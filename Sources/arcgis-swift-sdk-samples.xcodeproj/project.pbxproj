@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		00C07C6A27F7AF7A00661F49 /* ArcGIS in Frameworks */ = {isa = PBXBuildFile; productRef = 00C07C6927F7AF7A00661F49 /* ArcGIS */; };
 		00E5401C27F3CCA200CF66D5 /* AppMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5400C27F3CCA100CF66D5 /* AppMain.swift */; };
 		00E5401D27F3CCA200CF66D5 /* AppMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5400C27F3CCA100CF66D5 /* AppMain.swift */; };
 		00E5401E27F3CCA200CF66D5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5400D27F3CCA100CF66D5 /* ContentView.swift */; };
@@ -38,12 +39,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				00C07C6A27F7AF7A00661F49 /* ArcGIS in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		00C07C6827F7AF7A00661F49 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		00E5400627F3CCA100CF66D5 = {
 			isa = PBXGroup;
 			children = (
@@ -52,6 +61,7 @@
 				00E5400B27F3CCA100CF66D5 /* Shared */,
 				00E5401A27F3CCA200CF66D5 /* macOS */,
 				00E5401427F3CCA200CF66D5 /* Products */,
+				00C07C6827F7AF7A00661F49 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -116,6 +126,9 @@
 			dependencies = (
 			);
 			name = "arcgis-swift-sdk-samples (macOS)";
+			packageProductDependencies = (
+				00C07C6927F7AF7A00661F49 /* ArcGIS */,
+			);
 			productName = "arcgis-swift-sdk-samples (macOS)";
 			productReference = 00E5401927F3CCA200CF66D5 /* arcgis-swift-sdk-samples.app */;
 			productType = "com.apple.product-type.application";
@@ -472,6 +485,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		00C07C6927F7AF7A00661F49 /* ArcGIS */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ArcGIS;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 00E5400727F3CCA100CF66D5 /* Project object */;
 }
