@@ -23,6 +23,7 @@
 		00E5401927F3CCA200CF66D5 /* arcgis-swift-sdk-samples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "arcgis-swift-sdk-samples.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E5401B27F3CCA200CF66D5 /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
 		00E5402A27F775EA00CF66D5 /* arcgis-swift-sdk-samples--iOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "arcgis-swift-sdk-samples--iOS--Info.plist"; sourceTree = "<group>"; };
+		00E5402C27F7AF2400CF66D5 /* Swift */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,6 +47,7 @@
 		00E5400627F3CCA100CF66D5 = {
 			isa = PBXGroup;
 			children = (
+				00E5402C27F7AF2400CF66D5 /* Swift */,
 				00E5402A27F775EA00CF66D5 /* arcgis-swift-sdk-samples--iOS--Info.plist */,
 				00E5400B27F3CCA100CF66D5 /* Shared */,
 				00E5401A27F3CCA200CF66D5 /* macOS */,
