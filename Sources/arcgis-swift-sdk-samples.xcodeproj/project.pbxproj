@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0083586E27FE168D00192A15 /* ArcGIS in Frameworks */ = {isa = PBXBuildFile; productRef = 0083586D27FE168D00192A15 /* ArcGIS */; };
 		00C07C6A27F7AF7A00661F49 /* ArcGIS in Frameworks */ = {isa = PBXBuildFile; productRef = 00C07C6927F7AF7A00661F49 /* ArcGIS */; };
 		00E5401C27F3CCA200CF66D5 /* AppMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5400C27F3CCA100CF66D5 /* AppMain.swift */; };
 		00E5401D27F3CCA200CF66D5 /* AppMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5400C27F3CCA100CF66D5 /* AppMain.swift */; };
@@ -32,6 +33,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0083586E27FE168D00192A15 /* ArcGIS in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -109,6 +111,9 @@
 			dependencies = (
 			);
 			name = "arcgis-swift-sdk-samples (iOS)";
+			packageProductDependencies = (
+				0083586D27FE168D00192A15 /* ArcGIS */,
+			);
 			productName = "arcgis-swift-sdk-samples (iOS)";
 			productReference = 00E5401327F3CCA200CF66D5 /* Samples.app */;
 			productType = "com.apple.product-type.application";
@@ -487,6 +492,10 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		0083586D27FE168D00192A15 /* ArcGIS */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ArcGIS;
+		};
 		00C07C6927F7AF7A00661F49 /* ArcGIS */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ArcGIS;
