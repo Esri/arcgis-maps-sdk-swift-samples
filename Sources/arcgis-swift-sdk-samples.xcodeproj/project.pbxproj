@@ -25,7 +25,7 @@
 		00E5400D27F3CCA100CF66D5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		00E5400E27F3CCA200CF66D5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		00E5401327F3CCA200CF66D5 /* Samples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Samples.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		00E5401927F3CCA200CF66D5 /* arcgis-swift-sdk-samples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "arcgis-swift-sdk-samples.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E5401927F3CCA200CF66D5 /* Samples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Samples.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E5401B27F3CCA200CF66D5 /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
 		00E5402A27F775EA00CF66D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E5402C27F7AF2400CF66D5 /* Swift */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Swift; sourceTree = "<group>"; };
@@ -92,7 +92,7 @@
 			isa = PBXGroup;
 			children = (
 				00E5401327F3CCA200CF66D5 /* Samples.app */,
-				00E5401927F3CCA200CF66D5 /* arcgis-swift-sdk-samples.app */,
+				00E5401927F3CCA200CF66D5 /* Samples.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -147,7 +147,7 @@
 				00C07C6927F7AF7A00661F49 /* ArcGIS */,
 			);
 			productName = "arcgis-swift-sdk-samples (macOS)";
-			productReference = 00E5401927F3CCA200CF66D5 /* arcgis-swift-sdk-samples.app */;
+			productReference = 00E5401927F3CCA200CF66D5 /* Samples.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -434,7 +434,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 200.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.esri.arcgis-swift-sdk-samples";
-				PRODUCT_NAME = "arcgis-swift-sdk-samples";
+				PRODUCT_NAME = Samples;
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -460,7 +460,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 200.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.esri.arcgis-swift-sdk-samples";
-				PRODUCT_NAME = "arcgis-swift-sdk-samples";
+				PRODUCT_NAME = Samples;
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
