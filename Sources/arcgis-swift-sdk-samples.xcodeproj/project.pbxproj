@@ -3,11 +3,13 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 55;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		0083586E27FE168D00192A15 /* ArcGIS in Frameworks */ = {isa = PBXBuildFile; productRef = 0083586D27FE168D00192A15 /* ArcGIS */; };
+		0083589527FE518F00192A15 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 00E5402A27F775EA00CF66D5 /* Info.plist */; };
+		0083589727FE51A000192A15 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0083589627FE51A000192A15 /* Info.plist */; };
 		00C07C6A27F7AF7A00661F49 /* ArcGIS in Frameworks */ = {isa = PBXBuildFile; productRef = 00C07C6927F7AF7A00661F49 /* ArcGIS */; };
 		00E5401C27F3CCA200CF66D5 /* AppMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5400C27F3CCA100CF66D5 /* AppMain.swift */; };
 		00E5401D27F3CCA200CF66D5 /* AppMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5400C27F3CCA100CF66D5 /* AppMain.swift */; };
@@ -18,13 +20,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0083589627FE51A000192A15 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E5400C27F3CCA100CF66D5 /* AppMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMain.swift; sourceTree = "<group>"; };
 		00E5400D27F3CCA100CF66D5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		00E5400E27F3CCA200CF66D5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		00E5401327F3CCA200CF66D5 /* Samples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Samples.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E5401927F3CCA200CF66D5 /* arcgis-swift-sdk-samples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "arcgis-swift-sdk-samples.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E5401B27F3CCA200CF66D5 /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
-		00E5402A27F775EA00CF66D5 /* arcgis-swift-sdk-samples--iOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "arcgis-swift-sdk-samples--iOS--Info.plist"; sourceTree = "<group>"; };
+		00E5402A27F775EA00CF66D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E5402C27F7AF2400CF66D5 /* Swift */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -48,6 +51,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0083589427FE45F300192A15 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				00E5402A27F775EA00CF66D5 /* Info.plist */,
+			);
+			path = iOS;
+			sourceTree = "<group>";
+		};
 		00C07C6827F7AF7A00661F49 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -59,8 +70,8 @@
 			isa = PBXGroup;
 			children = (
 				00E5402C27F7AF2400CF66D5 /* Swift */,
-				00E5402A27F775EA00CF66D5 /* arcgis-swift-sdk-samples--iOS--Info.plist */,
 				00E5400B27F3CCA100CF66D5 /* Shared */,
+				0083589427FE45F300192A15 /* iOS */,
 				00E5401A27F3CCA200CF66D5 /* macOS */,
 				00E5401427F3CCA200CF66D5 /* Products */,
 				00C07C6827F7AF7A00661F49 /* Frameworks */,
@@ -90,6 +101,7 @@
 			isa = PBXGroup;
 			children = (
 				00E5401B27F3CCA200CF66D5 /* macOS.entitlements */,
+				0083589627FE51A000192A15 /* Info.plist */,
 			);
 			path = macOS;
 			sourceTree = "<group>";
@@ -157,7 +169,7 @@
 				};
 			};
 			buildConfigurationList = 00E5400A27F3CCA100CF66D5 /* Build configuration list for PBXProject "arcgis-swift-sdk-samples" */;
-			compatibilityVersion = "Xcode 13.0";
+			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -180,6 +192,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0083589527FE518F00192A15 /* Info.plist in Resources */,
 				00E5402027F3CCA200CF66D5 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -188,6 +201,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0083589727FE51A000192A15 /* Info.plist in Resources */,
 				00E5402127F3CCA200CF66D5 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -353,9 +367,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "arcgis-swift-sdk-samples--iOS--Info.plist";
+				INFOPLIST_FILE = iOS/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -382,9 +394,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "arcgis-swift-sdk-samples--iOS--Info.plist";
+				INFOPLIST_FILE = iOS/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -414,7 +424,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -441,7 +450,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
