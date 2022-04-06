@@ -19,6 +19,41 @@
 		00E5402127F3CCA200CF66D5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00E5400E27F3CCA200CF66D5 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXBuildRule section */
+		001C6DD627FE57A900D472C2 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.masque";
+			fileType = pattern.proxy;
+			inputFiles = (
+				"$(SRCROOT)/.secrets",
+			);
+			isEditable = 1;
+			name = "Generate swift code from secrets";
+			outputFiles = (
+				"$(DERIVED_FILE_DIR)/$(INPUT_FILE_BASE)",
+			);
+			runOncePerArchitecture = 0;
+			script = "\"${SRCROOT}/Scripts/masquerade\" -i \"${INPUT_FILE_PATH}\" -o \"${SCRIPT_OUTPUT_FILE_0}\" -s \"${SCRIPT_INPUT_FILE_0}\" -f\n";
+		};
+		0083586F27FE3BCF00192A15 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.masque";
+			fileType = pattern.proxy;
+			inputFiles = (
+				"$(SRCROOT)/.secrets",
+			);
+			isEditable = 1;
+			name = "Generate swift code from secrets";
+			outputFiles = (
+				"$(DERIVED_FILE_DIR)/$(INPUT_FILE_BASE)",
+			);
+			runOncePerArchitecture = 0;
+			script = "\"${SRCROOT}/Scripts/masquerade\" -i \"${INPUT_FILE_PATH}\" -o \"${SCRIPT_OUTPUT_FILE_0}\" -s \"${SCRIPT_INPUT_FILE_0}\" -f\n";
+		};
+/* End PBXBuildRule section */
+
 /* Begin PBXFileReference section */
 		0083589627FE51A000192A15 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E5400C27F3CCA100CF66D5 /* AppMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMain.swift; sourceTree = "<group>"; };
@@ -113,12 +148,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E5402427F3CCA200CF66D5 /* Build configuration list for PBXNativeTarget "arcgis-swift-sdk-samples (iOS)" */;
 			buildPhases = (
+				00E5402B27F77A5A00CF66D5 /* SwiftLint */,
 				00E5400F27F3CCA200CF66D5 /* Sources */,
 				00E5401027F3CCA200CF66D5 /* Frameworks */,
 				00E5401127F3CCA200CF66D5 /* Resources */,
-				00E5402B27F77A5A00CF66D5 /* SwiftLint */,
 			);
 			buildRules = (
+				0083586F27FE3BCF00192A15 /* PBXBuildRule */,
 			);
 			dependencies = (
 			);
@@ -134,11 +170,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E5402727F3CCA200CF66D5 /* Build configuration list for PBXNativeTarget "arcgis-swift-sdk-samples (macOS)" */;
 			buildPhases = (
+				001C6DD727FE57DE00D472C2 /* SwiftLint */,
 				00E5401527F3CCA200CF66D5 /* Sources */,
 				00E5401627F3CCA200CF66D5 /* Frameworks */,
 				00E5401727F3CCA200CF66D5 /* Resources */,
 			);
 			buildRules = (
+				001C6DD627FE57A900D472C2 /* PBXBuildRule */,
 			);
 			dependencies = (
 			);
@@ -209,6 +247,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		001C6DD727FE57DE00D472C2 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
 		00E5402B27F77A5A00CF66D5 /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
