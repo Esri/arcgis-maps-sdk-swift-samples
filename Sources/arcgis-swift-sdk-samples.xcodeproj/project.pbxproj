@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		001C6DD927FE585A00D472C2 /* AppSecrets.swift.masque in Resources */ = {isa = PBXBuildFile; fileRef = 001C6DD827FE585A00D472C2 /* AppSecrets.swift.masque */; };
+		001C6DDA27FE585A00D472C2 /* AppSecrets.swift.masque in Resources */ = {isa = PBXBuildFile; fileRef = 001C6DD827FE585A00D472C2 /* AppSecrets.swift.masque */; };
 		0083586E27FE168D00192A15 /* ArcGIS in Frameworks */ = {isa = PBXBuildFile; productRef = 0083586D27FE168D00192A15 /* ArcGIS */; };
 		0083589527FE518F00192A15 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 00E5402A27F775EA00CF66D5 /* Info.plist */; };
 		0083589727FE51A000192A15 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0083589627FE51A000192A15 /* Info.plist */; };
@@ -55,6 +57,7 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXFileReference section */
+		001C6DD827FE585A00D472C2 /* AppSecrets.swift.masque */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AppSecrets.swift.masque; sourceTree = "<group>"; };
 		0083589627FE51A000192A15 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E5400C27F3CCA100CF66D5 /* AppMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMain.swift; sourceTree = "<group>"; };
 		00E5400D27F3CCA100CF66D5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -116,6 +119,7 @@
 		00E5400B27F3CCA100CF66D5 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				001C6DD827FE585A00D472C2 /* AppSecrets.swift.masque */,
 				00E5400C27F3CCA100CF66D5 /* AppMain.swift */,
 				00E5400D27F3CCA100CF66D5 /* ContentView.swift */,
 				00E5400E27F3CCA200CF66D5 /* Assets.xcassets */,
@@ -230,6 +234,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				001C6DD927FE585A00D472C2 /* AppSecrets.swift.masque in Resources */,
 				0083589527FE518F00192A15 /* Info.plist in Resources */,
 				00E5402027F3CCA200CF66D5 /* Assets.xcassets in Resources */,
 			);
@@ -239,6 +244,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				001C6DDA27FE585A00D472C2 /* AppSecrets.swift.masque in Resources */,
 				0083589727FE51A000192A15 /* Info.plist in Resources */,
 				00E5402127F3CCA200CF66D5 /* Assets.xcassets in Resources */,
 			);
