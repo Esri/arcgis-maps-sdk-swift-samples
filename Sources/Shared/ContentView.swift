@@ -13,9 +13,11 @@
 // limitations under the License.
 
 import SwiftUI
+import ArcGIS
 
 struct ContentView: View {
     var body: some View {
+        MapView(map: Map(basemapStyle: .arcGISTopographic))
         Text("Hello, world!")
             .padding()
     }
