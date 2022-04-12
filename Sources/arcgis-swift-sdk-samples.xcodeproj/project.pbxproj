@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 55;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -154,7 +154,7 @@
 				};
 			};
 			buildConfigurationList = 00E5400A27F3CCA100CF66D5 /* Build configuration list for PBXProject "arcgis-swift-sdk-samples" */;
-			compatibilityVersion = "Xcode 12.0";
+			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
