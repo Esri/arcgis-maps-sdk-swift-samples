@@ -35,12 +35,10 @@
 
 /* Begin PBXFileReference section */
 		001C6DD827FE585A00D472C2 /* AppSecrets.swift.masque */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AppSecrets.swift.masque; sourceTree = "<group>"; };
-		0083589627FE51A000192A15 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E5400C27F3CCA100CF66D5 /* AppMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMain.swift; sourceTree = "<group>"; };
 		00E5400D27F3CCA100CF66D5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		00E5400E27F3CCA200CF66D5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		00E5401327F3CCA200CF66D5 /* Samples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Samples.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		00E5401B27F3CCA200CF66D5 /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
 		00E5402A27F775EA00CF66D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E5402C27F7AF2400CF66D5 /* Swift */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -78,7 +76,6 @@
 				00E5402C27F7AF2400CF66D5 /* Swift */,
 				00E5400B27F3CCA100CF66D5 /* Shared */,
 				0083589427FE45F300192A15 /* iOS */,
-				00E5401A27F3CCA200CF66D5 /* macOS */,
 				00E5401427F3CCA200CF66D5 /* Products */,
 				00C07C6827F7AF7A00661F49 /* Frameworks */,
 			);
@@ -101,15 +98,6 @@
 				00E5401327F3CCA200CF66D5 /* Samples.app */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		00E5401A27F3CCA200CF66D5 /* macOS */ = {
-			isa = PBXGroup;
-			children = (
-				00E5401B27F3CCA200CF66D5 /* macOS.entitlements */,
-				0083589627FE51A000192A15 /* Info.plist */,
-			);
-			path = macOS;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
