@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		00144B5C280634840090DD5D /* ArcGIS in Frameworks */ = {isa = PBXBuildFile; productRef = 00144B5B280634840090DD5D /* ArcGIS */; };
+		00144B5D280634840090DD5D /* ArcGIS in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 00144B5B280634840090DD5D /* ArcGIS */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		001C6DE127FE8A9400D472C2 /* AppSecrets.swift.masque in Sources */ = {isa = PBXBuildFile; fileRef = 001C6DD827FE585A00D472C2 /* AppSecrets.swift.masque */; };
-		0083586E27FE168D00192A15 /* ArcGIS in Frameworks */ = {isa = PBXBuildFile; productRef = 0083586D27FE168D00192A15 /* ArcGIS */; };
 		00E5401C27F3CCA200CF66D5 /* AppMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5400C27F3CCA100CF66D5 /* AppMain.swift */; };
 		00E5401E27F3CCA200CF66D5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5400D27F3CCA100CF66D5 /* ContentView.swift */; };
 		00E5402027F3CCA200CF66D5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00E5400E27F3CCA200CF66D5 /* Assets.xcassets */; };
@@ -33,6 +34,20 @@
 		};
 /* End PBXBuildRule section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		00144B5E280634840090DD5D /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				00144B5D280634840090DD5D /* ArcGIS in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		00144B5A2806335D0090DD5D /* ArcGIS */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ArcGIS; path = ../../swift/ArcGIS; sourceTree = "<group>"; };
 		001C6DD827FE585A00D472C2 /* AppSecrets.swift.masque */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AppSecrets.swift.masque; sourceTree = "<group>"; };
@@ -48,7 +63,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0083586E27FE168D00192A15 /* ArcGIS in Frameworks */,
+				00144B5C280634840090DD5D /* ArcGIS in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +127,7 @@
 				00E5400F27F3CCA200CF66D5 /* Sources */,
 				00E5401027F3CCA200CF66D5 /* Frameworks */,
 				00E5401127F3CCA200CF66D5 /* Resources */,
+				00144B5E280634840090DD5D /* Embed Frameworks */,
 			);
 			buildRules = (
 				0083586F27FE3BCF00192A15 /* PBXBuildRule */,
@@ -120,7 +136,7 @@
 			);
 			name = "arcgis-swift-sdk-samples (iOS)";
 			packageProductDependencies = (
-				0083586D27FE168D00192A15 /* ArcGIS */,
+				00144B5B280634840090DD5D /* ArcGIS */,
 			);
 			productName = "arcgis-swift-sdk-samples (iOS)";
 			productReference = 00E5401327F3CCA200CF66D5 /* Samples.app */;
@@ -413,7 +429,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		0083586D27FE168D00192A15 /* ArcGIS */ = {
+		00144B5B280634840090DD5D /* ArcGIS */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ArcGIS;
 		};
