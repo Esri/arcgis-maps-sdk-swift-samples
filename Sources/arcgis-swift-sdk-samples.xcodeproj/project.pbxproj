@@ -8,34 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		001C6DE127FE8A9400D472C2 /* AppSecrets.swift.masque in Sources */ = {isa = PBXBuildFile; fileRef = 001C6DD827FE585A00D472C2 /* AppSecrets.swift.masque */; };
-		001C6DE227FE8B0A00D472C2 /* AppSecrets.swift.masque in Sources */ = {isa = PBXBuildFile; fileRef = 001C6DD827FE585A00D472C2 /* AppSecrets.swift.masque */; };
 		0083586E27FE168D00192A15 /* ArcGIS in Frameworks */ = {isa = PBXBuildFile; productRef = 0083586D27FE168D00192A15 /* ArcGIS */; };
-		00C07C6A27F7AF7A00661F49 /* ArcGIS in Frameworks */ = {isa = PBXBuildFile; productRef = 00C07C6927F7AF7A00661F49 /* ArcGIS */; };
 		00E5401C27F3CCA200CF66D5 /* AppMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5400C27F3CCA100CF66D5 /* AppMain.swift */; };
-		00E5401D27F3CCA200CF66D5 /* AppMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5400C27F3CCA100CF66D5 /* AppMain.swift */; };
 		00E5401E27F3CCA200CF66D5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5400D27F3CCA100CF66D5 /* ContentView.swift */; };
-		00E5401F27F3CCA200CF66D5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5400D27F3CCA100CF66D5 /* ContentView.swift */; };
 		00E5402027F3CCA200CF66D5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00E5400E27F3CCA200CF66D5 /* Assets.xcassets */; };
-		00E5402127F3CCA200CF66D5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00E5400E27F3CCA200CF66D5 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
-		001C6DD627FE57A900D472C2 /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = com.apple.compilers.proxy.script;
-			filePatterns = "*.masque";
-			fileType = pattern.proxy;
-			inputFiles = (
-				"$(SRCROOT)/.secrets",
-			);
-			isEditable = 1;
-			name = "Generate swift code from secrets";
-			outputFiles = (
-				"$(DERIVED_FILE_DIR)/$(INPUT_FILE_BASE)",
-			);
-			runOncePerArchitecture = 0;
-			script = "\"${SRCROOT}/../Scripts/masquerade\" -i \"${INPUT_FILE_PATH}\" -o \"${SCRIPT_OUTPUT_FILE_0}\" -s \"${SCRIPT_INPUT_FILE_0}\" -f\n";
-		};
 		0083586F27FE3BCF00192A15 /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
 			compilerSpec = com.apple.compilers.proxy.script;
@@ -61,7 +40,6 @@
 		00E5400D27F3CCA100CF66D5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		00E5400E27F3CCA200CF66D5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		00E5401327F3CCA200CF66D5 /* Samples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Samples.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		00E5401927F3CCA200CF66D5 /* Samples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Samples.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E5401B27F3CCA200CF66D5 /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
 		00E5402A27F775EA00CF66D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E5402C27F7AF2400CF66D5 /* Swift */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Swift; sourceTree = "<group>"; };
@@ -73,14 +51,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0083586E27FE168D00192A15 /* ArcGIS in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		00E5401627F3CCA200CF66D5 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				00C07C6A27F7AF7A00661F49 /* ArcGIS in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -129,7 +99,6 @@
 			isa = PBXGroup;
 			children = (
 				00E5401327F3CCA200CF66D5 /* Samples.app */,
-				00E5401927F3CCA200CF66D5 /* Samples.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -169,29 +138,6 @@
 			productReference = 00E5401327F3CCA200CF66D5 /* Samples.app */;
 			productType = "com.apple.product-type.application";
 		};
-		00E5401827F3CCA200CF66D5 /* arcgis-swift-sdk-samples (macOS) */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 00E5402727F3CCA200CF66D5 /* Build configuration list for PBXNativeTarget "arcgis-swift-sdk-samples (macOS)" */;
-			buildPhases = (
-				001C6DDB27FE5CC900D472C2 /* Create .secrets file if it does not exist */,
-				001C6DD727FE57DE00D472C2 /* SwiftLint */,
-				00E5401527F3CCA200CF66D5 /* Sources */,
-				00E5401627F3CCA200CF66D5 /* Frameworks */,
-				00E5401727F3CCA200CF66D5 /* Resources */,
-			);
-			buildRules = (
-				001C6DD627FE57A900D472C2 /* PBXBuildRule */,
-			);
-			dependencies = (
-			);
-			name = "arcgis-swift-sdk-samples (macOS)";
-			packageProductDependencies = (
-				00C07C6927F7AF7A00661F49 /* ArcGIS */,
-			);
-			productName = "arcgis-swift-sdk-samples (macOS)";
-			productReference = 00E5401927F3CCA200CF66D5 /* Samples.app */;
-			productType = "com.apple.product-type.application";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -203,9 +149,6 @@
 				LastUpgradeCheck = 1330;
 				TargetAttributes = {
 					00E5401227F3CCA200CF66D5 = {
-						CreatedOnToolsVersion = 13.3;
-					};
-					00E5401827F3CCA200CF66D5 = {
 						CreatedOnToolsVersion = 13.3;
 					};
 				};
@@ -224,7 +167,6 @@
 			projectRoot = "";
 			targets = (
 				00E5401227F3CCA200CF66D5 /* arcgis-swift-sdk-samples (iOS) */,
-				00E5401827F3CCA200CF66D5 /* arcgis-swift-sdk-samples (macOS) */,
 			);
 		};
 /* End PBXProject section */
@@ -238,55 +180,9 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		00E5401727F3CCA200CF66D5 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				00E5402127F3CCA200CF66D5 /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		001C6DD727FE57DE00D472C2 /* SwiftLint */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = SwiftLint;
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
-		};
-		001C6DDB27FE5CC900D472C2 /* Create .secrets file if it does not exist */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Create .secrets file if it does not exist";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(SRCROOT)/.secrets",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if [ ! -e \"$SRCROOT/.secrets\" ]\nthen\n    touch \"$SRCROOT/.secrets\"\nfi\n";
-		};
 		001C6DDC27FE5CE800D472C2 /* Create .secrets file if it does not exist */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -335,16 +231,6 @@
 				001C6DE127FE8A9400D472C2 /* AppSecrets.swift.masque in Sources */,
 				00E5401E27F3CCA200CF66D5 /* ContentView.swift in Sources */,
 				00E5401C27F3CCA200CF66D5 /* AppMain.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		00E5401527F3CCA200CF66D5 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				001C6DE227FE8B0A00D472C2 /* AppSecrets.swift.masque in Sources */,
-				00E5401F27F3CCA200CF66D5 /* ContentView.swift in Sources */,
-				00E5401D27F3CCA200CF66D5 /* AppMain.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -515,58 +401,6 @@
 			};
 			name = Release;
 		};
-		00E5402827F3CCA200CF66D5 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 200.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.esri.arcgis-swift-sdk-samples";
-				PRODUCT_NAME = Samples;
-				SDKROOT = macosx;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Debug;
-		};
-		00E5402927F3CCA200CF66D5 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 200.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.esri.arcgis-swift-sdk-samples";
-				PRODUCT_NAME = Samples;
-				SDKROOT = macosx;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -588,23 +422,10 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		00E5402727F3CCA200CF66D5 /* Build configuration list for PBXNativeTarget "arcgis-swift-sdk-samples (macOS)" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				00E5402827F3CCA200CF66D5 /* Debug */,
-				00E5402927F3CCA200CF66D5 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		0083586D27FE168D00192A15 /* ArcGIS */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = ArcGIS;
-		};
-		00C07C6927F7AF7A00661F49 /* ArcGIS */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ArcGIS;
 		};
