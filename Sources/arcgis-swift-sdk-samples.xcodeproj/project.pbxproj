@@ -70,14 +70,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0083589427FE45F300192A15 /* iOS */ = {
-			isa = PBXGroup;
-			children = (
-				00E5402A27F775EA00CF66D5 /* Info.plist */,
-			);
-			path = iOS;
-			sourceTree = "<group>";
-		};
 		00C07C6827F7AF7A00661F49 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -90,7 +82,6 @@
 			children = (
 				00144B5A2806335D0090DD5D /* ArcGIS */,
 				00E5400B27F3CCA100CF66D5 /* Shared */,
-				0083589427FE45F300192A15 /* iOS */,
 				00E5401427F3CCA200CF66D5 /* Products */,
 				00C07C6827F7AF7A00661F49 /* Frameworks */,
 			);
@@ -103,6 +94,7 @@
 				00E5400C27F3CCA100CF66D5 /* AppMain.swift */,
 				00E5400D27F3CCA100CF66D5 /* ContentView.swift */,
 				00E5400E27F3CCA200CF66D5 /* Assets.xcassets */,
+				00E5402A27F775EA00CF66D5 /* Info.plist */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
