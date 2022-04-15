@@ -81,13 +81,13 @@
 			isa = PBXGroup;
 			children = (
 				00144B5A2806335D0090DD5D /* ArcGIS */,
-				00E5400B27F3CCA100CF66D5 /* Shared */,
+				00E5400B27F3CCA100CF66D5 /* arcgis-swift-sdk-samples */,
 				00E5401427F3CCA200CF66D5 /* Products */,
 				00C07C6827F7AF7A00661F49 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
-		00E5400B27F3CCA100CF66D5 /* Shared */ = {
+		00E5400B27F3CCA100CF66D5 /* arcgis-swift-sdk-samples */ = {
 			isa = PBXGroup;
 			children = (
 				001C6DD827FE585A00D472C2 /* AppSecrets.swift.masque */,
@@ -96,7 +96,7 @@
 				00E5400E27F3CCA200CF66D5 /* Assets.xcassets */,
 				00E5402A27F775EA00CF66D5 /* Info.plist */,
 			);
-			path = Shared;
+			path = "arcgis-swift-sdk-samples";
 			sourceTree = "<group>";
 		};
 		00E5401427F3CCA200CF66D5 /* Products */ = {
@@ -110,9 +110,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00E5401227F3CCA200CF66D5 /* arcgis-swift-sdk-samples (iOS) */ = {
+		00E5401227F3CCA200CF66D5 /* arcgis-swift-sdk-samples */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 00E5402427F3CCA200CF66D5 /* Build configuration list for PBXNativeTarget "arcgis-swift-sdk-samples (iOS)" */;
+			buildConfigurationList = 00E5402427F3CCA200CF66D5 /* Build configuration list for PBXNativeTarget "arcgis-swift-sdk-samples" */;
 			buildPhases = (
 				001C6DDC27FE5CE800D472C2 /* Create .secrets file if it does not exist */,
 				00E5402B27F77A5A00CF66D5 /* SwiftLint */,
@@ -126,7 +126,7 @@
 			);
 			dependencies = (
 			);
-			name = "arcgis-swift-sdk-samples (iOS)";
+			name = "arcgis-swift-sdk-samples";
 			packageProductDependencies = (
 				00144B5B280634840090DD5D /* ArcGIS */,
 			);
@@ -162,7 +162,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				00E5401227F3CCA200CF66D5 /* arcgis-swift-sdk-samples (iOS) */,
+				00E5401227F3CCA200CF66D5 /* arcgis-swift-sdk-samples */,
 			);
 		};
 /* End PBXProject section */
@@ -349,7 +349,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				INFOPLIST_FILE = Shared/Info.plist;
+				INFOPLIST_FILE = "arcgis-swift-sdk-samples/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -376,7 +376,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				INFOPLIST_FILE = Shared/Info.plist;
+				INFOPLIST_FILE = "arcgis-swift-sdk-samples/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -409,7 +409,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		00E5402427F3CCA200CF66D5 /* Build configuration list for PBXNativeTarget "arcgis-swift-sdk-samples (iOS)" */ = {
+		00E5402427F3CCA200CF66D5 /* Build configuration list for PBXNativeTarget "arcgis-swift-sdk-samples" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E5402527F3CCA200CF66D5 /* Debug */,
