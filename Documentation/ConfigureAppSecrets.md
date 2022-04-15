@@ -1,6 +1,6 @@
 # Configure App Secrets
 
-As a best-practices principle, the project conceals app secrets from source code by generating and compiling an `AppSecrets.swift` source code file at build time using a custom build rule.
+As a best-practice principle, the project conceals app secrets from source code by generating and compiling an `AppSecrets.swift` source code file at build time using a custom build rule.
 
 This build rule looks for a secrets file stored in the project's root directory, `$(SRCROOT)/.secrets`.
 
