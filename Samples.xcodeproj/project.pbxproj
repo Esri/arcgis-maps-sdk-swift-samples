@@ -81,13 +81,13 @@
 			isa = PBXGroup;
 			children = (
 				00144B5A2806335D0090DD5D /* ArcGIS */,
-				00E5400B27F3CCA100CF66D5 /* arcgis-swift-sdk-samples */,
+				00E5400B27F3CCA100CF66D5 /* Samples */,
 				00E5401427F3CCA200CF66D5 /* Products */,
 				00C07C6827F7AF7A00661F49 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
-		00E5400B27F3CCA100CF66D5 /* arcgis-swift-sdk-samples */ = {
+		00E5400B27F3CCA100CF66D5 /* Samples */ = {
 			isa = PBXGroup;
 			children = (
 				001C6DD827FE585A00D472C2 /* AppSecrets.swift.masque */,
@@ -96,7 +96,7 @@
 				00E5400E27F3CCA200CF66D5 /* Assets.xcassets */,
 				00E5402A27F775EA00CF66D5 /* Info.plist */,
 			);
-			path = "arcgis-swift-sdk-samples";
+			path = Samples;
 			sourceTree = "<group>";
 		};
 		00E5401427F3CCA200CF66D5 /* Products */ = {
