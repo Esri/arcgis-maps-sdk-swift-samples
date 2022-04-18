@@ -110,9 +110,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00E5401227F3CCA200CF66D5 /* arcgis-swift-sdk-samples */ = {
+		00E5401227F3CCA200CF66D5 /* Samples */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 00E5402427F3CCA200CF66D5 /* Build configuration list for PBXNativeTarget "arcgis-swift-sdk-samples" */;
+			buildConfigurationList = 00E5402427F3CCA200CF66D5 /* Build configuration list for PBXNativeTarget "Samples" */;
 			buildPhases = (
 				001C6DDC27FE5CE800D472C2 /* Create .secrets file if it does not exist */,
 				00E5402B27F77A5A00CF66D5 /* SwiftLint */,
@@ -126,7 +126,7 @@
 			);
 			dependencies = (
 			);
-			name = "arcgis-swift-sdk-samples";
+			name = Samples;
 			packageProductDependencies = (
 				00144B5B280634840090DD5D /* ArcGIS */,
 			);
@@ -149,7 +149,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 00E5400A27F3CCA100CF66D5 /* Build configuration list for PBXProject "arcgis-swift-sdk-samples" */;
+			buildConfigurationList = 00E5400A27F3CCA100CF66D5 /* Build configuration list for PBXProject "Samples" */;
 			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -162,7 +162,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				00E5401227F3CCA200CF66D5 /* arcgis-swift-sdk-samples */,
+				00E5401227F3CCA200CF66D5 /* Samples */,
 			);
 		};
 /* End PBXProject section */
@@ -400,7 +400,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00E5400A27F3CCA100CF66D5 /* Build configuration list for PBXProject "arcgis-swift-sdk-samples" */ = {
+		00E5400A27F3CCA100CF66D5 /* Build configuration list for PBXProject "Samples" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E5402227F3CCA200CF66D5 /* Debug */,
@@ -409,7 +409,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		00E5402427F3CCA200CF66D5 /* Build configuration list for PBXNativeTarget "arcgis-swift-sdk-samples" */ = {
+		00E5402427F3CCA200CF66D5 /* Build configuration list for PBXNativeTarget "Samples" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E5402527F3CCA200CF66D5 /* Debug */,
