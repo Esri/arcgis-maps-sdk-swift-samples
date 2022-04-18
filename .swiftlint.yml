@@ -85,4 +85,3 @@ trailing_whitespace:
 
 excluded:
   - Pods  # Ignore CocoaPods dependencies
-  - Swift  # Ignore local Swift package

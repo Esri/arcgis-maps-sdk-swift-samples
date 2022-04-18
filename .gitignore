@@ -32,6 +32,3 @@ Portal\ Data/
 Packages/
 Package.pins
 Package.resolved
-
-## Swift API local Swift package
-Sources/Swift/
