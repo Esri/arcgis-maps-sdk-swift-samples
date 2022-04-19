@@ -31,8 +31,8 @@ struct AppMain: App {
 extension AppMain {
     /// License the app with ArcGIS Runtime deployment license keys.
     /// - Note: An invalid key does not throw an exception, but simply fails to
-    ///   license the app, falling back to Developer Mode (which will display
-    ///   a watermark on the map view).
+    /// license the app, falling back to Developer Mode (which will display
+    /// a watermark on the map view).
     func license() {
         if let licenseKey = String.licenseKey,
            let extensionLicenseKey = String.extensionLicenseKey {
