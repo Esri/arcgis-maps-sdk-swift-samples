@@ -16,8 +16,10 @@ import SwiftUI
 import ArcGIS
 
 struct ContentView: View {
+    let map = Map(basemapStyle: .arcGISTopographic)
+    
     var body: some View {
-        MapView(map: Map(basemapStyle: .arcGISTopographic))
+        MapView(map: map)
         Text("Hello, world!")
             .padding()
     }
