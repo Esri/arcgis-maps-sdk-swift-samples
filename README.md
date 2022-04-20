@@ -4,8 +4,8 @@ This repository contains Swift sample code demonstrating the capabilities of (�
 
 ## Requirements
 
-* (⚠️ link subject to change) [ArcGIS Runtime SDK for Swift](https://developers.arcgis.com/ios/) 200.0.0 (or newer)
-* (⚠️ link subject to change) [ArcGIS Runtime Toolkit for Swift](https://github.com/ArcGIS/arcgis-runtime-toolkit-swift) 100.13.0 (or newer)
+* (⚠️ link subject to change) [ArcGIS Runtime SDK for Swift](https://developers.arcgis.com/ios/) 200.0 (or newer)
+* (⚠️ link subject to change) [ArcGIS Runtime Toolkit for Swift](https://github.com/ArcGIS/arcgis-runtime-toolkit-swift) 200.0 (or newer)
 * Xcode 13.0 (or newer)
 
 The *ArcGIS Runtime SDK Samples app* has a *Target SDK* version of *15.0*, meaning that it can run on devices with *iOS 15.0* or newer.
