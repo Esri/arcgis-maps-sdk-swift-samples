@@ -8,13 +8,13 @@ Note: License keys are not required for development. Without licensing or licens
 
 1. Create a hidden secrets file in the project's root directory.
 
-  ```bash
+  ```sh
   touch .secrets
   ```
 
 2. Add your **License Key** to the secrets file. Licensing the app will remove the 'Licensed for Developer Use Only' watermark. Licensing the app is optional in development but required for production. Add your **Extension License Key** and **API Key** to the secrets file if needed. Acquire license keys from your [dashboard](https://developers.arcgis.com/dashboard).
 
-  ```bash
+  ```sh
   echo ARCGIS_LICENSE_KEY=your-license-key >> .secrets
   echo ARCGIS_EXTENSION_LICENSE_KEY=your-extension-license-key >> .secrets
   echo ARCGIS_API_KEY_IOS=your-api-key >> .secrets

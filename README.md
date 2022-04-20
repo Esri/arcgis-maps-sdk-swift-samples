@@ -23,13 +23,13 @@ To build this app locally, follow the steps to add an API key to a secrets file 
 
 1. Create a hidden secrets file in the project file's directory.
 
-  ```bash
+  ```sh
   touch .secrets
   ```
 
 2. Add your **API Key** to the secrets file aforementioned. Adding an API key allows you to access a set of ready-to-use services, including basemaps. Acquire the keys from your [dashboard](https://developers.arcgis.com/dashboard). Visit the developer's website to learn more about [API keys](https://developers.arcgis.com/documentation/mapping-apis-and-services/security/api-keys/).
 
-  ```bash
+  ```sh
   echo ARCGIS_API_KEY_IOS=your-api-key >> .secrets
   ```
 
@@ -39,7 +39,7 @@ Please see [Configure App Secrets](Documentation/ConfigureAppSecrets.md) for add
 
 ## Issues
 
-Find a bug or want to request a new feature? Please let us know by submitting an issue.
+Find a bug or want to request a new feature? Please let us know by (⚠️ link subject to change) [creating an issue](https://github.com/ArcGIS/arcgis-runtime-samples-swift/issues/new).
 
 ## Contributing
 
