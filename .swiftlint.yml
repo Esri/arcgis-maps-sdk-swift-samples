@@ -2,11 +2,11 @@ custom_rules:
   spatial_reference_web_mercator:
     name: Web Mercator Spatial Reference
     regex: SpatialReference\(wkid:\s*(3857|102100)\)
-    message: "Use SpatialReference.webMercator() instead."
+    message: "Use 'SpatialReference.webMercator' instead."
   spatial_reference_wgs84:
     name: WGS84 Spatial Reference
     regex: SpatialReference\(wkid:\s*(4326)\)
-    message: "Use SpatialReference.wgs84() instead."
+    message: "Use 'SpatialReference.wgs84' instead."
   simple_closure:
     name: Simple Closure
     regex: (-> Void in)|(\(\) in)
@@ -82,6 +82,3 @@ trailing_closure:
   only_single_muted_parameter: true
 trailing_whitespace:
   ignores_empty_lines: true
-
-excluded:
-  - Pods  # Ignore CocoaPods dependencies
