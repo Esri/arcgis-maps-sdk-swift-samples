@@ -74,21 +74,21 @@
 			isa = PBXGroup;
 			children = (
 				00144B5A2806335D0090DD5D /* ArcGIS */,
-				00E5400B27F3CCA100CF66D5 /* Samples */,
+				00E5400B27F3CCA100CF66D5 /* Shared */,
 				00E5401427F3CCA200CF66D5 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		00E5400B27F3CCA100CF66D5 /* Samples */ = {
+		00E5400B27F3CCA100CF66D5 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
 				001C6DD827FE585A00D472C2 /* AppSecrets.swift.masque */,
-				00E5400C27F3CCA100CF66D5 /* SamplesApp.swift */,
-				00E5400D27F3CCA100CF66D5 /* ContentView.swift */,
 				00E5400E27F3CCA200CF66D5 /* Assets.xcassets */,
+				00E5400D27F3CCA100CF66D5 /* ContentView.swift */,
 				00E5402A27F775EA00CF66D5 /* Info.plist */,
+				00E5400C27F3CCA100CF66D5 /* SamplesApp.swift */,
 			);
-			path = Samples;
+			path = Shared;
 			sourceTree = "<group>";
 		};
 		00E5401427F3CCA200CF66D5 /* Products */ = {
@@ -341,7 +341,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				INFOPLIST_FILE = "$(SRCROOT)/Samples/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Shared/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -368,7 +368,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				INFOPLIST_FILE = "$(SRCROOT)/Samples/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Shared/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
