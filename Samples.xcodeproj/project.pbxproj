@@ -10,7 +10,7 @@
 		00144B5C280634840090DD5D /* ArcGIS in Frameworks */ = {isa = PBXBuildFile; productRef = 00144B5B280634840090DD5D /* ArcGIS */; };
 		00144B5D280634840090DD5D /* ArcGIS in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 00144B5B280634840090DD5D /* ArcGIS */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		001C6DE127FE8A9400D472C2 /* AppSecrets.swift.masque in Sources */ = {isa = PBXBuildFile; fileRef = 001C6DD827FE585A00D472C2 /* AppSecrets.swift.masque */; };
-		00E5401C27F3CCA200CF66D5 /* AppMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5400C27F3CCA100CF66D5 /* AppMain.swift */; };
+		00E5401C27F3CCA200CF66D5 /* SamplesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5400C27F3CCA100CF66D5 /* SamplesApp.swift */; };
 		00E5401E27F3CCA200CF66D5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5400D27F3CCA100CF66D5 /* ContentView.swift */; };
 		00E5402027F3CCA200CF66D5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00E5400E27F3CCA200CF66D5 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
@@ -51,7 +51,7 @@
 /* Begin PBXFileReference section */
 		00144B5A2806335D0090DD5D /* ArcGIS */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ArcGIS; path = ../swift/ArcGIS; sourceTree = "<group>"; };
 		001C6DD827FE585A00D472C2 /* AppSecrets.swift.masque */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AppSecrets.swift.masque; sourceTree = "<group>"; };
-		00E5400C27F3CCA100CF66D5 /* AppMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMain.swift; sourceTree = "<group>"; };
+		00E5400C27F3CCA100CF66D5 /* SamplesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SamplesApp.swift; sourceTree = "<group>"; };
 		00E5400D27F3CCA100CF66D5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		00E5400E27F3CCA200CF66D5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		00E5401327F3CCA200CF66D5 /* Samples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Samples.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -83,7 +83,7 @@
 			isa = PBXGroup;
 			children = (
 				001C6DD827FE585A00D472C2 /* AppSecrets.swift.masque */,
-				00E5400C27F3CCA100CF66D5 /* AppMain.swift */,
+				00E5400C27F3CCA100CF66D5 /* SamplesApp.swift */,
 				00E5400D27F3CCA100CF66D5 /* ContentView.swift */,
 				00E5400E27F3CCA200CF66D5 /* Assets.xcassets */,
 				00E5402A27F775EA00CF66D5 /* Info.plist */,
@@ -218,7 +218,7 @@
 			files = (
 				001C6DE127FE8A9400D472C2 /* AppSecrets.swift.masque in Sources */,
 				00E5401E27F3CCA200CF66D5 /* ContentView.swift in Sources */,
-				00E5401C27F3CCA200CF66D5 /* AppMain.swift in Sources */,
+				00E5401C27F3CCA200CF66D5 /* SamplesApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

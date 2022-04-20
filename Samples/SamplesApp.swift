@@ -16,7 +16,7 @@ import SwiftUI
 import ArcGIS
 
 @main
-struct AppMain: App {
+struct SamplesApp: App {
     init() {
         license()
     }
@@ -28,7 +28,7 @@ struct AppMain: App {
     }
 }
 
-extension AppMain {
+extension SamplesApp {
     /// License the app with ArcGIS Runtime deployment license keys.
     /// - Note: An invalid key does not throw an exception, but simply fails to
     /// license the app, falling back to Developer Mode (which will display
