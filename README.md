@@ -17,9 +17,9 @@ The *ArcGIS Runtime SDK Samples app* has a *Target SDK* version of *15.0*, meani
 1. **Open** the `Samples.xcodeproj` **project** file
 1. **Run** the `Samples` app target
 
-## Configure API key
+## Configure API Key
 
-To build this app locally, follow the steps to add an API key to a secrets file stored in the project file's directory, `$(SRCROOT)/.secrets`.
+To run this app and access specific, ready-to-use services such as basemap layer, follow the steps to add an API key to a secrets file stored in the project file's directory, `$(SRCROOT)/.secrets`.
 
 1. Create a hidden secrets file in the project file's directory.
 
