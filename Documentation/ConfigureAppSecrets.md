@@ -17,7 +17,7 @@ Note: License keys are not required for development. Without licensing or licens
   ```bash
   echo ARCGIS_LICENSE_KEY=your-license-key >> .secrets
   echo ARCGIS_EXTENSION_LICENSE_KEY=your-extension-license-key >> .secrets
-  echo ARCGIS_API_KEY_iOS=your-api-key >> .secrets
+  echo ARCGIS_API_KEY_IOS=your-api-key >> .secrets
   ```
 
   > Replace 'your-license-key', 'your-extension-license-key' and 'your-api-key' with your keys.

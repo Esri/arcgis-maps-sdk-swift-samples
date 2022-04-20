@@ -30,7 +30,7 @@ To build this app locally, follow the steps to add an API key to a secrets file 
 2. Add your **API Key** to the secrets file aforementioned. Adding an API key allows you to access a set of ready-to-use services, including basemaps. Acquire the keys from your [dashboard](https://developers.arcgis.com/dashboard). Visit the developer's website to learn more about [API keys](https://developers.arcgis.com/documentation/mapping-apis-and-services/security/api-keys/).
 
   ```bash
-  echo ARCGIS_API_KEY_iOS=your-api-key >> .secrets
+  echo ARCGIS_API_KEY_IOS=your-api-key >> .secrets
   ```
 
   > Replace 'your-api-key' with your keys.

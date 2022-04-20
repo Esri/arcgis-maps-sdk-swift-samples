@@ -40,10 +40,10 @@ extension AppMain {
             // capability.
             ArcGISRuntimeEnvironment.setLicense(licenseKey: licenseKey, extensions: [extensionLicenseKey])
         }
-        if let apiKey = String.iOSAPIKey {
+        if let apiKey = APIKey.iOS {
             // Authentication with an API key or named user is required to
             // access basemaps and other location services.
-            ArcGISRuntimeEnvironment.apiKey = APIKey(rawValue: apiKey)
+            ArcGISRuntimeEnvironment.apiKey = apiKey
         }
     }
 }
