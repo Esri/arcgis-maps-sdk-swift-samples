@@ -110,9 +110,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00E5401227F3CCA200CF66D5 /* Samples */ = {
+		00E5401227F3CCA200CF66D5 /* Samples (iOS) */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 00E5402427F3CCA200CF66D5 /* Build configuration list for PBXNativeTarget "Samples" */;
+			buildConfigurationList = 00E5402427F3CCA200CF66D5 /* Build configuration list for PBXNativeTarget "Samples (iOS)" */;
 			buildPhases = (
 				001C6DDC27FE5CE800D472C2 /* Create .secrets file if it does not exist */,
 				00E5402B27F77A5A00CF66D5 /* Lint Sources */,
@@ -126,7 +126,7 @@
 			);
 			dependencies = (
 			);
-			name = Samples;
+			name = "Samples (iOS)";
 			packageProductDependencies = (
 				00144B5B280634840090DD5D /* ArcGIS */,
 			);
@@ -162,7 +162,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				00E5401227F3CCA200CF66D5 /* Samples */,
+				00E5401227F3CCA200CF66D5 /* Samples (iOS) */,
 			);
 		};
 /* End PBXProject section */
@@ -409,7 +409,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		00E5402427F3CCA200CF66D5 /* Build configuration list for PBXNativeTarget "Samples" */ = {
+		00E5402427F3CCA200CF66D5 /* Build configuration list for PBXNativeTarget "Samples (iOS)" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E5402527F3CCA200CF66D5 /* Debug */,

@@ -16,7 +16,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E5401227F3CCA200CF66D5"
                BuildableName = "Samples.app"
-               BlueprintName = "Samples"
+               BlueprintName = "Samples (iOS)"
                ReferencedContainer = "container:Samples.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -46,7 +46,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "00E5401227F3CCA200CF66D5"
             BuildableName = "Samples.app"
-            BlueprintName = "Samples"
+            BlueprintName = "Samples (iOS)"
             ReferencedContainer = "container:Samples.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -63,7 +63,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "00E5401227F3CCA200CF66D5"
             BuildableName = "Samples.app"
-            BlueprintName = "Samples"
+            BlueprintName = "Samples (iOS)"
             ReferencedContainer = "container:Samples.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
