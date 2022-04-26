@@ -163,12 +163,12 @@
 		00E5400B27F3CCA100CF66D5 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				0074ABB228174B830037244A /* Samples */,
 				0074ABAF281742420037244A /* Content Display Logic */,
+				0074ABB228174B830037244A /* Samples */,
+				00E5400C27F3CCA100CF66D5 /* SamplesApp.swift */,
+				00E5400E27F3CCA200CF66D5 /* Assets.xcassets */,
 				001C6DD827FE585A00D472C2 /* AppSecrets.swift.masque */,
 				0074ABCA2817B8DB0037244A /* SamplesMapping.swift.tache */,
-				00E5400E27F3CCA200CF66D5 /* Assets.xcassets */,
-				00E5400C27F3CCA100CF66D5 /* SamplesApp.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";

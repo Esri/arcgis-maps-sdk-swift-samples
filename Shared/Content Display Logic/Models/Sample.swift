@@ -12,13 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Foundation
+import SwiftUI
 
 struct Sample {
     var name: String
     var description: String
     var viewName: String
     var dependencies: [String]
+    
+    var view: AnyView {
+        SamplesApp.samplesMapping[name]!
+    }
 }
 
 extension Sample: Decodable {

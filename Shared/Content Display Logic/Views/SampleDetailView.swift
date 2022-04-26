@@ -20,7 +20,7 @@ struct SampleDetailView: View {
     
     var body: some View {
         if let sample = sample {
-            SamplesApp.samplesMapping[sample.name]
+            sample.view
                 .navigationTitle(sample.name)
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {

@@ -14,12 +14,10 @@
 
 import SwiftUI
 import ArcGIS
-import Foundation
 
 struct ContentView: View {
-    /// The list of samples to display.
+    /// All samples decoded from the plist.
     let samples: [Sample]
-    
     /// The search term in the search bar.
     @State var searchTerm = ""
     
@@ -30,5 +28,6 @@ struct ContentView: View {
             SampleDetailView(sample: nil)
         }
         .searchable(text: $searchTerm, prompt: "Search By Sample Name")
+//        .navigationViewStyle(.stack)  // this solves the "object already owned" problem. 🤔
     }
 }
