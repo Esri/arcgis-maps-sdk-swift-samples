@@ -36,7 +36,7 @@
 				"$(DERIVED_FILE_DIR)/$(INPUT_FILE_BASE)",
 			);
 			runOncePerArchitecture = 0;
-			script = "PORTAL_ITEMS=$SCRIPT_INPUT_FILE_0\nFILE_TYPES=$SCRIPT_INPUT_FILE_1\nDOWNLOAD_DIRECTORY=\"${SRCROOT}/Portal Data\"\nxcrun --sdk macosx swift \"${SRCROOT}/Scripts/GenerateSampleViewMapping.swift\" \"${SCRIPT_INPUT_FILE_0}\" \"${INPUT_FILE_PATH}\" \"${SCRIPT_OUTPUT_FILE_0}\" \n";
+			script = "xcrun --sdk macosx swift \"${SRCROOT}/Scripts/GenerateSampleViewMapping.swift\" \"${SCRIPT_INPUT_FILE_0}\" \"${INPUT_FILE_PATH}\" \"${SCRIPT_OUTPUT_FILE_0}\" \n";
 		};
 		0083586F27FE3BCF00192A15 /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
