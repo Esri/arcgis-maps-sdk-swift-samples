@@ -1,0 +1,27 @@
+{
+    "category": "Maps",
+    "description": "Display a map with an imagery basemap.",
+    "ignore": false,
+    "images": [
+        "display-map.png"
+    ],
+    "keywords": [
+        "basemap style",
+        "map",
+        "AGSBasemapStyle",
+        "AGSMap",
+        "AGSMapView"
+    ],
+    "redirect_from": [
+        "/ios/latest/swift/sample-code/display-a-map.htm"
+    ],
+    "relevant_apis": [
+        "AGSBasemapStyle",
+        "AGSMap",
+        "AGSMapView"
+    ],
+    "snippets": [
+        "DisplayMapViewController.swift"
+    ],
+    "title": "Display a map"
+}
