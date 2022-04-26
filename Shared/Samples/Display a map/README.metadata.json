@@ -8,20 +8,18 @@
     "keywords": [
         "basemap style",
         "map",
-        "AGSBasemapStyle",
-        "AGSMap",
-        "AGSMapView"
+        "BasemapStyle",
+        "Map",
+        "MapView"
     ],
-    "redirect_from": [
-        "/ios/latest/swift/sample-code/display-a-map.htm"
-    ],
+    "redirect_from": [],
     "relevant_apis": [
-        "AGSBasemapStyle",
-        "AGSMap",
-        "AGSMapView"
+        "BasemapStyle",
+        "Map",
+        "MapView"
     ],
     "snippets": [
-        "DisplayMapViewController.swift"
+        "DisplayMapView.swift"
     ],
     "title": "Display a map"
 }
