@@ -23,10 +23,33 @@ struct SamplesApp: App {
     
     var body: some SwiftUI.Scene {
         WindowGroup {
-            ContentView()
+            ContentView(samples: decodeSamples(at: samplesPlistURL))
         }
     }
 }
+
+// MARK: - Sample Import
+
+extension SamplesApp {
+    /// The URL to the `Samples.plist` file inside the bundle.
+    private var samplesPlistURL: URL {
+        Bundle.main.url(forResource: "Samples", withExtension: "plist")!
+    }
+    
+    /// Decodes an array of samples from the plist at the given URL.
+    /// - Parameter url: The URL to the plist that defines samples.
+    /// - Returns: An array of samples.
+    func decodeSamples(at url: URL) -> [Sample] {
+        do {
+            let data = try Data(contentsOf: url)
+            return try PropertyListDecoder().decode([Sample].self, from: data)
+        } catch {
+            fatalError("Error decoding sample at \(url): \(error)")
+        }
+    }
+}
+
+// MARK: - License
 
 extension SamplesApp {
     /// License the app with ArcGIS Runtime deployment license keys.
