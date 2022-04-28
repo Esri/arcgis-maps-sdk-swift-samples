@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// This script read from the `Samples.plist` property list file and generates a
-// string that is the dictionary representation of type `[String: View]`, and
-// replace the stub in the template file, so that all the sample SwiftUI views
+// This script reads from the `Samples.plist` property list file and generates a
+// string that is the dictionary representation of type `[String: AnyView]`, and
+// replaces the stub in the template file, so that all the sample SwiftUI views
 // are available when the project compiles.
 //
 // It takes 3 arguments.
@@ -22,7 +22,7 @@
 // The second is a path to the template file, i.e. *.tache.
 // The third is a path to output generated file.
 //
-// The program will parse the input file, looking for an empty dictionary,
+// The program will parse the input file, look for an empty dictionary,
 // i.e.: [:], and replace it with the generated string representation.
 
 import Foundation
