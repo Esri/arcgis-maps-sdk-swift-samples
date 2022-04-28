@@ -15,12 +15,12 @@
 import SwiftUI
 
 struct SampleListView: View {
-    /// All samples that could be displayed in the list.
+    /// All samples that will be displayed in the list.
     let samples: [Sample]
     /// The search term in the search bar.
     @Binding var searchTerm: String
     /// The samples to display in the list. Searching adjusts this value.
-    var displayedSamples: [Sample] {
+    private var displayedSamples: [Sample] {
         if searchTerm.isEmpty {
             return samples
         } else {
