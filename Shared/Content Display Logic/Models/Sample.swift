@@ -14,40 +14,23 @@
 
 import SwiftUI
 
-struct Sample {
-    var name: String
+struct Sample: Decodable {
+    var displayName: String
     var description: String
     var viewName: String
-    var dependencies: [String]
+    var dependencies: [String]?
     
     var view: AnyView {
-        SamplesApp.samplesMapping[name]!
-    }
-}
-
-extension Sample: Decodable {
-    enum CodingKeys: String, CodingKey {
-        case name = "displayName"
-        case description = "descriptionText"
-        case viewName = "viewName"
-        case dependencies = "dependency"
-    }
-    
-    init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        name = try values.decode(String.self, forKey: .name)
-        description = try values.decode(String.self, forKey: .description)
-        viewName = try values.decode(String.self, forKey: .viewName)
-        dependencies = try values.decodeIfPresent([String].self, forKey: .dependencies) ?? []
+        SamplesApp.samplesMapping[displayName]!
     }
 }
 
 extension Sample: Identifiable {
-    var id: String { name }
+    var id: String { displayName }
 }
 
 extension Sample {
     var readmeURL: URL? {
-        return Bundle.main.url(forResource: "README", withExtension: "md", subdirectory: name)
+        Bundle.main.url(forResource: "README", withExtension: "md", subdirectory: displayName)
     }
 }

@@ -7,7 +7,7 @@
 		<string>Display a map</string>
 		<key>viewName</key>
 		<string>DisplayMapView</string>
-		<key>descriptionText</key>
+		<key>description</key>
 		<string>Display a map with an imagery basemap.</string>
 	</dict>
 </array>

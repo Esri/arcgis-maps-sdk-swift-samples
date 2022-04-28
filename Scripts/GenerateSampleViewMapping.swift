@@ -30,25 +30,10 @@ import Foundation
 // MARK: Model
 
 struct Sample: Decodable {
-    var name: String
+    var displayName: String
     var description: String
     var viewName: String
-    var dependencies: [String]
-    
-    enum CodingKeys: String, CodingKey {
-        case name = "displayName"
-        case description = "descriptionText"
-        case viewName = "viewName"
-        case dependencies = "dependency"
-    }
-    
-    init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        name = try values.decode(String.self, forKey: .name)
-        description = try values.decode(String.self, forKey: .description)
-        viewName = try values.decode(String.self, forKey: .viewName)
-        dependencies = try values.decodeIfPresent([String].self, forKey: .dependencies) ?? []
-    }
+    var dependencies: [String]?
 }
 
 // MARK: Script Entry
@@ -74,7 +59,7 @@ let samples: [Sample] = {
     }
 }()
 
-let entries = samples.map { sample in "\"\(sample.name)\": AnyView(\(sample.viewName)())" }.joined(separator: ", ")
+let entries = samples.map { sample in "\"\(sample.displayName)\": AnyView(\(sample.viewName)())" }.joined(separator: ", ")
 let dictionaryRepresentation = "[\(entries)]"
 
 do {

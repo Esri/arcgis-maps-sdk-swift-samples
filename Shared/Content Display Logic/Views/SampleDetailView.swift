@@ -21,7 +21,7 @@ struct SampleDetailView: View {
     var body: some View {
         if let sample = sample {
             sample.view
-                .navigationTitle(sample.name)
+                .navigationTitle(sample.displayName)
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
@@ -39,5 +39,5 @@ struct SampleDetailView: View {
 }
 
 extension SampleDetailView: Identifiable {
-    var id: String { sample?.name ?? "" }
+    var id: String { sample?.displayName ?? "" }
 }
