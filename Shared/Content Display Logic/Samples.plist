@@ -5,10 +5,10 @@
 	<dict>
 		<key>displayName</key>
 		<string>Display a map</string>
-		<key>viewName</key>
-		<string>DisplayMapView</string>
 		<key>description</key>
 		<string>Display a map with an imagery basemap.</string>
+		<key>viewName</key>
+		<string>DisplayMapView</string>
 	</dict>
 </array>
 </plist>
