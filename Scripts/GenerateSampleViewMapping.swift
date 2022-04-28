@@ -30,10 +30,10 @@ import Foundation
 // MARK: Model
 
 struct Sample: Decodable {
-    var displayName: String
-    var description: String
-    var viewName: String
-    var dependencies: [String]?
+    let displayName: String
+    let description: String
+    let viewName: String
+    let dependencies: [String]?
 }
 
 // MARK: Script Entry
