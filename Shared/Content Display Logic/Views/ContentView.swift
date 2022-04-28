@@ -19,7 +19,7 @@ struct ContentView: View {
     /// All samples decoded from the plist.
     let samples: [Sample]
     /// The search term in the search bar.
-    @State var searchTerm = ""
+    @State private var searchTerm = ""
     
     var body: some View {
         NavigationView {
