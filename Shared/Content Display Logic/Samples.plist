@@ -4,7 +4,7 @@
 <array>
 	<dict>
 		<key>displayName</key>
-		<string>Display a map</string>
+		<string>Display A Map</string>
 		<key>description</key>
 		<string>Display a map with an imagery basemap.</string>
 		<key>viewName</key>

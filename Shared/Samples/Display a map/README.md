@@ -14,9 +14,8 @@ Run the sample to view the map. Pan and zoom to navigate the map.
 
 ## How it works
 
-1. Create a `Map` object with a `arcGISImagery` basemap style.
-2. Create a `MapView` object to display the map.
-3. Set the map to the map view.
+1. Create a `Map` object with the `arcGISImagery` basemap style.
+2. Create a `MapView` instance with the map.
 
 ## Relevant API
 
