@@ -16,28 +16,24 @@ import SwiftUI
 
 struct SampleDetailView: View {
     /// The sample to display in the view.
-    var sample: Sample?
+    var sample: Sample
     
     var body: some View {
-        if let sample = sample {
-            sample.view
-                .navigationTitle(sample.displayName)
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button {
-                            print("Info button was tapped")
-                        } label: {
-                            Image(systemName: "info.circle")
-                        }
+        sample.view
+            .navigationTitle(sample.name)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        print("Info button was tapped")
+                    } label: {
+                        Image(systemName: "info.circle")
                     }
                 }
-        } else {
-            Text("Select a sample from the list.")
-        }
+            }
     }
 }
 
 extension SampleDetailView: Identifiable {
-    var id: String { sample?.displayName ?? "" }
+    var id: String { sample.name ?? "" }
 }

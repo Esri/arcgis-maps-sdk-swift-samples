@@ -15,22 +15,22 @@
 import SwiftUI
 
 struct Sample: Decodable {
-    let displayName: String
+    let name: String
     let description: String
     let viewName: String
     let dependencies: [String]?
-    
-    var view: AnyView {
-        SamplesApp.samplesMapping[displayName]!
-    }
 }
 
 extension Sample: Identifiable {
-    var id: String { displayName }
+    var id: String { name }
 }
 
 extension Sample {
     var readmeURL: URL? {
-        Bundle.main.url(forResource: "README", withExtension: "md", subdirectory: displayName)
+        Bundle.main.url(forResource: "README", withExtension: "md", subdirectory: name)
+    }
+    
+    var view: AnyView {
+        SamplesApp.samplesMapping[name]!
     }
 }

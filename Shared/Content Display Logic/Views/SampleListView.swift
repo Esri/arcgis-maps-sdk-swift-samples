@@ -24,13 +24,13 @@ struct SampleListView: View {
         if searchTerm.isEmpty {
             return samples
         } else {
-            return samples.filter { $0.displayName.localizedCaseInsensitiveContains(searchTerm) }
+            return samples.filter { $0.name.localizedCaseInsensitiveContains(searchTerm) }
         }
     }
     
     var body: some View {
         List(displayedSamples) { sample in
-            NavigationLink(sample.displayName) {
+            NavigationLink(sample.name) {
                 SampleDetailView(sample: sample)
             }
         }

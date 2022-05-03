@@ -3,7 +3,7 @@
 <plist version="1.0">
 <array>
 	<dict>
-		<key>displayName</key>
+		<key>name</key>
 		<string>Display A Map</string>
 		<key>description</key>
 		<string>Display a map with an imagery basemap.</string>
