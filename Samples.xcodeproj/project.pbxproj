@@ -113,7 +113,6 @@
 			children = (
 				0074ABC028174F430037244A /* Models */,
 				0005580D281872BE00224BC6 /* Views */,
-				0074ABB0281742E30037244A /* Samples.plist */,
 			);
 			path = "Content Display Logic";
 			sourceTree = "<group>";
@@ -248,7 +247,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0074ABB1281742E30037244A /* Samples.plist in Resources */,
 				00E5402027F3CCA200CF66D5 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
