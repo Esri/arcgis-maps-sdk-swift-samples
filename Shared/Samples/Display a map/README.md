@@ -10,7 +10,7 @@ The map is the fundamental building block of any GIS application and is used to 
 
 ## How to use the sample
 
-Run the sample to view the map. Pan and zoom to navigate the map.
+When loaded, the sample will display a map. Pan and zoom to explore the map.
 
 ## How it works
 
