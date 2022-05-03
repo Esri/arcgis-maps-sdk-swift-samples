@@ -28,6 +28,5 @@ struct ContentView: View {
             Text("Select a sample from the list.")
         }
         .searchable(text: $searchTerm, prompt: "Search By Sample Name")
-//        .navigationViewStyle(.stack)  // this solves the "object already owned" problem. 🤔
     }
 }
