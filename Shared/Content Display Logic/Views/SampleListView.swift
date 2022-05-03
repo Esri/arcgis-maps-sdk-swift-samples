@@ -30,10 +30,12 @@ struct SampleListView: View {
     
     var body: some View {
         List(displayedSamples) { sample in
-            NavigationLink(sample.displayName, destination: SampleDetailView(sample: sample))
+            NavigationLink(sample.displayName) {
+                SampleDetailView(sample: sample)
+            }
         }
         .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
+            ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
                     print("Info button was tapped")
                 } label: {
