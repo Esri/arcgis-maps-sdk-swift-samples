@@ -38,7 +38,7 @@ private struct Sample {
     let snippets: [String]
     /// The ArcGIS Online Portal Item IDs.
     let dependencies: [String]
-    /// The tags and relevant APIs if the sample.
+    /// The tags and relevant APIs of the sample.
     let tags: [String]
 }
 

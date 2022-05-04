@@ -14,13 +14,19 @@
 
 import SwiftUI
 
+/// A type that represents a sample in the sample viewer.
 protocol Sample {
+    /// The name of the sample.
     var name: String { get }
+    /// A brief description of the sample's functionalities.
     var description: String { get }
+    /// The ArcGIS Online Portal Item IDs that needs to be provisioned before
+    /// the sample runs.
     var dependencies: Set<String> { get }
+    /// The tags and relevant APIs of the sample.
     var tags: Set<String> { get }
     
-    /// A function which creates the example view.
+    /// A function which creates the sample's root view.
     func makeBody() -> AnyView
 }
 
@@ -34,6 +40,7 @@ extension Sample {
 // MARK: Computed Variables
 
 extension Sample {
+    /// The URL to a sample's `README.md` file.
     var readmeURL: URL {
         Bundle.main.url(forResource: "README", withExtension: "md", subdirectory: name)!
     }
