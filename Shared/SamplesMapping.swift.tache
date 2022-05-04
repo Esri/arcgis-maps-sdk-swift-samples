@@ -15,6 +15,6 @@
 import SwiftUI
 
 extension SamplesApp {
-    /// The name-view mapping of all samples.
-    static let samplesMapping: [String: AnyView] = [:]
+    /// The samples for this app.
+    static let samples: [Sample] = []
 }

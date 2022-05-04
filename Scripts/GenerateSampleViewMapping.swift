@@ -12,61 +12,116 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// This script reads from the `Samples.plist` property list file and generates a
-// string that is the dictionary representation of type `[String: AnyView]`, and
-// replaces the stub in the template file, so that all the sample SwiftUI views
+// This script recursively iterates through the samples directory and generates
+// a string that is the array representation of type `[Sample]`, and replaces
+// the code stub in the template file, so that all the sample SwiftUI Views
 // are available when the project compiles.
 //
 // It takes 3 arguments.
-// The first is a path to a plist file defining the samples.
-// The second is a path to the template file, i.e. *.tache.
-// The third is a path to output generated file.
-//
-// The program will parse the input file, look for an empty dictionary,
-// i.e.: [:], and replace it with the generated string representation.
+// The first is a path to the samples directory, i.e., $SRCROOT/Shared/Samples.
+// The second is a path to the template file, i.e., *.tache.
+// The third is a path to the output generated file.
 
 import Foundation
+import OSLog
 
 // MARK: Model
 
-struct Sample: Decodable {
-    let displayName: String
+/// A sample metadata retrieved from its `README.metadata.json` file.
+/// - Note: More about the schema at `common-samples/wiki/README.metadata.json`.
+private struct Sample {
+    /// The name/title of the sample.
+    let name: String
+    /// The description of the sample.
     let description: String
-    let viewName: String
-    let dependencies: [String]?
+    /// The relative paths to the code snippets.
+    let snippets: [String]
+    /// The ArcGIS Online Portal Item IDs.
+    let dependencies: [String]
+    /// The tags and relevant APIs if the sample.
+    let tags: [String]
+}
+
+extension Sample {
+    /// The SwiftUI View name of the root view of the sample. It is the same as
+    /// the first filename without extension in the snippets array.
+    var viewName: String {
+        // E.g., ["DisplayMapView.swift", "SomeView.swift"] -> DisplayMapView
+        snippets.first!.components(separatedBy: ".").first!
+    }
+}
+
+extension Sample: Decodable {
+    enum CodingKeys: String, CodingKey {
+        case name = "title"
+        case description = "description"
+        case dependencies = "offline_data"
+        case snippets = "snippets"
+        case tags = "keywords"
+    }
+    
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        name = try values.decode(String.self, forKey: .name)
+        description = try values.decode(String.self, forKey: .description)
+        snippets = try values.decodeIfPresent([String].self, forKey: .snippets)!
+        dependencies = try values.decodeIfPresent([String].self, forKey: .dependencies) ?? []
+        tags = try values.decodeIfPresent([String].self, forKey: .tags)!
+    }
+}
+
+// MARK: Methods
+
+/// Generate a string representation of an array.
+/// - Parameter array: An array of strings.
+/// - Returns: A Swift code representation of a string array.
+private func arrayRepresentation(from array: [String]) -> String {
+    "[\(array.map { "\"\($0)\"" }.joined(separator: ", "))]"
+}
+
+/// Parse a `README.metadata.json` to a `Sample` struct.
+/// - Parameter url: The URL to the metadata JSON file.
+/// - Returns: A sample object.
+private func parseJSON(at url: URL) -> Sample? {
+    guard let data = try? Data(contentsOf: url) else { return nil }
+    return try? JSONDecoder().decode(Sample.self, from: data)
 }
 
 // MARK: Script Entry
 
-let arguments = CommandLine.arguments
+private let arguments = CommandLine.arguments
+private let logger = Logger()
 
 guard arguments.count == 4 else {
-    print("Invalid number of arguments")
+    logger.error("Invalid number of arguments.")
     exit(1)
 }
 
-let samplesPlistURL = URL(fileURLWithPath: arguments[1], isDirectory: false)
+let samplesDirectoryURL = URL(fileURLWithPath: arguments[1], isDirectory: true)
 let templateURL = URL(fileURLWithPath: arguments[2], isDirectory: false)
 let outputFileURL = URL(fileURLWithPath: arguments[3], isDirectory: false)
 
-let samples: [Sample] = {
+private let samples: [Sample] = {
     do {
-        let data = try Data(contentsOf: samplesPlistURL)
-        return try PropertyListDecoder().decode([Sample].self, from: data)
+        // Find all subdirectories under the root Samples directory.
+        let sampleSubDirectories = try FileManager.default.contentsOfDirectory(at: samplesDirectoryURL, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles]).filter(\.hasDirectoryPath)
+        let samples = sampleSubDirectories.map { $0.appendingPathComponent("README.metadata.json") }.compactMap(parseJSON(at:))
+        return samples
     } catch {
-        print("Error decoding Samples.plist: \(error)")
+        logger.error("Error decoding Samples.plist: \(error.localizedDescription)")
         exit(1)
     }
 }()
 
-let entries = samples.map { sample in "\"\(sample.displayName)\": AnyView(\(sample.viewName)())" }.joined(separator: ", ")
-let dictionaryRepresentation = "[\(entries)]"
+private let entries = samples.map { sample in "AnySample(name: \"\(sample.name)\", description: \"\(sample.description)\", dependencies: \(arrayRepresentation(from: sample.dependencies)), tags: \(arrayRepresentation(from: sample.tags)), content: \(sample.viewName)())" }.joined(separator: ", ")
+private let arrayRepresentation = "[\(entries)]"
 
 do {
-    let file = try String(contentsOf: templateURL, encoding: .utf8)
-    let content = file.replacingOccurrences(of: "[:]", with: dictionaryRepresentation)
+    let templateFile = try String(contentsOf: templateURL, encoding: .utf8)
+    // Replace the empty array code stub, i.e. [], with the array representation.
+    let content = templateFile.replacingOccurrences(of: "[]", with: arrayRepresentation)
     try content.write(to: outputFileURL, atomically: true, encoding: .utf8)
 } catch {
-    print("Error reading or writing template file: \(error)")
+    logger.error("Error reading or writing template file: \(error.localizedDescription)")
     exit(1)
 }
