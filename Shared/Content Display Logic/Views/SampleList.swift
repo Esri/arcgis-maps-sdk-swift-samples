@@ -17,14 +17,14 @@ import SwiftUI
 struct SampleList: View {
     /// All samples that will be displayed in the list.
     let samples: [Sample]
-    /// The search term in the search bar.
-    @Binding var searchTerm: String
+    /// The search query in the search bar.
+    @Binding var query: String
     /// The samples to display in the list. Searching adjusts this value.
     private var displayedSamples: [Sample] {
-        if searchTerm.isEmpty {
+        if query.isEmpty {
             return samples
         } else {
-            return samples.filter { $0.name.localizedCaseInsensitiveContains(searchTerm) }
+            return samples.filter { $0.name.localizedCaseInsensitiveContains(query) }
         }
     }
     

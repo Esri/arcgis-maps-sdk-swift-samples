@@ -16,17 +16,17 @@ import SwiftUI
 import ArcGIS
 
 struct ContentView: View {
-    /// All samples decoded from the plist.
+    /// All samples retrieved from the Samples directory.
     let samples: [Sample]
-    /// The search term in the search bar.
-    @State private var searchTerm = ""
+    /// The search query in the search bar.
+    @State private var query = ""
     
     var body: some View {
         NavigationView {
-            SampleList(samples: samples, searchTerm: $searchTerm)
+            SampleList(samples: samples, query: $query)
                 .navigationTitle("Samples")
             Text("Select a sample from the list.")
         }
-        .searchable(text: $searchTerm, prompt: "Search By Sample Name")
+        .searchable(text: $query, prompt: "Search By Sample Name")
     }
 }

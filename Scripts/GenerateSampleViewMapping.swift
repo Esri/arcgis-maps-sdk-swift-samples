@@ -108,7 +108,7 @@ private let samples: [Sample] = {
         let samples = sampleSubDirectories.map { $0.appendingPathComponent("README.metadata.json") }.compactMap(parseJSON(at:))
         return samples
     } catch {
-        logger.error("Error decoding Samples.plist: \(error.localizedDescription)")
+        logger.error("Error decoding Samples: \(error.localizedDescription)")
         exit(1)
     }
 }()
