@@ -17,7 +17,7 @@ import ArcGIS
 
 struct DisplayMapView: View {
     /// A map with imagery basemap.
-    private let map = Map(basemapStyle: .arcGISImagery)
+    @StateObject private var map = Map(basemapStyle: .arcGISImagery)
     
     var body: some View {
         // Create a map view to display the map.
