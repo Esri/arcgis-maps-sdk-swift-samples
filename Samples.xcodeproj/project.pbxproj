@@ -119,13 +119,13 @@
 			path = Scripts;
 			sourceTree = "<group>";
 		};
-		0074ABAF281742420037244A /* Content Display Logic */ = {
+		0074ABAF281742420037244A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
 				0074ABC028174F430037244A /* Models */,
 				0005580D281872BE00224BC6 /* Views */,
 			);
-			path = "Content Display Logic";
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		0074ABB228174B830037244A /* Samples */ = {
@@ -175,7 +175,7 @@
 		00E5400B27F3CCA100CF66D5 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				0074ABAF281742420037244A /* Content Display Logic */,
+				0074ABAF281742420037244A /* Supporting Files */,
 				0074ABB228174B830037244A /* Samples */,
 				00E5400C27F3CCA100CF66D5 /* SamplesApp.swift */,
 				00E5400E27F3CCA200CF66D5 /* Assets.xcassets */,
