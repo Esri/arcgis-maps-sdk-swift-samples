@@ -147,8 +147,8 @@
 		0074ABC028174F430037244A /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				0074ABC128174F430037244A /* Sample.swift */,
 				003D7C1F2821E283009DDFD2 /* AnySample.swift */,
+				0074ABC128174F430037244A /* Sample.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -165,9 +165,9 @@
 			isa = PBXGroup;
 			children = (
 				00144B5A2806335D0090DD5D /* ArcGIS */,
-				003D7C332821EBCC009DDFD2 /* Scripts */,
 				00966EE62811F64D009D3DD7 /* iOS */,
 				00E5400B27F3CCA100CF66D5 /* Shared */,
+				003D7C332821EBCC009DDFD2 /* Scripts */,
 				00E5401427F3CCA200CF66D5 /* Products */,
 			);
 			sourceTree = "<group>";
