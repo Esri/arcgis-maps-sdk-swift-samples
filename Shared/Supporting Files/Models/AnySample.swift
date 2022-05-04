@@ -28,7 +28,7 @@ struct AnySample<Content: View> {
         tags: [String],
         content: @autoclosure @escaping () -> Content
     ) {
-        self.name = name
+        self.name = name.capitalized
         self.description = description
         self.content = content
         self.dependencies = Set(dependencies)
