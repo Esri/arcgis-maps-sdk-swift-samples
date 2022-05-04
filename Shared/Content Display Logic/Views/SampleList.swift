@@ -14,7 +14,7 @@
 
 import SwiftUI
 
-struct SampleListView: View {
+struct SampleList: View {
     /// All samples that will be displayed in the list.
     let samples: [Sample]
     /// The search term in the search bar.

@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0005580A2817C51E00224BC6 /* SampleDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000558092817C51E00224BC6 /* SampleDetailView.swift */; };
-		0005580C28185C0600224BC6 /* SampleListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0005580B28185C0600224BC6 /* SampleListView.swift */; };
+		0005580C28185C0600224BC6 /* SampleList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0005580B28185C0600224BC6 /* SampleList.swift */; };
 		00144B5C280634840090DD5D /* ArcGIS in Frameworks */ = {isa = PBXBuildFile; productRef = 00144B5B280634840090DD5D /* ArcGIS */; };
 		00144B5D280634840090DD5D /* ArcGIS in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 00144B5B280634840090DD5D /* ArcGIS */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		001C6DE127FE8A9400D472C2 /* AppSecrets.swift.masque in Sources */ = {isa = PBXBuildFile; fileRef = 001C6DD827FE585A00D472C2 /* AppSecrets.swift.masque */; };
@@ -72,7 +72,7 @@
 
 /* Begin PBXFileReference section */
 		000558092817C51E00224BC6 /* SampleDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleDetailView.swift; sourceTree = "<group>"; };
-		0005580B28185C0600224BC6 /* SampleListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleListView.swift; sourceTree = "<group>"; };
+		0005580B28185C0600224BC6 /* SampleList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleList.swift; sourceTree = "<group>"; };
 		00144B5A2806335D0090DD5D /* ArcGIS */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ArcGIS; path = ../swift/ArcGIS; sourceTree = "<group>"; };
 		001C6DD827FE585A00D472C2 /* AppSecrets.swift.masque */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AppSecrets.swift.masque; sourceTree = "<group>"; };
 		003D7C1F2821E283009DDFD2 /* AnySample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnySample.swift; sourceTree = "<group>"; };
@@ -105,7 +105,7 @@
 			children = (
 				00E5400D27F3CCA100CF66D5 /* ContentView.swift */,
 				000558092817C51E00224BC6 /* SampleDetailView.swift */,
-				0005580B28185C0600224BC6 /* SampleListView.swift */,
+				0005580B28185C0600224BC6 /* SampleList.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -313,7 +313,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				003D7C202821E283009DDFD2 /* AnySample.swift in Sources */,
-				0005580C28185C0600224BC6 /* SampleListView.swift in Sources */,
+				0005580C28185C0600224BC6 /* SampleList.swift in Sources */,
 				001C6DE127FE8A9400D472C2 /* AppSecrets.swift.masque in Sources */,
 				0005580A2817C51E00224BC6 /* SampleDetailView.swift in Sources */,
 				0074ABCD2817BCC30037244A /* SamplesMapping.swift.tache in Sources */,

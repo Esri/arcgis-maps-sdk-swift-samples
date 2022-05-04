@@ -23,7 +23,7 @@ struct ContentView: View {
     
     var body: some View {
         NavigationView {
-            SampleListView(samples: samples, searchTerm: $searchTerm)
+            SampleList(samples: samples, searchTerm: $searchTerm)
                 .navigationTitle("Samples")
             Text("Select a sample from the list.")
         }
