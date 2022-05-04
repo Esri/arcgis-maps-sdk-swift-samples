@@ -12,7 +12,7 @@
 		00144B5C280634840090DD5D /* ArcGIS in Frameworks */ = {isa = PBXBuildFile; productRef = 00144B5B280634840090DD5D /* ArcGIS */; };
 		00144B5D280634840090DD5D /* ArcGIS in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 00144B5B280634840090DD5D /* ArcGIS */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		001C6DE127FE8A9400D472C2 /* AppSecrets.swift.masque in Sources */ = {isa = PBXBuildFile; fileRef = 001C6DD827FE585A00D472C2 /* AppSecrets.swift.masque */; };
-		0074ABB1281742E30037244A /* Samples.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0074ABB0281742E30037244A /* Samples.plist */; };
+		003D7C202821E283009DDFD2 /* AnySample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 003D7C1F2821E283009DDFD2 /* AnySample.swift */; };
 		0074ABBF28174BCF0037244A /* DisplayMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0074ABBE28174BCF0037244A /* DisplayMapView.swift */; };
 		0074ABC428174F430037244A /* Sample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0074ABC128174F430037244A /* Sample.swift */; };
 		0074ABCD2817BCC30037244A /* SamplesMapping.swift.tache in Sources */ = {isa = PBXBuildFile; fileRef = 0074ABCA2817B8DB0037244A /* SamplesMapping.swift.tache */; };
@@ -28,7 +28,7 @@
 			filePatterns = "*.tache";
 			fileType = pattern.proxy;
 			inputFiles = (
-				"$(SRCROOT)/Shared/Content Display Logic/Samples.plist",
+				"$(SRCROOT)/Shared/Samples/",
 			);
 			isEditable = 1;
 			name = "Generate SwiftUI View Mapping from Samples.plist";
@@ -75,7 +75,9 @@
 		0005580B28185C0600224BC6 /* SampleListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleListView.swift; sourceTree = "<group>"; };
 		00144B5A2806335D0090DD5D /* ArcGIS */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ArcGIS; path = ../swift/ArcGIS; sourceTree = "<group>"; };
 		001C6DD827FE585A00D472C2 /* AppSecrets.swift.masque */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AppSecrets.swift.masque; sourceTree = "<group>"; };
-		0074ABB0281742E30037244A /* Samples.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Samples.plist; sourceTree = "<group>"; };
+		003D7C1F2821E283009DDFD2 /* AnySample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnySample.swift; sourceTree = "<group>"; };
+		003D7C342821EBCC009DDFD2 /* masquerade */ = {isa = PBXFileReference; lastKnownFileType = text; path = masquerade; sourceTree = "<group>"; };
+		003D7C352821EBCC009DDFD2 /* GenerateSampleViewMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateSampleViewMapping.swift; sourceTree = "<group>"; };
 		0074ABBE28174BCF0037244A /* DisplayMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayMapView.swift; sourceTree = "<group>"; };
 		0074ABC128174F430037244A /* Sample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sample.swift; sourceTree = "<group>"; };
 		0074ABCA2817B8DB0037244A /* SamplesMapping.swift.tache */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SamplesMapping.swift.tache; sourceTree = "<group>"; };
@@ -108,6 +110,15 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		003D7C332821EBCC009DDFD2 /* Scripts */ = {
+			isa = PBXGroup;
+			children = (
+				003D7C342821EBCC009DDFD2 /* masquerade */,
+				003D7C352821EBCC009DDFD2 /* GenerateSampleViewMapping.swift */,
+			);
+			path = Scripts;
+			sourceTree = "<group>";
+		};
 		0074ABAF281742420037244A /* Content Display Logic */ = {
 			isa = PBXGroup;
 			children = (
@@ -137,6 +148,7 @@
 			isa = PBXGroup;
 			children = (
 				0074ABC128174F430037244A /* Sample.swift */,
+				003D7C1F2821E283009DDFD2 /* AnySample.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -153,6 +165,7 @@
 			isa = PBXGroup;
 			children = (
 				00144B5A2806335D0090DD5D /* ArcGIS */,
+				003D7C332821EBCC009DDFD2 /* Scripts */,
 				00966EE62811F64D009D3DD7 /* iOS */,
 				00E5400B27F3CCA100CF66D5 /* Shared */,
 				00E5401427F3CCA200CF66D5 /* Products */,
@@ -299,6 +312,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				003D7C202821E283009DDFD2 /* AnySample.swift in Sources */,
 				0005580C28185C0600224BC6 /* SampleListView.swift in Sources */,
 				001C6DE127FE8A9400D472C2 /* AppSecrets.swift.masque in Sources */,
 				0005580A2817C51E00224BC6 /* SampleDetailView.swift in Sources */,

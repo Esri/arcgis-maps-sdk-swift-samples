@@ -29,7 +29,7 @@ struct SampleListView: View {
     }
     
     var body: some View {
-        List(displayedSamples) { sample in
+        List(displayedSamples, id: \.name) { sample in
             NavigationLink(sample.name) {
                 SampleDetailView(sample: sample)
             }

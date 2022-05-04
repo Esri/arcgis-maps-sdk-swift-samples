@@ -14,23 +14,27 @@
 
 import SwiftUI
 
-struct Sample: Decodable {
-    let name: String
-    let description: String
-    let viewName: String
-    let dependencies: [String]?
+protocol Sample {
+    var name: String { get }
+    var description: String { get }
+    var dependencies: Set<String> { get }
+    var tags: Set<String> { get }
+    
+    /// A function which creates the example view.
+    func makeBody() -> AnyView
 }
 
-extension Sample: Identifiable {
-    var id: String { name }
-}
+// MARK: Default Implementations
 
 extension Sample {
-    var readmeURL: URL? {
-        Bundle.main.url(forResource: "README", withExtension: "md", subdirectory: name)
-    }
-    
-    var view: AnyView {
-        SamplesApp.samplesMapping[name]!
+    var dependencies: Set<String> { [] }
+    var tags: Set<String> { [] }
+}
+
+// MARK: Computed Variables
+
+extension Sample {
+    var readmeURL: URL {
+        Bundle.main.url(forResource: "README", withExtension: "md", subdirectory: name)!
     }
 }
