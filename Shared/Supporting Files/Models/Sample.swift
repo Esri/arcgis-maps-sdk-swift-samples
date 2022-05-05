@@ -26,7 +26,7 @@ protocol Sample {
     /// The tags and relevant APIs of the sample.
     var tags: Set<String> { get }
     
-    /// A function which creates the sample's root view.
+    /// A function which creates and wraps the sample's root view.
     func makeBody() -> AnyView
 }
 

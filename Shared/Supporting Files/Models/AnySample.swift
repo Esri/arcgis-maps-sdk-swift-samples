@@ -19,6 +19,7 @@ struct AnySample<Content: View> {
     let description: String
     let dependencies: Set<String>
     let tags: Set<String>
+    /// A closure to create the sample's root view.
     let content: () -> Content
     
     init(
@@ -28,10 +29,12 @@ struct AnySample<Content: View> {
         tags: [String],
         content: @autoclosure @escaping () -> Content
     ) {
+        // Make sample name in title case.
         self.name = name.capitalized
         self.description = description
         self.content = content
         self.dependencies = Set(dependencies)
+        // Keep a distinct set of lowercased keyword tags.
         self.tags = Set(tags.map { $0.lowercased() })
     }
 }
