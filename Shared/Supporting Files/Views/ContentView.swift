@@ -19,7 +19,7 @@ struct ContentView: View {
     /// All samples retrieved from the Samples directory.
     let samples: [Sample]
     /// The search query in the search bar.
-    @State var query = ""
+    @State private var query = ""
     
     var body: some View {
         NavigationView {
