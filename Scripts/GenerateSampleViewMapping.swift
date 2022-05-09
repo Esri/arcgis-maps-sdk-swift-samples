@@ -94,7 +94,7 @@ private let samples: [Sample] = {
     }
 }()
 
-private let entries = samples.map { sample in "AnySample(name: \"\(sample.name)\", description: \"\(sample.description)\", dependencies: \(arrayRepresentation(from: sample.dependencies)), tags: \(arrayRepresentation(from: sample.tags)), content: \(sample.viewName)())" }.joined(separator: ", ")
+private let entries = samples.map { sample in "AnySample(name: \"\(sample.name)\", description: \"\(sample.description)\", dependencies: \(sample.dependencies), tags: \(sample.tags), content: \(sample.viewName)())" }.joined(separator: ", ")
 private let arrayRepresentation = "[\(entries)]"
 
 do {
