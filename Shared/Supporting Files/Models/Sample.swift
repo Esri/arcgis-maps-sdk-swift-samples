@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import SwiftUI
+import ArcGIS
 
 /// A type that represents a sample in the sample viewer.
 protocol Sample {
@@ -22,7 +23,7 @@ protocol Sample {
     var description: String { get }
     /// The ArcGIS Online Portal Item IDs that needs to be provisioned before
     /// the sample runs.
-    var dependencies: Set<String> { get }
+    var dependencies: Set<PortalItem.ID> { get }
     /// The tags and relevant APIs of the sample.
     var tags: Set<String> { get }
     
