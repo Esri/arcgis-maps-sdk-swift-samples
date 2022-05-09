@@ -82,13 +82,14 @@ private let samples: [Sample] = {
         let sampleSubDirectories = try FileManager.default.contentsOfDirectory(at: samplesDirectoryURL, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles]).filter(\.hasDirectoryPath)
         
         let decoder = JSONDecoder()
-        func parseJSON(at url: URL) -> Sample? {
-            guard let data = try? Data(contentsOf: url) else { return nil }
-            return try? decoder.decode(SampleMetadata.self, from: data)
-        }
-        
-        let samples = sampleSubDirectories.map { $0.appendingPathComponent("README.metadata.json") }.compactMap(parseJSON(at:))
-        return samples
+        return try FileManager.default.contentsOfDirectory(at: samplesDirectoryURL, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles])
+            .compactMap { url in
+                guard url.lastPathComponent == "README.metadata.json",
+                      let data = try? Data(contentsOf: url) else {
+                    return nil
+                }
+                return try? decoder.decode(Sample.self, from: data)
+            }
     } catch {
         logger.error("Error decoding Samples: \(error.localizedDescription)")
         exit(1)
