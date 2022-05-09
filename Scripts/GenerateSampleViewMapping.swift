@@ -29,7 +29,7 @@ import OSLog
 
 /// A sample metadata retrieved from its `README.metadata.json` file.
 /// - Note: More about the schema at `common-samples/wiki/README.metadata.json`.
-private struct Sample {
+private struct SampleMetadata {
     /// The name/title of the sample.
     let name: String
     /// The description of the sample.
@@ -42,7 +42,7 @@ private struct Sample {
     let tags: [String]
 }
 
-extension Sample {
+extension SampleMetadata {
     /// The SwiftUI View name of the root view of the sample. It is the same as
     /// the first filename without extension in the snippets array.
     var viewName: String {
@@ -51,7 +51,7 @@ extension Sample {
     }
 }
 
-extension Sample: Decodable {
+extension SampleMetadata: Decodable {
     private enum CodingKeys: String, CodingKey {
         case name = "title"
         case description = "description"
@@ -84,7 +84,7 @@ private func arrayRepresentation(from array: [String]) -> String {
 /// - Returns: A sample object.
 private func parseJSON(at url: URL) -> Sample? {
     guard let data = try? Data(contentsOf: url) else { return nil }
-    return try? JSONDecoder().decode(Sample.self, from: data)
+    return try? JSONDecoder().decode(SampleMetadata.self, from: data)
 }
 
 // MARK: Script Entry
