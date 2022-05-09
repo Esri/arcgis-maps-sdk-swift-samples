@@ -52,7 +52,7 @@ extension Sample {
 }
 
 extension Sample: Decodable {
-    enum CodingKeys: String, CodingKey {
+    private enum CodingKeys: String, CodingKey {
         case name = "title"
         case description = "description"
         case dependencies = "offline_data"
