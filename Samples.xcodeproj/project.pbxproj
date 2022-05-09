@@ -31,7 +31,7 @@
 				"$(SRCROOT)/Shared/Samples/",
 			);
 			isEditable = 1;
-			name = "Generate SwiftUI View Mapping from Samples.plist";
+			name = "Generate Sample Initializers from Source Code Files";
 			outputFiles = (
 				"$(DERIVED_FILE_DIR)/$(INPUT_FILE_BASE)",
 			);
