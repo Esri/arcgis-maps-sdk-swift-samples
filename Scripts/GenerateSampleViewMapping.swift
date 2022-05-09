@@ -60,13 +60,7 @@ private func arrayRepresentation(from array: [String]) -> String {
     "[\(array.map { "\"\($0)\"" }.joined(separator: ", "))]"
 }
 
-/// Parse a `README.metadata.json` to a `Sample` struct.
-/// - Parameter url: The URL to the metadata JSON file.
-/// - Returns: A sample object.
-private func parseJSON(at url: URL) -> Sample? {
-    guard let data = try? Data(contentsOf: url) else { return nil }
-    return try? JSONDecoder().decode(SampleMetadata.self, from: data)
-}
+
 
 // MARK: Script Entry
 
@@ -86,6 +80,13 @@ private let samples: [Sample] = {
     do {
         // Find all subdirectories under the root Samples directory.
         let sampleSubDirectories = try FileManager.default.contentsOfDirectory(at: samplesDirectoryURL, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles]).filter(\.hasDirectoryPath)
+        
+        let decoder = JSONDecoder()
+        func parseJSON(at url: URL) -> Sample? {
+            guard let data = try? Data(contentsOf: url) else { return nil }
+            return try? decoder.decode(SampleMetadata.self, from: data)
+        }
+        
         let samples = sampleSubDirectories.map { $0.appendingPathComponent("README.metadata.json") }.compactMap(parseJSON(at:))
         return samples
     } catch {
