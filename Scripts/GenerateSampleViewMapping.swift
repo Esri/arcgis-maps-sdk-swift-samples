@@ -30,16 +30,16 @@ import OSLog
 /// A sample metadata retrieved from its `README.metadata.json` file.
 /// - Note: More about the schema at `common-samples/wiki/README.metadata.json`.
 private struct SampleMetadata {
-    /// The name/title of the sample.
-    let name: String
+    /// The title of the sample.
+    let title: String
     /// The description of the sample.
     let description: String
     /// The relative paths to the code snippets.
     let snippets: [String]
     /// The ArcGIS Online Portal Item IDs.
-    let dependencies: [String]
+    let offline_data: [String]
     /// The tags and relevant APIs of the sample.
-    let tags: [String]
+    let keywords: [String]
 }
 
 extension SampleMetadata {
@@ -48,25 +48,6 @@ extension SampleMetadata {
     var viewName: String {
         // E.g., ["DisplayMapView.swift", "SomeView.swift"] -> DisplayMapView
         snippets.first!.components(separatedBy: ".").first!
-    }
-}
-
-extension SampleMetadata: Decodable {
-    private enum CodingKeys: String, CodingKey {
-        case name = "title"
-        case description = "description"
-        case dependencies = "offline_data"
-        case snippets = "snippets"
-        case tags = "keywords"
-    }
-    
-    init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        name = try values.decode(String.self, forKey: .name)
-        description = try values.decode(String.self, forKey: .description)
-        snippets = try values.decodeIfPresent([String].self, forKey: .snippets)!
-        dependencies = try values.decodeIfPresent([String].self, forKey: .dependencies) ?? []
-        tags = try values.decodeIfPresent([String].self, forKey: .tags)!
     }
 }
 
