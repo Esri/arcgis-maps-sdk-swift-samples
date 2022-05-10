@@ -36,7 +36,7 @@ private struct SampleMetadata: Decodable {
     /// The relative paths to the code snippets.
     let snippets: [String]
     /// The ArcGIS Online Portal Item IDs.
-    let offline_data: [String]?
+    let offlineData: [String]?
     /// The tags and relevant APIs of the sample.
     let keywords: [String]
 }
@@ -65,10 +65,15 @@ let outputFileURL = URL(fileURLWithPath: arguments[3], isDirectory: false)
 
 private let sampleMetadata: [SampleMetadata] = {
     do {
-        // Find all subdirectories under the root Samples directory.
+        // Finds all subdirectories under the root Samples directory.
         let decoder = JSONDecoder()
-        return try FileManager.default.contentsOfDirectory(at: samplesDirectoryURL, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles]).filter(\.hasDirectoryPath)
+        // Converts snake-case key "offline_data" to camel-case "offlineData".
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        // Do a shallow traverse of the top level of samples directory.
+        return try FileManager.default.contentsOfDirectory(at: samplesDirectoryURL, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles])
+            .filter(\.hasDirectoryPath)
             .compactMap { url in
+                // Try to access the metadata file under a subdirectory.
                 guard let data = try? Data(contentsOf: url.appendingPathComponent("README.metadata.json")) else {
                     return nil
                 }
@@ -80,7 +85,9 @@ private let sampleMetadata: [SampleMetadata] = {
     }
 }()
 
-private let entries = sampleMetadata.map { sample in "AnySample(name: \"\(sample.title)\", description: \"\(sample.description)\", dependencies: \(sample.offline_data ?? []), tags: \(sample.keywords), content: \(sample.viewName)())" }.joined(separator: ",\n        ")
+private let entries = sampleMetadata
+    .map { sample in "AnySample(name: \"\(sample.title)\", description: \"\(sample.description)\", dependencies: \(sample.offlineData ?? []), tags: \(sample.keywords), content: \(sample.viewName)())" }
+    .joined(separator: ",\n        ")
 private let arrayRepresentation = """
     [
             \(entries)
@@ -89,7 +96,7 @@ private let arrayRepresentation = """
 
 do {
     let templateFile = try String(contentsOf: templateURL, encoding: .utf8)
-    // Replace the empty array code stub, i.e. [], with the array representation.
+    // Replaces the empty array code stub, i.e. [], with the array representation.
     let content = templateFile.replacingOccurrences(of: "[]", with: arrayRepresentation)
     try content.write(to: outputFileURL, atomically: true, encoding: .utf8)
 } catch {
