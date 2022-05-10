@@ -13,8 +13,13 @@
 // limitations under the License.
 
 import SwiftUI
+import ArcGIS
 
 extension SamplesApp {
     /// The samples for this app.
-    static let samples: [Sample] = []
+    static let samples: [Sample] = [/* samples */]
 }
+
+// MARK: Sample Structs
+
+/* structs */

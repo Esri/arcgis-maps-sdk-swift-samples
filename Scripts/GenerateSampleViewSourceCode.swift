@@ -48,6 +48,13 @@ extension SampleMetadata {
         // E.g., ["DisplayMapView.swift", "SomeView.swift"] -> DisplayMapView
         snippets.first!.components(separatedBy: ".").first!
     }
+    
+    /// The struct name of a sample which is derived by dropping "View" from
+    /// the name of the root view.
+    var structName: String {
+        // E.g., DisplayMapView -> DisplayMap
+        String(viewName.dropLast(4))
+    }
 }
 
 // MARK: Script Entry
@@ -85,8 +92,23 @@ private let sampleMetadata: [SampleMetadata] = {
     }
 }()
 
+private let sampleStructs = sampleMetadata
+    .map { sample in
+        """
+        struct \(sample.structName): Sample {
+            var name: String { \"\(sample.title)\" }
+            var description: String { \"\(sample.description)\" }
+            var dependencies: Set<PortalItem.ID> { Set(\(sample.offlineData ?? []).compactMap(PortalItem.ID.init(_:))) }
+            var tags: Set<String> { \(sample.keywords) }
+            
+            func makeBody() -> AnyView { .init(\(sample.viewName)()) }
+        }
+        """
+    }
+    .joined(separator: ",\n")
+
 private let entries = sampleMetadata
-    .map { sample in "AnySample(name: \"\(sample.title)\", description: \"\(sample.description)\", dependencies: \(sample.offlineData ?? []), tags: \(sample.keywords), content: \(sample.viewName)())" }
+    .map { sample in "\(sample.structName)()" }
     .joined(separator: ",\n        ")
 private let arrayRepresentation = """
     [
@@ -97,7 +119,9 @@ private let arrayRepresentation = """
 do {
     let templateFile = try String(contentsOf: templateURL, encoding: .utf8)
     // Replaces the empty array code stub, i.e. [], with the array representation.
-    let content = templateFile.replacingOccurrences(of: "[]", with: arrayRepresentation)
+    let content = templateFile
+        .replacingOccurrences(of: "[/* samples */]", with: arrayRepresentation)
+        .replacingOccurrences(of: "/* structs */", with: sampleStructs)
     try content.write(to: outputFileURL, atomically: true, encoding: .utf8)
 } catch {
     print("Error reading or writing template file: \(error.localizedDescription)")
