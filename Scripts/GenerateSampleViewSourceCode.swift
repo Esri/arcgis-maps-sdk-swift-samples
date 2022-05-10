@@ -105,7 +105,7 @@ private let sampleStructs = sampleMetadata
         }
         """
     }
-    .joined(separator: ",\n")
+    .joined(separator: "\n")
 
 private let entries = sampleMetadata
     .map { sample in "\(sample.structName)()" }
