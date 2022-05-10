@@ -31,13 +31,6 @@ protocol Sample {
     func makeBody() -> AnyView
 }
 
-// MARK: Default Implementations
-
-extension Sample {
-    var dependencies: Set<String> { [] }
-    var tags: Set<String> { [] }
-}
-
 // MARK: Computed Variables
 
 extension Sample {

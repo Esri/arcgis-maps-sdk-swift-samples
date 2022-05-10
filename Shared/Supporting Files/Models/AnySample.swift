@@ -13,11 +13,12 @@
 // limitations under the License.
 
 import SwiftUI
+import ArcGIS
 
 struct AnySample<Content: View> {
     let name: String
     let description: String
-    let dependencies: Set<String>
+    let dependencies: Set<PortalItem.ID>
     let tags: Set<String>
     /// A closure to create the sample's root view.
     let content: () -> Content
@@ -33,7 +34,7 @@ struct AnySample<Content: View> {
         self.name = name.capitalized
         self.description = description
         self.content = content
-        self.dependencies = Set(dependencies)
+        self.dependencies = Set(dependencies.compactMap(PortalItem.ID.init(_:)))
         // Keep a distinct set of lowercased keyword tags.
         self.tags = Set(tags.map { $0.lowercased() })
     }
