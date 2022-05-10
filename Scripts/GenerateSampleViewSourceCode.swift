@@ -65,7 +65,7 @@ let outputFileURL = URL(fileURLWithPath: arguments[3], isDirectory: false)
 
 private let sampleMetadata: [SampleMetadata] = {
     do {
-        // Finds all subdirectories under the root Samples directory.
+        // Finds all subdirectories under the root samples directory.
         let decoder = JSONDecoder()
         // Converts snake-case key "offline_data" to camel-case "offlineData".
         decoder.keyDecodingStrategy = .convertFromSnakeCase
