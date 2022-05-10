@@ -23,13 +23,12 @@
 // The third is a path to the output generated file.
 
 import Foundation
-import OSLog
 
 // MARK: Model
 
 /// A sample metadata retrieved from its `README.metadata.json` file.
 /// - Note: More about the schema at `common-samples/wiki/README.metadata.json`.
-private struct SampleMetadata {
+private struct SampleMetadata: Decodable {
     /// The title of the sample.
     let title: String
     /// The description of the sample.
@@ -37,7 +36,7 @@ private struct SampleMetadata {
     /// The relative paths to the code snippets.
     let snippets: [String]
     /// The ArcGIS Online Portal Item IDs.
-    let offline_data: [String]
+    let offline_data: [String]?
     /// The tags and relevant APIs of the sample.
     let keywords: [String]
 }
@@ -51,24 +50,12 @@ extension SampleMetadata {
     }
 }
 
-// MARK: Methods
-
-/// Generate a string representation of an array.
-/// - Parameter array: An array of strings.
-/// - Returns: A Swift code representation of a string array.
-private func arrayRepresentation(from array: [String]) -> String {
-    "[\(array.map { "\"\($0)\"" }.joined(separator: ", "))]"
-}
-
-
-
 // MARK: Script Entry
 
 private let arguments = CommandLine.arguments
-private let logger = Logger()
 
 guard arguments.count == 4 else {
-    logger.error("Invalid number of arguments.")
+    print("Invalid number of arguments.")
     exit(1)
 }
 
@@ -76,27 +63,24 @@ let samplesDirectoryURL = URL(fileURLWithPath: arguments[1], isDirectory: true)
 let templateURL = URL(fileURLWithPath: arguments[2], isDirectory: false)
 let outputFileURL = URL(fileURLWithPath: arguments[3], isDirectory: false)
 
-private let samples: [Sample] = {
+private let sampleMetadata: [SampleMetadata] = {
     do {
         // Find all subdirectories under the root Samples directory.
-        let sampleSubDirectories = try FileManager.default.contentsOfDirectory(at: samplesDirectoryURL, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles]).filter(\.hasDirectoryPath)
-        
         let decoder = JSONDecoder()
-        return try FileManager.default.contentsOfDirectory(at: samplesDirectoryURL, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles])
+        return try FileManager.default.contentsOfDirectory(at: samplesDirectoryURL, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles]).filter(\.hasDirectoryPath)
             .compactMap { url in
-                guard url.lastPathComponent == "README.metadata.json",
-                      let data = try? Data(contentsOf: url) else {
+                guard let data = try? Data(contentsOf: url.appendingPathComponent("README.metadata.json")) else {
                     return nil
                 }
-                return try? decoder.decode(Sample.self, from: data)
+                return try? decoder.decode(SampleMetadata.self, from: data)
             }
     } catch {
-        logger.error("Error decoding Samples: \(error.localizedDescription)")
+        print("Error decoding Samples: \(error.localizedDescription)")
         exit(1)
     }
 }()
 
-private let entries = samples.map { sample in "AnySample(name: \"\(sample.name)\", description: \"\(sample.description)\", dependencies: \(arrayRepresentation(from: sample.dependencies)), tags: \(arrayRepresentation(from: sample.tags)), content: \(sample.viewName)())" }.joined(separator: ",\n")
+private let entries = sampleMetadata.map { sample in "AnySample(name: \"\(sample.title)\", description: \"\(sample.description)\", dependencies: \(sample.offline_data ?? []), tags: \(sample.keywords), content: \(sample.viewName)())" }.joined(separator: ",\n        ")
 private let arrayRepresentation = """
     [
             \(entries)
@@ -109,6 +93,6 @@ do {
     let content = templateFile.replacingOccurrences(of: "[]", with: arrayRepresentation)
     try content.write(to: outputFileURL, atomically: true, encoding: .utf8)
 } catch {
-    logger.error("Error reading or writing template file: \(error.localizedDescription)")
+    print("Error reading or writing template file: \(error.localizedDescription)")
     exit(1)
 }
