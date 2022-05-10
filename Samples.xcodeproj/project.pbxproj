@@ -36,7 +36,7 @@
 				"$(DERIVED_FILE_DIR)/$(INPUT_FILE_BASE)",
 			);
 			runOncePerArchitecture = 0;
-			script = "xcrun --sdk macosx swift \"${SRCROOT}/Scripts/GenerateSampleViewMapping.swift\" \"${SCRIPT_INPUT_FILE_0}\" \"${INPUT_FILE_PATH}\" \"${SCRIPT_OUTPUT_FILE_0}\" \n";
+			script = "xcrun --sdk macosx swift \"${SRCROOT}/Scripts/GenerateSampleViewSourceCode.swift\" \"${SCRIPT_INPUT_FILE_0}\" \"${INPUT_FILE_PATH}\" \"${SCRIPT_OUTPUT_FILE_0}\" \n";
 		};
 		0083586F27FE3BCF00192A15 /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
@@ -77,7 +77,7 @@
 		001C6DD827FE585A00D472C2 /* AppSecrets.swift.masque */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AppSecrets.swift.masque; sourceTree = "<group>"; };
 		003D7C1F2821E283009DDFD2 /* AnySample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnySample.swift; sourceTree = "<group>"; };
 		003D7C342821EBCC009DDFD2 /* masquerade */ = {isa = PBXFileReference; lastKnownFileType = text; path = masquerade; sourceTree = "<group>"; };
-		003D7C352821EBCC009DDFD2 /* GenerateSampleViewMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateSampleViewMapping.swift; sourceTree = "<group>"; };
+		003D7C352821EBCC009DDFD2 /* GenerateSampleViewSourceCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateSampleViewSourceCode.swift; sourceTree = "<group>"; };
 		0074ABBE28174BCF0037244A /* DisplayMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayMapView.swift; sourceTree = "<group>"; };
 		0074ABC128174F430037244A /* Sample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sample.swift; sourceTree = "<group>"; };
 		0074ABCA2817B8DB0037244A /* SamplesApp+Samples.swift.tache */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "SamplesApp+Samples.swift.tache"; sourceTree = "<group>"; };
@@ -114,7 +114,7 @@
 			isa = PBXGroup;
 			children = (
 				003D7C342821EBCC009DDFD2 /* masquerade */,
-				003D7C352821EBCC009DDFD2 /* GenerateSampleViewMapping.swift */,
+				003D7C352821EBCC009DDFD2 /* GenerateSampleViewSourceCode.swift */,
 			);
 			path = Scripts;
 			sourceTree = "<group>";
