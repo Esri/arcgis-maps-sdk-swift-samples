@@ -44,16 +44,16 @@ private struct SampleMetadata: Decodable {
 extension SampleMetadata {
     /// The SwiftUI View name of the root view of the sample. It is the same as
     /// the first filename without extension in the snippets array.
-    var viewName: String {
+    var viewName: Substring {
         // E.g., ["DisplayMapView.swift", "SomeView.swift"] -> DisplayMapView
-        snippets.first!.components(separatedBy: ".").first!
+        snippets.first!.dropLast(6)
     }
     
     /// The struct name of a sample which is derived by dropping "View" from
     /// the name of the root view.
-    var structName: String {
+    var structName: Substring {
         // E.g., DisplayMapView -> DisplayMap
-        String(viewName.dropLast(4))
+        viewName.dropLast(4)
     }
 }
 
@@ -94,11 +94,13 @@ private let sampleMetadata: [SampleMetadata] = {
 
 private let sampleStructs = sampleMetadata
     .map { sample in
-        """
+        let portalItemIDs = (sample.offlineData ?? [])
+            .map { #"PortalItem.ID("\#($0)")!"# }
+        return """
         struct \(sample.structName): Sample {
             var name: String { \"\(sample.title)\" }
             var description: String { \"\(sample.description)\" }
-            var dependencies: Set<PortalItem.ID> { Set(\(sample.offlineData ?? []).compactMap(PortalItem.ID.init(_:))) }
+            var dependencies: Set<PortalItem.ID> { [\(portalItemIDs.joined(separator: ", "))] }
             var tags: Set<String> { \(sample.keywords) }
             
             func makeBody() -> AnyView { .init(\(sample.viewName)()) }
