@@ -34,11 +34,6 @@
 			<key>UIImageName</key>
 			<string></string>
 		</dict>
-		<key>UITabBar</key>
-		<dict>
-			<key>UIImageName</key>
-			<string></string>
-		</dict>
 	</dict>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>

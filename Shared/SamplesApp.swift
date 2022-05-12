@@ -23,10 +23,12 @@ struct SamplesApp: App {
     
     var body: some SwiftUI.Scene {
         WindowGroup {
-            ContentView()
+            ContentView(samples: Self.samples)
         }
     }
 }
+
+// MARK: - License
 
 extension SamplesApp {
     /// License the app with ArcGIS Runtime deployment license keys.

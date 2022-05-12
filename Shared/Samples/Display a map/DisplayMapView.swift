@@ -15,12 +15,12 @@
 import SwiftUI
 import ArcGIS
 
-struct ContentView: View {
-    let map = Map(basemapStyle: .arcGISTopographic)
+struct DisplayMapView: View {
+    /// A map with imagery basemap.
+    @StateObject private var map = Map(basemapStyle: .arcGISImagery)
     
     var body: some View {
+        // Create a map view to display the map.
         MapView(map: map)
-        Text("Hello, world!")
-            .padding()
     }
 }
