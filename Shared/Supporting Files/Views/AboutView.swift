@@ -64,7 +64,6 @@ struct AboutView: View {
                 })
             )
         }
-//        .navigationViewStyle(.stack)
     }
 }
 
