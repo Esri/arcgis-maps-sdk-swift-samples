@@ -15,13 +15,13 @@
 import SwiftUI
 
 struct SampleList: View {
-    /// A `Boolean` value that indicates if the user is searching.
+    /// /// A `Boolean` value that indicates whether the user is searching.
     @Environment(\.isSearching) private var isSearching
     /// All samples that will be displayed in the list.
     let samples: [Sample]
     /// The search query in the search bar.
     @Binding var query: String
-    /// A `Boolean` value that indicates if the about view is being presented.
+    /// A `Boolean` value that indicates whether to present the about view.
     @State var aboutViewIsPresented = false
     
     /// The samples to display in the list. Searching adjusts this value.
