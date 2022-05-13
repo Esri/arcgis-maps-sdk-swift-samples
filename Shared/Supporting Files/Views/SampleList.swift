@@ -15,7 +15,7 @@
 import SwiftUI
 
 struct SampleList: View {
-    /// /// A `Boolean` value that indicates whether the user is searching.
+    /// A `Boolean` value that indicates whether the user is searching.
     @Environment(\.isSearching) private var isSearching
     /// All samples that will be displayed in the list.
     let samples: [Sample]
