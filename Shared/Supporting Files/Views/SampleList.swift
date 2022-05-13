@@ -21,6 +21,9 @@ struct SampleList: View {
     let samples: [Sample]
     /// The search query in the search bar.
     @Binding var query: String
+    
+    @State var aboutViewIsPresented = false
+    
     /// The samples to display in the list. Searching adjusts this value.
     private var displayedSamples: [Sample] {
         if !isSearching {
@@ -43,9 +46,12 @@ struct SampleList: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
-                    print("Info button was tapped")
+                    aboutViewIsPresented.toggle()
                 } label: {
                     Image(systemName: "info.circle")
+                }
+                .sheet(isPresented: $aboutViewIsPresented) {
+                    AboutView()
                 }
             }
         }
