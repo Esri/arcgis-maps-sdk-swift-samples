@@ -25,7 +25,7 @@ struct ChangeBasemapView: View {
         scale: 1e6
     )
     /// A `Boolean` value that indicates whether to show the basemap gallery.
-    @State private var showBasemapGallery = true
+    @State private var showBasemapGallery = false
     
     var body: some View {
         MapView(map: map, viewpoint: initialViewpoint)
@@ -41,7 +41,6 @@ struct ChangeBasemapView: View {
                     Toggle(isOn: $showBasemapGallery) {
                         Label("Show base map", systemImage: "map")
                     }
-                    .toggleStyle(.button)
                 }
             }
     }
