@@ -39,7 +39,7 @@ struct AboutView: View {
                 }
                 Section {
                     VersionRow(title: "Version", version: Bundle.main.shortVersion)
-                    VersionRow(title: "SDK Version", version: "200.0.0", build: "0")
+                    VersionRow(title: "SDK Version", version: Bundle.arcGIS.shortVersion, build: Bundle.arcGIS.version)
                 }
                 Section(header: Text("Powered By")) {
                     Link("ArcGIS Runtime Toolkit for Swift", destination: .toolkit)
@@ -97,6 +97,8 @@ private struct VersionRow: View {
 }
 
 private extension Bundle {
+    static let arcGIS = Bundle(identifier: "ArcGIS")!
+    
     var name: String { object(forInfoDictionaryKey: "CFBundleName") as? String ?? "" }
     var shortVersion: String { object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "" }
     var version: String { object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "" }
