@@ -19,11 +19,13 @@ import ArcGISToolkit
 struct ChangeBasemapView: View {
     /// A map with imagery basemap.
     @StateObject private var map = Map(basemapStyle: .arcGISImagery)
-    /// The initial viewpoint of the map.
+    
+    /// The initial viewpoint of the map.    
     private let initialViewpoint = Viewpoint(
         center: Point(x: -118.4, y: 33.7, spatialReference: .wgs84),
         scale: 1e6
     )
+    
     /// A `Boolean` value that indicates whether to show the basemap gallery.
     @State private var showBasemapGallery = false
     
