@@ -1,6 +1,6 @@
 # Change basemap
 
-Change a map's basemap. A basemap is beneath all the layers on a map and is used to provide a visual reference for the operational layers.
+Change a map's basemap. A basemap is beneath all layers on a map and is used to provide visual reference for the operational layers.
 
 ![Image of change basemap](change-basemap.png)
 
