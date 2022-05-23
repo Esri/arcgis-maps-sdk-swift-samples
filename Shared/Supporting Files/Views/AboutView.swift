@@ -19,7 +19,7 @@ struct AboutView: View {
     @Environment(\.presentationMode) private var presentationMode
     
     var copyrightText: Text {
-        Text("Copyright © 2022-\(Date(), format: .dateTime.year()) Esri. All Rights Reserved.")
+        Text("Copyright © 2022 Esri. All Rights Reserved.")
     }
     
     var body: some View {
