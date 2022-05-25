@@ -372,6 +372,7 @@ class Metadata:
         data["relevant_apis"] = self.relevant_apis
         data["snippets"] = self.snippets
         data["title"] = self.title
+        data["offline_data"] = self.offline_data
 
         return json.dumps(data, indent=4, sort_keys=True)
 
