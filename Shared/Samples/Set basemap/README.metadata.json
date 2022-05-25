@@ -1,9 +1,9 @@
 {
     "category": "Maps",
-    "description": "Change a map's basemap. A basemap is beneath all layers on a map and is used to provide visual reference for the operational layers.",
+    "description": "Set a map's basemap. A basemap is beneath all layers on a map and is used to provide visual reference for the operational layers.",
     "ignore": false,
     "images": [
-        "change-basemap.png"
+        "set-basemap.png"
     ],
     "keywords": [
         "basemap",
@@ -21,7 +21,7 @@
         "MapView"
     ],
     "snippets": [
-        "ChangeBasemapView.swift"
+        "SetBasemapView.swift"
     ],
-    "title": "Change basemap"
+    "title": "Set basemap"
 }

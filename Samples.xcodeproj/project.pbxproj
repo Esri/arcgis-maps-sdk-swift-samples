@@ -16,7 +16,7 @@
 		00B04273282EC59E0072E1B4 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B04272282EC59E0072E1B4 /* AboutView.swift */; };
 		00B042E1282ED6F50072E1B4 /* ArcGISToolkit in Frameworks */ = {isa = PBXBuildFile; productRef = 00B042E0282ED6F50072E1B4 /* ArcGISToolkit */; };
 		00B042E2282ED77E0072E1B4 /* arcgis-runtime-toolkit-swift in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 00B042DE282ED6E80072E1B4 /* arcgis-runtime-toolkit-swift */; };
-		00B042E8282EDC690072E1B4 /* ChangeBasemapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B042E5282EDC690072E1B4 /* ChangeBasemapView.swift */; };
+		00B042E8282EDC690072E1B4 /* SetBasemapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B042E5282EDC690072E1B4 /* SetBasemapView.swift */; };
 		00E5401C27F3CCA200CF66D5 /* SamplesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5400C27F3CCA100CF66D5 /* SamplesApp.swift */; };
 		00E5401E27F3CCA200CF66D5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5400D27F3CCA100CF66D5 /* ContentView.swift */; };
 		00E5402027F3CCA200CF66D5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00E5400E27F3CCA200CF66D5 /* Assets.xcassets */; };
@@ -82,7 +82,7 @@
 		0074ABCA2817B8DB0037244A /* SamplesApp+Samples.swift.tache */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "SamplesApp+Samples.swift.tache"; sourceTree = "<group>"; };
 		00B04272282EC59E0072E1B4 /* AboutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		00B042DE282ED6E80072E1B4 /* arcgis-runtime-toolkit-swift */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "arcgis-runtime-toolkit-swift"; path = "../arcgis-runtime-toolkit-swift"; sourceTree = "<group>"; };
-		00B042E5282EDC690072E1B4 /* ChangeBasemapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeBasemapView.swift; sourceTree = "<group>"; };
+		00B042E5282EDC690072E1B4 /* SetBasemapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetBasemapView.swift; sourceTree = "<group>"; };
 		00E5400C27F3CCA100CF66D5 /* SamplesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SamplesApp.swift; sourceTree = "<group>"; };
 		00E5400D27F3CCA100CF66D5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		00E5400E27F3CCA200CF66D5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -134,18 +134,18 @@
 		0074ABB228174B830037244A /* Samples */ = {
 			isa = PBXGroup;
 			children = (
-				0074ABB328174B830037244A /* Display a map */,
-				00B042E3282EDC690072E1B4 /* Change basemap */,
+				0074ABB328174B830037244A /* Display map */,
+				00B042E3282EDC690072E1B4 /* Set basemap */,
 			);
 			path = Samples;
 			sourceTree = "<group>";
 		};
-		0074ABB328174B830037244A /* Display a map */ = {
+		0074ABB328174B830037244A /* Display map */ = {
 			isa = PBXGroup;
 			children = (
 				0074ABBE28174BCF0037244A /* DisplayMapView.swift */,
 			);
-			path = "Display a map";
+			path = "Display map";
 			sourceTree = "<group>";
 		};
 		0074ABC028174F430037244A /* Models */ = {
@@ -164,12 +164,12 @@
 			path = iOS;
 			sourceTree = "<group>";
 		};
-		00B042E3282EDC690072E1B4 /* Change basemap */ = {
+		00B042E3282EDC690072E1B4 /* Set basemap */ = {
 			isa = PBXGroup;
 			children = (
-				00B042E5282EDC690072E1B4 /* ChangeBasemapView.swift */,
+				00B042E5282EDC690072E1B4 /* SetBasemapView.swift */,
 			);
-			path = "Change basemap";
+			path = "Set basemap";
 			sourceTree = "<group>";
 		};
 		00E5400627F3CCA100CF66D5 = {
@@ -330,7 +330,7 @@
 				00B04273282EC59E0072E1B4 /* AboutView.swift in Sources */,
 				00E5401E27F3CCA200CF66D5 /* ContentView.swift in Sources */,
 				0074ABBF28174BCF0037244A /* DisplayMapView.swift in Sources */,
-				00B042E8282EDC690072E1B4 /* ChangeBasemapView.swift in Sources */,
+				00B042E8282EDC690072E1B4 /* SetBasemapView.swift in Sources */,
 				0074ABC428174F430037244A /* Sample.swift in Sources */,
 				00E5401C27F3CCA200CF66D5 /* SamplesApp.swift in Sources */,
 			);
