@@ -1,6 +1,6 @@
 # Set basemap
 
-Set a map's basemap. A basemap is beneath all the layers on a map and is used to provide a visual reference for the operational layers.
+Set a map's basemap. A basemap is beneath all layers on a map and is used to provide visual reference for the operational layers.
 
 ![Image of set basemap](set-basemap.png)
 
@@ -25,7 +25,7 @@ Tap the map button in the toolbar to view a list of the available basemaps. Tap 
 * Map
 * MapView
 
-## Additional Information
+## Additional information
 
 This samples uses the basemap gallery toolkit component, which requires the [ArcGIS Runtime Toolkit for Swift](https://github.com/Esri/arcgis-runtime-toolkit-swift).
 
