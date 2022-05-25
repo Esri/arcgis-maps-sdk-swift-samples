@@ -79,6 +79,7 @@ private let sampleMetadata: [SampleMetadata] = {
         // Do a shallow traverse of the top level of samples directory.
         return try FileManager.default.contentsOfDirectory(at: samplesDirectoryURL, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles])
             .filter(\.hasDirectoryPath)
+            .sorted { $0.lastPathComponent < $1.lastPathComponent }
             .compactMap { url in
                 // Try to access the metadata file under a subdirectory.
                 guard let data = try? Data(contentsOf: url.appendingPathComponent("README.metadata.json")) else {
