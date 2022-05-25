@@ -1,8 +1,8 @@
-# Change basemap
+# Set basemap
 
-Change a map's basemap. A basemap is beneath all layers on a map and is used to provide visual reference for the operational layers.
+Set a map's basemap. A basemap is beneath all layers on a map and is used to provide visual reference for the operational layers.
 
-![Image of change basemap](change-basemap.png)
+![Image of set basemap](set-basemap.png)
 
 ## Use case
 

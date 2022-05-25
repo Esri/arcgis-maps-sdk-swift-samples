@@ -16,7 +16,7 @@ import SwiftUI
 import ArcGIS
 import ArcGISToolkit
 
-struct ChangeBasemapView: View {
+struct SetBasemapView: View {
     /// A map with imagery basemap.
     @StateObject private var map = Map(basemapStyle: .arcGISImagery)
     
