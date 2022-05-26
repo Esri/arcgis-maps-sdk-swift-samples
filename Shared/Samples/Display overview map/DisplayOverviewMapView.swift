@@ -27,7 +27,7 @@ struct DisplayOverviewMapView: View {
     )
     
     /// The visible area marked with a red rectangle on the overview map.
-    @State private var visibleArea: ArcGIS.Polygon?
+    @State private var visibleArea: Polygon?
     
     /// Create a map.
     static func makeMap() -> Map {
