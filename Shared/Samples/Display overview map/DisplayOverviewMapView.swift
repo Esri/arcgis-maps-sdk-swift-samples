@@ -30,10 +30,12 @@ struct DisplayOverviewMapView: View {
     @State private var visibleArea: Polygon?
     
     /// Create a map.
-    static func makeMap() -> Map {
-        let featureLayer = FeatureLayer(item: PortalItem(
-            portal: .arcGISOnline(isLoginRequired: false),
-            id: .init("97ceed5cfc984b4399e23888f6252856")!)
+    private static func makeMap() -> Map {
+        let featureLayer = FeatureLayer(
+            item: PortalItem(
+                portal: .arcGISOnline(isLoginRequired: false),
+                id: .init("97ceed5cfc984b4399e23888f6252856")!
+            )
         )
         let map = Map(basemapStyle: .arcGISTopographic)
         map.addOperationalLayer(featureLayer)
