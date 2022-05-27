@@ -32,3 +32,7 @@ Portal\ Data/
 Packages/
 Package.pins
 Package.resolved
+
+## Python build artifact
+# If the style check scripts are run locally, ignore the script build artifact.
+Scripts/CI/__pycache__/
