@@ -50,8 +50,8 @@ jobs:
       #    echo '${{ steps.file_changes.outputs.files_added}}'
       #    echo '${{ steps.file_changes.outputs.files_removed}}'
 
-      - name: Run style checks
-        uses: ./Scripts/CI/StyleCheck
+      - name: Run CI (currently only style checks)
+        uses: ./Scripts/CI
         with:
           FILE_PATHS: ${{ steps.file_changes.outputs.files }}
       
