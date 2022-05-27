@@ -1,0 +1,24 @@
+{
+    "category": "Maps",
+    "description": "Rotate a map.",
+    "ignore": false,
+    "images": [
+        "map-rotation.png"
+    ],
+    "keywords": [
+        "rotate",
+        "rotation",
+        "viewpoint",
+        "Compass",
+        "MapView"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Compass",
+        "MapView"
+    ],
+    "snippets": [
+        "MapRotationView.swift"
+    ],
+    "title": "Map rotation"
+}
