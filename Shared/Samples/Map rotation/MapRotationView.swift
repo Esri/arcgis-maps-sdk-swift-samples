@@ -17,7 +17,7 @@ import ArcGIS
 import ArcGISToolkit
 
 struct MapRotationView: View {
-    /// A map with ArcGIS Streets  basemap.
+    /// A map with ArcGIS Streets basemap.
     @StateObject private var map = Map(basemapStyle: .arcGISStreets)
     
     /// An optional-type viewpoint with starting rotation degree of zero.
@@ -60,7 +60,7 @@ struct MapRotationView: View {
                 .frame(width: UIScreen.main.bounds.width * 0.6)
                 
                 Text(String(format: "%.0f˚", viewpoint!.rotation))
-                    .frame(width: 40)
+                    .frame(width: 40, alignment: .leading)
             }
         }
     }
