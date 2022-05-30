@@ -38,20 +38,20 @@ struct MapRotationView: View {
                 }
             
             HStack {
-                // Create slider to rotate the map
+                // Create a slider to rotate the map.
                 Slider(
                     value: Binding(get: {
                         viewpoint!.rotation
                     }, set: { degree in
-                        // Get current viewpoint
+                        // Get the current viewpoint.
                         if let currentViewpoint = viewpoint {
-                            // Create rotation viewpoint
+                            // Create a rotated viewpoint.
                             let rotationViewpoint = Viewpoint(
                                 center: currentViewpoint.targetGeometry as! Point,
                                 scale: currentViewpoint.targetScale,
                                 rotation: degree
                             )
-                            // Update viewpoint with new, rotated viewpoint
+                            // Update the viewpoint with new, rotated viewpoint.
                             viewpoint = rotationViewpoint
                         }
                     }),
