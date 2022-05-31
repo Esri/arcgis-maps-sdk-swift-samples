@@ -2,7 +2,7 @@
 
 Rotate a map.
 
-![Image of set viewpoint rotation](set-viewpoint-rotation.png)
+![Screenshot of set viewpoint rotation sample](set-viewpoint-rotation.png)
 
 ## Use case
 
