@@ -21,7 +21,7 @@ struct SetViewpointRotationView: View {
     @StateObject private var map = Map(basemapStyle: .arcGISStreets)
     
     /// An optional-type viewpoint with starting rotation degree of zero.
-    @State private var viewpoint: Viewpoint? = Viewpoint(
+    @State private var viewpoint: Viewpoint! = Viewpoint(
         center: Point(x: -117.156229, y: 32.713652, spatialReference: .wgs84),
         scale: 50_000,
         rotation: 0
@@ -41,7 +41,7 @@ struct SetViewpointRotationView: View {
                 // Create a slider to rotate the map.
                 Slider(
                     value: Binding(get: {
-                        viewpoint!.rotation
+                        viewpoint.rotation
                     }, set: { degree in
                         // Get the current viewpoint.
                         if let currentViewpoint = viewpoint {
@@ -59,7 +59,7 @@ struct SetViewpointRotationView: View {
                 )
                 .frame(width: UIScreen.main.bounds.width * 0.6)
                 
-                Text(String(format: "%.0f˚", viewpoint!.rotation))
+                Text(String(format: "%.0f˚", viewpoint.rotation))
                     .frame(width: 40, alignment: .leading)
             }
         }
