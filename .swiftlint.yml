@@ -25,7 +25,6 @@ disabled_rules:
   - notification_center_detachment
   - type_body_length
   - type_name
-  - multiline_arguments  # Doesn't support the new trailing closures syntax yet, see https://github.com/realm/SwiftLint/issues/3605
 
 # Some rules are only opt-in
 opt_in_rules: 
@@ -55,6 +54,7 @@ opt_in_rules:
   - lower_acl_than_parent
   - missing_docs
   - modifier_order
+  - multiline_arguments
   - multiline_function_chains
   - multiline_parameters
   - operator_usage_whitespace
@@ -82,3 +82,5 @@ trailing_closure:
   only_single_muted_parameter: true
 trailing_whitespace:
   ignores_empty_lines: true
+multiline_arguments:
+  only_enforce_after_first_closure_on_first_line: true
