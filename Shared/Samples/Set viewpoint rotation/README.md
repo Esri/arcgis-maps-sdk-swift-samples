@@ -14,9 +14,10 @@ Use the slider to rotate the map. If the map is not pointed north, the compass w
 
 ## How it works
 
-1. Create a `Map` object with the `arcGISStreets` basemap style and add it to `MapView`.
-2. Create an `Optional`-type `Viewpoint` object with a desired starting rotation and add it to `MapView`.
-3. Update the viewpoint with a new viewpoint with a different rotation to change the rotation angle.
+1. Create a `Map` object with the `arcGISStreets` basemap style.
+2. Create an `Optional`-type `Viewpoint` object with a desired starting rotation.
+3. Create a `MapView` view with the `Map` and `Viewpoint` objects.
+4. Update the viewpoint with a new viewpoint with a different rotation to change the rotation angle.
 
 ## Relevant API
 
