@@ -14,10 +14,11 @@ Pan or zoom across the map view to browse through the tourist attractions featur
 
 ## How it works
 
-1. Create a `Map` with the `arcGISTopographic` basemap style and add it to the `MapView`.
-2. Instantiate a `FeatureLayer` and add it to the map's operational layers.
-3. Create an `OverviewMap` object using the toolkit.
-4. Add the `OverviewMap` to the map view as an overlay.
+1. Create a `Map` with the `arcGISTopographic` basemap style.
+2. Create a `MapView` instance with the map.
+3. Instantiate a `FeatureLayer` and add it to the map's operational layers.
+4. Create an `OverviewMap` object using the toolkit.
+5. Add the `OverviewMap` to the map view as an overlay.
 
 ## Relevant API
 
