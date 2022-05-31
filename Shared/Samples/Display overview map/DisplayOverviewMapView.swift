@@ -34,7 +34,7 @@ struct DisplayOverviewMapView: View {
         let featureLayer = FeatureLayer(
             item: PortalItem(
                 portal: .arcGISOnline(isLoginRequired: false),
-                id: .init("97ceed5cfc984b4399e23888f6252856")!
+                id: .northAmericaTouristAttractions
             )
         )
         let map = Map(basemapStyle: .arcGISTopographic)
@@ -56,4 +56,8 @@ struct DisplayOverviewMapView: View {
                 alignment: .topTrailing
             )
     }
+}
+
+private extension PortalItem.ID {
+    static let northAmericaTouristAttractions = Self("97ceed5cfc984b4399e23888f6252856")!
 }
