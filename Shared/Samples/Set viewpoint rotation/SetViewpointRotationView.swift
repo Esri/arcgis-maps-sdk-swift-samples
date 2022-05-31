@@ -16,7 +16,7 @@ import SwiftUI
 import ArcGIS
 import ArcGISToolkit
 
-struct MapRotationView: View {
+struct SetViewpointRotationView: View {
     /// A map with ArcGIS Streets basemap.
     @StateObject private var map = Map(basemapStyle: .arcGISStreets)
     
@@ -63,11 +63,5 @@ struct MapRotationView: View {
                     .frame(width: 40, alignment: .leading)
             }
         }
-    }
-}
-
-struct MapRotationView_Previews: PreviewProvider {
-    static var previews: some View {
-        MapRotationView()
     }
 }

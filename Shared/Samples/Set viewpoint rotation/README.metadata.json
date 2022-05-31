@@ -3,7 +3,7 @@
     "description": "Rotate a map.",
     "ignore": false,
     "images": [
-        "map-rotation.png"
+        "set-viewpoint-rotation.png"
     ],
     "keywords": [
         "rotate",
@@ -18,7 +18,7 @@
         "MapView"
     ],
     "snippets": [
-        "MapRotationView.swift"
+        "SetViewpointRotationView.swift"
     ],
-    "title": "Map rotation"
+    "title": "Set viewpoint rotation"
 }
