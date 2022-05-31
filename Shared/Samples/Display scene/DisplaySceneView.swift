@@ -23,7 +23,7 @@ struct DisplaySceneView: View {
     private let viewpoint = Viewpoint(
         latitude: 45.74,
         longitude: 6.88,
-        scale: 10_000,
+        scale: 4_500,
         camera: Camera(
             latitude: 45.74,
             longitude: 6.88,
