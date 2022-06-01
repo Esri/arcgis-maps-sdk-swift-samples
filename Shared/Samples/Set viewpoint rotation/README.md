@@ -26,4 +26,4 @@ Use the slider or pinch to rotate the map. If the map is not pointed north, the 
 
 ## Tags
 
-rotate, rotation, Toolkit, viewpoint
+rotate, rotation, toolkit, viewpoint
