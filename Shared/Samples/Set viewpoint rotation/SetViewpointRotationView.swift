@@ -17,7 +17,7 @@ import ArcGIS
 import ArcGISToolkit
 
 struct SetViewpointRotationView: View {
-    /// A map with ArcGIS Streets basemap.
+    /// A map with ArcGIS Streets basemap style.
     @StateObject private var map = Map(basemapStyle: .arcGISStreets)
     
     /// An optional-type viewpoint with starting rotation degree of zero.
@@ -43,17 +43,13 @@ struct SetViewpointRotationView: View {
                     value: Binding(get: {
                         viewpoint.rotation
                     }, set: { degree in
-                        // Get the current viewpoint.
-                        if let currentViewpoint = viewpoint {
-                            // Create a rotated viewpoint.
-                            let rotationViewpoint = Viewpoint(
-                                center: currentViewpoint.targetGeometry as! Point,
-                                scale: currentViewpoint.targetScale,
-                                rotation: degree
-                            )
-                            // Update the viewpoint with new, rotated viewpoint.
-                            viewpoint = rotationViewpoint
-                        }
+                        // Update the viewpoint with new, rotated viewpoint.
+                        let rotationViewpoint = Viewpoint(
+                            center: viewpoint.targetGeometry as! Point,
+                            scale: viewpoint.targetScale,
+                            rotation: degree
+                        )
+                        viewpoint = rotationViewpoint
                     }),
                     in: 0...360
                 )
