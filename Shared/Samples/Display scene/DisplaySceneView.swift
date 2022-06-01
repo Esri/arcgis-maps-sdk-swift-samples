@@ -16,10 +16,10 @@ import SwiftUI
 import ArcGIS
 
 struct DisplaySceneView: View {
-    /// A scene with imagery basemap style and a tiled elevation source
+    /// A scene with imagery basemap style and a tiled elevation source.
     @StateObject private var scene = makeScene()
     
-    /// The starting viewpoint with its initial camera location
+    /// The starting viewpoint with its initial camera location.
     private let viewpoint = Viewpoint(
         latitude: 45.74,
         longitude: 6.88,
@@ -36,16 +36,22 @@ struct DisplaySceneView: View {
     
     /// Make a scene.
     private static func makeScene() -> ArcGIS.Scene {
+        // Create a scene.
         let scene = Scene(basemapStyle: .arcGISImagery)
+        // Create a surface.
         let surface = Surface()
+        // Create a tiled elevation source.
         let worldElevationServiceURL = URL(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!
         let elevationSource = ArcGISTiledElevationSource(url: worldElevationServiceURL)
+        // Add the elevation source to the surface.
         surface.addElevationSource(elevationSource)
+        // Set the surface to the scene's base surface.
         scene.baseSurface = surface
         return scene
     }
     
     var body: some View {
+        // Create a scene view with a scene and viewpoint.
         SceneView(scene: scene, viewpoint: viewpoint)
     }
 }
