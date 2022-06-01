@@ -218,6 +218,7 @@ struct StyleGraphicsWithSymbolsView: View {
     // MARK: Body
     
     var body: some View {
+        // Create a map view with the graphic overlay.
         MapView(map: map, viewpoint: viewpoint, graphicsOverlays: [graphicsOverlay])
     }
 }
