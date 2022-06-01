@@ -136,9 +136,9 @@
 		0074ABB228174B830037244A /* Samples */ = {
 			isa = PBXGroup;
 			children = (
-				E004A6DE2846626A002A1FE6 /* Show callout */,
 				0074ABB328174B830037244A /* Display map */,
 				00B042E3282EDC690072E1B4 /* Set basemap */,
+				E004A6DE2846626A002A1FE6 /* Show callout */,
 			);
 			path = Samples;
 			sourceTree = "<group>";
