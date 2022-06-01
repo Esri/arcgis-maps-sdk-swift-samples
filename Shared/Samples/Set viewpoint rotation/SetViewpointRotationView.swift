@@ -56,11 +56,11 @@ struct SetViewpointRotationView: View {
                     }),
                     in: 0...360
                 )
-                .frame(width: UIScreen.main.bounds.width * 0.6)
                 
                 Text(String(format: "%.0f˚", viewpoint.rotation))
                     .frame(width: 40, alignment: .leading)
             }
+            .padding(.horizontal, 50)
         }
     }
 }
