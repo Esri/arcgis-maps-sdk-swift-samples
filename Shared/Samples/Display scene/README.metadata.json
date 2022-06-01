@@ -10,7 +10,11 @@
         "basemap",
         "elevation",
         "scene",
-        "surface"
+        "surface",
+        "ArcGISTiledElevationSource",
+        "Scene",
+        "SceneView",
+        "Surface"
     ],
     "redirect_from": [],
     "relevant_apis": [
