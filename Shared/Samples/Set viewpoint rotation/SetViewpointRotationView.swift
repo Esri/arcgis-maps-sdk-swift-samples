@@ -32,7 +32,10 @@ struct SetViewpointRotationView: View {
             MapView(map: map, viewpoint: viewpoint)
                 .onViewpointChanged(kind: .centerAndScale) { viewpoint = $0 }
                 .overlay(alignment: .topTrailing) {
-                    Compass(viewpoint: $viewpoint)
+                    Compass(
+                        viewpoint: $viewpoint,
+                        autoHide: false
+                    )
                         .frame(width: 44, height: 44)
                         .padding()
                 }
