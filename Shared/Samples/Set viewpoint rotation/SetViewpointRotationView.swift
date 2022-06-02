@@ -38,6 +38,8 @@ struct SetViewpointRotationView: View {
                     )
                         .frame(width: 44, height: 44)
                         .padding()
+                    .frame(width: 44, height: 44)
+                    .padding()
                 }
             
             HStack {
@@ -57,8 +59,16 @@ struct SetViewpointRotationView: View {
                     in: 0...360
                 )
                 
-                Text(String(format: "%.0f˚", viewpoint.rotation))
-                    .frame(width: 40, alignment: .leading)
+                Text(
+                    Measurement(
+                        value: viewpoint.rotation,
+                        unit: UnitAngle.degrees
+                    ),
+                    format: .measurement(
+                        width: .narrow,
+                        numberFormatStyle: .number.precision(.fractionLength(0))
+                    )
+                )
             }
             .padding(.horizontal, 50)
         }
