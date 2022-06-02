@@ -71,5 +71,6 @@ struct SetViewpointRotationView: View {
             }
             .padding(.horizontal, 50)
         }
+        .padding(.bottom)
     }
 }
