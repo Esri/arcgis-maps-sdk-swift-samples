@@ -82,3 +82,5 @@ trailing_closure:
   only_single_muted_parameter: true
 trailing_whitespace:
   ignores_empty_lines: true
+multiline_arguments:
+  only_enforce_after_first_closure_on_first_line: true
