@@ -80,12 +80,8 @@ struct StyleGraphicsWithSymbolsView: View {
         // Defines the boat route from the geometry.
         let boatRoute = boatTripGeometry
         
-        // Create a line symbol.
-        let lineSymbol = SimpleLineSymbol(
-            style: .dash,
-            color: UIColor(red: 0.5, green: 0, blue: 0.5, alpha: 1),
-            width: 4
-        )
+        // Creates a line symbol.
+        let lineSymbol = SimpleLineSymbol(style: .dash, color: UIColor(red: 0.5, green: 0, blue: 0.5, alpha: 1), width: 4)
         
         // Creates the graphic.
         let boatTripGraphic = Graphic(geometry: boatRoute, symbol: lineSymbol)
@@ -97,15 +93,9 @@ struct StyleGraphicsWithSymbolsView: View {
         // Defines the nesting ground from the geometry.
         let nestingGround = nestingGroundGeometry
         
-        // Define the outline and fill symbols.
-        let outlineSymbol = SimpleLineSymbol(
-            style: .dash,
-            color: UIColor(red: 0, green: 0, blue: 0.5, alpha: 1),
-            width: 1)
-        let fillSymbol = SimpleFillSymbol(
-            style: .diagonalCross,
-            color: UIColor(red: 0, green: 80 / 255.0, blue: 0, alpha: 1),
-            outline: outlineSymbol)
+        // Creates the outline and fill symbols.
+        let outlineSymbol = SimpleLineSymbol(style: .dash, color: UIColor(red: 0, green: 0, blue: 0.5, alpha: 1), width: 1)
+        let fillSymbol = SimpleFillSymbol(style: .diagonalCross, color: UIColor(red: 0, green: 80 / 255.0, blue: 0, alpha: 1), outline: outlineSymbol)
         
         // Creates the nesting graphic.
         let nestingGraphic = Graphic(geometry: nestingGround, symbol: fillSymbol)
