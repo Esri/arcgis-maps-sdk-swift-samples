@@ -16,16 +16,27 @@ import SwiftUI
 import ArcGIS
 import ArcGISToolkit
 
-struct FindAddressWithGeocodeView: View {
+struct SearchWithGeocodeView: View {
     /// A map with imagery basemap.
     @StateObject private var map = Map(basemapStyle: .arcGISImagery)
     
-    /// The map viewpoint used by the `SearchView` to pan/zoom the map
+    /// The viewpoint used by the `SearchView` to pan/zoom the map
     /// to the extent of the search results.
     @State private var searchResultViewpoint: Viewpoint? = Viewpoint(
         center: Point(x: -93.258133, y: 44.986656, spatialReference: .wgs84),
         scale: 1e6
     )
+    
+    /// Denotes whether the geoview is navigating. Used for the repeat search
+    /// behavior.
+    @State private var isGeoViewNavigating = false
+    
+    /// The current map view extent. Used to allow repeat searches after
+    /// panning/zooming the map.
+    @State private var geoViewExtent: Envelope?
+    
+    /// The center for the search.
+    @State private var queryCenter: Point?
     
     /// The screen point to perform an identify operation.
     @State private var identifyScreenPoint: CGPoint?
@@ -37,7 +48,7 @@ struct FindAddressWithGeocodeView: View {
     @State private var calloutPlacement: GraphicCalloutPlacement?
     
     /// Provides search behavior customization.
-    private let locatorDataSource = LocatorSearchSource()
+    private let locatorDataSource = LocatorSearchSource(name: "My Locator", maximumResults: 10, maximumSuggestions: 5)
     
     /// The `GraphicsOverlay` used by the `SearchView` toolkit component to
     /// display search results on the map.
@@ -54,9 +65,19 @@ struct FindAddressWithGeocodeView: View {
                 identifyScreenPoint = screenPoint
                 identifyTapLocation = tapLocation
             }
+            .onNavigatingChanged { isGeoViewNavigating = $0 }
+            .onViewpointChanged(kind: .centerAndScale) {
+                queryCenter = $0.targetGeometry.extent.center
+            }
+            .onVisibleAreaChanged { newValue in
+                // For "Repeat Search Here" behavior, use `geoViewExtent` and
+                // `isGeoViewNavigating` modifiers on the `SearchView`.
+                geoViewExtent = newValue.extent
+            }
             .callout(placement: $calloutPlacement.animation()) { placement in
-                // Show the full address of user tapped location graphic.
-                Text(placement.graphic.attributes["Place_addr"] as? String ?? "")
+                // Show the address of user tapped location graphic.
+                // To get the full geocoded address, use "Place_addr".
+                Text(placement.graphic.attributes["Match_addr"] as? String ?? "")
                     .font(.body)
                     .padding()
             }
@@ -71,7 +92,7 @@ struct FindAddressWithGeocodeView: View {
                 else {
                     return
                 }
-                // Creates a callout placement on the user tapped location.
+                // Creates a callout placement at the user tapped location.
                 calloutPlacement = identifyResult.graphics.first.flatMap { graphic in
                     GraphicCalloutPlacement(graphic: graphic, tapLocation: identifyTapLocation)
                 }
@@ -84,8 +105,9 @@ struct FindAddressWithGeocodeView: View {
                     viewpoint: $searchResultViewpoint
                 )
                 .resultsOverlay(searchResultsOverlay)
-                // Only returns the first result from the locator task.
-                .resultMode(.single)
+                .queryCenter($queryCenter)
+                .geoViewExtent($geoViewExtent)
+                .isGeoViewNavigating($isGeoViewNavigating)
                 .padding()
             }
         }
