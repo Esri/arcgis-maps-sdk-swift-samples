@@ -150,8 +150,8 @@
 			isa = PBXGroup;
 			children = (
 				0074ABB328174B830037244A /* Display map */,
-				E004A6D528465C70002A1FE6 /* Display scene */,
 				00B04FB3283EEB830026C882 /* Display overview map */,
+				E004A6D528465C70002A1FE6 /* Display scene */,
 				00B042E3282EDC690072E1B4 /* Set basemap */,
 			);
 			path = Samples;
