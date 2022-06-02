@@ -54,7 +54,7 @@ struct SetViewpointRotationView: View {
                         )
                         viewpoint = rotationViewpoint
                     }),
-                    in: 0...360
+                    in: 0...359
                 )
                 
                 Text(
