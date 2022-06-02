@@ -69,6 +69,7 @@ struct SetViewpointRotationView: View {
                         numberFormatStyle: .number.precision(.fractionLength(0))
                     )
                 )
+                .frame(minWidth: 60, alignment: .leading)
             }
             .padding(.horizontal, 50)
         }
