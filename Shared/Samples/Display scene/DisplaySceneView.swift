@@ -37,7 +37,7 @@ struct DisplaySceneView: View {
     /// Makes a scene.
     private static func makeScene() -> ArcGIS.Scene {
         // Creates a scene.
-        let scene = Scene(basemapStyle: .arcGISImagery)
+        let scene = Scene(basemapStyle: .arcGISImageryStandard)
         
         // Creates a surface.
         let surface = Surface()
