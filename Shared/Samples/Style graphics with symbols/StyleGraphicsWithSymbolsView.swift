@@ -42,7 +42,6 @@ struct StyleGraphicsWithSymbolsView: View {
     
     /// Creates a sequence of graphics for buoy points.
     private static func makeBuoyPoints() -> [Graphic] {
-        
         // Defines an array of points where buoys are located.
         let buoyLocations = [
             Point(x: -2.712642647560347, y: 56.062812566811544, spatialReference: .wgs84),
