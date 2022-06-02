@@ -29,10 +29,10 @@ struct StyleGraphicsWithSymbolsView: View {
     
     // MARK: Methods
     
-    /// Create a GraphicsOverlay.
+    /// Creates a GraphicsOverlay.
     private static func makeGraphicsOverlay() -> GraphicsOverlay {
         let graphicsOverlay = GraphicsOverlay()
-        // Add the graphics.
+        // Adds the graphics.
         graphicsOverlay.addGraphics(makeBuoyPoints())
         graphicsOverlay.addGraphics(makeText())
         graphicsOverlay.addGraphic(makeBoatTripGraphic())
@@ -61,11 +61,11 @@ struct StyleGraphicsWithSymbolsView: View {
     
     /// Creates a sequence of graphics for text.
     private static func makeText() -> [Graphic] {
-        // Define the text locations.
+        // Defines the text locations.
         let bassLocation = Point(x: -2.640631, y: 56.078083, spatialReference: .wgs84)
         let craigleithLocation = Point(x: -2.720324, y: 56.073569, spatialReference: .wgs84)
         
-        // Create the text symbols.
+        // Creates the text symbols.
         let bassRockSymbol = TextSymbol(text: "Bass Rock", color: UIColor(red: 0, green: 0, blue: 230 / 255.0, alpha: 1), size: 10, horizontalAlignment: .left, verticalAlignment: .bottom)
         let craigleithSymbol = TextSymbol(text: "Craigleith", color: UIColor(red: 0, green: 0, blue: 230 / 255.0, alpha: 1), size: 10, horizontalAlignment: .right, verticalAlignment: .top)
         
@@ -77,7 +77,7 @@ struct StyleGraphicsWithSymbolsView: View {
     
     /// Creates a graphic for the boat trip.
     private static func makeBoatTripGraphic() -> Graphic {
-        // Define the boat route from the geometry.
+        // Defines the boat route from the geometry.
         let boatRoute = boatTripGeometry
         
         // Create a line symbol.
@@ -94,7 +94,7 @@ struct StyleGraphicsWithSymbolsView: View {
     
     /// Creates a graphic for the nesting ground.
     private static func makeNestingGroundGraphic() -> Graphic {
-        // Define the nesting ground from the geometry.
+        // Defines the nesting ground from the geometry.
         let nestingGround = nestingGroundGeometry
         
         // Define the outline and fill symbols.
@@ -114,10 +114,10 @@ struct StyleGraphicsWithSymbolsView: View {
     
     /// The boat trip geometry.
     private static let boatTripGeometry: Polyline = {
-        // Create a polyline.
+        // Creates a polyline.
         let boatRoute = PolylineBuilder(spatialReference: .wgs84)
         
-        // Add points to the polyline.
+        // Adds points to the polyline.
         boatRoute.addPoint(x: -2.7184791227926772, y: 56.06147084563517)
         boatRoute.addPoint(x: -2.7196807500463924, y: 56.06147084563517)
         boatRoute.addPoint(x: -2.722084004553823, y: 56.062141712059706)
@@ -182,10 +182,10 @@ struct StyleGraphicsWithSymbolsView: View {
     
     /// The nesting ground geometry.
     private static let nestingGroundGeometry: Polygon = {
-        // Create a polygon.
+        // Creates a polygon.
         let nestingGround = PolygonBuilder(spatialReference: .wgs84)
         
-        // Add points to the polygon.
+        // Adds points to the polygon.
         nestingGround.addPoint(x: -2.643077012566659, y: 56.077125346044475)
         nestingGround.addPoint(x: -2.6428195210159444, y: 56.07717324600376)
         nestingGround.addPoint(x: -2.6425405718360033, y: 56.07774804087097)
@@ -218,7 +218,7 @@ struct StyleGraphicsWithSymbolsView: View {
     // MARK: Body
     
     var body: some View {
-        // Create a map view with the graphic overlay.
+        // Creates a map view with the graphic overlay.
         MapView(map: map, viewpoint: viewpoint, graphicsOverlays: [graphicsOverlay])
     }
 }
