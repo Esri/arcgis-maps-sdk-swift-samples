@@ -22,7 +22,7 @@ struct StyleGraphicsWithSymbolsView: View {
     @StateObject private var map = Map(basemapStyle: .arcGISOceans)
     
     /// A graphics overlay for the MapView.
-    private var graphicsOverlay = makeGraphicsOverlay()
+    private let graphicsOverlay = makeGraphicsOverlay()
     
     /// The starting viewpoint of the MapView.
     private let viewpoint = Viewpoint(latitude: 56.075844, longitude: -2.681572, scale: 288895.277144)
