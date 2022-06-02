@@ -21,8 +21,8 @@ Use the slider or pinch to rotate the map. If the map is not pointed north, the 
 
 ## Relevant API
 
-* ArcGISToolkit.Compass
 * ArcGIS.MapView
+* ArcGISToolkit.Compass
 
 ## Tags
 

@@ -10,13 +10,13 @@
         "rotation",
         "toolkit",
         "viewpoint",
-        "Compass",
-        "MapView"
+        "ArcGIS.MapView",
+        "ArcGISToolkit.Compass"
     ],
     "redirect_from": [],
     "relevant_apis": [
-        "Compass",
-        "MapView"
+        "ArcGIS.MapView",
+        "ArcGISToolkit.Compass"
     ],
     "snippets": [
         "SetViewpointRotationView.swift"
