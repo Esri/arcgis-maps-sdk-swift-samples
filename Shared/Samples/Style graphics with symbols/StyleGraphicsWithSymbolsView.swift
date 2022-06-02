@@ -69,9 +69,9 @@ struct StyleGraphicsWithSymbolsView: View {
         let bassRockSymbol = TextSymbol(text: "Bass Rock", color: UIColor(red: 0, green: 0, blue: 230 / 255.0, alpha: 1), size: 10, horizontalAlignment: .left, verticalAlignment: .bottom)
         let craigleithSymbol = TextSymbol(text: "Craigleith", color: UIColor(red: 0, green: 0, blue: 230 / 255.0, alpha: 1), size: 10, horizontalAlignment: .right, verticalAlignment: .top)
         
-        // Create the graphics.
-        let bassRockGraphic = Graphic(geometry: bassLocation, attributes: [:], symbol: bassRockSymbol)
-        let craigleithGraphic = Graphic(geometry: craigleithLocation, attributes: [:], symbol: craigleithSymbol)
+        // Creates the graphics.
+        let bassRockGraphic = Graphic(geometry: bassLocation, symbol: bassRockSymbol)
+        let craigleithGraphic = Graphic(geometry: craigleithLocation, symbol: craigleithSymbol)
         return [bassRockGraphic, craigleithGraphic]
     }
     
@@ -87,8 +87,8 @@ struct StyleGraphicsWithSymbolsView: View {
             width: 4
         )
         
-        // Create the graphic.
-        let boatTripGraphic = Graphic(geometry: boatRoute, attributes: [:], symbol: lineSymbol)
+        // Creates the graphic.
+        let boatTripGraphic = Graphic(geometry: boatRoute, symbol: lineSymbol)
         return boatTripGraphic
     }
     
@@ -107,8 +107,8 @@ struct StyleGraphicsWithSymbolsView: View {
             color: UIColor(red: 0, green: 80 / 255.0, blue: 0, alpha: 1),
             outline: outlineSymbol)
         
-        // Create the nesting graphic.
-        let nestingGraphic = Graphic(geometry: nestingGround, attributes: [:], symbol: fillSymbol)
+        // Creates the nesting graphic.
+        let nestingGraphic = Graphic(geometry: nestingGround, symbol: fillSymbol)
         return nestingGraphic
     }
     
