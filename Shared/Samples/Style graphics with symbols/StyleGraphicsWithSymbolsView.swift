@@ -42,21 +42,21 @@ struct StyleGraphicsWithSymbolsView: View {
     
     /// Creates a sequence of graphics for buoy points.
     private static func makeBuoyPoints() -> [Graphic] {
-        // Define the buoy locations.
-        let buoy1Loc = Point(x: -2.712642647560347, y: 56.062812566811544, spatialReference: .wgs84)
-        let buoy2Loc = Point(x: -2.6908416959572303, y: 56.06444173689877, spatialReference: .wgs84)
-        let buoy3Loc = Point(x: -2.6697273884990937, y: 56.064250073402874, spatialReference: .wgs84)
-        let buoy4Loc = Point(x: -2.6395150461199726, y: 56.06127916736989, spatialReference: .wgs84)
         
-        // Create a marker symbol.
+        // Defines an array of points where buoys are located.
+        let buoyLocations = [
+            Point(x: -2.712642647560347, y: 56.062812566811544, spatialReference: .wgs84),
+            Point(x: -2.6908416959572303, y: 56.06444173689877, spatialReference: .wgs84),
+            Point(x: -2.6697273884990937, y: 56.064250073402874, spatialReference: .wgs84),
+            Point(x: -2.6395150461199726, y: 56.06127916736989, spatialReference: .wgs84)
+        ]
+        
+        // Creates a marker symbol.
         let buoyMarker = SimpleMarkerSymbol(style: .circle, color: .red, size: 10)
         
-        // Create the graphics.
-        let buoyGraphic1 = Graphic(geometry: buoy1Loc, attributes: [:], symbol: buoyMarker)
-        let buoyGraphic2 = Graphic(geometry: buoy2Loc, attributes: [:], symbol: buoyMarker)
-        let buoyGraphic3 = Graphic(geometry: buoy3Loc, attributes: [:], symbol: buoyMarker)
-        let buoyGraphic4 = Graphic(geometry: buoy4Loc, attributes: [:], symbol: buoyMarker)
-        return [buoyGraphic1, buoyGraphic2, buoyGraphic3, buoyGraphic4]
+        // Creates a sequence of graphics.
+        let buoyGraphics = buoyLocations.map { Graphic(geometry: $0, symbol: buoyMarker) }
+        return buoyGraphics
     }
     
     /// Creates a sequence of graphics for text.
