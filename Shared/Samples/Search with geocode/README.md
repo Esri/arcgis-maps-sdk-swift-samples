@@ -24,8 +24,8 @@ Choose an address from the suggestions or submit your own address to show its lo
 * ArcGISToolkit.SearchView
 * GeocodeParameters
 * LocatorTask
-* SearchSuggestion
 * SearchResult
+* SearchSuggestion
 * SuggestParameters
 
 ## Additional information
