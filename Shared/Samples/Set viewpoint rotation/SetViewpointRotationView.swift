@@ -20,7 +20,7 @@ struct SetViewpointRotationView: View {
     /// A map with ArcGIS Streets basemap style.
     @StateObject private var map = Map(basemapStyle: .arcGISStreets)
     
-    /// An optional-type viewpoint with starting rotation degree of zero.
+    /// A viewpoint with starting rotation degree of zero.
     @State private var viewpoint: Viewpoint! = Viewpoint(
         center: Point(x: -117.156229, y: 32.713652, spatialReference: .wgs84),
         scale: 50_000,
