@@ -10,7 +10,7 @@ import SwiftUI
 import ArcGIS
 
 struct CreatePlanarAndGeodeticBuffersView: View {
-    /// A Boolean value indicating whether to show the options menu.
+    /// A Boolean value indicating whether to show options.
     @State private var showOptions = false
     
     /// A map with a topographic basemap style
@@ -36,7 +36,7 @@ struct CreatePlanarAndGeodeticBuffersView: View {
         return [geodeticOverlay, planarOverlay, tapLocationsOverlay]
     }
     
-    /// Creates a graphics overlay for the geodesic overlay.
+    /// Creates a graphics overlay for the geodetic overlay.
     private static func makeGeodeticOverlay() -> GraphicsOverlay {
         let overlay = GraphicsOverlay()
         let outlineSymbol = SimpleLineSymbol(style: .solid, color: .black, width: 2)
