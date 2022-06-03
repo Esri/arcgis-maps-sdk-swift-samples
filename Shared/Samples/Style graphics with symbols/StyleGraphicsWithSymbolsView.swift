@@ -27,8 +27,6 @@ struct StyleGraphicsWithSymbolsView: View {
     /// The starting viewpoint of the MapView.
     private let viewpoint = Viewpoint(latitude: 56.075844, longitude: -2.681572, scale: 288895.277144)
     
-    // MARK: Methods
-    
     /// Creates a GraphicsOverlay.
     private static func makeGraphicsOverlay() -> GraphicsOverlay {
         let graphicsOverlay = GraphicsOverlay()
@@ -176,7 +174,7 @@ private extension Geometry {
         )
     }
     
-    /// The nesting ground geometry
+    /// The nesting ground geometry.
     static var nestingGroundGeometry: Geometry {
         Polygon(
             points: [
