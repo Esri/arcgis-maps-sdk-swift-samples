@@ -80,7 +80,7 @@ struct StyleGraphicsWithSymbolsView: View {
         let lineSymbol = SimpleLineSymbol(style: .dash, color: UIColor(red: 0.5, green: 0, blue: 0.5, alpha: 1), width: 4)
         
         // Returns the boat trip graphic.
-        return = Graphic(geometry: .boatTrip, symbol: lineSymbol)
+        return Graphic(geometry: .boatTrip, symbol: lineSymbol)
     }
     
     /// Creates a graphic for the nesting ground.
@@ -90,7 +90,7 @@ struct StyleGraphicsWithSymbolsView: View {
         let fillSymbol = SimpleFillSymbol(style: .diagonalCross, color: UIColor(red: 0, green: 80 / 255, blue: 0, alpha: 1), outline: outlineSymbol)
         
         // Returns the nesting graphic.
-        return = Graphic(geometry: .nestingGround, symbol: fillSymbol)
+        return Graphic(geometry: .nestingGround, symbol: fillSymbol)
     }
     
     var body: some View {
@@ -162,7 +162,8 @@ private extension Geometry {
                 Point(x: -2.7198524110826376, y: 56.06204587471371),
                 Point(x: -2.719165766937657, y: 56.06166252294756),
                 Point(x: -2.718307461756433, y: 56.06147084563517)
-            ]
+            ],
+            spatialReference: .wgs84
         )
     }
     
@@ -195,7 +196,8 @@ private extension Geometry {
                 Point(x: -2.642197249768383, y: 56.076251161328514),
                 Point(x: -2.6428409786451708, y: 56.07661041772168),
                 Point(x: -2.643077012566659, y: 56.077125346044475)
-            ]
+            ],
+            spatialReference: .wgs84
         )
     }
 }
