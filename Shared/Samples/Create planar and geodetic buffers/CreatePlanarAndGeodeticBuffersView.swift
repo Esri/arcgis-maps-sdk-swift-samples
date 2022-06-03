@@ -117,10 +117,9 @@ struct CreatePlanarAndGeodeticBuffersView: View {
                         Spacer()
                         Text(bufferDistance, format: .measurement(width: .narrow))
                     }
-                    Slider(value: $bufferDistance.value, in: 200...2000, step: 1)
+                    Slider(value: $bufferDistance.value, in: 200...2000)
                 }
                 .padding([.horizontal, .top])
-                .transition(.opacity)
             }
             
             HStack {
