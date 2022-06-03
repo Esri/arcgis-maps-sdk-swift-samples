@@ -16,8 +16,6 @@ import SwiftUI
 import ArcGIS
 
 struct StyleGraphicsWithSymbolsView: View {
-    // MARK: MapView parameters
-    
     /// A map with ArcGIS Oceans basemap style.
     @StateObject private var map = Map(basemapStyle: .arcGISOceans)
     
@@ -94,8 +92,6 @@ struct StyleGraphicsWithSymbolsView: View {
         // Returns the nesting graphic.
         return = Graphic(geometry: .nestingGround, symbol: fillSymbol)
     }
-    
-    // MARK: Body
     
     var body: some View {
         // Creates a map view with the graphic overlay.
