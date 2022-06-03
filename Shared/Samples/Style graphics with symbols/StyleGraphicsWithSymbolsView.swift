@@ -25,7 +25,7 @@ struct StyleGraphicsWithSymbolsView: View {
     /// The starting viewpoint of the map view.
     private let viewpoint = Viewpoint(latitude: 56.075844, longitude: -2.681572, scale: 288895.277144)
     
-    /// Creates a GraphicsOverlay.
+    /// Creates a graphics overlay.
     private static func makeGraphicsOverlay() -> GraphicsOverlay {
         let graphicsOverlay = GraphicsOverlay()
         // Adds the graphics.
@@ -53,7 +53,7 @@ struct StyleGraphicsWithSymbolsView: View {
         return buoyLocations.map { Graphic(geometry: $0, symbol: buoyMarker) }
     }
     
-    /// Creates an array  of graphics for text.
+    /// Creates an array of graphics for text.
     private static func makeText() -> [Graphic] {
         // Defines the color of the symbol.
         let symbolColor = UIColor(red: 0, green: 0, blue: 230 / 255, alpha: 1)
