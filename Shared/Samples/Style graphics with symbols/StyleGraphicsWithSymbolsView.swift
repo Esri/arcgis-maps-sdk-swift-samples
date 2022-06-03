@@ -77,7 +77,7 @@ struct StyleGraphicsWithSymbolsView: View {
     /// Creates a graphic for the boat trip.
     private static func makeBoatTripGraphic() -> Graphic {
         // Defines the boat route from the geometry.
-        let boatRoute = boatTripGeometry
+        let boatRoute = Geometry.boatTripGeometry
         
         // Creates a line symbol.
         let lineSymbol = SimpleLineSymbol(style: .dash, color: UIColor(red: 0.5, green: 0, blue: 0.5, alpha: 1), width: 4)
@@ -90,7 +90,7 @@ struct StyleGraphicsWithSymbolsView: View {
     /// Creates a graphic for the nesting ground.
     private static func makeNestingGroundGraphic() -> Graphic {
         // Defines the nesting ground from the geometry.
-        let nestingGround = nestingGroundGeometry
+        let nestingGround = Geometry.nestingGroundGeometry
         
         // Creates the outline and fill symbols.
         let outlineSymbol = SimpleLineSymbol(style: .dash, color: UIColor(red: 0, green: 0, blue: 0.5, alpha: 1), width: 1)
@@ -101,113 +101,111 @@ struct StyleGraphicsWithSymbolsView: View {
         return nestingGraphic
     }
     
-    /// The boat trip geometry.
-    private static let boatTripGeometry: Polyline = {
-        // Creates a polyline.
-        let boatRoute = PolylineBuilder(spatialReference: .wgs84)
-        
-        // Adds points to the polyline.
-        boatRoute.addPoint(x: -2.7184791227926772, y: 56.06147084563517)
-        boatRoute.addPoint(x: -2.7196807500463924, y: 56.06147084563517)
-        boatRoute.addPoint(x: -2.722084004553823, y: 56.062141712059706)
-        boatRoute.addPoint(x: -2.726375530459948, y: 56.06386674355254)
-        boatRoute.addPoint(x: -2.726890513568683, y: 56.0660708381432)
-        boatRoute.addPoint(x: -2.7270621746049275, y: 56.06779569383808)
-        boatRoute.addPoint(x: -2.7255172252787228, y: 56.068753913653914)
-        boatRoute.addPoint(x: -2.723113970771293, y: 56.069424653352335)
-        boatRoute.addPoint(x: -2.719165766937657, y: 56.07028701581465)
-        boatRoute.addPoint(x: -2.713672613777817, y: 56.070574465681325)
-        boatRoute.addPoint(x: -2.7093810878716917, y: 56.07095772883556)
-        boatRoute.addPoint(x: -2.7044029178205866, y: 56.07153261642126)
-        boatRoute.addPoint(x: -2.698223120515766, y: 56.072394931722265)
-        boatRoute.addPoint(x: -2.6923866452834355, y: 56.07325722773041)
-        boatRoute.addPoint(x: -2.68672183108735, y: 56.07335303720707)
-        boatRoute.addPoint(x: -2.6812286779275096, y: 56.07354465544585)
-        boatRoute.addPoint(x: -2.6764221689126497, y: 56.074215311778964)
-        boatRoute.addPoint(x: -2.6698990495353394, y: 56.07488595644139)
-        boatRoute.addPoint(x: -2.6647492184479886, y: 56.075748196715914)
-        boatRoute.addPoint(x: -2.659427726324393, y: 56.076131408423215)
-        boatRoute.addPoint(x: -2.654792878345778, y: 56.07622721075461)
-        boatRoute.addPoint(x: -2.651359657620878, y: 56.076514616319784)
-        boatRoute.addPoint(x: -2.6477547758597324, y: 56.07708942101955)
-        boatRoute.addPoint(x: -2.6450081992798125, y: 56.07814320736718)
-        boatRoute.addPoint(x: -2.6432915889173625, y: 56.08025069360931)
-        boatRoute.addPoint(x: -2.638656740938747, y: 56.08044227755186)
-        boatRoute.addPoint(x: -2.636940130576297, y: 56.078813783674946)
-        boatRoute.addPoint(x: -2.636425147467562, y: 56.07728102068079)
-        boatRoute.addPoint(x: -2.637798435757522, y: 56.076610417698504)
-        boatRoute.addPoint(x: -2.638656740938747, y: 56.07507756705851)
-        boatRoute.addPoint(x: -2.641231656482422, y: 56.07479015077557)
-        boatRoute.addPoint(x: -2.6427766058086277, y: 56.075748196715914)
-        boatRoute.addPoint(x: -2.6456948434247924, y: 56.07546078543464)
-        boatRoute.addPoint(x: -2.647239792750997, y: 56.074598538729404)
-        boatRoute.addPoint(x: -2.6492997251859376, y: 56.072682365868616)
-        boatRoute.addPoint(x: -2.6530762679833284, y: 56.0718200569986)
-        boatRoute.addPoint(x: -2.655479522490758, y: 56.070861913404286)
-        boatRoute.addPoint(x: -2.6587410821794135, y: 56.07047864929729)
-        boatRoute.addPoint(x: -2.6633759301580286, y: 56.07028701581465)
-        boatRoute.addPoint(x: -2.666637489846684, y: 56.07009538137926)
-        boatRoute.addPoint(x: -2.670070710571584, y: 56.06990374599109)
-        boatRoute.addPoint(x: -2.6741905754414645, y: 56.069137194910745)
-        boatRoute.addPoint(x: -2.678310440311345, y: 56.06808316228391)
-        boatRoute.addPoint(x: -2.682086983108735, y: 56.06789151689155)
-        boatRoute.addPoint(x: -2.6868934921235956, y: 56.06760404701653)
-        boatRoute.addPoint(x: -2.6911850180297208, y: 56.06722075051504)
-        boatRoute.addPoint(x: -2.695133221863356, y: 56.06702910083509)
-        boatRoute.addPoint(x: -2.698223120515766, y: 56.066837450202335)
-        boatRoute.addPoint(x: -2.7016563412406667, y: 56.06645414607839)
-        boatRoute.addPoint(x: -2.7061195281830366, y: 56.0660708381432)
-        boatRoute.addPoint(x: -2.7100677320166717, y: 56.065591697864576)
-        boatRoute.addPoint(x: -2.713329291705327, y: 56.06520838135397)
-        boatRoute.addPoint(x: -2.7167625124302273, y: 56.06453756828941)
-        boatRoute.addPoint(x: -2.718307461756433, y: 56.06348340989081)
-        boatRoute.addPoint(x: -2.719165766937657, y: 56.062812566811544)
-        boatRoute.addPoint(x: -2.7198524110826376, y: 56.06204587471371)
-        boatRoute.addPoint(x: -2.719165766937657, y: 56.06166252294756)
-        boatRoute.addPoint(x: -2.718307461756433, y: 56.06147084563517)
-        
-        return boatRoute.toGeometry()
-    }()
-    
-    /// The nesting ground geometry.
-    private static let nestingGroundGeometry: Polygon = {
-        // Creates a polygon.
-        let nestingGround = PolygonBuilder(spatialReference: .wgs84)
-        
-        // Adds points to the polygon.
-        nestingGround.addPoint(x: -2.643077012566659, y: 56.077125346044475)
-        nestingGround.addPoint(x: -2.6428195210159444, y: 56.07717324600376)
-        nestingGround.addPoint(x: -2.6425405718360033, y: 56.07774804087097)
-        nestingGround.addPoint(x: -2.6427122328698127, y: 56.077927662508635)
-        nestingGround.addPoint(x: -2.642454741319098, y: 56.07829887790651)
-        nestingGround.addPoint(x: -2.641853927700763, y: 56.078526395253725)
-        nestingGround.addPoint(x: -2.6409741649024867, y: 56.078801809192434)
-        nestingGround.addPoint(x: -2.6399871139580795, y: 56.07881378366685)
-        nestingGround.addPoint(x: -2.6394077579689705, y: 56.07908919555142)
-        nestingGround.addPoint(x: -2.638764029092183, y: 56.07917301616904)
-        nestingGround.addPoint(x: -2.638485079912242, y: 56.07896945149566)
-        nestingGround.addPoint(x: -2.638570910429147, y: 56.078203080726844)
-        nestingGround.addPoint(x: -2.63878548672141, y: 56.077568418396)
-        nestingGround.addPoint(x: -2.6391931816767085, y: 56.077197195961084)
-        nestingGround.addPoint(x: -2.6399441986996273, y: 56.07675411934114)
-        nestingGround.addPoint(x: -2.6406523004640934, y: 56.076730169108444)
-        nestingGround.addPoint(x: -2.6406737580933193, y: 56.07632301287509)
-        nestingGround.addPoint(x: -2.6401802326211157, y: 56.075999679860494)
-        nestingGround.addPoint(x: -2.6402446055087943, y: 56.075844000034046)
-        nestingGround.addPoint(x: -2.640416266542604, y: 56.07578412301025)
-        nestingGround.addPoint(x: -2.6408883343855822, y: 56.075808073830935)
-        nestingGround.addPoint(x: -2.6417680971838577, y: 56.076239186057734)
-        nestingGround.addPoint(x: -2.642197249768383, y: 56.076251161328514)
-        nestingGround.addPoint(x: -2.6428409786451708, y: 56.07661041772168)
-        nestingGround.addPoint(x: -2.643077012566659, y: 56.077125346044475)
-        
-        return nestingGround.toGeometry()
-    }()
-    
     // MARK: Body
     
     var body: some View {
         // Creates a map view with the graphic overlay.
         MapView(map: map, viewpoint: viewpoint, graphicsOverlays: [graphicsOverlay])
+    }
+}
+
+private extension Geometry {
+    /// The boat trip geometry.
+    static var boatTripGeometry: Geometry {
+        Polyline(
+            points: [
+                Point(x: -2.7184791227926772, y: 56.06147084563517),
+                Point(x: -2.7196807500463924, y: 56.06147084563517),
+                Point(x: -2.722084004553823, y: 56.062141712059706),
+                Point(x: -2.726375530459948, y: 56.06386674355254),
+                Point(x: -2.726890513568683, y: 56.0660708381432),
+                Point(x: -2.7270621746049275, y: 56.06779569383808),
+                Point(x: -2.7255172252787228, y: 56.068753913653914),
+                Point(x: -2.723113970771293, y: 56.069424653352335),
+                Point(x: -2.719165766937657, y: 56.07028701581465),
+                Point(x: -2.713672613777817, y: 56.070574465681325),
+                Point(x: -2.7093810878716917, y: 56.07095772883556),
+                Point(x: -2.7044029178205866, y: 56.07153261642126),
+                Point(x: -2.698223120515766, y: 56.072394931722265),
+                Point(x: -2.6923866452834355, y: 56.07325722773041),
+                Point(x: -2.68672183108735, y: 56.07335303720707),
+                Point(x: -2.6812286779275096, y: 56.07354465544585),
+                Point(x: -2.6764221689126497, y: 56.074215311778964),
+                Point(x: -2.6698990495353394, y: 56.07488595644139),
+                Point(x: -2.6647492184479886, y: 56.075748196715914),
+                Point(x: -2.659427726324393, y: 56.076131408423215),
+                Point(x: -2.654792878345778, y: 56.07622721075461),
+                Point(x: -2.651359657620878, y: 56.076514616319784),
+                Point(x: -2.6477547758597324, y: 56.07708942101955),
+                Point(x: -2.6450081992798125, y: 56.07814320736718),
+                Point(x: -2.6432915889173625, y: 56.08025069360931),
+                Point(x: -2.638656740938747, y: 56.08044227755186),
+                Point(x: -2.636940130576297, y: 56.078813783674946),
+                Point(x: -2.636425147467562, y: 56.07728102068079),
+                Point(x: -2.637798435757522, y: 56.076610417698504),
+                Point(x: -2.638656740938747, y: 56.07507756705851),
+                Point(x: -2.641231656482422, y: 56.07479015077557),
+                Point(x: -2.6427766058086277, y: 56.075748196715914),
+                Point(x: -2.6456948434247924, y: 56.07546078543464),
+                Point(x: -2.647239792750997, y: 56.074598538729404),
+                Point(x: -2.6492997251859376, y: 56.072682365868616),
+                Point(x: -2.6530762679833284, y: 56.0718200569986),
+                Point(x: -2.655479522490758, y: 56.070861913404286),
+                Point(x: -2.6587410821794135, y: 56.07047864929729),
+                Point(x: -2.6633759301580286, y: 56.07028701581465),
+                Point(x: -2.666637489846684, y: 56.07009538137926),
+                Point(x: -2.670070710571584, y: 56.06990374599109),
+                Point(x: -2.6741905754414645, y: 56.069137194910745),
+                Point(x: -2.678310440311345, y: 56.06808316228391),
+                Point(x: -2.682086983108735, y: 56.06789151689155),
+                Point(x: -2.6868934921235956, y: 56.06760404701653),
+                Point(x: -2.6911850180297208, y: 56.06722075051504),
+                Point(x: -2.695133221863356, y: 56.06702910083509),
+                Point(x: -2.698223120515766, y: 56.066837450202335),
+                Point(x: -2.7016563412406667, y: 56.06645414607839),
+                Point(x: -2.7061195281830366, y: 56.0660708381432),
+                Point(x: -2.7100677320166717, y: 56.065591697864576),
+                Point(x: -2.713329291705327, y: 56.06520838135397),
+                Point(x: -2.7167625124302273, y: 56.06453756828941),
+                Point(x: -2.718307461756433, y: 56.06348340989081),
+                Point(x: -2.719165766937657, y: 56.062812566811544),
+                Point(x: -2.7198524110826376, y: 56.06204587471371),
+                Point(x: -2.719165766937657, y: 56.06166252294756),
+                Point(x: -2.718307461756433, y: 56.06147084563517)
+            ]
+        )
+    }
+    
+    /// The nesting ground geometry
+    static var nestingGroundGeometry: Geometry {
+        Polygon(
+            points: [
+                Point(x: -2.643077012566659, y: 56.077125346044475),
+                Point(x: -2.6428195210159444, y: 56.07717324600376),
+                Point(x: -2.6425405718360033, y: 56.07774804087097),
+                Point(x: -2.6427122328698127, y: 56.077927662508635),
+                Point(x: -2.642454741319098, y: 56.07829887790651),
+                Point(x: -2.641853927700763, y: 56.078526395253725),
+                Point(x: -2.6409741649024867, y: 56.078801809192434),
+                Point(x: -2.6399871139580795, y: 56.07881378366685),
+                Point(x: -2.6394077579689705, y: 56.07908919555142),
+                Point(x: -2.638764029092183, y: 56.07917301616904),
+                Point(x: -2.638485079912242, y: 56.07896945149566),
+                Point(x: -2.638570910429147, y: 56.078203080726844),
+                Point(x: -2.63878548672141, y: 56.077568418396),
+                Point(x: -2.6391931816767085, y: 56.077197195961084),
+                Point(x: -2.6399441986996273, y: 56.07675411934114),
+                Point(x: -2.6406523004640934, y: 56.076730169108444),
+                Point(x: -2.6406737580933193, y: 56.07632301287509),
+                Point(x: -2.6401802326211157, y: 56.075999679860494),
+                Point(x: -2.6402446055087943, y: 56.075844000034046),
+                Point(x: -2.640416266542604, y: 56.07578412301025),
+                Point(x: -2.6408883343855822, y: 56.075808073830935),
+                Point(x: -2.6417680971838577, y: 56.076239186057734),
+                Point(x: -2.642197249768383, y: 56.076251161328514),
+                Point(x: -2.6428409786451708, y: 56.07661041772168),
+                Point(x: -2.643077012566659, y: 56.077125346044475)
+            ]
+        )
     }
 }
