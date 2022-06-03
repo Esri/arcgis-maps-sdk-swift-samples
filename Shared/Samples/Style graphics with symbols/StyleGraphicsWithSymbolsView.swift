@@ -55,19 +55,16 @@ struct StyleGraphicsWithSymbolsView: View {
     
     /// Creates an array of graphics for text.
     private static func makeText() -> [Graphic] {
-        // Defines the color of the symbol.
-        let symbolColor = UIColor(red: 0, green: 0, blue: 230 / 255, alpha: 1)
-        
         // Creates the Bass Rock graphic.
         let bassRockGraphic = Graphic(
             geometry: Point(x: -2.640631, y: 56.078083, spatialReference: .wgs84),
-            symbol: TextSymbol(text: "Bass Rock", color: symbolColor, size: 10, horizontalAlignment: .left, verticalAlignment: .bottom)
+            symbol: TextSymbol(text: "Bass Rock", color: .blue, size: 10, horizontalAlignment: .left, verticalAlignment: .bottom)
         )
         
         // Creates the Craigleith graphic.
         let craigleithGraphic = Graphic(
             geometry: Point(x: -2.720324, y: 56.073569, spatialReference: .wgs84),
-            symbol: TextSymbol(text: "Craigleith", color: UIColor(red: 0, green: 0, blue: 230 / 255, alpha: 1), size: 10, horizontalAlignment: .right, verticalAlignment: .top)
+            symbol: TextSymbol(text: "Craigleith", color: .blue, size: 10, horizontalAlignment: .right, verticalAlignment: .top)
         )
         
         // Returns an array of graphics for the text.
@@ -77,7 +74,7 @@ struct StyleGraphicsWithSymbolsView: View {
     /// Creates a graphic for the boat trip.
     private static func makeBoatTripGraphic() -> Graphic {
         // Creates a line symbol.
-        let lineSymbol = SimpleLineSymbol(style: .dash, color: UIColor(red: 0.5, green: 0, blue: 0.5, alpha: 1), width: 4)
+        let lineSymbol = SimpleLineSymbol(style: .dash, color: .purple, width: 4)
         
         // Returns the boat trip graphic.
         return Graphic(geometry: .boatTrip, symbol: lineSymbol)
@@ -86,8 +83,8 @@ struct StyleGraphicsWithSymbolsView: View {
     /// Creates a graphic for the nesting ground.
     private static func makeNestingGroundGraphic() -> Graphic {
         // Creates the outline and fill symbols.
-        let outlineSymbol = SimpleLineSymbol(style: .dash, color: UIColor(red: 0, green: 0, blue: 0.5, alpha: 1), width: 1)
-        let fillSymbol = SimpleFillSymbol(style: .diagonalCross, color: UIColor(red: 0, green: 80 / 255, blue: 0, alpha: 1), outline: outlineSymbol)
+        let outlineSymbol = SimpleLineSymbol(style: .dash, color: .blue, width: 1)
+        let fillSymbol = SimpleFillSymbol(style: .diagonalCross, color: .green, outline: outlineSymbol)
         
         // Returns the nesting graphic.
         return Graphic(geometry: .nestingGround, symbol: fillSymbol)
