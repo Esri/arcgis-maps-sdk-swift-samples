@@ -20,19 +20,20 @@ struct SearchWithGeocodeView: View {
     /// A map with imagery basemap.
     @StateObject private var map = Map(basemapStyle: .arcGISImagery)
     
-    /// The viewpoint used by the `SearchView` to pan/zoom the map
-    /// to the extent of the search results.
+    /// The viewpoint used by the `SearchView` to pan/zoom the map to the extent of the search results.
     @State private var searchResultViewpoint: Viewpoint? = Viewpoint(
-        center: Point(x: -93.258133, y: 44.986656, spatialReference: .wgs84),
+        center: Point(
+            x: -93.258133,
+            y: 44.986656,
+            spatialReference: .wgs84
+        ),
         scale: 1e6
     )
     
-    /// Denotes whether the geoview is navigating. Used for the repeat search
-    /// behavior.
+    /// Denotes whether the geoview is navigating. Used for the repeat search behavior.
     @State private var isGeoViewNavigating = false
     
-    /// The current map view extent. Used to allow repeat searches after
-    /// panning/zooming the map.
+    /// The current map view extent. Used to allow repeat searches after panning/zooming the map.
     @State private var geoViewExtent: Envelope?
     
     /// The center for the search.
@@ -48,10 +49,14 @@ struct SearchWithGeocodeView: View {
     @State private var calloutPlacement: GraphicCalloutPlacement?
     
     /// Provides search behavior customization.
-    private let locatorDataSource = LocatorSearchSource(name: "My Locator", maximumResults: 10, maximumSuggestions: 5)
+    private let locatorDataSource = LocatorSearchSource(
+        name: "My Locator",
+        maximumResults: 10,
+        maximumSuggestions: 5
+    )
     
-    /// The `GraphicsOverlay` used by the `SearchView` toolkit component to
-    /// display search results on the map.
+    /// The `GraphicsOverlay` used by the `SearchView` toolkit component to display search
+    /// results on the map.
     private let searchResultsOverlay = GraphicsOverlay()
     
     var body: some View {
