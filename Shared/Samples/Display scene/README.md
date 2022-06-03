@@ -17,7 +17,7 @@ When loaded, the sample will display a scene. Pan and zoom to explore the scene.
 1. Create a `Scene` object with `arcGISImageryStandard` basemap style.
 2. Create a `Surface` object.
 3. Add an `ArcGISTiledElevationSource` object to the surface.
-4. Set the surface to the scene's basemap surface.
+4. Set the surface to the scene's base surface.
 5. Create a `SceneView` instance with the scene.
 
 ## Relevant API
