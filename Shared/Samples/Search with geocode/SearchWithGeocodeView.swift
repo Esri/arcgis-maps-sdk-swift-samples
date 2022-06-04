@@ -58,8 +58,8 @@ struct SearchWithGeocodeView: View {
         maximumSuggestions: 5
     )
     
-    /// The graphics overlay used by the `SearchView` toolkit component to
-    /// display search results on the map.
+    /// The graphics overlay used by the search toolkit component to display
+    /// search results on the map.
     private let searchResultsOverlay = GraphicsOverlay()
     
     var body: some View {
