@@ -31,7 +31,7 @@ struct SearchWithGeocodeView: View {
         scale: 1e6
     )
     
-    /// Denotes whether the geoview is navigating. Used for the repeat search
+    /// Denotes whether the map view is navigating. Used for the repeat search
     /// behavior.
     @State private var isGeoViewNavigating = false
     
@@ -85,7 +85,7 @@ struct SearchWithGeocodeView: View {
             .callout(placement: $calloutPlacement.animation()) { placement in
                 // Show the address of user tapped location graphic.
                 // To get the full geocoded address, use "Place_addr".
-                Text(placement.graphic.attributes["Match_addr"] as? String ?? "")
+                Text(placement.graphic.attributes["Match_addr"] as? String ?? "Unknown Address")
                     .font(.body)
                     .padding()
             }

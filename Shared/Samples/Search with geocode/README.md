@@ -32,7 +32,7 @@ Choose an address from the suggestions or submit your own address to show its lo
 
 This sample uses the World Geocoding Service. For more information, see [Geocoding service](https://developers.arcgis.com/documentation/mapping-apis-and-services/search/services/geocoding-service/) from ArcGIS Developer website.
 
-The `SearchView` toolkit component will support multiple search sources in the future. NOTE: Only the first source is currently used; multiple sources are not yet supported.
+The search toolkit component will support multiple search sources in the future. NOTE: Only the first source is currently used; multiple sources are not yet supported.
 
 ## Tags
 
