@@ -86,7 +86,6 @@ struct SearchWithGeocodeView: View {
                 // Show the address of user tapped location graphic.
                 // To get the full geocoded address, use "Place_addr".
                 Text(placement.graphic.attributes["Match_addr"] as? String ?? "Unknown Address")
-                    .font(.body)
                     .padding()
             }
             .task(id: identifyScreenPoint) {
