@@ -1,0 +1,25 @@
+{
+    "category": "Maps",
+    "description": "Rotate a map.",
+    "ignore": false,
+    "images": [
+        "set-viewpoint-rotation.png"
+    ],
+    "keywords": [
+        "rotate",
+        "rotation",
+        "toolkit",
+        "viewpoint",
+        "ArcGIS.MapView",
+        "ArcGISToolkit.Compass"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "ArcGIS.MapView",
+        "ArcGISToolkit.Compass"
+    ],
+    "snippets": [
+        "SetViewpointRotationView.swift"
+    ],
+    "title": "Set viewpoint rotation"
+}
