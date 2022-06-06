@@ -76,7 +76,7 @@ private let sampleMetadata: [SampleMetadata] = {
         let decoder = JSONDecoder()
         // Converts snake-case key "offline_data" to camel-case "offlineData".
         decoder.keyDecodingStrategy = .convertFromSnakeCase
-        // Do a shallow traverse of the top level of samples directory.
+        // Does a shallow traverse of the top level of samples directory.
         return try FileManager.default.contentsOfDirectory(at: samplesDirectoryURL, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles])
             .filter(\.hasDirectoryPath)
             .compactMap { url in
@@ -86,6 +86,7 @@ private let sampleMetadata: [SampleMetadata] = {
                 }
                 return try? decoder.decode(SampleMetadata.self, from: data)
             }
+            .sorted { $0.title < $1.title }
     } catch {
         print("Error decoding Samples: \(error.localizedDescription)")
         exit(1)

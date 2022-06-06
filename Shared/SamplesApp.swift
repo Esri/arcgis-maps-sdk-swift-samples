@@ -31,7 +31,7 @@ struct SamplesApp: App {
 // MARK: - License
 
 extension SamplesApp {
-    /// License the app with ArcGIS Runtime deployment license keys.
+    /// Licenses the app with ArcGIS Runtime deployment license keys.
     /// - Note: An invalid key does not throw an exception, but simply fails to
     /// license the app, falling back to Developer Mode (which will display
     /// a watermark on the map view).
