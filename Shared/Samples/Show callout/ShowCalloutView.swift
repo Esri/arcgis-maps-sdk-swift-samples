@@ -18,6 +18,7 @@ import ArcGIS
 struct ShowCalloutView: View {
     /// A map with a topographic basemap style.
     @StateObject private var map = Map(basemapStyle: .arcGISTopographic)
+    
     /// A location callout placement.
     @State private var calloutPlacement: LocationCalloutPlacement?
     
