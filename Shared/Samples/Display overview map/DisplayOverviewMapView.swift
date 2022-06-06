@@ -29,7 +29,7 @@ struct DisplayOverviewMapView: View {
     /// The visible area marked with a red rectangle on the overview map.
     @State private var visibleArea: Polygon?
     
-    /// Create a map.
+    /// Creates a map.
     private static func makeMap() -> Map {
         let featureLayer = FeatureLayer(
             item: PortalItem(
