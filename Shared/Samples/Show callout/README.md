@@ -2,7 +2,7 @@
 
 Show a callout with the latitude and longitude of user-tapped points.
 
-![Image of show callout](ShowCallout.jpg)
+![Screenshot of show callout sample](show-callout.png)
 
 ## Use case
 
@@ -14,20 +14,13 @@ Tap anywhere on the map. A callout showing the WGS84 coordinates for the tapped 
 
 ## How it works
 
-1. Listen for `GeoViewTapped` events on the map view.
-2. When the user taps, get the tapped location from the `Location` property of the `GeoViewInputEventArgs`.
-3. Project the geometry to WGS84 using `GeometryEngine.Project`.
-4. Create a string to display the coordinates; note that latitude and longitude in WGS84 map to the Y and X coordinates.
-5. Create a new callout definition using a title and the coordinate string.
-6. Display the callout by calling `ShowCalloutAt` on the map view with the location and the callout definition.
+1. Define an optional `LocationCalloutPlacement`.
+2. Use the `onSingleTapGesture()` modifier to update the location callout placement.
+3. Use the `callout()` modifier with the location callout placement to display a callout.
 
 ## Relevant API
 
-* CalloutDefinition
-* GeometryEngine.Project
-* GeoViewTappedEventArgs
-* MapView.GeoViewTapped
-* MapView.ShowCalloutAt
+* LocationCalloutPlacement
 
 ## Tags
 

@@ -10,20 +10,24 @@ import SwiftUI
 import ArcGIS
 
 struct ShowCalloutView: View {
+    /// A map with a topographic basemap style.
     @StateObject private var map = Map(basemapStyle: .arcGISTopographic)
+    /// The location callout placement.
     @State private var calloutPlacement: LocationCalloutPlacement?
-    @State private var showCallout = false
     
     var body: some View {
         MapView(map: map)
-            .onSingleTapGesture { offset, location in
-                if calloutPlacement == nil {
-                    calloutPlacement = LocationCalloutPlacement(location: location, offset: .zero, allowsOffsetRotation: false)
-                } else {
-                    calloutPlacement = nil
-                }
+            .onSingleTapGesture { _, mapPoint in
+                // Sets the callout placement location to the tap location
+                // if callout placement is nil.
+                // If not nil, sets the callout placement to nil.
+                calloutPlacement = calloutPlacement == nil ? LocationCalloutPlacement(
+                    location: mapPoint,
+                    offset: .zero,
+                    allowsOffsetRotation: false
+                ) : nil
             }
-            .callout(placement: $calloutPlacement) { callout in
+            .callout(placement: $calloutPlacement.animation()) { callout in
                 VStack(alignment: .leading) {
                     Text("Location")
                         .font(.headline)
