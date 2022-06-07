@@ -23,6 +23,9 @@
 		00E5401C27F3CCA200CF66D5 /* SamplesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5400C27F3CCA100CF66D5 /* SamplesApp.swift */; };
 		00E5401E27F3CCA200CF66D5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5400D27F3CCA100CF66D5 /* ContentView.swift */; };
 		00E5402027F3CCA200CF66D5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00E5400E27F3CCA200CF66D5 /* Assets.xcassets */; };
+		E004A6C128414332002A1FE6 /* SetViewpointRotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6BD28414332002A1FE6 /* SetViewpointRotationView.swift */; };
+		E004A6DC28465C70002A1FE6 /* DisplaySceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6D828465C70002A1FE6 /* DisplaySceneView.swift */; };
+		E004A6E62846A61F002A1FE6 /* StyleGraphicsWithSymbolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6E52846A61F002A1FE6 /* StyleGraphicsWithSymbolsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -94,6 +97,9 @@
 		00E5400E27F3CCA200CF66D5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		00E5401327F3CCA200CF66D5 /* Samples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Samples.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E5402A27F775EA00CF66D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E004A6BD28414332002A1FE6 /* SetViewpointRotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetViewpointRotationView.swift; sourceTree = "<group>"; };
+		E004A6D828465C70002A1FE6 /* DisplaySceneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplaySceneView.swift; sourceTree = "<group>"; };
+		E004A6E52846A61F002A1FE6 /* StyleGraphicsWithSymbolsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleGraphicsWithSymbolsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -151,8 +157,11 @@
 			children = (
 				0074ABB328174B830037244A /* Display map */,
 				00B04FB3283EEB830026C882 /* Display overview map */,
+				E004A6D528465C70002A1FE6 /* Display scene */,
 				00CB913628481475005C2C5D /* Search with geocode */,
 				00B042E3282EDC690072E1B4 /* Set basemap */,
+				E004A6B928414332002A1FE6 /* Set viewpoint rotation */,
+				E004A6E42846A609002A1FE6 /* Style graphics with symbols */,
 			);
 			path = Samples;
 			sourceTree = "<group>";
@@ -235,6 +244,30 @@
 				00E5401327F3CCA200CF66D5 /* Samples.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		E004A6B928414332002A1FE6 /* Set viewpoint rotation */ = {
+			isa = PBXGroup;
+			children = (
+				E004A6BD28414332002A1FE6 /* SetViewpointRotationView.swift */,
+			);
+			path = "Set viewpoint rotation";
+			sourceTree = "<group>";
+		};
+		E004A6D528465C70002A1FE6 /* Display scene */ = {
+			isa = PBXGroup;
+			children = (
+				E004A6D828465C70002A1FE6 /* DisplaySceneView.swift */,
+			);
+			path = "Display scene";
+			sourceTree = "<group>";
+		};
+		E004A6E42846A609002A1FE6 /* Style graphics with symbols */ = {
+			isa = PBXGroup;
+			children = (
+				E004A6E52846A61F002A1FE6 /* StyleGraphicsWithSymbolsView.swift */,
+			);
+			path = "Style graphics with symbols";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -362,10 +395,13 @@
 				0005580A2817C51E00224BC6 /* SampleDetailView.swift in Sources */,
 				0074ABCD2817BCC30037244A /* SamplesApp+Samples.swift.tache in Sources */,
 				00B04273282EC59E0072E1B4 /* AboutView.swift in Sources */,
+				E004A6C128414332002A1FE6 /* SetViewpointRotationView.swift in Sources */,
 				00E5401E27F3CCA200CF66D5 /* ContentView.swift in Sources */,
 				00B04FB5283EEBA80026C882 /* DisplayOverviewMapView.swift in Sources */,
 				0074ABBF28174BCF0037244A /* DisplayMapView.swift in Sources */,
+				E004A6DC28465C70002A1FE6 /* DisplaySceneView.swift in Sources */,
 				00B042E8282EDC690072E1B4 /* SetBasemapView.swift in Sources */,
+				E004A6E62846A61F002A1FE6 /* StyleGraphicsWithSymbolsView.swift in Sources */,
 				0074ABC428174F430037244A /* Sample.swift in Sources */,
 				00CB9138284814A4005C2C5D /* SearchWithGeocodeView.swift in Sources */,
 				00E5401C27F3CCA200CF66D5 /* SamplesApp.swift in Sources */,
