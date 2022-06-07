@@ -30,12 +30,12 @@ The sample provides an option to select a spatial operation. When an operation i
 
 * Geometry
 * GeometryEngine
+* GeometryEngine.difference(geometry1:geometry2:)
+* GeometryEngine.intersection(geometry1:geometry2:)
+* GeometryEngine.symmetricDifference(geometry1:geometry2:)
+* GeometryEngine.union(geometry1:geometry2:)
 * Graphic
 * GraphicsOverlay
-* class GeometryEngine.difference(geometry1:geometry2:)
-* class GeometryEngine.intersection(geometry1:geometry2:)
-* class GeometryEngine.symmetricDifference(geometry1:geometry2:)
-* class GeometryEngine.union(geometry1:geometry2:)
 
 ## Tags
 
