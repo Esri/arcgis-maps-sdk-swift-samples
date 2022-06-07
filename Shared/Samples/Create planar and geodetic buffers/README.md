@@ -18,7 +18,7 @@ Creating buffers is a core concept in GIS proximity analysis that allows you to 
 ## How it works
 
 1. Create graphics overlays for each overlay.
-2. Use the `onSingleTapGesture()` modifer to capture the map `Point`.
+2. Use the `onSingleTapGesture()` modifier to capture the map `Point`.
 3. Use the `GeometryEngine.geodeticBuffer` and `GeometryEngine.buffer` methods to create a geodetic and a planar buffer polygon from the map location and distance.
 4. Create and add a `Graphic` instance to the respective overlay.
 5. Display a `MapView` with the graphics overlays.
