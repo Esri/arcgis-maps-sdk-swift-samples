@@ -118,6 +118,10 @@ struct ShowResultsOfSpatialOperationsView: View {
             // Adds the result graphic to the graphics overlay.
             graphicsOverlay.addGraphic(resultGraphic)
         }
+        .onDisappear {
+            // Removes the result graphic from the graphics overlay.
+            graphicsOverlay.removeGraphic(resultGraphic)
+        }
     }
 }
 
