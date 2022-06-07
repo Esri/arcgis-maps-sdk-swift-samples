@@ -20,7 +20,7 @@ struct ShowResultsOfSpatialOperationsView: View {
     @State private var spatialOperation = SpatialOperation.none
     
     /// A map with a topographic basemap style and initial viewpoint.
-    @StateObject private var map = makeMap()
+    @StateObject private var map = Map(basemapStyle: .arcGISTopographic)
     
     /// A graphic representing the result of the spatial operation.
     @StateObject private var resultGraphic = makeResultGraphic()
@@ -41,16 +41,6 @@ struct ShowResultsOfSpatialOperationsView: View {
             case .intersection: return "Intersection"
             }
         }
-    }
-    
-    /// Creates a map.
-    private static func makeMap() -> Map {
-        let map = Map(basemapStyle: .arcGISTopographic)
-        map.initialViewpoint = Viewpoint(
-            center: Point(x: -13453, y: 6710127, spatialReference: .webMercator),
-            scale: 30_000
-        )
-        return map
     }
     
     /// Creates a graphic for the result.
@@ -103,7 +93,14 @@ struct ShowResultsOfSpatialOperationsView: View {
     
     var body: some View {
         VStack {
-            MapView(map: map, graphicsOverlays: [graphicsOverlay])
+            MapView(
+                map: map,
+                viewpoint: Viewpoint(
+                    center: Point(x: -13453, y: 6710127, spatialReference: .webMercator),
+                    scale: 30_000
+                ),
+                graphicsOverlays: [graphicsOverlay]
+            )
             
             Menu("Choose Operation") {
                 Picker("Spatial Operation", selection: $spatialOperation) {
