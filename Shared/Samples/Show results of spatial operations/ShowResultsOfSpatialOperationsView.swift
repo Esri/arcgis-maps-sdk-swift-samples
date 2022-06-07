@@ -106,7 +106,7 @@ struct ShowResultsOfSpatialOperationsView: View {
             MapView(map: map, graphicsOverlays: [graphicsOverlay])
             
             Menu("Choose Operation") {
-                Picker("Choose", selection: $spatialOperation) {
+                Picker("Spatial Operation", selection: $spatialOperation) {
                     ForEach(SpatialOperation.allCases.reversed(), id: \.self) { operation in
                         Text(operation.label)
                     }
