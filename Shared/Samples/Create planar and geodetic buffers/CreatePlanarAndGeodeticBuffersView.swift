@@ -19,7 +19,7 @@ struct CreatePlanarAndGeodeticBuffersView: View {
     /// A Boolean value indicating whether to show options.
     @State private var showOptions = false
     
-    /// A map with a topographic basemap style
+    /// A map with a topographic basemap style.
     @StateObject private var map = Map(basemapStyle: .arcGISTopographic)
     
     /// The graphics overlay for displaying the geometries created via a geodetic buffer around the tap point.
@@ -75,34 +75,41 @@ struct CreatePlanarAndGeodeticBuffersView: View {
         // Converts the buffer distance to meters.
         let bufferRadiusInMeters = bufferDistance.converted(to: .meters).value
         
-        // Ensures tthat the buffer radius is a positive value.
+        // Ensures that the buffer radius is a positive value.
         guard bufferRadiusInMeters > 0 else { return }
         
-        // Creates the geometry for the map point, buffered by the given distance in respect
-        // to the geodetic spatial reference system (the 3D representation of the Earth).
-        if let geodesicGeoemtry = GeometryEngine.geodeticBuffer(
+        // Creates the geometry for the map point, buffered by the given
+        // distance in respect to the geodetic spatial reference system
+        // (the 3D representation of the Earth).
+        if let geodeticGeometry = GeometryEngine.geodeticBuffer(
             around: point,
             distance: bufferRadiusInMeters,
             distanceUnit: .meters,
             maxDeviation: .nan,
             curveType: .geodesic
         ) {
-            // Creates and adds a graphic with the geodesic geometry to the geodetic overlay.
-            geodeticOverlay.addGraphic(Graphic(geometry: geodesicGeoemtry))
+            // Creates and adds a graphic with the geodetic geometry
+            // to the geodetic overlay.
+            geodeticOverlay.addGraphic(Graphic(geometry: geodeticGeometry))
         }
         
-        // Creates the geometry for the map point, buffered by the given distance in respect
-        // to the projected map spatial reference system.
-        if let planarGeometry = GeometryEngine.buffer(around: point, distance: bufferRadiusInMeters) {
-            // Creates and adds a graphic with the planar geometry to the planar overlay.
+        // Creates the geometry for the map point, buffered by the given
+        // distance in respect to the projected map spatial reference system.
+        if let planarGeometry = GeometryEngine.buffer(
+            around: point,
+            distance: bufferRadiusInMeters
+        ) {
+            // Creates and adds a graphic with the planar geometry
+            // to the planar overlay.
             planarOverlay.addGraphic(Graphic(geometry: planarGeometry))
         }
         
-        // Creates and adds a graphic symbolizing the tap location to the tap locations overlay.
+        // Creates and adds a graphic symbolizing the tap location
+        // to the tap locations overlay.
         tapLocationsOverlay.addGraphic(Graphic(geometry: point))
     }
     
-    /// Removes all graphics from each graphics overlays.
+    /// Removes all graphics from all graphics overlays.
     private func clearGraphics() {
         graphicsOverlays.forEach { $0.removeAllGraphics() }
     }
