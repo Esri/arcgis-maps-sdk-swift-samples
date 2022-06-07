@@ -54,7 +54,12 @@ struct SelectFeaturesInFeatureLayerView: View {
             do {
                 // Saves the results from the identify method on
                 // the map view proxy.
-                let results = try await mapViewProxy.identify(layer: featureLayer, screenPoint: screenPoint, tolerance: 12, maximumResults: 10)
+                let results = try await mapViewProxy.identify(
+                    layer: featureLayer,
+                    screenPoint: screenPoint,
+                    tolerance: 12,
+                    maximumResults: 10
+                )
                 
                 // Unselects the selected features.
                 featureLayer.unselect(features: selectedFeatures)
@@ -83,7 +88,16 @@ struct SelectFeaturesInFeatureLayerView: View {
     /// Creates a map.
     private static func makeMap() -> Map {
         let map = Map(basemapStyle: .arcGISTopographic)
-        map.initialViewpoint = Viewpoint(latitude: 0, longitude: 0, scale: 2e8)
+        map.initialViewpoint = Viewpoint(
+            center: Envelope(
+                xMin: -180,
+                yMin: -90,
+                xMax: 180,
+                yMax: 90,
+                spatialReference: .wgs84
+            ).center,
+            scale: 2e8
+        )
         return map
     }
     
