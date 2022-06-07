@@ -10,7 +10,7 @@ Callouts are used to display temporary detail content on a map. You can display 
 
 ## How to use the sample
 
-Tap anywhere on the map. A callout showing the WGS84 coordinates for the tapped point will appear.
+Tap anywhere on the map. A callout showing the WGS 84 coordinates for the tapped point will appear.
 
 ## How it works
 

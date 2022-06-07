@@ -25,11 +25,14 @@ struct ShowCalloutView: View {
     var body: some View {
         MapView(map: map)
             .onSingleTapGesture { _, mapPoint in
+                // Projects the point to WGS 84 spatial reference.
+                let location = GeometryEngine.project(mapPoint, into: .wgs84)!
+                
                 // Sets the callout placement location to the tap location
                 // if callout placement is nil.
                 // If not nil, sets the callout placement to nil.
                 calloutPlacement = calloutPlacement == nil ? LocationCalloutPlacement(
-                    location: mapPoint,
+                    location: location,
                     offset: .zero,
                     allowsOffsetRotation: false
                 ) : nil
