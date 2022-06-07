@@ -20,7 +20,7 @@ struct SearchWithGeocodeView: View {
     /// A map with imagery basemap.
     @StateObject private var map = Map(basemapStyle: .arcGISImagery)
     
-    /// The viewpoint used by the `SearchView` to pan/zoom the map to the extent
+    /// The viewpoint used by the search view to pan/zoom the map to the extent
     /// of the search results.
     @State private var searchResultViewpoint: Viewpoint? = Viewpoint(
         center: Point(
@@ -52,7 +52,7 @@ struct SearchWithGeocodeView: View {
     @State private var calloutPlacement: GraphicCalloutPlacement?
     
     /// Provides search behavior customization.
-    private let locatorDataSource = LocatorSearchSource(
+    @ObservedObject private var locatorDataSource = LocatorSearchSource(
         name: "My Locator",
         maximumResults: 10,
         maximumSuggestions: 5
@@ -60,7 +60,7 @@ struct SearchWithGeocodeView: View {
     
     /// The graphics overlay used by the search toolkit component to display
     /// search results on the map.
-    private let searchResultsOverlay = GraphicsOverlay()
+    @StateObject private var searchResultsOverlay = GraphicsOverlay()
     
     var body: some View {
         MapViewReader { proxy in
@@ -77,10 +77,10 @@ struct SearchWithGeocodeView: View {
             .onViewpointChanged(kind: .centerAndScale) {
                 queryCenter = $0.targetGeometry.extent.center
             }
-            .onVisibleAreaChanged { newValue in
+            .onVisibleAreaChanged { newVisibleArea in
                 // For "Repeat Search Here" behavior, use `geoViewExtent` and
                 // `isGeoViewNavigating` modifiers on the `SearchView`.
-                geoViewExtent = newValue.extent
+                geoViewExtent = newVisibleArea.extent
             }
             .callout(placement: $calloutPlacement.animation()) { placement in
                 // Show the address of user tapped location graphic.
