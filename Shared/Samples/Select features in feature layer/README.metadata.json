@@ -1,0 +1,30 @@
+{
+    "category": "Features",
+    "description": "Select features in a feature layer.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "features",
+        "layers",
+        "select",
+        "selection",
+        "tolerance",
+        "Feature",
+        "FeatureLayer",
+        "MapViewProxy",
+        "MapViewReader",
+        "ServiceFeatureTable"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Feature",
+        "FeatureLayer",
+        "MapViewProxy",
+        "MapViewReader",
+        "ServiceFeatureTable"
+    ],
+    "snippets": [
+        "SelectFeaturesInFeatureLayerView.swift"
+    ],
+    "title": "Select features in feature layer"
+}
