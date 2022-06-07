@@ -31,6 +31,29 @@ struct SelectFeaturesInFeatureLayerView: View {
     /// A map with a topographic basemap style and initial viewpoint.
     @StateObject private var map = makeMap()
     
+    /// Creates a feature layer.
+    private static func makeFeatureLayer() -> FeatureLayer {
+        let featureServiceURL = URL(string: "https://services1.arcgis.com/4yjifSiIG17X0gW4/arcgis/rest/services/GDP_per_capita_1960_2016/FeatureServer/0")!
+        let featureTable = ServiceFeatureTable(url: featureServiceURL)
+        return FeatureLayer(featureTable: featureTable)
+    }
+    
+    /// Creates a map.
+    private static func makeMap() -> Map {
+        let map = Map(basemapStyle: .arcGISTopographic)
+        map.initialViewpoint = Viewpoint(
+            center: Envelope(
+                xMin: -180,
+                yMin: -90,
+                xMax: 180,
+                yMax: 90,
+                spatialReference: .wgs84
+            ).center,
+            scale: 2e8
+        )
+        return map
+    }
+    
     /// Asynchronously loads the feature layer and adds it to the operational layer of the map.
     /// Toggles an alert displaying an error if loading fails.
     private func loadFeatureLayer() async {
@@ -76,29 +99,6 @@ struct SelectFeaturesInFeatureLayerView: View {
                 self.error = error
             }
         }
-    }
-    
-    /// Creates a feature layer.
-    private static func makeFeatureLayer() -> FeatureLayer {
-        let featureServiceURL = URL(string: "https://services1.arcgis.com/4yjifSiIG17X0gW4/arcgis/rest/services/GDP_per_capita_1960_2016/FeatureServer/0")!
-        let featureTable = ServiceFeatureTable(url: featureServiceURL)
-        return FeatureLayer(featureTable: featureTable)
-    }
-    
-    /// Creates a map.
-    private static func makeMap() -> Map {
-        let map = Map(basemapStyle: .arcGISTopographic)
-        map.initialViewpoint = Viewpoint(
-            center: Envelope(
-                xMin: -180,
-                yMin: -90,
-                xMax: 180,
-                yMax: 90,
-                spatialReference: .wgs84
-            ).center,
-            scale: 2e8
-        )
-        return map
     }
     
     var body: some View {
