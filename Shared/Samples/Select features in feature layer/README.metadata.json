@@ -2,7 +2,9 @@
     "category": "Features",
     "description": "Select features in a feature layer.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "select-features-in-feature-layer.png"
+    ],
     "keywords": [
         "features",
         "layers",
