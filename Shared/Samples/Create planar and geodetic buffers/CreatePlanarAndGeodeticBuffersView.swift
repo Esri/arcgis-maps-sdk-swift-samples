@@ -81,16 +81,16 @@ struct CreatePlanarAndGeodeticBuffersView: View {
         // Creates the geometry for the map point, buffered by the given
         // distance in respect to the geodetic spatial reference system
         // (the 3D representation of the Earth).
-        if let geodeticGeometry = GeometryEngine.geodeticBuffer(
+        if let geodesicGeometry = GeometryEngine.geodeticBuffer(
             around: point,
             distance: bufferRadiusInMeters,
             distanceUnit: .meters,
             maxDeviation: .nan,
             curveType: .geodesic
         ) {
-            // Creates and adds a graphic with the geodetic geometry
+            // Creates and adds a graphic with the geodesic geometry
             // to the geodetic overlay.
-            geodeticOverlay.addGraphic(Graphic(geometry: geodeticGeometry))
+            geodeticOverlay.addGraphic(Graphic(geometry: geodesicGeometry))
         }
         
         // Creates the geometry for the map point, buffered by the given
