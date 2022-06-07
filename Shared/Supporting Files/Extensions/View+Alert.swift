@@ -15,7 +15,7 @@
 import SwiftUI
 
 extension View {
-    /// Show an alert with the title "Error", the error's `localizedDescription`
+    /// Shows an alert with the title "Error", the error's `localizedDescription`
     /// as the message, and an OK button.
     /// - Parameters:
     ///   - isPresented: A binding to a Boolean value that determines whether
