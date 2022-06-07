@@ -35,7 +35,7 @@ struct CreatePlanarAndGeodeticBuffersView: View {
     @StateObject private var tapLocationsOverlay = makeTapLocationsOverlay()
     
     /// The radius to pass into the buffer functions.
-    @State private var bufferDistance: Measurement<UnitLength> = Measurement(value: 500, unit: .miles)
+    @State private var bufferDistance = Measurement(value: 500, unit: UnitLength.miles)
     
     /// An array of all graphics overlays.
     private var graphicsOverlays: [GraphicsOverlay] {
