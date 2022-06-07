@@ -32,8 +32,6 @@ Choose an address from the suggestions or submit your own address to show its lo
 
 This sample uses the World Geocoding Service. For more information, see [Geocoding service](https://developers.arcgis.com/documentation/mapping-apis-and-services/search/services/geocoding-service/) from ArcGIS Developer website.
 
-The search toolkit component will support multiple search sources in the future. NOTE: Only the first source is currently used; multiple sources are not yet supported.
-
 ## Tags
 
 address, businesses, geocode, locations, locator, places of interest, POI, point of interest, search, suggestions, toolkit
