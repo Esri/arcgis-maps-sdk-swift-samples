@@ -22,7 +22,7 @@ struct SearchWithGeocodeView: View {
     
     /// The viewpoint used by the search view to pan/zoom the map to the extent
     /// of the search results.
-    @State private var searchResultViewpoint: Viewpoint? = Viewpoint(
+    @State private var viewpoint: Viewpoint? = Viewpoint(
         center: Point(
             x: -93.258133,
             y: 44.986656,
@@ -66,7 +66,7 @@ struct SearchWithGeocodeView: View {
         MapViewReader { proxy in
             MapView(
                 map: map,
-                viewpoint: searchResultViewpoint,
+                viewpoint: viewpoint,
                 graphicsOverlays: [searchResultsOverlay]
             )
             .onSingleTapGesture { screenPoint, tapLocation in
@@ -79,12 +79,12 @@ struct SearchWithGeocodeView: View {
             }
             .onVisibleAreaChanged { newVisibleArea in
                 // For "Repeat Search Here" behavior, use `geoViewExtent` and
-                // `isGeoViewNavigating` modifiers on the `SearchView`.
+                // `isGeoViewNavigating` modifiers on the search view.
                 geoViewExtent = newVisibleArea.extent
             }
             .callout(placement: $calloutPlacement.animation()) { placement in
                 // Show the address of user tapped location graphic.
-                // To get the full geocoded address, use "Place_addr".
+                // To get the fully geocoded address, use "Place_addr".
                 Text(placement.graphic.attributes["Match_addr"] as? String ?? "Unknown Address")
                     .padding()
             }
@@ -109,7 +109,7 @@ struct SearchWithGeocodeView: View {
             .overlay {
                 SearchView(
                     sources: [locatorDataSource],
-                    viewpoint: $searchResultViewpoint
+                    viewpoint: $viewpoint
                 )
                 .resultsOverlay(searchResultsOverlay)
                 .queryCenter($queryCenter)
