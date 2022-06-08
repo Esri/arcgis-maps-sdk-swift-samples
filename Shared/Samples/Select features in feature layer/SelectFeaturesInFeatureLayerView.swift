@@ -115,10 +115,6 @@ struct SelectFeaturesInFeatureLayerView: View {
     }
 }
 
-struct SelectFeaturesInFeatureLayerView_Previews: PreviewProvider {
-    static var previews: some View {
-        SelectFeaturesInFeatureLayerView()
-    }
 private extension PortalItem.ID {
     static let gdpPerCapita = Self("10d76a5b015647279b165f3a64c2524f")!
 }
