@@ -62,9 +62,9 @@ struct SelectFeaturesInFeatureLayerView: View {
             // Adds the feature layer to the operational layer of the map.
             map.addOperationalLayer(featureLayer)
         } catch {
-            // Toggles the alert and updates the error.
-            showAlert.toggle()
+            // Updates the error and shows an alert.
             self.error = error
+            showAlert = true
         }
     }
     
@@ -90,9 +90,9 @@ struct SelectFeaturesInFeatureLayerView: View {
                 // Selects the features from the selected features array.
                 featureLayer.select(features: selectedFeatures)
             } catch {
-                // Toggles the alert and updates the error.
-                showAlert.toggle()
+                // Updates the error and shows an alert.
                 self.error = error
+                showAlert = true
             }
         }
     }
