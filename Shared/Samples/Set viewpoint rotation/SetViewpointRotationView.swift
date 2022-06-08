@@ -20,20 +20,26 @@ struct SetViewpointRotationView: View {
     /// A map with ArcGIS Streets basemap style.
     @StateObject private var map = Map(basemapStyle: .arcGISStreets)
     
-    /// A viewpoint with starting rotation degree of zero.
-    @State private var viewpoint: Viewpoint! = Viewpoint(
-        center: Point(x: -117.156229, y: 32.713652, spatialReference: .wgs84),
-        scale: 50_000,
-        rotation: 0
-    )
+    /// The center for the viewpoint.
+    @State private var center = Point(x: -117.156229, y: 32.713652, spatialReference: .wgs84)
+    
+    /// The scale of the viewpoint.
+    @State private var scale = 5e4
+    
+    /// The rotation angle for the viewpoint.
+    @State private var rotation = Double.zero
     
     var body: some View {
         VStack {
-            MapView(map: map, viewpoint: viewpoint)
-                .onViewpointChanged(kind: .centerAndScale) { viewpoint = $0 }
+            MapView(map: map, viewpoint: Viewpoint(center: center, scale: scale, rotation: rotation))
+                .onViewpointChanged(kind: .centerAndScale) { viewpoint in
+                    rotation = viewpoint.rotation
+                    center = viewpoint.targetGeometry.extent.center
+                    scale = viewpoint.targetScale
+                }
                 .overlay(alignment: .topTrailing) {
                     Compass(
-                        viewpoint: $viewpoint,
+                        viewpointRotation: $rotation,
                         autoHide: false
                     )
                     .frame(width: 44, height: 44)
@@ -42,24 +48,11 @@ struct SetViewpointRotationView: View {
             
             HStack {
                 // Create a slider to rotate the map.
-                Slider(
-                    value: Binding(get: {
-                        viewpoint.rotation
-                    }, set: { degree in
-                        // Update the viewpoint with new, rotated viewpoint.
-                        let rotationViewpoint = Viewpoint(
-                            center: viewpoint.targetGeometry as! Point,
-                            scale: viewpoint.targetScale,
-                            rotation: degree
-                        )
-                        viewpoint = rotationViewpoint
-                    }),
-                    in: 0...359
-                )
+                Slider(value: $rotation, in: 0...359)
                 
                 Text(
                     Measurement(
-                        value: viewpoint.rotation,
+                        value: rotation,
                         unit: UnitAngle.degrees
                     ),
                     format: .measurement(
