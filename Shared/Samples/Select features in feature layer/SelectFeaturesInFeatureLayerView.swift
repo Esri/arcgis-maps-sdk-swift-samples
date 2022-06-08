@@ -33,24 +33,8 @@ struct SelectFeaturesInFeatureLayerView: View {
     /// The error to display in the alert.
     @State private var error: Error?
     
-    /// A map with a topographic basemap style and initial viewpoint.
-    @StateObject private var map = makeMap()
-    
-    /// Creates a map.
-    private static func makeMap() -> Map {
-        let map = Map(basemapStyle: .arcGISTopographic)
-        map.initialViewpoint = Viewpoint(
-            center: Envelope(
-                xMin: -180,
-                yMin: -90,
-                xMax: 180,
-                yMax: 90,
-                spatialReference: .wgs84
-            ).center,
-            scale: 2e8
-        )
-        return map
-    }
+    /// A map with a topographic basemap style.
+    @StateObject private var map = Map(basemapStyle: .arcGISTopographic)
     
     /// Asynchronously loads the feature layer and adds it to the operational layer of the map.
     /// Toggles an alert displaying an error if loading fails.
