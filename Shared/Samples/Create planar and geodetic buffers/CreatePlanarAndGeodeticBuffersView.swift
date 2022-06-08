@@ -125,23 +125,25 @@ struct CreatePlanarAndGeodeticBuffersView: View {
             
             if showOptions {
                 VStack {
-                    HStack {
+                    Slider(value: $bufferDistance.value, in: 200...2000) {
                         Text("Buffer Radius")
-                        Spacer()
-                        Text(bufferDistance, format: .measurement(width: .narrow))
+                    } minimumValueLabel: {
+                        Text("200")
+                    } maximumValueLabel: {
+                        Text("2000")
                     }
-                    Slider(value: $bufferDistance.value, in: 200...2000)
+
+                    Text("Buffer radius: \(bufferDistance.formatted())")
                 }
                 .padding([.horizontal, .top])
             }
             
             HStack {
                 Spacer()
-                Button("Options") {
-                    withAnimation(.interactiveSpring()) {
-                        showOptions.toggle()
-                    }
+                Toggle(isOn: $showOptions.animation(.interactiveSpring())) {
+                    Text("Options")
                 }
+                .toggleStyle(.button)
                 Spacer()
                 Button("Clear All") {
                     clearGraphics()
