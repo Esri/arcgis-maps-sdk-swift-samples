@@ -105,7 +105,8 @@ struct SelectFeaturesInFeatureLayerView: View {
                 }
                 .overlay(alignment: .top) {
                     Text("\(selectedFeatures.count) feature(s) selected.")
-                        .padding(.top)
+                        .frame(maxWidth: .infinity)
+                        .background { Color.statusLabelBackground }
                 }
                 .alert(isPresented: $showAlert, presentingError: error)
                 .task {
