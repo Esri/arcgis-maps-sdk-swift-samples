@@ -20,7 +20,12 @@ struct SelectFeaturesInFeatureLayerView: View {
     @State private var selectedFeatures = [Feature]()
     
     /// A feature layer.
-    @State private var featureLayer = makeFeatureLayer()
+    @State private var featureLayer = FeatureLayer(
+        item: PortalItem(
+            portal: .arcGISOnline(isLoginRequired: false),
+            id: .gdpPerCapita
+        )
+    )
     
     /// A Boolean value indicating whether to show an alert.
     @State private var showAlert = false
@@ -30,13 +35,6 @@ struct SelectFeaturesInFeatureLayerView: View {
     
     /// A map with a topographic basemap style and initial viewpoint.
     @StateObject private var map = makeMap()
-    
-    /// Creates a feature layer.
-    private static func makeFeatureLayer() -> FeatureLayer {
-        let featureServiceURL = URL(string: "https://services1.arcgis.com/4yjifSiIG17X0gW4/arcgis/rest/services/GDP_per_capita_1960_2016/FeatureServer/0")!
-        let featureTable = ServiceFeatureTable(url: featureServiceURL)
-        return FeatureLayer(featureTable: featureTable)
-    }
     
     /// Creates a map.
     private static func makeMap() -> Map {
@@ -75,8 +73,10 @@ struct SelectFeaturesInFeatureLayerView: View {
     private func handleSelection(for mapViewProxy: MapViewProxy, at screenPoint: CGPoint) {
         Task {
             do {
-                // Saves the results from the identify method on
-                // the map view proxy.
+                // Unselects the selected features.
+                featureLayer.unselect(features: selectedFeatures)
+                
+                // Saves the results from the identify method on the map view proxy.
                 let results = try await mapViewProxy.identify(
                     layer: featureLayer,
                     screenPoint: screenPoint,
@@ -84,11 +84,7 @@ struct SelectFeaturesInFeatureLayerView: View {
                     maximumResults: 10
                 )
                 
-                // Unselects the selected features.
-                featureLayer.unselect(features: selectedFeatures)
-                
-                // Updates the selected features to
-                // the geo elements from the results.
+                // Updates the selected features to the geo elements from the results.
                 selectedFeatures = results.geoElements as! [Feature]
                 
                 // Selects the features from the selected features array.
@@ -123,4 +119,6 @@ struct SelectFeaturesInFeatureLayerView_Previews: PreviewProvider {
     static var previews: some View {
         SelectFeaturesInFeatureLayerView()
     }
+private extension PortalItem.ID {
+    static let gdpPerCapita = Self("10d76a5b015647279b165f3a64c2524f")!
 }
