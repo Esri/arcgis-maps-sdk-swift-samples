@@ -20,7 +20,7 @@ struct SetViewpointRotationView: View {
     /// A map with ArcGIS Streets basemap style.
     @StateObject private var map = Map(basemapStyle: .arcGISStreets)
     
-    /// The center for the viewpoint.
+    /// The center of the viewpoint.
     @State private var center = Point(x: -117.156229, y: 32.713652, spatialReference: .wgs84)
     
     /// The scale of the viewpoint.
@@ -33,9 +33,9 @@ struct SetViewpointRotationView: View {
         VStack {
             MapView(map: map, viewpoint: Viewpoint(center: center, scale: scale, rotation: rotation))
                 .onViewpointChanged(kind: .centerAndScale) { viewpoint in
-                    rotation = viewpoint.rotation
                     center = viewpoint.targetGeometry.extent.center
                     scale = viewpoint.targetScale
+                    rotation = viewpoint.rotation
                 }
                 .overlay(alignment: .topTrailing) {
                     Compass(
