@@ -59,10 +59,10 @@ struct ShowDeviceLocationView: View {
                     DragGesture()
                         .onChanged { _ in
                             // Sets the autopan mode to off when the map is dragged.
-                            if autoPanMode != .off {
-                                autoPanMode = .off
-                                locationDisplay.autoPanMode = .off
-                            }
+//                            if autoPanMode != .off {
+                            autoPanMode = .off
+                            locationDisplay.autoPanMode = .off
+//                            }
                         }
                 )
             
