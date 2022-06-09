@@ -23,15 +23,16 @@ struct CreatePlanarAndGeodeticBuffersView: View {
     @StateObject private var map = Map(basemapStyle: .arcGISTopographic)
     
     /// The graphics overlay for displaying the geometries created via a geodetic buffer around the tap point.
-    /// Green.
+    /// Contains graphics with green fill and black outline symbols.
     @StateObject private var geodeticOverlay = makeGeodeticOverlay()
     
     /// The graphics overlay for displaying the geometries created via a planar buffer around the tap point.
-    /// Red, but appears as brown when blended with the geodetic overlay.
+    /// Contains graphics with red fill and black outline symbols.
+    /// The red fill symbol appears brown when blended with the geodetic overlay.
     @StateObject private var planarOverlay = makePlanarOverlay()
     
     /// The graphics overlay for displaying the location of the tap point.
-    /// White crosses.
+    /// Contains graphics with white cross symbols.
     @StateObject private var tapLocationsOverlay = makeTapLocationsOverlay()
     
     /// The radius to pass into the buffer functions.
