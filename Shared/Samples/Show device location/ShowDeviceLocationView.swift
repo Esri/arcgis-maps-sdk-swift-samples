@@ -27,11 +27,11 @@ struct ShowDeviceLocationView: View {
     
 //    @State private var locationDisplay = LocationDisplay(dataSource: SystemLocationDataSource())
     
-    private let locationDisplay = LocationDisplay(dataSource: SystemLocationDataSource())
-    
     @StateObject private var map = Map(basemapStyle: .arcGISImageryStandard)
     
     private let locationManager = CLLocationManager()
+    
+    private let locationDisplay = LocationDisplay(dataSource: SystemLocationDataSource())
     
     private func startLocationData() async {
         // Requests location permission if it has not yet been determined
@@ -58,6 +58,7 @@ struct ShowDeviceLocationView: View {
                 .gesture(
                     DragGesture()
                         .onChanged { _ in
+                            // Sets the autopan mode to off when the map is dragged.
                             if autoPanMode != .off {
                                 autoPanMode = .off
                                 locationDisplay.autoPanMode = .off
@@ -65,7 +66,7 @@ struct ShowDeviceLocationView: View {
                         }
                 )
             
-            Text("\(locationDisplay.autoPanMode.label), \(String(locationDisplay.showLocation))")
+//            Text("\(locationDisplay.autoPanMode.label), \(String(locationDisplay.showLocation))")
             
             Menu("Location Settings") {
 //                Toggle(isOn: $locationDisplay.showLocation) {
