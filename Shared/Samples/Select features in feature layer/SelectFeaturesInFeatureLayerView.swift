@@ -91,6 +91,7 @@ struct SelectFeaturesInFeatureLayerView: View {
                     Text("\(selectedFeatures.count) feature(s) selected.")
                         .frame(maxWidth: .infinity)
                         .background { Color.statusLabelBackground }
+                        .edgesIgnoringSafeArea(.horizontal)
                 }
                 .alert(isPresented: $showAlert, presentingError: error)
                 .task {
