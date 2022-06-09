@@ -1,0 +1,128 @@
+// Copyright 2022 Esri
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//   https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+import SwiftUI
+import ArcGIS
+import CoreLocation
+
+struct ShowDeviceLocationView: View {
+    @State private var showAlert = false
+    
+    @State private var error: Error?
+    
+    @State private var showLocation = false
+
+    @State private var autoPanMode = LocationDisplay.AutoPanMode.off
+    
+//    @State private var locationDisplay = LocationDisplay(dataSource: SystemLocationDataSource())
+    
+    private let locationDisplay = LocationDisplay(dataSource: SystemLocationDataSource())
+    
+    @StateObject private var map = Map(basemapStyle: .arcGISImageryStandard)
+    
+    private let locationManager = CLLocationManager()
+    
+    private func startLocationData() async {
+        // Requests location permission if it has not yet been determined
+        if locationManager.authorizationStatus == .notDetermined {
+            locationManager.requestWhenInUseAuthorization()
+        }
+        do {
+            try await locationDisplay.dataSource.start()
+            locationDisplay.showLocation = false
+            locationDisplay.autoPanMode = .off
+        } catch {
+            self.error = error
+            self.showAlert = true
+        }
+    }
+    
+    var body: some View {
+        VStack {
+            MapView(map: map)
+                .locationDisplay(locationDisplay)
+                .task {
+                    await startLocationData()
+                }
+                .gesture(
+                    DragGesture()
+                        .onChanged { _ in
+                            if autoPanMode != .off {
+                                autoPanMode = .off
+                                locationDisplay.autoPanMode = .off
+                            }
+                        }
+                )
+            
+            Text("\(locationDisplay.autoPanMode.label), \(String(locationDisplay.showLocation))")
+            
+            Menu("Location Settings") {
+//                Toggle(isOn: $locationDisplay.showLocation) {
+//                    Text("Show Location")
+//                }
+//
+//                Picker("Auto-Pan Mode", selection: $locationDisplay.autoPanMode) {
+//                    ForEach(LocationDisplay.AutoPanMode.allCases, id: \.self) { mode in
+//                        Text(mode.label)
+//                    }
+//                }
+//                .pickerStyle(.menu)
+                Toggle(isOn: Binding(
+                    get: {
+                        showLocation
+                    },
+                    set: {
+                        showLocation = $0
+                        locationDisplay.showLocation = showLocation
+                    })
+                ) {
+                    Text("Show Location")
+                }
+                
+                Picker(
+                    "Auto-Pan Mode",
+                    selection: Binding(
+                        get: {
+                            autoPanMode
+                        },
+                        set: {
+                            autoPanMode = $0
+                            locationDisplay.autoPanMode = autoPanMode
+                        }
+                    )
+                ) {
+                    ForEach(LocationDisplay.AutoPanMode.allCases, id: \.self) { mode in
+                        Text(mode.label)
+                    }
+                }
+//                .pickerStyle(.menu)
+            }
+            .padding()
+        }
+        .alert(isPresented: $showAlert, presentingError: error)
+    }
+}
+
+private extension LocationDisplay.AutoPanMode {
+    static var allCases: [LocationDisplay.AutoPanMode] = [.off, .recenter, .navigation, .compassNavigation]
+    
+    var label: String {
+        switch self {
+        case .off: return "Off"
+        case .recenter: return "Recenter"
+        case .navigation: return "Navigation"
+        case .compassNavigation: return "Compass Navigation"
+        }
+    }
+}

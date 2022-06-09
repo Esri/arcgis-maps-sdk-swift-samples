@@ -1,0 +1,29 @@
+{
+    "category": "",
+    "description": "Show your current position on the map, as well as switch between different types of auto pan modes.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "GPS",
+        "compass",
+        "location",
+        "map",
+        "mobile",
+        "navigation",
+        "ArcGISMap",
+        "LocationDisplay",
+        "LocationDisplay.AutoPanMode",
+        "MapView"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "ArcGISMap",
+        "LocationDisplay",
+        "LocationDisplay.AutoPanMode",
+        "MapView"
+    ],
+    "snippets": [
+        "ShowDeviceLocationView.swift"
+    ],
+    "title": "Show device location"
+}
