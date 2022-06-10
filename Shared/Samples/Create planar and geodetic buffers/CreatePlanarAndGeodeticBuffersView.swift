@@ -19,6 +19,12 @@ struct CreatePlanarAndGeodeticBuffersView: View {
     /// A Boolean value indicating whether to show options.
     @State private var showOptions = false
     
+    /// The radius to pass into the buffer functions.
+    @State private var bufferDistance = Measurement(value: 500, unit: UnitLength.miles)
+    
+    /// The possible radii for buffers in miles.
+    private let bufferRadii: ClosedRange<Double> = 200...2_000
+    
     /// A map with a topographic basemap style.
     @StateObject private var map = Map(basemapStyle: .arcGISTopographic)
     
@@ -34,9 +40,6 @@ struct CreatePlanarAndGeodeticBuffersView: View {
     /// The graphics overlay for displaying the location of the tap point.
     /// Contains graphics with white cross symbols.
     @StateObject private var tapLocationsOverlay = makeTapLocationsOverlay()
-    
-    /// The radius to pass into the buffer functions.
-    @State private var bufferDistance = Measurement(value: 500, unit: UnitLength.miles)
     
     /// An array of all graphics overlays.
     private var graphicsOverlays: [GraphicsOverlay] {
@@ -75,9 +78,6 @@ struct CreatePlanarAndGeodeticBuffersView: View {
     private func addBuffer(at point: Point) {
         // Converts the buffer distance to meters.
         let bufferRadiusInMeters = bufferDistance.converted(to: .meters).value
-        
-        // Ensures that the buffer radius is a positive value.
-        guard bufferRadiusInMeters > 0 else { return }
         
         // Creates the geometry for the map point, buffered by the given
         // distance in respect to the geodetic spatial reference system
@@ -126,15 +126,15 @@ struct CreatePlanarAndGeodeticBuffersView: View {
             
             if showOptions {
                 VStack {
-                    Slider(value: $bufferDistance.value, in: 200...2000) {
+                    Slider(value: $bufferDistance.value, in: bufferRadii) {
                         Text("Buffer Radius")
                     } minimumValueLabel: {
-                        Text("200")
+                        Text(bufferRadii.lowerBound, format: .number)
                     } maximumValueLabel: {
-                        Text("2000")
+                        Text(bufferRadii.upperBound, format: .number)
                     }
-
-                    Text("Buffer radius: \(bufferDistance.formatted())")
+                    
+                    Text("Buffer radius: \(bufferDistance, format: .measurement(width: .abbreviated))")
                 }
                 .padding([.horizontal, .top])
             }
