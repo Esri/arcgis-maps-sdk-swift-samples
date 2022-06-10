@@ -41,8 +41,14 @@ struct ShowCalloutView: View {
                 VStack(alignment: .leading) {
                     Text("Location")
                         .font(.headline)
-                    Text("x: \(String(format: "%.2f", callout.location.x)), y: \(String(format: "%.2f", callout.location.y))")
-                        .font(.callout)
+                    Text(
+                        CoordinateFormatter.toLatitudeLongitude(
+                            point: callout.location,
+                            format: .decimalDegrees,
+                            decimalPlaces: 2
+                        )
+                    )
+                    .font(.callout)
                 }
                 .padding(5)
             }
