@@ -51,6 +51,7 @@ struct DownloadVectorTilesToLocalCacheView: View {
     /// A red box to represent the area of interest.
     @StateObject private var areaOfInterestGraphic = Graphic(symbol: SimpleLineSymbol(style: .solid, color: .red, width: 2))
     
+    /// A Boolean value indicating whether downloading is an option.
     private var canDownload: Bool {
         return taskIsLoaded && job == nil
     }
@@ -98,6 +99,24 @@ struct DownloadVectorTilesToLocalCacheView: View {
             self.error = error
             showAlert = true
         }
+    }
+    
+    /// Updates the area of interest graphic to represent the new extent.
+    private func updateAreaOfInterest(mapView: MapViewProxy, geometry: GeometryProxy) {
+        // Creates the minimum point for an envelope, in the map
+        // view’s spatial reference, from a point that is located
+        // at 10% the width and height of the map view's frame.
+        guard let min = mapView.location(fromScreenPoint: geometry.min()) else { return }
+        
+        // Creates the maximum point for an envelope, in the map
+        // view’s spatial reference, from a point that is located
+        // at 90% the width and height of the map view's frame.
+        guard let max = mapView.location(fromScreenPoint: geometry.max()) else { return }
+        
+        // Creates an envelope from the min and max points.
+        extent = Envelope(min: min, max: max)
+        // Updates the geometry of the graphic.
+        areaOfInterestGraphic.geometry = extent
     }
     
     /// Initiates the export vector tiles task to download a tile package.
@@ -182,21 +201,7 @@ struct DownloadVectorTilesToLocalCacheView: View {
                     )
                     .onVisibleAreaChanged { _ in
                         // Updates the area of interest when the visible area changes.
-                        
-                        // Creates the minimum point for an envelope, in the map
-                        // view’s spatial reference, from a point that is located
-                        // at 10% the width and height of the map view's frame.
-                        guard let min = mapViewProxy.location(fromScreenPoint: geometry.min()) else { return }
-                        
-                        // Creates the maximum point for an envelope, in the map
-                        // view’s spatial reference, from a point that is located
-                        // at 90% the width and height of the map view's frame.
-                        guard let max = mapViewProxy.location(fromScreenPoint: geometry.max()) else { return }
-                        
-                        // Creates an envelope from the min and max points.
-                        extent = Envelope(min: min, max: max)
-                        // Updates the geometry of the graphic.
-                        areaOfInterestGraphic.geometry = extent
+                        updateAreaOfInterest(mapView: mapViewProxy, geometry: geometry)
                     }
                     .onScaleChanged { scale in
                         // Updates the max scale to 10% of the map's scale.
