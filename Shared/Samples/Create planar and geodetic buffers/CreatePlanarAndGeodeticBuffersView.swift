@@ -141,7 +141,7 @@ struct CreatePlanarAndGeodeticBuffersView: View {
             
             HStack {
                 Spacer()
-                Toggle(isOn: $showOptions.animation(.interactiveSpring())) {
+                Toggle(isOn: $showOptions.animation(.spring())) {
                     Text("Options")
                 }
                 .toggleStyle(.button)
