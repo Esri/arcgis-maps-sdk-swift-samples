@@ -1,0 +1,35 @@
+{
+    "category": "",
+    "description": "Export tiles from an online vector tile service.",
+    "ignore": false,
+    "images": [
+        "download-vector-tiles-to-local-cache.png"
+    ],
+    "keywords": [
+        "cache",
+        "download",
+        "offline",
+        "vector",
+        "ArcGISVectorTiledLayer",
+        "ExportVectorTilesJob",
+        "ExportVectorTilesParameters",
+        "ExportVectorTilesResult",
+        "ExportVectorTilesTask",
+        "ItemResourceCache",
+        "VectorTileCache"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "ArcGISVectorTiledLayer",
+        "ExportVectorTilesJob",
+        "ExportVectorTilesParameters",
+        "ExportVectorTilesResult",
+        "ExportVectorTilesTask",
+        "ItemResourceCache",
+        "VectorTileCache"
+    ],
+    "snippets": [
+        "DownloadVectorTilesToLocalCacheView.swift"
+    ],
+    "title": "Download vector tiles to local cache"
+}
