@@ -147,7 +147,7 @@ private extension Geometry {
     static var polygon2: Geometry {
         Polygon(
             parts: [
-                // The outer ring
+                // The outer ring.
                 MutablePart(
                     points: [
                         Point(x: -13060, y: 6711030),
