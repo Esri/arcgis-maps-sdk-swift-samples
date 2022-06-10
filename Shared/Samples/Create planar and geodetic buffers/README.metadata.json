@@ -12,17 +12,17 @@
         "geodetic",
         "geometry",
         "planar",
-        "GeometryEngine.buffer",
-        "GeometryEngine.geodeticBuffer",
         "Graphic",
-        "GraphicsOverlay"
+        "GraphicsOverlay",
+        "static GeometryEngine.buffer(around:distance:)",
+        "static GeometryEngine.geodeticBuffer(around:distance:distanceUnit:maxDeviation:curveType:)"
     ],
     "redirect_from": [],
     "relevant_apis": [
-        "GeometryEngine.buffer",
-        "GeometryEngine.geodeticBuffer",
         "Graphic",
-        "GraphicsOverlay"
+        "GraphicsOverlay",
+        "static GeometryEngine.buffer(around:distance:)",
+        "static GeometryEngine.geodeticBuffer(around:distance:distanceUnit:maxDeviation:curveType:)"
     ],
     "snippets": [
         "CreatePlanarAndGeodeticBuffersView.swift"
