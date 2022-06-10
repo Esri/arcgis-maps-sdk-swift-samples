@@ -10,7 +10,7 @@ Selecting features, whether by query or identify, can be an important step both 
 
 ## How to use the sample
 
-Tap on a feature in the map. All features within a given tolerance (in pixels) of the tap will be selected.
+Tap on a feature in the map. All features within a given tolerance (in points) of the tap will be selected.
 
 ## How it works
 

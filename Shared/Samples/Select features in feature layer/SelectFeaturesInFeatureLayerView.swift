@@ -16,16 +16,16 @@ import SwiftUI
 import ArcGIS
 
 struct SelectFeaturesInFeatureLayerView: View {
-    /// An array of selected features.
-    @State private var selectedFeatures = [Feature]()
-    
-    /// A feature layer.
-    @State private var featureLayer = FeatureLayer(
+    /// A feature layer visualizing GDP per capita.
+    private let featureLayer = FeatureLayer(
         item: PortalItem(
             portal: .arcGISOnline(isLoginRequired: false),
             id: .gdpPerCapita
         )
     )
+    
+    /// The selected features.
+    @State private var selectedFeatures = [Feature]()
     
     /// A Boolean value indicating whether to show an alert.
     @State private var showAlert = false
