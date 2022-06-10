@@ -41,7 +41,7 @@ struct CreatePlanarAndGeodeticBuffersView: View {
     /// Contains graphics with white cross symbols.
     @StateObject private var tapLocationsOverlay = makeTapLocationsOverlay()
     
-    /// An array of all graphics overlays.
+    /// The graphics overlays used in this sample.
     private var graphicsOverlays: [GraphicsOverlay] {
         return [geodeticOverlay, planarOverlay, tapLocationsOverlay]
     }
