@@ -20,22 +20,22 @@ The sample provides an option to select a spatial operation. When an operation i
 2. Create `Graphic` instances for the overlapping polygons and result.
 3. Add the overlapping polygons and result graphics to the graphics overlay.
 4. Perform spatial relationships between the polygons by using the appropriate operation:
-    * `class GeometryEngine.union(geometry1:geometry2)` - This method returns the two geometries united together as one geometry.
-    * `class GeometryEngine.difference(geometry1:geometry2)` - This method returns the difference of Geometry1 from Geometry2.
-    * `class GeometryEngine.symmetricDifference(geometry1:geometry2)` - This method returns any part of Geometry1 or Geometry2 which do not intersect.
-    * `class GeometryEngine.intersection(geometry1:geometry2)` - This method returns the intersection of Geometry1 and Geometry2.
+    * `static GeometryEngine.union(_:_:)` - This method returns the two geometries united together as one geometry.
+    * `static GeometryEngine.difference(_:_:)` - This method returns the difference between two geometries.
+    * `static GeometryEngine.symmetricDifference(_:_:)` - This method returns any part of two geometries that do not intersect.
+    * `static GeometryEngine.intersection(_:_:)` - This method returns the intersection of two geometries.
 5. Use the geometry that is returned from the method call to update the geometry of the results graphic.
 
 ## Relevant API
 
 * Geometry
 * GeometryEngine
-* GeometryEngine.difference(geometry1:geometry2:)
-* GeometryEngine.intersection(geometry1:geometry2:)
-* GeometryEngine.symmetricDifference(geometry1:geometry2:)
-* GeometryEngine.union(geometry1:geometry2:)
 * Graphic
 * GraphicsOverlay
+* static GeometryEngine.difference(_:_:)
+* static GeometryEngine.intersection(_:_:)
+* static GeometryEngine.symmetricDifference(_:_:)
+* static GeometryEngine.union(_:_:)
 
 ## Tags
 

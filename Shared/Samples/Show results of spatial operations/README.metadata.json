@@ -16,23 +16,23 @@
         "union",
         "Geometry",
         "GeometryEngine",
-        "GeometryEngine.difference(geometry1:geometry2:)",
-        "GeometryEngine.intersection(geometry1:geometry2:)",
-        "GeometryEngine.symmetricDifference(geometry1:geometry2:)",
-        "GeometryEngine.union(geometry1:geometry2:)",
         "Graphic",
-        "GraphicsOverlay"
+        "GraphicsOverlay",
+        "static GeometryEngine.difference(_:_:)",
+        "static GeometryEngine.intersection(_:_:)",
+        "static GeometryEngine.symmetricDifference(_:_:)",
+        "static GeometryEngine.union(_:_:)"
     ],
     "redirect_from": [],
     "relevant_apis": [
         "Geometry",
         "GeometryEngine",
-        "GeometryEngine.difference(geometry1:geometry2:)",
-        "GeometryEngine.intersection(geometry1:geometry2:)",
-        "GeometryEngine.symmetricDifference(geometry1:geometry2:)",
-        "GeometryEngine.union(geometry1:geometry2:)",
         "Graphic",
-        "GraphicsOverlay"
+        "GraphicsOverlay",
+        "static GeometryEngine.difference(_:_:)",
+        "static GeometryEngine.intersection(_:_:)",
+        "static GeometryEngine.symmetricDifference(_:_:)",
+        "static GeometryEngine.union(_:_:)"
     ],
     "snippets": [
         "ShowResultsOfSpatialOperationsView.swift"
