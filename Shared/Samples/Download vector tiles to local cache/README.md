@@ -2,7 +2,8 @@
 
 Download tiles from an online vector tile service.
 
-![Screenshot of download vector tiles to local cache sample](download-vector-tiles-to-local-cache-downloading.png)
+![Screenshot of download vector tiles to local cache sample downloading](download-vector-tiles-to-local-cache-downloading.png)
+![Screenshot of download vector tiles to local cache sample results](download-vector-tiles-to-local-cache-results.png)
 
 ## Use case
 
@@ -15,10 +16,12 @@ When the vector tiled layer loads, zoom in to the extent you want to export. The
 ## How it works
 
 1. Create an `ExportVectorTilesTask`, passing in the `PortalItem` for the vector tiled layer. Since vector tiled layers are premium content, you must first authenticate with the Portal.
-2. Create default `ExportVectorTilesParameters` from the task, specifying extent and maximum scale.
-3. Create a `ExportVectorTilesJob` from the task using the parameters, and specifying a vector tile cache path and an item resource path. The resource path is required if you want to export the tiles with the style.
-4. Start the job, and once it completes successfully, get the resulting `ExportVectorTilesResult`.
-5. Get the `VectorTileCache` and `ItemResourceCache` from the result to create an `ArcGISVectorTiledLayer` that can be displayed to the map view.
+2. Create parameters for the export by using the task's method, `ExportVectorTilesTask.createDefaultExportVectorTilesParameters(areaOfInterest:maxScale:)`, specifying the area of interest and max scale.
+3. Create an `ExportVectorTileJob` by using the task's method, `ExportVectorTilesTask.exportVectorTiles(parameters:vectorTileCacheURL:itemResourceCacheURL:)`, passing in the parameters and specifying a vector tile cache path and an item resource path. The resource path is required if you want to export the tiles with the style.
+4. Start the job, then await the job's results.
+5. Get the `VectorTileCache` and `ItemResourceCache` from the result's output and create an `ArcGISVectorTiledLayer`.
+6. Create a `Map`, specifying a basemap with a base layer of the vector tiled layer.
+7. Set the map's initial viewpoint to the area of interest and create a map view with the map.
 
 ## Relevant API
 

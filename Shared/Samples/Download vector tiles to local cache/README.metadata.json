@@ -1,9 +1,10 @@
 {
-    "category": "",
-    "description": "Export tiles from an online vector tile service.",
+    "category": "Layers",
+    "description": "Download tiles from an online vector tile service.",
     "ignore": false,
     "images": [
-        "download-vector-tiles-to-local-cache.png"
+        "download-vector-tiles-to-local-cache-downloading.png",
+        "download-vector-tiles-to-local-cache-results.png"
     ],
     "keywords": [
         "cache",
