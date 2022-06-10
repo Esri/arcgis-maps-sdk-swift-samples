@@ -92,6 +92,8 @@ struct DownloadVectorTilesToLocalCacheView: View {
         do {
             try await map.load()
             guard let vectorTiledLayer = map.basemap?.baseLayers.first as? ArcGISVectorTiledLayer else { return }
+            
+            // Creates the export vector tiles task.
             exportVectorTilesTask = ExportVectorTilesTask(url: vectorTiledLayer.url)
             try await exportVectorTilesTask?.load()
             taskIsLoaded = exportVectorTilesTask?.loadStatus == .loaded
