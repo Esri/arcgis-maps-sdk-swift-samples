@@ -11,11 +11,11 @@ When using a map within a GIS application, it may be helpful for a user to know 
 
 ## How to use the sample
 
-Tap the **Location Settings** button to open the settings interface.
+Tap the "Location Settings" button to open the settings interface.
 
-Toggle **Show Location** to change the visibility of the location indicator in the map view. It will be asked by the system to provide permission to use the device's location, if the user have not yet used location services in this app.
+Toggle "Show Location" to change the visibility of the location indicator in the map view. It will be asked by the system to provide permission to use the device's location, if the user have not yet used location services in this app.
 
-Change the **Auto-Pan Mode** to choose if and how the SDK will position the map view's viewpoint to keep the location indicator in-frame. A menu will appear with the following options to change the `LocationDisplay.AutoPanMode`:
+Change the "Auto-Pan Mode" to choose if and how the SDK will position the map view's viewpoint to keep the location indicator in-frame. A menu will appear with the following options to change the `LocationDisplay.AutoPanMode`:
 
 * Off: Starts the location display with no auto-pan mode set.
 * Re-Center: Starts the location display with auto-pan mode set to `recenter`.
