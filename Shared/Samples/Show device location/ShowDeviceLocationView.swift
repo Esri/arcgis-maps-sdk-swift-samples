@@ -65,8 +65,12 @@ struct ShowDeviceLocationView: View {
 //                            }
                         }
                 )
-            
-//            Text("\(locationDisplay.autoPanMode.label), \(String(locationDisplay.showLocation))")
+                .onDisappear {
+                    Task {
+                        // Stops the location data source.
+                        await locationDisplay.dataSource.stop()
+                    }
+                }
             
             Menu("Location Settings") {
                 Toggle(isOn: Binding(
