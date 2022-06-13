@@ -24,7 +24,7 @@ Change the "Auto-Pan Mode" to choose if and how the SDK will position the map vi
 
 ## How it works
 
-1. Create a `LocationDisplay` object with `SystemLocationDataSource()`.
+1. Create a `LocationDisplay` object with a `SystemLocationDataSource()`.
 2. Use the `locationDisplay(_:)` map view modifier to set the location display for the map view.
 3. Use the `LocationDisplay.AutoPanMode` property to change how the map behaves when location updates are received.
 4. Use the `start()` and `stop()` methods on the location display's data source as necessary.
