@@ -14,11 +14,13 @@
         "info window",
         "popup",
         "tap",
-        "LocationCalloutPlacement"
+        "LocationCalloutPlacement",
+        "MapView.callout(placement:content:)"
     ],
     "redirect_from": [],
     "relevant_apis": [
-        "LocationCalloutPlacement"
+        "LocationCalloutPlacement",
+        "MapView.callout(placement:content:)"
     ],
     "snippets": [
         "ShowCalloutView.swift"
