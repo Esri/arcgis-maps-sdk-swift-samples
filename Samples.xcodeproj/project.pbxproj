@@ -26,9 +26,9 @@
 		E004A6C128414332002A1FE6 /* SetViewpointRotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6BD28414332002A1FE6 /* SetViewpointRotationView.swift */; };
 		E004A6DC28465C70002A1FE6 /* DisplaySceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6D828465C70002A1FE6 /* DisplaySceneView.swift */; };
 		E004A6E62846A61F002A1FE6 /* StyleGraphicsWithSymbolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6E52846A61F002A1FE6 /* StyleGraphicsWithSymbolsView.swift */; };
+		E004A6ED2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6EC2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift */; };
 		E004A6F6284FA42A002A1FE6 /* SelectFeaturesInFeatureLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6F5284FA42A002A1FE6 /* SelectFeaturesInFeatureLayerView.swift */; };
 		E004A6F828501843002A1FE6 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6F728501843002A1FE6 /* Color.swift */; };
-		E004A6ED2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6EC2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -103,9 +103,9 @@
 		E004A6BD28414332002A1FE6 /* SetViewpointRotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetViewpointRotationView.swift; sourceTree = "<group>"; };
 		E004A6D828465C70002A1FE6 /* DisplaySceneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplaySceneView.swift; sourceTree = "<group>"; };
 		E004A6E52846A61F002A1FE6 /* StyleGraphicsWithSymbolsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleGraphicsWithSymbolsView.swift; sourceTree = "<group>"; };
+		E004A6EC2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePlanarAndGeodeticBuffersView.swift; sourceTree = "<group>"; };
 		E004A6F5284FA42A002A1FE6 /* SelectFeaturesInFeatureLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectFeaturesInFeatureLayerView.swift; sourceTree = "<group>"; };
 		E004A6F728501843002A1FE6 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
-		E004A6EC2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePlanarAndGeodeticBuffersView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -166,8 +166,8 @@
 				0074ABB328174B830037244A /* Display map */,
 				00B04FB3283EEB830026C882 /* Display overview map */,
 				E004A6D528465C70002A1FE6 /* Display scene */,
-				E004A6F4284FA3C5002A1FE6 /* Select features in feature layer */,
 				00CB913628481475005C2C5D /* Search with geocode */,
+				E004A6F4284FA3C5002A1FE6 /* Select features in feature layer */,
 				00B042E3282EDC690072E1B4 /* Set basemap */,
 				E004A6B928414332002A1FE6 /* Set viewpoint rotation */,
 				E004A6E42846A609002A1FE6 /* Style graphics with symbols */,
@@ -279,20 +279,20 @@
 			path = "Style graphics with symbols";
 			sourceTree = "<group>";
 		};
-		E004A6F4284FA3C5002A1FE6 /* Select features in feature layer */ = {
-			isa = PBXGroup;
-			children = (
-				E004A6F5284FA42A002A1FE6 /* SelectFeaturesInFeatureLayerView.swift */,
-			);
-			path = "Select features in feature layer";
-            sourceTree = "<group>";
-        };
 		E004A6EB28495538002A1FE6 /* Create planar and geodetic buffers */ = {
 			isa = PBXGroup;
 			children = (
 				E004A6EC2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift */,
 			);
 			path = "Create planar and geodetic buffers";
+			sourceTree = "<group>";
+		};
+		E004A6F4284FA3C5002A1FE6 /* Select features in feature layer */ = {
+			isa = PBXGroup;
+			children = (
+				E004A6F5284FA42A002A1FE6 /* SelectFeaturesInFeatureLayerView.swift */,
+			);
+			path = "Select features in feature layer";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
