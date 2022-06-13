@@ -39,7 +39,7 @@ struct ShowDeviceLocationView: View {
     private let locationDisplay = LocationDisplay(dataSource: SystemLocationDataSource())
     
     /// Starts the location data source.
-    private func startLocationData() async {
+    private func startLocationDataSource() async {
         // Requests location permission if it has not yet been determined.
         if locationManager.authorizationStatus == .notDetermined {
             locationManager.requestWhenInUseAuthorization()
@@ -62,7 +62,7 @@ struct ShowDeviceLocationView: View {
             MapView(map: map)
                 .locationDisplay(locationDisplay)
                 .task {
-                    await startLocationData()
+                    await startLocationDataSource()
                 }
                 .gesture(
                     DragGesture()
