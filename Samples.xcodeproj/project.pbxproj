@@ -282,8 +282,8 @@
 				E004A6E828493BCE002A1FE6 /* ShowDeviceLocationView.swift */,
 			);
 			path = "Show device location";
-            sourceTree = "<group>";
-        };
+			sourceTree = "<group>";
+		};
 		E004A6EB28495538002A1FE6 /* Create planar and geodetic buffers */ = {
 			isa = PBXGroup;
 			children = (
