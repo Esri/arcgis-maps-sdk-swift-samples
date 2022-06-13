@@ -1,0 +1,31 @@
+{
+    "category": "Geometry",
+    "description": "Create a planar and geodetic buffer around a map point and display the results as a graphic.",
+    "ignore": false,
+    "images": [
+        "create-planar-and-geodetic-buffers.png"
+    ],
+    "keywords": [
+        "analysis",
+        "buffer",
+        "euclidean",
+        "geodetic",
+        "geometry",
+        "planar",
+        "Graphic",
+        "GraphicsOverlay",
+        "static GeometryEngine.buffer(around:distance:)",
+        "static GeometryEngine.geodeticBuffer(around:distance:distanceUnit:maxDeviation:curveType:)"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Graphic",
+        "GraphicsOverlay",
+        "static GeometryEngine.buffer(around:distance:)",
+        "static GeometryEngine.geodeticBuffer(around:distance:distanceUnit:maxDeviation:curveType:)"
+    ],
+    "snippets": [
+        "CreatePlanarAndGeodeticBuffersView.swift"
+    ],
+    "title": "Create planar and geodetic buffers"
+}
