@@ -22,8 +22,6 @@ struct ShowDeviceLocationView: View {
     @State private var error: Error?
     
     @State private var showLocation = false
-
-    @State private var autoPanMode = LocationDisplay.AutoPanMode.off
     
 //    @State private var locationDisplay = LocationDisplay(dataSource: SystemLocationDataSource())
     
@@ -40,8 +38,9 @@ struct ShowDeviceLocationView: View {
         }
         do {
             try await locationDisplay.dataSource.start()
-            locationDisplay.showLocation = false
-            locationDisplay.autoPanMode = .off
+            
+            locationDisplay.showLocation = showLocation
+            locationDisplay.autoPanMode = autoPanMode
         } catch {
             self.error = error
             self.showAlert = true
@@ -61,8 +60,7 @@ struct ShowDeviceLocationView: View {
                             // Sets the autopan mode to off when the map is dragged.
 //                            if autoPanMode != .off {
                             autoPanMode = .off
-                            locationDisplay.autoPanMode = .off
-//                            }
+                            locationDisplay.autoPanMode = autoPanMode
                         }
                 )
                 .onDisappear {
