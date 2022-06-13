@@ -11,11 +11,11 @@ When using a map within a GIS application, it may be helpful for a user to know 
 
 ## How to use the sample
 
-Tap the "Location Settings" button to open the settings interface.
+Tap the **Location Settings** button to open the settings interface.
 
-Toggle "Show Location" to change the visibility of the location indicator in the map view. It will be asked by the system to provide permission to use the device's location, if the user have not yet used location services in this app.
+Toggle **Show Location** to change the visibility of the location indicator in the map view. It will be asked by the system to provide permission to use the device's location, if the user have not yet used location services in this app.
 
-Change the "Auto-Pan Mode" to choose if and how the SDK will position the map view's viewpoint to keep the location indicator in-frame. A menu will appear with the following options to change the `LocationDisplay.AutoPanMode`:
+Change the **Auto-Pan Mode** to choose if and how the SDK will position the map view's viewpoint to keep the location indicator in-frame. A menu will appear with the following options to change the `LocationDisplay.AutoPanMode`:
 
 * Off: Starts the location display with no auto-pan mode set.
 * Re-Center: Starts the location display with auto-pan mode set to `recenter`.
@@ -24,7 +24,7 @@ Change the "Auto-Pan Mode" to choose if and how the SDK will position the map vi
 
 ## How it works
 
-1. Create a `LocationDisplay` object with a `SystemLocationDataSource()`.
+1. Create a `LocationDisplay` object with a location data source.
 2. Use the `locationDisplay(_:)` map view modifier to set the location display for the map view.
 3. Use the `LocationDisplay.AutoPanMode` property to change how the map behaves when location updates are received.
 4. Use the `start()` and `stop()` methods on the location display's data source as necessary.
@@ -36,7 +36,6 @@ Change the "Auto-Pan Mode" to choose if and how the SDK will position the map vi
 * LocationDisplay.AutoPanMode
 * MapView
 * MapView.locationDisplay(_:)
-* SystemLocationDataSource
 
 ## Additional information
 

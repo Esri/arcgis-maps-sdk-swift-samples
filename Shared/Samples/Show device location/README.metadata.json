@@ -17,8 +17,7 @@
         "LocationDisplay",
         "LocationDisplay.AutoPanMode",
         "MapView",
-        "MapView.locationDisplay(_:)",
-        "SystemLocationDataSource"
+        "MapView.locationDisplay(_:)"
     ],
     "redirect_from": [],
     "relevant_apis": [
@@ -26,8 +25,7 @@
         "LocationDisplay",
         "LocationDisplay.AutoPanMode",
         "MapView",
-        "MapView.locationDisplay(_:)",
-        "SystemLocationDataSource"
+        "MapView.locationDisplay(_:)"
     ],
     "snippets": [
         "ShowDeviceLocationView.swift"
