@@ -104,7 +104,8 @@ struct ShowDeviceLocationView: View {
                     )
                 ) {
                     ForEach(LocationDisplay.AutoPanMode.allCases, id: \.self) { mode in
-                        Text(mode.label)
+                        Label(mode.label, image: mode.imageName)
+                            .imageScale(.large)
                     }
                 }
 //                .pickerStyle(.menu)
@@ -124,6 +125,15 @@ private extension LocationDisplay.AutoPanMode {
         case .recenter: return "Recenter"
         case .navigation: return "Navigation"
         case .compassNavigation: return "Compass Navigation"
+        }
+    }
+    
+    var imageName: String {
+        switch self {
+        case .off: return "LocationDisplayOffIcon"
+        case .recenter: return "LocationDisplayDefaultIcon"
+        case .navigation: return "LocationDisplayNavigationIcon"
+        case .compassNavigation: return "LocationDisplayHeadingIcon"
         }
     }
 }
