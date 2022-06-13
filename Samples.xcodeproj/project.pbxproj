@@ -28,6 +28,7 @@
 		E004A6E62846A61F002A1FE6 /* StyleGraphicsWithSymbolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6E52846A61F002A1FE6 /* StyleGraphicsWithSymbolsView.swift */; };
 		E004A6F6284FA42A002A1FE6 /* SelectFeaturesInFeatureLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6F5284FA42A002A1FE6 /* SelectFeaturesInFeatureLayerView.swift */; };
 		E004A6F828501843002A1FE6 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6F728501843002A1FE6 /* Color.swift */; };
+		E004A6ED2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6EC2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -104,6 +105,7 @@
 		E004A6E52846A61F002A1FE6 /* StyleGraphicsWithSymbolsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleGraphicsWithSymbolsView.swift; sourceTree = "<group>"; };
 		E004A6F5284FA42A002A1FE6 /* SelectFeaturesInFeatureLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectFeaturesInFeatureLayerView.swift; sourceTree = "<group>"; };
 		E004A6F728501843002A1FE6 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		E004A6EC2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePlanarAndGeodeticBuffersView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -160,6 +162,7 @@
 		0074ABB228174B830037244A /* Samples */ = {
 			isa = PBXGroup;
 			children = (
+				E004A6EB28495538002A1FE6 /* Create planar and geodetic buffers */,
 				0074ABB328174B830037244A /* Display map */,
 				00B04FB3283EEB830026C882 /* Display overview map */,
 				E004A6D528465C70002A1FE6 /* Display scene */,
@@ -282,6 +285,14 @@
 				E004A6F5284FA42A002A1FE6 /* SelectFeaturesInFeatureLayerView.swift */,
 			);
 			path = "Select features in feature layer";
+            sourceTree = "<group>";
+        };
+		E004A6EB28495538002A1FE6 /* Create planar and geodetic buffers */ = {
+			isa = PBXGroup;
+			children = (
+				E004A6EC2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift */,
+			);
+			path = "Create planar and geodetic buffers";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -405,6 +416,7 @@
 			files = (
 				0005580C28185C0600224BC6 /* SampleList.swift in Sources */,
 				001C6DE127FE8A9400D472C2 /* AppSecrets.swift.masque in Sources */,
+				E004A6ED2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift in Sources */,
 				00181B462846AD7100654571 /* View+Alert.swift in Sources */,
 				0005580A2817C51E00224BC6 /* SampleDetailView.swift in Sources */,
 				E004A6F828501843002A1FE6 /* Color.swift in Sources */,
