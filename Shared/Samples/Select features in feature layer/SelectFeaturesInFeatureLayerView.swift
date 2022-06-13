@@ -36,7 +36,7 @@ struct SelectFeaturesInFeatureLayerView: View {
     /// A map with a topographic basemap style.
     @StateObject private var map = Map(basemapStyle: .arcGISTopographic)
     
-    /// Asynchronously loads the feature layer and adds it to the operational layer of the map.
+    /// Loads the feature layer and adds it to the operational layer of the map.
     /// Toggles an alert displaying an error if loading fails.
     private func loadFeatureLayer() async {
         do {
