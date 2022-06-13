@@ -69,22 +69,13 @@ struct ShowDeviceLocationView: View {
 //            Text("\(locationDisplay.autoPanMode.label), \(String(locationDisplay.showLocation))")
             
             Menu("Location Settings") {
-//                Toggle(isOn: $locationDisplay.showLocation) {
-//                    Text("Show Location")
-//                }
-//
-//                Picker("Auto-Pan Mode", selection: $locationDisplay.autoPanMode) {
-//                    ForEach(LocationDisplay.AutoPanMode.allCases, id: \.self) { mode in
-//                        Text(mode.label)
-//                    }
-//                }
-//                .pickerStyle(.menu)
                 Toggle(isOn: Binding(
                     get: {
                         showLocation
                     },
                     set: {
                         showLocation = $0
+                        // Updates the location display's show location value.
                         locationDisplay.showLocation = showLocation
                     })
                 ) {
@@ -99,6 +90,7 @@ struct ShowDeviceLocationView: View {
                         },
                         set: {
                             autoPanMode = $0
+                            // Updates the location display's auto-pan mode.
                             locationDisplay.autoPanMode = autoPanMode
                         }
                     )
@@ -108,7 +100,6 @@ struct ShowDeviceLocationView: View {
                             .imageScale(.large)
                     }
                 }
-//                .pickerStyle(.menu)
             }
             .padding()
         }
