@@ -17,31 +17,41 @@ import ArcGIS
 import CoreLocation
 
 struct ShowDeviceLocationView: View {
+    /// A Boolean value indicating whether to show an alert.
     @State private var showAlert = false
     
+    /// The error to display in the alert.
     @State private var error: Error?
     
+    /// A Boolean value indicating whether to device location.
     @State private var showLocation = false
     
-//    @State private var locationDisplay = LocationDisplay(dataSource: SystemLocationDataSource())
+    /// The current auto-pan mode.
+    @State private var autoPanMode = LocationDisplay.AutoPanMode.off
     
+    /// A map with a standard imagery basemap style.
     @StateObject private var map = Map(basemapStyle: .arcGISImageryStandard)
     
+    /// The `CLLocationManager` used to request location permissions.
     private let locationManager = CLLocationManager()
     
+    /// A location display using the system location data source.
     private let locationDisplay = LocationDisplay(dataSource: SystemLocationDataSource())
     
+    /// Starts the location data source.
     private func startLocationData() async {
-        // Requests location permission if it has not yet been determined
+        // Requests location permission if it has not yet been determined.
         if locationManager.authorizationStatus == .notDetermined {
             locationManager.requestWhenInUseAuthorization()
         }
         do {
+            // Starts the location display data source.
             try await locationDisplay.dataSource.start()
             
             locationDisplay.showLocation = showLocation
             locationDisplay.autoPanMode = autoPanMode
         } catch {
+            // Shows an alert with an error if starting the data source fails.
             self.error = error
             self.showAlert = true
         }
@@ -57,8 +67,7 @@ struct ShowDeviceLocationView: View {
                 .gesture(
                     DragGesture()
                         .onChanged { _ in
-                            // Sets the autopan mode to off when the map is dragged.
-//                            if autoPanMode != .off {
+                            // Sets the auto-pan mode to off when the map is dragged.
                             autoPanMode = .off
                             locationDisplay.autoPanMode = autoPanMode
                         }
