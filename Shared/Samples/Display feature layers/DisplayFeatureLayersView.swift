@@ -28,21 +28,84 @@ struct DisplayFeatureLayersView: View {
     /// The current viewpoint of the map view.
     @State private var viewpoint: Viewpoint?
     
+    /// The geodatabase used to create the feature layer.
+    @State private var geodatabase: Geodatabase!
+    
+    /// The GeoPackage used to create the feature layer.
+    @State private var geoPackage: GeoPackage!
+    
     /// A map with a topographic basemap style.
     @StateObject private var map = Map(basemapStyle: .arcGISTopographic)
     
     /// An authentication model to handle credentials for the service feature table.
     private let authenticationModel = AuthenticationModel()
     
-    /// Loads the geodatabase and geopackage.
-    private func loadGeoSources() async {
-        do {
-            try await Geodatabase.laTrails.load()
-            try await GeoPackage.auroraCO.load()
-        } catch {
-            self.error = error
-            showAlert = true
+    /// Loads a feature layer with a service feature table.
+    private func loadServiceFeatureTable() async throws {
+        let featureTable = ServiceFeatureTable(url: .damageAssessment)
+        let featureLayer = FeatureLayer(featureTable: featureTable)
+        let viewpoint = Viewpoint(latitude: 41.773519, longitude: -88.143104, scale: 4e3)
+        try await setFeatureLayer(featureLayer, viewpoint: viewpoint)
+    }
+    
+    /// Loads a feature layer with a portal item.
+    private func loadPortalitemFeatureTable() async throws {
+        let featureLayer = FeatureLayer(
+            item: PortalItem(
+                portal: .arcGISOnline(isLoginRequired: false),
+                id: .treesOfPortland
+            )
+        )
+        let viewpoint = Viewpoint(latitude: 45.5266, longitude: -122.6219, scale: 6e3)
+        try await setFeatureLayer(featureLayer, viewpoint: viewpoint)
+    }
+    
+    /// Loads a feature layer with a local geodatabase.
+    private func loadGeodatabaseFeatureTable() async throws {
+        // Loads the geodatabase if it does exist.
+        if geodatabase == nil {
+            geodatabase = Geodatabase(fileURL: .laTrails)
+            try await geodatabase.load()
         }
+        // Creates a feature layer from the geodatabase's feature table and
+        // sets the current feature layer to it.
+        if let featureTable = geodatabase.getGeodatabaseFeatureTable(tableName: "Trailheads") {
+            let featureLayer = FeatureLayer(featureTable: featureTable)
+            let viewpoint = Viewpoint(latitude: 34.0772, longitude: -118.7989, scale: 6e5)
+            try await setFeatureLayer(featureLayer, viewpoint: viewpoint)
+        }
+    }
+    
+    /// Loads a feature layer with a local GeoPackage.
+    private func loadGeoPackageFeatureTable() async throws {
+        if geoPackage == nil {
+            geoPackage = GeoPackage(fileURL: .auroraCO)
+            try await geoPackage.load()
+        }
+        if let featureTable = geoPackage.geoPackageFeatureTables.first {
+            let featureLayer = FeatureLayer(featureTable: featureTable)
+            let viewpoint = Viewpoint(latitude: 39.7294, longitude: -104.8319, scale: 5e5)
+            try await setFeatureLayer(featureLayer, viewpoint: viewpoint)
+        }
+    }
+    
+    /// Loads a feature layer with a local shapefile.
+    private func loadShapefileFeatureTable() async throws {
+        let shapefileFeatureTable = ShapefileFeatureTable(fileURL: .reserveBoundaries)
+        let featureLayer = FeatureLayer(featureTable: shapefileFeatureTable)
+        let viewpoint = Viewpoint(latitude: 56.641344, longitude: -3.889066, scale: 6e6)
+        try await setFeatureLayer(featureLayer, viewpoint: viewpoint)
+    }
+    
+    /// Sets the map's operational layer to the given feature layer and updates the current viewpoint.
+    private func setFeatureLayer(_ featureLayer: FeatureLayer, viewpoint: Viewpoint) async throws {
+        // Loads the feature layer.
+        try await featureLayer.load()
+        // Updates the map's operational layers.
+        map.removeAllOperationalLayers()
+        map.addOperationalLayer(featureLayer)
+        // Updates the current viewpoint.
+        self.viewpoint = viewpoint
     }
     
     /// Updates the feature layer to reflect the source chosen by the user.
@@ -50,20 +113,15 @@ struct DisplayFeatureLayersView: View {
         do {
             switch selectedFeatureLayerSource {
             case .serviceFeatureTable:
-                // Sets the feature layer to the damage assessment feature layer.
-                try await setFeatureLayer(.damageAssessment, viewpoint: .damageAssessment)
+                try await loadServiceFeatureTable()
             case .portalItem:
-                // Sets the feature layer to the trees of Portland feature layer.
-                try await setFeatureLayer(.treesOfPortland, viewpoint: .treesOfPortland)
+                try await loadPortalitemFeatureTable()
             case .geodatabase:
-                // Sets the feature layer to the LA trails feature layer.
-                try await setFeatureLayer(.laTrails, viewpoint: .laTrails)
+                try await loadGeodatabaseFeatureTable()
             case .geoPackage:
-                // Sets the feature layer to the Aurora, CO, feature layer.
-                try await setFeatureLayer(.auroraCO, viewpoint: .auroraCO)
+                try await loadGeoPackageFeatureTable()
             case .shapefile:
-                // Sets the feature layer to the reserve boundaries feature layer.
-                try await setFeatureLayer(.reserveBoundaries, viewpoint: .reserveBoundaries)
+                try await loadShapefileFeatureTable()
             }
         } catch {
             // Updates the error and shows an alert if any failures occur.
@@ -72,27 +130,10 @@ struct DisplayFeatureLayersView: View {
         }
     }
     
-    /// Sets the map's operational layer to the given feature layer and updates the current viewpoint.
-    private func setFeatureLayer(_ featureLayer: FeatureLayer, viewpoint: Viewpoint) async throws {
-        // Loads the feature layer.
-        if featureLayer.loadStatus != .loaded {
-            try await featureLayer.load()
-        }
-        
-        // Updates the map's operational layers.
-        map.removeAllOperationalLayers()
-        map.addOperationalLayer(featureLayer)
-        
-        // Updates the current viewpoint.
-        self.viewpoint = viewpoint
-    }
-    
     var body: some View {
         VStack {
             MapView(map: map, viewpoint: viewpoint)
                 .task {
-                    // Loads the geodatabase and geopackage.
-                    await loadGeoSources()
                     // Updates the feature layer.
                     await updateFeatureLayer()
                 }
@@ -125,80 +166,17 @@ struct DisplayFeatureLayersView: View {
     }
 }
 
-/// The feature layers used in this sample.
-private extension FeatureLayer {
-    /// Created using a service feature table.
-    /// Displays the damage to commercial buildings in Naperville, Illinois.
-    static let damageAssessment = FeatureLayer(featureTable: ServiceFeatureTable(url: .damageAssessment))
-    /// Created using a portal item.
-    /// Displays a collection of public street trees in Portland, Oregon.
-    static let treesOfPortland = FeatureLayer(
-        item: PortalItem(
-            portal: .arcGISOnline(isLoginRequired: false),
-            id: .treesOfPortland
+/// The authentication model used to handle challenges and credentials.
+private class AuthenticationModel: AuthenticationChallengeHandler {
+    func handleArcGISChallenge(
+        _ challenge: ArcGISAuthenticationChallenge
+    ) async throws -> ArcGISAuthenticationChallenge.Disposition {
+        return .useCredential(
+            // NOTE: Never hardcode login information in a production application.
+            // This is done solely for the sake of the sample.
+            try await .token(challenge: challenge, username: "viewer01", password: "I68VGU^nMurF")
         )
-    )
-    /// Created using a geodatabase.
-    /// Displays trailhead points within Los Angeles, California.
-    static let laTrails = FeatureLayer(
-        featureTable: Geodatabase
-            .laTrails
-            .getGeodatabaseFeatureTable(tableName: "Trailheads")!
-    )
-    /// Created using a GeoPackage.
-    /// Displays public art (points), bike trails (lines), subdivisions (polygons),
-    /// airport noise (raster), and liquor license density (raster) in Aurora, Colorado.
-    static let auroraCO = FeatureLayer(
-        featureTable: GeoPackage
-            .auroraCO
-            .geoPackageFeatureTables
-            .first!
-    )
-    /// Created using a shapefile.
-    /// Displays the wildlife reserve boundaries managed by the Scottish Wildlife Trust.
-    static let reserveBoundaries = FeatureLayer(featureTable: ShapefileFeatureTable.reserveBoundaries)
-}
-
-private extension Item.ID {
-    /// The ID used in the trees of Portland portal item.
-    static let treesOfPortland = Self("1759fd3e8a324358a0c58d9a687a8578")!
-}
-
-private extension Geodatabase {
-    /// The LA trails geodatabase.
-    static let laTrails = Geodatabase(fileURL: .laTrails)
-}
-
-private extension GeoPackage {
-    /// The Aurora, CO, GeoPackage.
-    static let auroraCO = GeoPackage(fileURL: .auroraCO)
-}
-
-private extension ShapefileFeatureTable {
-    /// The reserve boundaries shapefile feature table.
-    static let reserveBoundaries = ShapefileFeatureTable(fileURL: .reserveBoundaries)
-}
-
-/// The viewpoints for each feature layer source.
-private extension Viewpoint {
-    /// The viewpoint for Naperville, IL.
-    static let damageAssessment = Viewpoint(latitude: 41.773519, longitude: -88.143104, scale: 4e3)
-    /// The viewpoint for Portland, OR.
-    static let treesOfPortland = Viewpoint(latitude: 45.5266, longitude: -122.6219, scale: 6e3)
-    /// The viewpoint for Los Angeles, CA.
-    static let laTrails = Viewpoint(latitude: 34.0772, longitude: -118.7989, scale: 6e5)
-    /// The viewpoint for Aurora, CO.
-    static let auroraCO = Viewpoint(latitude: 39.7294, longitude: -104.8319, scale: 5e5)
-    /// The viewpoint for Scotland.
-    static let reserveBoundaries = Viewpoint(latitude: 56.641344, longitude: -3.889066, scale: 6e6)
-}
-
-/// The URLs for each feature layer source.
-private extension URL {
-    static let damageAssessment = URL(string: "https://sampleserver7.arcgisonline.com/server/rest/services/DamageAssessment/FeatureServer/0")!
-    static let laTrails = Bundle.main.url(forResource: "LA_Trails", withExtension: "geodatabase")!
-    static let auroraCO = Bundle.main.url(forResource: "AuroraCO", withExtension: "gpkg")!
-    static let reserveBoundaries = Bundle.main.url(forResource: "ScottishWildlifeTrust_ReserveBoundaries_20201102", withExtension: "shp")!
+    }
 }
 
 private extension DisplayFeatureLayersView {
@@ -219,15 +197,14 @@ private extension DisplayFeatureLayersView {
     }
 }
 
-/// The authentication model used to handle challenges and credentials.
-private class AuthenticationModel: AuthenticationChallengeHandler {
-    func handleArcGISChallenge(
-        _ challenge: ArcGISAuthenticationChallenge
-    ) async throws -> ArcGISAuthenticationChallenge.Disposition {
-        return .useCredential(
-            // NOTE: Never hardcode login information in a production application.
-            // This is done solely for the sake of the sample.
-            try await .token(challenge: challenge, username: "viewer01", password: "I68VGU^nMurF")
-        )
-    }
+private extension Item.ID {
+    /// The ID used in the trees of Portland portal item.
+    static let treesOfPortland = Self("1759fd3e8a324358a0c58d9a687a8578")!
+}
+
+private extension URL {
+    static let damageAssessment = URL(string: "https://sampleserver7.arcgisonline.com/server/rest/services/DamageAssessment/FeatureServer/0")!
+    static let laTrails = Bundle.main.url(forResource: "LA_Trails", withExtension: "geodatabase")!
+    static let auroraCO = Bundle.main.url(forResource: "AuroraCO", withExtension: "gpkg")!
+    static let reserveBoundaries = Bundle.main.url(forResource: "ScottishWildlifeTrust_ReserveBoundaries_20201102", withExtension: "shp")!
 }
