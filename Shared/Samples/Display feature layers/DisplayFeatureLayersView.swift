@@ -97,8 +97,6 @@ struct DisplayFeatureLayersView: View {
     
     /// Sets the map's operational layers to the given feature layer and updates the current viewpoint.
     private func setFeatureLayer(_ featureLayer: FeatureLayer, viewpoint: Viewpoint) async throws {
-        // Loads the feature layer.
-        try await featureLayer.load()
         // Updates the map's operational layers.
         map.removeAllOperationalLayers()
         map.addOperationalLayer(featureLayer)
