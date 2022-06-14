@@ -6,7 +6,7 @@ Show your current position on the map, as well as switch between different types
 
 ## Use case
 
-When using a map within a GIS application, it may be helpful for a user to know their own location within a map, whether that's to aid the user's navigation or to provide an easy means of identifying/collecting geospatial information at their location.
+When using a map within a GIS application, it may be helpful for a user to know their own location within a map, whether that's to aid the user's navigation or to provide an easy mean of identifying/collecting geospatial information at their location.
 
 ## How to use the sample
 
