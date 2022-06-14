@@ -25,7 +25,10 @@ struct SelectFeaturesInFeatureLayerView: View {
     )
     
     /// The selected features.
-    @State private var selectedFeatures = [Feature]()
+    @State private var selectedFeatures: [Feature] = []
+    
+    /// The point indicating where to identify features.
+    @State private var identifyPoint: CGPoint?
     
     /// A Boolean value indicating whether to show an alert.
     @State private var showAlert = false
@@ -52,40 +55,40 @@ struct SelectFeaturesInFeatureLayerView: View {
         }
     }
     
-    /// Handles the identification and selection of features in the feature layer.
-    /// Toggles an alert displaying an error if identification fails.
-    private func handleSelection(for mapViewProxy: MapViewProxy, at screenPoint: CGPoint) {
-        Task {
-            do {
-                // Unselects the selected features.
-                featureLayer.unselect(features: selectedFeatures)
-                
-                // Saves the results from the identify method on the map view proxy.
-                let results = try await mapViewProxy.identify(
-                    layer: featureLayer,
-                    screenPoint: screenPoint,
-                    tolerance: 12,
-                    maximumResults: 10
-                )
-                
-                // Updates the selected features to the geo elements from the results.
-                selectedFeatures = results.geoElements as! [Feature]
-                
-                // Selects the features from the selected features array.
-                featureLayer.select(features: selectedFeatures)
-            } catch {
-                // Updates the error and shows an alert.
-                self.error = error
-                showAlert = true
-            }
-        }
-    }
-    
     var body: some View {
         MapViewReader { mapViewProxy in
             MapView(map: map)
                 .onSingleTapGesture { screenPoint, _ in
-                    handleSelection(for: mapViewProxy, at: screenPoint)
+                    identifyPoint = screenPoint
+                }
+                .task(id: identifyPoint) {
+                    guard let identifyPoint = identifyPoint else { return }
+                    
+                    do {
+                        // Unselects the selected features.
+                        featureLayer.unselect(features: selectedFeatures)
+                        
+                        // Saves the results from the identify method on the map view proxy.
+                        let results = try await mapViewProxy.identify(
+                            layer: featureLayer,
+                            screenPoint: identifyPoint,
+                            tolerance: 12,
+                            maximumResults: 10
+                        )
+                        
+                        // Updates the selected features to the geo elements from the results.
+                        selectedFeatures = results.geoElements as! [Feature]
+                        
+                        // Selects the features from the selected features array.
+                        featureLayer.select(features: selectedFeatures)
+                    } catch {
+                        // Updates the error and shows an alert.
+                        self.error = error
+                        showAlert = true
+                    }
+                }
+                .task {
+                    await loadFeatureLayer()
                 }
                 .overlay(alignment: .top) {
                     Text("\(selectedFeatures.count) feature(s) selected.")
@@ -94,9 +97,6 @@ struct SelectFeaturesInFeatureLayerView: View {
                         .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
                 }
                 .alert(isPresented: $showAlert, presentingError: error)
-                .task {
-                    await loadFeatureLayer()
-                }
         }
     }
 }
