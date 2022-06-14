@@ -62,7 +62,7 @@ struct DisplayFeatureLayersView: View {
     
     /// Loads a feature layer with a local geodatabase.
     private func loadGeodatabaseFeatureTable() async throws {
-        // Loads the geodatabase if it does exist.
+        // Loads the geodatabase if it does not exist.
         if geodatabase == nil {
             geodatabase = Geodatabase(fileURL: .laTrails)
             try await geodatabase.load()
@@ -78,10 +78,13 @@ struct DisplayFeatureLayersView: View {
     
     /// Loads a feature layer with a local GeoPackage.
     private func loadGeoPackageFeatureTable() async throws {
+        // Loads the GeoPackage if it does not exist.
         if geoPackage == nil {
             geoPackage = GeoPackage(fileURL: .auroraCO)
             try await geoPackage.load()
         }
+        // Creates a feature layer from the GeoPackage's feature tables and
+        // sets the current feature layer to the first one.
         if let featureTable = geoPackage.geoPackageFeatureTables.first {
             let featureLayer = FeatureLayer(featureTable: featureTable)
             let viewpoint = Viewpoint(latitude: 39.7294, longitude: -104.8319, scale: 5e5)
