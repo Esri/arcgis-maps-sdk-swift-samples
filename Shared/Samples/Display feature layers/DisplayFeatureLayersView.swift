@@ -49,7 +49,7 @@ struct DisplayFeatureLayersView: View {
     }
     
     /// Loads a feature layer with a portal item.
-    private func loadPortalitemFeatureTable() async throws {
+    private func loadPortalItemFeatureTable() async throws {
         let featureLayer = FeatureLayer(
             item: PortalItem(
                 portal: .arcGISOnline(isLoginRequired: false),
@@ -97,7 +97,7 @@ struct DisplayFeatureLayersView: View {
         try await setFeatureLayer(featureLayer, viewpoint: viewpoint)
     }
     
-    /// Sets the map's operational layer to the given feature layer and updates the current viewpoint.
+    /// Sets the map's operational layers to the given feature layer and updates the current viewpoint.
     private func setFeatureLayer(_ featureLayer: FeatureLayer, viewpoint: Viewpoint) async throws {
         // Loads the feature layer.
         try await featureLayer.load()
@@ -115,7 +115,7 @@ struct DisplayFeatureLayersView: View {
             case .serviceFeatureTable:
                 try await loadServiceFeatureTable()
             case .portalItem:
-                try await loadPortalitemFeatureTable()
+                try await loadPortalItemFeatureTable()
             case .geodatabase:
                 try await loadGeodatabaseFeatureTable()
             case .geoPackage:
