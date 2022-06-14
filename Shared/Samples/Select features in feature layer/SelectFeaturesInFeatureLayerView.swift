@@ -30,7 +30,7 @@ struct SelectFeaturesInFeatureLayerView: View {
     
     /// A map with a topographic basemap style and a feature layer.
     @StateObject private var map: Map = {
-        /// A feature layer visualizing GDP per capita.
+        // A feature layer visualizing GDP per capita.
         let featureLayer = FeatureLayer(
             item: PortalItem(
                 portal: .arcGISOnline(isLoginRequired: false),
