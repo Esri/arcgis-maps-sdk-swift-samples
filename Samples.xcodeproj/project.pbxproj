@@ -27,6 +27,18 @@
 		E004A6DC28465C70002A1FE6 /* DisplaySceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6D828465C70002A1FE6 /* DisplaySceneView.swift */; };
 		E004A6E62846A61F002A1FE6 /* StyleGraphicsWithSymbolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6E52846A61F002A1FE6 /* StyleGraphicsWithSymbolsView.swift */; };
 		E004A6ED2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6EC2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift */; };
+		E017827D2857A068001CADB3 /* DisplayFeatureLayersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E017827C2857A068001CADB3 /* DisplayFeatureLayersView.swift */; };
+		E0B6768F2858195100F27B3A /* ScottishWildlifeTrust_ReserveBoundaries_20201102.prj in Resources */ = {isa = PBXBuildFile; fileRef = E0B676822858195100F27B3A /* ScottishWildlifeTrust_ReserveBoundaries_20201102.prj */; };
+		E0B676902858195100F27B3A /* ScottishWildlifeTrust_ReserveBoundaries_20201102.sbn in Resources */ = {isa = PBXBuildFile; fileRef = E0B676832858195100F27B3A /* ScottishWildlifeTrust_ReserveBoundaries_20201102.sbn */; };
+		E0B676912858195100F27B3A /* Scottish Wildlife Trust reserves shapefile Ts and Cs.pdf in Resources */ = {isa = PBXBuildFile; fileRef = E0B676842858195100F27B3A /* Scottish Wildlife Trust reserves shapefile Ts and Cs.pdf */; };
+		E0B676922858195100F27B3A /* ScottishWildlifeTrust_ReserveBoundaries_20201102.dbf in Resources */ = {isa = PBXBuildFile; fileRef = E0B676852858195100F27B3A /* ScottishWildlifeTrust_ReserveBoundaries_20201102.dbf */; };
+		E0B676932858195100F27B3A /* ScottishWildlifeTrust_ReserveBoundaries_20201102.cpg in Resources */ = {isa = PBXBuildFile; fileRef = E0B676862858195100F27B3A /* ScottishWildlifeTrust_ReserveBoundaries_20201102.cpg */; };
+		E0B676942858195100F27B3A /* ScottishWildlifeTrust_ReserveBoundaries_20201102.shp in Resources */ = {isa = PBXBuildFile; fileRef = E0B676872858195100F27B3A /* ScottishWildlifeTrust_ReserveBoundaries_20201102.shp */; };
+		E0B676952858195100F27B3A /* ScottishWildlifeTrust_ReserveBoundaries_20201102.shp.xml in Resources */ = {isa = PBXBuildFile; fileRef = E0B676882858195100F27B3A /* ScottishWildlifeTrust_ReserveBoundaries_20201102.shp.xml */; };
+		E0B676962858195100F27B3A /* ScottishWildlifeTrust_ReserveBoundaries_20201102.shx in Resources */ = {isa = PBXBuildFile; fileRef = E0B676892858195100F27B3A /* ScottishWildlifeTrust_ReserveBoundaries_20201102.shx */; };
+		E0B676972858195100F27B3A /* ScottishWildlifeTrust_ReserveBoundaries_20201102.sbx in Resources */ = {isa = PBXBuildFile; fileRef = E0B6768A2858195100F27B3A /* ScottishWildlifeTrust_ReserveBoundaries_20201102.sbx */; };
+		E0B676982858195100F27B3A /* AuroraCO.gpkg in Resources */ = {isa = PBXBuildFile; fileRef = E0B6768C2858195100F27B3A /* AuroraCO.gpkg */; };
+		E0B676992858195100F27B3A /* LA_Trails.geodatabase in Resources */ = {isa = PBXBuildFile; fileRef = E0B6768E2858195100F27B3A /* LA_Trails.geodatabase */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -102,6 +114,18 @@
 		E004A6D828465C70002A1FE6 /* DisplaySceneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplaySceneView.swift; sourceTree = "<group>"; };
 		E004A6E52846A61F002A1FE6 /* StyleGraphicsWithSymbolsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleGraphicsWithSymbolsView.swift; sourceTree = "<group>"; };
 		E004A6EC2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePlanarAndGeodeticBuffersView.swift; sourceTree = "<group>"; };
+		E017827C2857A068001CADB3 /* DisplayFeatureLayersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayFeatureLayersView.swift; sourceTree = "<group>"; };
+		E0B676822858195100F27B3A /* ScottishWildlifeTrust_ReserveBoundaries_20201102.prj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ScottishWildlifeTrust_ReserveBoundaries_20201102.prj; sourceTree = "<group>"; };
+		E0B676832858195100F27B3A /* ScottishWildlifeTrust_ReserveBoundaries_20201102.sbn */ = {isa = PBXFileReference; lastKnownFileType = file; path = ScottishWildlifeTrust_ReserveBoundaries_20201102.sbn; sourceTree = "<group>"; };
+		E0B676842858195100F27B3A /* Scottish Wildlife Trust reserves shapefile Ts and Cs.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "Scottish Wildlife Trust reserves shapefile Ts and Cs.pdf"; sourceTree = "<group>"; };
+		E0B676852858195100F27B3A /* ScottishWildlifeTrust_ReserveBoundaries_20201102.dbf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ScottishWildlifeTrust_ReserveBoundaries_20201102.dbf; sourceTree = "<group>"; };
+		E0B676862858195100F27B3A /* ScottishWildlifeTrust_ReserveBoundaries_20201102.cpg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ScottishWildlifeTrust_ReserveBoundaries_20201102.cpg; sourceTree = "<group>"; };
+		E0B676872858195100F27B3A /* ScottishWildlifeTrust_ReserveBoundaries_20201102.shp */ = {isa = PBXFileReference; lastKnownFileType = file; path = ScottishWildlifeTrust_ReserveBoundaries_20201102.shp; sourceTree = "<group>"; };
+		E0B676882858195100F27B3A /* ScottishWildlifeTrust_ReserveBoundaries_20201102.shp.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ScottishWildlifeTrust_ReserveBoundaries_20201102.shp.xml; sourceTree = "<group>"; };
+		E0B676892858195100F27B3A /* ScottishWildlifeTrust_ReserveBoundaries_20201102.shx */ = {isa = PBXFileReference; lastKnownFileType = file; path = ScottishWildlifeTrust_ReserveBoundaries_20201102.shx; sourceTree = "<group>"; };
+		E0B6768A2858195100F27B3A /* ScottishWildlifeTrust_ReserveBoundaries_20201102.sbx */ = {isa = PBXFileReference; lastKnownFileType = file; path = ScottishWildlifeTrust_ReserveBoundaries_20201102.sbx; sourceTree = "<group>"; };
+		E0B6768C2858195100F27B3A /* AuroraCO.gpkg */ = {isa = PBXFileReference; lastKnownFileType = file; path = AuroraCO.gpkg; sourceTree = "<group>"; };
+		E0B6768E2858195100F27B3A /* LA_Trails.geodatabase */ = {isa = PBXFileReference; lastKnownFileType = file; path = LA_Trails.geodatabase; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,6 +171,7 @@
 		0074ABAF281742420037244A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				E0B6767F2858195100F27B3A /* Shared Resources */,
 				00181B442846AD3900654571 /* Extensions */,
 				0074ABC028174F430037244A /* Models */,
 				0005580D281872BE00224BC6 /* Views */,
@@ -158,6 +183,7 @@
 			isa = PBXGroup;
 			children = (
 				E004A6EB28495538002A1FE6 /* Create planar and geodetic buffers */,
+				E017827B2857A04E001CADB3 /* Display feature layers */,
 				0074ABB328174B830037244A /* Display map */,
 				00B04FB3283EEB830026C882 /* Display overview map */,
 				E004A6D528465C70002A1FE6 /* Display scene */,
@@ -281,6 +307,64 @@
 			path = "Create planar and geodetic buffers";
 			sourceTree = "<group>";
 		};
+		E017827B2857A04E001CADB3 /* Display feature layers */ = {
+			isa = PBXGroup;
+			children = (
+				E017827C2857A068001CADB3 /* DisplayFeatureLayersView.swift */,
+			);
+			path = "Display feature layers";
+			sourceTree = "<group>";
+		};
+		E0B6767F2858195100F27B3A /* Shared Resources */ = {
+			isa = PBXGroup;
+			children = (
+				E0B676802858195100F27B3A /* Shapefiles */,
+				E0B6768B2858195100F27B3A /* Geopackages */,
+				E0B6768D2858195100F27B3A /* Geodatabases */,
+			);
+			path = "Shared Resources";
+			sourceTree = "<group>";
+		};
+		E0B676802858195100F27B3A /* Shapefiles */ = {
+			isa = PBXGroup;
+			children = (
+				E0B676812858195100F27B3A /* ScottishWildlifeTrust_reserves */,
+			);
+			path = Shapefiles;
+			sourceTree = "<group>";
+		};
+		E0B676812858195100F27B3A /* ScottishWildlifeTrust_reserves */ = {
+			isa = PBXGroup;
+			children = (
+				E0B676822858195100F27B3A /* ScottishWildlifeTrust_ReserveBoundaries_20201102.prj */,
+				E0B676832858195100F27B3A /* ScottishWildlifeTrust_ReserveBoundaries_20201102.sbn */,
+				E0B676842858195100F27B3A /* Scottish Wildlife Trust reserves shapefile Ts and Cs.pdf */,
+				E0B676852858195100F27B3A /* ScottishWildlifeTrust_ReserveBoundaries_20201102.dbf */,
+				E0B676862858195100F27B3A /* ScottishWildlifeTrust_ReserveBoundaries_20201102.cpg */,
+				E0B676872858195100F27B3A /* ScottishWildlifeTrust_ReserveBoundaries_20201102.shp */,
+				E0B676882858195100F27B3A /* ScottishWildlifeTrust_ReserveBoundaries_20201102.shp.xml */,
+				E0B676892858195100F27B3A /* ScottishWildlifeTrust_ReserveBoundaries_20201102.shx */,
+				E0B6768A2858195100F27B3A /* ScottishWildlifeTrust_ReserveBoundaries_20201102.sbx */,
+			);
+			path = ScottishWildlifeTrust_reserves;
+			sourceTree = "<group>";
+		};
+		E0B6768B2858195100F27B3A /* Geopackages */ = {
+			isa = PBXGroup;
+			children = (
+				E0B6768C2858195100F27B3A /* AuroraCO.gpkg */,
+			);
+			path = Geopackages;
+			sourceTree = "<group>";
+		};
+		E0B6768D2858195100F27B3A /* Geodatabases */ = {
+			isa = PBXGroup;
+			children = (
+				E0B6768E2858195100F27B3A /* LA_Trails.geodatabase */,
+			);
+			path = Geodatabases;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -348,7 +432,18 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E0B676972858195100F27B3A /* ScottishWildlifeTrust_ReserveBoundaries_20201102.sbx in Resources */,
+				E0B676942858195100F27B3A /* ScottishWildlifeTrust_ReserveBoundaries_20201102.shp in Resources */,
+				E0B676952858195100F27B3A /* ScottishWildlifeTrust_ReserveBoundaries_20201102.shp.xml in Resources */,
 				00E5402027F3CCA200CF66D5 /* Assets.xcassets in Resources */,
+				E0B6768F2858195100F27B3A /* ScottishWildlifeTrust_ReserveBoundaries_20201102.prj in Resources */,
+				E0B676982858195100F27B3A /* AuroraCO.gpkg in Resources */,
+				E0B676962858195100F27B3A /* ScottishWildlifeTrust_ReserveBoundaries_20201102.shx in Resources */,
+				E0B676902858195100F27B3A /* ScottishWildlifeTrust_ReserveBoundaries_20201102.sbn in Resources */,
+				E0B676932858195100F27B3A /* ScottishWildlifeTrust_ReserveBoundaries_20201102.cpg in Resources */,
+				E0B676912858195100F27B3A /* Scottish Wildlife Trust reserves shapefile Ts and Cs.pdf in Resources */,
+				E0B676992858195100F27B3A /* LA_Trails.geodatabase in Resources */,
+				E0B676922858195100F27B3A /* ScottishWildlifeTrust_ReserveBoundaries_20201102.dbf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -410,6 +505,7 @@
 				E004A6C128414332002A1FE6 /* SetViewpointRotationView.swift in Sources */,
 				00E5401E27F3CCA200CF66D5 /* ContentView.swift in Sources */,
 				00B04FB5283EEBA80026C882 /* DisplayOverviewMapView.swift in Sources */,
+				E017827D2857A068001CADB3 /* DisplayFeatureLayersView.swift in Sources */,
 				0074ABBF28174BCF0037244A /* DisplayMapView.swift in Sources */,
 				E004A6DC28465C70002A1FE6 /* DisplaySceneView.swift in Sources */,
 				00B042E8282EDC690072E1B4 /* SetBasemapView.swift in Sources */,

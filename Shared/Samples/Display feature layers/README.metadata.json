@@ -1,0 +1,36 @@
+{
+    "category": "Features",
+    "description": "Display feature layers from various data sources.",
+    "ignore": false,
+    "images": [
+        "display-feature-layers.png"
+    ],
+    "keywords": [
+        "feature",
+        "geodatabase",
+        "geopackage",
+        "layers",
+        "service",
+        "shapefile",
+        "table",
+        "FeatureLayer",
+        "GeoPackage",
+        "Geodatabase",
+        "PortalItem",
+        "ServiceFeatureTable",
+        "ShapefileFeatureTable"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "FeatureLayer",
+        "GeoPackage",
+        "Geodatabase",
+        "PortalItem",
+        "ServiceFeatureTable",
+        "ShapefileFeatureTable"
+    ],
+    "snippets": [
+        "DisplayFeatureLayersView.swift"
+    ],
+    "title": "Display feature layers"
+}
