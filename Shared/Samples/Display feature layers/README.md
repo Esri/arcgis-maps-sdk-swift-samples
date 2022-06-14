@@ -17,7 +17,7 @@ Tap the button on the toolbar to add feature layers, from different sources, to 
 ## How it works
 
 1. Create a `Map` with a topographic basemap style.
-2. Load a feature layer with a URL.
+2. Load a feature layer with a feature table.
     i. Create a `ServiceFeatureTable` from a URL.
     ii. Create a `FeatureLayer` with the feature table.
 3. Load a feature layer with a portal item.
@@ -33,7 +33,7 @@ Tap the button on the toolbar to add feature layers, from different sources, to 
 6. Load a feature layer with a shapefile.
     i. Create a `ShapefileFeatureTable` using the shapefile name.
     ii. Create a `FeatureLayer` from the feature table.
-7. Add the feature layer to the map's `operationalLayers`.
+7. Add the feature layer to the map's operational layers.
 8. Create a `MapView` with the map.
 
 ## Relevant API
