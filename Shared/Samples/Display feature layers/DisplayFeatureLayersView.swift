@@ -44,8 +44,7 @@ struct DisplayFeatureLayersView: View {
     private func loadServiceFeatureTable() async throws {
         let featureTable = ServiceFeatureTable(url: .damageAssessment)
         let featureLayer = FeatureLayer(featureTable: featureTable)
-        let viewpoint = Viewpoint(latitude: 41.773519, longitude: -88.143104, scale: 4e3)
-        try await setFeatureLayer(featureLayer, viewpoint: viewpoint)
+        try await setFeatureLayer(featureLayer, viewpoint: .napervilleIL)
     }
     
     /// Loads a feature layer with a portal item.
@@ -56,8 +55,7 @@ struct DisplayFeatureLayersView: View {
                 id: .treesOfPortland
             )
         )
-        let viewpoint = Viewpoint(latitude: 45.5266, longitude: -122.6219, scale: 6e3)
-        try await setFeatureLayer(featureLayer, viewpoint: viewpoint)
+        try await setFeatureLayer(featureLayer, viewpoint: .portlandOR)
     }
     
     /// Loads a feature layer with a local geodatabase.
@@ -71,8 +69,7 @@ struct DisplayFeatureLayersView: View {
         // sets the current feature layer to it.
         if let featureTable = geodatabase.getGeodatabaseFeatureTable(tableName: "Trailheads") {
             let featureLayer = FeatureLayer(featureTable: featureTable)
-            let viewpoint = Viewpoint(latitude: 34.0772, longitude: -118.7989, scale: 6e5)
-            try await setFeatureLayer(featureLayer, viewpoint: viewpoint)
+            try await setFeatureLayer(featureLayer, viewpoint: .losAngelesCA)
         }
     }
     
@@ -87,8 +84,7 @@ struct DisplayFeatureLayersView: View {
         // sets the current feature layer to the first one.
         if let featureTable = geoPackage.geoPackageFeatureTables.first {
             let featureLayer = FeatureLayer(featureTable: featureTable)
-            let viewpoint = Viewpoint(latitude: 39.7294, longitude: -104.8319, scale: 5e5)
-            try await setFeatureLayer(featureLayer, viewpoint: viewpoint)
+            try await setFeatureLayer(featureLayer, viewpoint: .auroraCO)
         }
     }
     
@@ -96,8 +92,7 @@ struct DisplayFeatureLayersView: View {
     private func loadShapefileFeatureTable() async throws {
         let shapefileFeatureTable = ShapefileFeatureTable(fileURL: .reserveBoundaries)
         let featureLayer = FeatureLayer(featureTable: shapefileFeatureTable)
-        let viewpoint = Viewpoint(latitude: 56.641344, longitude: -3.889066, scale: 6e6)
-        try await setFeatureLayer(featureLayer, viewpoint: viewpoint)
+        try await setFeatureLayer(featureLayer, viewpoint: .scotland)
     }
     
     /// Sets the map's operational layers to the given feature layer and updates the current viewpoint.
@@ -184,7 +179,7 @@ private class AuthenticationModel: AuthenticationChallengeHandler {
 
 private extension DisplayFeatureLayersView {
     /// The various feature layer sources.
-    enum FeatureLayerSource: CaseIterable {
+    private enum FeatureLayerSource: CaseIterable {
         case shapefile, geoPackage, geodatabase, portalItem, serviceFeatureTable
         
         /// A human-readable label for each feature layer source.
@@ -198,6 +193,19 @@ private extension DisplayFeatureLayersView {
             }
         }
     }
+}
+
+private extension Viewpoint {
+    /// The viewpoint for Naperville, IL.
+    static let napervilleIL = Viewpoint(latitude: 41.773519, longitude: -88.143104, scale: 4e3)
+    /// The viewpoint for Portland, OR.
+    static let portlandOR = Viewpoint(latitude: 45.5266, longitude: -122.6219, scale: 6e3)
+    /// The viewpoint for Los Angeles, CA.
+    static let losAngelesCA = Viewpoint(latitude: 34.0772, longitude: -118.7989, scale: 6e5)
+    /// The viewpoint for Aurora, CO.
+    static let auroraCO = Viewpoint(latitude: 39.7294, longitude: -104.8319, scale: 5e5)
+    /// The viewpoint for Scotland.
+    static let scotland = Viewpoint(latitude: 56.641344, longitude: -3.889066, scale: 6e6)
 }
 
 private extension Item.ID {
