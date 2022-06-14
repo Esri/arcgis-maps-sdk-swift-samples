@@ -2,8 +2,7 @@
 
 Show your current position on the map, as well as switch between different types of auto-pan modes.
 
-![Screenshot of show device location sample with auto-pan mode off](show-device-location-off.png)
-![Screenshot of show device location sample with compass navigation auto-pan mode](show-device-location-compass-navigation.png)
+![Screenshot of show device location sample](show-device-location.png)
 
 ## Use case
 
