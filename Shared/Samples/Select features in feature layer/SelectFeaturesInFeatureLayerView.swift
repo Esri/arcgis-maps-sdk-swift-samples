@@ -16,14 +16,6 @@ import SwiftUI
 import ArcGIS
 
 struct SelectFeaturesInFeatureLayerView: View {
-    /// A feature layer visualizing GDP per capita.
-    private let featureLayer = FeatureLayer(
-        item: PortalItem(
-            portal: .arcGISOnline(isLoginRequired: false),
-            id: .gdpPerCapita
-        )
-    )
-    
     /// The selected features.
     @State private var selectedFeatures: [Feature] = []
     
@@ -36,23 +28,22 @@ struct SelectFeaturesInFeatureLayerView: View {
     /// The error to display in the alert.
     @State private var error: Error?
     
-    /// A map with a topographic basemap style.
-    @StateObject private var map = Map(basemapStyle: .arcGISTopographic)
+    /// A map with a topographic basemap style and a feature layer.
+    @StateObject private var map: Map = {
+        /// A feature layer visualizing GDP per capita.
+        let featureLayer = FeatureLayer(
+            item: PortalItem(
+                portal: .arcGISOnline(isLoginRequired: false),
+                id: .gdpPerCapita
+            )
+        )
+        let map = Map(basemapStyle: .arcGISTopographic)
+        map.addOperationalLayer(featureLayer)
+        return map
+    }()
     
-    /// Loads the feature layer and adds it to the operational layer of the map.
-    /// Toggles an alert displaying an error if loading fails.
-    private func loadFeatureLayer() async {
-        do {
-            // Loads the feature layer.
-            try await featureLayer.load()
-            
-            // Adds the feature layer to the operational layer of the map.
-            map.addOperationalLayer(featureLayer)
-        } catch {
-            // Updates the error and shows an alert.
-            self.error = error
-            showAlert = true
-        }
+    private var featureLayer: FeatureLayer {
+        map.operationalLayers.first as! FeatureLayer
     }
     
     var body: some View {
@@ -86,9 +77,6 @@ struct SelectFeaturesInFeatureLayerView: View {
                         self.error = error
                         showAlert = true
                     }
-                }
-                .task {
-                    await loadFeatureLayer()
                 }
                 .overlay(alignment: .top) {
                     Text("\(selectedFeatures.count) feature(s) selected.")
