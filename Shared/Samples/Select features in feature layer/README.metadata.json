@@ -14,16 +14,14 @@
         "Feature",
         "FeatureLayer",
         "MapViewProxy",
-        "MapViewReader",
-        "ServiceFeatureTable"
+        "MapViewReader"
     ],
     "redirect_from": [],
     "relevant_apis": [
         "Feature",
         "FeatureLayer",
         "MapViewProxy",
-        "MapViewReader",
-        "ServiceFeatureTable"
+        "MapViewReader"
     ],
     "snippets": [
         "SelectFeaturesInFeatureLayerView.swift"
