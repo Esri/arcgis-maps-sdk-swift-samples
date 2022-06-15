@@ -201,6 +201,7 @@ struct DownloadVectorTilesToLocalCacheView: View {
                         // Configure the export vector tiles task.
                         await configureTask()
                     }
+                    .disabled(isDownloading)
                     .fullScreenCover(isPresented: $showResults) {
                         NavigationView {
                             MapView(map: Map(basemap: Basemap(baseLayer: vectorTiledLayer)), viewpoint: Viewpoint(targetExtent: extent!))
@@ -215,7 +216,6 @@ struct DownloadVectorTilesToLocalCacheView: View {
                                 }
                         }
                     }
-                    .disabled(isDownloading)
                     .overlay {
                         // NOTE: Temporary Placeholder for Progress View
                         if isDownloading {
@@ -253,6 +253,7 @@ struct DownloadVectorTilesToLocalCacheView: View {
         .onDisappear {
             // Removes the temporary files.
             removeTemporaryFiles()
+            try? FileManager.default.removeItem(at: .temporaryDirectory)
         }
     }
 }
