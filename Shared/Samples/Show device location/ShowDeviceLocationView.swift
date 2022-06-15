@@ -61,10 +61,9 @@ struct ShowDeviceLocationView: View {
         VStack {
             MapView(map: map)
                 .locationDisplay(locationDisplay)
-                .onViewpointChanged(kind: .centerAndScale) { _ in
-                    // Updates the auto-pan mode when the viewpoint changes.
-                    // Any scrolling or zooming behavior sets the mode to off.
-                    autoPanMode = locationDisplay.autoPanMode
+                .onReceive(locationDisplay.$autoPanMode) { mode in
+                    // Updates the auto-pan mode when an update is received.
+                    autoPanMode = mode
                 }
                 .task {
                     await startLocationDataSource()
