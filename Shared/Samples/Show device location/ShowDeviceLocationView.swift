@@ -61,17 +61,14 @@ struct ShowDeviceLocationView: View {
         VStack {
             MapView(map: map)
                 .locationDisplay(locationDisplay)
+                .onViewpointChanged(kind: .centerAndScale) { _ in
+                    // Updates the auto-pan mode when the viewpoint changes.
+                    // Any scrolling or zooming behavior sets the mode to off.
+                    autoPanMode = locationDisplay.autoPanMode
+                }
                 .task {
                     await startLocationDataSource()
                 }
-                .gesture(
-                    DragGesture()
-                        .onChanged { _ in
-                            // Sets the auto-pan mode to off when the map is dragged.
-                            autoPanMode = .off
-                            locationDisplay.autoPanMode = autoPanMode
-                        }
-                )
                 .onDisappear {
                     Task {
                         // Stops the location data source.
