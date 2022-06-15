@@ -22,6 +22,7 @@ struct DownloadVectorTilesToLocalCacheView: View {
     /// The error shown in the alert.
     @State private var error: Error?
     
+    /// A Boolean value indicating whether the task is loaded.
     @State private var taskIsLoaded = false
     
     /// The extent of the area of interest.
@@ -51,25 +52,6 @@ struct DownloadVectorTilesToLocalCacheView: View {
     /// A red box to represent the area of interest.
     @StateObject private var areaOfInterestGraphic = Graphic(symbol: SimpleLineSymbol(style: .solid, color: .red, width: 2))
     
-    /// A Boolean value indicating whether downloading is an option.
-    private var canDownload: Bool {
-        return taskIsLoaded && job == nil
-    }
-    
-    /// A map with a basemap containing the vector tiled layer of the results.
-    private var resultsMap: Map {
-        let map = Map(basemap: Basemap(baseLayer: vectorTiledLayer))
-        if let extent = extent {
-            map.initialViewpoint = Viewpoint(targetExtent: extent)
-        }
-        return map
-    }
-    
-    /// An error representing different download errors.
-    private enum DownloadError: Error {
-        case notAllowed
-    }
-    
     /// Creates a temporary directory to store all items.
     private func createTemporaryDirectory() {
         do {
@@ -84,7 +66,6 @@ struct DownloadVectorTilesToLocalCacheView: View {
     private func removeTemporaryFiles() {
         try? FileManager.default.removeItem(at: .vtpkTemporaryURL)
         try? FileManager.default.removeItem(at: .styleTemporaryURL)
-        try? FileManager.default.removeItem(at: .temporaryDirectory)
     }
     
     /// Sets up and loads the export vector tiles task.
@@ -119,6 +100,23 @@ struct DownloadVectorTilesToLocalCacheView: View {
         extent = Envelope(min: min, max: max)
         // Updates the geometry of the graphic.
         areaOfInterestGraphic.geometry = extent
+    }
+    
+    /// Attempts to download the vector tiles based on the area of interest.
+    private func downloadVectorTiles() async {
+        // Ensures the vector tile source info can be exported.
+        if let exportVectorTilesTask = exportVectorTilesTask,
+           let vectorTileSourceInfo = exportVectorTilesTask.vectorTileSourceInfo,
+           vectorTileSourceInfo.exportTilesAllowed {
+            // Initiates the download.
+            await initiateDownload(exportTask: exportVectorTilesTask)
+            // Handles the results of the download.
+            await handleDownloadResults()
+        } else {
+            // Shows an error if exporting is not allowed.
+            error = DownloadError.notAllowed
+            showAlert = true
+        }
     }
     
     /// Initiates the export vector tiles task to download a tile package.
@@ -156,6 +154,8 @@ struct DownloadVectorTilesToLocalCacheView: View {
         // Awaits and saves the job's results.
         let result = await job.result
         
+        self.job = nil
+        
         switch result {
         case .success(let output):
             if let vectorTileCache = output.vectorTileCache,
@@ -167,27 +167,9 @@ struct DownloadVectorTilesToLocalCacheView: View {
                     itemResourceCache: itemResourceCache
                 )
                 showResults = true
-                self.job = nil
             }
         case .failure(let error):
             self.error = error
-            showAlert = true
-        }
-    }
-    
-    /// Attempts to download the vector tiles based on the area of interest.
-    private func downloadVectorTiles() async {
-        // Ensures the vector tile source info can be exported.
-        if let exportVectorTilesTask = exportVectorTilesTask,
-           let vectorTileSourceInfo = exportVectorTilesTask.vectorTileSourceInfo,
-           vectorTileSourceInfo.exportTilesAllowed {
-            // Initiates the download.
-            await initiateDownload(exportTask: exportVectorTilesTask)
-            // Handles the results of the download.
-            await handleDownloadResults()
-        } else {
-            // Shows an error if exporting is not allowed.
-            error = DownloadError.notAllowed
             showAlert = true
         }
     }
@@ -201,7 +183,7 @@ struct DownloadVectorTilesToLocalCacheView: View {
                         viewpoint: Viewpoint(latitude: 34.049, longitude: -117.181, scale: 1e4),
                         graphicsOverlays: [graphicsOverlay]
                     )
-                    .onVisibleAreaChanged { _ in
+                    .onViewpointChanged(kind: .centerAndScale) { _ in
                         // Updates the area of interest when the visible area changes.
                         updateAreaOfInterest(mapView: mapViewProxy, geometry: geometry)
                     }
@@ -219,11 +201,9 @@ struct DownloadVectorTilesToLocalCacheView: View {
                         // Configure the export vector tiles task.
                         await configureTask()
                     }
-                    .disabled(!canDownload)
                     .fullScreenCover(isPresented: $showResults) {
                         NavigationView {
-                            MapView(map: resultsMap)
-                                .interactiveDismissDisabled()
+                            MapView(map: Map(basemap: Basemap(baseLayer: vectorTiledLayer)), viewpoint: Viewpoint(targetExtent: extent!))
                                 .navigationTitle("Vector tile package")
                                 .navigationBarTitleDisplayMode(.inline)
                                 .toolbar {
@@ -235,13 +215,25 @@ struct DownloadVectorTilesToLocalCacheView: View {
                                 }
                         }
                     }
+                    .disabled(isDownloading)
                     .overlay {
-                        // FIXME: Temporary Placeholder for Progress View
-                        if job != nil {
-                            ProgressView()
-                                .padding()
-                                .background(.white.opacity(0.6))
-                                .clipShape(RoundedRectangle(cornerRadius: 15.0))
+                        // NOTE: Temporary Placeholder for Progress View
+                        if isDownloading {
+                            VStack {
+                                ProgressView()
+                                    .padding()
+                                
+                                Button("Cancel") {
+                                    Task {
+                                        await job?.cancel()
+                                        job = nil
+                                    }
+                                    removeTemporaryFiles()
+                                }
+                            }
+                            .padding()
+                            .background(.white.opacity(0.6))
+                            .clipShape(RoundedRectangle(cornerRadius: 15.0))
                         }
                     }
                 }
@@ -292,4 +284,21 @@ private extension URL {
     /// A URL to the temporary directory to store the style item resources.
     static let styleTemporaryURL = temporaryDirectory
         .appendingPathComponent("styleItemResources", isDirectory: true)
+}
+
+private extension DownloadVectorTilesToLocalCacheView {
+    /// An error representing different download errors.
+    private enum DownloadError: Error {
+        case notAllowed
+    }
+    
+    /// A Boolean value indicating whether the current job is downloading.
+    private var isDownloading: Bool {
+        return job != nil
+    }
+    
+    /// A Boolean value indicating whether downloading is an option.
+    private var canDownload: Bool {
+        return taskIsLoaded && !isDownloading
+    }
 }
