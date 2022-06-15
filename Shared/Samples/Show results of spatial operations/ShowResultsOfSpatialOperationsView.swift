@@ -22,11 +22,11 @@ struct ShowResultsOfSpatialOperationsView: View {
     /// A map with a topographic basemap style and initial viewpoint.
     @StateObject private var map = makeMap()
     
-    /// A graphic representing the result of the spatial operation.
-    @StateObject private var resultGraphic = makeResultGraphic()
-    
     /// A graphics overlay for the map view.
     @StateObject private var graphicsOverlay = makeGraphicsOverlay()
+    
+    /// A graphic representing the result of the spatial operation.
+    @StateObject private var resultGraphic = Graphic(symbol: SimpleFillSymbol(color: .red, outline: .simple))
     
     /// An enum of spatial operations.
     private enum SpatialOperation: CaseIterable {
@@ -53,27 +53,19 @@ struct ShowResultsOfSpatialOperationsView: View {
         return map
     }
     
-    /// Creates a graphic for the result.
-    private static func makeResultGraphic() -> Graphic {
-        let lineSymbol = SimpleLineSymbol(style: .solid, color: .blue, width: 1)
-        return Graphic(symbol: SimpleFillSymbol(style: .solid, color: .red, outline: lineSymbol))
-    }
-    
     /// Creates the graphics overlay.
     private static func makeGraphicsOverlay() -> GraphicsOverlay {
         let overlay = GraphicsOverlay()
         
-        let lineSymbol = SimpleLineSymbol(style: .solid, color: .blue, width: 1)
-        
         // Creates the graphics for the two polygons.
         let polygonOneGraphic = Graphic(
             geometry: .polygon1,
-            symbol: SimpleFillSymbol(style: .solid, color: .blue, outline: lineSymbol)
+            symbol: SimpleFillSymbol(color: .blue, outline: .simple)
         )
         
         let polygonTwoGraphic = Graphic(
             geometry: .polygon2,
-            symbol: SimpleFillSymbol(style: .solid, color: .green, outline: lineSymbol)
+            symbol: SimpleFillSymbol(color: .green, outline: .simple)
         )
         
         // Adds the graphics to the overlay.
@@ -126,6 +118,11 @@ struct ShowResultsOfSpatialOperationsView: View {
             graphicsOverlay.removeGraphic(resultGraphic)
         }
     }
+}
+
+private extension LineSymbol {
+    /// A solid, thin, black line.
+    static let simple = SimpleLineSymbol(style: .solid, color: .black, width: 1)
 }
 
 private extension Geometry {
