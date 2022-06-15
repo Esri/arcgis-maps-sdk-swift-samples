@@ -304,8 +304,8 @@
 				E004A6F2284E4FEB002A1FE6 /* ShowResultsOfSpatialOperationsView.swift */,
 			);
 			path = "Show results of spatial operations";
-            sourceTree = "<group>";
-        };
+			sourceTree = "<group>";
+		};
 		E004A6F4284FA3C5002A1FE6 /* Select features in feature layer */ = {
 			isa = PBXGroup;
 			children = (
