@@ -32,7 +32,8 @@ struct ShowResultsOfSpatialOperationsView: View {
     
     /// An enum of spatial operations.
     private enum SpatialOperation: CaseIterable {
-        case none, union, difference, symmetricDifference, intersection
+        case intersection, symmetricDifference, difference, union, none
+        
         /// Human readable label strings for each spatial operation.
         var label: String {
             switch self {
