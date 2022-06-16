@@ -76,20 +76,22 @@ struct ShowDeviceLocationView: View {
                 }
             
             Menu("Location Settings") {
-                Toggle("Show Location", isOn: Binding(get: {
-                    showLocation
-                }, set: {
-                    showLocation = $0
-                    // Updates the location display's show location value.
-                    locationDisplay.showLocation = showLocation
-                }))
+                Toggle(
+                    "Show Location",
+                    isOn: Binding(
+                        get: { showLocation },
+                        set: {
+                            showLocation = $0
+                            // Updates the location display's show location value.
+                            locationDisplay.showLocation = showLocation
+                        }
+                    )
+                )
                 
                 Picker(
                     "Auto-Pan Mode",
                     selection: Binding(
-                        get: {
-                            autoPanMode
-                        },
+                        get: { autoPanMode },
                         set: {
                             autoPanMode = $0
                             // Updates the location display's auto-pan mode.
