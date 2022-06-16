@@ -13,7 +13,7 @@
 // limitations under the License.
 
 // This script downloads portal item data. It takes 2 arguments.
-// - The first is a path to the samples directory $SRCROOT/Shared/Samples.
+// - The first is a path to the samples directory, $SRCROOT/Shared/Samples.
 // - The second is a path to the download directory, $SRCROOT/Portal Data.
 //
 // A mapping of item IDs to filenames is maintained in the download directory.
@@ -32,14 +32,14 @@ struct SampleDependency: Decodable {
     let offlineData: [String]
 }
 
-/// A type that describes an item in a portal.
+/// A Portal Item and its data URL.
 struct PortalItem {
     static let arcGISOnlinePortalURL = URL(string: "https://www.arcgis.com")!
     
     /// The identifier of the item.
     let identifier: String
     
-    /// A URL connstructed with the default ArcGIS portal and portal item ID,
+    /// A URL constructed with the default ArcGIS Portal and portal item ID,
     /// such as `{portalURL}/sharing/rest/content/items/{itemIdentifier}/data`
     /// for the given item in the given portal.
     var dataURL: URL {
@@ -67,10 +67,10 @@ private func parseJSON(at url: URL) -> SampleDependency? {
     return try? decoder.decode(SampleDependency.self, from: data)
 }
 
-/// Returns the name of the file in the ZIP archive at the given URL.
+/// Returns the name of the file in a ZIP archive at the given URL.
 /// - Parameter url: The URL to a ZIP archive, assuming it only contains 1 file.
 /// - Throws: Exceptions when running the `zipinfo` process.
-/// - Returns: The file name.
+/// - Returns: The filename.
 func nameOfFileInArchive(at url: URL) throws -> String {
     let outputPipe = Pipe()
     let process = Process()
@@ -99,7 +99,7 @@ func numberOfFilesInArchive(at url: URL) throws -> Int {
     
     // The totals info looks something like
     // "28 files, 1382747 bytes uncompressed, 1190007 bytes compressed:  13.9%"
-    // To extract the count, cut the string when first space char is met.
+    // To extract the count, cut the string at the first whitespace.
     let totalsInfo = outputPipe.fileHandleForReading.readDataToEndOfFile()
     // `UInt8(32)` is space in ASCII.
     let totalsCount = String(data: totalsInfo.prefix { $0 != 32 }, encoding: .utf8)!
@@ -108,7 +108,7 @@ func numberOfFilesInArchive(at url: URL) throws -> Int {
 
 /// Uncompresses a ZIP archive at the source URL into the destination URL.
 /// - Parameters:
-///   - sourceURL: The URL of a ZIP archive.
+///   - sourceURL: The URL to a ZIP archive.
 ///   - destinationURL: The URL at which to uncompress the archive.
 /// - Throws: Exceptions when running the `unzip` process.
 func uncompressArchive(at sourceURL: URL, to destinationURL: URL) throws {
@@ -202,7 +202,7 @@ if !FileManager.default.fileExists(atPath: downloadDirectoryURL.path) {
     }
 }
 
-/// Portal Items retrieved from iterating through all samples metadata.
+/// Portal Items created from iterating through all metadata's "offline\_data".
 let portalItems: [PortalItem] = {
     do {
         // Find all subdirectories under the root Samples directory.
@@ -242,7 +242,7 @@ portalItems.forEach { portalItem in
         logger.info("Item \(portalItem.identifier) has already been downloaded.")
     } else {
         do {
-            // Creates a enclosing directory with portal item ID as its name.
+            // Creates an enclosing directory with portal item ID as its name.
             try FileManager.default.createDirectory(at: destinationURL, withIntermediateDirectories: false)
         } catch {
             logger.error("Error creating download directory: \(error.localizedDescription).")
@@ -266,7 +266,7 @@ portalItems.forEach { portalItem in
 }
 dispatchGroup.wait()
 
-// Updates the downloaded items plist record if needed.
+// Updates the downloaded items property list record if needed.
 if downloadedItems != previousDownloadedItems {
     do {
         let data = try PropertyListEncoder().encode(downloadedItems)
