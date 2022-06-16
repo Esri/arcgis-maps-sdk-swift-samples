@@ -112,7 +112,9 @@ struct ShowResultsOfSpatialOperationsView: View {
 
 private extension LineSymbol {
     /// A solid, thin, black line.
-    static let simple = SimpleLineSymbol(style: .solid, color: .black, width: 1)
+    static var simple: LineSymbol {
+        SimpleLineSymbol(style: .solid, color: .black, width: 1)
+    }
 }
 
 private extension Geometry {
