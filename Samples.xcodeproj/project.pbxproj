@@ -95,6 +95,7 @@
 		00B042E5282EDC690072E1B4 /* SetBasemapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetBasemapView.swift; sourceTree = "<group>"; };
 		00B04FB4283EEBA80026C882 /* DisplayOverviewMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayOverviewMapView.swift; sourceTree = "<group>"; };
 		00CB9137284814A4005C2C5D /* SearchWithGeocodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchWithGeocodeView.swift; sourceTree = "<group>"; };
+		00CCB8A2285AAD7D00BBAB70 /* DowloadPortalItemData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DowloadPortalItemData.swift; sourceTree = "<group>"; };
 		00E5400C27F3CCA100CF66D5 /* SamplesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SamplesApp.swift; sourceTree = "<group>"; };
 		00E5400D27F3CCA100CF66D5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		00E5400E27F3CCA200CF66D5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -144,6 +145,7 @@
 			children = (
 				003D7C342821EBCC009DDFD2 /* masquerade */,
 				003D7C352821EBCC009DDFD2 /* GenerateSampleViewSourceCode.swift */,
+				00CCB8A2285AAD7D00BBAB70 /* DowloadPortalItemData.swift */,
 			);
 			path = Scripts;
 			sourceTree = "<group>";
