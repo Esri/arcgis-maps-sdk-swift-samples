@@ -94,29 +94,19 @@ struct ShowResultsOfSpatialOperationsView: View {
     }
     
     var body: some View {
-        VStack {
-            MapView(map: map, graphicsOverlays: [graphicsOverlay])
-            
-            Menu("Choose Operation") {
-                Picker("Spatial Operation", selection: $spatialOperation) {
-                    ForEach(SpatialOperation.allCases.reversed(), id: \.self) { operation in
-                        Text(operation.label)
-                    }
-                }
-            }
+        MapView(map: map, graphicsOverlays: [graphicsOverlay])
             .onChange(of: spatialOperation) { _ in
                 performOperation()
             }
-            .padding()
-        }
-        .onAppear {
-            // Adds the result graphic to the graphics overlay.
-            graphicsOverlay.addGraphic(resultGraphic)
-        }
-        .onDisappear {
-            // Removes the result graphic from the graphics overlay.
-            graphicsOverlay.removeGraphic(resultGraphic)
-        }
+            .toolbar {
+                ToolbarItem(placement: .bottomBar) {
+                    Picker("Choose Operation", selection: $spatialOperation) {
+                        ForEach(SpatialOperation.allCases, id: \.self) { operation in
+                            Text(operation.label)
+                        }
+                    }
+                }
+            }
     }
 }
 
