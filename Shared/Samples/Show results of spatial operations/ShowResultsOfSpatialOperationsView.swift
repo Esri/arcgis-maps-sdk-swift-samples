@@ -26,7 +26,9 @@ struct ShowResultsOfSpatialOperationsView: View {
     @StateObject private var graphicsOverlay = makeGraphicsOverlay()
     
     /// A graphic representing the result of the spatial operation.
-    @StateObject private var resultGraphic = Graphic(symbol: SimpleFillSymbol(color: .red, outline: .simple))
+    private var resultGraphic: Graphic {
+        return graphicsOverlay.graphics.last!
+    }
     
     /// An enum of spatial operations.
     private enum SpatialOperation: CaseIterable {
@@ -55,9 +57,7 @@ struct ShowResultsOfSpatialOperationsView: View {
     
     /// Creates the graphics overlay.
     private static func makeGraphicsOverlay() -> GraphicsOverlay {
-        let overlay = GraphicsOverlay()
-        
-        // Creates the graphics for the two polygons.
+        // Creates the graphics for the two polygons and result.
         let polygonOneGraphic = Graphic(
             geometry: .polygon1,
             symbol: SimpleFillSymbol(color: .blue, outline: .simple)
@@ -68,9 +68,12 @@ struct ShowResultsOfSpatialOperationsView: View {
             symbol: SimpleFillSymbol(color: .green, outline: .simple)
         )
         
+        let resultGraphic = Graphic(
+            symbol: SimpleFillSymbol(color: .red, outline: .simple)
+        )
+        
         // Adds the graphics to the overlay.
-        overlay.addGraphics([polygonOneGraphic, polygonTwoGraphic])
-        return overlay
+        return GraphicsOverlay(graphics: [polygonOneGraphic, polygonTwoGraphic, resultGraphic])
     }
     
     /// Updates the result graphic based on the spatial operation.
