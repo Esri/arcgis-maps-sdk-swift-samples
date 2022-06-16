@@ -58,56 +58,56 @@ struct ShowDeviceLocationView: View {
     }
     
     var body: some View {
-        VStack {
-            MapView(map: map)
-                .locationDisplay(locationDisplay)
-                .onReceive(locationDisplay.$autoPanMode) { mode in
-                    // Updates the auto-pan mode when an update is received.
-                    autoPanMode = mode
+        MapView(map: map)
+            .locationDisplay(locationDisplay)
+            .onReceive(locationDisplay.$autoPanMode) { mode in
+                // Updates the auto-pan mode when an update is received.
+                autoPanMode = mode
+            }
+            .task {
+                await startLocationDataSource()
+            }
+            .onDisappear {
+                Task {
+                    // Stops the location data source.
+                    await locationDisplay.dataSource.stop()
                 }
-                .task {
-                    await startLocationDataSource()
-                }
-                .onDisappear {
-                    Task {
-                        // Stops the location data source.
-                        await locationDisplay.dataSource.stop()
-                    }
-                }
-            
-            Menu("Location Settings") {
-                Toggle(
-                    "Show Location",
-                    isOn: Binding(
-                        get: { showLocation },
-                        set: {
-                            showLocation = $0
-                            // Updates the location display's show location value.
-                            locationDisplay.showLocation = showLocation
+            }
+            .toolbar {
+                ToolbarItem(placement: .bottomBar) {
+                    Menu("Location Settings") {
+                        Toggle(
+                            "Show Location",
+                            isOn: Binding(
+                                get: { showLocation },
+                                set: {
+                                    showLocation = $0
+                                    // Updates the location display's show location value.
+                                    locationDisplay.showLocation = showLocation
+                                }
+                            )
+                        )
+                        
+                        Picker(
+                            "Auto-Pan Mode",
+                            selection: Binding(
+                                get: { autoPanMode },
+                                set: {
+                                    autoPanMode = $0
+                                    // Updates the location display's auto-pan mode.
+                                    locationDisplay.autoPanMode = autoPanMode
+                                }
+                            )
+                        ) {
+                            ForEach(LocationDisplay.AutoPanMode.allCases, id: \.self) { mode in
+                                Label(mode.label, image: mode.imageName)
+                                    .imageScale(.large)
+                            }
                         }
-                    )
-                )
-                
-                Picker(
-                    "Auto-Pan Mode",
-                    selection: Binding(
-                        get: { autoPanMode },
-                        set: {
-                            autoPanMode = $0
-                            // Updates the location display's auto-pan mode.
-                            locationDisplay.autoPanMode = autoPanMode
-                        }
-                    )
-                ) {
-                    ForEach(LocationDisplay.AutoPanMode.allCases, id: \.self) { mode in
-                        Label(mode.label, image: mode.imageName)
-                            .imageScale(.large)
                     }
                 }
             }
-            .padding()
-        }
-        .alert(isPresented: $showAlert, presentingError: error)
+            .alert(isPresented: $showAlert, presentingError: error)
     }
 }
 
