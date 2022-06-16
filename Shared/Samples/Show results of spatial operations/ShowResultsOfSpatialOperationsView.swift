@@ -104,7 +104,7 @@ struct ShowResultsOfSpatialOperationsView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
-                    Picker("Choose Operation", selection: $spatialOperation) {
+                    Picker("Spatial Operation", selection: $spatialOperation) {
                         ForEach(SpatialOperation.allCases, id: \.self) { operation in
                             Text(operation.label)
                         }
