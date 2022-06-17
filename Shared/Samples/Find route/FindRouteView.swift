@@ -49,8 +49,11 @@ struct FindRouteView: View {
     
     /// The graphics overlay for the route.
     @StateObject private var routeGraphicsOverlay: GraphicsOverlay = {
-        let routeGraphic = Graphic(symbol: SimpleLineSymbol(style: .solid, color: .yellow, width: 5))
-        return GraphicsOverlay(graphics: [routeGraphic])
+        return GraphicsOverlay(
+            graphics: [
+                Graphic(symbol: SimpleLineSymbol(style: .solid, color: .yellow, width: 5))
+            ]
+        )
     }()
     
     /// A route task from a URL
