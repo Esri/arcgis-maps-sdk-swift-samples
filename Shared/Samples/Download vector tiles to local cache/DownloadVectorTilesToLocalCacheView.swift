@@ -214,17 +214,20 @@ struct DownloadVectorTilesToLocalCacheView: View {
                     .alert(isPresented: $showAlert, presentingError: error)
                     .fullScreenCover(isPresented: $showResults) {
                         NavigationView {
-                            MapView(map: Map(basemap: Basemap(baseLayer: vectorTiledLayer)), viewpoint: Viewpoint(targetExtent: extent!))
-                                .navigationTitle("Vector tile package")
-                                .navigationBarTitleDisplayMode(.inline)
-                                .toolbar {
-                                    ToolbarItem(placement: .navigationBarTrailing) {
-                                        Button("Done") {
-                                            showResults = false
-                                            removeTemporaryFiles()
-                                        }
+                            MapView(
+                                map:Map(basemap: Basemap(baseLayer: vectorTiledLayer)),
+                                viewpoint: Viewpoint(targetExtent: extent!)
+                            )
+                            .navigationTitle("Vector tile package")
+                            .navigationBarTitleDisplayMode(.inline)
+                            .toolbar {
+                                ToolbarItem(placement: .navigationBarTrailing) {
+                                    Button("Done") {
+                                        showResults = false
+                                        removeTemporaryFiles()
                                     }
                                 }
+                            }
                         }
                     }
                     .overlay {
