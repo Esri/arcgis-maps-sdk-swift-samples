@@ -1,0 +1,45 @@
+{
+    "category": "Route and directions",
+    "description": "Display directions for a route between two points.",
+    "ignore": false,
+    "images": [
+        "find-route-solved-route.png",
+        "find-route-directions-list.png"
+    ],
+    "keywords": [
+        "directions",
+        "driving",
+        "navigation",
+        "network",
+        "network analysis",
+        "route",
+        "routing",
+        "shortest path",
+        "turn-by-turn",
+        "DirectionManeuver",
+        "Route",
+        "RouteParameters",
+        "RouteParameters.setStops(_:)",
+        "RouteResult",
+        "RouteTask",
+        "RouteTask.createDefaultParameters()",
+        "RouteTask.solveRoute(routeParameters:)",
+        "Stop"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "DirectionManeuver",
+        "Route",
+        "RouteParameters",
+        "RouteParameters.setStops(_:)",
+        "RouteResult",
+        "RouteTask",
+        "RouteTask.createDefaultParameters()",
+        "RouteTask.solveRoute(routeParameters:)",
+        "Stop"
+    ],
+    "snippets": [
+        "FindRouteView.swift"
+    ],
+    "title": "Find route"
+}
