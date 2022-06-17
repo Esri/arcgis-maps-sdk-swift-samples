@@ -1,0 +1,41 @@
+{
+    "category": "Geometry",
+    "description": "Find the union, intersection, or difference of two geometries.",
+    "ignore": false,
+    "images": [
+        "show-results-of-spatial-operations.png"
+    ],
+    "keywords": [
+        "analysis",
+        "combine",
+        "difference",
+        "geometry",
+        "intersection",
+        "merge",
+        "polygon",
+        "union",
+        "Geometry",
+        "GeometryEngine",
+        "Graphic",
+        "GraphicsOverlay",
+        "static GeometryEngine.difference(_:_:)",
+        "static GeometryEngine.intersection(_:_:)",
+        "static GeometryEngine.symmetricDifference(_:_:)",
+        "static GeometryEngine.union(_:_:)"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Geometry",
+        "GeometryEngine",
+        "Graphic",
+        "GraphicsOverlay",
+        "static GeometryEngine.difference(_:_:)",
+        "static GeometryEngine.intersection(_:_:)",
+        "static GeometryEngine.symmetricDifference(_:_:)",
+        "static GeometryEngine.union(_:_:)"
+    ],
+    "snippets": [
+        "ShowResultsOfSpatialOperationsView.swift"
+    ],
+    "title": "Show results of spatial operations"
+}
