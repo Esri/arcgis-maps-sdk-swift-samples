@@ -60,7 +60,7 @@ struct FindRouteView: View {
     private let routeTask = RouteTask(url: .routeTaskURL)
     
     /// The stops for this sample.
-    private var stops: [Stop] = [.stopOne, .stopTwo]
+    private let stops: [Stop] = [.stopOne, .stopTwo]
     
     /// The graphic for the first stop.
     private var stopOneGraphic: Graphic { stopGraphicsOverlay.graphics.first! }
