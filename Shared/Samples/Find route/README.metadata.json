@@ -3,8 +3,8 @@
     "description": "Display directions for a route between two points.",
     "ignore": false,
     "images": [
-        "find-route-solved-route.png",
-        "find-route-directions-list.png"
+        "find-route-directions-list.png",
+        "find-route-solved-route.png"
     ],
     "keywords": [
         "directions",
