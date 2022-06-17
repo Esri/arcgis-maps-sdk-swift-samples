@@ -44,13 +44,38 @@ struct DownloadVectorTilesToLocalCacheView: View {
     @State private var vectorTiledLayer: ArcGISVectorTiledLayer?
     
     /// A map with an ArcGIS streets night basemap style.
-    @StateObject private var map = Map(basemapStyle: .arcGISStreetsNight)
+    @StateObject private var map: Map = {
+        let map = Map(basemapStyle: .arcGISStreetsNight)
+        map.initialViewpoint = Viewpoint(latitude: 34.049, longitude: -117.181, scale: 1e4)
+        return map
+    }()
     
     /// A graphics overlay to display the area of interest.
-    @StateObject private var graphicsOverlay = GraphicsOverlay()
+    @StateObject private var graphicsOverlay = GraphicsOverlay(
+        graphics: [
+            Graphic(symbol: SimpleLineSymbol(style: .solid, color: .red, width: 2))
+        ]
+    )
+    
+    /// An error representing different download errors.
+    private enum DownloadError: Error {
+        case notAllowed
+    }
     
     /// A red box to represent the area of interest.
-    @StateObject private var areaOfInterestGraphic = Graphic(symbol: SimpleLineSymbol(style: .solid, color: .red, width: 2))
+    private var areaOfInterestGraphic: Graphic {
+        graphicsOverlay.graphics.first!
+    }
+    
+    /// A Boolean value indicating whether the current job is downloading.
+    private var isDownloading: Bool {
+        job != nil
+    }
+    
+    /// A Boolean value indicating whether downloading is an option.
+    private var canDownload: Bool {
+        taskIsLoaded && !isDownloading
+    }
     
     /// Creates a temporary directory to store all items.
     private func createTemporaryDirectory() {
@@ -122,8 +147,7 @@ struct DownloadVectorTilesToLocalCacheView: View {
     /// Initiates the export vector tiles task to download a tile package.
     private func initiateDownload(exportTask: ExportVectorTilesTask) async {
         // Ensures extent and max scale have values.
-        guard let extent = extent else { return }
-        guard let maxScale = maxScale else { return }
+        guard let extent = extent, let maxScale = maxScale else { return }
         
         do {
             // Creates the parameters for the export task.
@@ -175,14 +199,9 @@ struct DownloadVectorTilesToLocalCacheView: View {
     }
     
     var body: some View {
-        VStack {
-            GeometryReader { geometry in
-                MapViewReader { mapViewProxy in
-                    MapView(
-                        map: map,
-                        viewpoint: Viewpoint(latitude: 34.049, longitude: -117.181, scale: 1e4),
-                        graphicsOverlays: [graphicsOverlay]
-                    )
+        GeometryReader { geometry in
+            MapViewReader { mapViewProxy in
+                MapView(map: map, graphicsOverlays: [graphicsOverlay])
                     .onViewpointChanged(kind: .centerAndScale) { _ in
                         // Updates the area of interest when the visible area changes.
                         updateAreaOfInterest(mapView: mapViewProxy, geometry: geometry)
@@ -191,17 +210,8 @@ struct DownloadVectorTilesToLocalCacheView: View {
                         // Updates the max scale to 10% of the map's scale.
                         maxScale = scale * 0.1
                     }
-                    .onAppear {
-                        // Creates the temporary directory.
-                        createTemporaryDirectory()
-                        // Adds the area of interest graphic to the graphics overlay.
-                        graphicsOverlay.addGraphic(areaOfInterestGraphic)
-                    }
-                    .task {
-                        // Configure the export vector tiles task.
-                        await configureTask()
-                    }
                     .disabled(isDownloading)
+                    .alert(isPresented: $showAlert, presentingError: error)
                     .fullScreenCover(isPresented: $showResults) {
                         NavigationView {
                             MapView(map: Map(basemap: Basemap(baseLayer: vectorTiledLayer)), viewpoint: Viewpoint(targetExtent: extent!))
@@ -211,6 +221,7 @@ struct DownloadVectorTilesToLocalCacheView: View {
                                     ToolbarItem(placement: .navigationBarTrailing) {
                                         Button("Done") {
                                             showResults = false
+                                            removeTemporaryFiles()
                                         }
                                     }
                                 }
@@ -227,8 +238,8 @@ struct DownloadVectorTilesToLocalCacheView: View {
                                     Task {
                                         await job?.cancel()
                                         job = nil
+                                        removeTemporaryFiles()
                                     }
-                                    removeTemporaryFiles()
                                 }
                             }
                             .padding()
@@ -236,37 +247,52 @@ struct DownloadVectorTilesToLocalCacheView: View {
                             .clipShape(RoundedRectangle(cornerRadius: 15.0))
                         }
                     }
-                }
-            }
-            HStack {
-                Button("Download Vector Tiles") {
-                    Task {
-                        // Downloads the vector tiles in the area of interest.
-                        await downloadVectorTiles()
+                    .task {
+                        // Configure the export vector tiles task.
+                        await configureTask()
                     }
-                }
-                .disabled(!canDownload)
+                    .onAppear {
+                        // Creates the temporary directory.
+                        createTemporaryDirectory()
+                    }
+                    .onDisappear {
+                        // Removes the temporary files.
+                        removeTemporaryFiles()
+                        try? FileManager.default.removeItem(at: .temporaryDirectory)
+                    }
+                    .toolbar {
+                        ToolbarItem(placement: .bottomBar) {
+                            Button("Download Vector Tiles") {
+                                Task {
+                                    // Downloads the vector tiles in the area of interest.
+                                    await downloadVectorTiles()
+                                }
+                            }
+                            .disabled(!canDownload)
+                        }
+                    }
             }
-            .padding()
         }
-        .alert(isPresented: $showAlert, presentingError: error)
-        .onDisappear {
-            // Removes the temporary files.
-            removeTemporaryFiles()
-            try? FileManager.default.removeItem(at: .temporaryDirectory)
-        }
+    }
+}
+
+private extension Envelope {
+    func expanded(by factor: Double) -> Envelope {
+        let builder = EnvelopeBuilder(envelope: self)
+        builder.expand(factor: factor)
+        return builder.toGeometry()
     }
 }
 
 private extension GeometryProxy {
     /// A `CGPoint` that has x and y coordinates at 10% the size's width and height, respectively.
     func min() -> CGPoint {
-        return CGPoint(x: self.size.width * 0.1, y: self.size.height * 0.1)
+        CGPoint(x: self.size.width * 0.1, y: self.size.height * 0.1)
     }
     
     /// A `CGPoint` that has x and y coordinates at 90% the size's width and height, respectively.
     func max() -> CGPoint {
-        return CGPoint(x: self.size.width * 0.9, y: self.size.height * 0.9)
+        CGPoint(x: self.size.width * 0.9, y: self.size.height * 0.90)
     }
 }
 
@@ -278,28 +304,15 @@ private extension URL {
         .appendingPathComponent(UUID().uuidString)
     
     /// A URL to the temporary directory to store the exported vector tile package.
-    static let vtpkTemporaryURL = temporaryDirectory
-        .appendingPathComponent("myTileCache", isDirectory: false)
-        .appendingPathExtension("vtpk")
+    static var vtpkTemporaryURL: URL {
+        temporaryDirectory
+            .appendingPathComponent("myTileCache", isDirectory: false)
+            .appendingPathExtension("vtpk")
+    }
     
     /// A URL to the temporary directory to store the style item resources.
-    static let styleTemporaryURL = temporaryDirectory
-        .appendingPathComponent("styleItemResources", isDirectory: true)
-}
-
-private extension DownloadVectorTilesToLocalCacheView {
-    /// An error representing different download errors.
-    private enum DownloadError: Error {
-        case notAllowed
-    }
-    
-    /// A Boolean value indicating whether the current job is downloading.
-    private var isDownloading: Bool {
-        return job != nil
-    }
-    
-    /// A Boolean value indicating whether downloading is an option.
-    private var canDownload: Bool {
-        return taskIsLoaded && !isDownloading
+    static var styleTemporaryURL: URL {
+        temporaryDirectory
+            .appendingPathComponent("styleItemResources", isDirectory: true)
     }
 }
