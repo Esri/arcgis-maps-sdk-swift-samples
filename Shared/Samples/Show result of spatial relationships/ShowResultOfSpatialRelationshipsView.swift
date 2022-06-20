@@ -175,29 +175,32 @@ struct ShowResultOfSpatialRelationshipsView: View {
                 }
                 .task(id: identifyPoint) {
                     guard let identifyPoint = identifyPoint else { return }
-                    
-                    // Clears the selection and hides the callout.
+                    // Clears the selection.
                     graphicsOverlay.clearSelection()
-                    calloutPlacement = nil
                     
-                    do {
-                        // Identifies the graphic at the given screen point.
-                        let results = try await mapView.identify(
-                            graphicsOverlay: graphicsOverlay,
-                            screenPoint: identifyPoint,
-                            tolerance: 12,
-                            maximumResults: 1
-                        )
-                        
-                        if let identifiedGraphic = results.graphics.first {
-                            // Selects the identified graphic.
-                            identifiedGraphic.isSelected = true
-                            // Shows the graphic's relationships.
-                            showRelationships(for: identifiedGraphic, at: identifyPoint)
+                    if calloutPlacement == nil {
+                        do {
+                            // Identifies the graphic at the given screen point.
+                            let results = try await mapView.identify(
+                                graphicsOverlay: graphicsOverlay,
+                                screenPoint: identifyPoint,
+                                tolerance: 12,
+                                maximumResults: 1
+                            )
+                            
+                            if let identifiedGraphic = results.graphics.first {
+                                // Selects the identified graphic.
+                                identifiedGraphic.isSelected = true
+                                // Shows the graphic's relationships.
+                                showRelationships(for: identifiedGraphic, at: identifyPoint)
+                            }
+                        } catch {
+                            self.error = error
+                            showAlert = true
                         }
-                    } catch {
-                        self.error = error
-                        showAlert = true
+                    } else {
+                        // Hides the callout.
+                        calloutPlacement = nil
                     }
                 }
                 .overlay(alignment: .top) {
