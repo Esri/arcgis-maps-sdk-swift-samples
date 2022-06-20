@@ -1,0 +1,46 @@
+{
+    "category": "",
+    "description": "Determine spatial relationships between two geometries.",
+    "ignore": false,
+    "images": [
+        "show-result-of-spatial-relationships.png"
+    ],
+    "keywords": [
+        "geometries",
+        "relationship",
+        "spatial analysis",
+        "Geometry",
+        "GeometryEngine",
+        "Graphic",
+        "Point",
+        "Polygon",
+        "Polyline",
+        "static GeometryEngine.doesGeometry(_:contain:)",
+        "static GeometryEngine.isGeometry(_:crossing:)",
+        "static GeometryEngine.isGeometry(_:disjointWith:)",
+        "static GeometryEngine.isGeometry(_:intersecting:)",
+        "static GeometryEngine.isGeometry(_:overlapping:)",
+        "static GeometryEngine.isGeometry(_:touching:)",
+        "static GeometryEngine.isGeometry(_:within:)"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Geometry",
+        "GeometryEngine",
+        "Graphic",
+        "Point",
+        "Polygon",
+        "Polyline",
+        "static GeometryEngine.doesGeometry(_:contain:)",
+        "static GeometryEngine.isGeometry(_:crossing:)",
+        "static GeometryEngine.isGeometry(_:disjointWith:)",
+        "static GeometryEngine.isGeometry(_:intersecting:)",
+        "static GeometryEngine.isGeometry(_:overlapping:)",
+        "static GeometryEngine.isGeometry(_:touching:)",
+        "static GeometryEngine.isGeometry(_:within:)"
+    ],
+    "snippets": [
+        "ShowResultOfSpatialRelationshipsView.swift"
+    ],
+    "title": "Show result of spatial relationships"
+}
