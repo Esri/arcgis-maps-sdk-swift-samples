@@ -15,7 +15,7 @@
 import SwiftUI
 import ArcGIS
 
-struct AddGraphicsWithRendererView: View {
+struct StyleGraphicsWithRendererView: View {
     /// A map with a topographic basemap style and an initial viewpoint.
     @StateObject private var map: Map = {
         let map = Map(basemapStyle: .arcGISTopographic)
@@ -135,14 +135,14 @@ struct AddGraphicsWithRendererView: View {
     }
 }
 
-private extension AddGraphicsWithRendererView {
+private extension StyleGraphicsWithRendererView {
     /// Creates a heart-shape geometry with Bezier and elliptic arc segments.
     ///
     /// - Parameters:
     ///   - center: The center of the square that contains the heart shape.
     ///   - sideLength: The side length of the square.
     /// - Returns: A heart-shape geometry.
-    static func makeHeartGeometry(center: Point, sideLength: Double) -> Geometry? {
+    private static func makeHeartGeometry(center: Point, sideLength: Double) -> Geometry? {
         guard sideLength > 0 else { return nil }
         let spatialReference = center.spatialReference
         // Defines the x and y coordinates to simplify the calculation.

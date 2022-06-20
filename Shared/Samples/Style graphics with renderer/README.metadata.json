@@ -3,7 +3,7 @@
     "description": "A renderer allows you to change the style of all graphics in a graphics overlay by referencing a single symbol style. A renderer will only affect graphics that do not specify their own symbol style.",
     "ignore": false,
     "images": [
-        "add-graphics-with-renderer.png"
+        "style-graphics-with-renderer.png"
     ],
     "keywords": [
         "arc",
@@ -51,7 +51,7 @@
         "static GeometryEngine.geodesicEllipse(parameters:)"
     ],
     "snippets": [
-        "AddGraphicsWithRendererView.swift"
+        "StyleGraphicsWithRendererView.swift"
     ],
-    "title": "Add graphics with renderer"
+    "title": "Style graphics with renderer"
 }
