@@ -43,7 +43,7 @@ struct AddSceneLayerFromServiceView: View {
 }
 
 private extension URL {
-    /// The URL of the scene's service. Displays buildings  in Brest, France.
+    /// The URL of the scene's service. Displays buildings in Brest, France.
     static var brestBuildingServiceURL: URL {
         URL(string: "https://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/Buildings_Brest/SceneServer/layers/0")!
     }
