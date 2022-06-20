@@ -24,10 +24,12 @@ struct AddSceneLayerFromServiceView: View {
         let camera = Camera(locationPoint: point, heading: 41.64729875588979, pitch: 71.2017391571523, roll: 0)
         scene.initialViewpoint = Viewpoint(targetExtent: point, camera: camera)
         
-        // Creates a surface and assigns it to the scene's base surface.
+        // Creates a surface and adds an elevation source.
         let surface = Surface()
         let elevationSource = ArcGISTiledElevationSource(url: .worldElevationServiceURL)
         surface.addElevationSource(ArcGISTiledElevationSource(url: .worldElevationServiceURL))
+        
+        // Sets the surface to the scene's base surface.
         scene.baseSurface = surface
         
         // Adds a scene layer from a URL to the scene's operational layers.
