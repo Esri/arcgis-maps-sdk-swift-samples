@@ -59,7 +59,7 @@ struct ShowResultOfSpatialRelationshipsView: View {
     }
     
     /// Shows the relationships for the selected graphic.
-    private func showRelationships(for graphic: Graphic, at point: CGPoint) {
+    private func showRelationships(for graphic: Graphic) {
         guard let selectedGeometry = graphic.geometry,
               let allRelationships = allRelationships(for: selectedGeometry),
               let mapPoint = mapPoint else {
@@ -192,7 +192,7 @@ struct ShowResultOfSpatialRelationshipsView: View {
                                 // Selects the identified graphic.
                                 identifiedGraphic.isSelected = true
                                 // Shows the graphic's relationships.
-                                showRelationships(for: identifiedGraphic, at: identifyPoint)
+                                showRelationships(for: identifiedGraphic)
                             }
                         } catch {
                             self.error = error
