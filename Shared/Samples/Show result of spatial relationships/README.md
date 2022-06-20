@@ -25,8 +25,8 @@ Tap on the map to select one of the three graphics, and its geometry will be use
 * Point
 * Polygon
 * Polyline
-* static GeometryEngine.isGeometry(_:crossing:)
 * static GeometryEngine.doesGeometry(_:contain:)
+* static GeometryEngine.isGeometry(_:crossing:)
 * static GeometryEngine.isGeometry(_:disjointWith:)
 * static GeometryEngine.isGeometry(_:intersecting:)
 * static GeometryEngine.isGeometry(_:overlapping:)
