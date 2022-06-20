@@ -2,7 +2,7 @@
 
 Display an ArcGIS scene layer from a service.
 
-![Screenshot of add scene layer from a service sample](add-scene-layer-from-a-service.png)
+![Screenshot of add scene layer from service sample](add-scene-layer-from-service.png)
 
 ## Use case
 
