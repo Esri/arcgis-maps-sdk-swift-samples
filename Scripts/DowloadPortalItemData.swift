@@ -235,6 +235,7 @@ var downloadedItems = previousDownloadedItems
 
 // Asynchronously downloads portal items.
 let dispatchGroup = DispatchGroup()
+
 portalItems.forEach { portalItem in
     let destinationURL = downloadDirectoryURL.appendingPathComponent(portalItem.identifier, isDirectory: true)
     // Check a directory exists or not, to see if an item is already downloaded.
