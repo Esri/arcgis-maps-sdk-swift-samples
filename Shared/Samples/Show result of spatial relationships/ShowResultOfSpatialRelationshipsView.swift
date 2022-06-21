@@ -121,9 +121,9 @@ struct ShowResultOfSpatialRelationshipsView: View {
     
     /// Checks the different relationships between two geometries and returns the result as an array of strings.
     /// - Parameters:
-    ///   - geometry1: The input geometry to be compared
-    ///   - geometry2: The input geometry to be compared
-    /// - Returns: An array of strings representing relationship
+    ///   - geometry1: The input geometry to be compared.
+    ///   - geometry2: The input geometry to be compared.
+    /// - Returns: An array of strings representing relationship.
     private func getSpatialRelationships(of geometry1: Geometry, with geometry2: Geometry) -> [String] {
         var relationships = [String]()
         if GeometryEngine.isGeometry(geometry1, crossing: geometry2) {
