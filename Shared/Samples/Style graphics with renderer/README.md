@@ -39,7 +39,7 @@ Pan and zoom on the map to view graphics for points, lines, and polygons (includ
 
 ## Additional information
 
-To set unique symbols across a number of graphics (e.g. showing graphics of individual landmarks), see "Add graphics with symbols" sample.
+To set unique symbols across a number of graphics (e.g. showing graphics of individual landmarks), see "Style graphics with symbols" sample.
 
 ## Tags
 
