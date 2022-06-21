@@ -142,7 +142,7 @@ private extension StyleGraphicsWithRendererView {
     ///   - center: The center of the square that contains the heart shape.
     ///   - sideLength: The side length of the square.
     /// - Returns: A heart-shape geometry.
-    private static func makeHeartGeometry(center: Point, sideLength: Double) -> Geometry? {
+    static func makeHeartPolygon(center: Point, sideLength: Double) -> Polygon? {
         guard sideLength > 0 else { return nil }
         let spatialReference = center.spatialReference
         // Defines the x and y coordinates to simplify the calculation.
@@ -164,7 +164,7 @@ private extension StyleGraphicsWithRendererView {
             spatialReference: spatialReference
         )!
         
-        //  Creates the top left arc segment.
+        // Creates the top left arc segment.
         let leftArcCenter = Point(x: minX + sideLength * 0.25, y: minY + sideLength * 0.75, spatialReference: spatialReference)
         let leftArc = EllipticArcSegment.circularEllipticArcEllipticArcSegment(
             centerPoint: leftArcCenter,
