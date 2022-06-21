@@ -16,6 +16,12 @@ import SwiftUI
 import ArcGIS
 
 struct FindRouteView: View {
+    /// A Boolean value indicating whether to show an alert.
+    @State private var showAlert = false
+    
+    /// The error shown in the alert.
+    @State private var error: Error?
+    
     /// The direction maneuvers for the calculated route.
     @State private var directionsList: [DirectionManeuver] = []
     
@@ -79,14 +85,19 @@ struct FindRouteView: View {
     
     /// Creates the parameters for the route.
     private func createRouteParameters() async {
-        // Creates the default parameters.
-        let parameters = try? await routeTask.createDefaultParameters()
-        
-        // Sets return directions on the parameters to true.
-        parameters?.returnDirections = true
-        
-        // Updates the parameters for the route.
-        routeParameters = parameters
+        do {
+            // Creates the default parameters.
+            let parameters = try await routeTask.createDefaultParameters()
+            
+            // Sets return directions on the parameters to true.
+            parameters.returnDirections = true
+            
+            // Updates the parameters for the route.
+            routeParameters = parameters
+        } catch {
+            self.error = error
+            showAlert = true
+        }
     }
     
     /// Finds the route from stop one to stop two.
@@ -102,12 +113,17 @@ struct FindRouteView: View {
         // Sets the stops for the route parameters.
         routeParameters.setStops(stops)
         
-        // Solves the route based on the given route parameters.
-        let routeResult = try? await routeTask.solveRoute(routeParameters: routeParameters)
-        if let firstRoute = routeResult?.routes.first {
-            // Updates the route geometry and list of directions.
-            routeGraphic.geometry = firstRoute.routeGeometry
-            directionsList = firstRoute.directionManeuvers
+        do {
+            // Solves the route based on the given route parameters.
+            let routeResult = try await routeTask.solveRoute(routeParameters: routeParameters)
+            if let firstRoute = routeResult.routes.first {
+                // Updates the route geometry and list of directions.
+                routeGraphic.geometry = firstRoute.routeGeometry
+                directionsList = firstRoute.directionManeuvers
+            }
+        } catch {
+            self.error = error
+            showAlert = true
         }
     }
     
