@@ -26,7 +26,6 @@ struct AddSceneLayerFromServiceView: View {
         
         // Creates a surface and adds an elevation source.
         let surface = Surface()
-        let elevationSource = ArcGISTiledElevationSource(url: .worldElevationServiceURL)
         surface.addElevationSource(ArcGISTiledElevationSource(url: .worldElevationServiceURL))
         
         // Sets the surface to the scene's base surface.
