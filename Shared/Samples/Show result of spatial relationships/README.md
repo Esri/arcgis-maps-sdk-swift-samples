@@ -14,7 +14,7 @@ Tap on the map to select one of the three graphics, and its geometry will be use
 
 ## How it works
 
-1. Get the geometry from two different graphics. In this example, the geometry of the selected grpahic is compared to the geometry of each unselected graphic.
+1. Get the geometry from two different graphics. In this example, the geometry of the selected graphic is compared to the geometry of each unselected graphic.
 2. Use the methods in `GeometryEngine` - `isGeometry(_:crossing:)`, `doesGeometry(_:contain:)`, `isGeometry(_:disjointWith:)`, `isGeometry(_:intersecting:)`, `isGeometry(_:overlapping:)`, `isGeometry(_:touching:)`, and `isGeometry(_:within:)`, to check the relationship between the geometries, e.g. *contains*, *disjoint*, *intersects*, etc. The relationship exists if the method returns `true`.
 
 ## Relevant API
