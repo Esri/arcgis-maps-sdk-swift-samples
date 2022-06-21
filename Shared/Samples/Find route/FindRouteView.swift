@@ -60,13 +60,9 @@ struct FindRouteView: View {
     }()
     
     /// The graphics overlay for the route.
-    @StateObject private var routeGraphicsOverlay: GraphicsOverlay = {
-        return GraphicsOverlay(
-            graphics: [
-                Graphic(symbol: SimpleLineSymbol(style: .solid, color: .yellow, width: 5))
-            ]
-        )
-    }()
+    @StateObject private var routeGraphicsOverlay = GraphicsOverlay(graphics: [
+        Graphic(symbol: SimpleLineSymbol(style: .solid, color: .yellow, width: 5))
+    ])
     
     /// A route task from a URL
     private let routeTask = RouteTask(url: .routeTaskURL)
