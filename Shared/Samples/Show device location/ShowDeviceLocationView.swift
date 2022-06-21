@@ -17,103 +17,117 @@ import ArcGIS
 import CoreLocation
 
 struct ShowDeviceLocationView: View {
-    /// A Boolean value indicating whether to show an alert.
-    @State private var showAlert = false
-    
-    /// The error to display in the alert.
-    @State private var error: Error?
-    
-    /// A Boolean value indicating whether to device location.
-    @State private var showLocation = false
-    
-    /// The current auto-pan mode.
-    @State private var autoPanMode = LocationDisplay.AutoPanMode.off
-    
-    /// A map with a standard imagery basemap style.
-    @StateObject private var map = Map(basemapStyle: .arcGISImageryStandard)
-    
-    /// The `CLLocationManager` used to request location permissions.
-    private let locationManager = CLLocationManager()
-    
-    /// A location display using the system location data source.
-    private let locationDisplay = LocationDisplay(dataSource: SystemLocationDataSource())
-    
-    /// Starts the location data source.
-    private func startLocationDataSource() async {
-        // Requests location permission if it has not yet been determined.
-        if locationManager.authorizationStatus == .notDetermined {
-            locationManager.requestWhenInUseAuthorization()
-        }
-        do {
-            // Starts the location display data source.
-            try await locationDisplay.dataSource.start()
-            
-            locationDisplay.showLocation = showLocation
-            locationDisplay.autoPanMode = autoPanMode
-        } catch {
-            // Shows an alert with an error if starting the data source fails.
-            self.error = error
-            self.showAlert = true
-        }
-    }
+    /// The view model for this sample.
+    @StateObject private var model = Model()
     
     var body: some View {
-        MapView(map: map)
-            .locationDisplay(locationDisplay)
-            .onReceive(locationDisplay.$autoPanMode) { mode in
-                // Updates the auto-pan mode when an update is received.
-                autoPanMode = mode
-            }
+        MapView(map: model.map)
+            .locationDisplay(model.locationDisplay)
             .task {
-                await startLocationDataSource()
+                await model.startLocationDataSource()
+                await model.updateAutoPanMode()
             }
             .onDisappear {
-                Task {
-                    // Stops the location data source.
-                    await locationDisplay.dataSource.stop()
-                }
+                model.stopLocationDataSource()
             }
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
                     Menu("Location Settings") {
-                        Toggle(
-                            "Show Location",
-                            isOn: Binding(
-                                get: { showLocation },
-                                set: {
-                                    showLocation = $0
-                                    // Updates the location display's show location value.
-                                    locationDisplay.showLocation = showLocation
-                                }
-                            )
-                        )
+                        Toggle("Show Location", isOn: $model.showLocation)
                         
-                        Picker(
-                            "Auto-Pan Mode",
-                            selection: Binding(
-                                get: { autoPanMode },
-                                set: {
-                                    autoPanMode = $0
-                                    // Updates the location display's auto-pan mode.
-                                    locationDisplay.autoPanMode = autoPanMode
-                                }
-                            )
-                        ) {
+                        Picker("Auto-Pan Mode", selection: $model.autoPanMode) {
                             ForEach(LocationDisplay.AutoPanMode.allCases, id: \.self) { mode in
                                 Label(mode.label, image: mode.imageName)
                                     .imageScale(.large)
                             }
                         }
                     }
+                    .disabled(model.settingsDisabled)
                 }
             }
-            .alert(isPresented: $showAlert, presentingError: error)
+            .alert(isPresented: $model.showAlert, presentingError: model.error)
+    }
+}
+
+private extension ShowDeviceLocationView {
+    /// The view model for this sample.
+    @MainActor private class Model: ObservableObject {
+        /// A Boolean value indicating whether to show the device location.
+        @Published var showLocation: Bool {
+            didSet {
+                locationDisplay.showLocation = showLocation
+            }
+        }
+        
+        /// The current auto-pan mode.
+        @Published var autoPanMode: LocationDisplay.AutoPanMode {
+            didSet {
+                locationDisplay.autoPanMode = autoPanMode
+            }
+        }
+        
+        /// A Boolean value indicating whether the settings button is disabled.
+        @Published var settingsDisabled = true
+        
+        /// A Boolean value indicating whether to show an alert.
+        @Published var showAlert = false
+        
+        /// The error to display in the alert.
+        var error: Error?
+        
+        /// A map with a standard imagery basemap style.
+        let map = Map(basemapStyle: .arcGISImageryStandard)
+        
+        /// A location display using the system location data source.
+        let locationDisplay: LocationDisplay
+        
+        init() {
+            let locationDisplay = LocationDisplay(dataSource: SystemLocationDataSource())
+            self.locationDisplay = locationDisplay
+            self.showLocation = locationDisplay.showLocation
+            self.autoPanMode = locationDisplay.autoPanMode
+        }
+        
+        /// Starts the location data source.
+        func startLocationDataSource() async {
+            // Requests location permission if it has not yet been determined.
+            let locationManager = CLLocationManager()
+            if locationManager.authorizationStatus == .notDetermined {
+                locationManager.requestWhenInUseAuthorization()
+            }
+            do {
+                // Starts the location display data source.
+                try await locationDisplay.dataSource.start()
+                settingsDisabled = false
+            } catch {
+                // Shows an alert with an error if starting the data source fails.
+                self.error = error
+                showAlert = true
+            }
+        }
+        
+        /// Stops the location data source.
+        func stopLocationDataSource() {
+            Task {
+                await locationDisplay.dataSource.stop()
+            }
+        }
+        
+        /// Updates the current auto-pan mode if it does not match the location display's auto-pan mode.
+        func updateAutoPanMode() async {
+            for await mode in locationDisplay.$autoPanMode {
+                if autoPanMode != mode {
+                    autoPanMode = mode
+                }
+            }
+        }
     }
 }
 
 private extension LocationDisplay.AutoPanMode {
     static var allCases: [LocationDisplay.AutoPanMode] = [.off, .recenter, .navigation, .compassNavigation]
     
+    /// A human-readable label for each auto-pan mode.
     var label: String {
         switch self {
         case .off: return "Off"
@@ -123,6 +137,7 @@ private extension LocationDisplay.AutoPanMode {
         }
     }
     
+    /// The image name  for each auto-pan mode.
     var imageName: String {
         switch self {
         case .off: return "LocationDisplayOffIcon"
