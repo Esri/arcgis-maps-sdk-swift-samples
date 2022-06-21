@@ -20,6 +20,7 @@
 		00B042E8282EDC690072E1B4 /* SetBasemapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B042E5282EDC690072E1B4 /* SetBasemapView.swift */; };
 		00B04FB5283EEBA80026C882 /* DisplayOverviewMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B04FB4283EEBA80026C882 /* DisplayOverviewMapView.swift */; };
 		00CB9138284814A4005C2C5D /* SearchWithGeocodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00CB9137284814A4005C2C5D /* SearchWithGeocodeView.swift */; };
+		00CCB8A5285BAF8700BBAB70 /* OnDemandResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00CCB8A4285BAF8700BBAB70 /* OnDemandResource.swift */; };
 		00E5401C27F3CCA200CF66D5 /* SamplesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5400C27F3CCA100CF66D5 /* SamplesApp.swift */; };
 		00E5401E27F3CCA200CF66D5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5400D27F3CCA100CF66D5 /* ContentView.swift */; };
 		00E5402027F3CCA200CF66D5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00E5400E27F3CCA200CF66D5 /* Assets.xcassets */; };
@@ -96,6 +97,7 @@
 		00B04FB4283EEBA80026C882 /* DisplayOverviewMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayOverviewMapView.swift; sourceTree = "<group>"; };
 		00CB9137284814A4005C2C5D /* SearchWithGeocodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchWithGeocodeView.swift; sourceTree = "<group>"; };
 		00CCB8A2285AAD7D00BBAB70 /* DowloadPortalItemData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DowloadPortalItemData.swift; sourceTree = "<group>"; };
+		00CCB8A4285BAF8700BBAB70 /* OnDemandResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnDemandResource.swift; sourceTree = "<group>"; };
 		00E5400C27F3CCA100CF66D5 /* SamplesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SamplesApp.swift; sourceTree = "<group>"; };
 		00E5400D27F3CCA100CF66D5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		00E5400E27F3CCA200CF66D5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -189,6 +191,7 @@
 			isa = PBXGroup;
 			children = (
 				0074ABC128174F430037244A /* Sample.swift */,
+				00CCB8A4285BAF8700BBAB70 /* OnDemandResource.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -225,14 +228,22 @@
 			path = "Search with geocode";
 			sourceTree = "<group>";
 		};
+		00CCB8A6285D059300BBAB70 /* Portal Data */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Portal Data";
+			sourceTree = SOURCE_ROOT;
+		};
 		00E5400627F3CCA100CF66D5 = {
 			isa = PBXGroup;
 			children = (
 				00B042DE282ED6E80072E1B4 /* arcgis-runtime-toolkit-swift */,
 				00966EE62811F64D009D3DD7 /* iOS */,
-				00E5400B27F3CCA100CF66D5 /* Shared */,
-				003D7C332821EBCC009DDFD2 /* Scripts */,
+				00CCB8A6285D059300BBAB70 /* Portal Data */,
 				00E5401427F3CCA200CF66D5 /* Products */,
+				003D7C332821EBCC009DDFD2 /* Scripts */,
+				00E5400B27F3CCA100CF66D5 /* Shared */,
 			);
 			sourceTree = "<group>";
 		};
@@ -417,7 +428,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "SAMPLES_DIRECTORY=\"${SRCROOT}/Shared/Samples\"\nDOWNLOAD_DIRECTORY=\"${SRCROOT}/Portal Data\"\nxcrun --sdk macosx swift \"${SRCROOT}/Scripts/download-portal-item-data.swift\" \"$SAMPLES_DIRECTORY\" \"$DOWNLOAD_DIRECTORY\"\n";
+			shellScript = "SAMPLES_DIRECTORY=\"${SRCROOT}/Shared/Samples\"\nDOWNLOAD_DIRECTORY=\"${SRCROOT}/Portal Data\"\nxcrun --sdk macosx swift \"${SRCROOT}/Scripts/DowloadPortalItemData.swift\" \"$SAMPLES_DIRECTORY\" \"$DOWNLOAD_DIRECTORY\"\n";
 		};
 		00E5402B27F77A5A00CF66D5 /* Lint Sources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -447,6 +458,7 @@
 				0005580C28185C0600224BC6 /* SampleList.swift in Sources */,
 				E004A6E028466279002A1FE6 /* ShowCalloutView.swift in Sources */,
 				001C6DE127FE8A9400D472C2 /* AppSecrets.swift.masque in Sources */,
+				00CCB8A5285BAF8700BBAB70 /* OnDemandResource.swift in Sources */,
 				E004A6ED2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift in Sources */,
 				00181B462846AD7100654571 /* View+Alert.swift in Sources */,
 				0005580A2817C51E00224BC6 /* SampleDetailView.swift in Sources */,
