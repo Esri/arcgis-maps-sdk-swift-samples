@@ -113,7 +113,7 @@ struct StyleGraphicsWithRendererView: View {
         // Defines the point of origin for the curved polygon.
         let origin = Point(x: 40e5, y: 5e5, spatialReference: .webMercator)
         // Creates the geometry for the curved polygon.
-        let geometry = makeHeartGeometry(center: origin, sideLength: 10e5)
+        let geometry = makeHeartPolygon(center: origin, sideLength: 10e5)
         
         // Creates a graphics overlay containing a graphic with the polygon geometry.
         let overlay = GraphicsOverlay(graphics: [Graphic(geometry: geometry)])
