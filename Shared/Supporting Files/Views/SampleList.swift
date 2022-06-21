@@ -17,12 +17,22 @@ import SwiftUI
 struct SampleList: View {
     /// A Boolean value that indicates whether the user is searching.
     @Environment(\.isSearching) private var isSearching
+    
     /// All samples that will be displayed in the list.
     let samples: [Sample]
+    
     /// The search query in the search bar.
     @Binding var query: String
+    
     /// A Boolean value that indicates whether to present the about view.
-    @State var aboutViewIsPresented = false
+    @State private var aboutViewIsPresented = false
+    
+    /// An object to manage on-demand resources for a sample with dependencies.
+    @State private var onDemandResource: OnDemandResource?
+    
+    /// A Boolean value that indicates whether to show a sample with
+    /// on-demand resource dependencies.
+    @State private var showSampleWithDependency = false
     
     /// The samples to display in the list. Searching adjusts this value.
     private var displayedSamples: [Sample] {
@@ -39,8 +49,27 @@ struct SampleList: View {
     
     var body: some View {
         List(displayedSamples, id: \.name) { sample in
-            NavigationLink(sample.name) {
-                SampleDetailView(sample: sample)
+            if sample.dependencies.isEmpty {
+                NavigationLink(sample.name) {
+                    SampleDetailView(sample: sample)
+                }
+            } else {
+                Button {
+                    Task {
+                        onDemandResource = await OnDemandResource(tags: sample.dependencies)
+                        await onDemandResource?.download()
+                        onDemandResource = nil
+                        showSampleWithDependency = true
+                    }
+                } label: {
+                    if let resource = onDemandResource {
+                        ProgressView(resource.request.progress)
+                    } else {
+                        NavigationLink(sample.name, isActive: $showSampleWithDependency) {
+                            SampleDetailView(sample: sample)
+                        }
+                    }
+                }
             }
         }
         .toolbar {
