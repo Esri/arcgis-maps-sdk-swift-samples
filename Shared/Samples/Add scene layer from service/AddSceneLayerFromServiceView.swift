@@ -20,8 +20,8 @@ struct AddSceneLayerFromServiceView: View {
     @StateObject private var scene: ArcGIS.Scene = {
         // Creates a scene and sets an initial viewpoint.
         let scene = Scene(basemapStyle: .arcGISTopographic)
-        let point = Point(x: -4.49779155626782, y: 48.38282454039932, z: 62.013264927081764, spatialReference: .wgs84)
-        let camera = Camera(locationPoint: point, heading: 41.64729875588979, pitch: 71.2017391571523, roll: 0)
+        let point = Point(x: -4.4978, y: 48.3828, z: 62.0133, spatialReference: .wgs84)
+        let camera = Camera(locationPoint: point, heading: 41.65, pitch: 71.2, roll: 0)
         scene.initialViewpoint = Viewpoint(targetExtent: point, camera: camera)
         
         // Creates a surface and adds an elevation source.
