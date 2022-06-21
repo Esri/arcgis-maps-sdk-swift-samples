@@ -37,9 +37,7 @@ struct ShowResultOfSpatialRelationshipsView: View {
     /// A map with a topographic basemap style and an initial viewpoint.
     @StateObject private var map: Map = {
         let map = Map(basemapStyle: .arcGISTopographic)
-        if let point = Graphic.point.geometry as? Point {
-            map.initialViewpoint = Viewpoint(center: point, scale: 1e8)
-        }
+        map.initialViewpoint = Viewpoint(center: Graphic.point.geometry as! Point, scale: 1e8)
         return map
     }()
     
