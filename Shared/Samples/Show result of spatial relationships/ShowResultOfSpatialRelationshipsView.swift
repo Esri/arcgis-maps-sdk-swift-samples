@@ -46,12 +46,12 @@ struct ShowResultOfSpatialRelationshipsView: View {
     /// A graphics overlay consisting of a polygon, polyline, and point.
     @StateObject private var graphicsOverlay = GraphicsOverlay(graphics: [.polygon, .polyline, .point])
     
-    /// The point graphic.
-    private var pointGraphic: Graphic { graphicsOverlay.graphics.last! }
+    /// The polygon graphic.
+    private var polygonGraphic: Graphic { graphicsOverlay.graphics[0] }
     /// The polyline graphic.
     private var polylineGraphic: Graphic { graphicsOverlay.graphics[1] }
-    /// The polygon graphic.
-    private var polygonGraphic: Graphic { graphicsOverlay.graphics.first! }
+    /// The point graphic.
+    private var pointGraphic: Graphic { graphicsOverlay.graphics[2] }
     
     private struct Relationship {
         let relationships: [String]
