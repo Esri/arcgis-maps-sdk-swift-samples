@@ -189,7 +189,7 @@ struct ShowResultOfSpatialRelationshipsView: View {
                             
                             if let identifiedGraphic = results.graphics.first {
                                 // Selects the identified graphic.
-                                identifiedGraphic.isSelected = true
+                                graphicsOverlay.selectGraphics([identifiedGraphic])
                                 // Shows the graphic's relationships.
                                 showRelationships(for: identifiedGraphic)
                             }
