@@ -112,11 +112,11 @@ struct StyleGraphicsWithRendererView: View {
         let fillSymbol = SimpleFillSymbol(color: .red, outline: lineSymbol)
         // Defines the point of origin for the curved polygon.
         let origin = Point(x: 40e5, y: 5e5, spatialReference: .webMercator)
-        // Creates the geometry for the curved polygon.
-        let geometry = makeHeartPolygon(center: origin, sideLength: 10e5)
+        // Creates a heart-shaped polygon.
+        let heartPolygon = makeHeartPolygon(center: origin, sideLength: 10e5)
         
         // Creates a graphics overlay containing a graphic with the polygon geometry.
-        let overlay = GraphicsOverlay(graphics: [Graphic(geometry: geometry)])
+        let overlay = GraphicsOverlay(graphics: [Graphic(geometry: heartPolygon)])
         // Creates and assigns a simple renderer to the graphics overlay.
         overlay.renderer = SimpleRenderer(symbol: fillSymbol)
         return overlay
@@ -137,11 +137,11 @@ struct StyleGraphicsWithRendererView: View {
 }
 
 private extension StyleGraphicsWithRendererView {
-    /// Creates a heart-shape geometry with Bezier and elliptic arc segments.
+    /// Creates a heart-shaped polygon with Bezier and elliptic arc segments.
     /// - Parameters:
     ///   - center: The center of the square that contains the heart shape.
     ///   - sideLength: The side length of the square.
-    /// - Returns: A heart-shape geometry.
+    /// - Returns: A heart-shaped polygon.
     static func makeHeartPolygon(center: Point, sideLength: Double) -> Polygon? {
         guard sideLength > 0 else { return nil }
         let spatialReference = center.spatialReference
