@@ -93,7 +93,8 @@ struct StyleGraphicsWithRendererView: View {
             maxPointCount: 100,
             maxSegmentLength: 20,
             semiAxis1Length: 200,
-            semiAxis2Length: 400)
+            semiAxis2Length: 400
+        )
         // Creates the geometry for the ellipse from the parameters.
         let geometry = GeometryEngine.geodesicEllipse(parameters: parameters)
         
@@ -137,7 +138,6 @@ struct StyleGraphicsWithRendererView: View {
 
 private extension StyleGraphicsWithRendererView {
     /// Creates a heart-shape geometry with Bezier and elliptic arc segments.
-    ///
     /// - Parameters:
     ///   - center: The center of the square that contains the heart shape.
     ///   - sideLength: The side length of the square.
@@ -198,7 +198,6 @@ private extension StyleGraphicsWithRendererView {
         )!
         
         // Creates and returns the heart polygon.
-        let heart = MutablePart(segments: [leftCurve, leftArc, rightArc, rightCurve], spatialReference: spatialReference)
-        return Polygon(parts: [heart])
+        return Polygon(parts: [MutablePart(segments: [leftCurve, leftArc, rightArc, rightCurve], spatialReference: spatialReference)])
     }
 }
