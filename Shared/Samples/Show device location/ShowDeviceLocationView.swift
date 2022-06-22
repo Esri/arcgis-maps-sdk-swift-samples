@@ -125,7 +125,7 @@ private extension ShowDeviceLocationView {
 }
 
 private extension LocationDisplay.AutoPanMode {
-    static var allCases: [LocationDisplay.AutoPanMode] = [.off, .recenter, .navigation, .compassNavigation]
+    static var allCases: [LocationDisplay.AutoPanMode] { [.off, .recenter, .navigation, .compassNavigation] }
     
     /// A human-readable label for each auto-pan mode.
     var label: String {
