@@ -21,6 +21,10 @@
 		00B04FB5283EEBA80026C882 /* DisplayOverviewMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B04FB4283EEBA80026C882 /* DisplayOverviewMapView.swift */; };
 		00CB9138284814A4005C2C5D /* SearchWithGeocodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00CB9137284814A4005C2C5D /* SearchWithGeocodeView.swift */; };
 		00CCB8A5285BAF8700BBAB70 /* OnDemandResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00CCB8A4285BAF8700BBAB70 /* OnDemandResource.swift */; };
+		00D4EF802863842100B9CC30 /* DisplayFeatureLayersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D4EF7F2863842100B9CC30 /* DisplayFeatureLayersView.swift */; };
+		00D4EF9028638BF100B9CC30 /* LA_Trails.geodatabase in Resources */ = {isa = PBXBuildFile; fileRef = 00D4EF8228638BF100B9CC30 /* LA_Trails.geodatabase */; settings = {ASSET_TAGS = (2b0f9e17105847809dfeb04e3cad69e0, ); }; };
+		00D4EF9A28638BF100B9CC30 /* AuroraCO.gpkg in Resources */ = {isa = PBXBuildFile; fileRef = 00D4EF8F28638BF100B9CC30 /* AuroraCO.gpkg */; settings = {ASSET_TAGS = (68ec42517cdd439e81b036210483e8e7, ); }; };
+		00D4EFB12863CE6300B9CC30 /* ScottishWildlifeTrust_reserves in Resources */ = {isa = PBXBuildFile; fileRef = 00D4EFB02863CE6300B9CC30 /* ScottishWildlifeTrust_reserves */; settings = {ASSET_TAGS = (15a7cbd3af1e47cfa5d2c6b93dc44fc2, ); }; };
 		00E5401C27F3CCA200CF66D5 /* SamplesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5400C27F3CCA100CF66D5 /* SamplesApp.swift */; };
 		00E5401E27F3CCA200CF66D5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5400D27F3CCA100CF66D5 /* ContentView.swift */; };
 		00E5402027F3CCA200CF66D5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00E5400E27F3CCA200CF66D5 /* Assets.xcassets */; };
@@ -98,6 +102,10 @@
 		00CB9137284814A4005C2C5D /* SearchWithGeocodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchWithGeocodeView.swift; sourceTree = "<group>"; };
 		00CCB8A2285AAD7D00BBAB70 /* DowloadPortalItemData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DowloadPortalItemData.swift; sourceTree = "<group>"; };
 		00CCB8A4285BAF8700BBAB70 /* OnDemandResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnDemandResource.swift; sourceTree = "<group>"; };
+		00D4EF7F2863842100B9CC30 /* DisplayFeatureLayersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayFeatureLayersView.swift; sourceTree = "<group>"; };
+		00D4EF8228638BF100B9CC30 /* LA_Trails.geodatabase */ = {isa = PBXFileReference; lastKnownFileType = file; path = LA_Trails.geodatabase; sourceTree = "<group>"; };
+		00D4EF8F28638BF100B9CC30 /* AuroraCO.gpkg */ = {isa = PBXFileReference; lastKnownFileType = file; path = AuroraCO.gpkg; sourceTree = "<group>"; };
+		00D4EFB02863CE6300B9CC30 /* ScottishWildlifeTrust_reserves */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ScottishWildlifeTrust_reserves; sourceTree = "<group>"; };
 		00E5400C27F3CCA100CF66D5 /* SamplesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SamplesApp.swift; sourceTree = "<group>"; };
 		00E5400D27F3CCA100CF66D5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		00E5400E27F3CCA200CF66D5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -166,6 +174,7 @@
 			isa = PBXGroup;
 			children = (
 				E004A6EB28495538002A1FE6 /* Create planar and geodetic buffers */,
+				00D4EF7E2863840D00B9CC30 /* Display feature layers */,
 				0074ABB328174B830037244A /* Display map */,
 				00B04FB3283EEB830026C882 /* Display overview map */,
 				E004A6D528465C70002A1FE6 /* Display scene */,
@@ -231,9 +240,44 @@
 		00CCB8A6285D059300BBAB70 /* Portal Data */ = {
 			isa = PBXGroup;
 			children = (
+				00D4EF8128638BF100B9CC30 /* 2b0f9e17105847809dfeb04e3cad69e0 */,
+				00D4EF8328638BF100B9CC30 /* 15a7cbd3af1e47cfa5d2c6b93dc44fc2 */,
+				00D4EF8E28638BF100B9CC30 /* 68ec42517cdd439e81b036210483e8e7 */,
 			);
 			path = "Portal Data";
 			sourceTree = SOURCE_ROOT;
+		};
+		00D4EF7E2863840D00B9CC30 /* Display feature layers */ = {
+			isa = PBXGroup;
+			children = (
+				00D4EF7F2863842100B9CC30 /* DisplayFeatureLayersView.swift */,
+			);
+			path = "Display feature layers";
+			sourceTree = "<group>";
+		};
+		00D4EF8128638BF100B9CC30 /* 2b0f9e17105847809dfeb04e3cad69e0 */ = {
+			isa = PBXGroup;
+			children = (
+				00D4EF8228638BF100B9CC30 /* LA_Trails.geodatabase */,
+			);
+			path = 2b0f9e17105847809dfeb04e3cad69e0;
+			sourceTree = "<group>";
+		};
+		00D4EF8328638BF100B9CC30 /* 15a7cbd3af1e47cfa5d2c6b93dc44fc2 */ = {
+			isa = PBXGroup;
+			children = (
+				00D4EFB02863CE6300B9CC30 /* ScottishWildlifeTrust_reserves */,
+			);
+			path = 15a7cbd3af1e47cfa5d2c6b93dc44fc2;
+			sourceTree = "<group>";
+		};
+		00D4EF8E28638BF100B9CC30 /* 68ec42517cdd439e81b036210483e8e7 */ = {
+			isa = PBXGroup;
+			children = (
+				00D4EF8F28638BF100B9CC30 /* AuroraCO.gpkg */,
+			);
+			path = 68ec42517cdd439e81b036210483e8e7;
+			sourceTree = "<group>";
 		};
 		00E5400627F3CCA100CF66D5 = {
 			isa = PBXGroup;
@@ -352,6 +396,11 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
+				KnownAssetTags = (
+					15a7cbd3af1e47cfa5d2c6b93dc44fc2,
+					2b0f9e17105847809dfeb04e3cad69e0,
+					68ec42517cdd439e81b036210483e8e7,
+				);
 				LastSwiftUpdateCheck = 1330;
 				LastUpgradeCheck = 1330;
 				ORGANIZATIONNAME = Esri;
@@ -384,7 +433,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				00D4EF9028638BF100B9CC30 /* LA_Trails.geodatabase in Resources */,
+				00D4EF9A28638BF100B9CC30 /* AuroraCO.gpkg in Resources */,
 				00E5402027F3CCA200CF66D5 /* Assets.xcassets in Resources */,
+				00D4EFB12863CE6300B9CC30 /* ScottishWildlifeTrust_reserves in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -468,6 +520,7 @@
 				00E5401E27F3CCA200CF66D5 /* ContentView.swift in Sources */,
 				00B04FB5283EEBA80026C882 /* DisplayOverviewMapView.swift in Sources */,
 				0074ABBF28174BCF0037244A /* DisplayMapView.swift in Sources */,
+				00D4EF802863842100B9CC30 /* DisplayFeatureLayersView.swift in Sources */,
 				E004A6DC28465C70002A1FE6 /* DisplaySceneView.swift in Sources */,
 				E004A6F6284FA42A002A1FE6 /* SelectFeaturesInFeatureLayerView.swift in Sources */,
 				00B042E8282EDC690072E1B4 /* SetBasemapView.swift in Sources */,
@@ -597,6 +650,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -620,6 +674,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
