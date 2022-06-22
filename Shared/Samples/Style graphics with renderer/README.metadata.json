@@ -1,0 +1,57 @@
+{
+    "category": "Display information",
+    "description": "A renderer allows you to change the style of all graphics in a graphics overlay by referencing a single symbol style. A renderer will only affect graphics that do not specify their own symbol style.",
+    "ignore": false,
+    "images": [
+        "style-graphics-with-renderer.png"
+    ],
+    "keywords": [
+        "arc",
+        "bezier",
+        "curve",
+        "display",
+        "ellipse",
+        "graphics",
+        "marker",
+        "overlay",
+        "renderer",
+        "segment",
+        "symbol",
+        "true curve",
+        "CubicBezierSegment",
+        "EllipticArcSegment",
+        "GeodesicEllipseParameters",
+        "Geometry",
+        "Graphic",
+        "GraphicsOverlay",
+        "MutablePart",
+        "Polygon",
+        "Polyline",
+        "SimpleFillSymbol",
+        "SimpleLineSymbol",
+        "SimpleMarkerSymbol",
+        "SimpleRenderer",
+        "static GeometryEngine.geodesicEllipse(parameters:)"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "CubicBezierSegment",
+        "EllipticArcSegment",
+        "GeodesicEllipseParameters",
+        "Geometry",
+        "Graphic",
+        "GraphicsOverlay",
+        "MutablePart",
+        "Polygon",
+        "Polyline",
+        "SimpleFillSymbol",
+        "SimpleLineSymbol",
+        "SimpleMarkerSymbol",
+        "SimpleRenderer",
+        "static GeometryEngine.geodesicEllipse(parameters:)"
+    ],
+    "snippets": [
+        "StyleGraphicsWithRendererView.swift"
+    ],
+    "title": "Style graphics with renderer"
+}
