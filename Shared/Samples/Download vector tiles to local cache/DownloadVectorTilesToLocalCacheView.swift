@@ -202,6 +202,7 @@ struct DownloadVectorTilesToLocalCacheView: View {
         GeometryReader { geometry in
             MapViewReader { mapViewProxy in
                 MapView(map: map, graphicsOverlays: [graphicsOverlay])
+                    .interactionModes([.pan, .zoom])
                     .onViewpointChanged(kind: .centerAndScale) { _ in
                         // Updates the area of interest when the visible area changes.
                         updateAreaOfInterest(mapView: mapViewProxy, geometry: geometry)
@@ -215,7 +216,7 @@ struct DownloadVectorTilesToLocalCacheView: View {
                     .fullScreenCover(isPresented: $showResults) {
                         NavigationView {
                             MapView(
-                                map:Map(basemap: Basemap(baseLayer: vectorTiledLayer)),
+                                map: Map(basemap: Basemap(baseLayer: vectorTiledLayer)),
                                 viewpoint: Viewpoint(targetExtent: extent!)
                             )
                             .navigationTitle("Vector tile package")
@@ -276,14 +277,6 @@ struct DownloadVectorTilesToLocalCacheView: View {
                     }
             }
         }
-    }
-}
-
-private extension Envelope {
-    func expanded(by factor: Double) -> Envelope {
-        let builder = EnvelopeBuilder(envelope: self)
-        builder.expand(factor: factor)
-        return builder.toGeometry()
     }
 }
 
