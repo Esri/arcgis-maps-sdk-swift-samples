@@ -63,37 +63,24 @@ class OnDemandResource: ObservableObject {
     
     /// Cancels the on-demand resources request.
     func cancel() {
-        switch requestState {
-        case .notStarted, .cancelled:
-            break
-        case .inProgress:
-            request.progress.cancel()
-            request.endAccessingResources()
-        case .downloaded:
-            request.endAccessingResources()
-        }
+        request.progress.cancel()
+        request.endAccessingResources()
         requestState = .cancelled
     }
     
     /// Starts the on-demand resources request.
     func download() async {
         // Initiate download when it is not being/already downloaded.
-        switch requestState {
-        case .downloaded, .inProgress:
-            return
-        default:
-            break
-        }
         // Check if the resource is already on device.
         let isResourceAvailable = await request.conditionallyBeginAccessingResources()
         if !isResourceAvailable {
             do {
                 requestState = .inProgress(0)
                 try await request.beginAccessingResources()
+                requestState = .downloaded
             } catch {
                 self.error = error
             }
         }
-        request.endAccessingResources()
     }
 }
