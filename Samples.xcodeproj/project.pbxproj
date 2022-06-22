@@ -30,6 +30,8 @@
 		E004A6ED2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6EC2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift */; };
 		E004A6F3284E4FEB002A1FE6 /* ShowResultsOfSpatialOperationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6F2284E4FEB002A1FE6 /* ShowResultsOfSpatialOperationsView.swift */; };
 		E004A6F6284FA42A002A1FE6 /* SelectFeaturesInFeatureLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6F5284FA42A002A1FE6 /* SelectFeaturesInFeatureLayerView.swift */; };
+		E066DD382860AB28004D3D5B /* StyleGraphicsWithRendererView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E066DD372860AB28004D3D5B /* StyleGraphicsWithRendererView.swift */; };
+		E066DD4028610F55004D3D5B /* AddSceneLayerFromServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E066DD3F28610F55004D3D5B /* AddSceneLayerFromServiceView.swift */; };
 		E088E1572862579D00413100 /* SetSurfacePlacementModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E088E1562862579D00413100 /* SetSurfacePlacementModeView.swift */; };
 /* End PBXBuildFile section */
 
@@ -109,6 +111,8 @@
 		E004A6EC2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePlanarAndGeodeticBuffersView.swift; sourceTree = "<group>"; };
 		E004A6F2284E4FEB002A1FE6 /* ShowResultsOfSpatialOperationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowResultsOfSpatialOperationsView.swift; sourceTree = "<group>"; };
 		E004A6F5284FA42A002A1FE6 /* SelectFeaturesInFeatureLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectFeaturesInFeatureLayerView.swift; sourceTree = "<group>"; };
+		E066DD372860AB28004D3D5B /* StyleGraphicsWithRendererView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleGraphicsWithRendererView.swift; sourceTree = "<group>"; };
+		E066DD3F28610F55004D3D5B /* AddSceneLayerFromServiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSceneLayerFromServiceView.swift; sourceTree = "<group>"; };
 		E088E1562862579D00413100 /* SetSurfacePlacementModeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetSurfacePlacementModeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -165,6 +169,7 @@
 		0074ABB228174B830037244A /* Samples */ = {
 			isa = PBXGroup;
 			children = (
+				E066DD3E28610F3F004D3D5B /* Add scene layer from service */,
 				E004A6EB28495538002A1FE6 /* Create planar and geodetic buffers */,
 				0074ABB328174B830037244A /* Display map */,
 				00B04FB3283EEB830026C882 /* Display overview map */,
@@ -176,6 +181,7 @@
 				E004A6B928414332002A1FE6 /* Set viewpoint rotation */,
 				E004A6DE2846626A002A1FE6 /* Show callout */,
 				E004A6F1284E4F80002A1FE6 /* Show results of spatial operations */,
+				E066DD362860AB0B004D3D5B /* Style graphics with renderer */,
 				E004A6E42846A609002A1FE6 /* Style graphics with symbols */,
 			);
 			path = Samples;
@@ -317,6 +323,22 @@
 			path = "Select features in feature layer";
 			sourceTree = "<group>";
 		};
+		E066DD362860AB0B004D3D5B /* Style graphics with renderer */ = {
+			isa = PBXGroup;
+			children = (
+				E066DD372860AB28004D3D5B /* StyleGraphicsWithRendererView.swift */,
+			);
+			path = "Style graphics with renderer";
+			sourceTree = "<group>";
+		};
+		E066DD3E28610F3F004D3D5B /* Add scene layer from service */ = {
+			isa = PBXGroup;
+			children = (
+				E066DD3F28610F55004D3D5B /* AddSceneLayerFromServiceView.swift */,
+			);
+			path = "Add scene layer from service";
+			sourceTree = "<group>";
+		};
 		E088E1552862578800413100 /* Set surface placement mode */ = {
 			isa = PBXGroup;
 			children = (
@@ -456,6 +478,7 @@
 				E088E1572862579D00413100 /* SetSurfacePlacementModeView.swift in Sources */,
 				E004A6C128414332002A1FE6 /* SetViewpointRotationView.swift in Sources */,
 				00E5401E27F3CCA200CF66D5 /* ContentView.swift in Sources */,
+				E066DD382860AB28004D3D5B /* StyleGraphicsWithRendererView.swift in Sources */,
 				00B04FB5283EEBA80026C882 /* DisplayOverviewMapView.swift in Sources */,
 				0074ABBF28174BCF0037244A /* DisplayMapView.swift in Sources */,
 				E004A6DC28465C70002A1FE6 /* DisplaySceneView.swift in Sources */,
@@ -465,6 +488,7 @@
 				0074ABC428174F430037244A /* Sample.swift in Sources */,
 				00CB9138284814A4005C2C5D /* SearchWithGeocodeView.swift in Sources */,
 				00E5401C27F3CCA200CF66D5 /* SamplesApp.swift in Sources */,
+				E066DD4028610F55004D3D5B /* AddSceneLayerFromServiceView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
