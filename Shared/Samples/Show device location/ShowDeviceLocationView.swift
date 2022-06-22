@@ -137,7 +137,7 @@ private extension LocationDisplay.AutoPanMode {
         }
     }
     
-    /// The image name  for each auto-pan mode.
+    /// The image name for each auto-pan mode.
     var imageName: String {
         switch self {
         case .off: return "LocationDisplayOffIcon"
