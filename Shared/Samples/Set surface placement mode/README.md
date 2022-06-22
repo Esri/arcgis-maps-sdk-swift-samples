@@ -29,9 +29,9 @@ The sample loads a scene showing four points that use the individual surface pla
 * Graphic
 * GraphicsOverlay
 * LayerSceneProperties
+* static GeometryEngine.makeGeometry(from:z:)
 * Surface
 * SurfacePlacement
-* static GeometryEngine.makeGeometry(from:z:)
 
 ## About the data
 
