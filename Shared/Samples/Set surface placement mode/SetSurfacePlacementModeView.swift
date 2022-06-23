@@ -112,7 +112,7 @@ private extension SetSurfacePlacementModeView {
             // Creates the dictionary for graphics overlays of different surface placements.
             overlaysBySurfacePlacement = Dictionary(uniqueKeysWithValues: zip(SurfacePlacement.allCases, graphicsOverlays))
   
-            // Sets the initial z-value to the median of the possible z-values.
+            // Sets the initial z-value to the mid-range of the possible z-values.
             zValue = Measurement(value: Measurement.zMid, unit: UnitLength.meters)
             
             // Sets the current draped mode to billboarded.
@@ -197,7 +197,7 @@ private extension Measurement where UnitType == UnitLength {
     static var zMin: Self { Measurement(value: 0, unit: UnitLength.meters) }
     /// The maximum z-value.
     static var zMax: Self { Measurement(value: 140, unit: UnitLength.meters) }
-    /// The median of the possible z-values.
+    /// The mid-range of the possible z-values.
     static var zMid: Double { (zMin.value + zMax.value) / 2 }
 }
 
