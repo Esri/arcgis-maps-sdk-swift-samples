@@ -37,4 +37,10 @@ extension Sample {
     var readmeURL: URL {
         Bundle.main.url(forResource: "name", withExtension: "md", subdirectory: "READMEs")!
     }
+    
+    /// The sample's name in UpperCamelCase.
+    /// - Note: For example, "Display map" -> "DisplayMap".
+    var nameInUpperCamelCase: String {
+        name.capitalized.filter { !$0.isWhitespace }
+    }
 }

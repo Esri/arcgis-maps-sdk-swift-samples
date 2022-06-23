@@ -50,13 +50,9 @@ struct SampleList: View {
     var body: some View {
         List(displayedSamples, id: \.name) { sample in
             if sample.hasDependency {
-                NavigationLink(sample.name) {
-                    SampleDetailView(sample: sample)
-                }
-            } else {
                 Button {
                     Task {
-                        onDemandResource = await OnDemandResource(tags: [sample.name])
+                        onDemandResource = OnDemandResource(tags: [sample.nameInUpperCamelCase])
                         await onDemandResource?.download()
                         showSampleWithDependency = true
                     }
@@ -68,6 +64,10 @@ struct SampleList: View {
                             SampleDetailView(sample: sample)
                         }
                     }
+                }
+            } else {
+                NavigationLink(sample.name) {
+                    SampleDetailView(sample: sample)
                 }
             }
         }
