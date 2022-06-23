@@ -44,7 +44,8 @@ class OnDemandResource: ObservableObject {
     
     private var cancellables: Set<AnyCancellable> = []
     
-    init(tags: Set<String>) async {
+    /// Initializes a request with a set of Resource Tags.
+    init(tags: Set<String>) {
         request = NSBundleResourceRequest(tags: tags)
         request.loadingPriority = NSBundleResourceRequestLoadingPriorityUrgent
         request.progress
