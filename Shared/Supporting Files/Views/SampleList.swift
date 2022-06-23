@@ -56,13 +56,12 @@ struct SampleList: View {
             } else {
                 Button {
                     Task {
-                        onDemandResource = await OnDemandResource(tags: sample.dependencies)
+                        onDemandResource = await OnDemandResource(tags: [sample.name])
                         await onDemandResource?.download()
-                        onDemandResource = nil
                         showSampleWithDependency = true
                     }
                 } label: {
-                    if let resource = onDemandResource {
+                    if let resource = onDemandResource, !showSampleWithDependency {
                         ProgressView(resource.request.progress)
                     } else {
                         NavigationLink(sample.name, isActive: $showSampleWithDependency) {
@@ -83,6 +82,9 @@ struct SampleList: View {
                     AboutView()
                 }
             }
+        }
+        .onAppear {
+            onDemandResource = nil
         }
     }
 }
