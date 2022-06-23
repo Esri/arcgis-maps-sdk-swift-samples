@@ -21,11 +21,10 @@ protocol Sample {
     var name: String { get }
     /// A brief description of the sample's functionalities.
     var description: String { get }
-    /// The ArcGIS Online Portal Item IDs that needs to be provisioned before
-    /// the sample runs.
-    var dependencies: Set<PortalItem.ID> { get }
     /// The tags and relevant APIs of the sample.
     var tags: Set<String> { get }
+    /// A Boolean that indicates whether a sample has offline data dependencies.
+    var hasDependency: Bool { get }
     
     /// Creates the view for the sample.
     func makeBody() -> AnyView

@@ -49,7 +49,7 @@ struct SampleList: View {
     
     var body: some View {
         List(displayedSamples, id: \.name) { sample in
-            if sample.dependencies.isEmpty {
+            if sample.hasDependency {
                 NavigationLink(sample.name) {
                     SampleDetailView(sample: sample)
                 }
