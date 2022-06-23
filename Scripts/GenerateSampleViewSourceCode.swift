@@ -101,7 +101,6 @@ private let sampleStructs = sampleMetadata
         struct \(sample.structName): Sample {
             var name: String { \"\(sample.title)\" }
             var description: String { \"\(sample.description)\" }
-            var dependencies: Set<PortalItem.ID> { [\(portalItemIDs.joined(separator: ", "))] }
             var tags: Set<String> { \(sample.keywords) }
             var hasDependency: Bool { \(!portalItemIDs.isEmpty) }
             
