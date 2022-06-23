@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import SwiftUI
 import ArcGIS
+import SwiftUI
 
 struct DisplayFeatureLayersView: View {
     /// A Boolean value indicating whether to show an alert.
@@ -211,16 +211,16 @@ private extension Viewpoint {
 
 private extension PortalItem.ID {
     /// The ID used in the "Trees of Portland" portal item.
-    static let treesOfPortland = Self("1759fd3e8a324358a0c58d9a687a8578")!
+    static var treesOfPortland: Self { .init("1759fd3e8a324358a0c58d9a687a8578")! }
 }
 
 private extension URL {
     /// Naperville damage assessment service.
-    static let damageAssessment = URL(string: "https://sampleserver7.arcgisonline.com/server/rest/services/DamageAssessment/FeatureServer/0")!
+    static var damageAssessment: URL { .init(string: "https://sampleserver7.arcgisonline.com/server/rest/services/DamageAssessment/FeatureServer/0")! }
     /// Los Angeles Trailheads geodatabase.
-    static let laTrails = Bundle.main.url(forResource: "LA_Trails", withExtension: "geodatabase")!
+    static var laTrails: URL { Bundle.main.url(forResource: "LA_Trails", withExtension: "geodatabase")! }
     /// Aurora, Colorado GeoPackage.
-    static let auroraCO = Bundle.main.url(forResource: "AuroraCO", withExtension: "gpkg")!
+    static var auroraCO: URL { Bundle.main.url(forResource: "AuroraCO", withExtension: "gpkg")! }
     /// Scottish Wildlife Trust Reserves Shapefile.
-    static let reserveBoundaries = Bundle.main.url(forResource: "ScottishWildlifeTrust_ReserveBoundaries_20201102", withExtension: "shp", subdirectory: "ScottishWildlifeTrust_reserves")!
+    static var reserveBoundaries: URL { Bundle.main.url(forResource: "ScottishWildlifeTrust_ReserveBoundaries_20201102", withExtension: "shp", subdirectory: "ScottishWildlifeTrust_reserves")! }
 }
