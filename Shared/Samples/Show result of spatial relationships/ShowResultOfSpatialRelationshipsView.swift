@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import SwiftUI
 import ArcGIS
+import SwiftUI
 
 struct ShowResultOfSpatialRelationshipsView: View {
     /// A Boolean value indicating whether to show an alert.
@@ -123,7 +123,7 @@ struct ShowResultOfSpatialRelationshipsView: View {
     ///   - geometry2: The input geometry to be compared.
     /// - Returns: An array of strings representing relationship.
     private func getSpatialRelationships(of geometry1: Geometry, with geometry2: Geometry) -> [String] {
-        var relationships = [String]()
+        var relationships: [String] = []
         if GeometryEngine.isGeometry(geometry1, crossing: geometry2) {
             relationships.append("Crosses")
         }
