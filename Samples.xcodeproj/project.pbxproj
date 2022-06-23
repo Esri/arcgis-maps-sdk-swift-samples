@@ -27,6 +27,7 @@
 		E004A6DC28465C70002A1FE6 /* DisplaySceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6D828465C70002A1FE6 /* DisplaySceneView.swift */; };
 		E004A6E028466279002A1FE6 /* ShowCalloutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6DF28466279002A1FE6 /* ShowCalloutView.swift */; };
 		E004A6E62846A61F002A1FE6 /* StyleGraphicsWithSymbolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6E52846A61F002A1FE6 /* StyleGraphicsWithSymbolsView.swift */; };
+		E004A6E928493BCE002A1FE6 /* ShowDeviceLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6E828493BCE002A1FE6 /* ShowDeviceLocationView.swift */; };
 		E004A6ED2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6EC2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift */; };
 		E004A6F3284E4FEB002A1FE6 /* ShowResultsOfSpatialOperationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6F2284E4FEB002A1FE6 /* ShowResultsOfSpatialOperationsView.swift */; };
 		E004A6F6284FA42A002A1FE6 /* SelectFeaturesInFeatureLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6F5284FA42A002A1FE6 /* SelectFeaturesInFeatureLayerView.swift */; };
@@ -108,6 +109,7 @@
 		E004A6D828465C70002A1FE6 /* DisplaySceneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplaySceneView.swift; sourceTree = "<group>"; };
 		E004A6DF28466279002A1FE6 /* ShowCalloutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowCalloutView.swift; sourceTree = "<group>"; };
 		E004A6E52846A61F002A1FE6 /* StyleGraphicsWithSymbolsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleGraphicsWithSymbolsView.swift; sourceTree = "<group>"; };
+		E004A6E828493BCE002A1FE6 /* ShowDeviceLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowDeviceLocationView.swift; sourceTree = "<group>"; };
 		E004A6EC2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePlanarAndGeodeticBuffersView.swift; sourceTree = "<group>"; };
 		E004A6F2284E4FEB002A1FE6 /* ShowResultsOfSpatialOperationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowResultsOfSpatialOperationsView.swift; sourceTree = "<group>"; };
 		E004A6F5284FA42A002A1FE6 /* SelectFeaturesInFeatureLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectFeaturesInFeatureLayerView.swift; sourceTree = "<group>"; };
@@ -178,6 +180,7 @@
 				E004A6F4284FA3C5002A1FE6 /* Select features in feature layer */,
 				00B042E3282EDC690072E1B4 /* Set basemap */,
 				E004A6B928414332002A1FE6 /* Set viewpoint rotation */,
+				E004A6E728493BBB002A1FE6 /* Show device location */,
 				E004A6DE2846626A002A1FE6 /* Show callout */,
 				E066DD392860C9EE004D3D5B /* Show result of spatial relationships */,
 				E004A6F1284E4F80002A1FE6 /* Show results of spatial operations */,
@@ -297,6 +300,14 @@
 				E004A6E52846A61F002A1FE6 /* StyleGraphicsWithSymbolsView.swift */,
 			);
 			path = "Style graphics with symbols";
+			sourceTree = "<group>";
+		};
+		E004A6E728493BBB002A1FE6 /* Show device location */ = {
+			isa = PBXGroup;
+			children = (
+				E004A6E828493BCE002A1FE6 /* ShowDeviceLocationView.swift */,
+			);
+			path = "Show device location";
 			sourceTree = "<group>";
 		};
 		E004A6EB28495538002A1FE6 /* Create planar and geodetic buffers */ = {
@@ -466,6 +477,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E004A6E928493BCE002A1FE6 /* ShowDeviceLocationView.swift in Sources */,
 				0005580C28185C0600224BC6 /* SampleList.swift in Sources */,
 				E004A6E028466279002A1FE6 /* ShowCalloutView.swift in Sources */,
 				001C6DE127FE8A9400D472C2 /* AppSecrets.swift.masque in Sources */,

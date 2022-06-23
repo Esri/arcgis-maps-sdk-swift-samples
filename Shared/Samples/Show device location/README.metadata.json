@@ -1,0 +1,33 @@
+{
+    "category": "Maps",
+    "description": "Show your current position on the map, as well as switch between different types of auto-pan modes.",
+    "ignore": false,
+    "images": [
+        "show-device-location.png"
+    ],
+    "keywords": [
+        "GPS",
+        "compass",
+        "location",
+        "map",
+        "mobile",
+        "navigation",
+        "LocationDataSource",
+        "LocationDisplay",
+        "LocationDisplay.AutoPanMode",
+        "MapView",
+        "MapView.locationDisplay(_:)"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "LocationDataSource",
+        "LocationDisplay",
+        "LocationDisplay.AutoPanMode",
+        "MapView",
+        "MapView.locationDisplay(_:)"
+    ],
+    "snippets": [
+        "ShowDeviceLocationView.swift"
+    ],
+    "title": "Show device location"
+}
