@@ -12,9 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Foundation
 import Combine
-import ArcGIS
+import Foundation
 
 class OnDemandResource: ObservableObject {
     enum RequestState {
@@ -54,11 +53,6 @@ class OnDemandResource: ObservableObject {
             .receive(on: RunLoop.main)
             .sink { [weak self] in self?.requestState = $0 }
             .store(in: &cancellables)
-    }
-    
-    convenience init(tags: Set<Item.ID>) async {
-        let tagRawValues = Set(tags.map(\.rawValue))
-        await self.init(tags: tagRawValues)
     }
     
     /// Cancels the on-demand resources request.
