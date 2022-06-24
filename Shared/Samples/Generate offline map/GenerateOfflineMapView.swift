@@ -129,7 +129,7 @@ struct GenerateOfflineMapView: View {
             cancellable = generateOfflineMapJob.progress // **NOTE: temporary placeholder for job progress view**.
                 .publisher(for: \.fractionCompleted)
                 .receive(on: RunLoop.main)
-                .sink { jobProgress =  $0 }
+                .sink { jobProgress = $0 }
             
             // Awaits the results of the job and sets the offline map to the output.
             let output = try await generateOfflineMapJob.result.get()
