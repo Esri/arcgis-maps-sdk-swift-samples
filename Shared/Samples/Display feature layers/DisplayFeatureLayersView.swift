@@ -125,10 +125,6 @@ struct DisplayFeatureLayersView: View {
     var body: some View {
         MapView(map: map, viewpoint: viewpoint)
             .onViewpointChanged(kind: .centerAndScale) { viewpoint = $0 }
-            .task {
-                // Updates the feature layer.
-                await updateFeatureLayer()
-            }
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
                     Picker("Feature Layer", selection: $selectedFeatureLayerSource) {
