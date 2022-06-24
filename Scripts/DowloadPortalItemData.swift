@@ -114,7 +114,7 @@ func numberOfFilesInArchive(at url: URL) throws -> Int {
 func uncompressArchive(at sourceURL: URL, to destinationURL: URL) throws {
     let process = Process()
     process.executableURL = URL(fileURLWithPath: "/usr/bin/unzip", isDirectory: false)
-    // Unzip the archive into a specified sub-folder and silence the output.
+    // Unzips the archive into a specified sub-folder and silence the output.
     process.arguments = ["-q", sourceURL.path, "-d", destinationURL.path]
     try process.run()
     process.waitUntilExit()
@@ -205,7 +205,7 @@ if !FileManager.default.fileExists(atPath: downloadDirectoryURL.path) {
 /// Portal Items created from iterating through all metadata's "offline\_data".
 let portalItems: [PortalItem] = {
     do {
-        // Find all subdirectories under the root Samples directory.
+        // Finds all subdirectories under the root Samples directory.
         let sampleSubDirectories = try FileManager.default
             .contentsOfDirectory(at: samplesDirectoryURL, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles])
             .filter(\.hasDirectoryPath)
@@ -238,7 +238,7 @@ let dispatchGroup = DispatchGroup()
 
 portalItems.forEach { portalItem in
     let destinationURL = downloadDirectoryURL.appendingPathComponent(portalItem.identifier, isDirectory: true)
-    // Check a directory exists or not, to see if an item is already downloaded.
+    // Checks if a directory exists or not, to see if an item is already downloaded.
     if FileManager.default.fileExists(atPath: destinationURL.path) {
         logger.info("Item \(portalItem.identifier) has already been downloaded.")
     } else {

@@ -39,7 +39,7 @@ struct DisplayFeatureLayersView: View {
     
     /// Loads a feature layer with a service feature table.
     private func loadServiceFeatureTable() async throws {
-        // Create a service feature table from a feature service.
+        // Creates a service feature table from a feature service.
         let featureTable = ServiceFeatureTable(url: .damageAssessment)
         let featureLayer = FeatureLayer(featureTable: featureTable)
         try await setFeatureLayer(featureLayer, viewpoint: .napervilleIL)

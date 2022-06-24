@@ -65,8 +65,8 @@ class OnDemandResource: ObservableObject {
     
     /// Starts the on-demand resources request.
     func download() async {
-        // Initiate download when it is not being/already downloaded.
-        // Check if the resource is already on device.
+        // Initiates download when it is not being/already downloaded.
+        // Checks if the resource is already on device.
         let isResourceAvailable = await request.conditionallyBeginAccessingResources()
         if !isResourceAvailable {
             do {
