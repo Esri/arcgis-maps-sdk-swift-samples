@@ -10,7 +10,7 @@ In case of a natural disaster, emergency services can represent the affected are
 
 ## How to use the sample
 
-Tap on the map to select one of the three graphics, and its geometry will be used to check the spatial relationships with other graphics geometries. The result will be displayed in the popover.
+Tap on the map to select one of the three graphics. Its geometry will be used to check the spatial relationships with the other graphics' geometries. The result will be displayed in a callout.
 
 ## How it works
 
