@@ -140,7 +140,7 @@ private extension SetSurfacePlacementModeView {
         /// Creates a graphics overlay for the given surface placement.
         /// - Parameter surfacePlacement: The surface placement for which to create a graphics overlay.
         /// - Returns: A new `GraphicsOverlay` object.
-        private static func makeGraphicsOverlay(for surfacePlacement: SurfacePlacement) -> GraphicsOverlay {
+        static func makeGraphicsOverlay(for surfacePlacement: SurfacePlacement) -> GraphicsOverlay {
             // Creates symbols for the graphic.
             let markerSymbol = SimpleMarkerSymbol(style: .triangle, color: .red, size: 20)
             let textSymbol = TextSymbol(text: surfacePlacement.title, color: .blue, size: 20, horizontalAlignment: .left)
