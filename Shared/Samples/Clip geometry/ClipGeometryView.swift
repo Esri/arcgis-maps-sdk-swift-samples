@@ -16,10 +16,10 @@ import ArcGIS
 import SwiftUI
 
 struct ClipGeometryView: View {
-    /// A Boolean value indicating whether to disable the clip button.
+    /// A Boolean value indicating whether the clip button is disabled.
     @State private var clipIsDisabled = false
     
-    /// A map with an initial viewpoint of Colorado.
+    /// A map with a topographic basemap style and an initial viewpoint of Colorado.
     @StateObject private var map: Map = {
         let map = Map(basemapStyle: .arcGISTopographic)
         // Sets the initial viewpoint to Colorado and adds additional padding.
@@ -28,9 +28,11 @@ struct ClipGeometryView: View {
     }()
     
     /// The graphics overlay containing clipped and unclipped graphics of Colorado.
-    @StateObject private var coloradoGraphicsOverlay = GraphicsOverlay(graphics: [
-        Graphic(geometry: .coloradoEnvelope, symbol: .coloradoFill)
-    ])
+    @StateObject private var coloradoGraphicsOverlay = GraphicsOverlay(
+        graphics: [
+            Graphic(geometry: .coloradoEnvelope, symbol: .coloradoFill)
+        ]
+    )
     
     /// The graphics overlay containing graphics of the other envelopes, outlined by a dotted red line.
     @StateObject private var envelopesGraphicsOverlay = GraphicsOverlay(
@@ -50,7 +52,7 @@ struct ClipGeometryView: View {
         let clippedGeometry = GeometryEngine.clip(coloradoGraphic.geometry!, to: envelope)
         // Creates the clipped graphic from the clipped geometry if there is an overlap.
         let clippedGraphic = Graphic(geometry: clippedGeometry, symbol: .coloradoFill)
-        // Adds the clipped graphic to the colorado graphics overlay.
+        // Adds the clipped graphic to the Colorado graphics overlay.
         coloradoGraphicsOverlay.addGraphic(clippedGraphic)
     }
     
