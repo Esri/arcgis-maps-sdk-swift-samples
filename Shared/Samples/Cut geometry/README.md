@@ -16,6 +16,7 @@ Tap the button to cut the polygon with the polyline and see the resulting parts 
 
 1. Pass a `Geometry` and a `Polyline` to the `static GeometryEngine.cut(_:usingCutter:)` method to cut the geometry along the given polyline.
 2. Loop through the returned list of part geometries. Some geometries may be multi-part.
+3. Create a `Graphic` instance from the part and add it to a `GraphicsOverlay`.
 
 ## Relevant API
 
