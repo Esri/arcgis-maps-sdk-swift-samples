@@ -1,0 +1,30 @@
+{
+    "category": "",
+    "description": "Clip a geometry with another geometry.",
+    "ignore": false,
+    "images": [
+        "clip-geometry.png"
+    ],
+    "keywords": [
+        "analysis",
+        "clip",
+        "geometry",
+        "Envelope",
+        "Geometry",
+        "Graphic",
+        "GraphicsOverlay",
+        "static GeometryEngine.clip(_:to:)"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Envelope",
+        "Geometry",
+        "Graphic",
+        "GraphicsOverlay",
+        "static GeometryEngine.clip(_:to:)"
+    ],
+    "snippets": [
+        "ClipGeometryView.swift"
+    ],
+    "title": "Clip geometry"
+}
