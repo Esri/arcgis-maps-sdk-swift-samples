@@ -129,13 +129,3 @@ private extension Geometry {
         )
     }
 }
-
-struct CutGeometryView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            CutGeometryView()
-                .navigationTitle("Cut geometry")
-                .navigationBarTitleDisplayMode(.inline)
-        }
-    }
-}
