@@ -21,6 +21,7 @@ Tap the button to clip the blue graphic with the dotted red envelopes.
 
 * Envelope
 * Geometry
+* GeometryEngine
 * Graphic
 * GraphicsOverlay
 * static GeometryEngine.clip(_:to:)

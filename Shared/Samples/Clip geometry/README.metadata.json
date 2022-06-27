@@ -11,6 +11,7 @@
         "geometry",
         "Envelope",
         "Geometry",
+        "GeometryEngine",
         "Graphic",
         "GraphicsOverlay",
         "static GeometryEngine.clip(_:to:)"
@@ -19,6 +20,7 @@
     "relevant_apis": [
         "Envelope",
         "Geometry",
+        "GeometryEngine",
         "Graphic",
         "GraphicsOverlay",
         "static GeometryEngine.clip(_:to:)"
