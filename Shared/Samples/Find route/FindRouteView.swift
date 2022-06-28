@@ -16,27 +16,44 @@ import ArcGIS
 import SwiftUI
 
 struct FindRouteView: View {
+    /// A Boolean value indicating whether to show the directions.
+    @State private var isShowingDirections = false
+    
+    /// A Boolean value indicating whether to solve the route.
+    @State private var isSolvingRoute = false
+    
     /// The view model for this sample.
     @StateObject private var model = Model()
     
     var body: some View {
         MapView(map: model.map, graphicsOverlays: model.graphicsOverlays)
-            .alert(isPresented: $model.showAlert, presentingError: model.error)
+            .alert(isPresented: $model.isShowingAlert, presentingError: model.error)
+            .task {
+                await model.initializeRouteParameters()
+            }
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
                     Spacer()
                     Button("Route") {
-                        model.findRoute()
+                        isSolvingRoute = true
                     }
-                    .disabled(model.routeIsDisabled)
+                    .disabled(model.isRouteDisabled || isSolvingRoute)
+                    .task(id: isSolvingRoute) {
+                        // Ensures that solving the route is true.
+                        guard isSolvingRoute else { return }
+                        // Finds the route.
+                        await model.findRoute()
+                        // Sets solving the route to false.
+                        isSolvingRoute = false
+                    }
                     Spacer()
                     Button {
-                        model.showDirections = true
+                        isShowingDirections = true
                     } label: {
                         Image(systemName: "arrow.triangle.turn.up.right.diamond")
                     }
                     .disabled(model.directions.isEmpty)
-                    .popover(isPresented: $model.showDirections) {
+                    .popover(isPresented: $isShowingDirections) {
                         NavigationView {
                             List(model.directions, id: \.directionText) { directionManeuver in
                                 Text(directionManeuver.directionText)
@@ -46,7 +63,7 @@ struct FindRouteView: View {
                             .toolbar {
                                 ToolbarItem(placement: .navigationBarTrailing) {
                                     Button("Done") {
-                                        model.showDirections = false
+                                        isShowingDirections = false
                                     }
                                 }
                             }
@@ -64,20 +81,17 @@ private extension FindRouteView {
         /// The directions for the route.
         @Published var directions: [DirectionManeuver] = []
         
-        /// A Boolean value indicating whether to show the directions.
-        @Published var showDirections = false
-        
         /// The parameters for the route.
         @Published var routeParameters: RouteParameters!
-
+        
         /// A Boolean value indicating whether to show an alert.
-        @Published var showAlert = false
-
-        /// A Boolean value indicating whether to disable the route button.
-        var routeIsDisabled: Bool { routeParameters == nil }
+        @Published var isShowingAlert = false
         
         /// The error shown in the alert.
-        var error: Error?
+        @Published var error: Error?
+        
+        /// A Boolean value indicating whether to disable the route button.
+        var isRouteDisabled: Bool { routeParameters == nil }
         
         /// The route task.
         private let routeTask = RouteTask(url: .routeTask)
@@ -95,7 +109,7 @@ private extension FindRouteView {
         private let stopGraphicsOverlay: GraphicsOverlay
         
         /// The graphics overlays for the route and stops.
-        let graphicsOverlays: [GraphicsOverlay]
+        var graphicsOverlays: [GraphicsOverlay] { [routeGraphicsOverlay, stopGraphicsOverlay] }
         
         /// The graphic for the route.
         private var routeGraphic: Graphic { routeGraphicsOverlay.graphics.first! }
@@ -122,9 +136,9 @@ private extension FindRouteView {
             ])
             
             // Initializes the stops and the graphics overlay for them.
-            stops = [.one, .two]
-            let stopOne = stops.first!
-            let stopTwo = stops.last!
+            let stopOne = Stop.one
+            let stopTwo = Stop.two
+            stops = [stopOne, stopTwo]
             
             let stopOneGraphic = Graphic(
                 geometry: stopOne.geometry,
@@ -135,57 +149,47 @@ private extension FindRouteView {
                 geometry: stopTwo.geometry,
                 symbol: TextSymbol(text: stopTwo.name, color: .red, size: 20)
             )
-
+            
             stopGraphicsOverlay = GraphicsOverlay(graphics: [stopOneGraphic, stopTwoGraphic])
-            
-            // Initializes the graphics overlays.
-            graphicsOverlays = [routeGraphicsOverlay, stopGraphicsOverlay]
-            
-            // Creates the route parameters.
-            Task {
-                do {
-                    routeParameters = try await makeRouteParameters()
-                } catch {
-                    self.error = error
-                    showAlert = true
-                }
+        }
+        
+        /// Initializes the route parameters.
+        func initializeRouteParameters() async {
+            do {
+                // Creates the default parameters.
+                let parameters = try await routeTask.createDefaultParameters()
+                
+                // Sets the return directions on the parameters to true.
+                parameters.returnDirections = true
+                
+                // Sets the stops for the route.
+                parameters.setStops(stops)
+                
+                // Initializes the route parameters.
+                routeParameters = parameters
+            } catch {
+                self.error = error
+                isShowingAlert = true
             }
         }
         
-        /// Creates the parameters for the route.
-        private func makeRouteParameters() async throws -> RouteParameters {
-            // Creates the default parameters.
-            let parameters = try await routeTask.createDefaultParameters()
-            
-            // Sets the return directions on the parameters to true.
-            parameters.returnDirections = true
-            
-            // Sets the stops for the route.
-            parameters.setStops(stops)
-            
-            // Returns the parameters for the route.
-            return parameters
-        }
-        
         /// Finds the route from stop one to stop two.
-        func findRoute() {
-            Task {
-                // Resets the route geometry and directions.
-                routeGraphic.geometry = nil
-                directions.removeAll()
-                
-                do {
-                    // Solves the route based on the route parameters.
-                    let routeResult = try await routeTask.solveRoute(routeParameters: routeParameters)
-                    if let firstRoute = routeResult.routes.first {
-                        // Updates the route geometry and directions.
-                        routeGraphic.geometry = firstRoute.routeGeometry
-                        directions = firstRoute.directionManeuvers
-                    }
-                } catch {
-                    self.error = error
-                    showAlert = true
+        func findRoute() async {
+            // Resets the route geometry and directions.
+            routeGraphic.geometry = nil
+            directions.removeAll()
+            
+            do {
+                // Solves the route based on the route parameters.
+                let routeResult = try await routeTask.solveRoute(routeParameters: routeParameters)
+                if let firstRoute = routeResult.routes.first {
+                    // Updates the route geometry and directions.
+                    routeGraphic.geometry = firstRoute.routeGeometry
+                    directions = firstRoute.directionManeuvers
                 }
+            } catch {
+                self.error = error
+                isShowingAlert = true
             }
         }
     }
