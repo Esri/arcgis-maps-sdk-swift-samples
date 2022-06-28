@@ -246,6 +246,7 @@ private extension PortalItem {
 }
 
 private extension Envelope {
+    /// Expands the envelope by a given factor.
     func expanded(by factor: Double) -> Envelope {
         let builder = EnvelopeBuilder(envelope: self)
         builder.expand(factor: factor)
@@ -261,6 +262,6 @@ private extension GeometryProxy {
     
     /// A `CGPoint` that has x and y coordinates at 90% the size's width and height, respectively.
     func max() -> CGPoint {
-        CGPoint(x: self.size.width * 0.9, y: self.size.height * 0.90)
+        CGPoint(x: self.size.width * 0.9, y: self.size.height * 0.9)
     }
 }
