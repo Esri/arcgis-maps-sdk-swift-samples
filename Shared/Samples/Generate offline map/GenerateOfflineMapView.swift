@@ -47,18 +47,23 @@ struct GenerateOfflineMapView: View {
                                     Text("\(model.jobProgress, format: .percent) completed")
                                     ProgressView(value: model.jobProgress, total: 1)
                                 }
+                                .frame(maxWidth: geometry.size.width * 0.5)
                                 
                                 Button("Cancel") {
-                                    Task {
-                                        await generateOfflineMapJob.cancel()
-                                        if let cancellable = cancellable {
-                                            cancellable.cancel()
-                                        }
-                                        self.generateOfflineMapJob = nil
-                                        generateIsDisabled = false
-                                    }
+                                    isCancellingJob = true
                                 }
                                 .padding(.top)
+                                .disabled(isCancellingJob)
+                                .task(id: isCancellingJob) {
+                                    // Ensures cancelling the job is true.
+                                    guard isCancellingJob else { return }
+                                    // Cancels the job.
+                                    await model.cancelJob()
+                                    // Sets cancelling the job and generating an
+                                    // offline map to false.
+                                    isCancellingJob = false
+                                    isGeneratingOfflineMap = false
+                                }
                             }
                             .padding()
                             .background(.white.opacity(0.9))
@@ -69,9 +74,16 @@ struct GenerateOfflineMapView: View {
                     .toolbar {
                         ToolbarItem(placement: .bottomBar) {
                             Button("Generate Offline Map") {
-                                Task {
-                                    await generateOfflineMap()
-                                }
+                                isGeneratingOfflineMap = true
+                            }
+                            .disabled(model.isGenerateDisabled || isGeneratingOfflineMap)
+                            .task(id: isGeneratingOfflineMap) {
+                                // Ensures generating an offline map is true.
+                                guard isGeneratingOfflineMap else { return }
+                                // Generates an offline map.
+                                await model.generateOfflineMap(mapView: mapView, geometry: geometry)
+                                // Sets generating an offline map to false.
+                                isGeneratingOfflineMap = false
                             }
                         }
                     }
