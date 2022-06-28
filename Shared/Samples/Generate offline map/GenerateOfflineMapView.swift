@@ -40,6 +40,12 @@ struct GenerateOfflineMapView: View {
                         model.removeTemporaryDirectory()
                     }
                     .overlay {
+                        if model.offlineMap == nil {
+                            Rectangle()
+                                .stroke(.red, lineWidth: 2)
+                                .frame(width: geometry.size.width * 0.8, height: geometry.size.height * 0.8)
+                        }
+                        
                         // NOTE: Temporary placeholder for job progress view.
                         if isGeneratingOfflineMap {
                             VStack {
