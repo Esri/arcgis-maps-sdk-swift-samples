@@ -18,8 +18,8 @@ When the map loads, zoom to the extent you want to take offline. The red border 
 2. Create an `OfflineMapTask` instance with a `PortalItem`.
 3. Create `GenerateOfflineMapParameters` parameters for the offline map task with `OfflineMapTask.createDefaultGenerateOfflineMapParameters(areaOfInterest:)`.
 4. Create a `GenerateOfflineMapJob` with `OfflineMapTask.generateOfflineMap(parameters:downloadDirectoryURL:)`, using the parameters and specifying a download directory URL.
-5. Start the job and await the results and get its output with `GenerateOfflineMapJob.results.get()`.
-6. When the job is done, get the offline map from the output.
+5. Start the job and await the results.
+6. Get the offline map from the result's output when the job successfully finishes.
 
 ## Relevant API
 
@@ -31,7 +31,7 @@ When the map loads, zoom to the extent you want to take offline. The red border 
 
 ## About the data
 
-The map used in this sample shows the [Naperville water network](https://arcgisruntime.maps.arcgis.com/home/item.html?id=acc027394bc84c2fb04d1ed317aac674) within Naperville, IL, USA, with cartography designed for web and mobile devices with offline support.
+The map used in this sample shows the [Naperville water network](https://www.arcgis.com/home/item.html?id=acc027394bc84c2fb04d1ed317aac674) within Naperville, IL, USA, with cartography designed for web and mobile devices with offline support.
 
 ## Additional information
 
