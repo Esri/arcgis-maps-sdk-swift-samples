@@ -17,7 +17,11 @@ import Combine
 import SwiftUI
 
 struct GenerateOfflineMapView: View {
+    /// A Boolean value indicating whether the job is generating an offline map.
+    @State private var isGeneratingOfflineMap = false
     
+    /// A Boolean value indicating whether the job is cancelling.
+    @State private var isCancellingJob = false
     
     /// The view model for this sample.
     @StateObject private var model = Model()
@@ -27,7 +31,7 @@ struct GenerateOfflineMapView: View {
             MapViewReader { mapView in
                 MapView(map: model.offlineMap ?? model.onlineMap)
                     .interactionModes([.pan, .zoom])
-                    .disabled(generateOfflineMapJob != nil)
+                    .disabled(isGeneratingOfflineMap)
                     .alert(isPresented: $model.isShowingAlert, presentingError: model.error)
                     .task {
                         await model.initializeOfflineMapTask()
@@ -37,7 +41,7 @@ struct GenerateOfflineMapView: View {
                     }
                     .overlay {
                         // NOTE: Temporary placeholder for job progress view.
-                        if let generateOfflineMapJob = generateOfflineMapJob {
+                        if isGeneratingOfflineMap {
                             VStack {
                                 VStack {
                                     Text("\(model.jobProgress, format: .percent) completed")
@@ -69,7 +73,6 @@ struct GenerateOfflineMapView: View {
                                     await generateOfflineMap()
                                 }
                             }
-                            .disabled(generateIsDisabled)
                         }
                     }
             }
