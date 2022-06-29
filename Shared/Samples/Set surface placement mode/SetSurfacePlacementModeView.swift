@@ -99,11 +99,11 @@ private extension SetSurfacePlacementModeView {
             // Creates and adds an elevation source to a surface and sets it
             // to the scene's base surface.
             let surface = Surface()
-            surface.addElevationSource(ArcGISTiledElevationSource(url: .worldElevationServiceURL))
+            surface.addElevationSource(ArcGISTiledElevationSource(url: .worldElevationService))
             scene.baseSurface = surface
             
             // Adds a scene layer from a URL to the scene's operational layers.
-            scene.addOperationalLayer(ArcGISSceneLayer(url: .sceneServiceURL))
+            scene.addOperationalLayer(ArcGISSceneLayer(url: .sceneService))
             self.scene = scene
             
             // Creates the graphics overlays for each surface placement.
@@ -208,11 +208,11 @@ private extension ClosedRange where Bound == Measurement<UnitLength> {
 
 private extension URL {
     /// The URL of a Brest, France buildings scene service.
-    static var sceneServiceURL: URL {
+    static var sceneService: URL {
         URL(string: "https://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/Buildings_Brest/SceneServer")!
     }
     /// The URL of the Terrain 3D ArcGIS REST Service.
-    static var worldElevationServiceURL: URL {
+    static var worldElevationService: URL {
         URL(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!
     }
 }
