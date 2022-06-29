@@ -53,7 +53,7 @@ struct GenerateOfflineMapView: View {
                                     Text("\(model.jobProgress, format: .percent) completed")
                                     ProgressView(value: model.jobProgress, total: 1)
                                 }
-                                .frame(maxWidth: geometry.size.width * 0.5)
+                                .frame(maxWidth: 200)
                                 
                                 Button("Cancel") {
                                     isCancellingJob = true
@@ -72,8 +72,8 @@ struct GenerateOfflineMapView: View {
                                 }
                             }
                             .padding()
-                            .background(.white.opacity(0.9))
-                            .clipShape(RoundedRectangle(cornerRadius: 15.0))
+                            .background(.regularMaterial)
+                            .clipShape(RoundedRectangle(cornerRadius: 15))
                             .shadow(radius: 3)
                         }
                     }
@@ -154,9 +154,11 @@ private extension GenerateOfflineMapView {
         }
         
         /// Generates the offline map.
-        /// - Parameter mapView: A map view proxy used to convert the min and max screen points to
-        /// the map view's spatial reference.
-        /// - Parameter geometry: A geometry proxy used to reference the min and max screen points.
+        /// - Parameters:
+        ///   - mapView: A map view proxy used to convert the min and max screen points to the map
+        ///   view's spatial reference.
+        ///   - geometry: A geometry proxy used to reference the min and max screen points that
+        ///   represent the area of interest.
         func generateOfflineMap(mapView: MapViewProxy, geometry: GeometryProxy) async {
             // Creates the min and max points for the envelope.
             guard let min = mapView.location(fromScreenPoint: geometry.min()),
