@@ -17,7 +17,7 @@ import SwiftUI
 
 struct ClipGeometryView: View {
     /// A Boolean value indicating whether the clip button is disabled.
-    @State private var clipIsDisabled = false
+    @State private var isClipDisabled = false
     
     /// A map with a topographic basemap style and an initial viewpoint of Colorado.
     @StateObject private var map: Map = {
@@ -62,13 +62,13 @@ struct ClipGeometryView: View {
                 ToolbarItem(placement: .bottomBar) {
                     Button("Clip") {
                         // Disables the clip button.
-                        clipIsDisabled = true
+                        isClipDisabled = true
                         // Hides the Colorado graphic.
                         coloradoGraphic.isVisible = false
                         // Clips Colorado's geometry to each envelope.
                         envelopesGraphicsOverlay.graphics.forEach { clipColoradoGeometry(to: $0.geometry as! Envelope) }
                     }
-                    .disabled(clipIsDisabled)
+                    .disabled(isClipDisabled)
                 }
             }
     }
