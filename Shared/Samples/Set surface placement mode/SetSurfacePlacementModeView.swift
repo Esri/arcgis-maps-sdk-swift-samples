@@ -42,7 +42,7 @@ struct SetSurfacePlacementModeView: View {
                             .minimumScaleFactor(0.5)
                             .lineLimit(1)
                         
-                        Slider(value: $model.zValue.value, in: model.zValueRange.range) {
+                        Slider(value: $model.zValue.value, in: model.zValueRange.asDouble) {
                             Text("Z-value")
                         } minimumValueLabel: {
                             Text(model.zValueRange.lowerBound, format: .measurement(width: .narrow))
@@ -202,8 +202,8 @@ private extension Measurement where UnitType == UnitLength {
 }
 
 private extension ClosedRange where Bound == Measurement<UnitLength> {
-    /// A closed range of the measurement's values.
-    var range: ClosedRange<Double> { self.lowerBound.value...self.upperBound.value }
+    /// The measurement's values as a closed range of doubles.
+    var asDouble: ClosedRange<Double> { self.lowerBound.value...self.upperBound.value }
 }
 
 private extension URL {
