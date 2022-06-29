@@ -87,7 +87,7 @@ private extension SetSurfacePlacementModeView {
         let graphicsOverlays: [GraphicsOverlay]
         
         /// A dictionary for graphics overlays of different surface placement modes.
-        let overlaysBySurfacePlacement: [SurfacePlacement: GraphicsOverlay]
+        private let overlaysBySurfacePlacement: [SurfacePlacement: GraphicsOverlay]
         
         init() {
             // Creates the scene with an initial viewpoint.
@@ -123,13 +123,13 @@ private extension SetSurfacePlacementModeView {
         }
         
         /// Updates the draped graphics to change their visibility based on the current draped mode.
-        func updateDrapedGraphics() {
+        private func updateDrapedGraphics() {
             overlaysBySurfacePlacement[.drapedBillboarded]?.isVisible = drapedMode == .billboarded
             overlaysBySurfacePlacement[.drapedFlat]?.isVisible = drapedMode == .flat
         }
         
         /// Updates the graphics' z-value.
-        func updateGraphics() {
+        private func updateGraphics() {
             overlaysBySurfacePlacement.values.forEach { graphicsOverlay in
                 graphicsOverlay.graphics.forEach { graphic in
                     graphic.geometry = GeometryEngine.makeGeometry(from: graphic.geometry!, z: zValue.value)
@@ -140,7 +140,7 @@ private extension SetSurfacePlacementModeView {
         /// Creates a graphics overlay for the given surface placement.
         /// - Parameter surfacePlacement: The surface placement for which to create a graphics overlay.
         /// - Returns: A new `GraphicsOverlay` object.
-        static func makeGraphicsOverlay(for surfacePlacement: SurfacePlacement) -> GraphicsOverlay {
+        private static func makeGraphicsOverlay(for surfacePlacement: SurfacePlacement) -> GraphicsOverlay {
             // Creates symbols for the graphic.
             let markerSymbol = SimpleMarkerSymbol(style: .triangle, color: .red, size: 20)
             let textSymbol = TextSymbol(text: surfacePlacement.label, color: .blue, size: 20, horizontalAlignment: .left)
