@@ -143,7 +143,7 @@ private extension SetSurfacePlacementModeView {
         static func makeGraphicsOverlay(for surfacePlacement: SurfacePlacement) -> GraphicsOverlay {
             // Creates symbols for the graphic.
             let markerSymbol = SimpleMarkerSymbol(style: .triangle, color: .red, size: 20)
-            let textSymbol = TextSymbol(text: surfacePlacement.title, color: .blue, size: 20, horizontalAlignment: .left)
+            let textSymbol = TextSymbol(text: surfacePlacement.label, color: .blue, size: 20, horizontalAlignment: .left)
             
             // Adds an offset to avoid overlapping the text and marker symbols.
             textSymbol.offsetY = 20
@@ -180,8 +180,8 @@ private extension SetSurfacePlacementModeView {
 private extension SurfacePlacement {
     static var allCases: [Self] { [.absolute, .drapedBillboarded, .drapedFlat, .relative, .relativeToScene] }
     
-    /// The human-readable name of the surface placement.
-    var title: String {
+    /// A human-readable label of the surface placement.
+    var label: String {
         switch self {
         case .absolute: return "Absolute"
         case .drapedBillboarded: return "Draped Billboarded"
