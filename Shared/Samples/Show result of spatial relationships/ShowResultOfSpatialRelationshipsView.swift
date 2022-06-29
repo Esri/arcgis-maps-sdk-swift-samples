@@ -51,12 +51,8 @@ struct ShowResultOfSpatialRelationshipsView: View {
     /// The point graphic.
     private var pointGraphic: Graphic { graphicsOverlay.graphics[2] }
     
-    private struct Relationship {
-        let relationships: [String]
-        let title: String
-    }
-    
     /// Shows the relationships for the selected graphic.
+    /// - Parameter graphic: The graphic to show all spatial relationships for.
     private func showRelationships(for graphic: Graphic) {
         guard let selectedGeometry = graphic.geometry,
               let allRelationships = allRelationships(for: selectedGeometry),
@@ -70,7 +66,9 @@ struct ShowResultOfSpatialRelationshipsView: View {
         calloutPlacement = LocationCalloutPlacement(location: mapPoint)
     }
     
-    /// Returns the relevant relationships for a given geometry.
+    /// Returns the relevant spatial relationships for a given geometry with all other geometries in this sample.
+    /// - Parameter geometry: The geometry to find all spatial relationships for.
+    /// - Returns: An array of relationships between the given geometry and all other geometries.
     private func allRelationships(for geometry: Geometry) -> [Relationship]? {
         guard let pointGeometry = pointGraphic.geometry,
               let polylineGeometry = polylineGraphic.geometry,
@@ -81,71 +79,22 @@ struct ShowResultOfSpatialRelationshipsView: View {
         switch geometry {
         case is Point:
             return [
-                Relationship(
-                    relationships: getSpatialRelationships(of: pointGeometry, with: polylineGeometry),
-                    title: "Relationship With Polyline"
-                ),
-                Relationship(
-                    relationships: getSpatialRelationships(of: pointGeometry, with: polygonGeometry),
-                    title: "Relationship With Polygon"
-                )
+                Relationship(between: pointGeometry, and: polylineGeometry),
+                Relationship(between: pointGeometry, and: polygonGeometry)
             ]
         case is Polyline:
             return [
-                Relationship(
-                    relationships: getSpatialRelationships(of: polylineGeometry, with: pointGeometry),
-                    title: "Relationship With Point"
-                ),
-                Relationship(
-                    relationships: getSpatialRelationships(of: polylineGeometry, with: polygonGeometry),
-                    title: "Relationship With Polygon"
-                )
+                Relationship(between: polylineGeometry, and: pointGeometry),
+                Relationship(between: polylineGeometry, and: polygonGeometry)
             ]
         case is Polygon:
             return [
-                Relationship(
-                    relationships: getSpatialRelationships(of: polygonGeometry, with: pointGeometry),
-                    title: "Relationship With Point"
-                ),
-                Relationship(
-                    relationships: getSpatialRelationships(of: polygonGeometry, with: polylineGeometry),
-                    title: "Relationship With Polyline"
-                )
+                Relationship(between: polygonGeometry, and: pointGeometry),
+                Relationship(between: polygonGeometry, and: polylineGeometry)
             ]
         default:
             return nil
         }
-    }
-    
-    /// Checks the different relationships between two geometries and returns the result as an array of strings.
-    /// - Parameters:
-    ///   - geometry1: The input geometry to be compared.
-    ///   - geometry2: The input geometry to be compared.
-    /// - Returns: An array of strings representing relationship.
-    private func getSpatialRelationships(of geometry1: Geometry, with geometry2: Geometry) -> [String] {
-        var relationships: [String] = []
-        if GeometryEngine.isGeometry(geometry1, crossing: geometry2) {
-            relationships.append("Crosses")
-        }
-        if GeometryEngine.doesGeometry(geometry1, contain: geometry2) {
-            relationships.append("Contains")
-        }
-        if GeometryEngine.isGeometry(geometry1, disjointWith: geometry2) {
-            relationships.append("Disjoint")
-        }
-        if GeometryEngine.isGeometry(geometry1, intersecting: geometry2) {
-            relationships.append("Intersects")
-        }
-        if GeometryEngine.isGeometry(geometry1, overlapping: geometry2) {
-            relationships.append("Overlaps")
-        }
-        if GeometryEngine.isGeometry(geometry1, touching: geometry2) {
-            relationships.append("Touches")
-        }
-        if GeometryEngine.isGeometry(geometry1, within: geometry2) {
-            relationships.append("Within")
-        }
-        return relationships
     }
     
     var body: some View {
@@ -157,12 +106,12 @@ struct ShowResultOfSpatialRelationshipsView: View {
                 }
                 .callout(placement: $calloutPlacement.animation(.default.speed(4))) { _ in
                     VStack(alignment: .leading) {
-                        ForEach(relationships, id: \.title) { relationship in
-                            Text(relationship.title)
+                        ForEach(relationships, id: \.relationshipWithLabel) { relationship in
+                            Text(relationship.relationshipWithLabel)
                                 .font(.headline)
                             VStack(alignment: .leading) {
-                                ForEach(relationship.relationships, id: \.self) { relationship in
-                                    Text(relationship)
+                                ForEach(relationship.spatialRelationships, id: \.self) { spatialRelationship in
+                                    Text(spatialRelationship)
                                 }
                             }
                             .padding(.bottom, 5)
@@ -206,6 +155,75 @@ struct ShowResultOfSpatialRelationshipsView: View {
                         .padding(.vertical, 6)
                         .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
                 }
+        }
+    }
+}
+
+private extension ShowResultOfSpatialRelationshipsView {
+    /// The relationship between one geometry and another geometry.
+    struct Relationship {
+        /// The input geometry to be compared.
+        private let geometryOne: Geometry
+        /// The input geometry to be compared against.
+        private let geometryTwo: Geometry
+        
+        /// - Parameters:
+        ///   - geometryOne: The input geometry to be compared.
+        ///   - geometryTwo: The input geometry to be compared against.
+        init(between geometryOne: Geometry, and geometryTwo: Geometry) {
+            self.geometryOne = geometryOne
+            self.geometryTwo = geometryTwo
+        }
+        
+        /// The spatial relationships between geometry one and two.
+        var spatialRelationships: [String] {
+            geometryOne.getSpatialRelationships(with: geometryTwo)
+        }
+        
+        /// A description of what geometry type `geometryOne` is compared against.
+        var relationshipWithLabel: String {
+            "Relationship with \(geometryTwo.type)"
+        }
+    }
+}
+
+private extension Geometry {
+    /// Checks the different relationships between two geometries and returns the result as an array of strings.
+    /// - Parameter geometry: The input geometry to be compared against.
+    /// - Returns: An array of strings representing a relationship.
+    func getSpatialRelationships(with geometry: Geometry) -> [String] {
+        var relationships: [String] = []
+        if GeometryEngine.isGeometry(self, crossing: geometry) {
+            relationships.append("Crosses")
+        }
+        if GeometryEngine.doesGeometry(self, contain: geometry) {
+            relationships.append("Contains")
+        }
+        if GeometryEngine.isGeometry(self, disjointWith: geometry) {
+            relationships.append("Disjoint")
+        }
+        if GeometryEngine.isGeometry(self, intersecting: geometry) {
+            relationships.append("Intersects")
+        }
+        if GeometryEngine.isGeometry(self, overlapping: geometry) {
+            relationships.append("Overlaps")
+        }
+        if GeometryEngine.isGeometry(self, touching: geometry) {
+            relationships.append("Touches")
+        }
+        if GeometryEngine.isGeometry(self, within: geometry) {
+            relationships.append("Within")
+        }
+        return relationships
+    }
+    
+    /// Returns what type the geometry is.
+    var type: String {
+        switch self {
+        case is Point: return "Point"
+        case is Polyline: return "Polyline"
+        case is Polygon: return "Polygon"
+        default: return "Unknown"
         }
     }
 }
