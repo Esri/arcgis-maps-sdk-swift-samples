@@ -17,7 +17,7 @@ import SwiftUI
 
 struct CutGeometryView: View {
     /// A Boolean value indicating whether the cut button is disabled.
-    @State private var cutIsDisabled = false
+    @State private var isCutDisabled = false
     
     /// A map with a topographic basemap style and an initial viewpoint of Lake Superior.
     @StateObject private var map: Map = {
@@ -42,33 +42,27 @@ struct CutGeometryView: View {
         return GraphicsOverlay(graphics: [lakeSuperiorGraphic, borderGraphic])
     }()
     
-    /// The graphic of Lake Superior.
-    private var lakeSuperiorGraphic: Graphic { graphicsOverlay.graphics[0] }
-    
-    /// The graphic of the Canada/USA border.
-    private var borderGraphic: Graphic { graphicsOverlay.graphics[1] }
-    
     var body: some View {
         MapView(map: map, graphicsOverlays: [graphicsOverlay])
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
                     Button("Cut") {
                         // Cuts the Lake Superior graphic using the border polyline.
-                        guard let parts = GeometryEngine.cut(lakeSuperiorGraphic.geometry!, usingCutter: borderGraphic.geometry as! Polyline),
+                        guard let parts = GeometryEngine.cut(.lakeSuperiorPolygon, usingCutter: .borderPolyline),
                               parts.count >= 2,
                               let firstPart = parts.first,
                               let secondPart = parts.last else {
                             return
                         }
                         // Disables the cut button.
-                        cutIsDisabled = true
+                        isCutDisabled = true
                         // Creates the graphics for the Canadian and USA sides of Lake Superior.
                         let canadaSideGraphic = Graphic(geometry: firstPart, symbol: SimpleFillSymbol(style: .backwardDiagonal, color: .green))
                         let usaSideGraphic = Graphic(geometry: secondPart, symbol: SimpleFillSymbol(style: .forwardDiagonal, color: .yellow))
                         // Adds the graphics to the graphics overlay.
                         graphicsOverlay.addGraphics([canadaSideGraphic, usaSideGraphic])
                     }
-                    .disabled(cutIsDisabled)
+                    .disabled(isCutDisabled)
                 }
             }
     }
