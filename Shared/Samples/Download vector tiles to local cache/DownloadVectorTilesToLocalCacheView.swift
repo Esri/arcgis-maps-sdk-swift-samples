@@ -13,14 +13,15 @@
 // limitations under the License.
 
 import ArcGIS
-import Combine
 import SwiftUI
 
 struct DownloadVectorTilesToLocalCacheView: View {
     /// A Boolean value indicating whether to download vector tiles.
     @State private var isDownloading = false
+    
     /// A Boolean value indicating whether to cancel and the job.
     @State private var isCancellingJob = false
+    
     /// The view model for this sample.
     @StateObject private var model = Model()
     
@@ -46,24 +47,25 @@ struct DownloadVectorTilesToLocalCacheView: View {
                         if isDownloading {
                             VStack {
                                 VStack {
-                                    Text("\(model.jobProgress, format: .percent) completed")
-                                    ProgressView(value: model.jobProgress, total: 1)
-                                }
-                                .frame(maxWidth: 200)
-                                
-                                Button("Cancel") {
-                                    isCancellingJob = true
-                                }
-                                .padding(.top)
-                                .disabled(isCancellingJob)
-                                .task(id: isCancellingJob) {
-                                    // Ensures cancelling the job is true.
-                                    guard isCancellingJob else { return }
-                                    // Cancels the job.
-                                    await model.cancelJob()
-                                    // Sets cancelling the job and downloading to false.
-                                    isCancellingJob = false
-                                    isDownloading = false
+                                    if let progress = model.exportVectorTilesJob?.progress {
+                                        ProgressView(progress)
+                                            .progressViewStyle(LinearProgressStyle())
+                                    }
+                                    
+                                    Button("Cancel") {
+                                        isCancellingJob = true
+                                    }
+                                    .padding(.top)
+                                    .disabled(isCancellingJob)
+                                    .task(id: isCancellingJob) {
+                                        // Ensures cancelling the job is true.
+                                        guard isCancellingJob else { return }
+                                        // Cancels the job.
+                                        await model.cancelJob()
+                                        // Sets cancelling the job and downloading to false.
+                                        isCancellingJob = false
+                                        isDownloading = false
+                                    }
                                 }
                             }
                             .padding()
@@ -127,17 +129,14 @@ private extension DownloadVectorTilesToLocalCacheView {
         /// The error shown in the alert.
         @Published var error: Error?
         
+        /// The export vector tiles job.
+        @Published var exportVectorTilesJob: ExportVectorTilesJob!
+        
         /// The export vector tiles task.
         private var exportVectorTilesTask: ExportVectorTilesTask!
         
-        /// The export vector tiles job.
-        private var exportVectorTilesJob: ExportVectorTilesJob!
-        
         /// The vector tiled layer from the downloaded result.
         private var vectorTiledLayerResults: ArcGISVectorTiledLayer!
-        
-        /// A cancellable that updates the job's progress.
-        private var cancellable: AnyCancellable!
         
         /// A URL to the directory temporarily storing all items.
         private let temporaryDirectoryURL = FileManager
@@ -233,17 +232,10 @@ private extension DownloadVectorTilesToLocalCacheView {
                     // Starts the job.
                     exportVectorTilesJob.start()
                     
-                    // Updates the job's progress.
-                    cancellable = exportVectorTilesJob.progress
-                        .publisher(for: \.fractionCompleted)
-                        .receive(on: RunLoop.main)
-                        .sink { self.jobProgress = $0 }
-                    
-                    // Awaits the result of the job/
+                    // Awaits the result of the job
                     let result = await exportVectorTilesJob.result
                     
-                    // Cancels the job progress subscriber and sets the job to nil.
-                    cancellable.cancel()
+                    // Sets the job to nil.
                     exportVectorTilesJob = nil
                     
                     switch result {
@@ -281,8 +273,6 @@ private extension DownloadVectorTilesToLocalCacheView {
         func cancelJob() async {
             // Cancels the export vector tiles job.
             await exportVectorTilesJob.cancel()
-            // Cancels the job progress subscriber and sets the job to nil.
-            cancellable.cancel()
             exportVectorTilesJob = nil
             // Removes any temporary files.
             removeTemporaryFiles()
@@ -307,6 +297,27 @@ private extension DownloadVectorTilesToLocalCacheView {
         /// Removes the temporary directory.
         func removeTemporaryDirectory() {
             try? FileManager.default.removeItem(at: temporaryDirectoryURL)
+        }
+    }
+}
+
+private extension DownloadVectorTilesToLocalCacheView {
+    struct LinearProgressStyle: ProgressViewStyle {
+        func makeBody(configuration: Configuration) -> some View {
+            let fractionCompleted = configuration.fractionCompleted ?? 0
+            
+            VStack {
+                Text("\(fractionCompleted, format: .percent) completed")
+                ZStack(alignment: .leading) {
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Color(.systemGray5))
+                    
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Color.accentColor)
+                        .frame(width: 200 * fractionCompleted)
+                }
+                .frame(maxWidth: 200, maxHeight: 8)
+            }
         }
     }
 }
