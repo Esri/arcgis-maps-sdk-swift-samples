@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import ArcGIS
-import Combine
 import SwiftUI
 
 struct GenerateOfflineMapView: View {
@@ -49,11 +48,10 @@ struct GenerateOfflineMapView: View {
                         // NOTE: Temporary placeholder for job progress view.
                         if isGeneratingOfflineMap {
                             VStack {
-                                VStack {
-                                    Text("\(model.jobProgress, format: .percent) completed")
-                                    ProgressView(value: model.jobProgress, total: 1)
+                                if let progress = model.generateOfflineMapJob?.progress {
+                                    ProgressView(progress)
+                                        .progressViewStyle(LinearProgressStyle())
                                 }
-                                .frame(maxWidth: 200)
                                 
                                 Button("Cancel") {
                                     isCancellingJob = true
@@ -88,6 +86,8 @@ struct GenerateOfflineMapView: View {
                                 guard isGeneratingOfflineMap else { return }
                                 // Generates an offline map.
                                 await model.generateOfflineMap(mapView: mapView, geometry: geometry)
+                                // Disables the generate offline map button.
+                                model.isGenerateDisabled = true
                                 // Sets generating an offline map to false.
                                 isGeneratingOfflineMap = false
                             }
@@ -100,8 +100,7 @@ struct GenerateOfflineMapView: View {
 
 private extension GenerateOfflineMapView {
     /// The view model for this sample.
-    @MainActor
-    class Model: ObservableObject {
+    @MainActor class Model: ObservableObject {
         /// The offline map that is generated.
         @Published var offlineMap: Map?
         
@@ -121,10 +120,7 @@ private extension GenerateOfflineMapView {
         private var offlineMapTask: OfflineMapTask!
         
         /// The generate offline map job.
-        private var generateOfflineMapJob: GenerateOfflineMapJob!
-        
-        /// A cancellable that updates the job's progress.
-        private var cancellable: AnyCancellable?
+        @Published var generateOfflineMapJob: GenerateOfflineMapJob!
         
         /// A URL referencing the temporary directory where the offline map files are stored.
         private let temporaryDirectory = FileManager
@@ -179,17 +175,10 @@ private extension GenerateOfflineMapView {
                 // Starts the job.
                 generateOfflineMapJob.start()
                 
-                // Updates the job's progress.
-                cancellable = generateOfflineMapJob.progress
-                    .publisher(for: \.fractionCompleted)
-                    .receive(on: RunLoop.main)
-                    .sink { self.jobProgress = $0 }
-                
                 // Awaits the result of the job.
                 let result = await generateOfflineMapJob.result
                 
-                // Cancels the job progress subscriber and sets the job to nil.
-                cancellable?.cancel()
+                // Sets the job to nil.
                 generateOfflineMapJob = nil
                 
                 switch result {
@@ -215,8 +204,6 @@ private extension GenerateOfflineMapView {
         func cancelJob() async {
             // Cancels the generate offline map job.
             await generateOfflineMapJob.cancel()
-            // Cancels the job progress subscriber and sets the job to nil.
-            cancellable?.cancel()
             generateOfflineMapJob = nil
         }
         
@@ -233,6 +220,27 @@ private extension GenerateOfflineMapView {
         /// Removes the temporary directory.
         func removeTemporaryDirectory() {
             try? FileManager.default.removeItem(at: temporaryDirectory)
+        }
+    }
+}
+
+private extension GenerateOfflineMapView {
+    struct LinearProgressStyle: ProgressViewStyle {
+        func makeBody(configuration: Configuration) -> some View {
+            let fractionCompleted = configuration.fractionCompleted ?? 0
+            
+            VStack {
+                Text("\(fractionCompleted, format: .percent) completed")
+                ZStack(alignment: .leading) {
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Color(.systemGray4))
+                    
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Color.accentColor)
+                        .frame(width: 200 * fractionCompleted)
+                }
+                .frame(maxWidth: 200, maxHeight: 8)
+            }
         }
     }
 }
