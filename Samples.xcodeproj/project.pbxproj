@@ -370,8 +370,8 @@
 				E088E1562862579D00413100 /* SetSurfacePlacementModeView.swift */,
 			);
 			path = "Set surface placement mode";
-            sourceTree = "<group>";
-        };
+			sourceTree = "<group>";
+		};
 		E0EA0B75286638FD00C9621D /* Project */ = {
 			isa = PBXGroup;
 			children = (
