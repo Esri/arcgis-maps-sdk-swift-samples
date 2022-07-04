@@ -15,7 +15,7 @@ Use the slider or pinch to rotate the map. If the map is not pointed north, the 
 ## How it works
 
 1. Create a `Map` object with the `arcGISStreets` basemap style.
-2. Create a `Viewpoint` object with a desired starting rotation.
+2. Create a `Viewpoint` object with a center, a scale, and a desired starting rotation.
 3. Create a `MapView` instance with the map and viewpoint.
 4. Update the viewpoint with a different rotation to change the rotation angle.
 
