@@ -23,32 +23,31 @@ struct SetSurfacePlacementModeView: View {
         VStack(spacing: 0) {
             SceneView(scene: model.scene, graphicsOverlays: model.graphicsOverlays)
             VStack {
-                Group {
-                    HStack {
-                        Text("Draped mode:")
-                            .frame(width: 120, alignment: .leading)
-                        
-                        Picker("Draped Mode", selection: $model.drapedMode) {
-                            ForEach(DrapedMode.allCases, id: \.self) { mode in
-                                Text(mode.label)
-                            }
-                        }
-                        .pickerStyle(.segmented)
-                    }
+                HStack {
+                    Text("Draped mode:")
+                        .frame(width: 120, alignment: .leading)
                     
-                    HStack {
-                        Text("Z-value: \(model.zValue, format: .measurement(width: .narrow))")
-                            .frame(width: 120, alignment: .leading)
-                            .minimumScaleFactor(0.5)
-                            .lineLimit(1)
-                        
-                        Slider(value: $model.zValue.value, in: model.zValueRange.doubleRange) {
-                            Text("Z-value")
-                        } minimumValueLabel: {
-                            Text(model.zValueRange.lowerBound, format: .measurement(width: .narrow))
-                        } maximumValueLabel: {
-                            Text(model.zValueRange.upperBound, format: .measurement(width: .narrow))
+                    Picker("Draped Mode", selection: $model.drapedMode) {
+                        ForEach(DrapedMode.allCases, id: \.self) { mode in
+                            Text(mode.label)
                         }
+                    }
+                    .pickerStyle(.segmented)
+                }
+                .frame(maxWidth: 540)
+                
+                HStack {
+                    Text("Z-value: \(model.zValue, format: .measurement(width: .narrow))")
+                        .frame(width: 120, alignment: .leading)
+                        .minimumScaleFactor(0.5)
+                        .lineLimit(1)
+                    
+                    Slider(value: $model.zValue.value, in: model.zValueRange.doubleRange) {
+                        Text("Z-value")
+                    } minimumValueLabel: {
+                        Text(model.zValueRange.lowerBound, format: .measurement(width: .narrow))
+                    } maximumValueLabel: {
+                        Text(model.zValueRange.upperBound, format: .measurement(width: .narrow))
                     }
                 }
                 .frame(maxWidth: 540)
@@ -111,7 +110,7 @@ private extension SetSurfacePlacementModeView {
             
             // Creates the dictionary for graphics overlays of different surface placements.
             overlaysBySurfacePlacement = Dictionary(uniqueKeysWithValues: zip(SurfacePlacement.allCases, graphicsOverlays))
-  
+            
             // Sets the initial z-value to the mid-range of the possible z-values.
             zValue = Measurement(value: Measurement.zMid, unit: UnitLength.meters)
             
