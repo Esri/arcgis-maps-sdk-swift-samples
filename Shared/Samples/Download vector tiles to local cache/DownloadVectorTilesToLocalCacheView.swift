@@ -114,9 +114,6 @@ struct DownloadVectorTilesToLocalCacheView: View {
 private extension DownloadVectorTilesToLocalCacheView {
     /// A view model for this sample.
     @MainActor class Model: ObservableObject {
-        /// The export vector tiles job's progress.
-        @Published var jobProgress = 0.0
-        
         /// A Boolean value indicating whether the download button is disabled.
         @Published var isDownloadDisabled = true
         
