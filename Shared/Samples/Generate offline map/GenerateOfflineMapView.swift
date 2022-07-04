@@ -104,9 +104,6 @@ private extension GenerateOfflineMapView {
         /// The offline map that is generated.
         @Published var offlineMap: Map?
         
-        /// The generate offline map job's progress.
-        @Published var jobProgress = 0.0
-        
         /// A Boolean value indicating whether the generate button is disabled.
         @Published var isGenerateDisabled = true
         
@@ -116,11 +113,11 @@ private extension GenerateOfflineMapView {
         /// The error shown in the alert.
         @Published var error: Error?
         
-        /// The offline map task.
-        private var offlineMapTask: OfflineMapTask!
-        
         /// The generate offline map job.
         @Published var generateOfflineMapJob: GenerateOfflineMapJob!
+        
+        /// The offline map task.
+        private var offlineMapTask: OfflineMapTask!
         
         /// A URL referencing the temporary directory where the offline map files are stored.
         private let temporaryDirectory = FileManager
