@@ -171,10 +171,10 @@ private extension GenerateOfflineMapView {
             
             do {
                 // Creates the default parameters for the offline map task.
-                let parameters = try await offlineMapTask.createDefaultGenerateOfflineMapParameters(areaOfInterest: extent)
+                let parameters = try await offlineMapTask.makeDefaultGenerateOfflineMapParameters(areaOfInterest: extent)
                 
                 // Creates the generate offline map job based on the parameters.
-                generateOfflineMapJob = offlineMapTask.generateOfflineMap(parameters: parameters, downloadDirectoryURL: temporaryDirectory)
+                generateOfflineMapJob = offlineMapTask.makeGenerateOfflineMapJob(parameters: parameters, downloadDirectory: temporaryDirectory)
                 
                 // Starts the job.
                 generateOfflineMapJob.start()
