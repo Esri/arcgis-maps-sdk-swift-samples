@@ -230,7 +230,7 @@ private extension GenerateOfflineMapView {
                 Text("\(fractionCompleted, format: .percent) completed")
                 ZStack(alignment: .leading) {
                     RoundedRectangle(cornerRadius: 10)
-                        .fill(Color(.systemGray4))
+                        .fill(Color(.systemGray5))
                     
                     RoundedRectangle(cornerRadius: 10)
                         .fill(Color.accentColor)
