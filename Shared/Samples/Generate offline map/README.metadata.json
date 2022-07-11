@@ -14,6 +14,8 @@
         "GenerateOfflineMapParameters",
         "GenerateOfflineMapResult",
         "OfflineMapTask",
+        "OfflineMapTask.makeDefaultGenerateOfflineMapParameters(areaOfInterest:)",
+        "OfflineMapTask.makeGenerateOfflineMapJob(parameters:downloadDirectory:)",
         "PortalItem"
     ],
     "redirect_from": [],
@@ -22,6 +24,8 @@
         "GenerateOfflineMapParameters",
         "GenerateOfflineMapResult",
         "OfflineMapTask",
+        "OfflineMapTask.makeDefaultGenerateOfflineMapParameters(areaOfInterest:)",
+        "OfflineMapTask.makeGenerateOfflineMapJob(parameters:downloadDirectory:)",
         "PortalItem"
     ],
     "snippets": [
