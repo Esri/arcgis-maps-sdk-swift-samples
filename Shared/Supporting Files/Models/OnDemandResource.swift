@@ -33,12 +33,6 @@ class OnDemandResource: ObservableObject {
     /// The problem occured in downloading resources.
     @Published private(set) var error: Error?
     
-    /// A Boolean value that indicates whether the error is from cancelling the
-    /// download request.
-    var isUserCancelledError: Bool {
-        (error as? NSError)?.code != NSUserCancelledError
-    }
-    
     /// The on-demand resources request.
     let request: NSBundleResourceRequest
     

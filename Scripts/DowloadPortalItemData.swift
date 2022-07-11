@@ -26,7 +26,6 @@ import OSLog
 // MARK: Model
 
 /// A sample's dependencies retrieved from its `README.metadata.json` file.
-/// - Note: More about the schema at `common-samples/wiki/README.metadata.json`.
 struct SampleDependency: Decodable {
     /// The ArcGIS Online Portal Item IDs.
     let offlineData: [String]
