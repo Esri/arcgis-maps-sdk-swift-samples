@@ -220,8 +220,8 @@
 		0074ABC028174F430037244A /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				0074ABC128174F430037244A /* Sample.swift */,
 				00CCB8A4285BAF8700BBAB70 /* OnDemandResource.swift */,
+				0074ABC128174F430037244A /* Sample.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
