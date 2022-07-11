@@ -1,0 +1,39 @@
+{
+    "category": "Scenes",
+    "description": "Position graphics relative to a surface using different surface placement modes.",
+    "ignore": false,
+    "images": [
+        "set-surface-placement-mode.png"
+    ],
+    "keywords": [
+        "3D",
+        "absolute",
+        "altitude",
+        "draped",
+        "elevation",
+        "floating",
+        "relative",
+        "scenes",
+        "sea level",
+        "surface placement",
+        "Graphic",
+        "GraphicsOverlay",
+        "LayerSceneProperties",
+        "Surface",
+        "SurfacePlacement",
+        "static GeometryEngine.makeGeometry(from:z:)"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Graphic",
+        "GraphicsOverlay",
+        "LayerSceneProperties",
+        "Surface",
+        "SurfacePlacement",
+        "static GeometryEngine.makeGeometry(from:z:)"
+    ],
+    "snippets": [
+        "SetSurfacePlacementModeView.swift"
+    ],
+    "title": "Set surface placement mode"
+}
