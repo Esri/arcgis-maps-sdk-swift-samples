@@ -68,6 +68,7 @@ struct FindRouteView: View {
                                 }
                             }
                         }
+                        .navigationViewStyle(.stack)
                         .frame(minWidth: 320, minHeight: 500)
                     }
                 }
