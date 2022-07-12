@@ -1,5 +1,5 @@
 {
-    "category": "Layers",
+    "category": "",
     "description": "Download tiles from an online vector tile service.",
     "ignore": false,
     "images": [
@@ -16,6 +16,8 @@
         "ExportVectorTilesParameters",
         "ExportVectorTilesResult",
         "ExportVectorTilesTask",
+        "ExportVectorTilesTask.createDefaultExportVectorTilesParameters(areaOfInterest:maxScale:)",
+        "ExportVectorTilesTask.exportVectorTiles(parameters:vectorTileCacheURL:itemResourceCacheURL:)",
         "ItemResourceCache",
         "VectorTileCache"
     ],
@@ -26,6 +28,8 @@
         "ExportVectorTilesParameters",
         "ExportVectorTilesResult",
         "ExportVectorTilesTask",
+        "ExportVectorTilesTask.createDefaultExportVectorTilesParameters(areaOfInterest:maxScale:)",
+        "ExportVectorTilesTask.exportVectorTiles(parameters:vectorTileCacheURL:itemResourceCacheURL:)",
         "ItemResourceCache",
         "VectorTileCache"
     ],
