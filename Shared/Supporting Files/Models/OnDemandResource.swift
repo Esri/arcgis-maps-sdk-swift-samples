@@ -46,7 +46,6 @@ final class OnDemandResource: ObservableObject {
         request.progress
             .publisher(for: \.fractionCompleted, options: .new)
             .map { $0 < 1 ? .inProgress($0) : .downloaded }
-            .receive(on: RunLoop.main)
             .sink { [weak self] in self?.requestState = $0 }
             .store(in: &cancellables)
     }
