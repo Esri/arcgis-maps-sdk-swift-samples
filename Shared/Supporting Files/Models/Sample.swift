@@ -23,7 +23,7 @@ protocol Sample {
     var description: String { get }
     /// The tags and relevant APIs of the sample.
     var tags: Set<String> { get }
-    /// A Boolean that indicates whether a sample has offline data dependencies.
+    /// A Boolean value that indicates whether a sample has offline data dependencies.
     var hasDependency: Bool { get }
     
     /// Creates the view for the sample.

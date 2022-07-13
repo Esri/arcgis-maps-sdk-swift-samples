@@ -101,7 +101,7 @@ func numberOfFilesInArchive(at url: URL) throws -> Int {
     // To extract the count, cut the string at the first whitespace.
     let totalsInfo = outputPipe.fileHandleForReading.readDataToEndOfFile()
     // `UInt8(32)` is space in ASCII.
-    let totalsCount = String(data: totalsInfo.prefix { $0 != 32 }, encoding: .utf8)!
+    let totalsCount = String(data: totalsInfo.prefix(while: { $0 != 32 }), encoding: .utf8)!
     return Int(totalsCount)!
 }
 
@@ -208,7 +208,9 @@ let portalItems: [PortalItem] = {
         let sampleSubDirectories = try FileManager.default
             .contentsOfDirectory(at: samplesDirectoryURL, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles])
             .filter(\.hasDirectoryPath)
-        let sampleDependencies = sampleSubDirectories.map { $0.appendingPathComponent("README.metadata.json") }.compactMap(parseJSON(at:))
+        let sampleDependencies = sampleSubDirectories
+            .map { $0.appendingPathComponent("README.metadata.json", isDirectory: false) }
+            .compactMap(parseJSON(at:))
         return sampleDependencies.flatMap(\.offlineData).map(PortalItem.init(identifier:))
     } catch {
         logger.error("Error decoding Samples dependencies: \(error.localizedDescription)")

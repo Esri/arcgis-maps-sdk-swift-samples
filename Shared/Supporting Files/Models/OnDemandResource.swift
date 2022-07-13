@@ -15,7 +15,8 @@
 import Combine
 import Foundation
 
-class OnDemandResource: ObservableObject {
+@MainActor
+final class OnDemandResource: ObservableObject {
     enum RequestState {
         /// A request that has not started.
         case notStarted
