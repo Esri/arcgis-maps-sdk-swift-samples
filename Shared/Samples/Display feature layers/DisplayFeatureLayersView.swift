@@ -38,20 +38,20 @@ struct DisplayFeatureLayersView: View {
     @StateObject private var map = Map(basemapStyle: .arcGISTopographic)
     
     /// Loads a feature layer with a service feature table.
-    private func loadServiceFeatureTable() async throws {
+    private func loadServiceFeatureTable() {
         // Creates a service feature table from a feature service.
         let featureTable = ServiceFeatureTable(url: .damageAssessment)
         let featureLayer = FeatureLayer(featureTable: featureTable)
-        try await setFeatureLayer(featureLayer, viewpoint: .napervilleIL)
+        setFeatureLayer(featureLayer, viewpoint: .napervilleIL)
     }
     
     /// Loads a feature layer with a portal item.
-    private func loadPortalItemFeatureTable() async throws {
+    private func loadPortalItemFeatureTable() {
         let featureLayer = FeatureLayer(item: PortalItem(
             portal: .arcGISOnline(isLoginRequired: false),
             id: .treesOfPortland
         ))
-        try await setFeatureLayer(featureLayer, viewpoint: .portlandOR)
+        setFeatureLayer(featureLayer, viewpoint: .portlandOR)
     }
     
     /// Loads a feature layer with a local geodatabase.
@@ -65,7 +65,7 @@ struct DisplayFeatureLayersView: View {
         // sets the current feature layer to it.
         if let featureTable = geodatabase.getGeodatabaseFeatureTable(tableName: "Trailheads") {
             let featureLayer = FeatureLayer(featureTable: featureTable)
-            try await setFeatureLayer(featureLayer, viewpoint: .losAngelesCA)
+            setFeatureLayer(featureLayer, viewpoint: .losAngelesCA)
         }
     }
     
@@ -80,19 +80,19 @@ struct DisplayFeatureLayersView: View {
         // sets the current feature layer to the first one.
         if let featureTable = geoPackage.geoPackageFeatureTables.first {
             let featureLayer = FeatureLayer(featureTable: featureTable)
-            try await setFeatureLayer(featureLayer, viewpoint: .auroraCO)
+            setFeatureLayer(featureLayer, viewpoint: .auroraCO)
         }
     }
     
     /// Loads a feature layer with a local shapefile.
-    private func loadShapefileFeatureTable() async throws {
+    private func loadShapefileFeatureTable() {
         let shapefileFeatureTable = ShapefileFeatureTable(fileURL: .reserveBoundaries)
         let featureLayer = FeatureLayer(featureTable: shapefileFeatureTable)
-        try await setFeatureLayer(featureLayer, viewpoint: .scotland)
+        setFeatureLayer(featureLayer, viewpoint: .scotland)
     }
     
     /// Sets the map's operational layers to the given feature layer and updates the current viewpoint.
-    private func setFeatureLayer(_ featureLayer: FeatureLayer, viewpoint: Viewpoint) async throws {
+    private func setFeatureLayer(_ featureLayer: FeatureLayer, viewpoint: Viewpoint) {
         // Updates the map's operational layers.
         map.removeAllOperationalLayers()
         map.addOperationalLayer(featureLayer)
@@ -105,15 +105,15 @@ struct DisplayFeatureLayersView: View {
         do {
             switch selectedFeatureLayerSource {
             case .serviceFeatureTable:
-                try await loadServiceFeatureTable()
+                loadServiceFeatureTable()
             case .portalItem:
-                try await loadPortalItemFeatureTable()
+                loadPortalItemFeatureTable()
             case .geodatabase:
                 try await loadGeodatabaseFeatureTable()
             case .geoPackage:
                 try await loadGeoPackageFeatureTable()
             case .shapefile:
-                try await loadShapefileFeatureTable()
+                loadShapefileFeatureTable()
             }
         } catch {
             // Updates the error and shows an alert if any failures occur.
