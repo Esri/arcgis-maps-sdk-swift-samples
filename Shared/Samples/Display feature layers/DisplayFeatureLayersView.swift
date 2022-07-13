@@ -63,10 +63,9 @@ struct DisplayFeatureLayersView: View {
         }
         // Creates a feature layer from the geodatabase's feature table and
         // sets the current feature layer to it.
-        if let featureTable = geodatabase.getGeodatabaseFeatureTable(tableName: "Trailheads") {
-            let featureLayer = FeatureLayer(featureTable: featureTable)
-            setFeatureLayer(featureLayer, viewpoint: .losAngelesCA)
-        }
+        let featureTable = geodatabase.getGeodatabaseFeatureTable(tableName: "Trailheads")!
+        let featureLayer = FeatureLayer(featureTable: featureTable)
+        setFeatureLayer(featureLayer, viewpoint: .losAngelesCA)
     }
     
     /// Loads a feature layer with a local GeoPackage.
@@ -78,10 +77,9 @@ struct DisplayFeatureLayersView: View {
         }
         // Creates a feature layer from the GeoPackage's feature tables and
         // sets the current feature layer to the first one.
-        if let featureTable = geoPackage.geoPackageFeatureTables.first {
-            let featureLayer = FeatureLayer(featureTable: featureTable)
-            setFeatureLayer(featureLayer, viewpoint: .auroraCO)
-        }
+        let featureTable = geoPackage.geoPackageFeatureTables.first!
+        let featureLayer = FeatureLayer(featureTable: featureTable)
+        setFeatureLayer(featureLayer, viewpoint: .auroraCO)
     }
     
     /// Loads a feature layer with a local shapefile.
