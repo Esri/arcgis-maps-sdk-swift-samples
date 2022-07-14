@@ -62,14 +62,17 @@ struct FindRouteView: View {
                             .navigationBarTitleDisplayMode(.inline)
                             .toolbar {
                                 ToolbarItem(placement: .navigationBarTrailing) {
-                                    Button("Done") {
+                                    Button {
                                         isShowingDirections = false
+                                    } label: {
+                                        Text("Done")
+                                            .bold()
                                     }
                                 }
                             }
                         }
                         .navigationViewStyle(.stack)
-                        .frame(minWidth: 320, minHeight: 500)
+                        .frame(minWidth: 320, minHeight: 390)
                     }
                 }
             }
