@@ -25,7 +25,7 @@ struct SampleList: View {
     @Binding var query: String
     
     /// A Boolean value that indicates whether to present the about view.
-    @State private var aboutViewIsPresented = false
+    @State private var isAboutViewPresented = false
     
     /// An object to manage on-demand resources for a sample with dependencies.
     @State private var onDemandResource: OnDemandResource?
@@ -74,11 +74,11 @@ struct SampleList: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
-                    aboutViewIsPresented.toggle()
+                    isAboutViewPresented.toggle()
                 } label: {
                     Image(systemName: "info.circle")
                 }
-                .sheet(isPresented: $aboutViewIsPresented) {
+                .sheet(isPresented: $isAboutViewPresented) {
                     AboutView()
                 }
             }
