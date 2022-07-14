@@ -21,7 +21,6 @@
 // If an item already exists, it will skip that item.
 
 import Foundation
-import OSLog
 
 // MARK: Model
 
