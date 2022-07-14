@@ -66,7 +66,9 @@ final class OnDemandResource: ObservableObject {
         // Initiates download when it is not being/already downloaded.
         // Checks if the resource is already on device.
         let isResourceAvailable = await request.conditionallyBeginAccessingResources()
-        if !isResourceAvailable {
+        if isResourceAvailable {
+            requestState = .downloaded
+        } else {
             do {
                 requestState = .inProgress(0)
                 try await request.beginAccessingResources()
