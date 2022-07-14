@@ -74,8 +74,8 @@ final class OnDemandResource: ObservableObject {
                 try await request.beginAccessingResources()
                 requestState = .downloaded
             } catch {
-                requestState = .error
                 self.error = error
+                requestState = .error
             }
         }
     }
