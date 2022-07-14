@@ -24,7 +24,7 @@ protocol Sample {
     /// The tags and relevant APIs of the sample.
     var tags: Set<String> { get }
     /// A Boolean value that indicates whether a sample has offline data dependencies.
-    var hasDependency: Bool { get }
+    var hasDependencies: Bool { get }
     
     /// Creates the view for the sample.
     func makeBody() -> AnyView
@@ -43,4 +43,7 @@ extension Sample {
     var nameInUpperCamelCase: String {
         name.capitalized.filter { !$0.isWhitespace }
     }
+    
+    /// By default, a sample doesn't have dependencies.
+    var hasDependencies: Bool { false }
 }
