@@ -99,11 +99,10 @@ private let sampleStructs = sampleMetadata
             .map { #"PortalItem.ID("\#($0)")!"# }
         return """
         struct \(sample.structName): Sample {
-            var name: String { \"\(sample.title)\" }
-            var description: String { \"\(sample.description)\" }
-            var tags: Set<String> { \(sample.keywords) }
-            var hasDependency: Bool { \(!portalItemIDs.isEmpty) }
-            
+            let name = \"\(sample.title)\"
+            let description = \"\(sample.description)\"
+            let tags: Set<String> = \(sample.keywords)
+            \(portalItemIDs.isEmpty ? "" : "let hasDependencies = true")
             func makeBody() -> AnyView { .init(\(sample.viewName)()) }
         }
         """
