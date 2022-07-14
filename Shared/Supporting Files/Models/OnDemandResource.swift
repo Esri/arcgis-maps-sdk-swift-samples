@@ -15,8 +15,8 @@
 import Combine
 import Foundation
 
-@MainActor
 /// A wrapper class that manages on-demand resource request.
+@MainActor
 final class OnDemandResource: ObservableObject {
     /// The state of an on-demand resource request.
     enum RequestState {
@@ -32,6 +32,9 @@ final class OnDemandResource: ObservableObject {
         case error
     }
     
+    /// The progress of the on-demand resource request.
+    var progress: Progress { request.progress }
+    
     /// The current state of the on-demand resource request.
     @Published private(set) var requestState: RequestState = .notStarted
     
@@ -41,8 +44,8 @@ final class OnDemandResource: ObservableObject {
     /// The on-demand resource request.
     private let request: NSBundleResourceRequest
     
-    /// The progress of the on-demand resource request.
-    var progress: Progress { request.progress }
+    /// A set of cancellable instances for the request progress subscription.
+    private var cancellables: Set<AnyCancellable> = []
     
     /// Initializes a request with a set of Resource Tags.
     init(tags: Set<String>) {
@@ -50,13 +53,16 @@ final class OnDemandResource: ObservableObject {
         request.loadingPriority = NSBundleResourceRequestLoadingPriorityUrgent
         request.progress
             .publisher(for: \.fractionCompleted, options: .new)
+            .receive(on: DispatchQueue.main)
             .map { $0 < 1 ? .inProgress($0) : .downloaded }
-            .assign(to: &$requestState)
+            .sink { [weak self] in self?.requestState = $0 }
+            .store(in: &cancellables)
     }
     
     /// Cancels the on-demand resource request.
     func cancel() {
-        request.progress.cancel()
+        progress.cancel()
+        cancellables.removeAll()
         request.endAccessingResources()
         requestState = .cancelled
     }
@@ -70,12 +76,12 @@ final class OnDemandResource: ObservableObject {
             requestState = .downloaded
         } else {
             do {
-                requestState = .inProgress(0)
                 try await request.beginAccessingResources()
-                requestState = .downloaded
             } catch {
-                self.error = error
-                requestState = .error
+                if (error as NSError).code != NSUserCancelledError {
+                    self.error = error
+                    requestState = .error
+                }
             }
         }
     }
