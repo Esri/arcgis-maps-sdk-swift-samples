@@ -63,13 +63,13 @@ extension PortalItem: Decodable {
 /// Parses a `README.metadata.json` to a `SampleDependency` struct.
 /// - Parameter url: The URL to the metadata JSON file.
 /// - Returns: A `SampleDependency` object.
-private func parseJSON(at url: URL) -> SampleDependency? {
-    guard let data = try? Data(contentsOf: url) else { return nil }
+private func parseJSON(at url: URL) throws -> SampleDependency {
+    let data = try Data(contentsOf: url)
     // Finds all subdirectories under the root samples directory.
     let decoder = JSONDecoder()
     // Converts snake-case key "offline_data" to camel-case "offlineData".
     decoder.keyDecodingStrategy = .convertFromSnakeCase
-    return try? decoder.decode(SampleDependency.self, from: data)
+    return try decoder.decode(SampleDependency.self, from: data)
 }
 
 /// Returns the name of the file in a ZIP archive at the given URL.
@@ -213,9 +213,11 @@ let portalItems: [PortalItem] = {
         let sampleSubDirectories = try FileManager.default
             .contentsOfDirectory(at: samplesDirectoryURL, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles])
             .filter(\.hasDirectoryPath)
-        let sampleDependencies = sampleSubDirectories
+        let sampleJSONs = sampleSubDirectories
             .map { $0.appendingPathComponent("README.metadata.json", isDirectory: false) }
-            .compactMap(parseJSON(at:))
+        // Omit the decoding errors from samples that don't have dependencies.
+        let sampleDependencies = sampleJSONs
+            .compactMap { try? parseJSON(at: $0) }
         return sampleDependencies.flatMap(\.offlineData)
     } catch {
         print("error: Error decoding Samples dependencies: \(error.localizedDescription)")
