@@ -228,7 +228,7 @@ typealias Filename = String
 typealias DownloadedItems = [Identifier: Filename]
 
 /// The URL to a property list that maintains records of downloaded resources.
-let downloadedItemsURL = downloadDirectoryURL.appendingPathComponent("downloaded_items.plist", isDirectory: false)
+let downloadedItemsURL = downloadDirectoryURL.appendingPathComponent(".downloaded_items.plist", isDirectory: false)
 let previousDownloadedItems: DownloadedItems = {
     do {
         let data = try Data(contentsOf: downloadedItemsURL)
