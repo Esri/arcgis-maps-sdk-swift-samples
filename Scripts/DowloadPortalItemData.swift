@@ -28,7 +28,7 @@ import OSLog
 /// A sample's dependencies retrieved from its `README.metadata.json` file.
 struct SampleDependency: Decodable {
     /// The ArcGIS Online Portal Item IDs.
-    let offlineData: [String]
+    let offlineData: [PortalItem]
 }
 
 /// A Portal Item and its data URL.
@@ -49,6 +49,12 @@ struct PortalItem {
             .appendingPathComponent("items")
             .appendingPathComponent(identifier)
             .appendingPathComponent("data")
+    }
+}
+
+extension PortalItem: Decodable {
+    init(from decoder: Decoder) throws {
+        self.init(identifier: try String(from: decoder))
     }
 }
 
@@ -179,10 +185,9 @@ func downloadFile(at sourceURL: URL, to downloadDirectory: URL, completion: @esc
 // MARK: Script Entry
 
 let arguments = CommandLine.arguments
-let logger = Logger()
 
 guard arguments.count == 3 else {
-    logger.error("Invalid number of arguments.")
+    print("error: Invalid number of arguments.")
     exit(1)
 }
 
@@ -196,7 +201,7 @@ if !FileManager.default.fileExists(atPath: downloadDirectoryURL.path) {
     do {
         try FileManager.default.createDirectory(at: downloadDirectoryURL, withIntermediateDirectories: false)
     } catch {
-        logger.error("Error creating download directory: \(error.localizedDescription).")
+        print("error: Error creating download directory: \(error.localizedDescription).")
         exit(1)
     }
 }
@@ -211,9 +216,9 @@ let portalItems: [PortalItem] = {
         let sampleDependencies = sampleSubDirectories
             .map { $0.appendingPathComponent("README.metadata.json", isDirectory: false) }
             .compactMap(parseJSON(at:))
-        return sampleDependencies.flatMap(\.offlineData).map(PortalItem.init(identifier:))
+        return sampleDependencies.flatMap(\.offlineData)
     } catch {
-        logger.error("Error decoding Samples dependencies: \(error.localizedDescription)")
+        print("error: Error decoding Samples dependencies: \(error.localizedDescription)")
         exit(1)
     }
 }()
@@ -241,16 +246,16 @@ portalItems.forEach { portalItem in
     let destinationURL = downloadDirectoryURL.appendingPathComponent(portalItem.identifier, isDirectory: true)
     // Checks if a directory exists or not, to see if an item is already downloaded.
     if FileManager.default.fileExists(atPath: destinationURL.path) {
-        logger.info("Item \(portalItem.identifier) has already been downloaded.")
+        print("info: Item \(portalItem.identifier) has already been downloaded.")
     } else {
         do {
             // Creates an enclosing directory with portal item ID as its name.
             try FileManager.default.createDirectory(at: destinationURL, withIntermediateDirectories: false)
         } catch {
-            logger.error("Error creating download directory: \(error.localizedDescription).")
+            print("error: Error creating download directory: \(error.localizedDescription).")
             exit(1)
         }
-        logger.info("Downloading item \(portalItem.identifier)")
+        print("info: Downloading item \(portalItem.identifier)")
         fflush(stdout)
         dispatchGroup.enter()
         downloadFile(at: portalItem.dataURL, to: destinationURL) { result in
@@ -259,7 +264,7 @@ portalItems.forEach { portalItem in
                 downloadedItems[portalItem.identifier] = url.lastPathComponent
                 dispatchGroup.leave()
             case .failure(let error):
-                logger.error("Error downloading item \(portalItem.identifier): \(error.localizedDescription)")
+                print("error: Error downloading item \(portalItem.identifier): \(error.localizedDescription)")
                 URLSession.shared.invalidateAndCancel()
                 exit(1)
             }
@@ -274,7 +279,7 @@ if downloadedItems != previousDownloadedItems {
         let data = try PropertyListEncoder().encode(downloadedItems)
         try data.write(to: downloadedItemsURL)
     } catch {
-        logger.error("Error recording downloaded items: \(error.localizedDescription)")
+        print("error: Error recording downloaded items: \(error.localizedDescription)")
         exit(1)
     }
 }
