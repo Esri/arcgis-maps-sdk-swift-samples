@@ -48,8 +48,8 @@ struct SampleList: View {
     }
     
     var body: some View {
-        List(displayedSamples, id: \.name) { sample in
-            if sample.hasDependency {
+        List(displayedSamples, id: \.nameInUpperCamelCase) { sample in
+            if sample.hasDependencies {
                 Button {
                     Task {
                         onDemandResource = OnDemandResource(tags: [sample.nameInUpperCamelCase])
