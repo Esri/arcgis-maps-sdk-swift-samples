@@ -61,6 +61,7 @@ extension PortalItem: Decodable {
 
 /// Parses a `README.metadata.json` to a `SampleDependency` struct.
 /// - Parameter url: The URL to the metadata JSON file.
+/// - Throws: Exceptions for unable to find or decode JSON data.
 /// - Returns: A `SampleDependency` object.
 private func parseJSON(at url: URL) throws -> SampleDependency {
     let data = try Data(contentsOf: url)
