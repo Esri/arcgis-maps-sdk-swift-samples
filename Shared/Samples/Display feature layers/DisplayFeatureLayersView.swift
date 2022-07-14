@@ -20,7 +20,9 @@ struct DisplayFeatureLayersView: View {
     @State private var showAlert = false
     
     /// The error shown in the alert.
-    @State private var error: Error?
+    @State private var error: Error? {
+        didSet { showAlert = error != nil }
+    }
     
     /// The feature layer source that is displayed.
     @State private var selectedFeatureLayerSource: FeatureLayerSource = .serviceFeatureTable
@@ -116,7 +118,6 @@ struct DisplayFeatureLayersView: View {
         } catch {
             // Updates the error and shows an alert if any failures occur.
             self.error = error
-            showAlert = true
         }
     }
     
