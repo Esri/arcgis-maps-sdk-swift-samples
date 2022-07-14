@@ -74,5 +74,5 @@ struct SampleWithDependenciesDetailView: View {
 }
 
 extension SampleWithDependenciesDetailView: Identifiable {
-    var id: String { sample.name }
+    var id: String { sample.nameInUpperCamelCase }
 }
