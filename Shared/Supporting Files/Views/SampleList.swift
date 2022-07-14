@@ -28,13 +28,6 @@ struct SampleList: View {
     /// A Boolean value that indicates whether to present the about view.
     @State private var isAboutViewPresented = false
     
-    /// An object to manage on-demand resources for a sample with dependencies.
-    @State private var onDemandResource: OnDemandResource?
-    
-    /// A Boolean value that indicates whether to show a sample with
-    /// on-demand resource dependencies.
-    @State private var showSampleWithDependency = false
-    
     /// The samples to display in the list. Searching adjusts this value.
     private var displayedSamples: [Sample] {
         if !isSearching {
@@ -50,26 +43,8 @@ struct SampleList: View {
     
     var body: some View {
         List(displayedSamples, id: \.nameInUpperCamelCase) { sample in
-            if sample.hasDependencies {
-                Button {
-                    Task {
-                        onDemandResource = OnDemandResource(tags: [sample.nameInUpperCamelCase])
-                        await onDemandResource?.download()
-                        showSampleWithDependency = true
-                    }
-                } label: {
-                    if let resource = onDemandResource, !showSampleWithDependency {
-                        ProgressView(resource.progress)
-                    } else {
-                        NavigationLink(sample.name, isActive: $showSampleWithDependency) {
-                            SampleDetailView(sample: sample)
-                        }
-                    }
-                }
-            } else {
-                NavigationLink(sample.name) {
-                    SampleDetailView(sample: sample)
-                }
+            NavigationLink(sample.name) {
+                SampleDetailView(sample: sample)
             }
         }
         .toolbar {
@@ -83,9 +58,6 @@ struct SampleList: View {
                     AboutView()
                 }
             }
-        }
-        .onAppear {
-            onDemandResource = nil
         }
     }
 }

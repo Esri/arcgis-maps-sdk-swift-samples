@@ -16,21 +16,60 @@ import SwiftUI
 
 struct SampleDetailView: View {
     /// The sample to display in the view.
-    var sample: Sample
+    private let sample: Sample
+    
+    /// An object to manage on-demand resources for a sample with dependencies.
+    @StateObject private var onDemandResource: OnDemandResource
+    
+    init(sample: Sample) {
+        self.sample = sample
+        self._onDemandResource = StateObject(
+            wrappedValue: OnDemandResource(tags: [sample.nameInUpperCamelCase])
+        )
+    }
     
     var body: some View {
-        sample.makeBody()
-            .navigationTitle(sample.name)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        print("Info button was tapped")
-                    } label: {
-                        Image(systemName: "info.circle")
+        Group {
+            switch onDemandResource.requestState {
+            case .notStarted, .inProgress:
+                VStack {
+                    ProgressView(onDemandResource.progress)
+                    Button("Cancel") {
+                        onDemandResource.cancel()
                     }
                 }
+                .padding()
+            case .cancelled:
+                VStack {
+                    Image(systemName: "nosign")
+                    Text("On-demand resources download canceled.")
+                }
+                .padding()
+            case .error:
+                VStack {
+                    Image(systemName: "x.circle")
+                    Text(onDemandResource.error!.localizedDescription)
+                }
+                .padding()
+            case .downloaded:
+                sample.makeBody()
             }
+        }
+        .task {
+            guard case .notStarted = onDemandResource.requestState else { return }
+            await onDemandResource.download()
+        }
+        .navigationTitle(sample.name)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    print("Info button was tapped")
+                } label: {
+                    Image(systemName: "info.circle")
+                }
+            }
+        }
     }
 }
 
