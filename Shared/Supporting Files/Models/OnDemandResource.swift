@@ -16,7 +16,9 @@ import Combine
 import Foundation
 
 @MainActor
+/// A wrapper class that manages on-demand resource request.
 final class OnDemandResource: ObservableObject {
+    /// The state of an on-demand resource request.
     enum RequestState {
         /// A request that has not started.
         case notStarted
@@ -26,18 +28,21 @@ final class OnDemandResource: ObservableObject {
         case downloaded
         /// A request that was cancelled.
         case cancelled
+        /// A request that ends in an error while downloading resources.
+        case error
     }
     
-    /// The on-demand resources request states.
+    /// The current state of the on-demand resource request.
     @Published private(set) var requestState: RequestState = .notStarted
     
-    /// The problem occured in downloading resources.
+    /// The error occured in downloading resources.
     @Published private(set) var error: Error?
     
-    /// The on-demand resources request.
-    let request: NSBundleResourceRequest
+    /// The on-demand resource request.
+    private let request: NSBundleResourceRequest
     
-    private var cancellables: Set<AnyCancellable> = []
+    /// The progress of the on-demand resource request.
+    var progress: Progress { request.progress }
     
     /// Initializes a request with a set of Resource Tags.
     init(tags: Set<String>) {
@@ -46,18 +51,17 @@ final class OnDemandResource: ObservableObject {
         request.progress
             .publisher(for: \.fractionCompleted, options: .new)
             .map { $0 < 1 ? .inProgress($0) : .downloaded }
-            .sink { [weak self] in self?.requestState = $0 }
-            .store(in: &cancellables)
+            .assign(to: &$requestState)
     }
     
-    /// Cancels the on-demand resources request.
+    /// Cancels the on-demand resource request.
     func cancel() {
         request.progress.cancel()
         request.endAccessingResources()
         requestState = .cancelled
     }
     
-    /// Starts the on-demand resources request.
+    /// Starts the on-demand resource request.
     func download() async {
         // Initiates download when it is not being/already downloaded.
         // Checks if the resource is already on device.
@@ -68,6 +72,7 @@ final class OnDemandResource: ObservableObject {
                 try await request.beginAccessingResources()
                 requestState = .downloaded
             } catch {
+                requestState = .error
                 self.error = error
             }
         }

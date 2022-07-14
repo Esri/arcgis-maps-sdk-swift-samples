@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import SwiftUI
+import ArcGIS
 
 struct SampleList: View {
     /// A Boolean value that indicates whether the user is searching.
@@ -58,7 +59,7 @@ struct SampleList: View {
                     }
                 } label: {
                     if let resource = onDemandResource, !showSampleWithDependency {
-                        ProgressView(resource.request.progress)
+                        ProgressView(resource.progress)
                     } else {
                         NavigationLink(sample.name, isActive: $showSampleWithDependency) {
                             SampleDetailView(sample: sample)
