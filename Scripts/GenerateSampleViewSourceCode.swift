@@ -102,8 +102,7 @@ private let sampleStructs = sampleMetadata
             var name: String { \"\(sample.title)\" }
             var description: String { \"\(sample.description)\" }
             var tags: Set<String> { \(sample.keywords) }
-            var hasDependency: Bool { \(!portalItemIDs.isEmpty) }
-            
+            \(portalItemIDs.isEmpty ? "" : "var hasDependencies: Bool { true }\n")
             func makeBody() -> AnyView { .init(\(sample.viewName)()) }
         }
         """
