@@ -43,11 +43,7 @@ struct SampleList: View {
     var body: some View {
         List(displayedSamples, id: \.nameInUpperCamelCase) { sample in
             NavigationLink(sample.name) {
-                if sample.hasDependencies {
-                    SampleWithDependenciesDetailView(sample: sample)
-                } else {
-                    SampleDetailView(sample: sample)
-                }
+                SampleDetailView(sample: sample)
             }
         }
         .toolbar {
