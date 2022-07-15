@@ -78,7 +78,8 @@ struct FindRouteView: View {
 
 private extension FindRouteView {
     /// A view model for this sample.
-    @MainActor class Model: ObservableObject {
+    @MainActor
+    class Model: ObservableObject {
         /// The directions for the route.
         @Published var directions: [DirectionManeuver] = []
         
