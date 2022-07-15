@@ -61,12 +61,9 @@ struct FindRouteView: View {
                             .navigationTitle("Directions")
                             .navigationBarTitleDisplayMode(.inline)
                             .toolbar {
-                                ToolbarItem(placement: .navigationBarTrailing) {
-                                    Button {
+                                ToolbarItem(placement: .confirmationAction) {
+                                    Button("Done") {
                                         isShowingDirections = false
-                                    } label: {
-                                        Text("Done")
-                                            .bold()
                                     }
                                 }
                             }
