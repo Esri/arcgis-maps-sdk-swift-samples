@@ -38,44 +38,53 @@ struct DownloadPreplannedMapAreaView: View {
                     .padding(.vertical, 6)
                     .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
             }
-            .sheet(isPresented: $isSelectingMap) {
-                List {
-                    Section {
-                        Picker("Web Maps (Online)", selection: $model.currentPreplannedMapArea) {
-                            Text("Web Map (Online)")
-                                .tag(nil as PreplannedMapArea?)
-                        }
-                        .labelsHidden()
-                        .pickerStyle(.inline)
-                    }
-                    
-                    Section {
-                        Picker("Preplanned Map Areas", selection: $model.currentPreplannedMapArea) {
-                            ForEach(model.preplannedMapAreas, id: \.portalItemIdentifier) { preplannedMapArea in
-                                HStack {
-                                    if let job = model.currentJobs[preplannedMapArea] {
-                                        ProgressView(job.progress)
-                                            .progressViewStyle(Gauge())
-                                            .fixedSize()
-                                    }
-                                    Text(preplannedMapArea.displayName)
-                                    Spacer()
-                                }
-                                .tag(Optional(preplannedMapArea))
+            .sheet(isPresented: $isSelectingMap, detents: [.medium]) {
+                NavigationView {
+                    List {
+                        Section {
+                            Picker("Web Maps (Online)", selection: $model.currentPreplannedMapArea) {
+                                Text("Web Map (Online)")
+                                    .tag(nil as PreplannedMapArea?)
                             }
+                            .labelsHidden()
+                            .pickerStyle(.inline)
                         }
-                        .labelsHidden()
-                        .pickerStyle(.inline)
-                    } header: {
-                        Text("Preplanned Map Areas")
-                    } footer: {
-                        Text(footerText)
+                        
+                        Section {
+                            Picker("Preplanned Map Areas", selection: $model.currentPreplannedMapArea) {
+                                ForEach(model.preplannedMapAreas, id: \.portalItemIdentifier) { preplannedMapArea in
+                                    HStack {
+                                        if let job = model.currentJobs[preplannedMapArea] {
+                                            ProgressView(job.progress)
+                                                .progressViewStyle(Gauge())
+                                                .fixedSize()
+                                        }
+                                        Text(preplannedMapArea.displayName)
+                                        Spacer()
+                                    }
+                                    .tag(Optional(preplannedMapArea))
+                                }
+                            }
+                            .labelsHidden()
+                            .pickerStyle(.inline)
+                        } header: {
+                            Text("Preplanned Map Areas")
+                        } footer: {
+                            Text(footerText)
+                        }
+                    }
+                    .task(id: model.currentPreplannedMapArea) {
+                        await model.handlePreplannedMapSelection(for: model.currentPreplannedMapArea)
+                    }
+                    .navigationTitle("Select Map")
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbar {
+                        ToolbarItem(placement: .confirmationAction) {
+                            Button("Done") { isSelectingMap = false }
+                        }
                     }
                 }
-                .task(id: model.currentPreplannedMapArea) {
-                    await model.handlePreplannedMapSelection(for: model.currentPreplannedMapArea)
-                }
-                .navigationTitle("Select Map")
+                .navigationViewStyle(.stack)
             }
             .task {
                 await model.loadPreplannedMapAreas()
