@@ -415,6 +415,7 @@
 				00E5401027F3CCA200CF66D5 /* Frameworks */,
 				00E5401127F3CCA200CF66D5 /* Resources */,
 				00144B5E280634840090DD5D /* Embed Frameworks */,
+				0039A4E72885C45200592C86 /* Copy README.md Files For Source Code View */,
 			);
 			buildRules = (
 				0083586F27FE3BCF00192A15 /* PBXBuildRule */,
@@ -495,6 +496,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if [ ! -e \"$SRCROOT/.secrets\" ]\nthen\n    touch \"$SRCROOT/.secrets\"\nfi\n";
+		};
+		0039A4E72885C45200592C86 /* Copy README.md Files For Source Code View */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Copy README.md Files For Source Code View";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo $BUILT_PRODUCTS_DIR\n\n# Directory to which the readmes will be copied.\nREADMES_DIR=${BUILT_PRODUCTS_DIR}/${CONTENTS_FOLDER_PATH}/READMEs\nmkdir -p \"${READMES_DIR}\"\n\n# Root readme for the project to skip.\nDEFAULT_README=$SRCROOT/README.md\n\n# Find all README.md files in the project.\nfind ${SRCROOT} -name \"README.md\" | while read file\ndo\n    # Skip the root readme for project.\n    if [ \"$file\" = \"$DEFAULT_README\" ]\n    then\n        echo $BUILT_PRODUCTS_DIR\n        continue\n    fi\n    \n    # Extract the folder name from the path.\n    FILE_PATH=$(dirname \"$file\")\n    FOLDER_NAME=$(basename \"$FILE_PATH\")\n    \n    cp \"${file}\" \"${READMES_DIR}/${FOLDER_NAME}.md\"\ndone\n";
 		};
 		00E5402B27F77A5A00CF66D5 /* Lint Sources */ = {
 			isa = PBXShellScriptBuildPhase;
