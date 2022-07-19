@@ -19,13 +19,24 @@ struct DownloadPreplannedMapAreaView: View {
     /// A Boolean value indicating whether to select a map.
     @State private var isSelectingMap = false
     
+    /// A Boolean value indicating whether to show delete alert.
+    @State private var isShowingDeleteAlert = false
+    
+    /// A Boolean value indicating whether to show an alert for an error.
+    @State private var isShowingErrorAlert = false
+    
     /// The view model for this sample.
     @StateObject private var model = Model()
     
     var body: some View {
         MapView(map: model.map)
-            .alert(isPresented: $model.isShowingErrorAlert, presentingError: model.error)
-            .alert("Delete all offline areas", isPresented: $model.isShowingDeleteAlert) {
+            .alert(isPresented: $isShowingErrorAlert, presentingError: model.error)
+            .onReceive(model.$error) { error in
+                if error != nil {
+                    isShowingErrorAlert = true
+                }
+            }
+            .alert("Delete all offline areas", isPresented: $isShowingDeleteAlert) {
                 Button("Delete", role: .destructive) {
                     Task { await model.removeDownloadedMaps() }
                 }
@@ -40,12 +51,6 @@ struct DownloadPreplannedMapAreaView: View {
             }
             .task {
                 await model.loadPreplannedMapAreas()
-            }
-            .onDisappear {
-                Task {
-                    await model.removeDownloadedMaps()
-                    model.removeTemporaryDirectory()
-                }
             }
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
@@ -103,7 +108,7 @@ struct DownloadPreplannedMapAreaView: View {
                     }
                     Spacer()
                     Button {
-                        model.isShowingDeleteAlert = true
+                        isShowingDeleteAlert = true
                     } label: {
                         Image(systemName: "trash")
                     }
@@ -115,13 +120,7 @@ struct DownloadPreplannedMapAreaView: View {
 
 private extension DownloadPreplannedMapAreaView {
     /// A view model for this sample.
-    @MainActor class Model: ObservableObject {
-        /// A Boolean value indicating whether to show delete alert.
-        @Published var isShowingDeleteAlert = false
-        
-        /// A Boolean value indicating whether to show an alert for an error.
-        @Published var isShowingErrorAlert = false
-        
+    class Model: ObservableObject {
         /// The error shown in the alert.
         @Published var error: Error?
         
@@ -162,12 +161,18 @@ private extension DownloadPreplannedMapAreaView {
             makeTemporaryDirectory()
         }
         
-        /// Loads each preplanned map area from the offline map task.
+        deinit {
+            // Removes the temporary directory.
+            removeTemporaryDirectory()
+        }
+        
+        /// Loads each preplanned map area from the offline map
+        @MainActor
         func loadPreplannedMapAreas() async {
             do {
                 preplannedMapAreas = try await offlineMapTask.preplannedMapAreas.sorted { $0.displayName < $1.displayName }
                 await withThrowingTaskGroup(of: Void.self) { group in
-                    for preplannedMapArea in preplannedMapAreas {
+                    preplannedMapAreas.forEach { preplannedMapArea in
                         group.addTask {
                             try await preplannedMapArea.load()
                         }
@@ -175,7 +180,6 @@ private extension DownloadPreplannedMapAreaView {
                 }
             } catch {
                 self.error = error
-                isShowingErrorAlert = true
             }
         }
         
@@ -184,6 +188,7 @@ private extension DownloadPreplannedMapAreaView {
         /// to the currently selected preplanned map area. If the preplanned map area is nil, then the map
         /// is set to the online web map.
         /// - Parameter preplannedMapArea: The preplanned map area used to change the displayed map.
+        @MainActor
         func handlePreplannedMapSelection(for preplannedMapArea: PreplannedMapArea?) async {
             if let preplannedMapArea = preplannedMapArea {
                 // Ensures the map is loaded.
@@ -211,6 +216,7 @@ private extension DownloadPreplannedMapAreaView {
         
         /// Downloads the given preplanned map area.
         /// - Parameter preplannedMapArea: The preplanned map area to be downloaded.
+        @MainActor
         private func downloadPreplannedMapArea(_ preplannedMapArea: PreplannedMapArea) async {
             do {
                 // Creates the default parameters.
@@ -250,11 +256,9 @@ private extension DownloadPreplannedMapAreaView {
                     // error is not a cancellation error.
                     guard !(error is CancellationError) else { return }
                     self.error = error
-                    isShowingErrorAlert = true
                 }
             } catch {
                 self.error = error
-                isShowingErrorAlert = true
             }
         }
         
@@ -263,7 +267,9 @@ private extension DownloadPreplannedMapAreaView {
             // Cancels all current jobs.
             await withTaskGroup(of: Void.self) { group in
                 currentJobs.forEach { _, job in
-                    group.addTask { await job.cancel() }
+                    group.addTask {
+                        await job.cancel()
+                    }
                 }
             }
             
@@ -277,7 +283,6 @@ private extension DownloadPreplannedMapAreaView {
                     try FileManager.default.removeItem(at: package.fileURL)
                 } catch {
                     self.error = error
-                    isShowingErrorAlert = true
                 }
             }
             localMapPackages.removeAll()
@@ -292,7 +297,6 @@ private extension DownloadPreplannedMapAreaView {
                 try FileManager.default.createDirectory(at: temporaryDirectoryURL, withIntermediateDirectories: false)
             } catch {
                 self.error = error
-                isShowingErrorAlert = true
             }
         }
         
