@@ -24,16 +24,6 @@ struct SampleInfoView: View {
     /// The sample to view information for.
     let sample: Sample
     
-    /// The HTML to display in the web view.
-    private var html: String {
-        switch informationMode {
-        case .readme:
-            return readmeHTML ?? errorHTML
-        case .code:
-            return codeHTML ?? errorHTML
-        }
-    }
-    
     var body: some View {
         ZStack {
             WebView(htmlString: readmeHTML ?? errorHTML)
@@ -123,7 +113,7 @@ private extension SampleInfoView {
     
     /// The code of the sample's view file.
     var sampleContent: String? {
-        guard let path = Bundle.main.path(forResource: sample.name, ofType: "swift", inDirectory: "SampleViews"),
+        guard let path = Bundle.main.path(forResource: sampleViewFileName, ofType: "swift"),
               let content = try? String(contentsOfFile: path, encoding: .utf8) else {
             return nil
         }
