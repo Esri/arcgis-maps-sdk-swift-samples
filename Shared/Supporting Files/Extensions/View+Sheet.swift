@@ -147,7 +147,7 @@ private struct SheetModifier<SheetContent>: ViewModifier where SheetContent: Vie
     }
 }
 
-private struct Sheet<Content>: UIViewControllerRepresentable where Content: View {
+private struct Sheet<Content>: UIViewRepresentable where Content: View {
     /// A Boolean value indicating whether the sheet is presented.
     @Binding private var isPresented: Bool
     
@@ -190,11 +190,14 @@ private struct Sheet<Content>: UIViewControllerRepresentable where Content: View
         Coordinator(self)
     }
     
-    func makeUIViewController(context: Context) -> UIViewController {
-        UIViewController()
+    func makeUIView(context: Context) -> UIView {
+        UIView()
     }
     
-    func updateUIViewController(_ rootViewController: UIViewController, context: Context) {
+    func updateUIView(_ uiView: UIView, context: Context) {
+        // Ensures that the root view controller exists.
+        guard let rootViewController = uiView.window?.rootViewController else { return }
+        
         /// A Boolean value indicating whether the presented view controller is a hosting controller.
         let isPresentedControllerHostingType = rootViewController.presentedViewController is UIHostingController<Content>
         
