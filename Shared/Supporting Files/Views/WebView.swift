@@ -24,13 +24,12 @@ struct WebView: UIViewRepresentable {
         let webConfiguration = WKWebViewConfiguration()
         // Sets the data detector types to links.
         webConfiguration.dataDetectorTypes = .link
-        // Creates a web view with the configuration.
-        let webView = WKWebView(frame: .zero, configuration: webConfiguration)
-        // Loads the given HTML string.
-        webView.loadHTMLString(htmlString, baseURL: URL(fileURLWithPath: Bundle.main.bundlePath))
-        // Returns the web view.
-        return webView
+        // Returns a web view with the configuration.
+        return WKWebView(frame: .zero, configuration: webConfiguration)
     }
     
-    func updateUIView(_ webView: WKWebView, context: Context) { }
+    func updateUIView(_ webView: WKWebView, context: Context) {
+        // Loads the given HTML string.
+        webView.loadHTMLString(htmlString, baseURL: URL(fileURLWithPath: Bundle.main.bundlePath))
+    }
 }
