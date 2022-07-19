@@ -57,14 +57,14 @@ private struct SheetModifier<SheetContent>: ViewModifier where SheetContent: Vie
     /// A Boolean value indicating whether a popover is visible.
     @State private var isPopoverVisible = false
     
+    /// A Boolean value indicating whether a sheet is visible.
+    @State private var isSheetVisible = false
+    
+    /// A Boolean value indicating whether the layout is transitioning from a sheet layout.
+    @State private var isTransitioningFromSheet = false
+    
     /// A Boolean value indicating whether the sheet or popover is presented.
-    @Binding var isPresented: Bool {
-        didSet {
-            if !isPresented {
-                onDismiss?()
-            }
-        }
-    }
+    @Binding var isPresented: Bool
     
     /// The specified detents for the sheet.
     let detents: Set<Detent>
@@ -80,14 +80,12 @@ private struct SheetModifier<SheetContent>: ViewModifier where SheetContent: Vie
     
     func body(content: Content) -> some View {
         if #available(iOS 16.0, *) {
-            // TODO: Complete iOS 16.0 implementation.
             //            content
             //                .sheet(
             //                    isPresented: Binding(
-            //                        get: { isPresented && isSheetLayout },
+            //                        get: { isPresented && isSheetLayout && !isPopoverVisible },
             //                        set: { isPresented = $0 }
-            //                    ),
-            //                    onDismiss: onDismiss
+            //                    )
             //                ) {
             //                    sheetContent
             //                        .presentationDetents(Set(
@@ -98,16 +96,50 @@ private struct SheetModifier<SheetContent>: ViewModifier where SheetContent: Vie
             //                                }
             //                            }
             //                        ))
+            //                        .onAppear {
+            //                            isSheetVisible = true
+            //                            isTransitioningFromSheet = false
+            //                        }
+            //                        .onDisappear {
+            //                            isSheetVisible = false
+            //                            if isTransitioningFromSheet {
+            //                                // Presents the sheet when transitioning from a
+            //                                // sheet to popover layout.
+            //                                isPresented = true
+            //                            }
+            //                        }
+            //                }
+            //                .onChange(of: isSheetLayout) { _ in
+            //                    if isPresented {
+            //                        isTransitioningFromSheet = true
+            //                    }
             //                }
             //                .popover(
             //                    isPresented: Binding(
-            //                        get: { isPresented && !isSheetLayout },
+            //                        get: { isPresented && !isSheetLayout && !isSheetVisible },
             //                        set: { isPresented = $0 }
             //                    ),
             //                    attachmentAnchor: .point(.bottom)
             //                ) {
             //                    sheetContent
             //                        .frame(idealWidth: 320, idealHeight: 428)
+            //                        .onAppear {
+            //                            isPopoverVisible = true
+            //                            isTransitioningFromSheet = false
+            //                        }
+            //                        .onDisappear {
+            //                            isPopoverVisible = false
+            //                            if !isPresented {
+            //                                // Calls the on dismiss closure if the popover is
+            //                                // not presented.
+            //                                onDismiss?()
+            //                            } else {
+            //                                // Presents the sheet when transitioning from a
+            //                                // popover layout.
+            //                                isPresented = true
+            //                            }
+            //
+            //                        }
             //                }
         } else {
             ZStack {
@@ -122,7 +154,12 @@ private struct SheetModifier<SheetContent>: ViewModifier where SheetContent: Vie
                         sheetContent
                             .frame(idealWidth: 320, idealHeight: 428)
                             .onAppear { isPopoverVisible = true }
-                            .onDisappear { isPopoverVisible = false }
+                            .onDisappear {
+                                isPopoverVisible = false
+                                if !isPresented {
+                                    onDismiss?()
+                                }
+                            }
                     }
                 
                 Sheet(
@@ -140,6 +177,11 @@ private struct SheetModifier<SheetContent>: ViewModifier where SheetContent: Vie
                     isSheetLayout: isSheetLayout
                 ) {
                     sheetContent
+                        .onDisappear {
+                            if !isPresented {
+                                onDismiss?()
+                            }
+                        }
                 }
                 .fixedSize()
             }
@@ -147,7 +189,7 @@ private struct SheetModifier<SheetContent>: ViewModifier where SheetContent: Vie
     }
 }
 
-private struct Sheet<Content>: UIViewControllerRepresentable where Content: View {
+private struct Sheet<Content>: UIViewRepresentable where Content: View {
     /// A Boolean value indicating whether the sheet is presented.
     @Binding private var isPresented: Bool
     
@@ -190,11 +232,14 @@ private struct Sheet<Content>: UIViewControllerRepresentable where Content: View
         Coordinator(self)
     }
     
-    func makeUIViewController(context: Context) -> UIViewController {
-        UIViewController()
+    func makeUIView(context: Context) -> UIView {
+        UIView()
     }
     
-    func updateUIViewController(_ rootViewController: UIViewController, context: Context) {
+    func updateUIView(_ uiView: UIView, context: Context) {
+        // Ensures that the root view controller exists.
+        guard let rootViewController = uiView.window?.rootViewController else { return }
+        
         /// A Boolean value indicating whether the presented view controller is a hosting controller.
         let isPresentedControllerHostingType = rootViewController.presentedViewController is UIHostingController<Content>
         
