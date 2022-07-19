@@ -76,7 +76,7 @@ private func parseJSON(at url: URL) throws -> SampleDependency {
 /// - Parameter url: The URL to a ZIP archive, assuming it only contains 1 file.
 /// - Throws: Exceptions when running the `zipinfo` process.
 /// - Returns: The filename.
-func nameOfFileInArchive(at url: URL) throws -> String {
+func name(ofFileInArchiveAt url: URL) throws -> String {
     let outputPipe = Pipe()
     let process = Process()
     process.executableURL = URL(fileURLWithPath: "/usr/bin/zipinfo", isDirectory: false)
@@ -93,7 +93,7 @@ func nameOfFileInArchive(at url: URL) throws -> String {
 /// - Parameter url: The URL to a ZIP archive.
 /// - Throws: Exceptions when running the `zipinfo` process.
 /// - Returns: The file count in the archive.
-func numberOfFilesInArchive(at url: URL) throws -> Int {
+func count(ofFilesInArchiveAt url: URL) throws -> Int {
     let outputPipe = Pipe()
     let process = Process()
     process.executableURL = URL(fileURLWithPath: "/usr/bin/zipinfo", isDirectory: false)
@@ -143,9 +143,9 @@ func downloadFile(at sourceURL: URL, to downloadDirectory: URL, completion: @esc
                 //   - multiple files, use the suggested filename (*.zip).
                 // If it is not an archive, use the server suggested filename.
                 if isArchive {
-                    let count = try numberOfFilesInArchive(at: temporaryURL)
+                    let count = try count(ofFilesInArchiveAt: temporaryURL)
                     if count == 1 {
-                        downloadName = try nameOfFileInArchive(at: temporaryURL)
+                        downloadName = try name(ofFileInArchiveAt: temporaryURL)
                     } else {
                         downloadName = suggestedFilename
                     }
