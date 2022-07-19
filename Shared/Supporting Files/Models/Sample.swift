@@ -35,7 +35,7 @@ protocol Sample {
 extension Sample {
     /// The URL to a sample's `README.md` file.
     var readmeURL: URL {
-        Bundle.main.url(forResource: "name", withExtension: "md", subdirectory: "READMEs")!
+        Bundle.main.url(forResource: name, withExtension: "md", subdirectory: "READMEs")!
     }
     
     /// The sample's name in UpperCamelCase.

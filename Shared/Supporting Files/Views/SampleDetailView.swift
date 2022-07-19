@@ -73,6 +73,7 @@ struct SampleDetailView: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
                     print("Info button was tapped")
+                    print(sample.readmeURL)
                 } label: {
                     Image(systemName: "info.circle")
                 }
