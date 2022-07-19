@@ -58,13 +58,7 @@ private struct SheetModifier<SheetContent>: ViewModifier where SheetContent: Vie
     @State private var isPopoverVisible = false
     
     /// A Boolean value indicating whether the sheet or popover is presented.
-    @Binding var isPresented: Bool {
-        didSet {
-            if !isPresented {
-                onDismiss?()
-            }
-        }
-    }
+    @Binding var isPresented: Bool
     
     /// The specified detents for the sheet.
     let detents: Set<Detent>
@@ -122,7 +116,12 @@ private struct SheetModifier<SheetContent>: ViewModifier where SheetContent: Vie
                         sheetContent
                             .frame(idealWidth: 320, idealHeight: 428)
                             .onAppear { isPopoverVisible = true }
-                            .onDisappear { isPopoverVisible = false }
+                            .onDisappear {
+                                isPopoverVisible = false
+                                if !isPresented {
+                                    onDismiss?()
+                                }
+                            }
                     }
                 
                 Sheet(
@@ -140,6 +139,11 @@ private struct SheetModifier<SheetContent>: ViewModifier where SheetContent: Vie
                     isSheetLayout: isSheetLayout
                 ) {
                     sheetContent
+                        .onDisappear {
+                            if !isPresented {
+                                onDismiss?()
+                            }
+                        }
                 }
                 .fixedSize()
             }
