@@ -141,11 +141,11 @@ struct DisplayFeatureLayersView: View {
             .onAppear {
                 // Updates the URL session challenge handler to use the
                 // specified credentials and tokens for any challenges.
-                ArcGISURLSession.challengeHandler = ChallengeHandler()
+                ArcGISRuntimeEnvironment.authenticationChallengeHandler = ChallengeHandler()
             }
             .onDisappear {
                 // Resets the URL session challenge handler to use default handling.
-                ArcGISURLSession.challengeHandler = nil
+                ArcGISRuntimeEnvironment.authenticationChallengeHandler = nil
             }
     }
 }
