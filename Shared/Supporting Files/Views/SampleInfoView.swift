@@ -133,7 +133,6 @@ private extension SampleInfoView {
     /// The HTML to display the sample's source code.
     var codeHTML: String? {
         guard let content = sampleContent else { return nil }
-//        let cssPath = Bundle.main.path(forResource: "xcode-\(colorScheme == .light ? "light" : "dark")", ofType: "css")!
         let cssPath = Bundle.main.path(forResource: "xcode", ofType: "css")!
         let jsPath = Bundle.main.path(forResource: "highlight.min", ofType: "js")!
         let html = """
@@ -157,6 +156,7 @@ private extension SampleInfoView {
 // MARK: Error HTML
 
 private extension SampleInfoView {
+    /// The HTML to display if there is an error displaying the README or code.
     var errorHTML: String {
         """
         <!doctype html>
