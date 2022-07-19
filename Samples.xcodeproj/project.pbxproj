@@ -623,6 +623,7 @@
 		};
 		0039A4E72885C45200592C86 /* Copy README.md Files For Source Code View */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
