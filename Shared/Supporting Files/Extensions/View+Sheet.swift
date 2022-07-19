@@ -270,8 +270,10 @@ private struct Sheet<Content>: UIViewRepresentable where Content: View {
             // Presents the hosting controller.
             rootViewController.present(model.hostingController, animated: model.isTransitioningFromPopover ? false : true)
             model.presentationAttempts += 1
-        } else if !isPresented && wasPresenting && !model.hostingController.isBeingDismissed {
-            // Dismisses the sheet.
+        } else if !isPresented && wasPresenting && !model.hostingController.isBeingDismissed && !(rootViewController.presentedViewController is UIAlertController) {
+            // Dismisses the view controller presented by the root view controller
+            // if 'isPresented' is false, but was presenting before (popover), is
+            // not currently being dismissed, and is not an alert.
             rootViewController.dismiss(animated: isPresentedControllerHostingType ? true : false)
             model.isTransitioningFromPopover = !isPresentedControllerHostingType
             model.presentationAttempts = 0
