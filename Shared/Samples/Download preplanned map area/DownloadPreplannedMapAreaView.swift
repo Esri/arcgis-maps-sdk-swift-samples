@@ -169,8 +169,13 @@ private extension DownloadPreplannedMapAreaView {
         /// Loads each preplanned map area from the offline map
         @MainActor
         func loadPreplannedMapAreas() async {
+            // Ensures that the preplanned map areas do not already exist.
+            guard preplannedMapAreas.isEmpty else { return }
             do {
+                // Sorts the offline map task's preplanned map areas alphabetically.
                 preplannedMapAreas = try await offlineMapTask.preplannedMapAreas.sorted { $0.displayName < $1.displayName }
+                
+                // Loads the preplanned map areas.
                 await withThrowingTaskGroup(of: Void.self) { group in
                     preplannedMapAreas.forEach { preplannedMapArea in
                         group.addTask {
