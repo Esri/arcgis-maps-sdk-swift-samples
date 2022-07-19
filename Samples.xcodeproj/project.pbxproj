@@ -11,6 +11,25 @@
 		0005580C28185C0600224BC6 /* SampleList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0005580B28185C0600224BC6 /* SampleList.swift */; };
 		00181B462846AD7100654571 /* View+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00181B452846AD7100654571 /* View+Alert.swift */; };
 		001C6DE127FE8A9400D472C2 /* AppSecrets.swift.masque in Sources */ = {isa = PBXBuildFile; fileRef = 001C6DD827FE585A00D472C2 /* AppSecrets.swift.masque */; };
+		0039A4E92885C50300592C86 /* AddSceneLayerFromServiceView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E066DD3F28610F55004D3D5B /* AddSceneLayerFromServiceView.swift */; };
+		0039A4EA2885C50300592C86 /* ClipGeometryView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E000E75F2869E33D005D87C5 /* ClipGeometryView.swift */; };
+		0039A4EB2885C50300592C86 /* CreatePlanarAndGeodeticBuffersView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E004A6EC2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift */; };
+		0039A4EC2885C50300592C86 /* CutGeometryView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E000E762286A0B18005D87C5 /* CutGeometryView.swift */; };
+		0039A4ED2885C50300592C86 /* DisplayMapView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 0074ABBE28174BCF0037244A /* DisplayMapView.swift */; };
+		0039A4EE2885C50300592C86 /* DisplayOverviewMapView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 00B04FB4283EEBA80026C882 /* DisplayOverviewMapView.swift */; };
+		0039A4EF2885C50300592C86 /* DisplaySceneView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E004A6D828465C70002A1FE6 /* DisplaySceneView.swift */; };
+		0039A4F02885C50300592C86 /* ProjectView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E0EA0B762866390E00C9621D /* ProjectView.swift */; };
+		0039A4F12885C50300592C86 /* SearchWithGeocodeView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 00CB9137284814A4005C2C5D /* SearchWithGeocodeView.swift */; };
+		0039A4F22885C50300592C86 /* SelectFeaturesInFeatureLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E004A6F5284FA42A002A1FE6 /* SelectFeaturesInFeatureLayerView.swift */; };
+		0039A4F32885C50300592C86 /* SetBasemapView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 00B042E5282EDC690072E1B4 /* SetBasemapView.swift */; };
+		0039A4F42885C50300592C86 /* SetSurfacePlacementModeView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E088E1562862579D00413100 /* SetSurfacePlacementModeView.swift */; };
+		0039A4F52885C50300592C86 /* SetViewpointRotationView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E004A6BD28414332002A1FE6 /* SetViewpointRotationView.swift */; };
+		0039A4F62885C50300592C86 /* ShowCalloutView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E004A6DF28466279002A1FE6 /* ShowCalloutView.swift */; };
+		0039A4F72885C50300592C86 /* ShowDeviceLocationView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E004A6E828493BCE002A1FE6 /* ShowDeviceLocationView.swift */; };
+		0039A4F82885C50300592C86 /* ShowResultOfSpatialRelationshipsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E066DD3A2860CA08004D3D5B /* ShowResultOfSpatialRelationshipsView.swift */; };
+		0039A4F92885C50300592C86 /* ShowResultsOfSpatialOperationsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E004A6F2284E4FEB002A1FE6 /* ShowResultsOfSpatialOperationsView.swift */; };
+		0039A4FA2885C50300592C86 /* StyleGraphicsWithRendererView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E066DD372860AB28004D3D5B /* StyleGraphicsWithRendererView.swift */; };
+		0039A4FB2885C50300592C86 /* StyleGraphicsWithSymbolsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E004A6E52846A61F002A1FE6 /* StyleGraphicsWithSymbolsView.swift */; };
 		0074ABBF28174BCF0037244A /* DisplayMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0074ABBE28174BCF0037244A /* DisplayMapView.swift */; };
 		0074ABC428174F430037244A /* Sample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0074ABC128174F430037244A /* Sample.swift */; };
 		0074ABCD2817BCC30037244A /* SamplesApp+Samples.swift.tache in Sources */ = {isa = PBXBuildFile; fileRef = 0074ABCA2817B8DB0037244A /* SamplesApp+Samples.swift.tache */; };
@@ -23,6 +42,7 @@
 		00E5401C27F3CCA200CF66D5 /* SamplesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5400C27F3CCA100CF66D5 /* SamplesApp.swift */; };
 		00E5401E27F3CCA200CF66D5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5400D27F3CCA100CF66D5 /* ContentView.swift */; };
 		00E5402027F3CCA200CF66D5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00E5400E27F3CCA200CF66D5 /* Assets.xcassets */; };
+		E000E7602869E33D005D87C5 /* ClipGeometryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E000E75F2869E33D005D87C5 /* ClipGeometryView.swift */; };
 		E000E763286A0B18005D87C5 /* CutGeometryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E000E762286A0B18005D87C5 /* CutGeometryView.swift */; };
 		E004A6C128414332002A1FE6 /* SetViewpointRotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6BD28414332002A1FE6 /* SetViewpointRotationView.swift */; };
 		E004A6DC28465C70002A1FE6 /* DisplaySceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6D828465C70002A1FE6 /* DisplaySceneView.swift */; };
@@ -37,6 +57,7 @@
 		E041AC1A287F54580056009B /* highlight.min.js in Resources */ = {isa = PBXBuildFile; fileRef = E041AC15287F54580056009B /* highlight.min.js */; };
 		E041AC1E288076A60056009B /* info.css in Resources */ = {isa = PBXBuildFile; fileRef = E041AC1D288076A60056009B /* info.css */; };
 		E041AC20288077B90056009B /* xcode.css in Resources */ = {isa = PBXBuildFile; fileRef = E041AC1F288077B90056009B /* xcode.css */; };
+		E066DD35285CF3B3004D3D5B /* FindRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E066DD34285CF3B3004D3D5B /* FindRouteView.swift */; };
 		E066DD382860AB28004D3D5B /* StyleGraphicsWithRendererView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E066DD372860AB28004D3D5B /* StyleGraphicsWithRendererView.swift */; };
 		E066DD3B2860CA08004D3D5B /* ShowResultOfSpatialRelationshipsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E066DD3A2860CA08004D3D5B /* ShowResultOfSpatialRelationshipsView.swift */; };
 		E066DD4028610F55004D3D5B /* AddSceneLayerFromServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E066DD3F28610F55004D3D5B /* AddSceneLayerFromServiceView.swift */; };
@@ -91,6 +112,35 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		0039A4E82885C4E300592C86 /* Copy Source Code Files */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 7;
+			files = (
+				0039A4E92885C50300592C86 /* AddSceneLayerFromServiceView.swift in Copy Source Code Files */,
+				0039A4EA2885C50300592C86 /* ClipGeometryView.swift in Copy Source Code Files */,
+				0039A4EB2885C50300592C86 /* CreatePlanarAndGeodeticBuffersView.swift in Copy Source Code Files */,
+				0039A4EC2885C50300592C86 /* CutGeometryView.swift in Copy Source Code Files */,
+				0039A4ED2885C50300592C86 /* DisplayMapView.swift in Copy Source Code Files */,
+				0039A4EE2885C50300592C86 /* DisplayOverviewMapView.swift in Copy Source Code Files */,
+				0039A4EF2885C50300592C86 /* DisplaySceneView.swift in Copy Source Code Files */,
+				0039A4F02885C50300592C86 /* ProjectView.swift in Copy Source Code Files */,
+				0039A4F12885C50300592C86 /* SearchWithGeocodeView.swift in Copy Source Code Files */,
+				0039A4F22885C50300592C86 /* SelectFeaturesInFeatureLayerView.swift in Copy Source Code Files */,
+				0039A4F32885C50300592C86 /* SetBasemapView.swift in Copy Source Code Files */,
+				0039A4F42885C50300592C86 /* SetSurfacePlacementModeView.swift in Copy Source Code Files */,
+				0039A4F52885C50300592C86 /* SetViewpointRotationView.swift in Copy Source Code Files */,
+				0039A4F62885C50300592C86 /* ShowCalloutView.swift in Copy Source Code Files */,
+				0039A4F72885C50300592C86 /* ShowDeviceLocationView.swift in Copy Source Code Files */,
+				0039A4F82885C50300592C86 /* ShowResultOfSpatialRelationshipsView.swift in Copy Source Code Files */,
+				0039A4F92885C50300592C86 /* ShowResultsOfSpatialOperationsView.swift in Copy Source Code Files */,
+				0039A4FA2885C50300592C86 /* StyleGraphicsWithRendererView.swift in Copy Source Code Files */,
+				0039A4FB2885C50300592C86 /* StyleGraphicsWithSymbolsView.swift in Copy Source Code Files */,
+			);
+			name = "Copy Source Code Files";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -113,6 +163,7 @@
 		00E5400E27F3CCA200CF66D5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		00E5401327F3CCA200CF66D5 /* Samples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Samples.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E5402A27F775EA00CF66D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E000E75F2869E33D005D87C5 /* ClipGeometryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipGeometryView.swift; sourceTree = "<group>"; };
 		E000E762286A0B18005D87C5 /* CutGeometryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutGeometryView.swift; sourceTree = "<group>"; };
 		E004A6BD28414332002A1FE6 /* SetViewpointRotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetViewpointRotationView.swift; sourceTree = "<group>"; };
 		E004A6D828465C70002A1FE6 /* DisplaySceneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplaySceneView.swift; sourceTree = "<group>"; };
@@ -127,6 +178,7 @@
 		E041AC15287F54580056009B /* highlight.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = highlight.min.js; sourceTree = "<group>"; };
 		E041AC1D288076A60056009B /* info.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = info.css; sourceTree = "<group>"; };
 		E041AC1F288077B90056009B /* xcode.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = xcode.css; sourceTree = "<group>"; };
+		E066DD34285CF3B3004D3D5B /* FindRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindRouteView.swift; sourceTree = "<group>"; };
 		E066DD372860AB28004D3D5B /* StyleGraphicsWithRendererView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleGraphicsWithRendererView.swift; sourceTree = "<group>"; };
 		E066DD3A2860CA08004D3D5B /* ShowResultOfSpatialRelationshipsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowResultOfSpatialRelationshipsView.swift; sourceTree = "<group>"; };
 		E066DD3F28610F55004D3D5B /* AddSceneLayerFromServiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSceneLayerFromServiceView.swift; sourceTree = "<group>"; };
@@ -191,11 +243,13 @@
 			isa = PBXGroup;
 			children = (
 				E066DD3E28610F3F004D3D5B /* Add scene layer from service */,
+				E000E75E2869E325005D87C5 /* Clip geometry */,
 				E004A6EB28495538002A1FE6 /* Create planar and geodetic buffers */,
 				E000E761286A0B07005D87C5 /* Cut geometry */,
 				0074ABB328174B830037244A /* Display map */,
 				00B04FB3283EEB830026C882 /* Display overview map */,
 				E004A6D528465C70002A1FE6 /* Display scene */,
+				E066DD33285CF3A0004D3D5B /* Find route */,
 				E0EA0B75286638FD00C9621D /* Project */,
 				00CB913628481475005C2C5D /* Search with geocode */,
 				E004A6F4284FA3C5002A1FE6 /* Select features in feature layer */,
@@ -292,6 +346,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		E000E75E2869E325005D87C5 /* Clip geometry */ = {
+			isa = PBXGroup;
+			children = (
+				E000E75F2869E33D005D87C5 /* ClipGeometryView.swift */,
+			);
+			path = "Clip geometry";
+			sourceTree = "<group>";
+		};
 		E000E761286A0B07005D87C5 /* Cut geometry */ = {
 			isa = PBXGroup;
 			children = (
@@ -374,6 +436,14 @@
 			path = Web;
 			sourceTree = "<group>";
 		};
+		E066DD33285CF3A0004D3D5B /* Find route */ = {
+			isa = PBXGroup;
+			children = (
+				E066DD34285CF3B3004D3D5B /* FindRouteView.swift */,
+			);
+			path = "Find route";
+			sourceTree = "<group>";
+		};
 		E066DD362860AB0B004D3D5B /* Style graphics with renderer */ = {
 			isa = PBXGroup;
 			children = (
@@ -426,9 +496,9 @@
 				00E5400F27F3CCA200CF66D5 /* Sources */,
 				00E5401027F3CCA200CF66D5 /* Frameworks */,
 				00E5401127F3CCA200CF66D5 /* Resources */,
-				E041ABC8287CB66A0056009B /* Copy READMEs */,
-				E041ABD9287DB75B0056009B /* Copy Sample Views */,
 				00144B5E280634840090DD5D /* Embed Frameworks */,
+				0039A4E82885C4E300592C86 /* Copy Source Code Files */,
+				0039A4E72885C45200592C86 /* Copy README.md Files For Source Code View */,
 			);
 			buildRules = (
 				0083586F27FE3BCF00192A15 /* PBXBuildRule */,
@@ -513,6 +583,24 @@
 			shellPath = /bin/sh;
 			shellScript = "if [ ! -e \"$SRCROOT/.secrets\" ]\nthen\n    touch \"$SRCROOT/.secrets\"\nfi\n";
 		};
+		0039A4E72885C45200592C86 /* Copy README.md Files For Source Code View */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Copy README.md Files For Source Code View";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo $BUILT_PRODUCTS_DIR\n\n# Directory to which the readmes will be copied.\nREADMES_DIR=${BUILT_PRODUCTS_DIR}/${CONTENTS_FOLDER_PATH}/READMEs\nmkdir -p \"${READMES_DIR}\"\n\n# Root readme for the project to skip.\nDEFAULT_README=$SRCROOT/README.md\n\n# Find all README.md files in the project.\nfind ${SRCROOT} -name \"README.md\" | while read file\ndo\n    # Skip the root readme for project.\n    if [ \"$file\" = \"$DEFAULT_README\" ]\n    then\n        echo $BUILT_PRODUCTS_DIR\n        continue\n    fi\n    \n    # Extract the folder name from the path.\n    FILE_PATH=$(dirname \"$file\")\n    FOLDER_NAME=$(basename \"$FILE_PATH\")\n    \n    cp \"${file}\" \"${READMES_DIR}/${FOLDER_NAME}.md\"\ndone\n";
+		};
 		00E5402B27F77A5A00CF66D5 /* Lint Sources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -529,43 +617,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
-		};
-		E041ABC8287CB66A0056009B /* Copy READMEs */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Copy READMEs";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "#directory to which the readmes will be copied\nREADMES_DIR=${BUILT_PRODUCTS_DIR}/${CONTENTS_FOLDER_PATH}/READMEs\nmkdir -p \"${READMES_DIR}\"\n\n#readme for the project to skip\nDEFAULT_README=$SRCROOT/README.md\n\n#find all README.md files in the project\nfind ${SRCROOT} -name \"README.md\" | while read file\ndo\n    #skip if its the default readme for project\n    if [ \"$file\" = \"$DEFAULT_README\" ]\n    then\n        echo $BUILT_PRODUCTS_DIR\n        continue\n    fi\n    \n    #extract the folder name from the path\n    FILE_PATH=$(dirname \"$file\")\n    FOLDER_NAME=$(basename \"$FILE_PATH\")\n    \n    cp \"${file}\" \"${READMES_DIR}/${FOLDER_NAME}.md\"\ndone\n";
-		};
-		E041ABD9287DB75B0056009B /* Copy Sample Views */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Sample Views";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "#directory to which the views will be copied\nSAMPLE_VIEWS_DIR=${BUILT_PRODUCTS_DIR}/${CONTENTS_FOLDER_PATH}/SampleViews\nmkdir -p \"${SAMPLE_VIEWS_DIR}\"\n\necho \"${SAMPLE_VIEWS_DIR}\"\n\n#find all .swift files in the Samples directory\nfind \"${SRCROOT}/Shared/Samples\" -name \"*View.swift\" | while read file\ndo\n    #extract the folder name from the path\n    FILE_PATH=$(dirname \"$file\")\n    FOLDER_NAME=$(basename \"$FILE_PATH\")\n    \n    cp \"${file}\" \"${SAMPLE_VIEWS_DIR}/${FOLDER_NAME}.swift\"\ndone\n";
+			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -574,6 +626,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E000E7602869E33D005D87C5 /* ClipGeometryView.swift in Sources */,
 				E004A6E928493BCE002A1FE6 /* ShowDeviceLocationView.swift in Sources */,
 				0005580C28185C0600224BC6 /* SampleList.swift in Sources */,
 				E004A6E028466279002A1FE6 /* ShowCalloutView.swift in Sources */,
@@ -596,6 +649,7 @@
 				00B04FB5283EEBA80026C882 /* DisplayOverviewMapView.swift in Sources */,
 				0074ABBF28174BCF0037244A /* DisplayMapView.swift in Sources */,
 				E004A6DC28465C70002A1FE6 /* DisplaySceneView.swift in Sources */,
+				E066DD35285CF3B3004D3D5B /* FindRouteView.swift in Sources */,
 				E004A6F6284FA42A002A1FE6 /* SelectFeaturesInFeatureLayerView.swift in Sources */,
 				00B042E8282EDC690072E1B4 /* SetBasemapView.swift in Sources */,
 				E004A6E62846A61F002A1FE6 /* StyleGraphicsWithSymbolsView.swift in Sources */,
