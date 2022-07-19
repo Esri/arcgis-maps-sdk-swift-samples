@@ -64,6 +64,7 @@
 		E066DD4028610F55004D3D5B /* AddSceneLayerFromServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E066DD3F28610F55004D3D5B /* AddSceneLayerFromServiceView.swift */; };
 		E070A0A3286F3B6000F2B606 /* DownloadPreplannedMapAreaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E070A0A2286F3B6000F2B606 /* DownloadPreplannedMapAreaView.swift */; };
 		E088E1572862579D00413100 /* SetSurfacePlacementModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E088E1562862579D00413100 /* SetSurfacePlacementModeView.swift */; };
+		E0A1AEE2288744A6003C797D /* DownloadPreplannedMapAreaView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E070A0A2286F3B6000F2B606 /* DownloadPreplannedMapAreaView.swift */; };
 		E0EA0B772866390E00C9621D /* ProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0EA0B762866390E00C9621D /* ProjectView.swift */; };
 /* End PBXBuildFile section */
 
@@ -127,6 +128,7 @@
 				0039A4ED2885C50300592C86 /* DisplayMapView.swift in Copy Source Code Files */,
 				0039A4EE2885C50300592C86 /* DisplayOverviewMapView.swift in Copy Source Code Files */,
 				0039A4EF2885C50300592C86 /* DisplaySceneView.swift in Copy Source Code Files */,
+				E0A1AEE2288744A6003C797D /* DownloadPreplannedMapAreaView.swift in Copy Source Code Files */,
 				0039A4F02885C50300592C86 /* ProjectView.swift in Copy Source Code Files */,
 				0039A4F12885C50300592C86 /* SearchWithGeocodeView.swift in Copy Source Code Files */,
 				0039A4F22885C50300592C86 /* SelectFeaturesInFeatureLayerView.swift in Copy Source Code Files */,
