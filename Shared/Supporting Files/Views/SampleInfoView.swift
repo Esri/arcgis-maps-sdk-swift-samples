@@ -107,9 +107,7 @@ private extension SampleInfoView {
 
 private extension SampleInfoView {
     /// The name of the sample's view file.
-    var sampleViewFileName: String {
-        "\(sample.name.split(separator: " ").map { $0.capitalized }.joined())View"
-    }
+    var sampleViewFileName: String { "\(sample.nameInUpperCamelCase)View" }
     
     /// The code of the sample's view file.
     var sampleContent: String? {
