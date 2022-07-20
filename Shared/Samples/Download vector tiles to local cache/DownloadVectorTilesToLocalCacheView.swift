@@ -191,6 +191,27 @@ private extension DownloadVectorTilesToLocalCacheView {
             }
         }
         
+        /// Creates the export tiles parameters for the export vector tiles task.
+        /// - Parameters:
+        ///   - areaOfInterest: The area of interest to export vector tiles for.
+        ///   - maxScale: The max scale of for the export vector tiles job.
+        /// - Returns: `ExportVectorTilesParameters` if there are no errors. Otherwise, it returns `nil`.
+        private func makeExportTilesParameters(
+            for areaOfInterest: Envelope,
+            with maxScale: Double
+        ) async -> ExportVectorTilesParameters? {
+            do {
+                return try await exportVectorTilesTask.createDefaultExportVectorTilesParameters(
+                    areaOfInterest: areaOfInterest,
+                    maxScale: maxScale
+                )
+            } catch {
+                self.error = error
+                isShowingAlert = true
+                return nil
+            }
+        }
+        
         /// Downloads the vector tiles within the area of interest.
         /// - Parameters:
         ///   - mapView: A map view proxy used to convert the min and max screen points to the map
@@ -204,62 +225,52 @@ private extension DownloadVectorTilesToLocalCacheView {
                 // Creates the min and max points for the envelope.
                 guard let min = mapView.location(fromScreenPoint: geometry.min()),
                       let max = mapView.location(fromScreenPoint: geometry.max()),
-                      let maxScale = maxScale else {
+                      let maxScale = maxScale,
+                      // Creates the envelope representing the area of interest.
+                      case let extent = Envelope(min: min, max: max),
+                      // Creates the default parameters based on the extent and max scale.
+                      let parameters = await makeExportTilesParameters(for: extent, with: maxScale) else {
                     return
                 }
                 
-                // Creates the envelope representing the area of interest.
-                let extent = Envelope(min: min, max: max)
+                // Creates the export vector tiles job based on the parameters
+                // and temporary URLs.
+                exportVectorTilesJob = exportVectorTilesTask.exportVectorTiles(
+                    parameters: parameters,
+                    vectorTileCacheURL: vtpkTemporaryURL,
+                    itemResourceCacheURL: styleTemporaryURL
+                )
                 
-                do {
-                    // Creates the default parameters based on the extent and max scale.
-                    let parameters = try await exportVectorTilesTask.createDefaultExportVectorTilesParameters(
-                        areaOfInterest: extent,
-                        maxScale: maxScale
-                    )
-                    
-                    // Creates the export vector tiles job based on the parameters
-                    // and temporary URLs.
-                    exportVectorTilesJob = exportVectorTilesTask.exportVectorTiles(
-                        parameters: parameters,
-                        vectorTileCacheURL: vtpkTemporaryURL,
-                        itemResourceCacheURL: styleTemporaryURL
-                    )
-                    
-                    // Starts the job.
-                    exportVectorTilesJob.start()
-                    
-                    // Awaits the result of the job
-                    let result = await exportVectorTilesJob.result
-                    
-                    // Sets the job to nil.
-                    exportVectorTilesJob = nil
-                    
-                    switch result {
-                    case .success(let output):
-                        // Gets the vector tile and item resource cache from the output.
-                        if let vectorTileCache = output.vectorTileCache,
-                           let itemResourceCache = output.itemResourceCache {
-                            // Creates a vector tiled layer from the caches.
-                            vectorTiledLayerResults = ArcGISVectorTiledLayer(
-                                vectorTileCache: vectorTileCache,
-                                itemResourceCache: itemResourceCache
-                            )
-                            // Creates a map with a basemap from the vector tiled layer results.
-                            downloadedVectorTilesMap = Map(basemap: Basemap(baseLayer: vectorTiledLayerResults))
-                            // Sets the initial viewpoint of the result map.
-                            downloadedVectorTilesMap.initialViewpoint = Viewpoint(targetExtent: extent.expanded(by: 0.9))
-                            // Shows the downloaded results.
-                            isShowingResults = true
-                        }
-                    case .failure(let error):
-                        // Shows an alert with the error if the job fails and the
-                        // error is not a cancellation error.
-                        guard !(error is CancellationError) else { return }
-                        self.error = error
-                        isShowingAlert = true
+                // Starts the job.
+                exportVectorTilesJob.start()
+                
+                // Awaits the result of the job
+                let result = await exportVectorTilesJob.result
+                
+                // Sets the job to nil.
+                exportVectorTilesJob = nil
+                
+                switch result {
+                case .success(let output):
+                    // Gets the vector tile and item resource cache from the output.
+                    if let vectorTileCache = output.vectorTileCache,
+                       let itemResourceCache = output.itemResourceCache {
+                        // Creates a vector tiled layer from the caches.
+                        vectorTiledLayerResults = ArcGISVectorTiledLayer(
+                            vectorTileCache: vectorTileCache,
+                            itemResourceCache: itemResourceCache
+                        )
+                        // Creates a map with a basemap from the vector tiled layer results.
+                        downloadedVectorTilesMap = Map(basemap: Basemap(baseLayer: vectorTiledLayerResults))
+                        // Sets the initial viewpoint of the result map.
+                        downloadedVectorTilesMap.initialViewpoint = Viewpoint(targetExtent: extent.expanded(by: 0.9))
+                        // Shows the downloaded results.
+                        isShowingResults = true
                     }
-                } catch {
+                case .failure(let error):
+                    // Shows an alert with the error if the job fails and the
+                    // error is not a cancellation error.
+                    guard !(error is CancellationError) else { return }
                     self.error = error
                     isShowingAlert = true
                 }
