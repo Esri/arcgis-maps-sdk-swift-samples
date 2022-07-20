@@ -22,20 +22,12 @@ struct DownloadPreplannedMapAreaView: View {
     /// A Boolean value indicating whether to show delete alert.
     @State private var isShowingDeleteAlert = false
     
-    /// A Boolean value indicating whether to show an alert for an error.
-    @State private var isShowingErrorAlert = false
-    
     /// The view model for this sample.
     @StateObject private var model = Model()
     
     var body: some View {
         MapView(map: model.map)
-            .alert(isPresented: $isShowingErrorAlert, presentingError: model.error)
-            .onReceive(model.$error) { error in
-                if error != nil {
-                    isShowingErrorAlert = true
-                }
-            }
+            .alert(isPresented: $model.isShowingErrorAlert, presentingError: model.error)
             .alert("Delete all offline areas", isPresented: $isShowingDeleteAlert) {
                 Button("Delete", role: .destructive) {
                     Task { await model.removeDownloadedMaps() }
@@ -125,6 +117,9 @@ private extension DownloadPreplannedMapAreaView {
     /// A view model for this sample.
     @MainActor
     class Model: ObservableObject {
+        /// A Boolean value indicating whether to show an alert for an error.
+        @Published var isShowingErrorAlert = false
+        
         /// The error shown in the alert.
         @Published var error: Error?
         
@@ -188,6 +183,7 @@ private extension DownloadPreplannedMapAreaView {
                 }
             } catch {
                 self.error = error
+                isShowingErrorAlert = true
             }
         }
         
@@ -294,6 +290,7 @@ private extension DownloadPreplannedMapAreaView {
                     try FileManager.default.removeItem(at: package.fileURL)
                 } catch {
                     self.error = error
+                    isShowingErrorAlert = true
                 }
             }
             localMapPackages.removeAll()
@@ -308,6 +305,7 @@ private extension DownloadPreplannedMapAreaView {
                 try FileManager.default.createDirectory(at: temporaryDirectoryURL, withIntermediateDirectories: false)
             } catch {
                 self.error = error
+                isShowingErrorAlert = true
             }
         }
     }
