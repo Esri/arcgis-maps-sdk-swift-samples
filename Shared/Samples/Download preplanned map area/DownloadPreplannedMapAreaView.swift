@@ -217,9 +217,13 @@ private extension DownloadPreplannedMapAreaView {
             }
         }
         
-        /// Downloads the given preplanned map area.
-        /// - Parameter preplannedMapArea: The preplanned map area to be downloaded.
-        private func downloadPreplannedMapArea(_ preplannedMapArea: PreplannedMapArea) async {
+        /// Creates the parameters for a download preplanned offline map job.
+        /// - Parameter preplannedMapArea: The preplanned map area to create parameters for.
+        /// - Returns: A `DownloadPreplannedOfflineMapParameters` if there are no errors. Otherwise,
+        /// it returns nil.
+        private func makeDownloadPreplannedOfflineMapParameters(
+            for preplannedMapArea: PreplannedMapArea
+        ) async -> DownloadPreplannedOfflineMapParameters? {
             do {
                 // Creates the default parameters.
                 let parameters = try await offlineMapTask.makeDefaultDownloadPreplannedOfflineMapParameters(
@@ -227,40 +231,51 @@ private extension DownloadPreplannedMapAreaView {
                 )
                 // Sets the update mode to no updates as the offline map is display-only.
                 parameters.updateMode = .noUpdates
-                
-                // Creates the download directory URL based on the preplanned
-                // map area's portal item identifier.
-                let downloadDirectoryURL = temporaryDirectoryURL
-                    .appendingPathComponent(preplannedMapArea.portalItemIdentifier)
-                    .appendingPathExtension("mmpk")
-                
-                // Creates the download preplanned offline map job.
-                let job = offlineMapTask.makeDownloadPreplannedOfflineMapJob(
-                    parameters: parameters,
-                    downloadDirectory: downloadDirectoryURL
-                )
-                
-                // Adds the job for the preplanned map area to the current jobs.
-                currentJobs[preplannedMapArea] = job
-                
-                // Starts the job.
-                job.start()
-                
-                // Awaits the results of the job.
-                let result = await job.result
-                
-                switch result {
-                case .success(let output):
-                    // Adds the output's mobile map package to the downloaded map packages.
-                    localMapPackages.append(output.mobileMapPackage)
-                case .failure(let error):
-                    // Shows an alert with the error if the job fails and the
-                    // error is not a cancellation error.
-                    guard !(error is CancellationError) else { return }
-                    self.error = error
-                }
+                return parameters
             } catch {
                 self.error = error
+                isShowingErrorAlert = true
+                return nil
+            }
+        }
+        
+        /// Downloads the given preplanned map area.
+        /// - Parameter preplannedMapArea: The preplanned map area to be downloaded.
+        private func downloadPreplannedMapArea(_ preplannedMapArea: PreplannedMapArea) async {
+            // Creates the parameters for the download preplanned offline map job.
+            guard let parameters = await makeDownloadPreplannedOfflineMapParameters(for: preplannedMapArea) else { return }
+            
+            // Creates the download directory URL based on the preplanned map area's
+            // portal item identifier.
+            let downloadDirectoryURL = temporaryDirectoryURL
+                .appendingPathComponent(preplannedMapArea.portalItemIdentifier)
+                .appendingPathExtension("mmpk")
+            
+            // Creates the download preplanned offline map job.
+            let job = offlineMapTask.makeDownloadPreplannedOfflineMapJob(
+                parameters: parameters,
+                downloadDirectory: downloadDirectoryURL
+            )
+            
+            // Adds the job for the preplanned map area to the current jobs.
+            currentJobs[preplannedMapArea] = job
+            
+            // Starts the job.
+            job.start()
+            
+            // Awaits the results of the job.
+            let result = await job.result
+            
+            switch result {
+            case .success(let output):
+                // Adds the output's mobile map package to the downloaded map packages.
+                localMapPackages.append(output.mobileMapPackage)
+            case .failure(let error):
+                // Shows an alert with the error if the job fails and the error is not
+                // a cancellation error.
+                guard !(error is CancellationError) else { return }
+                self.error = error
+                isShowingErrorAlert = true
             }
         }
         
