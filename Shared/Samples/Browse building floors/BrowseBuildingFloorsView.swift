@@ -39,6 +39,7 @@ struct BrowseBuildingFloorsView: View {
         MapView(map: map)
             .onViewpointChanged(kind: .centerAndScale) { viewpoint = $0 }
             .onNavigatingChanged { isMapNavigating = $0 }
+            .ignoresSafeArea(.keyboard, edges: .bottom)
             .overlay {
                 if isMapLoaded,
                    let floorManager = map.floorManager {
