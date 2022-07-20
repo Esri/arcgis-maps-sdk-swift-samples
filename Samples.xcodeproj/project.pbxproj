@@ -57,7 +57,7 @@
 		E004A6ED2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6EC2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift */; };
 		E004A6F3284E4FEB002A1FE6 /* ShowResultsOfSpatialOperationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6F2284E4FEB002A1FE6 /* ShowResultsOfSpatialOperationsView.swift */; };
 		E004A6F6284FA42A002A1FE6 /* SelectFeaturesInFeatureLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6F5284FA42A002A1FE6 /* SelectFeaturesInFeatureLayerView.swift */; };
-		E041AC22288089CD0056009B /* View+Sheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = E041AC21288089CD0056009B /* View+Sheet.swift */; };
+		E0082217287755AC002AD138 /* View+Sheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0082216287755AC002AD138 /* View+Sheet.swift */; };
 		E066DD35285CF3B3004D3D5B /* FindRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E066DD34285CF3B3004D3D5B /* FindRouteView.swift */; };
 		E066DD382860AB28004D3D5B /* StyleGraphicsWithRendererView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E066DD372860AB28004D3D5B /* StyleGraphicsWithRendererView.swift */; };
 		E066DD3B2860CA08004D3D5B /* ShowResultOfSpatialRelationshipsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E066DD3A2860CA08004D3D5B /* ShowResultOfSpatialRelationshipsView.swift */; };
@@ -183,7 +183,7 @@
 		E004A6EC2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePlanarAndGeodeticBuffersView.swift; sourceTree = "<group>"; };
 		E004A6F2284E4FEB002A1FE6 /* ShowResultsOfSpatialOperationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowResultsOfSpatialOperationsView.swift; sourceTree = "<group>"; };
 		E004A6F5284FA42A002A1FE6 /* SelectFeaturesInFeatureLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectFeaturesInFeatureLayerView.swift; sourceTree = "<group>"; };
-		E041AC21288089CD0056009B /* View+Sheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+Sheet.swift"; sourceTree = "<group>"; };
+		E0082216287755AC002AD138 /* View+Sheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Sheet.swift"; sourceTree = "<group>"; };
 		E066DD34285CF3B3004D3D5B /* FindRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindRouteView.swift; sourceTree = "<group>"; };
 		E066DD372860AB28004D3D5B /* StyleGraphicsWithRendererView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleGraphicsWithRendererView.swift; sourceTree = "<group>"; };
 		E066DD3A2860CA08004D3D5B /* ShowResultOfSpatialRelationshipsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowResultOfSpatialRelationshipsView.swift; sourceTree = "<group>"; };
@@ -220,7 +220,7 @@
 			isa = PBXGroup;
 			children = (
 				00181B452846AD7100654571 /* View+Alert.swift */,
-				E041AC21288089CD0056009B /* View+Sheet.swift */,
+				E0082216287755AC002AD138 /* View+Sheet.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -708,6 +708,7 @@
 				001C6DE127FE8A9400D472C2 /* AppSecrets.swift.masque in Sources */,
 				00CCB8A5285BAF8700BBAB70 /* OnDemandResource.swift in Sources */,
 				E004A6ED2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift in Sources */,
+				E0082217287755AC002AD138 /* View+Sheet.swift in Sources */,
 				00181B462846AD7100654571 /* View+Alert.swift in Sources */,
 				E0EA0B772866390E00C9621D /* ProjectView.swift in Sources */,
 				E070A0A3286F3B6000F2B606 /* DownloadPreplannedMapAreaView.swift in Sources */,
