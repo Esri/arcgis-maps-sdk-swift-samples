@@ -37,7 +37,7 @@ struct DownloadVectorTilesToLocalCacheView: View {
                         await model.initializeVectorTilesTask()
                     }
                     .onDisappear {
-                        model.removeTemporaryDirectory()
+                        Task { await model.cancelJob() }
                     }
                     .overlay {
                         Rectangle()
@@ -89,6 +89,7 @@ struct DownloadVectorTilesToLocalCacheView: View {
                                 isDownloading = false
                             }
                             .fullScreenCover(isPresented: $model.isShowingResults) {
+                                // Removes the temporary files when the cover is dismissed.
                                 model.removeTemporaryFiles()
                             } content: {
                                 NavigationView {
@@ -96,7 +97,7 @@ struct DownloadVectorTilesToLocalCacheView: View {
                                         .navigationTitle("Vector tile package")
                                         .navigationBarTitleDisplayMode(.inline)
                                         .toolbar {
-                                            ToolbarItem(placement: .navigationBarTrailing) {
+                                            ToolbarItem(placement: .confirmationAction) {
                                                 Button("Done") {
                                                     model.isShowingResults = false
                                                 }
@@ -170,6 +171,11 @@ private extension DownloadVectorTilesToLocalCacheView {
             
             // Creates a temporary directory for the files.
             makeTemporaryDirectory()
+        }
+        
+        deinit {
+            // Removes the temporary directory.
+            try? FileManager.default.removeItem(at: temporaryDirectoryURL)
         }
         
         /// Initializes the vector tiles task.
@@ -280,7 +286,7 @@ private extension DownloadVectorTilesToLocalCacheView {
         /// Cancels the export vector tiles job.
         func cancelJob() async {
             // Cancels the export vector tiles job.
-            await exportVectorTilesJob.cancel()
+            await exportVectorTilesJob?.cancel()
             exportVectorTilesJob = nil
             // Removes any temporary files.
             removeTemporaryFiles()
@@ -300,11 +306,6 @@ private extension DownloadVectorTilesToLocalCacheView {
         func removeTemporaryFiles() {
             try? FileManager.default.removeItem(at: vtpkTemporaryURL)
             try? FileManager.default.removeItem(at: styleTemporaryURL)
-        }
-        
-        /// Removes the temporary directory.
-        func removeTemporaryDirectory() {
-            try? FileManager.default.removeItem(at: temporaryDirectoryURL)
         }
     }
 }
