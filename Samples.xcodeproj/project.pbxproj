@@ -57,6 +57,7 @@
 		E004A6ED2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6EC2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift */; };
 		E004A6F3284E4FEB002A1FE6 /* ShowResultsOfSpatialOperationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6F2284E4FEB002A1FE6 /* ShowResultsOfSpatialOperationsView.swift */; };
 		E004A6F6284FA42A002A1FE6 /* SelectFeaturesInFeatureLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6F5284FA42A002A1FE6 /* SelectFeaturesInFeatureLayerView.swift */; };
+		E03CB06A288894C4002B27D9 /* FindRouteView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E066DD34285CF3B3004D3D5B /* FindRouteView.swift */; };
 		E041ABC0287CA9F00056009B /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E041ABBF287CA9F00056009B /* WebView.swift */; };
 		E041ABD7287DB04D0056009B /* SampleInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E041ABD6287DB04D0056009B /* SampleInfoView.swift */; };
 		E041AC1A287F54580056009B /* highlight.min.js in Resources */ = {isa = PBXBuildFile; fileRef = E041AC15287F54580056009B /* highlight.min.js */; };
@@ -132,6 +133,7 @@
 				0039A4ED2885C50300592C86 /* DisplayMapView.swift in Copy Source Code Files */,
 				0039A4EE2885C50300592C86 /* DisplayOverviewMapView.swift in Copy Source Code Files */,
 				0039A4EF2885C50300592C86 /* DisplaySceneView.swift in Copy Source Code Files */,
+				E03CB06A288894C4002B27D9 /* FindRouteView.swift in Copy Source Code Files */,
 				0039A4F02885C50300592C86 /* ProjectView.swift in Copy Source Code Files */,
 				0039A4F12885C50300592C86 /* SearchWithGeocodeView.swift in Copy Source Code Files */,
 				0039A4F22885C50300592C86 /* SelectFeaturesInFeatureLayerView.swift in Copy Source Code Files */,
