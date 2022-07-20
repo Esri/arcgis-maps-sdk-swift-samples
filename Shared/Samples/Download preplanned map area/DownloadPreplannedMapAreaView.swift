@@ -194,7 +194,7 @@ private extension DownloadPreplannedMapAreaView {
         /// - Parameter preplannedMapArea: The preplanned map area used to change the displayed map.
         func handlePreplannedMapSelection(for preplannedMapArea: PreplannedMapArea?) async {
             if let preplannedMapArea = preplannedMapArea {
-                // Ensures the map is loaded.
+                // Ensures the preplanned map area is loaded.
                 guard preplannedMapArea.loadStatus == .loaded else { return }
                 
                 // Downloads the preplanned map area if it has not been downloaded.
@@ -202,10 +202,12 @@ private extension DownloadPreplannedMapAreaView {
                     await downloadPreplannedMapArea(preplannedMapArea)
                 }
                 
-                // Sets the displayed map to the selected preplanned map area.
+                // Sets the displayed map to the currently selected preplanned map area.
                 if let currentPreplannedMapArea = currentPreplannedMapArea,
                    // Gets the downloaded map package for the selected preplanned map area.
-                   let mapPackage = localMapPackages.first(where: { $0.fileURL.path.contains(currentPreplannedMapArea.portalItemIdentifier) }),
+                   let mapPackage = localMapPackages.first(
+                    where: { $0.fileURL.path.contains(currentPreplannedMapArea.portalItemIdentifier) }
+                   ),
                    let offlineMap = mapPackage.maps.first {
                     // Sets the map to the offline map.
                     map = offlineMap
@@ -317,7 +319,10 @@ private extension DownloadPreplannedMapAreaView {
         /// Creates the temporary directory.
         private func makeTemporaryDirectory() {
             do {
-                try FileManager.default.createDirectory(at: temporaryDirectoryURL, withIntermediateDirectories: false)
+                try FileManager.default.createDirectory(
+                    at: temporaryDirectoryURL,
+                    withIntermediateDirectories: false
+                )
             } catch {
                 self.error = error
                 isShowingErrorAlert = true
