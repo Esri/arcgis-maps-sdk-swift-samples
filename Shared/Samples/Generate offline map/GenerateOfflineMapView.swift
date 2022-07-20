@@ -148,6 +148,19 @@ private extension GenerateOfflineMapView {
             }
         }
         
+        /// Creates the generate offline map parameters.
+        /// - Parameter areaOfInterest: The area of interest to create the parameters for.
+        /// - Returns: A `GenerateOfflineMapParameters` if there are no errors. Otherwise, it returns `nil`,
+        private func makeGenerateOfflineMapParameters(for areaOfInterest: Envelope) async -> GenerateOfflineMapParameters? {
+            do {
+                // Returns the default parameters for the offline map task.
+                return try await offlineMapTask.makeDefaultGenerateOfflineMapParameters(areaOfInterest: areaOfInterest)
+            } catch {
+                self.error = error
+                return nil
+            }
+        }
+        
         /// Generates the offline map.
         /// - Parameters:
         ///   - mapView: A map view proxy used to convert the min and max screen points to the map
@@ -155,44 +168,43 @@ private extension GenerateOfflineMapView {
         ///   - geometry: A geometry proxy used to reference the min and max screen points that
         ///   represent the area of interest.
         func generateOfflineMap(mapView: MapViewProxy, geometry: GeometryProxy) async {
+            // Disables the generate offline map button.
+            isGenerateDisabled = true
+            
             // Creates the min and max points for the envelope.
             guard let min = mapView.location(fromScreenPoint: geometry.min()),
-                  let max = mapView.location(fromScreenPoint: geometry.max()) else {
+                  let max = mapView.location(fromScreenPoint: geometry.max()),
+                  // Creates the envelope representing the area of interest.
+                  case let extent = Envelope(min: min, max: max),
+                  // Creates the default parameters for the offline map task.
+                  let parameters = await makeGenerateOfflineMapParameters(for: extent) else {
+                isGenerateDisabled = false
                 return
             }
             
-            // Creates the envelope representing the area of interest.
-            let extent = Envelope(min: min, max: max)
+            // Creates the generate offline map job based on the parameters.
+            generateOfflineMapJob = offlineMapTask.makeGenerateOfflineMapJob(parameters: parameters, downloadDirectory: temporaryDirectory)
             
-            do {
-                // Creates the default parameters for the offline map task.
-                let parameters = try await offlineMapTask.makeDefaultGenerateOfflineMapParameters(areaOfInterest: extent)
-                
-                // Creates the generate offline map job based on the parameters.
-                generateOfflineMapJob = offlineMapTask.makeGenerateOfflineMapJob(parameters: parameters, downloadDirectory: temporaryDirectory)
-                
-                // Starts the job.
-                generateOfflineMapJob.start()
-                
-                // Awaits the result of the job.
-                let result = await generateOfflineMapJob.result
-                
-                // Sets the job to nil.
-                generateOfflineMapJob = nil
-                
-                switch result {
-                case .success(let output):
-                    // Sets the offline map to the output's offline map.
-                    offlineMap = output.offlineMap
-                    // Sets the initial viewpoint of the offline map.
-                    offlineMap.initialViewpoint = Viewpoint(targetExtent: extent.expanded(by: 0.8))
-                case .failure(let error):
-                    // Shows an alert with the error if the job fails and the
-                    // error is not a cancellation error.
-                    guard !(error is CancellationError) else { return }
-                    self.error = error
-                }
-            } catch {
+            // Starts the job.
+            generateOfflineMapJob.start()
+            
+            // Awaits the result of the job.
+            let result = await generateOfflineMapJob.result
+            
+            // Sets the job to nil.
+            generateOfflineMapJob = nil
+            
+            switch result {
+            case .success(let output):
+                // Sets the offline map to the output's offline map.
+                offlineMap = output.offlineMap
+                // Sets the initial viewpoint of the offline map.
+                offlineMap.initialViewpoint = Viewpoint(targetExtent: extent.expanded(by: 0.8))
+            case .failure(let error):
+                isGenerateDisabled = false
+                // Shows an alert with the error if the job fails and the
+                // error is not a cancellation error.
+                guard !(error is CancellationError) else { return }
                 self.error = error
             }
         }
