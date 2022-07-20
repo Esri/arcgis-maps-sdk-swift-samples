@@ -42,7 +42,7 @@ struct GenerateOfflineMapView: View {
                         await model.initializeOfflineMapTask()
                     }
                     .onDisappear {
-                        model.removeTemporaryDirectory()
+                        Task { await model.cancelJob() }
                     }
                     .overlay {
                         if model.offlineMap == nil {
@@ -92,8 +92,6 @@ struct GenerateOfflineMapView: View {
                                 guard isGeneratingOfflineMap else { return }
                                 // Generates an offline map.
                                 await model.generateOfflineMap(mapView: mapView, geometry: geometry)
-                                // Disables the generate offline map button.
-                                model.isGenerateDisabled = true
                                 // Sets generating an offline map to false.
                                 isGeneratingOfflineMap = false
                             }
@@ -106,7 +104,8 @@ struct GenerateOfflineMapView: View {
 
 private extension GenerateOfflineMapView {
     /// The view model for this sample.
-    @MainActor class Model: ObservableObject {
+    @MainActor
+    class Model: ObservableObject {
         /// The offline map that is generated.
         @Published var offlineMap: Map!
         
@@ -134,6 +133,11 @@ private extension GenerateOfflineMapView {
         init() {
             // Creates the temporary directory.
             makeTemporaryDirectory()
+        }
+        
+        deinit {
+            // Removes the temporary directory.
+            try? FileManager.default.removeItem(at: temporaryDirectory)
         }
         
         /// Initializes the offline map task.
@@ -212,7 +216,7 @@ private extension GenerateOfflineMapView {
         /// Cancels the generate offline map job.
         func cancelJob() async {
             // Cancels the generate offline map job.
-            await generateOfflineMapJob.cancel()
+            await generateOfflineMapJob?.cancel()
             generateOfflineMapJob = nil
         }
         
@@ -223,11 +227,6 @@ private extension GenerateOfflineMapView {
             } catch {
                 self.error = error
             }
-        }
-        
-        /// Removes the temporary directory.
-        func removeTemporaryDirectory() {
-            try? FileManager.default.removeItem(at: temporaryDirectory)
         }
     }
 }
