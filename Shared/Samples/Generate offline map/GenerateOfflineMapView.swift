@@ -22,9 +22,6 @@ struct GenerateOfflineMapView: View {
     /// A Boolean value indicating whether the job is cancelling.
     @State private var isCancellingJob = false
     
-    /// A Boolean value indicating whether to show an alert.
-    @State var isShowingAlert = false
-    
     /// The view model for this sample.
     @StateObject private var model = Model()
     
@@ -34,10 +31,7 @@ struct GenerateOfflineMapView: View {
                 MapView(map: model.offlineMap ?? model.onlineMap)
                     .interactionModes([.pan, .zoom])
                     .disabled(isGeneratingOfflineMap)
-                    .alert(isPresented: $isShowingAlert, presentingError: model.error)
-                    .onReceive(model.$error) { error in
-                        isShowingAlert = error != nil
-                    }
+                    .alert(isPresented: $model.isShowingAlert, presentingError: model.error)
                     .task {
                         await model.initializeOfflineMapTask()
                     }
@@ -112,6 +106,9 @@ private extension GenerateOfflineMapView {
         /// A Boolean value indicating whether the generate button is disabled.
         @Published var isGenerateDisabled = true
         
+        /// A Boolean value indicating whether to show an alert.
+        @Published var isShowingAlert = false
+        
         /// The error shown in the alert.
         @Published var error: Error?
         
@@ -149,6 +146,7 @@ private extension GenerateOfflineMapView {
                 isGenerateDisabled = false
             } catch {
                 self.error = error
+                isShowingAlert = true
             }
         }
         
@@ -161,6 +159,7 @@ private extension GenerateOfflineMapView {
                 return try await offlineMapTask.makeDefaultGenerateOfflineMapParameters(areaOfInterest: areaOfInterest)
             } catch {
                 self.error = error
+                isShowingAlert = true
                 return nil
             }
         }
@@ -210,6 +209,7 @@ private extension GenerateOfflineMapView {
                 // error is not a cancellation error.
                 guard !(error is CancellationError) else { return }
                 self.error = error
+                isShowingAlert = true
             }
         }
         
@@ -226,6 +226,7 @@ private extension GenerateOfflineMapView {
                 try FileManager.default.createDirectory(at: temporaryDirectory, withIntermediateDirectories: false)
             } catch {
                 self.error = error
+                isShowingAlert = true
             }
         }
     }
