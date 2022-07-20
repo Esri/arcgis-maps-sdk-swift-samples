@@ -17,12 +17,15 @@ import SwiftUI
 struct SampleList: View {
     /// A Boolean value that indicates whether the user is searching.
     @Environment(\.isSearching) private var isSearching
+    
     /// All samples that will be displayed in the list.
     let samples: [Sample]
+    
     /// The search query in the search bar.
     @Binding var query: String
+    
     /// A Boolean value that indicates whether to present the about view.
-    @State var aboutViewIsPresented = false
+    @State private var isAboutViewPresented = false
     
     /// The samples to display in the list. Searching adjusts this value.
     private var displayedSamples: [Sample] {
@@ -38,7 +41,7 @@ struct SampleList: View {
     }
     
     var body: some View {
-        List(displayedSamples, id: \.name) { sample in
+        List(displayedSamples, id: \.nameInUpperCamelCase) { sample in
             NavigationLink(sample.name) {
                 SampleDetailView(sample: sample)
             }
@@ -46,11 +49,11 @@ struct SampleList: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
-                    aboutViewIsPresented.toggle()
+                    isAboutViewPresented.toggle()
                 } label: {
                     Image(systemName: "info.circle")
                 }
-                .sheet(isPresented: $aboutViewIsPresented) {
+                .sheet(isPresented: $isAboutViewPresented) {
                     AboutView()
                 }
             }
