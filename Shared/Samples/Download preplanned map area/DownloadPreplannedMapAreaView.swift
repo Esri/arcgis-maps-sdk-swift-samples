@@ -52,6 +52,9 @@ struct DownloadPreplannedMapAreaView: View {
             .task {
                 await model.loadPreplannedMapAreas()
             }
+            .onDisappear {
+                Task { await model.cancelAllJobs() }
+            }
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
                     Spacer()
@@ -120,6 +123,7 @@ struct DownloadPreplannedMapAreaView: View {
 
 private extension DownloadPreplannedMapAreaView {
     /// A view model for this sample.
+    @MainActor
     class Model: ObservableObject {
         /// The error shown in the alert.
         @Published var error: Error?
@@ -163,11 +167,10 @@ private extension DownloadPreplannedMapAreaView {
         
         deinit {
             // Removes the temporary directory.
-            removeTemporaryDirectory()
+            try? FileManager.default.removeItem(at: temporaryDirectoryURL)
         }
         
         /// Loads each preplanned map area from the offline map
-        @MainActor
         func loadPreplannedMapAreas() async {
             // Ensures that the preplanned map areas do not already exist.
             guard preplannedMapAreas.isEmpty else { return }
@@ -193,7 +196,6 @@ private extension DownloadPreplannedMapAreaView {
         /// to the currently selected preplanned map area. If the preplanned map area is nil, then the map
         /// is set to the online web map.
         /// - Parameter preplannedMapArea: The preplanned map area used to change the displayed map.
-        @MainActor
         func handlePreplannedMapSelection(for preplannedMapArea: PreplannedMapArea?) async {
             if let preplannedMapArea = preplannedMapArea {
                 // Ensures the map is loaded.
@@ -221,7 +223,6 @@ private extension DownloadPreplannedMapAreaView {
         
         /// Downloads the given preplanned map area.
         /// - Parameter preplannedMapArea: The preplanned map area to be downloaded.
-        @MainActor
         private func downloadPreplannedMapArea(_ preplannedMapArea: PreplannedMapArea) async {
             do {
                 // Creates the default parameters.
@@ -267,9 +268,8 @@ private extension DownloadPreplannedMapAreaView {
             }
         }
         
-        // Removes all downloaded maps.
-        func removeDownloadedMaps() async {
-            // Cancels all current jobs.
+        /// Cancels all current jobs.
+        func cancelAllJobs() async {
             await withTaskGroup(of: Void.self) { group in
                 currentJobs.forEach { _, job in
                     group.addTask {
@@ -277,6 +277,12 @@ private extension DownloadPreplannedMapAreaView {
                     }
                 }
             }
+        }
+        
+        // Removes all downloaded maps.
+        func removeDownloadedMaps() async {
+            // Cancels all current jobs.
+            await cancelAllJobs()
             
             // Sets the current map to the online web map.
             map = onlineMap
@@ -297,17 +303,12 @@ private extension DownloadPreplannedMapAreaView {
         }
         
         /// Creates the temporary directory.
-        func makeTemporaryDirectory() {
+        private func makeTemporaryDirectory() {
             do {
                 try FileManager.default.createDirectory(at: temporaryDirectoryURL, withIntermediateDirectories: false)
             } catch {
                 self.error = error
             }
-        }
-        
-        /// Removes the temporary directory.
-        func removeTemporaryDirectory() {
-            try? FileManager.default.removeItem(at: temporaryDirectoryURL)
         }
     }
 }
