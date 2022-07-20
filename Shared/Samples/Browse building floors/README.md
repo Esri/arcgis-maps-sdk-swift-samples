@@ -25,7 +25,7 @@ Use the picker to browse different floor levels in the facility. Only the select
 
 ## About the data
 
-This sample uses a [floor-aware web map](https://arcgis.com/home/item.html?id=f133a698536f44c8884ad81f80b6cfc7) that displays the floors of Building L on the Esri Redlands campus.
+This sample uses a [floor-aware web map](https://www.arcgis.com/home/item.html?id=f133a698536f44c8884ad81f80b6cfc7) that displays the floors of Building L on the Esri Redlands campus.
 
 ## Additional information
 
