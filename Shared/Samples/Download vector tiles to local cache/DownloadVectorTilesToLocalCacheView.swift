@@ -127,6 +127,9 @@ private extension DownloadVectorTilesToLocalCacheView {
         /// The error shown in the alert.
         @Published var error: Error?
         
+        /// A map with a basemap from the vector tiled layer results.
+        @Published var downloadedVectorTilesMap: Map!
+        
         /// The export vector tiles job.
         @Published var exportVectorTilesJob: ExportVectorTilesJob!
         
@@ -137,29 +140,16 @@ private extension DownloadVectorTilesToLocalCacheView {
         private var vectorTiledLayerResults: ArcGISVectorTiledLayer!
         
         /// A URL to the directory temporarily storing all items.
-        private let temporaryDirectoryURL = FileManager
-            .default
-            .temporaryDirectory
-            .appendingPathComponent(UUID().uuidString)
+        private let temporaryDirectoryURL: URL
         
         /// A URL to the temporary directory to store the exported vector tile package.
-        private var vtpkTemporaryURL: URL {
-            temporaryDirectoryURL
-                .appendingPathComponent("myTileCache")
-                .appendingPathExtension("vtpk")
-        }
+        private let vtpkTemporaryURL: URL
         
         /// A URL to the temporary directory to store the style item resources.
-        private var styleTemporaryURL: URL {
-            temporaryDirectoryURL
-                .appendingPathComponent("styleItemResources", isDirectory: true)
-        }
+        private let styleTemporaryURL: URL
         
         /// The max scale for the export vector tiles job.
         var maxScale: Double?
-        
-        /// A map with a basemap from the vector tiled layer results.
-        var downloadedVectorTilesMap: Map!
         
         /// A map with a night streets basemap style and an initial viewpoint.
         let map: Map
@@ -168,6 +158,22 @@ private extension DownloadVectorTilesToLocalCacheView {
             // Initializes the map.
             map = Map(basemapStyle: .arcGISStreetsNight)
             map.initialViewpoint = Viewpoint(latitude: 34.049, longitude: -117.181, scale: 1e4)
+            
+            // Initializes the URL for the temporary directory.
+            temporaryDirectoryURL = FileManager
+                .default
+                .temporaryDirectory
+                .appendingPathComponent(UUID().uuidString)
+            
+            // Initializes the URL for the directory containing vector tile packages.
+            vtpkTemporaryURL = temporaryDirectoryURL
+                .appendingPathComponent("myTileCache")
+                .appendingPathExtension("vtpk")
+            
+            // Initializes the URL for the directory containing style item resources.
+            styleTemporaryURL = temporaryDirectoryURL
+                .appendingPathComponent("styleItemResources", isDirectory: true)
+            
             
             // Creates a temporary directory for the files.
             makeTemporaryDirectory()
