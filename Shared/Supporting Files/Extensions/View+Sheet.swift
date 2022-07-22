@@ -229,13 +229,11 @@ private struct Sheet<Content>: UIViewRepresentable where Content: View {
     /// - Parameters:
     ///   - isPresented: A Boolean value indicating whether the sheet is presented.
     ///   - detents: The specified detents for the sheet.
-    ///   - onDismiss: The closure to execute when dismissing the sheet.
     ///   - isSheetLayout: A Boolean value indicating whether the device's layout is such that a sheet should be presented.
     ///   - content: The content of the sheet.
     init(
         isPresented: Binding<Bool>,
         detents: [UISheetPresentationController.Detent],
-        onDismiss: (() -> Void)?,
         isSheetLayout: Bool,
         content: @escaping () -> Content
     ) {
@@ -245,7 +243,6 @@ private struct Sheet<Content>: UIViewRepresentable where Content: View {
         _model = StateObject(
             wrappedValue: SheetModel<Content>(
                 detents: detents,
-                onDismiss: onDismiss,
                 content: content()
             )
         )
@@ -319,7 +316,6 @@ private struct Sheet<Content>: UIViewRepresentable where Content: View {
         /// Updates the parent when the sheet is dismissed with a swipe.
         func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
             parent.isPresented = false
-            parent.model.onDismiss?()
             parent.model.presentationAttempts = 0
         }
     }
@@ -335,16 +331,12 @@ private extension Sheet {
         let hostingController: UIHostingController<Content>
         /// The specified detents for the sheet.
         let detents: [UISheetPresentationController.Detent]
-        /// The closure to execute when dismissing the sheet.
-        let onDismiss: (() -> Void)?
         
         init(
             detents: [UISheetPresentationController.Detent],
-            onDismiss: (() -> Void)?,
             content: Content
         ) {
             self.detents = detents
-            self.onDismiss = onDismiss
             hostingController = UIHostingController(rootView: content)
         }
     }
