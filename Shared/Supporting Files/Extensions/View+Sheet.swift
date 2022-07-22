@@ -80,113 +80,136 @@ private struct SheetModifier<SheetContent>: ViewModifier where SheetContent: Vie
     
     func body(content: Content) -> some View {
         if #available(iOS 16.0, *) {
-            //            content
-            //                .sheet(
-            //                    isPresented: Binding(
-            //                        get: { isPresented && isSheetLayout && !isPopoverVisible },
-            //                        set: { isPresented = $0 }
-            //                    )
-            //                ) {
-            //                    sheetContent
-            //                        .presentationDetents(Set(
-            //                            detents.map {
-            //                                switch $0 {
-            //                                case .medium: return .medium
-            //                                case .large: return .large
-            //                                }
-            //                            }
-            //                        ))
-            //                        .onAppear {
-            //                            isSheetVisible = true
-            //                            isTransitioningFromSheet = false
-            //                        }
-            //                        .onDisappear {
-            //                            isSheetVisible = false
-            //                            if isTransitioningFromSheet {
-            //                                // Presents the sheet when transitioning from a
-            //                                // sheet to popover layout.
-            //                                isPresented = true
-            //                            }
-            //                        }
-            //                }
-            //                .onChange(of: isSheetLayout) { _ in
-            //                    if isPresented {
-            //                        isTransitioningFromSheet = true
-            //                    }
-            //                }
-            //                .popover(
-            //                    isPresented: Binding(
-            //                        get: { isPresented && !isSheetLayout && !isSheetVisible },
-            //                        set: { isPresented = $0 }
-            //                    ),
-            //                    attachmentAnchor: .point(.bottom)
-            //                ) {
-            //                    sheetContent
-            //                        .frame(idealWidth: 320, idealHeight: 428)
-            //                        .onAppear {
-            //                            isPopoverVisible = true
-            //                            isTransitioningFromSheet = false
-            //                        }
-            //                        .onDisappear {
-            //                            isPopoverVisible = false
-            //                            if !isPresented {
-            //                                // Calls the on dismiss closure if the popover is
-            //                                // not presented.
-            //                                onDismiss?()
-            //                            } else {
-            //                                // Presents the sheet when transitioning from a
-            //                                // popover layout.
-            //                                isPresented = true
-            //                            }
-            //
-            //                        }
-            //                }
+            makeContentWithSheet(content)
         } else {
-            ZStack {
-                content
-                    .popover(
-                        isPresented: Binding(
-                            get: { isPresented && !isSheetLayout },
-                            set: { isPresented = $0 }
-                        ),
-                        attachmentAnchor: .point(.bottom)
-                    ) {
-                        sheetContent
-                            .frame(idealWidth: 320, idealHeight: 428)
-                            .onAppear { isPopoverVisible = true }
-                            .onDisappear {
-                                isPopoverVisible = false
-                                if !isPresented {
-                                    onDismiss?()
-                                }
-                            }
+            makeContentWithSheetWrapper(content)
+        }
+    }
+}
+
+private extension SheetModifier {
+    /// Creates the given content with a popover and sheet modifier. Uses the native iOS 16 `presentationDetents`
+    ///  modifier and `PresentationDetent` type to present a sheet.
+    /// - Parameter content: The content that will present the sheet or popover.
+    /// - Returns: The given content with popover and sheet modifiers to transition between a popover and a sheet
+    /// when necessary.
+    @available(iOS 16.0, *)
+    func makeContentWithSheet(_ content: Content) -> some View {
+        content
+            .popover(
+                isPresented: Binding(
+                    get: { isPresented && !isSheetLayout && !isSheetVisible },
+                    set: { isPresented = $0 }
+                )
+            ) {
+                sheetContent
+                    .frame(idealWidth: 320, idealHeight: 428)
+                    .onAppear {
+                        isPopoverVisible = true
+                        isTransitioningFromSheet = false
                     }
-                
-                Sheet(
-                    isPresented: Binding(
-                        get: { isPresented && !isPopoverVisible },
-                        set: { isPresented = $0 }
-                    ),
-                    detents: detents.map {
-                        switch $0 {
-                        case .medium: return .medium()
-                        case .large: return .large()
+                    .onDisappear {
+                        isPopoverVisible = false
+                        if !isPresented {
+                            // Calls the on dismiss closure if the popover is
+                            // not presented.
+                            onDismiss?()
+                        } else {
+                            // Presents the sheet when transitioning from a
+                            // popover layout.
+                            isPresented = true
                         }
-                    },
-                    onDismiss: onDismiss,
-                    isSheetLayout: isSheetLayout
+                        
+                    }
+            }
+            .sheet(
+                isPresented: Binding(
+                    get: { isPresented && isSheetLayout && !isPopoverVisible },
+                    set: { isPresented = $0 }
+                )
+            ) {
+                sheetContent
+//                    .presentationDetents(Set(
+//                        detents.map {
+//                            switch $0 {
+//                            case .medium: return .medium
+//                            case .large: return .large
+//                            }
+//                        }
+//                    ))
+                    .onAppear {
+                        isSheetVisible = true
+                        isTransitioningFromSheet = false
+                    }
+                    .onDisappear {
+                        isSheetVisible = false
+                        if isTransitioningFromSheet {
+                            // Presents the sheet when transitioning from a
+                            // sheet to popover layout.
+                            isPresented = true
+                        } else {
+                            // Calls the on dismiss closure when the sheet disappears
+                            // and is not transitioning to a popover.
+                            onDismiss?()
+                        }
+                    }
+            }
+            .onChange(of: isSheetLayout) { _ in
+                if isSheetLayout {
+                    isTransitioningFromSheet = true
+                }
+            }
+    }
+    
+    /// Creates the given content with a popover modifier and a `UIViewRepresentable` that presents a sheet
+    /// using a `UISheetPresentationController` and `UISheetPresentationController.Detent`s.
+    /// - Parameter content: The content that will present the sheet or popover.
+    /// - Returns: The given content with the necessary modifiers and views to present a popover or sheet and
+    /// transition between them when necessary.
+    func makeContentWithSheetWrapper(_ content: Content) -> some View {
+        ZStack {
+            content
+                .popover(
+                    isPresented: Binding(
+                        get: { isPresented && !isSheetLayout },
+                        set: { isPresented = $0 }
+                    )
                 ) {
                     sheetContent
+                        .frame(idealWidth: 320, idealHeight: 428)
+                        .onAppear { isPopoverVisible = true }
                         .onDisappear {
+                            isPopoverVisible = false
                             if !isPresented {
                                 onDismiss?()
                             }
                         }
                 }
-                .fixedSize()
+            
+            Sheet(
+                isPresented: Binding(
+                    get: { isPresented && !isPopoverVisible },
+                    set: { isPresented = $0 }
+                ),
+                detents: detents.map {
+                    switch $0 {
+                    case .medium: return .medium()
+                    case .large: return .large()
+                    }
+                },
+                isSheetLayout: isSheetLayout
+            ) {
+                sheetContent
+                    .onDisappear {
+                        if !isPresented {
+                            onDismiss?()
+                        }
+                    }
             }
+            .fixedSize()
         }
     }
+    
 }
 
 private struct Sheet<Content>: UIViewRepresentable where Content: View {
