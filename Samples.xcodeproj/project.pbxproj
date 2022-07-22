@@ -63,6 +63,8 @@
 		E066DD4028610F55004D3D5B /* AddSceneLayerFromServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E066DD3F28610F55004D3D5B /* AddSceneLayerFromServiceView.swift */; };
 		E088E1572862579D00413100 /* SetSurfacePlacementModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E088E1562862579D00413100 /* SetSurfacePlacementModeView.swift */; };
 		E0EA0B772866390E00C9621D /* ProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0EA0B762866390E00C9621D /* ProjectView.swift */; };
+		F111CCC1288B5D5600205358 /* DisplayMapMobileMapPackage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F111CCC0288B5D5600205358 /* DisplayMapMobileMapPackage.swift */; };
+		F111CCC4288B641900205358 /* Yellowstone.mmpk in Resources */ = {isa = PBXBuildFile; fileRef = F111CCC3288B641900205358 /* Yellowstone.mmpk */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -185,6 +187,8 @@
 		E066DD3F28610F55004D3D5B /* AddSceneLayerFromServiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSceneLayerFromServiceView.swift; sourceTree = "<group>"; };
 		E088E1562862579D00413100 /* SetSurfacePlacementModeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetSurfacePlacementModeView.swift; sourceTree = "<group>"; };
 		E0EA0B762866390E00C9621D /* ProjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectView.swift; sourceTree = "<group>"; };
+		F111CCC0288B5D5600205358 /* DisplayMapMobileMapPackage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayMapMobileMapPackage.swift; sourceTree = "<group>"; };
+		F111CCC3288B641900205358 /* Yellowstone.mmpk */ = {isa = PBXFileReference; lastKnownFileType = file; path = Yellowstone.mmpk; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -247,6 +251,7 @@
 				E000E761286A0B07005D87C5 /* Cut geometry */,
 				00D4EF7E2863840D00B9CC30 /* Display feature layers */,
 				0074ABB328174B830037244A /* Display map */,
+				F111CCBD288B548400205358 /* Display map from mobile map package */,
 				00B04FB3283EEB830026C882 /* Display overview map */,
 				E004A6D528465C70002A1FE6 /* Display scene */,
 				E066DD33285CF3A0004D3D5B /* Find route */,
@@ -318,6 +323,7 @@
 		00CCB8A6285D059300BBAB70 /* Portal Data */ = {
 			isa = PBXGroup;
 			children = (
+				F111CCC2288B63DB00205358 /* e1f3a7254cb845b09450f54937c16061 */,
 				00D4EF8128638BF100B9CC30 /* 2b0f9e17105847809dfeb04e3cad69e0 */,
 				00D4EF8328638BF100B9CC30 /* 15a7cbd3af1e47cfa5d2c6b93dc44fc2 */,
 				00D4EF8E28638BF100B9CC30 /* 68ec42517cdd439e81b036210483e8e7 */,
@@ -518,6 +524,22 @@
 			path = Project;
 			sourceTree = "<group>";
 		};
+		F111CCBD288B548400205358 /* Display map from mobile map package */ = {
+			isa = PBXGroup;
+			children = (
+				F111CCC0288B5D5600205358 /* DisplayMapMobileMapPackage.swift */,
+			);
+			path = "Display map from mobile map package";
+			sourceTree = "<group>";
+		};
+		F111CCC2288B63DB00205358 /* e1f3a7254cb845b09450f54937c16061 */ = {
+			isa = PBXGroup;
+			children = (
+				F111CCC3288B641900205358 /* Yellowstone.mmpk */,
+			);
+			path = e1f3a7254cb845b09450f54937c16061;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -593,6 +615,7 @@
 			files = (
 				00D4EF9028638BF100B9CC30 /* LA_Trails.geodatabase in Resources */,
 				00D4EF9A28638BF100B9CC30 /* AuroraCO.gpkg in Resources */,
+				F111CCC4288B641900205358 /* Yellowstone.mmpk in Resources */,
 				00E5402027F3CCA200CF66D5 /* Assets.xcassets in Resources */,
 				00D4EFB12863CE6300B9CC30 /* ScottishWildlifeTrust_reserves in Resources */,
 			);
@@ -687,6 +710,7 @@
 			files = (
 				E000E7602869E33D005D87C5 /* ClipGeometryView.swift in Sources */,
 				E004A6E928493BCE002A1FE6 /* ShowDeviceLocationView.swift in Sources */,
+				F111CCC1288B5D5600205358 /* DisplayMapMobileMapPackage.swift in Sources */,
 				0005580C28185C0600224BC6 /* SampleList.swift in Sources */,
 				E004A6E028466279002A1FE6 /* ShowCalloutView.swift in Sources */,
 				E000E763286A0B18005D87C5 /* CutGeometryView.swift in Sources */,
