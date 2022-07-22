@@ -297,12 +297,12 @@ private extension DownloadPreplannedMapAreaView {
                 currentJobs = currentJobs.filter { $1.status == .succeeded }
                 guard let currentPreplannedMapArea = currentPreplannedMapArea,
                       currentJobs[currentPreplannedMapArea] != nil else {
-                          // Sets the current map to the online web map if the current
-                          // preplanned map does not exist.
-                          map = onlineMap
-                          currentPreplannedMapArea = nil
-                          return
-                      }
+                    // Sets the current map to the online web map if the current
+                    // preplanned map does not exist.
+                    map = onlineMap
+                    currentPreplannedMapArea = nil
+                    return
+                }
             }
         }
         
