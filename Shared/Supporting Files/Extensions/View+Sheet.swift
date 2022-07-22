@@ -119,7 +119,6 @@ private extension SheetModifier {
                             // popover layout.
                             isPresented = true
                         }
-                        
                     }
             }
             .sheet(
@@ -129,14 +128,14 @@ private extension SheetModifier {
                 )
             ) {
                 sheetContent
-//                    .presentationDetents(Set(
-//                        detents.map {
-//                            switch $0 {
-//                            case .medium: return .medium
-//                            case .large: return .large
-//                            }
-//                        }
-//                    ))
+                //                    .presentationDetents(Set(
+                //                        detents.map {
+                //                            switch $0 {
+                //                            case .medium: return .medium
+                //                            case .large: return .large
+                //                            }
+                //                        }
+                //                    ))
                     .onAppear {
                         isSheetVisible = true
                         isTransitioningFromSheet = false
@@ -209,7 +208,6 @@ private extension SheetModifier {
             .fixedSize()
         }
     }
-    
 }
 
 private struct Sheet<Content>: UIViewRepresentable where Content: View {
