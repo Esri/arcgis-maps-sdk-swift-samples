@@ -45,7 +45,7 @@ struct DownloadPreplannedMapAreaView: View {
                 await model.loadPreplannedMapAreas()
             }
             .onDisappear {
-                Task { await model.cancelAllJobs() }
+                Task { await model.cancelAllJobs(shouldRemove: false) }
             }
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
@@ -281,8 +281,9 @@ private extension DownloadPreplannedMapAreaView {
             }
         }
         
-        /// Cancels all current jobs.
-        func cancelAllJobs() async {
+        /// Cancels all current jobs and removes all if specified.
+        /// - Parameter shouldRemove: A Boolean value indicating whether to remove all current jobs.
+        func cancelAllJobs(shouldRemove: Bool) async {
             await withTaskGroup(of: Void.self) { group in
                 currentJobs.forEach { _, job in
                     group.addTask {
@@ -290,12 +291,25 @@ private extension DownloadPreplannedMapAreaView {
                     }
                 }
             }
+            if shouldRemove {
+                currentJobs.removeAll()
+            } else {
+                currentJobs = currentJobs.filter { $1.status == .succeeded }
+                guard let currentPreplannedMapArea = currentPreplannedMapArea,
+                      currentJobs[currentPreplannedMapArea] != nil else {
+                          // Sets the current map to the online web map if the current
+                          // preplanned map does not exist.
+                          map = onlineMap
+                          currentPreplannedMapArea = nil
+                          return
+                      }
+            }
         }
         
         // Removes all downloaded maps.
         func removeDownloadedMaps() async {
-            // Cancels all current jobs.
-            await cancelAllJobs()
+            // Cancels and removes all current jobs.
+            await cancelAllJobs(shouldRemove: true)
             
             // Sets the current map to the online web map.
             map = onlineMap
@@ -311,9 +325,6 @@ private extension DownloadPreplannedMapAreaView {
                 }
             }
             localMapPackages.removeAll()
-            
-            // Removes all current jobs.
-            currentJobs.removeAll()
         }
         
         /// Creates the temporary directory.
