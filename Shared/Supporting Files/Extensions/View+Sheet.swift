@@ -267,7 +267,7 @@ private struct Sheet<Content>: UIViewRepresentable where Content: View {
         guard isSheetLayout else {
             // Dismisses the sheet if it is being presented and a popover should
             // be presented instead.
-            if isPresentedControllerHostingType {
+            if isPresentedControllerHostingType && !model.hostingController.isBeingDismissed {
                 rootViewController.dismiss(animated: false)
             }
             return
