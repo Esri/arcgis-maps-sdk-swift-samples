@@ -153,11 +153,7 @@ private extension SheetModifier {
                         }
                     }
             }
-            .onChange(of: isSheetLayout) { _ in
-                if isSheetLayout {
-                    isTransitioningFromSheet = true
-                }
-            }
+            .onChange(of: isSheetLayout) { isTransitioningFromSheet = !$0 }
     }
     
     /// Creates the given content with a popover modifier and a `UIViewRepresentable` that presents a sheet
