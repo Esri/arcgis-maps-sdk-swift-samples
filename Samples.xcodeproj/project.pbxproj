@@ -64,7 +64,7 @@
 		E088E1572862579D00413100 /* SetSurfacePlacementModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E088E1562862579D00413100 /* SetSurfacePlacementModeView.swift */; };
 		E0EA0B772866390E00C9621D /* ProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0EA0B762866390E00C9621D /* ProjectView.swift */; };
 		F111CCC1288B5D5600205358 /* DisplayMapMobileMapPackage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F111CCC0288B5D5600205358 /* DisplayMapMobileMapPackage.swift */; };
-		F111CCC4288B641900205358 /* Yellowstone.mmpk in Resources */ = {isa = PBXBuildFile; fileRef = F111CCC3288B641900205358 /* Yellowstone.mmpk */; };
+		F111CCC4288B641900205358 /* Yellowstone.mmpk in Resources */ = {isa = PBXBuildFile; fileRef = F111CCC3288B641900205358 /* Yellowstone.mmpk */; settings = {ASSET_TAGS = (DisplayMobileMapPackage, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -580,6 +580,7 @@
 				BuildIndependentTargetsInParallel = 1;
 				KnownAssetTags = (
 					DisplayFeatureLayers,
+					DisplayMobileMapPackage,
 				);
 				LastSwiftUpdateCheck = 1330;
 				LastUpgradeCheck = 1330;
