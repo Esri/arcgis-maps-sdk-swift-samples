@@ -541,6 +541,8 @@
 				F111CCC3288B641900205358 /* Yellowstone.mmpk */,
 			);
 			path = e1f3a7254cb845b09450f54937c16061;
+			sourceTree = "<group>";
+		};
 		E0FE32E528747762002C6ACA /* Browse building floors */ = {
 			isa = PBXGroup;
 			children = (
