@@ -33,6 +33,7 @@ struct DisplayMapMobileMapPackage: View {
     }
     
     var body: some View {
+        loadMobileMapPackage()
         // Creates a map view to display the map.
         if let map = map {
             MapView(map: map)
