@@ -65,6 +65,7 @@
 		E0EA0B772866390E00C9621D /* ProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0EA0B762866390E00C9621D /* ProjectView.swift */; };
 		F111CCC1288B5D5600205358 /* DisplayMapMobileMapPackage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F111CCC0288B5D5600205358 /* DisplayMapMobileMapPackage.swift */; };
 		F111CCC4288B641900205358 /* Yellowstone.mmpk in Resources */ = {isa = PBXBuildFile; fileRef = F111CCC3288B641900205358 /* Yellowstone.mmpk */; settings = {ASSET_TAGS = (DisplayMobileMapPackage, ); }; };
+		E0FE32E728747778002C6ACA /* BrowseBuildingFloorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0FE32E628747778002C6ACA /* BrowseBuildingFloorsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -189,6 +190,7 @@
 		E0EA0B762866390E00C9621D /* ProjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectView.swift; sourceTree = "<group>"; };
 		F111CCC0288B5D5600205358 /* DisplayMapMobileMapPackage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayMapMobileMapPackage.swift; sourceTree = "<group>"; };
 		F111CCC3288B641900205358 /* Yellowstone.mmpk */ = {isa = PBXFileReference; lastKnownFileType = file; path = Yellowstone.mmpk; sourceTree = "<group>"; };
+		E0FE32E628747778002C6ACA /* BrowseBuildingFloorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseBuildingFloorsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -246,6 +248,7 @@
 			isa = PBXGroup;
 			children = (
 				E066DD3E28610F3F004D3D5B /* Add scene layer from service */,
+				E0FE32E528747762002C6ACA /* Browse building floors */,
 				E000E75E2869E325005D87C5 /* Clip geometry */,
 				E004A6EB28495538002A1FE6 /* Create planar and geodetic buffers */,
 				E000E761286A0B07005D87C5 /* Cut geometry */,
@@ -538,6 +541,12 @@
 				F111CCC3288B641900205358 /* Yellowstone.mmpk */,
 			);
 			path = e1f3a7254cb845b09450f54937c16061;
+		E0FE32E528747762002C6ACA /* Browse building floors */ = {
+			isa = PBXGroup;
+			children = (
+				E0FE32E628747778002C6ACA /* BrowseBuildingFloorsView.swift */,
+			);
+			path = "Browse building floors";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -719,6 +728,7 @@
 				00CCB8A5285BAF8700BBAB70 /* OnDemandResource.swift in Sources */,
 				E004A6ED2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift in Sources */,
 				00181B462846AD7100654571 /* View+Alert.swift in Sources */,
+				E0FE32E728747778002C6ACA /* BrowseBuildingFloorsView.swift in Sources */,
 				E0EA0B772866390E00C9621D /* ProjectView.swift in Sources */,
 				0005580A2817C51E00224BC6 /* SampleDetailView.swift in Sources */,
 				0074ABCD2817BCC30037244A /* SamplesApp+Samples.swift.tache in Sources */,
