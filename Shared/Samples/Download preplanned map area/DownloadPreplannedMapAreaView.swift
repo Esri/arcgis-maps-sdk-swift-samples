@@ -371,11 +371,11 @@ private extension DownloadPreplannedMapAreaView {
 private extension PreplannedMapArea {
     /// The name of the preplanned map area.
     var displayName: String {
-        portalItem?.title.replacingOccurrences(of: "_", with: " ") ?? portalItem?.name ?? "Untitled"
+        portalItem.title.replacingOccurrences(of: "_", with: " ")
     }
     /// The portal item's ID.
     var portalItemIdentifier: String {
-        portalItem?.id.rawValue ?? "-"
+        portalItem.id.rawValue
     }
 }
 
