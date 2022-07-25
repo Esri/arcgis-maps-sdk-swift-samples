@@ -40,7 +40,6 @@ struct SetViewpointRotationView: View {
                         viewpointRotation: $rotation,
                         autoHide: false
                     )
-                    .frame(width: 44, height: 44)
                     .padding()
                 }
             
