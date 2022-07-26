@@ -23,7 +23,7 @@ struct DisplayMapFromMobileMapPackageView: View {
     @State private var mobileMapPackage: MobileMapPackage!
     
     /// A Boolean value indicating whether to show an alert.
-    @State private var showAlert = false
+    @State private var isShowingAlert = false
     
     /// The error shown in the alert.
     @State private var error: Error? {

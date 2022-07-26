@@ -2,7 +2,7 @@
 
 Display a map from a mobile map package.
 
-![Image of display map from mobile map package](display-map-from-mobile-map-package.png)
+![Screenshot of display map from mobile map package sample](display-map-from-mobile-map-package.png)
 
 ## Use case
 
@@ -14,9 +14,9 @@ The sample displays the map in the mobile map package. Pan and zoom to observe t
 
 ## How it works
 
-1. Create a `MobileMapPackage` specifying the path to the .mmpk file.
-2. Load the mobile map package asynchronously.
-3. After it successfully loads, get the map from the mobile map package and add it to the map view.
+1. Create a `MobileMapPackage` instance, specifying the path to the .mmpk file.
+2. Asynchronously load the mobile map package.
+3. After it successfully loads, get the map from the mobile map package and update the map view's map with it.
 
 ## Relevant API
 
