@@ -592,7 +592,6 @@
 				KnownAssetTags = (
 					DisplayFeatureLayers,
 					DisplayMapFromMobileMapPackage,
-					DisplayMobileMapPackage,
 				);
 				LastSwiftUpdateCheck = 1330;
 				LastUpgradeCheck = 1330;

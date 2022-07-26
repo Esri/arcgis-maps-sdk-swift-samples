@@ -18,10 +18,13 @@ import SwiftUI
 struct DisplayMapFromMobileMapPackageView: View {
     /// A map with no specified style.
     @State private var map = Map()
+    
     /// The mobile map package.
     @State private var mobileMapPackage: MobileMapPackage!
+    
     /// A Boolean value indicating whether to show an alert.
     @State private var showAlert = false
+    
     /// The error shown in the alert.
     @State private var error: Error? {
         didSet { showAlert = error != nil }
@@ -33,11 +36,6 @@ struct DisplayMapFromMobileMapPackageView: View {
         var yellowstoneURL: URL { Bundle.main.url(forResource: "Yellowstone", withExtension: "mmpk")! }
         mobileMapPackage = MobileMapPackage(fileURL: yellowstoneURL)
         try await mobileMapPackage.load()
-        setMap()
-    }
-    
-    /// Sets the the map.
-    func setMap() {
         // Gets the first map in the mobile map package.
         guard let map = mobileMapPackage.maps.first else { return }
         self.map = map
