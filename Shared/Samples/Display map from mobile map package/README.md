@@ -15,8 +15,8 @@ When the sample opens, it will automatically display the map in the mobile map p
 ## How it works
 
 1. Create a `MobileMapPackage` specifying the path to the .mmpk file.
-2. Load the mobile map package with `mmpk.loadAsync()`.
-3. After it successfully loads, get the map from the .mmpk and add it to the map view: `mapView.setMap(mmpk.getMaps().get(0))`.
+2. Load the mobile map package asynchronously.
+3. After it successfully loads, get the map from the mobile map package and add it to the map view.
 
 ## Relevant API
 
@@ -25,7 +25,7 @@ When the sample opens, it will automatically display the map in the mobile map p
 
 ## About the data
 
-This sample shows points of interest within a [Yellowstone Mobile Map Package](https://arcgisruntime.maps.arcgis.com/home/item.html?id=e1f3a7254cb845b09450f54937c16061) hosted on ArcGIS Online.
+This sample shows points of interest within a [Yellowstone Mobile Map Package](https://www.arcgis.com/home/item.html?id=e1f3a7254cb845b09450f54937c16061) hosted on ArcGIS Online.
 
 ## Tags
 
