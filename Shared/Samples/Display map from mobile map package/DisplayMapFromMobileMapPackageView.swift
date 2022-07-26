@@ -48,10 +48,10 @@ struct DisplayMapFromMobileMapPackageView: View {
                 do {
                     try await loadMobileMapPackage()
                 } catch {
+                    // Presents an error message if the map fails to load.
                     self.error = error
                 }
             }
-        // Presents an error message if the map fails to load.
             .alert(isPresented: $showAlert, presentingError: error)
     }
 }
