@@ -254,6 +254,7 @@
 				E004A6D528465C70002A1FE6 /* Display scene */,
 				E066DD33285CF3A0004D3D5B /* Find route */,
 				E0EA0B75286638FD00C9621D /* Project */,
+				F19A316128906F0D003B7EF9 /* Raster layer (file) */,
 				00CB913628481475005C2C5D /* Search with geocode */,
 				E004A6F4284FA3C5002A1FE6 /* Select features in feature layer */,
 				00B042E3282EDC690072E1B4 /* Set basemap */,
@@ -527,6 +528,13 @@
 				E0FE32E628747778002C6ACA /* BrowseBuildingFloorsView.swift */,
 			);
 			path = "Browse building floors";
+			sourceTree = "<group>";
+		};
+		F19A316128906F0D003B7EF9 /* Raster layer (file) */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Raster layer (file)";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
