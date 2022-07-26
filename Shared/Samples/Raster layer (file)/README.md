@@ -2,7 +2,7 @@
 
 Create and use a raster layer made from a local raster file.
 
-![Apply raster layer file](RasterLayerFile.png)
+![Image of raster layer (file)](raster-layer-file.png)
 
 ## Use case
 
