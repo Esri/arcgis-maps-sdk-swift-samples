@@ -27,7 +27,7 @@ struct DisplayMapFromMobileMapPackageView: View {
     
     /// The error shown in the alert.
     @State private var error: Error? {
-        didSet { showAlert = error != nil }
+        didSet { isShowingAlert = error != nil }
     }
     
     /// Loads a local mobile map package.
@@ -52,6 +52,6 @@ struct DisplayMapFromMobileMapPackageView: View {
                     self.error = error
                 }
             }
-            .alert(isPresented: $showAlert, presentingError: error)
+            .alert(isPresented: $isShowingAlert, presentingError: error)
     }
 }
