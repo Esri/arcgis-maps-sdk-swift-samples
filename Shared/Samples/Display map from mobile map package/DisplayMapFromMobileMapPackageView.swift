@@ -30,7 +30,7 @@ struct DisplayMapFromMobileMapPackageView: View {
     /// Loads a local mobile map package.
     private func loadMobileMapPackage() async throws {
         // Loads the local mobile map package.
-        var yellowstoneURL: URL { Bundle.main.url(forResource: "Yellowstone", withExtension: "mmpk")! }
+        let yellowstoneURL = Bundle.main.url(forResource: "Yellowstone", withExtension: "mmpk")!
         mobileMapPackage = MobileMapPackage(fileURL: yellowstoneURL)
         try await mobileMapPackage.load()
         setMap()
