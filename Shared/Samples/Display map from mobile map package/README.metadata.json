@@ -3,7 +3,7 @@
     "description": "Display a map from a mobile map package.",
     "ignore": false,
     "images": [
-        "display-map-mobile-map-package.png"
+        "display-map-from-mobile-map-package.png"
     ],
     "keywords": [
         "mmpk",
@@ -21,7 +21,7 @@
         "MobileMapPackage"
     ],
     "snippets": [
-        "DisplayMapMobileMapPackage.swift"
+        "DisplayMapFromMobileMapPackageView.swift"
     ],
     "title": "Display map from mobile map package"
 }

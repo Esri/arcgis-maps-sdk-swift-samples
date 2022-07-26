@@ -63,9 +63,9 @@
 		E066DD4028610F55004D3D5B /* AddSceneLayerFromServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E066DD3F28610F55004D3D5B /* AddSceneLayerFromServiceView.swift */; };
 		E088E1572862579D00413100 /* SetSurfacePlacementModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E088E1562862579D00413100 /* SetSurfacePlacementModeView.swift */; };
 		E0EA0B772866390E00C9621D /* ProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0EA0B762866390E00C9621D /* ProjectView.swift */; };
-		F111CCC1288B5D5600205358 /* DisplayMapMobileMapPackage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F111CCC0288B5D5600205358 /* DisplayMapMobileMapPackage.swift */; };
-		F111CCC4288B641900205358 /* Yellowstone.mmpk in Resources */ = {isa = PBXBuildFile; fileRef = F111CCC3288B641900205358 /* Yellowstone.mmpk */; settings = {ASSET_TAGS = (DisplayMobileMapPackage, ); }; };
 		E0FE32E728747778002C6ACA /* BrowseBuildingFloorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0FE32E628747778002C6ACA /* BrowseBuildingFloorsView.swift */; };
+		F111CCC1288B5D5600205358 /* DisplayMapFromMobileMapPackageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F111CCC0288B5D5600205358 /* DisplayMapFromMobileMapPackageView.swift */; };
+		F111CCC4288B641900205358 /* Yellowstone.mmpk in Resources */ = {isa = PBXBuildFile; fileRef = F111CCC3288B641900205358 /* Yellowstone.mmpk */; settings = {ASSET_TAGS = (DisplayMapFromMobileMapPackage, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -188,9 +188,9 @@
 		E066DD3F28610F55004D3D5B /* AddSceneLayerFromServiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSceneLayerFromServiceView.swift; sourceTree = "<group>"; };
 		E088E1562862579D00413100 /* SetSurfacePlacementModeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetSurfacePlacementModeView.swift; sourceTree = "<group>"; };
 		E0EA0B762866390E00C9621D /* ProjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectView.swift; sourceTree = "<group>"; };
-		F111CCC0288B5D5600205358 /* DisplayMapMobileMapPackage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayMapMobileMapPackage.swift; sourceTree = "<group>"; };
-		F111CCC3288B641900205358 /* Yellowstone.mmpk */ = {isa = PBXFileReference; lastKnownFileType = file; path = Yellowstone.mmpk; sourceTree = "<group>"; };
 		E0FE32E628747778002C6ACA /* BrowseBuildingFloorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseBuildingFloorsView.swift; sourceTree = "<group>"; };
+		F111CCC0288B5D5600205358 /* DisplayMapFromMobileMapPackageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayMapFromMobileMapPackageView.swift; sourceTree = "<group>"; };
+		F111CCC3288B641900205358 /* Yellowstone.mmpk */ = {isa = PBXFileReference; lastKnownFileType = file; path = Yellowstone.mmpk; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -527,10 +527,18 @@
 			path = Project;
 			sourceTree = "<group>";
 		};
+		E0FE32E528747762002C6ACA /* Browse building floors */ = {
+			isa = PBXGroup;
+			children = (
+				E0FE32E628747778002C6ACA /* BrowseBuildingFloorsView.swift */,
+			);
+			path = "Browse building floors";
+			sourceTree = "<group>";
+		};
 		F111CCBD288B548400205358 /* Display map from mobile map package */ = {
 			isa = PBXGroup;
 			children = (
-				F111CCC0288B5D5600205358 /* DisplayMapMobileMapPackage.swift */,
+				F111CCC0288B5D5600205358 /* DisplayMapFromMobileMapPackageView.swift */,
 			);
 			path = "Display map from mobile map package";
 			sourceTree = "<group>";
@@ -541,14 +549,6 @@
 				F111CCC3288B641900205358 /* Yellowstone.mmpk */,
 			);
 			path = e1f3a7254cb845b09450f54937c16061;
-			sourceTree = "<group>";
-		};
-		E0FE32E528747762002C6ACA /* Browse building floors */ = {
-			isa = PBXGroup;
-			children = (
-				E0FE32E628747778002C6ACA /* BrowseBuildingFloorsView.swift */,
-			);
-			path = "Browse building floors";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -591,6 +591,7 @@
 				BuildIndependentTargetsInParallel = 1;
 				KnownAssetTags = (
 					DisplayFeatureLayers,
+					DisplayMapFromMobileMapPackage,
 					DisplayMobileMapPackage,
 				);
 				LastSwiftUpdateCheck = 1330;
@@ -722,7 +723,7 @@
 			files = (
 				E000E7602869E33D005D87C5 /* ClipGeometryView.swift in Sources */,
 				E004A6E928493BCE002A1FE6 /* ShowDeviceLocationView.swift in Sources */,
-				F111CCC1288B5D5600205358 /* DisplayMapMobileMapPackage.swift in Sources */,
+				F111CCC1288B5D5600205358 /* DisplayMapFromMobileMapPackageView.swift in Sources */,
 				0005580C28185C0600224BC6 /* SampleList.swift in Sources */,
 				E004A6E028466279002A1FE6 /* ShowCalloutView.swift in Sources */,
 				E000E763286A0B18005D87C5 /* CutGeometryView.swift in Sources */,
