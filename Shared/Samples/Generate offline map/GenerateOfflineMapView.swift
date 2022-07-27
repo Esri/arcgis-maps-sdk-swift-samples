@@ -120,11 +120,18 @@ private extension GenerateOfflineMapView {
         /// A URL referencing the temporary directory where the offline map files are stored.
         private let temporaryDirectory = makeTemporaryDirectory()
         
+        /// A portal item displaying the Naperville, IL water network.
+        private let napervillePortalItem = PortalItem(
+            portal: .arcGISOnline(isLoginRequired: false),
+            id: PortalItem.ID("acc027394bc84c2fb04d1ed317aac674")!
+        )
         
         /// The online map that is loaded from a portal item.
-        let onlineMap = Map(item: PortalItem.napervilleWaterNetwork)
+        let onlineMap: Map
         
         init() {
+            // Initializes the online map.
+            onlineMap = Map(item: napervillePortalItem)
         }
         
         deinit {
@@ -145,7 +152,7 @@ private extension GenerateOfflineMapView {
             do {
                 // Waits for the online map to load.
                 try await onlineMap.load()
-                offlineMapTask = OfflineMapTask(portalItem: .napervilleWaterNetwork)
+                offlineMapTask = OfflineMapTask(portalItem: napervillePortalItem)
                 isGenerateDisabled = false
             } catch {
                 self.error = error
@@ -265,16 +272,6 @@ private extension GenerateOfflineMapView {
                 .frame(maxWidth: 200, maxHeight: 8)
             }
         }
-    }
-}
-
-private extension PortalItem {
-    /// A portal item displaying the Naperville, IL water network.
-    static var napervilleWaterNetwork: Self {
-        .init(
-            portal: .arcGISOnline(isLoginRequired: false),
-            id: PortalItem.ID("acc027394bc84c2fb04d1ed317aac674")!
-        )
     }
 }
 
