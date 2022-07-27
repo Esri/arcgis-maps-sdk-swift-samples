@@ -208,23 +208,22 @@ private extension GenerateOfflineMapView {
             // Starts the job.
             generateOfflineMapJob.start()
             
-            // Awaits the result of the job.
-            let result = await generateOfflineMapJob.result
+            defer {
+                generateOfflineMapJob = nil
+                isGenerateDisabled = offlineMap != nil
+            }
             
-            // Sets the job to nil.
-            generateOfflineMapJob = nil
-            
-            switch result {
-            case .success(let output):
+            do {
+                // Awaits the output of the job.
+                let output = try await generateOfflineMapJob.output
                 // Sets the offline map to the output's offline map.
                 offlineMap = output.offlineMap
                 // Sets the initial viewpoint of the offline map.
                 offlineMap.initialViewpoint = Viewpoint(targetExtent: extent.expanded(by: 0.8))
-            case .failure(let error):
-                isGenerateDisabled = false
-                // Shows an alert with the error if the job fails and the
-                // error is not a cancellation error.
-                guard !(error is CancellationError) else { return }
+            } catch is CancellationError {
+                // Does nothing if the error is a cancellation error.
+            } catch {
+                // Shows an alert with the error if the job fails.
                 self.error = error
                 isShowingAlert = true
             }
