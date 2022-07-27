@@ -29,8 +29,7 @@ struct GenerateOfflineMapView: View {
         GeometryReader { geometry in
             MapViewReader { mapView in
                 MapView(map: model.offlineMap ?? model.onlineMap)
-                    .interactionModes([.pan, .zoom])
-                    .disabled(isGeneratingOfflineMap)
+                    .interactionModes(isGeneratingOfflineMap ? [] : [.pan, .zoom])
                     .alert(isPresented: $model.isShowingAlert, presentingError: model.error)
                     .task {
                         await model.initializeOfflineMapTask()
