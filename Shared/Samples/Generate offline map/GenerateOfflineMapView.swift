@@ -118,26 +118,30 @@ private extension GenerateOfflineMapView {
         private var offlineMapTask: OfflineMapTask!
         
         /// A URL referencing the temporary directory where the offline map files are stored.
-        private let temporaryDirectory = FileManager
-            .default
-            .temporaryDirectory
-            .appendingPathComponent(UUID().uuidString)
+        private let temporaryDirectory = makeTemporaryDirectory()
+        
         
         /// The online map that is loaded from a portal item.
         let onlineMap = Map(item: PortalItem.napervilleWaterNetwork)
         
         init() {
-            // Creates the temporary directory.
-            makeTemporaryDirectory()
         }
         
         deinit {
-            // Removes the temporary directory.
-            try? FileManager.default.removeItem(at: temporaryDirectory)
+            if let temporaryDirectory = temporaryDirectory {
+                // Removes the temporary directory.
+                try? FileManager.default.removeItem(at: temporaryDirectory)
+            }
         }
         
         /// Initializes the offline map task.
         func initializeOfflineMapTask() async {
+            // Ensures a temporary directory exists.
+            guard temporaryDirectory != nil else {
+                isShowingAlert = true
+                return
+            }
+            
             do {
                 // Waits for the online map to load.
                 try await onlineMap.load()
@@ -185,7 +189,10 @@ private extension GenerateOfflineMapView {
             }
             
             // Creates the generate offline map job based on the parameters.
-            generateOfflineMapJob = offlineMapTask.makeGenerateOfflineMapJob(parameters: parameters, downloadDirectory: temporaryDirectory)
+            generateOfflineMapJob = offlineMapTask.makeGenerateOfflineMapJob(
+                parameters: parameters,
+                downloadDirectory: temporaryDirectory!
+            )
             
             // Starts the job.
             generateOfflineMapJob.start()
@@ -220,12 +227,21 @@ private extension GenerateOfflineMapView {
         }
         
         /// Creates the temporary directory.
-        private func makeTemporaryDirectory() {
+        private static func makeTemporaryDirectory() -> URL? {
             do {
-                try FileManager.default.createDirectory(at: temporaryDirectory, withIntermediateDirectories: false)
+                return try FileManager.default.url(
+                    for: .itemReplacementDirectory,
+                    in: .userDomainMask,
+                    appropriateFor: FileManager
+                        .default
+                        .temporaryDirectory
+                        .appendingPathComponent(
+                            UUID().uuidString
+                        ),
+                    create: true
+                )
             } catch {
-                self.error = error
-                isShowingAlert = true
+                return nil
             }
         }
     }
