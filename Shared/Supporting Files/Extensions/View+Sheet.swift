@@ -270,27 +270,27 @@ private struct Sheet<Content>: UIViewRepresentable where Content: View {
         /// A Boolean value indicating whether the sheet was already presenting.
         let wasPresenting = rootViewController.presentedViewController != nil
         
-        if isPresented && !wasPresenting && model.presentationAttempts < 2 {
-            // Presents the hosting controller if the sheet should be presented,
-            // was not presenting before, and the number of presentation attempts
-            // is less than two.
+        /// A Boolean value indicating whether the presented view controller is an alert controller.
+        let isPresentedControllerAlertType = rootViewController.presentedViewController is UIAlertController
+        
+        if isPresented && !wasPresenting {
+            // Presents the hosting controller if the sheet should be presented and
+            // was not presenting before.
             
             // Sets the delegate and detents for the hosting controller.
-            model.hostingController.sheetPresentationController?.delegate = context.coordinator
             if let sheet = model.hostingController.sheetPresentationController {
+                sheet.delegate = context.coordinator
                 sheet.detents = model.detents
             }
             
             // Presents the hosting controller.
             rootViewController.present(model.hostingController, animated: model.isTransitioningFromPopover ? false : true)
-            model.presentationAttempts += 1
-        } else if !isPresented && wasPresenting && !model.hostingController.isBeingDismissed && !(rootViewController.presentedViewController is UIAlertController) {
+        } else if !isPresented && wasPresenting && !model.hostingController.isBeingDismissed && !isPresentedControllerAlertType {
             // Dismisses the view controller presented by the root view controller
             // if 'isPresented' is false, but was presenting before (popover), is
             // not currently being dismissed, and is not an alert.
             rootViewController.dismiss(animated: isPresentedControllerHostingType ? true : false)
             model.isTransitioningFromPopover = !isPresentedControllerHostingType
-            model.presentationAttempts = 0
         } else if wasPresenting {
             // Updates the root view of the hosting controller if the sheet
             // was already presenting.
@@ -310,15 +310,12 @@ private struct Sheet<Content>: UIViewRepresentable where Content: View {
         /// Updates the parent when the sheet is dismissed with a swipe.
         func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
             parent.isPresented = false
-            parent.model.presentationAttempts = 0
         }
     }
 }
 
 private extension Sheet {
     class SheetModel<Content>: ObservableObject where Content: View {
-        /// The number of attempts the view controller has made to present the hosting controller.
-        var presentationAttempts = 0
         /// A Boolean value indicating whether the layout is transitioning from a popover layout.
         var isTransitioningFromPopover = false
         /// The hosting controller for the content of the sheet.
