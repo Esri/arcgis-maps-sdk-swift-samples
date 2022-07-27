@@ -18,8 +18,8 @@ When the map loads, zoom to the extent you want to take offline. The red border 
 2. Create an `OfflineMapTask` instance with a `PortalItem`.
 3. Create `GenerateOfflineMapParameters` parameters for the offline map task with `OfflineMapTask.makeDefaultGenerateOfflineMapParameters(areaOfInterest:)`.
 4. Create a `GenerateOfflineMapJob` with `OfflineMapTask.makeGenerateOfflineMapJob(parameters:downloadDirectory:)`, using the parameters and specifying a download directory URL.
-5. Start the job and await the results.
-6. Get the offline map from the result's output when the job successfully finishes.
+5. Start the job and await its output.
+6. Get the offline map from the output when the job successfully finishes.
 
 ## Relevant API
 
