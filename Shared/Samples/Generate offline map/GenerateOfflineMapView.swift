@@ -122,7 +122,9 @@ private extension GenerateOfflineMapView {
         @Published var isShowingAlert = false
         
         /// The error shown in the alert.
-        @Published var error: Error?
+        @Published var error: Error? {
+            didSet { isShowingAlert = error != nil }
+        }
         
         /// The generate offline map job.
         @Published var generateOfflineMapJob: GenerateOfflineMapJob!
@@ -169,7 +171,6 @@ private extension GenerateOfflineMapView {
                 isGenerateDisabled = false
             } catch {
                 self.error = error
-                isShowingAlert = true
             }
         }
         
@@ -182,7 +183,6 @@ private extension GenerateOfflineMapView {
                 return try await offlineMapTask.makeDefaultGenerateOfflineMapParameters(areaOfInterest: areaOfInterest)
             } catch {
                 self.error = error
-                isShowingAlert = true
                 return nil
             }
         }
@@ -225,7 +225,6 @@ private extension GenerateOfflineMapView {
             } catch {
                 // Shows an alert with the error if the job fails.
                 self.error = error
-                isShowingAlert = true
             }
         }
         
