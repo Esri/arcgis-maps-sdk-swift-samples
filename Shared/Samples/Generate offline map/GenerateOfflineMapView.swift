@@ -38,24 +38,22 @@ struct GenerateOfflineMapView: View {
                         Task { await model.cancelJob() }
                     }
                     .overlay {
-                        if model.offlineMap == nil {
-                            Rectangle()
-                                .stroke(.red, lineWidth: 2)
-                                .frame(width: geometry.size.width * 0.8, height: geometry.size.height * 0.8)
-                        }
-                        
-                        // NOTE: Temporary placeholder for job progress view.
-                        if isGeneratingOfflineMap {
-                            VStack {
-                                if let progress = model.generateOfflineMapJob?.progress {
-                                    ProgressView(progress)
-                                        .progressViewStyle(LinearProgressStyle())
-                                }
+                        Rectangle()
+                            .stroke(.red, lineWidth: 2)
+                            .padding(EdgeInsets(top: 20, leading: 20, bottom: 44, trailing: 20))
+                            .opacity(model.offlineMap == nil ? 1 : 0)
+                    }
+                    .overlay {
+                        if isGeneratingOfflineMap,
+                           let progress = model.generateOfflineMapJob?.progress {
+                            VStack(spacing: 16) {
+                                ProgressView(progress)
+                                    .progressViewStyle(.linear)
+                                    .frame(maxWidth: 200)
                                 
                                 Button("Cancel") {
                                     isCancellingJob = true
                                 }
-                                .padding(.top)
                                 .disabled(isCancellingJob)
                                 .task(id: isCancellingJob) {
                                     // Ensures cancelling the job is true.
@@ -83,8 +81,23 @@ struct GenerateOfflineMapView: View {
                             .task(id: isGeneratingOfflineMap) {
                                 // Ensures generating an offline map is true.
                                 guard isGeneratingOfflineMap else { return }
+                                
+                                // Creates a rectangle from the area of interest.
+                                let viewRect = geometry.frame(in: .local).inset(
+                                    by: UIEdgeInsets(
+                                        top: 20,
+                                        left: geometry.safeAreaInsets.leading + 20,
+                                        bottom: 44,
+                                        right: -geometry.safeAreaInsets.trailing + 20
+                                    )
+                                )
+                                
+                                // Creates an envelope from the rectangle.
+                                guard let extent = mapView.envelope(fromViewRect: viewRect) else { return }
+                                
                                 // Generates an offline map.
-                                await model.generateOfflineMap(mapView: mapView, geometry: geometry)
+                                await model.generateOfflineMap(extent: extent)
+                                
                                 // Sets generating an offline map to false.
                                 isGeneratingOfflineMap = false
                             }
@@ -163,7 +176,7 @@ private extension GenerateOfflineMapView {
         /// Creates the generate offline map parameters.
         /// - Parameter areaOfInterest: The area of interest to create the parameters for.
         /// - Returns: A `GenerateOfflineMapParameters` if there are no errors. Otherwise, it returns `nil`,
-        private func makeGenerateOfflineMapParameters(for areaOfInterest: Envelope) async -> GenerateOfflineMapParameters? {
+        private func makeGenerateOfflineMapParameters(areaOfInterest: Envelope) async -> GenerateOfflineMapParameters? {
             do {
                 // Returns the default parameters for the offline map task.
                 return try await offlineMapTask.makeDefaultGenerateOfflineMapParameters(areaOfInterest: areaOfInterest)
@@ -175,22 +188,13 @@ private extension GenerateOfflineMapView {
         }
         
         /// Generates the offline map.
-        /// - Parameters:
-        ///   - mapView: A map view proxy used to convert the min and max screen points to the map
-        ///   view's spatial reference.
-        ///   - geometry: A geometry proxy used to reference the min and max screen points that
-        ///   represent the area of interest.
-        func generateOfflineMap(mapView: MapViewProxy, geometry: GeometryProxy) async {
+        /// - Parameter extent: The area of interest's envelope to generate an offline map for.
+        func generateOfflineMap(extent: Envelope) async {
             // Disables the generate offline map button.
             isGenerateDisabled = true
             
-            // Creates the min and max points for the envelope.
-            guard let min = mapView.location(fromScreenPoint: geometry.min()),
-                  let max = mapView.location(fromScreenPoint: geometry.max()),
-                  // Creates the envelope representing the area of interest.
-                  case let extent = Envelope(min: min, max: max),
-                  // Creates the default parameters for the offline map task.
-                  let parameters = await makeGenerateOfflineMapParameters(for: extent) else {
+            // Creates the default parameters for the offline map task.
+            guard let parameters = await makeGenerateOfflineMapParameters(areaOfInterest: extent) else {
                 isGenerateDisabled = false
                 return
             }
@@ -254,24 +258,16 @@ private extension GenerateOfflineMapView {
     }
 }
 
-private extension GenerateOfflineMapView {
-    struct LinearProgressStyle: ProgressViewStyle {
-        func makeBody(configuration: Configuration) -> some View {
-            let fractionCompleted = configuration.fractionCompleted ?? 0
-            
-            VStack {
-                Text("\(fractionCompleted, format: .percent) completed")
-                ZStack(alignment: .leading) {
-                    RoundedRectangle(cornerRadius: 10)
-                        .fill(Color(.systemGray5))
-                    
-                    RoundedRectangle(cornerRadius: 10)
-                        .fill(Color.accentColor)
-                        .frame(width: 200 * fractionCompleted)
-                }
-                .frame(maxWidth: 200, maxHeight: 8)
-            }
+private extension MapViewProxy {
+    /// Creates an envelope from the given rectangle.
+    /// - Parameter viewRect: The rectangle to create an envelope of.
+    /// - Returns: An envelope of the given rectangle.
+    func envelope(fromViewRect viewRect: CGRect) -> Envelope? {
+        guard let min = location(fromScreenPoint: CGPoint(x: viewRect.minX, y: viewRect.minY)),
+              let max = location(fromScreenPoint: CGPoint(x: viewRect.maxX, y: viewRect.maxY)) else {
+            return nil
         }
+        return Envelope(min: min, max: max)
     }
 }
 
@@ -281,17 +277,5 @@ private extension Envelope {
         let builder = EnvelopeBuilder(envelope: self)
         builder.expand(factor: factor)
         return builder.toGeometry()
-    }
-}
-
-private extension GeometryProxy {
-    /// A `CGPoint` that has x and y coordinates at 10% the size's width and height, respectively.
-    func min() -> CGPoint {
-        CGPoint(x: self.size.width * 0.1, y: self.size.height * 0.1)
-    }
-    
-    /// A `CGPoint` that has x and y coordinates at 90% the size's width and height, respectively.
-    func max() -> CGPoint {
-        CGPoint(x: self.size.width * 0.9, y: self.size.height * 0.9)
     }
 }
