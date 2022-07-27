@@ -18,6 +18,9 @@ struct SampleDetailView: View {
     /// The sample to display in the view.
     private let sample: Sample
     
+    /// A Boolean value indicating whether the sample's information view is visible.
+    @State private var isSampleInfoViewVisible = false
+    
     /// An object to manage on-demand resources for a sample with dependencies.
     @StateObject private var onDemandResource: OnDemandResource
     
@@ -67,6 +70,7 @@ struct SampleDetailView: View {
                 sample.makeBody()
             }
         }
+        .environment(\.isSampleInfoViewVisible, isSampleInfoViewVisible)
         .navigationTitle(sample.name)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
