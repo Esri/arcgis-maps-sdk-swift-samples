@@ -225,7 +225,7 @@ private extension DownloadVectorTilesToLocalCacheView {
             maxScale: Double
         ) async -> ExportVectorTilesParameters? {
             do {
-                return try await exportVectorTilesTask.createDefaultExportVectorTilesParameters(
+                return try await exportVectorTilesTask.makeDefaultExportVectorTilesParameters(
                     areaOfInterest: areaOfInterest,
                     maxScale: maxScale
                 )
