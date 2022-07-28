@@ -16,6 +16,9 @@
         "Raster",
         "RasterLayer"
     ],
+    "offline_data": [
+        "7c4c679ab06a4df19dc497f577f111bd"
+    ],
     "redirect_from": [],
     "relevant_apis": [
         "Raster",
