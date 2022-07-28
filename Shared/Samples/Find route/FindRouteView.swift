@@ -159,7 +159,7 @@ private extension FindRouteView {
         func initializeRouteParameters() async {
             do {
                 // Creates the default parameters.
-                let parameters = try await routeTask.createDefaultParameters()
+                let parameters = try await routeTask.makeDefaultParameters()
                 
                 // Sets the return directions on the parameters to true.
                 parameters.returnDirections = true
