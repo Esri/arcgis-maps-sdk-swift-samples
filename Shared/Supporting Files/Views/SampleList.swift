@@ -88,7 +88,7 @@ private extension SampleList {
                     }
                     .buttonStyle(.borderless)
                 }
-                .animation(.easeOut, value: isShowingDescription)
+                .animation(.easeOut(duration: 0.2), value: isShowingDescription)
             }
         }
     }
