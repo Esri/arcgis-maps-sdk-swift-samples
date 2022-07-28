@@ -17,10 +17,15 @@ import SwiftUI
 
 struct RasterLayerFileView: View {
     /// A map with imagery basemap.
-    @StateObject private var map = Map(basemapStyle: .arcGISImageryStandard)
+    @State private var map = Map(basemapStyle: .arcGISImageryStandard)
     
-    /// The mobile map package.
+    /// The raster layer.
     @State private var rasterLayer: RasterLayer!
+    
+    /// The center of the full extent of the raster layer.
+    @State private var center = Point(x: 0, y: 0)
+    
+    @State private var viewpoint: Viewpoint!
     
     /// A Boolean value indicating whether to show an alert.
     @State private var isShowingAlert = false
@@ -34,17 +39,19 @@ struct RasterLayerFileView: View {
     private func loadRasterLayer() async throws {
         // Loads the local mobile map package.
         let shastaURL = Bundle.main.url(forResource: "Shasta", withExtension: "tif")!
-        let raster = Raster(fileURL: shastaURL)
+        let directoryURL = URL(fileURLWithPath: "raster-file")
+        let raster = Raster(fileURL: directoryURL)
         rasterLayer = RasterLayer(raster: raster)
+        map.addOperationalLayer(rasterLayer)
         try await rasterLayer.load()
         // Gets the first map in the mobile map package.
-        guard let map = rasterLayer.fullExtent?.center else { return }
+        center = rasterLayer.fullExtent!.center
         
     }
     
     var body: some View {
         // Creates a map view to display the map.
-        MapView(map: map, viewpoint: <#T##Viewpoint?#>)
+        MapView(map: map, viewpoint: Viewpoint(center: center, scale: 8_0000))
             .task {
                 do {
                     try await loadRasterLayer()
