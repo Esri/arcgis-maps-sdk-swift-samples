@@ -66,6 +66,8 @@
 		E0FE32E728747778002C6ACA /* BrowseBuildingFloorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0FE32E628747778002C6ACA /* BrowseBuildingFloorsView.swift */; };
 		F19A316328907237003B7EF9 /* RasterLayerFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F19A316228907237003B7EF9 /* RasterLayerFileView.swift */; };
 		F19A31662890892B003B7EF9 /* raster-file in Resources */ = {isa = PBXBuildFile; fileRef = F19A31652890892B003B7EF9 /* raster-file */; settings = {ASSET_TAGS = (RasterLayerFile, ); }; };
+		F111CCC1288B5D5600205358 /* DisplayMapFromMobileMapPackageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F111CCC0288B5D5600205358 /* DisplayMapFromMobileMapPackageView.swift */; };
+		F111CCC4288B641900205358 /* Yellowstone.mmpk in Resources */ = {isa = PBXBuildFile; fileRef = F111CCC3288B641900205358 /* Yellowstone.mmpk */; settings = {ASSET_TAGS = (DisplayMapFromMobileMapPackage, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -191,6 +193,8 @@
 		E0FE32E628747778002C6ACA /* BrowseBuildingFloorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseBuildingFloorsView.swift; sourceTree = "<group>"; };
 		F19A316228907237003B7EF9 /* RasterLayerFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RasterLayerFileView.swift; sourceTree = "<group>"; };
 		F19A31652890892B003B7EF9 /* raster-file */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "raster-file"; sourceTree = "<group>"; };
+		F111CCC0288B5D5600205358 /* DisplayMapFromMobileMapPackageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayMapFromMobileMapPackageView.swift; sourceTree = "<group>"; };
+		F111CCC3288B641900205358 /* Yellowstone.mmpk */ = {isa = PBXFileReference; lastKnownFileType = file; path = Yellowstone.mmpk; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -254,6 +258,7 @@
 				E000E761286A0B07005D87C5 /* Cut geometry */,
 				00D4EF7E2863840D00B9CC30 /* Display feature layers */,
 				0074ABB328174B830037244A /* Display map */,
+				F111CCBD288B548400205358 /* Display map from mobile map package */,
 				00B04FB3283EEB830026C882 /* Display overview map */,
 				E004A6D528465C70002A1FE6 /* Display scene */,
 				E066DD33285CF3A0004D3D5B /* Find route */,
@@ -327,6 +332,7 @@
 			isa = PBXGroup;
 			children = (
 				F19A3164289088DA003B7EF9 /* 7c4c679ab06a4df19dc497f577f111bd */,
+				F111CCC2288B63DB00205358 /* e1f3a7254cb845b09450f54937c16061 */,
 				00D4EF8128638BF100B9CC30 /* 2b0f9e17105847809dfeb04e3cad69e0 */,
 				00D4EF8328638BF100B9CC30 /* 15a7cbd3af1e47cfa5d2c6b93dc44fc2 */,
 				00D4EF8E28638BF100B9CC30 /* 68ec42517cdd439e81b036210483e8e7 */,
@@ -551,6 +557,22 @@
 			path = 7c4c679ab06a4df19dc497f577f111bd;
 			sourceTree = "<group>";
 		};
+		F111CCBD288B548400205358 /* Display map from mobile map package */ = {
+			isa = PBXGroup;
+			children = (
+				F111CCC0288B5D5600205358 /* DisplayMapFromMobileMapPackageView.swift */,
+			);
+			path = "Display map from mobile map package";
+			sourceTree = "<group>";
+		};
+		F111CCC2288B63DB00205358 /* e1f3a7254cb845b09450f54937c16061 */ = {
+			isa = PBXGroup;
+			children = (
+				F111CCC3288B641900205358 /* Yellowstone.mmpk */,
+			);
+			path = e1f3a7254cb845b09450f54937c16061;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -592,6 +614,7 @@
 				KnownAssetTags = (
 					DisplayFeatureLayers,
 					RasterLayerFile,
+					DisplayMapFromMobileMapPackage,
 				);
 				LastSwiftUpdateCheck = 1330;
 				LastUpgradeCheck = 1330;
@@ -628,6 +651,7 @@
 				00D4EF9028638BF100B9CC30 /* LA_Trails.geodatabase in Resources */,
 				F19A31662890892B003B7EF9 /* raster-file in Resources */,
 				00D4EF9A28638BF100B9CC30 /* AuroraCO.gpkg in Resources */,
+				F111CCC4288B641900205358 /* Yellowstone.mmpk in Resources */,
 				00E5402027F3CCA200CF66D5 /* Assets.xcassets in Resources */,
 				00D4EFB12863CE6300B9CC30 /* ScottishWildlifeTrust_reserves in Resources */,
 			);
@@ -722,6 +746,7 @@
 			files = (
 				E000E7602869E33D005D87C5 /* ClipGeometryView.swift in Sources */,
 				E004A6E928493BCE002A1FE6 /* ShowDeviceLocationView.swift in Sources */,
+				F111CCC1288B5D5600205358 /* DisplayMapFromMobileMapPackageView.swift in Sources */,
 				0005580C28185C0600224BC6 /* SampleList.swift in Sources */,
 				E004A6E028466279002A1FE6 /* ShowCalloutView.swift in Sources */,
 				E000E763286A0B18005D87C5 /* CutGeometryView.swift in Sources */,
