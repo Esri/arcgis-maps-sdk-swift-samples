@@ -66,7 +66,7 @@
 		E0FE32E728747778002C6ACA /* BrowseBuildingFloorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0FE32E628747778002C6ACA /* BrowseBuildingFloorsView.swift */; };
 		F111CCC1288B5D5600205358 /* DisplayMapFromMobileMapPackageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F111CCC0288B5D5600205358 /* DisplayMapFromMobileMapPackageView.swift */; };
 		F111CCC4288B641900205358 /* Yellowstone.mmpk in Resources */ = {isa = PBXBuildFile; fileRef = F111CCC3288B641900205358 /* Yellowstone.mmpk */; settings = {ASSET_TAGS = (DisplayMapFromMobileMapPackage, ); }; };
-		F12F4E772893902000E655BC /* raster-file in Resources */ = {isa = PBXBuildFile; fileRef = F12F4E762893902000E655BC /* raster-file */; settings = {ASSET_TAGS = ("RasterLayer(File)", ); }; };
+		F12F4E772893902000E655BC /* raster-file in Resources */ = {isa = PBXBuildFile; fileRef = F12F4E762893902000E655BC /* raster-file */; settings = {ASSET_TAGS = (RasterFromFile, ); }; };
 		F19A316328907237003B7EF9 /* RasterFromFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F19A316228907237003B7EF9 /* RasterFromFileView.swift */; };
 /* End PBXBuildFile section */
 
@@ -614,7 +614,7 @@
 				KnownAssetTags = (
 					DisplayFeatureLayers,
 					DisplayMapFromMobileMapPackage,
-					"RasterLayer(File)",
+					RasterFromFile,
 				);
 				LastSwiftUpdateCheck = 1330;
 				LastUpgradeCheck = 1330;
