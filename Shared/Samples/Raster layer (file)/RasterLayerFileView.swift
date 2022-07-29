@@ -38,15 +38,13 @@ struct RasterLayerFileView: View {
     /// Loads a local mobile map package.
     private func loadRasterLayer() async throws {
         // Loads the local mobile map package.
-        let shastaURL = Bundle.main.url(forResource: "Shasta", withExtension: "tif")!
-        let directoryURL = URL(fileURLWithPath: "raster-file")
-        let raster = Raster(fileURL: directoryURL)
+        let shastaURL = Bundle.main.url(forResource: "Shasta", withExtension: "tif", subdirectory: "raster-file")!
+        let raster = Raster(fileURL: shastaURL)
         rasterLayer = RasterLayer(raster: raster)
         map.addOperationalLayer(rasterLayer)
         try await rasterLayer.load()
         // Gets the first map in the mobile map package.
         center = rasterLayer.fullExtent!.center
-        
     }
     
     var body: some View {
@@ -63,4 +61,3 @@ struct RasterLayerFileView: View {
             .alert(isPresented: $isShowingAlert, presentingError: error)
     }
 }
-
