@@ -25,8 +25,6 @@ struct RasterLayerFileView: View {
     /// The center of the full extent of the raster layer.
     @State private var center = Point(x: 0, y: 0)
     
-    @State private var viewpoint: Viewpoint!
-    
     /// A Boolean value indicating whether to show an alert.
     @State private var isShowingAlert = false
     
@@ -35,20 +33,24 @@ struct RasterLayerFileView: View {
         didSet { isShowingAlert = error != nil }
     }
     
-    /// Loads a local mobile map package.
+    /// Loads a local raster layer.
     private func loadRasterLayer() async throws {
-        // Loads the local mobile map package.
+        // Gets the Shasta.tif file URL.
         let shastaURL = Bundle.main.url(forResource: "Shasta", withExtension: "tif", subdirectory: "raster-file")!
+        // Creates a raster with the file URL.
         let raster = Raster(fileURL: shastaURL)
+        // Creates a raster layer using the raster object.
         rasterLayer = RasterLayer(raster: raster)
+        // Adds the raster layer to the map.
         map.addOperationalLayer(rasterLayer)
+        // Loads the raster layer.
         try await rasterLayer.load()
-        // Gets the first map in the mobile map package.
+        // Gets the center point of the raster layer's full extent.
         center = rasterLayer.fullExtent!.center
     }
     
     var body: some View {
-        // Creates a map view to display the map.
+        // Creates a map view with a viewpoint to display the map.
         MapView(map: map, viewpoint: Viewpoint(center: center, scale: 8_0000))
             .task {
                 do {
