@@ -133,7 +133,12 @@ private extension GenerateOfflineMapView {
         private var offlineMapTask: OfflineMapTask!
         
         /// A URL referencing the temporary directory where the offline map files are stored.
-        private let temporaryDirectory = makeTemporaryDirectory()
+        private let temporaryDirectory = try? FileManager.default.url(
+            for: .itemReplacementDirectory,
+            in: .userDomainMask,
+            appropriateFor: Bundle.main.bundleURL,
+            create: true
+        )
         
         /// A portal item displaying the Naperville, IL water network.
         private let napervillePortalItem = PortalItem(
@@ -233,25 +238,6 @@ private extension GenerateOfflineMapView {
             // Cancels the generate offline map job.
             await generateOfflineMapJob?.cancel()
             generateOfflineMapJob = nil
-        }
-        
-        /// Creates the temporary directory.
-        private static func makeTemporaryDirectory() -> URL? {
-            do {
-                return try FileManager.default.url(
-                    for: .itemReplacementDirectory,
-                    in: .userDomainMask,
-                    appropriateFor: FileManager
-                        .default
-                        .temporaryDirectory
-                        .appendingPathComponent(
-                            UUID().uuidString
-                        ),
-                    create: true
-                )
-            } catch {
-                return nil
-            }
         }
     }
 }
