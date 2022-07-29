@@ -10,13 +10,13 @@ Rasters can be digital aerial photographs, imagery from satellites, digital pict
 
 ## How to use the sample
 
-When the sample starts, a raster will be loaded from a file and displayed in the map view.
+Upon launch, a raster will be loaded from a file and displayed in the map view. Pan and zoom to explore.
 
 ## How it works
 
 1. Create a `Raster` from a raster file.
 2. Create a `RasterLayer` from the raster.
-3. Add it as an operational layer with `map.getOperationalLayers().add(rasterLayer)`.
+3. Add the raster layer to the map's operational layers.
 
 ## Relevant API
 
