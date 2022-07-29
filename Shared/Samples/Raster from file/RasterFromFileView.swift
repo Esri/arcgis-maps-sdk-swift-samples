@@ -19,9 +19,6 @@ struct RasterFromFileView: View {
     /// A map with a standard imagery basemap style.
     @StateObject private var map = Map(basemapStyle: .arcGISImageryStandard)
     
-    /// The raster layer.
-    @State private var rasterLayer: RasterLayer!
-    
     /// The center of the full extent of the raster layer.
     @State private var center = Point(x: 0, y: 0)
     
@@ -40,7 +37,7 @@ struct RasterFromFileView: View {
         // Creates a raster with the file URL.
         let raster = Raster(fileURL: shastaURL)
         // Creates a raster layer using the raster object.
-        rasterLayer = RasterLayer(raster: raster)
+        let rasterLayer = RasterLayer(raster: raster)
         // Adds the raster layer to the map's operational layer.
         map.addOperationalLayer(rasterLayer)
         // Loads the raster layer.
