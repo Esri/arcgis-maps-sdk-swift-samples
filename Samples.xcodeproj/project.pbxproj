@@ -67,7 +67,7 @@
 		F111CCC1288B5D5600205358 /* DisplayMapFromMobileMapPackageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F111CCC0288B5D5600205358 /* DisplayMapFromMobileMapPackageView.swift */; };
 		F111CCC4288B641900205358 /* Yellowstone.mmpk in Resources */ = {isa = PBXBuildFile; fileRef = F111CCC3288B641900205358 /* Yellowstone.mmpk */; settings = {ASSET_TAGS = (DisplayMapFromMobileMapPackage, ); }; };
 		F12F4E772893902000E655BC /* raster-file in Resources */ = {isa = PBXBuildFile; fileRef = F12F4E762893902000E655BC /* raster-file */; settings = {ASSET_TAGS = ("RasterLayer(File)", ); }; };
-		F19A316328907237003B7EF9 /* RasterLayerFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F19A316228907237003B7EF9 /* RasterLayerFileView.swift */; };
+		F19A316328907237003B7EF9 /* RasterFromFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F19A316228907237003B7EF9 /* RasterFromFileView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -194,7 +194,7 @@
 		F111CCC0288B5D5600205358 /* DisplayMapFromMobileMapPackageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayMapFromMobileMapPackageView.swift; sourceTree = "<group>"; };
 		F111CCC3288B641900205358 /* Yellowstone.mmpk */ = {isa = PBXFileReference; lastKnownFileType = file; path = Yellowstone.mmpk; sourceTree = "<group>"; };
 		F12F4E762893902000E655BC /* raster-file */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "raster-file"; sourceTree = "<group>"; };
-		F19A316228907237003B7EF9 /* RasterLayerFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RasterLayerFileView.swift; sourceTree = "<group>"; };
+		F19A316228907237003B7EF9 /* RasterFromFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RasterFromFileView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -263,7 +263,7 @@
 				E004A6D528465C70002A1FE6 /* Display scene */,
 				E066DD33285CF3A0004D3D5B /* Find route */,
 				E0EA0B75286638FD00C9621D /* Project */,
-				F19A316128906F0D003B7EF9 /* Raster layer (file) */,
+				F19A316128906F0D003B7EF9 /* Raster from file */,
 				00CB913628481475005C2C5D /* Search with geocode */,
 				E004A6F4284FA3C5002A1FE6 /* Select features in feature layer */,
 				00B042E3282EDC690072E1B4 /* Set basemap */,
@@ -557,12 +557,12 @@
 			path = e1f3a7254cb845b09450f54937c16061;
 			sourceTree = "<group>";
 		};
-		F19A316128906F0D003B7EF9 /* Raster layer (file) */ = {
+		F19A316128906F0D003B7EF9 /* Raster from file */ = {
 			isa = PBXGroup;
 			children = (
-				F19A316228907237003B7EF9 /* RasterLayerFileView.swift */,
+				F19A316228907237003B7EF9 /* RasterFromFileView.swift */,
 			);
-			path = "Raster layer (file)";
+			path = "Raster from file";
 			sourceTree = "<group>";
 		};
 		F19A3164289088DA003B7EF9 /* 7c4c679ab06a4df19dc497f577f111bd */ = {
@@ -770,7 +770,7 @@
 				00D4EF802863842100B9CC30 /* DisplayFeatureLayersView.swift in Sources */,
 				E004A6DC28465C70002A1FE6 /* DisplaySceneView.swift in Sources */,
 				E066DD35285CF3B3004D3D5B /* FindRouteView.swift in Sources */,
-				F19A316328907237003B7EF9 /* RasterLayerFileView.swift in Sources */,
+				F19A316328907237003B7EF9 /* RasterFromFileView.swift in Sources */,
 				E004A6F6284FA42A002A1FE6 /* SelectFeaturesInFeatureLayerView.swift in Sources */,
 				00B042E8282EDC690072E1B4 /* SetBasemapView.swift in Sources */,
 				E004A6E62846A61F002A1FE6 /* StyleGraphicsWithSymbolsView.swift in Sources */,
