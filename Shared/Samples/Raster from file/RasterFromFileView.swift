@@ -16,8 +16,8 @@ import ArcGIS
 import SwiftUI
 
 struct RasterFromFileView: View {
-    /// A map with imagery basemap.
-    @State private var map = Map(basemapStyle: .arcGISImageryStandard)
+    /// A map with a standard imagery basemap style.
+    @StateObject private var map = Map(basemapStyle: .arcGISImageryStandard)
     
     /// The raster layer.
     @State private var rasterLayer: RasterLayer!
@@ -41,7 +41,7 @@ struct RasterFromFileView: View {
         let raster = Raster(fileURL: shastaURL)
         // Creates a raster layer using the raster object.
         rasterLayer = RasterLayer(raster: raster)
-        // Adds the raster layer to the map.
+        // Adds the raster layer to the map's operational layer.
         map.addOperationalLayer(rasterLayer)
         // Loads the raster layer.
         try await rasterLayer.load()
@@ -51,7 +51,7 @@ struct RasterFromFileView: View {
     
     var body: some View {
         // Creates a map view with a viewpoint to display the map.
-        MapView(map: map, viewpoint: Viewpoint(center: center, scale: 8_0000))
+        MapView(map: map, viewpoint: Viewpoint(center: center, scale: 80_000))
             .task {
                 do {
                     try await loadRasterLayer()
