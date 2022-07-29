@@ -3,7 +3,7 @@
     "description": "Create and use a raster layer made from a local raster file.",
     "ignore": false,
     "images": [
-        "raster-layer-file.png"
+        "raster-from-file.png"
     ],
     "keywords": [
         "data",
@@ -24,7 +24,7 @@
         "RasterLayer"
     ],
     "snippets": [
-        "RasterLayerFileView.swift"
+        "RasterFromFileView.swift"
     ],
-    "title": "Raster layer (file)"
+    "title": "Raster from file"
 }

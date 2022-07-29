@@ -1,8 +1,8 @@
-# Raster layer (file)
+# Raster from file
 
 Create and use a raster layer made from a local raster file.
 
-![Screenshot of raster layer (file) sample](raster-layer-file.png)
+![Screenshot of raster from file sample](raster-from-file.png)
 
 ## Use case
 
