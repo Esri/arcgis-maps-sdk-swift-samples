@@ -15,7 +15,7 @@
 import ArcGIS
 import SwiftUI
 
-struct RasterFromFileView: View {
+struct AddRasterFromFileView: View {
     /// A map with a standard imagery basemap style.
     @StateObject private var map = Map(basemapStyle: .arcGISImageryStandard)
     
