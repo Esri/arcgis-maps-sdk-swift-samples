@@ -263,7 +263,7 @@
 				E004A6D528465C70002A1FE6 /* Display scene */,
 				E066DD33285CF3A0004D3D5B /* Find route */,
 				E0EA0B75286638FD00C9621D /* Project */,
-				F19A316128906F0D003B7EF9 /* Raster from file */,
+				F19A316128906F0D003B7EF9 /* Add raster from file */,
 				00CB913628481475005C2C5D /* Search with geocode */,
 				E004A6F4284FA3C5002A1FE6 /* Select features in feature layer */,
 				00B042E3282EDC690072E1B4 /* Set basemap */,
@@ -557,12 +557,12 @@
 			path = e1f3a7254cb845b09450f54937c16061;
 			sourceTree = "<group>";
 		};
-		F19A316128906F0D003B7EF9 /* Raster from file */ = {
+		F19A316128906F0D003B7EF9 /* Add raster from file */ = {
 			isa = PBXGroup;
 			children = (
 				F1E71BF0289473760064C33F /* AddRasterFromFileView.swift */,
 			);
-			path = "Raster from file";
+			path = "Add raster from file";
 			sourceTree = "<group>";
 		};
 		F19A3164289088DA003B7EF9 /* 7c4c679ab06a4df19dc497f577f111bd */ = {
