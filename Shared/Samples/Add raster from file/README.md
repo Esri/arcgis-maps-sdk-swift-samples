@@ -1,4 +1,4 @@
-# Add Raster from file
+# Add raster from file
 
 Create and use a raster layer made from a local raster file.
 
