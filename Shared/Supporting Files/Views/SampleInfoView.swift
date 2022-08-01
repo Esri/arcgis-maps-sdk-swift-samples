@@ -26,10 +26,10 @@ struct SampleInfoView: View {
     
     var body: some View {
         ZStack {
-            WebView(htmlString: readmeHTML ?? errorHTML)
-                .zIndex(informationMode == .readme ? 1 : 0)
-            WebView(htmlString: codeHTML ?? errorHTML)
-                .zIndex(informationMode == .code ? 1 : 0)
+            WebView(htmlString: readmeHTML)
+                .opacity(informationMode == .readme ? 1 : 0)
+            WebView(htmlString: codeHTML)
+                .opacity(informationMode == .code ? 1 : 0)
         }
         .edgesIgnoringSafeArea([.horizontal, .bottom])
         .toolbar {
@@ -70,8 +70,8 @@ private extension SampleInfoView {
     }
     
     /// The HTML to display the README.
-    var readmeHTML: String? {
-        guard let content = readmeMarkdownText else { return nil }
+    var readmeHTML: String {
+        guard let content = readmeMarkdownText else { return makeErrorHTML(mode: .readme) }
         let cssPath = Bundle.main.path(forResource: "info", ofType: "css")!
         let string = """
             <!doctype html>
@@ -119,8 +119,8 @@ private extension SampleInfoView {
     }
     
     /// The HTML to display the sample's source code.
-    var codeHTML: String? {
-        guard let content = sampleContent else { return nil }
+    var codeHTML: String {
+        guard let content = sampleContent else { return makeErrorHTML(mode: .code) }
         let cssPath = Bundle.main.path(forResource: "xcode", ofType: "css")!
         let jsPath = Bundle.main.path(forResource: "highlight.min", ofType: "js")!
         let html = """
@@ -144,12 +144,14 @@ private extension SampleInfoView {
 // MARK: Error HTML
 
 private extension SampleInfoView {
-    /// The HTML to display if there is an error displaying the README or code.
-    var errorHTML: String {
+    /// Creates the HTML to display if there is an error displaying the README or code.
+    /// - Parameter mode: The information mode that failed to display.
+    /// - Returns: A `String` of HTML of an error message.
+    func makeErrorHTML(mode: InformationMode) -> String {
         """
         <!doctype html>
         <html>
-        <h1 style="text-align: center;">Unable to display "\(sample.name)" \(informationMode == .code ? "code" : "README").</h1>
+        <h1 style="text-align: center;">Unable to display "\(sample.name)" \(mode == .code ? "code" : "README").</h1>
         </html>
         """
     }
