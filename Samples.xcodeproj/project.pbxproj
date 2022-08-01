@@ -57,11 +57,13 @@
 		E004A6ED2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6EC2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift */; };
 		E004A6F3284E4FEB002A1FE6 /* ShowResultsOfSpatialOperationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6F2284E4FEB002A1FE6 /* ShowResultsOfSpatialOperationsView.swift */; };
 		E004A6F6284FA42A002A1FE6 /* SelectFeaturesInFeatureLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6F5284FA42A002A1FE6 /* SelectFeaturesInFeatureLayerView.swift */; };
+		E03CB0692888944D002B27D9 /* GenerateOfflineMapView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E088E1732863B5F800413100 /* GenerateOfflineMapView.swift */; };
 		E066DD35285CF3B3004D3D5B /* FindRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E066DD34285CF3B3004D3D5B /* FindRouteView.swift */; };
 		E066DD382860AB28004D3D5B /* StyleGraphicsWithRendererView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E066DD372860AB28004D3D5B /* StyleGraphicsWithRendererView.swift */; };
 		E066DD3B2860CA08004D3D5B /* ShowResultOfSpatialRelationshipsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E066DD3A2860CA08004D3D5B /* ShowResultOfSpatialRelationshipsView.swift */; };
 		E066DD4028610F55004D3D5B /* AddSceneLayerFromServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E066DD3F28610F55004D3D5B /* AddSceneLayerFromServiceView.swift */; };
 		E088E1572862579D00413100 /* SetSurfacePlacementModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E088E1562862579D00413100 /* SetSurfacePlacementModeView.swift */; };
+		E088E1742863B5F800413100 /* GenerateOfflineMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E088E1732863B5F800413100 /* GenerateOfflineMapView.swift */; };
 		E0EA0B772866390E00C9621D /* ProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0EA0B762866390E00C9621D /* ProjectView.swift */; };
 		E0FE32E728747778002C6ACA /* BrowseBuildingFloorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0FE32E628747778002C6ACA /* BrowseBuildingFloorsView.swift */; };
 		F111CCC1288B5D5600205358 /* DisplayMapFromMobileMapPackageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F111CCC0288B5D5600205358 /* DisplayMapFromMobileMapPackageView.swift */; };
@@ -128,6 +130,7 @@
 				0039A4ED2885C50300592C86 /* DisplayMapView.swift in Copy Source Code Files */,
 				0039A4EE2885C50300592C86 /* DisplayOverviewMapView.swift in Copy Source Code Files */,
 				0039A4EF2885C50300592C86 /* DisplaySceneView.swift in Copy Source Code Files */,
+				E03CB0692888944D002B27D9 /* GenerateOfflineMapView.swift in Copy Source Code Files */,
 				0039A4F02885C50300592C86 /* ProjectView.swift in Copy Source Code Files */,
 				0039A4F12885C50300592C86 /* SearchWithGeocodeView.swift in Copy Source Code Files */,
 				0039A4F22885C50300592C86 /* SelectFeaturesInFeatureLayerView.swift in Copy Source Code Files */,
@@ -187,6 +190,7 @@
 		E066DD3A2860CA08004D3D5B /* ShowResultOfSpatialRelationshipsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowResultOfSpatialRelationshipsView.swift; sourceTree = "<group>"; };
 		E066DD3F28610F55004D3D5B /* AddSceneLayerFromServiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSceneLayerFromServiceView.swift; sourceTree = "<group>"; };
 		E088E1562862579D00413100 /* SetSurfacePlacementModeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetSurfacePlacementModeView.swift; sourceTree = "<group>"; };
+		E088E1732863B5F800413100 /* GenerateOfflineMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateOfflineMapView.swift; sourceTree = "<group>"; };
 		E0EA0B762866390E00C9621D /* ProjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectView.swift; sourceTree = "<group>"; };
 		E0FE32E628747778002C6ACA /* BrowseBuildingFloorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseBuildingFloorsView.swift; sourceTree = "<group>"; };
 		F111CCC0288B5D5600205358 /* DisplayMapFromMobileMapPackageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayMapFromMobileMapPackageView.swift; sourceTree = "<group>"; };
@@ -258,6 +262,7 @@
 				00B04FB3283EEB830026C882 /* Display overview map */,
 				E004A6D528465C70002A1FE6 /* Display scene */,
 				E066DD33285CF3A0004D3D5B /* Find route */,
+				E088E1722863B5E600413100 /* Generate offline map */,
 				E0EA0B75286638FD00C9621D /* Project */,
 				00CB913628481475005C2C5D /* Search with geocode */,
 				E004A6F4284FA3C5002A1FE6 /* Select features in feature layer */,
@@ -519,6 +524,14 @@
 			path = "Set surface placement mode";
 			sourceTree = "<group>";
 		};
+		E088E1722863B5E600413100 /* Generate offline map */ = {
+			isa = PBXGroup;
+			children = (
+				E088E1732863B5F800413100 /* GenerateOfflineMapView.swift */,
+			);
+			path = "Generate offline map";
+			sourceTree = "<group>";
+		};
 		E0EA0B75286638FD00C9621D /* Project */ = {
 			isa = PBXGroup;
 			children = (
@@ -749,6 +762,7 @@
 				E004A6F6284FA42A002A1FE6 /* SelectFeaturesInFeatureLayerView.swift in Sources */,
 				00B042E8282EDC690072E1B4 /* SetBasemapView.swift in Sources */,
 				E004A6E62846A61F002A1FE6 /* StyleGraphicsWithSymbolsView.swift in Sources */,
+				E088E1742863B5F800413100 /* GenerateOfflineMapView.swift in Sources */,
 				0074ABC428174F430037244A /* Sample.swift in Sources */,
 				00CB9138284814A4005C2C5D /* SearchWithGeocodeView.swift in Sources */,
 				00E5401C27F3CCA200CF66D5 /* SamplesApp.swift in Sources */,
