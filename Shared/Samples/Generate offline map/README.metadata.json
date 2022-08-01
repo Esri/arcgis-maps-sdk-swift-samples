@@ -1,0 +1,35 @@
+{
+    "category": "Maps",
+    "description": "Take a web map offline.",
+    "ignore": false,
+    "images": [
+        "generate-offline-map.png"
+    ],
+    "keywords": [
+        "download",
+        "offline",
+        "save",
+        "web map",
+        "GenerateOfflineMapJob",
+        "GenerateOfflineMapParameters",
+        "GenerateOfflineMapResult",
+        "OfflineMapTask",
+        "OfflineMapTask.makeDefaultGenerateOfflineMapParameters(areaOfInterest:)",
+        "OfflineMapTask.makeGenerateOfflineMapJob(parameters:downloadDirectory:)",
+        "PortalItem"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "GenerateOfflineMapJob",
+        "GenerateOfflineMapParameters",
+        "GenerateOfflineMapResult",
+        "OfflineMapTask",
+        "OfflineMapTask.makeDefaultGenerateOfflineMapParameters(areaOfInterest:)",
+        "OfflineMapTask.makeGenerateOfflineMapJob(parameters:downloadDirectory:)",
+        "PortalItem"
+    ],
+    "snippets": [
+        "GenerateOfflineMapView.swift"
+    ],
+    "title": "Generate offline map"
+}
