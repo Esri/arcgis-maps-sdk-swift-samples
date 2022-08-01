@@ -57,21 +57,21 @@
 		E004A6ED2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6EC2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift */; };
 		E004A6F3284E4FEB002A1FE6 /* ShowResultsOfSpatialOperationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6F2284E4FEB002A1FE6 /* ShowResultsOfSpatialOperationsView.swift */; };
 		E004A6F6284FA42A002A1FE6 /* SelectFeaturesInFeatureLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6F5284FA42A002A1FE6 /* SelectFeaturesInFeatureLayerView.swift */; };
+		E03CB0692888944D002B27D9 /* GenerateOfflineMapView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E088E1732863B5F800413100 /* GenerateOfflineMapView.swift */; };
 		E03CB06A288894C4002B27D9 /* FindRouteView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E066DD34285CF3B3004D3D5B /* FindRouteView.swift */; };
 		E041ABC0287CA9F00056009B /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E041ABBF287CA9F00056009B /* WebView.swift */; };
 		E041ABD7287DB04D0056009B /* SampleInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E041ABD6287DB04D0056009B /* SampleInfoView.swift */; };
 		E041AC1A287F54580056009B /* highlight.min.js in Resources */ = {isa = PBXBuildFile; fileRef = E041AC15287F54580056009B /* highlight.min.js */; };
 		E041AC1E288076A60056009B /* info.css in Resources */ = {isa = PBXBuildFile; fileRef = E041AC1D288076A60056009B /* info.css */; };
 		E041AC20288077B90056009B /* xcode.css in Resources */ = {isa = PBXBuildFile; fileRef = E041AC1F288077B90056009B /* xcode.css */; };
-		E03CB0692888944D002B27D9 /* GenerateOfflineMapView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E088E1732863B5F800413100 /* GenerateOfflineMapView.swift */; };
 		E066DD35285CF3B3004D3D5B /* FindRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E066DD34285CF3B3004D3D5B /* FindRouteView.swift */; };
 		E066DD382860AB28004D3D5B /* StyleGraphicsWithRendererView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E066DD372860AB28004D3D5B /* StyleGraphicsWithRendererView.swift */; };
 		E066DD3B2860CA08004D3D5B /* ShowResultOfSpatialRelationshipsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E066DD3A2860CA08004D3D5B /* ShowResultOfSpatialRelationshipsView.swift */; };
 		E066DD4028610F55004D3D5B /* AddSceneLayerFromServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E066DD3F28610F55004D3D5B /* AddSceneLayerFromServiceView.swift */; };
 		E088E1572862579D00413100 /* SetSurfacePlacementModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E088E1562862579D00413100 /* SetSurfacePlacementModeView.swift */; };
+		E088E1742863B5F800413100 /* GenerateOfflineMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E088E1732863B5F800413100 /* GenerateOfflineMapView.swift */; };
 		E08953F12891899600E077CF /* EnvironmentValues+SampleInfoVisibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = E08953F02891899600E077CF /* EnvironmentValues+SampleInfoVisibility.swift */; };
 		E0A1AEE328874590003C797D /* DisplayFeatureLayersView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 00D4EF7F2863842100B9CC30 /* DisplayFeatureLayersView.swift */; };
-		E088E1742863B5F800413100 /* GenerateOfflineMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E088E1732863B5F800413100 /* GenerateOfflineMapView.swift */; };
 		E0EA0B772866390E00C9621D /* ProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0EA0B762866390E00C9621D /* ProjectView.swift */; };
 		E0FE32E728747778002C6ACA /* BrowseBuildingFloorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0FE32E628747778002C6ACA /* BrowseBuildingFloorsView.swift */; };
 		F111CCC1288B5D5600205358 /* DisplayMapFromMobileMapPackageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F111CCC0288B5D5600205358 /* DisplayMapFromMobileMapPackageView.swift */; };
@@ -205,8 +205,8 @@
 		E066DD3A2860CA08004D3D5B /* ShowResultOfSpatialRelationshipsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowResultOfSpatialRelationshipsView.swift; sourceTree = "<group>"; };
 		E066DD3F28610F55004D3D5B /* AddSceneLayerFromServiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSceneLayerFromServiceView.swift; sourceTree = "<group>"; };
 		E088E1562862579D00413100 /* SetSurfacePlacementModeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetSurfacePlacementModeView.swift; sourceTree = "<group>"; };
-		E08953F02891899600E077CF /* EnvironmentValues+SampleInfoVisibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+SampleInfoVisibility.swift"; sourceTree = "<group>"; };
 		E088E1732863B5F800413100 /* GenerateOfflineMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateOfflineMapView.swift; sourceTree = "<group>"; };
+		E08953F02891899600E077CF /* EnvironmentValues+SampleInfoVisibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+SampleInfoVisibility.swift"; sourceTree = "<group>"; };
 		E0EA0B762866390E00C9621D /* ProjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectView.swift; sourceTree = "<group>"; };
 		E0FE32E628747778002C6ACA /* BrowseBuildingFloorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseBuildingFloorsView.swift; sourceTree = "<group>"; };
 		F111CCC0288B5D5600205358 /* DisplayMapFromMobileMapPackageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayMapFromMobileMapPackageView.swift; sourceTree = "<group>"; };
@@ -241,8 +241,8 @@
 		00181B442846AD3900654571 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				00181B452846AD7100654571 /* View+Alert.swift */,
 				E08953F02891899600E077CF /* EnvironmentValues+SampleInfoVisibility.swift */,
+				00181B452846AD7100654571 /* View+Alert.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
