@@ -155,7 +155,12 @@ private extension DownloadVectorTilesToLocalCacheView {
         private var vectorTiledLayerResults: ArcGISVectorTiledLayer!
         
         /// A URL to the directory temporarily storing all items.
-        private let temporaryDirectory = makeTemporaryDirectory()
+        private let temporaryDirectory = try? FileManager.default.url(
+            for: .itemReplacementDirectory,
+            in: .userDomainMask,
+            appropriateFor: Bundle.main.bundleURL,
+            create: true
+        )
         
         /// A URL to the temporary directory to store the exported vector tile package.
         private let vtpkTemporaryURL: URL!
@@ -294,26 +299,6 @@ private extension DownloadVectorTilesToLocalCacheView {
             // Cancels the export vector tiles job.
             await exportVectorTilesJob?.cancel()
             exportVectorTilesJob = nil
-        }
-        
-        /// Creates the temporary directory.
-        /// - Returns: A `URL` of the temporary directory. If it fails, it returns `nil`.
-        private static func makeTemporaryDirectory() -> URL? {
-            do {
-                return try FileManager.default.url(
-                    for: .itemReplacementDirectory,
-                    in: .userDomainMask,
-                    appropriateFor: FileManager
-                        .default
-                        .temporaryDirectory
-                        .appendingPathComponent(
-                            UUID().uuidString
-                        ),
-                    create: true
-                )
-            } catch {
-                return nil
-            }
         }
         
         /// Removes any temporary files.
