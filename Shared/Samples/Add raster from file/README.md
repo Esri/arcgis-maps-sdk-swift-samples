@@ -23,6 +23,10 @@ Upon launch, a raster will be loaded from a file and displayed in the map view. 
 * Raster
 * RasterLayer
 
+## About the data
+
+This sample shows a [Shasta.tif Raster Image](https://www.arcgis.com/home/item.html?id=6876e57d373a497e9cdb916642531b70) hosted on ArcGIS Online.
+
 ## Additional information
 
 See the topic [What is raster data?](https://desktop.arcgis.com/en/arcmap/latest/manage-data/raster-and-images/what-is-raster-data.htm) in the *ArcMap* documentation for more information about raster images.
