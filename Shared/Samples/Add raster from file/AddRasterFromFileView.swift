@@ -33,7 +33,7 @@ struct AddRasterFromFileView: View {
     /// Loads a local raster layer.
     private func loadRasterLayer() async throws {
         // Gets the Shasta.tif file URL.
-        let shastaURL = Bundle.main.url(forResource: "Shasta", withExtension: "tif", subdirectory: "raster-file")!
+        let shastaURL = Bundle.main.url(forResource: "Shasta", withExtension: "tif")!
         // Creates a raster with the file URL.
         let raster = Raster(fileURL: shastaURL)
         // Creates a raster layer using the raster object.
