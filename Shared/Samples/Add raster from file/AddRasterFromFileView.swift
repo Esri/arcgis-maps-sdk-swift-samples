@@ -53,7 +53,7 @@ struct AddRasterFromFileView: View {
                 do {
                     try await loadRasterLayer()
                 } catch {
-                    // Presents an error message if the map fails to load.
+                    // Presents an error message if the raster fails to load.
                     self.error = error
                 }
             }
