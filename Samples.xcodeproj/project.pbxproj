@@ -67,7 +67,7 @@
 		F111CCC1288B5D5600205358 /* DisplayMapFromMobileMapPackageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F111CCC0288B5D5600205358 /* DisplayMapFromMobileMapPackageView.swift */; };
 		F111CCC4288B641900205358 /* Yellowstone.mmpk in Resources */ = {isa = PBXBuildFile; fileRef = F111CCC3288B641900205358 /* Yellowstone.mmpk */; settings = {ASSET_TAGS = (DisplayMapFromMobileMapPackage, ); }; };
 		F1E71BF1289473760064C33F /* AddRasterFromFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E71BF0289473760064C33F /* AddRasterFromFileView.swift */; };
-		F1E71BF92899D7A70064C33F /* 6876e57d373a497e9cdb916642531b70 in Resources */ = {isa = PBXBuildFile; fileRef = F1E71BF82899D7A70064C33F /* 6876e57d373a497e9cdb916642531b70 */; settings = {ASSET_TAGS = (AddRasterFromFile, ); }; };
+		F1E71BF32898A5F00064C33F /* Shasta.tif in Resources */ = {isa = PBXBuildFile; fileRef = F1E71BF22898A5F00064C33F /* Shasta.tif */; settings = {ASSET_TAGS = (AddRasterFromFile, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -194,7 +194,7 @@
 		F111CCC0288B5D5600205358 /* DisplayMapFromMobileMapPackageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayMapFromMobileMapPackageView.swift; sourceTree = "<group>"; };
 		F111CCC3288B641900205358 /* Yellowstone.mmpk */ = {isa = PBXFileReference; lastKnownFileType = file; path = Yellowstone.mmpk; sourceTree = "<group>"; };
 		F1E71BF0289473760064C33F /* AddRasterFromFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRasterFromFileView.swift; sourceTree = "<group>"; };
-		F1E71BF82899D7A70064C33F /* 6876e57d373a497e9cdb916642531b70 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = 6876e57d373a497e9cdb916642531b70; sourceTree = "<group>"; };
+		F1E71BF22898A5F00064C33F /* Shasta.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = Shasta.tif; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -331,7 +331,7 @@
 		00CCB8A6285D059300BBAB70 /* Portal Data */ = {
 			isa = PBXGroup;
 			children = (
-				F1E71BF82899D7A70064C33F /* 6876e57d373a497e9cdb916642531b70 */,
+				F19A3164289088DA003B7EF9 /* 6876e57d373a497e9cdb916642531b70 */,
 				F111CCC2288B63DB00205358 /* e1f3a7254cb845b09450f54937c16061 */,
 				00D4EF8128638BF100B9CC30 /* 2b0f9e17105847809dfeb04e3cad69e0 */,
 				00D4EF8328638BF100B9CC30 /* 15a7cbd3af1e47cfa5d2c6b93dc44fc2 */,
@@ -565,6 +565,14 @@
 			path = "Add raster from file";
 			sourceTree = "<group>";
 		};
+		F19A3164289088DA003B7EF9 /* 6876e57d373a497e9cdb916642531b70 */ = {
+			isa = PBXGroup;
+			children = (
+				F1E71BF22898A5F00064C33F /* Shasta.tif */,
+			);
+			path = 6876e57d373a497e9cdb916642531b70;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -641,8 +649,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				00D4EF9028638BF100B9CC30 /* LA_Trails.geodatabase in Resources */,
+				F1E71BF32898A5F00064C33F /* Shasta.tif in Resources */,
 				00D4EF9A28638BF100B9CC30 /* AuroraCO.gpkg in Resources */,
-				F1E71BF92899D7A70064C33F /* 6876e57d373a497e9cdb916642531b70 in Resources */,
 				F111CCC4288B641900205358 /* Yellowstone.mmpk in Resources */,
 				00E5402027F3CCA200CF66D5 /* Assets.xcassets in Resources */,
 				00D4EFB12863CE6300B9CC30 /* ScottishWildlifeTrust_reserves in Resources */,
