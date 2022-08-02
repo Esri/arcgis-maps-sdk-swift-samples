@@ -91,10 +91,10 @@ struct DownloadVectorTilesToLocalCacheView: View {
                                         right: -geometry.safeAreaInsets.trailing + 20
                                     )
                                 )
-
+                                
                                 // Creates an envelope from the rectangle.
                                 guard let extent = mapView.envelope(fromViewRect: viewRect) else { return }
-
+                                
                                 // Downloads the vector tiles.
                                 await model.downloadVectorTiles(extent: extent)
                                 // Sets downloading to false when the download finishes.
@@ -127,7 +127,8 @@ struct DownloadVectorTilesToLocalCacheView: View {
 
 private extension DownloadVectorTilesToLocalCacheView {
     /// A view model for this sample.
-    @MainActor class Model: ObservableObject {
+    @MainActor
+    class Model: ObservableObject {
         /// A Boolean value indicating whether the download button is disabled.
         @Published var isDownloadDisabled = true
         
