@@ -200,10 +200,7 @@ private extension DownloadVectorTilesToLocalCacheView {
         /// Initializes the vector tiles task.
         func initializeVectorTilesTask() async {
             // Ensures a temporary directory exists.
-            guard temporaryDirectory != nil else {
-                isShowingAlert = true
-                return
-            }
+            guard temporaryDirectory != nil else { fatalError("A temporary directory does not exist.") }
             
             do {
                 // Waits for the map to load.
@@ -237,7 +234,6 @@ private extension DownloadVectorTilesToLocalCacheView {
                 )
             } catch {
                 self.error = error
-                isShowingAlert = true
                 return nil
             }
         }
@@ -253,7 +249,7 @@ private extension DownloadVectorTilesToLocalCacheView {
                let parameters = await makeExportTilesParameters(areaOfInterest: extent, maxScale: maxScale) {
                 // Creates the export vector tiles job based on the parameters
                 // and temporary URLs.
-                exportVectorTilesJob = exportVectorTilesTask.exportVectorTiles(
+                exportVectorTilesJob = exportVectorTilesTask.makeExportVectorTilesJob(
                     parameters: parameters,
                     vectorTileCacheURL: vtpkTemporaryURL,
                     itemResourceCacheURL: styleTemporaryURL
