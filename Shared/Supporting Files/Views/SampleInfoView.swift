@@ -44,7 +44,7 @@ struct SampleInfoView: View {
             
             ToolbarItem(placement: .bottomBar) {
                 if informationMode == .code {
-                    Text(sampleViewFileName)
+                    Text(sample.snippets.first ?? "Unknown filename")
                 }
             }
         }
@@ -106,12 +106,9 @@ private extension SampleInfoView {
 // MARK: Code
 
 private extension SampleInfoView {
-    /// The name of the sample's view file.
-    var sampleViewFileName: String { "\(sample.nameInUpperCamelCase)View" }
-    
     /// The code of the sample's view file.
     var sampleContent: String? {
-        guard let path = Bundle.main.path(forResource: sampleViewFileName, ofType: "swift"),
+        guard let path = sample.snippetURLs.first?.relativePath,
               let content = try? String(contentsOfFile: path, encoding: .utf8) else {
             return nil
         }
