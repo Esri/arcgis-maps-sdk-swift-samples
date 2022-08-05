@@ -320,11 +320,9 @@ private struct Sheet<Content>: UIViewRepresentable where Content: View {
         } else if wasPresenting {
             // Updates the sheet presentation controller and the root view of the hosting
             // controller if the sheet was already presenting.
-            sheet.animateChanges {
-                configureSheetPresentationController(sheet)
-                Task {
-                    model.hostingController.rootView = content
-                }
+            configureSheetPresentationController(sheet)
+            Task {
+                model.hostingController.rootView = content
             }
         }
     }
