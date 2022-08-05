@@ -26,10 +26,34 @@ struct WebView: UIViewRepresentable {
         webConfiguration.dataDetectorTypes = .link
         // Creates a web view with the configuration.
         let webView = WKWebView(frame: .zero, configuration: webConfiguration)
+        // Sets the web view's navigation delegate.
+        webView.navigationDelegate = context.coordinator
         // Loads the given HTML string.
         webView.loadHTMLString(htmlString, baseURL: URL(fileURLWithPath: Bundle.main.bundlePath))
         return webView
     }
     
     func updateUIView(_ webView: WKWebView, context: Context) { }
+    
+    func makeCoordinator() -> Coordinator {
+        Coordinator()
+    }
+    
+    class Coordinator: NSObject, WKNavigationDelegate {
+        func webView(
+            _ webView: WKWebView,
+            decidePolicyFor navigationAction: WKNavigationAction,
+            decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
+        ) {
+            switch navigationAction.navigationType {
+            case .linkActivated:
+                if let url = navigationAction.request.url, UIApplication.shared.canOpenURL(url) {
+                    UIApplication.shared.open(url)
+                }
+                decisionHandler(.cancel)
+            default:
+                decisionHandler(.allow)
+            }
+        }
+    }
 }
