@@ -17,14 +17,22 @@ import SwiftUI
 extension View {
     /// Presents a sheet with the specified detent and content.
     /// - Parameters:
-    ///   - isPresented: A binding to a Boolean value that determines whether the sheet it presented.
+    ///   - isPresented: A `Binding` to a Boolean value that determines whether the sheet is presented.
     ///   - detents: A set of supported detents for the sheet. If there is more than one detent, the sheet
     ///   can be dragged to resize it.
+    ///   - selection: A `Binding` to the currently selected detent.
+    ///   - dragIndicatorVisibility: The preferred visibility of the drag indicator.
+    ///   - idealWidth: The ideal width of the popover.
+    ///   - idealHeight: The ideal height of the popover.
     ///   - onDismiss: A closure to execute when dismissing the sheet.
     ///   - content: A closure returning the content of the sheet.
     func sheet<Content>(
         isPresented: Binding<Bool>,
-        detents: Set<Detent>,
+        detents: [Detent],
+        selection: Binding<Detent>? = nil,
+        dragIndicatorVisibility: Visibility = .automatic,
+        idealWidth: CGFloat = 320,
+        idealHeight: CGFloat = 428,
         onDismiss: (() -> Void)? = nil,
         content: @escaping () -> Content
     ) -> some View where Content: View {
@@ -32,12 +40,18 @@ extension View {
             SheetModifier(
                 isPresented: isPresented,
                 detents: detents,
+                selection: selection ?? .none,
+                dragIndicatorVisibility: dragIndicatorVisibility,
+                idealWidth: idealWidth,
+                idealHeight: idealHeight,
                 onDismiss: onDismiss,
                 sheetContent: content()
             )
         )
     }
 }
+
+// MARK: Detent
 
 /// A detent for sheet presentation.
 enum Detent {
@@ -46,6 +60,32 @@ enum Detent {
     /// A large sheet presentation detent.
     case large
 }
+
+// MARK: Environment
+
+private struct DragIndicatorVisibilityEnvironmentKey: EnvironmentKey {
+    static let defaultValue: Visibility = .automatic
+}
+
+private struct IsSheetLayoutEnvironmentKey: EnvironmentKey {
+    static let defaultValue = true
+}
+
+private extension EnvironmentValues {
+    /// The preferred visibility of the drag indicator.
+    var dragIndicatorVisibility: Visibility {
+        get { self[DragIndicatorVisibilityEnvironmentKey.self] }
+        set { self[DragIndicatorVisibilityEnvironmentKey.self] = newValue }
+    }
+    
+    /// A Boolean value indicating whether the device's layout is such that a sheet should be presented.
+    var isSheetLayout: Bool {
+        get { self[IsSheetLayoutEnvironmentKey.self] }
+        set { self[IsSheetLayoutEnvironmentKey.self] = newValue }
+    }
+}
+
+// MARK: Sheet Modifier
 
 private struct SheetModifier<SheetContent>: ViewModifier where SheetContent: View {
     /// The current horizontal size class of the environment.
@@ -67,7 +107,19 @@ private struct SheetModifier<SheetContent>: ViewModifier where SheetContent: Vie
     @Binding var isPresented: Bool
     
     /// The specified detents for the sheet.
-    let detents: Set<Detent>
+    let detents: [Detent]
+    
+    /// A `Binding` to the currently selected detent.
+    let selection: Binding<Detent>?
+    
+    /// The preferred visibility of the drag indicator.
+    let dragIndicatorVisibility: Visibility
+    
+    /// The ideal width of the popover.
+    let idealWidth: CGFloat
+    
+    /// The ideal height of the popover.
+    let idealHeight: CGFloat
     
     /// The closure to execute when dismissing the sheet.
     let onDismiss: (() -> Void)?
@@ -79,122 +131,116 @@ private struct SheetModifier<SheetContent>: ViewModifier where SheetContent: Vie
     private var isSheetLayout: Bool { horizontalSizeClass != .regular || verticalSizeClass != .regular }
     
     func body(content: Content) -> some View {
-        if #available(iOS 16.0, *) {
-            //            content
-            //                .sheet(
-            //                    isPresented: Binding(
-            //                        get: { isPresented && isSheetLayout && !isPopoverVisible },
-            //                        set: { isPresented = $0 }
-            //                    )
-            //                ) {
-            //                    sheetContent
-            //                        .presentationDetents(Set(
-            //                            detents.map {
-            //                                switch $0 {
-            //                                case .medium: return .medium
-            //                                case .large: return .large
-            //                                }
-            //                            }
-            //                        ))
-            //                        .onAppear {
-            //                            isSheetVisible = true
-            //                            isTransitioningFromSheet = false
-            //                        }
-            //                        .onDisappear {
-            //                            isSheetVisible = false
-            //                            if isTransitioningFromSheet {
-            //                                // Presents the sheet when transitioning from a
-            //                                // sheet to popover layout.
-            //                                isPresented = true
-            //                            }
-            //                        }
-            //                }
-            //                .onChange(of: isSheetLayout) { _ in
-            //                    if isPresented {
-            //                        isTransitioningFromSheet = true
-            //                    }
-            //                }
-            //                .popover(
-            //                    isPresented: Binding(
-            //                        get: { isPresented && !isSheetLayout && !isSheetVisible },
-            //                        set: { isPresented = $0 }
-            //                    ),
-            //                    attachmentAnchor: .point(.bottom)
-            //                ) {
-            //                    sheetContent
-            //                        .frame(idealWidth: 320, idealHeight: 428)
-            //                        .onAppear {
-            //                            isPopoverVisible = true
-            //                            isTransitioningFromSheet = false
-            //                        }
-            //                        .onDisappear {
-            //                            isPopoverVisible = false
-            //                            if !isPresented {
-            //                                // Calls the on dismiss closure if the popover is
-            //                                // not presented.
-            //                                onDismiss?()
-            //                            } else {
-            //                                // Presents the sheet when transitioning from a
-            //                                // popover layout.
-            //                                isPresented = true
-            //                            }
-            //
-            //                        }
-            //                }
-        } else {
-            ZStack {
-                content
-                    .popover(
-                        isPresented: Binding(
-                            get: { isPresented && !isSheetLayout },
-                            set: { isPresented = $0 }
-                        ),
-                        attachmentAnchor: .point(.bottom)
-                    ) {
-                        sheetContent
-                            .frame(idealWidth: 320, idealHeight: 428)
-                            .onAppear { isPopoverVisible = true }
-                            .onDisappear {
-                                isPopoverVisible = false
-                                if !isPresented {
-                                    onDismiss?()
-                                }
-                            }
-                    }
-                
-                Sheet(
+        makeContentWithSheetWrapper(content)
+    }
+}
+
+// MARK: iOS 15
+
+private extension Detent {
+    /// A medium or large `UISheetPresentationController.Detent` based on the `Detent`.
+    var sheetDetent: UISheetPresentationController.Detent {
+        switch self {
+        case .medium: return .medium()
+        case .large: return .large()
+        }
+    }
+    
+    /// A medium or large `UISheetPresentationController.Detent.Identifier` based on the `Detent`.
+    var sheetDetentIdentifier: UISheetPresentationController.Detent.Identifier {
+        switch self {
+        case .medium: return .medium
+        case .large: return .large
+        }
+    }
+}
+
+private extension UISheetPresentationController.Detent.Identifier {
+    /// A `Detent` based on the `UISheetPresentationController.Detent.Identifier`. Is `nil` if
+    /// the identifier is not medium or large.
+    var detent: Detent? {
+        switch self {
+        case .medium: return .medium
+        case .large: return .large
+        default: return nil
+        }
+    }
+}
+
+private extension SheetModifier {
+    /// Creates the given content with a popover modifier and a `UIViewRepresentable` that presents a sheet
+    /// using a `UISheetPresentationController` and `UISheetPresentationController.Detent`s.
+    /// - Parameter content: The content that will present the sheet or popover.
+    /// - Returns: The given content with the necessary modifiers and views to present a popover or sheet and
+    /// transition between them when necessary.
+    func makeContentWithSheetWrapper(_ content: Content) -> some View {
+        ZStack {
+            content
+                .popover(
                     isPresented: Binding(
-                        get: { isPresented && !isPopoverVisible },
+                        get: { isPresented && !isSheetLayout },
                         set: { isPresented = $0 }
-                    ),
-                    detents: detents.map {
-                        switch $0 {
-                        case .medium: return .medium()
-                        case .large: return .large()
-                        }
-                    },
-                    onDismiss: onDismiss,
-                    isSheetLayout: isSheetLayout
+                    )
                 ) {
                     sheetContent
+                        .frame(idealWidth: idealWidth, idealHeight: idealHeight)
+                        .onAppear { isPopoverVisible = true }
                         .onDisappear {
+                            isPopoverVisible = false
                             if !isPresented {
                                 onDismiss?()
                             }
                         }
                 }
-                .fixedSize()
+            
+            Sheet(
+                isPresented: Binding(
+                    get: { isPresented && !isPopoverVisible },
+                    set: { isPresented = $0 }
+                ),
+                detents: detents.map { $0.sheetDetent },
+                selection: Binding(
+                    get: {
+                        selection?.wrappedValue.sheetDetentIdentifier
+                    },
+                    set: {
+                        if let newSelection = $0?.detent {
+                            selection?.wrappedValue = newSelection
+                        }
+                    }
+                )
+            ) {
+                sheetContent
+                    .onDisappear {
+                        if !isPresented {
+                            onDismiss?()
+                        }
+                    }
             }
+            .fixedSize()
+            .environment(\.dragIndicatorVisibility, dragIndicatorVisibility)
+            .environment(\.isSheetLayout, isSheetLayout)
         }
     }
 }
 
+// MARK: Sheet Wrapper
+
 private struct Sheet<Content>: UIViewRepresentable where Content: View {
+    /// The preferred visibility of the drag indicator.
+    @Environment(\.dragIndicatorVisibility) private var dragIndicatorVisibility
+    
+    /// A Boolean value indicating whether the device's layout is such that a sheet should be presented.
+    @Environment(\.isSheetLayout) private var isSheetLayout
+    
     /// A Boolean value indicating whether the sheet is presented.
     @Binding private var isPresented: Bool
     
-    /// A Boolean value indicating whether the device's layout is such that a sheet should be presented.
-    private let isSheetLayout: Bool
+    /// The specified detents for the sheet.
+    private let detents: [UISheetPresentationController.Detent]
+    
+    /// The identifier of the currently selected detent.
+    @Binding private var selection: UISheetPresentationController.Detent.Identifier?
     
     /// The content of the sheet.
     private let content: Content
@@ -206,23 +252,20 @@ private struct Sheet<Content>: UIViewRepresentable where Content: View {
     /// - Parameters:
     ///   - isPresented: A Boolean value indicating whether the sheet is presented.
     ///   - detents: The specified detents for the sheet.
-    ///   - onDismiss: The closure to execute when dismissing the sheet.
-    ///   - isSheetLayout: A Boolean value indicating whether the device's layout is such that a sheet should be presented.
+    ///   - selection: The identifier of the currently selected detent.
     ///   - content: The content of the sheet.
     init(
         isPresented: Binding<Bool>,
         detents: [UISheetPresentationController.Detent],
-        onDismiss: (() -> Void)?,
-        isSheetLayout: Bool,
+        selection: Binding<UISheetPresentationController.Detent.Identifier?>,
         content: @escaping () -> Content
     ) {
         _isPresented = isPresented
-        self.isSheetLayout = isSheetLayout
+        self.detents = detents
+        _selection = selection
         self.content = content()
         _model = StateObject(
             wrappedValue: SheetModel<Content>(
-                detents: detents,
-                onDismiss: onDismiss,
                 content: content()
             )
         )
@@ -243,11 +286,13 @@ private struct Sheet<Content>: UIViewRepresentable where Content: View {
         /// A Boolean value indicating whether the presented view controller is a hosting controller.
         let isPresentedControllerHostingType = rootViewController.presentedViewController is UIHostingController<Content>
         
-        // Ensures that the device's layout is such that a sheet should be presented.
-        guard isSheetLayout else {
+        // Ensures that the device's layout is such that a sheet should be presented and
+        // the hosting controller's sheet presentation controller exists.
+        guard isSheetLayout,
+              let sheet = model.hostingController.sheetPresentationController else {
             // Dismisses the sheet if it is being presented and a popover should
             // be presented instead.
-            if isPresentedControllerHostingType {
+            if isPresentedControllerHostingType && !model.hostingController.isBeingDismissed {
                 rootViewController.dismiss(animated: false)
             }
             return
@@ -256,31 +301,44 @@ private struct Sheet<Content>: UIViewRepresentable where Content: View {
         /// A Boolean value indicating whether the sheet was already presenting.
         let wasPresenting = rootViewController.presentedViewController != nil
         
-        if isPresented && !wasPresenting && model.presentationAttempts < 2 {
-            // Presents the hosting controller if the sheet should be presented,
-            // was not presenting before, and the number of presentation attempts
-            // is less than two.
-            
-            // Sets the delegate and detents for the hosting controller.
-            model.hostingController.sheetPresentationController?.delegate = context.coordinator
-            if let sheet = model.hostingController.sheetPresentationController {
-                sheet.detents = model.detents
-            }
-            
+        /// A Boolean value indicating whether the presented view controller is an alert controller.
+        let isPresentedControllerAlertType = rootViewController.presentedViewController is UIAlertController
+        
+        if isPresented && !wasPresenting {
+            // Sets the sheet presentation controller's delegate.
+            sheet.delegate = context.coordinator
+            // Configures the hosting controller's sheet presentation controller.
+            configureSheetPresentationController(sheet)
             // Presents the hosting controller.
             rootViewController.present(model.hostingController, animated: model.isTransitioningFromPopover ? false : true)
-            model.presentationAttempts += 1
-        } else if !isPresented && wasPresenting && !model.hostingController.isBeingDismissed && !(rootViewController.presentedViewController is UIAlertController) {
+        } else if !isPresented && wasPresenting && !model.hostingController.isBeingDismissed && !isPresentedControllerAlertType {
             // Dismisses the view controller presented by the root view controller
             // if 'isPresented' is false, but was presenting before (popover), is
             // not currently being dismissed, and is not an alert.
             rootViewController.dismiss(animated: isPresentedControllerHostingType ? true : false)
             model.isTransitioningFromPopover = !isPresentedControllerHostingType
-            model.presentationAttempts = 0
         } else if wasPresenting {
-            // Updates the root view of the hosting controller if the sheet
-            // was already presenting.
-            model.hostingController.rootView = content
+            // Updates the sheet presentation controller and the root view of the hosting
+            // controller if the sheet was already presenting.
+            configureSheetPresentationController(sheet)
+            Task {
+                model.hostingController.rootView = content
+            }
+        }
+    }
+    
+    /// Configures the given sheet presentation controller's detents, selected detent identifier, and drag indicator visibility.
+    /// - Parameter sheet: The `UISheetPresentationController` to configure.
+    private func configureSheetPresentationController(_ sheet: UISheetPresentationController) {
+        sheet.detents = detents
+        sheet.selectedDetentIdentifier = selection
+        switch dragIndicatorVisibility {
+        case .automatic:
+            sheet.prefersGrabberVisible = detents.count > 1
+        case .visible:
+            sheet.prefersGrabberVisible = true
+        case .hidden:
+            sheet.prefersGrabberVisible = false
         }
     }
     
@@ -296,32 +354,24 @@ private struct Sheet<Content>: UIViewRepresentable where Content: View {
         /// Updates the parent when the sheet is dismissed with a swipe.
         func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
             parent.isPresented = false
-            parent.model.onDismiss?()
-            parent.model.presentationAttempts = 0
+            parent.selection = presentationController.presentedViewController.sheetPresentationController?.selectedDetentIdentifier
+        }
+        
+        /// Updates the selection of the parent when the sheet presentation controller's selected detent identifier changes.
+        func sheetPresentationControllerDidChangeSelectedDetentIdentifier(_ sheetPresentationController: UISheetPresentationController) {
+            parent.selection = sheetPresentationController.selectedDetentIdentifier
         }
     }
 }
 
 private extension Sheet {
     class SheetModel<Content>: ObservableObject where Content: View {
-        /// The number of attempts the view controller has made to present the hosting controller.
-        var presentationAttempts = 0
         /// A Boolean value indicating whether the layout is transitioning from a popover layout.
         var isTransitioningFromPopover = false
         /// The hosting controller for the content of the sheet.
         let hostingController: UIHostingController<Content>
-        /// The specified detents for the sheet.
-        let detents: [UISheetPresentationController.Detent]
-        /// The closure to execute when dismissing the sheet.
-        let onDismiss: (() -> Void)?
         
-        init(
-            detents: [UISheetPresentationController.Detent],
-            onDismiss: (() -> Void)?,
-            content: Content
-        ) {
-            self.detents = detents
-            self.onDismiss = onDismiss
+        init(content: Content) {
             hostingController = UIHostingController(rootView: content)
         }
     }
