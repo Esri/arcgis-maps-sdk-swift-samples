@@ -28,12 +28,13 @@ struct WebView: UIViewRepresentable {
         let webView = WKWebView(frame: .zero, configuration: webConfiguration)
         // Sets the web view's navigation delegate.
         webView.navigationDelegate = context.coordinator
-        // Loads the given HTML string.
-        webView.loadHTMLString(htmlString, baseURL: URL(fileURLWithPath: Bundle.main.bundlePath))
         return webView
     }
     
-    func updateUIView(_ webView: WKWebView, context: Context) { }
+    func updateUIView(_ webView: WKWebView, context: Context) {
+        // Loads the given HTML string.
+        webView.loadHTMLString(htmlString, baseURL: URL(fileURLWithPath: Bundle.main.bundlePath))
+    }
     
     func makeCoordinator() -> Coordinator {
         Coordinator()

@@ -21,6 +21,9 @@ struct SampleInfoView: View {
     /// The current sample information displayed.
     @State private var informationMode: InformationMode = .readme
     
+    /// The index of the sample's currently selected code snippet.
+    @State private var selectedSnippetIndex = 0
+    
     /// The sample to view information for.
     let sample: Sample
     
@@ -44,7 +47,11 @@ struct SampleInfoView: View {
             
             ToolbarItem(placement: .bottomBar) {
                 if informationMode == .code {
-                    Text(sample.snippets.first ?? "Unknown filename")
+                    Picker("Source Code File Picker", selection: $selectedSnippetIndex) {
+                        ForEach(sample.snippetURLs.indices, id: \.self) { index in
+                            Text(sample.snippets[index].dropLast(6))
+                        }
+                    }
                 }
             }
         }
@@ -108,11 +115,10 @@ private extension SampleInfoView {
 private extension SampleInfoView {
     /// The code of the sample's view file.
     var sampleContent: String? {
-        guard let path = sample.snippetURLs.first?.relativePath,
-              let content = try? String(contentsOfFile: path, encoding: .utf8) else {
-            return nil
-        }
-        return content
+        try? String(
+            contentsOf: sample.snippetURLs[selectedSnippetIndex],
+            encoding: .utf8
+        )
     }
     
     /// The HTML to display the sample's source code.
