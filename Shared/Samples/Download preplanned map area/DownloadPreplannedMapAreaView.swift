@@ -272,17 +272,15 @@ private extension DownloadPreplannedMapAreaView {
             // Starts the job.
             job.start()
             
-            // Awaits the results of the job.
-            let result = await job.result
-            
-            switch result {
-            case .success(let output):
+            do {
+                // Awaits the output of the job.
+                let output = try await job.output
                 // Adds the output's mobile map package to the downloaded map packages.
                 localMapPackages.append(output.mobileMapPackage)
-            case .failure(let error):
-                // Shows an alert with the error if the job fails and the error is not
-                // a cancellation error.
-                guard !(error is CancellationError) else { return }
+            } catch is CancellationError {
+                // Does nothing if the error is a cancellation error.
+            } catch {
+                // Shows an alert with the error if the job fails.
                 self.error = error
             }
         }
@@ -302,8 +300,7 @@ private extension DownloadPreplannedMapAreaView {
             } else {
                 currentJobs = currentJobs.filter { $1.status == .succeeded }
                 guard let currentPreplannedMapArea = currentPreplannedMapArea,
-                      currentJobs[currentPreplannedMapArea] != nil
-                else {
+                      currentJobs[currentPreplannedMapArea] != nil else {
                     // Sets the current map to the online web map if the current
                     // preplanned map does not exist.
                     map = onlineMap
