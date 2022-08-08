@@ -185,24 +185,7 @@ private extension SheetModifier {
                     set: { isPresented = $0 }
                 )
             ) {
-                sheetContent
-                    .frame(idealWidth: idealWidth, idealHeight: idealHeight)
-                    .onAppear {
-                        isPopoverVisible = true
-                        isTransitioningFromSheet = false
-                    }
-                    .onDisappear {
-                        isPopoverVisible = false
-                        if !isPresented {
-                            // Calls the on dismiss closure if the popover is
-                            // not presented.
-                            onDismiss?()
-                        } else {
-                            // Presents the sheet when transitioning from a
-                            // popover layout.
-                            isPresented = true
-                        }
-                    }
+                makePopoverContent()
             }
             .sheet(
                 isPresented: Binding(
@@ -210,48 +193,77 @@ private extension SheetModifier {
                     set: { isPresented = $0 }
                 )
             ) {
-                Group {
-                    if let selection = selection?.wrappedValue {
-                        // Applies a presentation detents modifier with a selection.
-                        sheetContent
-                            .presentationDetents(
-                                presentationDetents,
-                                selection: Binding(
-                                    get: {
-                                        selection.presentationDetent
-                                    },
-                                    set: {
-                                        if let newSelection = $0.detent {
-                                            self.selection?.wrappedValue = newSelection
-                                        }
-                                    }
-                                )
-                            )
-                    } else {
-                        // Applies a presentation detents modifier without a selection.
-                        sheetContent
-                            .presentationDetents(presentationDetents)
-                    }
-                }
-                .presentationDragIndicator(dragIndicatorVisibility)
-                .onAppear {
-                    isSheetVisible = true
-                    isTransitioningFromSheet = false
-                }
-                .onDisappear {
-                    isSheetVisible = false
-                    if isTransitioningFromSheet {
-                        // Presents the sheet when transitioning from a
-                        // sheet to popover layout.
-                        isPresented = true
-                    } else {
-                        // Calls the on dismiss closure when the sheet disappears
-                        // and is not transitioning to a popover.
-                        onDismiss?()
-                    }
-                }
+                makeSheetContent()
             }
             .onChange(of: isSheetLayout) { isTransitioningFromSheet = !$0 }
+    }
+    
+    /// Creates the content of the popover.
+    /// - Returns: The content of the popover.
+    func makePopoverContent() -> some View {
+        sheetContent
+            .frame(idealWidth: idealWidth, idealHeight: idealHeight)
+            .onAppear {
+                isPopoverVisible = true
+                isTransitioningFromSheet = false
+            }
+            .onDisappear {
+                isPopoverVisible = false
+                if !isPresented {
+                    // Calls the on dismiss closure if the popover is
+                    // not presented.
+                    onDismiss?()
+                } else {
+                    // Presents the sheet when transitioning from a
+                    // popover layout.
+                    isPresented = true
+                }
+            }
+    }
+    
+    /// Creates the content of the sheet with the corresponding presentation detents modifier if a selection exists.
+    /// - Returns: The content of the sheet
+    func makeSheetContent() -> some View {
+        Group {
+            if let selection = selection?.wrappedValue {
+                // Applies a presentation detents modifier with a selection.
+                sheetContent
+                    .presentationDetents(
+                        presentationDetents,
+                        selection: Binding(
+                            get: {
+                                selection.presentationDetent
+                            },
+                            set: {
+                                if let newSelection = $0.detent {
+                                    self.selection?.wrappedValue = newSelection
+                                }
+                            }
+                        )
+                    )
+            } else {
+                // Applies a presentation detents modifier without a selection.
+                sheetContent
+                    .presentationDetents(presentationDetents)
+            }
+        }
+        .presentationDragIndicator(dragIndicatorVisibility)
+        .onAppear {
+            isSheetVisible = true
+            isTransitioningFromSheet = false
+        }
+        .onDisappear {
+            isSheetVisible = false
+            if isTransitioningFromSheet {
+                // Presents the sheet when transitioning from a
+                // sheet to popover layout.
+                isPresented = true
+            } else {
+                // Calls the on dismiss closure when the sheet disappears
+                // and is not transitioning to a popover.
+                onDismiss?()
+            }
+        }
     }
 }
 
