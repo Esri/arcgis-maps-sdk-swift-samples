@@ -154,10 +154,7 @@ private extension DownloadPreplannedMapAreaView {
         private let offlineMapTask: OfflineMapTask
         
         /// A URL to a temporary directory where the downloaded map packages are stored.
-        private let temporaryDirectoryURL = FileManager
-            .default
-            .temporaryDirectory
-            .appendingPathComponent(UUID().uuidString)
+        private let temporaryDirectoryURL = makeTemporaryDirectory()
         
         init() {
             // Initializes the online map and offline map task.
@@ -166,8 +163,6 @@ private extension DownloadPreplannedMapAreaView {
             
             // Sets the map to the online map.
             map = onlineMap
-            // Creates the temporary directory.
-            makeTemporaryDirectory()
         }
         
         deinit {
@@ -306,7 +301,8 @@ private extension DownloadPreplannedMapAreaView {
             } else {
                 currentJobs = currentJobs.filter { $1.status == .succeeded }
                 guard let currentPreplannedMapArea = currentPreplannedMapArea,
-                      currentJobs[currentPreplannedMapArea] != nil else {
+                      currentJobs[currentPreplannedMapArea] != nil
+                else {
                     // Sets the current map to the online web map if the current
                     // preplanned map does not exist.
                     map = onlineMap
@@ -337,16 +333,17 @@ private extension DownloadPreplannedMapAreaView {
             localMapPackages.removeAll()
         }
         
-        /// Creates the temporary directory.
-        private func makeTemporaryDirectory() {
+        /// Creates a temporary directory.
+        private static func makeTemporaryDirectory() -> URL {
             do {
-                try FileManager.default.createDirectory(
-                    at: temporaryDirectoryURL,
-                    withIntermediateDirectories: false
+                return try FileManager.default.url(
+                    for: .itemReplacementDirectory,
+                    in: .userDomainMask,
+                    appropriateFor: Bundle.main.bundleURL,
+                    create: true
                 )
             } catch {
-                self.error = error
-                isShowingErrorAlert = true
+                fatalError("A temporary directory could not be created.")
             }
         }
     }
