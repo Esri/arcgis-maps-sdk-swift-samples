@@ -16,8 +16,8 @@
         "ExportVectorTilesParameters",
         "ExportVectorTilesResult",
         "ExportVectorTilesTask",
-        "ExportVectorTilesTask.createDefaultExportVectorTilesParameters(areaOfInterest:maxScale:)",
-        "ExportVectorTilesTask.exportVectorTiles(parameters:vectorTileCacheURL:itemResourceCacheURL:)",
+        "ExportVectorTilesTask.makeDefaultExportVectorTilesParameters(areaOfInterest:maxScale:)",
+        "ExportVectorTilesTask.makeExportVectorTilesJob(parameters:vectorTileCacheURL:itemResourceCacheURL:)",
         "ItemResourceCache",
         "VectorTileCache"
     ],
@@ -28,8 +28,8 @@
         "ExportVectorTilesParameters",
         "ExportVectorTilesResult",
         "ExportVectorTilesTask",
-        "ExportVectorTilesTask.createDefaultExportVectorTilesParameters(areaOfInterest:maxScale:)",
-        "ExportVectorTilesTask.exportVectorTiles(parameters:vectorTileCacheURL:itemResourceCacheURL:)",
+        "ExportVectorTilesTask.makeDefaultExportVectorTilesParameters(areaOfInterest:maxScale:)",
+        "ExportVectorTilesTask.makeExportVectorTilesJob(parameters:vectorTileCacheURL:itemResourceCacheURL:)",
         "ItemResourceCache",
         "VectorTileCache"
     ],
