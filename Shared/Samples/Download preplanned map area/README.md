@@ -21,9 +21,9 @@ Select a preplanned map area by tapping the "Select Map" button and selecting on
 3. Load the offline map task's `PreplannedMapArea`s.
 4. To download a selected map area, create the default parameters with the offline map task's `makeDefaultDownloadPreplannedOfflineMapParameters(preplannedMapArea:)` method, specifying the selected map area.
 5. Set the parameter's update mode.
-6. Create a `DownloadPreplannedOfflineMapJob` instance with the task's `makeDownloadPreplannedOfflineMapJob(parameters:downloadDirectory:)` method, passing in the parameters and a download directory as arguments.
-7. Start the job and await its results.
-8. Get the offline `Map` from the result's output when the job successfully finishes.
+6. Create a `DownloadPreplannedOfflineMapJob` instance with the offline map task's `makeDownloadPreplannedOfflineMapJob(parameters:downloadDirectory:)` method, passing in the parameters and a download directory as arguments.
+7. Start the job and await its output.
+8. Get the offline `Map` from the output when the job successfully finishes.
 9. Update the map with the offline map.
 
 ## Relevant API
