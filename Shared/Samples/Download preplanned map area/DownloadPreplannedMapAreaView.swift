@@ -45,7 +45,7 @@ struct DownloadPreplannedMapAreaView: View {
                 await model.loadPreplannedMapAreas()
             }
             .onDisappear {
-                Task { await model.cancelAllJobs(shouldRemove: false) }
+                Task { await model.cancelAllJobs() }
             }
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
@@ -285,9 +285,8 @@ private extension DownloadPreplannedMapAreaView {
             }
         }
         
-        /// Cancels all current jobs and removes all if specified.
-        /// - Parameter shouldRemove: A Boolean value indicating whether to remove all current jobs.
-        func cancelAllJobs(shouldRemove: Bool) async {
+        /// Cancels all current jobs.
+        func cancelAllJobs() async {
             await withTaskGroup(of: Void.self) { group in
                 currentJobs.forEach { _, job in
                     group.addTask {
@@ -295,25 +294,13 @@ private extension DownloadPreplannedMapAreaView {
                     }
                 }
             }
-            if shouldRemove {
-                currentJobs.removeAll()
-            } else {
-                currentJobs = currentJobs.filter { $1.status == .succeeded }
-                guard let currentPreplannedMapArea = currentPreplannedMapArea,
-                      currentJobs[currentPreplannedMapArea] != nil else {
-                    // Sets the current map to the online web map if the current
-                    // preplanned map does not exist.
-                    map = onlineMap
-                    currentPreplannedMapArea = nil
-                    return
-                }
-            }
         }
         
         // Removes all downloaded maps.
         func removeDownloadedMaps() async {
             // Cancels and removes all current jobs.
-            await cancelAllJobs(shouldRemove: true)
+            await cancelAllJobs()
+            currentJobs.removeAll()
             
             // Sets the current map to the online web map.
             map = onlineMap

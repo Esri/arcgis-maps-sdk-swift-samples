@@ -71,9 +71,8 @@ struct SampleDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button {
-                    print("Info button was tapped")
-                    print(sample.readmeURL)
+                NavigationLink {
+                    Text("Hello, world!")
                 } label: {
                     Image(systemName: "info.circle")
                 }
