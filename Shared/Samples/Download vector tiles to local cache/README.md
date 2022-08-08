@@ -16,10 +16,10 @@ When the vector tiled layer loads, zoom in to the extent you want to export. The
 ## How it works
 
 1. Create an `ExportVectorTilesTask` instance, passing in the `PortalItem` for the vector tiled layer. Since vector tiled layers are premium content, you must first authenticate with the Portal.
-2. Create parameters for the export by using the task's method, `ExportVectorTilesTask.createDefaultExportVectorTilesParameters(areaOfInterest:maxScale:)`, specifying the area of interest and max scale.
-3. Create an `ExportVectorTileJob` instance by using the task's method, `ExportVectorTilesTask.exportVectorTiles(parameters:vectorTileCacheURL:itemResourceCacheURL:)`, passing in the parameters and specifying a vector tile cache path and an item resource path. The resource path is required if you want to export the tiles with the style.
-4. Start the job and await its results.
-5. Get the `VectorTileCache` and `ItemResourceCache` from the result's output and create an `ArcGISVectorTiledLayer`.
+2. Create parameters for the export by using the task's method, `ExportVectorTilesTask.makeDefaultExportVectorTilesParameters(areaOfInterest:maxScale:)`, specifying the area of interest and max scale.
+3. Create an `ExportVectorTileJob` instance by using the task's method, `ExportVectorTilesTask.makeExportVectorTilesJob(parameters:vectorTileCacheURL:itemResourceCacheURL:)`, passing in the parameters and specifying a vector tile cache path and an item resource path. The resource path is required if you want to export the tiles with the style.
+4. Start the job and await its output.
+5. Get the `VectorTileCache` and `ItemResourceCache` from the output and create an `ArcGISVectorTiledLayer` instance.
 6. Create a `Map` instance, specifying a basemap with a base layer of the vector tiled layer.
 7. Set the map's initial viewpoint to the area of interest and create a map view with the map.
 
@@ -30,8 +30,8 @@ When the vector tiled layer loads, zoom in to the extent you want to export. The
 * ExportVectorTilesParameters
 * ExportVectorTilesResult
 * ExportVectorTilesTask
-* ExportVectorTilesTask.createDefaultExportVectorTilesParameters(areaOfInterest:maxScale:)
-* ExportVectorTilesTask.exportVectorTiles(parameters:vectorTileCacheURL:itemResourceCacheURL:)
+* ExportVectorTilesTask.makeDefaultExportVectorTilesParameters(areaOfInterest:maxScale:)
+* ExportVectorTilesTask.makeExportVectorTilesJob(parameters:vectorTileCacheURL:itemResourceCacheURL:)
 * ItemResourceCache
 * VectorTileCache
 
