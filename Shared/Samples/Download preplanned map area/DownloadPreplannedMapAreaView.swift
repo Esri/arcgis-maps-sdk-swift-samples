@@ -121,7 +121,9 @@ private extension DownloadPreplannedMapAreaView {
         @Published var isShowingErrorAlert = false
         
         /// The error shown in the alert.
-        @Published var error: Error?
+        @Published var error: Error? {
+            didSet { isShowingErrorAlert = error != nil }
+        }
         
         /// The preplanned map areas from the offline map task.
         @Published var preplannedMapAreas: [PreplannedMapArea] = []
@@ -188,7 +190,6 @@ private extension DownloadPreplannedMapAreaView {
                 }
             } catch {
                 self.error = error
-                isShowingErrorAlert = true
             }
         }
         
@@ -241,7 +242,6 @@ private extension DownloadPreplannedMapAreaView {
                 return parameters
             } catch {
                 self.error = error
-                isShowingErrorAlert = true
                 return nil
             }
         }
@@ -282,7 +282,6 @@ private extension DownloadPreplannedMapAreaView {
                 // a cancellation error.
                 guard !(error is CancellationError) else { return }
                 self.error = error
-                isShowingErrorAlert = true
             }
         }
         
@@ -327,7 +326,6 @@ private extension DownloadPreplannedMapAreaView {
                     try FileManager.default.removeItem(at: package.fileURL)
                 } catch {
                     self.error = error
-                    isShowingErrorAlert = true
                 }
             }
             localMapPackages.removeAll()
