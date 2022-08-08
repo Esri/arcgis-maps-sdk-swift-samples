@@ -141,11 +141,17 @@ private extension DownloadPreplannedMapAreaView {
         /// A Boolean value indicating whether the delete button is disabled.
         var isDeleteDisabled: Bool { localMapPackages.isEmpty }
         
+        /// A portal item displaying the Naperville, IL water network.
+        private let napervillePortalItem = PortalItem(
+            portal: .arcGISOnline(isLoginRequired: false),
+            id: PortalItem.ID("acc027394bc84c2fb04d1ed317aac674")!
+        )
+        
         /// The online map of the Naperville water network.
-        private let onlineMap = Map(item: PortalItem.napervilleWaterNetwork)
+        private let onlineMap: Map
         
         /// The offline map task.
-        private let offlineMapTask = OfflineMapTask(portalItem: .napervilleWaterNetwork)
+        private let offlineMapTask: OfflineMapTask
         
         /// A URL to a temporary directory where the downloaded map packages are stored.
         private let temporaryDirectoryURL = FileManager
@@ -154,6 +160,10 @@ private extension DownloadPreplannedMapAreaView {
             .appendingPathComponent(UUID().uuidString)
         
         init() {
+            // Initializes the online map and offline map task.
+            onlineMap = Map(item: napervillePortalItem)
+            offlineMapTask = OfflineMapTask(portalItem: napervillePortalItem)
+            
             // Sets the map to the online map.
             map = onlineMap
             // Creates the temporary directory.
@@ -390,15 +400,5 @@ extension PreplannedMapArea: Equatable {
 extension PreplannedMapArea: Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
-    }
-}
-
-private extension PortalItem {
-    /// A portal item displaying the Naperville, IL water network.
-    static var napervilleWaterNetwork: Self {
-        .init(
-            portal: .arcGISOnline(isLoginRequired: false),
-            id: PortalItem.ID("acc027394bc84c2fb04d1ed317aac674")!
-        )
     }
 }
