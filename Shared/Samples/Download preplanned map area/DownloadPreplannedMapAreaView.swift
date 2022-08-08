@@ -230,7 +230,7 @@ private extension DownloadPreplannedMapAreaView {
         /// - Returns: A `DownloadPreplannedOfflineMapParameters` if there are no errors. Otherwise,
         /// it returns nil.
         private func makeDownloadPreplannedOfflineMapParameters(
-            for preplannedMapArea: PreplannedMapArea
+            preplannedMapArea: PreplannedMapArea
         ) async -> DownloadPreplannedOfflineMapParameters? {
             do {
                 // Creates the default parameters.
@@ -250,7 +250,9 @@ private extension DownloadPreplannedMapAreaView {
         /// - Parameter preplannedMapArea: The preplanned map area to be downloaded.
         private func downloadPreplannedMapArea(_ preplannedMapArea: PreplannedMapArea) async {
             // Creates the parameters for the download preplanned offline map job.
-            guard let parameters = await makeDownloadPreplannedOfflineMapParameters(for: preplannedMapArea) else { return }
+            guard let parameters = await makeDownloadPreplannedOfflineMapParameters(
+                preplannedMapArea: preplannedMapArea
+            ) else { return }
             
             // Creates the download directory URL based on the preplanned map area's
             // portal item identifier.
