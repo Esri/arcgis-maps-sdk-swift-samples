@@ -156,18 +156,13 @@ private extension DownloadVectorTilesToLocalCacheView {
         private var vectorTiledLayerResults: ArcGISVectorTiledLayer!
         
         /// A URL to the directory temporarily storing all items.
-        private let temporaryDirectory = try? FileManager.default.url(
-            for: .itemReplacementDirectory,
-            in: .userDomainMask,
-            appropriateFor: Bundle.main.bundleURL,
-            create: true
-        )
+        private let temporaryDirectory = makeTemporaryDirectory()
         
         /// A URL to the temporary directory to store the exported vector tile package.
-        private let vtpkTemporaryURL: URL!
+        private let vtpkTemporaryURL: URL
         
         /// A URL to the temporary directory to store the style item resources.
-        private let styleTemporaryURL: URL!
+        private let styleTemporaryURL: URL
         
         /// The max scale for the export vector tiles job.
         var maxScale: Double?
@@ -181,27 +176,22 @@ private extension DownloadVectorTilesToLocalCacheView {
             map.initialViewpoint = Viewpoint(latitude: 34.049, longitude: -117.181, scale: 1e4)
             
             // Initializes the URL for the directory containing vector tile packages.
-            vtpkTemporaryURL = temporaryDirectory?
+            vtpkTemporaryURL = temporaryDirectory
                 .appendingPathComponent("myTileCache")
                 .appendingPathExtension("vtpk")
             
             // Initializes the URL for the directory containing style item resources.
-            styleTemporaryURL = temporaryDirectory?
+            styleTemporaryURL = temporaryDirectory
                 .appendingPathComponent("styleItemResources", isDirectory: true)
         }
         
         deinit {
-            if let temporaryDirectory = temporaryDirectory {
-                // Removes the temporary directory.
-                try? FileManager.default.removeItem(at: temporaryDirectory)
-            }
+            // Removes the temporary directory.
+            try? FileManager.default.removeItem(at: temporaryDirectory)
         }
         
         /// Initializes the vector tiles task.
         func initializeVectorTilesTask() async {
-            // Ensures a temporary directory exists.
-            guard temporaryDirectory != nil else { fatalError("A temporary directory does not exist.") }
-            
             do {
                 // Waits for the map to load.
                 try await map.load()
@@ -302,6 +292,21 @@ private extension DownloadVectorTilesToLocalCacheView {
         func removeTemporaryFiles() {
             try? FileManager.default.removeItem(at: vtpkTemporaryURL)
             try? FileManager.default.removeItem(at: styleTemporaryURL)
+        }
+        
+        /// Creates a temporary directory.
+        /// - Returns: The URL to the temporary directory.
+        private static func makeTemporaryDirectory() -> URL {
+            do {
+                return try FileManager.default.url(
+                    for: .itemReplacementDirectory,
+                    in: .userDomainMask,
+                    appropriateFor: Bundle.main.bundleURL,
+                    create: true
+                )
+            } catch {
+                fatalError("A temporary directory could not be created.")
+            }
         }
     }
 }
