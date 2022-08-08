@@ -17,7 +17,7 @@ import SwiftUI
 extension View {
     /// Presents a sheet with the specified detent and content.
     /// - Parameters:
-    ///   - isPresented: A `Binding` to a Boolean value that determines whether the sheet it presented.
+    ///   - isPresented: A `Binding` to a Boolean value that determines whether the sheet is presented.
     ///   - detents: A set of supported detents for the sheet. If there is more than one detent, the sheet
     ///   can be dragged to resize it.
     ///   - selection: A `Binding` to the currently selected detent.
@@ -440,11 +440,9 @@ private struct Sheet<Content>: UIViewRepresentable where Content: View {
         } else if wasPresenting {
             // Updates the sheet presentation controller and the root view of the hosting
             // controller if the sheet was already presenting.
-            sheet.animateChanges {
-                configureSheetPresentationController(sheet)
-                Task {
-                    model.hostingController.rootView = content
-                }
+            configureSheetPresentationController(sheet)
+            Task {
+                model.hostingController.rootView = content
             }
         }
     }
