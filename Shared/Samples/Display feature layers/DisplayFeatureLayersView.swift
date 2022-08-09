@@ -65,7 +65,7 @@ struct DisplayFeatureLayersView: View {
         }
         // Creates a feature layer from the geodatabase's feature table and
         // sets the current feature layer to it.
-        let featureTable = geodatabase.getGeodatabaseFeatureTable(tableName: "Trailheads")!
+        let featureTable = geodatabase.featureTable(named: "Trailheads")!
         let featureLayer = FeatureLayer(featureTable: featureTable)
         setFeatureLayer(featureLayer, viewpoint: .losAngelesCA)
     }
