@@ -2,7 +2,6 @@ html {
     -webkit-text-size-adjust: 100%;
 }
 
-
 pre code.hljs {
     display: block;
     overflow-x: auto;
@@ -73,8 +72,8 @@ Other Type Names (@State, Int, String)
 @media (prefers-color-scheme: dark) {
     body {
         background-color: #1F1F24;
-      }
-      
+    }
+    
     .hljs {
         background: #1F1F24;
         color: #FFFFFF;

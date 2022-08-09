@@ -15,9 +15,6 @@
 import SwiftUI
 
 struct SampleInfoView: View {
-    /// The current color scheme of the device.
-    @Environment(\.colorScheme) private var colorScheme
-    
     /// The current sample information displayed.
     @State private var informationMode: InformationMode = .readme
     

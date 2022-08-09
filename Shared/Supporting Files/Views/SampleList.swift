@@ -63,6 +63,7 @@ private extension SampleList {
     struct SampleRow: View {
         /// The sample displayed in the row.
         let sample: Sample
+        
         /// A Boolean value indicating whether to show the sample's description
         @State private var isShowingDescription = false
         
