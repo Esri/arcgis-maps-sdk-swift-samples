@@ -74,7 +74,7 @@ struct DownloadPreplannedMapAreaView: View {
                                                         .progressViewStyle(Gauge())
                                                         .fixedSize()
                                                 }
-                                                Text(preplannedMapArea.displayName)
+                                                Text(preplannedMapArea.portalItem.title)
                                                 Spacer()
                                             }
                                             .tag(Optional(preplannedMapArea))
@@ -178,7 +178,9 @@ private extension DownloadPreplannedMapAreaView {
             guard preplannedMapAreas.isEmpty else { return }
             do {
                 // Sorts the offline map task's preplanned map areas alphabetically.
-                preplannedMapAreas = try await offlineMapTask.preplannedMapAreas.sorted { $0.displayName < $1.displayName }
+                preplannedMapAreas = try await offlineMapTask.preplannedMapAreas.sorted {
+                    $0.portalItem.title < $1.portalItem.title
+                }
                 
                 // Loads the preplanned map areas.
                 await withThrowingTaskGroup(of: Void.self) { group in
@@ -360,15 +362,8 @@ private extension DownloadPreplannedMapAreaView {
 }
 
 private extension PreplannedMapArea {
-    /// The name of the preplanned map area.
-    var displayName: String {
-        portalItem.title.replacingOccurrences(of: "_", with: " ")
-    }
-    
     /// The portal item's ID.
-    var portalItemIdentifier: String {
-        portalItem.id.rawValue
-    }
+    var portalItemIdentifier: String { portalItem.id.rawValue }
 }
 
 extension PreplannedMapArea: Identifiable {}
