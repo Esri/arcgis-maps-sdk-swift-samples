@@ -89,7 +89,7 @@ struct DownloadPreplannedMapAreaView: View {
                                 }
                             }
                             .task(id: model.currentPreplannedMapArea) {
-                                await model.handlePreplannedMapSelection(for: model.currentPreplannedMapArea)
+                                await model.handlePreplannedMapAreaSelection()
                             }
                             .navigationTitle("Select Map")
                             .navigationBarTitleDisplayMode(.inline)
@@ -199,9 +199,9 @@ private extension DownloadPreplannedMapAreaView {
         /// area is not nil, the preplanned map area will be downloaded if necessary and updates the map
         /// to the currently selected preplanned map area. If the preplanned map area is nil, then the map
         /// is set to the online web map.
-        /// - Parameter preplannedMapArea: The preplanned map area used to change the displayed map.
-        func handlePreplannedMapSelection(for preplannedMapArea: PreplannedMapArea?) async {
-            if let preplannedMapArea = preplannedMapArea {
+        func handlePreplannedMapAreaSelection() async {
+            if let preplannedMapArea = currentPreplannedMapArea,
+               preplannedMapArea.loadStatus == .loaded {
                 // Ensures the preplanned map area is loaded.
                 guard preplannedMapArea.loadStatus == .loaded else { return }
                 
