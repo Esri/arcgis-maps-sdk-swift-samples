@@ -8,7 +8,7 @@ Take a map offline using a preplanned map area.
 
 Generating offline maps on demand for a specific area can be time consuming for users and a processing load on the server. If areas of interest are known ahead of time, a web map author can pre-create packages for these areas. This way, the generation only needs to happen once, making the workflow more efficient for users and servers.
 
-An archeology team could define preplanned map areas for dig sites which can be taken offline for field use. To see the difference, compare this sample to the "Generate an offline map" sample.
+An archeology team could define preplanned map areas for dig sites which can be taken offline for field use. To see the difference, compare this sample to the "Generate offline map" sample.
 
 ## How to use the sample
 
@@ -36,7 +36,7 @@ Select a preplanned map area by tapping the "Select Map" button and selecting on
 
 ## About the data
 
-The [Naperville stormwater network map](https://www.arcgis.com/home/item.html?id=acc027394bc84c2fb04d1ed317aac674) is based on ArcGIS Solutions for Stormwater and provides a realistic depiction of a theoretical stormwater network.
+The [Naperville water network](https://www.arcgis.com/home/item.html?id=acc027394bc84c2fb04d1ed317aac674) map is based on ArcGIS Solutions for Stormwater and provides a realistic depiction of a theoretical stormwater network.
 
 ## Additional information
 
