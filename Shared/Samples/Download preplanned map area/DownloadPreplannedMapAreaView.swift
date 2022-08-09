@@ -67,7 +67,7 @@ struct DownloadPreplannedMapAreaView: View {
                                 
                                 Section {
                                     Picker("Preplanned Map Areas", selection: $model.currentPreplannedMapArea) {
-                                        ForEach(model.preplannedMapAreas, id: \.portalItemIdentifier) { preplannedMapArea in
+                                        ForEach(model.preplannedMapAreas) { preplannedMapArea in
                                             HStack {
                                                 if let job = model.currentJobs[preplannedMapArea] {
                                                     ProgressView(job.progress)
@@ -288,7 +288,7 @@ private extension DownloadPreplannedMapAreaView {
         /// Cancels all current jobs.
         func cancelAllJobs() async {
             await withTaskGroup(of: Void.self) { group in
-                currentJobs.forEach { _, job in
+                currentJobs.values.forEach { job in
                     group.addTask {
                         await job.cancel()
                     }
@@ -364,6 +364,7 @@ private extension PreplannedMapArea {
     var displayName: String {
         portalItem.title.replacingOccurrences(of: "_", with: " ")
     }
+    
     /// The portal item's ID.
     var portalItemIdentifier: String {
         portalItem.id.rawValue
@@ -372,13 +373,11 @@ private extension PreplannedMapArea {
 
 extension PreplannedMapArea: Identifiable {}
 
-extension PreplannedMapArea: Equatable {
-    public static func == (lhs: PreplannedMapArea, rhs: PreplannedMapArea) -> Bool {
-        lhs === rhs
-    }
-}
-
 extension PreplannedMapArea: Hashable {
+    public static func == (lhs: PreplannedMapArea, rhs: PreplannedMapArea) -> Bool {
+        lhs.id == rhs.id
+    }
+    
     public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
