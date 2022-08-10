@@ -77,6 +77,8 @@ struct SampleDetailView: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 NavigationLink {
                     SampleInfoView(sample: sample)
+                        .onAppear { isSampleInfoViewVisible = true }
+                        .onDisappear { isSampleInfoViewVisible = false }
                 } label: {
                     Image(systemName: "info.circle")
                 }
