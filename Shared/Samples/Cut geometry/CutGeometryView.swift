@@ -16,8 +16,8 @@ import ArcGIS
 import SwiftUI
 
 struct CutGeometryView: View {
-    /// A Boolean value indicating whether the cut button is disabled.
-    @State private var isCutDisabled = false
+    /// A Boolean value indicating whether the geometry is cut.
+    @State private var isGeometryCut = false
     
     /// A map with a topographic basemap style and an initial viewpoint of Lake Superior.
     @StateObject private var map: Map = {
@@ -42,27 +42,38 @@ struct CutGeometryView: View {
         return GraphicsOverlay(graphics: [lakeSuperiorGraphic, borderGraphic])
     }()
     
+    /// The graphics overlay containing cut graphics.
+    @StateObject private var cutGraphicsOverlay = GraphicsOverlay()
+    
+    /// Cuts geometry and adds resulting graphics.
+    private func cutGeometry() {
+        // Cuts the Lake Superior polygon using the border polyline.
+        guard let parts = GeometryEngine.cut(.lakeSuperiorPolygon, usingCutter: .borderPolyline),
+              parts.count == 2,
+              let firstPart = parts.first,
+              let secondPart = parts.last else {
+            return
+        }
+        // Creates the graphics for the Canadian and USA sides of Lake Superior.
+        let canadaSideGraphic = Graphic(geometry: firstPart, symbol: SimpleFillSymbol(style: .backwardDiagonal, color: .green))
+        let usaSideGraphic = Graphic(geometry: secondPart, symbol: SimpleFillSymbol(style: .forwardDiagonal, color: .yellow))
+        // Adds the graphics to the graphics overlay.
+        cutGraphicsOverlay.addGraphics([canadaSideGraphic, usaSideGraphic])
+    }
+    
+    /// Removes all cut graphics.
+    private func reset() {
+        cutGraphicsOverlay.removeAllGraphics()
+    }
+    
     var body: some View {
-        MapView(map: map, graphicsOverlays: [graphicsOverlay])
+        MapView(map: map, graphicsOverlays: [graphicsOverlay, cutGraphicsOverlay])
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
-                    Button("Cut") {
-                        // Cuts the Lake Superior graphic using the border polyline.
-                        guard let parts = GeometryEngine.cut(.lakeSuperiorPolygon, usingCutter: .borderPolyline),
-                              parts.count >= 2,
-                              let firstPart = parts.first,
-                              let secondPart = parts.last else {
-                            return
-                        }
-                        // Disables the cut button.
-                        isCutDisabled = true
-                        // Creates the graphics for the Canadian and USA sides of Lake Superior.
-                        let canadaSideGraphic = Graphic(geometry: firstPart, symbol: SimpleFillSymbol(style: .backwardDiagonal, color: .green))
-                        let usaSideGraphic = Graphic(geometry: secondPart, symbol: SimpleFillSymbol(style: .forwardDiagonal, color: .yellow))
-                        // Adds the graphics to the graphics overlay.
-                        graphicsOverlay.addGraphics([canadaSideGraphic, usaSideGraphic])
+                    Button(isGeometryCut ? "Reset" : "Clip") {
+                        isGeometryCut ? reset() : cutGeometry()
+                        isGeometryCut.toggle()
                     }
-                    .disabled(isCutDisabled)
                 }
             }
     }
