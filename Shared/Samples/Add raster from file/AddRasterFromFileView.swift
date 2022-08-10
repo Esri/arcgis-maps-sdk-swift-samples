@@ -17,7 +17,7 @@ import SwiftUI
 
 struct AddRasterFromFileView: View {
     /// Makes a map with a raster layer.
-    static func makeMap() -> Map {
+    private static func makeMap() -> Map {
         /// A map with a standard imagery basemap style.
         let map = Map(basemapStyle: .arcGISImageryStandard)
         // Gets the Shasta.tif file URL.
