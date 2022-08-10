@@ -16,11 +16,23 @@ import ArcGIS
 import SwiftUI
 
 struct AddRasterFromFileView: View {
-    /// A map with a standard imagery basemap style.
-    @StateObject private var map = Map(basemapStyle: .arcGISImageryStandard)
+    /// Make a map from a local file.
+    static func makeMap() -> Map {
+        /// A map with a standard imagery basemap style.
+        let map = Map(basemapStyle: .arcGISImageryStandard)
+        // Gets the Shasta.tif file URL.
+        let shastaURL = Bundle.main.url(forResource: "Shasta", withExtension: "tif")!
+        // Creates a raster with the file URL.
+        let raster = Raster(fileURL: shastaURL)
+        // Creates a raster layer using the raster object.
+        let rasterLayer = RasterLayer(raster: raster)
+        // Adds the raster layer to the map's operational layer.
+        map.addOperationalLayer(rasterLayer)
+        return map
+    }
     
-    /// The center of the full extent of the raster layer.
-    @State private var center = Point(x: 0, y: 0)
+    /// A map with a standard imagery basemap style.
+    @StateObject private var map = makeMap()
     
     /// A Boolean value indicating whether to show an alert.
     @State private var isShowingAlert = false
@@ -30,33 +42,37 @@ struct AddRasterFromFileView: View {
         didSet { isShowingAlert = error != nil }
     }
     
-    /// Loads a local raster layer.
-    private func loadRasterLayer() async throws {
-        // Gets the Shasta.tif file URL.
-        let shastaURL = Bundle.main.url(forResource: "Shasta", withExtension: "tif")!
-        // Creates a raster with the file URL.
-        let raster = Raster(fileURL: shastaURL)
-        // Creates a raster layer using the raster object.
-        let rasterLayer = RasterLayer(raster: raster)
-        // Adds the raster layer to the map's operational layer.
-        map.addOperationalLayer(rasterLayer)
-        // Loads the raster layer.
-        try await rasterLayer.load()
-        // Gets the center point of the raster layer's full extent.
-        center = rasterLayer.fullExtent!.center
+    /// The center of the full extent of the raster layer.
+    @State private var center: Point?
+    
+    /// The scale of the map.
+    @State private var scale: Double?
+    
+    var viewpoint: Viewpoint? {
+        guard let center = center, let scale = scale else {
+            return nil
+        }
+        
+        return Viewpoint(center: center, scale: scale)
     }
     
     var body: some View {
         // Creates a map view with a viewpoint to display the map.
-        MapView(map: map, viewpoint: Viewpoint(center: center, scale: 80_000))
+        MapView(map: map, viewpoint: viewpoint)
+            .onViewpointChanged(kind: .centerAndScale) { newViewpoint in
+                center = newViewpoint.targetGeometry as? Point
+                scale = newViewpoint.targetScale
+            }
             .task {
                 do {
-                    try await loadRasterLayer()
+                    let rasterLayer = map.operationalLayers.first!
+                    try await rasterLayer.load()
+                    center = rasterLayer.fullExtent!.center
+                    scale = 80_000
                 } catch {
                     // Presents an error message if the raster fails to load.
                     self.error = error
                 }
             }
-            .alert(isPresented: $isShowingAlert, presentingError: error)
     }
 }
