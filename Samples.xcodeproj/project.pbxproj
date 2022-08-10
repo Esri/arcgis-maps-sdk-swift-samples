@@ -79,6 +79,7 @@
 		F111CCC4288B641900205358 /* Yellowstone.mmpk in Resources */ = {isa = PBXBuildFile; fileRef = F111CCC3288B641900205358 /* Yellowstone.mmpk */; settings = {ASSET_TAGS = (DisplayMapFromMobileMapPackage, ); }; };
 		F1E71BF1289473760064C33F /* AddRasterFromFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E71BF0289473760064C33F /* AddRasterFromFileView.swift */; };
 		F1E71BF32898A5F00064C33F /* Shasta.tif in Resources */ = {isa = PBXBuildFile; fileRef = F1E71BF22898A5F00064C33F /* Shasta.tif */; settings = {ASSET_TAGS = (AddRasterFromFile, ); }; };
+		F1E71BFA28A479C70064C33F /* AddRasterFromFileView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = F1E71BF0289473760064C33F /* AddRasterFromFileView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -134,6 +135,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				F1E71BFA28A479C70064C33F /* AddRasterFromFileView.swift in Copy Source Code Files */,
 				0039A4E92885C50300592C86 /* AddSceneLayerFromServiceView.swift in Copy Source Code Files */,
 				0039A4EA2885C50300592C86 /* ClipGeometryView.swift in Copy Source Code Files */,
 				0039A4EB2885C50300592C86 /* CreatePlanarAndGeodeticBuffersView.swift in Copy Source Code Files */,
