@@ -16,8 +16,8 @@ import ArcGIS
 import SwiftUI
 
 struct ClipGeometryView: View {
-    /// A Boolean value indicating whether the clip button is disabled.
-    @State private var isClipDisabled = false
+    /// A Boolean value indicating whether the geometries are clipped.
+    @State private var geometriesClipped = false
     
     /// A map with a topographic basemap style and an initial viewpoint of Colorado.
     @StateObject private var map: Map = {
@@ -27,7 +27,7 @@ struct ClipGeometryView: View {
         return map
     }()
     
-    /// The graphics overlay containing clipped and unclipped graphics of Colorado.
+    /// The graphics overlay containing an unclipped graphic of Colorado.
     @StateObject private var coloradoGraphicsOverlay = GraphicsOverlay(
         graphics: [
             Graphic(geometry: .coloradoEnvelope, symbol: .coloradoFill)
@@ -41,34 +41,47 @@ struct ClipGeometryView: View {
         }
     )
     
+    /// The graphics overlay containing clipped graphics.
+    @StateObject private var clippedGraphicsOverlay = GraphicsOverlay()
+    
     /// The unclipped graphic of Colorado.
     private var coloradoGraphic: Graphic { coloradoGraphicsOverlay.graphics.first! }
     
     /// Clips the geometry of Colorado to the given envelope.
     /// - Parameter envelope: The envelope to clip the geometry of Colorado to.
-    private func clipColoradoGeometry(to envelope: Envelope) {
+    /// - Returns: The clipped graphic.
+    private func clipColoradoGeometry(to envelope: Envelope) -> Graphic {
         // Uses the geometry engine to create a new geometry for the area of
         // Colorado that overlaps the given envelope.
         let clippedGeometry = GeometryEngine.clip(coloradoGraphic.geometry!, to: envelope)
-        // Creates the clipped graphic from the clipped geometry if there is an overlap.
-        let clippedGraphic = Graphic(geometry: clippedGeometry, symbol: .coloradoFill)
-        // Adds the clipped graphic to the Colorado graphics overlay.
-        coloradoGraphicsOverlay.addGraphic(clippedGraphic)
+        // Creates and returns the clipped graphic from the clipped geometry if there is an overlap.
+        return Graphic(geometry: clippedGeometry, symbol: .coloradoFill)
+    }
+    
+    /// Clips geometries and add resulting graphics.
+    private func clipGeometries() {
+        // Hides the Colorado graphic.
+        coloradoGraphic.isVisible = false
+        // Clips Colorado's geometry to each envelope.
+        let clippedGraphics = envelopesGraphicsOverlay.graphics.map { clipColoradoGeometry(to: $0.geometry as! Envelope) }
+        // Adds clipped graphics.
+        clippedGraphicsOverlay.addGraphics(clippedGraphics)
+    }
+    
+    /// Removes all clipped graphics.
+    private func reset() {
+        clippedGraphicsOverlay.removeAllGraphics()
+        coloradoGraphic.isVisible = true
     }
     
     var body: some View {
-        MapView(map: map, graphicsOverlays: [coloradoGraphicsOverlay, envelopesGraphicsOverlay])
+        MapView(map: map, graphicsOverlays: [coloradoGraphicsOverlay, envelopesGraphicsOverlay, clippedGraphicsOverlay])
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
-                    Button("Clip") {
-                        // Disables the clip button.
-                        isClipDisabled = true
-                        // Hides the Colorado graphic.
-                        coloradoGraphic.isVisible = false
-                        // Clips Colorado's geometry to each envelope.
-                        envelopesGraphicsOverlay.graphics.forEach { clipColoradoGeometry(to: $0.geometry as! Envelope) }
+                    Button(geometriesClipped ? "Reset" : "Clip") {
+                        geometriesClipped ? reset() : clipGeometries()
+                        geometriesClipped.toggle()
                     }
-                    .disabled(isClipDisabled)
                 }
             }
     }
@@ -77,7 +90,7 @@ struct ClipGeometryView: View {
 private extension Symbol {
     /// The simple fill symbol for Colorado graphics.
     static var coloradoFill: SimpleFillSymbol {
-        .init(
+        SimpleFillSymbol(
             color: .blue.withAlphaComponent(0.2),
             outline: SimpleLineSymbol(
                 style: .solid,
