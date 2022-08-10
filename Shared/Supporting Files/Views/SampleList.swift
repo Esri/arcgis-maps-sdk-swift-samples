@@ -41,10 +41,8 @@ struct SampleList: View {
     }
     
     var body: some View {
-        List(displayedSamples, id: \.nameInUpperCamelCase) { sample in
-            NavigationLink(sample.name) {
-                SampleDetailView(sample: sample)
-            }
+        List(displayedSamples, id: \.name) { sample in
+            SampleRow(sample: sample)
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
@@ -56,6 +54,42 @@ struct SampleList: View {
                 .sheet(isPresented: $isAboutViewPresented) {
                     AboutView()
                 }
+            }
+        }
+    }
+}
+
+private extension SampleList {
+    struct SampleRow: View {
+        /// The sample displayed in the row.
+        let sample: Sample
+        
+        /// A Boolean value indicating whether to show the sample's description
+        @State private var isShowingDescription = false
+        
+        var body: some View {
+            NavigationLink {
+                SampleDetailView(sample: sample)
+            } label: {
+                HStack {
+                    VStack(alignment: .leading, spacing: 5) {
+                        Text(sample.name)
+                        if isShowingDescription {
+                            Text(sample.description)
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                                .transition(.move(edge: .top).combined(with: .opacity))
+                        }
+                    }
+                    Spacer()
+                    Button {
+                        isShowingDescription.toggle()
+                    } label: {
+                        Image(systemName: isShowingDescription ? "info.circle.fill" : "info.circle")
+                    }
+                    .buttonStyle(.borderless)
+                }
+                .animation(.easeOut(duration: 0.2), value: isShowingDescription)
             }
         }
     }
