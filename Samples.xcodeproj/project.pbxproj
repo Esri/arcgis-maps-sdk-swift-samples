@@ -61,12 +61,20 @@
 		E03CB06B2889879D002B27D9 /* DownloadVectorTilesToLocalCacheView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E004A6EF284E4B9B002A1FE6 /* DownloadVectorTilesToLocalCacheView.swift */; };
 		E0082217287755AC002AD138 /* View+Sheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0082216287755AC002AD138 /* View+Sheet.swift */; };
 		E03CB0692888944D002B27D9 /* GenerateOfflineMapView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E088E1732863B5F800413100 /* GenerateOfflineMapView.swift */; };
+		E03CB06A288894C4002B27D9 /* FindRouteView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E066DD34285CF3B3004D3D5B /* FindRouteView.swift */; };
+		E041ABC0287CA9F00056009B /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E041ABBF287CA9F00056009B /* WebView.swift */; };
+		E041ABD7287DB04D0056009B /* SampleInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E041ABD6287DB04D0056009B /* SampleInfoView.swift */; };
+		E041AC1A287F54580056009B /* highlight.min.js in Resources */ = {isa = PBXBuildFile; fileRef = E041AC15287F54580056009B /* highlight.min.js */; };
+		E041AC1E288076A60056009B /* info.css in Resources */ = {isa = PBXBuildFile; fileRef = E041AC1D288076A60056009B /* info.css */; };
+		E041AC20288077B90056009B /* xcode.css in Resources */ = {isa = PBXBuildFile; fileRef = E041AC1F288077B90056009B /* xcode.css */; };
 		E066DD35285CF3B3004D3D5B /* FindRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E066DD34285CF3B3004D3D5B /* FindRouteView.swift */; };
 		E066DD382860AB28004D3D5B /* StyleGraphicsWithRendererView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E066DD372860AB28004D3D5B /* StyleGraphicsWithRendererView.swift */; };
 		E066DD3B2860CA08004D3D5B /* ShowResultOfSpatialRelationshipsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E066DD3A2860CA08004D3D5B /* ShowResultOfSpatialRelationshipsView.swift */; };
 		E066DD4028610F55004D3D5B /* AddSceneLayerFromServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E066DD3F28610F55004D3D5B /* AddSceneLayerFromServiceView.swift */; };
 		E088E1572862579D00413100 /* SetSurfacePlacementModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E088E1562862579D00413100 /* SetSurfacePlacementModeView.swift */; };
 		E088E1742863B5F800413100 /* GenerateOfflineMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E088E1732863B5F800413100 /* GenerateOfflineMapView.swift */; };
+		E08953F12891899600E077CF /* EnvironmentValues+SampleInfoVisibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = E08953F02891899600E077CF /* EnvironmentValues+SampleInfoVisibility.swift */; };
+		E0A1AEE328874590003C797D /* DisplayFeatureLayersView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 00D4EF7F2863842100B9CC30 /* DisplayFeatureLayersView.swift */; };
 		E0EA0B772866390E00C9621D /* ProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0EA0B762866390E00C9621D /* ProjectView.swift */; };
 		E0FE32E728747778002C6ACA /* BrowseBuildingFloorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0FE32E628747778002C6ACA /* BrowseBuildingFloorsView.swift */; };
 		F111CCC1288B5D5600205358 /* DisplayMapFromMobileMapPackageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F111CCC0288B5D5600205358 /* DisplayMapFromMobileMapPackageView.swift */; };
@@ -130,10 +138,12 @@
 				0039A4EA2885C50300592C86 /* ClipGeometryView.swift in Copy Source Code Files */,
 				0039A4EB2885C50300592C86 /* CreatePlanarAndGeodeticBuffersView.swift in Copy Source Code Files */,
 				0039A4EC2885C50300592C86 /* CutGeometryView.swift in Copy Source Code Files */,
+				E0A1AEE328874590003C797D /* DisplayFeatureLayersView.swift in Copy Source Code Files */,
 				0039A4ED2885C50300592C86 /* DisplayMapView.swift in Copy Source Code Files */,
 				0039A4EE2885C50300592C86 /* DisplayOverviewMapView.swift in Copy Source Code Files */,
 				0039A4EF2885C50300592C86 /* DisplaySceneView.swift in Copy Source Code Files */,
 				E03CB06B2889879D002B27D9 /* DownloadVectorTilesToLocalCacheView.swift in Copy Source Code Files */,
+				E03CB06A288894C4002B27D9 /* FindRouteView.swift in Copy Source Code Files */,
 				E03CB0692888944D002B27D9 /* GenerateOfflineMapView.swift in Copy Source Code Files */,
 				0039A4F02885C50300592C86 /* ProjectView.swift in Copy Source Code Files */,
 				0039A4F12885C50300592C86 /* SearchWithGeocodeView.swift in Copy Source Code Files */,
@@ -191,12 +201,18 @@
 		E004A6F2284E4FEB002A1FE6 /* ShowResultsOfSpatialOperationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowResultsOfSpatialOperationsView.swift; sourceTree = "<group>"; };
 		E004A6F5284FA42A002A1FE6 /* SelectFeaturesInFeatureLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectFeaturesInFeatureLayerView.swift; sourceTree = "<group>"; };
 		E0082216287755AC002AD138 /* View+Sheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Sheet.swift"; sourceTree = "<group>"; };
+		E041ABBF287CA9F00056009B /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
+		E041ABD6287DB04D0056009B /* SampleInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleInfoView.swift; sourceTree = "<group>"; };
+		E041AC15287F54580056009B /* highlight.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = highlight.min.js; sourceTree = "<group>"; };
+		E041AC1D288076A60056009B /* info.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = info.css; sourceTree = "<group>"; };
+		E041AC1F288077B90056009B /* xcode.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = xcode.css; sourceTree = "<group>"; };
 		E066DD34285CF3B3004D3D5B /* FindRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindRouteView.swift; sourceTree = "<group>"; };
 		E066DD372860AB28004D3D5B /* StyleGraphicsWithRendererView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleGraphicsWithRendererView.swift; sourceTree = "<group>"; };
 		E066DD3A2860CA08004D3D5B /* ShowResultOfSpatialRelationshipsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowResultOfSpatialRelationshipsView.swift; sourceTree = "<group>"; };
 		E066DD3F28610F55004D3D5B /* AddSceneLayerFromServiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSceneLayerFromServiceView.swift; sourceTree = "<group>"; };
 		E088E1562862579D00413100 /* SetSurfacePlacementModeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetSurfacePlacementModeView.swift; sourceTree = "<group>"; };
 		E088E1732863B5F800413100 /* GenerateOfflineMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateOfflineMapView.swift; sourceTree = "<group>"; };
+		E08953F02891899600E077CF /* EnvironmentValues+SampleInfoVisibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+SampleInfoVisibility.swift"; sourceTree = "<group>"; };
 		E0EA0B762866390E00C9621D /* ProjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectView.swift; sourceTree = "<group>"; };
 		E0FE32E628747778002C6ACA /* BrowseBuildingFloorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseBuildingFloorsView.swift; sourceTree = "<group>"; };
 		F111CCC0288B5D5600205358 /* DisplayMapFromMobileMapPackageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayMapFromMobileMapPackageView.swift; sourceTree = "<group>"; };
@@ -221,7 +237,9 @@
 				00B04272282EC59E0072E1B4 /* AboutView.swift */,
 				00E5400D27F3CCA100CF66D5 /* ContentView.swift */,
 				000558092817C51E00224BC6 /* SampleDetailView.swift */,
+				E041ABD6287DB04D0056009B /* SampleInfoView.swift */,
 				0005580B28185C0600224BC6 /* SampleList.swift */,
+				E041ABBF287CA9F00056009B /* WebView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -229,6 +247,7 @@
 		00181B442846AD3900654571 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				E08953F02891899600E077CF /* EnvironmentValues+SampleInfoVisibility.swift */,
 				00181B452846AD7100654571 /* View+Alert.swift */,
 				E0082216287755AC002AD138 /* View+Sheet.swift */,
 			);
@@ -251,6 +270,7 @@
 				00181B442846AD3900654571 /* Extensions */,
 				0074ABC028174F430037244A /* Models */,
 				0005580D281872BE00224BC6 /* Views */,
+				E041ABC3287CAFEB0056009B /* Web */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -500,6 +520,16 @@
 			path = "Select features in feature layer";
 			sourceTree = "<group>";
 		};
+		E041ABC3287CAFEB0056009B /* Web */ = {
+			isa = PBXGroup;
+			children = (
+				E041AC15287F54580056009B /* highlight.min.js */,
+				E041AC1D288076A60056009B /* info.css */,
+				E041AC1F288077B90056009B /* xcode.css */,
+			);
+			path = Web;
+			sourceTree = "<group>";
+		};
 		E066DD33285CF3A0004D3D5B /* Find route */ = {
 			isa = PBXGroup;
 			children = (
@@ -654,10 +684,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E041AC1E288076A60056009B /* info.css in Resources */,
+				E041AC1A287F54580056009B /* highlight.min.js in Resources */,
+				00E5402027F3CCA200CF66D5 /* Assets.xcassets in Resources */,
+				E041AC20288077B90056009B /* xcode.css in Resources */,
 				00D4EF9028638BF100B9CC30 /* LA_Trails.geodatabase in Resources */,
 				00D4EF9A28638BF100B9CC30 /* AuroraCO.gpkg in Resources */,
 				F111CCC4288B641900205358 /* Yellowstone.mmpk in Resources */,
-				00E5402027F3CCA200CF66D5 /* Assets.xcassets in Resources */,
 				00D4EFB12863CE6300B9CC30 /* ScottishWildlifeTrust_reserves in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -758,6 +791,7 @@
 				001C6DE127FE8A9400D472C2 /* AppSecrets.swift.masque in Sources */,
 				00CCB8A5285BAF8700BBAB70 /* OnDemandResource.swift in Sources */,
 				E004A6ED2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift in Sources */,
+				E041ABD7287DB04D0056009B /* SampleInfoView.swift in Sources */,
 				E0082217287755AC002AD138 /* View+Sheet.swift in Sources */,
 				00181B462846AD7100654571 /* View+Alert.swift in Sources */,
 				E0FE32E728747778002C6ACA /* BrowseBuildingFloorsView.swift in Sources */,
@@ -767,6 +801,7 @@
 				E004A6F3284E4FEB002A1FE6 /* ShowResultsOfSpatialOperationsView.swift in Sources */,
 				00B04273282EC59E0072E1B4 /* AboutView.swift in Sources */,
 				E066DD3B2860CA08004D3D5B /* ShowResultOfSpatialRelationshipsView.swift in Sources */,
+				E041ABC0287CA9F00056009B /* WebView.swift in Sources */,
 				E088E1572862579D00413100 /* SetSurfacePlacementModeView.swift in Sources */,
 				E004A6C128414332002A1FE6 /* SetViewpointRotationView.swift in Sources */,
 				00E5401E27F3CCA200CF66D5 /* ContentView.swift in Sources */,
@@ -777,6 +812,7 @@
 				E004A6DC28465C70002A1FE6 /* DisplaySceneView.swift in Sources */,
 				E066DD35285CF3B3004D3D5B /* FindRouteView.swift in Sources */,
 				E004A6F6284FA42A002A1FE6 /* SelectFeaturesInFeatureLayerView.swift in Sources */,
+				E08953F12891899600E077CF /* EnvironmentValues+SampleInfoVisibility.swift in Sources */,
 				00B042E8282EDC690072E1B4 /* SetBasemapView.swift in Sources */,
 				E004A6E62846A61F002A1FE6 /* StyleGraphicsWithSymbolsView.swift in Sources */,
 				E088E1742863B5F800413100 /* GenerateOfflineMapView.swift in Sources */,
