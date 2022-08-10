@@ -16,7 +16,7 @@ import ArcGIS
 import SwiftUI
 
 struct AddRasterFromFileView: View {
-    /// Make a map from a local file.
+    /// Makes a map with a raster layer.
     static func makeMap() -> Map {
         /// A map with a standard imagery basemap style.
         let map = Map(basemapStyle: .arcGISImageryStandard)
@@ -52,7 +52,6 @@ struct AddRasterFromFileView: View {
         guard let center = center, let scale = scale else {
             return nil
         }
-        
         return Viewpoint(center: center, scale: scale)
     }
     
