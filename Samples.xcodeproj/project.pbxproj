@@ -77,6 +77,9 @@
 		E0FE32E728747778002C6ACA /* BrowseBuildingFloorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0FE32E628747778002C6ACA /* BrowseBuildingFloorsView.swift */; };
 		F111CCC1288B5D5600205358 /* DisplayMapFromMobileMapPackageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F111CCC0288B5D5600205358 /* DisplayMapFromMobileMapPackageView.swift */; };
 		F111CCC4288B641900205358 /* Yellowstone.mmpk in Resources */ = {isa = PBXBuildFile; fileRef = F111CCC3288B641900205358 /* Yellowstone.mmpk */; settings = {ASSET_TAGS = (DisplayMapFromMobileMapPackage, ); }; };
+		F1E71BF1289473760064C33F /* AddRasterFromFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E71BF0289473760064C33F /* AddRasterFromFileView.swift */; };
+		F1E71BF32898A5F00064C33F /* Shasta.tif in Resources */ = {isa = PBXBuildFile; fileRef = F1E71BF22898A5F00064C33F /* Shasta.tif */; settings = {ASSET_TAGS = (AddRasterFromFile, ); }; };
+		F1E71BFA28A479C70064C33F /* AddRasterFromFileView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = F1E71BF0289473760064C33F /* AddRasterFromFileView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -132,6 +135,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				F1E71BFA28A479C70064C33F /* AddRasterFromFileView.swift in Copy Source Code Files */,
 				0039A4E92885C50300592C86 /* AddSceneLayerFromServiceView.swift in Copy Source Code Files */,
 				0039A4EA2885C50300592C86 /* ClipGeometryView.swift in Copy Source Code Files */,
 				0039A4EB2885C50300592C86 /* CreatePlanarAndGeodeticBuffersView.swift in Copy Source Code Files */,
@@ -213,6 +217,8 @@
 		E0FE32E628747778002C6ACA /* BrowseBuildingFloorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseBuildingFloorsView.swift; sourceTree = "<group>"; };
 		F111CCC0288B5D5600205358 /* DisplayMapFromMobileMapPackageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayMapFromMobileMapPackageView.swift; sourceTree = "<group>"; };
 		F111CCC3288B641900205358 /* Yellowstone.mmpk */ = {isa = PBXFileReference; lastKnownFileType = file; path = Yellowstone.mmpk; sourceTree = "<group>"; };
+		F1E71BF0289473760064C33F /* AddRasterFromFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRasterFromFileView.swift; sourceTree = "<group>"; };
+		F1E71BF22898A5F00064C33F /* Shasta.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = Shasta.tif; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -274,6 +280,7 @@
 		0074ABB228174B830037244A /* Samples */ = {
 			isa = PBXGroup;
 			children = (
+				F19A316128906F0D003B7EF9 /* Add raster from file */,
 				E066DD3E28610F3F004D3D5B /* Add scene layer from service */,
 				E0FE32E528747762002C6ACA /* Browse building floors */,
 				E000E75E2869E325005D87C5 /* Clip geometry */,
@@ -354,6 +361,7 @@
 		00CCB8A6285D059300BBAB70 /* Portal Data */ = {
 			isa = PBXGroup;
 			children = (
+				F19A3164289088DA003B7EF9 /* 6876e57d373a497e9cdb916642531b70 */,
 				F111CCC2288B63DB00205358 /* e1f3a7254cb845b09450f54937c16061 */,
 				00D4EF8128638BF100B9CC30 /* 2b0f9e17105847809dfeb04e3cad69e0 */,
 				00D4EF8328638BF100B9CC30 /* 15a7cbd3af1e47cfa5d2c6b93dc44fc2 */,
@@ -597,6 +605,22 @@
 			path = e1f3a7254cb845b09450f54937c16061;
 			sourceTree = "<group>";
 		};
+		F19A316128906F0D003B7EF9 /* Add raster from file */ = {
+			isa = PBXGroup;
+			children = (
+				F1E71BF0289473760064C33F /* AddRasterFromFileView.swift */,
+			);
+			path = "Add raster from file";
+			sourceTree = "<group>";
+		};
+		F19A3164289088DA003B7EF9 /* 6876e57d373a497e9cdb916642531b70 */ = {
+			isa = PBXGroup;
+			children = (
+				F1E71BF22898A5F00064C33F /* Shasta.tif */,
+			);
+			path = 6876e57d373a497e9cdb916642531b70;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -636,6 +660,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				KnownAssetTags = (
+					AddRasterFromFile,
 					DisplayFeatureLayers,
 					DisplayMapFromMobileMapPackage,
 				);
@@ -676,6 +701,7 @@
 				00E5402027F3CCA200CF66D5 /* Assets.xcassets in Resources */,
 				E041AC20288077B90056009B /* xcode.css in Resources */,
 				00D4EF9028638BF100B9CC30 /* LA_Trails.geodatabase in Resources */,
+				F1E71BF32898A5F00064C33F /* Shasta.tif in Resources */,
 				00D4EF9A28638BF100B9CC30 /* AuroraCO.gpkg in Resources */,
 				F111CCC4288B641900205358 /* Yellowstone.mmpk in Resources */,
 				00D4EFB12863CE6300B9CC30 /* ScottishWildlifeTrust_reserves in Resources */,
@@ -786,6 +812,7 @@
 				0005580A2817C51E00224BC6 /* SampleDetailView.swift in Sources */,
 				0074ABCD2817BCC30037244A /* SamplesApp+Samples.swift.tache in Sources */,
 				E004A6F3284E4FEB002A1FE6 /* ShowResultsOfSpatialOperationsView.swift in Sources */,
+				F1E71BF1289473760064C33F /* AddRasterFromFileView.swift in Sources */,
 				00B04273282EC59E0072E1B4 /* AboutView.swift in Sources */,
 				E066DD3B2860CA08004D3D5B /* ShowResultOfSpatialRelationshipsView.swift in Sources */,
 				E041ABC0287CA9F00056009B /* WebView.swift in Sources */,
