@@ -119,52 +119,44 @@ class DownloadPreplannedMapAreaViewModel: ObservableObject {
     
     /// Creates the parameters for a download preplanned offline map job.
     /// - Parameter preplannedMapArea: The preplanned map area to create parameters for.
-    /// - Returns: A `DownloadPreplannedOfflineMapParameters` if there are no errors. Otherwise,
-    /// it returns nil.
+    /// - Returns: A `DownloadPreplannedOfflineMapParameters` if there are no errors.
     private func makeDownloadPreplannedOfflineMapParameters(
         preplannedMapArea: PreplannedMapArea
-    ) async -> DownloadPreplannedOfflineMapParameters? {
-        do {
-            // Creates the default parameters.
-            let parameters = try await offlineMapTask.makeDefaultDownloadPreplannedOfflineMapParameters(
-                preplannedMapArea: preplannedMapArea
-            )
-            // Sets the update mode to no updates as the offline map is display-only.
-            parameters.updateMode = .noUpdates
-            return parameters
-        } catch {
-            self.error = error
-            return nil
-        }
+    ) async throws -> DownloadPreplannedOfflineMapParameters {
+        // Creates the default parameters.
+        let parameters = try await offlineMapTask.makeDefaultDownloadPreplannedOfflineMapParameters(
+            preplannedMapArea: preplannedMapArea
+        )
+        // Sets the update mode to no updates as the offline map is display-only.
+        parameters.updateMode = .noUpdates
+        return parameters
     }
     
     /// Downloads the given preplanned map area.
     /// - Parameter preplannedMapArea: The preplanned map area to be downloaded.
     private func downloadPreplannedMapArea(_ preplannedMapArea: PreplannedMapArea) async {
-        // Creates the parameters for the download preplanned offline map job.
-        guard let parameters = await makeDownloadPreplannedOfflineMapParameters(
-            preplannedMapArea: preplannedMapArea
-        ) else { return }
-        
-        // Creates the download directory URL based on the preplanned map area's
-        // portal item identifier.
-        let downloadDirectoryURL = temporaryDirectoryURL
-            .appendingPathComponent(preplannedMapArea.portalItemIdentifier)
-            .appendingPathExtension("mmpk")
-        
-        // Creates the download preplanned offline map job.
-        let job = offlineMapTask.makeDownloadPreplannedOfflineMapJob(
-            parameters: parameters,
-            downloadDirectory: downloadDirectoryURL
-        )
-        
-        // Adds the job for the preplanned map area to the current jobs.
-        currentJobs[ObjectIdentifier(preplannedMapArea)] = job
-        
-        // Starts the job.
-        job.start()
-        
         do {
+            // Creates the parameters for the download preplanned offline map job.
+            let parameters = try await makeDownloadPreplannedOfflineMapParameters(preplannedMapArea: preplannedMapArea)
+            
+            // Creates the download directory URL based on the preplanned map area's
+            // portal item identifier.
+            let downloadDirectoryURL = temporaryDirectoryURL
+                .appendingPathComponent(preplannedMapArea.portalItemIdentifier)
+                .appendingPathExtension("mmpk")
+            
+            // Creates the download preplanned offline map job.
+            let job = offlineMapTask.makeDownloadPreplannedOfflineMapJob(
+                parameters: parameters,
+                downloadDirectory: downloadDirectoryURL
+            )
+            
+            // Adds the job for the preplanned map area to the current jobs.
+            currentJobs[ObjectIdentifier(preplannedMapArea)] = job
+            
+            // Starts the job.
+            job.start()
+            
             // Awaits the output of the job.
             let output = try await job.output
             // Adds the output's mobile map package to the downloaded map packages.
@@ -172,7 +164,7 @@ class DownloadPreplannedMapAreaViewModel: ObservableObject {
         } catch is CancellationError {
             // Does nothing if the error is a cancellation error.
         } catch {
-            // Shows an alert with the error if the job fails.
+            // Shows an alert if any errors occur.
             self.error = error
         }
     }
