@@ -27,7 +27,7 @@ struct CutGeometryView: View {
     }()
     
     /// A graphics overlay containing the Lake Superior polygon and a border line.
-    @StateObject private var graphicsOverlay: GraphicsOverlay = {
+    @StateObject private var lakeGraphicsOverlay: GraphicsOverlay = {
         let lakeSuperiorGraphic = Graphic(
             geometry: .lakeSuperiorPolygon,
             symbol: SimpleFillSymbol(
@@ -67,7 +67,7 @@ struct CutGeometryView: View {
     }
     
     var body: some View {
-        MapView(map: map, graphicsOverlays: [graphicsOverlay, cutGraphicsOverlay])
+        MapView(map: map, graphicsOverlays: [lakeGraphicsOverlay, cutGraphicsOverlay])
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
                     Button(isGeometryCut ? "Reset" : "Cut") {
