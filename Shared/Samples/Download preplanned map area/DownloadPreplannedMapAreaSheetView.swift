@@ -16,8 +16,8 @@ import ArcGIS
 import SwiftUI
 
 struct DownloadPreplannedMapAreaSheetView: View {
-    /// A Boolean value indicating whether to select a map.
-    @Binding var isSelectingMap: Bool
+    /// The action to dismiss the sheet.
+    @Environment(\.dismiss) private var dismiss
     
     /// The view model for the download preplanned map area view.
     @EnvironmentObject private var model: DownloadPreplannedMapAreaViewModel
@@ -63,7 +63,7 @@ struct DownloadPreplannedMapAreaSheetView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") { isSelectingMap = false }
+                    Button("Done") { dismiss() }
                 }
             }
         }

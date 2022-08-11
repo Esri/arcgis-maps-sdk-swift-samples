@@ -52,7 +52,7 @@ struct DownloadPreplannedMapAreaView: View {
                         isSelectingMap.toggle()
                     }
                     .sheet(isPresented: $isSelectingMap, detents: [.medium]) {
-                        DownloadPreplannedMapAreaSheetView(isSelectingMap: $isSelectingMap)
+                        DownloadPreplannedMapAreaSheetView()
                             .environmentObject(model)
                     }
                     Spacer()
