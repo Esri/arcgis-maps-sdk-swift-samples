@@ -296,16 +296,13 @@ private extension DownloadVectorTilesToLocalCacheView {
         /// Creates a temporary directory.
         /// - Returns: The URL to the temporary directory.
         private static func makeTemporaryDirectory() -> URL {
-            do {
-                return try FileManager.default.url(
-                    for: .itemReplacementDirectory,
-                    in: .userDomainMask,
-                    appropriateFor: Bundle.main.bundleURL,
-                    create: true
-                )
-            } catch {
-                fatalError("A temporary directory could not be created.")
-            }
+            // swiftlint:disable:next force_try
+            try! FileManager.default.url(
+                for: .itemReplacementDirectory,
+                in: .userDomainMask,
+                appropriateFor: Bundle.main.bundleURL,
+                create: true
+            )
         }
     }
 }
