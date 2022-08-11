@@ -42,33 +42,19 @@ struct AddRasterFromFileView: View {
         didSet { isShowingAlert = error != nil }
     }
     
-    /// The center of the full extent of the raster layer.
-    @State private var center: Point?
-    
-    /// The scale of the map.
-    @State private var scale: Double?
-    
-    var viewpoint: Viewpoint? {
-        guard let center = center, let scale = scale else {
-            return nil
-        }
-        return Viewpoint(center: center, scale: scale)
-    }
+    /// The current viewpoint of the map view.
+    @State private var viewpoint: Viewpoint?
     
     var body: some View {
         // Creates a map view with a viewpoint to display the map.
         MapView(map: map, viewpoint: viewpoint)
-            .onViewpointChanged(kind: .centerAndScale) { newViewpoint in
-                center = newViewpoint.targetGeometry as? Point
-                scale = newViewpoint.targetScale
-            }
+            .onViewpointChanged(kind: .centerAndScale) { viewpoint = $0 }
             .alert(isPresented: $isShowingAlert, presentingError: error)
             .task {
                 do {
                     let rasterLayer = map.operationalLayers.first!
                     try await rasterLayer.load()
-                    center = rasterLayer.fullExtent!.center
-                    scale = 80_000
+                    viewpoint = Viewpoint(center: rasterLayer.fullExtent!.center, scale: 8e4)
                 } catch {
                     // Presents an error message if the raster fails to load.
                     self.error = error
