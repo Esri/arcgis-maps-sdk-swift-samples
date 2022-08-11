@@ -208,49 +208,33 @@ private extension DownloadVectorTilesToLocalCacheView {
             }
         }
         
-        /// Creates the export tiles parameters for the export vector tiles task.
-        /// - Parameters:
-        ///   - areaOfInterest: The area of interest to export vector tiles for.
-        ///   - maxScale: The max scale of for the export vector tiles job.
-        /// - Returns: An `ExportVectorTilesParameters` if there are no errors. Otherwise, it returns `nil`.
-        private func makeExportTilesParameters(
-            areaOfInterest: Envelope,
-            maxScale: Double
-        ) async -> ExportVectorTilesParameters? {
-            do {
-                return try await exportVectorTilesTask.makeDefaultExportVectorTilesParameters(
-                    areaOfInterest: areaOfInterest,
-                    maxScale: maxScale
-                )
-            } catch {
-                self.error = error
-                return nil
-            }
-        }
-        
         /// Downloads the vector tiles within the area of interest.
         /// - Parameter extent: The area of interest's envelope to download vector tiles.
         func downloadVectorTiles(extent: Envelope) async {
             // Ensures that exporting vector tiles is allowed.
             if let vectorTileSourceInfo = exportVectorTilesTask.vectorTileSourceInfo,
                vectorTileSourceInfo.exportTilesAllowed,
-               let maxScale = maxScale,
-               // Creates the parameters for the export vector tiles job.
-               let parameters = await makeExportTilesParameters(areaOfInterest: extent, maxScale: maxScale) {
-                // Creates the export vector tiles job based on the parameters
-                // and temporary URLs.
-                exportVectorTilesJob = exportVectorTilesTask.makeExportVectorTilesJob(
-                    parameters: parameters,
-                    vectorTileCacheURL: vtpkTemporaryURL,
-                    itemResourceCacheURL: styleTemporaryURL
-                )
-                
-                // Starts the job.
-                exportVectorTilesJob.start()
-                
-                defer { exportVectorTilesJob = nil }
-                
+               let maxScale = maxScale {
                 do {
+                    // Creates the parameters for the export vector tiles job.
+                    let parameters = try await exportVectorTilesTask.makeDefaultExportVectorTilesParameters(
+                        areaOfInterest: extent,
+                        maxScale: maxScale
+                    )
+                    
+                    // Creates the export vector tiles job based on the parameters
+                    // and temporary URLs.
+                    exportVectorTilesJob = exportVectorTilesTask.makeExportVectorTilesJob(
+                        parameters: parameters,
+                        vectorTileCacheURL: vtpkTemporaryURL,
+                        itemResourceCacheURL: styleTemporaryURL
+                    )
+                    
+                    // Starts the job.
+                    exportVectorTilesJob.start()
+                    
+                    defer { exportVectorTilesJob = nil }
+                    
                     // Awaits the output of the job.
                     let output = try await exportVectorTilesJob.output
                     
@@ -275,7 +259,7 @@ private extension DownloadVectorTilesToLocalCacheView {
                 } catch is CancellationError {
                     // Does nothing if the error is a cancellation error.
                 } catch {
-                    // Shows an alert with the error if the job fails.
+                    // Shows an alert if any errors occur.
                     self.error = error
                 }
             }
