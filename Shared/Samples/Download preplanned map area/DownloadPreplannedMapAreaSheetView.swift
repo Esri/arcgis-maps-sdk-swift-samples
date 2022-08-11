@@ -73,7 +73,7 @@ struct DownloadPreplannedMapAreaSheetView: View {
     }
 }
 
-/// A circular gauge progress view  style.
+/// A circular gauge progress view style.
 private struct GaugeProgressViewStyle: ProgressViewStyle {
     private var strokeStyle: StrokeStyle { .init(lineWidth: 3, lineCap: .round) }
     
