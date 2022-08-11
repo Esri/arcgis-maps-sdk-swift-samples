@@ -58,13 +58,13 @@ struct ClipGeometryView: View {
         return Graphic(geometry: clippedGeometry, symbol: .coloradoFill)
     }
     
-    /// Clips geometries and add resulting graphics.
+    /// Clips geometries and adds resulting graphics.
     private func clipGeometries() {
         // Hides the Colorado graphic.
         coloradoGraphic.isVisible = false
         // Clips Colorado's geometry to each envelope.
         let clippedGraphics = envelopesGraphicsOverlay.graphics.map { clipColoradoGeometry(to: $0.geometry as! Envelope) }
-        // Adds clipped graphics.
+        // Adds the clipped graphics.
         clippedGraphicsOverlay.addGraphics(clippedGraphics)
     }
     

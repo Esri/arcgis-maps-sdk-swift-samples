@@ -70,7 +70,7 @@ struct CutGeometryView: View {
         MapView(map: map, graphicsOverlays: [graphicsOverlay, cutGraphicsOverlay])
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
-                    Button(isGeometryCut ? "Reset" : "Clip") {
+                    Button(isGeometryCut ? "Reset" : "Cut") {
                         isGeometryCut ? reset() : cutGeometry()
                         isGeometryCut.toggle()
                     }
