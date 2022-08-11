@@ -283,7 +283,6 @@ private extension DownloadVectorTilesToLocalCacheView {
         
         /// Cancels the export vector tiles job.
         func cancelJob() async {
-            // Cancels the export vector tiles job.
             await exportVectorTilesJob?.cancel()
             exportVectorTilesJob = nil
         }
