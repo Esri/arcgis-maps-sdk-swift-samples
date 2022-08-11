@@ -53,12 +53,10 @@ struct DownloadPreplannedMapAreaSheetView: View {
                 } header: {
                     Text("Preplanned Map Areas")
                 } footer: {
-                    Text(
-                        """
-                          Tap to download a preplanned map area for offline use. Once the selected \
-                          map is downloaded, the map will update with the offline map's area.
-                          """
-                    )
+                    Text("""
+                      Tap to download a preplanned map area for offline use. Once the selected \
+                      map is downloaded, the map will update with the offline map's area.
+                      """)
                 }
             }
             .navigationTitle("Select Map")
