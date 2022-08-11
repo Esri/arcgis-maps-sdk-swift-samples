@@ -26,7 +26,7 @@ struct CutGeometryView: View {
         return map
     }()
     
-    /// A graphics overlay containing the Lake Superior, border, and cut graphics.
+    /// A graphics overlay containing the Lake Superior polygon and a border line.
     @StateObject private var graphicsOverlay: GraphicsOverlay = {
         let lakeSuperiorGraphic = Graphic(
             geometry: .lakeSuperiorPolygon,

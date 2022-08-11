@@ -17,7 +17,7 @@ import SwiftUI
 
 struct ClipGeometryView: View {
     /// A Boolean value indicating whether the geometries are clipped.
-    @State private var geometriesClipped = false
+    @State private var geometriesAreClipped = false
     
     /// A map with a topographic basemap style and an initial viewpoint of Colorado.
     @StateObject private var map: Map = {
@@ -78,9 +78,9 @@ struct ClipGeometryView: View {
         MapView(map: map, graphicsOverlays: [coloradoGraphicsOverlay, envelopesGraphicsOverlay, clippedGraphicsOverlay])
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
-                    Button(geometriesClipped ? "Reset" : "Clip") {
-                        geometriesClipped ? reset() : clipGeometries()
-                        geometriesClipped.toggle()
+                    Button(geometriesAreClipped ? "Reset" : "Clip") {
+                        geometriesAreClipped ? reset() : clipGeometries()
+                        geometriesAreClipped.toggle()
                     }
                 }
             }
