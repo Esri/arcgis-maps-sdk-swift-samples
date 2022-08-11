@@ -62,6 +62,7 @@ struct AddRasterFromFileView: View {
                 center = newViewpoint.targetGeometry as? Point
                 scale = newViewpoint.targetScale
             }
+            .alert(isPresented: $isShowingAlert, presentingError: error)
             .task {
                 do {
                     let rasterLayer = map.operationalLayers.first!
