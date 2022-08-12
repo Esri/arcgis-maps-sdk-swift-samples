@@ -108,9 +108,7 @@ extension DownloadPreplannedMapAreaView {
                 offlineMap = nil
             case .preplannedMap(let preplannedMapArea) where preplannedMapArea.loadStatus == .loaded:
                 // Downloads the preplanned map area if it has not been downloaded.
-                if job(for: preplannedMapArea) == nil {
-                    await downloadPreplannedMapArea(preplannedMapArea)
-                }
+                await downloadPreplannedMapArea(preplannedMapArea)
                 
                 // Updates the offline map if the currently selected map is not an online map.
                 if case .preplannedMap(let currentlySelectedArea) = selectedMap {
@@ -141,6 +139,8 @@ extension DownloadPreplannedMapAreaView {
         /// Downloads the given preplanned map area.
         /// - Parameter preplannedMapArea: The preplanned map area to be downloaded.
         private func downloadPreplannedMapArea(_ preplannedMapArea: PreplannedMapArea) async {
+            // Ensures the preplanned map area has not been downloaded.
+            guard job(for: preplannedMapArea) == nil else { return }
             do {
                 // Creates the parameters for the download preplanned offline map job.
                 let parameters = try await makeDownloadPreplannedOfflineMapParameters(preplannedMapArea: preplannedMapArea)
