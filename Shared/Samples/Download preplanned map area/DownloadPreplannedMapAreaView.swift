@@ -26,7 +26,7 @@ struct DownloadPreplannedMapAreaView: View {
     @State private var isShowingDeleteAlert = false
     
     /// The view model for this sample.
-    @StateObject private var model = DownloadPreplannedMapAreaViewModel()
+    @StateObject private var model = Model()
     
     var body: some View {
         MapView(map: model.map)
@@ -52,7 +52,7 @@ struct DownloadPreplannedMapAreaView: View {
                         isSelectingMap.toggle()
                     }
                     .sheet(isPresented: $isSelectingMap, detents: [.medium]) {
-                        DownloadPreplannedMapAreaSheetView()
+                        MapPicker()
                             .environmentObject(model)
                     }
                     Spacer()
@@ -62,12 +62,12 @@ struct DownloadPreplannedMapAreaView: View {
                         Image(systemName: "trash")
                     }
                     .disabled(model.localMapPackages.isEmpty)
-                    .alert("Delete all offline areas", isPresented: $isShowingDeleteAlert) {
+                    .alert("Delete All Offline Areas", isPresented: $isShowingDeleteAlert) {
                         Button("Delete", role: .destructive) {
                             model.removeDownloadedMaps()
                         }
                     } message: {
-                        Text("Are you sure you want to delete all preplanned map areas?")
+                        Text("Are you sure you want to delete all downloaded preplanned map areas?")
                     }
                 }
             }
