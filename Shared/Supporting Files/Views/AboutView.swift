@@ -16,7 +16,7 @@ import SwiftUI
 import ArcGIS
 
 struct AboutView: View {
-    @Environment(\.presentationMode) private var presentationMode
+    @Environment(\.dismiss) var dismiss: DismissAction
     
     var copyrightText: Text {
         Text("Copyright © 2022 Esri. All Rights Reserved.")
@@ -58,7 +58,7 @@ struct AboutView: View {
             .navigationBarTitle("About", displayMode: .inline)
             .navigationBarItems(
                 trailing: Button(action: {
-                    presentationMode.wrappedValue.dismiss()
+                    dismiss()
                 }, label: {
                     Text("Done").bold()
                 })
