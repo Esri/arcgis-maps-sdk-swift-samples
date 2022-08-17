@@ -16,7 +16,7 @@ import SwiftUI
 import ArcGIS
 
 struct AboutView: View {
-    @Environment(\.dismiss) var dismiss: DismissAction
+    @Environment(\.dismiss) private var dismiss: DismissAction
     
     var copyrightText: Text {
         Text("Copyright © 2022 Esri. All Rights Reserved.")
