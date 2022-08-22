@@ -79,7 +79,7 @@ struct DisplayFeatureLayersView: View {
         }
         // Creates a feature layer from the GeoPackage's feature tables and
         // sets the current feature layer to the first one.
-        let featureTable = geoPackage.geoPackageFeatureTables.first!
+        let featureTable = geoPackage.featureTables.first!
         let featureLayer = FeatureLayer(featureTable: featureTable)
         setFeatureLayer(featureLayer, viewpoint: .auroraCO)
     }
