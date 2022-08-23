@@ -55,14 +55,15 @@ struct AboutView: View {
                     Link("API Reference", destination: .apiReference)
                 }
             }
-            .navigationBarTitle("About", displayMode: .inline)
-            .navigationBarItems(
-                trailing: Button(action: {
-                    dismiss()
-                }, label: {
-                    Text("Done").bold()
-                })
-            )
+            .navigationTitle("About")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") {
+                        dismiss()
+                    }
+                }
+            }
         }
     }
 }
