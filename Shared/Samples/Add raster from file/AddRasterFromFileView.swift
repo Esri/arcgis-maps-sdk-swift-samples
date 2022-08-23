@@ -21,7 +21,7 @@ struct AddRasterFromFileView: View {
         /// A map with a standard imagery basemap style.
         let map = Map(basemapStyle: .arcGISImageryStandard)
         // Gets the Shasta.tif file URL.
-        let shastaURL = Bundle.main.url(forResource: "Shasta", withExtension: "tif")!
+        let shastaURL = Bundle.main.url(forResource: "Shasta", withExtension: "tif", subdirectory: "raster-file")!
         // Creates a raster with the file URL.
         let raster = Raster(fileURL: shastaURL)
         // Creates a raster layer using the raster object.
