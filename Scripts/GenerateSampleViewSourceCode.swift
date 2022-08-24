@@ -101,9 +101,9 @@ private let sampleStructs = sampleMetadata
         struct \(sample.structName): Sample {
             var name: String { \"\(sample.title)\" }
             var description: String { \"\(sample.description)\" }
-            var dependencies: Set<PortalItem.ID> { [\(portalItemIDs.joined(separator: ", "))] }
+            var snippets: [String] { \(sample.snippets) }
             var tags: Set<String> { \(sample.keywords) }
-            
+            \(portalItemIDs.isEmpty ? "" : "var hasDependencies: Bool { true }\n")
             func makeBody() -> AnyView { .init(\(sample.viewName)()) }
         }
         """

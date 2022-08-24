@@ -1,0 +1,27 @@
+{
+    "category": "Maps",
+    "description": "Display a map from a mobile map package.",
+    "ignore": false,
+    "images": [
+        "display-map-from-mobile-map-package.png"
+    ],
+    "keywords": [
+        "mmpk",
+        "mobile map package",
+        "offline",
+        "MapView",
+        "MobileMapPackage"
+    ],
+    "offline_data": [
+        "e1f3a7254cb845b09450f54937c16061"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "MapView",
+        "MobileMapPackage"
+    ],
+    "snippets": [
+        "DisplayMapFromMobileMapPackageView.swift"
+    ],
+    "title": "Display map from mobile map package"
+}

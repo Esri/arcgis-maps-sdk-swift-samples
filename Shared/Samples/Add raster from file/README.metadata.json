@@ -1,0 +1,30 @@
+{
+    "category": "Layers",
+    "description": "Create and use a raster layer made from a local raster file.",
+    "ignore": false,
+    "images": [
+        "add-raster-from-file.png"
+    ],
+    "keywords": [
+        "data",
+        "image",
+        "import",
+        "layer",
+        "raster",
+        "visualization",
+        "Raster",
+        "RasterLayer"
+    ],
+    "offline_data": [
+        "7c4c679ab06a4df19dc497f577f111bd"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Raster",
+        "RasterLayer"
+    ],
+    "snippets": [
+        "AddRasterFromFileView.swift"
+    ],
+    "title": "Add raster from file"
+}

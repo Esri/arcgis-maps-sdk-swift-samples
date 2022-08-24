@@ -16,24 +16,77 @@ import SwiftUI
 
 struct SampleDetailView: View {
     /// The sample to display in the view.
-    var sample: Sample
+    private let sample: Sample
+    
+    /// A Boolean value indicating whether the sample's information view is visible.
+    @State private var isSampleInfoViewVisible = false
+    
+    /// An object to manage on-demand resources for a sample with dependencies.
+    @StateObject private var onDemandResource: OnDemandResource
+    
+    init(sample: Sample) {
+        self.sample = sample
+        self._onDemandResource = StateObject(
+            wrappedValue: OnDemandResource(tags: [sample.nameInUpperCamelCase])
+        )
+    }
     
     var body: some View {
-        sample.makeBody()
-            .navigationTitle(sample.name)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        print("Info button was tapped")
-                    } label: {
-                        Image(systemName: "info.circle")
+        Group {
+            if sample.hasDependencies {
+                // 'onDemandResource' is created in this branch.
+                Group {
+                    switch onDemandResource.requestState {
+                    case .notStarted, .inProgress:
+                        VStack {
+                            ProgressView(onDemandResource.progress)
+                            Button("Cancel") {
+                                onDemandResource.cancel()
+                            }
+                        }
+                        .padding()
+                    case .cancelled:
+                        VStack {
+                            Image(systemName: "nosign")
+                            Text("On-demand resources download canceled.")
+                        }
+                        .padding()
+                    case .error:
+                        VStack {
+                            Image(systemName: "x.circle")
+                            Text(onDemandResource.error!.localizedDescription)
+                        }
+                        .padding()
+                    case .downloaded:
+                        sample.makeBody()
                     }
                 }
+                .task {
+                    guard case .notStarted = onDemandResource.requestState else { return }
+                    await onDemandResource.download()
+                }
+            } else {
+                // 'onDemandResource' is not created in this branch.
+                sample.makeBody()
             }
+        }
+        .environment(\.isSampleInfoViewVisible, isSampleInfoViewVisible)
+        .navigationTitle(sample.name)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                NavigationLink {
+                    SampleInfoView(sample: sample)
+                        .onAppear { isSampleInfoViewVisible = true }
+                        .onDisappear { isSampleInfoViewVisible = false }
+                } label: {
+                    Image(systemName: "info.circle")
+                }
+            }
+        }
     }
 }
 
 extension SampleDetailView: Identifiable {
-    var id: String { sample.name }
+    var id: String { sample.nameInUpperCamelCase }
 }

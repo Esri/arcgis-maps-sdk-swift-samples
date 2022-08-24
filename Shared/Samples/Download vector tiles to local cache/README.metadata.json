@@ -1,0 +1,40 @@
+{
+    "category": "Layers",
+    "description": "Download tiles from an online vector tile service.",
+    "ignore": false,
+    "images": [
+        "download-vector-tiles-to-local-cache-downloading.png",
+        "download-vector-tiles-to-local-cache-results.png"
+    ],
+    "keywords": [
+        "cache",
+        "download",
+        "offline",
+        "vector",
+        "ArcGISVectorTiledLayer",
+        "ExportVectorTilesJob",
+        "ExportVectorTilesParameters",
+        "ExportVectorTilesResult",
+        "ExportVectorTilesTask",
+        "ExportVectorTilesTask.makeDefaultExportVectorTilesParameters(areaOfInterest:maxScale:)",
+        "ExportVectorTilesTask.makeExportVectorTilesJob(parameters:vectorTileCacheURL:itemResourceCacheURL:)",
+        "ItemResourceCache",
+        "VectorTileCache"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "ArcGISVectorTiledLayer",
+        "ExportVectorTilesJob",
+        "ExportVectorTilesParameters",
+        "ExportVectorTilesResult",
+        "ExportVectorTilesTask",
+        "ExportVectorTilesTask.makeDefaultExportVectorTilesParameters(areaOfInterest:maxScale:)",
+        "ExportVectorTilesTask.makeExportVectorTilesJob(parameters:vectorTileCacheURL:itemResourceCacheURL:)",
+        "ItemResourceCache",
+        "VectorTileCache"
+    ],
+    "snippets": [
+        "DownloadVectorTilesToLocalCacheView.swift"
+    ],
+    "title": "Download vector tiles to local cache"
+}

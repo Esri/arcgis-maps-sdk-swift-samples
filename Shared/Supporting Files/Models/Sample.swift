@@ -19,13 +19,18 @@ import ArcGIS
 protocol Sample {
     /// The name of the sample.
     var name: String { get }
+    
     /// A brief description of the sample's functionalities.
     var description: String { get }
-    /// The ArcGIS Online Portal Item IDs that needs to be provisioned before
-    /// the sample runs.
-    var dependencies: Set<PortalItem.ID> { get }
+    
+    /// The relative paths to the code snippets.
+    var snippets: [String] { get }
+    
     /// The tags and relevant APIs of the sample.
     var tags: Set<String> { get }
+    
+    /// A Boolean value that indicates whether a sample has offline data dependencies.
+    var hasDependencies: Bool { get }
     
     /// Creates the view for the sample.
     func makeBody() -> AnyView
@@ -36,6 +41,20 @@ protocol Sample {
 extension Sample {
     /// The URL to a sample's `README.md` file.
     var readmeURL: URL {
-        Bundle.main.url(forResource: "name", withExtension: "md", subdirectory: "READMEs")!
+        Bundle.main.url(forResource: name, withExtension: "md", subdirectory: "READMEs")!
     }
+    
+    /// The URLs to a sample's source code files.
+    var snippetURLs: [URL] {
+        snippets.compactMap { Bundle.main.url(forResource: $0, withExtension: nil) }
+    }
+    
+    /// The sample's name in UpperCamelCase.
+    /// - Note: For example, "Display map" -> "DisplayMap".
+    var nameInUpperCamelCase: String {
+        name.capitalized.filter { !$0.isWhitespace }
+    }
+    
+    /// By default, a sample doesn't have dependencies.
+    var hasDependencies: Bool { false }
 }
