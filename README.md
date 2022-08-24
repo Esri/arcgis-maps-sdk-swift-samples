@@ -40,9 +40,9 @@ Please see [Configure App Secrets](Documentation/ConfigureAppSecrets.md) for add
 ## Additional Resources
 
 * Unfamiliar with SwiftUI? Check out Apple's [SwiftUI documentation](https://developer.apple.com/documentation/swiftui/).
-* Want to start a new project? (⚠️ link subject to change)  [Setup](https://developers.arcgis.com/ios/get-started) your development environment
-* New to the API? Explore the documentation: (⚠️ link subject to change)  [Guide](https://developers.arcgis.com/ios/) | (⚠️ link subject to change)  [API Reference](https://developers.arcgis.com/ios/api-reference/)
-* Got a question? Ask the community on our (⚠️ link subject to change)  [forum](https://community.esri.com/community/developers/native-app-developers/arcgis-runtime-sdk-for-ios/)
+* Want to start a new project? (⚠️ link subject to change) [Setup](https://developers.arcgis.com/ios/get-started) your development environment
+* New to the API? Explore the documentation: (⚠️ link subject to change) [Guide](https://developers.arcgis.com/ios/) | (⚠️ link subject to change) [API Reference](https://developers.arcgis.com/ios/api-reference/)
+* Got a question? Ask the community on our (⚠️ link subject to change) [forum](https://community.esri.com/community/developers/native-app-developers/arcgis-runtime-sdk-for-ios/)
 
 ## Contributing
 
