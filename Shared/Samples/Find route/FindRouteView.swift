@@ -162,7 +162,7 @@ private extension FindRouteView {
                 let parameters = try await routeTask.makeDefaultParameters()
                 
                 // Sets the return directions on the parameters to true.
-                parameters.returnDirections = true
+                parameters.returnsDirections = true
                 
                 // Sets the stops for the route.
                 parameters.setStops(stops)
