@@ -115,6 +115,12 @@ struct SearchWithGeocodeView: View {
                 .queryCenter($queryCenter)
                 .geoViewExtent($geoViewExtent)
                 .isGeoViewNavigating($isGeoViewNavigating)
+                .onQueryChanged { query in
+                    if query.isEmpty {
+                        // Hides the callout when query is cleared.
+                        calloutPlacement = nil
+                    }
+                }
                 .padding()
             }
         }
