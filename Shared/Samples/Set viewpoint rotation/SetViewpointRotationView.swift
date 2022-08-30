@@ -60,6 +60,7 @@ struct SetViewpointRotationView: View {
                 .frame(minWidth: 60, alignment: .leading)
             }
             .padding(.horizontal, 50)
+            .frame(maxWidth: 540)
         }
         .padding(.bottom)
     }
