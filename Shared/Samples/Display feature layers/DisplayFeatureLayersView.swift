@@ -49,10 +49,12 @@ struct DisplayFeatureLayersView: View {
     
     /// Loads a feature layer with a portal item.
     private func loadPortalItemFeatureTable() {
-        let featureLayer = FeatureLayer(item: PortalItem(
-            portal: .arcGISOnline(isLoginRequired: false),
-            id: .treesOfPortland
-        ))
+        let featureLayer = FeatureLayer(
+            item: PortalItem(
+                portal: .arcGISOnline(isLoginRequired: false),
+                id: .treesOfPortland
+            )
+        )
         setFeatureLayer(featureLayer, viewpoint: .portlandOR)
     }
     
@@ -206,7 +208,7 @@ private extension Viewpoint {
 
 private extension PortalItem.ID {
     /// The ID used in the "Trees of Portland" portal item.
-    static var treesOfPortland: Self { .init("1759fd3e8a324358a0c58d9a687a8578")! }
+    static var treesOfPortland: Self { Self("1759fd3e8a324358a0c58d9a687a8578")! }
 }
 
 private extension URL {
