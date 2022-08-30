@@ -42,7 +42,7 @@ struct ShowDeviceLocationView: View {
                             }
                         }
                     }
-                    .disabled(model.isSettingsDisabled)
+                    .disabled(model.areSettingsDisabled)
                 }
             }
             .alert(isPresented: $model.isShowingAlert, presentingError: model.error)
@@ -67,7 +67,7 @@ private extension ShowDeviceLocationView {
         }
         
         /// A Boolean value indicating whether the settings button is disabled.
-        @Published var isSettingsDisabled = true
+        @published var areSettingsDisabled = true
         
         /// A Boolean value indicating whether to show an alert.
         @Published var isShowingAlert = false
@@ -98,7 +98,7 @@ private extension ShowDeviceLocationView {
             do {
                 // Starts the location display data source.
                 try await locationDisplay.dataSource.start()
-                isSettingsDisabled = false
+                areSettingsDisabled = false
             } catch {
                 // Shows an alert with an error if starting the data source fails.
                 self.error = error
