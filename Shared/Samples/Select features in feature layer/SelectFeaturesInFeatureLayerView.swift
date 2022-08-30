@@ -23,7 +23,7 @@ struct SelectFeaturesInFeatureLayerView: View {
     @State private var identifyPoint: CGPoint?
     
     /// A Boolean value indicating whether to show an alert.
-    @State private var showAlert = false
+    @State private var isShowingAlert = false
     
     /// The error to display in the alert.
     @State private var error: Error?
@@ -75,7 +75,7 @@ struct SelectFeaturesInFeatureLayerView: View {
                     } catch {
                         // Updates the error and shows an alert.
                         self.error = error
-                        showAlert = true
+                        isShowingAlert = true
                     }
                 }
                 .overlay(alignment: .top) {
@@ -84,7 +84,7 @@ struct SelectFeaturesInFeatureLayerView: View {
                         .padding(.vertical, 6)
                         .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
                 }
-                .alert(isPresented: $showAlert, presentingError: error)
+                .alert(isPresented: $isShowingAlert, presentingError: error)
         }
     }
 }
