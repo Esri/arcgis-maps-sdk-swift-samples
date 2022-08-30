@@ -206,7 +206,7 @@ private extension Viewpoint {
 
 private extension PortalItem.ID {
     /// The ID used in the "Trees of Portland" portal item.
-    static var treesOfPortland: Self { .init("1759fd3e8a324358a0c58d9a687a8578")! }
+    static var treesOfPortland: Self { Self("1759fd3e8a324358a0c58d9a687a8578")! }
 }
 
 private extension URL {
