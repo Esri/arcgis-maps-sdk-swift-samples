@@ -23,7 +23,7 @@ struct CreatePlanarAndGeodeticBuffersView: View {
     @State private var bufferDistance = Measurement(value: 500, unit: UnitLength.miles)
     
     /// The possible radii for buffers in miles.
-    private let bufferRadii: ClosedRange<Double> = 200...2_000
+    private let bufferRadii = Measurement.rMin...Measurement.rMax
     
     /// A map with a topographic basemap style.
     @StateObject private var map = Map(basemapStyle: .arcGISTopographic)
@@ -126,12 +126,12 @@ struct CreatePlanarAndGeodeticBuffersView: View {
             
             if showOptions {
                 VStack {
-                    Slider(value: $bufferDistance.value, in: bufferRadii) {
+                    Slider(value: $bufferDistance.value, in: bufferRadii.doubleRange) {
                         Text("Buffer Radius")
                     } minimumValueLabel: {
-                        Text(bufferRadii.lowerBound, format: .number)
+                        Text(bufferRadii.lowerBound, format: .measurement(width: .narrow))
                     } maximumValueLabel: {
-                        Text(bufferRadii.upperBound, format: .number)
+                        Text(bufferRadii.upperBound, format: .measurement(width: .narrow))
                     }
                     
                     Text("Buffer radius: \(bufferDistance, format: .measurement(width: .abbreviated))")
@@ -154,4 +154,16 @@ struct CreatePlanarAndGeodeticBuffersView: View {
             .padding()
         }
     }
+}
+
+private extension ClosedRange where Bound == Measurement<UnitLength> {
+    /// The measurement's values as a closed range of doubles.
+    var doubleRange: ClosedRange<Double> { self.lowerBound.value...self.upperBound.value }
+}
+
+private extension Measurement where UnitType == UnitLength {
+    /// The minimum radius.
+    static var rMin: Self { Measurement(value: 200, unit: UnitLength.miles) }
+    /// The maximum radius.
+    static var rMax: Self { Measurement(value: 2_000, unit: UnitLength.miles) }
 }
