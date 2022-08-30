@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import SwiftUI
-import ArcGIS
 
 struct ContentView: View {
     /// All samples retrieved from the Samples directory.
