@@ -51,7 +51,8 @@ struct ShowDeviceLocationView: View {
 
 private extension ShowDeviceLocationView {
     /// The view model for this sample.
-    @MainActor private class Model: ObservableObject {
+    @MainActor
+    class Model: ObservableObject {
         /// A Boolean value indicating whether to show the device location.
         @Published var showLocation: Bool {
             didSet {
