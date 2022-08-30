@@ -103,8 +103,8 @@ struct SearchWithGeocodeView: View {
                 calloutPlacement = identifyResult.graphics.first.flatMap { graphic in
                     GraphicCalloutPlacement(graphic: graphic, tapLocation: identifyTapLocation)
                 }
-                self.identifyScreenPoint = nil
-                self.identifyTapLocation = nil
+                identifyScreenPoint = nil
+                identifyTapLocation = nil
             }
             .overlay {
                 SearchView(
