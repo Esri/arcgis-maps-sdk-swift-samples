@@ -26,13 +26,13 @@ struct AddSceneLayerFromServiceView: View {
         
         // Creates a surface and adds an elevation source.
         let surface = Surface()
-        surface.addElevationSource(ArcGISTiledElevationSource(url: .worldElevationServiceURL))
+        surface.addElevationSource(ArcGISTiledElevationSource(url: .worldElevationService))
         
         // Sets the surface to the scene's base surface.
         scene.baseSurface = surface
         
         // Adds a scene layer from a URL to the scene's operational layers.
-        scene.addOperationalLayer(ArcGISSceneLayer(url: .brestBuildingServiceURL))
+        scene.addOperationalLayer(ArcGISSceneLayer(url: .brestBuildingService))
         return scene
     }()
     
@@ -43,11 +43,12 @@ struct AddSceneLayerFromServiceView: View {
 
 private extension URL {
     /// The URL of a Brest, France buildings scene service.
-    static var brestBuildingServiceURL: URL {
+    static var brestBuildingService: URL {
         URL(string: "https://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/Buildings_Brest/SceneServer/layers/0")!
     }
+    
     /// The URL of the Terrain 3D ArcGIS REST Service.
-    static var worldElevationServiceURL: URL {
+    static var worldElevationService: URL {
         URL(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!
     }
 }
