@@ -17,11 +17,11 @@ import SwiftUI
 
 struct DisplayFeatureLayersView: View {
     /// A Boolean value indicating whether to show an alert.
-    @State private var showAlert = false
+    @State private var isShowingAlert = false
     
     /// The error shown in the alert.
     @State private var error: Error? {
-        didSet { showAlert = error != nil }
+        didSet { isShowingAlert = error != nil }
     }
     
     /// The feature layer source that is displayed.
@@ -137,7 +137,7 @@ struct DisplayFeatureLayersView: View {
                     }
                 }
             }
-            .alert(isPresented: $showAlert, presentingError: error)
+            .alert(isPresented: $isShowingAlert, presentingError: error)
             .onAppear {
                 // Updates the URL session challenge handler to use the
                 // specified credentials and tokens for any challenges.

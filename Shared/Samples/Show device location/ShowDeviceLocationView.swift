@@ -33,7 +33,7 @@ struct ShowDeviceLocationView: View {
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
                     Menu("Location Settings") {
-                        Toggle("Show Location", isOn: $model.showLocation)
+                        Toggle("Show Location", isOn: $model.isShowingLocation)
                         
                         Picker("Auto-Pan Mode", selection: $model.autoPanMode) {
                             ForEach(LocationDisplay.AutoPanMode.allCases, id: \.self) { mode in
@@ -42,10 +42,10 @@ struct ShowDeviceLocationView: View {
                             }
                         }
                     }
-                    .disabled(model.settingsDisabled)
+                    .disabled(model.isSettingsDisabled)
                 }
             }
-            .alert(isPresented: $model.showAlert, presentingError: model.error)
+            .alert(isPresented: $model.isShowingAlert, presentingError: model.error)
     }
 }
 
@@ -53,9 +53,9 @@ private extension ShowDeviceLocationView {
     /// The view model for this sample.
     @MainActor private class Model: ObservableObject {
         /// A Boolean value indicating whether to show the device location.
-        @Published var showLocation: Bool {
+        @Published var isShowingLocation: Bool {
             didSet {
-                locationDisplay.showLocation = showLocation
+                locationDisplay.showLocation = isShowingLocation
             }
         }
         
@@ -67,10 +67,10 @@ private extension ShowDeviceLocationView {
         }
         
         /// A Boolean value indicating whether the settings button is disabled.
-        @Published var settingsDisabled = true
+        @Published var isSettingsDisabled = true
         
         /// A Boolean value indicating whether to show an alert.
-        @Published var showAlert = false
+        @Published var isShowingAlert = false
         
         /// The error to display in the alert.
         var error: Error?
@@ -84,7 +84,7 @@ private extension ShowDeviceLocationView {
         init() {
             let locationDisplay = LocationDisplay(dataSource: SystemLocationDataSource())
             self.locationDisplay = locationDisplay
-            self.showLocation = locationDisplay.showLocation
+            self.isShowingLocation = locationDisplay.showLocation
             self.autoPanMode = locationDisplay.autoPanMode
         }
         
@@ -98,11 +98,11 @@ private extension ShowDeviceLocationView {
             do {
                 // Starts the location display data source.
                 try await locationDisplay.dataSource.start()
-                settingsDisabled = false
+                isSettingsDisabled = false
             } catch {
                 // Shows an alert with an error if starting the data source fails.
                 self.error = error
-                showAlert = true
+                isShowingAlert = true
             }
         }
         
