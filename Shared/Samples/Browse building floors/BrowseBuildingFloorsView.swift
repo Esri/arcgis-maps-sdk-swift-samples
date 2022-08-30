@@ -33,7 +33,12 @@ struct BrowseBuildingFloorsView: View {
     @State private var isMapLoaded = false
     
     /// A floor-aware web map of Building L on the Esri Redlands campus.
-    @StateObject private var map = Map(item: PortalItem.esriBuildingL)
+    @StateObject private var map = Map(
+        item: PortalItem(
+            portal: .arcGISOnline(isLoginRequired: false),
+            id: .esriBuildingL
+        )
+    )
     
     var body: some View {
         MapView(map: map)
@@ -65,12 +70,7 @@ struct BrowseBuildingFloorsView: View {
     }
 }
 
-private extension PortalItem {
+private extension PortalItem.ID {
     /// A portal item of Building L's floors on the Esri Redlands campus.
-    static var esriBuildingL: Self {
-        .init(
-            portal: .arcGISOnline(isLoginRequired: false),
-            id: PortalItem.ID("f133a698536f44c8884ad81f80b6cfc7")!
-        )
-    }
+    static var esriBuildingL: Self { Self("f133a698536f44c8884ad81f80b6cfc7")! }
 }
