@@ -5,7 +5,7 @@ URL to README:
 
 ## Linked Issue(s)
 
-- `common-samples/issues/`
+- `swift/issues/`
 
 ## How To Test
 
