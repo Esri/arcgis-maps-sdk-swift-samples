@@ -15,7 +15,7 @@
 import SwiftUI
 import ArcGIS
 
-struct ShowResultsOfSpatialOperationsView: View {
+struct ShowResultOfSpatialOperationsView: View {
     /// The current spatial operation performed.
     @State private var spatialOperation = SpatialOperation.none
     
