@@ -21,7 +21,9 @@ struct BrowseBuildingFloorsView: View {
     @State private var isShowingAlert = false
     
     /// The error shown in the alert.
-    @State private var error: Error?
+    @State private var error: Error? {
+        didSet { isShowingAlert = error != nil }
+    }
     
     /// The current viewpoint of the map.
     @State private var viewpoint: Viewpoint?
@@ -64,7 +66,6 @@ struct BrowseBuildingFloorsView: View {
                     isMapLoaded = true
                 } catch {
                     self.error = error
-                    isShowingAlert = true
                 }
             }
     }

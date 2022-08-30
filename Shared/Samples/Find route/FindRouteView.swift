@@ -90,7 +90,9 @@ private extension FindRouteView {
         @Published var isShowingAlert = false
         
         /// The error shown in the alert.
-        @Published var error: Error?
+        @Published var error: Error? {
+            didSet { isShowingAlert = error != nil }
+        }
         
         /// A Boolean value indicating whether to disable the route button.
         var isRouteDisabled: Bool { routeParameters == nil }
@@ -171,7 +173,6 @@ private extension FindRouteView {
                 routeParameters = parameters
             } catch {
                 self.error = error
-                isShowingAlert = true
             }
         }
         
@@ -191,7 +192,6 @@ private extension FindRouteView {
                 }
             } catch {
                 self.error = error
-                isShowingAlert = true
             }
         }
     }
