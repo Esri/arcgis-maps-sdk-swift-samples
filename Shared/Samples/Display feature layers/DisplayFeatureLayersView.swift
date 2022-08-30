@@ -186,18 +186,22 @@ private extension Viewpoint {
     static var napervilleIL: Viewpoint {
         Viewpoint(latitude: 41.7735, longitude: -88.1431, scale: 4e3)
     }
+    
     /// The viewpoint for Portland, OR.
     static var portlandOR: Viewpoint {
         Viewpoint(latitude: 45.5266, longitude: -122.6219, scale: 6e3)
     }
+    
     /// The viewpoint for Los Angeles, CA.
     static var losAngelesCA: Viewpoint {
         Viewpoint(latitude: 34.0772, longitude: -118.7989, scale: 6e5)
     }
+    
     /// The viewpoint for Aurora, CO.
     static var auroraCO: Viewpoint {
         Viewpoint(latitude: 39.7294, longitude: -104.8319, scale: 5e5)
     }
+    
     /// The viewpoint for Scotland.
     static var scotland: Viewpoint {
         Viewpoint(latitude: 56.6413, longitude: -3.8890, scale: 6e6)
@@ -206,16 +210,19 @@ private extension Viewpoint {
 
 private extension PortalItem.ID {
     /// The ID used in the "Trees of Portland" portal item.
-    static var treesOfPortland: Self { .init("1759fd3e8a324358a0c58d9a687a8578")! }
+    static var treesOfPortland: Self { Self("1759fd3e8a324358a0c58d9a687a8578")! }
 }
 
 private extension URL {
     /// Naperville damage assessment service.
     static var damageAssessment: URL { .init(string: "https://sampleserver7.arcgisonline.com/server/rest/services/DamageAssessment/FeatureServer/0")! }
+    
     /// Los Angeles Trailheads geodatabase.
     static var laTrails: URL { Bundle.main.url(forResource: "LA_Trails", withExtension: "geodatabase")! }
+    
     /// Aurora, Colorado GeoPackage.
     static var auroraCO: URL { Bundle.main.url(forResource: "AuroraCO", withExtension: "gpkg")! }
+    
     /// Scottish Wildlife Trust Reserves Shapefile.
     static var reserveBoundaries: URL { Bundle.main.url(forResource: "ScottishWildlifeTrust_ReserveBoundaries_20201102", withExtension: "shp", subdirectory: "ScottishWildlifeTrust_reserves")! }
 }

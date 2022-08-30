@@ -15,7 +15,7 @@
 import SwiftUI
 import ArcGIS
 
-struct ShowResultsOfSpatialOperationsView: View {
+struct ShowResultOfSpatialOperationsView: View {
     /// The current spatial operation performed.
     @State private var spatialOperation = SpatialOperation.none
     
@@ -34,7 +34,7 @@ struct ShowResultsOfSpatialOperationsView: View {
     private enum SpatialOperation: CaseIterable {
         case intersection, symmetricDifference, difference, union, none
         
-        /// Human readable label strings for each spatial operation.
+        /// A human-readable label for each spatial operation.
         var label: String {
             switch self {
             case .none: return "None"

@@ -217,7 +217,7 @@ private extension Geometry {
         return relationships
     }
     
-    /// Returns what type the geometry is.
+    /// The type of the geometry.
     var type: String {
         switch self {
         case is Point: return "Point"
