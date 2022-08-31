@@ -104,27 +104,31 @@ private let sampleStructs = sampleMetadata
             var snippets: [String] { \(sample.snippets) }
             var tags: Set<String> { \(sample.keywords) }
             \(portalItemIDs.isEmpty ? "" : "var hasDependencies: Bool { true }\n")
-            func makeBody() -> AnyView { .init(\(sample.viewName)()) }
         }
         """
     }
     .joined(separator: "\n")
 
+private let sampleViewCases = sampleMetadata
+    .map { sample in
+        return """
+                case "\(sample.title)":
+                    \(sample.viewName)()
+        """
+    }
+    .joined(separator: "\n")
+
 private let entries = sampleMetadata
-    .map { sample in "\(sample.structName)()" }
-    .joined(separator: ",\n        ")
-private let arrayRepresentation = """
-    [
-            \(entries)
-        ]
-    """
+    .map { sample in "        \(sample.structName)()" }
+    .joined(separator: ",\n")
 
 do {
     let templateFile = try String(contentsOf: templateURL, encoding: .utf8)
     // Replaces the empty array code stub, i.e. [], with the array representation.
     let content = templateFile
-        .replacingOccurrences(of: "[/* samples */]", with: arrayRepresentation)
+        .replacingOccurrences(of: "/* samples */", with: entries)
         .replacingOccurrences(of: "/* structs */", with: sampleStructs)
+        .replacingOccurrences(of: "/* sample view cases */", with: sampleViewCases)
     try content.write(to: outputFileURL, atomically: true, encoding: .utf8)
 } catch {
     print("Error reading or writing template file: \(error.localizedDescription)")

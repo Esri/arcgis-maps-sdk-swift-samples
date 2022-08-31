@@ -58,7 +58,7 @@ struct SampleDetailView: View {
                         }
                         .padding()
                     case .downloaded:
-                        sample.makeBody()
+                        sampleView(for: sample.name)
                     }
                 }
                 .task {
@@ -67,7 +67,7 @@ struct SampleDetailView: View {
                 }
             } else {
                 // 'onDemandResource' is not created in this branch.
-                sample.makeBody()
+                sampleView(for: sample.name)
             }
         }
         .environment(\.isSampleInfoViewVisible, isSampleInfoViewVisible)

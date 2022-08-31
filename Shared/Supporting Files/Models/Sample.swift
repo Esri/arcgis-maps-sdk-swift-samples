@@ -30,9 +30,6 @@ protocol Sample {
     
     /// A Boolean value that indicates whether a sample has offline data dependencies.
     var hasDependencies: Bool { get }
-    
-    /// Creates the view for the sample.
-    func makeBody() -> AnyView
 }
 
 // MARK: Computed Variables
