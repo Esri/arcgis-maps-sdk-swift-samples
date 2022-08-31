@@ -68,7 +68,7 @@ private extension ShowDeviceLocationView {
         }
         
         /// A Boolean value indicating whether the settings button is disabled.
-        @published var areSettingsDisabled = true
+        @Published var areSettingsDisabled = true
         
         /// A Boolean value indicating whether to show an alert.
         @Published var isShowingAlert = false
