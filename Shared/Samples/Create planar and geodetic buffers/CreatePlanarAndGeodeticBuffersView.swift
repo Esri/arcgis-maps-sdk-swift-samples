@@ -17,7 +17,7 @@ import ArcGIS
 
 struct CreatePlanarAndGeodeticBuffersView: View {
     /// A Boolean value indicating whether to show options.
-    @State private var showOptions = false
+    @State private var isShowingOptions = false
     
     /// The radius to pass into the buffer functions.
     @State private var bufferDistance = Measurement(value: 500, unit: UnitLength.miles)
@@ -124,7 +124,7 @@ struct CreatePlanarAndGeodeticBuffersView: View {
                     addBuffer(at: mapPoint)
                 }
             
-            if showOptions {
+            if isShowingOptions {
                 VStack {
                     Slider(value: $bufferDistance.value, in: bufferRadii.doubleRange) {
                         Text("Buffer Radius")
@@ -141,7 +141,7 @@ struct CreatePlanarAndGeodeticBuffersView: View {
             
             HStack {
                 Spacer()
-                Toggle(isOn: $showOptions.animation(.spring())) {
+                Toggle(isOn: $isShowingOptions.animation(.spring())) {
                     Text("Options")
                 }
                 .toggleStyle(.button)

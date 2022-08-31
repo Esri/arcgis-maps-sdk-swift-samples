@@ -27,12 +27,12 @@ struct SetBasemapView: View {
     )
     
     /// A Boolean value that indicates whether to show the basemap gallery.
-    @State private var showBasemapGallery = false
+    @State private var isShowingBasemapGallery = false
     
     var body: some View {
         MapView(map: map, viewpoint: initialViewpoint)
             .overlay(alignment: .topTrailing) {
-                if showBasemapGallery {
+                if isShowingBasemapGallery {
                     BasemapGallery(geoModel: map)
                         .style(.automatic())
                         .esriBorder()
@@ -40,7 +40,7 @@ struct SetBasemapView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
-                    Toggle(isOn: $showBasemapGallery) {
+                    Toggle(isOn: $isShowingBasemapGallery) {
                         Label("Show base map", systemImage: "map")
                     }
                 }

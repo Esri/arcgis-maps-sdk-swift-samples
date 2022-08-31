@@ -17,11 +17,11 @@ import SwiftUI
 
 struct DisplayFeatureLayersView: View {
     /// A Boolean value indicating whether to show an alert.
-    @State private var showAlert = false
+    @State private var isShowingAlert = false
     
     /// The error shown in the alert.
     @State private var error: Error? {
-        didSet { showAlert = error != nil }
+        didSet { isShowingAlert = error != nil }
     }
     
     /// The feature layer source that is displayed.
@@ -139,7 +139,7 @@ struct DisplayFeatureLayersView: View {
                     }
                 }
             }
-            .alert(isPresented: $showAlert, presentingError: error)
+            .alert(isPresented: $isShowingAlert, presentingError: error)
             .onAppear {
                 // Updates the URL session challenge handler to use the
                 // specified credentials and tokens for any challenges.
@@ -188,18 +188,22 @@ private extension Viewpoint {
     static var napervilleIL: Viewpoint {
         Viewpoint(latitude: 41.7735, longitude: -88.1431, scale: 4e3)
     }
+    
     /// The viewpoint for Portland, OR.
     static var portlandOR: Viewpoint {
         Viewpoint(latitude: 45.5266, longitude: -122.6219, scale: 6e3)
     }
+    
     /// The viewpoint for Los Angeles, CA.
     static var losAngelesCA: Viewpoint {
         Viewpoint(latitude: 34.0772, longitude: -118.7989, scale: 6e5)
     }
+    
     /// The viewpoint for Aurora, CO.
     static var auroraCO: Viewpoint {
         Viewpoint(latitude: 39.7294, longitude: -104.8319, scale: 5e5)
     }
+    
     /// The viewpoint for Scotland.
     static var scotland: Viewpoint {
         Viewpoint(latitude: 56.6413, longitude: -3.8890, scale: 6e6)
@@ -214,10 +218,13 @@ private extension PortalItem.ID {
 private extension URL {
     /// Naperville damage assessment service.
     static var damageAssessment: URL { .init(string: "https://sampleserver7.arcgisonline.com/server/rest/services/DamageAssessment/FeatureServer/0")! }
+    
     /// Los Angeles Trailheads geodatabase.
     static var laTrails: URL { Bundle.main.url(forResource: "LA_Trails", withExtension: "geodatabase")! }
+    
     /// Aurora, Colorado GeoPackage.
     static var auroraCO: URL { Bundle.main.url(forResource: "AuroraCO", withExtension: "gpkg")! }
+    
     /// Scottish Wildlife Trust Reserves Shapefile.
     static var reserveBoundaries: URL { Bundle.main.url(forResource: "ScottishWildlifeTrust_ReserveBoundaries_20201102", withExtension: "shp", subdirectory: "ScottishWildlifeTrust_reserves")! }
 }
