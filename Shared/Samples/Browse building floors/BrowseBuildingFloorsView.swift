@@ -48,7 +48,7 @@ struct BrowseBuildingFloorsView: View {
             .onNavigatingChanged { isMapNavigating = $0 }
             .alert(isPresented: $isShowingAlert, presentingError: error)
             .ignoresSafeArea(.keyboard, edges: .bottom)
-            .overlay {
+            .overlay(alignment: .bottomTrailing) {
                 if isMapLoaded,
                    let floorManager = map.floorManager {
                     FloorFilter(
@@ -56,6 +56,10 @@ struct BrowseBuildingFloorsView: View {
                         alignment: .bottomTrailing,
                         viewpoint: $viewpoint,
                         isNavigating: $isMapNavigating
+                    )
+                    .frame(
+                        maxWidth: 400,
+                        maxHeight: 400
                     )
                     .padding(.toolkitDefault)
                     .padding(.bottom, 27)
