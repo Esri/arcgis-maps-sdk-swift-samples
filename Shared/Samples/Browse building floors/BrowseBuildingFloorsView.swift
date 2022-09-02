@@ -21,7 +21,9 @@ struct BrowseBuildingFloorsView: View {
     @State private var isShowingAlert = false
     
     /// The error shown in the alert.
-    @State private var error: Error?
+    @State private var error: Error? {
+        didSet { isShowingAlert = error != nil }
+    }
     
     /// The current viewpoint of the map.
     @State private var viewpoint: Viewpoint?
@@ -33,14 +35,20 @@ struct BrowseBuildingFloorsView: View {
     @State private var isMapLoaded = false
     
     /// A floor-aware web map of Building L on the Esri Redlands campus.
-    @StateObject private var map = Map(item: PortalItem.esriBuildingL)
+    @StateObject private var map = Map(
+        item: PortalItem(
+            portal: .arcGISOnline(isLoginRequired: false),
+            id: .esriBuildingL
+        )
+    )
     
     var body: some View {
         MapView(map: map)
             .onViewpointChanged(kind: .centerAndScale) { viewpoint = $0 }
             .onNavigatingChanged { isMapNavigating = $0 }
+            .alert(isPresented: $isShowingAlert, presentingError: error)
             .ignoresSafeArea(.keyboard, edges: .bottom)
-            .overlay {
+            .overlay(alignment: .bottomTrailing) {
                 if isMapLoaded,
                    let floorManager = map.floorManager {
                     FloorFilter(
@@ -48,6 +56,10 @@ struct BrowseBuildingFloorsView: View {
                         alignment: .bottomTrailing,
                         viewpoint: $viewpoint,
                         isNavigating: $isMapNavigating
+                    )
+                    .frame(
+                        maxWidth: 400,
+                        maxHeight: 400
                     )
                     .padding(.toolkitDefault)
                     .padding(.bottom, 27)
@@ -59,18 +71,12 @@ struct BrowseBuildingFloorsView: View {
                     isMapLoaded = true
                 } catch {
                     self.error = error
-                    isShowingAlert = true
                 }
             }
     }
 }
 
-private extension PortalItem {
+private extension PortalItem.ID {
     /// A portal item of Building L's floors on the Esri Redlands campus.
-    static var esriBuildingL: Self {
-        .init(
-            portal: .arcGISOnline(isLoginRequired: false),
-            id: PortalItem.ID("f133a698536f44c8884ad81f80b6cfc7")!
-        )
-    }
+    static var esriBuildingL: Self { Self("f133a698536f44c8884ad81f80b6cfc7")! }
 }

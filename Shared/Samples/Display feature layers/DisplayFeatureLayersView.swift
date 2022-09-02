@@ -49,10 +49,12 @@ struct DisplayFeatureLayersView: View {
     
     /// Loads a feature layer with a portal item.
     private func loadPortalItemFeatureTable() {
-        let featureLayer = FeatureLayer(item: PortalItem(
-            portal: .arcGISOnline(isLoginRequired: false),
-            id: .treesOfPortland
-        ))
+        let featureLayer = FeatureLayer(
+            item: PortalItem(
+                portal: .arcGISOnline(isLoginRequired: false),
+                id: .treesOfPortland
+            )
+        )
         setFeatureLayer(featureLayer, viewpoint: .portlandOR)
     }
     
