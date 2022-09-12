@@ -79,7 +79,11 @@ struct ClipGeometryView: View {
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
                     Button(geometriesAreClipped ? "Reset" : "Clip") {
-                        geometriesAreClipped ? reset() : clipGeometries()
+                        if geometriesAreClipped {
+                            reset()
+                        } else {
+                            clipGeometries()
+                        }
                         geometriesAreClipped.toggle()
                     }
                 }

@@ -71,7 +71,11 @@ struct CutGeometryView: View {
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
                     Button(isGeometryCut ? "Reset" : "Cut") {
-                        isGeometryCut ? reset() : cutGeometry()
+                        if isGeometryCut {
+                            reset()
+                        } else {
+                            cutGeometry()
+                        }
                         isGeometryCut.toggle()
                     }
                 }
