@@ -103,8 +103,8 @@ struct SearchWithGeocodeView: View {
                 calloutPlacement = identifyResult.graphics.first.flatMap { graphic in
                     GraphicCalloutPlacement(graphic: graphic, tapLocation: identifyTapLocation)
                 }
-                self.identifyScreenPoint = nil
-                self.identifyTapLocation = nil
+                identifyScreenPoint = nil
+                identifyTapLocation = nil
             }
             .overlay {
                 SearchView(
@@ -115,6 +115,12 @@ struct SearchWithGeocodeView: View {
                 .queryCenter($queryCenter)
                 .geoViewExtent($geoViewExtent)
                 .isGeoViewNavigating($isGeoViewNavigating)
+                .onQueryChanged { query in
+                    if query.isEmpty {
+                        // Hides the callout when query is cleared.
+                        calloutPlacement = nil
+                    }
+                }
                 .padding()
             }
         }

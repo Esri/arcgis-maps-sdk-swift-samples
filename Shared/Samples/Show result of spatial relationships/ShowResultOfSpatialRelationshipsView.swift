@@ -17,7 +17,7 @@ import SwiftUI
 
 struct ShowResultOfSpatialRelationshipsView: View {
     /// A Boolean value indicating whether to show an alert.
-    @State private var showAlert = false
+    @State private var isShowingAlert = false
     
     /// The error shown in the alert.
     @State private var error: Error?
@@ -142,7 +142,7 @@ struct ShowResultOfSpatialRelationshipsView: View {
                             }
                         } catch {
                             self.error = error
-                            showAlert = true
+                            isShowingAlert = true
                         }
                     } else {
                         // Hides the callout.
@@ -217,7 +217,7 @@ private extension Geometry {
         return relationships
     }
     
-    /// Returns what type the geometry is.
+    /// The type of the geometry.
     var type: String {
         switch self {
         case is Point: return "Point"

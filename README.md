@@ -37,13 +37,18 @@ To run this app and access specific, ready-to-use services such as basemap layer
 
 Please see [Configure App Secrets](Documentation/ConfigureAppSecrets.md) for adding license key and other details.
 
-## Issues
+## Additional Resources
 
-Find a bug or want to request a new feature? Please let us know by (⚠️ link subject to change) [creating an issue](https://github.com/ArcGIS/arcgis-runtime-samples-swift/issues/new).
+* Unfamiliar with SwiftUI? Check out Apple's [SwiftUI documentation](https://developer.apple.com/documentation/swiftui/).
+* Want to start a new project? (⚠️ link subject to change) [Setup](https://developers.arcgis.com/ios/get-started) your development environment
+* New to the API? Explore the documentation: (⚠️ link subject to change) [Guide](https://developers.arcgis.com/ios/) | (⚠️ link subject to change) [API Reference](https://developers.arcgis.com/ios/api-reference/)
+* Got a question? Ask the community on our (⚠️ link subject to change) [forum](https://community.esri.com/community/developers/native-app-developers/arcgis-runtime-sdk-for-ios/)
 
 ## Contributing
 
 Esri welcomes contributions from anyone and everyone. Please see our [guidelines for contributing](https://github.com/esri/contributing).
+
+Find a bug or want to request a new feature? Please let us know by (⚠️ link subject to change) [creating an issue](https://github.com/ArcGIS/arcgis-runtime-samples-swift/issues/new).
 
 ## Licensing
 

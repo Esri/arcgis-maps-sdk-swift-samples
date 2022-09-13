@@ -90,7 +90,9 @@ private extension FindRouteView {
         @Published var isShowingAlert = false
         
         /// The error shown in the alert.
-        @Published var error: Error?
+        @Published var error: Error? {
+            didSet { isShowingAlert = error != nil }
+        }
         
         /// A Boolean value indicating whether to disable the route button.
         var isRouteDisabled: Bool { routeParameters == nil }
@@ -162,7 +164,7 @@ private extension FindRouteView {
                 let parameters = try await routeTask.makeDefaultParameters()
                 
                 // Sets the return directions on the parameters to true.
-                parameters.returnDirections = true
+                parameters.returnsDirections = true
                 
                 // Sets the stops for the route.
                 parameters.setStops(stops)
@@ -171,7 +173,6 @@ private extension FindRouteView {
                 routeParameters = parameters
             } catch {
                 self.error = error
-                isShowingAlert = true
             }
         }
         
@@ -183,15 +184,14 @@ private extension FindRouteView {
             
             do {
                 // Solves the route based on the route parameters.
-                let routeResult = try await routeTask.solveRoute(routeParameters: routeParameters)
+                let routeResult = try await routeTask.solveRoute(parameters: routeParameters)
                 if let firstRoute = routeResult.routes.first {
                     // Updates the route geometry and directions.
-                    routeGraphic.geometry = firstRoute.routeGeometry
+                    routeGraphic.geometry = firstRoute.geometry
                     directions = firstRoute.directionManeuvers
                 }
             } catch {
                 self.error = error
-                isShowingAlert = true
             }
         }
     }

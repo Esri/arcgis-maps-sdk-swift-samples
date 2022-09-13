@@ -14,11 +14,14 @@
 
 import SwiftUI
 
-extension SamplesApp {
-    /// The samples for this app.
-    static let samples: [Sample] = [/* samples */]
+private struct IsSampleInfoViewVisibleKey: EnvironmentKey {
+    static let defaultValue = false
 }
 
-// MARK: Sample Structs
-
-/* structs */
+extension EnvironmentValues {
+    /// A Boolean value indicating whether the sample's information view is visible.
+    var isSampleInfoViewVisible: Bool {
+        get { self[IsSampleInfoViewVisibleKey.self] }
+        set { self[IsSampleInfoViewVisibleKey.self] = newValue }
+    }
+}

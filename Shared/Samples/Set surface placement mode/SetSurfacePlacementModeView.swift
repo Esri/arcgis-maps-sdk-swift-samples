@@ -194,8 +194,10 @@ private extension SurfacePlacement {
 private extension Measurement where UnitType == UnitLength {
     /// The minimum z-value.
     static var zMin: Self { Measurement(value: 0, unit: UnitLength.meters) }
+    
     /// The maximum z-value.
     static var zMax: Self { Measurement(value: 140, unit: UnitLength.meters) }
+    
     /// The mid-range of the possible z-values.
     static var zMid: Double { (zMin.value + zMax.value) / 2 }
 }
@@ -210,6 +212,7 @@ private extension URL {
     static var sceneService: URL {
         URL(string: "https://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/Buildings_Brest/SceneServer")!
     }
+    
     /// The URL of the Terrain 3D ArcGIS REST Service.
     static var worldElevationService: URL {
         URL(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!

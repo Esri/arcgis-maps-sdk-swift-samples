@@ -1,0 +1,132 @@
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
+pre code.hljs {
+    display: block;
+    overflow-x: auto;
+    padding: 1em
+}
+
+code.hljs {
+    padding: 3px 5px
+}
+
+.hljs {
+    background: #FFFFFF;
+    color: #000000;
+}
+
+/* Comments */
+.hljs-comment {
+    color: #5D6C79;
+}
+
+/* Strings */
+.hljs-string {
+    color: #C41A16;
+}
+
+/* Numbers */
+.hljs-number {
+    color: #1C00CF;
+}
+
+/* Regex Literals */
+.hljs-regexp {
+    color: #C41A16;
+}
+
+/* Keywords */
+.hljs-keyword,
+.hljs-literal {
+    color: #9B2393;
+}
+
+/* URLs */
+.hljs-link,
+a {
+    color: #0E0EFF;
+    text-decoration: none;
+}
+
+/* Other Declarations */
+.hljs-title /* ie: func makeUIView */,
+.hljs-params /* ie: context */ {
+    color: #0F68A0;
+}
+
+/*
+Type Declarations (ContentView)
+Other Class Names (Error, View),
+Other Function and Method Names (@Environment)
+Other Type Names (@State, Int, String)
+*/
+.hljs-title.class_ /* ie: struct ContentView: View */,
+.hljs-meta /* ie: @State */ ,
+.hljs-type /* ie: String */{
+    color: #3900A0;
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #1F1F24;
+    }
+    
+    .hljs {
+        background: #1F1F24;
+        color: #FFFFFF;
+    }
+    
+    /* Comments */
+    .hljs-comment {
+        color: #6C7986;
+    }
+    
+    /* Strings */
+    .hljs-string {
+        color: #FC6A5D;
+    }
+    
+    /* Numbers */
+    .hljs-number {
+        color: #D0BF69;
+    }
+    
+    /* Regex Literals */
+    .hljs-regexp {
+        color: #FC6A5D;
+    }
+    
+    /* Keywords */
+    .hljs-keyword,
+    .hljs-literal {
+        color: #FC5FA3;
+    }
+    
+    /* URLs */
+    .hljs-link,
+    a {
+        color: #5482FF;
+        text-decoration: none;
+    }
+    
+    /* Other Declarations */
+    .hljs-title /* ie: func makeUIView */,
+    .hljs-params /* ie: context */ {
+        color: #41A1C0;
+    }
+    
+    /*
+    Type Declarations (ContentView)
+    Other Class Names (Error, View),
+    Other Function and Method Names (@Environment)
+    Other Type Names (@State, Int, String)
+    */
+    .hljs-title.class_ /* ie: struct ContentView: View */,
+    .hljs-meta /* ie: @State */ ,
+    .hljs-type /* ie: String */{
+        color: #D0A8FF;
+    }
+}
