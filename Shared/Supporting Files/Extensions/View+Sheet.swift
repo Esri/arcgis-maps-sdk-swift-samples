@@ -172,11 +172,12 @@ private extension SheetModifier {
         Set(detents.map { $0.presentationDetent })
     }
     
-    /// Creates the given content with a popover and sheet modifier. Uses the native iOS 16 `presentationDetents`
-    ///  modifier and `PresentationDetent` type to present a sheet.
+    /// Creates the given content with a popover and sheet modifier. Uses the
+    /// native iOS 16 `presentationDetents` modifier and `PresentationDetent`
+    /// type to present a sheet.
     /// - Parameter content: The content that will present the sheet or popover.
-    /// - Returns: The given content with popover and sheet modifiers to transition between a popover and a sheet
-    /// when necessary.
+    /// - Returns: The given content with popover and sheet modifiers to transition
+    /// between a popover and a sheet when necessary.
     func makeContentWithSheet(_ content: Content) -> some View {
         content
             .popover(
@@ -210,18 +211,17 @@ private extension SheetModifier {
             .onDisappear {
                 isPopoverVisible = false
                 if !isPresented {
-                    // Calls the on dismiss closure if the popover is
-                    // not presented.
+                    // Calls the on dismiss closure if the popover is not presented.
                     onDismiss?()
                 } else {
-                    // Presents the sheet when transitioning from a
-                    // popover layout.
+                    // Presents the sheet when transitioning from a popover layout.
                     isPresented = true
                 }
             }
     }
     
-    /// Creates the content of the sheet with the corresponding presentation detents modifier if a selection exists.
+    /// Creates the content of the sheet with the corresponding presentation
+    /// detents modifier if a selection exists.
     /// - Returns: The content of the sheet
     func makeSheetContent() -> some View {
         Group {
