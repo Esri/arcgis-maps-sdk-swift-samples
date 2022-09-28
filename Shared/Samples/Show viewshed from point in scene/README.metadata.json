@@ -26,7 +26,9 @@
         "Viewshed"
     ],
     "snippets": [
-        "ShowViewshedFromPointInSceneView.swift"
+        "ShowViewshedFromPointInSceneView.swift",
+        "ShowViewshedFromPointInSceneView.Model.swift",
+        "ShowViewshedFromPointInSceneView.ViewshedSettingsView.swift"
     ],
     "title": "Show viewshed from point in scene"
 }
