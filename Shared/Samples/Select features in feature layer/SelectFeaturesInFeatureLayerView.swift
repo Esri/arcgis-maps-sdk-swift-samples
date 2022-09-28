@@ -57,11 +57,11 @@ struct SelectFeaturesInFeatureLayerView: View {
                     
                     do {
                         // Unselects the selected features.
-                        featureLayer.unselect(features: selectedFeatures)
+                        featureLayer.unselectFeatures(selectedFeatures)
                         
                         // Saves the results from the identify method on the map view proxy.
                         let results = try await mapViewProxy.identify(
-                            layer: featureLayer,
+                            on: featureLayer,
                             screenPoint: identifyPoint,
                             tolerance: 12,
                             maximumResults: 10
@@ -71,7 +71,7 @@ struct SelectFeaturesInFeatureLayerView: View {
                         selectedFeatures = results.geoElements as! [Feature]
                         
                         // Selects the features from the selected features array.
-                        featureLayer.select(features: selectedFeatures)
+                        featureLayer.selectFeatures(selectedFeatures)
                     } catch {
                         // Updates the error and shows an alert.
                         self.error = error
