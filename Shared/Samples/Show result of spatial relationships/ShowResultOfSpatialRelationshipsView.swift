@@ -128,7 +128,7 @@ struct ShowResultOfSpatialRelationshipsView: View {
                         do {
                             // Identifies the graphic at the given screen point.
                             let results = try await mapView.identify(
-                                graphicsOverlay: graphicsOverlay,
+                                on: graphicsOverlay,
                                 screenPoint: identifyPoint,
                                 tolerance: 12,
                                 maximumResults: 1

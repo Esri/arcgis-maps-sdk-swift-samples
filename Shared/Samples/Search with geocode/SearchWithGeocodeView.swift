@@ -92,7 +92,7 @@ struct SearchWithGeocodeView: View {
                 guard let screenPoint = identifyScreenPoint,
                       // Identifies when user taps a graphic.
                       let identifyResult = try? await proxy.identify(
-                        graphicsOverlay: searchResultsOverlay,
+                        on: searchResultsOverlay,
                         screenPoint: screenPoint,
                         tolerance: 10
                       )
