@@ -184,7 +184,7 @@ private extension FindRouteView {
             
             do {
                 // Solves the route based on the route parameters.
-                let routeResult = try await routeTask.solveRoute(parameters: routeParameters)
+                let routeResult = try await routeTask.solveRoute(using: routeParameters)
                 if let firstRoute = routeResult.routes.first {
                     // Updates the route geometry and directions.
                     routeGraphic.geometry = firstRoute.geometry
