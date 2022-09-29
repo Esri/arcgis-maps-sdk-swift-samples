@@ -10,7 +10,7 @@ A 3D viewshed analysis is a type of visual analysis you can perform on a scene. 
 
 ## How to use the sample
 
-Tap on the map to add an observer location. Tap the gear icon to view the settings. Use the sliders to change the properties (heading, pitch, etc.), of the viewshed and see them updated in real time. To move the viewshed, tap anywhere on the screen.
+Tap on the map to add an observer location. Use the sliders to change the properties (heading, pitch, etc.), of the viewshed and see them updated in real time. To move the viewshed, tap anywhere on the screen.
 
 ## How it works
 
