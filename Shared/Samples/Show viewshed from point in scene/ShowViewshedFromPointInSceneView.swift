@@ -16,7 +16,7 @@ import ArcGIS
 import SwiftUI
 
 struct ShowViewshedFromPointInSceneView: View {
-    /// The view model for this sample.
+    /// The view model for the sample.
     @StateObject private var model = Model()
     
     /// A Boolean value indicating whether to show the settings sheet.
@@ -36,16 +36,15 @@ struct ShowViewshedFromPointInSceneView: View {
                     .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
             }
             .toolbar {
-                ToolbarItem(placement: .bottomBar) {
+                ToolbarItemGroup(placement: .bottomBar) {
                     Spacer()
                     Button("Viewshed Settings") {
                         isShowingSettings = true
                     }
-                    .sheet(isPresented: $isShowingSettings, detents: [.medium]) {
+                    .sheet(isPresented: $isShowingSettings, detents: [.medium], dragIndicatorVisibility: .visible) {
                         ViewshedSettingsView()
                             .environmentObject(model)
                     }
-                    Spacer()
                 }
             }
     }

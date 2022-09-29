@@ -34,8 +34,37 @@ extension ShowViewshedFromPointInSceneView {
         /// An analysis overlay that contains a location viewshed analysis.
         var analysisOverlay: AnalysisOverlay
         
+        /// The color which non-visible areas of all viewsheds will be rendered.
+        var obstructedAreaColor = Color(uiColor: Viewshed.obstructedColor) {
+            didSet {
+                Viewshed.obstructedColor = UIColor(obstructedAreaColor)
+            }
+        }
+        
+        /// The color which visible areas of all viewsheds will be rendered.
+        var visibleColor = Color(uiColor: Viewshed.visibleColor) {
+            didSet {
+                Viewshed.visibleColor = UIColor(visibleColor)
+            }
+        }
+        
+        /// The color used to render the frustum outline.
+        var frustumOutlineColor = Color(uiColor: Viewshed.frustumOutlineColor) {
+            didSet {
+                Viewshed.frustumOutlineColor = UIColor(frustumOutlineColor)
+            }
+        }
+        
+        /// The z value of viewshed's location.
+        var locationZ: Double {
+            didSet {
+                viewshed.location = GeometryEngine.makeGeometry(from: viewshed.location, z: locationZ)
+            }
+        }
+        
         init() {
             analysisOverlay = AnalysisOverlay(analyses: [viewshed])
+            locationZ = viewshed.location.z!
             scene = Self.makeScene()
         }
         
