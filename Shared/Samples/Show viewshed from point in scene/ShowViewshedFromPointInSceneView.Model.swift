@@ -34,14 +34,14 @@ extension ShowViewshedFromPointInSceneView {
         /// An analysis overlay that contains a location viewshed analysis.
         var analysisOverlay: AnalysisOverlay
         
-        /// The color which non-visible areas of all viewsheds will be rendered.
+        /// The color used to display non-visible areas of a viewshed.
         var obstructedAreaColor = Color(uiColor: Viewshed.obstructedColor) {
             didSet {
                 Viewshed.obstructedColor = UIColor(obstructedAreaColor)
             }
         }
         
-        /// The color which visible areas of all viewsheds will be rendered.
+        /// The color used to display visible areas of a viewshed.
         var visibleColor = Color(uiColor: Viewshed.visibleColor) {
             didSet {
                 Viewshed.visibleColor = UIColor(visibleColor)

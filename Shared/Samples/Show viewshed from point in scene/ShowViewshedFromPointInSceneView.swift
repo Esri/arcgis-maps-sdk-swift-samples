@@ -19,7 +19,7 @@ struct ShowViewshedFromPointInSceneView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
-    /// A Boolean value indicating whether to show the settings sheet.
+    /// A Boolean value indicating whether the settings sheet is being shown or not.
     @State private var isShowingSettings = false
     
     var body: some View {
