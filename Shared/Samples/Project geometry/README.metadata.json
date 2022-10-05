@@ -28,7 +28,7 @@
         "static GeometryEngine.project(_:into:)"
     ],
     "snippets": [
-        "ProjectView.swift"
+        "ProjectGeometryView.swift"
     ],
-    "title": "Project"
+    "title": "Project geometry"
 }
