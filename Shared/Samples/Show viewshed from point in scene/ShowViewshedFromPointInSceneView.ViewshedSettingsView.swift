@@ -21,9 +21,9 @@ extension ShowViewshedFromPointInSceneView {
         
         var body: some View {
             List {
-                Section("Toggles") {
-                    Toggle("Analysis Overlay Visible", isOn: $model.analysisOverlay.isVisible)
-                    Toggle("Frustum Outline Visible", isOn: $model.viewshed.isFrustumOutlineVisible)
+                Section("Visibility") {
+                    Toggle("Analysis Overlay", isOn: $model.isAnalysisOverlayVisible)
+                    Toggle("Frustum Outline", isOn: $model.isFrustumOutlineVisible)
                 }
                 
                 Section("Colors") {
@@ -33,29 +33,28 @@ extension ShowViewshedFromPointInSceneView {
                 }
                 
                 Section("Perspective") {
-                    MeasurementSlider<UnitLength>(label: "Height", measurementValue: $model.locationZ, range: 10...300, minValue: Measurement(value: 10, unit: .meters), maxValue: Measurement(value: 300, unit: .meters))
-                    MeasurementSlider<UnitAngle>(label: "Heading", measurementValue: $model.viewshed.heading, range: 0...360, minValue: .d0, maxValue: .d360)
-                    MeasurementSlider<UnitAngle>(label: "Pitch", measurementValue: $model.viewshed.pitch, range: 0...180, minValue: .d0, maxValue: .d180)
-                    MeasurementSlider<UnitAngle>(label: "Horizontal Angle", measurementValue: $model.viewshed.horizontalAngle, range: 0...120, minValue: .d0, maxValue: .d120)
-                    MeasurementSlider<UnitAngle>(label: "Vertical Angle", measurementValue: $model.viewshed.verticalAngle, range: 0...120, minValue: .d0, maxValue: .d120)
-                    MeasurementSlider<UnitLength>(label: "Min Distance", measurementValue: Binding($model.viewshed.minDistance)!, range: 1...1000, minValue: Measurement(value: 1, unit: .meters), maxValue: Measurement(value: 1000, unit: .meters))
-                    MeasurementSlider<UnitLength>(label: "Max Distance", measurementValue: Binding($model.viewshed.maxDistance)!, range: 1000...2000, minValue: Measurement(value: 1000, unit: .meters), maxValue: Measurement(value: 2000, unit: .meters))
+                    PerspectiveRow(label: "Height", measurementValue: $model.locationZ, range: 10...300, unit: UnitLength.meters)
+                    PerspectiveRow(label: "Heading", measurementValue: $model.heading, range: 0...360, unit: UnitAngle.degrees)
+                    PerspectiveRow(label: "Pitch", measurementValue: $model.pitch, range: 0...180, unit: UnitAngle.degrees)
+                    PerspectiveRow(label: "Horizontal Angle", measurementValue: $model.horizontalAngle, range: 0...120, unit: UnitAngle.degrees)
+                    PerspectiveRow(label: "Vertical Angle", measurementValue: $model.verticalAngle, range: 0...120, unit: UnitAngle.degrees)
+                    PerspectiveRow(label: "Min Distance", measurementValue: $model.minDistance, range: 1...1000, unit: UnitLength.meters)
+                    PerspectiveRow(label: "Max Distance", measurementValue: $model.maxDistance, range: 1000...2000, unit: UnitLength.meters)
                 }
             }
         }
     }
     
     /// A slider to adjust various dimensional unit of measures.
-    struct MeasurementSlider<UnitType>: View where UnitType: Dimension {
+    struct PerspectiveRow: View {
         let label: String
         @Binding var measurementValue: Double
         let range: ClosedRange<Double>
-        let minValue: Measurement<UnitType>
-        let maxValue: Measurement<UnitType>
+        let unit: Dimension
         
         var body: some View {
             HStack {
-                Text(label)
+                Text("\(label): \(Measurement(value: measurementValue, unit: unit), format: .measurement(width: .narrow, numberFormatStyle: .number.precision(.fractionLength(0))))")
                     .minimumScaleFactor(0.5)
                 Spacer()
                 Slider(value: $measurementValue, in: range)
@@ -63,18 +62,4 @@ extension ShowViewshedFromPointInSceneView {
             }
         }
     }
-}
-
-private extension Measurement where UnitType == UnitAngle {
-    /// 0 degrees.
-    static var d0: Self { Measurement(value: 0, unit: UnitAngle.degrees) }
-    
-    /// 120 degrees.
-    static var d120: Self { Measurement(value: 120, unit: UnitAngle.degrees) }
-    
-    /// 180 degrees.
-    static var d180: Self { Measurement(value: 180, unit: UnitAngle.degrees) }
-    
-    /// 360 degrees.
-    static var d360: Self { Measurement(value: 360, unit: UnitAngle.degrees) }
 }

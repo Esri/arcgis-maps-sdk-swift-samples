@@ -23,10 +23,10 @@ struct ShowViewshedFromPointInSceneView: View {
     @State private var isShowingSettings = false
     
     var body: some View {
-        SceneView(scene: model.scene, analysisOverlays: [model.analysisOverlay])
+        SceneView(scene: model.scene, analysisOverlays: [Model.analysisOverlay])
             .onSingleTapGesture { _, scenePoint in
                 if let scenePoint {
-                    model.viewshed.location = scenePoint
+                    Model.viewshed.location = scenePoint
                 }
             }
             .overlay(alignment: .top) {

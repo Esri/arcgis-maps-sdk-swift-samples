@@ -17,11 +17,8 @@ import SwiftUI
 
 extension ShowViewshedFromPointInSceneView {
     class Model: ObservableObject {
-        /// A scene with imagery basemap style.
-        let scene: ArcGIS.Scene
-        
         /// The location viewshed used in the sample.
-        var viewshed = LocationViewshed(
+        static let viewshed = LocationViewshed(
             location: Point(x: -4.50, y: 48.4, z: 100, spatialReference: .wgs84),
             heading: 20,
             pitch: 70,
@@ -32,9 +29,13 @@ extension ShowViewshedFromPointInSceneView {
         )!
         
         /// An analysis overlay that contains a location viewshed analysis.
-        var analysisOverlay: AnalysisOverlay
+        static let analysisOverlay = AnalysisOverlay(analyses: [viewshed])
+        
+        /// A scene with imagery basemap style.
+        let scene = makeScene()
         
         /// The color used to display non-visible areas of a viewshed.
+        @Published
         var obstructedAreaColor = Color(uiColor: Viewshed.obstructedColor) {
             didSet {
                 Viewshed.obstructedColor = UIColor(obstructedAreaColor)
@@ -42,6 +43,7 @@ extension ShowViewshedFromPointInSceneView {
         }
         
         /// The color used to display visible areas of a viewshed.
+        @Published
         var visibleColor = Color(uiColor: Viewshed.visibleColor) {
             didSet {
                 Viewshed.visibleColor = UIColor(visibleColor)
@@ -49,6 +51,7 @@ extension ShowViewshedFromPointInSceneView {
         }
         
         /// The color used to render the frustum outline.
+        @Published
         var frustumOutlineColor = Color(uiColor: Viewshed.frustumOutlineColor) {
             didSet {
                 Viewshed.frustumOutlineColor = UIColor(frustumOutlineColor)
@@ -56,16 +59,71 @@ extension ShowViewshedFromPointInSceneView {
         }
         
         /// The z value of viewshed's location.
-        var locationZ: Double {
+        @Published
+        var locationZ = viewshed.location.z! {
             didSet {
-                viewshed.location = GeometryEngine.makeGeometry(from: viewshed.location, z: locationZ)
+                Self.viewshed.location = GeometryEngine.makeGeometry(from: Self.viewshed.location, z: locationZ)
             }
         }
         
-        init() {
-            analysisOverlay = AnalysisOverlay(analyses: [viewshed])
-            locationZ = viewshed.location.z!
-            scene = Self.makeScene()
+        /// A Boolean value indicating whether the frustum outline is visible or not.
+        @Published
+        var isFrustumOutlineVisible = viewshed.isFrustumOutlineVisible {
+            didSet {
+                Self.viewshed.isFrustumOutlineVisible = isFrustumOutlineVisible
+            }
+        }
+        
+        /// A Boolean value indicating whether the analysis overlay is visible or not.
+        @Published
+        var isAnalysisOverlayVisible = analysisOverlay.isVisible {
+            didSet {
+                Self.analysisOverlay.isVisible = isAnalysisOverlayVisible
+            }
+        }
+        
+        // MARK: Published viewshed properties
+        
+        @Published
+        var heading = viewshed.heading {
+            didSet {
+                Self.viewshed.heading = heading
+            }
+        }
+        
+        @Published
+        var pitch = viewshed.pitch {
+            didSet {
+                Self.viewshed.pitch = pitch
+            }
+        }
+        
+        @Published
+        var horizontalAngle = viewshed.horizontalAngle {
+            didSet {
+                Self.viewshed.horizontalAngle = horizontalAngle
+            }
+        }
+        
+        @Published
+        var verticalAngle = viewshed.verticalAngle {
+            didSet {
+                Self.viewshed.verticalAngle = verticalAngle
+            }
+        }
+        
+        @Published
+        var minDistance = viewshed.minDistance! {
+            didSet {
+                Self.viewshed.minDistance = minDistance
+            }
+        }
+        
+        @Published
+        var maxDistance = viewshed.maxDistance! {
+            didSet {
+                Self.viewshed.maxDistance = maxDistance
+            }
         }
         
         /// Makes a scene.
