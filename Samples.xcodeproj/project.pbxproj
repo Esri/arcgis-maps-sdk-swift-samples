@@ -310,8 +310,8 @@
 				E004A6B928414332002A1FE6 /* Set viewpoint rotation */,
 				E004A6DE2846626A002A1FE6 /* Show callout */,
 				E004A6E728493BBB002A1FE6 /* Show device location */,
-				E066DD392860C9EE004D3D5B /* Show result of spatial relationships */,
 				E004A6F1284E4F80002A1FE6 /* Show result of spatial operations */,
+				E066DD392860C9EE004D3D5B /* Show result of spatial relationships */,
 				E066DD362860AB0B004D3D5B /* Style graphics with renderer */,
 				E004A6E42846A609002A1FE6 /* Style graphics with symbols */,
 			);
