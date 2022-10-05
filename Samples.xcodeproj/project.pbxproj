@@ -351,8 +351,8 @@
 		0086F3FC28E3770900974721 /* Show viewshed from point in scene */ = {
 			isa = PBXGroup;
 			children = (
-				0086F3FD28E3770900974721 /* ShowViewshedFromPointInSceneView.swift */,
 				0042E24228E4BF8F001F33D6 /* ShowViewshedFromPointInSceneView.Model.swift */,
+				0086F3FD28E3770900974721 /* ShowViewshedFromPointInSceneView.swift */,
 				0042E24428E4F82B001F33D6 /* ShowViewshedFromPointInSceneView.ViewshedSettingsView.swift */,
 			);
 			path = "Show viewshed from point in scene";
@@ -848,7 +848,7 @@
 				E0082217287755AC002AD138 /* View+Sheet.swift in Sources */,
 				00181B462846AD7100654571 /* View+Alert.swift in Sources */,
 				E0FE32E728747778002C6ACA /* BrowseBuildingFloorsView.swift in Sources */,
-				E0EA0B772866390E00C9621D /* ProjectView.swift in Sources */,
+				E0EA0B772866390E00C9621D /* ProjectGeometryView.swift in Sources */,
 				0042E24328E4BF8F001F33D6 /* ShowViewshedFromPointInSceneView.Model.swift in Sources */,
 				E0EA0B772866390E00C9621D /* ProjectGeometryView.swift in Sources */,
 				0005580A2817C51E00224BC6 /* SampleDetailView.swift in Sources */,
