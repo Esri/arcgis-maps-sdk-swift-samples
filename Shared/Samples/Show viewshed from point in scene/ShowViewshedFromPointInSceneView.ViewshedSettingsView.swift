@@ -46,7 +46,7 @@ extension ShowViewshedFromPointInSceneView {
     }
     
     /// A slider to adjust various dimensional unit of measures.
-    struct PerspectiveRow: View {
+    private struct PerspectiveRow: View {
         let label: String
         @Binding var measurementValue: Double
         let range: ClosedRange<Double>
