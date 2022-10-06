@@ -53,12 +53,17 @@ extension ShowViewshedFromPointInSceneView {
         let unit: Dimension
         
         var body: some View {
-            HStack {
-                Text("\(label): \(Measurement(value: measurementValue, unit: unit), format: .measurement(width: .narrow, numberFormatStyle: .number.precision(.fractionLength(0))))")
-                    .minimumScaleFactor(0.5)
-                Spacer()
+            VStack {
+                HStack {
+                    Text(label)
+                    Spacer()
+                    Text(
+                        Measurement(value: measurementValue, unit: unit),
+                        format: .measurement(width: .narrow, numberFormatStyle: .number.precision(.fractionLength(0)))
+                    )
+                    .foregroundColor(.secondary)
+                }
                 Slider(value: $measurementValue, in: range)
-                    .frame(width: 160, alignment: .trailing)
             }
         }
     }

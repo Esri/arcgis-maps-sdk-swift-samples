@@ -18,18 +18,10 @@ import SwiftUI
 extension ShowViewshedFromPointInSceneView {
     class Model: ObservableObject {
         /// The location viewshed used in the sample.
-        static let viewshed = LocationViewshed(
-            location: Point(x: -4.50, y: 48.4, z: 100, spatialReference: .wgs84),
-            heading: 20,
-            pitch: 70,
-            horizontalAngle: 45,
-            verticalAngle: 90,
-            minDistance: 50,
-            maxDistance: 1000
-        )!
+        let viewshed: LocationViewshed
         
         /// An analysis overlay that contains a location viewshed analysis.
-        static let analysisOverlay = AnalysisOverlay(analyses: [viewshed])
+        let analysisOverlay: AnalysisOverlay
         
         /// A scene with imagery basemap style.
         let scene = makeScene()
@@ -60,70 +52,95 @@ extension ShowViewshedFromPointInSceneView {
         
         /// The z value of viewshed's location.
         @Published
-        var locationZ = viewshed.location.z! {
+        var locationZ: Double {
             didSet {
-                Self.viewshed.location = GeometryEngine.makeGeometry(from: Self.viewshed.location, z: locationZ)
+                viewshed.location = GeometryEngine.makeGeometry(from: viewshed.location, z: locationZ)
             }
         }
         
         /// A Boolean value indicating whether the frustum outline is visible or not.
         @Published
-        var isFrustumOutlineVisible = viewshed.isFrustumOutlineVisible {
+        var isFrustumOutlineVisible: Bool {
             didSet {
-                Self.viewshed.isFrustumOutlineVisible = isFrustumOutlineVisible
+                viewshed.isFrustumOutlineVisible = isFrustumOutlineVisible
             }
         }
         
         /// A Boolean value indicating whether the analysis overlay is visible or not.
         @Published
-        var isAnalysisOverlayVisible = analysisOverlay.isVisible {
+        var isAnalysisOverlayVisible: Bool {
             didSet {
-                Self.analysisOverlay.isVisible = isAnalysisOverlayVisible
+                analysisOverlay.isVisible = isAnalysisOverlayVisible
             }
         }
         
         // MARK: Published viewshed properties
         
         @Published
-        var heading = viewshed.heading {
+        var heading: Double {
             didSet {
-                Self.viewshed.heading = heading
+                viewshed.heading = heading
             }
         }
         
         @Published
-        var pitch = viewshed.pitch {
+        var pitch: Double {
             didSet {
-                Self.viewshed.pitch = pitch
+                viewshed.pitch = pitch
             }
         }
         
         @Published
-        var horizontalAngle = viewshed.horizontalAngle {
+        var horizontalAngle: Double {
             didSet {
-                Self.viewshed.horizontalAngle = horizontalAngle
+                viewshed.horizontalAngle = horizontalAngle
             }
         }
         
         @Published
-        var verticalAngle = viewshed.verticalAngle {
+        var verticalAngle: Double {
             didSet {
-                Self.viewshed.verticalAngle = verticalAngle
+                viewshed.verticalAngle = verticalAngle
             }
         }
         
         @Published
-        var minDistance = viewshed.minDistance! {
+        var minDistance: Double {
             didSet {
-                Self.viewshed.minDistance = minDistance
+                viewshed.minDistance = minDistance
             }
         }
         
         @Published
-        var maxDistance = viewshed.maxDistance! {
+        var maxDistance: Double {
             didSet {
-                Self.viewshed.maxDistance = maxDistance
+                viewshed.maxDistance = maxDistance
             }
+        }
+        
+        init() {
+            self.viewshed = LocationViewshed(
+                location: Point(x: -4.50, y: 48.4, z: 100, spatialReference: .wgs84),
+                heading: 20,
+                pitch: 70,
+                horizontalAngle: 45,
+                verticalAngle: 90,
+                minDistance: 50,
+                maxDistance: 1000
+            )!
+            
+            analysisOverlay = AnalysisOverlay(analyses: [viewshed])
+            isAnalysisOverlayVisible = analysisOverlay.isVisible
+            
+            // Initialize published properties from viewshed's properties.
+            locationZ = viewshed.location.z!
+            isFrustumOutlineVisible = viewshed.isFrustumOutlineVisible
+            heading = viewshed.heading
+            pitch = viewshed.pitch
+            horizontalAngle = viewshed.horizontalAngle
+            verticalAngle = viewshed.verticalAngle
+            minDistance = viewshed.minDistance!
+            maxDistance = viewshed.maxDistance!
         }
         
         /// Makes a scene.
