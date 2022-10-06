@@ -15,7 +15,7 @@
 import ArcGIS
 import SwiftUI
 
-struct ProjectView: View {
+struct ProjectGeometryView: View {
     /// A location callout placement.
     @State private var calloutPlacement: LocationCalloutPlacement?
     

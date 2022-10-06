@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import SwiftUI
-import ArcGIS
 
 /// A type that represents a sample in the sample viewer.
 protocol Sample {

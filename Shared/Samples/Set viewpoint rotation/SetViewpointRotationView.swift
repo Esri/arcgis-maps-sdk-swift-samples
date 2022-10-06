@@ -22,8 +22,10 @@ struct SetViewpointRotationView: View {
     
     /// The center of the viewpoint.
     @State private var center = Point(x: -117.156229, y: 32.713652, spatialReference: .wgs84)
+    
     /// The scale of the viewpoint.
     @State private var scale = 5e4
+    
     /// The rotation angle for the viewpoint.
     @State private var rotation = Double.zero
     
@@ -60,6 +62,7 @@ struct SetViewpointRotationView: View {
                 .frame(minWidth: 60, alignment: .leading)
             }
             .padding(.horizontal, 50)
+            .frame(maxWidth: 540)
         }
         .padding(.bottom)
     }

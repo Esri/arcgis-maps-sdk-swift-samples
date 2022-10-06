@@ -25,7 +25,7 @@ Upon launch, a raster will be loaded from a file and displayed in the map view. 
 
 ## About the data
 
-This sample shows a [Shasta.tif Raster Image](https://www.arcgis.com/home/item.html?id=6876e57d373a497e9cdb916642531b70) hosted on ArcGIS Online.
+This sample shows a [Shasta Raster](https://www.arcgis.com/home/item.html?id=7c4c679ab06a4df19dc497f577f111bd) hosted on ArcGIS Online.
 
 ## Additional information
 

@@ -23,7 +23,7 @@ struct SelectFeaturesInFeatureLayerView: View {
     @State private var identifyPoint: CGPoint?
     
     /// A Boolean value indicating whether to show an alert.
-    @State private var showAlert = false
+    @State private var isShowingAlert = false
     
     /// The error to display in the alert.
     @State private var error: Error?
@@ -57,11 +57,11 @@ struct SelectFeaturesInFeatureLayerView: View {
                     
                     do {
                         // Unselects the selected features.
-                        featureLayer.unselect(features: selectedFeatures)
+                        featureLayer.unselectFeatures(selectedFeatures)
                         
                         // Saves the results from the identify method on the map view proxy.
                         let results = try await mapViewProxy.identify(
-                            layer: featureLayer,
+                            on: featureLayer,
                             screenPoint: identifyPoint,
                             tolerance: 12,
                             maximumResults: 10
@@ -71,11 +71,11 @@ struct SelectFeaturesInFeatureLayerView: View {
                         selectedFeatures = results.geoElements as! [Feature]
                         
                         // Selects the features from the selected features array.
-                        featureLayer.select(features: selectedFeatures)
+                        featureLayer.selectFeatures(selectedFeatures)
                     } catch {
                         // Updates the error and shows an alert.
                         self.error = error
-                        showAlert = true
+                        isShowingAlert = true
                     }
                 }
                 .overlay(alignment: .top) {
@@ -84,11 +84,11 @@ struct SelectFeaturesInFeatureLayerView: View {
                         .padding(.vertical, 6)
                         .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
                 }
-                .alert(isPresented: $showAlert, presentingError: error)
+                .alert(isPresented: $isShowingAlert, presentingError: error)
         }
     }
 }
 
 private extension PortalItem.ID {
-    static let gdpPerCapita = Self("10d76a5b015647279b165f3a64c2524f")!
+    static var gdpPerCapita: Self { Self("10d76a5b015647279b165f3a64c2524f")! }
 }
