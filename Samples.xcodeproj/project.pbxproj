@@ -705,7 +705,7 @@
 					DisplayMapFromMobileMapPackage,
 				);
 				LastSwiftUpdateCheck = 1330;
-				LastUpgradeCheck = 1400;
+				LastUpgradeCheck = 1330;
 				ORGANIZATIONNAME = Esri;
 				TargetAttributes = {
 					00E5401227F3CCA200CF66D5 = {
