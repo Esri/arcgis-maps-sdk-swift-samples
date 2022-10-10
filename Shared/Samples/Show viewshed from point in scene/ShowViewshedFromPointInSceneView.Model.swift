@@ -41,8 +41,7 @@ extension ShowViewshedFromPointInSceneView {
         }
         
         /// The color used to render the frustum outline.
-        @Published
-        var frustumOutlineColor = Color(uiColor: Viewshed.frustumOutlineColor) {
+        @Published var frustumOutlineColor = Color(uiColor: Viewshed.frustumOutlineColor) {
             didSet {
                 Viewshed.frustumOutlineColor = UIColor(frustumOutlineColor)
             }
