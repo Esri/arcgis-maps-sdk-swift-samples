@@ -27,16 +27,14 @@ extension ShowViewshedFromPointInSceneView {
         let scene = makeScene()
         
         /// The color used to display non-visible areas of a viewshed.
-        @Published
-        var obstructedAreaColor = Color(uiColor: Viewshed.obstructedColor) {
+        @Published var obstructedAreaColor = Color(uiColor: Viewshed.obstructedColor) {
             didSet {
                 Viewshed.obstructedColor = UIColor(obstructedAreaColor)
             }
         }
         
         /// The color used to display visible areas of a viewshed.
-        @Published
-        var visibleColor = Color(uiColor: Viewshed.visibleColor) {
+        @Published var visibleColor = Color(uiColor: Viewshed.visibleColor) {
             didSet {
                 Viewshed.visibleColor = UIColor(visibleColor)
             }
@@ -51,24 +49,21 @@ extension ShowViewshedFromPointInSceneView {
         }
         
         /// The z value of viewshed's location.
-        @Published
-        var locationZ: Double {
+        @Published var locationZ: Double {
             didSet {
                 viewshed.location = GeometryEngine.makeGeometry(from: viewshed.location, z: locationZ)
             }
         }
         
         /// A Boolean value indicating whether the frustum outline is visible or not.
-        @Published
-        var isFrustumOutlineVisible: Bool {
+        @Published var isFrustumOutlineVisible: Bool {
             didSet {
                 viewshed.isFrustumOutlineVisible = isFrustumOutlineVisible
             }
         }
         
         /// A Boolean value indicating whether the analysis overlay is visible or not.
-        @Published
-        var isAnalysisOverlayVisible: Bool {
+        @Published var isAnalysisOverlayVisible: Bool {
             didSet {
                 analysisOverlay.isVisible = isAnalysisOverlayVisible
             }
@@ -76,43 +71,37 @@ extension ShowViewshedFromPointInSceneView {
         
         // MARK: Published viewshed properties
         
-        @Published
-        var heading: Double {
+        @Published var heading: Double {
             didSet {
                 viewshed.heading = heading
             }
         }
         
-        @Published
-        var pitch: Double {
+        @Published var pitch: Double {
             didSet {
                 viewshed.pitch = pitch
             }
         }
         
-        @Published
-        var horizontalAngle: Double {
+        @Published var horizontalAngle: Double {
             didSet {
                 viewshed.horizontalAngle = horizontalAngle
             }
         }
         
-        @Published
-        var verticalAngle: Double {
+        @Published var verticalAngle: Double {
             didSet {
                 viewshed.verticalAngle = verticalAngle
             }
         }
         
-        @Published
-        var minDistance: Double {
+        @Published var minDistance: Double {
             didSet {
                 viewshed.minDistance = minDistance
             }
         }
         
-        @Published
-        var maxDistance: Double {
+        @Published var maxDistance: Double {
             didSet {
                 viewshed.maxDistance = maxDistance
             }
