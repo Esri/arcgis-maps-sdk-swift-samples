@@ -27,6 +27,7 @@ struct ShowViewshedFromPointInSceneView: View {
             .onSingleTapGesture { _, scenePoint in
                 if let scenePoint {
                     model.viewshed.location = scenePoint
+                    model.locationZ = scenePoint.z!
                 }
             }
             .overlay(alignment: .top) {
