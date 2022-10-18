@@ -137,7 +137,7 @@ private extension GenerateOfflineMapView {
         
         /// A portal item displaying the Naperville, IL water network.
         private let napervillePortalItem = PortalItem(
-            portal: .arcGISOnline(isLoginRequired: false),
+            portal: .arcGISOnline(requiresLogin: false),
             id: PortalItem.ID("acc027394bc84c2fb04d1ed317aac674")!
         )
         
