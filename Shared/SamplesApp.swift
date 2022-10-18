@@ -36,8 +36,10 @@ extension SamplesApp {
     /// license the app, falling back to Developer Mode (which will display
     /// a watermark on the map view).
     func license() {
-        if let licenseKey = LicenseKey(String.licenseKey!),
-           let extensionLicenseKey = LicenseKey(String.extensionLicenseKey!) {
+        if let licenseStringLiteral = String.licenseKey,
+           let licenseKey = LicenseKey(licenseStringLiteral),
+           let extensionLicenseStringLiteral = String.extensionLicenseKey,
+           let extensionLicenseKey = LicenseKey(extensionLicenseStringLiteral) {
             // Set both keys to access all samples, including utility network
             // capability.
             try? ArcGISRuntimeEnvironment.setLicense(with: licenseKey, extensions: [extensionLicenseKey])
