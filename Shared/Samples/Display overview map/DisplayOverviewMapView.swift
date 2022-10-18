@@ -33,7 +33,7 @@ struct DisplayOverviewMapView: View {
     private static func makeMap() -> Map {
         let featureLayer = FeatureLayer(
             item: PortalItem(
-                portal: .arcGISOnline(isLoginRequired: false),
+                portal: .arcGISOnline(requiresLogin: false),
                 id: .northAmericaTouristAttractions
             )
         )

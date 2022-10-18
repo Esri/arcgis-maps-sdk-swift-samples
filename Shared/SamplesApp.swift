@@ -36,11 +36,11 @@ extension SamplesApp {
     /// license the app, falling back to Developer Mode (which will display
     /// a watermark on the map view).
     func license() {
-        if let licenseKey = String.licenseKey,
-           let extensionLicenseKey = String.extensionLicenseKey {
+        if let licenseKey = LicenseKey(String.licenseKey!),
+           let extensionLicenseKey = LicenseKey(String.extensionLicenseKey!) {
             // Set both keys to access all samples, including utility network
             // capability.
-            ArcGISRuntimeEnvironment.setLicense(licenseKey: licenseKey, extensions: [extensionLicenseKey])
+            try? ArcGISRuntimeEnvironment.setLicense(with: licenseKey, extensions: [extensionLicenseKey])
         }
         // Authentication with an API key or named user is required to access
         // basemaps and other location services.
