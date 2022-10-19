@@ -112,7 +112,7 @@ private let sampleStructs = sampleMetadata
 private let sampleViewCases = sampleMetadata
     .map { sample in
         return """
-                case "\(sample.title)":
+                case is \(sample.structName):
                     \(sample.viewName)()
         """
     }
