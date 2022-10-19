@@ -28,7 +28,7 @@ extension SampleDetailView {
         switch sample {
 /* sample view cases */
         default:
-            EmptyView()
+            fatalError("Unknown \(sample.name) sample view generated.")
         }
     }
 }
