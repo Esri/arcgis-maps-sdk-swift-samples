@@ -1,14 +1,14 @@
-# ArcGIS Runtime SDK for Swift Samples
+# ArcGIS Maps SDK for Swift Samples
 
-This repository contains Swift sample code demonstrating the capabilities of (⚠️ link subject to change) [ArcGIS Runtime SDK for Swift](https://developers.arcgis.com/ios/) and how to use them in your own app. The project can be opened in Xcode and run on a simulator or a device. Or you can (⚠️ link subject to change) [download the app from the App Store](https://itunes.apple.com/us/app/arcgis-runtime-sdk-for-ios/id1180714771) on your iPhone, iPad, or iPod touch.
+This repository contains Swift sample code demonstrating the capabilities of (⚠️ link subject to change) [ArcGIS Maps SDK for Swift](https://developers.arcgis.com/ios/) and how to use them in your own app. The project can be opened in Xcode and run on a simulator or a device. Or you can (⚠️ link subject to change) [download the app from the App Store](https://apps.apple.com/us/app/arcgis-maps-sdk-samples/id1630449018) on your iPhone, iPad, or iPod touch.
 
 ## Requirements
 
-* (⚠️ link subject to change) [ArcGIS Runtime SDK for Swift](https://developers.arcgis.com/ios/) 200.0 (or newer)
-* (⚠️ link subject to change) [ArcGIS Runtime Toolkit for Swift](https://github.com/ArcGIS/arcgis-runtime-toolkit-swift) 200.0 (or newer)
+* (⚠️ link subject to change) [ArcGIS Maps SDK for Swift](https://developers.arcgis.com/ios/) 200.0 (or newer)
+* (⚠️ link subject to change) [ArcGIS Maps SDK for Swift Toolkit](https://github.com/ArcGIS/arcgis-maps-sdk-swift-toolkit) 200.0 (or newer)
 * Xcode 13.0 (or newer)
 
-The *ArcGIS Runtime SDK Samples app* has a *Target SDK* version of *15.0*, meaning that it can run on devices with *iOS 15.0* or newer.
+The *ArcGIS Maps SDK for Swift Samples app* has a *Target SDK* version of *15.0*, meaning that it can run on devices with *iOS 15.0* or newer.
 
 ## Building Samples Using Swift API Manually 
 
@@ -48,7 +48,7 @@ Please see [Configure App Secrets](Documentation/ConfigureAppSecrets.md) for add
 
 Esri welcomes contributions from anyone and everyone. Please see our [guidelines for contributing](https://github.com/esri/contributing).
 
-Find a bug or want to request a new feature? Please let us know by (⚠️ link subject to change) [creating an issue](https://github.com/ArcGIS/arcgis-runtime-samples-swift/issues/new).
+Find a bug or want to request a new feature? Please let us know by (⚠️ link subject to change) [creating an issue](https://github.com/ArcGIS/arcgis-maps-sdk-swift-samples/issues/new).
 
 ## Licensing
 
@@ -66,4 +66,4 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-A copy of the license is available in the repository's [LICENSE](https://github.com/Esri/arcgis-runtime-samples-swift/blob/main/LICENSE) file.
+A copy of the license is available in the repository's [LICENSE](https://github.com/Esri/arcgis-maps-sdk-swift-samples/blob/main/LICENSE) file.
