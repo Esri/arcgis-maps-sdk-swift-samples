@@ -111,7 +111,7 @@ def all_samples(path: str) -> None:
 
 def main():
 
-    msg = 'README checker. Run it against the arcgis-runtime-samples-swift ' \
+    msg = 'README checker. Run it against the arcgis-maps-sdk-swift-samples ' \
           'folder or a single sample folder. ' \
           'On success: Script will exit with zero. ' \
           'On failure: Style violations will print to console and the script ' \
