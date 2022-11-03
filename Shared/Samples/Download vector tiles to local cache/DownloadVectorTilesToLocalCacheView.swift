@@ -198,7 +198,7 @@ private extension DownloadVectorTilesToLocalCacheView {
                 // Gets the map's base layers.
                 guard let vectorTiledLayer = map.basemap?.baseLayers.first as? ArcGISVectorTiledLayer else { return }
                 // Creates the export vector tiles task from the base layers' URL.
-                exportVectorTilesTask = ExportVectorTilesTask(url: vectorTiledLayer.url)
+                exportVectorTilesTask = ExportVectorTilesTask(url: vectorTiledLayer.url!)
                 // Loads the export vector tiles task.
                 try await exportVectorTilesTask.load()
                 // Enables the download button.
@@ -213,7 +213,7 @@ private extension DownloadVectorTilesToLocalCacheView {
         func downloadVectorTiles(extent: Envelope) async {
             // Ensures that exporting vector tiles is allowed.
             if let vectorTileSourceInfo = exportVectorTilesTask.vectorTileSourceInfo,
-               vectorTileSourceInfo.exportTilesAllowed,
+               vectorTileSourceInfo.allowsExportingTiles,
                let maxScale = maxScale {
                 do {
                     // Creates the parameters for the export vector tiles job.
