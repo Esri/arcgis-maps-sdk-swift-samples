@@ -18,8 +18,8 @@ struct SampleDetailView: View {
     /// The sample to display in the view.
     private let sample: Sample
     
-    /// A Boolean value indicating whether the sample's information view is visible.
-    @State private var isSampleInfoViewVisible = false
+    /// A Boolean value that indicates whether to present the sample's information view.
+    @State private var isSampleInfoViewPresented = false
     
     /// An object to manage on-demand resources for a sample with dependencies.
     @StateObject private var onDemandResource: OnDemandResource
@@ -70,17 +70,26 @@ struct SampleDetailView: View {
                 sample.makeBody()
             }
         }
-        .environment(\.isSampleInfoViewVisible, isSampleInfoViewVisible)
+        .environment(\.isSampleInfoViewVisible, isSampleInfoViewPresented)
         .navigationTitle(sample.name)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                NavigationLink {
-                    SampleInfoView(sample: sample)
-                        .onAppear { isSampleInfoViewVisible = true }
-                        .onDisappear { isSampleInfoViewVisible = false }
+                Button {
+                    isSampleInfoViewPresented.toggle()
                 } label: {
                     Image(systemName: "info.circle")
+                }
+                .sheet(isPresented: $isSampleInfoViewPresented) {
+                    if #available(iOS 16, *) {
+                        NavigationStack {
+                            SampleInfoView(sample: sample)
+                        }
+                    } else {
+                        NavigationView {
+                            SampleInfoView(sample: sample)
+                        }
+                    }
                 }
             }
         }
