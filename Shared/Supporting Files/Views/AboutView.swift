@@ -15,53 +15,14 @@
 import SwiftUI
 
 struct AboutView: View {
-    @Environment(\.dismiss) private var dismiss: DismissAction
-    
-    var copyrightText: Text {
-        Text("Copyright © 2022 Esri. All Rights Reserved.")
-    }
-    
     var body: some View {
-        NavigationView {
-            List {
-                Section {
-                    VStack {
-                        Image("ArcGIS SDK Logo", label: Text("App icon"))
-                        Text(Bundle.main.name)
-                            .font(.headline)
-                        copyrightText
-                            .font(.footnote)
-                            .foregroundColor(.secondary)
-                    }
-                    .listRowBackground(Color.clear)
-                    .frame(maxWidth: .infinity)
-                }
-                Section {
-                    VersionRow(title: "Version", version: Bundle.main.shortVersion)
-                    VersionRow(title: "SDK Version", version: Bundle.arcGIS.shortVersion, build: Bundle.arcGIS.version)
-                }
-                Section(header: Text("Powered By")) {
-                    Link("ArcGIS Runtime Toolkit for Swift", destination: .toolkit)
-                    Link("ArcGIS Runtime SDK for Swift", destination: .developers)
-                }
-                Section(footer: Text("Browse and discuss in the Esri Community.")) {
-                    Link("Esri Community", destination: .esriCommunity)
-                }
-                Section(footer: Text("Log an issue in the GitHub repository.")) {
-                    Link("GitHub Repository", destination: .githubRepository)
-                }
-                Section(footer: Text("View details about the API.")) {
-                    Link("API Reference", destination: .apiReference)
-                }
+        if #available(iOS 16, *) {
+            NavigationStack {
+                AboutList()
             }
-            .navigationTitle("About")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") {
-                        dismiss()
-                    }
-                }
+        } else {
+            NavigationView {
+                AboutList()
             }
         }
     }
@@ -110,4 +71,55 @@ private extension URL {
     static let githubRepository = URL(string: "https://github.com/ArcGIS/arcgis-runtime-samples-swift")!
     static let toolkit = URL(string: "https://github.com/ArcGIS/arcgis-runtime-toolkit-swift")!
     static let apiReference = URL(string: "https://developers.arcgis.com/ios/api-reference/")!
+}
+
+private struct AboutList: View {
+    @Environment(\.dismiss) private var dismiss: DismissAction
+    
+    var copyrightText: Text {
+        Text("Copyright © 2022 Esri. All Rights Reserved.")
+    }
+    
+    var body: some View {
+        List {
+            Section {
+                VStack {
+                    Image("ArcGIS SDK Logo", label: Text("App icon"))
+                    Text(Bundle.main.name)
+                        .font(.headline)
+                    copyrightText
+                        .font(.footnote)
+                        .foregroundColor(.secondary)
+                }
+                .listRowBackground(Color.clear)
+                .frame(maxWidth: .infinity)
+            }
+            Section {
+                VersionRow(title: "Version", version: Bundle.main.shortVersion)
+                VersionRow(title: "SDK Version", version: Bundle.arcGIS.shortVersion, build: Bundle.arcGIS.version)
+            }
+            Section(header: Text("Powered By")) {
+                Link("ArcGIS Runtime Toolkit for Swift", destination: .toolkit)
+                Link("ArcGIS Runtime SDK for Swift", destination: .developers)
+            }
+            Section(footer: Text("Browse and discuss in the Esri Community.")) {
+                Link("Esri Community", destination: .esriCommunity)
+            }
+            Section(footer: Text("Log an issue in the GitHub repository.")) {
+                Link("GitHub Repository", destination: .githubRepository)
+            }
+            Section(footer: Text("View details about the API.")) {
+                Link("API Reference", destination: .apiReference)
+            }
+        }
+        .navigationTitle("About")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .confirmationAction) {
+                Button("Done") {
+                    dismiss()
+                }
+            }
+        }
+    }
 }
