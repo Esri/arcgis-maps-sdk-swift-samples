@@ -17,15 +17,24 @@ import SwiftUI
 struct ContentView: View {
     /// All samples retrieved from the Samples directory.
     let samples: [Sample]
+    
     /// The search query in the search bar.
     @State private var query = ""
     
     var body: some View {
-        NavigationView {
-            SampleList(samples: samples, query: $query)
-                .navigationTitle("Samples")
-            Text("Select a sample from the list.")
+        if #available(iOS 16, *) {
+            NavigationSplitView {
+                SampleList(samples: samples, query: $query)
+            } detail: {
+                Text("Select a sample from the list.")
+            }
+            .searchable(text: $query, prompt: "Search By Sample Name")
+        } else {
+            NavigationView {
+                SampleList(samples: samples, query: $query)
+                Text("Select a sample from the list.")
+            }
+            .searchable(text: $query, prompt: "Search By Sample Name")
         }
-        .searchable(text: $query, prompt: "Search By Sample Name")
     }
 }
