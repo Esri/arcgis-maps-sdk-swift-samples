@@ -23,6 +23,10 @@ struct SampleInfoView: View {
     /// The index of the sample's currently selected code snippet.
     @State private var selectedSnippetIndex = 0
     
+    /// A Boolean value used to set the custom environment value
+    /// for sample info view visibility.
+    @State private var isSampleInfoViewVisible = true
+    
     /// The sample to view information for.
     let sample: Sample
     
@@ -34,6 +38,7 @@ struct SampleInfoView: View {
                 .opacity(informationMode == .code ? 1 : 0)
         }
         .edgesIgnoringSafeArea([.horizontal, .bottom])
+        .environment(\.isSampleInfoViewVisible, isSampleInfoViewVisible)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
@@ -61,6 +66,7 @@ struct SampleInfoView: View {
                 }
             }
         }
+        .onDisappear { isSampleInfoViewVisible = false }
     }
 }
 

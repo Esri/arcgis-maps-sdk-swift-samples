@@ -233,6 +233,9 @@ private struct Sheet<Content>: UIViewRepresentable where Content: View {
     /// A Boolean value indicating whether the device's layout is such that a sheet should be presented.
     @Environment(\.isSheetLayout) private var isSheetLayout
     
+    /// A Boolean value indicating whether the sample's information view is visible.
+    @Environment(\.isSampleInfoViewVisible) private var isSampleInfoViewVisible: Bool
+    
     /// A Boolean value indicating whether the sheet is presented.
     @Binding private var isPresented: Bool
     
@@ -311,10 +314,11 @@ private struct Sheet<Content>: UIViewRepresentable where Content: View {
             configureSheetPresentationController(sheet)
             // Presents the hosting controller.
             rootViewController.present(model.hostingController, animated: model.isTransitioningFromPopover ? false : true)
-        } else if !isPresented && wasPresenting && !model.hostingController.isBeingDismissed && !isPresentedControllerAlertType {
+        } else if !isPresented && wasPresenting && !model.hostingController.isBeingDismissed && !isPresentedControllerAlertType && !isSampleInfoViewVisible {
             // Dismisses the view controller presented by the root view controller
             // if 'isPresented' is false, but was presenting before (popover), is
-            // not currently being dismissed, and is not an alert.
+            // not currently being dismissed, and is not an alert, and is not the
+            // sample info view.
             rootViewController.dismiss(animated: isPresentedControllerHostingType ? true : false)
             model.isTransitioningFromPopover = !isPresentedControllerHostingType
         } else if wasPresenting {
