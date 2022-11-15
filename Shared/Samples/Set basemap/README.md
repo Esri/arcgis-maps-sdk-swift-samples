@@ -27,7 +27,7 @@ Tap the map button in the toolbar to view a list of the available basemaps. Tap 
 
 ## Additional information
 
-This samples uses the basemap gallery toolkit component, which requires the [ArcGIS Runtime Toolkit for Swift](https://github.com/Esri/arcgis-runtime-toolkit-swift).
+This samples uses the basemap gallery toolkit component, which requires the [ArcGIS Runtime Toolkit for Swift](https://github.com/ArcGIS/arcgis-maps-sdk-swift-toolkit).
 
 ## Tags
 
