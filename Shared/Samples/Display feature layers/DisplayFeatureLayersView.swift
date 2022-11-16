@@ -51,7 +51,7 @@ struct DisplayFeatureLayersView: View {
     private func loadPortalItemFeatureTable() {
         let featureLayer = FeatureLayer(
             item: PortalItem(
-                portal: .arcGISOnline(requiresLogin: false),
+                portal: .arcGISOnline(connection: .anonymous),
                 id: .treesOfPortland
             )
         )
@@ -143,11 +143,11 @@ struct DisplayFeatureLayersView: View {
             .onAppear {
                 // Updates the URL session challenge handler to use the
                 // specified credentials and tokens for any challenges.
-                ArcGISRuntimeEnvironment.authenticationChallengeHandler = ChallengeHandler()
+                ArcGISEnvironment.authenticationChallengeHandler = ChallengeHandler()
             }
             .onDisappear {
                 // Resets the URL session challenge handler to use default handling.
-                ArcGISRuntimeEnvironment.authenticationChallengeHandler = nil
+                ArcGISEnvironment.authenticationChallengeHandler = nil
             }
     }
 }
