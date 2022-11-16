@@ -31,7 +31,7 @@ The data used in this sample is the [OpenStreetMap Tourist Attractions for North
 
 ## Additional information
 
-This sample uses the overview map toolkit component, which requires the [ArcGIS Runtime Toolkit for Swift](https://github.com/ArcGIS/arcgis-maps-sdk-swift-toolkit).
+This sample uses the overview map toolkit component, which requires the [ArcGIS Maps SDK for Swift Toolkit](https://github.com/ArcGIS/arcgis-maps-sdk-swift-toolkit).
 
 ## Tags
 

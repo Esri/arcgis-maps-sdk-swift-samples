@@ -6,7 +6,7 @@ Display an ArcGIS scene layer from a service.
 
 ## Use case
 
-Adding a scene layer from a service allows you to author the scene layer elsewhere in the platform, say with ArcGIS Pro or CityEngine, and then add that scene layer to a scene in Runtime. Loading a scene layer from a service also permits the layer source to change dynamically without updating the code.
+Adding a scene layer from a service allows you to author the scene layer elsewhere in the platform, say with ArcGIS Pro or CityEngine, and then add that scene layer to a scene in ArcGIS Maps SDK. Loading a scene layer from a service also permits the layer source to change dynamically without updating the code.
 
 ## How to use the sample
 
