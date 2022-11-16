@@ -80,7 +80,7 @@ struct SampleDetailView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
-                    isSampleInfoViewPresented.toggle()
+                    isSampleInfoViewPresented = true
                     isSampleInfoViewVisible = isSampleInfoViewPresented
                 } label: {
                     Image(systemName: "info.circle")
