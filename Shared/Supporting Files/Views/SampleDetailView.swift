@@ -21,10 +21,6 @@ struct SampleDetailView: View {
     /// A Boolean value that indicates whether to present the sample's information view.
     @State private var isSampleInfoViewPresented = false
     
-    /// A Boolean value used to set the custom environment value
-    /// for sample info view visibility.
-    @State private var isSampleInfoViewVisible = false
-    
     /// An object to manage on-demand resources for a sample with dependencies.
     @StateObject private var onDemandResource: OnDemandResource
     
@@ -74,14 +70,12 @@ struct SampleDetailView: View {
                 sample.makeBody()
             }
         }
-        .environment(\.isSampleInfoViewVisible, isSampleInfoViewVisible)
         .navigationTitle(sample.name)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
                     isSampleInfoViewPresented = true
-                    isSampleInfoViewVisible = isSampleInfoViewPresented
                 } label: {
                     Image(systemName: "info.circle")
                 }
