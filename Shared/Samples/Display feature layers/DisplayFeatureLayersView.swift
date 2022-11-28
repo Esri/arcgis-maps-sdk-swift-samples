@@ -154,7 +154,7 @@ struct DisplayFeatureLayersView: View {
 
 /// The authentication model used to handle challenges and credentials.
 private struct ChallengeHandler: AuthenticationChallengeHandler {
-    func handleArcGISChallenge(
+    func handleArcGISAuthenticationChallenge(
         _ challenge: ArcGISAuthenticationChallenge
     ) async throws -> ArcGISAuthenticationChallenge.Disposition {
         // NOTE: Never hardcode login information in a production application.
