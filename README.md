@@ -2,10 +2,6 @@
 
 This repository contains Swift sample code demonstrating the capabilities of [ArcGIS Maps SDK for Swift](https://developers.arcgis.com/swift/) and how to use them in your own app. The project can be opened in Xcode and run on a simulator or a device. 
 
-<!--
-Or you can [download the app from the App Store](https://apps.apple.com/us/app/arcgis-maps-sdk-samples/id1630449018) on your iPhone, iPad, or iPod touch.
--->
-
 ## Requirements
 
 * [ArcGIS Maps SDK for Swift](https://developers.arcgis.com/swift/) 200.0 (or newer)
