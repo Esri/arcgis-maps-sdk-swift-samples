@@ -1,11 +1,11 @@
 # ArcGIS Maps SDK for Swift Samples
 
-This repository contains Swift sample code demonstrating the capabilities of (⚠️ link subject to change) [ArcGIS Maps SDK for Swift](https://developers.arcgis.com/ios/) and how to use them in your own app. The project can be opened in Xcode and run on a simulator or a device. Or you can (⚠️ link subject to change) [download the app from the App Store](https://apps.apple.com/us/app/arcgis-maps-sdk-samples/id1630449018) on your iPhone, iPad, or iPod touch.
+This repository contains Swift sample code demonstrating the capabilities of [ArcGIS Maps SDK for Swift](https://developers.arcgis.com/swift/) and how to use them in your own app. The project can be opened in Xcode and run on a simulator or a device. 
 
 ## Requirements
 
-* (⚠️ link subject to change) [ArcGIS Maps SDK for Swift](https://developers.arcgis.com/ios/) 200.0 (or newer)
-* (⚠️ link subject to change) [ArcGIS Maps SDK for Swift Toolkit](https://github.com/ArcGIS/arcgis-maps-sdk-swift-toolkit) 200.0 (or newer)
+* [ArcGIS Maps SDK for Swift](https://developers.arcgis.com/swift/) 200.0 (or newer)
+* [ArcGIS Maps SDK for Swift Toolkit](https://github.com/Esri/arcgis-maps-sdk-swift-toolkit) 200.0 (or newer)
 * Xcode 14.0 (or newer)
 
 The *ArcGIS Maps SDK for Swift Samples app* has a *Target SDK* version of *15.0*, meaning that it can run on devices with *iOS 15.0* or newer.
@@ -40,15 +40,15 @@ Please see [Configure App Secrets](Documentation/ConfigureAppSecrets.md) for add
 ## Additional Resources
 
 * Unfamiliar with SwiftUI? Check out Apple's [SwiftUI documentation](https://developer.apple.com/documentation/swiftui/).
-* Want to start a new project? (⚠️ link subject to change) [Setup](https://developers.arcgis.com/ios/get-started) your development environment
-* New to the API? Explore the documentation: (⚠️ link subject to change) [Guide](https://developers.arcgis.com/ios/) | (⚠️ link subject to change) [API Reference](https://developers.arcgis.com/ios/api-reference/)
-* Got a question? Ask the community on our (⚠️ link subject to change) [forum](https://community.esri.com/t5/arcgis-runtime-sdk-for-ios-questions/bd-p/arcgis-runtime-sdk-for-ios-questions)
+* Want to start a new project? [Setup](https://developers.arcgis.com/swift/get-started) your development environment
+* New to the API? Explore the documentation: [Guide](https://developers.arcgis.com/swift/) | [API Reference](https://developers.arcgis.com/swift/api-reference/documentation/arcgis/)
+* Got a question? Ask the community on our [forum](https://community.esri.com/t5/arcgis-runtime-sdk-for-ios-questions/bd-p/arcgis-runtime-sdk-for-ios-questions)
 
 ## Contributing
 
 Esri welcomes contributions from anyone and everyone. Please see our [guidelines for contributing](https://github.com/esri/contributing).
 
-Find a bug or want to request a new feature? Please let us know by (⚠️ link subject to change) [creating an issue](https://github.com/ArcGIS/arcgis-maps-sdk-swift-samples/issues/new).
+Find a bug or want to request a new feature? Please let us know by [creating an issue](https://github.com/Esri/arcgis-maps-sdk-swift-samples/issues/new).
 
 ## Licensing
 
