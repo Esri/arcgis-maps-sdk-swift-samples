@@ -15,7 +15,7 @@
 import ArcGIS
 import SwiftUI
 
-struct DisplayFeatureLayersView: View {
+struct AddFeatureLayersView: View {
     /// A Boolean value indicating whether to show an alert.
     @State private var isShowingAlert = false
     
@@ -165,7 +165,7 @@ private struct ChallengeHandler: AuthenticationChallengeHandler {
     }
 }
 
-private extension DisplayFeatureLayersView {
+private extension AddFeatureLayersView {
     /// The various feature layer sources for the sample.
     enum FeatureLayerSource: CaseIterable, Equatable {
         case shapefile, geoPackage, geodatabase, portalItem, serviceFeatureTable
