@@ -3,7 +3,7 @@
     "description": "Display feature layers from various data sources.",
     "ignore": false,
     "images": [
-        "display-feature-layers.png"
+        "add-feature-layers.png"
     ],
     "keywords": [
         "feature",
@@ -35,7 +35,7 @@
         "ShapefileFeatureTable"
     ],
     "snippets": [
-        "DisplayFeatureLayersView.swift"
+        "AddFeatureLayersView.swift"
     ],
-    "title": "Display feature layers"
+    "title": "Add feature layers"
 }

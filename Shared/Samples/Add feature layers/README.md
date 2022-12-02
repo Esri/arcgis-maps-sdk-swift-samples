@@ -1,8 +1,8 @@
-# Display feature layers
+# Add feature layers
 
 Display feature layers from various data sources.
 
-![Screenshot of display feature layers sample](display-feature-layers.png)
+![Screenshot of add feature layers sample](add-feature-layers.png)
 
 ## Use case
 
