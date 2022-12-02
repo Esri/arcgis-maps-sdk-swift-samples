@@ -66,11 +66,11 @@ private extension Bundle {
 }
 
 private extension URL {
-    static let developers = URL(string: "https://developers.arcgis.com/ios/")!
+    static let developers = URL(string: "https://developers.arcgis.com/swift/")!
     static let esriCommunity = URL(string: "https://community.esri.com/t5/arcgis-runtime-sdk-for-ios-questions/bd-p/arcgis-runtime-sdk-for-ios-questions")!
     static let githubRepository = URL(string: "https://github.com/ArcGIS/arcgis-maps-sdk-swift-samples")!
     static let toolkit = URL(string: "https://github.com/ArcGIS/arcgis-maps-sdk-swift-toolkit")!
-    static let apiReference = URL(string: "https://developers.arcgis.com/ios/api-reference/")!
+    static let apiReference = URL(string: "https://developers.arcgis.com/swift/api-reference/documentation/arcgis/")!
 }
 
 private struct AboutList: View {
