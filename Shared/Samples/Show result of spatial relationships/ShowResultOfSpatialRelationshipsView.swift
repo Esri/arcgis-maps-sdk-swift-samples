@@ -87,7 +87,7 @@ struct ShowResultOfSpatialRelationshipsView: View {
                 Relationship(between: polylineGeometry, and: pointGeometry),
                 Relationship(between: polylineGeometry, and: polygonGeometry)
             ]
-        case is Polygon:
+        case is ArcGIS.Polygon:
             return [
                 Relationship(between: polygonGeometry, and: pointGeometry),
                 Relationship(between: polygonGeometry, and: polylineGeometry)
@@ -222,7 +222,7 @@ private extension Geometry {
         switch self {
         case is Point: return "Point"
         case is Polyline: return "Polyline"
-        case is Polygon: return "Polygon"
+        case is ArcGIS.Polygon: return "Polygon"
         default: return "Unknown"
         }
     }

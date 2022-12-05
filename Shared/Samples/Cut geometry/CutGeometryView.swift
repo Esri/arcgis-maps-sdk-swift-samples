@@ -85,7 +85,7 @@ struct CutGeometryView: View {
 
 private extension Geometry {
     /// A polygon representing the area of Lake Superior.
-    static var lakeSuperiorPolygon: Polygon {
+    static var lakeSuperiorPolygon: ArcGIS.Polygon {
         Polygon(
             points: [
                 Point(x: -10254374.668616, y: 5908345.076380),
