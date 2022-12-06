@@ -45,7 +45,7 @@ struct ProjectGeometryView: View {
             .onSingleTapGesture { _, mapPoint in
                 if calloutPlacement == nil {
                     // Sets the original point to where the map was tapped.
-                    originalPoint = mapPoint
+                    originalPoint = GeometryEngine.normalizeCentralMeridian(of: mapPoint) as? Point
                     
                     // Projects the original point from Web Mercator to WGS 84.
                     let projectedPoint = GeometryEngine.project(originalPoint!, into: .wgs84)!
