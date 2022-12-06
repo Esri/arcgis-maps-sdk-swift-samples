@@ -23,12 +23,13 @@ struct SamplesApp: App {
     
     var body: some SwiftUI.Scene {
         WindowGroup {
-#if targetEnvironment(macCatalyst)
-            // On-demand resources aren't available on Mac Catalyst yet.
-            ContentView(samples: Self.samples.filter { !$0.hasDependencies })
-#else
-            ContentView(samples: Self.samples)
-#endif
+            ContentView(
+                samples: Self.samples
+                #if targetEnvironment(macCatalyst)
+                    // On-demand resources aren't available on Mac Catalyst yet.
+                    .filter { !$0.hasDependencies }
+                #endif
+            )
         }
     }
 }
