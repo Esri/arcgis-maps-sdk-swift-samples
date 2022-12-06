@@ -15,7 +15,7 @@ The *ArcGIS Maps SDK for Swift Samples app* has a *Target SDK* version of *15.0*
 1. **Fork** and then **clone** the repository
 1. **Configure** the Swift API locally following the instructions in internal Swift API repo, section `Adding the ArcGIS library to your App`
 1. **Open** the `Samples.xcodeproj` **project** file
-1. **Run** the `Samples (iOS)` app target
+1. **Run** the `Samples` app target
 
 ## Configuring API Keys
 

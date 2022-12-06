@@ -192,7 +192,7 @@
 		0074ABC128174F430037244A /* Sample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sample.swift; sourceTree = "<group>"; };
 		0074ABCA2817B8DB0037244A /* SamplesApp+Samples.swift.tache */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "SamplesApp+Samples.swift.tache"; sourceTree = "<group>"; };
 		0086F3FD28E3770900974721 /* ShowViewshedFromPointInSceneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowViewshedFromPointInSceneView.swift; sourceTree = "<group>"; };
-		00ACF554293E6C6A0059B2A9 /* Samples (iOS).entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Samples (iOS).entitlements"; sourceTree = "<group>"; };
+		00ACF554293E6C6A0059B2A9 /* Samples.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Samples.entitlements; sourceTree = "<group>"; };
 		00B04272282EC59E0072E1B4 /* AboutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		00B042E5282EDC690072E1B4 /* SetBasemapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetBasemapView.swift; sourceTree = "<group>"; };
 		00B04FB4283EEBA80026C882 /* DisplayOverviewMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayOverviewMapView.swift; sourceTree = "<group>"; };
@@ -365,6 +365,14 @@
 			path = iOS;
 			sourceTree = "<group>";
 		};
+		00ACF574293FC0AE0059B2A9 /* Mac Catalyst */ = {
+			isa = PBXGroup;
+			children = (
+				00ACF554293E6C6A0059B2A9 /* Samples.entitlements */,
+			);
+			path = "Mac Catalyst";
+			sourceTree = "<group>";
+		};
 		00B042E3282EDC690072E1B4 /* Set basemap */ = {
 			isa = PBXGroup;
 			children = (
@@ -446,9 +454,9 @@
 			children = (
 				0067F5A729242F1E00215F5D /* arcgis-maps-sdk-swift-toolkit */,
 				00966EE62811F64D009D3DD7 /* iOS */,
+				00ACF574293FC0AE0059B2A9 /* Mac Catalyst */,
 				00CCB8A6285D059300BBAB70 /* Portal Data */,
 				00E5401427F3CCA200CF66D5 /* Products */,
-				00ACF554293E6C6A0059B2A9 /* Samples (iOS).entitlements */,
 				003D7C332821EBCC009DDFD2 /* Scripts */,
 				00E5400B27F3CCA100CF66D5 /* Shared */,
 			);
@@ -664,9 +672,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00E5401227F3CCA200CF66D5 /* Samples (iOS) */ = {
+		00E5401227F3CCA200CF66D5 /* Samples */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 00E5402427F3CCA200CF66D5 /* Build configuration list for PBXNativeTarget "Samples (iOS)" */;
+			buildConfigurationList = 00E5402427F3CCA200CF66D5 /* Build configuration list for PBXNativeTarget "Samples" */;
 			buildPhases = (
 				001C6DDC27FE5CE800D472C2 /* Create .secrets File If It Does Not Exist */,
 				00CCB8A3285BA2FD00BBAB70 /* Download Portal Item Data */,
@@ -684,7 +692,7 @@
 			);
 			dependencies = (
 			);
-			name = "Samples (iOS)";
+			name = Samples;
 			packageProductDependencies = (
 				0067F5A929242F4600215F5D /* ArcGISToolkit */,
 			);
@@ -726,7 +734,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				00E5401227F3CCA200CF66D5 /* Samples (iOS) */,
+				00E5401227F3CCA200CF66D5 /* Samples */,
 			);
 		};
 /* End PBXProject section */
@@ -1000,7 +1008,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "Samples (iOS).entitlements";
+				CODE_SIGN_ENTITLEMENTS = Samples.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1030,7 +1038,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "Samples (iOS).entitlements";
+				CODE_SIGN_ENTITLEMENTS = Samples.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1068,7 +1076,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		00E5402427F3CCA200CF66D5 /* Build configuration list for PBXNativeTarget "Samples (iOS)" */ = {
+		00E5402427F3CCA200CF66D5 /* Build configuration list for PBXNativeTarget "Samples" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E5402527F3CCA200CF66D5 /* Debug */,
