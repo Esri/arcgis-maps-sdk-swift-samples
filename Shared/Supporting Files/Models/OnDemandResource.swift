@@ -38,7 +38,7 @@ final class OnDemandResource: ObservableObject {
     /// The current state of the on-demand resource request.
     @Published private(set) var requestState: RequestState = .notStarted
     
-    /// The error occured in downloading resources.
+    /// The error occurred in downloading resources.
     @Published private(set) var error: Error?
     
     /// The on-demand resource request.
