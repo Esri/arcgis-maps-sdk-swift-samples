@@ -159,7 +159,7 @@ private extension GenerateOfflineMapView {
             do {
                 // Waits for the online map to load.
                 try await onlineMap.load()
-                offlineMapTask = OfflineMapTask(portalItem: napervillePortalItem)
+                offlineMapTask = OfflineMapTask(onlineMap: onlineMap)
                 isGenerateDisabled = false
             } catch {
                 self.error = error
