@@ -58,7 +58,7 @@ private struct VersionRow: View {
 }
 
 private extension Bundle {
-    static let arcGIS = Bundle(identifier: "com.esri.ArcGIS")!
+    static let arcGIS = Bundle(identifier: "com.esri.arcgis-maps.swift")!
     
     var name: String { object(forInfoDictionaryKey: "CFBundleName") as? String ?? "" }
     var shortVersion: String { object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "" }
