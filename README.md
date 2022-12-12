@@ -10,12 +10,14 @@ This repository contains Swift sample code demonstrating the capabilities of [Ar
 
 The *ArcGIS Maps SDK for Swift Samples app* has a *Target SDK* version of *15.0*, meaning that it can run on devices with *iOS 15.0* or newer.
 
-## Building Samples Using Swift API Manually 
+## Building Samples Using Swift Package Manager
 
 1. **Fork** and then **clone** the repository
-1. **Configure** the Swift API locally following the instructions in internal Swift API repo, section `Adding the ArcGIS library to your App`
 1. **Open** the `Samples.xcodeproj` **project** file
+    > The project has been configured to use the arcgis-maps-sdk-swift-toolkit package, which provides the ArcGISToolkit framework as well as the ArcGIS framework.
 1. **Run** the `Samples` app target
+
+> To add the Swift packages to your own projects, consult the documentation for the [ArcGIS Runtime Toolkit for Swift](https://github.com/Esri/arcgis-maps-sdk-swift-toolkit#swift-package-manager) and [ArcGIS Maps SDK for Swift](https://github.com/Esri/arcgis-maps-sdk-swift#instructions).
 
 ## Configuring API Keys
 
