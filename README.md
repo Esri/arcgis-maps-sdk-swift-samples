@@ -1,4 +1,56 @@
-# ArcGIS Runtime SDK for Swift Samples
+# ArcGIS Maps SDK for Swift Samples
+
+This repository contains Swift sample code demonstrating the capabilities of [ArcGIS Maps SDK for Swift](https://developers.arcgis.com/swift/) and how to use them in your own app. The project can be opened in Xcode and run on a simulator or a device. 
+
+## Requirements
+
+* [ArcGIS Maps SDK for Swift](https://developers.arcgis.com/swift/) 200.0 (or newer)
+* [ArcGIS Maps SDK for Swift Toolkit](https://github.com/Esri/arcgis-maps-sdk-swift-toolkit) 200.0 (or newer)
+* Xcode 14.0 (or newer)
+
+The *ArcGIS Maps SDK for Swift Samples app* has a *Target SDK* version of *15.0*, meaning that it can run on devices with *iOS 15.0* or newer.
+
+## Building Samples Using Swift Package Manager
+
+1. **Fork** and then **clone** the repository
+1. **Open** the `Samples.xcodeproj` **project** file
+    > The project has been configured to use the arcgis-maps-sdk-swift-toolkit package, which provides the ArcGISToolkit framework as well as the ArcGIS framework.
+1. **Run** the `Samples` app target
+
+> To add the Swift packages to your own projects, consult the documentation for the [ArcGIS Maps SDK for Swift Toolkit](https://github.com/Esri/arcgis-maps-sdk-swift-toolkit#swift-package-manager) and [ArcGIS Maps SDK for Swift](https://github.com/Esri/arcgis-maps-sdk-swift#instructions).
+
+## Configuring API Keys
+
+To run this app and access specific, ready-to-use services such as basemap layer, follow the steps to add an API key to a secrets file stored in the project file's directory, `$(SRCROOT)/.secrets`.
+
+1. Create a hidden secrets file in the project file's directory.
+
+  ```sh
+  touch .secrets
+  ```
+
+2. Add your **API Key** to the secrets file aforementioned. Adding an API key allows you to access a set of ready-to-use services, including basemaps. Acquire the keys from your [dashboard](https://developers.arcgis.com/dashboard). Visit the developer's website to learn more about [API keys](https://developers.arcgis.com/documentation/mapping-apis-and-services/security/api-keys/).
+
+  ```sh
+  echo ARCGIS_API_KEY_IOS=your-api-key >> .secrets
+  ```
+
+  > Replace 'your-api-key' with your keys.
+
+Please see [Configure App Secrets](Documentation/ConfigureAppSecrets.md) for adding license key and other details.
+
+## Additional Resources
+
+* Unfamiliar with SwiftUI? Check out Apple's [SwiftUI documentation](https://developer.apple.com/documentation/swiftui/).
+* Want to start a new project? [Setup](https://developers.arcgis.com/swift/get-started) your development environment
+* New to the API? Explore the documentation: [Guide](https://developers.arcgis.com/swift/) | [API Reference](https://developers.arcgis.com/swift/api-reference/documentation/arcgis/)
+* Got a question? Ask the community on our [forum](https://community.esri.com/t5/arcgis-runtime-sdk-for-ios-questions/bd-p/arcgis-runtime-sdk-for-ios-questions)
+
+## Contributing
+
+Esri welcomes contributions from anyone and everyone. Please see our [guidelines for contributing](https://github.com/esri/contributing).
+
+Find a bug or want to request a new feature? Please let us know by [creating an issue](https://github.com/Esri/arcgis-maps-sdk-swift-samples/issues/new).
 
 ## Licensing
 
@@ -16,4 +68,4 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-A copy of the license is available in the repository's [LICENSE](https://github.com/Esri/arcgis-runtime-samples-swift/blob/main/LICENSE) file.
+A copy of the license is available in the repository's [LICENSE](LICENSE?raw=1) file.

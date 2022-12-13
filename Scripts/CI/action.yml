@@ -1,0 +1,15 @@
+name: "mdl (markdownlint) and Python style checks"
+description: "This check will run several scripts to ensure the format of README and metadata are correct."
+author: "tchen@esri.com"
+
+inputs:
+  FILE_PATHS:
+    description: "Files to run the checks on."
+    required: true
+
+runs:
+  using: "docker"
+  image: "Dockerfile"
+  args:
+    - "--string"
+    - ${{ inputs.FILE_PATHS }}

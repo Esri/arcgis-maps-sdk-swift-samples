@@ -1,0 +1,27 @@
+{
+    "category": "Maps",
+    "description": "Set a map's basemap. A basemap is beneath all layers on a map and is used to provide visual reference for the operational layers.",
+    "ignore": false,
+    "images": [
+        "set-basemap.png"
+    ],
+    "keywords": [
+        "basemap",
+        "map",
+        "BasemapGallery",
+        "BasemapStyle",
+        "Map",
+        "MapView"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "BasemapGallery",
+        "BasemapStyle",
+        "Map",
+        "MapView"
+    ],
+    "snippets": [
+        "SetBasemapView.swift"
+    ],
+    "title": "Set basemap"
+}

@@ -1,0 +1,29 @@
+{
+    "category": "Scenes",
+    "description": "Display an ArcGIS scene layer from a service.",
+    "ignore": false,
+    "images": [
+        "add-scene-layer-from-service.png"
+    ],
+    "keywords": [
+        "3D",
+        "URL",
+        "buildings",
+        "model",
+        "scene",
+        "service",
+        "ArcGISSceneLayer",
+        "Scene",
+        "SceneView"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "ArcGISSceneLayer",
+        "Scene",
+        "SceneView"
+    ],
+    "snippets": [
+        "AddSceneLayerFromServiceView.swift"
+    ],
+    "title": "Add scene layer from service"
+}

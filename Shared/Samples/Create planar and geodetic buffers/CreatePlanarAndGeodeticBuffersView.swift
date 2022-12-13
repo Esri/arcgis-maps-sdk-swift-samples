@@ -1,0 +1,169 @@
+// Copyright 2022 Esri
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//   https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+import SwiftUI
+import ArcGIS
+
+struct CreatePlanarAndGeodeticBuffersView: View {
+    /// A Boolean value indicating whether to show options.
+    @State private var isShowingOptions = false
+    
+    /// The radius to pass into the buffer functions.
+    @State private var bufferDistance = Measurement(value: 500, unit: UnitLength.miles)
+    
+    /// The possible radii for buffers in miles.
+    private let bufferRadii = Measurement.rMin...Measurement.rMax
+    
+    /// A map with a topographic basemap style.
+    @StateObject private var map = Map(basemapStyle: .arcGISTopographic)
+    
+    /// The graphics overlay for displaying the geometries created via a geodetic buffer around the tap point.
+    /// Contains graphics with green fill and black outline symbols.
+    @StateObject private var geodeticOverlay = makeGeodeticOverlay()
+    
+    /// The graphics overlay for displaying the geometries created via a planar buffer around the tap point.
+    /// Contains graphics with red fill and black outline symbols.
+    /// The red fill symbol appears brown when blended with the geodetic overlay.
+    @StateObject private var planarOverlay = makePlanarOverlay()
+    
+    /// The graphics overlay for displaying the location of the tap point.
+    /// Contains graphics with white cross symbols.
+    @StateObject private var tapLocationsOverlay = makeTapLocationsOverlay()
+    
+    /// The graphics overlays used in this sample.
+    private var graphicsOverlays: [GraphicsOverlay] {
+        return [geodeticOverlay, planarOverlay, tapLocationsOverlay]
+    }
+    
+    /// Creates a graphics overlay for the geodetic overlay.
+    private static func makeGeodeticOverlay() -> GraphicsOverlay {
+        let overlay = GraphicsOverlay()
+        let outlineSymbol = SimpleLineSymbol(style: .solid, color: .black, width: 2)
+        let fillSymbol = SimpleFillSymbol(style: .solid, color: .green, outline: outlineSymbol)
+        overlay.renderer = SimpleRenderer(symbol: fillSymbol)
+        overlay.opacity = 0.5
+        return overlay
+    }
+    
+    /// Creates a graphics overlay for the planar overlay.
+    private static func makePlanarOverlay() -> GraphicsOverlay {
+        let overlay = GraphicsOverlay()
+        let outlineSymbol = SimpleLineSymbol(style: .solid, color: .black, width: 2)
+        let fillSymbol = SimpleFillSymbol(style: .solid, color: .red, outline: outlineSymbol)
+        overlay.renderer = SimpleRenderer(symbol: fillSymbol)
+        overlay.opacity = 0.5
+        return overlay
+    }
+    
+    /// Creates a graphics overlay for the tap locations overlay.
+    private static func makeTapLocationsOverlay() -> GraphicsOverlay {
+        let overlay = GraphicsOverlay()
+        let symbol = SimpleMarkerSymbol(style: .cross, color: .white, size: 14)
+        overlay.renderer = SimpleRenderer(symbol: symbol)
+        return overlay
+    }
+    
+    /// Adds a buffer at a given point.
+    private func addBuffer(at point: Point) {
+        // Converts the buffer distance to meters.
+        let bufferRadiusInMeters = bufferDistance.converted(to: .meters).value
+        
+        // Creates the geometry for the map point, buffered by the given
+        // distance in respect to the geodetic spatial reference system
+        // (the 3D representation of the Earth).
+        if let geodesicGeometry = GeometryEngine.geodeticBuffer(
+            around: point,
+            distance: bufferRadiusInMeters,
+            distanceUnit: .meters,
+            maxDeviation: .nan,
+            curveType: .geodesic
+        ) {
+            // Creates and adds a graphic with the geodesic geometry
+            // to the geodetic overlay.
+            geodeticOverlay.addGraphic(Graphic(geometry: geodesicGeometry))
+        }
+        
+        // Creates the geometry for the map point, buffered by the given
+        // distance in respect to the projected map spatial reference system.
+        if let planarGeometry = GeometryEngine.buffer(
+            around: point,
+            distance: bufferRadiusInMeters
+        ) {
+            // Creates and adds a graphic with the planar geometry
+            // to the planar overlay.
+            planarOverlay.addGraphic(Graphic(geometry: planarGeometry))
+        }
+        
+        // Creates and adds a graphic symbolizing the tap location
+        // to the tap locations overlay.
+        tapLocationsOverlay.addGraphic(Graphic(geometry: point))
+    }
+    
+    /// Removes all graphics from all graphics overlays.
+    private func clearGraphics() {
+        graphicsOverlays.forEach { $0.removeAllGraphics() }
+    }
+    
+    var body: some View {
+        VStack {
+            // Creates a map view with graphics overlays.
+            MapView(map: map, graphicsOverlays: graphicsOverlays)
+                .onSingleTapGesture { _, mapPoint in
+                    // Adds a buffer at the given map point.
+                    addBuffer(at: mapPoint)
+                }
+            
+            if isShowingOptions {
+                VStack {
+                    Slider(value: $bufferDistance.value, in: bufferRadii.doubleRange) {
+                        Text("Buffer Radius")
+                    } minimumValueLabel: {
+                        Text(bufferRadii.lowerBound, format: .measurement(width: .narrow))
+                    } maximumValueLabel: {
+                        Text(bufferRadii.upperBound, format: .measurement(width: .narrow))
+                    }
+                    
+                    Text("Buffer radius: \(bufferDistance, format: .measurement(width: .abbreviated))")
+                }
+                .padding([.horizontal, .top])
+            }
+            
+            HStack {
+                Spacer()
+                Toggle(isOn: $isShowingOptions.animation(.spring())) {
+                    Text("Options")
+                }
+                .toggleStyle(.button)
+                Spacer()
+                Button("Clear All") {
+                    clearGraphics()
+                }
+                Spacer()
+            }
+            .padding()
+        }
+    }
+}
+
+private extension ClosedRange where Bound == Measurement<UnitLength> {
+    /// The measurement's values as a closed range of doubles.
+    var doubleRange: ClosedRange<Double> { self.lowerBound.value...self.upperBound.value }
+}
+
+private extension Measurement where UnitType == UnitLength {
+    /// The minimum radius.
+    static var rMin: Self { Measurement(value: 200, unit: UnitLength.miles) }
+    /// The maximum radius.
+    static var rMax: Self { Measurement(value: 2_000, unit: UnitLength.miles) }
+}

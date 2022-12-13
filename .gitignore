@@ -1,10 +1,5 @@
-# App Secrets
-#
+## App Secrets
 .secrets
-
-# Xcode
-#
-# gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
 
 ## Build generated
 build/
@@ -30,10 +25,14 @@ xcuserdata/
 *.xcscmblueprint
 
 ## Portal Item Data
-/Portal\ Data
+Portal\ Data/
 
 ## Swift Package Manager
 # Add this line if you want to avoid checking in source code from Swift Package Manager dependencies.
 Packages/
 Package.pins
 Package.resolved
+
+## Python build artifact
+# If the style check scripts are run locally, ignore the script build artifact.
+Scripts/CI/__pycache__/

@@ -1,0 +1,39 @@
+{
+    "category": "Display information",
+    "description": "Use a symbol style to display a graphic on a graphics overlay.",
+    "ignore": false,
+    "images": [
+        "style-graphics-with-symbols.png"
+    ],
+    "keywords": [
+        "display",
+        "fill",
+        "graphics",
+        "line",
+        "marker",
+        "overlay",
+        "point",
+        "symbol",
+        "Geometry",
+        "Graphic",
+        "GraphicsOverlay",
+        "SimpleFillSymbol",
+        "SimpleLineSymbol",
+        "SimpleMarkerSymbol",
+        "TextSymbol"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Geometry",
+        "Graphic",
+        "GraphicsOverlay",
+        "SimpleFillSymbol",
+        "SimpleLineSymbol",
+        "SimpleMarkerSymbol",
+        "TextSymbol"
+    ],
+    "snippets": [
+        "StyleGraphicsWithSymbolsView.swift"
+    ],
+    "title": "Style graphics with symbols"
+}

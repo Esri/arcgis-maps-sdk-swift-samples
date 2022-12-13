@@ -1,0 +1,25 @@
+{
+    "category": "Maps",
+    "description": "Display a map with an imagery basemap.",
+    "ignore": false,
+    "images": [
+        "display-map.png"
+    ],
+    "keywords": [
+        "basemap style",
+        "map",
+        "BasemapStyle",
+        "Map",
+        "MapView"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "BasemapStyle",
+        "Map",
+        "MapView"
+    ],
+    "snippets": [
+        "DisplayMapView.swift"
+    ],
+    "title": "Display map"
+}
