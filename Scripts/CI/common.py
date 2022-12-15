@@ -23,13 +23,10 @@ from typing import List, Set
 # A set of words that get omitted during letter-case checks.
 # This set will be updated when a special word appears in a new sample.
 exception_proper_nouns = {
-    'ArcGIS Online',
-    'ArcGIS Pro',
     'GeoPackage',
     'OAuth',
     'OpenStreetMap',
-    'SwiftUI',
-    'Web Mercator'
+    'SwiftUI'
 }
 
 # A set of category folder names for legacy support.
