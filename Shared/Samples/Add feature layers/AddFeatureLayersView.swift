@@ -159,7 +159,7 @@ private struct ChallengeHandler: AuthenticationChallengeHandler {
     ) async throws -> ArcGISAuthenticationChallenge.Disposition {
         // NOTE: Never hardcode login information in a production application.
         // This is done solely for the sake of the sample.
-        return .useCredential(
+        return .continueWithCredential(
             try await .token(challenge: challenge, username: "viewer01", password: "I68VGU^nMurF")
         )
     }
