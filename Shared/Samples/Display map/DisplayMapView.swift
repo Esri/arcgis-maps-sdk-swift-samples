@@ -18,7 +18,7 @@ import ArcGIS
 struct DisplayMapView: View {
     private class Model: ObservableObject {
         /// A map with imagery basemap.
-        let map: Map = Map(basemapStyle: .arcGISImagery)
+        let map = Map(basemapStyle: .arcGISImagery)
     }
     
     /// The view model for the sample.
