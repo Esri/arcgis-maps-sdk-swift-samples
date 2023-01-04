@@ -25,7 +25,7 @@ struct AddSceneLayerFromServiceView: View {
 }
 
 extension AddSceneLayerFromServiceView {
-    class Model: ObservableObject {
+    private class Model: ObservableObject {
         let scene: ArcGIS.Scene = {
             // Creates a scene and sets an initial viewpoint.
             let scene = Scene(basemapStyle: .arcGISTopographic)
