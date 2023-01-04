@@ -17,8 +17,13 @@ import ArcGIS
 import ArcGISToolkit
 
 struct SetBasemapView: View {
-    /// A map with imagery basemap.
-    @StateObject private var map = Map(basemapStyle: .arcGISImagery)
+    private class Model: ObservableObject {
+        /// A map with imagery basemap.
+        let map = Map(basemapStyle: .arcGISImagery)
+    }
+    
+    /// The view model for the sample.
+    @StateObject private var model = Model()
     
     /// The initial viewpoint of the map.
     private let initialViewpoint = Viewpoint(
@@ -30,10 +35,10 @@ struct SetBasemapView: View {
     @State private var isShowingBasemapGallery = false
     
     var body: some View {
-        MapView(map: map, viewpoint: initialViewpoint)
+        MapView(map: model.map, viewpoint: initialViewpoint)
             .overlay(alignment: .topTrailing) {
                 if isShowingBasemapGallery {
-                    BasemapGallery(geoModel: map)
+                    BasemapGallery(geoModel: model.map)
                         .style(.automatic())
                         .esriBorder()
                 }
