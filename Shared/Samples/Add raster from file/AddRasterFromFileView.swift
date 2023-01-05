@@ -18,7 +18,9 @@ import SwiftUI
 struct AddRasterFromFileView: View {
     private class Model: ObservableObject {
         /// A map with imagery basemap and a raster layer.
-        let map: Map = {
+        let map: Map
+        
+        init() {
             /// A map with a standard imagery basemap style.
             let map = Map(basemapStyle: .arcGISImageryStandard)
             // Gets the Shasta.tif file URL.
@@ -29,8 +31,8 @@ struct AddRasterFromFileView: View {
             let rasterLayer = RasterLayer(raster: raster)
             // Adds the raster layer to the map's operational layer.
             map.addOperationalLayer(rasterLayer)
-            return map
-        }()
+            self.map = map
+        }
     }
     
     /// The view model for the sample.
