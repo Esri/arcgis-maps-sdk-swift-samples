@@ -25,8 +25,10 @@ struct SelectFeaturesInFeatureLayerView: View {
     /// A Boolean value indicating whether to show an alert.
     @State private var isShowingAlert = false
     
-    /// The error to display in the alert.
-    @State private var error: Error?
+    /// The error shown in the alert.
+    @State private var error: Error? {
+        didSet { isShowingAlert = error != nil }
+    }
     
     /// The view model for the sample.
     @StateObject private var model = Model()
@@ -60,7 +62,6 @@ struct SelectFeaturesInFeatureLayerView: View {
                     } catch {
                         // Updates the error and shows an alert.
                         self.error = error
-                        isShowingAlert = true
                     }
                 }
                 .overlay(alignment: .top) {

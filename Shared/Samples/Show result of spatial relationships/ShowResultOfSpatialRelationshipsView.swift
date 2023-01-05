@@ -20,7 +20,9 @@ struct ShowResultOfSpatialRelationshipsView: View {
     @State private var isShowingAlert = false
     
     /// The error shown in the alert.
-    @State private var error: Error?
+    @State private var error: Error? {
+        didSet { isShowingAlert = error != nil }
+    }
     
     /// The point indicating where to identify a graphic.
     @State private var identifyPoint: CGPoint?
@@ -142,7 +144,6 @@ struct ShowResultOfSpatialRelationshipsView: View {
                             }
                         } catch {
                             self.error = error
-                            isShowingAlert = true
                         }
                     } else {
                         // Hides the callout.
