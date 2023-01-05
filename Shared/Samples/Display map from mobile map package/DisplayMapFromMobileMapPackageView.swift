@@ -46,14 +46,11 @@ extension DisplayMapFromMobileMapPackageView {
         /// A map with no specified style.
         var map = Map()
         
-        /// The mobile map package.
-        private var mobileMapPackage: MobileMapPackage!
-        
         /// Loads a local mobile map package.
         func loadMobileMapPackage() async throws {
             // Loads the local mobile map package.
             let yellowstoneURL = Bundle.main.url(forResource: "Yellowstone", withExtension: "mmpk")!
-            mobileMapPackage = MobileMapPackage(fileURL: yellowstoneURL)
+            let mobileMapPackage = MobileMapPackage(fileURL: yellowstoneURL)
             try await mobileMapPackage.load()
             // Gets the first map in the mobile map package.
             guard let map = mobileMapPackage.maps.first else { return }
