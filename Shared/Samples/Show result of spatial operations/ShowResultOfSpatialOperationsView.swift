@@ -19,16 +19,8 @@ struct ShowResultOfSpatialOperationsView: View {
     /// The current spatial operation performed.
     @State private var spatialOperation = SpatialOperation.none
     
-    /// A map with a topographic basemap style and initial viewpoint.
-    @StateObject private var map = makeMap()
-    
-    /// A graphics overlay for the map view.
-    @StateObject private var graphicsOverlay = makeGraphicsOverlay()
-    
-    /// A graphic representing the result of the spatial operation.
-    private var resultGraphic: Graphic {
-        return graphicsOverlay.graphics.last!
-    }
+    /// The view model for the sample.
+    @StateObject private var model = Model()
     
     /// An enum of spatial operations.
     private enum SpatialOperation: CaseIterable {
@@ -46,61 +38,10 @@ struct ShowResultOfSpatialOperationsView: View {
         }
     }
     
-    /// Creates a map.
-    private static func makeMap() -> Map {
-        let map = Map(basemapStyle: .arcGISTopographic)
-        map.initialViewpoint = Viewpoint(
-            center: Point(x: -13453, y: 6710127, spatialReference: .webMercator),
-            scale: 30_000
-        )
-        return map
-    }
-    
-    /// Creates the graphics overlay.
-    private static func makeGraphicsOverlay() -> GraphicsOverlay {
-        // Creates the graphics for the two polygons and result.
-        let polygonOneGraphic = Graphic(
-            geometry: .polygon1,
-            symbol: SimpleFillSymbol(color: .blue, outline: .simple)
-        )
-        
-        let polygonTwoGraphic = Graphic(
-            geometry: .polygon2,
-            symbol: SimpleFillSymbol(color: .green, outline: .simple)
-        )
-        
-        let resultGraphic = Graphic(
-            symbol: SimpleFillSymbol(color: .red, outline: .simple)
-        )
-        
-        // Adds the graphics to the overlay.
-        return GraphicsOverlay(graphics: [polygonOneGraphic, polygonTwoGraphic, resultGraphic])
-    }
-    
-    /// Updates the result graphic based on the spatial operation.
-    private func performOperation() {
-        let resultGeometry: Geometry?
-        // Updates the geometry based on the selected spatial operation.
-        switch spatialOperation {
-        case .none:
-            resultGeometry = nil
-        case .union:
-            resultGeometry = GeometryEngine.union(.polygon1, .polygon2)
-        case .difference:
-            resultGeometry = GeometryEngine.difference(.polygon1, .polygon2)
-        case .symmetricDifference:
-            resultGeometry = GeometryEngine.symmetricDifference(.polygon1, .polygon2)
-        case .intersection:
-            resultGeometry = GeometryEngine.intersection(.polygon1, .polygon2)
-        }
-        // Updates the result graphic geometry.
-        resultGraphic.geometry = resultGeometry
-    }
-    
     var body: some View {
-        MapView(map: map, graphicsOverlays: [graphicsOverlay])
+        MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
             .onChange(of: spatialOperation) { _ in
-                performOperation()
+                model.performOperation(spatialOperation)
             }
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
@@ -111,6 +52,66 @@ struct ShowResultOfSpatialOperationsView: View {
                     }
                 }
             }
+    }
+}
+
+private extension ShowResultOfSpatialOperationsView {
+    private class Model: ObservableObject {
+        /// A map with a topographic basemap style and initial viewpoint.
+        let map: Map = {
+            let map = Map(basemapStyle: .arcGISTopographic)
+            map.initialViewpoint = Viewpoint(
+                center: Point(x: -13453, y: 6710127, spatialReference: .webMercator),
+                scale: 30_000
+            )
+            return map
+        }()
+        
+        /// A graphics overlay for the map view.
+        let graphicsOverlay: GraphicsOverlay = {
+            // Creates the graphics for the two polygons and result.
+            let polygonOneGraphic = Graphic(
+                geometry: .polygon1,
+                symbol: SimpleFillSymbol(color: .blue, outline: .simple)
+            )
+            
+            let polygonTwoGraphic = Graphic(
+                geometry: .polygon2,
+                symbol: SimpleFillSymbol(color: .green, outline: .simple)
+            )
+            
+            let resultGraphic = Graphic(
+                symbol: SimpleFillSymbol(color: .red, outline: .simple)
+            )
+            
+            // Adds the graphics to the overlay.
+            return GraphicsOverlay(graphics: [polygonOneGraphic, polygonTwoGraphic, resultGraphic])
+        }()
+        
+        /// A graphic representing the result of the spatial operation.
+        var resultGraphic: Graphic {
+            return graphicsOverlay.graphics.last!
+        }
+        
+        /// Updates the result graphic based on the spatial operation.
+        func performOperation(_ spatialOperation: SpatialOperation) {
+            let resultGeometry: Geometry?
+            // Updates the geometry based on the selected spatial operation.
+            switch spatialOperation {
+            case .none:
+                resultGeometry = nil
+            case .union:
+                resultGeometry = GeometryEngine.union(.polygon1, .polygon2)
+            case .difference:
+                resultGeometry = GeometryEngine.difference(.polygon1, .polygon2)
+            case .symmetricDifference:
+                resultGeometry = GeometryEngine.symmetricDifference(.polygon1, .polygon2)
+            case .intersection:
+                resultGeometry = GeometryEngine.intersection(.polygon1, .polygon2)
+            }
+            // Updates the result graphic geometry.
+            resultGraphic.geometry = resultGeometry
+        }
     }
 }
 
