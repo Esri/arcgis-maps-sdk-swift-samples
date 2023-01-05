@@ -16,12 +16,6 @@ import ArcGIS
 import SwiftUI
 
 struct DisplayMapFromMobileMapPackageView: View {
-    /// A map with no specified style.
-    @State private var map = Map()
-    
-    /// The mobile map package.
-    @State private var mobileMapPackage: MobileMapPackage!
-    
     /// A Boolean value indicating whether to show an alert.
     @State private var isShowingAlert = false
     
@@ -30,28 +24,40 @@ struct DisplayMapFromMobileMapPackageView: View {
         didSet { isShowingAlert = error != nil }
     }
     
-    /// Loads a local mobile map package.
-    private func loadMobileMapPackage() async throws {
-        // Loads the local mobile map package.
-        let yellowstoneURL = Bundle.main.url(forResource: "Yellowstone", withExtension: "mmpk")!
-        mobileMapPackage = MobileMapPackage(fileURL: yellowstoneURL)
-        try await mobileMapPackage.load()
-        // Gets the first map in the mobile map package.
-        guard let map = mobileMapPackage.maps.first else { return }
-        self.map = map
-    }
+    /// The view model for the sample.
+    @StateObject private var model = Model()
     
     var body: some View {
-        // Creates a map view to display the map.
-        MapView(map: map)
+        MapView(map: model.map)
             .task {
                 do {
-                    try await loadMobileMapPackage()
+                    try await model.loadMobileMapPackage()
                 } catch {
                     // Presents an error message if the map fails to load.
                     self.error = error
                 }
             }
             .alert(isPresented: $isShowingAlert, presentingError: error)
+    }
+}
+
+extension DisplayMapFromMobileMapPackageView {
+    private class Model: ObservableObject {
+        /// A map with no specified style.
+        var map = Map()
+        
+        /// The mobile map package.
+        private var mobileMapPackage: MobileMapPackage!
+        
+        /// Loads a local mobile map package.
+        func loadMobileMapPackage() async throws {
+            // Loads the local mobile map package.
+            let yellowstoneURL = Bundle.main.url(forResource: "Yellowstone", withExtension: "mmpk")!
+            mobileMapPackage = MobileMapPackage(fileURL: yellowstoneURL)
+            try await mobileMapPackage.load()
+            // Gets the first map in the mobile map package.
+            guard let map = mobileMapPackage.maps.first else { return }
+            self.map = map
+        }
     }
 }
