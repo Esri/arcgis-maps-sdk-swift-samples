@@ -20,16 +20,7 @@ struct StyleGraphicsWithRendererView: View {
     @StateObject private var model = Model()
     
     var body: some View {
-        MapView(
-            map: model.map,
-            graphicsOverlays: [
-                model.pointGraphicsOverlay,
-                model.lineGraphicsOverlay,
-                model.squarePolygonGraphicsOverlay,
-                model.ellipseGraphicsOverlay,
-                model.curvedPolygonGraphicsOverlay
-            ]
-        )
+        MapView(map: model.map, graphicsOverlays: model.graphicsOverlays)
     }
 }
 
@@ -42,8 +33,19 @@ private extension StyleGraphicsWithRendererView {
             return map
         }()
         
+        /// The graphics overlays used in this sample.
+        var graphicsOverlays: [GraphicsOverlay] {
+            return [
+                pointGraphicsOverlay,
+                lineGraphicsOverlay,
+                squarePolygonGraphicsOverlay,
+                ellipseGraphicsOverlay,
+                curvedPolygonGraphicsOverlay
+            ]
+        }
+        
         /// The graphics overlay rendering a point.
-        let pointGraphicsOverlay: GraphicsOverlay = {
+        private let pointGraphicsOverlay: GraphicsOverlay = {
             // Creates a simple marker symbol.
             let symbol = SimpleMarkerSymbol(style: .diamond, color: .green, size: 10)
             // Creates the geometry for the point.
@@ -57,7 +59,7 @@ private extension StyleGraphicsWithRendererView {
         }()
         
         /// The graphics overlay rendering a line.
-        let lineGraphicsOverlay: GraphicsOverlay = {
+        private let lineGraphicsOverlay: GraphicsOverlay = {
             // Creates a simple line symbol.
             let symbol = SimpleLineSymbol(style: .solid, color: .blue, width: 5)
             // Creates the geometry for the line.
@@ -77,7 +79,7 @@ private extension StyleGraphicsWithRendererView {
         }()
         
         /// The graphics overlay rendering a square polygon.
-        let squarePolygonGraphicsOverlay: GraphicsOverlay = {
+        private let squarePolygonGraphicsOverlay: GraphicsOverlay = {
             // Creates a simple fill symbol.
             let symbol = SimpleFillSymbol(color: .yellow)
             // Creates the geometry for the square polygon.
@@ -99,7 +101,7 @@ private extension StyleGraphicsWithRendererView {
         }()
         
         /// The graphics overlay rendering an ellipse.
-        let ellipseGraphicsOverlay: GraphicsOverlay = {
+        private let ellipseGraphicsOverlay: GraphicsOverlay = {
             // Creates a simple fill symbol.
             let symbol = SimpleFillSymbol(color: .purple)
             // Defines the center point of the ellipse.
@@ -125,7 +127,7 @@ private extension StyleGraphicsWithRendererView {
         }()
         
         /// The graphics overlay rendering a curved polygon.
-        let curvedPolygonGraphicsOverlay: GraphicsOverlay = {
+        private let curvedPolygonGraphicsOverlay: GraphicsOverlay = {
             // Creates a simple fill symbol with an outline.
             let lineSymbol = SimpleLineSymbol(style: .solid, color: .black, width: 1)
             let fillSymbol = SimpleFillSymbol(color: .red, outline: lineSymbol)
@@ -146,7 +148,7 @@ private extension StyleGraphicsWithRendererView {
         ///   - center: The center of the square that contains the heart shape.
         ///   - sideLength: The side length of the square.
         /// - Returns: A heart-shaped polygon.
-        static func makeHeartPolygon(center: Point, sideLength: Double) -> ArcGIS.Polygon? {
+        private static func makeHeartPolygon(center: Point, sideLength: Double) -> ArcGIS.Polygon? {
             guard sideLength > 0 else { return nil }
             let spatialReference = center.spatialReference
             // Defines the x and y coordinates to simplify the calculation.
