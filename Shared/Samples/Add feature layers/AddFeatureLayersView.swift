@@ -19,6 +19,11 @@ struct AddFeatureLayersView: View {
     /// A Boolean value indicating whether to show an alert.
     @State private var isShowingAlert = false
     
+    /// The error shown in the alert.
+    @State private var error: Error? {
+        didSet { isShowingAlert = error != nil }
+    }
+    
     /// The current viewpoint of the map view.
     @State private var viewpoint: Viewpoint?
     
@@ -36,14 +41,18 @@ struct AddFeatureLayersView: View {
                         }
                     }
                     .task(id: model.selectedFeatureLayerSource) {
-                        // Loads the selected feature layer.
-                        await model.updateFeatureLayer()
-                        viewpoint = model.featureLayerViewpoint
-                        isShowingAlert = model.error != nil
+                        do {
+                            // Loads the selected feature layer.
+                            try await model.updateFeatureLayer()
+                            viewpoint = model.featureLayerViewpoint
+                        } catch {
+                            // Updates the error and shows an alert if any failures occur.
+                            self.error = error
+                        }
                     }
                 }
             }
-            .alert(isPresented: $isShowingAlert, presentingError: model.error)
+            .alert(isPresented: $isShowingAlert, presentingError: error)
             .onAppear {
                 // Updates the URL session challenge handler to use the
                 // specified credentials and tokens for any challenges.
@@ -80,9 +89,6 @@ private extension AddFeatureLayersView {
         /// The GeoPackage used to create the feature layer.
         private var geoPackage: GeoPackage!
         
-        /// An error when loading a feature layer.
-        var error: Error?
-        
         /// The viewpoint for a specific feature layer.
         var featureLayerViewpoint: Viewpoint?
         
@@ -90,21 +96,22 @@ private extension AddFeatureLayersView {
         @Published var selectedFeatureLayerSource: FeatureLayerSource = .serviceFeatureTable
         
         /// Loads a feature layer with a service feature table.
-        private func loadServiceFeatureTable() {
+        private func loadServiceFeatureTable() async throws {
             // Creates a service feature table from a feature service.
             let featureTable = ServiceFeatureTable(url: .damageAssessment)
+            try await featureTable.load()
             let featureLayer = FeatureLayer(featureTable: featureTable)
             setFeatureLayer(featureLayer, viewpoint: .napervilleIL)
         }
         
         /// Loads a feature layer with a portal item.
-        private func loadPortalItemFeatureTable() {
-            let featureLayer = FeatureLayer(
-                item: PortalItem(
-                    portal: .arcGISOnline(connection: .anonymous),
-                    id: .treesOfPortland
-                )
+        private func loadPortalItemFeatureTable() async throws  {
+            let portalItem = PortalItem(
+                portal: .arcGISOnline(connection: .anonymous),
+                id: .treesOfPortland
             )
+            try await portalItem.load()
+            let featureLayer = FeatureLayer(item: portalItem)
             setFeatureLayer(featureLayer, viewpoint: .portlandOR)
         }
         
@@ -137,8 +144,9 @@ private extension AddFeatureLayersView {
         }
         
         /// Loads a feature layer with a local shapefile.
-        private func loadShapefileFeatureTable() {
+        private func loadShapefileFeatureTable() async throws  {
             let shapefileFeatureTable = ShapefileFeatureTable(fileURL: .reserveBoundaries)
+            try await shapefileFeatureTable.load()
             let featureLayer = FeatureLayer(featureTable: shapefileFeatureTable)
             setFeatureLayer(featureLayer, viewpoint: .scotland)
         }
@@ -153,24 +161,18 @@ private extension AddFeatureLayersView {
         }
         
         /// Updates the feature layer to reflect the source chosen by the user.
-        func updateFeatureLayer() async {
-            do {
-                switch selectedFeatureLayerSource {
-                case .serviceFeatureTable:
-                    loadServiceFeatureTable()
-                case .portalItem:
-                    loadPortalItemFeatureTable()
-                case .geodatabase:
-                    try await loadGeodatabaseFeatureTable()
-                case .geoPackage:
-                    try await loadGeoPackageFeatureTable()
-                case .shapefile:
-                    loadShapefileFeatureTable()
-                }
-                self.error = nil
-            } catch {
-                // Updates the error and shows an alert if any failures occur.
-                self.error = error
+        func updateFeatureLayer() async throws {
+            switch selectedFeatureLayerSource {
+            case .serviceFeatureTable:
+                try await loadServiceFeatureTable()
+            case .portalItem:
+                try await loadPortalItemFeatureTable()
+            case .geodatabase:
+                try await loadGeodatabaseFeatureTable()
+            case .geoPackage:
+                try await loadGeoPackageFeatureTable()
+            case .shapefile:
+                try await loadShapefileFeatureTable()
             }
         }
     }
