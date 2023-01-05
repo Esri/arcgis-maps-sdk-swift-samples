@@ -156,12 +156,13 @@ struct DownloadVectorTilesToLocalCacheView: View {
 
 private extension DownloadVectorTilesToLocalCacheView {
     /// A view model for this sample.
+    @MainActor
     class Model: ObservableObject {
         /// A map with a basemap from the vector tiled layer results.
         var downloadedVectorTilesMap: Map!
         
         /// The export vector tiles job.
-        var exportVectorTilesJob: ExportVectorTilesJob!
+        @Published var exportVectorTilesJob: ExportVectorTilesJob!
         
         /// The export vector tiles task.
         private var exportVectorTilesTask: ExportVectorTilesTask!
