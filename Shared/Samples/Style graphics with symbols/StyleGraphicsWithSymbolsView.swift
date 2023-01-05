@@ -16,83 +16,92 @@ import SwiftUI
 import ArcGIS
 
 struct StyleGraphicsWithSymbolsView: View {
-    /// A map with ArcGIS Oceans basemap style.
-    @StateObject private var map = Map(basemapStyle: .arcGISOceans)
-    
-    /// A graphics overlay for the map view.
-    @StateObject private var graphicsOverlay = makeGraphicsOverlay()
-    
-    /// The starting viewpoint of the map view.
-    private let viewpoint = Viewpoint(latitude: 56.075844, longitude: -2.681572, scale: 288895.277144)
-    
-    /// Creates a graphics overlay.
-    private static func makeGraphicsOverlay() -> GraphicsOverlay {
-        let graphicsOverlay = GraphicsOverlay()
-        // Adds the graphics.
-        graphicsOverlay.addGraphics(makeBuoyPoints())
-        graphicsOverlay.addGraphics(makeText())
-        graphicsOverlay.addGraphic(makeBoatTripGraphic())
-        graphicsOverlay.addGraphic(makeNestingGroundGraphic())
-        return graphicsOverlay
-    }
-    
-    /// Creates an array of graphics for buoy points.
-    private static func makeBuoyPoints() -> [Graphic] {
-        // Defines an array of points where buoys are located.
-        let buoyLocations = [
-            Point(x: -2.712642647560347, y: 56.062812566811544, spatialReference: .wgs84),
-            Point(x: -2.6908416959572303, y: 56.06444173689877, spatialReference: .wgs84),
-            Point(x: -2.6697273884990937, y: 56.064250073402874, spatialReference: .wgs84),
-            Point(x: -2.6395150461199726, y: 56.06127916736989, spatialReference: .wgs84)
-        ]
-        
-        // Creates a marker symbol.
-        let buoyMarker = SimpleMarkerSymbol(style: .circle, color: .red, size: 10)
-        
-        // Returns an array of graphics for the buoy locations.
-        return buoyLocations.map { Graphic(geometry: $0, symbol: buoyMarker) }
-    }
-    
-    /// Creates an array of graphics for text.
-    private static func makeText() -> [Graphic] {
-        // Creates the Bass Rock graphic.
-        let bassRockGraphic = Graphic(
-            geometry: Point(x: -2.640631, y: 56.078083, spatialReference: .wgs84),
-            symbol: TextSymbol(text: "Bass Rock", color: .blue, size: 10, horizontalAlignment: .left, verticalAlignment: .bottom)
-        )
-        
-        // Creates the Craigleith graphic.
-        let craigleithGraphic = Graphic(
-            geometry: Point(x: -2.720324, y: 56.073569, spatialReference: .wgs84),
-            symbol: TextSymbol(text: "Craigleith", color: .blue, size: 10, horizontalAlignment: .right, verticalAlignment: .top)
-        )
-        
-        // Returns an array of graphics for the text.
-        return [bassRockGraphic, craigleithGraphic]
-    }
-    
-    /// Creates a graphic for the boat trip.
-    private static func makeBoatTripGraphic() -> Graphic {
-        // Creates a line symbol.
-        let lineSymbol = SimpleLineSymbol(style: .dash, color: .purple, width: 4)
-        
-        // Returns the boat trip graphic.
-        return Graphic(geometry: .boatTrip, symbol: lineSymbol)
-    }
-    
-    /// Creates a graphic for the nesting ground.
-    private static func makeNestingGroundGraphic() -> Graphic {
-        // Creates the outline and fill symbols.
-        let outlineSymbol = SimpleLineSymbol(style: .dash, color: .blue, width: 1)
-        let fillSymbol = SimpleFillSymbol(style: .diagonalCross, color: .green, outline: outlineSymbol)
-        
-        // Returns the nesting graphic.
-        return Graphic(geometry: .nestingGround, symbol: fillSymbol)
-    }
+    /// The view model for the sample.
+    @StateObject private var model = Model()
     
     var body: some View {
-        // Creates a map view with the graphic overlay.
-        MapView(map: map, viewpoint: viewpoint, graphicsOverlays: [graphicsOverlay])
+        // Creates a map view with a graphics overlay.
+        MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
+    }
+}
+
+private extension StyleGraphicsWithSymbolsView {
+    private class Model: ObservableObject {
+        /// A map with ArcGIS Oceans basemap style.
+        let map: Map = {
+            let map = Map(basemapStyle: .arcGISOceans)
+            // The initial viewpoint of the map view.
+            map.initialViewpoint = Viewpoint(latitude: 56.075844, longitude: -2.681572, scale: 288895.277144)
+            return map
+        }()
+        
+        /// A graphics overlay for the map view.
+        let graphicsOverlay = makeGraphicsOverlay()
+        
+        /// Creates a graphics overlay.
+        private static func makeGraphicsOverlay() -> GraphicsOverlay {
+            let graphicsOverlay = GraphicsOverlay()
+            // Adds the graphics.
+            graphicsOverlay.addGraphics(makeBuoyPoints())
+            graphicsOverlay.addGraphics(makeText())
+            graphicsOverlay.addGraphic(makeBoatTripGraphic())
+            graphicsOverlay.addGraphic(makeNestingGroundGraphic())
+            return graphicsOverlay
+        }
+        
+        /// Creates an array of graphics for buoy points.
+        private static func makeBuoyPoints() -> [Graphic] {
+            // Defines an array of points where buoys are located.
+            let buoyLocations = [
+                Point(x: -2.712642647560347, y: 56.062812566811544, spatialReference: .wgs84),
+                Point(x: -2.6908416959572303, y: 56.06444173689877, spatialReference: .wgs84),
+                Point(x: -2.6697273884990937, y: 56.064250073402874, spatialReference: .wgs84),
+                Point(x: -2.6395150461199726, y: 56.06127916736989, spatialReference: .wgs84)
+            ]
+            
+            // Creates a marker symbol.
+            let buoyMarker = SimpleMarkerSymbol(style: .circle, color: .red, size: 10)
+            
+            // Returns an array of graphics for the buoy locations.
+            return buoyLocations.map { Graphic(geometry: $0, symbol: buoyMarker) }
+        }
+        
+        /// Creates an array of graphics for text.
+        private static func makeText() -> [Graphic] {
+            // Creates the Bass Rock graphic.
+            let bassRockGraphic = Graphic(
+                geometry: Point(x: -2.640631, y: 56.078083, spatialReference: .wgs84),
+                symbol: TextSymbol(text: "Bass Rock", color: .blue, size: 10, horizontalAlignment: .left, verticalAlignment: .bottom)
+            )
+            
+            // Creates the Craigleith graphic.
+            let craigleithGraphic = Graphic(
+                geometry: Point(x: -2.720324, y: 56.073569, spatialReference: .wgs84),
+                symbol: TextSymbol(text: "Craigleith", color: .blue, size: 10, horizontalAlignment: .right, verticalAlignment: .top)
+            )
+            
+            // Returns an array of graphics for the text.
+            return [bassRockGraphic, craigleithGraphic]
+        }
+        
+        /// Creates a graphic for the boat trip.
+        private static func makeBoatTripGraphic() -> Graphic {
+            // Creates a line symbol.
+            let lineSymbol = SimpleLineSymbol(style: .dash, color: .purple, width: 4)
+            
+            // Returns the boat trip graphic.
+            return Graphic(geometry: .boatTrip, symbol: lineSymbol)
+        }
+        
+        /// Creates a graphic for the nesting ground.
+        private static func makeNestingGroundGraphic() -> Graphic {
+            // Creates the outline and fill symbols.
+            let outlineSymbol = SimpleLineSymbol(style: .dash, color: .blue, width: 1)
+            let fillSymbol = SimpleFillSymbol(style: .diagonalCross, color: .green, outline: outlineSymbol)
+            
+            // Returns the nesting graphic.
+            return Graphic(geometry: .nestingGround, symbol: fillSymbol)
+        }
     }
 }
 
