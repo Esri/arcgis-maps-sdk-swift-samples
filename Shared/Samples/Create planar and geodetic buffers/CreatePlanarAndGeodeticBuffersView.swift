@@ -160,7 +160,6 @@ private extension CreatePlanarAndGeodeticBuffersView {
         func clearGraphics() {
             graphicsOverlays.forEach { $0.removeAllGraphics() }
         }
-        
     }
 }
 

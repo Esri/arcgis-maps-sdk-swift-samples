@@ -106,7 +106,6 @@ private extension ShowDeviceLocationView {
             }
             // Starts the location display data source.
             try await locationDisplay.dataSource.start()
-            
         }
         
         /// Stops the location data source.

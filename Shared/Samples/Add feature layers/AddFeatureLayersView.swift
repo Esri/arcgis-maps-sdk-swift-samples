@@ -105,7 +105,7 @@ private extension AddFeatureLayersView {
         }
         
         /// Loads a feature layer with a portal item.
-        private func loadPortalItemFeatureTable() async throws  {
+        private func loadPortalItemFeatureTable() async throws {
             let portalItem = PortalItem(
                 portal: .arcGISOnline(connection: .anonymous),
                 id: .treesOfPortland
@@ -144,7 +144,7 @@ private extension AddFeatureLayersView {
         }
         
         /// Loads a feature layer with a local shapefile.
-        private func loadShapefileFeatureTable() async throws  {
+        private func loadShapefileFeatureTable() async throws {
             let shapefileFeatureTable = ShapefileFeatureTable(fileURL: .reserveBoundaries)
             try await shapefileFeatureTable.load()
             let featureLayer = FeatureLayer(featureTable: shapefileFeatureTable)
