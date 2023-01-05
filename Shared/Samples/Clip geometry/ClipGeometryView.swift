@@ -50,21 +50,21 @@ private extension ClipGeometryView {
         }()
         
         /// The graphics overlay containing an unclipped graphic of Colorado.
-        private var coloradoGraphicsOverlay = GraphicsOverlay(
+        private let coloradoGraphicsOverlay = GraphicsOverlay(
             graphics: [
                 Graphic(geometry: .coloradoEnvelope, symbol: .coloradoFill)
             ]
         )
         
         /// The graphics overlay containing graphics of the other envelopes, outlined by a dotted red line.
-        private var envelopesGraphicsOverlay = GraphicsOverlay(
+        private let envelopesGraphicsOverlay = GraphicsOverlay(
             graphics: Geometry.envelopes.map {
                 Graphic(geometry: $0, symbol: SimpleLineSymbol(style: .dot, color: .red, width: 3))
             }
         )
         
         /// The graphics overlay containing clipped graphics.
-        private var clippedGraphicsOverlay = GraphicsOverlay()
+        private let clippedGraphicsOverlay = GraphicsOverlay()
         
         /// The unclipped graphic of Colorado.
         private var coloradoGraphic: Graphic { coloradoGraphicsOverlay.graphics.first! }
