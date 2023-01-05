@@ -45,8 +45,8 @@ struct ShowCalloutView: View {
                     Text("Location")
                         .font(.headline)
                     Text(
-                        CoordinateFormatter.toLatitudeLongitude(
-                            point: callout.location,
+                        CoordinateFormatter.latitudeLongitudeString(
+                            from: callout.location,
                             format: .decimalDegrees,
                             decimalPlaces: 2
                         )
