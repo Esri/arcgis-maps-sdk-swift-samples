@@ -17,6 +17,17 @@ import CoreLocation
 import SwiftUI
 
 struct ShowDeviceLocationView: View {
+    /// A Boolean value indicating whether to show an alert.
+    @State private var isShowingAlert = false
+    
+    /// The error shown in the alert.
+    @State private var error: Error? {
+        didSet { isShowingAlert = error != nil }
+    }
+    
+    /// A Boolean value indicating whether the settings button is disabled.
+    @State private var areSettingsDisabled = true
+    
     /// The view model for this sample.
     @StateObject private var model = Model()
     
@@ -24,8 +35,14 @@ struct ShowDeviceLocationView: View {
         MapView(map: model.map)
             .locationDisplay(model.locationDisplay)
             .task {
-                await model.startLocationDataSource()
-                await model.updateAutoPanMode()
+                do {
+                    try await model.startLocationDataSource()
+                    await model.updateAutoPanMode()
+                    areSettingsDisabled = false
+                } catch {
+                    // Shows an alert with an error if starting the data source fails.
+                    self.error = error
+                }
             }
             .onDisappear {
                 model.stopLocationDataSource()
@@ -42,10 +59,10 @@ struct ShowDeviceLocationView: View {
                             }
                         }
                     }
-                    .disabled(model.areSettingsDisabled)
+                    .disabled(areSettingsDisabled)
                 }
             }
-            .alert(isPresented: $model.isShowingAlert, presentingError: model.error)
+            .alert(isPresented: $isShowingAlert, presentingError: error)
     }
 }
 
@@ -67,15 +84,6 @@ private extension ShowDeviceLocationView {
             }
         }
         
-        /// A Boolean value indicating whether the settings button is disabled.
-        @Published var areSettingsDisabled = true
-        
-        /// A Boolean value indicating whether to show an alert.
-        @Published var isShowingAlert = false
-        
-        /// The error to display in the alert.
-        var error: Error?
-        
         /// A map with a standard imagery basemap style.
         let map = Map(basemapStyle: .arcGISImageryStandard)
         
@@ -90,21 +98,15 @@ private extension ShowDeviceLocationView {
         }
         
         /// Starts the location data source.
-        func startLocationDataSource() async {
+        func startLocationDataSource() async throws {
             // Requests location permission if it has not yet been determined.
             let locationManager = CLLocationManager()
             if locationManager.authorizationStatus == .notDetermined {
                 locationManager.requestWhenInUseAuthorization()
             }
-            do {
-                // Starts the location display data source.
-                try await locationDisplay.dataSource.start()
-                areSettingsDisabled = false
-            } catch {
-                // Shows an alert with an error if starting the data source fails.
-                self.error = error
-                isShowingAlert = true
-            }
+            // Starts the location display data source.
+            try await locationDisplay.dataSource.start()
+            
         }
         
         /// Stops the location data source.
