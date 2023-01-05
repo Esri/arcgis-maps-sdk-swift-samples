@@ -19,109 +19,22 @@ struct CreatePlanarAndGeodeticBuffersView: View {
     /// A Boolean value indicating whether to show options.
     @State private var isShowingOptions = false
     
-    /// The radius to pass into the buffer functions.
-    @State private var bufferDistance = Measurement(value: 500, unit: UnitLength.miles)
-    
     /// The possible radii for buffers in miles.
     private let bufferRadii = Measurement.rMin...Measurement.rMax
     
-    /// A map with a topographic basemap style.
-    @StateObject private var map = Map(basemapStyle: .arcGISTopographic)
+    /// The radius to pass into the buffer functions.
+    @State private var bufferDistance = Measurement(value: 500, unit: UnitLength.miles)
     
-    /// The graphics overlay for displaying the geometries created via a geodetic buffer around the tap point.
-    /// Contains graphics with green fill and black outline symbols.
-    @StateObject private var geodeticOverlay = makeGeodeticOverlay()
-    
-    /// The graphics overlay for displaying the geometries created via a planar buffer around the tap point.
-    /// Contains graphics with red fill and black outline symbols.
-    /// The red fill symbol appears brown when blended with the geodetic overlay.
-    @StateObject private var planarOverlay = makePlanarOverlay()
-    
-    /// The graphics overlay for displaying the location of the tap point.
-    /// Contains graphics with white cross symbols.
-    @StateObject private var tapLocationsOverlay = makeTapLocationsOverlay()
-    
-    /// The graphics overlays used in this sample.
-    private var graphicsOverlays: [GraphicsOverlay] {
-        return [geodeticOverlay, planarOverlay, tapLocationsOverlay]
-    }
-    
-    /// Creates a graphics overlay for the geodetic overlay.
-    private static func makeGeodeticOverlay() -> GraphicsOverlay {
-        let overlay = GraphicsOverlay()
-        let outlineSymbol = SimpleLineSymbol(style: .solid, color: .black, width: 2)
-        let fillSymbol = SimpleFillSymbol(style: .solid, color: .green, outline: outlineSymbol)
-        overlay.renderer = SimpleRenderer(symbol: fillSymbol)
-        overlay.opacity = 0.5
-        return overlay
-    }
-    
-    /// Creates a graphics overlay for the planar overlay.
-    private static func makePlanarOverlay() -> GraphicsOverlay {
-        let overlay = GraphicsOverlay()
-        let outlineSymbol = SimpleLineSymbol(style: .solid, color: .black, width: 2)
-        let fillSymbol = SimpleFillSymbol(style: .solid, color: .red, outline: outlineSymbol)
-        overlay.renderer = SimpleRenderer(symbol: fillSymbol)
-        overlay.opacity = 0.5
-        return overlay
-    }
-    
-    /// Creates a graphics overlay for the tap locations overlay.
-    private static func makeTapLocationsOverlay() -> GraphicsOverlay {
-        let overlay = GraphicsOverlay()
-        let symbol = SimpleMarkerSymbol(style: .cross, color: .white, size: 14)
-        overlay.renderer = SimpleRenderer(symbol: symbol)
-        return overlay
-    }
-    
-    /// Adds a buffer at a given point.
-    private func addBuffer(at point: Point) {
-        // Converts the buffer distance to meters.
-        let bufferRadiusInMeters = bufferDistance.converted(to: .meters).value
-        
-        // Creates the geometry for the map point, buffered by the given
-        // distance in respect to the geodetic spatial reference system
-        // (the 3D representation of the Earth).
-        if let geodesicGeometry = GeometryEngine.geodeticBuffer(
-            around: point,
-            distance: bufferRadiusInMeters,
-            distanceUnit: .meters,
-            maxDeviation: .nan,
-            curveType: .geodesic
-        ) {
-            // Creates and adds a graphic with the geodesic geometry
-            // to the geodetic overlay.
-            geodeticOverlay.addGraphic(Graphic(geometry: geodesicGeometry))
-        }
-        
-        // Creates the geometry for the map point, buffered by the given
-        // distance in respect to the projected map spatial reference system.
-        if let planarGeometry = GeometryEngine.buffer(
-            around: point,
-            distance: bufferRadiusInMeters
-        ) {
-            // Creates and adds a graphic with the planar geometry
-            // to the planar overlay.
-            planarOverlay.addGraphic(Graphic(geometry: planarGeometry))
-        }
-        
-        // Creates and adds a graphic symbolizing the tap location
-        // to the tap locations overlay.
-        tapLocationsOverlay.addGraphic(Graphic(geometry: point))
-    }
-    
-    /// Removes all graphics from all graphics overlays.
-    private func clearGraphics() {
-        graphicsOverlays.forEach { $0.removeAllGraphics() }
-    }
+    /// The view model for the sample.
+    @StateObject private var model = Model()
     
     var body: some View {
         VStack {
             // Creates a map view with graphics overlays.
-            MapView(map: map, graphicsOverlays: graphicsOverlays)
+            MapView(map: model.map, graphicsOverlays: model.graphicsOverlays)
                 .onSingleTapGesture { _, mapPoint in
                     // Adds a buffer at the given map point.
-                    addBuffer(at: mapPoint)
+                    model.addBuffer(at: mapPoint, bufferDistance: bufferDistance)
                 }
             
             if isShowingOptions {
@@ -147,12 +60,107 @@ struct CreatePlanarAndGeodeticBuffersView: View {
                 .toggleStyle(.button)
                 Spacer()
                 Button("Clear All") {
-                    clearGraphics()
+                    model.clearGraphics()
                 }
                 Spacer()
             }
             .padding()
         }
+    }
+}
+
+private extension CreatePlanarAndGeodeticBuffersView {
+    private class Model: ObservableObject {
+        /// A map with a topographic basemap style.
+        let map = Map(basemapStyle: .arcGISTopographic)
+        
+        /// The graphics overlay for displaying the geometries created via a geodetic buffer around the tap point.
+        /// Contains graphics with green fill and black outline symbols.
+        private let geodeticOverlay = makeGeodeticOverlay()
+        
+        /// The graphics overlay for displaying the geometries created via a planar buffer around the tap point.
+        /// Contains graphics with red fill and black outline symbols.
+        /// The red fill symbol appears brown when blended with the geodetic overlay.
+        private let planarOverlay = makePlanarOverlay()
+        
+        /// The graphics overlay for displaying the location of the tap point.
+        /// Contains graphics with white cross symbols.
+        private let tapLocationsOverlay = makeTapLocationsOverlay()
+        
+        /// The graphics overlays used in this sample.
+        var graphicsOverlays: [GraphicsOverlay] {
+            return [geodeticOverlay, planarOverlay, tapLocationsOverlay]
+        }
+        
+        /// Creates a graphics overlay for the geodetic overlay.
+        private static func makeGeodeticOverlay() -> GraphicsOverlay {
+            let overlay = GraphicsOverlay()
+            let outlineSymbol = SimpleLineSymbol(style: .solid, color: .black, width: 2)
+            let fillSymbol = SimpleFillSymbol(style: .solid, color: .green, outline: outlineSymbol)
+            overlay.renderer = SimpleRenderer(symbol: fillSymbol)
+            overlay.opacity = 0.5
+            return overlay
+        }
+        
+        /// Creates a graphics overlay for the planar overlay.
+        private static func makePlanarOverlay() -> GraphicsOverlay {
+            let overlay = GraphicsOverlay()
+            let outlineSymbol = SimpleLineSymbol(style: .solid, color: .black, width: 2)
+            let fillSymbol = SimpleFillSymbol(style: .solid, color: .red, outline: outlineSymbol)
+            overlay.renderer = SimpleRenderer(symbol: fillSymbol)
+            overlay.opacity = 0.5
+            return overlay
+        }
+        
+        /// Creates a graphics overlay for the tap locations overlay.
+        private static func makeTapLocationsOverlay() -> GraphicsOverlay {
+            let overlay = GraphicsOverlay()
+            let symbol = SimpleMarkerSymbol(style: .cross, color: .white, size: 14)
+            overlay.renderer = SimpleRenderer(symbol: symbol)
+            return overlay
+        }
+        
+        /// Adds a buffer at a given point.
+        func addBuffer(at point: Point, bufferDistance: Measurement<UnitLength>) {
+            // Converts the buffer distance to meters.
+            let bufferRadiusInMeters = bufferDistance.converted(to: .meters).value
+            
+            // Creates the geometry for the map point, buffered by the given
+            // distance in respect to the geodetic spatial reference system
+            // (the 3D representation of the Earth).
+            if let geodesicGeometry = GeometryEngine.geodeticBuffer(
+                around: point,
+                distance: bufferRadiusInMeters,
+                distanceUnit: .meters,
+                maxDeviation: .nan,
+                curveType: .geodesic
+            ) {
+                // Creates and adds a graphic with the geodesic geometry
+                // to the geodetic overlay.
+                geodeticOverlay.addGraphic(Graphic(geometry: geodesicGeometry))
+            }
+            
+            // Creates the geometry for the map point, buffered by the given
+            // distance in respect to the projected map spatial reference system.
+            if let planarGeometry = GeometryEngine.buffer(
+                around: point,
+                distance: bufferRadiusInMeters
+            ) {
+                // Creates and adds a graphic with the planar geometry
+                // to the planar overlay.
+                planarOverlay.addGraphic(Graphic(geometry: planarGeometry))
+            }
+            
+            // Creates and adds a graphic symbolizing the tap location
+            // to the tap locations overlay.
+            tapLocationsOverlay.addGraphic(Graphic(geometry: point))
+        }
+        
+        /// Removes all graphics from all graphics overlays.
+        func clearGraphics() {
+            graphicsOverlays.forEach { $0.removeAllGraphics() }
+        }
+        
     }
 }
 
