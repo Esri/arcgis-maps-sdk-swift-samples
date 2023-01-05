@@ -28,7 +28,7 @@ struct SetViewpointRotationView: View {
     
     private class Model: ObservableObject {
         /// A map with ArcGIS Streets basemap style.
-        let map: Map = Map(basemapStyle: .arcGISStreets)
+        let map = Map(basemapStyle: .arcGISStreets)
     }
     
     /// The view model for the sample.
