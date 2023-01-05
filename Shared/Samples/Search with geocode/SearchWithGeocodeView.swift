@@ -17,9 +17,6 @@ import ArcGIS
 import ArcGISToolkit
 
 struct SearchWithGeocodeView: View {
-    /// A map with imagery basemap.
-    @StateObject private var map = Map(basemapStyle: .arcGISImagery)
-    
     /// The viewpoint used by the search view to pan/zoom the map to the extent
     /// of the search results.
     @State private var viewpoint: Viewpoint? = Viewpoint(
@@ -58,16 +55,15 @@ struct SearchWithGeocodeView: View {
         maximumSuggestions: 5
     )
     
-    /// The graphics overlay used by the search toolkit component to display
-    /// search results on the map.
-    @StateObject private var searchResultsOverlay = GraphicsOverlay()
+    /// The view model for the sample.
+    @StateObject private var model = Model()
     
     var body: some View {
         MapViewReader { proxy in
             MapView(
-                map: map,
+                map: model.map,
                 viewpoint: viewpoint,
-                graphicsOverlays: [searchResultsOverlay]
+                graphicsOverlays: [model.searchResultsOverlay]
             )
             .onSingleTapGesture { screenPoint, tapLocation in
                 identifyScreenPoint = screenPoint
@@ -92,7 +88,7 @@ struct SearchWithGeocodeView: View {
                 guard let screenPoint = identifyScreenPoint,
                       // Identifies when user taps a graphic.
                       let identifyResult = try? await proxy.identify(
-                        on: searchResultsOverlay,
+                        on: model.searchResultsOverlay,
                         screenPoint: screenPoint,
                         tolerance: 10
                       )
@@ -111,7 +107,7 @@ struct SearchWithGeocodeView: View {
                     sources: [locatorDataSource],
                     viewpoint: $viewpoint
                 )
-                .resultsOverlay(searchResultsOverlay)
+                .resultsOverlay(model.searchResultsOverlay)
                 .queryCenter($queryCenter)
                 .geoViewExtent($geoViewExtent)
                 .isGeoViewNavigating($isGeoViewNavigating)
@@ -124,5 +120,16 @@ struct SearchWithGeocodeView: View {
                 .padding()
             }
         }
+    }
+}
+
+private extension SearchWithGeocodeView {
+    private class Model: ObservableObject {
+        /// A map with imagery basemap.
+        let map = Map(basemapStyle: .arcGISImagery)
+        
+        /// The graphics overlay used by the search toolkit component to display
+        /// search results on the map.
+        let searchResultsOverlay = GraphicsOverlay()
     }
 }
