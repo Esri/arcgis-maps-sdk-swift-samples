@@ -23,7 +23,7 @@ struct ClipGeometryView: View {
     @StateObject private var model = Model()
     
     var body: some View {
-        MapView(map: model.map, graphicsOverlays: [model.coloradoGraphicsOverlay, model.envelopesGraphicsOverlay, model.clippedGraphicsOverlay])
+        MapView(map: model.map, graphicsOverlays: model.graphicsOverlays)
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
                     Button(geometriesAreClipped ? "Reset" : "Clip") {
@@ -50,24 +50,29 @@ private extension ClipGeometryView {
         }()
         
         /// The graphics overlay containing an unclipped graphic of Colorado.
-        var coloradoGraphicsOverlay = GraphicsOverlay(
+        private var coloradoGraphicsOverlay = GraphicsOverlay(
             graphics: [
                 Graphic(geometry: .coloradoEnvelope, symbol: .coloradoFill)
             ]
         )
         
         /// The graphics overlay containing graphics of the other envelopes, outlined by a dotted red line.
-        var envelopesGraphicsOverlay = GraphicsOverlay(
+        private var envelopesGraphicsOverlay = GraphicsOverlay(
             graphics: Geometry.envelopes.map {
                 Graphic(geometry: $0, symbol: SimpleLineSymbol(style: .dot, color: .red, width: 3))
             }
         )
         
         /// The graphics overlay containing clipped graphics.
-        var clippedGraphicsOverlay = GraphicsOverlay()
+        private var clippedGraphicsOverlay = GraphicsOverlay()
         
         /// The unclipped graphic of Colorado.
         private var coloradoGraphic: Graphic { coloradoGraphicsOverlay.graphics.first! }
+        
+        /// The graphics overlays used in this sample.
+        var graphicsOverlays: [GraphicsOverlay] {
+            return [coloradoGraphicsOverlay, envelopesGraphicsOverlay, clippedGraphicsOverlay]
+        }
         
         /// Clips the geometry of Colorado to the given envelope.
         /// - Parameter envelope: The envelope to clip the geometry of Colorado to.
