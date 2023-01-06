@@ -37,7 +37,7 @@ struct ShowDeviceLocationView: View {
             .task {
                 do {
                     try await model.startLocationDataSource()
-                    await model.updateAutoPanMode()
+                    model.updateAutoPanMode()
                     areSettingsDisabled = false
                 } catch {
                     // Shows an alert with an error if starting the data source fails.
@@ -116,10 +116,12 @@ private extension ShowDeviceLocationView {
         }
         
         /// Updates the current auto-pan mode if it does not match the location display's auto-pan mode.
-        func updateAutoPanMode() async {
-            for await mode in locationDisplay.$autoPanMode {
-                if autoPanMode != mode {
-                    autoPanMode = mode
+        func updateAutoPanMode() {
+            Task {
+                for await mode in locationDisplay.$autoPanMode {
+                    if autoPanMode != mode {
+                        autoPanMode = mode
+                    }
                 }
             }
         }
