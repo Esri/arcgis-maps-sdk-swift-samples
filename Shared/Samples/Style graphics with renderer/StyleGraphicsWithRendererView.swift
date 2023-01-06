@@ -107,7 +107,7 @@ private extension StyleGraphicsWithRendererView {
             // Defines the center point of the ellipse.
             let center = Point(x: 40e5, y: 25e5, spatialReference: .webMercator)
             // Creates the parameters for the ellipse.
-            let parameters = GeodesicEllipseParameters(
+            let parameters = GeodesicEllipseParameters<Polygon>(
                 axisDirection: -45,
                 center: center,
                 linearUnit: .kilometers,
