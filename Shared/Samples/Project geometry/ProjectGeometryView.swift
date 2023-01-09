@@ -24,7 +24,7 @@ struct ProjectGeometryView: View {
     
     /// The view model for the sample.
     @StateObject private var model = Model()
-
+    
     var body: some View {
         MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
             .onSingleTapGesture { _, mapPoint in
