@@ -25,8 +25,8 @@ struct DownloadVectorTilesToLocalCacheView: View {
     /// A Boolean value indicating whether to show an alert.
     @State private var isShowingAlert = false
     
-    /// A Boolean value indicating whether the download button is disabled.
-    @State private var isDownloadDisabled = true
+    /// A Boolean value indicating whether the download button is enabled.
+    @State private var allowsDownloading = false
     
     /// A Boolean value indicating whether to show the result map.
     @State private var isShowingResults = false
@@ -50,7 +50,7 @@ struct DownloadVectorTilesToLocalCacheView: View {
                         do {
                             try await model.initializeVectorTilesTask()
                             // Enables the download button.
-                            isDownloadDisabled = false
+                            allowsDownloading = true
                         } catch {
                             self.error = error
                         }
@@ -97,7 +97,7 @@ struct DownloadVectorTilesToLocalCacheView: View {
                             Button("Download Vector Tiles") {
                                 isDownloading = true
                             }
-                            .disabled(isDownloadDisabled || isDownloading)
+                            .disabled(!allowsDownloading || isDownloading)
                             .task(id: isDownloading) {
                                 // Ensures downloading is true.
                                 guard isDownloading else { return }
