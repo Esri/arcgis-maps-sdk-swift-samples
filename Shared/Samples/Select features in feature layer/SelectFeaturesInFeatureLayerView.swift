@@ -77,22 +77,20 @@ struct SelectFeaturesInFeatureLayerView: View {
 
 private extension SelectFeaturesInFeatureLayerView {
     class Model: ObservableObject {
-        /// A map with a topographic basemap style and a feature layer.
-        let map: Map = {
-            // A feature layer visualizing GDP per capita.
-            let featureLayer = FeatureLayer(
-                item: PortalItem(
-                    portal: .arcGISOnline(connection: .anonymous),
-                    id: .gdpPerCapita
-                )
+        /// A feature layer visualizing GDP per capita.
+        let gdpPerCapitaLayer = FeatureLayer(
+            item: PortalItem(
+                portal: .arcGISOnline(connection: .anonymous),
+                id: .gdpPerCapita
             )
-            let map = Map(basemapStyle: .arcGISTopographic)
-            map.addOperationalLayer(featureLayer)
-            return map
-        }()
-        
-        var featureLayer: FeatureLayer {
-            map.operationalLayers.first as! FeatureLayer
+        )
+
+        /// A map with a topographic basemap style and a feature layer.
+        let map: Map
+
+        init() {
+            map = Map(basemapStyle: .arcGISTopographic)
+            map.addOperationalLayer(gdpPerCapitaLayer)
         }
     }
 }
