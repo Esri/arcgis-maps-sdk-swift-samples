@@ -22,22 +22,6 @@ struct ShowResultOfSpatialOperationsView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
-    /// An enum of spatial operations.
-    private enum SpatialOperation: CaseIterable {
-        case intersection, symmetricDifference, difference, union, none
-        
-        /// A human-readable label for each spatial operation.
-        var label: String {
-            switch self {
-            case .none: return "None"
-            case .union: return "Union"
-            case .difference: return "Difference"
-            case .symmetricDifference: return "Symmetric Difference"
-            case .intersection: return "Intersection"
-            }
-        }
-    }
-    
     var body: some View {
         MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
             .onChange(of: spatialOperation) { _ in
@@ -56,6 +40,22 @@ struct ShowResultOfSpatialOperationsView: View {
 }
 
 private extension ShowResultOfSpatialOperationsView {
+    /// An enum of spatial operations.
+    enum SpatialOperation: CaseIterable {
+        case intersection, symmetricDifference, difference, union, none
+        
+        /// A human-readable label for each spatial operation.
+        var label: String {
+            switch self {
+            case .none: return "None"
+            case .union: return "Union"
+            case .difference: return "Difference"
+            case .symmetricDifference: return "Symmetric Difference"
+            case .intersection: return "Intersection"
+            }
+        }
+    }
+    
     class Model: ObservableObject {
         /// A map with a topographic basemap style and initial viewpoint.
         let map: Map = {
