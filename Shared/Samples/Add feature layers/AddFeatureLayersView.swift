@@ -79,7 +79,7 @@ private struct ChallengeHandler: AuthenticationChallengeHandler {
 }
 
 private extension AddFeatureLayersView {
-    private class Model: ObservableObject {
+    class Model: ObservableObject {
         /// A map with a topographic basemap style.
         let map = Map(basemapStyle: .arcGISTopographic)
         

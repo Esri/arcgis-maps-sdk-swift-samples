@@ -45,7 +45,7 @@ struct DisplayOverviewMapView: View {
 }
 
 private extension DisplayOverviewMapView {
-    private class Model: ObservableObject {
+    class Model: ObservableObject {
         /// A map with imagery basemap and a tourist attraction feature layer.
         let map: Map = {
             let featureLayer = FeatureLayer(

@@ -113,7 +113,7 @@ struct ShowResultOfSpatialRelationshipsView: View {
 }
 
 private extension ShowResultOfSpatialRelationshipsView {
-    private class Model: ObservableObject {
+    class Model: ObservableObject {
         /// A map with a topographic basemap style and an initial viewpoint.
         let map: Map = {
             let map = Map(basemapStyle: .arcGISTopographic)

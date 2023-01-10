@@ -40,7 +40,7 @@ struct ClipGeometryView: View {
 }
 
 private extension ClipGeometryView {
-    private class Model: ObservableObject {
+    class Model: ObservableObject {
         /// A map with a topographic basemap style and an initial viewpoint of Colorado.
         let map: Map = {
             let map = Map(basemapStyle: .arcGISTopographic)

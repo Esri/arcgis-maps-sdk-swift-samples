@@ -40,7 +40,7 @@ struct CutGeometryView: View {
 }
 
 private extension CutGeometryView {
-    private class Model: ObservableObject {
+    class Model: ObservableObject {
         /// A map with a topographic basemap style and an initial viewpoint of Lake Superior.
         let map: Map = {
             let map = Map(basemapStyle: .arcGISTopographic)

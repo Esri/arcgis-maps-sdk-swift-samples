@@ -124,7 +124,7 @@ struct SearchWithGeocodeView: View {
 }
 
 private extension SearchWithGeocodeView {
-    private class Model: ObservableObject {
+    class Model: ObservableObject {
         /// A map with imagery basemap.
         let map = Map(basemapStyle: .arcGISImagery)
         

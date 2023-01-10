@@ -76,7 +76,7 @@ struct SelectFeaturesInFeatureLayerView: View {
 }
 
 private extension SelectFeaturesInFeatureLayerView {
-    private class Model: ObservableObject {
+    class Model: ObservableObject {
         /// A map with a topographic basemap style and a feature layer.
         let map: Map = {
             // A feature layer visualizing GDP per capita.

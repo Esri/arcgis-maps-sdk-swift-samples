@@ -26,7 +26,7 @@ struct StyleGraphicsWithSymbolsView: View {
 }
 
 private extension StyleGraphicsWithSymbolsView {
-    private class Model: ObservableObject {
+    class Model: ObservableObject {
         /// A map with ArcGIS Oceans basemap style.
         let map: Map = {
             let map = Map(basemapStyle: .arcGISOceans)
