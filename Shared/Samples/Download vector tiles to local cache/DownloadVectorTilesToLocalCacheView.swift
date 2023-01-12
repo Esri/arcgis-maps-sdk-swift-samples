@@ -25,9 +25,6 @@ struct DownloadVectorTilesToLocalCacheView: View {
     /// A Boolean value indicating whether to show an alert.
     @State private var isShowingAlert = false
     
-    /// A Boolean value indicating whether the download button is enabled.
-    @State private var allowsDownloading = false
-    
     /// A Boolean value indicating whether to show the result map.
     @State private var isShowingResults = false
     
@@ -49,8 +46,6 @@ struct DownloadVectorTilesToLocalCacheView: View {
                     .task {
                         do {
                             try await model.initializeVectorTilesTask()
-                            // Enables the download button.
-                            allowsDownloading = true
                         } catch {
                             self.error = error
                         }
@@ -97,7 +92,7 @@ struct DownloadVectorTilesToLocalCacheView: View {
                             Button("Download Vector Tiles") {
                                 isDownloading = true
                             }
-                            .disabled(!allowsDownloading || isDownloading)
+                            .disabled(model.exportVectorTilesTask == nil || isDownloading)
                             .task(id: isDownloading) {
                                 // Ensures downloading is true.
                                 guard isDownloading else { return }
@@ -165,7 +160,7 @@ private extension DownloadVectorTilesToLocalCacheView {
         @Published var exportVectorTilesJob: ExportVectorTilesJob!
         
         /// The export vector tiles task.
-        private var exportVectorTilesTask: ExportVectorTilesTask!
+        @Published var exportVectorTilesTask: ExportVectorTilesTask!
         
         /// The vector tiled layer from the downloaded result.
         private var vectorTiledLayerResults: ArcGISVectorTiledLayer!
