@@ -18,21 +18,7 @@ import SwiftUI
 struct AddRasterFromFileView: View {
     private class Model: ObservableObject {
         /// A map with imagery basemap and a raster layer.
-        let map: Map
-        
-        init() {
-            /// A map with a standard imagery basemap style.
-            let map = Map(basemapStyle: .arcGISImageryStandard)
-            // Gets the Shasta.tif file URL.
-            let shastaURL = Bundle.main.url(forResource: "Shasta", withExtension: "tif", subdirectory: "raster-file/raster-file")!
-            // Creates a raster with the file URL.
-            let raster = Raster(fileURL: shastaURL)
-            // Creates a raster layer using the raster object.
-            let rasterLayer = RasterLayer(raster: raster)
-            // Adds the raster layer to the map's operational layer.
-            map.addOperationalLayer(rasterLayer)
-            self.map = map
-        }
+        let map = Map(basemapStyle: .arcGISImageryStandard)
     }
     
     /// The view model for the sample.
@@ -56,8 +42,15 @@ struct AddRasterFromFileView: View {
             .alert(isPresented: $isShowingAlert, presentingError: error)
             .task {
                 do {
-                    let rasterLayer = model.map.operationalLayers.first!
+                    // Gets the Shasta.tif file URL.
+                    let shastaURL = Bundle.main.url(forResource: "Shasta", withExtension: "tif", subdirectory: "raster-file/raster-file")!
+                    // Creates a raster with the file URL.
+                    let raster = Raster(fileURL: shastaURL)
+                    // Creates a raster layer using the raster object.
+                    let rasterLayer = RasterLayer(raster: raster)
                     try await rasterLayer.load()
+                    // Adds the raster layer to the map's operational layer.
+                    model.map.addOperationalLayer(rasterLayer)
                     viewpoint = Viewpoint(center: rasterLayer.fullExtent!.center, scale: 8e4)
                 } catch {
                     // Presents an error message if the raster fails to load.
