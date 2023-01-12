@@ -42,16 +42,16 @@ struct ShowResultOfSpatialRelationshipsView: View {
     /// Shows the relationships for the selected graphic.
     /// - Parameter graphic: The graphic to show all spatial relationships for.
     private func showRelationships(for graphic: Graphic) {
-        guard let selectedGeometry = graphic.geometry,
-              let allRelationships = model.allRelationships(for: selectedGeometry),
-              let mapPoint = mapPoint else {
+        guard let selectedGeometry = graphic.geometry else {
             return
         }
-        
         // Updates the relationships.
-        relationships = allRelationships
+        relationships = model.allRelationships(for: selectedGeometry)
+        guard !relationships.isEmpty else {
+            return
+        }
         // Updates the location callout placement.
-        calloutPlacement = LocationCalloutPlacement(location: mapPoint)
+        calloutPlacement = mapPoint.map { LocationCalloutPlacement(location: $0) }
     }
     
     var body: some View {
@@ -137,12 +137,10 @@ private extension ShowResultOfSpatialRelationshipsView {
         /// Returns the relevant spatial relationships for a given geometry with all other geometries in this sample.
         /// - Parameter geometry: The geometry to find all spatial relationships for.
         /// - Returns: An array of relationships between the given geometry and all other geometries.
-        func allRelationships(for geometry: Geometry) -> [Relationship]? {
-            guard let pointGeometry = pointGraphic.geometry,
-                  let polylineGeometry = polylineGraphic.geometry,
-                  let polygonGeometry = polygonGraphic.geometry else {
-                return nil
-            }
+        func allRelationships(for geometry: Geometry) -> [Relationship] {
+            let pointGeometry = pointGraphic.geometry!
+            let polylineGeometry = polylineGraphic.geometry!
+            let polygonGeometry = polygonGraphic.geometry!
             
             switch geometry {
             case is Point:
@@ -161,7 +159,7 @@ private extension ShowResultOfSpatialRelationshipsView {
                     Relationship(between: polygonGeometry, and: polylineGeometry)
                 ]
             default:
-                return nil
+                return []
             }
         }
     }
