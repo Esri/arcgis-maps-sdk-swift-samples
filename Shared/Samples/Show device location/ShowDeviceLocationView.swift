@@ -26,7 +26,7 @@ struct ShowDeviceLocationView: View {
     }
     
     /// A Boolean value indicating whether the settings button is disabled.
-    @State private var areSettingsDisabled = true
+    @State private var settingsButtonIsDisabled = true
     
     /// The view model for this sample.
     @StateObject private var model = Model()
@@ -37,8 +37,14 @@ struct ShowDeviceLocationView: View {
             .task {
                 do {
                     try await model.startLocationDataSource()
-                    model.updateAutoPanMode()
-                    areSettingsDisabled = false
+                    settingsButtonIsDisabled = false
+                    // Updates the current auto-pan mode if it does not match the
+                    // location display's auto-pan mode.
+                    for await mode in model.locationDisplay.$autoPanMode {
+                        if model.autoPanMode != mode {
+                            model.autoPanMode = mode
+                        }
+                    }
                 } catch {
                     // Shows an alert with an error if starting the data source fails.
                     self.error = error
@@ -59,7 +65,7 @@ struct ShowDeviceLocationView: View {
                             }
                         }
                     }
-                    .disabled(areSettingsDisabled)
+                    .disabled(settingsButtonIsDisabled)
                 }
             }
             .alert(isPresented: $isShowingAlert, presentingError: error)
@@ -112,17 +118,6 @@ private extension ShowDeviceLocationView {
         func stopLocationDataSource() {
             Task {
                 await locationDisplay.dataSource.stop()
-            }
-        }
-        
-        /// Updates the current auto-pan mode if it does not match the location display's auto-pan mode.
-        func updateAutoPanMode() {
-            Task {
-                for await mode in locationDisplay.$autoPanMode {
-                    if autoPanMode != mode {
-                        autoPanMode = mode
-                    }
-                }
             }
         }
     }
