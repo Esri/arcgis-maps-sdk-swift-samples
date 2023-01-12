@@ -33,6 +33,9 @@ struct ShowResultOfSpatialRelationshipsView: View {
     /// A location callout placement.
     @State private var calloutPlacement: LocationCalloutPlacement?
     
+    /// The relationships for the selected graphic.
+    @State private var relationships: [Relationship] = []
+    
     /// The view model for the sample.
     @StateObject private var model = Model()
     
@@ -46,7 +49,7 @@ struct ShowResultOfSpatialRelationshipsView: View {
         }
         
         // Updates the relationships.
-        model.relationships = allRelationships
+        relationships = allRelationships
         // Updates the location callout placement.
         calloutPlacement = LocationCalloutPlacement(location: mapPoint)
     }
@@ -60,7 +63,7 @@ struct ShowResultOfSpatialRelationshipsView: View {
                 }
                 .callout(placement: $calloutPlacement.animation(.default.speed(4))) { _ in
                     VStack(alignment: .leading) {
-                        ForEach(model.relationships, id: \.relationshipWithLabel) { relationship in
+                        ForEach(relationships, id: \.relationshipWithLabel) { relationship in
                             Text(relationship.relationshipWithLabel)
                                 .font(.headline)
                             VStack(alignment: .leading) {
@@ -130,9 +133,6 @@ private extension ShowResultOfSpatialRelationshipsView {
         private var polylineGraphic: Graphic { graphicsOverlay.graphics[1] }
         /// The point graphic.
         private var pointGraphic: Graphic { graphicsOverlay.graphics[2] }
-        
-        /// The relationships for the selected graphic.
-        var relationships: [Relationship] = []
         
         /// Returns the relevant spatial relationships for a given geometry with all other geometries in this sample.
         /// - Parameter geometry: The geometry to find all spatial relationships for.
