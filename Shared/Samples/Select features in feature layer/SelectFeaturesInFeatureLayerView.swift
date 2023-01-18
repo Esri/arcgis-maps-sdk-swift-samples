@@ -84,10 +84,10 @@ private extension SelectFeaturesInFeatureLayerView {
                 id: .gdpPerCapita
             )
         )
-
+        
         /// A map with a topographic basemap style and a feature layer.
         let map: Map
-
+        
         init() {
             map = Map(basemapStyle: .arcGISTopographic)
             map.addOperationalLayer(gdpPerCapitaLayer)
