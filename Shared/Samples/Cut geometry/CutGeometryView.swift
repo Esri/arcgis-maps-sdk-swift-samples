@@ -77,8 +77,8 @@ private extension CutGeometryView {
         /// Cuts geometry and adds resulting graphics.
         func cutGeometry() {
             // Cuts the Lake Superior polygon using the border polyline.
-            guard let parts = GeometryEngine.cut(.lakeSuperiorPolygon, usingCutter: .borderPolyline),
-                  parts.count == 2,
+            let parts = GeometryEngine.cut(.lakeSuperiorPolygon, usingCutter: .borderPolyline)
+            guard parts.count == 2,
                   let firstPart = parts.first,
                   let secondPart = parts.last else {
                 return
