@@ -45,6 +45,8 @@ struct DisplayOverviewMapView: View {
 }
 
 private extension DisplayOverviewMapView {
+    /// The model used to store the geo model and other expensive objects
+    /// used in this view.
     class Model: ObservableObject {
         /// A map with imagery basemap and a tourist attraction feature layer.
         let map: Map = {

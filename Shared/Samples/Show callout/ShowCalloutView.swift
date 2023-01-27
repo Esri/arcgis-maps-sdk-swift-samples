@@ -16,6 +16,8 @@ import SwiftUI
 import ArcGIS
 
 struct ShowCalloutView: View {
+    /// The model used to store the geo model and other expensive objects
+    /// used in this view.
     private class Model: ObservableObject {
         /// A map with a topographic basemap style.
         let map = Map(basemapStyle: .arcGISTopographic)

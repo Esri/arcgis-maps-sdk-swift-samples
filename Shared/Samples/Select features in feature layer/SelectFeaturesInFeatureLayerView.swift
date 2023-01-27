@@ -76,6 +76,8 @@ struct SelectFeaturesInFeatureLayerView: View {
 }
 
 private extension SelectFeaturesInFeatureLayerView {
+    /// The model used to store the geo model and other expensive objects
+    /// used in this view.
     class Model: ObservableObject {
         /// A feature layer visualizing GDP per capita.
         let gdpPerCapitaLayer = FeatureLayer(

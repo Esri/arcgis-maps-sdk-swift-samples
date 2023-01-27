@@ -16,6 +16,8 @@ import SwiftUI
 import ArcGIS
 
 struct DisplaySceneView: View {
+    /// The model used to store the geo model and other expensive objects
+    /// used in this view.
     private class Model: ObservableObject {
         /// A scene with imagery basemap style and a tiled elevation source.
         let scene: ArcGIS.Scene = {

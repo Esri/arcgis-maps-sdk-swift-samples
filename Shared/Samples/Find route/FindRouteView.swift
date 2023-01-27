@@ -93,7 +93,8 @@ struct FindRouteView: View {
 }
 
 private extension FindRouteView {
-    /// A view model for this sample.
+    /// The model used to store the geo model and other expensive objects
+    /// used in this view.
     @MainActor
     class Model: ObservableObject {
         /// The directions for the route.

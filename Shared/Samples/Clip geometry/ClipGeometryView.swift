@@ -40,6 +40,8 @@ struct ClipGeometryView: View {
 }
 
 private extension ClipGeometryView {
+    /// The model used to store the geo model and other expensive objects
+    /// used in this view.
     class Model: ObservableObject {
         /// A map with a topographic basemap style and an initial viewpoint of Colorado.
         let map: Map = {

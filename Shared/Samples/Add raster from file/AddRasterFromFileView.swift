@@ -16,6 +16,8 @@ import ArcGIS
 import SwiftUI
 
 struct AddRasterFromFileView: View {
+    /// The model used to store the geo model and other expensive objects
+    /// used in this view.
     private class Model: ObservableObject {
         /// A map with imagery basemap and a raster layer.
         let map = Map(basemapStyle: .arcGISImageryStandard)

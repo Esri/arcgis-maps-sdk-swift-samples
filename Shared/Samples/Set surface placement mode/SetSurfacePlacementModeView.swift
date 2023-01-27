@@ -60,7 +60,8 @@ struct SetSurfacePlacementModeView: View {
 }
 
 private extension SetSurfacePlacementModeView {
-    /// A view model for this sample.
+    /// The model used to store the geo model and other expensive objects
+    /// used in this view.
     class Model: ObservableObject {
         /// The range of possible z-values. The z-value range is 0 to 140 meters in this sample.
         let zValueRange = Measurement.zMin...Measurement.zMax

@@ -20,6 +20,8 @@ struct SetBasemapView: View {
     /// A Boolean value that indicates whether to show the basemap gallery.
     @State private var isShowingBasemapGallery = false
     
+    /// The model used to store the geo model and other expensive objects
+    /// used in this view.
     private class Model: ObservableObject {
         /// A map with imagery basemap.
         let map: Map = {

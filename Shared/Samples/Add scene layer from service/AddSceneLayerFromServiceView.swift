@@ -25,6 +25,8 @@ struct AddSceneLayerFromServiceView: View {
 }
 
 private extension AddSceneLayerFromServiceView {
+    /// The model used to store the geo model and other expensive objects
+    /// used in this view.
     class Model: ObservableObject {
         let scene: ArcGIS.Scene = {
             // Creates a scene and sets an initial viewpoint.

@@ -34,6 +34,8 @@ struct BrowseBuildingFloorsView: View {
     /// A Boolean value indicating whether the map is loaded.
     @State private var isMapLoaded = false
     
+    /// The model used to store the geo model and other expensive objects
+    /// used in this view.
     private class Model: ObservableObject {
         /// A floor-aware web map of Building L on the Esri Redlands campus.
         let map = Map(

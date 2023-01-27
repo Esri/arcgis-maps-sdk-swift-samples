@@ -150,7 +150,8 @@ struct DownloadVectorTilesToLocalCacheView: View {
 }
 
 private extension DownloadVectorTilesToLocalCacheView {
-    /// A view model for this sample.
+    /// The model used to store the geo model and other expensive objects
+    /// used in this view.
     @MainActor
     class Model: ObservableObject {
         /// A map with a basemap from the vector tiled layer results.

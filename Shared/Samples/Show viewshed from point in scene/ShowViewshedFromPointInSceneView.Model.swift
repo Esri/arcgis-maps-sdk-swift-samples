@@ -16,6 +16,8 @@ import ArcGIS
 import SwiftUI
 
 extension ShowViewshedFromPointInSceneView {
+    /// The model used to store the geo model and other expensive objects
+    /// used in this view.
     class Model: ObservableObject {
         /// The location viewshed used in the sample.
         let viewshed: LocationViewshed

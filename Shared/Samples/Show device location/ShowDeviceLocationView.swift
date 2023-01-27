@@ -73,7 +73,8 @@ struct ShowDeviceLocationView: View {
 }
 
 private extension ShowDeviceLocationView {
-    /// The view model for this sample.
+    /// The model used to store the geo model and other expensive objects
+    /// used in this view.
     @MainActor
     class Model: ObservableObject {
         /// A Boolean value indicating whether to show the device location.

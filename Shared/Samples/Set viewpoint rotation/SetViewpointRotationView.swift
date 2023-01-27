@@ -26,6 +26,8 @@ struct SetViewpointRotationView: View {
     /// The rotation angle for the viewpoint.
     @State private var rotation = Double.zero
     
+    /// The model used to store the geo model and other expensive objects
+    /// used in this view.
     private class Model: ObservableObject {
         /// A map with ArcGIS Streets basemap style.
         let map = Map(basemapStyle: .arcGISStreets)

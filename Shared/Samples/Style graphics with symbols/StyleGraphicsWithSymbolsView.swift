@@ -26,6 +26,8 @@ struct StyleGraphicsWithSymbolsView: View {
 }
 
 private extension StyleGraphicsWithSymbolsView {
+    /// The model used to store the geo model and other expensive objects
+    /// used in this view.
     class Model: ObservableObject {
         /// A map with ArcGIS Oceans basemap style.
         let map: Map = {
