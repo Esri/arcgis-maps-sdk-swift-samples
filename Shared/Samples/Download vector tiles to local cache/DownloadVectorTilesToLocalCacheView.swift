@@ -113,15 +113,17 @@ struct DownloadVectorTilesToLocalCacheView: View {
                                 // Downloads the vector tiles.
                                 do {
                                     try await model.downloadVectorTiles(extent: extent)
-                                    // Sets downloading to false when the download finishes.
-                                    isDownloading = false
                                     // Sets show results to true.
                                     isShowingResults = true
+                                    // Sets downloading to false when the download finishes.
+                                    isDownloading = false
                                 } catch is CancellationError {
                                     // Does nothing if the error is a cancellation error.
                                 } catch {
                                     // Shows an alert if any errors occur.
                                     self.error = error
+                                    // Sets downloading to false when the download finishes.
+                                    isDownloading = false
                                 }
                             }
                             .sheet(isPresented: $isShowingResults) {
