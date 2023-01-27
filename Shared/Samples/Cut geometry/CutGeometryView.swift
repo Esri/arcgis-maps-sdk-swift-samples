@@ -28,7 +28,7 @@ struct CutGeometryView: View {
                 ToolbarItem(placement: .bottomBar) {
                     Button(isGeometryCut ? "Reset" : "Cut") {
                         if isGeometryCut {
-                            model.reset()
+                            model.removeAllGraphics()
                         } else {
                             model.cutGeometry()
                         }
@@ -91,7 +91,7 @@ private extension CutGeometryView {
         }
         
         /// Removes all cut graphics.
-        func reset() {
+        func removeAllGraphics() {
             cutGraphicsOverlay.removeAllGraphics()
         }
     }
