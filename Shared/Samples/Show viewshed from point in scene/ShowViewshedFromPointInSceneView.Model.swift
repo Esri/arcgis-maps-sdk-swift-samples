@@ -145,7 +145,7 @@ extension ShowViewshedFromPointInSceneView {
                 heading: 20,
                 pitch: 70,
                 roll: 0
-            )
+            )!
             scene.initialViewpoint = Viewpoint(targetExtent: camera.location, camera: camera)
             
             // Creates a surface.
