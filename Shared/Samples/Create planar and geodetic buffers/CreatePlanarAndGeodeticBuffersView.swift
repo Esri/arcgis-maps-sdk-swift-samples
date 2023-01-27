@@ -60,7 +60,7 @@ struct CreatePlanarAndGeodeticBuffersView: View {
                 .toggleStyle(.button)
                 Spacer()
                 Button("Clear All") {
-                    model.clearGraphics()
+                    model.removeAllBufferGraphics()
                 }
                 Spacer()
             }
@@ -159,7 +159,7 @@ private extension CreatePlanarAndGeodeticBuffersView {
         }
         
         /// Removes all graphics from all graphics overlays.
-        func clearGraphics() {
+        func removeAllBufferGraphics() {
             graphicsOverlays.forEach { $0.removeAllGraphics() }
         }
     }
