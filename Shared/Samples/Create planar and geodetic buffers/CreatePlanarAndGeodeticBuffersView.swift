@@ -123,6 +123,9 @@ private extension CreatePlanarAndGeodeticBuffersView {
         }
         
         /// Adds a buffer at a given point.
+        /// - Parameters:
+        ///   - point: The center of the new buffer.
+        ///   - bufferDistance: The radius of the new buffer.
         func addBuffer(at point: Point, bufferDistance: Measurement<UnitLength>) {
             // Converts the buffer distance to meters.
             let bufferRadiusInMeters = bufferDistance.converted(to: .meters).value
