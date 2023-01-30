@@ -80,7 +80,7 @@ private extension ShowDeviceLocationView {
         /// A Boolean value indicating whether to show the device location.
         @Published var isShowingLocation: Bool {
             didSet {
-                locationDisplay.showLocation = isShowingLocation
+                locationDisplay.showsLocation = isShowingLocation
             }
         }
         
