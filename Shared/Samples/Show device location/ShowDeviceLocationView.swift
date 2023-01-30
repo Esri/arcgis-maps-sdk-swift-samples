@@ -100,7 +100,7 @@ private extension ShowDeviceLocationView {
         init() {
             let locationDisplay = LocationDisplay(dataSource: SystemLocationDataSource())
             self.locationDisplay = locationDisplay
-            self.isShowingLocation = locationDisplay.showLocation
+            self.isShowingLocation = locationDisplay.showsLocation
             self.autoPanMode = locationDisplay.autoPanMode
         }
         
