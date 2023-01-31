@@ -211,9 +211,10 @@ private extension DownloadVectorTilesToLocalCacheView {
             guard let vectorTiledLayer = map.basemap?.baseLayers.first as? ArcGISVectorTiledLayer,
                   let url = vectorTiledLayer.url else { return }
             // Creates the export vector tiles task from the base layers' URL.
-            exportVectorTilesTask = ExportVectorTilesTask(url: url)
+            let exportVectorTilesTask = ExportVectorTilesTask(url: url)
             // Loads the export vector tiles task.
             try await exportVectorTilesTask.load()
+            self.exportVectorTilesTask = exportVectorTilesTask
         }
         
         /// Downloads the vector tiles within the area of interest.
