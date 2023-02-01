@@ -71,8 +71,8 @@ struct FindRouteView: View {
                     .disabled(model.directions.isEmpty)
                     .popover(isPresented: $isShowingDirections) {
                         NavigationView {
-                            List(model.directions, id: \.directionText) { directionManeuver in
-                                Text(directionManeuver.directionText)
+                            List(model.directions, id: \.text) { directionManeuver in
+                                Text(directionManeuver.text)
                             }
                             .navigationTitle("Directions")
                             .navigationBarTitleDisplayMode(.inline)
