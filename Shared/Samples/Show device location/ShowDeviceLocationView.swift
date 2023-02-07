@@ -35,6 +35,9 @@ struct ShowDeviceLocationView: View {
         MapView(map: model.map)
             .locationDisplay(model.locationDisplay)
             .task {
+                guard model.locationDisplay.dataSource.status != .started else {
+                    return
+                }
                 do {
                     try await model.startLocationDataSource()
                     settingsButtonIsDisabled = false

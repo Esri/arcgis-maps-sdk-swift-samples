@@ -43,6 +43,7 @@ struct AddRasterFromFileView: View {
             .onViewpointChanged(kind: .centerAndScale) { viewpoint = $0 }
             .alert(isPresented: $isShowingAlert, presentingError: error)
             .task {
+                guard model.map.operationalLayers.isEmpty else { return }
                 do {
                     // Gets the Shasta.tif file URL.
                     let shastaURL = Bundle.main.url(forResource: "Shasta", withExtension: "tif", subdirectory: "raster-file/raster-file")!

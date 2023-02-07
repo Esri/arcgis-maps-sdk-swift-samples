@@ -91,9 +91,7 @@ private extension ShowResultOfSpatialOperationsView {
         }()
         
         /// A graphic representing the result of the spatial operation.
-        var resultGraphic: Graphic {
-            return graphicsOverlay.graphics.last!
-        }
+        var resultGraphic: Graphic { graphicsOverlay.graphics.last! }
         
         /// Updates the result graphic based on the spatial operation.
         func performOperation(_ spatialOperation: SpatialOperation) {

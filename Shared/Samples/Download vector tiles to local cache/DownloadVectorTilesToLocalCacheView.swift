@@ -205,6 +205,7 @@ private extension DownloadVectorTilesToLocalCacheView {
         
         /// Initializes the vector tiles task.
         func initializeVectorTilesTask() async throws {
+            guard exportVectorTilesTask == nil else { return }
             // Waits for the map to load.
             try await map.load()
             // Gets the map's base layers.
