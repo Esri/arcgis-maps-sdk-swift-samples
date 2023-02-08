@@ -16,6 +16,8 @@ import ArcGIS
 import SwiftUI
 
 extension ShowViewshedFromPointInSceneView {
+    /// The model used to store the geo model and other expensive objects
+    /// used in this view.
     class Model: ObservableObject {
         /// The location viewshed used in the sample.
         let viewshed: LocationViewshed
@@ -143,7 +145,7 @@ extension ShowViewshedFromPointInSceneView {
                 heading: 20,
                 pitch: 70,
                 roll: 0
-            )
+            )!
             scene.initialViewpoint = Viewpoint(targetExtent: camera.location, camera: camera)
             
             // Creates a surface.

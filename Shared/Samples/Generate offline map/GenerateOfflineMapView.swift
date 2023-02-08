@@ -109,7 +109,8 @@ struct GenerateOfflineMapView: View {
 }
 
 private extension GenerateOfflineMapView {
-    /// The view model for this sample.
+    /// The model used to store the geo model and other expensive objects
+    /// used in this view.
     @MainActor
     class Model: ObservableObject {
         /// The offline map that is generated.

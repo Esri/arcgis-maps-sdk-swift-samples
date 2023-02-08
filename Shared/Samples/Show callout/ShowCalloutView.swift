@@ -16,14 +16,21 @@ import SwiftUI
 import ArcGIS
 
 struct ShowCalloutView: View {
-    /// A map with a topographic basemap style.
-    @StateObject private var map = Map(basemapStyle: .arcGISTopographic)
+    /// The model used to store the geo model and other expensive objects
+    /// used in this view.
+    private class Model: ObservableObject {
+        /// A map with a topographic basemap style.
+        let map = Map(basemapStyle: .arcGISTopographic)
+    }
+    
+    /// The view model for the sample.
+    @StateObject private var model = Model()
     
     /// A location callout placement.
     @State private var calloutPlacement: LocationCalloutPlacement?
     
     var body: some View {
-        MapView(map: map)
+        MapView(map: model.map)
             .onSingleTapGesture { _, mapPoint in
                 if calloutPlacement == nil {
                     // Projects the point to the WGS 84 spatial reference.
@@ -40,8 +47,8 @@ struct ShowCalloutView: View {
                     Text("Location")
                         .font(.headline)
                     Text(
-                        CoordinateFormatter.toLatitudeLongitude(
-                            point: callout.location,
+                        CoordinateFormatter.latitudeLongitudeString(
+                            from: callout.location,
                             format: .decimalDegrees,
                             decimalPlaces: 2
                         )
