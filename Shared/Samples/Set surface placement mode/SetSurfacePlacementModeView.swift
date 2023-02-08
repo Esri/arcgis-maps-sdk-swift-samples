@@ -93,7 +93,7 @@ private extension SetSurfacePlacementModeView {
             // Creates the scene with an initial viewpoint.
             let scene = Scene(basemapStyle: .arcGISImagery)
             let point = Point(x: -4.4595, y: 48.3889, z: 80, spatialReference: .wgs84)
-            let camera = Camera(locationPoint: point, heading: 330, pitch: 97, roll: 0)
+            let camera = Camera(location: point, heading: 330, pitch: 97, roll: 0)
             scene.initialViewpoint = Viewpoint(targetExtent: point, camera: camera)
             
             // Creates and adds an elevation source to a surface and sets it

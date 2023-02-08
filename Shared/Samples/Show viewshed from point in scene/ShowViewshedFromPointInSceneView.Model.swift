@@ -140,7 +140,7 @@ extension ShowViewshedFromPointInSceneView {
             
             // Sets the initial viewpoint of the scene.
             let camera = Camera(
-                lookAtPoint: Point(x: -4.50, y: 48.4, z: 100.0, spatialReference: .wgs84),
+                lookingAt: Point(x: -4.50, y: 48.4, z: 100.0, spatialReference: .wgs84),
                 distance: 200,
                 heading: 20,
                 pitch: 70,
