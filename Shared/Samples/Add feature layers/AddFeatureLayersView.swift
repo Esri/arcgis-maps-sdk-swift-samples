@@ -56,17 +56,17 @@ struct AddFeatureLayersView: View {
             .onAppear {
                 // Updates the URL session challenge handler to use the
                 // specified credentials and tokens for any challenges.
-                ArcGISEnvironment.authenticationManager.authenticationChallengeHandler = ChallengeHandler()
+                ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = ChallengeHandler()
             }
             .onDisappear {
                 // Resets the URL session challenge handler to use default handling.
-                ArcGISEnvironment.authenticationManager.authenticationChallengeHandler = nil
+                ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = nil
             }
     }
 }
 
 /// The authentication model used to handle challenges and credentials.
-private struct ChallengeHandler: AuthenticationChallengeHandler {
+private struct ChallengeHandler: ArcGISAuthenticationChallengeHandler {
     func handleArcGISAuthenticationChallenge(
         _ challenge: ArcGISAuthenticationChallenge
     ) async throws -> ArcGISAuthenticationChallenge.Disposition {

@@ -32,7 +32,7 @@ private extension AddSceneLayerFromServiceView {
             // Creates a scene and sets an initial viewpoint.
             let scene = Scene(basemapStyle: .arcGISTopographic)
             let point = Point(x: -4.4978, y: 48.3828, z: 62.0133, spatialReference: .wgs84)
-            let camera = Camera(locationPoint: point, heading: 41.65, pitch: 71.2, roll: 0)
+            let camera = Camera(location: point, heading: 41.65, pitch: 71.2, roll: 0)
             scene.initialViewpoint = Viewpoint(targetExtent: point, camera: camera)
             
             // Creates a surface and adds an elevation source.
