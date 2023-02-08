@@ -44,7 +44,6 @@ struct SetBasemapView: View {
                 if isShowingBasemapGallery {
                     BasemapGallery(geoModel: model.map)
                         .style(.automatic())
-                        .esriBorder()
                 }
             }
             .toolbar {
