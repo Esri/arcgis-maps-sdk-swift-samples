@@ -61,7 +61,7 @@ struct ShowResultOfSpatialRelationshipsView: View {
                     identifyPoint = screenPoint
                     self.mapPoint = mapPoint
                 }
-                .callout(placement: $calloutPlacement.animation(.default.speed(4))) { _ in
+                .callout(placement: $calloutPlacement.animation(.default.speed(2))) { _ in
                     VStack(alignment: .leading) {
                         ForEach(relationships, id: \.relationshipWithLabel) { relationship in
                             Text(relationship.relationshipWithLabel)

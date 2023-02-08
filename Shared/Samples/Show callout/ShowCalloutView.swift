@@ -42,7 +42,7 @@ struct ShowCalloutView: View {
                     calloutPlacement = nil
                 }
             }
-            .callout(placement: $calloutPlacement.animation(.default.speed(4))) { callout in
+            .callout(placement: $calloutPlacement.animation(.default.speed(2))) { callout in
                 VStack(alignment: .leading) {
                     Text("Location")
                         .font(.headline)
