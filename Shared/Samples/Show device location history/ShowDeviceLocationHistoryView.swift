@@ -102,7 +102,7 @@ private extension ShowDeviceLocationHistoryView {
         private let trackBuilder = PolylineBuilder(spatialReference: .webMercator)
         
         /// A multipoint builder to make the point graphics.
-        private let pointBuilder = MultipointBuilder(spatialReference: .webMercator)
+        private let multipointBuilder = MultipointBuilder(spatialReference: .webMercator)
         
         /// A task to get location updates from the asynchronous stream.
         private var locationProcessingTask: Task<(), Never>?
@@ -147,8 +147,8 @@ private extension ShowDeviceLocationHistoryView {
         /// - Parameter lastPosition: The last location point from the
         /// location data source.
         private func processLocationUpdate(lastPosition: Point) {
-            pointBuilder.points.append(lastPosition)
-            locationGraphic.geometry = pointBuilder.toGeometry()
+            multipointBuilder.points.append(lastPosition)
+            locationGraphic.geometry = multipointBuilder.toGeometry()
             trackBuilder.add(lastPosition)
             trackGraphic.geometry = trackBuilder.toGeometry()
         }
