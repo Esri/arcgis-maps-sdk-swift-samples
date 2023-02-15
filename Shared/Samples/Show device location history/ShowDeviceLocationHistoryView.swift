@@ -31,7 +31,7 @@ struct ShowDeviceLocationHistoryView: View {
     @StateObject private var model = Model()
     
     var body: some View {
-        MapView(map: model.map, graphicsOverlays: [model.trackOverlay, model.locationsOverlay])
+        MapView(map: model.map, graphicsOverlays: model.graphicsOverlays)
             .locationDisplay(model.locationDisplay)
             .task {
                 do {
@@ -81,11 +81,16 @@ private extension ShowDeviceLocationHistoryView {
         /// A location display using a simulated location data source.
         let locationDisplay: LocationDisplay
         
+        /// The graphics overlays used in this sample.
+        var graphicsOverlays: [GraphicsOverlay] {
+            [trackOverlay, locationsOverlay]
+        }
+
         /// A graphics overlay for location history polyline.
-        let trackOverlay: GraphicsOverlay
-        
+        private let trackOverlay: GraphicsOverlay
+
         /// A graphics overlay for location history points.
-        let locationsOverlay: GraphicsOverlay
+        private let locationsOverlay: GraphicsOverlay
         
         /// The markers for traveled location points.
         private let locationGraphic = Graphic()
