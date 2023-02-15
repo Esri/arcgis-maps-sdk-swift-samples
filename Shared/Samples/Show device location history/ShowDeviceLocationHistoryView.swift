@@ -110,7 +110,7 @@ private extension ShowDeviceLocationHistoryView {
             trackOverlay.renderer = SimpleRenderer(
                 symbol: SimpleLineSymbol(
                     style: .solid,
-                    color: UIColor(Color.accentColor.opacity(0.5)),
+                    color: .tintColor.withAlphaComponent(0.5),
                     width: 3
                 )
             )
