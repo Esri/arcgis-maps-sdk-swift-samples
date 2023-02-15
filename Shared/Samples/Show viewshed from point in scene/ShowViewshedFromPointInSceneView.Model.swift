@@ -57,9 +57,9 @@ extension ShowViewshedFromPointInSceneView {
         }
         
         /// A Boolean value indicating whether the frustum outline is visible or not.
-        @Published var isFrustumOutlineVisible: Bool {
+        @Published var frustumOutlineIsVisible: Bool {
             didSet {
-                viewshed.isFrustumOutlineVisible = isFrustumOutlineVisible
+                viewshed.frustumOutlineIsVisible = frustumOutlineIsVisible
             }
         }
         
@@ -124,7 +124,7 @@ extension ShowViewshedFromPointInSceneView {
             
             // Initialize published properties from viewshed's properties.
             locationZ = viewshed.location.z!
-            isFrustumOutlineVisible = viewshed.isFrustumOutlineVisible
+            frustumOutlineIsVisible = viewshed.frustumOutlineIsVisible
             heading = viewshed.heading
             pitch = viewshed.pitch
             horizontalAngle = viewshed.horizontalAngle
