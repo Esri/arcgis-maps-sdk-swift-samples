@@ -27,6 +27,9 @@ struct ShowDeviceLocationHistoryView: View {
     /// A Boolean value indicating whether the tracking button is disabled.
     @State private var trackingButtonIsDisabled = true
     
+    /// A Boolean value indicating whether to track the simulated location.
+    @State private var isTracking = false
+    
     /// The view model for this sample.
     @StateObject private var model = Model()
     
@@ -42,17 +45,19 @@ struct ShowDeviceLocationHistoryView: View {
                     self.error = error
                 }
             }
+            .task(id: isTracking) {
+                guard isTracking else { return }
+                await model.processingLocationChanges()
+            }
             .onDisappear {
-                model.stopProcessingLocationChanges()
-                model.isTracking = false
                 model.stopLocationDataSource()
+                isTracking = false
             }
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
-                    Button(model.isTracking ? "Stop Tracking" : "Start Tracking") {
-                        model.isTracking.toggle()
-                    }
-                    .disabled(trackingButtonIsDisabled)
+                    Toggle(isTracking ? "Stop Tracking" : "Start Tracking", isOn: $isTracking)
+                        .toggleStyle(.button)
+                        .disabled(trackingButtonIsDisabled)
                 }
             }
             .alert(isPresented: $isShowingAlert, presentingError: error)
@@ -62,19 +67,7 @@ struct ShowDeviceLocationHistoryView: View {
 private extension ShowDeviceLocationHistoryView {
     /// The model used to store the geo model and other expensive objects
     /// used in this view.
-    @MainActor
     class Model: ObservableObject {
-        /// A Boolean value indicating whether to track the device location.
-        @Published var isTracking = false {
-            didSet {
-                if isTracking {
-                    startProcessingLocationChanges()
-                } else {
-                    stopProcessingLocationChanges()
-                }
-            }
-        }
-        
         /// A map with a light gray basemap style.
         let map = Map(basemapStyle: .arcGISLightGrayBase)
         
@@ -82,9 +75,7 @@ private extension ShowDeviceLocationHistoryView {
         let locationDisplay: LocationDisplay
         
         /// The graphics overlays used in this sample.
-        var graphicsOverlays: [GraphicsOverlay] {
-            [trackOverlay, locationsOverlay]
-        }
+        var graphicsOverlays: [GraphicsOverlay] { [trackOverlay, locationsOverlay] }
 
         /// A graphics overlay for location history polyline.
         private let trackOverlay: GraphicsOverlay
@@ -155,18 +146,10 @@ private extension ShowDeviceLocationHistoryView {
         
         /// Starts to process location updates produced by the async stream
         /// using the `for-await-in` syntax.
-        func startProcessingLocationChanges() {
-            locationProcessingTask = Task { [weak self] in
-                for await newLocation in locationDisplay.dataSource.locations {
-                    self?.processLocationUpdate(lastPosition: newLocation.position)
-                }
+        func processingLocationChanges() async {
+            for await location in locationDisplay.dataSource.locations {
+                processLocationUpdate(lastPosition: location.position)
             }
-        }
-        
-        /// Stops processing location updates.
-        func stopProcessingLocationChanges() {
-            locationProcessingTask?.cancel()
-            locationProcessingTask = nil
         }
         
         /// Makes the simulated location data source for the sample.
