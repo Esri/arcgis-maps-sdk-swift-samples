@@ -75,13 +75,7 @@ private extension ShowDeviceLocationHistoryView {
         let locationDisplay: LocationDisplay
         
         /// The graphics overlays used in this sample.
-        var graphicsOverlays: [GraphicsOverlay] { [trackOverlay, locationsOverlay] }
-
-        /// A graphics overlay for location history polyline.
-        private let trackOverlay: GraphicsOverlay
-
-        /// A graphics overlay for location history points.
-        private let locationsOverlay: GraphicsOverlay
+        let graphicsOverlays: [GraphicsOverlay]
         
         /// The markers for traveled location points.
         private let locationGraphic = Graphic()
@@ -99,7 +93,7 @@ private extension ShowDeviceLocationHistoryView {
             locationDisplay = LocationDisplay(dataSource: Self.makeSimulatedLocationDataSource())
             locationDisplay.autoPanMode = .recenter
             
-            trackOverlay = GraphicsOverlay(graphics: [trackGraphic])
+            let trackOverlay = GraphicsOverlay(graphics: [trackGraphic])
             trackOverlay.renderer = SimpleRenderer(
                 symbol: SimpleLineSymbol(
                     style: .solid,
@@ -108,7 +102,7 @@ private extension ShowDeviceLocationHistoryView {
                 )
             )
             
-            locationsOverlay = GraphicsOverlay(graphics: [locationGraphic])
+            let locationsOverlay = GraphicsOverlay(graphics: [locationGraphic])
             locationsOverlay.renderer = SimpleRenderer(
                 symbol: SimpleMarkerSymbol(
                     style: .circle,
@@ -116,6 +110,8 @@ private extension ShowDeviceLocationHistoryView {
                     size: 5
                 )
             )
+            
+            graphicsOverlays = [trackOverlay, locationsOverlay]
         }
         
         /// Starts the location data source.
