@@ -95,9 +95,6 @@ private extension ShowDeviceLocationHistoryView {
         /// A multipoint builder to make the point graphics.
         private let multipointBuilder = MultipointBuilder(spatialReference: .webMercator)
         
-        /// A task to get location updates from the asynchronous stream.
-        private var locationProcessingTask: Task<(), Never>?
-        
         init() {
             locationDisplay = LocationDisplay(dataSource: Self.makeSimulatedLocationDataSource())
             locationDisplay.autoPanMode = .recenter
