@@ -17,10 +17,13 @@ import SwiftUI
 
 struct ProjectGeometryView: View {
     /// A location callout placement.
-    @State private var calloutPlacement: LocationCalloutPlacement?
+    @State private var calloutPlacement: CalloutPlacement?
     
     /// The point where the map was tapped in its original spatial reference (Web Mercator).
-    @State private var originalPoint: Point?
+    @State private var originalPoint: Point!
+    
+    /// The tap location.
+    @State private var tapLocation: Point!
     
     /// The view model for the sample.
     @StateObject private var model = Model()
@@ -28,6 +31,7 @@ struct ProjectGeometryView: View {
     var body: some View {
         MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
             .onSingleTapGesture { _, mapPoint in
+                tapLocation = mapPoint
                 if calloutPlacement == nil {
                     // Sets the original point to where the map was tapped.
                     originalPoint = GeometryEngine.normalizeCentralMeridian(of: mapPoint) as? Point
@@ -39,20 +43,20 @@ struct ProjectGeometryView: View {
                     model.pointGraphic.geometry = projectedPoint
                     
                     // Updates the location callout placement.
-                    calloutPlacement = LocationCalloutPlacement(location: projectedPoint)
+                    calloutPlacement = CalloutPlacement.location(projectedPoint)
                 } else {
                     // Hides the callout and point graphic.
                     calloutPlacement = nil
                     model.pointGraphic.geometry = nil
                 }
             }
-            .callout(placement: $calloutPlacement.animation(.default.speed(2))) { callout in
+            .callout(placement: $calloutPlacement.animation(.default.speed(2))) { _ in
                 VStack(alignment: .leading) {
                     Group {
                         Text("Coordinates")
                             .fontWeight(.medium)
-                        Text("Original: \(originalPoint!.xyCoordinates)")
-                        Text("Projected: \(callout.location.xyCoordinates)")
+                        Text("Original: \(originalPoint.xyCoordinates)")
+                        Text("Projected: \(tapLocation.xyCoordinates)")
                     }
                     .font(.callout)
                 }
