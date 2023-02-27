@@ -46,7 +46,7 @@ struct SearchWithGeocodeView: View {
     @State private var identifyTapLocation: Point?
     
     /// The placement for a graphic callout.
-    @State private var calloutPlacement: GraphicCalloutPlacement?
+    @State private var calloutPlacement: CalloutPlacement?
     
     /// Provides search behavior customization.
     @ObservedObject private var locatorDataSource = LocatorSearchSource(
@@ -81,7 +81,7 @@ struct SearchWithGeocodeView: View {
             .callout(placement: $calloutPlacement.animation()) { placement in
                 // Show the address of user tapped location graphic.
                 // To get the fully geocoded address, use "Place_addr".
-                Text(placement.graphic.attributes["Match_addr"] as? String ?? "Unknown Address")
+                Text(placement.geoElement?.attributes["Match_addr"] as? String ?? "Unknown Address")
                     .padding()
             }
             .task(id: identifyScreenPoint) {
@@ -97,7 +97,7 @@ struct SearchWithGeocodeView: View {
                 }
                 // Creates a callout placement at the user tapped location.
                 calloutPlacement = identifyResult.graphics.first.flatMap { graphic in
-                    GraphicCalloutPlacement(graphic: graphic, tapLocation: identifyTapLocation)
+                    CalloutPlacement.geoElement(graphic, tapLocation: identifyTapLocation)
                 }
                 identifyScreenPoint = nil
                 identifyTapLocation = nil

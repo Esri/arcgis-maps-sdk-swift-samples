@@ -31,7 +31,7 @@ struct ShowResultOfSpatialRelationshipsView: View {
     @State private var mapPoint: Point?
     
     /// A location callout placement.
-    @State private var calloutPlacement: LocationCalloutPlacement?
+    @State private var calloutPlacement: CalloutPlacement?
     
     /// The relationships for the selected graphic.
     @State private var relationships: [Relationship] = []
@@ -51,7 +51,7 @@ struct ShowResultOfSpatialRelationshipsView: View {
             return
         }
         // Updates the location callout placement.
-        calloutPlacement = mapPoint.map { LocationCalloutPlacement(location: $0) }
+        calloutPlacement = mapPoint.map { CalloutPlacement.location($0) }
     }
     
     var body: some View {
