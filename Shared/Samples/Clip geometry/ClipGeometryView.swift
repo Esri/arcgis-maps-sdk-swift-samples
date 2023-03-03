@@ -47,7 +47,7 @@ private extension ClipGeometryView {
         let map: Map = {
             let map = Map(basemapStyle: .arcGISTopographic)
             // Sets the initial viewpoint to Colorado and adds additional padding.
-            map.initialViewpoint = Viewpoint(targetExtent: .coloradoEnvelope.expanded(by: 2))
+            map.initialViewpoint = Viewpoint(boundingGeometry: .coloradoEnvelope.expanded(by: 2))
             return map
         }()
         
@@ -170,7 +170,7 @@ private extension Envelope {
     /// Expands the envelope by a given factor.
     func expanded(by factor: Double) -> Envelope {
         let builder = EnvelopeBuilder(envelope: self)
-        builder.expand(factor: factor)
+        builder.expand(by: factor)
         return builder.toGeometry()
     }
 }

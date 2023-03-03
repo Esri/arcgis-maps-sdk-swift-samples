@@ -170,27 +170,27 @@ private extension StyleGraphicsWithRendererView {
                 controlPoint2: leftControlPoint2,
                 endPoint: leftCurveEnd,
                 spatialReference: spatialReference
-            )!
+            )
             
             // Creates the top left arc segment.
             let leftArcCenter = Point(x: minX + sideLength * 0.25, y: minY + sideLength * 0.75, spatialReference: spatialReference)
-            let leftArc = EllipticArcSegment.circularEllipticArcEllipticArcSegment(
+            let leftArc = EllipticArcSegment.makeCircular(
                 centerPoint: leftArcCenter,
                 radius: arcRadius,
                 startAngle: .pi,
                 centralAngle: -.pi,
                 spatialReference: spatialReference
-            )!
+            )
             
             // Creates the top right arc segment.
             let rightArcCenter = Point(x: minX + sideLength * 0.75, y: minY + sideLength * 0.75, spatialReference: spatialReference)
-            let rightArc = EllipticArcSegment.circularEllipticArcEllipticArcSegment(
+            let rightArc = EllipticArcSegment.makeCircular(
                 centerPoint: rightArcCenter,
                 radius: arcRadius,
                 startAngle: .pi,
                 centralAngle: -.pi,
                 spatialReference: spatialReference
-            )!
+            )
             
             // Creates the bottom right curve segment.
             let rightCurveStart = Point(x: minX + sideLength, y: minY + sideLength * 0.75, spatialReference: spatialReference)
@@ -203,7 +203,7 @@ private extension StyleGraphicsWithRendererView {
                 controlPoint2: rightControlPoint2,
                 endPoint: rightCurveEnd,
                 spatialReference: spatialReference
-            )!
+            )
             
             // Creates and returns the heart polygon.
             return Polygon(parts: [MutablePart(segments: [leftCurve, leftArc, rightArc, rightCurve], spatialReference: spatialReference)])
