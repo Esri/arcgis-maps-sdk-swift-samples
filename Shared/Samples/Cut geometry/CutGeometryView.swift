@@ -46,7 +46,7 @@ private extension CutGeometryView {
         /// A map with a topographic basemap style and an initial viewpoint of Lake Superior.
         let map: Map = {
             let map = Map(basemapStyle: .arcGISTopographic)
-            map.initialViewpoint = Viewpoint(targetExtent: Geometry.lakeSuperiorPolygon)
+            map.initialViewpoint = Viewpoint(boundingGeometry: Geometry.lakeSuperiorPolygon)
             return map
         }()
         

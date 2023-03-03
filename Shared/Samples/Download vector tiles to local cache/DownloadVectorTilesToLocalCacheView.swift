@@ -260,7 +260,7 @@ private extension DownloadVectorTilesToLocalCacheView {
                     downloadedVectorTilesMap = Map(basemap: Basemap(baseLayer: vectorTiledLayerResults))
                     
                     // Sets the initial viewpoint of the result map.
-                    downloadedVectorTilesMap.initialViewpoint = Viewpoint(targetExtent: extent.expanded(by: 0.9))
+                    downloadedVectorTilesMap.initialViewpoint = Viewpoint(boundingGeometry: extent.expanded(by: 0.9))
                 }
             }
         }
@@ -308,7 +308,7 @@ private extension Envelope {
     /// Expands the envelope by a given factor.
     func expanded(by factor: Double) -> Envelope {
         let builder = EnvelopeBuilder(envelope: self)
-        builder.expand(factor: factor)
+        builder.expand(by: factor)
         return builder.toGeometry()
     }
 }
