@@ -17,6 +17,22 @@ Tap on one or more features while "Start" or "Barrier" is selected. When a junct
 
 ## Relevant API
 
+* ServiceGeodatabase
+* UtilityAssetType
+* UtilityDomainNetwork
+* UtilityElement
+* UtilityElementTraceResult
+* UtilityNetwork
+* UtilityNetworkDefinition
+* UtilityNetworkSource
+* UtilityTerminal
+* UtilityTier
+* UtilityTraceConfiguration
+* UtilityTraceParameters
+* UtilityTraceResult
+* UtilityTraceType
+* UtilityTraversability
+* enum GeometryEngine.polyline(_:fractionalLengthClosestTo:tolerance:)
 
 ## Additional information
 
