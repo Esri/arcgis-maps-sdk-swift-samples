@@ -17,8 +17,8 @@ When you run the sample, the app will load a web map which contains premium cont
 
 1. Create an `OAuthUserConfiguration` object specifying the portal URL, client ID, and redirect URL.
 2. Create a toolkit component `Authenticator` object with OAuth user configuration.
-2. Set authenticator object as ArcGIS and Network challenge handlers on authentication manager to handle authentication challenges.
-3. Load a map with premium content requiring authentication.
+3. Set authenticator object as ArcGIS and Network challenge handlers on authentication manager to handle authentication challenges.
+4. Load a map with premium content requiring authentication.
 
 ## Relevant API
 
