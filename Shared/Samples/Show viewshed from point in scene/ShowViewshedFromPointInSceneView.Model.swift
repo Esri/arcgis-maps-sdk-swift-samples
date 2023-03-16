@@ -117,7 +117,7 @@ extension ShowViewshedFromPointInSceneView {
                 verticalAngle: 90,
                 minDistance: 50,
                 maxDistance: 1000
-            )!
+            )
             
             analysisOverlay = AnalysisOverlay(analyses: [viewshed])
             isAnalysisOverlayVisible = analysisOverlay.isVisible
