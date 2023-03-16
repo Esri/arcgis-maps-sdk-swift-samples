@@ -20,7 +20,7 @@
         "AuthenticationManager",
         "Authenticator",
         "OAuthUserConfiguration",
-	    "Portal",
+        "Portal",
         "PortalItem"
     ],
     "snippets": [
