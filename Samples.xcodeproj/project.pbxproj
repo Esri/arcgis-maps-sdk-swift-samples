@@ -58,6 +58,7 @@
 		00E5401E27F3CCA200CF66D5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5400D27F3CCA100CF66D5 /* ContentView.swift */; };
 		00E5402027F3CCA200CF66D5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00E5400E27F3CCA200CF66D5 /* Assets.xcassets */; };
 		7533012129C3A3CF00EF5C26 /* TraceUtilityNetworkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7533012029C3A3CF00EF5C26 /* TraceUtilityNetworkView.swift */; };
+		7533012229C3C02B00EF5C26 /* TraceUtilityNetworkView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 7533012029C3A3CF00EF5C26 /* TraceUtilityNetworkView.swift */; };
 		E000E7602869E33D005D87C5 /* ClipGeometryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E000E75F2869E33D005D87C5 /* ClipGeometryView.swift */; };
 		E000E763286A0B18005D87C5 /* CutGeometryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E000E762286A0B18005D87C5 /* CutGeometryView.swift */; };
 		E004A6C128414332002A1FE6 /* SetViewpointRotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6BD28414332002A1FE6 /* SetViewpointRotationView.swift */; };
@@ -176,6 +177,7 @@
 				0039A4F92885C50300592C86 /* ShowResultOfSpatialOperationsView.swift in Copy Source Code Files */,
 				0039A4FA2885C50300592C86 /* StyleGraphicsWithRendererView.swift in Copy Source Code Files */,
 				0039A4FB2885C50300592C86 /* StyleGraphicsWithSymbolsView.swift in Copy Source Code Files */,
+				7533012229C3C02B00EF5C26 /* TraceUtilityNetworkView.swift in Copy Source Code Files */,
 			);
 			name = "Copy Source Code Files";
 			runOnlyForDeploymentPostprocessing = 0;
