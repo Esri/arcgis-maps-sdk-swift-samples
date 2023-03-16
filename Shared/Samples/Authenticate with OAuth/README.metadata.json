@@ -13,7 +13,11 @@
         "credential",
         "portal",
         "security",
-        "portalitem"
+        "AuthenticationManager",
+        "Authenticator",
+        "OAuthUserConfiguration",
+        "Portal",
+        "PortalItem"
     ],
     "redirect_from": [],
     "relevant_apis": [
