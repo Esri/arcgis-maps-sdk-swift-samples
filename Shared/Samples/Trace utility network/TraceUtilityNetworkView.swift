@@ -349,7 +349,7 @@ private extension PortalItem {
 
 private extension URL {
     static var featureService: URL {
-        .baseURL.appendingPathComponent("server/rest/services/UtilityNetwork/NapervilleElectric/FeatureServer")
+        baseURL.appendingPathComponent("server/rest/services/UtilityNetwork/NapervilleElectric/FeatureServer")
     }
     
     static var baseURL: URL {
