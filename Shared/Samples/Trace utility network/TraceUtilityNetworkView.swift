@@ -53,6 +53,9 @@ struct TraceUtilityNetworkView: View {
         startingPoints.removeAll()
         tracingActivity = .none
         traceType = .connected
+        map.operationalLayers.forEach { layer in
+            (layer as? FeatureLayer)?.clearSelection()
+        }
     }
     
     private var hint: String? {
@@ -112,7 +115,7 @@ struct TraceUtilityNetworkView: View {
                             try? await network?.load()
                             try? await geodatabase.load()
                             
-                            URL.featureLayers.forEach { url in
+                            featureLayers.forEach { url in
                                 let featureTable = ServiceFeatureTable(url: url)
                                 let layer = FeatureLayer(featureTable: featureTable)
                                 print("adding feature layer")
@@ -181,6 +184,7 @@ struct TraceUtilityNetworkView: View {
                                     layer.selectFeatures(features)
                                 }
                             }
+                            tracingActivity = .viewingResults
                         } catch {
                             print(error)
                         }
@@ -192,6 +196,7 @@ struct TraceUtilityNetworkView: View {
                 Button("Reset") {
                     reset()
                 }
+                .padding()
             }
             if tracingActivity == .settingPoints || tracingActivity == .settingType {
                 Button("Cancel", role: .destructive) {
@@ -207,7 +212,12 @@ private extension TraceUtilityNetworkView {
         network?.definition?.domainNetwork(named: "ElectricDistribution")
     }
     
-
+    var featureLayers: [URL] {
+        return [
+            URL.featureService.appendingPathComponent("0"),
+            URL.featureService.appendingPathComponent("3")
+        ]
+    }
     
     var network: UtilityNetwork? {
         map.utilityNetworks.first
@@ -258,10 +268,6 @@ private extension PortalItem {
 private extension URL {
     static var featureService: URL {
         .baseURL.appendingPathComponent("server/rest/services/UtilityNetwork/NapervilleElectric/FeatureServer")
-    }
-    
-    static var featureLayers: [URL] {
-        [featureService.appendingPathComponent("0"), featureService.appendingPathComponent("3")]
     }
     
     static var baseURL: URL {
