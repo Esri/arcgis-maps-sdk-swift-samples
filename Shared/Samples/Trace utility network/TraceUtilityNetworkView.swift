@@ -26,11 +26,15 @@ struct TraceUtilityNetworkView: View {
     
     @State private var traceConfiguration: UtilityNamedTraceConfiguration!
     
+    @State private var traceConfigurations = [UtilityNamedTraceConfiguration]()
+    
     @State private var pointType: PointType = .start
     
     @State private var showingTraceManager = true
     
     @State private var detent = Detent.medium
+    
+    @State private var startingPoints = [UtilityElement]()
     
     enum PointType: String {
         case barrier
@@ -48,8 +52,6 @@ struct TraceUtilityNetworkView: View {
         tracingActivity = .none
         pointType = .start
     }
-    
-    @State private var traceConfigurations = [UtilityNamedTraceConfiguration]()
     
     private var hint: String? {
         switch tracingActivity {
@@ -70,15 +72,35 @@ struct TraceUtilityNetworkView: View {
                 if let hint {
                     Text(hint)
                 }
-                MapView(map: map)
-                    .onDisappear {
-                        ArcGISEnvironment.authenticationManager.arcGISCredentialStore.removeAll()
-                    }
-                    .task {
-                        try? await ArcGISEnvironment.authenticationManager.arcGISCredentialStore.add(.publicSample)
-                        traceConfigurations = (try? await network.queryNamedTraceConfigurations()) ?? []
-                        traceConfiguration = traceConfigurations.first
-                    }
+                MapViewReader { mapViewProxy in
+                    MapView(map: map)
+                        .onSingleTapGesture { screenPoint, _ in
+                            guard tracingActivity == .settingPoints else { return }
+                            Task {
+                                let identifyLayerResults = try await mapViewProxy.identifyLayers(
+                                    screenPoint: screenPoint,
+                                    tolerance: 10
+                                )
+                                for identifyLayerResult in identifyLayerResults {
+                                    identifyLayerResult.geoElements.forEach { geoElement in
+                                        if let feature = geoElement as? ArcGISFeature,
+                                            let element = network.makeElement(arcGISFeature: feature) {
+                                            print("Adding", element.assetGroup.name, element.assetType.name)
+                                            startingPoints.append(element)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        .onDisappear {
+                            ArcGISEnvironment.authenticationManager.arcGISCredentialStore.removeAll()
+                        }
+                        .task {
+                            try? await ArcGISEnvironment.authenticationManager.arcGISCredentialStore.add(.publicSample)
+                            traceConfigurations = (try? await network.queryNamedTraceConfigurations()) ?? []
+                            traceConfiguration = traceConfigurations.first
+                        }
+                }
                 traceManager
                     .frame(width: geometryProxy.size.width)
                     .background(.thinMaterial)
