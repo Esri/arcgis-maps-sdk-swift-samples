@@ -35,6 +35,8 @@
         "TrackDisplayProperties"
     ],
     "snippets": [
+        "AddDynamicEntityLayerView.Model.swift",
+        "AddDynamicEntityLayerView.SettingsView.swift",
         "AddDynamicEntityLayerView.swift"
     ],
     "title": "Add dynamic entity layer"
