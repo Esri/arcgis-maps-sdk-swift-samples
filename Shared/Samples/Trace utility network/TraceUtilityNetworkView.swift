@@ -16,23 +16,25 @@ import ArcGIS
 import SwiftUI
 
 struct TraceUtilityNetworkView: View {
+    @State private var barriers = [UtilityElement]()
+    
+    @State private var geodatabase = ServiceGeodatabase(url: .featureService)
+    
     @State private var map = {
         let map = Map(item: PortalItem.napervilleElectricalNetwork)
         map.basemap = Basemap(style: .arcGISStreetsNight)
         return map
     }()
     
-    @State private var geodatabase = ServiceGeodatabase(url: .featureService)
+    @State private var pointType: PointType = .start
     
-    @State private var tracingActivity: TracingActivity?
+    @State private var startingPoints = [UtilityElement]()
+    
+    @State private var traceTask: Task<(), Never>?
     
     @State private var traceType = UtilityTraceParameters.TraceType.connected
     
-    @State private var pointType: PointType = .start
-    
-    @State private var barriers = [UtilityElement]()
-    
-    @State private var startingPoints = [UtilityElement]()
+    @State private var tracingActivity: TracingActivity?
     
     /// The overlay on which trace graphics will be drawn.
     private var parametersOverlay: GraphicsOverlay = {
@@ -190,8 +192,6 @@ struct TraceUtilityNetworkView: View {
             }
         }
     }
-    
-    @State private var traceTask: Task<(), Never>?
     
     var traceManager: some View {
         HStack(spacing: 5) {
