@@ -1,6 +1,6 @@
 {
     "category": "Display information",
-    "description": "Use the Sketch Editor to edit or sketch a new point, line, or polygon geometry on a map.",
+    "description": "Use the Geometry Editor to edit or sketch points, multipoints, lines, and polygons on a map.",
     "ignore": false,
     "images": [
         "sketch-on-map-1.png",
@@ -9,26 +9,24 @@
     "keywords": [
         "draw",
         "edit",
-        "AGSGeometry",
-        "AGSGraphic",
-        "AGSGraphicsOverlay",
-        "AGSMapView",
-        "AGSSketchCreationMode",
-        "AGSSketchEditor"
+        "MapView",
+        "GeometryEditor",
+        "Geometry",
+        "GeometryBuilder",
+        "Graphic",
+        "GraphicsOverlay"
     ],
-    "redirect_from": [
-        "/ios/latest/swift/sample-code/sketch-on-the-map.htm"
-    ],
+    "redirect_from": [],
     "relevant_apis": [
-        "AGSGeometry",
-        "AGSGraphic",
-        "AGSGraphicsOverlay",
-        "AGSMapView",
-        "AGSSketchCreationMode",
-        "AGSSketchEditor"
+        "MapView",
+        "GeometryEditor",
+        "Geometry",
+        "GeometryBuilder",
+        "Graphic",
+        "GraphicsOverlay"
     ],
     "snippets": [
-        "SketchViewController.swift"
+        "SketchOnTheMapView.swift"
     ],
     "title": "Sketch on the map"
 }

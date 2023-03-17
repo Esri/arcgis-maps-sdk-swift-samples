@@ -1,6 +1,6 @@
 # Sketch on the map
 
-Use the Sketch Editor to edit or sketch a new point, line, or polygon geometry on a map.
+Use the Geometry Editor to edit or sketch a new point, line, or polygon geometry on a map.
 
 ![Image of sketch on map 1](sketch-on-map-1.png)
 ![Image of sketch on map 2](sketch-on-map-2.png)
@@ -22,12 +22,11 @@ Tap the add button to choose a geometry for the Sketch Editor. Use the toolbar t
 
 ## Relevant API
 
-* AGSGeometry
-* AGSGraphic
-* AGSGraphicsOverlay
-* AGSMapView
-* AGSSketchCreationMode
-* AGSSketchEditor
+* Geometry
+* Graphic
+* GraphicsOverlay
+* MapView
+* GeometryEditor
 
 ## Tags
 

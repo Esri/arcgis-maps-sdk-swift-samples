@@ -19,15 +19,16 @@ import SwiftUI
 struct SketchOnTheMapView: View {
     @State private var map = Map(basemapStyle: .arcGISTopographic)
     @State private var geometryEditor = GeometryEditor()
+    @State private var graphicsOverlay = GraphicsOverlay(renderingMode: .dynamic)
     
     var body: some View {
         VStack {
-            MapView(map: map)
+            MapView(map: map, graphicsOverlays: [graphicsOverlay])
                 .geometryEditor(geometryEditor)
         }
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
-                GeometryEditorMenu(geometryEditor: geometryEditor)
+                GeometryEditorMenu(geometryEditor: geometryEditor, graphicsOverlay: graphicsOverlay)
             }
         }
     }
@@ -38,8 +39,8 @@ struct GeometryEditorMenu: View {
     /// The model for the menu.
     @ObservedObject var model: Model
     
-    init(geometryEditor: GeometryEditor) {
-        model = Model(geometryEditor: geometryEditor)
+    init(geometryEditor: GeometryEditor, graphicsOverlay: GraphicsOverlay) {
+        model = Model(geometryEditor: geometryEditor, graphicsOverlay: graphicsOverlay)
     }
     
     var body: some View {
@@ -85,13 +86,19 @@ extension GeometryEditorMenu {
                 } label: {
                     Label("Clear", systemImage: "trash")
                 }
-                .disabled(model.geometry?.isEmpty ?? true)
+                .disabled(!model.canClear)
                 
                 Divider()
                 
                 Button {
-                    model.geometryEditor.stop()
-                    model.isStarted = false
+                    model.save()
+                } label: {
+                    Label("Save", systemImage: "map")
+                }
+                .disabled(!model.canSave)
+                
+                Button {
+                    model.stop()
                 } label: {
                     Label("Stop", systemImage: "stop.circle")
                 }
@@ -109,7 +116,7 @@ extension GeometryEditorMenu {
                     model.geometryEditor.start(withType: Polyline.self)
                     model.isStarted = true
                 } label: {
-                    Label("New Line", systemImage: "scribble")
+                    Label("New Line", systemImage: "pencil.line")
                 }
                 
                 Button {
@@ -141,7 +148,7 @@ extension GeometryEditorMenu {
                     model.geometryEditor.start(withType: Polygon.self)
                     model.isStarted = true
                 } label: {
-                    Label("New Freehand Area", systemImage: "scribble")
+                    Label("New Freehand Area", systemImage: "lasso")
                 }
             }
         }
@@ -154,6 +161,9 @@ extension GeometryEditorMenu {
         /// The geometry editor.
         let geometryEditor: GeometryEditor
         
+        /// The graphics overlay used to save geometries to.
+        let graphicsOverlay: GraphicsOverlay
+        
         /// A Boolean value indicating if the geometry editor can perform an undo.
         @Published private(set) var canUndo = false
         
@@ -163,21 +173,31 @@ extension GeometryEditorMenu {
         /// The currently selected element.
         @Published private(set) var selection: GeometryEditorElement?
         
+        /// A Boolean value indicating if the geometry can be saved to a graphics overlay.
+        @Published private(set) var canSave = false
+        
+        /// A Boolean value indicating if the geometry can be cleared from the geometry editor.
+        @Published private(set) var canClear = false
+        
         /// The current geometry of the geometry editor.
         @Published private(set) var geometry: Geometry? {
             didSet {
                 canUndo = geometryEditor.canUndo
                 canRedo = geometryEditor.canRedo
+                canClear = geometry.map { !$0.isEmpty } ?? false
+                canSave = true //geometry.map { GeometryBuilder.builder(from: $0).sketchIsValid } ?? false
             }
         }
         
         /// A Boolean value indicating if the geometry editor has started.
-        @Published var isStarted: Bool = false
+        @Published var isStarted = false
         
         /// Creates the geometry menu with a geometry editor.
         /// - Parameter geometryEditor: The geometry editor that the menu should interact with.
-        init(geometryEditor: GeometryEditor) {
+        /// - Parameter graphicsOverlay: The graphics overlay that is used to save geometries to.
+        init(geometryEditor: GeometryEditor, graphicsOverlay: GraphicsOverlay) {
             self.geometryEditor = geometryEditor
+            self.graphicsOverlay = graphicsOverlay
             
             Task { [weak self, geometryEditor] in
                 for await geometry in geometryEditor.$geometry {
@@ -188,6 +208,37 @@ extension GeometryEditorMenu {
                 for await selection in geometryEditor.$selectedElement {
                     self?.selection = selection
                 }
+            }
+        }
+        
+        /// Saves the current geometry to the graphics overlay and stops editing.
+        /// Precondition: `canSave`
+        func save() {
+            let geometry = geometryEditor.geometry!
+            let graphic = Graphic(geometry: geometry, symbol: symbol(for: geometry))
+            graphicsOverlay.addGraphic(graphic)
+            stop()
+        }
+        
+        /// Stops editing with the geometry editor.
+        func stop() {
+            geometryEditor.stop()
+            isStarted = false
+        }
+        
+        func symbol(for geometry: Geometry) -> Symbol {
+            switch geometry {
+            case is Point, is Multipoint:
+                return SimpleMarkerSymbol(style: .circle, color: .blue, size: 20)
+            case is Polyline:
+                return SimpleLineSymbol(color: .blue, width: 2)
+            case is Polygon:
+                return SimpleFillSymbol(
+                    color: .gray.withAlphaComponent(0.5),
+                    outline: SimpleLineSymbol(color: .blue, width: 2)
+                )
+            default:
+                fatalError("Unexpected geometry type")
             }
         }
     }
