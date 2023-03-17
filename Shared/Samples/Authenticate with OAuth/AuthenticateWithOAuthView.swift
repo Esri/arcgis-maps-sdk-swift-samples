@@ -60,12 +60,6 @@ struct AuthenticateWithOAuthView: View {
     }
 }
 
-struct AuthenticateWithOAuthView_Previews: PreviewProvider {
-    static var previews: some View {
-        AuthenticateWithOAuthView()
-    }
-}
-
 private extension OAuthUserConfiguration {
     /// The configuration of the application registered on ArcGIS Online.
     static let arcgisDotCom = OAuthUserConfiguration(
