@@ -21,7 +21,7 @@ struct AuthenticateWithOAuthView: View {
     @ObservedObject var authenticator: Authenticator
 
     init() {
-        // Create an authenticator.
+        // Creates an authenticator.
         authenticator = Authenticator(
             oAuthUserConfigurations: [.arcgisDotCom]
         )
@@ -41,7 +41,7 @@ struct AuthenticateWithOAuthView: View {
             id: PortalItem.ID(.portalItemID)!
         )
         
-        // Create map with portal item.
+        // Creates map with portal item.
         return Map(item: portalItem)
     }()
     
