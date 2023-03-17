@@ -175,8 +175,6 @@ struct TraceUtilityNetworkView: View {
                                 .filter { $0 is UtilityElementTraceResult }
                                 .map { $0 as! UtilityElementTraceResult }
                             
-                            print(map.operationalLayers.count)
-                            
                             for result in traceResults ?? [] {
                                 let groups = Dictionary(grouping: result.elements) { $0.networkSource.name }
                                 for (networkName, elements) in groups {
