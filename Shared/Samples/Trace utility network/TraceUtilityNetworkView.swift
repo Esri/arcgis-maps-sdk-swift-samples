@@ -181,7 +181,6 @@ struct TraceUtilityNetworkView: View {
                                 let groups = Dictionary(grouping: result.elements) { $0.networkSource.name }
                                 for (networkName, elements) in groups {
                                     guard let layer = self.map.operationalLayers.first(where: { ($0 as? FeatureLayer)?.featureTable?.tableName == networkName }) as? FeatureLayer else { continue }
-
                                     let features = try await network?.features(for: elements) ?? []
                                     layer.selectFeatures(features)
                                 }
