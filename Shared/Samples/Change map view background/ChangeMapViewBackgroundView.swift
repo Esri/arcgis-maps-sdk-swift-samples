@@ -41,7 +41,7 @@ struct ChangeMapViewBackgroundView: View {
                 }
             }
             .sheet(isPresented: $isShowingSettings, detents: [.medium], dragIndicatorVisibility: .visible) {
-                BackgroundGridSettingsView()
+                SettingsView()
                     .environmentObject(model)
             }
     }

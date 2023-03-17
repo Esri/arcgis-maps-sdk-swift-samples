@@ -58,9 +58,9 @@
 		00E5401E27F3CCA200CF66D5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5400D27F3CCA100CF66D5 /* ContentView.swift */; };
 		00E5402027F3CCA200CF66D5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00E5400E27F3CCA200CF66D5 /* Assets.xcassets */; };
 		4D2ADC5A29C4F612003B367F /* ChangeMapViewBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2ADC5529C4F612003B367F /* ChangeMapViewBackgroundView.swift */; };
-		4D2ADC5D29C4F612003B367F /* ChangeMapViewBackgroundView.BackgroundGridSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2ADC5829C4F612003B367F /* ChangeMapViewBackgroundView.BackgroundGridSettingsView.swift */; };
+		4D2ADC5D29C4F612003B367F /* ChangeMapViewBackgroundView.SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2ADC5829C4F612003B367F /* ChangeMapViewBackgroundView.SettingsView.swift */; };
 		4D2ADC5F29C4F9CC003B367F /* ChangeMapViewBackgroundView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4D2ADC5529C4F612003B367F /* ChangeMapViewBackgroundView.swift */; };
-		4D2ADC6029C4F9CC003B367F /* ChangeMapViewBackgroundView.BackgroundGridSettingsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4D2ADC5829C4F612003B367F /* ChangeMapViewBackgroundView.BackgroundGridSettingsView.swift */; };
+		4D2ADC6029C4F9CC003B367F /* ChangeMapViewBackgroundView.SettingsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4D2ADC5829C4F612003B367F /* ChangeMapViewBackgroundView.SettingsView.swift */; };
 		4D2ADC6229C5071C003B367F /* ChangeMapViewBackgroundView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2ADC6129C5071C003B367F /* ChangeMapViewBackgroundView.Model.swift */; };
 		4D2ADC6329C5088E003B367F /* ChangeMapViewBackgroundView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4D2ADC6129C5071C003B367F /* ChangeMapViewBackgroundView.Model.swift */; };
 		E000E7602869E33D005D87C5 /* ClipGeometryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E000E75F2869E33D005D87C5 /* ClipGeometryView.swift */; };
@@ -153,7 +153,7 @@
 			files = (
 				4D2ADC6329C5088E003B367F /* ChangeMapViewBackgroundView.Model.swift in Copy Source Code Files */,
 				4D2ADC5F29C4F9CC003B367F /* ChangeMapViewBackgroundView.swift in Copy Source Code Files */,
-				4D2ADC6029C4F9CC003B367F /* ChangeMapViewBackgroundView.BackgroundGridSettingsView.swift in Copy Source Code Files */,
+				4D2ADC6029C4F9CC003B367F /* ChangeMapViewBackgroundView.SettingsView.swift in Copy Source Code Files */,
 				0044CDE02995D4DD004618CE /* ShowDeviceLocationHistoryView.swift in Copy Source Code Files */,
 				0042E24628E50EE4001F33D6 /* ShowViewshedFromPointInSceneView.swift in Copy Source Code Files */,
 				0042E24728E50EE4001F33D6 /* ShowViewshedFromPointInSceneView.Model.swift in Copy Source Code Files */,
@@ -222,8 +222,7 @@
 		00E5401327F3CCA200CF66D5 /* Samples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Samples.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E5402A27F775EA00CF66D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4D2ADC5529C4F612003B367F /* ChangeMapViewBackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeMapViewBackgroundView.swift; sourceTree = "<group>"; };
-		4D2ADC5829C4F612003B367F /* ChangeMapViewBackgroundView.BackgroundGridSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeMapViewBackgroundView.BackgroundGridSettingsView.swift; sourceTree = "<group>"; };
-		4D2ADC5E29C4F6E3003B367F /* arcgis-maps-sdk-swift-toolkit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "arcgis-maps-sdk-swift-toolkit"; path = "../arcgis-maps-sdk-swift-toolkit"; sourceTree = "<group>"; };
+		4D2ADC5829C4F612003B367F /* ChangeMapViewBackgroundView.SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeMapViewBackgroundView.SettingsView.swift; sourceTree = "<group>"; };
 		4D2ADC6129C5071C003B367F /* ChangeMapViewBackgroundView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeMapViewBackgroundView.Model.swift; sourceTree = "<group>"; };
 		E000E75F2869E33D005D87C5 /* ClipGeometryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipGeometryView.swift; sourceTree = "<group>"; };
 		E000E762286A0B18005D87C5 /* CutGeometryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutGeometryView.swift; sourceTree = "<group>"; };
@@ -504,7 +503,7 @@
 			isa = PBXGroup;
 			children = (
 				4D2ADC5529C4F612003B367F /* ChangeMapViewBackgroundView.swift */,
-				4D2ADC5829C4F612003B367F /* ChangeMapViewBackgroundView.BackgroundGridSettingsView.swift */,
+				4D2ADC5829C4F612003B367F /* ChangeMapViewBackgroundView.SettingsView.swift */,
 				4D2ADC6129C5071C003B367F /* ChangeMapViewBackgroundView.Model.swift */,
 			);
 			path = "Change map view background";
@@ -903,7 +902,7 @@
 				00E5401E27F3CCA200CF66D5 /* ContentView.swift in Sources */,
 				E066DD382860AB28004D3D5B /* StyleGraphicsWithRendererView.swift in Sources */,
 				00B04FB5283EEBA80026C882 /* DisplayOverviewMapView.swift in Sources */,
-				4D2ADC5D29C4F612003B367F /* ChangeMapViewBackgroundView.BackgroundGridSettingsView.swift in Sources */,
+				4D2ADC5D29C4F612003B367F /* ChangeMapViewBackgroundView.SettingsView.swift in Sources */,
 				0074ABBF28174BCF0037244A /* DisplayMapView.swift in Sources */,
 				0086F40128E3770A00974721 /* ShowViewshedFromPointInSceneView.swift in Sources */,
 				00D4EF802863842100B9CC30 /* AddFeatureLayersView.swift in Sources */,

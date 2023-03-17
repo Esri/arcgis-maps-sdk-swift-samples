@@ -21,9 +21,9 @@
         "MapView"
     ],
     "snippets": [
-        "ChangeMapViewBackgroundView.BackgroundGridSettingsView.swift",
-        "ChangeMapViewBackgroundView.Model.swift"
-        "ChangeMapViewBackgroundView.swift",
+        "ChangeMapViewBackgroundView.Model.swift",
+        "ChangeMapViewBackgroundView.SettingsView.swift",
+        "ChangeMapViewBackgroundView.swift"
     ],
     "title": "Change map view background"
 }
