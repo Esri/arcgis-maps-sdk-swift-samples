@@ -275,37 +275,6 @@ struct TraceUtilityNetworkView: View {
     }
 }
 
-private extension TraceUtilityNetworkView {
-    var electricDistribution: UtilityDomainNetwork? {
-        network?.definition?.domainNetwork(named: "ElectricDistribution")
-    }
-    
-    var featureLayers: [URL] {
-        return [
-            URL.featureService.appendingPathComponent("0"),
-            URL.featureService.appendingPathComponent("3")
-        ]
-    }
-    
-    var network: UtilityNetwork? {
-        map.utilityNetworks.first
-    }
-    
-    var supportedTraceTypes: [UtilityTraceParameters.TraceType] {
-        return [.connected, .subnetwork, .upstream, .downstream]
-    }
-    
-    var mediumVoltageRadial: UtilityTier? {
-        electricDistribution?.tier(named: "Medium Voltage Radial")
-    }
-}
-
-private extension UtilityTraceParameters.TraceType {
-    var displayName: String {
-        String(describing: self).capitalized
-    }
-}
-
 private extension ArcGISCredential {
     static var publicSample: ArcGISCredential {
         get async throws {
@@ -315,20 +284,6 @@ private extension ArcGISCredential {
                 password: "I68VGU^nMurF"
             )
         }
-    }
-}
-
-private extension Viewpoint {
-    static var initialViewpoint: Viewpoint {
-        .init(
-            boundingGeometry: Envelope(
-                xMin: -9813547.35557238,
-                yMin: 5129980.36635111,
-                xMax: -9813185.0602376,
-                yMax: 5130215.41254146,
-                spatialReference: .webMercator
-            )
-        )
     }
 }
 
@@ -347,16 +302,61 @@ private extension PortalItem {
     }
 }
 
-private extension URL {
-    static var featureService: URL {
-        baseURL.appendingPathComponent("server/rest/services/UtilityNetwork/NapervilleElectric/FeatureServer")
+private extension TraceUtilityNetworkView {
+    var electricDistribution: UtilityDomainNetwork? {
+        network?.definition?.domainNetwork(named: "ElectricDistribution")
     }
     
+    var featureLayers: [URL] {
+        return [
+            URL.featureService.appendingPathComponent("0"),
+            URL.featureService.appendingPathComponent("3")
+        ]
+    }
+    
+    var mediumVoltageRadial: UtilityTier? {
+        electricDistribution?.tier(named: "Medium Voltage Radial")
+    }
+    
+    var network: UtilityNetwork? {
+        map.utilityNetworks.first
+    }
+    
+    var supportedTraceTypes: [UtilityTraceParameters.TraceType] {
+        return [.connected, .subnetwork, .upstream, .downstream]
+    }
+}
+
+private extension URL {
     static var baseURL: URL {
         URL(string: "https://sampleserver7.arcgisonline.com")!
     }
     
+    static var featureService: URL {
+        baseURL.appendingPathComponent("server/rest/services/UtilityNetwork/NapervilleElectric/FeatureServer")
+    }
+    
     static var sampleServer7: URL {
         baseURL.appendingPathComponent("portal/sharing/rest")
+    }
+}
+
+private extension UtilityTraceParameters.TraceType {
+    var displayName: String {
+        String(describing: self).capitalized
+    }
+}
+
+private extension Viewpoint {
+    static var initialViewpoint: Viewpoint {
+        .init(
+            boundingGeometry: Envelope(
+                xMin: -9813547.35557238,
+                yMin: 5129980.36635111,
+                xMax: -9813185.0602376,
+                yMax: 5130215.41254146,
+                spatialReference: .webMercator
+            )
+        )
     }
 }
