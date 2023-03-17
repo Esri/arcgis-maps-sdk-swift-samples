@@ -142,6 +142,7 @@ struct TraceUtilityNetworkView: View {
                                 }
                             }
                         }
+                        .selectionColor(.yellow)
                         .onDisappear {
                             ArcGISEnvironment.authenticationManager.arcGISCredentialStore.removeAll()
                         }
