@@ -30,6 +30,8 @@ struct TraceUtilityNetworkView: View {
     
     @State private var pointType: PointType = .start
     
+    @State private var barriers = [UtilityElement]()
+    
     @State private var startingPoints = [UtilityElement]()
     
     /// The overlay on which trace graphics will be drawn.
@@ -48,15 +50,16 @@ struct TraceUtilityNetworkView: View {
     }
     
     func reset() {
+        barriers.removeAll()
         graphicsOverlay.removeAllGraphics()
+        map.operationalLayers.forEach { layer in
+            (layer as? FeatureLayer)?.clearSelection()
+        }
         pointType = .start
         startingPoints.removeAll()
         traceTask?.cancel()
         tracingActivity = .none
         traceType = .connected
-        map.operationalLayers.forEach { layer in
-            (layer as? FeatureLayer)?.clearSelection()
-        }
     }
     
     private var hint: String? {
@@ -91,7 +94,12 @@ struct TraceUtilityNetworkView: View {
                                     identifyLayerResult.geoElements.forEach { geoElement in
                                         if let feature = geoElement as? ArcGISFeature,
                                            let element = network?.makeElement(arcGISFeature: feature) {
-                                            startingPoints.append(element)
+                                            switch pointType {
+                                            case.barrier:
+                                                barriers.append(element)
+                                            case .start:
+                                                startingPoints.append(element)
+                                            }
                                             if let geometry = feature.geometry?.extent.center {
                                                 let graphic = Graphic(
                                                     geometry: geometry,
@@ -170,6 +178,7 @@ struct TraceUtilityNetworkView: View {
                                 traceType: traceType,
                                 startingLocations: startingPoints
                             )
+                            parameters.addBarriers(barriers)
                             parameters.traceConfiguration = mediumVoltageRadial?.defaultTraceConfiguration
                             let traceResults: [UtilityElementTraceResult]? = try await network?.trace(using: parameters)
                                 .filter { $0 is UtilityElementTraceResult }
@@ -183,10 +192,10 @@ struct TraceUtilityNetworkView: View {
                                     layer.selectFeatures(features)
                                 }
                             }
-                            tracingActivity = .viewingResults
                         } catch {
                             print(error)
                         }
+                        tracingActivity = .viewingResults
                     }
                 }
             case .tracing:
@@ -200,7 +209,7 @@ struct TraceUtilityNetworkView: View {
                 }
                 
             case .viewingResults:
-                Button("Reset") {
+                Button("Reset", role: .destructive) {
                     reset()
                 }
                 .padding()
