@@ -108,7 +108,7 @@ struct TraceUtilityNetworkView: View {
                     Text(hint)
                 }
                 MapViewReader { mapViewProxy in
-                    MapView(map: map, graphicsOverlays: [graphicsOverlay])
+                    MapView(map: map, viewpoint: .initialViewpoint, graphicsOverlays: [graphicsOverlay])
                         .onSingleTapGesture { screenPoint, _ in
                             guard tracingActivity == .settingPoints else { return }
                             Task {
@@ -319,6 +319,20 @@ private extension ArcGISCredential {
                 password: "I68VGU^nMurF"
             )
         }
+    }
+}
+
+private extension Viewpoint {
+    static var initialViewpoint: Viewpoint {
+        .init(
+            boundingGeometry: Envelope(
+                xMin: -9813547.35557238,
+                yMin: 5129980.36635111,
+                xMax: -9813185.0602376,
+                yMax: 5130215.41254146,
+                spatialReference: .webMercator
+            )
+        )
     }
 }
 
