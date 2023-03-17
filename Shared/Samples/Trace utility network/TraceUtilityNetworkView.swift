@@ -36,6 +36,9 @@ struct TraceUtilityNetworkView: View {
     
     @State private var startingPoints = [UtilityElement]()
     
+    /// The overlay on which trace graphics will be drawn.
+    private var graphicsOverlay = GraphicsOverlay()
+    
     enum PointType: String {
         case barrier
         case start
@@ -73,7 +76,7 @@ struct TraceUtilityNetworkView: View {
                     Text(hint)
                 }
                 MapViewReader { mapViewProxy in
-                    MapView(map: map)
+                    MapView(map: map, graphicsOverlays: [graphicsOverlay])
                         .onSingleTapGesture { screenPoint, _ in
                             guard tracingActivity == .settingPoints else { return }
                             Task {
@@ -87,6 +90,18 @@ struct TraceUtilityNetworkView: View {
                                             let element = network.makeElement(arcGISFeature: feature) {
                                             print("Adding", element.assetGroup.name, element.assetType.name)
                                             startingPoints.append(element)
+                                            
+                                            if let geometry = feature.geometry?.extent.center {
+                                                let graphic = Graphic(
+                                                    geometry: geometry,
+                                                    symbol: SimpleMarkerSymbol(
+                                                        style: .cross,
+                                                        color: .green,
+                                                        size: 20
+                                                    )
+                                                )
+                                                graphicsOverlay.addGraphic(graphic)
+                                            }
                                         }
                                     }
                                 }
