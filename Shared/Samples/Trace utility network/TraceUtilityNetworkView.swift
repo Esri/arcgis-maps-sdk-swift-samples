@@ -51,6 +51,7 @@ struct TraceUtilityNetworkView: View {
         graphicsOverlay.removeAllGraphics()
         pointType = .start
         startingPoints.removeAll()
+        traceTask?.cancel()
         tracingActivity = .none
         traceType = .connected
         map.operationalLayers.forEach { layer in
@@ -130,6 +131,8 @@ struct TraceUtilityNetworkView: View {
         }
     }
     
+    @State private var traceTask: Task<(), Never>?
+    
     var traceManager: some View {
         HStack(spacing: 5) {
             switch tracingActivity {
@@ -152,6 +155,7 @@ struct TraceUtilityNetworkView: View {
                 Button("Next") {
                     tracingActivity = .settingType
                 }
+                .disabled(startingPoints.isEmpty)
             case .settingType:
                 Picker("Type", selection: $traceType) {
                     ForEach(supportedTraceTypes, id: \.self) { type in
@@ -160,8 +164,7 @@ struct TraceUtilityNetworkView: View {
                 }
                 Button("Trace") {
                     tracingActivity = .tracing
-                    Task {
-                        print("Starting trace")
+                    traceTask = Task {
                         do {
                             let parameters = UtilityTraceParameters(
                                 traceType: traceType,
@@ -177,7 +180,6 @@ struct TraceUtilityNetworkView: View {
                             for result in traceResults ?? [] {
                                 let groups = Dictionary(grouping: result.elements) { $0.networkSource.name }
                                 for (networkName, elements) in groups {
-                                    print("FINDING LAYER FOR", networkName)
                                     guard let layer = self.map.operationalLayers.first(where: { ($0 as? FeatureLayer)?.featureTable?.tableName == networkName }) as? FeatureLayer else { continue }
 
                                     let features = try await network?.features(for: elements) ?? []
@@ -191,7 +193,15 @@ struct TraceUtilityNetworkView: View {
                     }
                 }
             case .tracing:
-                Text("Please wait")
+                HStack {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle())
+                        .padding()
+                    Button("Cancel", role: .destructive) {
+                        reset()
+                    }
+                }
+                
             case .viewingResults:
                 Button("Reset") {
                     reset()
