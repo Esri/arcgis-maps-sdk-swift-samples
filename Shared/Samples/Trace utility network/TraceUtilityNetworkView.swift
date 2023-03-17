@@ -164,7 +164,7 @@ struct TraceUtilityNetworkView: View {
                                             color: darkCyan,
                                             width: 3
                                         ),
-                                        values: [3]
+                                        values: [5]
                                     )
                                     let lowVoltageValue = UniqueValue(
                                         description: "N/A",
