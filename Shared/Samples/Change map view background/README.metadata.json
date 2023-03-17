@@ -9,10 +9,7 @@
     "keywords": [
         "background",
         "grid",
-        "map",
-        "BackgroundGrid",
-        "Map",
-        "MapView"
+        "map"
     ],
     "redirect_from": [],
     "relevant_apis": [

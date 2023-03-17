@@ -2,7 +2,9 @@
 
 Customize map view's background by changing its grid properties.
 
-![Image of change map view background](change-map-view-background.png)
+| ChangeMapViewBackground | Settings |
+| ----------------- | ------------- |
+|![Image of change map view background](change-map-view-background.png)|![Image of change map view background](change-map-view-background-settings.png)|
 
 ## Use case
 
@@ -10,23 +12,24 @@ Basemaps should be selected contextually. For example, in maritime applications,
 
 ## How to use the sample
 
-Tap the "Change background" button in the toolbar to open the settings view. Tap the color next to "Color" and "Line color" rows to change the background color and the grid's line color respectively. Use the sliders to change the grid line width and grid size.
+Tap the "Background Grid Settings" button in the toolbar to open the settings view. Tap the color next to "Color" and "Line color" rows to change the background color and the grid's line color respectively. Use the sliders to change the grid line width and grid size.
 
 ## How it works
 
-1. Create an `AGSMap` object.
-2. Set the map to the `AGSMapView` object.
-3. Set the background grid style in the settings and set it to the map view's `backgroundGrid` property. Customize the background grid with the following properties:
-    * `color`: fill color
-    * `gridLineColor`: color of background grid lines
-    * `gridLineWidth`: width (in points) of background grid lines
-    * `gridSize`: size (in points) of the background grid
+1. Create a `Map` object.
+2. Display the map in a `MapView`.
+3. Set the `backgroundGrid` property on the `MapView`.
+3. Update the background grid properties from the settings view. The following `BackgroundGrid` properties are updated:
+    * `backgroundColor`: fill color
+    * `lineColor`: color of background grid lines
+    * `lineWidth`: width (in points) of background grid lines
+    * `size`: size (in points) of the background grid
 
 ## Relevant API
 
-* AGSBackgroundGrid
-* AGSMap
-* AGSMapView
+* BackgroundGrid
+* Map
+* MapView
 
 ## Tags
 
