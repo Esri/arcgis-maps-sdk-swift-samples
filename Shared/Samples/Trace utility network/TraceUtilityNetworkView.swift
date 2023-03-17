@@ -65,6 +65,21 @@ struct TraceUtilityNetworkView: View {
         return overlay
     }()
     
+    private var hint: String? {
+        switch tracingActivity {
+        case .none, .viewingResults:
+            return nil
+        case .settingPoints:
+            return "Tap on the map to add a \(pointType == .start ? "Starting Location" : "Barrier")."
+        case .settingType:
+            return "Choose the trace type"
+        case .tracing:
+            return "Tracing..."
+        }
+    }
+    
+    // MARK: Enums
+    
     enum PointType: String {
         case barrier
         case start
@@ -76,6 +91,8 @@ struct TraceUtilityNetworkView: View {
         case tracing
         case viewingResults
     }
+    
+    // MARK: Methods
     
     func reset() {
         barriers.removeAll()
@@ -90,18 +107,7 @@ struct TraceUtilityNetworkView: View {
         traceType = .connected
     }
     
-    private var hint: String? {
-        switch tracingActivity {
-        case .none, .viewingResults:
-            return nil
-        case .settingPoints:
-            return "Tap on the map to add a \(pointType == .start ? "Starting Location" : "Barrier")."
-        case .settingType:
-            return "Choose the trace type"
-        case .tracing:
-            return "Tracing..."
-        }
-    }
+    // MARK: Views
     
     var body: some View {
         GeometryReader { geometryProxy in
