@@ -22,6 +22,8 @@ struct TraceUtilityNetworkView: View {
         return map
     }()
     
+    @State private var geodatabase = ServiceGeodatabase(url: .featureService)
+    
     @State private var tracingActivity: TracingActivity?
     
     @State private var traceType = UtilityTraceParameters.TraceType.connected
@@ -84,10 +86,8 @@ struct TraceUtilityNetworkView: View {
                                 for identifyLayerResult in identifyLayerResults {
                                     identifyLayerResult.geoElements.forEach { geoElement in
                                         if let feature = geoElement as? ArcGISFeature,
-                                            let element = network.makeElement(arcGISFeature: feature) {
-                                            print("Adding", element.assetGroup.name, element.assetType.name)
+                                           let element = network?.makeElement(arcGISFeature: feature) {
                                             startingPoints.append(element)
-                                            
                                             if let geometry = feature.geometry?.extent.center {
                                                 let graphic = Graphic(
                                                     geometry: geometry,
@@ -109,6 +109,15 @@ struct TraceUtilityNetworkView: View {
                         }
                         .task {
                             try? await ArcGISEnvironment.authenticationManager.arcGISCredentialStore.add(.publicSample)
+                            try? await network?.load()
+                            try? await geodatabase.load()
+                            
+                            URL.featureLayers.forEach { url in
+                                let featureTable = ServiceFeatureTable(url: url)
+                                let layer = FeatureLayer(featureTable: featureTable)
+                                print("adding feature layer")
+                                map.addOperationalLayer(layer)
+                            }
                         }
                 }
                 traceManager
@@ -149,15 +158,32 @@ struct TraceUtilityNetworkView: View {
                 Button("Trace") {
                     tracingActivity = .tracing
                     Task {
-                        let traceResults: [UtilityGeometryTraceResult] = try await network.trace(
-                            using: UtilityTraceParameters(
-                                traceType: .upstream,
+                        print("Starting trace")
+                        do {
+                            let parameters = UtilityTraceParameters(
+                                traceType: traceType,
                                 startingLocations: startingPoints
                             )
-                        )
-                            .filter { $0 is UtilityGeometryTraceResult }
-                            .map { $0 as! UtilityGeometryTraceResult }
-                        print("geometry results", traceResults.count)
+                            parameters.traceConfiguration = mediumVoltageRadial?.defaultTraceConfiguration
+                            let traceResults: [UtilityElementTraceResult]? = try await network?.trace(using: parameters)
+                                .filter { $0 is UtilityElementTraceResult }
+                                .map { $0 as! UtilityElementTraceResult }
+                            
+                            print(map.operationalLayers.count)
+                            
+                            for result in traceResults ?? [] {
+                                let groups = Dictionary(grouping: result.elements) { $0.networkSource.name }
+                                for (networkName, elements) in groups {
+                                    print("FINDING LAYER FOR", networkName)
+                                    guard let layer = self.map.operationalLayers.first(where: { ($0 as? FeatureLayer)?.featureTable?.tableName == networkName }) as? FeatureLayer else { continue }
+
+                                    let features = try await network?.features(for: elements) ?? []
+                                    layer.selectFeatures(features)
+                                }
+                            }
+                        } catch {
+                            print(error)
+                        }
                     }
                 }
             case .tracing:
@@ -177,12 +203,22 @@ struct TraceUtilityNetworkView: View {
 }
 
 private extension TraceUtilityNetworkView {
-    var network: UtilityNetwork {
-        map.utilityNetworks.first!
+    var electricDistribution: UtilityDomainNetwork? {
+        network?.definition?.domainNetwork(named: "ElectricDistribution")
+    }
+    
+
+    
+    var network: UtilityNetwork? {
+        map.utilityNetworks.first
     }
     
     var supportedTraceTypes: [UtilityTraceParameters.TraceType] {
         return [.connected, .subnetwork, .upstream, .downstream]
+    }
+    
+    var mediumVoltageRadial: UtilityTier? {
+        electricDistribution?.tier(named: "Medium Voltage Radial")
     }
 }
 
@@ -220,7 +256,19 @@ private extension PortalItem {
 }
 
 private extension URL {
+    static var featureService: URL {
+        .baseURL.appendingPathComponent("server/rest/services/UtilityNetwork/NapervilleElectric/FeatureServer")
+    }
+    
+    static var featureLayers: [URL] {
+        [featureService.appendingPathComponent("0"), featureService.appendingPathComponent("3")]
+    }
+    
+    static var baseURL: URL {
+        URL(string: "https://sampleserver7.arcgisonline.com")!
+    }
+    
     static var sampleServer7: URL {
-        URL(string: "https://sampleserver7.arcgisonline.com/portal/sharing/rest")!
+        baseURL.appendingPathComponent("portal/sharing/rest")
     }
 }
