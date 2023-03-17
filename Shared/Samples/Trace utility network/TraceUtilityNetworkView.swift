@@ -24,15 +24,9 @@ struct TraceUtilityNetworkView: View {
     
     @State private var tracingActivity: TracingActivity?
     
-    @State private var traceConfiguration: UtilityNamedTraceConfiguration!
-    
-    @State private var traceConfigurations = [UtilityNamedTraceConfiguration]()
+    @State private var traceType = UtilityTraceParameters.TraceType.connected
     
     @State private var pointType: PointType = .start
-    
-    @State private var showingTraceManager = true
-    
-    @State private var detent = Detent.medium
     
     @State private var startingPoints = [UtilityElement]()
     
@@ -52,8 +46,11 @@ struct TraceUtilityNetworkView: View {
     }
     
     func reset() {
-        tracingActivity = .none
+        graphicsOverlay.removeAllGraphics()
         pointType = .start
+        startingPoints.removeAll()
+        tracingActivity = .none
+        traceType = .connected
     }
     
     private var hint: String? {
@@ -112,8 +109,6 @@ struct TraceUtilityNetworkView: View {
                         }
                         .task {
                             try? await ArcGISEnvironment.authenticationManager.arcGISCredentialStore.add(.publicSample)
-                            traceConfigurations = (try? await network.queryNamedTraceConfigurations()) ?? []
-                            traceConfiguration = traceConfigurations.first
                         }
                 }
                 traceManager
@@ -146,16 +141,25 @@ struct TraceUtilityNetworkView: View {
                     tracingActivity = .settingType
                 }
             case .settingType:
-                Picker("Type", selection: $traceConfiguration) {
-                    ForEach(traceConfigurations) { configuration in
-                        Text(configuration.name)
-                            .tag(configuration)
+                Picker("Type", selection: $traceType) {
+                    ForEach(supportedTraceTypes, id: \.self) { type in
+                        Text(type.displayName).tag(type)
                     }
                 }
                 Button("Trace") {
                     tracingActivity = .tracing
+                    Task {
+                        let traceResults: [UtilityGeometryTraceResult] = try await network.trace(
+                            using: UtilityTraceParameters(
+                                traceType: .upstream,
+                                startingLocations: startingPoints
+                            )
+                        )
+                            .filter { $0 is UtilityGeometryTraceResult }
+                            .map { $0 as! UtilityGeometryTraceResult }
+                        print("geometry results", traceResults.count)
+                    }
                 }
-                .disabled(traceConfiguration == nil)
             case .tracing:
                 Text("Please wait")
             case .viewingResults:
@@ -172,23 +176,19 @@ struct TraceUtilityNetworkView: View {
     }
 }
 
-extension UtilityNamedTraceConfiguration: Hashable {
-    public static func == (lhs: UtilityNamedTraceConfiguration, rhs: UtilityNamedTraceConfiguration) -> Bool {
-        return lhs.name == rhs.name && lhs.traceType == rhs.traceType && lhs.globalID == rhs.globalID
-    }
-    
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(name)
-        hasher.combine(traceType)
-        hasher.combine(globalID)
-    }
-}
-
-extension UtilityNamedTraceConfiguration: Identifiable {}
-
 private extension TraceUtilityNetworkView {
     var network: UtilityNetwork {
         map.utilityNetworks.first!
+    }
+    
+    var supportedTraceTypes: [UtilityTraceParameters.TraceType] {
+        return [.connected, .subnetwork, .upstream, .downstream]
+    }
+}
+
+private extension UtilityTraceParameters.TraceType {
+    var displayName: String {
+        String(describing: self).capitalized
     }
 }
 
