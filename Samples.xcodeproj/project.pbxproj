@@ -314,7 +314,7 @@
 		0074ABB228174B830037244A /* Samples */ = {
 			isa = PBXGroup;
 			children = (
-				4D2ADC3E29C26D05003B367F /* Add Dynamic Entity Layer */,
+				4D2ADC3E29C26D05003B367F /* Add dynamic entity layer */,
 				00D4EF7E2863840D00B9CC30 /* Add feature layers */,
 				F19A316128906F0D003B7EF9 /* Add raster from file */,
 				E066DD3E28610F3F004D3D5B /* Add scene layer from service */,
@@ -491,12 +491,12 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		4D2ADC3E29C26D05003B367F /* Add Dynamic Entity Layer */ = {
+		4D2ADC3E29C26D05003B367F /* Add dynamic entity layer */ = {
 			isa = PBXGroup;
 			children = (
 				4D2ADC3F29C26D05003B367F /* AddDynamicEntityLayerView.swift */,
 			);
-			path = "Add Dynamic Entity Layer";
+			path = "Add dynamic entity layer";
 			sourceTree = "<group>";
 		};
 		E000E75E2869E325005D87C5 /* Clip geometry */ = {
