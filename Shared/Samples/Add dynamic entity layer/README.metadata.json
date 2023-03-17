@@ -1,5 +1,5 @@
 {
-    "category": "Maps",
+    "category": "Layers",
     "description": "Display data from an ArcGIS stream service using a dynamic entity layer.",
     "ignore": false,
     "images": [
@@ -15,7 +15,14 @@
         "real-time",
         "service",
         "stream",
-        "track"
+        "track",
+        "ArcGISStreamService",
+        "ConnectionStatus",
+        "DynamicEntity",
+        "DynamicEntityFilter",
+        "DynamicEntityLayer",
+        "DynamicEntityPurgeOptions",
+        "TrackDisplayProperties"
     ],
     "redirect_from": [],
     "relevant_apis": [
@@ -30,5 +37,5 @@
     "snippets": [
         "AddDynamicEntityLayerView.swift"
     ],
-    "title": "Add Dynamic Entity Layer"
+    "title": "Add dynamic entity layer"
 }
