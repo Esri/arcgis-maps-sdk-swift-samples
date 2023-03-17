@@ -22,14 +22,136 @@ struct TraceUtilityNetworkView: View {
         return map
     }()
     
+    @State private var tracingActivity: TracingActivity?
+    
+    @State private var traceConfiguration: UtilityNamedTraceConfiguration!
+    
+    @State private var pointType: PointType = .start
+    
+    @State private var showingTraceManager = true
+    
+    @State private var detent = Detent.medium
+    
+    enum PointType: String {
+        case barrier
+        case start
+    }
+    
+    enum TracingActivity {
+        case settingPoints
+        case settingType
+        case tracing
+        case viewingResults
+    }
+    
+    func reset() {
+        tracingActivity = .none
+        pointType = .start
+    }
+    
+    @State private var traceConfigurations = [UtilityNamedTraceConfiguration]()
+    
+    private var hint: String? {
+        switch tracingActivity {
+        case .none, .viewingResults:
+            return nil
+        case .settingPoints:
+            return "Tap on the map to add a \(pointType == .start ? "Starting Location" : "Barrier")."
+        case .settingType:
+            return "Choose the trace type"
+        case .tracing:
+            return "Tracing..."
+        }
+    }
+    
     var body: some View {
-        MapView(map: map)
-            .onDisappear {
-                ArcGISEnvironment.authenticationManager.arcGISCredentialStore.removeAll()
+        GeometryReader { geometryProxy in
+            VStack(spacing: .zero) {
+                if let hint {
+                    Text(hint)
+                }
+                MapView(map: map)
+                    .onDisappear {
+                        ArcGISEnvironment.authenticationManager.arcGISCredentialStore.removeAll()
+                    }
+                    .task {
+                        try? await ArcGISEnvironment.authenticationManager.arcGISCredentialStore.add(.publicSample)
+                        traceConfigurations = (try? await network.queryNamedTraceConfigurations()) ?? []
+                        traceConfiguration = traceConfigurations.first
+                    }
+                traceManager
+                    .frame(width: geometryProxy.size.width)
+                    .background(.thinMaterial)
             }
-            .task {
-                try? await ArcGISEnvironment.authenticationManager.arcGISCredentialStore.add(.publicSample)
+        }
+    }
+    
+    var traceManager: some View {
+        HStack(spacing: 5) {
+            switch tracingActivity {
+            case .none:
+                Button("Start a new trace") {
+                    withAnimation {
+                        tracingActivity = .settingPoints
+                    }
+                }
+                .padding()
+            case .settingPoints:
+                Picker("Add starting points & barriers", selection: $pointType) {
+                    Text(PointType.start.rawValue.capitalized)
+                        .tag(PointType.start)
+                    Text(PointType.barrier.rawValue.capitalized)
+                        .tag(PointType.barrier)
+                }
+                .padding()
+                .pickerStyle(.segmented)
+                Button("Next") {
+                    tracingActivity = .settingType
+                }
+            case .settingType:
+                Picker("Type", selection: $traceConfiguration) {
+                    ForEach(traceConfigurations) { configuration in
+                        Text(configuration.name)
+                            .tag(configuration)
+                    }
+                }
+                Button("Trace") {
+                    tracingActivity = .tracing
+                }
+                .disabled(traceConfiguration == nil)
+            case .tracing:
+                Text("Please wait")
+            case .viewingResults:
+                Button("Reset") {
+                    reset()
+                }
             }
+            if tracingActivity == .settingPoints || tracingActivity == .settingType {
+                Button("Cancel", role: .destructive) {
+                    reset()
+                }
+            }
+        }
+    }
+}
+
+extension UtilityNamedTraceConfiguration: Hashable {
+    public static func == (lhs: UtilityNamedTraceConfiguration, rhs: UtilityNamedTraceConfiguration) -> Bool {
+        return lhs.name == rhs.name && lhs.traceType == rhs.traceType && lhs.globalID == rhs.globalID
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(name)
+        hasher.combine(traceType)
+        hasher.combine(globalID)
+    }
+}
+
+extension UtilityNamedTraceConfiguration: Identifiable {}
+
+private extension TraceUtilityNetworkView {
+    var network: UtilityNetwork {
+        map.utilityNetworks.first!
     }
 }
 
