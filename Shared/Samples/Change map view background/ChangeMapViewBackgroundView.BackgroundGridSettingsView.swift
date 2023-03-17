@@ -21,7 +21,7 @@ extension ChangeMapViewBackgroundView {
         
         var body: some View {
             List {
-                Section("Background Grid Settings") {
+                Section("Background Grid") {
                     HStack {
                         ColorPicker(selection: $model.color) {
                             Text("Color")
