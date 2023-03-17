@@ -112,34 +112,29 @@ struct TraceUtilityNetworkView: View {
                         .onSingleTapGesture { screenPoint, _ in
                             guard tracingActivity == .settingPoints else { return }
                             Task {
-                                let identifyLayerResults = try await mapViewProxy.identifyLayers(
+                                guard let feature = try await mapViewProxy.identifyLayers(
                                     screenPoint: screenPoint,
                                     tolerance: 10
-                                )
-                                for identifyLayerResult in identifyLayerResults {
-                                    identifyLayerResult.geoElements.forEach { geoElement in
-                                        if let feature = geoElement as? ArcGISFeature,
-                                           let element = network?.makeElement(arcGISFeature: feature) {
-                                            switch pointType {
-                                            case.barrier:
-                                                barriers.append(element)
-                                            case .start:
-                                                startingPoints.append(element)
-                                            }
-                                            if let geometry = feature.geometry?.extent.center {
-                                                let graphic = Graphic(
-                                                    geometry: geometry,
-                                                    symbol: SimpleMarkerSymbol(
-                                                        style: .cross,
-                                                        color: .green,
-                                                        size: 20
-                                                    )
+                                ).first?.geoElements.first as? ArcGISFeature else { return }
+                                    if let element = network?.makeElement(arcGISFeature: feature) {
+                                        switch pointType {
+                                        case.barrier:
+                                            barriers.append(element)
+                                        case .start:
+                                            startingPoints.append(element)
+                                        }
+                                        if let geometry = feature.geometry?.extent.center {
+                                            let graphic = Graphic(
+                                                geometry: geometry,
+                                                symbol: SimpleMarkerSymbol(
+                                                    style: .cross,
+                                                    color: .green,
+                                                    size: 20
                                                 )
-                                                graphicsOverlay.addGraphic(graphic)
-                                            }
+                                            )
+                                            graphicsOverlay.addGraphic(graphic)
                                         }
                                     }
-                                }
                             }
                         }
                         .selectionColor(.yellow)
