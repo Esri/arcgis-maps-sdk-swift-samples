@@ -35,7 +35,33 @@ struct TraceUtilityNetworkView: View {
     @State private var startingPoints = [UtilityElement]()
     
     /// The overlay on which trace graphics will be drawn.
-    private var graphicsOverlay = GraphicsOverlay()
+    private var graphicsOverlay: GraphicsOverlay = {
+        let barrierPointSymbol = SimpleMarkerSymbol(
+            style: .x,
+            color: .red,
+            size: 20
+        )
+        let barrierUniqueValue = UniqueValue(
+            description: "Barriers",
+            label: PointType.barrier.rawValue,
+            symbol: barrierPointSymbol,
+            values: [TracingActivity.settingPoints, PointType.barrier]
+        )
+        let startingPointSymbol = SimpleMarkerSymbol(
+            style: .cross,
+            color: .green,
+            size: 20
+        )
+        let renderer = UniqueValueRenderer(
+            fieldNames: ["TraceLocationType"],
+            uniqueValues: [barrierUniqueValue],
+            defaultLabel: String(describing: TracingActivity.settingPoints),
+            defaultSymbol: startingPointSymbol
+        )
+        let overlay = GraphicsOverlay()
+        overlay.renderer = renderer
+        return overlay
+    }()
     
     enum PointType: String {
         case barrier
@@ -127,7 +153,37 @@ struct TraceUtilityNetworkView: View {
                             featureLayers.forEach { url in
                                 let featureTable = ServiceFeatureTable(url: url)
                                 let layer = FeatureLayer(featureTable: featureTable)
-                                print("adding feature layer")
+                                
+                                if featureTable.serviceLayerID == 3 {
+                                    let darkCyan = UIColor(red: 0, green: 0.55, blue: 0.55, alpha: 1)
+                                    let mediumVoltageValue = UniqueValue(
+                                        description: "N/A",
+                                        label: "Medium voltage",
+                                        symbol: SimpleLineSymbol(
+                                            style: .solid,
+                                            color: darkCyan,
+                                            width: 3
+                                        ),
+                                        values: [3]
+                                    )
+                                    let lowVoltageValue = UniqueValue(
+                                        description: "N/A",
+                                        label: "Low voltage",
+                                        symbol: SimpleLineSymbol(
+                                            style: .dash,
+                                            color: darkCyan,
+                                            width: 3
+                                        ),
+                                        values: [3]
+                                    )
+                                    layer.renderer = UniqueValueRenderer(
+                                        fieldNames: ["ASSETGROUP"],
+                                        uniqueValues: [mediumVoltageValue, lowVoltageValue],
+                                        defaultLabel: "",
+                                        defaultSymbol: SimpleLineSymbol()
+                                    )
+                                }
+                                
                                 map.addOperationalLayer(layer)
                             }
                         }
