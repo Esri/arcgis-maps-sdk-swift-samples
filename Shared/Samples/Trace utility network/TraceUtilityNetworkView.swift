@@ -35,7 +35,7 @@ struct TraceUtilityNetworkView: View {
     @State private var startingPoints = [UtilityElement]()
     
     /// The overlay on which trace graphics will be drawn.
-    private var graphicsOverlay: GraphicsOverlay = {
+    private var parametersOverlay: GraphicsOverlay = {
         let barrierPointSymbol = SimpleMarkerSymbol(
             style: .x,
             color: .red,
@@ -77,7 +77,7 @@ struct TraceUtilityNetworkView: View {
     
     func reset() {
         barriers.removeAll()
-        graphicsOverlay.removeAllGraphics()
+        parametersOverlay.removeAllGraphics()
         map.operationalLayers.forEach { layer in
             (layer as? FeatureLayer)?.clearSelection()
         }
@@ -108,7 +108,7 @@ struct TraceUtilityNetworkView: View {
                     Text(hint)
                 }
                 MapViewReader { mapViewProxy in
-                    MapView(map: map, viewpoint: .initialViewpoint, graphicsOverlays: [graphicsOverlay])
+                    MapView(map: map, viewpoint: .initialViewpoint, graphicsOverlays: [parametersOverlay])
                         .onSingleTapGesture { screenPoint, _ in
                             guard tracingActivity == .settingPoints else { return }
                             Task {
@@ -132,7 +132,7 @@ struct TraceUtilityNetworkView: View {
                                                     size: 20
                                                 )
                                             )
-                                            graphicsOverlay.addGraphic(graphic)
+                                            parametersOverlay.addGraphic(graphic)
                                         }
                                     }
                             }
