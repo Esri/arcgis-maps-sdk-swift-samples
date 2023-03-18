@@ -124,7 +124,15 @@ struct TraceUtilityNetworkView: View {
                                     screenPoint: screenPoint,
                                     tolerance: 10
                                 ).first?.geoElements.first as? ArcGISFeature else { return }
-                                    if let element = network?.makeElement(arcGISFeature: feature) {
+                                    if let element = network?.makeElement(arcGISFeature: feature),
+                                       let table = feature.table as? ArcGISFeatureTable,
+                                        let networkSource = network?.definition?.networkSource(named: table.tableName) {
+                                        switch networkSource.kind {
+                                        case .junction:
+                                            print("")
+                                        case .edge:
+                                            print("")
+                                        }
                                         switch pointType {
                                         case.barrier:
                                             barriers.append(element)
