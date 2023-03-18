@@ -3,13 +3,16 @@
     "description": "Customize map view's background by changing its grid properties.",
     "ignore": false,
     "images": [
-        "change-map-view-background.png",
-        "change-map-view-background-settings.png"
+        "change-map-view-background-settings.png",
+        "change-map-view-background.png"
     ],
     "keywords": [
         "background",
         "grid",
-        "map"
+        "map",
+        "BackgroundGrid",
+        "Map",
+        "MapView"
     ],
     "redirect_from": [],
     "relevant_apis": [
