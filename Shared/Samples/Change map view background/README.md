@@ -19,7 +19,7 @@ Tap the "Background Grid Settings" button in the toolbar to open the settings vi
 1. Create a `Map` object.
 2. Display the map in a `MapView`.
 3. Set the `backgroundGrid` property on the `MapView`.
-3. Update the background grid properties from the settings view. The following `BackgroundGrid` properties are updated:
+4. Update the background grid properties from the settings view. The following `BackgroundGrid` properties are updated:
     * `backgroundColor`: fill color
     * `lineColor`: color of background grid lines
     * `lineWidth`: width (in points) of background grid lines
