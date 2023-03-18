@@ -3,8 +3,8 @@
     "description": "Display data from an ArcGIS stream service using a dynamic entity layer.",
     "ignore": false,
     "images": [
-        "add-dynamic-entity-layer.png",
-        "add-dynamic-entity-layer-settings.png"
+        "add-dynamic-entity-layer-settings.png",
+        "add-dynamic-entity-layer.png"
     ],
     "keywords": [
         "data",
@@ -15,7 +15,14 @@
         "real-time",
         "service",
         "stream",
-        "track"
+        "track",
+        "ArcGISStreamService",
+        "ConnectionStatus",
+        "DynamicEntity",
+        "DynamicEntityFilter",
+        "DynamicEntityLayer",
+        "DynamicEntityPurgeOptions",
+        "TrackDisplayProperties"
     ],
     "redirect_from": [],
     "relevant_apis": [
