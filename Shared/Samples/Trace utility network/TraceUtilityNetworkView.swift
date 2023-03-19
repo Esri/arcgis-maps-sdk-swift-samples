@@ -117,31 +117,33 @@ struct TraceUtilityNetworkView: View {
                 }
                 MapViewReader { mapViewProxy in
                     MapView(map: map, viewpoint: .initialViewpoint, graphicsOverlays: [parametersOverlay])
-                        .onSingleTapGesture { screenPoint, _ in
+                        .onSingleTapGesture { screenPoint, mapPoint in
                             guard tracingActivity == .settingPoints else { return }
                             Task {
                                 guard let feature = try await mapViewProxy.identifyLayers(
                                     screenPoint: screenPoint,
                                     tolerance: 10
                                 ).first?.geoElements.first as? ArcGISFeature else { return }
-                                    if let element = network?.makeElement(arcGISFeature: feature),
-                                       let table = feature.table as? ArcGISFeatureTable,
-                                        let networkSource = network?.definition?.networkSource(named: table.tableName) {
-                                        switch networkSource.kind {
-                                        case .junction:
-                                            print("")
-                                        case .edge:
-                                            print("")
-                                        }
-                                        switch pointType {
-                                        case.barrier:
-                                            barriers.append(element)
-                                        case .start:
-                                            startingPoints.append(element)
-                                        }
-                                        if let geometry = feature.geometry?.extent.center {
+                                if let table = feature.table as? ArcGISFeatureTable,
+                                   let networkSource = network?.definition?.networkSource(named: table.tableName) {
+                                    var element: UtilityElement?
+                                    switch networkSource.kind {
+                                    case .junction:
+                                        print("")
+                                        element = network!.makeElement(arcGISFeature: feature)!
+                                    case .edge:
+                                        if let geometry = feature.geometry,
+                                           let line = GeometryEngine.makeGeometry(from: geometry, z: nil) as? Polyline,
+                                           let newElement = network?.makeElement(arcGISFeature: feature) {
+                                            newElement.fractionAlongEdge = GeometryEngine.polyline(
+                                                line,
+                                                fractionalLengthClosestTo: mapPoint,
+                                                tolerance: -1
+                                            )
+                                            print("fraction along edge", newElement.fractionAlongEdge)
+                                            element = newElement
                                             let graphic = Graphic(
-                                                geometry: geometry,
+                                                geometry: mapPoint,
                                                 symbol: SimpleMarkerSymbol(
                                                     style: .cross,
                                                     color: .green,
@@ -151,6 +153,13 @@ struct TraceUtilityNetworkView: View {
                                             parametersOverlay.addGraphic(graphic)
                                         }
                                     }
+                                    switch pointType {
+                                    case.barrier:
+                                        barriers.append(element!)
+                                    case .start:
+                                        startingPoints.append(element!)
+                                    }
+                                }
                             }
                         }
                         .selectionColor(.yellow)
