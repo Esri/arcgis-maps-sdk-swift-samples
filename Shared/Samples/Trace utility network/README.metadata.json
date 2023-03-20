@@ -1,5 +1,5 @@
 {
-    "category": "Utility network",
+    "category": "",
     "description": "Discover connected features in a utility network using connected, subnetwork, upstream, and downstream traces.",
     "ignore": false,
     "images": [
@@ -9,7 +9,6 @@
         "condition barriers",
         "downstream trace",
         "network analysis",
-        "static GeometryEngine.polyline(_:fractionalLengthClosestTo:tolerance:)",
         "subnetwork trace",
         "trace configuration",
         "traversability",
@@ -30,12 +29,12 @@
         "UtilityTraceParameters",
         "UtilityTraceResult",
         "UtilityTraceType",
-        "UtilityTraversability"
+        "UtilityTraversability",
+        "static GeometryEngine.polyline(_:fractionalLengthClosestTo:tolerance:)"
     ],
     "redirect_from": [],
     "relevant_apis": [
         "ServiceGeodatabase",
-        "static GeometryEngine.polyline(_:fractionalLengthClosestTo:tolerance:)",
         "UtilityAssetType",
         "UtilityDomainNetwork",
         "UtilityElement",
@@ -49,7 +48,8 @@
         "UtilityTraceParameters",
         "UtilityTraceResult",
         "UtilityTraceType",
-        "UtilityTraversability"
+        "UtilityTraversability",
+        "static GeometryEngine.polyline(_:fractionalLengthClosestTo:tolerance:)"
     ],
     "snippets": [
         "TraceUtilityNetworkView.swift"
