@@ -30,6 +30,10 @@ struct TraceUtilityNetworkView: View {
     
     @State private var startingPoints = [UtilityElement]()
     
+    @State private var terminalSelectionIsOpen = false
+    
+    @State private var pendingElement: (element: UtilityElement, feature: ArcGISFeature)?
+    
     @State private var traceTask: Task<(), Never>?
     
     @State private var traceType = UtilityTraceParameters.TraceType.connected
@@ -107,6 +111,28 @@ struct TraceUtilityNetworkView: View {
         traceType = .connected
     }
     
+    func saveAndAddPendingElementAt(_ point: Geometry?) {
+        guard let pendingElement, let geometry = point ?? pendingElement.feature.geometry else {
+            print("There was no pending element to add")
+            return
+        }
+        let graphic = Graphic(
+            geometry: geometry,
+            symbol: SimpleMarkerSymbol(
+                style: .cross,
+                color: .green,
+                size: 20
+            )
+        )
+        switch pointType {
+        case.barrier:
+            barriers.append(pendingElement.element)
+        case .start:
+            startingPoints.append(pendingElement.element)
+        }
+        parametersOverlay.addGraphic(graphic)
+    }
+    
     // MARK: Views
     
     var body: some View {
@@ -126,43 +152,48 @@ struct TraceUtilityNetworkView: View {
                                 ).first?.geoElements.first as? ArcGISFeature else { return }
                                 if let table = feature.table as? ArcGISFeatureTable,
                                    let networkSource = network?.definition?.networkSource(named: table.tableName) {
-                                    var element: UtilityElement?
                                     switch networkSource.kind {
                                     case .junction:
-                                        print("")
-                                        element = network!.makeElement(arcGISFeature: feature)!
+                                        if let newElement = network?.makeElement(arcGISFeature: feature) {
+                                            pendingElement = (newElement, feature)
+                                            if pendingElement?.element.assetType.terminalConfiguration?.terminals.count ?? .zero > 1 {
+                                                terminalSelectionIsOpen = true
+                                            } else {
+                                                saveAndAddPendingElementAt(feature.geometry)
+                                            }
+                                        }
+                                        
                                     case .edge:
                                         if let geometry = feature.geometry,
                                            let line = GeometryEngine.makeGeometry(from: geometry, z: nil) as? Polyline,
                                            let newElement = network?.makeElement(arcGISFeature: feature) {
-                                            newElement.fractionAlongEdge = GeometryEngine.polyline(
+                                            pendingElement = (newElement, feature)
+                                            pendingElement?.element.fractionAlongEdge = GeometryEngine.polyline(
                                                 line,
                                                 fractionalLengthClosestTo: mapPoint,
                                                 tolerance: -1
                                             )
-                                            print("fraction along edge", newElement.fractionAlongEdge)
-                                            element = newElement
-                                            let graphic = Graphic(
-                                                geometry: mapPoint,
-                                                symbol: SimpleMarkerSymbol(
-                                                    style: .cross,
-                                                    color: .green,
-                                                    size: 20
-                                                )
-                                            )
-                                            parametersOverlay.addGraphic(graphic)
+                                            print("fraction along edge", pendingElement?.element.fractionAlongEdge)
+                                            saveAndAddPendingElementAt(mapPoint)
                                         }
-                                    }
-                                    switch pointType {
-                                    case.barrier:
-                                        barriers.append(element!)
-                                    case .start:
-                                        startingPoints.append(element!)
                                     }
                                 }
                             }
                         }
                         .selectionColor(.yellow)
+                        .confirmationDialog(
+                            "Select terminal",
+                            isPresented: $terminalSelectionIsOpen,
+                            titleVisibility: .visible
+                        ) {
+                            ForEach(pendingElement?.element.assetType.terminalConfiguration?.terminals ?? []) { terminal in
+                                Button(terminal.name) {
+                                    pendingElement?.element.terminal = terminal
+                                    print("Pending element:", pendingElement, "terminal set to:", pendingElement?.element.terminal?.name)
+                                    saveAndAddPendingElementAt(nil)
+                                }
+                            }
+                        }
                         .onDisappear {
                             ArcGISEnvironment.authenticationManager.arcGISCredentialStore.removeAll()
                         }
