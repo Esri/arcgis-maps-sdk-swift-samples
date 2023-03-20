@@ -20,13 +20,15 @@ extension ChangeMapViewBackgroundView {
     /// The model used to store the geo model and other expensive objects
     /// used in this view.
     class Model: ObservableObject {
-        /// A map with a streets basemap style.
+        /// A map with a single feature layer representing world time zones.
         let map: Map = {
-            // Initializes tiled layer.
-            let tiledLayer = ArcGISTiledLayer(url: .worldTimeZones)
-            
-            // Initialize map with tiled layer as basemap.
-            let map = Map(basemap: Basemap(baseLayer: tiledLayer))
+            let featureServiceTable = ServiceFeatureTable(
+                url: URL(string: "https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/World_Time_Zones/FeatureServer/0")!
+            )
+            let featureLayer = FeatureLayer(featureTable: featureServiceTable)
+
+            let map = Map()
+            map.addOperationalLayer(featureLayer)
             return map
         }()
         
@@ -70,7 +72,7 @@ extension ChangeMapViewBackgroundView {
         }
         
         init() {
-            // Initialize properties from the background grid.
+            // Initializes properties from the background grid.
             color = Color(uiColor: backgroundGrid.backgroundColor)
             lineColor = Color(uiColor: backgroundGrid.lineColor)
             lineWidth = backgroundGrid.lineWidth
