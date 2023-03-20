@@ -9,13 +9,13 @@
     "keywords": [
         "draw",
         "edit",
+        "sketch",
         "Geometry",
         "GeometryBuilder",
         "GeometryEditor",
         "Graphic",
         "GraphicsOverlay",
-        "MapView",
-        "sketch"
+        "MapView"
     ],
     "redirect_from": [],
     "relevant_apis": [
