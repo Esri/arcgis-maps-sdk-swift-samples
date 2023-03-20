@@ -1,6 +1,6 @@
 {
     "category": "Display information",
-    "description": "Use the Geometry Editor to edit or sketch points, multipoints, lines, and polygons on a map.",
+    "description": "Use the Geometry Editor to edit or sketch a new point, multipoint, line, or polygon geometry on a map.",
     "ignore": false,
     "images": [
         "sketch-on-map-1.png",
@@ -9,12 +9,13 @@
     "keywords": [
         "draw",
         "edit",
-        "MapView",
-        "GeometryEditor",
         "Geometry",
         "GeometryBuilder",
+        "GeometryEditor",
         "Graphic",
-        "GraphicsOverlay"
+        "GraphicsOverlay",
+        "MapView",
+        "sketch"
     ],
     "redirect_from": [],
     "relevant_apis": [
