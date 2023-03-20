@@ -11,23 +11,25 @@ A field worker could annotate features of interest on a map (via the GUI) such a
 
 ## How to use the sample
 
-Tap the add button to choose a geometry for the Sketch Editor. Use the toolbar to undo or redo changes made to the sketch on the graphics overlay. The graphics overlay can be cleared using the clear all button.
+Tap the pencil button to choose a geometry editor tool. Begin interactively sketching on the map view. Tap the pencil button again for editing options or to save or cancel a sketch.
 
 ## How it works
 
-1. Create an `AGSSketchEditor` and set it to the map view's `sketchEditor` property.
-2. Use `AGSSketchEditor.start(with:creationMode:)` to start sketching. If editing an existing graphic's geometry, use `AGSSketchEditor.start(with:)`.
-3. Check to see if undo and redo are possible during a sketch session with `canUndo` and `canRedo` using `AGSSketchEditor.undoManager`. If it's possible, use `AGSSketchEditor.undoManager.undo()` and `AGSSketchEditor.undoManager.redo()`.
-4. To exit the sketch editor, use `AGSSketchEditor.stop()`.
+1. Create an `GeometryEditor` and assign it to a map view with the `geometryEditor` view modifier.
+2. Set the tool of the geometry editor to the preferred tool.
+3. Use the `start(withType:)` method on the `GeometryEditor` to start interactively sketching on the map view.
+3. Use various methods and properties of the `GeometryEditor` to undo, redo, delete a selected element, clear the sketch, and cancel the sketch. 
+4. Save a sketch as a `Graphic` to a `GraphicsOverlay` displayed on the map view.
 
 ## Relevant API
 
+* MapView
+* GeometryEditor
 * Geometry
 * Graphic
 * GraphicsOverlay
-* MapView
-* GeometryEditor
+* GeometryBuilder
 
 ## Tags
 
-draw, edit
+draw, edit, sketch
