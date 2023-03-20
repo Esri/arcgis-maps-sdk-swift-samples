@@ -23,12 +23,12 @@ Tap the pencil button to choose a geometry editor tool. Begin interactively sket
 
 ## Relevant API
 
-* MapView
-* GeometryEditor
 * Geometry
+* GeometryBuilder
+* GeometryEditor
 * Graphic
 * GraphicsOverlay
-* GeometryBuilder
+* MapView
 
 ## Tags
 
