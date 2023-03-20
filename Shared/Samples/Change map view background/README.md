@@ -6,7 +6,7 @@ Customize map view's background by changing its grid properties.
 
 ## Use case
 
-Basemaps should be selected contextually. For example, in maritime applications, it would be more appropriate to use a basemap of the world's oceans as opposed to a basemap of the world's streets.
+A background grid defines the default color and grid for display behind a map or scene surface. Set properties on the background grid to highlight and give context to your MapView or SceneView.
 
 ## How to use the sample
 
