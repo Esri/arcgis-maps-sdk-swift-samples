@@ -84,23 +84,23 @@ extension GeometryEditorMenu {
                 Button(role: .destructive) {
                     model.geometryEditor.clearGeometry()
                 } label: {
-                    Label("Clear", systemImage: "trash")
+                    Label("Clear Current Sketch", systemImage: "trash")
                 }
-                .disabled(!model.canClear)
+                .disabled(!model.canClearCurrentSketch)
                 
                 Divider()
                 
                 Button {
                     model.save()
                 } label: {
-                    Label("Save", systemImage: "map")
+                    Label("Save Sketch", systemImage: "square.and.arrow.down")
                 }
                 .disabled(!model.canSave)
                 
                 Button {
                     model.stop()
                 } label: {
-                    Label("Stop", systemImage: "stop.circle")
+                    Label("Cancel Sketch", systemImage: "xmark")
                 }
             } else {
                 Button {
@@ -150,6 +150,15 @@ extension GeometryEditorMenu {
                 } label: {
                     Label("New Freehand Area", systemImage: "lasso")
                 }
+                
+                Divider()
+                
+                Button(role: .destructive) {
+                    model.clearSavedSketches()
+                } label: {
+                    Label("Clear Saved Sketches", systemImage: "trash")
+                }
+                .disabled(!model.canClearSavedSketches)
             }
         }
     }
@@ -177,14 +186,17 @@ extension GeometryEditorMenu {
         @Published private(set) var canSave = false
         
         /// A Boolean value indicating if the geometry can be cleared from the geometry editor.
-        @Published private(set) var canClear = false
+        @Published private(set) var canClearCurrentSketch = false
+        
+        /// A Boolean value indicating if the saved sketches can be cleared.
+        @Published private(set) var canClearSavedSketches = false
         
         /// The current geometry of the geometry editor.
         @Published private(set) var geometry: Geometry? {
             didSet {
                 canUndo = geometryEditor.canUndo
                 canRedo = geometryEditor.canRedo
-                canClear = geometry.map { !$0.isEmpty } ?? false
+                canClearCurrentSketch = geometry.map { !$0.isEmpty } ?? false
                 canSave = true //geometry.map { GeometryBuilder.builder(from: $0).sketchIsValid } ?? false
             }
         }
@@ -218,6 +230,12 @@ extension GeometryEditorMenu {
             let graphic = Graphic(geometry: geometry, symbol: symbol(for: geometry))
             graphicsOverlay.addGraphic(graphic)
             stop()
+            canClearSavedSketches = true
+        }
+        
+        func clearSavedSketches() {
+            graphicsOverlay.removeAllGraphics()
+            canClearSavedSketches = false
         }
         
         /// Stops editing with the geometry editor.
