@@ -23,7 +23,7 @@ extension ChangeMapViewBackgroundView {
         /// A map with a single feature layer representing world time zones.
         let map: Map = {
             let featureServiceTable = ServiceFeatureTable(
-                url: URL(string: "https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/World_Time_Zones/FeatureServer/0")!
+                item: PortalItem(url: URL(string: "https://www.arcgis.com/home/item.html?id=312cebfea2624e108e234220b04460b8")!)!
             )
             let featureLayer = FeatureLayer(featureTable: featureServiceTable)
 
