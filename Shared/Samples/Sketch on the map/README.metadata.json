@@ -18,12 +18,12 @@
     ],
     "redirect_from": [],
     "relevant_apis": [
-        "MapView",
-        "GeometryEditor",
         "Geometry",
         "GeometryBuilder",
+        "GeometryEditor",
         "Graphic",
-        "GraphicsOverlay"
+        "GraphicsOverlay",
+        "MapView"
     ],
     "snippets": [
         "SketchOnTheMapView.swift"
