@@ -92,7 +92,7 @@ extension DownloadPreplannedMapAreaView {
                 )
                 
                 // Loads the preplanned map areas.
-                try await preplannedMapAreas.load()
+                await preplannedMapAreas.load()
             } catch {
                 self.error = error
             }
