@@ -42,26 +42,15 @@ struct TraceUtilityNetworkView: View {
     
     /// The overlay on which trace graphics will be drawn.
     private var parametersOverlay: GraphicsOverlay = {
-        let barrierPointSymbol = SimpleMarkerSymbol(
-            style: .x,
-            color: .red,
-            size: 20
-        )
+        let barrierPointSymbol = SimpleMarkerSymbol(style: .x, color: .red, size: 20)
+        let startingPointSymbol = SimpleMarkerSymbol(style: .cross, color: .green, size: 20)
         let barrierUniqueValue = UniqueValue(
-            description: "Barriers",
-            label: PointType.barrier.rawValue,
             symbol: barrierPointSymbol,
-            values: [TracingActivity.settingPoints, PointType.barrier]
-        )
-        let startingPointSymbol = SimpleMarkerSymbol(
-            style: .cross,
-            color: .green,
-            size: 20
+            values: [PointType.barrier.rawValue]
         )
         let renderer = UniqueValueRenderer(
-            fieldNames: ["TraceLocationType"],
+            fieldNames: [String(describing: PointType.self)],
             uniqueValues: [barrierUniqueValue],
-            defaultLabel: String(describing: TracingActivity.settingPoints),
             defaultSymbol: startingPointSymbol
         )
         let overlay = GraphicsOverlay()
@@ -118,12 +107,9 @@ struct TraceUtilityNetworkView: View {
         }
         let graphic = Graphic(
             geometry: geometry,
-            symbol: SimpleMarkerSymbol(
-                style: .cross,
-                color: .green,
-                size: 20
-            )
+            attributes: [String(describing: PointType.self): pointType.rawValue]
         )
+        print(graphic.attributes)
         switch pointType {
         case.barrier:
             barriers.append(pendingItem.element)
