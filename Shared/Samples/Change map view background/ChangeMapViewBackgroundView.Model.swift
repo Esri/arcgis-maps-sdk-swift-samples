@@ -22,7 +22,7 @@ extension ChangeMapViewBackgroundView {
     class Model: ObservableObject {
         /// A map with a streets basemap style.
         let map: Map = {
-            // Initialize tiled layer.
+            // Initializes tiled layer.
             let tiledLayer = ArcGISTiledLayer(url: .worldTimeZones)
             
             // Initialize map with tiled layer as basemap.

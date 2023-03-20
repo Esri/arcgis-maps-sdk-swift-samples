@@ -20,7 +20,7 @@ struct ChangeMapViewBackgroundView: View {
     @StateObject private var model = Model()
     
     /// A Boolean value indicating whether the settings view should be presented.
-    @State var isShowingSettings = false
+    @State private var isShowingSettings = false
     
     /// The initial viewpoint for the map.
     @State var viewpoint = Viewpoint(
