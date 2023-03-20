@@ -32,7 +32,7 @@ struct TraceUtilityNetworkView: View {
     
     @State private var terminalSelectionIsOpen = false
     
-    @State private var pendingElement: (element: UtilityElement, feature: ArcGISFeature)?
+    @State private var pendingItem: (element: UtilityElement, feature: ArcGISFeature)?
     
     @State private var traceTask: Task<(), Never>?
     
@@ -112,7 +112,7 @@ struct TraceUtilityNetworkView: View {
     }
     
     func saveAndAddPendingElementAt(_ point: Geometry?) {
-        guard let pendingElement, let geometry = point ?? pendingElement.feature.geometry else {
+        guard let pendingItem, let geometry = point ?? pendingItem.feature.geometry else {
             print("There was no pending element to add")
             return
         }
@@ -126,9 +126,9 @@ struct TraceUtilityNetworkView: View {
         )
         switch pointType {
         case.barrier:
-            barriers.append(pendingElement.element)
+            barriers.append(pendingItem.element)
         case .start:
-            startingPoints.append(pendingElement.element)
+            startingPoints.append(pendingItem.element)
         }
         parametersOverlay.addGraphic(graphic)
     }
@@ -155,8 +155,8 @@ struct TraceUtilityNetworkView: View {
                                     switch networkSource.kind {
                                     case .junction:
                                         if let newElement = network?.makeElement(arcGISFeature: feature) {
-                                            pendingElement = (newElement, feature)
-                                            if pendingElement?.element.assetType.terminalConfiguration?.terminals.count ?? .zero > 1 {
+                                            pendingItem = (newElement, feature)
+                                            if pendingItem?.element.assetType.terminalConfiguration?.terminals.count ?? .zero > 1 {
                                                 terminalSelectionIsOpen = true
                                             } else {
                                                 saveAndAddPendingElementAt(feature.geometry)
@@ -167,13 +167,13 @@ struct TraceUtilityNetworkView: View {
                                         if let geometry = feature.geometry,
                                            let line = GeometryEngine.makeGeometry(from: geometry, z: nil) as? Polyline,
                                            let newElement = network?.makeElement(arcGISFeature: feature) {
-                                            pendingElement = (newElement, feature)
-                                            pendingElement?.element.fractionAlongEdge = GeometryEngine.polyline(
+                                            pendingItem = (newElement, feature)
+                                            pendingItem?.element.fractionAlongEdge = GeometryEngine.polyline(
                                                 line,
                                                 fractionalLengthClosestTo: mapPoint,
                                                 tolerance: -1
                                             )
-                                            print("fraction along edge", pendingElement?.element.fractionAlongEdge)
+                                            print("fraction along edge", pendingItem?.element.fractionAlongEdge)
                                             saveAndAddPendingElementAt(mapPoint)
                                         }
                                     }
@@ -186,10 +186,10 @@ struct TraceUtilityNetworkView: View {
                             isPresented: $terminalSelectionIsOpen,
                             titleVisibility: .visible
                         ) {
-                            ForEach(pendingElement?.element.assetType.terminalConfiguration?.terminals ?? []) { terminal in
+                            ForEach(pendingItem?.element.assetType.terminalConfiguration?.terminals ?? []) { terminal in
                                 Button(terminal.name) {
-                                    pendingElement?.element.terminal = terminal
-                                    print("Pending element:", pendingElement, "terminal set to:", pendingElement?.element.terminal?.name)
+                                    pendingItem?.element.terminal = terminal
+                                    print("Pending element:", pendingItem, "terminal set to:", pendingItem?.element.terminal?.name)
                                     saveAndAddPendingElementAt(nil)
                                 }
                             }
