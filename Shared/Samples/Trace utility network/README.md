@@ -33,6 +33,7 @@ Tap "Start a new trace" to select the type of trace using the confirmation dialo
 
 ## Relevant API
 
+* enum GeometryEngine.polyline(_:fractionalLengthClosestTo:tolerance:)
 * ServiceGeodatabase
 * UtilityAssetType
 * UtilityDomainNetwork
@@ -48,7 +49,6 @@ Tap "Start a new trace" to select the type of trace using the confirmation dialo
 * UtilityTraceResult
 * UtilityTraceType
 * UtilityTraversability
-* enum GeometryEngine.polyline(_:fractionalLengthClosestTo:tolerance:)
 
 ## Additional information
 

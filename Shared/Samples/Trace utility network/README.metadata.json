@@ -8,6 +8,7 @@
     "keywords": [
         "condition barriers",
         "downstream trace",
+        "enum GeometryEngine.polyline(_:fractionalLengthClosestTo:tolerance:)",
         "network analysis",
         "subnetwork trace",
         "trace configuration",
@@ -29,11 +30,11 @@
         "UtilityTraceParameters",
         "UtilityTraceResult",
         "UtilityTraceType",
-        "UtilityTraversability",
-        "enum GeometryEngine.polyline(_:fractionalLengthClosestTo:tolerance:)"
+        "UtilityTraversability"
     ],
     "redirect_from": [],
     "relevant_apis": [
+        "enum GeometryEngine.polyline(_:fractionalLengthClosestTo:tolerance:)",
         "ServiceGeodatabase",
         "UtilityAssetType",
         "UtilityDomainNetwork",
@@ -48,8 +49,7 @@
         "UtilityTraceParameters",
         "UtilityTraceResult",
         "UtilityTraceType",
-        "UtilityTraversability",
-        "enum GeometryEngine.polyline(_:fractionalLengthClosestTo:tolerance:)"
+        "UtilityTraversability"
     ],
     "snippets": [
         "TraceUtilityNetworkView.swift"
