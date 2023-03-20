@@ -159,7 +159,6 @@ struct TraceUtilityNetworkView: View {
                                                 fractionalLengthClosestTo: mapPoint,
                                                 tolerance: -1
                                             )
-                                            print("fraction along edge", pendingItem?.element.fractionAlongEdge)
                                             saveAndAddPendingElementAt(mapPoint)
                                         }
                                     }
@@ -175,7 +174,6 @@ struct TraceUtilityNetworkView: View {
                             ForEach(pendingItem?.element.assetType.terminalConfiguration?.terminals ?? []) { terminal in
                                 Button(terminal.name) {
                                     pendingItem?.element.terminal = terminal
-                                    print("Pending element:", pendingItem, "terminal set to:", pendingItem?.element.terminal?.name)
                                     saveAndAddPendingElementAt(nil)
                                 }
                             }
@@ -316,6 +314,8 @@ struct TraceUtilityNetworkView: View {
 }
 
 private extension ArcGISCredential {
+    /// - Note: Never hardcode login information in a production application. This is done solely
+    /// for the sake of the sample.
     static var publicSample: ArcGISCredential {
         get async throws {
             try await TokenCredential.credential(
