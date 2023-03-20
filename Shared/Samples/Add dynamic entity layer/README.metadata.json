@@ -17,27 +17,27 @@
         "stream",
         "track",
         "ArcGISStreamService",
+        "ArcGISStreamServiceFilter",
         "ConnectionStatus",
         "DynamicEntity",
-        "DynamicEntityFilter",
+        "DynamicEntityDataSource.PurgeOptions",
         "DynamicEntityLayer",
-        "DynamicEntityPurgeOptions",
         "TrackDisplayProperties"
     ],
     "redirect_from": [],
     "relevant_apis": [
         "ArcGISStreamService",
+        "ArcGISStreamServiceFilter",
         "ConnectionStatus",
         "DynamicEntity",
-        "DynamicEntityFilter",
+        "DynamicEntityDataSource.PurgeOptions",
         "DynamicEntityLayer",
-        "DynamicEntityPurgeOptions",
         "TrackDisplayProperties"
     ],
     "snippets": [
+        "AddDynamicEntityLayerView.swift",
         "AddDynamicEntityLayerView.Model.swift",
-        "AddDynamicEntityLayerView.SettingsView.swift",
-        "AddDynamicEntityLayerView.swift"
+        "AddDynamicEntityLayerView.SettingsView.swift"
     ],
     "title": "Add dynamic entity layer"
 }
