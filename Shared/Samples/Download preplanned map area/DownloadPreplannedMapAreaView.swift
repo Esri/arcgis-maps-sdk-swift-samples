@@ -17,7 +17,7 @@ import SwiftUI
 
 struct DownloadPreplannedMapAreaView: View {
     /// A Boolean value indicating whether the sample info view is visible.
-    @Environment(\.isSampleInfoViewVisible) private var isSampleInfoViewVisible
+    //@Environment(\.isSampleInfoViewVisible) private var isSampleInfoViewVisible
     
     /// A Boolean value indicating whether to select a map.
     @State private var isSelectingMap = false
@@ -30,24 +30,22 @@ struct DownloadPreplannedMapAreaView: View {
     
     var body: some View {
         MapView(map: model.map)
-            .alert(isPresented: $model.isShowingErrorAlert, presentingError: model.error)
+            //.alert(isPresented: $model.isShowingErrorAlert, presentingError: model.error)
             .overlay(alignment: .top) {
-                Text("Current map: \(model.map.item?.title ?? "Unknown")")
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 6)
-                    .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
+                mapNameOverlay
             }
             .task {
                 await model.loadPreplannedMapAreas()
             }
             .onDisappear {
-                if !isSampleInfoViewVisible {
-                    Task { await model.cancelAllJobs() }
-                }
+//                if !isSampleInfoViewVisible {
+//                    Task { await model.cancelAllJobs() }
+//                }
             }
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
                     Spacer()
+                    
                     Button("Select Map") {
                         isSelectingMap.toggle()
                     }
@@ -55,7 +53,9 @@ struct DownloadPreplannedMapAreaView: View {
                         MapPicker()
                             .environmentObject(model)
                     }
+                    
                     Spacer()
+                    
                     Button {
                         isShowingDeleteAlert = true
                     } label: {
@@ -71,5 +71,13 @@ struct DownloadPreplannedMapAreaView: View {
                     }
                 }
             }
+    }
+    
+    var mapNameOverlay: some View {
+        Text(model.map.item?.title ?? "Unknown Map")
+            .font(.footnote)
+            .frame(maxWidth: .infinity)
+            .padding(8)
+            .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
     }
 }

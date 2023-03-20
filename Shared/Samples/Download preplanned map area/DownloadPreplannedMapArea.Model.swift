@@ -24,12 +24,12 @@ extension DownloadPreplannedMapAreaView {
         }
         
         /// A Boolean value indicating whether to show an alert for an error.
-        @Published var isShowingErrorAlert = false
+        //@Published var isShowingErrorAlert = false
         
         /// The error shown in the alert.
-        @Published var error: Error? {
-            didSet { isShowingErrorAlert = error != nil }
-        }
+        @Published var error: Error? //{
+//            didSet { isShowingErrorAlert = error != nil }
+        //}
         
         /// The preplanned map areas from the offline map task.
         @Published private(set) var preplannedMapAreas: [PreplannedMapArea] = []
