@@ -18,8 +18,8 @@ Tap the pencil button to choose a geometry editor tool. Begin interactively sket
 1. Create an `GeometryEditor` and assign it to a map view with the `geometryEditor` view modifier.
 2. Set the tool of the geometry editor to the preferred tool.
 3. Use the `start(withType:)` method on the `GeometryEditor` to start interactively sketching on the map view.
-3. Use various methods and properties of the `GeometryEditor` to undo, redo, delete a selected element, clear the sketch, and cancel the sketch. 
-4. Save a sketch as a `Graphic` to a `GraphicsOverlay` displayed on the map view.
+4. Use various methods and properties of the `GeometryEditor` to undo, redo, delete a selected element, clear the sketch, and cancel the sketch. 
+5. Save a sketch as a `Graphic` to a `GraphicsOverlay` displayed on the map view.
 
 ## Relevant API
 
