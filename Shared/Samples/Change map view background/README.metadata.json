@@ -22,7 +22,7 @@
     "snippets": [
         "ChangeMapViewBackgroundView.swift",
         "ChangeMapViewBackgroundView.Model.swift",
-        "ChangeMapViewBackgroundView.SettingsView.swift",
+        "ChangeMapViewBackgroundView.SettingsView.swift"
     ],
     "title": "Change map view background"
 }
