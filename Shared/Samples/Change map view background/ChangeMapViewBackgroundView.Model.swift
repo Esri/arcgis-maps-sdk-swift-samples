@@ -22,9 +22,7 @@ extension ChangeMapViewBackgroundView {
     class Model: ObservableObject {
         /// A map with a single feature layer representing world time zones.
         let map: Map = {
-            let featureServiceTable = ServiceFeatureTable(
-                item: PortalItem(url: URL(string: "https://www.arcgis.com/home/item.html?id=312cebfea2624e108e234220b04460b8")!)!
-            )
+            let featureServiceTable = ServiceFeatureTable(item: .worldTimeZones)
             let featureLayer = FeatureLayer(featureTable: featureServiceTable)
 
             let map = Map()
@@ -81,8 +79,9 @@ extension ChangeMapViewBackgroundView {
     }
 }
 
-private extension URL {
-    static let worldTimeZones = URL(
-        string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/WorldTimeZones/MapServer"
+private extension Item {
+    /// A portal item representing world time zones.
+    static let worldTimeZones = PortalItem(
+        url: URL(string: "https://www.arcgis.com/home/item.html?id=312cebfea2624e108e234220b04460b8")!
     )!
 }
