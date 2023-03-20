@@ -32,7 +32,7 @@ Upon launch, a web map containing premium content will load. You will be prompte
 
 The workflow presented in this sample works for all SAML based enterprise (IWA, PKI, Okta, etc.) & social (Facebook, Google, etc.) identity providers for ArcGIS Online or Portal. For more information, see the topic [Set up enterprise logins](https://doc.arcgis.com/en/arcgis-online/administer/enterprise-logins.htm).
 
-For additional information on using OAuth in your app, see the topic [Authenticate with the API](https://developers.arcgis.com/documentation/core-concepts/security-and-authentication/mobile-and-native-user-logins/) in *Mobile and Native Named User Login*.
+For additional information on using OAuth in your app, see the topic [OAuth 2.0](https://developers.arcgis.com/documentation/mapping-apis-and-services/security/oauth-2.0/) and [Serverless native and mobile app workflow](https://developers.arcgis.com/documentation/mapping-apis-and-services/security/arcgis-identity/serverless-native-apps/).
 
 ## Tags
 

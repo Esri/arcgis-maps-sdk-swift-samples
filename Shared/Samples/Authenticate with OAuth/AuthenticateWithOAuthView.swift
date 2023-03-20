@@ -18,13 +18,11 @@ import ArcGISToolkit
 
 struct AuthenticateWithOAuthView: View {
     /// The authenticator to handle authentication challenges.
-    @ObservedObject var authenticator: Authenticator
+    @StateObject private var authenticator = Authenticator(
+        oAuthUserConfigurations: [.arcgisDotCom]
+    )
 
     init() {
-        // Creates an authenticator.
-        authenticator = Authenticator(
-            oAuthUserConfigurations: [.arcgisDotCom]
-        )
         // Sets authenticator as ArcGIS and Network challenge handlers to handle authentication
         // challenges.
         ArcGISEnvironment.authenticationManager.handleChallenges(using: authenticator)
@@ -38,7 +36,7 @@ struct AuthenticateWithOAuthView: View {
         // The portal item to be displayed on the map.
         let portalItem = PortalItem(
             portal: portal,
-            id: PortalItem.ID(.portalItemID)!
+            id: .trafficMap
         )
         
         // Creates map with portal item.
@@ -48,7 +46,13 @@ struct AuthenticateWithOAuthView: View {
     var body: some View {
         MapView(map: map)
             .authenticator(authenticator)
-            .onDisappear { signOut() }
+            .onDisappear {
+                // Reset challenge handlers.
+                ArcGISEnvironment.authenticationManager.handleChallenges(using: nil)
+
+                // Sign out.
+                signOut()
+            }
     }
     
     /// Signs out from the portal by revoking OAuth tokens and clearing credential stores.
@@ -84,7 +88,9 @@ private extension String {
     /// A unique identifier associated with an application registered with the portal.
     /// - Note: This identifier is for a public application created by the ArcGIS Maps SDK team.
     static let clientID = "lgAdHkYZYlwwfAhC"
-    
+}
+
+private extension PortalItem.ID {
     /// The portal item ID of a web map to be displayed on the map.
-    static let portalItemID = "e5039444ef3c48b8a8fdc9227f9be7c1"
+    static var trafficMap: Self { Self("e5039444ef3c48b8a8fdc9227f9be7c1")! }
 }
