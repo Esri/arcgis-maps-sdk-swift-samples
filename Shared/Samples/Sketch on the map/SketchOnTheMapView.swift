@@ -197,7 +197,7 @@ extension GeometryEditorMenu {
                 canUndo = geometryEditor.canUndo
                 canRedo = geometryEditor.canRedo
                 canClearCurrentSketch = geometry.map { !$0.isEmpty } ?? false
-                canSave = true //geometry.map { GeometryBuilder.builder(from: $0).sketchIsValid } ?? false
+                canSave = sketchIsValidForSaving
             }
         }
         
@@ -244,6 +244,8 @@ extension GeometryEditorMenu {
             isStarted = false
         }
         
+        /// Returns the symbology for graphics saved to the graphics overlay.
+        /// - Parameter geometry: The geometry of the graphic to be saved.
         func symbol(for geometry: Geometry) -> Symbol {
             switch geometry {
             case is Point, is Multipoint:
@@ -257,6 +259,25 @@ extension GeometryEditorMenu {
                 )
             default:
                 fatalError("Unexpected geometry type")
+            }
+        }
+        
+        /// A Boolean value indicating if the sketch is in a state in which it can be saved
+        /// to a graphics overlay.
+        var sketchIsValidForSaving: Bool {
+            guard let geometry else { return false }
+            
+            switch geometry {
+            case let point as Point:
+                return PointBuilder(point: point).sketchIsValid
+            case let multipoint as Multipoint:
+                return MultipointBuilder(multipoint: multipoint).sketchIsValid
+            case let polyline as Polyline:
+                return PolylineBuilder(polyline: polyline).sketchIsValid
+            case let polygon as Polygon:
+                return PolygonBuilder(polygon: polygon).sketchIsValid
+            default:
+                fatalError("Unsupported geometry type")
             }
         }
     }
