@@ -25,30 +25,17 @@ struct SelectFeaturesInFeatureLayerView: View {
     /// A Boolean value indicating whether to show an alert.
     @State private var isShowingAlert = false
     
-    /// The error to display in the alert.
-    @State private var error: Error?
-    
-    /// A map with a topographic basemap style and a feature layer.
-    @StateObject private var map: Map = {
-        // A feature layer visualizing GDP per capita.
-        let featureLayer = FeatureLayer(
-            item: PortalItem(
-                portal: .arcGISOnline(connection: .anonymous),
-                id: .gdpPerCapita
-            )
-        )
-        let map = Map(basemapStyle: .arcGISTopographic)
-        map.addOperationalLayer(featureLayer)
-        return map
-    }()
-    
-    private var featureLayer: FeatureLayer {
-        map.operationalLayers.first as! FeatureLayer
+    /// The error shown in the alert.
+    @State private var error: Error? {
+        didSet { isShowingAlert = error != nil }
     }
+    
+    /// The view model for the sample.
+    @StateObject private var model = Model()
     
     var body: some View {
         MapViewReader { mapViewProxy in
-            MapView(map: map)
+            MapView(map: model.map)
                 .onSingleTapGesture { screenPoint, _ in
                     identifyPoint = screenPoint
                 }
@@ -57,11 +44,11 @@ struct SelectFeaturesInFeatureLayerView: View {
                     
                     do {
                         // Unselects the selected features.
-                        featureLayer.unselectFeatures(selectedFeatures)
+                        model.gdpPerCapitaLayer.unselectFeatures(selectedFeatures)
                         
                         // Saves the results from the identify method on the map view proxy.
                         let results = try await mapViewProxy.identify(
-                            on: featureLayer,
+                            on: model.gdpPerCapitaLayer,
                             screenPoint: identifyPoint,
                             tolerance: 12,
                             maximumResults: 10
@@ -71,11 +58,10 @@ struct SelectFeaturesInFeatureLayerView: View {
                         selectedFeatures = results.geoElements as! [Feature]
                         
                         // Selects the features from the selected features array.
-                        featureLayer.selectFeatures(selectedFeatures)
+                        model.gdpPerCapitaLayer.selectFeatures(selectedFeatures)
                     } catch {
                         // Updates the error and shows an alert.
                         self.error = error
-                        isShowingAlert = true
                     }
                 }
                 .overlay(alignment: .top) {
@@ -85,6 +71,28 @@ struct SelectFeaturesInFeatureLayerView: View {
                         .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
                 }
                 .alert(isPresented: $isShowingAlert, presentingError: error)
+        }
+    }
+}
+
+private extension SelectFeaturesInFeatureLayerView {
+    /// The model used to store the geo model and other expensive objects
+    /// used in this view.
+    class Model: ObservableObject {
+        /// A feature layer visualizing GDP per capita.
+        let gdpPerCapitaLayer = FeatureLayer(
+            item: PortalItem(
+                portal: .arcGISOnline(connection: .anonymous),
+                id: .gdpPerCapita
+            )
+        )
+        
+        /// A map with a topographic basemap style and a feature layer.
+        let map: Map
+        
+        init() {
+            map = Map(basemapStyle: .arcGISTopographic)
+            map.addOperationalLayer(gdpPerCapitaLayer)
         }
     }
 }

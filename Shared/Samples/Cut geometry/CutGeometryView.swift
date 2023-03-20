@@ -19,67 +19,81 @@ struct CutGeometryView: View {
     /// A Boolean value indicating whether the geometry is cut.
     @State private var isGeometryCut = false
     
-    /// A map with a topographic basemap style and an initial viewpoint of Lake Superior.
-    @StateObject private var map: Map = {
-        let map = Map(basemapStyle: .arcGISTopographic)
-        map.initialViewpoint = Viewpoint(targetExtent: Geometry.lakeSuperiorPolygon)
-        return map
-    }()
-    
-    /// A graphics overlay containing the Lake Superior polygon and a border line.
-    @StateObject private var lakeGraphicsOverlay: GraphicsOverlay = {
-        let lakeSuperiorGraphic = Graphic(
-            geometry: .lakeSuperiorPolygon,
-            symbol: SimpleFillSymbol(
-                color: .blue.withAlphaComponent(0.1),
-                outline: SimpleLineSymbol(style: .solid, color: .blue, width: 4)
-            )
-        )
-        let borderGraphic = Graphic(
-            geometry: .borderPolyline,
-            symbol: SimpleLineSymbol(style: .dot, color: .red, width: 5)
-        )
-        return GraphicsOverlay(graphics: [lakeSuperiorGraphic, borderGraphic])
-    }()
-    
-    /// The graphics overlay containing cut graphics.
-    @StateObject private var cutGraphicsOverlay = GraphicsOverlay()
-    
-    /// Cuts geometry and adds resulting graphics.
-    private func cutGeometry() {
-        // Cuts the Lake Superior polygon using the border polyline.
-        guard let parts = GeometryEngine.cut(.lakeSuperiorPolygon, usingCutter: .borderPolyline),
-              parts.count == 2,
-              let firstPart = parts.first,
-              let secondPart = parts.last else {
-            return
-        }
-        // Creates the graphics for the Canadian and USA sides of Lake Superior.
-        let canadaSideGraphic = Graphic(geometry: firstPart, symbol: SimpleFillSymbol(style: .backwardDiagonal, color: .green))
-        let usaSideGraphic = Graphic(geometry: secondPart, symbol: SimpleFillSymbol(style: .forwardDiagonal, color: .yellow))
-        // Adds the graphics to the graphics overlay.
-        cutGraphicsOverlay.addGraphics([canadaSideGraphic, usaSideGraphic])
-    }
-    
-    /// Removes all cut graphics.
-    private func reset() {
-        cutGraphicsOverlay.removeAllGraphics()
-    }
+    /// The view model for the sample.
+    @StateObject private var model = Model()
     
     var body: some View {
-        MapView(map: map, graphicsOverlays: [lakeGraphicsOverlay, cutGraphicsOverlay])
+        MapView(map: model.map, graphicsOverlays: model.graphicsOverlays)
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
                     Button(isGeometryCut ? "Reset" : "Cut") {
                         if isGeometryCut {
-                            reset()
+                            model.removeAllGraphics()
                         } else {
-                            cutGeometry()
+                            model.cutGeometry()
                         }
                         isGeometryCut.toggle()
                     }
                 }
             }
+    }
+}
+
+private extension CutGeometryView {
+    /// The model used to store the geo model and other expensive objects
+    /// used in this view.
+    class Model: ObservableObject {
+        /// A map with a topographic basemap style and an initial viewpoint of Lake Superior.
+        let map: Map = {
+            let map = Map(basemapStyle: .arcGISTopographic)
+            map.initialViewpoint = Viewpoint(boundingGeometry: Geometry.lakeSuperiorPolygon)
+            return map
+        }()
+        
+        /// A graphics overlay containing the Lake Superior polygon and a border line.
+        private let lakeGraphicsOverlay: GraphicsOverlay = {
+            let lakeSuperiorGraphic = Graphic(
+                geometry: .lakeSuperiorPolygon,
+                symbol: SimpleFillSymbol(
+                    color: .blue.withAlphaComponent(0.1),
+                    outline: SimpleLineSymbol(style: .solid, color: .blue, width: 4)
+                )
+            )
+            let borderGraphic = Graphic(
+                geometry: .borderPolyline,
+                symbol: SimpleLineSymbol(style: .dot, color: .red, width: 5)
+            )
+            return GraphicsOverlay(graphics: [lakeSuperiorGraphic, borderGraphic])
+        }()
+        
+        /// The graphics overlay containing cut graphics.
+        private let cutGraphicsOverlay = GraphicsOverlay()
+        
+        /// The graphics overlays used in this sample.
+        var graphicsOverlays: [GraphicsOverlay] {
+            return [lakeGraphicsOverlay, cutGraphicsOverlay]
+        }
+        
+        /// Cuts geometry and adds resulting graphics.
+        func cutGeometry() {
+            // Cuts the Lake Superior polygon using the border polyline.
+            let parts = GeometryEngine.cut(.lakeSuperiorPolygon, usingCutter: .borderPolyline)
+            guard parts.count == 2,
+                  let firstPart = parts.first,
+                  let secondPart = parts.last else {
+                return
+            }
+            // Creates the graphics for the Canadian and USA sides of Lake Superior.
+            let canadaSideGraphic = Graphic(geometry: firstPart, symbol: SimpleFillSymbol(style: .backwardDiagonal, color: .green))
+            let usaSideGraphic = Graphic(geometry: secondPart, symbol: SimpleFillSymbol(style: .forwardDiagonal, color: .yellow))
+            // Adds the graphics to the graphics overlay.
+            cutGraphicsOverlay.addGraphics([canadaSideGraphic, usaSideGraphic])
+        }
+        
+        /// Removes all cut graphics.
+        func removeAllGraphics() {
+            cutGraphicsOverlay.removeAllGraphics()
+        }
     }
 }
 

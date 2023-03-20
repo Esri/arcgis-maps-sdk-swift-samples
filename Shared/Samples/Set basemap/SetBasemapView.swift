@@ -17,25 +17,33 @@ import ArcGIS
 import ArcGISToolkit
 
 struct SetBasemapView: View {
-    /// A map with imagery basemap.
-    @StateObject private var map = Map(basemapStyle: .arcGISImagery)
-    
-    /// The initial viewpoint of the map.
-    private let initialViewpoint = Viewpoint(
-        center: Point(x: -118.4, y: 33.7, spatialReference: .wgs84),
-        scale: 1e6
-    )
-    
     /// A Boolean value that indicates whether to show the basemap gallery.
     @State private var isShowingBasemapGallery = false
     
+    /// The model used to store the geo model and other expensive objects
+    /// used in this view.
+    private class Model: ObservableObject {
+        /// A map with imagery basemap.
+        let map: Map = {
+            let map = Map(basemapStyle: .arcGISImagery)
+            // The initial viewpoint of the map.
+            map.initialViewpoint = Viewpoint(
+                center: Point(x: -118.4, y: 33.7, spatialReference: .wgs84),
+                scale: 1e6
+            )
+            return map
+        }()
+    }
+    
+    /// The view model for the sample.
+    @StateObject private var model = Model()
+    
     var body: some View {
-        MapView(map: map, viewpoint: initialViewpoint)
+        MapView(map: model.map)
             .overlay(alignment: .topTrailing) {
                 if isShowingBasemapGallery {
-                    BasemapGallery(geoModel: map)
+                    BasemapGallery(geoModel: model.map)
                         .style(.automatic())
-                        .esriBorder()
                 }
             }
             .toolbar {

@@ -44,7 +44,7 @@ Please see [Configure App Secrets](Documentation/ConfigureAppSecrets.md) for add
 * Unfamiliar with SwiftUI? Check out Apple's [SwiftUI documentation](https://developer.apple.com/documentation/swiftui/).
 * Want to start a new project? [Setup](https://developers.arcgis.com/swift/get-started) your development environment
 * New to the API? Explore the documentation: [Guide](https://developers.arcgis.com/swift/) | [API Reference](https://developers.arcgis.com/swift/api-reference/documentation/arcgis/)
-* Got a question? Ask the community on our [forum](https://community.esri.com/t5/arcgis-runtime-sdk-for-ios-questions/bd-p/arcgis-runtime-sdk-for-ios-questions)
+* Got a question? Ask the community on our [forum](https://community.esri.com/t5/swift-maps-sdk-questions/bd-p/swift-maps-sdk-questions)
 
 ## Contributing
 
