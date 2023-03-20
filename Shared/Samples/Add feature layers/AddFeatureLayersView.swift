@@ -15,7 +15,7 @@
 import ArcGIS
 import SwiftUI
 
-struct DisplayFeatureLayersView: View {
+struct AddFeatureLayersView: View {
     /// A Boolean value indicating whether to show an alert.
     @State private var isShowingAlert = false
     
@@ -51,7 +51,7 @@ struct DisplayFeatureLayersView: View {
     private func loadPortalItemFeatureTable() {
         let featureLayer = FeatureLayer(
             item: PortalItem(
-                portal: .arcGISOnline(isLoginRequired: false),
+                portal: .arcGISOnline(connection: .anonymous),
                 id: .treesOfPortland
             )
         )
@@ -143,18 +143,18 @@ struct DisplayFeatureLayersView: View {
             .onAppear {
                 // Updates the URL session challenge handler to use the
                 // specified credentials and tokens for any challenges.
-                ArcGISRuntimeEnvironment.authenticationChallengeHandler = ChallengeHandler()
+                ArcGISEnvironment.authenticationChallengeHandler = ChallengeHandler()
             }
             .onDisappear {
                 // Resets the URL session challenge handler to use default handling.
-                ArcGISRuntimeEnvironment.authenticationChallengeHandler = nil
+                ArcGISEnvironment.authenticationChallengeHandler = nil
             }
     }
 }
 
 /// The authentication model used to handle challenges and credentials.
 private struct ChallengeHandler: AuthenticationChallengeHandler {
-    func handleArcGISChallenge(
+    func handleArcGISAuthenticationChallenge(
         _ challenge: ArcGISAuthenticationChallenge
     ) async throws -> ArcGISAuthenticationChallenge.Disposition {
         // NOTE: Never hardcode login information in a production application.
@@ -165,7 +165,7 @@ private struct ChallengeHandler: AuthenticationChallengeHandler {
     }
 }
 
-private extension DisplayFeatureLayersView {
+private extension AddFeatureLayersView {
     /// The various feature layer sources for the sample.
     enum FeatureLayerSource: CaseIterable, Equatable {
         case shapefile, geoPackage, geodatabase, portalItem, serviceFeatureTable

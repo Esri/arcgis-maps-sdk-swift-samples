@@ -187,6 +187,7 @@ private extension SurfacePlacement {
         case .drapedFlat: return "Draped Flat"
         case .relative: return "Relative"
         case .relativeToScene: return "Relative to Scene"
+        @unknown default: return "Unknown"
         }
     }
 }

@@ -135,6 +135,7 @@ private extension LocationDisplay.AutoPanMode {
         case .recenter: return "Recenter"
         case .navigation: return "Navigation"
         case .compassNavigation: return "Compass Navigation"
+        @unknown default: return "Unknown"
         }
     }
     
@@ -145,6 +146,7 @@ private extension LocationDisplay.AutoPanMode {
         case .recenter: return "LocationDisplayDefaultIcon"
         case .navigation: return "LocationDisplayNavigationIcon"
         case .compassNavigation: return "LocationDisplayHeadingIcon"
+        @unknown default: return "LocationDisplayOffIcon"
         }
     }
 }

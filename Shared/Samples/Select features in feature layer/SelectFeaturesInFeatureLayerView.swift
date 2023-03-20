@@ -33,7 +33,7 @@ struct SelectFeaturesInFeatureLayerView: View {
         // A feature layer visualizing GDP per capita.
         let featureLayer = FeatureLayer(
             item: PortalItem(
-                portal: .arcGISOnline(isLoginRequired: false),
+                portal: .arcGISOnline(connection: .anonymous),
                 id: .gdpPerCapita
             )
         )

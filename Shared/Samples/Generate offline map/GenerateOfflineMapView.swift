@@ -137,7 +137,7 @@ private extension GenerateOfflineMapView {
         
         /// A portal item displaying the Naperville, IL water network.
         private let napervillePortalItem = PortalItem(
-            portal: .arcGISOnline(isLoginRequired: false),
+            portal: .arcGISOnline(connection: .anonymous),
             id: PortalItem.ID("acc027394bc84c2fb04d1ed317aac674")!
         )
         
@@ -159,7 +159,7 @@ private extension GenerateOfflineMapView {
             do {
                 // Waits for the online map to load.
                 try await onlineMap.load()
-                offlineMapTask = OfflineMapTask(portalItem: napervillePortalItem)
+                offlineMapTask = OfflineMapTask(onlineMap: onlineMap)
                 isGenerateDisabled = false
             } catch {
                 self.error = error

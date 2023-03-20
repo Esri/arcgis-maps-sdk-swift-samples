@@ -15,6 +15,8 @@
 import SwiftUI
 
 struct SampleInfoView: View {
+    @Environment(\.dismiss) private var dismiss: DismissAction
+    
     /// The current sample information displayed.
     @State private var informationMode: InformationMode = .readme
     
@@ -32,6 +34,7 @@ struct SampleInfoView: View {
                 .opacity(informationMode == .code ? 1 : 0)
         }
         .edgesIgnoringSafeArea([.horizontal, .bottom])
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Picker("Information Mode", selection: $informationMode) {
@@ -40,6 +43,12 @@ struct SampleInfoView: View {
                     }
                 }
                 .pickerStyle(.segmented)
+            }
+            
+            ToolbarItem(placement: .confirmationAction) {
+                Button("Done") {
+                    dismiss()
+                }
             }
             
             ToolbarItem(placement: .bottomBar) {
