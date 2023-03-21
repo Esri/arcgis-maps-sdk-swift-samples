@@ -15,6 +15,7 @@
         "upstream trace",
         "utility network",
         "validate consistency",
+        "GeometryEngine.polyline(_:fractionalLengthClosestTo:tolerance:)",
         "ServiceGeodatabase",
         "UtilityAssetType",
         "UtilityDomainNetwork",
@@ -29,11 +30,11 @@
         "UtilityTraceParameters",
         "UtilityTraceResult",
         "UtilityTraceType",
-        "UtilityTraversability",
-        "static GeometryEngine.polyline(_:fractionalLengthClosestTo:tolerance:)"
+        "UtilityTraversability"
     ],
     "redirect_from": [],
     "relevant_apis": [
+        "GeometryEngine.polyline(_:fractionalLengthClosestTo:tolerance:)",
         "ServiceGeodatabase",
         "UtilityAssetType",
         "UtilityDomainNetwork",
@@ -48,8 +49,7 @@
         "UtilityTraceParameters",
         "UtilityTraceResult",
         "UtilityTraceType",
-        "UtilityTraversability",
-        "static GeometryEngine.polyline(_:fractionalLengthClosestTo:tolerance:)"
+        "UtilityTraversability"
     ],
     "snippets": [
         "TraceUtilityNetworkView.swift"
