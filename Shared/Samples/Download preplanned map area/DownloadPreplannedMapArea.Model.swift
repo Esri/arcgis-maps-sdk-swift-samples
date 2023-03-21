@@ -107,9 +107,19 @@ extension DownloadPreplannedMapAreaView {
                 offlineMap = nil
             case .offlineMap(let info):
                 if info.canDownload {
+                    // If we have not yet downloaded or started downloading, then kick off a
+                    // download and reset selection to online map since we have to download
+                    // the offline map.
+                    selectedMap = .onlineWebMap
                     Task {
                         await info.download()
                     }
+                } else if case .success(let mmpk) = info.result {
+                    // If we have already downloaded, then open the map in the mmpk.
+                    offlineMap = mmpk.maps.first
+                } else {
+                    // If we have a failure, then keep the online map selected.
+                    selectedMap = .onlineWebMap
                 }
             }
         }
@@ -221,7 +231,7 @@ extension OfflineMapModel {
     /// This returns `false` if the map was already downloaded or is in the process
     /// of being downloaded.
     var canDownload: Bool {
-        job == nil || result == nil
+        job == nil && result == nil
     }
     
     /// Creates the parameters for a download preplanned offline map job.

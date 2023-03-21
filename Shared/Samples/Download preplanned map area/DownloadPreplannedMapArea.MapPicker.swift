@@ -85,7 +85,7 @@ extension DownloadPreplannedMapAreaView {
                         .progressViewStyle(.gauge)
                 } else {
                     switch model.result {
-                    case .success(let mmpk):
+                    case .success:
                         Image(systemName: "checkmark.icloud")
                     case .failure:
                         Image(systemName: "exclamationmark.icloud")
