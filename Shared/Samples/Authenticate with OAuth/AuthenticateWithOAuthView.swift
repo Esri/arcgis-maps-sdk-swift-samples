@@ -21,12 +21,6 @@ struct AuthenticateWithOAuthView: View {
     @StateObject private var authenticator = Authenticator(
         oAuthUserConfigurations: [.arcgisDotCom]
     )
-
-    init() {
-        // Sets authenticator as ArcGIS and Network challenge handlers to handle authentication
-        // challenges.
-        ArcGISEnvironment.authenticationManager.handleChallenges(using: authenticator)
-    }
     
     /// The map to be displayed on the map view.
     @State private var map: Map = {
@@ -46,11 +40,23 @@ struct AuthenticateWithOAuthView: View {
     var body: some View {
         MapView(map: map)
             .authenticator(authenticator)
+            .onAppear {
+                // Setting the challenge handlers here in `onAppear` so user is prompted to enter
+                // credentials every time trying the sample. In real world applications, set challenge
+                // handlers at the start of the application.
+                
+                // Sets authenticator as ArcGIS and Network challenge handlers to handle authentication
+                // challenges.
+                ArcGISEnvironment.authenticationManager.handleChallenges(using: authenticator)
+            }
             .onDisappear {
-                // Reset challenge handlers.
+                // Resetting the challenge handlers and clearing credentials here in `onDisappear`
+                // so user is prompted to enter credentials every time trying the sample. In real
+                // world applications, do these from sign out functionality of the application.
+                
+                // Resets challenge handlers.
                 ArcGISEnvironment.authenticationManager.handleChallenges(using: nil)
 
-                // Sign out.
                 signOut()
             }
     }
