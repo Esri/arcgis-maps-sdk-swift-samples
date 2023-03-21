@@ -220,7 +220,7 @@ private extension NavigateARouteView {
             
             // Updates the graphics and viewpoint.
             routeAheadGraphic.geometry = routeGeometry
-            viewpoint = Viewpoint(targetExtent: routeGeometry, rotation: 0)
+            viewpoint = Viewpoint(boundingGeometry: routeGeometry)
         }
         
         func startUpdates() async {
