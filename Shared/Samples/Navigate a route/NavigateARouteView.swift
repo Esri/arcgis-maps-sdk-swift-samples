@@ -162,7 +162,7 @@ private extension NavigateARouteView {
         func solveRoute() async {
             do {
                 // Creates the default parameters from the route task.
-                let parameters = try await routeTask.createDefaultParameters()
+                let parameters = try await routeTask.makeDefaultParameters()
                 
                 // Configures the parameters.
                 parameters.returnDirections = true
