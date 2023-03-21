@@ -66,7 +66,7 @@ extension DownloadPreplannedMapAreaView {
         private let temporaryDirectory: URL
     
         /// The offline map information.
-        @Published var offlineMapInfos: Result<[OfflineMapInfo], Error>?
+        @Published var offlineMapModels: Result<[OfflineMapModel], Error>?
         
         init() {
             // Create temp dsirectory.
@@ -78,11 +78,11 @@ extension DownloadPreplannedMapAreaView {
             
             // Get the preplanned map areas and map those to offline map infos.
             Task { [weak self, offlineMapTask] in
-                self?.offlineMapInfos = await Result {
+                self?.offlineMapModels = await Result {
                     try await offlineMapTask.preplannedMapAreas
                         .sorted(using: KeyPathComparator(\.portalItem.title))
                         .map {
-                            OfflineMapInfo(
+                            OfflineMapModel(
                                 preplannedMapArea: $0,
                                 offlineMapTask: offlineMapTask,
                                 temporaryDirectory: temporaryDirectory
@@ -148,25 +148,33 @@ extension DownloadPreplannedMapAreaView {
     }
 }
 
-struct OfflineMapInfo {
+class OfflineMapModel: ObservableObject {
     let preplannedMapArea: PreplannedMapArea
     let offlineMapTask: OfflineMapTask
     let temporaryDirectory: URL
-    var job: DownloadPreplannedOfflineMapJob?
-    var result: Result<MobileMapPackage, Error>?
-}
-
-extension OfflineMapInfo: Hashable {
-    static func == (lhs: OfflineMapInfo, rhs: OfflineMapInfo) -> Bool {
-        lhs.preplannedMapArea === rhs.preplannedMapArea
-    }
+    @Published var job: DownloadPreplannedOfflineMapJob?
+    @Published var result: Result<MobileMapPackage, Error>?
     
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(ObjectIdentifier(self.preplannedMapArea))
+    init(preplannedMapArea: PreplannedMapArea, offlineMapTask: OfflineMapTask, temporaryDirectory: URL) {
+        self.preplannedMapArea = preplannedMapArea
+        self.offlineMapTask = offlineMapTask
+        self.temporaryDirectory = temporaryDirectory
     }
 }
 
-extension OfflineMapInfo {
+extension OfflineMapModel: Identifiable {}
+
+extension OfflineMapModel: Hashable {
+    static func == (lhs: OfflineMapModel, rhs: OfflineMapModel) -> Bool {
+        lhs === rhs
+    }
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(ObjectIdentifier(self))
+    }
+}
+
+@MainActor
+extension OfflineMapModel {
     /// The directory that should hold the mmpk of the offline map.
     var mmpkDirectory: URL {
         temporaryDirectory
@@ -174,20 +182,11 @@ extension OfflineMapInfo {
             .appendingPathExtension("mmpk")
     }
     
-    /// Whether or not the offline map can be downloaded.
-    /// This returns `false` if the map was already downloaded or is in the process
-    /// of being downloaded.
-    var canDownload: Bool {
-        job == nil || result == nil
-    }
-}
-
-extension DownloadPreplannedMapAreaView.Model {
     /// Downloads the given preplanned map area.
     /// - Parameter preplannedMapArea: The preplanned map area to be downloaded.
     /// - Precondition: `canDownload`
-    func foo(_ info: OfflineMapInfo) {
-        precondition(info.canDownload)
+    func download() async {
+        precondition(canDownload)
         
         let parameters: DownloadPreplannedOfflineMapParameters
         
@@ -213,6 +212,16 @@ extension DownloadPreplannedMapAreaView.Model {
         
         // Awaits the output of the job and assigns the result.
         result = await job.result.map { $0.mobileMapPackage }
+        
+        // Set the job to nil
+        self.job = nil
+    }
+    
+    /// Whether or not the offline map can be downloaded.
+    /// This returns `false` if the map was already downloaded or is in the process
+    /// of being downloaded.
+    var canDownload: Bool {
+        job == nil || result == nil
     }
     
     /// Creates the parameters for a download preplanned offline map job.
@@ -265,6 +274,6 @@ private extension FileManager {
 extension DownloadPreplannedMapAreaView.Model {
     enum SelectedMap: Hashable {
         case onlineWebMap
-        case offlineMap(OfflineMapInfo)
+        case offlineMap(OfflineMapModel)
     }
 }

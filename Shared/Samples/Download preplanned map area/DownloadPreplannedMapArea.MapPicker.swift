@@ -36,31 +36,22 @@ extension DownloadPreplannedMapAreaView {
                     }
                     
                     Section {
-                        
-                        switch model.offlineMapInfos {
-                        case .success(let infos):
+                        switch model.offlineMapModels {
+                        case .success(let models):
                             Picker("Preplanned Map Areas", selection: $model.selectedMap) {
-                                ForEach(infos, id: \.preplannedMapArea.portalItem.id) { offlineMapInfo in
-                                    HStack {
-                                        if let job = offlineMapInfo.job {
-                                            ProgressView(job.progress)
-                                                .progressViewStyle(.gauge)
-                                        }
-                                        Text(offlineMapInfo.preplannedMapArea.portalItem.title)
-                                    }
-                                    .tag(Model.SelectedMap.offlineMap(offlineMapInfo))
+                                ForEach(models) { model in
+                                    PreplannedMapAreaSelectionView(model: model)
                                 }
                             }
                             .labelsHidden()
                             .pickerStyle(.inline)
                         case .failure(let error):
-                            // Error getting the offline infos.
+                            // Error getting the offline map models.
                             Text(error.localizedDescription)
                         case .none:
-                            // Getting the offline infos is still in progress.
+                            // Getting the offline map models is still in progress.
                             ProgressView()
                         }
-                        
                     } header: {
                         Text("Preplanned Map Areas")
                     } footer: {
@@ -81,6 +72,30 @@ extension DownloadPreplannedMapAreaView {
                 }
             }
             .navigationViewStyle(.stack)
+        }
+    }
+
+    private struct PreplannedMapAreaSelectionView: View {
+        @ObservedObject var model: OfflineMapModel
+        
+        var body: some View {
+            HStack {
+                if let job = model.job {
+                    ProgressView(job.progress)
+                        .progressViewStyle(.gauge)
+                } else {
+                    switch model.result {
+                    case .success(let mmpk):
+                        Image(systemName: "checkmark.icloud")
+                    case .failure:
+                        Image(systemName: "exclamationmark.icloud")
+                    case .none:
+                        Image(systemName: "icloud.and.arrow.down")
+                    }
+                }
+                Text(model.preplannedMapArea.portalItem.title)
+            }
+            .tag(Model.SelectedMap.offlineMap(model))
         }
     }
 }
