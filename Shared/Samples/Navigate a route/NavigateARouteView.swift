@@ -188,7 +188,7 @@ private extension NavigateARouteView {
         /// directions, the route ahead graphic, and the map's viewpoint.
         func setNavigation() {
             // Creates a route tracker from the route results.
-            routeTracker = RouteTracker(routeResult: routeResult, routeIndex: 0, skipCoincidentStops: true)
+            routeTracker = RouteTracker(routeResult: routeResult, routeIndex: 0, skipsCoincidentStops: true)
             routeTracker.voiceGuidanceUnitSystem = Locale.current.usesMetricSystem ? .metric : .imperial
             
             // Gets the route and its geometry from the route result.
