@@ -230,7 +230,10 @@ private extension NavigateARouteView {
             }
         }
         
-        /// Updates the current auto-pan mode if it does not match the location display's auto-pan mode.
+        /// Monitor the asynchronous stream of auto-pan modes.
+        ///
+        /// Updates the current auto-pan mode if it does not match the location display's auto-pan
+        /// mode.
         private func trackAutoPanMode() async {
             for await mode in locationDisplay.$autoPanMode {
                 if autoPanMode != mode {
