@@ -116,9 +116,6 @@ private extension NavigateARouteView {
         /// The directions for the route.
         private var directions: [DirectionManeuver] = []
         
-        /// The stops for this sample.
-        private let stops: [Stop]
-        
         /// The graphics overlay for the stops.
         private let stopGraphicsOverlay: GraphicsOverlay
         
@@ -138,9 +135,6 @@ private extension NavigateARouteView {
         
         init() {
             autoPanMode = .off
-            
-            // Initializes the stops for this sample.
-            stops = Stop.stops
             
             // Creates the graphics for each stop.
             let stopGraphics = stops.map {
@@ -258,9 +252,7 @@ private extension NavigateARouteView {
             setNavigation()
         }
     }
-}
-
-private extension Stop {
+    
     /// The stops for this sample.
     static var stops: [Stop] {
         let one = Stop(point: Point(x: -117.160386727, y: 32.706608, spatialReference: .wgs84))
