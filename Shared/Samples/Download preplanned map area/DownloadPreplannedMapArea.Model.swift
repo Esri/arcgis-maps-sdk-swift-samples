@@ -183,6 +183,13 @@ extension OfflineMapModel: Hashable {
     }
 }
 
+extension OfflineMapModel {
+    /// A Boolean value indicating whether the map is being taken offline.
+    var isDownloading: Bool {
+        job != nil
+    }
+}
+
 @MainActor
 private extension OfflineMapModel {
     /// The directory that should hold the mmpk of the offline map.
@@ -223,8 +230,6 @@ private extension OfflineMapModel {
         // Awaits the output of the job and assigns the result.
         result = await job.result.map { $0.mobileMapPackage }
         
-        result = .failure(NSError(domain: "foo", code: 1))
-        
         // Set the job to nil
         self.job = nil
     }
@@ -234,11 +239,6 @@ private extension OfflineMapModel {
     /// of being downloaded.
     var canDownload: Bool {
         !(isDownloading || downloadDidSucceed)
-    }
-    
-    /// A Boolean value indicating whether the map is being taken offline.
-    var isDownloading: Bool {
-        job != nil
     }
     
     /// A Boolean value indicating whether the download succeeded.

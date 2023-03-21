@@ -80,40 +80,43 @@ extension DownloadPreplannedMapAreaView {
         
         var body: some View {
             HStack {
-                if let job = model.job {
+                if model.isDownloading, let job = model.job {
                     ProgressView(job.progress)
                         .progressViewStyle(.gauge)
-                } else {
-                    switch model.result {
-                    case .success:
-                        Image(systemName: "checkmark.icloud.fill")
-                    case .failure:
-                        Image(systemName: "exclamationmark.icloud")
-                            .foregroundColor(.red)
-                    case .none:
-                        Image(systemName: "icloud.and.arrow.down")
-                            .foregroundColor(.accentColor)
-                    }
-                }
-                VStack(alignment: .leading, spacing: 2) {
                     Text(model.preplannedMapArea.portalItem.title)
-                        .foregroundColor(textColor(for: model.result))
-                    if case .failure = model.result {
-                        Text("Error occurred. Tap to retry.")
-                            .font(.caption2)
+                } else {
+                        switch model.result {
+                        case .success:
+                            Image(systemName: "checkmark.icloud.fill")
+                        case .failure:
+                            Image(systemName: "exclamationmark.icloud")
+                                .foregroundColor(.red)
+                        case .none:
+                            Image(systemName: "icloud.and.arrow.down")
+                                .foregroundColor(.accentColor)
+                        }
+                    
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(model.preplannedMapArea.portalItem.title)
+                            .foregroundColor(titleColor(for: model.result))
+                        
+                        // If failed then show tap to retry text.
+                        if case .failure = model.result {
+                            Text("Error occurred. Tap to retry.")
+                                .font(.caption2)
+                        }
                     }
                 }
             }
             .tag(Model.SelectedMap.offlineMap(model))
         }
         
-        func textColor(for result: Result<MobileMapPackage, Error>?) -> Color {
+        /// The color of the title for a given result.
+        func titleColor(for result: Result<MobileMapPackage, Error>?) -> Color {
             switch model.result {
             case .success:
                 return .primary
-            case .failure:
-                return .secondary
-            case .none:
+            case .failure, .none:
                 return .secondary
             }
         }
