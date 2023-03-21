@@ -165,9 +165,9 @@ private extension NavigateARouteView {
                 let parameters = try await routeTask.makeDefaultParameters()
                 
                 // Configures the parameters.
-                parameters.returnDirections = true
-                parameters.returnStops = true
-                parameters.returnRoutes = true
+                parameters.returnsDirections = true
+                parameters.returnsStops = true
+                parameters.returnsRoutes = true
                 parameters.outputSpatialReference = .wgs84
                 
                 // Sets the stops on the parameters.
