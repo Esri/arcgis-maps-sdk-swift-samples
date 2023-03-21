@@ -174,7 +174,7 @@ private extension NavigateARouteView {
                 parameters.setStops(stops)
                 
                 // Solves the route based on the parameters.
-                routeResult = try await routeTask.solveRoute(routeParameters: parameters)
+                routeResult = try await routeTask.solveRoute(using: parameters)
                 
                 // Enables the navigate button.
                 isNavigateDisabled = false
