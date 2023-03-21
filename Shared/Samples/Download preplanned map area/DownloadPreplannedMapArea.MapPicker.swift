@@ -36,20 +36,31 @@ extension DownloadPreplannedMapAreaView {
                     }
                     
                     Section {
-                        Picker("Preplanned Map Areas", selection: $model.selectedMap) {
-                            ForEach(model.preplannedMapAreas, id: \.portalItem.id) { preplannedMapArea in
-                                HStack {
-                                    if let job = model.job(for: preplannedMapArea) {
-                                        ProgressView(job.progress)
-                                            .progressViewStyle(.gauge)
+                        
+                        switch model.offlineMapInfos {
+                        case .success(let infos):
+                            Picker("Preplanned Map Areas", selection: $model.selectedMap) {
+                                ForEach(infos, id: \.preplannedMapArea.portalItem.id) { offlineMapInfo in
+                                    HStack {
+                                        if let job = offlineMapInfo.job {
+                                            ProgressView(job.progress)
+                                                .progressViewStyle(.gauge)
+                                        }
+                                        Text(offlineMapInfo.preplannedMapArea.portalItem.title)
                                     }
-                                    Text(preplannedMapArea.portalItem.title)
+                                    .tag(Model.SelectedMap.offlineMap(offlineMapInfo))
                                 }
-                                .tag(Model.SelectedMap.preplannedMap(area: preplannedMapArea))
                             }
+                            .labelsHidden()
+                            .pickerStyle(.inline)
+                        case .failure(let error):
+                            // Error getting the offline infos.
+                            Text(error.localizedDescription)
+                        case .none:
+                            // Getting the offline infos is still in progress.
+                            ProgressView()
                         }
-                        .labelsHidden()
-                        .pickerStyle(.inline)
+                        
                     } header: {
                         Text("Preplanned Map Areas")
                     } footer: {

@@ -18,11 +18,6 @@ import SwiftUI
 extension DownloadPreplannedMapAreaView {
     @MainActor
     class Model: ObservableObject {
-        enum SelectedMap { // swiftlint:disable:this nesting
-            case onlineWebMap
-            case preplannedMap(area: PreplannedMapArea)
-        }
-        
         /// A Boolean value indicating whether to show an alert for an error.
         //@Published var isShowingErrorAlert = false
         
@@ -31,17 +26,17 @@ extension DownloadPreplannedMapAreaView {
 //            didSet { isShowingErrorAlert = error != nil }
         //}
         
-        /// The preplanned map areas from the offline map task.
-        @Published private(set) var preplannedMapAreas: [PreplannedMapArea] = []
+        //@Published private(set) var preplannedMapAreas: [PreplannedMapArea] = []
         
         /// The currently selected map.
         @Published var selectedMap: SelectedMap = .onlineWebMap {
             didSet {
-                Task {
-                    await selectedMapDidChange()
-                }
+                selectedMapDidChange()
             }
         }
+        
+        /// Manages the lifetime of async tasks.
+        //private var tasks = TaskManager()
         
         /// The download preplanned offline map job for each preplanned map area.
         @Published private var currentJobs: [ObjectIdentifier: DownloadPreplannedOfflineMapJob] = [:]
@@ -68,110 +63,54 @@ extension DownloadPreplannedMapAreaView {
         private let offlineMapTask: OfflineMapTask
         
         /// A URL to a temporary directory where the downloaded map packages are stored.
-        private let temporaryDirectoryURL = makeTemporaryDirectory()
+        private let temporaryDirectory: URL
+    
+        /// The offline map information.
+        @Published var offlineMapInfos: Result<[OfflineMapInfo], Error>?
         
         init() {
+            // Create temp dsirectory.
+            temporaryDirectory = FileManager.createTemporaryDirectory()
+            
             // Initializes the online map and offline map task.
             onlineMap = Map(item: napervillePortalItem)
             offlineMapTask = OfflineMapTask(portalItem: napervillePortalItem)
+            
+            // Get the preplanned map areas and map those to offline map infos.
+            Task { [weak self, offlineMapTask] in
+                self?.offlineMapInfos = await Result {
+                    try await offlineMapTask.preplannedMapAreas
+                        .sorted(using: KeyPathComparator(\.portalItem.title))
+                        .map {
+                            OfflineMapInfo(
+                                preplannedMapArea: $0,
+                                offlineMapTask: offlineMapTask,
+                                temporaryDirectory: temporaryDirectory
+                            )
+                        }
+                }
+            }
         }
         
         deinit {
             // Removes the temporary directory.
-            try? FileManager.default.removeItem(at: temporaryDirectoryURL)
-        }
-        
-        /// Loads each preplanned map area from the offline map
-        func loadPreplannedMapAreas() async {
-            // Ensures that the preplanned map areas do not already exist.
-            guard preplannedMapAreas.isEmpty else { return }
-            do {
-                // Sorts the offline map task's preplanned map areas alphabetically.
-                preplannedMapAreas = try await offlineMapTask.preplannedMapAreas.sorted(
-                    using: KeyPathComparator(\.portalItem.title)
-                )
-                
-                // Loads the preplanned map areas.
-                await preplannedMapAreas.load()
-            } catch {
-                self.error = error
-            }
+            try? FileManager.default.removeItem(at: temporaryDirectory)
         }
         
         /// Updates the displayed map based on the given preplanned map area. If the preplanned map
         /// area is not nil, the preplanned map area will be downloaded if necessary and updates the map
         /// to the currently selected preplanned map area. If the preplanned map area is nil, then the map
         /// is set to the online web map.
-        private func selectedMapDidChange() async {
+        private func selectedMapDidChange() {
             switch selectedMap {
             case .onlineWebMap:
                 offlineMap = nil
-            case .preplannedMap(let preplannedMapArea) where preplannedMapArea.loadStatus == .loaded:
-                // Downloads the preplanned map area if it has not been downloaded.
-                await downloadPreplannedMapArea(preplannedMapArea)
-                
-                // Updates the offline map if the currently selected map is not an online map.
-                if case .preplannedMap(let currentlySelectedArea) = selectedMap {
-                    offlineMap = localMapPackages
-                        .first(where: { $0.fileURL.path.contains(currentlySelectedArea.portalItemIdentifier) })?
-                        .maps.first
+            case .offlineMap(let info):
+                if info.canDownload {
+                    Task {
+                        await info.download()
+                    }
                 }
-            default:
-                break
-            }
-        }
-        
-        /// Creates the parameters for a download preplanned offline map job.
-        /// - Parameter preplannedMapArea: The preplanned map area to create parameters for.
-        /// - Returns: A `DownloadPreplannedOfflineMapParameters` if there are no errors.
-        private func makeDownloadPreplannedOfflineMapParameters(
-            preplannedMapArea: PreplannedMapArea
-        ) async throws -> DownloadPreplannedOfflineMapParameters {
-            // Creates the default parameters.
-            let parameters = try await offlineMapTask.makeDefaultDownloadPreplannedOfflineMapParameters(
-                preplannedMapArea: preplannedMapArea
-            )
-            // Sets the update mode to no updates as the offline map is display-only.
-            parameters.updateMode = .noUpdates
-            return parameters
-        }
-        
-        /// Downloads the given preplanned map area.
-        /// - Parameter preplannedMapArea: The preplanned map area to be downloaded.
-        private func downloadPreplannedMapArea(_ preplannedMapArea: PreplannedMapArea) async {
-            // Ensures the preplanned map area has not been downloaded.
-            guard job(for: preplannedMapArea) == nil else { return }
-            do {
-                // Creates the parameters for the download preplanned offline map job.
-                let parameters = try await makeDownloadPreplannedOfflineMapParameters(preplannedMapArea: preplannedMapArea)
-                
-                // Creates the download directory URL based on the preplanned map area's
-                // portal item identifier.
-                let downloadDirectoryURL = temporaryDirectoryURL
-                    .appendingPathComponent(preplannedMapArea.portalItemIdentifier)
-                    .appendingPathExtension("mmpk")
-                
-                // Creates the download preplanned offline map job.
-                let job = offlineMapTask.makeDownloadPreplannedOfflineMapJob(
-                    parameters: parameters,
-                    downloadDirectory: downloadDirectoryURL
-                )
-                
-                // Adds the job for the preplanned map area to the current jobs.
-                currentJobs[ObjectIdentifier(preplannedMapArea)] = job
-                
-                // Starts the job.
-                job.start()
-                
-                // Awaits the output of the job.
-                let output = try await job.output
-                // Adds the output's mobile map package to the downloaded map packages.
-                localMapPackages.append(output.mobileMapPackage)
-            } catch is CancellationError {
-                // Does nothing if the error is a cancellation error.
-            } catch {
-                // Shows an alert if any errors occur.
-                self.error = error
             }
         }
         
@@ -206,51 +145,126 @@ extension DownloadPreplannedMapAreaView {
             // Sets the current map to the online web map.
             selectedMap = .onlineWebMap
         }
-        
-        /// Gets the job for the given preplanned map area from the current jobs.
-        /// - Parameter preplannedMapArea: The preplanned map area to get the job from.
-        /// - Returns: A `DownloadPreplannedOfflineMapJob` from the current jobs.
-        func job(for preplannedMapArea: PreplannedMapArea) -> DownloadPreplannedOfflineMapJob? {
-            currentJobs[ObjectIdentifier(preplannedMapArea)]
-        }
-        
-        /// Creates a temporary directory.
-        private static func makeTemporaryDirectory() -> URL {
-            // swiftlint:disable:next force_try
-            try! FileManager.default.url(
-                for: .itemReplacementDirectory,
-                in: .userDomainMask,
-                appropriateFor: Bundle.main.bundleURL,
-                create: true
-            )
-        }
     }
 }
 
-extension DownloadPreplannedMapAreaView.Model.SelectedMap: Equatable {
-    static func == (lhs: Self, rhs: Self) -> Bool {
-        switch (lhs, rhs) {
-        case (.onlineWebMap, .onlineWebMap): return true
-        case (let .preplannedMap(lhsArea), let .preplannedMap(rhsArea)):
-            return lhsArea.portalItem.id == rhsArea.portalItem.id
-        default:
-            return false
-        }
-    }
+struct OfflineMapInfo {
+    let preplannedMapArea: PreplannedMapArea
+    let offlineMapTask: OfflineMapTask
+    let temporaryDirectory: URL
+    var job: DownloadPreplannedOfflineMapJob?
+    var result: Result<MobileMapPackage, Error>?
 }
 
-extension DownloadPreplannedMapAreaView.Model.SelectedMap: Hashable {
+extension OfflineMapInfo: Hashable {
+    static func == (lhs: OfflineMapInfo, rhs: OfflineMapInfo) -> Bool {
+        lhs.preplannedMapArea === rhs.preplannedMapArea
+    }
+    
     func hash(into hasher: inout Hasher) {
-        switch self {
-        case .onlineWebMap:
-            break
-        case .preplannedMap(let area):
-            hasher.combine(area.portalItem.id)
-        }
+        hasher.combine(ObjectIdentifier(self.preplannedMapArea))
     }
 }
 
-private extension PreplannedMapArea {
-    /// The portal item's ID.
-    var portalItemIdentifier: String { portalItem.id.rawValue }
+extension OfflineMapInfo {
+    /// The directory that should hold the mmpk of the offline map.
+    var mmpkDirectory: URL {
+        temporaryDirectory
+            .appendingPathComponent(preplannedMapArea.portalItem.id.rawValue)
+            .appendingPathExtension("mmpk")
+    }
+    
+    /// Whether or not the offline map can be downloaded.
+    /// This returns `false` if the map was already downloaded or is in the process
+    /// of being downloaded.
+    var canDownload: Bool {
+        job == nil || result == nil
+    }
+}
+
+extension DownloadPreplannedMapAreaView.Model {
+    /// Downloads the given preplanned map area.
+    /// - Parameter preplannedMapArea: The preplanned map area to be downloaded.
+    /// - Precondition: `canDownload`
+    func foo(_ info: OfflineMapInfo) {
+        precondition(info.canDownload)
+        
+        let parameters: DownloadPreplannedOfflineMapParameters
+        
+        do {
+            // Creates the parameters for the download preplanned offline map job.
+            parameters = try await makeParameters(area: preplannedMapArea)
+        } catch {
+            // If creating the parameters fails, set the failure.
+            self.result = .failure(error)
+            return
+        }
+            
+        // Creates the download preplanned offline map job.
+        let job = offlineMapTask.makeDownloadPreplannedOfflineMapJob(
+            parameters: parameters,
+            downloadDirectory: mmpkDirectory
+        )
+        
+        self.job = job
+        
+        // Starts the job.
+        job.start()
+        
+        // Awaits the output of the job and assigns the result.
+        result = await job.result.map { $0.mobileMapPackage }
+    }
+    
+    /// Creates the parameters for a download preplanned offline map job.
+    /// - Parameter preplannedMapArea: The preplanned map area to create parameters for.
+    /// - Returns: A `DownloadPreplannedOfflineMapParameters` if there are no errors.
+    func makeParameters(area: PreplannedMapArea) async throws -> DownloadPreplannedOfflineMapParameters {
+        // Creates the default parameters.
+        let parameters = try await offlineMapTask.makeDefaultDownloadPreplannedOfflineMapParameters(preplannedMapArea: area)
+        // Sets the update mode to no updates as the offline map is display-only.
+        parameters.updateMode = .noUpdates
+        return parameters
+    }
+}
+
+private extension FileManager {
+    /// Creates a temporary directory and returns the URL of the created directory.
+    static func createTemporaryDirectory() -> URL {
+        // swiftlint:disable:next force_try
+        try! FileManager.default.url(
+            for: .itemReplacementDirectory,
+            in: .userDomainMask,
+            appropriateFor: Bundle.main.bundleURL,
+            create: true
+        )
+    }
+}
+
+//private class TaskManager {
+//    private var tasks: [UUID: Task<Void, Never>] = [:]
+//
+//    func enqueue(_ operation: @escaping () async -> Void) {
+//        let id = UUID()
+//        let task = Task { [weak self] in
+//            await operation()
+//            self?.cleanupTask(withID: id)
+//        }
+//        tasks[id] = task
+//    }
+//
+//    func cleanupTask(withID id: UUID) {
+//        tasks[id] = nil
+//    }
+//
+//    deinit {
+//        // Cancels any enqueued tasks that aren't complete.
+//        tasks.values.forEach { $0.cancel() }
+//    }
+//}
+
+extension DownloadPreplannedMapAreaView.Model {
+    enum SelectedMap: Hashable {
+        case onlineWebMap
+        case offlineMap(OfflineMapInfo)
+    }
 }

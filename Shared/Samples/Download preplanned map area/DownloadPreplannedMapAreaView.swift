@@ -34,9 +34,6 @@ struct DownloadPreplannedMapAreaView: View {
             .overlay(alignment: .top) {
                 mapNameOverlay
             }
-            .task {
-                await model.loadPreplannedMapAreas()
-            }
             .onDisappear {
 //                if !isSampleInfoViewVisible {
 //                    Task { await model.cancelAllJobs() }
