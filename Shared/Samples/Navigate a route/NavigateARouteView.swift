@@ -193,7 +193,7 @@ private extension NavigateARouteView {
             
             // Gets the route and its geometry from the route result.
             guard let firstRoute = routeResult.routes.first,
-                  let routeGeometry = firstRoute.routeGeometry else {
+                  let routeGeometry = firstRoute.geometry else {
                 return
             }
             
