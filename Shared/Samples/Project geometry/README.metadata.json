@@ -3,7 +3,7 @@
     "description": "Project a point to another spatial reference.",
     "ignore": false,
     "images": [
-        "project.png"
+        "project-geometry.png"
     ],
     "keywords": [
         "WGS 84",
@@ -28,7 +28,7 @@
         "static GeometryEngine.project(_:into:)"
     ],
     "snippets": [
-        "ProjectView.swift"
+        "ProjectGeometryView.swift"
     ],
-    "title": "Project"
+    "title": "Project geometry"
 }

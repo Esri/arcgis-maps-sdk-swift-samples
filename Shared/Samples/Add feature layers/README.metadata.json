@@ -3,7 +3,7 @@
     "description": "Display feature layers from various data sources.",
     "ignore": false,
     "images": [
-        "display-feature-layers.png"
+        "add-feature-layers.png"
     ],
     "keywords": [
         "feature",
@@ -21,7 +21,7 @@
         "ShapefileFeatureTable"
     ],
     "offline_data": [
-        "2b0f9e17105847809dfeb04e3cad69e0",
+        "cb1b20748a9f4d128dad8a87244e3e37",
         "68ec42517cdd439e81b036210483e8e7",
         "15a7cbd3af1e47cfa5d2c6b93dc44fc2"
     ],
@@ -35,7 +35,7 @@
         "ShapefileFeatureTable"
     ],
     "snippets": [
-        "DisplayFeatureLayersView.swift"
+        "AddFeatureLayersView.swift"
     ],
-    "title": "Display feature layers"
+    "title": "Add feature layers"
 }

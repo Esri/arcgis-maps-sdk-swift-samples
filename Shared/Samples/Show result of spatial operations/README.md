@@ -1,8 +1,8 @@
-# Show results of spatial operations
+# Show result of spatial operations
 
 Find the union, intersection, or difference of two geometries.
 
-![Screenshot of show results of spatial operations sample](show-results-of-spatial-operations.png)
+![Screenshot of show result of spatial operations sample](show-result-of-spatial-operations.png)
 
 ## Use case
 

@@ -109,7 +109,8 @@ struct GenerateOfflineMapView: View {
 }
 
 private extension GenerateOfflineMapView {
-    /// The view model for this sample.
+    /// The model used to store the geo model and other expensive objects
+    /// used in this view.
     @MainActor
     class Model: ObservableObject {
         /// The offline map that is generated.
@@ -132,17 +133,12 @@ private extension GenerateOfflineMapView {
         /// The offline map task.
         private var offlineMapTask: OfflineMapTask!
         
-        /// A URL referencing the temporary directory where the offline map files are stored.
-        private let temporaryDirectory = try? FileManager.default.url(
-            for: .itemReplacementDirectory,
-            in: .userDomainMask,
-            appropriateFor: Bundle.main.bundleURL,
-            create: true
-        )
+        /// A URL to a temporary directory where the offline map files are stored.
+        private let temporaryDirectory = makeTemporaryDirectory()
         
         /// A portal item displaying the Naperville, IL water network.
         private let napervillePortalItem = PortalItem(
-            portal: .arcGISOnline(isLoginRequired: false),
+            portal: .arcGISOnline(connection: .anonymous),
             id: PortalItem.ID("acc027394bc84c2fb04d1ed317aac674")!
         )
         
@@ -155,24 +151,16 @@ private extension GenerateOfflineMapView {
         }
         
         deinit {
-            if let temporaryDirectory = temporaryDirectory {
-                // Removes the temporary directory.
-                try? FileManager.default.removeItem(at: temporaryDirectory)
-            }
+            // Removes the temporary directory.
+            try? FileManager.default.removeItem(at: temporaryDirectory)
         }
         
         /// Initializes the offline map task.
         func initializeOfflineMapTask() async {
-            // Ensures a temporary directory exists.
-            guard temporaryDirectory != nil else {
-                isShowingAlert = true
-                return
-            }
-            
             do {
                 // Waits for the online map to load.
                 try await onlineMap.load()
-                offlineMapTask = OfflineMapTask(portalItem: napervillePortalItem)
+                offlineMapTask = OfflineMapTask(onlineMap: onlineMap)
                 isGenerateDisabled = false
             } catch {
                 self.error = error
@@ -207,7 +195,7 @@ private extension GenerateOfflineMapView {
             // Creates the generate offline map job based on the parameters.
             generateOfflineMapJob = offlineMapTask.makeGenerateOfflineMapJob(
                 parameters: parameters,
-                downloadDirectory: temporaryDirectory!
+                downloadDirectory: temporaryDirectory
             )
             
             // Starts the job.
@@ -224,7 +212,7 @@ private extension GenerateOfflineMapView {
                 // Sets the offline map to the output's offline map.
                 offlineMap = output.offlineMap
                 // Sets the initial viewpoint of the offline map.
-                offlineMap.initialViewpoint = Viewpoint(targetExtent: extent.expanded(by: 0.8))
+                offlineMap.initialViewpoint = Viewpoint(boundingGeometry: extent.expanded(by: 0.8))
             } catch is CancellationError {
                 // Does nothing if the error is a cancellation error.
             } catch {
@@ -238,6 +226,17 @@ private extension GenerateOfflineMapView {
             // Cancels the generate offline map job.
             await generateOfflineMapJob?.cancel()
             generateOfflineMapJob = nil
+        }
+        
+        /// Creates a temporary directory.
+        private static func makeTemporaryDirectory() -> URL {
+            // swiftlint:disable:next force_try
+            try! FileManager.default.url(
+                for: .itemReplacementDirectory,
+                in: .userDomainMask,
+                appropriateFor: Bundle.main.bundleURL,
+                create: true
+            )
         }
     }
 }
@@ -259,7 +258,7 @@ private extension Envelope {
     /// Expands the envelope by a given factor.
     func expanded(by factor: Double) -> Envelope {
         let builder = EnvelopeBuilder(envelope: self)
-        builder.expand(factor: factor)
+        builder.expand(by: factor)
         return builder.toGeometry()
     }
 }

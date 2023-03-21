@@ -17,9 +17,6 @@ import ArcGIS
 import ArcGISToolkit
 
 struct SearchWithGeocodeView: View {
-    /// A map with imagery basemap.
-    @StateObject private var map = Map(basemapStyle: .arcGISImagery)
-    
     /// The viewpoint used by the search view to pan/zoom the map to the extent
     /// of the search results.
     @State private var viewpoint: Viewpoint? = Viewpoint(
@@ -49,7 +46,7 @@ struct SearchWithGeocodeView: View {
     @State private var identifyTapLocation: Point?
     
     /// The placement for a graphic callout.
-    @State private var calloutPlacement: GraphicCalloutPlacement?
+    @State private var calloutPlacement: CalloutPlacement?
     
     /// Provides search behavior customization.
     @ObservedObject private var locatorDataSource = LocatorSearchSource(
@@ -58,16 +55,15 @@ struct SearchWithGeocodeView: View {
         maximumSuggestions: 5
     )
     
-    /// The graphics overlay used by the search toolkit component to display
-    /// search results on the map.
-    @StateObject private var searchResultsOverlay = GraphicsOverlay()
+    /// The view model for the sample.
+    @StateObject private var model = Model()
     
     var body: some View {
         MapViewReader { proxy in
             MapView(
-                map: map,
+                map: model.map,
                 viewpoint: viewpoint,
-                graphicsOverlays: [searchResultsOverlay]
+                graphicsOverlays: [model.searchResultsOverlay]
             )
             .onSingleTapGesture { screenPoint, tapLocation in
                 identifyScreenPoint = screenPoint
@@ -85,14 +81,14 @@ struct SearchWithGeocodeView: View {
             .callout(placement: $calloutPlacement.animation()) { placement in
                 // Show the address of user tapped location graphic.
                 // To get the fully geocoded address, use "Place_addr".
-                Text(placement.graphic.attributes["Match_addr"] as? String ?? "Unknown Address")
+                Text(placement.geoElement?.attributes["Match_addr"] as? String ?? "Unknown Address")
                     .padding()
             }
             .task(id: identifyScreenPoint) {
                 guard let screenPoint = identifyScreenPoint,
                       // Identifies when user taps a graphic.
                       let identifyResult = try? await proxy.identify(
-                        graphicsOverlay: searchResultsOverlay,
+                        on: model.searchResultsOverlay,
                         screenPoint: screenPoint,
                         tolerance: 10
                       )
@@ -101,22 +97,41 @@ struct SearchWithGeocodeView: View {
                 }
                 // Creates a callout placement at the user tapped location.
                 calloutPlacement = identifyResult.graphics.first.flatMap { graphic in
-                    GraphicCalloutPlacement(graphic: graphic, tapLocation: identifyTapLocation)
+                    CalloutPlacement.geoElement(graphic, tapLocation: identifyTapLocation)
                 }
-                self.identifyScreenPoint = nil
-                self.identifyTapLocation = nil
+                identifyScreenPoint = nil
+                identifyTapLocation = nil
             }
             .overlay {
                 SearchView(
                     sources: [locatorDataSource],
                     viewpoint: $viewpoint
                 )
-                .resultsOverlay(searchResultsOverlay)
+                .resultsOverlay(model.searchResultsOverlay)
                 .queryCenter($queryCenter)
                 .geoViewExtent($geoViewExtent)
                 .isGeoViewNavigating($isGeoViewNavigating)
+                .onQueryChanged { query in
+                    if query.isEmpty {
+                        // Hides the callout when query is cleared.
+                        calloutPlacement = nil
+                    }
+                }
                 .padding()
             }
         }
+    }
+}
+
+private extension SearchWithGeocodeView {
+    /// The model used to store the geo model and other expensive objects
+    /// used in this view.
+    class Model: ObservableObject {
+        /// A map with imagery basemap.
+        let map = Map(basemapStyle: .arcGISImagery)
+        
+        /// The graphics overlay used by the search toolkit component to display
+        /// search results on the map.
+        let searchResultsOverlay = GraphicsOverlay()
     }
 }

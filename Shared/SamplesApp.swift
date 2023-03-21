@@ -23,7 +23,13 @@ struct SamplesApp: App {
     
     var body: some SwiftUI.Scene {
         WindowGroup {
-            ContentView(samples: Self.samples)
+            ContentView(
+                samples: Self.samples
+                #if targetEnvironment(macCatalyst)
+                    // On-demand resources aren't available on Mac Catalyst yet.
+                    .filter { !$0.hasDependencies }
+                #endif
+            )
         }
     }
 }
@@ -31,19 +37,21 @@ struct SamplesApp: App {
 // MARK: - License
 
 extension SamplesApp {
-    /// Licenses the app with ArcGIS Runtime deployment license keys.
+    /// Licenses the app with ArcGIS Maps SDK deployment license keys.
     /// - Note: An invalid key does not throw an exception, but simply fails to
     /// license the app, falling back to Developer Mode (which will display
     /// a watermark on the map view).
     func license() {
-        if let licenseKey = String.licenseKey,
-           let extensionLicenseKey = String.extensionLicenseKey {
+        if let licenseStringLiteral = String.licenseKey,
+           let licenseKey = LicenseKey(licenseStringLiteral),
+           let extensionLicenseStringLiteral = String.extensionLicenseKey,
+           let extensionLicenseKey = LicenseKey(extensionLicenseStringLiteral) {
             // Set both keys to access all samples, including utility network
             // capability.
-            ArcGISRuntimeEnvironment.setLicense(licenseKey: licenseKey, extensions: [extensionLicenseKey])
+            try? ArcGISEnvironment.setLicense(with: licenseKey, extensions: [extensionLicenseKey])
         }
         // Authentication with an API key or named user is required to access
         // basemaps and other location services.
-        ArcGISRuntimeEnvironment.apiKey = .iOS
+        ArcGISEnvironment.apiKey = .iOS
     }
 }

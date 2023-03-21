@@ -19,71 +19,89 @@ struct ClipGeometryView: View {
     /// A Boolean value indicating whether the geometries are clipped.
     @State private var geometriesAreClipped = false
     
-    /// A map with a topographic basemap style and an initial viewpoint of Colorado.
-    @StateObject private var map: Map = {
-        let map = Map(basemapStyle: .arcGISTopographic)
-        // Sets the initial viewpoint to Colorado and adds additional padding.
-        map.initialViewpoint = Viewpoint(targetExtent: .coloradoEnvelope.expanded(by: 2))
-        return map
-    }()
-    
-    /// The graphics overlay containing an unclipped graphic of Colorado.
-    @StateObject private var coloradoGraphicsOverlay = GraphicsOverlay(
-        graphics: [
-            Graphic(geometry: .coloradoEnvelope, symbol: .coloradoFill)
-        ]
-    )
-    
-    /// The graphics overlay containing graphics of the other envelopes, outlined by a dotted red line.
-    @StateObject private var envelopesGraphicsOverlay = GraphicsOverlay(
-        graphics: Geometry.envelopes.map {
-            Graphic(geometry: $0, symbol: SimpleLineSymbol(style: .dot, color: .red, width: 3))
-        }
-    )
-    
-    /// The graphics overlay containing clipped graphics.
-    @StateObject private var clippedGraphicsOverlay = GraphicsOverlay()
-    
-    /// The unclipped graphic of Colorado.
-    private var coloradoGraphic: Graphic { coloradoGraphicsOverlay.graphics.first! }
-    
-    /// Clips the geometry of Colorado to the given envelope.
-    /// - Parameter envelope: The envelope to clip the geometry of Colorado to.
-    /// - Returns: The clipped graphic.
-    private func clipColoradoGeometry(to envelope: Envelope) -> Graphic {
-        // Uses the geometry engine to create a new geometry for the area of
-        // Colorado that overlaps the given envelope.
-        let clippedGeometry = GeometryEngine.clip(coloradoGraphic.geometry!, to: envelope)
-        // Creates and returns the clipped graphic from the clipped geometry if there is an overlap.
-        return Graphic(geometry: clippedGeometry, symbol: .coloradoFill)
-    }
-    
-    /// Clips geometries and adds resulting graphics.
-    private func clipGeometries() {
-        // Hides the Colorado graphic.
-        coloradoGraphic.isVisible = false
-        // Clips Colorado's geometry to each envelope.
-        let clippedGraphics = envelopesGraphicsOverlay.graphics.map { clipColoradoGeometry(to: $0.geometry as! Envelope) }
-        // Adds the clipped graphics.
-        clippedGraphicsOverlay.addGraphics(clippedGraphics)
-    }
-    
-    /// Removes all clipped graphics.
-    private func reset() {
-        clippedGraphicsOverlay.removeAllGraphics()
-        coloradoGraphic.isVisible = true
-    }
+    /// The view model for the sample.
+    @StateObject private var model = Model()
     
     var body: some View {
-        MapView(map: map, graphicsOverlays: [coloradoGraphicsOverlay, envelopesGraphicsOverlay, clippedGraphicsOverlay])
+        MapView(map: model.map, graphicsOverlays: model.graphicsOverlays)
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
                     Button(geometriesAreClipped ? "Reset" : "Clip") {
-                        geometriesAreClipped ? reset() : clipGeometries()
+                        if geometriesAreClipped {
+                            model.reset()
+                        } else {
+                            model.clipGeometries()
+                        }
                         geometriesAreClipped.toggle()
                     }
                 }
             }
+    }
+}
+
+private extension ClipGeometryView {
+    /// The model used to store the geo model and other expensive objects
+    /// used in this view.
+    class Model: ObservableObject {
+        /// A map with a topographic basemap style and an initial viewpoint of Colorado.
+        let map: Map = {
+            let map = Map(basemapStyle: .arcGISTopographic)
+            // Sets the initial viewpoint to Colorado and adds additional padding.
+            map.initialViewpoint = Viewpoint(boundingGeometry: .coloradoEnvelope.expanded(by: 2))
+            return map
+        }()
+        
+        /// The graphics overlay containing an unclipped graphic of Colorado.
+        private let coloradoGraphicsOverlay = GraphicsOverlay(
+            graphics: [
+                Graphic(geometry: .coloradoEnvelope, symbol: .coloradoFill)
+            ]
+        )
+        
+        /// The graphics overlay containing graphics of the other envelopes, outlined by a dotted red line.
+        private let envelopesGraphicsOverlay = GraphicsOverlay(
+            graphics: Geometry.envelopes.map {
+                Graphic(geometry: $0, symbol: SimpleLineSymbol(style: .dot, color: .red, width: 3))
+            }
+        )
+        
+        /// The graphics overlay containing clipped graphics.
+        private let clippedGraphicsOverlay = GraphicsOverlay()
+        
+        /// The unclipped graphic of Colorado.
+        private var coloradoGraphic: Graphic { coloradoGraphicsOverlay.graphics.first! }
+        
+        /// The graphics overlays used in this sample.
+        var graphicsOverlays: [GraphicsOverlay] {
+            return [coloradoGraphicsOverlay, envelopesGraphicsOverlay, clippedGraphicsOverlay]
+        }
+        
+        /// Clips the geometry of Colorado to the given envelope.
+        /// - Parameter envelope: The envelope to clip the geometry of Colorado to.
+        /// - Returns: The clipped graphic.
+        private func clipColoradoGeometry(to envelope: Envelope) -> Graphic {
+            // Uses the geometry engine to create a new geometry for the area of
+            // Colorado that overlaps the given envelope.
+            let clippedGeometry = GeometryEngine.clip(coloradoGraphic.geometry!, to: envelope)
+            // Creates and returns the clipped graphic from the clipped geometry if there is an overlap.
+            return Graphic(geometry: clippedGeometry, symbol: .coloradoFill)
+        }
+        
+        /// Clips geometries and adds resulting graphics.
+        func clipGeometries() {
+            // Hides the Colorado graphic.
+            coloradoGraphic.isVisible = false
+            // Clips Colorado's geometry to each envelope.
+            let clippedGraphics = envelopesGraphicsOverlay.graphics.map { clipColoradoGeometry(to: $0.geometry as! Envelope) }
+            // Adds the clipped graphics.
+            clippedGraphicsOverlay.addGraphics(clippedGraphics)
+        }
+        
+        /// Removes all clipped graphics.
+        func reset() {
+            clippedGraphicsOverlay.removeAllGraphics()
+            coloradoGraphic.isVisible = true
+        }
     }
 }
 
@@ -152,7 +170,7 @@ private extension Envelope {
     /// Expands the envelope by a given factor.
     func expanded(by factor: Double) -> Envelope {
         let builder = EnvelopeBuilder(envelope: self)
-        builder.expand(factor: factor)
+        builder.expand(by: factor)
         return builder.toGeometry()
     }
 }

@@ -13,56 +13,16 @@
 // limitations under the License.
 
 import SwiftUI
-import ArcGIS
 
 struct AboutView: View {
-    @Environment(\.dismiss) private var dismiss: DismissAction
-    
-    var copyrightText: Text {
-        Text("Copyright © 2022 Esri. All Rights Reserved.")
-    }
-    
     var body: some View {
-        NavigationView {
-            List {
-                Section {
-                    VStack {
-                        Image("ArcGIS SDK Logo", label: Text("App icon"))
-                        Text(Bundle.main.name)
-                            .font(.headline)
-                        copyrightText
-                            .font(.footnote)
-                            .foregroundColor(.secondary)
-                    }
-                    .listRowBackground(Color.clear)
-                    .frame(maxWidth: .infinity)
-                }
-                Section {
-                    VersionRow(title: "Version", version: Bundle.main.shortVersion)
-                    VersionRow(title: "SDK Version", version: Bundle.arcGIS.shortVersion, build: Bundle.arcGIS.version)
-                }
-                Section(header: Text("Powered By")) {
-                    Link("ArcGIS Runtime Toolkit for Swift", destination: .toolkit)
-                    Link("ArcGIS Runtime SDK for Swift", destination: .developers)
-                }
-                Section(footer: Text("Browse and discuss in the Esri Community.")) {
-                    Link("Esri Community", destination: .esriCommunity)
-                }
-                Section(footer: Text("Log an issue in the GitHub repository.")) {
-                    Link("GitHub Repository", destination: .githubRepository)
-                }
-                Section(footer: Text("View details about the API.")) {
-                    Link("API Reference", destination: .apiReference)
-                }
+        if #available(iOS 16, *) {
+            NavigationStack {
+                AboutList()
             }
-            .navigationTitle("About")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") {
-                        dismiss()
-                    }
-                }
+        } else {
+            NavigationView {
+                AboutList()
             }
         }
     }
@@ -98,7 +58,7 @@ private struct VersionRow: View {
 }
 
 private extension Bundle {
-    static let arcGIS = Bundle(identifier: "ArcGIS")!
+    static let arcGIS = Bundle(identifier: "com.esri.arcgis-maps.swift")!
     
     var name: String { object(forInfoDictionaryKey: "CFBundleName") as? String ?? "" }
     var shortVersion: String { object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "" }
@@ -106,9 +66,60 @@ private extension Bundle {
 }
 
 private extension URL {
-    static let developers = URL(string: "https://developers.arcgis.com/ios/")!
-    static let esriCommunity = URL(string: "https://community.esri.com/t5/arcgis-runtime-sdk-for-ios-questions/bd-p/arcgis-runtime-sdk-for-ios-questions")!
-    static let githubRepository = URL(string: "https://github.com/ArcGIS/arcgis-runtime-samples-swift")!
-    static let toolkit = URL(string: "https://github.com/ArcGIS/arcgis-runtime-toolkit-swift")!
-    static let apiReference = URL(string: "https://developers.arcgis.com/ios/api-reference/")!
+    static let developers = URL(string: "https://developers.arcgis.com/swift/")!
+    static let esriCommunity = URL(string: "https://community.esri.com/t5/swift-maps-sdk-questions/bd-p/swift-maps-sdk-questions")!
+    static let githubRepository = URL(string: "https://github.com/ArcGIS/arcgis-maps-sdk-swift-samples")!
+    static let toolkit = URL(string: "https://github.com/ArcGIS/arcgis-maps-sdk-swift-toolkit")!
+    static let apiReference = URL(string: "https://developers.arcgis.com/swift/api-reference/documentation/arcgis/")!
+}
+
+private struct AboutList: View {
+    @Environment(\.dismiss) private var dismiss: DismissAction
+    
+    var copyrightText: Text {
+        Text("Copyright © 2022 Esri. All Rights Reserved.")
+    }
+    
+    var body: some View {
+        List {
+            Section {
+                VStack {
+                    Image("ArcGIS SDK Logo", label: Text("App icon"))
+                    Text(Bundle.main.name)
+                        .font(.headline)
+                    copyrightText
+                        .font(.footnote)
+                        .foregroundColor(.secondary)
+                }
+                .listRowBackground(Color.clear)
+                .frame(maxWidth: .infinity)
+            }
+            Section {
+                VersionRow(title: "Version", version: Bundle.main.shortVersion)
+                VersionRow(title: "SDK Version", version: Bundle.arcGIS.shortVersion, build: Bundle.arcGIS.version)
+            }
+            Section(header: Text("Powered By")) {
+                Link("ArcGIS Maps SDK for Swift Toolkit", destination: .toolkit)
+                Link("ArcGIS Maps SDK for Swift", destination: .developers)
+            }
+            Section(footer: Text("Browse and discuss in the Esri Community.")) {
+                Link("Esri Community", destination: .esriCommunity)
+            }
+            Section(footer: Text("Log an issue in the GitHub repository.")) {
+                Link("GitHub Repository", destination: .githubRepository)
+            }
+            Section(footer: Text("View details about the API.")) {
+                Link("API Reference", destination: .apiReference)
+            }
+        }
+        .navigationTitle("About")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .confirmationAction) {
+                Button("Done") {
+                    dismiss()
+                }
+            }
+        }
+    }
 }

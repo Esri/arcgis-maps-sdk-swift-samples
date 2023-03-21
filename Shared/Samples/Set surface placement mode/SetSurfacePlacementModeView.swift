@@ -60,7 +60,8 @@ struct SetSurfacePlacementModeView: View {
 }
 
 private extension SetSurfacePlacementModeView {
-    /// A view model for this sample.
+    /// The model used to store the geo model and other expensive objects
+    /// used in this view.
     class Model: ObservableObject {
         /// The range of possible z-values. The z-value range is 0 to 140 meters in this sample.
         let zValueRange = Measurement.zMin...Measurement.zMax
@@ -92,8 +93,8 @@ private extension SetSurfacePlacementModeView {
             // Creates the scene with an initial viewpoint.
             let scene = Scene(basemapStyle: .arcGISImagery)
             let point = Point(x: -4.4595, y: 48.3889, z: 80, spatialReference: .wgs84)
-            let camera = Camera(locationPoint: point, heading: 330, pitch: 97, roll: 0)
-            scene.initialViewpoint = Viewpoint(targetExtent: point, camera: camera)
+            let camera = Camera(location: point, heading: 330, pitch: 97, roll: 0)
+            scene.initialViewpoint = Viewpoint(boundingGeometry: point, camera: camera)
             
             // Creates and adds an elevation source to a surface and sets it
             // to the scene's base surface.
@@ -187,6 +188,7 @@ private extension SurfacePlacement {
         case .drapedFlat: return "Draped Flat"
         case .relative: return "Relative"
         case .relativeToScene: return "Relative to Scene"
+        @unknown default: return "Unknown"
         }
     }
 }
@@ -194,8 +196,10 @@ private extension SurfacePlacement {
 private extension Measurement where UnitType == UnitLength {
     /// The minimum z-value.
     static var zMin: Self { Measurement(value: 0, unit: UnitLength.meters) }
+    
     /// The maximum z-value.
     static var zMax: Self { Measurement(value: 140, unit: UnitLength.meters) }
+    
     /// The mid-range of the possible z-values.
     static var zMid: Double { (zMin.value + zMax.value) / 2 }
 }
@@ -210,6 +214,7 @@ private extension URL {
     static var sceneService: URL {
         URL(string: "https://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/Buildings_Brest/SceneServer")!
     }
+    
     /// The URL of the Terrain 3D ArcGIS REST Service.
     static var worldElevationService: URL {
         URL(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!

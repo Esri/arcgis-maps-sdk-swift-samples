@@ -16,23 +16,15 @@ import ArcGIS
 import SwiftUI
 
 struct AddRasterFromFileView: View {
-    /// Makes a map with a raster layer.
-    private static func makeMap() -> Map {
-        /// A map with a standard imagery basemap style.
+    /// The model used to store the geo model and other expensive objects
+    /// used in this view.
+    private class Model: ObservableObject {
+        /// A map with imagery basemap and a raster layer.
         let map = Map(basemapStyle: .arcGISImageryStandard)
-        // Gets the Shasta.tif file URL.
-        let shastaURL = Bundle.main.url(forResource: "Shasta", withExtension: "tif", subdirectory: "raster-file/raster-file")!
-        // Creates a raster with the file URL.
-        let raster = Raster(fileURL: shastaURL)
-        // Creates a raster layer using the raster object.
-        let rasterLayer = RasterLayer(raster: raster)
-        // Adds the raster layer to the map's operational layer.
-        map.addOperationalLayer(rasterLayer)
-        return map
     }
     
-    /// A map with a standard imagery basemap style.
-    @StateObject private var map = makeMap()
+    /// The view model for the sample.
+    @StateObject private var model = Model()
     
     /// A Boolean value indicating whether to show an alert.
     @State private var isShowingAlert = false
@@ -47,13 +39,21 @@ struct AddRasterFromFileView: View {
     
     var body: some View {
         // Creates a map view with a viewpoint to display the map.
-        MapView(map: map, viewpoint: viewpoint)
+        MapView(map: model.map, viewpoint: viewpoint)
             .onViewpointChanged(kind: .centerAndScale) { viewpoint = $0 }
             .alert(isPresented: $isShowingAlert, presentingError: error)
             .task {
+                guard model.map.operationalLayers.isEmpty else { return }
                 do {
-                    let rasterLayer = map.operationalLayers.first!
+                    // Gets the Shasta.tif file URL.
+                    let shastaURL = Bundle.main.url(forResource: "Shasta", withExtension: "tif", subdirectory: "raster-file/raster-file")!
+                    // Creates a raster with the file URL.
+                    let raster = Raster(fileURL: shastaURL)
+                    // Creates a raster layer using the raster object.
+                    let rasterLayer = RasterLayer(raster: raster)
                     try await rasterLayer.load()
+                    // Adds the raster layer to the map's operational layer.
+                    model.map.addOperationalLayer(rasterLayer)
                     viewpoint = Viewpoint(center: rasterLayer.fullExtent!.center, scale: 8e4)
                 } catch {
                     // Presents an error message if the raster fails to load.

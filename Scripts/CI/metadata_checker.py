@@ -111,7 +111,7 @@ def all_samples(path: str):
 
 def main():
     # Initialize parser.
-    msg = 'Metadata checker. Run it against the arcgis-runtime-samples-swift ' \
+    msg = 'Metadata checker. Run it against the arcgis-maps-sdk-swift-samples ' \
           'folder or a single sample folder. ' \
           'On success: Script will exit with zero. ' \
           'On failure: Style violations will print to console and the script ' \

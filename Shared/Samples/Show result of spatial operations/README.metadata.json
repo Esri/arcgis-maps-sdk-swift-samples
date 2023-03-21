@@ -3,7 +3,7 @@
     "description": "Find the union, intersection, or difference of two geometries.",
     "ignore": false,
     "images": [
-        "show-results-of-spatial-operations.png"
+        "show-result-of-spatial-operations.png"
     ],
     "keywords": [
         "analysis",
@@ -35,7 +35,7 @@
         "static GeometryEngine.union(_:_:)"
     ],
     "snippets": [
-        "ShowResultsOfSpatialOperationsView.swift"
+        "ShowResultOfSpatialOperationsView.swift"
     ],
-    "title": "Show results of spatial operations"
+    "title": "Show result of spatial operations"
 }

@@ -1,8 +1,8 @@
-# Project
+# Project geometry
 
 Project a point to another spatial reference.
 
-![Screenshot of project sample](project.png)
+![Screenshot of project geometry sample](project-geometry.png)
 
 ## Use case
 

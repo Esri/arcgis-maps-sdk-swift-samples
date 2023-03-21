@@ -15,7 +15,7 @@ Pan and zoom around the map. Observe the graphics on the map.
 ## How it works
 
 1. Create a `GraphicsOverlay` object.
-2. Create an instance of a `Symbol` subclass, such as `SymbolFillSymbol`, `SymbolLineSymbol`, `SimpleMarkerSymbol`, or `TextSymbol`.
+2. Create an instance of a `Symbol` subclass, such as `SimpleFillSymbol`, `SimpleLineSymbol`, `SimpleMarkerSymbol`, or `TextSymbol`.
 3. Create a `Graphic` instance, specifying a `Geometry`, attributes, and a `Symbol`.
 4. Add the graphic to the graphics overlay.
 5. Create a `MapView` instance with the graphics overlay.

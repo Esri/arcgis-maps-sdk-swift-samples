@@ -44,6 +44,7 @@ struct SampleList: View {
         List(displayedSamples, id: \.name) { sample in
             SampleRow(sample: sample)
         }
+        .navigationTitle("Samples")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
