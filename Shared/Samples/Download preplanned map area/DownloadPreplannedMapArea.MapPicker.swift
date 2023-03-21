@@ -86,16 +86,36 @@ extension DownloadPreplannedMapAreaView {
                 } else {
                     switch model.result {
                     case .success:
-                        Image(systemName: "checkmark.icloud")
+                        Image(systemName: "checkmark.icloud.fill")
                     case .failure:
                         Image(systemName: "exclamationmark.icloud")
+                            .foregroundColor(.red)
                     case .none:
                         Image(systemName: "icloud.and.arrow.down")
+                            .foregroundColor(.accentColor)
                     }
                 }
-                Text(model.preplannedMapArea.portalItem.title)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(model.preplannedMapArea.portalItem.title)
+                        .foregroundColor(textColor(for: model.result))
+                    if case .failure = model.result {
+                        Text("Error occurred. Tap to retry.")
+                            .font(.caption2)
+                    }
+                }
             }
             .tag(Model.SelectedMap.offlineMap(model))
+        }
+        
+        func textColor(for result: Result<MobileMapPackage, Error>?) -> Color {
+            switch model.result {
+            case .success:
+                return .primary
+            case .failure:
+                return .secondary
+            case .none:
+                return .secondary
+            }
         }
     }
 }

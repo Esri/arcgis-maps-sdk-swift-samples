@@ -31,7 +31,7 @@ extension DownloadPreplannedMapAreaView {
         /// The currently selected map.
         @Published var selectedMap: SelectedMap = .onlineWebMap {
             didSet {
-                selectedMapDidChange()
+                selectedMapDidChange(from: oldValue)
             }
         }
         
@@ -101,16 +101,16 @@ extension DownloadPreplannedMapAreaView {
         /// area is not nil, the preplanned map area will be downloaded if necessary and updates the map
         /// to the currently selected preplanned map area. If the preplanned map area is nil, then the map
         /// is set to the online web map.
-        private func selectedMapDidChange() {
+        private func selectedMapDidChange(from oldValue: SelectedMap) {
             switch selectedMap {
             case .onlineWebMap:
                 offlineMap = nil
             case .offlineMap(let info):
                 if info.canDownload {
                     // If we have not yet downloaded or started downloading, then kick off a
-                    // download and reset selection to online map since we have to download
+                    // download and reset selection to prevous selection since we have to download
                     // the offline map.
-                    selectedMap = .onlineWebMap
+                    selectedMap = oldValue
                     Task {
                         await info.download()
                     }
@@ -119,7 +119,7 @@ extension DownloadPreplannedMapAreaView {
                     offlineMap = mmpk.maps.first
                 } else {
                     // If we have a failure, then keep the online map selected.
-                    selectedMap = .onlineWebMap
+                    selectedMap = oldValue
                 }
             }
         }
@@ -184,7 +184,7 @@ extension OfflineMapModel: Hashable {
 }
 
 @MainActor
-extension OfflineMapModel {
+private extension OfflineMapModel {
     /// The directory that should hold the mmpk of the offline map.
     var mmpkDirectory: URL {
         temporaryDirectory
@@ -223,15 +223,31 @@ extension OfflineMapModel {
         // Awaits the output of the job and assigns the result.
         result = await job.result.map { $0.mobileMapPackage }
         
+        result = .failure(NSError(domain: "foo", code: 1))
+        
         // Set the job to nil
         self.job = nil
     }
     
-    /// Whether or not the offline map can be downloaded.
-    /// This returns `false` if the map was already downloaded or is in the process
+    /// A Boolean value indicating whether the offline map can be downloaded.
+    /// This returns `false` if the map was already downloaded successfully or is in the process
     /// of being downloaded.
     var canDownload: Bool {
-        job == nil && result == nil
+        !(isDownloading || downloadDidSucceed)
+    }
+    
+    /// A Boolean value indicating whether the map is being taken offline.
+    var isDownloading: Bool {
+        job != nil
+    }
+    
+    /// A Boolean value indicating whether the download succeeded.
+    var downloadDidSucceed: Bool {
+        if case .success = result {
+            return true
+        } else {
+            return false
+        }
     }
     
     /// Creates the parameters for a download preplanned offline map job.
