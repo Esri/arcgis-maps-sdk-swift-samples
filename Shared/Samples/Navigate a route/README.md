@@ -22,7 +22,9 @@ Tap "Navigate" to simulate traveling and to receive directions from a preset sta
 6. Create an `RouteTracker` using the route result, and the index of the desired route to take.
 7. Create a `RouteTrackerLocationDataSource` with the route tracker and a `SimulatedLocationDataSource` object to snap the location display to the route.
 8. Use `RouteTracker.trackingStatus` to be notified of `TrackingStatus` changes, and use them to display updated route information. `TrackingStatus` includes a variety of information on the route progress, such as the remaining distance, remaining geometry or traversed geometry (represented by an `Polyline`), or the remaining time (`TimeInterval`), amongst others.
-
+9. Use `RouteTracker.voiceGuidances` to be notified of new voice guidances. From the voice guidance, get the `VoiceGuidance.text` representing the directions and use a text-to-speech engine to output the maneuver directions.
+10. You can also query the tracking status for the current `DirectionManeuver` index, retrieve that maneuver from the `Route`, and get its direction text to display in the GUI.
+11. To establish whether the destination has been reached, get the `destinationStatus` from the tracking status. If the destination status is `reached` and the `remainingDestinationCount` is 1, you have arrived at the destination and can stop routing. If there are several destinations on your route and the remaining destination count is greater than 1, switch the route tracker to the next destination.
 
 ## Relevant API
 

@@ -221,6 +221,7 @@ private extension NavigateARouteView {
             await withTaskGroup(of: Void.self) { group in
                 group.addTask { await self.trackAutoPanMode() }
                 group.addTask { await self.trackStatus() }
+                group.addTask { await self.trackVoiceGuidance() }
             }
         }
         
@@ -231,6 +232,13 @@ private extension NavigateARouteView {
             for try await status in routeTracker.$trackingStatus {
                 routeTraversedGraphic.geometry = status?.routeProgress.traversedGeometry
                 routeRemainingGraphic.geometry = status?.routeProgress.remainingGeometry
+            }
+        }
+        
+        /// Monitor the asynchronous stream of voice guidances.
+        private func trackVoiceGuidance() async {
+            for try await voiceGuidance in routeTracker.voiceGuidances {
+                print(voiceGuidance.text)
             }
         }
         
