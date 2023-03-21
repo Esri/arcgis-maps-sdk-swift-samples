@@ -37,7 +37,6 @@ struct NavigateARouteView: View {
             // Solves the route and sets the navigation.
             await model.solveRoute()
             model.setNavigation()
-            await model.startUpdates()
         }
         .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
@@ -217,16 +216,22 @@ private extension NavigateARouteView {
             viewpoint = Viewpoint(boundingGeometry: routeGeometry)
         }
         
-        func startUpdates() async {
+        private func startTracking() async {
             await withTaskGroup(of: Void.self) { group in
-                group.addTask {
-                    await self.updateAutoPanMode()
-                }
+                group.addTask { await self.trackAutoPanMode() }
+                group.addTask { await self.trackStatus() }
+            }
+        }
+        
+        private func trackStatus() async {
+            for try await status in routeTracker.$trackingStatus {
+                routeTraversedGraphic.geometry = status?.routeProgress.traversedGeometry
+                routeAheadGraphic.geometry = status?.routeProgress.remainingGeometry
             }
         }
         
         /// Updates the current auto-pan mode if it does not match the location display's auto-pan mode.
-        private func updateAutoPanMode() async {
+        private func trackAutoPanMode() async {
             for await mode in locationDisplay.$autoPanMode {
                 if autoPanMode != mode {
                     autoPanMode = mode
@@ -239,6 +244,7 @@ private extension NavigateARouteView {
             do {
                 try await locationDisplay.dataSource.start()
                 locationDisplay.autoPanMode = .navigation
+                await startTracking()
             } catch {
                 self.error = error
                 isShowingAlert = true
