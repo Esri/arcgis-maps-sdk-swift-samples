@@ -243,7 +243,6 @@ private extension NavigateARouteView {
         
         /// Starts navigating the route.
         func startNavigation() async {
-            print(locationDisplay.dataSource.status)
             do {
                 try await locationDisplay.dataSource.start()
                 locationDisplay.autoPanMode = .navigation
@@ -254,7 +253,6 @@ private extension NavigateARouteView {
         }
         
         func resetNavigation() async {
-            print(locationDisplay.dataSource.status)
             locationDisplay.autoPanMode = .off
             await locationDisplay.dataSource.stop()
             setNavigation()
