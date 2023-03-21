@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import ArcGIS
-import AVFoundation
 import SwiftUI
 
 struct NavigateARouteView: View {
