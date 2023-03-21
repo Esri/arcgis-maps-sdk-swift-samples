@@ -57,6 +57,10 @@
 		00E5401C27F3CCA200CF66D5 /* SamplesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5400C27F3CCA100CF66D5 /* SamplesApp.swift */; };
 		00E5401E27F3CCA200CF66D5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5400D27F3CCA100CF66D5 /* ContentView.swift */; };
 		00E5402027F3CCA200CF66D5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00E5400E27F3CCA200CF66D5 /* Assets.xcassets */; };
+		4D126D6D29CA1B6000CFB7A7 /* DisplayDeviceLocationWithNMEADataSourcesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D126D6929CA1B6000CFB7A7 /* DisplayDeviceLocationWithNMEADataSourcesView.swift */; };
+		4D126D7229CA1E1800CFB7A7 /* SimulatedNMEADataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D126D7129CA1E1800CFB7A7 /* SimulatedNMEADataSource.swift */; };
+		4D126D7329CA1EFD00CFB7A7 /* DisplayDeviceLocationWithNMEADataSourcesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4D126D6929CA1B6000CFB7A7 /* DisplayDeviceLocationWithNMEADataSourcesView.swift */; };
+		4D126D7429CA1EFD00CFB7A7 /* SimulatedNMEADataSource.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4D126D7129CA1E1800CFB7A7 /* SimulatedNMEADataSource.swift */; };
 		E000E7602869E33D005D87C5 /* ClipGeometryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E000E75F2869E33D005D87C5 /* ClipGeometryView.swift */; };
 		E000E763286A0B18005D87C5 /* CutGeometryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E000E762286A0B18005D87C5 /* CutGeometryView.swift */; };
 		E004A6C128414332002A1FE6 /* SetViewpointRotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6BD28414332002A1FE6 /* SetViewpointRotationView.swift */; };
@@ -145,6 +149,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				4D126D7329CA1EFD00CFB7A7 /* DisplayDeviceLocationWithNMEADataSourcesView.swift in Copy Source Code Files */,
+				4D126D7429CA1EFD00CFB7A7 /* SimulatedNMEADataSource.swift in Copy Source Code Files */,
 				0044CDE02995D4DD004618CE /* ShowDeviceLocationHistoryView.swift in Copy Source Code Files */,
 				0042E24628E50EE4001F33D6 /* ShowViewshedFromPointInSceneView.swift in Copy Source Code Files */,
 				0042E24728E50EE4001F33D6 /* ShowViewshedFromPointInSceneView.Model.swift in Copy Source Code Files */,
@@ -212,6 +218,8 @@
 		00E5400E27F3CCA200CF66D5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		00E5401327F3CCA200CF66D5 /* Samples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Samples.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E5402A27F775EA00CF66D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4D126D6929CA1B6000CFB7A7 /* DisplayDeviceLocationWithNMEADataSourcesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayDeviceLocationWithNMEADataSourcesView.swift; sourceTree = "<group>"; };
+		4D126D7129CA1E1800CFB7A7 /* SimulatedNMEADataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulatedNMEADataSource.swift; sourceTree = "<group>"; };
 		E000E75F2869E33D005D87C5 /* ClipGeometryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipGeometryView.swift; sourceTree = "<group>"; };
 		E000E762286A0B18005D87C5 /* CutGeometryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutGeometryView.swift; sourceTree = "<group>"; };
 		E004A6BD28414332002A1FE6 /* SetViewpointRotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetViewpointRotationView.swift; sourceTree = "<group>"; };
@@ -317,6 +325,7 @@
 				E000E75E2869E325005D87C5 /* Clip geometry */,
 				E004A6EB28495538002A1FE6 /* Create planar and geodetic buffers */,
 				E000E761286A0B07005D87C5 /* Cut geometry */,
+				4D126D6829CA1B6000CFB7A7 /* Display device location with NMEA data sources */,
 				0074ABB328174B830037244A /* Display map */,
 				F111CCBD288B548400205358 /* Display map from mobile map package */,
 				00B04FB3283EEB830026C882 /* Display overview map */,
@@ -484,6 +493,15 @@
 				00E5401327F3CCA200CF66D5 /* Samples.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		4D126D6829CA1B6000CFB7A7 /* Display device location with NMEA data sources */ = {
+			isa = PBXGroup;
+			children = (
+				4D126D6929CA1B6000CFB7A7 /* DisplayDeviceLocationWithNMEADataSourcesView.swift */,
+				4D126D7129CA1E1800CFB7A7 /* SimulatedNMEADataSource.swift */,
+			);
+			path = "Display device location with NMEA data sources";
 			sourceTree = "<group>";
 		};
 		E000E75E2869E325005D87C5 /* Clip geometry */ = {
@@ -855,6 +873,7 @@
 				0005580C28185C0600224BC6 /* SampleList.swift in Sources */,
 				E004A6E028466279002A1FE6 /* ShowCalloutView.swift in Sources */,
 				E000E763286A0B18005D87C5 /* CutGeometryView.swift in Sources */,
+				4D126D7229CA1E1800CFB7A7 /* SimulatedNMEADataSource.swift in Sources */,
 				001C6DE127FE8A9400D472C2 /* AppSecrets.swift.masque in Sources */,
 				00CCB8A5285BAF8700BBAB70 /* OnDemandResource.swift in Sources */,
 				E004A6ED2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift in Sources */,
@@ -880,6 +899,7 @@
 				0074ABBF28174BCF0037244A /* DisplayMapView.swift in Sources */,
 				0086F40128E3770A00974721 /* ShowViewshedFromPointInSceneView.swift in Sources */,
 				00D4EF802863842100B9CC30 /* AddFeatureLayersView.swift in Sources */,
+				4D126D6D29CA1B6000CFB7A7 /* DisplayDeviceLocationWithNMEADataSourcesView.swift in Sources */,
 				E004A6DC28465C70002A1FE6 /* DisplaySceneView.swift in Sources */,
 				E066DD35285CF3B3004D3D5B /* FindRouteView.swift in Sources */,
 				E004A6F6284FA42A002A1FE6 /* SelectFeaturesInFeatureLayerView.swift in Sources */,
