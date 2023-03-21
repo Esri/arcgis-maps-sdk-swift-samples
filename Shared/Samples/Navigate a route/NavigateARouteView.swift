@@ -20,6 +20,7 @@ struct NavigateARouteView: View {
     /// A Boolean value indicating whether the sample is navigating the route.
     @State private var isNavigatingRoute = false
     
+    /// A Boolean value indicating whether navigation is being reset.
     @State private var isResettingRoute = false
     
     /// The view model for this sample.
