@@ -125,8 +125,8 @@ private extension NavigateARouteView {
             return [stopGraphicsOverlay, routeGraphicsOverlay]
         }
         
-        /// A graphic of the route ahead.
-        private var routeAheadGraphic: Graphic { routeGraphicsOverlay.graphics.first! }
+        /// A graphic of the route remaining.
+        private var routeRemainingGraphic: Graphic { routeGraphicsOverlay.graphics.first! }
         
         /// A graphic of the route traversed.
         private var routeTraversedGraphic: Graphic { routeGraphicsOverlay.graphics.last! }
@@ -142,13 +142,13 @@ private extension NavigateARouteView {
                 )
             }
             
-            // Creates the graphics for the route ahead and traversed.
-            let routeAheadGraphic = Graphic(symbol: SimpleLineSymbol(style: .dash, color: .systemPurple, width: 5))
+            // Creates the graphics for the route remaining and traversed.
+            let routeRemainingGraphic = Graphic(symbol: SimpleLineSymbol(style: .dash, color: .systemPurple, width: 5))
             let routeTraversedGraphic = Graphic(symbol: SimpleLineSymbol(style: .solid, color: .systemBlue, width: 3))
             
             // Creates the graphics overlay for the stops and route.
             stopGraphicsOverlay = GraphicsOverlay(graphics: stopGraphics)
-            routeGraphicsOverlay = GraphicsOverlay(graphics: [routeAheadGraphic, routeTraversedGraphic])
+            routeGraphicsOverlay = GraphicsOverlay(graphics: [routeRemainingGraphic, routeTraversedGraphic])
         }
         
         /// Solves the route.
@@ -212,7 +212,7 @@ private extension NavigateARouteView {
             locationDisplay.dataSource = routeTrackerLocationDataSource
             
             // Updates the graphics and viewpoint.
-            routeAheadGraphic.geometry = routeGeometry
+            routeRemainingGraphic.geometry = routeGeometry
             viewpoint = Viewpoint(boundingGeometry: routeGeometry)
         }
         
@@ -230,7 +230,7 @@ private extension NavigateARouteView {
         private func trackStatus() async {
             for try await status in routeTracker.$trackingStatus {
                 routeTraversedGraphic.geometry = status?.routeProgress.traversedGeometry
-                routeAheadGraphic.geometry = status?.routeProgress.remainingGeometry
+                routeRemainingGraphic.geometry = status?.routeProgress.remainingGeometry
             }
         }
         
