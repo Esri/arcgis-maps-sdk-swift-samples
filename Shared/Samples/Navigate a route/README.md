@@ -14,18 +14,15 @@ Tap "Navigate" to simulate traveling and to receive directions from a preset sta
 
 ## How it works
 
-1. Create an `AGSRouteTask` using a URL to an online route service.
-2. Generate default `AGSRouteParameters` using `AGSRouteTask.defaultRouteParameters(completion:)`.
-3. Set `returnRoutes`, `returnStops`, and `returnDirections` on the parameters to `true`.
-4. Assign all `AGSStop` objects to the route parameters using `AGSRouteParameters.setStops(_:)`.
-5. Solve the route using `AGSRouteTask.solveRoute(with:completion:)` to get an `AGSRouteResult`.
-6. Create an `AGSRouteTracker` using the route result, and the index of the desired route to take.
-7. Create an `AGSRouteTrackerLocationDataSource` with the route tracker and an `AGSSimulatedLocationDataSource` object to snap the location display to the route.
-8. Use `AGSLocationChangeHandlerDelegate.locationDataSource(_:locationDidChange:)` to track the location of the device and update the route tracking status.
-9. Use `AGSRouteTrackerDelegate.routeTracker(_:didUpdate:)` to be notified of `AGSTrackingStatus` changes, and use them to display updated route information. `AGSTrackingStatus` includes a variety of information on the route progress, such as the remaining distance, remaining geometry or traversed geometry (represented by an `AGSPolyline`), or the remaining time (`Double`), amongst others.
-10. Use `AGSRouteTrackerDelegate.routeTracker(_:didGenerateNewVoiceGuidance:)` to be notified of new voice guidances. From the voice guidance, get the `AGSVoiceGuidance.text` representing the directions and use a text-to-speech engine to output the maneuver directions.
-11. You can also query the tracking status for the current `AGSDirectionManeuver` index, retrieve that maneuver from the `AGSRoute`, and get its direction text to display in the GUI.
-12. To establish whether the destination has been reached, get the `destinationStatus` from the tracking status. If the destination status is `reached` and the `remainingDestinationCount` is 1, you have arrived at the destination and can stop routing. If there are several destinations on your route and the remaining destination count is greater than 1, switch the route tracker to the next destination.
+1. Create an `RouteTask` using a URL to an online route service.
+2. Generate default `RouteParameters` using `RouteTask.makeDefaultParameters()`.
+3. Set `returnsRoutes`, `returnsStops`, and `returnsDirections` on the parameters to `true`.
+4. Assign all `Stop` objects to the route parameters using `RouteParameters.setStops(_:)`.
+5. Solve the route using `RouteTask.solveRoute(using:)` to get a `RouteResult`.
+6. Create an `RouteTracker` using the route result, and the index of the desired route to take.
+7. Create a `RouteTrackerLocationDataSource` with the route tracker and a `SimulatedLocationDataSource` object to snap the location display to the route.
+8. Use `RouteTracker.trackingStatus` to be notified of `TrackingStatus` changes, and use them to display updated route information. `TrackingStatus` includes a variety of information on the route progress, such as the remaining distance, remaining geometry or traversed geometry (represented by an `Polyline`), or the remaining time (`TimeInterval`), amongst others.
+
 
 ## Relevant API
 
