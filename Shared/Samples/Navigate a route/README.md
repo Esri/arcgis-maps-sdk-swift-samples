@@ -29,18 +29,18 @@ Tap "Navigate" to simulate traveling and to receive directions from a preset sta
 
 ## Relevant API
 
-* AGSDestinationStatus
-* AGSDirectionManeuver
-* AGSLocation
-* AGSLocationDataSource
-* AGSRoute
-* AGSRouteParameters
-* AGSRouteTask
-* AGSRouteTracker
-* AGSRouteTrackerLocationDataSource
-* AGSSimulatedLocationDataSource
-* AGSStop
-* AGSVoiceGuidance
+* DestinationStatus
+* DirectionManeuver
+* Location
+* LocationDataSource
+* Route
+* RouteParameters
+* RouteTask
+* RouteTracker
+* RouteTrackerLocationDataSource
+* SimulatedLocationDataSource
+* Stop
+* VoiceGuidance
 
 ## About the data
 
