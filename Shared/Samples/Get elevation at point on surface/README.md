@@ -10,7 +10,7 @@ Knowing the elevation at a given point in a landscape can aid in navigation, pla
 
 ## How to use the sample
 
-Tap anywhere on the surface to get the elevation at that point. Elevation is reported in the standard local measurements. The scene view is in WGS84, which is a geographic coordinate system.
+Tap anywhere on the surface to get the elevation at that point. Tap again to dismiss the callout. Elevation is reported in the standard local measurements. The scene view is in WGS84, which is a geographic coordinate system.
 
 ## How it works
 
