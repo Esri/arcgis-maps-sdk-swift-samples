@@ -48,10 +48,10 @@ struct GetElevationAtPointOnSurfaceView: View {
                     .padding(5)
                 }
                 .task(id: scenePoint) {
-                    guard let scenePoint,
-                          // Converts the tapped screen point into a point on the surface.
-                          let relativeSurfacePoint = sceneViewProxy.baseSurfaceLocation(fromScreenPoint: screenPoint) else { return }
+                    guard let scenePoint else { return }
                     if calloutPlacement == nil {
+                        // Converts the tapped screen point into a point on the surface.
+                        guard let relativeSurfacePoint = sceneViewProxy.baseSurfaceLocation(fromScreenPoint: screenPoint) else { return }
                         // Gets the elevation from the tap location.
                         elevation = await elevation(at: relativeSurfacePoint)
                         // Shows the callout at the tapped location.
