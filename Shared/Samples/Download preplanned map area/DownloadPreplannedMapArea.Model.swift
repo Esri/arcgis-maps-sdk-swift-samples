@@ -25,9 +25,6 @@ extension DownloadPreplannedMapAreaView {
             }
         }
         
-        /// Manages the lifetime of async tasks.
-        //private var tasks = TaskManager()
-        
         /// The offline map of the downloaded preplanned map area.
         @Published private var offlineMap: Map?
         
