@@ -190,6 +190,7 @@ class OfflineMapModel: ObservableObject, Identifiable {
     
     deinit {
         Task {
+            // Cancel any outstanding job.
             await job?.cancel()
         }
     }
