@@ -24,10 +24,10 @@
         "OfflineMapTask.makeDownloadPreplannedOfflineMapJob(parameters:downloadDirectory:)",
         "PreplannedMapArea"
     ],
-    "snippets": [
+    "snippets": [,
+        "DownloadPreplannedMapAreaView.swift",
         "DownloadPreplannedMapAreaView.MapPicker.swift",
-        "DownloadPreplannedMapAreaView.Model.swift",
-        "DownloadPreplannedMapAreaView.swift"
+        "DownloadPreplannedMapAreaView.Model.swift"
     ],
     "title": "Download preplanned map area"
 }
