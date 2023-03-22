@@ -34,6 +34,15 @@ struct NavigateARouteView: View {
         )
         .onViewpointChanged(kind: .centerAndScale) { model.viewpoint = $0 }
         .locationDisplay(model.locationDisplay)
+        .overlay(alignment: .top) {
+            VStack {
+                Text("Distance remaining:")
+                Text("Time remaining:")
+                Text("Next direction:")
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(.ultraThinMaterial)
+        }
         .task {
             // Solves the route and sets the navigation.
             await model.solveRoute()
