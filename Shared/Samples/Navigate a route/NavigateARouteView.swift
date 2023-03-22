@@ -17,12 +17,6 @@ import AVFoundation
 import SwiftUI
 
 struct NavigateARouteView: View {
-    /// A Boolean value indicating whether the sample is navigating the route.
-    @State private var isNavigatingRoute = false
-    
-    /// A Boolean value indicating whether navigation is being reset.
-    @State private var isResettingRoute = false
-    
     /// The view model for this sample.
     @StateObject private var model = Model()
     
@@ -48,33 +42,33 @@ struct NavigateARouteView: View {
         .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
                 Button("Navigate") {
-                    isNavigatingRoute = true
+                    model.isNavigatingRoute = true
                 }
-                .task(id: isNavigatingRoute) {
-                    guard isNavigatingRoute else { return }
+                .task(id: model.isNavigatingRoute) {
+                    guard model.isNavigatingRoute else { return }
                     await model.startNavigation()
                 }
-                .disabled(model.isNavigateDisabled || isNavigatingRoute)
+                .disabled(model.isNavigateDisabled || model.isNavigatingRoute)
                 
                 Spacer()
                 
                 Button("Recenter") {
                     model.autoPanMode = .navigation
                 }
-                .disabled(!isNavigatingRoute || model.autoPanMode == .navigation)
+                .disabled(!model.isNavigatingRoute || model.autoPanMode == .navigation)
                 
                 Spacer()
                 
                 Button("Reset") {
-                    isResettingRoute = true
+                    model.isResettingRoute = true
                 }
-                .task(id: isResettingRoute) {
-                    guard isResettingRoute else { return }
+                .task(id: model.isResettingRoute) {
+                    guard model.isResettingRoute else { return }
                     await model.resetNavigation()
-                    isNavigatingRoute = false
-                    isResettingRoute = false
+                    model.isNavigatingRoute = false
+                    model.isResettingRoute = false
                 }
-                .disabled(isResettingRoute)
+                .disabled(model.isResettingRoute)
             }
         }
     }
@@ -86,6 +80,12 @@ private extension NavigateARouteView {
     class Model: ObservableObject {
         /// A Boolean value indicating whether the navigate button is disabled.
         @Published var isNavigateDisabled = true
+        
+        /// A Boolean value indicating whether the sample is navigating the route.
+        @Published var isNavigatingRoute = false
+        
+        /// A Boolean value indicating whether navigation is being reset.
+        @Published var isResettingRoute = false
         
         /// A Boolean value indicating whether to show an alert.
         @Published var isShowingAlert = false
@@ -271,8 +271,10 @@ private extension NavigateARouteView {
                             statusText = "Intermediate stop reached, continue to next stop."
                             try? await routeTracker.switchToNextDestination()
                         } else {
-                            statusText = "Final destination reached."
+                            isNavigatingRoute = false
+                            isResettingRoute = true
                             await resetNavigation()
+                            isResettingRoute = false
                         }
                     }
                 }
