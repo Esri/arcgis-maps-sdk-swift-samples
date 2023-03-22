@@ -22,10 +22,9 @@ extension AddDynamicEntityLayerView {
         var body: some View {
             List {
                 Section("Track display properties") {
-                    Toggle("Track lines", isOn: $model.showsTrackLine)
-                    Toggle("Previous observations", isOn: $model.showsPreviousObservations)
+                    Toggle("Track Lines", isOn: $model.showsTrackLine)
+                    Toggle("Previous Observations", isOn: $model.showsPreviousObservations)
                 }
-                .toggleStyle(SwitchToggleStyle(tint: .accentColor))
                 
                 Section("Observations") {
                     VStack {
@@ -35,12 +34,11 @@ extension AddDynamicEntityLayerView {
                             Text(model.maximumObservations.formatted())
                                 .foregroundColor(.secondary)
                         }
-                        Spacer()
                         Slider(value: $model.maximumObservations, in: model.maxObservationRange, step: 1)
                     }
                     HStack {
                         Spacer()
-                        Button("Purge all observations") {
+                        Button("Purge All Observations") {
                             Task {
                                 try? await model.streamService.purgeAll()
                             }

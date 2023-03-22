@@ -23,7 +23,7 @@ extension AddDynamicEntityLayerView {
         let map = Map(basemapStyle: .arcGISStreets)
         
         /// The data source for the dynamic entity layer.
-        var streamService: ArcGISStreamService = {
+        let streamService: ArcGISStreamService = {
             let streamService = ArcGISStreamService(url: .streamService)
             
             let filter = ArcGISStreamServiceFilter()
@@ -35,7 +35,7 @@ extension AddDynamicEntityLayerView {
         }()
         
         /// The layer displaying the dynamic entities on the map.
-        var dynamicEntityLayer: DynamicEntityLayer
+        let dynamicEntityLayer: DynamicEntityLayer
         
         /// A Boolean value indicating whether track lines should be displayed.
         @Published var showsTrackLine: Bool {
@@ -58,18 +58,18 @@ extension AddDynamicEntityLayerView {
             }
         }
         
-        // The maximum observations range.
-        // Used by Slider, which requires CGFloat values.
+        /// The maximum observations range.
+        /// Used by slider, which requires `CGFloat` values.
         let maxObservationRange = CGFloat(1)...CGFloat(16)
         
         /// The stream service connection status.
         @Published var connectionStatus: String
         
         init() {
-            // Create the dynamic entity layer
+            // Creates the dynamic entity layer.
             dynamicEntityLayer = DynamicEntityLayer(dataSource: streamService)
             
-            // Initialize properties from the dynamic entity layer and stream service.
+            // Initializes properties from the dynamic entity layer and stream service.
             showsTrackLine = dynamicEntityLayer.trackDisplayProperties.showsTrackLine
             showsPreviousObservations = dynamicEntityLayer.trackDisplayProperties.showsPreviousObservations
             maximumObservations = CGFloat(dynamicEntityLayer.trackDisplayProperties.maximumObservations)
@@ -85,7 +85,7 @@ extension AddDynamicEntityLayerView {
                 }
             }
             
-            // Add the dynamic entity layer to the map's operation layers array.
+            // Adds the dynamic entity layer to the map's operational layers.
             map.addOperationalLayer(dynamicEntityLayer)
         }
     }
@@ -98,7 +98,7 @@ private extension URL {
 }
 
 extension ConnectionStatus: CustomStringConvertible {
-    /// A user-friendly string for ConnectionStatus.
+    /// A user-friendly string for `ConnectionStatus`.
     public var description: String {
         switch self {
         case .connecting:

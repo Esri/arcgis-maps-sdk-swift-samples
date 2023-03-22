@@ -18,7 +18,7 @@ Use the controls to connect to or disconnect from the stream service, modify dis
 ## How it works
 
 1. Create an `ArcGIStreamService` using a stream service URL.
-2. Set a `DynamicEntityFilter` on the stream service to limit the amount of data coming from the server.
+2. Set an `ArcGISStreamServiceFilter` on the stream service to limit the amount of data coming from the server.
 3. Set the `maximumDuration` property of the stream service's `purgeOptions` to limit the amount of data managed by the application.
 4. Create a `DynamicEntityLayer` using the stream service.
 5. Update values in the layer's `trackDisplayProperties` to customize the layer's appearance.
