@@ -50,7 +50,7 @@ extension DownloadPreplannedMapAreaView {
                             Text(error.localizedDescription)
                         case .none:
                             // Getting the offline map models is still in progress.
-                            ProgressView()
+                            ProgressView().frame(maxWidth: .infinity)
                         }
                     } header: {
                         Text("Preplanned Map Areas")
@@ -58,7 +58,7 @@ extension DownloadPreplannedMapAreaView {
                         Text(
                             """
                             Tap to download a preplanned map area for offline use. Once the selected \
-                            map is downloaded, the map will update with the offline map's area.
+                            map is downloaded, you can tap it again to select and open it.
                             """
                         )
                     }
