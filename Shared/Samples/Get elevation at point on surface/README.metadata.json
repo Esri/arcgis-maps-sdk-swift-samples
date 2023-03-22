@@ -1,0 +1,28 @@
+{
+    "category": "Scenes",
+    "description": "Get the elevation for a given point on a surface in a scene.",
+    "ignore": false,
+    "images": [
+        "get-elevation-at-point-on-surface.png"
+    ],
+    "keywords": [
+        "elevation",
+        "point",
+        "surface",
+        "ArcGISTiledElevationSource",
+        "ElevationSource",
+        "SceneView",
+        "Surface"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "ArcGISTiledElevationSource",
+        "ElevationSource",
+        "SceneView",
+        "Surface"
+    ],
+    "snippets": [
+        "GetElevationAtPointOnSurfaceView.swift"
+    ],
+    "title": "Get elevation at point on surface"
+}
