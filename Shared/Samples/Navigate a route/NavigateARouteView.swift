@@ -136,6 +136,7 @@ private extension NavigateARouteView {
         /// The graphics overlay for the route.
         private let routeGraphicsOverlay: GraphicsOverlay
         
+        /// Formats the time remaining for display.
         private let timeFormatter: DateComponentsFormatter = {
             let formatter = DateComponentsFormatter()
             formatter.allowedUnits = [.hour, .minute, .second]
