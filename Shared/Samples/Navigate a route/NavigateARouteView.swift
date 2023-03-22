@@ -104,13 +104,16 @@ private extension NavigateARouteView {
         }
         
         /// The status text to display to the user.
-        @Published var statusText: String = ""
+        @Published var statusText: String = defaultStatus
         
         /// A map with a navigation basemap style.
         let map = Map(basemapStyle: .arcGISNavigation)
         
         /// The map's location display.
         let locationDisplay = LocationDisplay()
+        
+        /// The default status to display when not navigating.
+        static let defaultStatus = "Directions are shown here."
         
         /// The route task.
         private let routeTask = RouteTask(url: .routeTask)
@@ -254,12 +257,23 @@ private extension NavigateARouteView {
                     routeTraversedGraphic.geometry = status.routeProgress.traversedGeometry
                     routeRemainingGraphic.geometry = status.routeProgress.remainingGeometry
                     
-                    statusText = """
-                    Distance remaining: \(status.routeProgress.remainingDistance.distanceRemainingText)
-                    Time remaining: \(timeFormatter.string(from: status.routeProgress.remainingTime) ?? "")
-                    """
-                    if status.currentManeuverIndex + 1 < directions.count {
-                        statusText.append("\nNext direction: \(directions[status.currentManeuverIndex + 1].text)")
+                    switch status.destinationStatus {
+                    case .notReached, .approaching:
+                        statusText = """
+                        Distance remaining: \(status.routeProgress.remainingDistance.distanceRemainingText)
+                        Time remaining: \(timeFormatter.string(from: status.routeProgress.remainingTime) ?? "")
+                        """
+                        if status.currentManeuverIndex + 1 < directions.count {
+                            statusText.append("\nNext direction: \(directions[status.currentManeuverIndex + 1].text)")
+                        }
+                    case .reached:
+                        if status.remainingDestinationCount > 1 {
+                            statusText = "Intermediate stop reached, continue to next stop."
+                            try? await routeTracker.switchToNextDestination()
+                        } else {
+                            statusText = "Final destination reached."
+                            await resetNavigation()
+                        }
                     }
                 }
             }
@@ -302,6 +316,7 @@ private extension NavigateARouteView {
             await locationDisplay.dataSource.stop()
             setNavigation()
             speechSynthesizer.stopSpeaking(at: .immediate)
+            statusText = Self.defaultStatus
         }
     }
     
