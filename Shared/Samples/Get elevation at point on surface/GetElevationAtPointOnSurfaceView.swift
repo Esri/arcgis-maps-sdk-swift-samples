@@ -69,7 +69,7 @@ struct GetElevationAtPointOnSurfaceView: View {
     /// in the same spatial reference as the scene view.
     /// - Returns: The elevation in meters.
     private func elevation(at surfacePoint: Point) async -> Double? {
-        return try? await model.scene.baseSurface.elevation(at: surfacePoint)
+        try? await model.scene.baseSurface.elevation(at: surfacePoint)
     }
 }
 
