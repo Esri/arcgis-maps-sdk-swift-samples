@@ -26,16 +26,13 @@ extension DownloadPreplannedMapAreaView {
         }
         
         /// The offline map of the downloaded preplanned map area.
-        @Published private var offlineMap: Map?
+        private var offlineMap: Map?
         
         /// The map used in the map view.
-        var map: Map { offlineMap ?? onlineMap }
+        var currentMap: Map { offlineMap ?? onlineMap }
         
         /// A portal item displaying the Naperville, IL water network.
-        private let napervillePortalItem = PortalItem(
-            portal: .arcGISOnline(connection: .anonymous),
-            id: PortalItem.ID("acc027394bc84c2fb04d1ed317aac674")!
-        )
+        private let portalItem = PortalItem.naperville()
         
         /// The online map of the Naperville water network.
         private let onlineMap: Map
@@ -47,34 +44,26 @@ extension DownloadPreplannedMapAreaView {
         private let temporaryDirectory: URL
     
         /// The offline map information.
-        @Published var offlineMapModels: Result<[OfflineMapModel], Error>?
+        @Published private(set) var offlineMapModels: Result<[OfflineMapModel], Error>?
         
         /// All the offline map models or an empty array in the case of an error.
-        var allOfflineMapModels: [OfflineMapModel] {
+        private var allOfflineMapModels: [OfflineMapModel] {
             guard case .success(let models) = offlineMapModels else {
                 return []
             }
             return models
         }
         
-        private var makeOfflineMapModelsTask: Task<Void, Never>?
-        
         /// A Boolean value indicating if the offline content can be deleted.
-        @Published var canRemoveDownloadedMaps = false
+        @Published private(set) var canRemoveDownloadedMaps = false
         
         init() {
             // Create temp dsirectory.
             temporaryDirectory = FileManager.createTemporaryDirectory()
             
             // Initializes the online map and offline map task.
-            onlineMap = Map(item: napervillePortalItem)
-            offlineMapTask = OfflineMapTask(portalItem: napervillePortalItem)
-            
-            // Get the preplanned map areas and map those to offline map infos.
-            makeOfflineMapModelsTask = Task { [weak self] in
-                await self?.makeOfflineMapModels()
-                self?.makeOfflineMapModelsTask = nil
-            }
+            onlineMap = Map(item: portalItem)
+            offlineMapTask = OfflineMapTask(portalItem: portalItem)
         }
         
         /// Gets the preplanned map areas from the offline map task and creates the
@@ -96,9 +85,6 @@ extension DownloadPreplannedMapAreaView {
         deinit {
             // Removes the temporary directory
             try? FileManager.default.removeItem(at: temporaryDirectory)
-            
-            // Cancel the task that is making the offline map models.
-            makeOfflineMapModelsTask?.cancel()
         }
         
         /// Updates the displayed map based on the given preplanned map area. If the preplanned map
@@ -130,12 +116,12 @@ extension DownloadPreplannedMapAreaView {
         }
         
         /// Updates the `canRemoveDownloadedMaps` state.
-        func updateCanRemoveDownloadedMaps() {
+        private func updateCanRemoveDownloadedMaps() {
             canRemoveDownloadedMaps = allOfflineMapModels.contains(where: \.downloadDidSucceed)
         }
         
         /// Cancels all current jobs.
-        func cancelAllJobs() async {
+        private func cancelAllJobs() async {
             await withTaskGroup(of: Void.self) { group in
                 allOfflineMapModels.forEach { model in
                     if model.isDownloading {
@@ -185,9 +171,9 @@ class OfflineMapModel: ObservableObject, Identifiable {
     /// The directory where the mmpk will be stored.
     let mmpkDirectory: URL
     /// The currently running download job.
-    @Published var job: DownloadPreplannedOfflineMapJob?
+    @Published private(set) var job: DownloadPreplannedOfflineMapJob?
     /// The result of the download job.
-    @Published var result: Result<MobileMapPackage, Error>?
+    @Published private(set) var result: Result<MobileMapPackage, Error>?
     
     init(preplannedMapArea: PreplannedMapArea, offlineMapTask: OfflineMapTask, temporaryDirectory: URL) {
         self.preplannedMapArea = preplannedMapArea
@@ -311,6 +297,15 @@ private extension FileManager {
             in: .userDomainMask,
             appropriateFor: Bundle.main.bundleURL,
             create: true
+        )
+    }
+}
+
+private extension PortalItem {
+    static func naperville() -> PortalItem {
+        PortalItem(
+            portal: .arcGISOnline(connection: .anonymous),
+            id: PortalItem.ID("acc027394bc84c2fb04d1ed317aac674")!
         )
     }
 }

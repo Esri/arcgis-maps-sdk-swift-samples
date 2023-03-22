@@ -29,7 +29,7 @@ struct DownloadPreplannedMapAreaView: View {
     @StateObject private var model = Model()
     
     var body: some View {
-        MapView(map: model.map)
+        MapView(map: model.currentMap)
             .overlay(alignment: .top) {
                 mapNameOverlay
             }
@@ -62,10 +62,14 @@ struct DownloadPreplannedMapAreaView: View {
                     }
                 }
             }
+            .task {
+                // Make the offline map models when the view is first shown.
+                await model.makeOfflineMapModels()
+            }
     }
     
     var mapNameOverlay: some View {
-        Text(model.map.item?.title ?? "Unknown Map")
+        Text(model.currentMap.item?.title ?? "Unknown Map")
             .font(.footnote)
             .frame(maxWidth: .infinity)
             .padding(8)
