@@ -195,7 +195,7 @@ class OfflineMapModel: ObservableObject, Identifiable {
     }
     
     deinit {
-        Task {
+        Task { [job] in
             // Cancel any outstanding job.
             await job?.cancel()
         }
@@ -311,25 +311,3 @@ private extension FileManager {
         )
     }
 }
-
-//private class TaskManager {
-//    private var tasks: [UUID: Task<Void, Never>] = [:]
-//
-//    func enqueue(_ operation: @escaping () async -> Void) {
-//        let id = UUID()
-//        let task = Task { [weak self] in
-//            await operation()
-//            self?.cleanupTask(withID: id)
-//        }
-//        tasks[id] = task
-//    }
-//
-//    func cleanupTask(withID id: UUID) {
-//        tasks[id] = nil
-//    }
-//
-//    deinit {
-//        // Cancels any enqueued tasks that aren't complete.
-//        tasks.values.forEach { $0.cancel() }
-//    }
-//}
