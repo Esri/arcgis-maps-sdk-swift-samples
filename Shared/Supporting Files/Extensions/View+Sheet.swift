@@ -301,9 +301,6 @@ private struct Sheet<Content>: UIViewRepresentable where Content: View {
         /// A Boolean value indicating whether the sheet was already presenting.
         let wasPresenting = rootViewController.presentedViewController != nil
         
-        /// A Boolean value indicating whether the hosting controller is being dismissed.
-        let isHostBeingDismissed = model.hostingController.isBeingDismissed
-        
         /// A Boolean value indicating whether the presented view controller is an alert controller.
         let isPresentedControllerAlertType = rootViewController.presentedViewController is UIAlertController
         
@@ -314,15 +311,11 @@ private struct Sheet<Content>: UIViewRepresentable where Content: View {
             configureSheetPresentationController(sheet)
             // Presents the hosting controller.
             rootViewController.present(model.hostingController, animated: model.isTransitioningFromPopover ? false : true)
-        } else if !isPresented && wasPresenting && !isHostBeingDismissed && !isPresentedControllerAlertType {
+        } else if !isPresented && wasPresenting && !model.hostingController.isBeingDismissed && !isPresentedControllerAlertType {
             // Dismisses the view controller presented by the root view controller
             // if 'isPresented' is false, but was presenting before (popover), is
             // not currently being dismissed, and is not an alert.
             rootViewController.dismiss(animated: isPresentedControllerHostingType ? true : false)
-            model.isTransitioningFromPopover = !isPresentedControllerHostingType
-        } else if isHostBeingDismissed {
-            // Sets 'isPresented' to false when the hosting controller is being dismissed.
-            isPresented = false
             model.isTransitioningFromPopover = !isPresentedControllerHostingType
         } else if wasPresenting {
             // Updates the sheet presentation controller and the root view of the hosting
@@ -360,6 +353,7 @@ private struct Sheet<Content>: UIViewRepresentable where Content: View {
         
         /// Updates the parent when the sheet is dismissed with a swipe.
         func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+            parent.isPresented = false
             parent.selection = presentationController.presentedViewController.sheetPresentationController?.selectedDetentIdentifier
         }
         
