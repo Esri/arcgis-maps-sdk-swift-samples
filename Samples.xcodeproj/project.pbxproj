@@ -61,6 +61,8 @@
 		4D126D7229CA1E1800CFB7A7 /* SimulatedNMEADataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D126D7129CA1E1800CFB7A7 /* SimulatedNMEADataSource.swift */; };
 		4D126D7329CA1EFD00CFB7A7 /* DisplayDeviceLocationWithNMEADataSourcesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4D126D6929CA1B6000CFB7A7 /* DisplayDeviceLocationWithNMEADataSourcesView.swift */; };
 		4D126D7429CA1EFD00CFB7A7 /* SimulatedNMEADataSource.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4D126D7129CA1E1800CFB7A7 /* SimulatedNMEADataSource.swift */; };
+		4D126D7C29CA3E6000CFB7A7 /* Redlands.nmea in Resources */ = {isa = PBXBuildFile; fileRef = 4D126D7B29CA3E6000CFB7A7 /* Redlands.nmea */; settings = {ASSET_TAGS = (DisplayDeviceLocationWithNmeaDataSources, ); }; };
+		4D126D7E29CA43D200CFB7A7 /* DisplayDeviceLocationWithNMEADataSourcesView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D126D7D29CA43D200CFB7A7 /* DisplayDeviceLocationWithNMEADataSourcesView.Model.swift */; };
 		E000E7602869E33D005D87C5 /* ClipGeometryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E000E75F2869E33D005D87C5 /* ClipGeometryView.swift */; };
 		E000E763286A0B18005D87C5 /* CutGeometryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E000E762286A0B18005D87C5 /* CutGeometryView.swift */; };
 		E004A6C128414332002A1FE6 /* SetViewpointRotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6BD28414332002A1FE6 /* SetViewpointRotationView.swift */; };
@@ -220,6 +222,8 @@
 		00E5402A27F775EA00CF66D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4D126D6929CA1B6000CFB7A7 /* DisplayDeviceLocationWithNMEADataSourcesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayDeviceLocationWithNMEADataSourcesView.swift; sourceTree = "<group>"; };
 		4D126D7129CA1E1800CFB7A7 /* SimulatedNMEADataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulatedNMEADataSource.swift; sourceTree = "<group>"; };
+		4D126D7B29CA3E6000CFB7A7 /* Redlands.nmea */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Redlands.nmea; sourceTree = "<group>"; };
+		4D126D7D29CA43D200CFB7A7 /* DisplayDeviceLocationWithNMEADataSourcesView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayDeviceLocationWithNMEADataSourcesView.Model.swift; sourceTree = "<group>"; };
 		E000E75F2869E33D005D87C5 /* ClipGeometryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipGeometryView.swift; sourceTree = "<group>"; };
 		E000E762286A0B18005D87C5 /* CutGeometryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutGeometryView.swift; sourceTree = "<group>"; };
 		E004A6BD28414332002A1FE6 /* SetViewpointRotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetViewpointRotationView.swift; sourceTree = "<group>"; };
@@ -425,6 +429,7 @@
 				00C94A0228B53DCC004E42D9 /* 7c4c679ab06a4df19dc497f577f111bd */,
 				00D4EF8328638BF100B9CC30 /* 15a7cbd3af1e47cfa5d2c6b93dc44fc2 */,
 				00D4EF8E28638BF100B9CC30 /* 68ec42517cdd439e81b036210483e8e7 */,
+				4D126D7629CA3B3F00CFB7A7 /* d5bad9f4fee9483791e405880fb466da */,
 				F111CCC2288B63DB00205358 /* e1f3a7254cb845b09450f54937c16061 */,
 			);
 			path = "Portal Data";
@@ -466,8 +471,8 @@
 			isa = PBXGroup;
 			children = (
 				00966EE62811F64D009D3DD7 /* iOS */,
-				00CCB8A6285D059300BBAB70 /* Portal Data */,
 				00E5401427F3CCA200CF66D5 /* Products */,
+				00CCB8A6285D059300BBAB70 /* Portal Data */,
 				003D7C332821EBCC009DDFD2 /* Scripts */,
 				00E5400B27F3CCA100CF66D5 /* Shared */,
 				00ACF554293E6C6A0059B2A9 /* Samples.entitlements */,
@@ -499,9 +504,18 @@
 			isa = PBXGroup;
 			children = (
 				4D126D6929CA1B6000CFB7A7 /* DisplayDeviceLocationWithNMEADataSourcesView.swift */,
+				4D126D7D29CA43D200CFB7A7 /* DisplayDeviceLocationWithNMEADataSourcesView.Model.swift */,
 				4D126D7129CA1E1800CFB7A7 /* SimulatedNMEADataSource.swift */,
 			);
 			path = "Display device location with NMEA data sources";
+			sourceTree = "<group>";
+		};
+		4D126D7629CA3B3F00CFB7A7 /* d5bad9f4fee9483791e405880fb466da */ = {
+			isa = PBXGroup;
+			children = (
+				4D126D7B29CA3E6000CFB7A7 /* Redlands.nmea */,
+			);
+			path = d5bad9f4fee9483791e405880fb466da;
 			sourceTree = "<group>";
 		};
 		E000E75E2869E325005D87C5 /* Clip geometry */ = {
@@ -731,6 +745,8 @@
 				KnownAssetTags = (
 					AddFeatureLayers,
 					AddRasterFromFile,
+					DisplayDeviceLocationWithNMEADataSources,
+					DisplayDeviceLocationWithNmeaDataSources,
 					DisplayMapFromMobileMapPackage,
 				);
 				LastSwiftUpdateCheck = 1330;
@@ -771,6 +787,7 @@
 				E041AC1E288076A60056009B /* info.css in Resources */,
 				E041AC1A287F54580056009B /* highlight.min.js in Resources */,
 				00E5402027F3CCA200CF66D5 /* Assets.xcassets in Resources */,
+				4D126D7C29CA3E6000CFB7A7 /* Redlands.nmea in Resources */,
 				00C94A0D28B53DE1004E42D9 /* raster-file in Resources */,
 				E041AC20288077B90056009B /* xcode.css in Resources */,
 				00D4EF9028638BF100B9CC30 /* LA_Trails.geodatabase in Resources */,
@@ -899,6 +916,7 @@
 				0074ABBF28174BCF0037244A /* DisplayMapView.swift in Sources */,
 				0086F40128E3770A00974721 /* ShowViewshedFromPointInSceneView.swift in Sources */,
 				00D4EF802863842100B9CC30 /* AddFeatureLayersView.swift in Sources */,
+				4D126D7E29CA43D200CFB7A7 /* DisplayDeviceLocationWithNMEADataSourcesView.Model.swift in Sources */,
 				4D126D6D29CA1B6000CFB7A7 /* DisplayDeviceLocationWithNMEADataSourcesView.swift in Sources */,
 				E004A6DC28465C70002A1FE6 /* DisplaySceneView.swift in Sources */,
 				E066DD35285CF3B3004D3D5B /* FindRouteView.swift in Sources */,
