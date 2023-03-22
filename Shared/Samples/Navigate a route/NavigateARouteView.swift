@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import ArcGIS
+import AVFoundation
 import SwiftUI
 
 struct NavigateARouteView: View {
@@ -113,6 +114,9 @@ private extension NavigateARouteView {
         
         /// The directions for the route.
         private var directions: [DirectionManeuver] = []
+        
+        /// An AVSpeechSynthesizer for text to speech.
+        let speechSynthesizer = AVSpeechSynthesizer()
         
         /// The graphics overlay for the stops.
         private let stopGraphicsOverlay: GraphicsOverlay
@@ -238,7 +242,8 @@ private extension NavigateARouteView {
         /// Monitor the asynchronous stream of voice guidances.
         private func trackVoiceGuidance() async {
             for try await voiceGuidance in routeTracker.voiceGuidances {
-                print(voiceGuidance.text)
+                speechSynthesizer.stopSpeaking(at: .word)
+                speechSynthesizer.speak(AVSpeechUtterance(string: voiceGuidance.text))
             }
         }
         
@@ -270,6 +275,7 @@ private extension NavigateARouteView {
             locationDisplay.autoPanMode = .off
             await locationDisplay.dataSource.stop()
             setNavigation()
+            speechSynthesizer.stopSpeaking(at: .immediate)
         }
     }
     
