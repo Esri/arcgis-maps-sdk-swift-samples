@@ -22,10 +22,10 @@ extension ChangeMapViewBackgroundView {
     class Model: ObservableObject {
         /// A map with a single feature layer representing world time zones.
         let map: Map = {
-            // Initialize tiled layer.
+            // Initializes tiled layer.
             let tiledLayer = ArcGISTiledLayer(url: .worldTimeZones)
             
-            // Initialize map with tiled layer as basemap.
+            // Initializes map with tiled layer as basemap.
             return Map(basemap: Basemap(baseLayer: tiledLayer))
         }()
         

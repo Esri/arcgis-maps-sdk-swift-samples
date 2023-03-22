@@ -22,12 +22,8 @@ extension ChangeMapViewBackgroundView {
         var body: some View {
             List {
                 Section("Background Grid") {
-                    ColorPicker(selection: $model.color) {
-                        Text("Color")
-                    }
-                    ColorPicker(selection: $model.lineColor) {
-                        Text("Line Color")
-                    }
+                    ColorPicker("Color", selection: $model.color)
+                    ColorPicker("Line Color", selection: $model.lineColor)
                     VStack {
                         HStack {
                             Text("Line Width")
