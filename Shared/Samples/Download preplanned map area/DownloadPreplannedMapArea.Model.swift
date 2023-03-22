@@ -60,6 +60,8 @@ extension DownloadPreplannedMapAreaView {
             return models
         }
         
+        private var makeOfflineMapModelsTask: Task<Void, Never>?
+        
         /// A Boolean value indicating if the offline content can be deleted.
         @Published var canRemoveDownloadedMaps = false
         
@@ -72,8 +74,9 @@ extension DownloadPreplannedMapAreaView {
             offlineMapTask = OfflineMapTask(portalItem: napervillePortalItem)
             
             // Get the preplanned map areas and map those to offline map infos.
-            Task { [weak self] in
+            makeOfflineMapModelsTask = Task { [weak self] in
                 await self?.makeOfflineMapModels()
+                self?.makeOfflineMapModelsTask = nil
             }
         }
         
@@ -96,6 +99,9 @@ extension DownloadPreplannedMapAreaView {
         deinit {
             // Removes the temporary directory
             try? FileManager.default.removeItem(at: temporaryDirectory)
+            
+            // Cancel the task that is making the offline map models.
+            makeOfflineMapModelsTask?.cancel()
         }
         
         /// Updates the displayed map based on the given preplanned map area. If the preplanned map
