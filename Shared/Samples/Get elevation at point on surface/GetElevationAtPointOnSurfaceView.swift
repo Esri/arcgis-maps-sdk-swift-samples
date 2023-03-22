@@ -83,9 +83,9 @@ private extension GetElevationAtPointOnSurfaceView {
             
             // Sets the initial viewpoint of the scene to northern Nepal.
             scene.initialViewpoint = Viewpoint(
-                latitude: 28.42,
-                longitude: 83.9,
-                scale: 1e4,
+                latitude: .nan,
+                longitude: .nan,
+                scale: .nan,
                 camera: Camera(
                     latitude: 28.42,
                     longitude: 83.9,
