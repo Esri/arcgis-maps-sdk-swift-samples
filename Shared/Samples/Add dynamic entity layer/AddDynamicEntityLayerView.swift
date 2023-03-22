@@ -24,7 +24,7 @@ struct AddDynamicEntityLayerView: View {
     
     /// The initial viewpoint for the map.
     @State var viewpoint = Viewpoint(
-        center: Point(x: -12452361.48631679, y: 4949774.965107439),
+        center: Point(x: -12452361.486, y: 4949774.965),
         scale: 200_000
     )
     
@@ -66,6 +66,13 @@ struct AddDynamicEntityLayerView: View {
             .sheet(isPresented: $isShowingSettings, detents: [.medium], dragIndicatorVisibility: .visible) {
                 SettingsView()
                     .environmentObject(model)
+            }
+            .task {
+                // This will update `connectionStatus` when the stream service
+                // connection status changes.
+                for await status in model.streamService.$connectionStatus {
+                    model.connectionStatus = status.description
+                }
             }
     }
 }

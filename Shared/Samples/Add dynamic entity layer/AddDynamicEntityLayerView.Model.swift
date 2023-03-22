@@ -75,16 +75,6 @@ extension AddDynamicEntityLayerView {
             maximumObservations = CGFloat(dynamicEntityLayer.trackDisplayProperties.maximumObservations)
             connectionStatus = streamService.connectionStatus.description
             
-            Task {
-                // This will update `connectionStatus` when the stream service
-                // connection status changes.
-                for await status in streamService.$connectionStatus {
-                    DispatchQueue.main.async { [weak self] in
-                        self?.connectionStatus = status.description
-                    }
-                }
-            }
-            
             // Adds the dynamic entity layer to the map's operational layers.
             map.addOperationalLayer(dynamicEntityLayer)
         }
