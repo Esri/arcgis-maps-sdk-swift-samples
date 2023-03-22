@@ -74,8 +74,10 @@ extension DownloadPreplannedMapAreaView {
             .navigationViewStyle(.stack)
         }
     }
-
+    
+    /// A view that displays preplanned map areas available for download.
     private struct PreplannedMapAreaSelectionView: View {
+        /// The model that drives this view.
         @ObservedObject var model: OfflineMapModel
         
         var body: some View {
@@ -87,7 +89,7 @@ extension DownloadPreplannedMapAreaView {
                 } else {
                         switch model.result {
                         case .success:
-                            Image(systemName: "checkmark.icloud.fill")
+                            EmptyView()
                         case .failure:
                             Image(systemName: "exclamationmark.icloud")
                                 .foregroundColor(.red)
