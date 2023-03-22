@@ -65,6 +65,7 @@
 		4D2ADC6929C50C4C003B367F /* AddDynamicEntityLayerView.SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2ADC6829C50C4C003B367F /* AddDynamicEntityLayerView.SettingsView.swift */; };
 		4D2ADC6A29C50D91003B367F /* AddDynamicEntityLayerView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4D2ADC6629C50BD6003B367F /* AddDynamicEntityLayerView.Model.swift */; };
 		4D2ADC6B29C50D91003B367F /* AddDynamicEntityLayerView.SettingsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4D2ADC6829C50C4C003B367F /* AddDynamicEntityLayerView.SettingsView.swift */; };
+		1C08856329CB6EA700BA091A /* ShowPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C08855F29CB6EA700BA091A /* ShowPopupView.swift */; };
 		218F35B829C28F4A00502022 /* AuthenticateWithOAuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218F35B329C28F4A00502022 /* AuthenticateWithOAuthView.swift */; };
 		218F35C229C290BF00502022 /* AuthenticateWithOAuthView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 218F35B329C28F4A00502022 /* AuthenticateWithOAuthView.swift */; };
 		E000E7602869E33D005D87C5 /* ClipGeometryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E000E75F2869E33D005D87C5 /* ClipGeometryView.swift */; };
@@ -231,6 +232,7 @@
 		4D2ADC3F29C26D05003B367F /* AddDynamicEntityLayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDynamicEntityLayerView.swift; sourceTree = "<group>"; };
 		4D2ADC6629C50BD6003B367F /* AddDynamicEntityLayerView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDynamicEntityLayerView.Model.swift; sourceTree = "<group>"; };
 		4D2ADC6829C50C4C003B367F /* AddDynamicEntityLayerView.SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDynamicEntityLayerView.SettingsView.swift; sourceTree = "<group>"; };
+		1C08855F29CB6EA700BA091A /* ShowPopupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowPopupView.swift; sourceTree = "<group>"; };
 		218F35B329C28F4A00502022 /* AuthenticateWithOAuthView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticateWithOAuthView.swift; sourceTree = "<group>"; };
 		E000E75F2869E33D005D87C5 /* ClipGeometryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipGeometryView.swift; sourceTree = "<group>"; };
 		E000E762286A0B18005D87C5 /* CutGeometryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutGeometryView.swift; sourceTree = "<group>"; };
@@ -364,6 +366,7 @@
 				E004A6DE2846626A002A1FE6 /* Show callout */,
 				E004A6E728493BBB002A1FE6 /* Show device location */,
 				0044CDD72995C352004618CE /* Show device location history */,
+				1C08855D29CB6EA700BA091A /* Show popup */,
 				E004A6F1284E4F80002A1FE6 /* Show result of spatial operations */,
 				E066DD392860C9EE004D3D5B /* Show result of spatial relationships */,
 				0086F3FC28E3770900974721 /* Show viewshed from point in scene */,
@@ -525,6 +528,12 @@
 				4D2ADC6829C50C4C003B367F /* AddDynamicEntityLayerView.SettingsView.swift */,
 			);
 			path = "Add dynamic entity layer";
+		1C08855D29CB6EA700BA091A /* Show popup */ = {
+			isa = PBXGroup;
+			children = (
+				1C08855F29CB6EA700BA091A /* ShowPopupView.swift */,
+			);
+			path = "Show popup";
 			sourceTree = "<group>";
 		};
 		218F35B229C28F4A00502022 /* Authenticate with OAuth */ = {
@@ -911,6 +920,7 @@
 				E004A6ED2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift in Sources */,
 				E041ABD7287DB04D0056009B /* SampleInfoView.swift in Sources */,
 				E0082217287755AC002AD138 /* View+Sheet.swift in Sources */,
+				1C08856329CB6EA700BA091A /* ShowPopupView.swift in Sources */,
 				00181B462846AD7100654571 /* View+Alert.swift in Sources */,
 				E0FE32E728747778002C6ACA /* BrowseBuildingFloorsView.swift in Sources */,
 				E0EA0B772866390E00C9621D /* ProjectGeometryView.swift in Sources */,
