@@ -125,7 +125,7 @@ private extension NavigateARouteView {
         private var directions: [DirectionManeuver] = []
         
         /// An AVSpeechSynthesizer for text to speech.
-        let speechSynthesizer = AVSpeechSynthesizer()
+        private let speechSynthesizer = AVSpeechSynthesizer()
         
         /// The graphics overlay for the stops.
         private let stopGraphicsOverlay: GraphicsOverlay
