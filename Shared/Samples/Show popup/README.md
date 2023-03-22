@@ -14,11 +14,10 @@ Tap on the features to prompt a popup that displays information about the featur
 
 ## How it works
 
-1. Create and load an `Map` using a URL.
-2. Set the map to an `MapView`.
-3. Use the `GeoView.identifyLayer(_:screenPoint:tolerance:returnPopupsOnly:completion:)` method to identify the top-most feature.
-4. Create an `PopupView` with the result's `popups`.
-5. Present the view controller.
+1. Create a `Map` using a URL.
+2. Create a `MapView` with the `Map`.
+3. Use the `GeoViewProxy.identifyLayers(_:screenPoint:tolerance:returnPopupsOnly:maximumResultsPerLayer:)` method to identify the top-most features.
+4. Create a `PopupView` with the result's `popups`.
 
 ## Relevant API
 
