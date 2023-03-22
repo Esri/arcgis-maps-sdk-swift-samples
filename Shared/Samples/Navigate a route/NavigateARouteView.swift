@@ -35,18 +35,10 @@ struct NavigateARouteView: View {
         .onViewpointChanged(kind: .centerAndScale) { model.viewpoint = $0 }
         .locationDisplay(model.locationDisplay)
         .overlay(alignment: .top) {
-            VStack(alignment: .leading) {
-                if model.routeTracker?.trackingStatus?.destinationStatus == .reached {
-                    Text("Final destination reached.")
-                } else {
-                    Text("Distance remaining: \(model.textForRemainingDistance)")
-                    Text("Time remaining: \(model.textForRemainingTime)")
-                    Text("Next direction: \(model.textForNextDirection ?? "")")
-                }
-            }
-            .padding(2)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(.ultraThinMaterial)
+            Text(model.statusText)
+                .padding(2)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(.ultraThinMaterial)
         }
         .task {
             // Solves the route and sets the navigation.
@@ -111,9 +103,8 @@ private extension NavigateARouteView {
             }
         }
         
-        @Published var textForRemainingTime: String = ""
-        @Published var textForRemainingDistance: String = ""
-        @Published var textForNextDirection: String?
+        /// The status text to display to the user.
+        @Published var statusText: String = ""
         
         /// A map with a navigation basemap style.
         let map = Map(basemapStyle: .arcGISNavigation)
@@ -128,7 +119,7 @@ private extension NavigateARouteView {
         private var routeResult: RouteResult!
         
         /// The route tracker.
-        var routeTracker: RouteTracker!
+        private var routeTracker: RouteTracker!
         
         /// The directions for the route.
         private var directions: [DirectionManeuver] = []
@@ -263,10 +254,12 @@ private extension NavigateARouteView {
                     routeTraversedGraphic.geometry = status.routeProgress.traversedGeometry
                     routeRemainingGraphic.geometry = status.routeProgress.remainingGeometry
                     
-                    textForRemainingDistance = status.routeProgress.remainingDistance.distanceRemainingText
-                    textForRemainingTime = timeFormatter.string(from: status.routeProgress.remainingTime) ?? ""
+                    statusText = """
+                    Distance remaining: \(status.routeProgress.remainingDistance.distanceRemainingText)
+                    Time remaining: \(timeFormatter.string(from: status.routeProgress.remainingTime) ?? "")
+                    """
                     if status.currentManeuverIndex + 1 < directions.count {
-                        textForNextDirection = directions[status.currentManeuverIndex + 1].text
+                        statusText.append("\nNext direction: \(directions[status.currentManeuverIndex + 1].text)")
                     }
                 }
             }
