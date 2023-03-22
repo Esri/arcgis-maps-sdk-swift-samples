@@ -2,7 +2,9 @@
     "category": "",
     "description": "Use a routing service to navigate between two points.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "navigate-route.png"
+    ],
     "keywords": [
         "directions",
         "maneuver",
