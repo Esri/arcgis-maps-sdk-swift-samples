@@ -72,18 +72,24 @@ extension DownloadPreplannedMapAreaView {
             offlineMapTask = OfflineMapTask(portalItem: napervillePortalItem)
             
             // Get the preplanned map areas and map those to offline map infos.
-            Task { [weak self, offlineMapTask] in
-                self?.offlineMapModels = await Result {
-                    try await offlineMapTask.preplannedMapAreas
-                        .sorted(using: KeyPathComparator(\.portalItem.title))
-                        .map {
-                            OfflineMapModel(
-                                preplannedMapArea: $0,
-                                offlineMapTask: offlineMapTask,
-                                temporaryDirectory: temporaryDirectory
-                            )
-                        }
-                }
+            Task { [weak self] in
+                await self?.makeOfflineMapModels()
+            }
+        }
+        
+        /// Gets the preplanned map areas from the offline map task and creates the
+        /// offline map models.
+        func makeOfflineMapModels() async {
+            self.offlineMapModels = await Result {
+                try await offlineMapTask.preplannedMapAreas
+                    .sorted(using: KeyPathComparator(\.portalItem.title))
+                    .map {
+                        OfflineMapModel(
+                            preplannedMapArea: $0,
+                            offlineMapTask: offlineMapTask,
+                            temporaryDirectory: temporaryDirectory
+                        )
+                    }
             }
         }
         
