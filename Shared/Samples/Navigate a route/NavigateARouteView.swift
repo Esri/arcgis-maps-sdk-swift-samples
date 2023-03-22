@@ -35,11 +35,16 @@ struct NavigateARouteView: View {
         .onViewpointChanged(kind: .centerAndScale) { model.viewpoint = $0 }
         .locationDisplay(model.locationDisplay)
         .overlay(alignment: .top) {
-            VStack {
-                Text("Distance remaining:")
-                Text("Time remaining:")
-                Text("Next direction:")
+            VStack(alignment: .leading) {
+                if model.routeTracker?.trackingStatus?.destinationStatus == .reached {
+                    Text("Final destination reached.")
+                } else {
+                    Text("Distance remaining: \(model.textForRemainingDistance)")
+                    Text("Time remaining: \(model.textForRemainingTime)")
+                    Text("Next direction: \(model.textForNextDirection ?? "")")
+                }
             }
+            .padding(2)
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(.ultraThinMaterial)
         }
@@ -106,6 +111,10 @@ private extension NavigateARouteView {
             }
         }
         
+        @Published var textForRemainingTime: String = ""
+        @Published var textForRemainingDistance: String = ""
+        @Published var textForNextDirection: String?
+        
         /// A map with a navigation basemap style.
         let map = Map(basemapStyle: .arcGISNavigation)
         
@@ -119,7 +128,7 @@ private extension NavigateARouteView {
         private var routeResult: RouteResult!
         
         /// The route tracker.
-        private var routeTracker: RouteTracker!
+        var routeTracker: RouteTracker!
         
         /// The directions for the route.
         private var directions: [DirectionManeuver] = []
@@ -132,6 +141,13 @@ private extension NavigateARouteView {
         
         /// The graphics overlay for the route.
         private let routeGraphicsOverlay: GraphicsOverlay
+        
+        private let timeFormatter: DateComponentsFormatter = {
+            let formatter = DateComponentsFormatter()
+            formatter.allowedUnits = [.hour, .minute, .second]
+            formatter.unitsStyle = .full
+            return formatter
+        }()
         
         /// The map's graphics overlays.
         var graphicsOverlays: [GraphicsOverlay] {
@@ -243,8 +259,16 @@ private extension NavigateARouteView {
         /// When new statuses are delivered, update the route's traversed and remaining graphics.
         private func trackStatus() async {
             for try await status in routeTracker.$trackingStatus {
-                routeTraversedGraphic.geometry = status?.routeProgress.traversedGeometry
-                routeRemainingGraphic.geometry = status?.routeProgress.remainingGeometry
+                if let status {
+                    routeTraversedGraphic.geometry = status.routeProgress.traversedGeometry
+                    routeRemainingGraphic.geometry = status.routeProgress.remainingGeometry
+                    
+                    textForRemainingDistance = status.routeProgress.remainingDistance.distanceRemainingText
+                    textForRemainingTime = timeFormatter.string(from: status.routeProgress.remainingTime) ?? ""
+                    if status.currentManeuverIndex + 1 < directions.count {
+                        textForNextDirection = directions[status.currentManeuverIndex + 1].text
+                    }
+                }
             }
         }
         
@@ -297,6 +321,12 @@ private extension NavigateARouteView {
         let three = Stop(point: Point(x: -117.147230, y: 32.730467, spatialReference: .wgs84))
         three.name = "RH Fleet Aerospace Museum"
         return [one, two, three]
+    }
+}
+
+private extension TrackingDistance {
+    var distanceRemainingText: String {
+        "\(displayText) \(self.displayTextUnits.abbreviation)"
     }
 }
 
