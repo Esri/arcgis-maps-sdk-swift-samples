@@ -6,7 +6,7 @@ Customize map view's background by changing its grid properties.
 
 ## Use case
 
-A background grid defines the default color and grid for display behind a map or scene surface. Set properties on the background grid to highlight and give context to your MapView or SceneView.
+A background grid defines the default color and grid for display behind a map or scene surface. Set properties on the background grid to highlight and give context to your map view or scene view.
 
 ## How to use the sample
 
@@ -16,7 +16,7 @@ Tap the "Background Grid Settings" button in the toolbar to open the settings vi
 
 1. Create a `Map` object.
 2. Display the map in a `MapView`.
-3. Set the `backgroundGrid` property on the `MapView`.
+3. Set the `backgroundGrid` on the `MapView` using the view modifier.
 4. Update the background grid properties from the settings view. The following `BackgroundGrid` properties are updated:
     * `backgroundColor`: fill color
     * `lineColor`: color of background grid lines

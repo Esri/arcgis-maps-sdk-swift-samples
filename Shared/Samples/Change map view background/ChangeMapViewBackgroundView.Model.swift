@@ -33,12 +33,12 @@ extension ChangeMapViewBackgroundView {
         /// The background grid for the map.
         let backgroundGrid = BackgroundGrid(backgroundColor: .black, lineColor: .white, lineWidth: 2, size: 32)
         
-        // The line width range.
-        // Used by Slider, which requires CGFloat values.
+        /// The line width range.
+        /// Used by slider, which requires `CGFloat` values.
         let lineWidthRange = CGFloat(0)...CGFloat(10)
         
-        // The grid size range.
-        // Used by Slider, which requires CGFloat values.
+        /// The grid size range.
+        /// Used by slider, which requires `CGFloat` values.
         let sizeRange = CGFloat(2)...CGFloat(50)
         
         /// The background color of the grid.
