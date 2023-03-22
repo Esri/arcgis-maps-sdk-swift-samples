@@ -23,10 +23,10 @@ struct GetElevationAtPointOnSurfaceView: View {
     @State private var calloutPlacement: CalloutPlacement?
     
     /// The screen point where to get the base surface location.
-    @State private var screenPoint: CGPoint!
+    @State private var screenPoint: CGPoint?
     
     /// The scene point where the scene was tapped.
-    @State private var scenePoint: Point!
+    @State private var scenePoint: Point?
     
     /// The surface elevation of the tapped point.
     @State private var elevation: Double?
@@ -48,7 +48,7 @@ struct GetElevationAtPointOnSurfaceView: View {
                     .padding(5)
                 }
                 .task(id: scenePoint) {
-                    guard let scenePoint else { return }
+                    guard let scenePoint, let screenPoint else { return }
                     if calloutPlacement == nil {
                         // Converts the tapped screen point into a point on the surface.
                         guard let relativeSurfacePoint = sceneViewProxy.baseSurfaceLocation(fromScreenPoint: screenPoint) else { return }
