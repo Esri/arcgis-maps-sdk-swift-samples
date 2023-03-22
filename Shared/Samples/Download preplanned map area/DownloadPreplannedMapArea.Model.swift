@@ -18,16 +18,6 @@ import SwiftUI
 extension DownloadPreplannedMapAreaView {
     @MainActor
     class Model: ObservableObject {
-        /// A Boolean value indicating whether to show an alert for an error.
-        //@Published var isShowingErrorAlert = false
-        
-        /// The error shown in the alert.
-        @Published var error: Error? //{
-//            didSet { isShowingErrorAlert = error != nil }
-        //}
-        
-        //@Published private(set) var preplannedMapAreas: [PreplannedMapArea] = []
-        
         /// The currently selected map.
         @Published var selectedMap: SelectedMap = .onlineWebMap {
             didSet {
@@ -37,12 +27,6 @@ extension DownloadPreplannedMapAreaView {
         
         /// Manages the lifetime of async tasks.
         //private var tasks = TaskManager()
-        
-        /// The download preplanned offline map job for each preplanned map area.
-        @Published private var currentJobs: [ObjectIdentifier: DownloadPreplannedOfflineMapJob] = [:]
-        
-        /// The downloaded mobile map packages from the preplanned map area.
-        @Published private(set) var localMapPackages: [MobileMapPackage] = []
         
         /// The offline map of the downloaded preplanned map area.
         @Published private var offlineMap: Map?
@@ -67,6 +51,17 @@ extension DownloadPreplannedMapAreaView {
     
         /// The offline map information.
         @Published var offlineMapModels: Result<[OfflineMapModel], Error>?
+        
+        /// All the offline map models or an empty array in the case of an error.
+        var allOfflineMapModels: [OfflineMapModel] {
+            guard case .success(let models) = offlineMapModels else {
+                return []
+            }
+            return models
+        }
+        
+        /// A Boolean value indicating if the offline content can be deleted.
+        @Published var canRemoveDownloadedMaps = false
         
         init() {
             // Create temp dsirectory.
@@ -93,7 +88,7 @@ extension DownloadPreplannedMapAreaView {
         }
         
         deinit {
-            // Removes the temporary directory.
+            // Removes the temporary directory
             try? FileManager.default.removeItem(at: temporaryDirectory)
         }
         
@@ -111,8 +106,9 @@ extension DownloadPreplannedMapAreaView {
                     // download and reset selection to prevous selection since we have to download
                     // the offline map.
                     selectedMap = oldValue
-                    Task {
+                    Task { [weak self] in
                         await info.download()
+                        self?.updateCanRemoveDownloadedMaps()
                     }
                 } else if case .success(let mmpk) = info.result {
                     // If we have already downloaded, then open the map in the mmpk.
@@ -124,12 +120,19 @@ extension DownloadPreplannedMapAreaView {
             }
         }
         
+        /// Updates the `canRemoveDownloadedMaps` state.
+        func updateCanRemoveDownloadedMaps() {
+            canRemoveDownloadedMaps = allOfflineMapModels.contains(where: \.downloadDidSucceed)
+        }
+        
         /// Cancels all current jobs.
         func cancelAllJobs() async {
             await withTaskGroup(of: Void.self) { group in
-                currentJobs.values.forEach { job in
-                    group.addTask {
-                        await job.cancel()
+                allOfflineMapModels.forEach { model in
+                    if model.isDownloading {
+                        group.addTask {
+                            await model.cancelDownloading()
+                        }
                     }
                 }
             }
@@ -137,47 +140,66 @@ extension DownloadPreplannedMapAreaView {
         
         // Removes all downloaded maps.
         func removeDownloadedMaps() {
-            Task {
-                // Cancels and removes all current jobs.
-                await cancelAllJobs()
-                currentJobs.removeAll()
-                
-                // Removes all downloaded map packages.
-                localMapPackages.forEach { package in
-                    do {
-                        try FileManager.default.removeItem(at: package.fileURL)
-                    } catch {
-                        self.error = error
-                    }
-                }
-                localMapPackages.removeAll()
-            }
             // Sets the current map to the online web map.
             selectedMap = .onlineWebMap
+            
+            // Update state.
+            canRemoveDownloadedMaps = false
+            
+            Task {
+                // Cancel all current download jobs.
+                await cancelAllJobs()
+                
+                // Remove each download.
+                allOfflineMapModels.forEach { $0.removeDownloadedContent() }
+            }
         }
     }
 }
 
-class OfflineMapModel: ObservableObject {
+extension DownloadPreplannedMapAreaView.Model {
+    /// A type that specifies the currently selected map.
+    enum SelectedMap: Hashable {
+        /// The online version of the map.
+        case onlineWebMap
+        /// One of the offline maps.
+        case offlineMap(OfflineMapModel)
+    }
+}
+
+/// An object that encapsulates state about an offline map.
+class OfflineMapModel: ObservableObject, Identifiable {
+    /// The preplanned map area.
     let preplannedMapArea: PreplannedMapArea
+    /// The task to use to take the area offline.
     let offlineMapTask: OfflineMapTask
-    let temporaryDirectory: URL
+    /// The directory where the mmpk will be stored.
+    let mmpkDirectory: URL
+    /// The currently running download job.
     @Published var job: DownloadPreplannedOfflineMapJob?
+    /// The result of the download job.
     @Published var result: Result<MobileMapPackage, Error>?
     
     init(preplannedMapArea: PreplannedMapArea, offlineMapTask: OfflineMapTask, temporaryDirectory: URL) {
         self.preplannedMapArea = preplannedMapArea
         self.offlineMapTask = offlineMapTask
-        self.temporaryDirectory = temporaryDirectory
+        self.mmpkDirectory = temporaryDirectory
+            .appendingPathComponent(preplannedMapArea.portalItem.id.rawValue)
+            .appendingPathExtension("mmpk")
+    }
+    
+    deinit {
+        Task {
+            await job?.cancel()
+        }
     }
 }
-
-extension OfflineMapModel: Identifiable {}
 
 extension OfflineMapModel: Hashable {
     static func == (lhs: OfflineMapModel, rhs: OfflineMapModel) -> Bool {
         lhs === rhs
     }
+    
     func hash(into hasher: inout Hasher) {
         hasher.combine(ObjectIdentifier(self))
     }
@@ -192,13 +214,6 @@ extension OfflineMapModel {
 
 @MainActor
 private extension OfflineMapModel {
-    /// The directory that should hold the mmpk of the offline map.
-    var mmpkDirectory: URL {
-        temporaryDirectory
-            .appendingPathComponent(preplannedMapArea.portalItem.id.rawValue)
-            .appendingPathExtension("mmpk")
-    }
-    
     /// Downloads the given preplanned map area.
     /// - Parameter preplannedMapArea: The preplanned map area to be downloaded.
     /// - Precondition: `canDownload`
@@ -260,6 +275,21 @@ private extension OfflineMapModel {
         parameters.updateMode = .noUpdates
         return parameters
     }
+    
+    /// Cancels current download.
+    func cancelDownloading() async {
+        guard let job = job else {
+            return
+        }
+        await job.cancel()
+        self.job = nil
+    }
+    
+    /// Removes the downloaded offline map (mmpk) from disk.
+    func removeDownloadedContent() {
+        result = nil
+        try? FileManager.default.removeItem(at: mmpkDirectory)
+    }
 }
 
 private extension FileManager {
@@ -296,10 +326,3 @@ private extension FileManager {
 //        tasks.values.forEach { $0.cancel() }
 //    }
 //}
-
-extension DownloadPreplannedMapAreaView.Model {
-    enum SelectedMap: Hashable {
-        case onlineWebMap
-        case offlineMap(OfflineMapModel)
-    }
-}

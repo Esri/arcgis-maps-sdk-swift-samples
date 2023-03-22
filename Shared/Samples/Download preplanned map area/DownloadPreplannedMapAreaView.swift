@@ -17,7 +17,7 @@ import SwiftUI
 
 struct DownloadPreplannedMapAreaView: View {
     /// A Boolean value indicating whether the sample info view is visible.
-    //@Environment(\.isSampleInfoViewVisible) private var isSampleInfoViewVisible
+    @Environment(\.isSampleInfoViewVisible) private var isSampleInfoViewVisible
     
     /// A Boolean value indicating whether to select a map.
     @State private var isSelectingMap = false
@@ -30,14 +30,8 @@ struct DownloadPreplannedMapAreaView: View {
     
     var body: some View {
         MapView(map: model.map)
-            //.alert(isPresented: $model.isShowingErrorAlert, presentingError: model.error)
             .overlay(alignment: .top) {
                 mapNameOverlay
-            }
-            .onDisappear {
-//                if !isSampleInfoViewVisible {
-//                    Task { await model.cancelAllJobs() }
-//                }
             }
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
@@ -58,7 +52,7 @@ struct DownloadPreplannedMapAreaView: View {
                     } label: {
                         Image(systemName: "trash")
                     }
-                    .disabled(model.localMapPackages.isEmpty)
+                    .disabled(!model.canRemoveDownloadedMaps)
                     .alert("Delete All Offline Areas", isPresented: $isShowingDeleteAlert) {
                         Button("Delete", role: .destructive) {
                             model.removeDownloadedMaps()
