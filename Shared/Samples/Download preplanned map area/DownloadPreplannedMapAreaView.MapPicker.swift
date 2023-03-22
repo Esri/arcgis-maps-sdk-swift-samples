@@ -57,8 +57,8 @@ extension DownloadPreplannedMapAreaView {
                     } footer: {
                         Text(
                             """
-                            Tap to download a preplanned map area for offline use. Once the selected \
-                            map is downloaded, you can tap it again to select and open it.
+                            Tap to download a preplanned map area for offline use. Once downloaded, \
+                            tap it again to select and open it.
                             """
                         )
                     }
