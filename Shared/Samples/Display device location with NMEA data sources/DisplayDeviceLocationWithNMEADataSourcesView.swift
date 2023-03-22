@@ -15,14 +15,7 @@
 import SwiftUI
 import ArcGIS
 
-struct DisplayDeviceLocationWithNMEADataSourcesView: View {
-    /// The model used to store the geo model and other expensive objects
-    /// used in this view.
-    private class Model: ObservableObject {
-        /// A map with imagery basemap.
-        let map = Map(basemapStyle: .arcGISImagery)
-    }
-    
+struct DisplayDeviceLocationWithNMEADataSourcesView: View {    
     /// The view model for the sample.
     @StateObject private var model = Model()
     
@@ -52,10 +45,22 @@ struct DisplayDeviceLocationWithNMEADataSourcesView: View {
                     Button("Reset") {
                         shouldReset = true
                     }
-//                    .sheet(isPresented: shouldShowSource, detents: [.medium], dragIndicatorVisibility: .visible) {
-//                        ViewshedSettingsView()
-//                            .environmentObject(model)
-//                    }
+                    .sheet(isPresented: $shouldShowSource, detents: [.medium], dragIndicatorVisibility: .visible) {
+                        VStack {
+                            Button("Device") {
+                                shouldReset = true
+                            }
+//                            Button("Mock Data") {
+//                                nmeaLocationDataSource = NMEALocationDataSource(receiverSpatialReference: .wgs84)
+////                                nmeaLocationDataSource.locationChangeHandlerDelegate = self
+////                                mockNMEADataSource.delegate = self
+//                                start()
+//                            }
+                            Button("Cancel") {
+                                shouldShowSource.toggle()
+                            }
+                        }
+                    }
                 }
             }
     }

@@ -20,6 +20,9 @@
         "NMEALocationDataSource",
         "NMEASatelliteInfo"
     ],
+    "offline_data": [
+        "d5bad9f4fee9483791e405880fb466da"
+    ],
     "redirect_from": [],
     "relevant_apis": [
         "Location",
