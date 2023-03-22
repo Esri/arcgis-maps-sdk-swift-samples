@@ -25,9 +25,9 @@
         "PreplannedMapArea"
     ],
     "snippets": [
-        "DownloadPreplannedMapAreaView.swift",
-        "DownloadPreplannedMapArea.MapPicker.swift",
-        "DownloadPreplannedMapArea.Model.swift"
+        "DownloadPreplannedMapAreaView.MapPicker.swift",
+        "DownloadPreplannedMapAreaView.Model.swift",
+        "DownloadPreplannedMapAreaView.swift"
     ],
     "title": "Download preplanned map area"
 }
