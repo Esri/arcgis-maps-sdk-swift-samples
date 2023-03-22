@@ -22,15 +22,9 @@ struct ChangeMapViewBackgroundView: View {
     /// A Boolean value indicating whether the settings view should be presented.
     @State private var isShowingSettings = false
     
-    /// The initial viewpoint for the map.
-    @State var viewpoint = Viewpoint(
-        center: Point(x: 3224786, y: 2661231, spatialReference: .webMercator),
-        scale: 236_663_484
-    )
-    
     var body: some View {
         // Creates a map view to display the map.
-        MapView(map: model.map, viewpoint: viewpoint)
+        MapView(map: model.map)
             .backgroundGrid(model.backgroundGrid)
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
