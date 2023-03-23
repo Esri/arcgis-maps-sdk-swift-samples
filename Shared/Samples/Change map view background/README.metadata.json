@@ -1,0 +1,28 @@
+{
+    "category": "Maps",
+    "description": "Customize map view's background by changing its grid properties.",
+    "ignore": false,
+    "images": [
+        "change-map-view-background-settings.png"
+    ],
+    "keywords": [
+        "background",
+        "grid",
+        "map",
+        "BackgroundGrid",
+        "Map",
+        "MapView"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "BackgroundGrid",
+        "Map",
+        "MapView"
+    ],
+    "snippets": [
+        "ChangeMapViewBackgroundView.swift",
+        "ChangeMapViewBackgroundView.Model.swift",
+        "ChangeMapViewBackgroundView.SettingsView.swift"
+    ],
+    "title": "Change map view background"
+}
