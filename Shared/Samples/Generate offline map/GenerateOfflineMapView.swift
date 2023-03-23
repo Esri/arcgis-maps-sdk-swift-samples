@@ -109,7 +109,8 @@ struct GenerateOfflineMapView: View {
 }
 
 private extension GenerateOfflineMapView {
-    /// The view model for this sample.
+    /// The model used to store the geo model and other expensive objects
+    /// used in this view.
     @MainActor
     class Model: ObservableObject {
         /// The offline map that is generated.
@@ -211,7 +212,7 @@ private extension GenerateOfflineMapView {
                 // Sets the offline map to the output's offline map.
                 offlineMap = output.offlineMap
                 // Sets the initial viewpoint of the offline map.
-                offlineMap.initialViewpoint = Viewpoint(targetExtent: extent.expanded(by: 0.8))
+                offlineMap.initialViewpoint = Viewpoint(boundingGeometry: extent.expanded(by: 0.8))
             } catch is CancellationError {
                 // Does nothing if the error is a cancellation error.
             } catch {
@@ -257,7 +258,7 @@ private extension Envelope {
     /// Expands the envelope by a given factor.
     func expanded(by factor: Double) -> Envelope {
         let builder = EnvelopeBuilder(envelope: self)
-        builder.expand(factor: factor)
+        builder.expand(by: factor)
         return builder.toGeometry()
     }
 }

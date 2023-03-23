@@ -20,7 +20,9 @@ struct ShowResultOfSpatialRelationshipsView: View {
     @State private var isShowingAlert = false
     
     /// The error shown in the alert.
-    @State private var error: Error?
+    @State private var error: Error? {
+        didSet { isShowingAlert = error != nil }
+    }
     
     /// The point indicating where to identify a graphic.
     @State private var identifyPoint: CGPoint?
@@ -29,82 +31,37 @@ struct ShowResultOfSpatialRelationshipsView: View {
     @State private var mapPoint: Point?
     
     /// A location callout placement.
-    @State private var calloutPlacement: LocationCalloutPlacement?
+    @State private var calloutPlacement: CalloutPlacement?
     
     /// The relationships for the selected graphic.
     @State private var relationships: [Relationship] = []
     
-    /// A map with a topographic basemap style and an initial viewpoint.
-    @StateObject private var map: Map = {
-        let map = Map(basemapStyle: .arcGISTopographic)
-        map.initialViewpoint = Viewpoint(center: Graphic.point.geometry as! Point, scale: 1e8)
-        return map
-    }()
-    
-    /// A graphics overlay consisting of a polygon, polyline, and point.
-    @StateObject private var graphicsOverlay = GraphicsOverlay(graphics: [.polygon, .polyline, .point])
-    
-    /// The polygon graphic.
-    private var polygonGraphic: Graphic { graphicsOverlay.graphics[0] }
-    /// The polyline graphic.
-    private var polylineGraphic: Graphic { graphicsOverlay.graphics[1] }
-    /// The point graphic.
-    private var pointGraphic: Graphic { graphicsOverlay.graphics[2] }
+    /// The view model for the sample.
+    @StateObject private var model = Model()
     
     /// Shows the relationships for the selected graphic.
     /// - Parameter graphic: The graphic to show all spatial relationships for.
     private func showRelationships(for graphic: Graphic) {
-        guard let selectedGeometry = graphic.geometry,
-              let allRelationships = allRelationships(for: selectedGeometry),
-              let mapPoint = mapPoint else {
+        guard let selectedGeometry = graphic.geometry else {
             return
         }
-        
         // Updates the relationships.
-        relationships = allRelationships
+        relationships = model.allRelationships(for: selectedGeometry)
+        guard !relationships.isEmpty else {
+            return
+        }
         // Updates the location callout placement.
-        calloutPlacement = LocationCalloutPlacement(location: mapPoint)
-    }
-    
-    /// Returns the relevant spatial relationships for a given geometry with all other geometries in this sample.
-    /// - Parameter geometry: The geometry to find all spatial relationships for.
-    /// - Returns: An array of relationships between the given geometry and all other geometries.
-    private func allRelationships(for geometry: Geometry) -> [Relationship]? {
-        guard let pointGeometry = pointGraphic.geometry,
-              let polylineGeometry = polylineGraphic.geometry,
-              let polygonGeometry = polygonGraphic.geometry else {
-            return nil
-        }
-        
-        switch geometry {
-        case is Point:
-            return [
-                Relationship(between: pointGeometry, and: polylineGeometry),
-                Relationship(between: pointGeometry, and: polygonGeometry)
-            ]
-        case is Polyline:
-            return [
-                Relationship(between: polylineGeometry, and: pointGeometry),
-                Relationship(between: polylineGeometry, and: polygonGeometry)
-            ]
-        case is ArcGIS.Polygon:
-            return [
-                Relationship(between: polygonGeometry, and: pointGeometry),
-                Relationship(between: polygonGeometry, and: polylineGeometry)
-            ]
-        default:
-            return nil
-        }
+        calloutPlacement = mapPoint.map { CalloutPlacement.location($0) }
     }
     
     var body: some View {
         MapViewReader { mapView in
-            MapView(map: map, graphicsOverlays: [graphicsOverlay])
+            MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
                 .onSingleTapGesture { screenPoint, mapPoint in
                     identifyPoint = screenPoint
                     self.mapPoint = mapPoint
                 }
-                .callout(placement: $calloutPlacement.animation(.default.speed(4))) { _ in
+                .callout(placement: $calloutPlacement.animation(.default.speed(2))) { _ in
                     VStack(alignment: .leading) {
                         ForEach(relationships, id: \.relationshipWithLabel) { relationship in
                             Text(relationship.relationshipWithLabel)
@@ -122,13 +79,13 @@ struct ShowResultOfSpatialRelationshipsView: View {
                 .task(id: identifyPoint) {
                     guard let identifyPoint = identifyPoint else { return }
                     // Clears the selection.
-                    graphicsOverlay.clearSelection()
+                    model.graphicsOverlay.clearSelection()
                     
                     if calloutPlacement == nil {
                         do {
                             // Identifies the graphic at the given screen point.
                             let results = try await mapView.identify(
-                                on: graphicsOverlay,
+                                on: model.graphicsOverlay,
                                 screenPoint: identifyPoint,
                                 tolerance: 12,
                                 maximumResults: 1
@@ -136,13 +93,12 @@ struct ShowResultOfSpatialRelationshipsView: View {
                             
                             if let identifiedGraphic = results.graphics.first {
                                 // Selects the identified graphic.
-                                graphicsOverlay.selectGraphics([identifiedGraphic])
+                                model.graphicsOverlay.selectGraphics([identifiedGraphic])
                                 // Shows the graphic's relationships.
                                 showRelationships(for: identifiedGraphic)
                             }
                         } catch {
                             self.error = error
-                            isShowingAlert = true
                         }
                     } else {
                         // Hides the callout.
@@ -155,6 +111,58 @@ struct ShowResultOfSpatialRelationshipsView: View {
                         .padding(.vertical, 6)
                         .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
                 }
+        }
+    }
+}
+
+private extension ShowResultOfSpatialRelationshipsView {
+    /// The model used to store the geo model and other expensive objects
+    /// used in this view.
+    class Model: ObservableObject {
+        /// A map with a topographic basemap style and an initial viewpoint.
+        let map: Map = {
+            let map = Map(basemapStyle: .arcGISTopographic)
+            map.initialViewpoint = Viewpoint(center: Graphic.point.geometry as! Point, scale: 1e8)
+            return map
+        }()
+        
+        /// A graphics overlay consisting of a polygon, polyline, and point.
+        let graphicsOverlay = GraphicsOverlay(graphics: [.polygon, .polyline, .point])
+        
+        /// The polygon graphic.
+        private var polygonGraphic: Graphic { graphicsOverlay.graphics[0] }
+        /// The polyline graphic.
+        private var polylineGraphic: Graphic { graphicsOverlay.graphics[1] }
+        /// The point graphic.
+        private var pointGraphic: Graphic { graphicsOverlay.graphics[2] }
+        
+        /// Returns the relevant spatial relationships for a given geometry with all other geometries in this sample.
+        /// - Parameter geometry: The geometry to find all spatial relationships for.
+        /// - Returns: An array of relationships between the given geometry and all other geometries.
+        func allRelationships(for geometry: Geometry) -> [Relationship] {
+            let pointGeometry = pointGraphic.geometry!
+            let polylineGeometry = polylineGraphic.geometry!
+            let polygonGeometry = polygonGraphic.geometry!
+            
+            switch geometry {
+            case is Point:
+                return [
+                    Relationship(between: pointGeometry, and: polylineGeometry),
+                    Relationship(between: pointGeometry, and: polygonGeometry)
+                ]
+            case is Polyline:
+                return [
+                    Relationship(between: polylineGeometry, and: pointGeometry),
+                    Relationship(between: polylineGeometry, and: polygonGeometry)
+                ]
+            case is ArcGIS.Polygon:
+                return [
+                    Relationship(between: polygonGeometry, and: pointGeometry),
+                    Relationship(between: polygonGeometry, and: polylineGeometry)
+                ]
+            default:
+                return []
+            }
         }
     }
 }

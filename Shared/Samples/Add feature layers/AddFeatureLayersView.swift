@@ -24,118 +24,31 @@ struct AddFeatureLayersView: View {
         didSet { isShowingAlert = error != nil }
     }
     
-    /// The feature layer source that is displayed.
-    @State private var selectedFeatureLayerSource: FeatureLayerSource = .serviceFeatureTable
-    
     /// The current viewpoint of the map view.
     @State private var viewpoint: Viewpoint?
     
-    /// The geodatabase used to create the feature layer.
-    @State private var geodatabase: Geodatabase!
-    
-    /// The GeoPackage used to create the feature layer.
-    @State private var geoPackage: GeoPackage!
-    
-    /// A map with a topographic basemap style.
-    @StateObject private var map = Map(basemapStyle: .arcGISTopographic)
-    
-    /// Loads a feature layer with a service feature table.
-    private func loadServiceFeatureTable() {
-        // Creates a service feature table from a feature service.
-        let featureTable = ServiceFeatureTable(url: .damageAssessment)
-        let featureLayer = FeatureLayer(featureTable: featureTable)
-        setFeatureLayer(featureLayer, viewpoint: .napervilleIL)
-    }
-    
-    /// Loads a feature layer with a portal item.
-    private func loadPortalItemFeatureTable() {
-        let featureLayer = FeatureLayer(
-            item: PortalItem(
-                portal: .arcGISOnline(connection: .anonymous),
-                id: .treesOfPortland
-            )
-        )
-        setFeatureLayer(featureLayer, viewpoint: .portlandOR)
-    }
-    
-    /// Loads a feature layer with a local geodatabase.
-    private func loadGeodatabaseFeatureTable() async throws {
-        // Loads the geodatabase if it does not exist.
-        if geodatabase == nil {
-            geodatabase = Geodatabase(fileURL: .laTrails)
-            try await geodatabase.load()
-        }
-        // Creates a feature layer from the geodatabase's feature table and
-        // sets the current feature layer to it.
-        let featureTable = geodatabase.featureTable(named: "Trailheads")!
-        let featureLayer = FeatureLayer(featureTable: featureTable)
-        setFeatureLayer(featureLayer, viewpoint: .losAngelesCA)
-    }
-    
-    /// Loads a feature layer with a local GeoPackage.
-    private func loadGeoPackageFeatureTable() async throws {
-        // Loads the GeoPackage if it does not exist.
-        if geoPackage == nil {
-            geoPackage = GeoPackage(fileURL: .auroraCO)
-            try await geoPackage.load()
-        }
-        // Creates a feature layer from the GeoPackage's feature tables and
-        // sets the current feature layer to the first one.
-        let featureTable = geoPackage.featureTables.first!
-        let featureLayer = FeatureLayer(featureTable: featureTable)
-        setFeatureLayer(featureLayer, viewpoint: .auroraCO)
-    }
-    
-    /// Loads a feature layer with a local shapefile.
-    private func loadShapefileFeatureTable() {
-        let shapefileFeatureTable = ShapefileFeatureTable(fileURL: .reserveBoundaries)
-        let featureLayer = FeatureLayer(featureTable: shapefileFeatureTable)
-        setFeatureLayer(featureLayer, viewpoint: .scotland)
-    }
-    
-    /// Sets the map's operational layers to the given feature layer and updates the current viewpoint.
-    private func setFeatureLayer(_ featureLayer: FeatureLayer, viewpoint: Viewpoint) {
-        // Updates the map's operational layers.
-        map.removeAllOperationalLayers()
-        map.addOperationalLayer(featureLayer)
-        // Updates the current viewpoint.
-        self.viewpoint = viewpoint
-    }
-    
-    /// Updates the feature layer to reflect the source chosen by the user.
-    private func updateFeatureLayer() async {
-        do {
-            switch selectedFeatureLayerSource {
-            case .serviceFeatureTable:
-                loadServiceFeatureTable()
-            case .portalItem:
-                loadPortalItemFeatureTable()
-            case .geodatabase:
-                try await loadGeodatabaseFeatureTable()
-            case .geoPackage:
-                try await loadGeoPackageFeatureTable()
-            case .shapefile:
-                loadShapefileFeatureTable()
-            }
-        } catch {
-            // Updates the error and shows an alert if any failures occur.
-            self.error = error
-        }
-    }
+    /// The view model for the sample.
+    @StateObject private var model = Model()
     
     var body: some View {
-        MapView(map: map, viewpoint: viewpoint)
+        MapView(map: model.map, viewpoint: viewpoint)
             .onViewpointChanged(kind: .centerAndScale) { viewpoint = $0 }
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
-                    Picker("Feature Layer", selection: $selectedFeatureLayerSource) {
+                    Picker("Feature Layer", selection: $model.selectedFeatureLayerSource) {
                         ForEach(FeatureLayerSource.allCases, id: \.self) { source in
                             Text(source.label)
                         }
                     }
-                    .task(id: selectedFeatureLayerSource) {
-                        // Loads the selected feature layer.
-                        await updateFeatureLayer()
+                    .task(id: model.selectedFeatureLayerSource) {
+                        do {
+                            // Loads the selected feature layer.
+                            try await model.updateFeatureLayer()
+                            viewpoint = model.featureLayerViewpoint
+                        } catch {
+                            // Updates the error and shows an alert if any failures occur.
+                            self.error = error
+                        }
                     }
                 }
             }
@@ -143,25 +56,127 @@ struct AddFeatureLayersView: View {
             .onAppear {
                 // Updates the URL session challenge handler to use the
                 // specified credentials and tokens for any challenges.
-                ArcGISEnvironment.authenticationChallengeHandler = ChallengeHandler()
+                ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = ChallengeHandler()
             }
             .onDisappear {
                 // Resets the URL session challenge handler to use default handling.
-                ArcGISEnvironment.authenticationChallengeHandler = nil
+                ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = nil
             }
     }
 }
 
 /// The authentication model used to handle challenges and credentials.
-private struct ChallengeHandler: AuthenticationChallengeHandler {
+private struct ChallengeHandler: ArcGISAuthenticationChallengeHandler {
     func handleArcGISAuthenticationChallenge(
         _ challenge: ArcGISAuthenticationChallenge
     ) async throws -> ArcGISAuthenticationChallenge.Disposition {
         // NOTE: Never hardcode login information in a production application.
         // This is done solely for the sake of the sample.
-        return .useCredential(
-            try await .token(challenge: challenge, username: "viewer01", password: "I68VGU^nMurF")
+        return .continueWithCredential(
+            try await TokenCredential.credential(for: challenge, username: "viewer01", password: "I68VGU^nMurF")
         )
+    }
+}
+
+private extension AddFeatureLayersView {
+    /// The model used to store the geo model and other expensive objects
+    /// used in this view.
+    class Model: ObservableObject {
+        /// A map with a topographic basemap style.
+        let map = Map(basemapStyle: .arcGISTopographic)
+        
+        /// The geodatabase used to create the feature layer.
+        private var geodatabase: Geodatabase!
+        
+        /// The GeoPackage used to create the feature layer.
+        private var geoPackage: GeoPackage!
+        
+        /// The viewpoint for a specific feature layer.
+        var featureLayerViewpoint: Viewpoint?
+        
+        /// The feature layer source that is displayed.
+        @Published var selectedFeatureLayerSource: FeatureLayerSource = .serviceFeatureTable
+        
+        /// Loads a feature layer with a service feature table.
+        private func loadServiceFeatureTable() async throws {
+            // Creates a service feature table from a feature service.
+            let featureTable = ServiceFeatureTable(url: .damageAssessment)
+            try await featureTable.load()
+            let featureLayer = FeatureLayer(featureTable: featureTable)
+            setFeatureLayer(featureLayer, viewpoint: .napervilleIL)
+        }
+        
+        /// Loads a feature layer with a portal item.
+        private func loadPortalItemFeatureTable() async throws {
+            let portalItem = PortalItem(
+                portal: .arcGISOnline(connection: .anonymous),
+                id: .treesOfPortland
+            )
+            try await portalItem.load()
+            let featureLayer = FeatureLayer(item: portalItem)
+            setFeatureLayer(featureLayer, viewpoint: .portlandOR)
+        }
+        
+        /// Loads a feature layer with a local geodatabase.
+        private func loadGeodatabaseFeatureTable() async throws {
+            // Loads the geodatabase if it does not exist.
+            if geodatabase == nil {
+                geodatabase = Geodatabase(fileURL: .laTrails)
+                try await geodatabase.load()
+            }
+            // Creates a feature layer from the geodatabase's feature table and
+            // sets the current feature layer to it.
+            let featureTable = geodatabase.featureTable(named: "Trailheads")!
+            let featureLayer = FeatureLayer(featureTable: featureTable)
+            setFeatureLayer(featureLayer, viewpoint: .losAngelesCA)
+        }
+        
+        /// Loads a feature layer with a local GeoPackage.
+        private func loadGeoPackageFeatureTable() async throws {
+            // Loads the GeoPackage if it does not exist.
+            if geoPackage == nil {
+                geoPackage = GeoPackage(fileURL: .auroraCO)
+                try await geoPackage.load()
+            }
+            // Creates a feature layer from the GeoPackage's feature tables and
+            // sets the current feature layer to the first one.
+            let featureTable = geoPackage.featureTables.first!
+            let featureLayer = FeatureLayer(featureTable: featureTable)
+            setFeatureLayer(featureLayer, viewpoint: .auroraCO)
+        }
+        
+        /// Loads a feature layer with a local shapefile.
+        private func loadShapefileFeatureTable() async throws {
+            let shapefileFeatureTable = ShapefileFeatureTable(fileURL: .reserveBoundaries)
+            try await shapefileFeatureTable.load()
+            let featureLayer = FeatureLayer(featureTable: shapefileFeatureTable)
+            setFeatureLayer(featureLayer, viewpoint: .scotland)
+        }
+        
+        /// Sets the map's operational layers to the given feature layer and updates the current viewpoint.
+        private func setFeatureLayer(_ featureLayer: FeatureLayer, viewpoint: Viewpoint) {
+            // Updates the map's operational layers.
+            map.removeAllOperationalLayers()
+            map.addOperationalLayer(featureLayer)
+            // Updates the current viewpoint.
+            featureLayerViewpoint = viewpoint
+        }
+        
+        /// Updates the feature layer to reflect the source chosen by the user.
+        func updateFeatureLayer() async throws {
+            switch selectedFeatureLayerSource {
+            case .serviceFeatureTable:
+                try await loadServiceFeatureTable()
+            case .portalItem:
+                try await loadPortalItemFeatureTable()
+            case .geodatabase:
+                try await loadGeodatabaseFeatureTable()
+            case .geoPackage:
+                try await loadGeoPackageFeatureTable()
+            case .shapefile:
+                try await loadShapefileFeatureTable()
+            }
+        }
     }
 }
 

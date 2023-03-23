@@ -10,12 +10,14 @@ This repository contains Swift sample code demonstrating the capabilities of [Ar
 
 The *ArcGIS Maps SDK for Swift Samples app* has a *Target SDK* version of *15.0*, meaning that it can run on devices with *iOS 15.0* or newer.
 
-## Building Samples Using Swift API Manually 
+## Building Samples Using Swift Package Manager
 
 1. **Fork** and then **clone** the repository
-1. **Configure** the Swift API locally following the instructions in internal Swift API repo, section `Adding the ArcGIS library to your App`
 1. **Open** the `Samples.xcodeproj` **project** file
+    > The project has been configured to use the arcgis-maps-sdk-swift-toolkit package, which provides the ArcGISToolkit framework as well as the ArcGIS framework.
 1. **Run** the `Samples` app target
+
+> To add the Swift packages to your own projects, consult the documentation for the [ArcGIS Maps SDK for Swift Toolkit](https://github.com/Esri/arcgis-maps-sdk-swift-toolkit#swift-package-manager) and [ArcGIS Maps SDK for Swift](https://github.com/Esri/arcgis-maps-sdk-swift#instructions).
 
 ## Configuring API Keys
 
@@ -42,7 +44,7 @@ Please see [Configure App Secrets](Documentation/ConfigureAppSecrets.md) for add
 * Unfamiliar with SwiftUI? Check out Apple's [SwiftUI documentation](https://developer.apple.com/documentation/swiftui/).
 * Want to start a new project? [Setup](https://developers.arcgis.com/swift/get-started) your development environment
 * New to the API? Explore the documentation: [Guide](https://developers.arcgis.com/swift/) | [API Reference](https://developers.arcgis.com/swift/api-reference/documentation/arcgis/)
-* Got a question? Ask the community on our [forum](https://community.esri.com/t5/arcgis-runtime-sdk-for-ios-questions/bd-p/arcgis-runtime-sdk-for-ios-questions)
+* Got a question? Ask the community on our [forum](https://community.esri.com/t5/swift-maps-sdk-questions/bd-p/swift-maps-sdk-questions)
 
 ## Contributing
 

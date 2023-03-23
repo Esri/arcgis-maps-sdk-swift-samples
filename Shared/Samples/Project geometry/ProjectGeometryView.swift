@@ -17,32 +17,21 @@ import SwiftUI
 
 struct ProjectGeometryView: View {
     /// A location callout placement.
-    @State private var calloutPlacement: LocationCalloutPlacement?
+    @State private var calloutPlacement: CalloutPlacement?
     
     /// The point where the map was tapped in its original spatial reference (Web Mercator).
-    @State private var originalPoint: Point?
+    @State private var originalPoint: Point!
     
-    /// A map with a topographic basemap style and an initial viewpoint.
-    @StateObject private var map: Map = {
-        let map = Map(basemapStyle: .arcGISTopographic)
-        map.initialViewpoint = Viewpoint(
-            center: Point(x: -1.2e7, y: 5e6, spatialReference: .webMercator),
-            scale: 4e7
-        )
-        return map
-    }()
+    /// The tap location.
+    @State private var tapLocation: Point!
     
-    /// A graphics overlay containing a graphic with a circular, red marker symbol.
-    @StateObject private var graphicsOverlay = GraphicsOverlay(graphics: [
-        Graphic(symbol: SimpleMarkerSymbol(color: .red, size: 8))
-    ])
-    
-    /// The graphic with a circular, red marker symbol.
-    private var pointGraphic: Graphic { graphicsOverlay.graphics.first! }
+    /// The view model for the sample.
+    @StateObject private var model = Model()
     
     var body: some View {
-        MapView(map: map, graphicsOverlays: [graphicsOverlay])
+        MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
             .onSingleTapGesture { _, mapPoint in
+                tapLocation = mapPoint
                 if calloutPlacement == nil {
                     // Sets the original point to where the map was tapped.
                     originalPoint = GeometryEngine.normalizeCentralMeridian(of: mapPoint) as? Point
@@ -51,23 +40,23 @@ struct ProjectGeometryView: View {
                     let projectedPoint = GeometryEngine.project(originalPoint!, into: .wgs84)!
                     
                     // Updates the geometry of the point graphic.
-                    pointGraphic.geometry = projectedPoint
+                    model.pointGraphic.geometry = projectedPoint
                     
                     // Updates the location callout placement.
-                    calloutPlacement = LocationCalloutPlacement(location: projectedPoint)
+                    calloutPlacement = CalloutPlacement.location(projectedPoint)
                 } else {
                     // Hides the callout and point graphic.
                     calloutPlacement = nil
-                    pointGraphic.geometry = nil
+                    model.pointGraphic.geometry = nil
                 }
             }
-            .callout(placement: $calloutPlacement.animation(.default.speed(4))) { callout in
+            .callout(placement: $calloutPlacement.animation(.default.speed(2))) { _ in
                 VStack(alignment: .leading) {
                     Group {
                         Text("Coordinates")
                             .fontWeight(.medium)
-                        Text("Original: \(originalPoint!.xyCoordinates)")
-                        Text("Projected: \(callout.location.xyCoordinates)")
+                        Text("Original: \(originalPoint.xyCoordinates)")
+                        Text("Projected: \(tapLocation.xyCoordinates)")
                     }
                     .font(.callout)
                 }
@@ -79,6 +68,30 @@ struct ProjectGeometryView: View {
                     .padding(.vertical, 6)
                     .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
             }
+    }
+}
+
+private extension ProjectGeometryView {
+    /// The model used to store the geo model and other expensive objects
+    /// used in this view.
+    class Model: ObservableObject {
+        /// A map with a topographic basemap style and an initial viewpoint.
+        let map: Map = {
+            let map = Map(basemapStyle: .arcGISTopographic)
+            map.initialViewpoint = Viewpoint(
+                center: Point(x: -1.2e7, y: 5e6, spatialReference: .webMercator),
+                scale: 4e7
+            )
+            return map
+        }()
+        
+        /// A graphics overlay containing a graphic with a circular, red marker symbol.
+        let graphicsOverlay = GraphicsOverlay(graphics: [
+            Graphic(symbol: SimpleMarkerSymbol(color: .red, size: 8))
+        ])
+        
+        /// The graphic with a circular, red marker symbol.
+        var pointGraphic: Graphic { graphicsOverlay.graphics.first! }
     }
 }
 
