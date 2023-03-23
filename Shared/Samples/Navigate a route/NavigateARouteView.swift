@@ -120,10 +120,10 @@ private extension NavigateARouteView {
         private let routeTask = RouteTask(url: .routeTask)
         
         /// The route result.
-        private var routeResult: RouteResult!
+        private var routeResult: RouteResult?
         
         /// The route tracker.
-        private var routeTracker: RouteTracker!
+        private var routeTracker: RouteTracker?
         
         /// The directions for the route.
         private var directions: [DirectionManeuver] = []
@@ -204,8 +204,12 @@ private extension NavigateARouteView {
         /// Sets the route tracker and location display's data source with a solved route. Updates
         /// the list of directions, the route ahead graphic, and the map's viewpoint.
         func setNavigation() {
+            guard let routeResult else { return }
+            
             // Creates a route tracker from the route results.
             routeTracker = RouteTracker(routeResult: routeResult, routeIndex: 0, skipsCoincidentStops: true)
+            guard let routeTracker else { return }
+            
             routeTracker.voiceGuidanceUnitSystem = Locale.current.usesMetricSystem ? .metric : .imperial
             
             // Gets the route and its geometry from the route result.
@@ -253,6 +257,7 @@ private extension NavigateARouteView {
         ///
         /// When new statuses are delivered, update the route's traversed and remaining graphics.
         private func trackStatus() async {
+            guard let routeTracker else { return }
             for try await status in routeTracker.$trackingStatus {
                 if let status {
                     routeTraversedGraphic.geometry = status.routeProgress.traversedGeometry
@@ -284,6 +289,7 @@ private extension NavigateARouteView {
         
         /// Monitor the asynchronous stream of voice guidances.
         private func trackVoiceGuidance() async {
+            guard let routeTracker else { return }
             for try await voiceGuidance in routeTracker.voiceGuidances {
                 speechSynthesizer.stopSpeaking(at: .word)
                 speechSynthesizer.speak(AVSpeechUtterance(string: voiceGuidance.text))
