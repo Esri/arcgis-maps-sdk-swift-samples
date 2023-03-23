@@ -26,19 +26,12 @@ struct SetViewpointRotationView: View {
     /// The rotation angle for the viewpoint.
     @State private var rotation = Double.zero
     
-    /// The model used to store the geo model and other expensive objects
-    /// used in this view.
-    private class Model: ObservableObject {
-        /// A map with ArcGIS Streets basemap style.
-        let map = Map(basemapStyle: .arcGISStreets)
-    }
-    
-    /// The view model for the sample.
-    @StateObject private var model = Model()
+    /// A map with ArcGIS Streets basemap style.
+    @State private var map = Map(basemapStyle: .arcGISStreets)
     
     var body: some View {
         VStack {
-            MapView(map: model.map, viewpoint: Viewpoint(center: center, scale: scale, rotation: rotation))
+            MapView(map: map, viewpoint: Viewpoint(center: center, scale: scale, rotation: rotation))
                 .onViewpointChanged(kind: .centerAndScale) { viewpoint in
                     center = viewpoint.targetGeometry.extent.center
                     scale = viewpoint.targetScale
