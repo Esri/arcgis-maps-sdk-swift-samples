@@ -201,8 +201,8 @@ private extension NavigateARouteView {
             }
         }
         
-        /// Sets the route tracker and location display's data source with a solved route. Updates the list of
-        /// directions, the route ahead graphic, and the map's viewpoint.
+        /// Sets the route tracker and location display's data source with a solved route. Updates
+        /// the list of directions, the route ahead graphic, and the map's viewpoint.
         func setNavigation() {
             // Creates a route tracker from the route results.
             routeTracker = RouteTracker(routeResult: routeResult, routeIndex: 0, skipsCoincidentStops: true)
