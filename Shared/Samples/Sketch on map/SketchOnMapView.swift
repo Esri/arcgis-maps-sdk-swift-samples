@@ -68,7 +68,7 @@ extension GeometryEditorMenu {
                 model.geometryEditor.start(withType: Point.self)
                 model.isStarted = true
             } label: {
-                Label("New Point", systemImage: "pencil")
+                Label("New Point", systemImage: "smallcircle.filled.circle")
             }
             
             Button {
