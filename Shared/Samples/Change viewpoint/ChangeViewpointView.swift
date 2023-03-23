@@ -23,42 +23,44 @@ struct ChangeViewpointView: View {
     
     var body: some View {
         MapViewReader { mapViewProxy in
-            MapView(map: model.map, graphicsOverlays: [model.graphicsOverlays])
-                .onScaleChanged { model.scale = $0 }
-                .onVisibleAreaChanged { visibleArea = $0 }
-                .onChange(of: $model.viewpointType.wrappedValue) { type in
-                    switch type {
-                    case .centerAndScale:
-                        Task {
-                            try await mapViewProxy.setViewpointCenter(model.londonCoordinate, scale: 40000)
-                        }
-                    case .geometry:
-                        Task {
-                            try await mapViewProxy.setViewpointGeometry(
-                                model.griffithParkGeometry,
-                                padding: 50
-                            )
-                        }
-                    case .animate:
-                        Task {
-                            if let center = visibleArea?.extent.center {
-                                try await mapViewProxy.setViewpoint(
-                                    Viewpoint(center: center, scale: model.scale / 2),
-                                    duration: 5
+            VStack {
+                MapView(map: model.map, graphicsOverlays: [model.graphicsOverlays])
+                    .onScaleChanged { model.scale = $0 }
+                    .onVisibleAreaChanged { visibleArea = $0 }
+                    .onChange(of: $model.viewpointType.wrappedValue) { type in
+                        switch type {
+                        case .centerAndScale:
+                            Task {
+                                try await mapViewProxy.setViewpointCenter(model.londonCoordinate, scale: 40000)
+                            }
+                        case .geometry:
+                            Task {
+                                try await mapViewProxy.setViewpointGeometry(
+                                    model.griffithParkGeometry,
+                                    padding: 50
                                 )
+                            }
+                        case .animate:
+                            Task {
+                                if let center = visibleArea?.extent.center {
+                                    try await mapViewProxy.setViewpoint(
+                                        Viewpoint(center: center, scale: model.scale / 2),
+                                        duration: 5
+                                    )
+                                }
                             }
                         }
                     }
-                }
-            HStack {
-                Picker("Viewpoint Type", selection: $model.viewpointType) {
-                    ForEach(ViewpointType.allCases, id: \.self) { mode in
-                        Text(mode.label)
+                HStack {
+                    Picker("Viewpoint Type", selection: $model.viewpointType) {
+                        ForEach(ViewpointType.allCases, id: \.self) { mode in
+                            Text(mode.label)
+                        }
                     }
+                    .pickerStyle(.segmented)
+                    .frame(maxWidth: 540)
+                    .padding()
                 }
-                .pickerStyle(.segmented)
-                .frame(maxWidth: 540)
-                .padding()
             }
         }
     }
