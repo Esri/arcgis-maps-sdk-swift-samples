@@ -27,7 +27,7 @@
         "MapView"
     ],
     "snippets": [
-        "SketchOnTheMapView.swift"
+        "SketchOnMapView.swift"
     ],
     "title": "Sketch on map"
 }
