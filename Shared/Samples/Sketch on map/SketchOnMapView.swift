@@ -76,7 +76,7 @@ extension GeometryEditorMenu {
                 model.geometryEditor.start(withType: Polyline.self)
                 model.isStarted = true
             } label: {
-                Label("New Line", systemImage: "pencil.line")
+                Label("New Line", systemImage: "line.diagonal")
             }
             
             Button {
