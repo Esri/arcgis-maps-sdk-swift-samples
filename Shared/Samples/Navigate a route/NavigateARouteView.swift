@@ -28,6 +28,10 @@ struct NavigateARouteView: View {
         )
         .onViewpointChanged(kind: .centerAndScale) { model.viewpoint = $0 }
         .locationDisplay(model.locationDisplay)
+        .alert(
+            isPresented: Binding(get: { model.error != nil }, set: { _ in model.error = nil }),
+            presentingError: model.error
+        )
         .overlay(alignment: .top) {
             Text(model.statusText)
                 .padding(2)
@@ -86,9 +90,6 @@ private extension NavigateARouteView {
         
         /// A Boolean value indicating whether navigation is being reset.
         @Published var isResettingRoute = false
-        
-        /// A Boolean value indicating whether to show an alert.
-        @Published var isShowingAlert = false
         
         /// The error shown in the alert.
         @Published var error: Error?
@@ -197,7 +198,6 @@ private extension NavigateARouteView {
                 isNavigateDisabled = false
             } catch {
                 self.error = error
-                isShowingAlert = true
             }
         }
         
@@ -310,7 +310,6 @@ private extension NavigateARouteView {
                 await startTracking()
             } catch {
                 self.error = error
-                isShowingAlert = true
             }
         }
         
