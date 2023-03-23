@@ -1,4 +1,4 @@
-// Copyright 2022 Esri
+// Copyright 2023 Esri
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ import SwiftUI
 struct SketchOnTheMapView: View {
     /// The map to display in the view.
     @State private var map = Map(basemapStyle: .arcGISTopographic)
+    
     /// The model that is required by the menu.
     @StateObject var model = GeometryEditorMenuModel(
         geometryEditor: GeometryEditor(),
@@ -229,7 +230,7 @@ extension GeometryEditorMenu {
     }
     
     /// Saves the current geometry to the graphics overlay and stops editing.
-    /// Precondition: `canSave`
+    /// - Precondition: `canSave`
     func save() {
         let geometry = geometryEditor.geometry!
         let graphic = Graphic(geometry: geometry, symbol: symbol(for: geometry))
@@ -252,6 +253,7 @@ extension GeometryEditorMenu {
     
     /// Returns the symbology for graphics saved to the graphics overlay.
     /// - Parameter geometry: The geometry of the graphic to be saved.
+    /// - Returns: Either a marker or fill symbol depending on the type of provided geometry.
     private func symbol(for geometry: Geometry) -> Symbol {
         switch geometry {
         case is Point, is Multipoint:
