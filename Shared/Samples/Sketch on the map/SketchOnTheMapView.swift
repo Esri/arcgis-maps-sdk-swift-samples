@@ -232,6 +232,7 @@ extension GeometryEditorMenu {
     /// Saves the current geometry to the graphics overlay and stops editing.
     /// - Precondition: `canSave`
     func save() {
+        precondition(canSave)
         let geometry = geometryEditor.geometry!
         let graphic = Graphic(geometry: geometry, symbol: symbol(for: geometry))
         graphicsOverlay.addGraphic(graphic)
