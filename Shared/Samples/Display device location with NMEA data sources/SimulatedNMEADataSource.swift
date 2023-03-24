@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import Foundation
+import ArcGIS
 
 protocol SimulatedNMEADataSourceDelegate: AnyObject {
     /// A mock delegate method to receive NMEA data updates.
@@ -32,6 +33,8 @@ class SimulatedNMEADataSource {
     private var timer: Timer?
     /// A delegate to notify view controllers.
     weak var delegate: SimulatedNMEADataSourceDelegate?
+    
+    var nmeaLocationDataSource: NMEALocationDataSource?
     
     /// Load locations from NMEA sentences.
     /// Read mock NMEA sentences line by line and group them by the timestamp.
@@ -63,8 +66,10 @@ class SimulatedNMEADataSource {
         playbackSpeed = speed
     }
     
-    func start() {
+    func start(with nmeaLocationDataSource: NMEALocationDataSource) {
         guard !nmeaDataIterator.elements.isEmpty else { return }
+        self.nmeaLocationDataSource = nmeaLocationDataSource
+        
         // Invalidate timer to stop previous mock data generation.
         timer?.invalidate()
         // Time interval in second.
@@ -72,7 +77,8 @@ class SimulatedNMEADataSource {
         // Create a new timer.
         let newTimer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { [weak self] _ in
             guard let self = self else { return }
-            self.delegate?.dataSource(self, didUpdate: self.nmeaDataIterator.next()!)
+            self.nmeaLocationDataSource?.pushData(self.nmeaDataIterator.next()!)
+//            self.delegate?.dataSource(self, didUpdate: self.nmeaDataIterator.next()!)
         }
         timer = newTimer
     }

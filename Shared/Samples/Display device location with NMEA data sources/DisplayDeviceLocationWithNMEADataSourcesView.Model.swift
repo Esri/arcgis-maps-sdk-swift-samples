@@ -19,31 +19,37 @@ import ExternalAccessory
 extension DisplayDeviceLocationWithNMEADataSourcesView {
     /// The model used to store the geo model and other expensive objects
     /// used in this view.
+    @MainActor
     class Model: ObservableObject {
         /// A map with imagery basemap.
         let map = Map(basemapStyle: .arcGISImagery)
         
-        @State var autoPanMode: LocationDisplay.AutoPanMode = .recenter
+        var autoPanMode: LocationDisplay.AutoPanMode = .recenter {
+            didSet {
+                locationDisplay.autoPanMode = autoPanMode
+                isRecenterButtonDisabled = autoPanMode == .recenter
+            }
+        }
         
-        @State var isRecenterButtonEnabled = false
+        @Published var isRecenterButtonDisabled = true
         
-        @State var isResetButtonEnabled = false
+        @Published var isResetButtonDisabled = true
         
-        @State var isSourceButtonEnabled = true
+        @Published var isSourceButtonDisabled = false
         
-        @State var accuracyStatus: String = ""
+        @Published var accuracyStatus: String = "Accuracy info will be shown here."
         
-        @State var satelliteStatus: String = ""
+        @Published var satelliteStatus: String = "Satellites info will be shown here."
         
         var locationDisplay = LocationDisplay()
-
+        
         /// An NMEA location data source, to parse NMEA data.
         var nmeaLocationDataSource: NMEALocationDataSource!
         
         /// A mock data source to read NMEA sentences from a local file, and generate
         /// mock NMEA data every fixed amount of time.
         let mockNMEADataSource = SimulatedNMEADataSource(nmeaSourceFile: Bundle.main.url(forResource: "Redlands", withExtension: "nmea")!, speed: 1.5)
-
+        
         /// A formatter for the accuracy distance string.
         let distanceFormatter: MeasurementFormatter = {
             let formatter = MeasurementFormatter()
@@ -63,46 +69,43 @@ extension DisplayDeviceLocationWithNMEADataSourcesView {
         ]
         
         init() {
-//            var dataSource =
-//            locationDispay = LocationDisplay(dataSource: dataSource)
+            Task {
+                for await mode in locationDisplay.$autoPanMode {
+                    if autoPanMode != mode {
+                        autoPanMode = mode
+                    }
+                }
+            }
         }
         
         func recenter() {
             autoPanMode = .recenter
-            isRecenterButtonEnabled = false
-            
-//            mapView.locationDisplay.autoPanModeChangedHandler = { [weak self] _ in
-//                DispatchQueue.main.async {
-//                    self?.recenterBarButtonItem.isEnabled = true
-//                }
-//                self?.mapView.locationDisplay.autoPanModeChangedHandler = nil
-//            }
         }
         
         func reset() {
             // Reset buttons states.
-            isResetButtonEnabled = false
-            isSourceButtonEnabled = true
+            isResetButtonDisabled = true
+            isSourceButtonDisabled = false
             // Reset the status text.
             accuracyStatus = "Accuracy info will be shown here."
             satelliteStatus = "Satellites info will be shown here."
             
             // Reset and stop the location display.
-//            mapView.locationDisplay.autoPanModeChangedHandler = nil
+            //            mapView.locationDisplay.autoPanModeChangedHandler = nil
             autoPanMode = .off
             
             Task {
                 // Stop the location display, which in turn stop the data source.
                 await nmeaLocationDataSource.stop()
-
+                
                 // Reset NMEA location data source.
                 nmeaLocationDataSource = nil
             }
-
+            
             // Pause the mock data generation.
             mockNMEADataSource.stop()
-//            // Disconnect from the mock data updates.
-//            mockNMEADataSource.delegate = nil
+            //            // Disconnect from the mock data updates.
+            //            mockNMEADataSource.delegate = nil
         }
         
         /// Get the first connected and supported Bluetooth accessory with its
@@ -126,75 +129,68 @@ extension DisplayDeviceLocationWithNMEADataSourcesView {
         func accessoryDidConnect(connectedAccessory: EAAccessory, protocolString: String) {
             if let dataSource = NMEALocationDataSource(accessory: connectedAccessory, protocol: protocolString) {
                 nmeaLocationDataSource = dataSource
-//                nmeaLocationDataSource.locationChangeHandlerDelegate = self
+                //                nmeaLocationDataSource.locationChangeHandlerDelegate = self
                 start()
             } else {
-//                presentAlert(message: "NMEA location data source failed to initialize from the accessory!")
+                //                presentAlert(message: "NMEA location data source failed to initialize from the accessory!")
             }
-        }
-        
-        @IBAction func chooseDataSource(_ sender: UIBarButtonItem) {
-            let alertController = UIAlertController(
-                title: "Choose an NMEA data source.",
-                message: nil,
-                preferredStyle: .actionSheet
-            )
-            // Add real data source to the options.
-            let realDataSourceAction = UIAlertAction(title: "Device", style: .default) { [unowned self] _ in
-                if let (accessory, protocolString) = firstSupportedAccessoryWithProtocol() {
-                    // Use the supported accessory directly if it's already connected.
-                    accessoryDidConnect(connectedAccessory: accessory, protocolString: protocolString)
-                } else {
-                    // Show a picker to pair the device with a Bluetooth accessory.
-                    EAAccessoryManager.shared().showBluetoothAccessoryPicker(withNameFilter: nil) { error in
-                        if let error = error as? EABluetoothAccessoryPickerError,
-                           error.code != .alreadyConnected {
-                            switch error.code {
-                            case .resultNotFound:
-                                print("presentalert")
-//                                self.presentAlert(message: "The specified accessory could not be found, perhaps because it was turned off prior to connection.")
-                            case .resultCancelled:
-                                // Don't show error message when the picker is cancelled.
-                                return
-                            default:
-                                print("default presentalert")
-//                                self.presentAlert(message: "Selecting an accessory failed for an unknown reason.")
-                            }
-                        } else if let (accessory, protocolString) = self.firstSupportedAccessoryWithProtocol() {
-                            // Proceed with supported and connected accessory, and
-                            // ignore other accessories that aren't supported.
-                            self.accessoryDidConnect(connectedAccessory: accessory, protocolString: protocolString)
-                        }
-                    }
-                }
-            }
-            alertController.addAction(realDataSourceAction)
-            // Add mock data source to the options.
-            let mockDataSourceAction = UIAlertAction(title: "Mock Data", style: .default) { [unowned self] _ in
-                nmeaLocationDataSource = NMEALocationDataSource(receiverSpatialReference: .wgs84)
-//                nmeaLocationDataSource.locationChangeHandlerDelegate = self
-//                mockNMEADataSource.delegate = self
-                start()
-            }
-            alertController.addAction(mockDataSourceAction)
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-            alertController.addAction(cancelAction)
-            alertController.popoverPresentationController?.barButtonItem = sender
-//            present(alertController, animated: true)
         }
         
         func start() {
             // Set NMEA location data source for location display.
             locationDisplay.dataSource = nmeaLocationDataSource
             // Set buttons states.
-            isSourceButtonEnabled = false
-            isResetButtonEnabled = true
+            isSourceButtonDisabled = true
+            isResetButtonDisabled = false
+            
             // Start the data source and location display.
-            mockNMEADataSource.start()
+            mockNMEADataSource.start(with: nmeaLocationDataSource)
             Task {
                 try? await nmeaLocationDataSource.start()
                 // Recenter the map and set pan mode.
                 recenter()
+                
+                for await location in nmeaLocationDataSource.locations {
+                    guard let nmeaLocation = location as? NMEALocation else { return }
+                    let horizontalAccuracy = Measurement(
+                        value: nmeaLocation.horizontalAccuracy,
+                        unit: UnitLength.meters
+                    )
+                    let verticalAccuracy = Measurement(
+                        value: nmeaLocation.verticalAccuracy,
+                        unit: UnitLength.meters
+                    )
+                    let accuracyText = String(
+                        format: "Accuracy - Horizontal: %@; Vertical: %@",
+                        distanceFormatter.string(from: horizontalAccuracy),
+                        distanceFormatter.string(from: verticalAccuracy)
+                    )
+                    accuracyStatus = accuracyText
+                }
+                
+            TODO: figure out why satellite info doesn't show up
+                for await satellites in nmeaLocationDataSource.satellites {
+                    // Update the satellites info status text.
+                    let satelliteSystems = satellites.filter {
+                        $0.system != nil
+                    }
+                    let satelliteSystemsText = ListFormatter.localizedString(
+                        byJoining: Set(satellites.map(\.system!.label)).sorted()
+                    )
+                    let idText = ListFormatter.localizedString(
+                        byJoining: satelliteSystems.map { String($0.id) }
+                    )
+                    satelliteStatus = String(
+                        format: """
+            %d satellites in view
+            System(s): %@
+            IDs: %@
+            """,
+                        satellites.count,
+                        satelliteSystemsText,
+                        idText
+                    )
+                }
             }
         }
     }
