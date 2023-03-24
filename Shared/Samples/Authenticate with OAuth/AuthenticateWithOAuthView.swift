@@ -48,6 +48,10 @@ struct AuthenticateWithOAuthView: View {
                 // Sets authenticator as ArcGIS and Network challenge handlers to handle authentication
                 // challenges.
                 ArcGISEnvironment.authenticationManager.handleChallenges(using: authenticator)
+                
+                // In real world applications, uncomment this code to persist credentials in the
+                // keychain and remove `signOut()` from `onDisappear`.
+                //setupPersistentCredentialStorage()
             }
             .onDisappear {
                 // Resetting the challenge handlers and clearing credentials here in `onDisappear`
@@ -66,6 +70,16 @@ struct AuthenticateWithOAuthView: View {
         Task {
             await ArcGISEnvironment.authenticationManager.revokeOAuthTokens()
             await ArcGISEnvironment.authenticationManager.clearCredentialStores()
+        }
+    }
+    
+    // Sets up new ArcGIS and Network credential stores that will be persisted in the keychain.
+    func setupPersistentCredentialStorage() {
+        Task {
+            try await ArcGISEnvironment.authenticationManager.setupPersistentCredentialStorage(
+                access: .whenUnlockedThisDeviceOnly,
+                synchronizesWithiCloud: false
+            )
         }
     }
 }

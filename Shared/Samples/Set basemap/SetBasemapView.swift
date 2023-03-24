@@ -20,29 +20,22 @@ struct SetBasemapView: View {
     /// A Boolean value that indicates whether to show the basemap gallery.
     @State private var isShowingBasemapGallery = false
     
-    /// The model used to store the geo model and other expensive objects
-    /// used in this view.
-    private class Model: ObservableObject {
-        /// A map with imagery basemap.
-        let map: Map = {
-            let map = Map(basemapStyle: .arcGISImagery)
-            // The initial viewpoint of the map.
-            map.initialViewpoint = Viewpoint(
-                center: Point(x: -118.4, y: 33.7, spatialReference: .wgs84),
-                scale: 1e6
-            )
-            return map
-        }()
-    }
-    
-    /// The view model for the sample.
-    @StateObject private var model = Model()
+    /// A map with imagery basemap.
+    @State private var map: Map = {
+        let map = Map(basemapStyle: .arcGISImagery)
+        // The initial viewpoint of the map.
+        map.initialViewpoint = Viewpoint(
+            center: Point(x: -118.4, y: 33.7, spatialReference: .wgs84),
+            scale: 1e6
+        )
+        return map
+    }()
     
     var body: some View {
-        MapView(map: model.map)
+        MapView(map: map)
             .overlay(alignment: .topTrailing) {
                 if isShowingBasemapGallery {
-                    BasemapGallery(geoModel: model.map)
+                    BasemapGallery(geoModel: map)
                         .style(.automatic())
                 }
             }

@@ -34,30 +34,23 @@ struct BrowseBuildingFloorsView: View {
     /// A Boolean value indicating whether the map is loaded.
     @State private var isMapLoaded = false
     
-    /// The model used to store the geo model and other expensive objects
-    /// used in this view.
-    private class Model: ObservableObject {
-        /// A floor-aware web map of Building L on the Esri Redlands campus.
-        let map = Map(
-            item: PortalItem(
-                portal: .arcGISOnline(connection: .anonymous),
-                id: .esriBuildingL
-            )
+    /// A floor-aware web map of Building L on the Esri Redlands campus.
+    @State private var map = Map(
+        item: PortalItem(
+            portal: .arcGISOnline(connection: .anonymous),
+            id: .esriBuildingL
         )
-    }
-    
-    /// The view model for the sample.
-    @StateObject private var model = Model()
+    )
     
     var body: some View {
-        MapView(map: model.map)
+        MapView(map: map)
             .onViewpointChanged(kind: .centerAndScale) { viewpoint = $0 }
             .onNavigatingChanged { isMapNavigating = $0 }
             .alert(isPresented: $isShowingAlert, presentingError: error)
             .ignoresSafeArea(.keyboard, edges: .bottom)
             .overlay(alignment: .bottomTrailing) {
                 if isMapLoaded,
-                   let floorManager = model.map.floorManager {
+                   let floorManager = map.floorManager {
                     FloorFilter(
                         floorManager: floorManager,
                         alignment: .bottomTrailing,
@@ -74,7 +67,7 @@ struct BrowseBuildingFloorsView: View {
             }
             .task {
                 do {
-                    try await model.map.load()
+                    try await map.load()
                     isMapLoaded = true
                 } catch {
                     self.error = error
