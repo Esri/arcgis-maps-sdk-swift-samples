@@ -533,11 +533,8 @@ private extension Viewpoint {
     static var initialViewpoint: Viewpoint {
         .init(
             boundingGeometry: Envelope(
-                xMin: -9813547.35557238,
-                yMin: 5129980.36635111,
-                xMax: -9813185.0602376,
-                yMax: 5130215.41254146,
-                spatialReference: .webMercator
+                xRange: (-9813547.35557238)...(-9813185.0602376),
+                yRange: (5129980.36635111)...(5130215.41254146)
             )
         )
     }
