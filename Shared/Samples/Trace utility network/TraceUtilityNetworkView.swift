@@ -381,10 +381,10 @@ private extension SimpleMarkerSymbol {
     }
 }
 
-private extension TraceUtilityNetworkView {
+extension TraceUtilityNetworkView {
     /// The buttons and picker shown to the user while setting points.
     @ViewBuilder
-    var controlsForSettingPoints: some View {
+    private var controlsForSettingPoints: some View {
         Picker("Add starting points & barriers", selection: pointType) {
             ForEach([PointType.start, PointType.barrier], id: \.self) { type in
                 Text(type.rawValue.capitalized).tag(type)
@@ -404,7 +404,7 @@ private extension TraceUtilityNetworkView {
     }
     
     /// The domain network for this sample.
-    var electricDistribution: UtilityDomainNetwork? {
+    private var electricDistribution: UtilityDomainNetwork? {
         network?.definition?.domainNetwork(named: "ElectricDistribution")
     }
     
@@ -412,7 +412,7 @@ private extension TraceUtilityNetworkView {
     ///
     /// The feature layers allow us to modify the visual rendering style of different elements in
     /// the network.
-    var featureLayerURLs: [URL] {
+    private var featureLayerURLs: [URL] {
         return [
             .featureService.appendingPathComponent("0"),
             .featureService.appendingPathComponent("3")
@@ -420,12 +420,12 @@ private extension TraceUtilityNetworkView {
     }
     
     /// The utility tier for this sample.
-    var mediumVoltageRadial: UtilityTier? {
+    private var mediumVoltageRadial: UtilityTier? {
         electricDistribution?.tier(named: "Medium Voltage Radial")
     }
     
     /// The utility network for this sample.
-    var network: UtilityNetwork? {
+    private var network: UtilityNetwork? {
         map.utilityNetworks.first
     }
     
@@ -449,13 +449,13 @@ private extension TraceUtilityNetworkView {
     }
     
     /// The trace types supported for this sample.
-    var supportedTraceTypes: [UtilityTraceParameters.TraceType] {
+    private var supportedTraceTypes: [UtilityTraceParameters.TraceType] {
         return [.connected, .subnetwork, .upstream, .downstream]
     }
     
     /// Buttons for each the available terminals on the last added utility element.
     @ViewBuilder
-    var terminalPickerButtons: some View {
+    private var terminalPickerButtons: some View {
         ForEach(lastAddedElement?.assetType.terminalConfiguration?.terminals ?? []) { terminal in
             Button(terminal.name) {
                 lastAddedElement?.terminal = terminal
@@ -469,7 +469,7 @@ private extension TraceUtilityNetworkView {
     /// When a trace type is selected, the pending trace is initialized as a new instance of trace
     /// parameters. The trace configuration can also be set. The user should set trace points next.
     @ViewBuilder
-    var traceTypePickerButtons: some View {
+    private var traceTypePickerButtons: some View {
         ForEach(supportedTraceTypes, id: \.self) { type in
             Button(type.displayName) {
                 pendingTraceParameters = UtilityTraceParameters(traceType: type, startingLocations: [])
