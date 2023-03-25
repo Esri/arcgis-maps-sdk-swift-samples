@@ -113,14 +113,14 @@ struct TraceUtilityNetworkView: View {
     }
     
     /// Adds a provided feature to the pending trace.
+    ///
+    /// For junction features with more than one terminal, the user should be prompted to pick a
+    /// terminal. For edge features, the fractional point along the feature's edge should be
+    /// computed.
     /// - Parameters:
     ///   - feature: The feature to be added to the pending trace.
     ///   - mapPoint: The location on the map where the feature was discovered. If the feature is a
     ///   junction type, the feature's geometry will be used instead.
-    ///
-    ///   For junction features with more than one terminal, the user should be prompted to pick a
-    ///   terminal. For edge features, the fractional point along the feature's edge should be
-    ///   computed.
     func add(_ feature: ArcGISFeature, at mapPoint: Point) {
         if let element = network?.makeElement(arcGISFeature: feature),
            let geometry = feature.geometry,
