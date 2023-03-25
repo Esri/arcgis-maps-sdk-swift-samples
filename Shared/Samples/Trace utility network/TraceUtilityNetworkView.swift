@@ -112,7 +112,7 @@ struct TraceUtilityNetworkView: View {
         lastAddedElement = element
     }
     
-    /// Makes a utility network element from the provided feature and adds it to the pending trace.
+    /// Adds a provided feature to the pending trace.
     /// - Parameters:
     ///   - feature: The feature to be added to the pending trace.
     ///   - mapPoint: The location on the map where the feature was discovered. If the feature is a
