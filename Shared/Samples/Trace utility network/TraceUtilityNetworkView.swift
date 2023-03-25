@@ -391,7 +391,7 @@ private extension TraceUtilityNetworkView {
         }
         .disabled(pendingTrace?.startingLocations.isEmpty ?? true)
         .padding()
-        Button("Cancel", role: .destructive) {
+        Button("Reset", role: .destructive) {
             reset()
         }
         .padding()
