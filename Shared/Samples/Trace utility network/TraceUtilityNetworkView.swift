@@ -95,7 +95,7 @@ struct TraceUtilityNetworkView: View {
     /// - Parameters:
     ///   - element: The utility element to be added to the pending trace.
     ///   - point: The location on the map where the element's visual indicator should be added.
-    func add(_ element: UtilityElement, at point: Geometry) {
+    private func add(_ element: UtilityElement, at point: Geometry) {
         guard let pendingTraceParameters,
             case .settingPoints(let pointType) = tracingActivity else { return }
         let graphic = Graphic(
@@ -121,7 +121,7 @@ struct TraceUtilityNetworkView: View {
     ///   - feature: The feature to be added to the pending trace.
     ///   - mapPoint: The location on the map where the feature was discovered. If the feature is a
     ///   junction type, the feature's geometry will be used instead.
-    func add(_ feature: ArcGISFeature, at mapPoint: Point) {
+    private func add(_ feature: ArcGISFeature, at mapPoint: Point) {
         if let element = network?.makeElement(arcGISFeature: feature),
            let geometry = feature.geometry,
            let table = feature.table as? ArcGISFeatureTable,
@@ -153,7 +153,7 @@ struct TraceUtilityNetworkView: View {
     ///   - screenPoint: The location on the screen where the identify operation is desired.
     ///   - proxy: The map view proxy to perform the identify operation with.
     /// - Returns: The first discoverable feature or `nil` if none were identified.
-    func identifyFeatureAt(_ screenPoint: CGPoint, with proxy: MapViewProxy) async -> ArcGISFeature? {
+    private func identifyFeatureAt(_ screenPoint: CGPoint, with proxy: MapViewProxy) async -> ArcGISFeature? {
         guard let feature = try? await proxy.identifyLayers(
             screenPoint: screenPoint,
             tolerance: 10
@@ -164,7 +164,7 @@ struct TraceUtilityNetworkView: View {
     }
     
     /// Resets all of the important stateful values for when a trace is cancelled or completed.
-    func reset() {
+    private func reset() {
         map.operationalLayers.forEach { ($0 as? FeatureLayer)?.clearSelection() }
         points.removeAllGraphics()
         pendingTraceParameters = nil
@@ -172,7 +172,7 @@ struct TraceUtilityNetworkView: View {
     }
     
     /// Performs important tasks including adding credentials, loading and adding operational layers.
-    func setup() async {
+    private func setup() async {
         try? await ArcGISEnvironment.authenticationManager.arcGISCredentialStore.add(.publicSample)
         try? await network?.load()
         featureLayers.forEach { url in
@@ -190,7 +190,7 @@ struct TraceUtilityNetworkView: View {
     }
     
     /// Runs a trace with the pending trace configuration.
-    func trace() async {
+    private func trace() async {
         guard let pendingTraceParameters else { return }
         do {
             let traceResults = try await network?.trace(using: pendingTraceParameters)
@@ -214,7 +214,7 @@ struct TraceUtilityNetworkView: View {
     
     /// Updates the textual user hint. If no message is provided a preset hint is used.
     /// - Parameter message: The message to display to the user.
-    func updateHint(_ message: String? = nil) {
+    private func updateHint(_ message: String? = nil) {
         if let message {
             hint = message
         } else {
