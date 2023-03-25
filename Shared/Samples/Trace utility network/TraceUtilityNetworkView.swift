@@ -489,7 +489,7 @@ private extension UniqueValue {
     static var lowVoltage: UniqueValue {
         .init(
             label: "Low voltage",
-            symbol: SimpleLineSymbol(style: .dash, color: UIColor.darkCyan, width: 3),
+            symbol: SimpleLineSymbol(style: .dash, color: .darkCyan, width: 3),
             values: [3]
         )
     }
@@ -498,7 +498,7 @@ private extension UniqueValue {
     static var mediumVoltage: UniqueValue {
         .init(
             label: "Medium voltage",
-            symbol: SimpleLineSymbol(style: .solid, color: UIColor.darkCyan, width: 3),
+            symbol: SimpleLineSymbol(style: .solid, color: .darkCyan, width: 3),
             values: [5]
         )
     }
