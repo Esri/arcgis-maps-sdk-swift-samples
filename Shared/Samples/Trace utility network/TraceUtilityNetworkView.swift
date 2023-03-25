@@ -356,19 +356,12 @@ private extension ArcGISCredential {
     }
 }
 
-private extension Item.ID {
-    /// A portal item ID for the electrical network in this sample.
-    static var napervilleElectricalNetwork: Item.ID {
-        .init("471eb0bf37074b1fbb972b1da70fb310")!
-    }
-}
-
 private extension PortalItem {
     /// A portal item for the electrical network in this sample.
     static var napervilleElectricalNetwork: PortalItem {
         .init(
             portal: .arcGISOnline(connection: .authenticated),
-            id: .napervilleElectricalNetwork
+            id: .init("471eb0bf37074b1fbb972b1da70fb310")!
         )
     }
 }
