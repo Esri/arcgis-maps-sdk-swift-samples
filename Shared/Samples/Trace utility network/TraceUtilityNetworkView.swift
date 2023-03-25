@@ -75,13 +75,13 @@ struct TraceUtilityNetworkView: View {
     // MARK: Enums
     
     /// The types of points used during a utility network trace.
-    enum PointType: String {
+    private enum PointType: String {
         case barrier
         case start
     }
     
     /// The different activities a user will traverse while performing a utility network trace.
-    enum TracingActivity: Equatable {
+    private enum TracingActivity: Equatable {
         case settingPoints(pointType: PointType)
         case settingType
         case tracing
@@ -427,7 +427,7 @@ private extension TraceUtilityNetworkView {
     ///
     /// - Note: This should only be used when the user is setting starting points or barriers. If
     /// this condition isn't present, gets will be inaccurate and sets will be ignored.
-    var pointType: Binding<PointType> {
+    private var pointType: Binding<PointType> {
         .init(
             get: {
                 guard case .settingPoints(let pointType) = tracingActivity else {
