@@ -96,16 +96,17 @@ struct TraceUtilityNetworkView: View {
     ///   - element: The utility element to be added to the pending trace.
     ///   - point: The location on the map where the element's visual indicator should be added.
     func add(_ element: UtilityElement, at point: Geometry) {
-        guard case .settingPoints(let pointType) = tracingActivity else { return }
+        guard let pendingTraceParameters,
+            case .settingPoints(let pointType) = tracingActivity else { return }
         let graphic = Graphic(
             geometry: point,
             attributes: [String(describing: PointType.self): pointType.rawValue]
         )
         switch pointType {
         case.barrier:
-            pendingTraceParameters?.addBarrier(element)
+            pendingTraceParameters.addBarrier(element)
         case .start:
-            pendingTraceParameters?.addStartingLocation(element)
+            pendingTraceParameters.addStartingLocation(element)
         }
         points.addGraphic(graphic)
         lastAddedElement = element
