@@ -194,7 +194,11 @@ struct TraceUtilityNetworkView: View {
         }
     }
     
-    /// Runs a trace with the pending trace configuration.
+    /// Runs a trace with the pending trace configuration and selects features in the map that
+    /// correspond to the element results.
+    ///
+    /// Note that elements are grouped by network source prior to selection so that all selections
+    /// per operational layer can be made at once.
     private func trace() async {
         guard let pendingTraceParameters else { return }
         do {
