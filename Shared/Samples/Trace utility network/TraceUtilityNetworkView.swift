@@ -180,7 +180,7 @@ struct TraceUtilityNetworkView: View {
             hint = "An error occurred while loading the network."
             return
         }
-        featureLayers.forEach { url in
+        featureLayerURLs.forEach { url in
             let table = ServiceFeatureTable(url: url)
             let layer = FeatureLayer(featureTable: table)
             if table.serviceLayerID == 3 {
@@ -412,10 +412,10 @@ private extension TraceUtilityNetworkView {
     ///
     /// The feature layers allow us to modify the visual rendering style of different elements in
     /// the network.
-    var featureLayers: [URL] {
+    var featureLayerURLs: [URL] {
         return [
-            URL.featureService.appendingPathComponent("0"),
-            URL.featureService.appendingPathComponent("3")
+            .featureService.appendingPathComponent("0"),
+            .featureService.appendingPathComponent("3")
         ]
     }
     
