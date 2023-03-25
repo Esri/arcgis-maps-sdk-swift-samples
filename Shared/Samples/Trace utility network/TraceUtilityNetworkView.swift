@@ -141,6 +141,8 @@ struct TraceUtilityNetworkView: View {
                     updateHint(String(format: "fractionAlongEdge: %.3f", element.fractionAlongEdge))
                     add(element, at: mapPoint)
                 }
+            @unknown default:
+                return
             }
         }
     }
