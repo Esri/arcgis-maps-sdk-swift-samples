@@ -139,7 +139,7 @@ struct TraceUtilityNetworkView: View {
                         fractionalLengthClosestTo: mapPoint,
                         tolerance: -1
                     )
-                    updateHint(String(format: "fractionAlongEdge: %.3f", element.fractionAlongEdge))
+                    updateUserHint(withMessage: String(format: "fractionAlongEdge: %.3f", element.fractionAlongEdge))
                     add(element, at: mapPoint)
                 }
             @unknown default:
@@ -217,13 +217,13 @@ struct TraceUtilityNetworkView: View {
             tracingActivity = .viewingResults
         } catch {
             tracingActivity = .none
-            updateHint("An error occurred")
+            updateUserHint(withMessage: "An error occurred")
         }
     }
     
     /// Updates the textual user hint. If no message is provided a preset hint is used.
     /// - Parameter message: The message to display to the user.
-    private func updateHint(_ message: String? = nil) {
+    private func updateUserHint(withMessage message: String? = nil) {
         if let message {
             hint = message
         } else {
@@ -297,7 +297,7 @@ struct TraceUtilityNetworkView: View {
                             }
                         }
                         .task(id: tracingActivity) {
-                            updateHint()
+                            updateUserHint()
                             if tracingActivity == .tracing {
                                 await trace()
                             }
@@ -463,7 +463,7 @@ extension TraceUtilityNetworkView {
         ForEach(lastAddedElement?.assetType.terminalConfiguration?.terminals ?? []) { terminal in
             Button(terminal.name) {
                 lastAddedElement?.terminal = terminal
-                updateHint("terminal: \(terminal.name)")
+                updateUserHint(withMessage: "terminal: \(terminal.name)")
             }
         }
     }
