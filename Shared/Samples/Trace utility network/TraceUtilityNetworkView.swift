@@ -173,8 +173,13 @@ struct TraceUtilityNetworkView: View {
     
     /// Performs important tasks including adding credentials, loading and adding operational layers.
     private func setup() async {
-        try? await ArcGISEnvironment.authenticationManager.arcGISCredentialStore.add(.publicSample)
-        try? await network?.load()
+        do {
+            try await ArcGISEnvironment.authenticationManager.arcGISCredentialStore.add(.publicSample)
+            try await network?.load()
+        } catch {
+            hint = "An error occurred while loading the network."
+            return
+        }
         featureLayers.forEach { url in
             let table = ServiceFeatureTable(url: url)
             let layer = FeatureLayer(featureTable: table)
