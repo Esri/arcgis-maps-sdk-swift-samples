@@ -43,7 +43,7 @@ struct TraceUtilityNetworkView: View {
     ///
     /// Important trace information like the trace type, starting points, and barriers is contained
     /// within this value.
-    @State private var pendingTrace: UtilityTraceParameters?
+    @State private var pendingTraceParameters: UtilityTraceParameters?
     
     /// A Boolean value indicating if the user is selecting a terminal for an element.
     ///
@@ -103,9 +103,9 @@ struct TraceUtilityNetworkView: View {
         )
         switch pointType {
         case.barrier:
-            pendingTrace?.addBarrier(element)
+            pendingTraceParameters?.addBarrier(element)
         case .start:
-            pendingTrace?.addStartingLocation(element)
+            pendingTraceParameters?.addStartingLocation(element)
         }
         points.addGraphic(graphic)
         lastAddedElement = element
@@ -166,7 +166,7 @@ struct TraceUtilityNetworkView: View {
     func reset() {
         map.operationalLayers.forEach { ($0 as? FeatureLayer)?.clearSelection() }
         points.removeAllGraphics()
-        pendingTrace = nil
+        pendingTraceParameters = nil
         tracingActivity = .none
     }
     
@@ -190,9 +190,9 @@ struct TraceUtilityNetworkView: View {
     
     /// Runs a trace with the pending trace configuration.
     func trace() async {
-        guard let pendingTrace else { return }
+        guard let pendingTraceParameters else { return }
         do {
-            let traceResults = try await network?.trace(using: pendingTrace)
+            let traceResults = try await network?.trace(using: pendingTraceParameters)
                 .filter { $0 is UtilityElementTraceResult }
             for result in traceResults as? [UtilityElementTraceResult] ?? [] {
                 let groups = Dictionary(grouping: result.elements) { $0.networkSource.name }
@@ -267,7 +267,7 @@ struct TraceUtilityNetworkView: View {
                         .onChange(of: traceTypeSelectionIsOpen) { _ in
                             // If type selection is closed and a new trace wasn't initialized we can
                             // figure that the user opted to cancel.
-                            if !traceTypeSelectionIsOpen && pendingTrace == nil { reset() }
+                            if !traceTypeSelectionIsOpen && pendingTraceParameters == nil { reset() }
                         }
                         .onDisappear {
                             ArcGISEnvironment.authenticationManager.arcGISCredentialStore.removeAll()
@@ -389,7 +389,7 @@ private extension TraceUtilityNetworkView {
         Button("Trace") {
             tracingActivity = .tracing
         }
-        .disabled(pendingTrace?.startingLocations.isEmpty ?? true)
+        .disabled(pendingTraceParameters?.startingLocations.isEmpty ?? true)
         .padding()
         Button("Reset", role: .destructive) {
             reset()
@@ -466,8 +466,8 @@ private extension TraceUtilityNetworkView {
     var traceTypePickerButtons: some View {
         ForEach(supportedTraceTypes, id: \.self) { type in
             Button(type.displayName) {
-                pendingTrace = UtilityTraceParameters(traceType: type, startingLocations: [])
-                pendingTrace?.traceConfiguration = mediumVoltageRadial?.defaultTraceConfiguration
+                pendingTraceParameters = UtilityTraceParameters(traceType: type, startingLocations: [])
+                pendingTraceParameters?.traceConfiguration = mediumVoltageRadial?.defaultTraceConfiguration
                 tracingActivity = .settingPoints(pointType: .start)
             }
         }
