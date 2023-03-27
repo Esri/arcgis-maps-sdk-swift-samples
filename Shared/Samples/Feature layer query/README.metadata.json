@@ -1,0 +1,28 @@
+{
+    "category": "Features",
+    "description": "Find features in a feature table which match an SQL query.",
+    "ignore": false,
+    "images": [
+        "feature-layer-query-1.png",
+        "feature-layer-query-2.png"
+    ],
+    "keywords": [
+        "query",
+        "search",
+        "FeatureLayer",
+        "FeatureQueryResult",
+        "QueryParameters",
+        "ServiceFeatureTable"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "FeatureLayer",
+        "FeatureQueryResult",
+        "QueryParameters",
+        "ServiceFeatureTable"
+    ],
+    "snippets": [
+        "FeatureLayerQueryView.swift"
+    ],
+    "title": "Feature layer query"
+}
