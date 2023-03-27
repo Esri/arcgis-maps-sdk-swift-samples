@@ -51,7 +51,7 @@ struct AuthenticateWithOAuthView: View {
                 
                 // In real world applications, uncomment this code to persist credentials in the
                 // keychain and remove `signOut()` from `onDisappear`.
-                //setupPersistentCredentialStorage()
+                // setupPersistentCredentialStorage()
             }
             .onDisappear {
                 // Resetting the challenge handlers and clearing credentials here in `onDisappear`
