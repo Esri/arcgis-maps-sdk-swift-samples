@@ -20,9 +20,6 @@ struct ShowPopupView: View {
     /// A map of reported incidents in San Francisco.
     @State private var map = Map(url: URL(string: "https://arcgisruntime.maps.arcgis.com/home/item.html?id=fb788308ea2e4d8682b9c05ef641f273")!)!
     
-    /// The view model for the sample.
-    @StateObject private var model = Model()
-    
     /// The screen point to perform an identify operation.
     @State private var identifyScreenPoint: CGPoint?
     
@@ -37,7 +34,7 @@ struct ShowPopupView: View {
     
     var body: some View {
         MapViewReader { proxy in
-            MapView(map: model.map)
+            MapView(map: map)
                 .onSingleTapGesture { screenPoint, _ in
                     identifyScreenPoint = screenPoint
                 }
