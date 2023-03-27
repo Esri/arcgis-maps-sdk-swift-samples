@@ -26,7 +26,7 @@ struct ChangeViewpointView: View {
     @State private var scale: Double = 0
     
     /// The current viewpoint type.
-    @State var viewpointType: ViewpointType = .centerAndScale
+    @State private var viewpointType: ViewpointType = .centerAndScale
     
     enum ViewpointType: CaseIterable {
         case geometry, centerAndScale, animate
