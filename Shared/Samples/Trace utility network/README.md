@@ -25,7 +25,7 @@ Tap "Start a new trace" to select the type of trace using the confirmation dialo
 9. Create a `UtilityElement` for the identified feature.
 10. Determine the type of the identified feature using `UtilityNetworkSource.sourceType`.
 11. If the type is `junction`, display a terminal picker when more than one terminal is found.
-12. If the type is `edge`, compute how far along the edge the user tapped using `enum GeometryEngine.polyline(_:fractionalLengthClosestTo:tolerance:)`.
+12. If the type is `edge`, compute how far along the edge the user tapped using `GeometryEngine.polyline(_:fractionalLengthClosestTo:tolerance:)`.
 13. Add any created `UtilityElement`(s) to the collection of starting locations or barriers in the `UtilityTraceParameters`.
 14. Run `UtilityNetwork.trace(using:)` using the `UtilityTraceParameters`.
 15. Group the `UtilityElementTraceResult.elements` by their `networkSource.name`.
