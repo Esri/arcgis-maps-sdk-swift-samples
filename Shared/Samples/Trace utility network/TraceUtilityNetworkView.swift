@@ -316,7 +316,7 @@ struct TraceUtilityNetworkView: View {
         HStack(spacing: 5) {
             switch tracingActivity {
             case .none:
-                Button("Start a new trace") {
+                Button("Start a New Trace") {
                     withAnimation {
                         tracingActivity = .settingType
                         traceTypeSelectionIsOpen.toggle()
