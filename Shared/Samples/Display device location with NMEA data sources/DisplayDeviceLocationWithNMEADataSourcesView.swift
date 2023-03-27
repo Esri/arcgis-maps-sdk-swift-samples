@@ -51,7 +51,7 @@ struct DisplayDeviceLocationWithNMEADataSourcesView: View {
                     .disabled(model.isSourceButtonDisabled)
                     Spacer()
                     Button("Recenter") {
-                        model.recenter()
+                        model.autoPanMode = .recenter
                     }
                     .disabled(model.isRecenterButtonDisabled)
                     Spacer()
@@ -96,7 +96,7 @@ struct DisplayDeviceLocationWithNMEADataSourcesView: View {
                     default:
                         self.error = AccessoryError(detail: "The specified accessory could not be found, perhaps because it was turned off prior to connection.")
                     }
-                    isShowingAlert = true
+                    isShowingAlert = (self.error != nil)
                 } else if let (accessory, protocolString) = model.firstSupportedAccessoryWithProtocol() {
                     // Proceed with supported and connected accessory, and
                     // ignore other accessories that aren't supported.

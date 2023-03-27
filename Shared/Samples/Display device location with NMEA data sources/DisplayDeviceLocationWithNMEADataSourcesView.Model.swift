@@ -86,11 +86,6 @@ extension DisplayDeviceLocationWithNMEADataSourcesView {
             }
         }
         
-        /// Set the autopan mode to `.recenter`
-        func recenter() {
-            autoPanMode = .recenter
-        }
-        
         /// Reset the sample, stopping the data source, resetting button states and status strings.
         func reset() {
             // Reset buttons states.
@@ -156,19 +151,19 @@ extension DisplayDeviceLocationWithNMEADataSourcesView {
             }
             
             Task {
+                // Start the data source
                 try? await nmeaLocationDataSource.start()
-                // Recenter the map and set pan mode.
-                recenter()
+                
+                // Set the autopan mode to `.recenter`
+                autoPanMode = .recenter
             }
             
             Task {
-                // Watch location updates.
-                await locations()
-            }
-            
-            Task {
-                // Watch satellite updates.
-                await satellites()
+                await withTaskGroup(of: Void.self) { [weak self] taskGroup in
+                    guard let self else { return }
+                    taskGroup.addTask { await self.locations() }
+                    taskGroup.addTask { await self.satellites() }
+                }
             }
         }
         
