@@ -28,7 +28,3 @@ Tap on the features to prompt a popup that displays information about the featur
 ## About the data
 
 This sample uses a [feature layer](https://sampleserver6.arcgisonline.com/arcgis/rest/services/SF311/FeatureServer/0) that displays reported incidents in San Francisco.
-
-## Tags
-
-feature, feature layer, popup, web map
