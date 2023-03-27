@@ -31,7 +31,7 @@ The map view has several methods for setting its current viewpoint. Select a vie
 
 ## Additional information
 
-See the various "setViewpoint" methods on `MapViewProxy` and `SceneViewProxy` [here](https://next.sites.afd.arcgis.com/swift/api-reference/documentation/arcgis/mapviewproxy).
+See the various "setViewpoint" methods on `MapViewProxy` and `SceneViewProxy` [here](https://developers.arcgis.com/swift/api-reference/documentation/arcgis/mapviewproxy/).
 
 ## Tags
 
