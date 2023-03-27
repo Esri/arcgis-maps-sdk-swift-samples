@@ -18,7 +18,12 @@ import ArcGISToolkit
 
 struct ShowPopupView: View {
     /// A map of reported incidents in San Francisco.
-    @State private var map = Map(url: URL(string: "https://arcgisruntime.maps.arcgis.com/home/item.html?id=fb788308ea2e4d8682b9c05ef641f273")!)!
+    @State private var map = Map(
+        item: PortalItem(
+            portal: .arcGISOnline(connection: .anonymous),
+            id: .incidentsInSanFrancisco
+        )
+    )
     
     /// The screen point to perform an identify operation.
     @State private var identifyScreenPoint: CGPoint?
@@ -29,9 +34,6 @@ struct ShowPopupView: View {
     /// A Boolean value specifying whether the popup view should be shown or not.
     @State private var showPopup = false
     
-    /// The detent of the floating panel.
-    @State private var floatingPanelDetent: FloatingPanelDetent = .full
-    
     var body: some View {
         MapViewReader { proxy in
             MapView(map: map)
@@ -40,24 +42,19 @@ struct ShowPopupView: View {
                 }
                 .task(id: identifyScreenPoint) {
                     guard let identifyScreenPoint = identifyScreenPoint,
-                          let identifyResult = await Result(awaiting: {
-                              try await proxy.identifyLayers(
-                                screenPoint: identifyScreenPoint,
-                                tolerance: 12,
-                                returnPopupsOnly: false
-                              )
-                          })
-                        .cancellationToNil()
-                    else {
-                        return
-                    }
+                          let identifyResult = try? await proxy.identifyLayers(
+                            screenPoint: identifyScreenPoint,
+                            tolerance: 12,
+                            returnPopupsOnly: false
+                          ),
+                          let firstPopup = identifyResult.first?.popups.first
+                    else { return }
                     
-                    self.identifyScreenPoint = nil
-                    self.popup = try? identifyResult.get().first?.popups.first
-                    self.showPopup = self.popup != nil
+                    self.popup = firstPopup
+                    self.showPopup = true
                 }
                 .floatingPanel(
-                    selectedDetent: $floatingPanelDetent,
+                    selectedDetent: .constant(.full),
                     horizontalAlignment: .leading,
                     isPresented: $showPopup
                 ) {
@@ -71,4 +68,9 @@ struct ShowPopupView: View {
                 }
         }
     }
+}
+
+private extension PortalItem.ID {
+    /// The ID used in the "Incidents in San Francisco" portal item.
+    static var incidentsInSanFrancisco: Self { Self("fb788308ea2e4d8682b9c05ef641f273")! }
 }
