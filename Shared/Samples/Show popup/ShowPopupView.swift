@@ -17,12 +17,8 @@ import ArcGIS
 import ArcGISToolkit
 
 struct ShowPopupView: View {
-    /// The model used to store the geo model and other expensive objects
-    /// used in this view.
-    private class Model: ObservableObject {
-        /// A map of reported incidents in San Francisco.
-        let map = Map(url: URL(string: "https://arcgisruntime.maps.arcgis.com/home/item.html?id=fb788308ea2e4d8682b9c05ef641f273")!)!
-    }
+    /// A map of reported incidents in San Francisco.
+    @State private var map = Map(url: URL(string: "https://arcgisruntime.maps.arcgis.com/home/item.html?id=fb788308ea2e4d8682b9c05ef641f273")!)!
     
     /// The view model for the sample.
     @StateObject private var model = Model()
