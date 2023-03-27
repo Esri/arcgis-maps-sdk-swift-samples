@@ -31,16 +31,7 @@ The map view has several methods for setting its current viewpoint. Select a vie
 
 ## Additional information
 
-See the various setViewpoint methods on `GeoView` and `MapView`.
-
-* MapViewProxy.setViewpoint(_:)
-* MapViewProxy.setViewpoint(_:duration:)
-* MapViewProxy.setViewpointCenter(_:)
-* MapViewProxy.setViewpointCenter(_:scale:)
-* MapViewProxy.setViewpointGeometry(_:)
-* MapViewProxy.setViewpointGeometry(_:padding:)
-* MapViewProxy.setViewpointRotation(_:)
-* MapViewProxy.setViewpointScale(_:)
+See the various "setViewpoint" methods on `MapViewProxy` and `SceneViewProxy` [here](https://next.sites.afd.arcgis.com/swift/api-reference/documentation/arcgis/mapviewproxy).
 
 ## Tags
 
