@@ -14,10 +14,10 @@ Tap on the features to prompt a popup that displays information about the featur
 
 ## How it works
 
-1. Create a `Map` using a URL.
+1. Create and load a `Map` instance from a `PortalItem` of a web map.
 2. Create a `MapView` with the `Map`.
-3. Use the `GeoViewProxy.identifyLayers(_:screenPoint:tolerance:returnPopupsOnly:maximumResultsPerLayer:)` method to identify the top-most features.
-4. Create a `PopupView` with the result's `popups`.
+3. Use the `GeoViewProxy.identifyLayers(_:screenPoint:tolerance:returnPopupsOnly:maximumResultsPerLayer:)` method to identify the top-most feature.
+4. Create a `PopupView` with the result's first popup.
 
 ## Relevant API
 
@@ -27,7 +27,7 @@ Tap on the features to prompt a popup that displays information about the featur
 
 ## About the data
 
-This sample uses a [feature layer](https://sampleserver6.arcgisonline.com/arcgis/rest/services/SF311/FeatureServer/0) that displays reported incidents in San Francisco.
+This sample uses a [web map](https://www.arcgis.com/home/item.html?id=fb788308ea2e4d8682b9c05ef641f273) that displays reported incidents in San Francisco.
 
 ## Tags
 
