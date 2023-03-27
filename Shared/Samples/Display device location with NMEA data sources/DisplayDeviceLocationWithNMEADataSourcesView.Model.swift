@@ -156,9 +156,9 @@ extension DisplayDeviceLocationWithNMEADataSourcesView {
                 
                 // Set the autopan mode to `.recenter`
                 autoPanMode = .recenter
-            }
-            
-            Task {
+                
+                // Set up a TaskGroup to get asynchronous
+                // location and satellite updates.
                 await withTaskGroup(of: Void.self) { [weak self] taskGroup in
                     guard let self else { return }
                     taskGroup.addTask { await self.locations() }
