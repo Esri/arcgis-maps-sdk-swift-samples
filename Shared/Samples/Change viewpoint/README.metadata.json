@@ -20,9 +20,7 @@
         "Point",
         "Viewpoint"
     ],
-    "redirect_from": [
-        "/ios/latest/swift/sample-code/change-viewpoint.htm"
-    ],
+    "redirect_from": [],
     "relevant_apis": [
         "Geometry",
         "Map",

@@ -17,9 +17,9 @@ The map view has several methods for setting its current viewpoint. Select a vie
 
 1. Create a `Map` object and set it to the `MapView` object.
 2. Change the map's viewpoint using one of the available methods:
-    * Use `MapView.setViewpoint(_:duration:)` to pan to a viewpoint over the specified length of time.
-    * Use `MapView.setViewpointCenter(_:scale:)` to center the viewpoint on an `Point` and set a distance from the ground using a scale.
-    * Use `MapView.setViewpointGeometry(_:padding:)` to set the viewpoint to a given `Geometry`.
+    * Use `MapViewProxy.setViewpoint(_:duration:)` to pan to a viewpoint over the specified length of time.
+    * Use `MapViewProxy.setViewpointCenter(_:scale:)` to center the viewpoint on an `Point` and set a distance from the ground using a scale.
+    * Use `MapViewProxy.setViewpointGeometry(_:padding:)` to set the viewpoint to a given `Geometry`.
 
 ## Relevant API
 
