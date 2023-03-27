@@ -261,7 +261,7 @@ extension GeometryEditorMenu {
             return SimpleMarkerSymbol(style: .circle, color: .blue, size: 20)
         case is Polyline:
             return SimpleLineSymbol(color: .blue, width: 2)
-        case is Polygon:
+        case is ArcGIS.Polygon:
             return SimpleFillSymbol(
                 color: .gray.withAlphaComponent(0.5),
                 outline: SimpleLineSymbol(color: .blue, width: 2)
