@@ -15,25 +15,18 @@
 import Foundation
 import ArcGIS
 
-protocol SimulatedNMEADataSourceDelegate: AnyObject {
-    /// A mock delegate method to receive NMEA data updates.
-    /// Replace it with the real one to receive NMEA sentences from a GPS dongle.
-    /// - Parameters:
-    ///   - dataSource: The data source itself.
-    ///   - nmeaData: The latest NMEA data.
-    func dataSource(_ dataSource: SimulatedNMEADataSource, didUpdate nmeaData: Data)
-}
-
+/// A data source simulating NMEA data.
 class SimulatedNMEADataSource {
     /// The playback speed multiplier.
     private let playbackSpeed: Double
+    
     /// An iterator to hold and loop through the mock NMEA data.
     private var nmeaDataIterator: CircularIterator<Data>
+    
     /// A timer to periodically provide NMEA data updates.
     private var timer: Timer?
-    /// A delegate to notify view controllers.
-    weak var delegate: SimulatedNMEADataSourceDelegate?
     
+    /// The NMEA location data source to push data to.
     var nmeaLocationDataSource: NMEALocationDataSource?
     
     /// Load locations from NMEA sentences.
@@ -77,8 +70,10 @@ class SimulatedNMEADataSource {
         // Create a new timer.
         let newTimer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { [weak self] _ in
             guard let self = self else { return }
-            self.nmeaLocationDataSource?.pushData(self.nmeaDataIterator.next()!)
-//            self.delegate?.dataSource(self, didUpdate: self.nmeaDataIterator.next()!)
+            let data = self.nmeaDataIterator.next()!
+            
+            // Push the data to the data source.
+            self.nmeaLocationDataSource?.pushData(data)
         }
         timer = newTimer
     }

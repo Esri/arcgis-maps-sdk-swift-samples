@@ -27,14 +27,14 @@ struct DisplayDeviceLocationWithNMEADataSourcesView: View {
     @State private var isShowingAlert = false
     
     /// An error returned from the `EAAccessoryManager`.
-    @State private var error: Error?
+    @State private var error: AccessoryError?
     
     var body: some View {
         // Creates a map view to display the map.
         MapView(map: model.map)
             .locationDisplay(model.locationDisplay)
             .overlay(alignment: .top) {
-                VStack {
+                VStack(alignment: .leading) {
                     Text(model.accuracyStatus)
                     Text(model.satelliteStatus)
                 }
@@ -61,43 +61,74 @@ struct DisplayDeviceLocationWithNMEADataSourcesView: View {
                     .disabled(model.isResetButtonDisabled)
                 }
             }
-            .alert(isPresented: $isShowingAlert, presentingError: error)
-            .confirmationDialog("Choose an NMEA data source.", isPresented: $shouldShowSource, titleVisibility: .visible) {
+            .accessoryAlert(isPresented: $isShowingAlert, presentingError: error)
+            .confirmationDialog(
+                "Choose an NMEA data source.",
+                isPresented: $shouldShowSource,
+                titleVisibility: .visible
+            ) {
                 Button("Device") {
-                    if let (accessory, protocolString) = model.firstSupportedAccessoryWithProtocol() {
-                        // Use the supported accessory directly if it's already connected.
-                        model.accessoryDidConnect(connectedAccessory: accessory, protocolString: protocolString)
-                    } else {
-                        // Show a picker to pair the device with a Bluetooth accessory.
-                        EAAccessoryManager.shared().showBluetoothAccessoryPicker(withNameFilter: nil) { error in
-                            if let error = error as? EABluetoothAccessoryPickerError,
-                               error.code != .alreadyConnected {
-                                self.error = error
-                                isShowingAlert = true
-//                                switch error.code {
-//                                case .resultNotFound:
-//                                    self.presentAlert(message: "The specified accessory could not be found, perhaps because it was turned off prior to connection.")
-//                                case .resultCancelled:
-//                                    // Don't show error message when the picker is cancelled.
-//                                    return
-//                                default:
-//                                    self.presentAlert(message: "Selecting an accessory failed for an unknown reason.")
-//                                }
-                            } else if let (accessory, protocolString) = model.firstSupportedAccessoryWithProtocol() {
-                                // Proceed with supported and connected accessory, and
-                                // ignore other accessories that aren't supported.
-                                model.accessoryDidConnect(connectedAccessory: accessory, protocolString: protocolString)
-                            }
-                        }
-                    }
+                    selectDevice()
                 }
-                
                 Button("Mock Data") {
                     model.nmeaLocationDataSource = NMEALocationDataSource(receiverSpatialReference: .wgs84)
-                    //                            nmeaLocationDataSource.locationChangeHandlerDelegate = self
-                    //                            mockNMEADataSource.delegate = self
-                    model.start()
+                    model.start(usingMockedData: true)
                 }
             }
+    }
+    
+    func selectDevice() {
+        if let (accessory, protocolString) = model.firstSupportedAccessoryWithProtocol() {
+            // Use the supported accessory directly if it's already connected.
+            model.accessoryDidConnect(connectedAccessory: accessory, protocolString: protocolString)
+        } else {
+            // Show a picker to pair the device with a Bluetooth accessory.
+            EAAccessoryManager.shared().showBluetoothAccessoryPicker(withNameFilter: nil) { error in
+                if let error = error as? EABluetoothAccessoryPickerError,
+                   error.code != .alreadyConnected {
+                    switch error.code {
+                    case .resultNotFound:
+                        self.error = AccessoryError(detail: "The specified accessory could not be found, perhaps because it was turned off prior to connection.")
+                    case .resultCancelled:
+                        // Don't show error message when the picker is cancelled.
+                        self.error = nil
+                        return
+                    default:
+                        self.error = AccessoryError(detail: "The specified accessory could not be found, perhaps because it was turned off prior to connection.")
+                    }
+                    isShowingAlert = true
+                } else if let (accessory, protocolString) = model.firstSupportedAccessoryWithProtocol() {
+                    // Proceed with supported and connected accessory, and
+                    // ignore other accessories that aren't supported.
+                    let result = model.accessoryDidConnect(connectedAccessory: accessory, protocolString: protocolString)
+                    if !result {
+                        self.error = AccessoryError(detail: "Selecting an accessory failed for an unknown reason.")
+                        isShowingAlert = true
+                    }
+                }
+            }
+        }
+    }
+}
+
+/// An error relating to NMEA accessories.
+struct AccessoryError: Error {
+    let detail: String
+}
+
+extension View {
+    /// Shows an alert with the title "Error", the error's `details`
+    /// as the message, and an OK button.
+    /// - Parameters:
+    ///   - isPresented: A binding to a Boolean value that determines whether
+    ///   to present the alert. When the user taps one of the alert’s actions,
+    ///   the system sets this value to false and dismisses the alert.
+    ///   - error: An ``AccessoryError`` to be shown in the alert.
+    func accessoryAlert(isPresented: Binding<Bool>, presentingError error: AccessoryError?) -> some View {
+        alert("Error", isPresented: isPresented, presenting: error) { _ in
+            EmptyView()
+        } message: { error in
+            Text(error.detail)
+        }
     }
 }

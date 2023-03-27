@@ -22,25 +22,32 @@ extension DisplayDeviceLocationWithNMEADataSourcesView {
     @MainActor
     class Model: ObservableObject {
         /// A map with imagery basemap.
-        let map = Map(basemapStyle: .arcGISImagery)
+        let map = Map(basemapStyle: .arcGISNavigation)
         
+        /// The current autopan mode.
         var autoPanMode: LocationDisplay.AutoPanMode = .recenter {
             didSet {
                 locationDisplay.autoPanMode = autoPanMode
-                isRecenterButtonDisabled = autoPanMode == .recenter
+                isRecenterButtonDisabled = nmeaLocationDataSource == nil || autoPanMode == .recenter
             }
         }
         
+        /// A Boolean value specifying if the "recenter" button should be disabled.
         @Published var isRecenterButtonDisabled = true
         
+        /// A Boolean value specifying if the "reset" button should be disabled.
         @Published var isResetButtonDisabled = true
         
+        /// A Boolean value specifying if the "source" button should be disabled.
         @Published var isSourceButtonDisabled = false
         
+        /// A string containing GPS accuracy.
         @Published var accuracyStatus: String = "Accuracy info will be shown here."
         
+        /// A string containing satellite information.
         @Published var satelliteStatus: String = "Satellites info will be shown here."
         
+        /// The location display used in the map view.
         var locationDisplay = LocationDisplay()
         
         /// An NMEA location data source, to parse NMEA data.
@@ -70,6 +77,7 @@ extension DisplayDeviceLocationWithNMEADataSourcesView {
         
         init() {
             Task {
+                // Watch for changes in the location display's autopan mode.
                 for await mode in locationDisplay.$autoPanMode {
                     if autoPanMode != mode {
                         autoPanMode = mode
@@ -78,10 +86,12 @@ extension DisplayDeviceLocationWithNMEADataSourcesView {
             }
         }
         
+        /// Set the autopan mode to `.recenter`
         func recenter() {
             autoPanMode = .recenter
         }
         
+        /// Reset the sample, stopping the data source, resetting button states and status strings.
         func reset() {
             // Reset buttons states.
             isResetButtonDisabled = true
@@ -90,22 +100,17 @@ extension DisplayDeviceLocationWithNMEADataSourcesView {
             accuracyStatus = "Accuracy info will be shown here."
             satelliteStatus = "Satellites info will be shown here."
             
-            // Reset and stop the location display.
-            //            mapView.locationDisplay.autoPanModeChangedHandler = nil
-            autoPanMode = .off
-            
             Task {
                 // Stop the location display, which in turn stop the data source.
                 await nmeaLocationDataSource.stop()
                 
                 // Reset NMEA location data source.
                 nmeaLocationDataSource = nil
+                autoPanMode = .off
             }
             
             // Pause the mock data generation.
             mockNMEADataSource.stop()
-            //            // Disconnect from the mock data updates.
-            //            mockNMEADataSource.delegate = nil
         }
         
         /// Get the first connected and supported Bluetooth accessory with its
@@ -126,17 +131,19 @@ extension DisplayDeviceLocationWithNMEADataSourcesView {
         }
         
         /// The Bluetooth accessory picker connected to a supported accessory.
-        func accessoryDidConnect(connectedAccessory: EAAccessory, protocolString: String) {
+        @discardableResult
+        func accessoryDidConnect(connectedAccessory: EAAccessory, protocolString: String) -> Bool {
             if let dataSource = NMEALocationDataSource(accessory: connectedAccessory, protocol: protocolString) {
                 nmeaLocationDataSource = dataSource
-                //                nmeaLocationDataSource.locationChangeHandlerDelegate = self
                 start()
-            } else {
-                //                presentAlert(message: "NMEA location data source failed to initialize from the accessory!")
+                return true
             }
+            return false
         }
         
-        func start() {
+        /// Starts the location data source and awaits location and satellite updates.
+        /// - Parameter usingMockedData: Indicates that the location datasource should use mocked data.
+        func start(usingMockedData: Bool = false) {
             // Set NMEA location data source for location display.
             locationDisplay.dataSource = nmeaLocationDataSource
             // Set buttons states.
@@ -144,53 +151,74 @@ extension DisplayDeviceLocationWithNMEADataSourcesView {
             isResetButtonDisabled = false
             
             // Start the data source and location display.
-            mockNMEADataSource.start(with: nmeaLocationDataSource)
+            if usingMockedData {
+                mockNMEADataSource.start(with: nmeaLocationDataSource)
+            }
+            
             Task {
                 try? await nmeaLocationDataSource.start()
                 // Recenter the map and set pan mode.
                 recenter()
+            }
+            
+            Task {
+                // Watch location updates.
+                await locations()
+            }
+            
+            Task {
+                // Watch satellite updates.
+                await satellites()
+            }
+        }
+        
+        /// Starts iterating over location udpates and set the accuracy status.
+        func locations() async {
+            for await location in nmeaLocationDataSource.locations {
+                guard let nmeaLocation = location as? NMEALocation,
+                      nmeaLocationDataSource.status == .started else { return }
+                let horizontalAccuracy = Measurement(
+                    value: nmeaLocation.horizontalAccuracy,
+                    unit: UnitLength.meters
+                )
+                let verticalAccuracy = Measurement(
+                    value: nmeaLocation.verticalAccuracy,
+                    unit: UnitLength.meters
+                )
+                let accuracyText = String(
+                    format: "Accuracy - Horizontal: %@; Vertical: %@",
+                    distanceFormatter.string(from: horizontalAccuracy),
+                    distanceFormatter.string(from: verticalAccuracy)
+                )
+                accuracyStatus = accuracyText
+            }
+        }
+        
+        /// Starts iterating over satellite udpates and set the satellite status.
+        func satellites() async {
+            for await satellites in nmeaLocationDataSource.satellites {
+                guard nmeaLocationDataSource.status == .started else { return }
                 
-                for await location in nmeaLocationDataSource.locations {
-                    guard let nmeaLocation = location as? NMEALocation else { return }
-                    let horizontalAccuracy = Measurement(
-                        value: nmeaLocation.horizontalAccuracy,
-                        unit: UnitLength.meters
-                    )
-                    let verticalAccuracy = Measurement(
-                        value: nmeaLocation.verticalAccuracy,
-                        unit: UnitLength.meters
-                    )
-                    let accuracyText = String(
-                        format: "Accuracy - Horizontal: %@; Vertical: %@",
-                        distanceFormatter.string(from: horizontalAccuracy),
-                        distanceFormatter.string(from: verticalAccuracy)
-                    )
-                    accuracyStatus = accuracyText
+                // Update the satellites info status text.
+                let satelliteSystems = satellites.filter {
+                    $0.system != nil
                 }
-                
-            TODO: figure out why satellite info doesn't show up
-                for await satellites in nmeaLocationDataSource.satellites {
-                    // Update the satellites info status text.
-                    let satelliteSystems = satellites.filter {
-                        $0.system != nil
-                    }
-                    let satelliteSystemsText = ListFormatter.localizedString(
-                        byJoining: Set(satellites.map(\.system!.label)).sorted()
-                    )
-                    let idText = ListFormatter.localizedString(
-                        byJoining: satelliteSystems.map { String($0.id) }
-                    )
-                    satelliteStatus = String(
-                        format: """
+                let satelliteSystemsText = ListFormatter.localizedString(
+                    byJoining: Set(satellites.map(\.system!.label)).sorted()
+                )
+                let idText = ListFormatter.localizedString(
+                    byJoining: satelliteSystems.map { String($0.id) }
+                )
+                satelliteStatus = String(
+                    format: """
             %d satellites in view
             System(s): %@
             IDs: %@
             """,
-                        satellites.count,
-                        satelliteSystemsText,
-                        idText
-                    )
-                }
+                    satellites.count,
+                    satelliteSystemsText,
+                    idText
+                )
             }
         }
     }
@@ -214,17 +242,5 @@ private extension NMEAGNSSSystem {
         default:
             return "Unknown GNSS type"
         }
-    }
-}
-
-private extension URL {
-    /// The URL for the world elevation service.
-    static var worldElevationService: URL {
-        URL(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!
-    }
-    
-    /// The URL for the 3D buildings layer in Brest, France.
-    static var brestBuildingsLayer: URL {
-        URL(string: "https://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/Buildings_Brest/SceneServer/layers/0")!
     }
 }
