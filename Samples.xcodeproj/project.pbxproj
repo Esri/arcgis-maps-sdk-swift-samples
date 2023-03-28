@@ -582,8 +582,8 @@
 		75DD735229D3535A0010229D /* Trace utility network */ = {
 			isa = PBXGroup;
 			children = (
-				75DD735529D3535A0010229D /* TraceUtilityNetworkView.swift */,
 				75DD737229D3666E0010229D /* TraceUtilityNetworkView.Model.swift */,
+				75DD735529D3535A0010229D /* TraceUtilityNetworkView.swift */,
 			);
 			path = "Trace utility network";
 			sourceTree = "<group>";
