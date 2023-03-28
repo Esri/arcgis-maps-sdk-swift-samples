@@ -74,6 +74,8 @@
 		4D2ADC6B29C50D91003B367F /* AddDynamicEntityLayerView.SettingsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4D2ADC6829C50C4C003B367F /* AddDynamicEntityLayerView.SettingsView.swift */; };
 		75DD735929D3535A0010229D /* TraceUtilityNetworkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DD735529D3535A0010229D /* TraceUtilityNetworkView.swift */; };
 		75DD735B29D353B70010229D /* TraceUtilityNetworkView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 75DD735529D3535A0010229D /* TraceUtilityNetworkView.swift */; };
+		75DD737329D3666E0010229D /* TraceUtilityNetworkView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DD737229D3666E0010229D /* TraceUtilityNetworkView.Model.swift */; };
+		75DD737429D367030010229D /* TraceUtilityNetworkView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 75DD737229D3666E0010229D /* TraceUtilityNetworkView.Model.swift */; };
 		88F93CC129C3D59D0006B28E /* SketchOnMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F93CC029C3D59C0006B28E /* SketchOnMapView.swift */; };
 		88F93CC229C4D3480006B28E /* SketchOnMapView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 88F93CC029C3D59C0006B28E /* SketchOnMapView.swift */; };
 		E000E7602869E33D005D87C5 /* ClipGeometryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E000E75F2869E33D005D87C5 /* ClipGeometryView.swift */; };
@@ -202,6 +204,7 @@
 				0039A4FA2885C50300592C86 /* StyleGraphicsWithRendererView.swift in Copy Source Code Files */,
 				0039A4FB2885C50300592C86 /* StyleGraphicsWithSymbolsView.swift in Copy Source Code Files */,
 				75DD735B29D353B70010229D /* TraceUtilityNetworkView.swift in Copy Source Code Files */,
+				75DD737429D367030010229D /* TraceUtilityNetworkView.Model.swift in Copy Source Code Files */,
 			);
 			name = "Copy Source Code Files";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -249,6 +252,7 @@
 		4D2ADC6629C50BD6003B367F /* AddDynamicEntityLayerView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDynamicEntityLayerView.Model.swift; sourceTree = "<group>"; };
 		4D2ADC6829C50C4C003B367F /* AddDynamicEntityLayerView.SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDynamicEntityLayerView.SettingsView.swift; sourceTree = "<group>"; };
 		75DD735529D3535A0010229D /* TraceUtilityNetworkView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TraceUtilityNetworkView.swift; sourceTree = "<group>"; };
+		75DD737229D3666E0010229D /* TraceUtilityNetworkView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraceUtilityNetworkView.Model.swift; sourceTree = "<group>"; };
 		88F93CC029C3D59C0006B28E /* SketchOnMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SketchOnMapView.swift; sourceTree = "<group>"; };
 		E000E75F2869E33D005D87C5 /* ClipGeometryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipGeometryView.swift; sourceTree = "<group>"; };
 		E000E762286A0B18005D87C5 /* CutGeometryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutGeometryView.swift; sourceTree = "<group>"; };
@@ -579,6 +583,7 @@
 			isa = PBXGroup;
 			children = (
 				75DD735529D3535A0010229D /* TraceUtilityNetworkView.swift */,
+				75DD737229D3666E0010229D /* TraceUtilityNetworkView.Model.swift */,
 			);
 			path = "Trace utility network";
 			sourceTree = "<group>";
@@ -959,6 +964,7 @@
 				E004A6E928493BCE002A1FE6 /* ShowDeviceLocationView.swift in Sources */,
 				F111CCC1288B5D5600205358 /* DisplayMapFromMobileMapPackageView.swift in Sources */,
 				218F35B829C28F4A00502022 /* AuthenticateWithOAuthView.swift in Sources */,
+				75DD737329D3666E0010229D /* TraceUtilityNetworkView.Model.swift in Sources */,
 				0005580C28185C0600224BC6 /* SampleList.swift in Sources */,
 				E004A6E028466279002A1FE6 /* ShowCalloutView.swift in Sources */,
 				E000E763286A0B18005D87C5 /* CutGeometryView.swift in Sources */,
