@@ -241,7 +241,7 @@ private extension NavigateRouteView {
             
             // Updates the graphics and viewpoint.
             routeRemainingGraphic.geometry = routeGeometry
-            viewpoint = Viewpoint(boundingGeometry: routeGeometry)
+            viewpoint = Viewpoint(boundingGeometry: routeGeometry, rotation: 0)
         }
         
         /// Start monitoring multiple asynchronous streams of information.
