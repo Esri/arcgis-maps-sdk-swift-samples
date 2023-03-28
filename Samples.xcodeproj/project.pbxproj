@@ -78,6 +78,8 @@
 		75DD737429D367030010229D /* TraceUtilityNetworkView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 75DD737229D3666E0010229D /* TraceUtilityNetworkView.Model.swift */; };
 		75DD737A29D376650010229D /* TraceUtilityNetworkView.Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DD737929D376650010229D /* TraceUtilityNetworkView.Enums.swift */; };
 		75DD737B29D376AF0010229D /* TraceUtilityNetworkView.Enums.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 75DD737929D376650010229D /* TraceUtilityNetworkView.Enums.swift */; };
+		75DD737D29D380A30010229D /* TraceUtilityNetworkView.Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DD737C29D380A30010229D /* TraceUtilityNetworkView.Views.swift */; };
+		75DD737E29D380EE0010229D /* TraceUtilityNetworkView.Views.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 75DD737C29D380A30010229D /* TraceUtilityNetworkView.Views.swift */; };
 		88F93CC129C3D59D0006B28E /* SketchOnMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F93CC029C3D59C0006B28E /* SketchOnMapView.swift */; };
 		88F93CC229C4D3480006B28E /* SketchOnMapView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 88F93CC029C3D59C0006B28E /* SketchOnMapView.swift */; };
 		E000E7602869E33D005D87C5 /* ClipGeometryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E000E75F2869E33D005D87C5 /* ClipGeometryView.swift */; };
@@ -208,6 +210,7 @@
 				75DD735B29D353B70010229D /* TraceUtilityNetworkView.swift in Copy Source Code Files */,
 				75DD737B29D376AF0010229D /* TraceUtilityNetworkView.Enums.swift in Copy Source Code Files */,
 				75DD737429D367030010229D /* TraceUtilityNetworkView.Model.swift in Copy Source Code Files */,
+				75DD737E29D380EE0010229D /* TraceUtilityNetworkView.Views.swift in Copy Source Code Files */,
 			);
 			name = "Copy Source Code Files";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -257,6 +260,7 @@
 		75DD735529D3535A0010229D /* TraceUtilityNetworkView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TraceUtilityNetworkView.swift; sourceTree = "<group>"; };
 		75DD737229D3666E0010229D /* TraceUtilityNetworkView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraceUtilityNetworkView.Model.swift; sourceTree = "<group>"; };
 		75DD737929D376650010229D /* TraceUtilityNetworkView.Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraceUtilityNetworkView.Enums.swift; sourceTree = "<group>"; };
+		75DD737C29D380A30010229D /* TraceUtilityNetworkView.Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraceUtilityNetworkView.Views.swift; sourceTree = "<group>"; };
 		88F93CC029C3D59C0006B28E /* SketchOnMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SketchOnMapView.swift; sourceTree = "<group>"; };
 		E000E75F2869E33D005D87C5 /* ClipGeometryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipGeometryView.swift; sourceTree = "<group>"; };
 		E000E762286A0B18005D87C5 /* CutGeometryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutGeometryView.swift; sourceTree = "<group>"; };
@@ -589,6 +593,7 @@
 				75DD735529D3535A0010229D /* TraceUtilityNetworkView.swift */,
 				75DD737929D376650010229D /* TraceUtilityNetworkView.Enums.swift */,
 				75DD737229D3666E0010229D /* TraceUtilityNetworkView.Model.swift */,
+				75DD737C29D380A30010229D /* TraceUtilityNetworkView.Views.swift */,
 			);
 			path = "Trace utility network";
 			sourceTree = "<group>";
@@ -994,6 +999,7 @@
 				E066DD3B2860CA08004D3D5B /* ShowResultOfSpatialRelationshipsView.swift in Sources */,
 				4D2ADC5A29C4F612003B367F /* ChangeMapViewBackgroundView.swift in Sources */,
 				0044CDDF2995C39E004618CE /* ShowDeviceLocationHistoryView.swift in Sources */,
+				75DD737D29D380A30010229D /* TraceUtilityNetworkView.Views.swift in Sources */,
 				75DD735929D3535A0010229D /* TraceUtilityNetworkView.swift in Sources */,
 				E041ABC0287CA9F00056009B /* WebView.swift in Sources */,
 				E088E1572862579D00413100 /* SetSurfacePlacementModeView.swift in Sources */,
