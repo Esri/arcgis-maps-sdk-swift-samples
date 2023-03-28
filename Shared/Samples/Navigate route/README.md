@@ -1,4 +1,4 @@
-# Navigate a route
+# Navigate route
 
 Use a routing service to navigate between two points.
 
