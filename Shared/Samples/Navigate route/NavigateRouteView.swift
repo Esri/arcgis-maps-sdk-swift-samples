@@ -274,6 +274,7 @@ private extension NavigateRouteView {
                             statusText = "Intermediate stop reached, continue to next stop."
                             try? await routeTracker.switchToNextDestination()
                         } else {
+                            await locationDisplay.dataSource.stop()
                             isNavigatingRoute = false
                         }
                     }
