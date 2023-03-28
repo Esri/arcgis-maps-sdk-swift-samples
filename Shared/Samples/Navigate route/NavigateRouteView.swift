@@ -123,7 +123,7 @@ private extension NavigateRouteView {
         private var routeResult: RouteResult?
         
         /// The route tracker.
-        private var routeTracker: RouteTracker?
+        private var routeTracker: RouteTracker!
         
         /// The directions for the route.
         private var directions: [DirectionManeuver] = []
