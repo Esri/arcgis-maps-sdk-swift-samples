@@ -19,9 +19,6 @@ struct TraceUtilityNetworkView: View {
     /// The view model for the sample.
     @StateObject private var model = TraceUtilityNetworkView.Model()
     
-    /// The current tracing related activity.
-    @State private var tracingActivity: TracingActivity?
-    
     // MARK: Enums
     
     /// The types of points used during a utility network trace.
@@ -31,7 +28,7 @@ struct TraceUtilityNetworkView: View {
     }
     
     /// The different activities a user will traverse while performing a utility network trace.
-    private enum TracingActivity: Equatable {
+    enum TracingActivity: Equatable {
         case settingPoints(pointType: PointType)
         case settingType
         case tracing
@@ -47,7 +44,7 @@ struct TraceUtilityNetworkView: View {
     ///   - point: The location on the map where the element's visual indicator should be added.
     private func add(_ element: UtilityElement, at point: Geometry) {
         guard let pendingTraceParameters = model.pendingTraceParameters,
-            case .settingPoints(let pointType) = tracingActivity else { return }
+              case .settingPoints(let pointType) = model.tracingActivity else { return }
         let graphic = Graphic(
             geometry: point,
             attributes: [String(describing: PointType.self): pointType.rawValue]
@@ -118,7 +115,7 @@ struct TraceUtilityNetworkView: View {
         model.map.operationalLayers.forEach { ($0 as? FeatureLayer)?.clearSelection() }
         model.points.removeAllGraphics()
         model.pendingTraceParameters = nil
-        tracingActivity = .none
+        model.tracingActivity = .none
     }
     
     /// Performs important tasks including adding credentials, loading and adding operational layers.
@@ -164,9 +161,9 @@ struct TraceUtilityNetworkView: View {
                     layer.selectFeatures(features)
                 }
             }
-            tracingActivity = .viewingResults
+            model.tracingActivity = .viewingResults
         } catch {
-            tracingActivity = .none
+            model.tracingActivity = .none
             updateUserHint(withMessage: "An error occurred")
         }
     }
@@ -177,7 +174,7 @@ struct TraceUtilityNetworkView: View {
         if let message {
             model.hint = message
         } else {
-            switch tracingActivity {
+            switch model.tracingActivity {
             case .none:
                 model.hint = ""
             case .settingPoints(let pointType):
@@ -242,7 +239,7 @@ struct TraceUtilityNetworkView: View {
                             await setup()
                         }
                         .task(id: model.lastSingleTap?.mapPoint) {
-                            guard case .settingPoints = tracingActivity,
+                            guard case .settingPoints = model.tracingActivity,
                                   let lastSingleTap = model.lastSingleTap else {
                                 return
                             }
@@ -253,9 +250,9 @@ struct TraceUtilityNetworkView: View {
                                 add(feature, at: lastSingleTap.mapPoint)
                             }
                         }
-                        .task(id: tracingActivity) {
+                        .task(id: model.tracingActivity) {
                             updateUserHint()
-                            if tracingActivity == .tracing {
+                            if model.tracingActivity == .tracing {
                                 await trace()
                             }
                         }
@@ -271,11 +268,11 @@ struct TraceUtilityNetworkView: View {
     /// tracing activity.
     var traceManager: some View {
         HStack(spacing: 5) {
-            switch tracingActivity {
+            switch model.tracingActivity {
             case .none:
                 Button("Start a New Trace") {
                     withAnimation {
-                        tracingActivity = .settingType
+                        model.tracingActivity = .settingType
                         model.traceTypeSelectorIsOpen.toggle()
                     }
                 }
@@ -325,7 +322,7 @@ extension TraceUtilityNetworkView {
         .padding()
         .pickerStyle(.segmented)
         Button("Trace") {
-            tracingActivity = .tracing
+            model.tracingActivity = .tracing
         }
         .disabled(model.pendingTraceParameters?.startingLocations.isEmpty ?? true)
         .padding()
@@ -368,14 +365,14 @@ extension TraceUtilityNetworkView {
     private var pointType: Binding<PointType> {
         .init(
             get: {
-                guard case .settingPoints(let pointType) = tracingActivity else {
+                guard case .settingPoints(let pointType) = model.tracingActivity else {
                     return .start
                 }
                 return pointType
             },
             set: {
-                guard case .settingPoints = tracingActivity else { return }
-                tracingActivity = .settingPoints(pointType: $0)
+                guard case .settingPoints = model.tracingActivity else { return }
+                model.tracingActivity = .settingPoints(pointType: $0)
             }
         )
     }
@@ -409,7 +406,7 @@ extension TraceUtilityNetworkView {
                     startingLocations: []
                 )
                 model.pendingTraceParameters?.traceConfiguration = mediumVoltageRadial?.defaultTraceConfiguration
-                tracingActivity = .settingPoints(pointType: .start)
+                model.tracingActivity = .settingPoints(pointType: .start)
             }
         }
     }

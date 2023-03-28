@@ -48,6 +48,9 @@ extension TraceUtilityNetworkView {
         /// A Boolean value indicating if the trace type selection menu is open.
         @Published var traceTypeSelectorIsOpen = false
         
+        /// The current tracing related activity.
+        @Published var tracingActivity: TracingActivity?
+        
         /// The map contains the utility network and operational layers on which trace results will
         /// be selected.
         let map = {
