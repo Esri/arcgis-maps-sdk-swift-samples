@@ -151,10 +151,10 @@ private extension NavigateRouteView {
         }
         
         /// A graphic of the route remaining.
-        private var routeRemainingGraphic: Graphic { routeGraphicsOverlay.graphics.first! }
+        private let routeRemainingGraphic: Graphic
         
         /// A graphic of the route traversed.
-        private var routeTraversedGraphic: Graphic { routeGraphicsOverlay.graphics.last! }
+        private let routeTraversedGraphic: Graphic
         
         init() {
             autoPanMode = .off
