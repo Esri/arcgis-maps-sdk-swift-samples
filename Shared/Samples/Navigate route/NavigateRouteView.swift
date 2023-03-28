@@ -244,7 +244,7 @@ private extension NavigateRouteView {
             viewpoint = Viewpoint(boundingGeometry: routeGeometry, rotation: 0)
         }
         
-        /// Start monitoring multiple asynchronous streams of information.
+        /// Starts monitoring multiple asynchronous streams of information.
         private func startTracking() async {
             await withTaskGroup(of: Void.self) { group in
                 group.addTask { await self.trackAutoPanMode() }
