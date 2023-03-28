@@ -16,15 +16,8 @@ import ArcGIS
 import SwiftUI
 
 struct AddRasterFromFileView: View {
-    /// The model used to store the geo model and other expensive objects
-    /// used in this view.
-    private class Model: ObservableObject {
-        /// A map with imagery basemap and a raster layer.
-        let map = Map(basemapStyle: .arcGISImageryStandard)
-    }
-    
-    /// The view model for the sample.
-    @StateObject private var model = Model()
+    /// A map with imagery basemap and a raster layer.
+    @State private var map = Map(basemapStyle: .arcGISImageryStandard)
     
     /// A Boolean value indicating whether to show an alert.
     @State private var isShowingAlert = false
@@ -39,11 +32,11 @@ struct AddRasterFromFileView: View {
     
     var body: some View {
         // Creates a map view with a viewpoint to display the map.
-        MapView(map: model.map, viewpoint: viewpoint)
+        MapView(map: map, viewpoint: viewpoint)
             .onViewpointChanged(kind: .centerAndScale) { viewpoint = $0 }
             .alert(isPresented: $isShowingAlert, presentingError: error)
             .task {
-                guard model.map.operationalLayers.isEmpty else { return }
+                guard map.operationalLayers.isEmpty else { return }
                 do {
                     // Gets the Shasta.tif file URL.
                     let shastaURL = Bundle.main.url(forResource: "Shasta", withExtension: "tif", subdirectory: "raster-file/raster-file")!
@@ -53,7 +46,7 @@ struct AddRasterFromFileView: View {
                     let rasterLayer = RasterLayer(raster: raster)
                     try await rasterLayer.load()
                     // Adds the raster layer to the map's operational layer.
-                    model.map.addOperationalLayer(rasterLayer)
+                    map.addOperationalLayer(rasterLayer)
                     viewpoint = Viewpoint(center: rasterLayer.fullExtent!.center, scale: 8e4)
                 } catch {
                     // Presents an error message if the raster fails to load.

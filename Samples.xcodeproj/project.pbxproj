@@ -35,8 +35,6 @@
 		0042E24628E50EE4001F33D6 /* ShowViewshedFromPointInSceneView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 0086F3FD28E3770900974721 /* ShowViewshedFromPointInSceneView.swift */; };
 		0042E24728E50EE4001F33D6 /* ShowViewshedFromPointInSceneView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 0042E24228E4BF8F001F33D6 /* ShowViewshedFromPointInSceneView.Model.swift */; };
 		0042E24828E50EE4001F33D6 /* ShowViewshedFromPointInSceneView.ViewshedSettingsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 0042E24428E4F82B001F33D6 /* ShowViewshedFromPointInSceneView.ViewshedSettingsView.swift */; };
-		0044CDDF2995C39E004618CE /* ShowDeviceLocationHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0044CDDE2995C39E004618CE /* ShowDeviceLocationHistoryView.swift */; };
-		0044CDE02995D4DD004618CE /* ShowDeviceLocationHistoryView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 0044CDDE2995C39E004618CE /* ShowDeviceLocationHistoryView.swift */; };
 		006C835528B40682004AEB7F /* BrowseBuildingFloorsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E0FE32E628747778002C6ACA /* BrowseBuildingFloorsView.swift */; };
 		006C835628B40682004AEB7F /* DisplayMapFromMobileMapPackageView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = F111CCC0288B5D5600205358 /* DisplayMapFromMobileMapPackageView.swift */; };
 		0074ABBF28174BCF0037244A /* DisplayMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0074ABBE28174BCF0037244A /* DisplayMapView.swift */; };
@@ -57,8 +55,6 @@
 		00E5401C27F3CCA200CF66D5 /* SamplesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5400C27F3CCA100CF66D5 /* SamplesApp.swift */; };
 		00E5401E27F3CCA200CF66D5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5400D27F3CCA100CF66D5 /* ContentView.swift */; };
 		00E5402027F3CCA200CF66D5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00E5400E27F3CCA200CF66D5 /* Assets.xcassets */; };
-		7533012129C3A3CF00EF5C26 /* TraceUtilityNetworkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7533012029C3A3CF00EF5C26 /* TraceUtilityNetworkView.swift */; };
-		7533012229C3C02B00EF5C26 /* TraceUtilityNetworkView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 7533012029C3A3CF00EF5C26 /* TraceUtilityNetworkView.swift */; };
 		E000E7602869E33D005D87C5 /* ClipGeometryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E000E75F2869E33D005D87C5 /* ClipGeometryView.swift */; };
 		E000E763286A0B18005D87C5 /* CutGeometryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E000E762286A0B18005D87C5 /* CutGeometryView.swift */; };
 		E004A6C128414332002A1FE6 /* SetViewpointRotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6BD28414332002A1FE6 /* SetViewpointRotationView.swift */; };
@@ -147,7 +143,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
-				0044CDE02995D4DD004618CE /* ShowDeviceLocationHistoryView.swift in Copy Source Code Files */,
 				0042E24628E50EE4001F33D6 /* ShowViewshedFromPointInSceneView.swift in Copy Source Code Files */,
 				0042E24728E50EE4001F33D6 /* ShowViewshedFromPointInSceneView.Model.swift in Copy Source Code Files */,
 				0042E24828E50EE4001F33D6 /* ShowViewshedFromPointInSceneView.ViewshedSettingsView.swift in Copy Source Code Files */,
@@ -177,7 +172,6 @@
 				0039A4F92885C50300592C86 /* ShowResultOfSpatialOperationsView.swift in Copy Source Code Files */,
 				0039A4FA2885C50300592C86 /* StyleGraphicsWithRendererView.swift in Copy Source Code Files */,
 				0039A4FB2885C50300592C86 /* StyleGraphicsWithSymbolsView.swift in Copy Source Code Files */,
-				7533012229C3C02B00EF5C26 /* TraceUtilityNetworkView.swift in Copy Source Code Files */,
 			);
 			name = "Copy Source Code Files";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -193,7 +187,6 @@
 		003D7C352821EBCC009DDFD2 /* GenerateSampleViewSourceCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateSampleViewSourceCode.swift; sourceTree = "<group>"; };
 		0042E24228E4BF8F001F33D6 /* ShowViewshedFromPointInSceneView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowViewshedFromPointInSceneView.Model.swift; sourceTree = "<group>"; };
 		0042E24428E4F82B001F33D6 /* ShowViewshedFromPointInSceneView.ViewshedSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowViewshedFromPointInSceneView.ViewshedSettingsView.swift; sourceTree = "<group>"; };
-		0044CDDE2995C39E004618CE /* ShowDeviceLocationHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowDeviceLocationHistoryView.swift; sourceTree = "<group>"; };
 		0074ABBE28174BCF0037244A /* DisplayMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayMapView.swift; sourceTree = "<group>"; };
 		0074ABC128174F430037244A /* Sample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sample.swift; sourceTree = "<group>"; };
 		0074ABCA2817B8DB0037244A /* SamplesApp+Samples.swift.tache */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "SamplesApp+Samples.swift.tache"; sourceTree = "<group>"; };
@@ -215,7 +208,6 @@
 		00E5400E27F3CCA200CF66D5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		00E5401327F3CCA200CF66D5 /* Samples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Samples.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E5402A27F775EA00CF66D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		7533012029C3A3CF00EF5C26 /* TraceUtilityNetworkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraceUtilityNetworkView.swift; sourceTree = "<group>"; };
 		E000E75F2869E33D005D87C5 /* ClipGeometryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipGeometryView.swift; sourceTree = "<group>"; };
 		E000E762286A0B18005D87C5 /* CutGeometryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutGeometryView.swift; sourceTree = "<group>"; };
 		E004A6BD28414332002A1FE6 /* SetViewpointRotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetViewpointRotationView.swift; sourceTree = "<group>"; };
@@ -292,14 +284,6 @@
 			path = Scripts;
 			sourceTree = "<group>";
 		};
-		0044CDD72995C352004618CE /* Show device location history */ = {
-			isa = PBXGroup;
-			children = (
-				0044CDDE2995C39E004618CE /* ShowDeviceLocationHistoryView.swift */,
-			);
-			path = "Show device location history";
-			sourceTree = "<group>";
-		};
 		0074ABAF281742420037244A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
@@ -336,13 +320,11 @@
 				E004A6B928414332002A1FE6 /* Set viewpoint rotation */,
 				E004A6DE2846626A002A1FE6 /* Show callout */,
 				E004A6E728493BBB002A1FE6 /* Show device location */,
-				0044CDD72995C352004618CE /* Show device location history */,
 				E004A6F1284E4F80002A1FE6 /* Show result of spatial operations */,
 				E066DD392860C9EE004D3D5B /* Show result of spatial relationships */,
 				0086F3FC28E3770900974721 /* Show viewshed from point in scene */,
 				E066DD362860AB0B004D3D5B /* Style graphics with renderer */,
 				E004A6E42846A609002A1FE6 /* Style graphics with symbols */,
-				7533011F29C3A38400EF5C26 /* Trace utility network */,
 			);
 			path = Samples;
 			sourceTree = "<group>";
@@ -489,14 +471,6 @@
 				00E5401327F3CCA200CF66D5 /* Samples.app */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		7533011F29C3A38400EF5C26 /* Trace utility network */ = {
-			isa = PBXGroup;
-			children = (
-				7533012029C3A3CF00EF5C26 /* TraceUtilityNetworkView.swift */,
-			);
-			path = "Trace utility network";
 			sourceTree = "<group>";
 		};
 		E000E75E2869E325005D87C5 /* Clip geometry */ = {
@@ -880,11 +854,9 @@
 				0005580A2817C51E00224BC6 /* SampleDetailView.swift in Sources */,
 				0074ABCD2817BCC30037244A /* SamplesApp+Samples.swift.tache in Sources */,
 				E004A6F3284E4FEB002A1FE6 /* ShowResultOfSpatialOperationsView.swift in Sources */,
-				7533012129C3A3CF00EF5C26 /* TraceUtilityNetworkView.swift in Sources */,
 				F1E71BF1289473760064C33F /* AddRasterFromFileView.swift in Sources */,
 				00B04273282EC59E0072E1B4 /* AboutView.swift in Sources */,
 				E066DD3B2860CA08004D3D5B /* ShowResultOfSpatialRelationshipsView.swift in Sources */,
-				0044CDDF2995C39E004618CE /* ShowDeviceLocationHistoryView.swift in Sources */,
 				E041ABC0287CA9F00056009B /* WebView.swift in Sources */,
 				E088E1572862579D00413100 /* SetSurfacePlacementModeView.swift in Sources */,
 				E004A6C128414332002A1FE6 /* SetViewpointRotationView.swift in Sources */,

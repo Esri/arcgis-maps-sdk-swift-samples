@@ -17,8 +17,18 @@ import ArcGIS
 import ArcGISToolkit
 
 struct DisplayOverviewMapView: View {
-    /// The view model for the sample.
-    @StateObject private var model = Model()
+    /// A map with imagery basemap and a tourist attraction feature layer.
+    @State private var map: Map = {
+        let featureLayer = FeatureLayer(
+            item: PortalItem(
+                portal: .arcGISOnline(connection: .anonymous),
+                id: .northAmericaTouristAttractions
+            )
+        )
+        let map = Map(basemapStyle: .arcGISTopographic)
+        map.addOperationalLayer(featureLayer)
+        return map
+    }()
     
     /// The current viewpoint of the map view.
     @State private var viewpoint = Viewpoint(
@@ -30,7 +40,7 @@ struct DisplayOverviewMapView: View {
     @State private var visibleArea: ArcGIS.Polygon?
     
     var body: some View {
-        MapView(map: model.map, viewpoint: viewpoint)
+        MapView(map: map, viewpoint: viewpoint)
             .onViewpointChanged(kind: .centerAndScale) { viewpoint = $0 }
             .onVisibleAreaChanged { visibleArea = $0 }
             .overlay(alignment: .topTrailing) {
@@ -41,25 +51,6 @@ struct DisplayOverviewMapView: View {
                 .frame(width: 200, height: 132)
                 .padding()
             }
-    }
-}
-
-private extension DisplayOverviewMapView {
-    /// The model used to store the geo model and other expensive objects
-    /// used in this view.
-    class Model: ObservableObject {
-        /// A map with imagery basemap and a tourist attraction feature layer.
-        let map: Map = {
-            let featureLayer = FeatureLayer(
-                item: PortalItem(
-                    portal: .arcGISOnline(connection: .anonymous),
-                    id: .northAmericaTouristAttractions
-                )
-            )
-            let map = Map(basemapStyle: .arcGISTopographic)
-            map.addOperationalLayer(featureLayer)
-            return map
-        }()
     }
 }
 

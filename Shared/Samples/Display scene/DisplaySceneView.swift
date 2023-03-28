@@ -16,50 +16,43 @@ import SwiftUI
 import ArcGIS
 
 struct DisplaySceneView: View {
-    /// The model used to store the geo model and other expensive objects
-    /// used in this view.
-    private class Model: ObservableObject {
-        /// A scene with imagery basemap style and a tiled elevation source.
-        let scene: ArcGIS.Scene = {
-            // Creates a scene.
-            let scene = Scene(basemapStyle: .arcGISImageryStandard)
-            
-            // Sets the initial viewpoint of the scene.
-            scene.initialViewpoint = Viewpoint(
+    /// A scene with imagery basemap style and a tiled elevation source.
+    @State private var scene: ArcGIS.Scene = {
+        // Creates a scene.
+        let scene = Scene(basemapStyle: .arcGISImageryStandard)
+        
+        // Sets the initial viewpoint of the scene.
+        scene.initialViewpoint = Viewpoint(
+            latitude: .nan,
+            longitude: .nan,
+            scale: .nan,
+            camera: Camera(
                 latitude: 45.74,
                 longitude: 6.88,
-                scale: 4_500,
-                camera: Camera(
-                    latitude: 45.74,
-                    longitude: 6.88,
-                    altitude: 4500,
-                    heading: 10,
-                    pitch: 70,
-                    roll: 0
-                )
+                altitude: 4500,
+                heading: 10,
+                pitch: 70,
+                roll: 0
             )
-            
-            // Creates a surface.
-            let surface = Surface()
-            
-            // Creates a tiled elevation source.
-            let worldElevationServiceURL = URL(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!
-            let elevationSource = ArcGISTiledElevationSource(url: worldElevationServiceURL)
-            
-            // Adds the elevation source to the surface.
-            surface.addElevationSource(elevationSource)
-            
-            // Sets the surface to the scene's base surface.
-            scene.baseSurface = surface
-            return scene
-        }()
-    }
-    
-    /// The view model for the sample.
-    @StateObject private var model = Model()
+        )
+        
+        // Creates a surface.
+        let surface = Surface()
+        
+        // Creates a tiled elevation source.
+        let worldElevationServiceURL = URL(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!
+        let elevationSource = ArcGISTiledElevationSource(url: worldElevationServiceURL)
+        
+        // Adds the elevation source to the surface.
+        surface.addElevationSource(elevationSource)
+        
+        // Sets the surface to the scene's base surface.
+        scene.baseSurface = surface
+        return scene
+    }()
     
     var body: some View {
         // Creates a scene view with the scene.
-        SceneView(scene: model.scene)
+        SceneView(scene: scene)
     }
 }
