@@ -203,25 +203,19 @@ extension TraceUtilityNetworkView {
         ///
         /// Note that elements are grouped by network source prior to selection so that all selections
         /// per operational layer can be made at once.
-        func trace() async {
+        func trace() async throws {
             guard let pendingTraceParameters = pendingTraceParameters else { return }
-            do {
-                let traceResults = try await network?.trace(using: pendingTraceParameters)
-                    .filter { $0 is UtilityElementTraceResult }
-                for result in traceResults as? [UtilityElementTraceResult] ?? [] {
-                    let groups = Dictionary(grouping: result.elements) { $0.networkSource.name }
-                    for (networkName, elements) in groups {
-                        guard let layer = map.operationalLayers.first(
-                            where: { ($0 as? FeatureLayer)?.featureTable?.tableName == networkName }
-                        ) as? FeatureLayer else { continue }
-                        let features = try await network?.features(for: elements) ?? []
-                        layer.selectFeatures(features)
-                    }
+            let traceResults = try await network?.trace(using: pendingTraceParameters)
+                .filter { $0 is UtilityElementTraceResult }
+            for result in traceResults as? [UtilityElementTraceResult] ?? [] {
+                let groups = Dictionary(grouping: result.elements) { $0.networkSource.name }
+                for (networkName, elements) in groups {
+                    guard let layer = map.operationalLayers.first(
+                        where: { ($0 as? FeatureLayer)?.featureTable?.tableName == networkName }
+                    ) as? FeatureLayer else { continue }
+                    let features = try await network?.features(for: elements) ?? []
+                    layer.selectFeatures(features)
                 }
-                tracingActivity = .viewingResults
-            } catch {
-                tracingActivity = .none
-                updateUserHint(withMessage: "An error occurred")
             }
         }
         
