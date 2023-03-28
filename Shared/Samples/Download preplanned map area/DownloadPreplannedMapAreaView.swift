@@ -17,7 +17,7 @@ import SwiftUI
 
 struct DownloadPreplannedMapAreaView: View {
     /// A Boolean value indicating whether to select a map.
-    @State private var isSelectingMap = false
+    @State private var isShowingSelectMapView = false
     
     /// A Boolean value indicating whether to show delete alert.
     @State private var isShowingDeleteAlert = false
@@ -35,9 +35,9 @@ struct DownloadPreplannedMapAreaView: View {
                     Spacer()
                     
                     Button("Select Map") {
-                        isSelectingMap.toggle()
+                        isShowingSelectMapView.toggle()
                     }
-                    .sheet(isPresented: $isSelectingMap, detents: [.medium]) {
+                    .sheet(isPresented: $isShowingSelectMapView, detents: [.medium]) {
                         MapPicker()
                             .environmentObject(model)
                     }
