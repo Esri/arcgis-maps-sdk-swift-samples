@@ -16,7 +16,7 @@ import ArcGIS
 import AVFoundation
 import SwiftUI
 
-struct NavigateARouteView: View {
+struct NavigateRouteView: View {
     /// The view model for this sample.
     @StateObject private var model = Model()
     
