@@ -20,6 +20,11 @@ extension TraceUtilityNetworkView {
     class Model: ObservableObject {
         // MARK: Properties
         
+        /// The domain network for this sample.
+        private var electricDistribution: UtilityDomainNetwork? {
+            network?.definition?.domainNetwork(named: "ElectricDistribution")
+        }
+        
         /// The URLs of the relevant feature layers for this sample.
         ///
         /// The feature layers allow us to modify the visual rendering style of different elements in
@@ -53,6 +58,11 @@ extension TraceUtilityNetworkView {
             map.basemap = Basemap(style: .arcGISStreetsNight)
             return map
         }()
+        
+        /// The utility tier for this sample.
+        private var mediumVoltageRadial: UtilityTier? {
+            electricDistribution?.tier(named: "Medium Voltage Radial")
+        }
         
         /// The utility network for this sample.
         var network: UtilityNetwork? {
@@ -165,6 +175,17 @@ extension TraceUtilityNetworkView {
                 return nil
             }
             return feature
+        }
+        
+        /// Makes new utility trace parameters with the provided trace type.
+        /// - Parameter type: The trace type.
+        func makeTraceParameters(withTraceType type: UtilityTraceParameters.TraceType) {
+            pendingTraceParameters = UtilityTraceParameters(
+                traceType: type,
+                startingLocations: []
+            )
+            pendingTraceParameters?.traceConfiguration = mediumVoltageRadial?.defaultTraceConfiguration
+            tracingActivity = .settingPoints(pointType: .start)
         }
         
         /// Resets all of the important stateful values for when a trace is cancelled or completed.

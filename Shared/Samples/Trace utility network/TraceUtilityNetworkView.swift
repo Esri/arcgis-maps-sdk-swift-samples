@@ -145,16 +145,6 @@ extension TraceUtilityNetworkView {
         .padding()
     }
     
-    /// The domain network for this sample.
-    private var electricDistribution: UtilityDomainNetwork? {
-        model.network?.definition?.domainNetwork(named: "ElectricDistribution")
-    }
-    
-    /// The utility tier for this sample.
-    private var mediumVoltageRadial: UtilityTier? {
-        electricDistribution?.tier(named: "Medium Voltage Radial")
-    }
-    
     /// Determines whether the user is setting starting points or barriers.
     ///
     /// - Note: This should only be used when the user is setting starting points or barriers. If
@@ -198,12 +188,7 @@ extension TraceUtilityNetworkView {
     private var traceTypePickerButtons: some View {
         ForEach(supportedTraceTypes, id: \.self) { type in
             Button(type.displayName) {
-                model.pendingTraceParameters = UtilityTraceParameters(
-                    traceType: type,
-                    startingLocations: []
-                )
-                model.pendingTraceParameters?.traceConfiguration = mediumVoltageRadial?.defaultTraceConfiguration
-                model.tracingActivity = .settingPoints(pointType: .start)
+                model.makeTraceParameters(withTraceType: type)
             }
         }
     }
