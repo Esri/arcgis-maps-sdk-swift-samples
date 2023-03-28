@@ -253,7 +253,7 @@ private extension NavigateRouteView {
             }
         }
         
-        /// Monitor the asynchronous stream of tracking statuses.
+        /// Monitors the asynchronous stream of tracking statuses.
         ///
         /// When new statuses are delivered, update the route's traversed and remaining graphics.
         private func trackStatus() async {
