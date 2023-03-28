@@ -50,16 +50,12 @@ struct ChangeViewpointView: View {
                     .task(id: viewpointType) {
                         switch viewpointType {
                         case .centerAndScale:
-                            do {
-                                try await mapViewProxy.setViewpointCenter(model.londonEast, scale: 4e4)
-                            } catch {}
+                            _ = try? await mapViewProxy.setViewpointCenter(model.londonEast, scale: 4e4)
                         case .geometry:
-                            do {
-                                try await mapViewProxy.setViewpointGeometry(
-                                    model.griffithParkGeometry,
-                                    padding: 50
-                                )
-                            } catch {}
+                            _ = try? await mapViewProxy.setViewpointGeometry(
+                                model.griffithParkGeometry,
+                                padding: 50
+                            )
                         case .animate:
                             do {
                                 if let center = visibleArea?.extent.center {
