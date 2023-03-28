@@ -16,18 +16,11 @@ import SwiftUI
 import ArcGIS
 
 struct DisplayMapView: View {
-    /// The model used to store the geo model and other expensive objects
-    /// used in this view.
-    private class Model: ObservableObject {
-        /// A map with imagery basemap.
-        let map = Map(basemapStyle: .arcGISImagery)
-    }
-    
-    /// The view model for the sample.
-    @StateObject private var model = Model()
+    /// A map with imagery basemap.
+    @State private var map = Map(basemapStyle: .arcGISImagery)
     
     var body: some View {
         // Creates a map view to display the map.
-        MapView(map: model.map)
+        MapView(map: map)
     }
 }

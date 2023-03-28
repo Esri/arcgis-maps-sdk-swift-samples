@@ -1,0 +1,27 @@
+{
+    "category": "Display information",
+    "description": "Show a predefined popup from a web map.",
+    "ignore": false,
+    "images": [
+        "show-popup.png"
+    ],
+    "keywords": [
+        "feature",
+        "feature layer",
+        "popup",
+        "web map",
+        "IdentifyLayerResult",
+        "Map",
+        "PopupView"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "IdentifyLayerResult",
+        "Map",
+        "PopupView"
+    ],
+    "snippets": [
+        "ShowPopupView.swift"
+    ],
+    "title": "Show popup"
+}

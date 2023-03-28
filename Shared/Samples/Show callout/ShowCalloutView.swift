@@ -16,15 +16,8 @@ import SwiftUI
 import ArcGIS
 
 struct ShowCalloutView: View {
-    /// The model used to store the geo model and other expensive objects
-    /// used in this view.
-    private class Model: ObservableObject {
-        /// A map with a topographic basemap style.
-        let map = Map(basemapStyle: .arcGISTopographic)
-    }
-    
-    /// The view model for the sample.
-    @StateObject private var model = Model()
+    /// A map with a topographic basemap style.
+    @State private var map = Map(basemapStyle: .arcGISTopographic)
     
     /// A location callout placement.
     @State private var calloutPlacement: CalloutPlacement?
@@ -33,7 +26,7 @@ struct ShowCalloutView: View {
     @State private var tapLocation: Point!
     
     var body: some View {
-        MapView(map: model.map)
+        MapView(map: map)
             .onSingleTapGesture { _, mapPoint in
                 tapLocation = mapPoint
                 if calloutPlacement == nil {
