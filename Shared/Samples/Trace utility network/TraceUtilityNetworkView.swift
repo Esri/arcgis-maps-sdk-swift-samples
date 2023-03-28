@@ -80,16 +80,15 @@ struct TraceUtilityNetworkView: View {
                         }
                     }
                 }
-                traceManager
+                traceMenu
                     .frame(width: geometryProxy.size.width)
                     .background(.thinMaterial)
             }
         }
     }
     
-    /// The view at the bottom of the screen that guides the user through the various stages of a
-    /// tracing activity.
-    var traceManager: some View {
+    /// The menu at the bottom of the screen that guides the user through running a trace.
+    var traceMenu: some View {
         HStack(spacing: 5) {
             switch model.tracingActivity {
             case .none:
