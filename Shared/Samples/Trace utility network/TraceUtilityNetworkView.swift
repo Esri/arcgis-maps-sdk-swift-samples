@@ -83,7 +83,7 @@ struct TraceUtilityNetworkView: View {
             case .junction:
                 add(element, at: geometry)
                 if element.assetType.terminalConfiguration?.terminals.count ?? .zero > 1 {
-                    model.terminalSelectionIsOpen.toggle()
+                    model.terminalSelectorIsOpen.toggle()
                 }
             case .edge:
                 if let line = GeometryEngine.makeGeometry(from: geometry, z: nil) as? Polyline {
@@ -227,7 +227,7 @@ struct TraceUtilityNetworkView: View {
                         )
                         .confirmationDialog(
                             "Select terminal",
-                            isPresented: $model.terminalSelectionIsOpen,
+                            isPresented: $model.terminalSelectorIsOpen,
                             titleVisibility: .visible,
                             actions: { terminalPickerButtons }
                         )

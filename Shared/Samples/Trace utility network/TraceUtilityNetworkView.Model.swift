@@ -43,7 +43,7 @@ extension TraceUtilityNetworkView {
         ///
         /// When a utility element has more than one terminal, the user is presented with a menu of the
         /// available terminal names.
-        @Published var terminalSelectionIsOpen = false
+        @Published var terminalSelectorIsOpen = false
         
         /// The map contains the utility network and operational layers on which trace results will
         /// be selected.
