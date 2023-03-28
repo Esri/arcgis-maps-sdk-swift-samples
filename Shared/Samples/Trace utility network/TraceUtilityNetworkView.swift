@@ -16,9 +16,6 @@ import ArcGIS
 import SwiftUI
 
 struct TraceUtilityNetworkView: View {
-    /// The textual hint shown to the user.
-    @State var hint: String?
-    
     /// The last element that was added to either the list of starting points or barriers.
     ///
     /// When an element contains more than one terminal, the user should be presented with the
@@ -151,7 +148,7 @@ struct TraceUtilityNetworkView: View {
             try await ArcGISEnvironment.authenticationManager.arcGISCredentialStore.add(.publicSample)
             try await network?.load()
         } catch {
-            hint = "An error occurred while loading the network."
+            model.hint = "An error occurred while loading the network."
             return
         }
         featureLayerURLs.forEach { url in
@@ -199,24 +196,24 @@ struct TraceUtilityNetworkView: View {
     /// - Parameter message: The message to display to the user.
     private func updateUserHint(withMessage message: String? = nil) {
         if let message {
-            hint = message
+            model.hint = message
         } else {
             switch tracingActivity {
             case .none:
-                hint = ""
+                model.hint = ""
             case .settingPoints(let pointType):
                 switch pointType {
                 case .start:
-                    hint = "Tap on the map to add a Start Location."
+                    model.hint = "Tap on the map to add a Start Location."
                 case .barrier:
-                    hint = "Tap on the map to add a Barrier."
+                    model.hint = "Tap on the map to add a Barrier."
                 }
             case .settingType:
-                hint = "Choose the trace type"
+                model.hint = "Choose the trace type"
             case .tracing:
-                hint = "Tracing..."
+                model.hint = "Tracing..."
             case .viewingResults:
-                hint = "Trace completed."
+                model.hint = "Trace completed."
             }
         }
     }
@@ -226,7 +223,7 @@ struct TraceUtilityNetworkView: View {
     var body: some View {
         GeometryReader { geometryProxy in
             VStack(spacing: .zero) {
-                if let hint {
+                if let hint = model.hint {
                     Text(hint)
                         .padding([.bottom])
                 }

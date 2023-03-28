@@ -18,6 +18,9 @@ import Foundation
 extension TraceUtilityNetworkView {
     /// The model used to manage the state of the trace view.
     class Model: ObservableObject {
+        /// The textual hint shown to the user.
+        @Published var hint: String?
+        
         /// The parameters for the pending trace.
         ///
         /// Important trace information like the trace type, starting points, and barriers is contained
