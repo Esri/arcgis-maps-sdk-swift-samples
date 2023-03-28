@@ -58,7 +58,7 @@ extension DownloadPreplannedMapAreaView {
         @Published private(set) var canRemoveDownloadedMaps = false
         
         init() {
-            // Create temp dsirectory.
+            // Create temp directory.
             temporaryDirectory = FileManager.createTemporaryDirectory()
             
             // Initializes the online map and offline map task.
