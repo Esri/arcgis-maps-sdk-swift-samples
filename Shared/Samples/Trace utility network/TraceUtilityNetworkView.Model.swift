@@ -21,10 +21,17 @@ extension TraceUtilityNetworkView {
         /// The textual hint shown to the user.
         @Published var hint: String?
         
+        /// The last element that was added to either the list of starting points or barriers.
+        ///
+        /// When an element contains more than one terminal, the user should be presented with the
+        /// option to select a terminal. Keeping a reference to the last added element provides ease
+        /// of access to save the user's choice.
+        @Published var lastAddedElement: UtilityElement?
+        
         /// The parameters for the pending trace.
         ///
-        /// Important trace information like the trace type, starting points, and barriers is contained
-        /// within this value.
+        /// Important trace information like the trace type, starting points, and barriers is
+        /// contained within this value.
         @Published var pendingTraceParameters: UtilityTraceParameters?
         
         /// The map contains the utility network and operational layers on which trace results will

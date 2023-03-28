@@ -16,13 +16,6 @@ import ArcGIS
 import SwiftUI
 
 struct TraceUtilityNetworkView: View {
-    /// The last element that was added to either the list of starting points or barriers.
-    ///
-    /// When an element contains more than one terminal, the user should be presented with the
-    /// option to select a terminal. Keeping a reference to the last added element provides ease of
-    /// access to save the user's choice.
-    @State private var lastAddedElement: UtilityElement?
-    
     /// The last locations in the screen and map where a tap occurred.
     ///
     /// Monitoring these values allows for an asynchronous identification task when they change.
@@ -80,7 +73,7 @@ struct TraceUtilityNetworkView: View {
             pendingTraceParameters.addStartingLocation(element)
         }
         model.points.addGraphic(graphic)
-        lastAddedElement = element
+        model.lastAddedElement = element
     }
     
     /// Adds a provided feature to the pending trace.
@@ -408,9 +401,9 @@ extension TraceUtilityNetworkView {
     /// Buttons for each the available terminals on the last added utility element.
     @ViewBuilder
     private var terminalPickerButtons: some View {
-        ForEach(lastAddedElement?.assetType.terminalConfiguration?.terminals ?? []) { terminal in
+        ForEach(model.lastAddedElement?.assetType.terminalConfiguration?.terminals ?? []) { terminal in
             Button(terminal.name) {
-                lastAddedElement?.terminal = terminal
+                model.lastAddedElement?.terminal = terminal
                 updateUserHint(withMessage: "terminal: \(terminal.name)")
             }
         }
