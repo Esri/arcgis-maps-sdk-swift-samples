@@ -31,14 +31,6 @@ struct TraceUtilityNetworkView: View {
     /// Monitoring these values allows for an asynchronous identification task when they change.
     @State private var lastSingleTap: (screenPoint: CGPoint, mapPoint: Point)?
     
-    /// The map contains the utility network and operational layers on which trace results will be
-    /// selected.
-    @State private var map = {
-        let map = Map(item: PortalItem.napervilleElectricalNetwork)
-        map.basemap = Basemap(style: .arcGISStreetsNight)
-        return map
-    }()
-    
     /// The view model for the sample.
     @StateObject private var model = TraceUtilityNetworkView.Model()
     
@@ -168,7 +160,7 @@ struct TraceUtilityNetworkView: View {
     
     /// Resets all of the important stateful values for when a trace is cancelled or completed.
     private func reset() {
-        map.operationalLayers.forEach { ($0 as? FeatureLayer)?.clearSelection() }
+        model.map.operationalLayers.forEach { ($0 as? FeatureLayer)?.clearSelection() }
         points.removeAllGraphics()
         pendingTraceParameters = nil
         tracingActivity = .none
@@ -193,7 +185,7 @@ struct TraceUtilityNetworkView: View {
                     defaultSymbol: SimpleLineSymbol()
                 )
             }
-            map.addOperationalLayer(layer)
+            model.map.addOperationalLayer(layer)
         }
     }
     
@@ -210,7 +202,7 @@ struct TraceUtilityNetworkView: View {
             for result in traceResults as? [UtilityElementTraceResult] ?? [] {
                 let groups = Dictionary(grouping: result.elements) { $0.networkSource.name }
                 for (networkName, elements) in groups {
-                    guard let layer = self.map.operationalLayers.first(
+                    guard let layer = self.model.map.operationalLayers.first(
                         where: { ($0 as? FeatureLayer)?.featureTable?.tableName == networkName }
                     ) as? FeatureLayer else { continue }
                     let features = try await network?.features(for: elements) ?? []
@@ -260,7 +252,7 @@ struct TraceUtilityNetworkView: View {
                         .padding([.bottom])
                 }
                 MapViewReader { mapViewProxy in
-                    MapView(map: map, viewpoint: .initialViewpoint, graphicsOverlays: [points])
+                    MapView(map: model.map, viewpoint: .initialViewpoint, graphicsOverlays: [points])
                         .onSingleTapGesture { screenPoint, mapPoint in
                             lastSingleTap = (screenPoint, mapPoint)
                         }
@@ -359,16 +351,6 @@ private extension ArcGISCredential {
     }
 }
 
-private extension PortalItem {
-    /// A portal item for the electrical network in this sample.
-    static var napervilleElectricalNetwork: PortalItem {
-        .init(
-            portal: .arcGISOnline(connection: .authenticated),
-            id: .init("471eb0bf37074b1fbb972b1da70fb310")!
-        )
-    }
-}
-
 private extension SimpleMarkerSymbol {
     /// The symbol for barrier elements.
     static var barrier: SimpleMarkerSymbol {
@@ -426,7 +408,7 @@ extension TraceUtilityNetworkView {
     
     /// The utility network for this sample.
     private var network: UtilityNetwork? {
-        map.utilityNetworks.first
+        model.map.utilityNetworks.first
     }
     
     /// Determines whether the user is setting starting points or barriers.
