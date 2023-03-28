@@ -64,13 +64,10 @@ struct NavigateRouteView: View {
                 Spacer()
                 
                 Button("Reset") {
-                    model.isResettingRoute = true
-                }
-                .task(id: model.isResettingRoute) {
-                    guard model.isResettingRoute else { return }
-                    await model.resetNavigation()
-                    model.isNavigatingRoute = false
-                    model.isResettingRoute = false
+                    Task {
+                        await model.resetNavigation()
+                        model.isNavigatingRoute = false
+                    }
                 }
                 .disabled(model.isResettingRoute)
             }
@@ -278,9 +275,6 @@ private extension NavigateRouteView {
                             try? await routeTracker.switchToNextDestination()
                         } else {
                             isNavigatingRoute = false
-                            isResettingRoute = true
-                            await resetNavigation()
-                            isResettingRoute = false
                         }
                     }
                 }
@@ -320,11 +314,14 @@ private extension NavigateRouteView {
         }
         
         func resetNavigation() async {
+            guard !isResettingRoute else { return }
+            isResettingRoute = true
             locationDisplay.autoPanMode = .off
             await locationDisplay.dataSource.stop()
             setNavigation()
             speechSynthesizer.stopSpeaking(at: .immediate)
             statusText = Self.defaultStatus
+            isResettingRoute = false
         }
     }
     
