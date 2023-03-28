@@ -52,8 +52,8 @@
         "UtilityTraversability"
     ],
     "snippets": [
-        "TraceUtilityNetworkView.Model.swift",
-        "TraceUtilityNetworkView.swift"
+        "TraceUtilityNetworkView.swift",
+        "TraceUtilityNetworkView.Model.swift"
     ],
     "title": "Trace utility network"
 }
