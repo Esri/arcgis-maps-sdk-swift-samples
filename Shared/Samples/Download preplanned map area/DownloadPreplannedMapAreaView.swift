@@ -16,9 +16,6 @@ import ArcGIS
 import SwiftUI
 
 struct DownloadPreplannedMapAreaView: View {
-    /// A Boolean value indicating whether the sample info view is visible.
-    @Environment(\.isSampleInfoViewVisible) private var isSampleInfoViewVisible
-    
     /// A Boolean value indicating whether to select a map.
     @State private var isSelectingMap = false
     
