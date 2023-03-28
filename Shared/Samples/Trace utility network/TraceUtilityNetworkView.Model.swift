@@ -28,6 +28,11 @@ extension TraceUtilityNetworkView {
         /// of access to save the user's choice.
         @Published var lastAddedElement: UtilityElement?
         
+        /// The last locations in the screen and map where a tap occurred.
+        ///
+        /// Monitoring these values allows for an asynchronous identification task when they change.
+        @Published var lastSingleTap: (screenPoint: CGPoint, mapPoint: Point)?
+        
         /// The parameters for the pending trace.
         ///
         /// Important trace information like the trace type, starting points, and barriers is

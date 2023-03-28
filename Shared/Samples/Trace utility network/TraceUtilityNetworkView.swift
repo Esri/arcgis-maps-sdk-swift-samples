@@ -16,11 +16,6 @@ import ArcGIS
 import SwiftUI
 
 struct TraceUtilityNetworkView: View {
-    /// The last locations in the screen and map where a tap occurred.
-    ///
-    /// Monitoring these values allows for an asynchronous identification task when they change.
-    @State private var lastSingleTap: (screenPoint: CGPoint, mapPoint: Point)?
-    
     /// The view model for the sample.
     @StateObject private var model = TraceUtilityNetworkView.Model()
     
@@ -227,7 +222,7 @@ struct TraceUtilityNetworkView: View {
                         graphicsOverlays: [model.points]
                     )
                         .onSingleTapGesture { screenPoint, mapPoint in
-                            lastSingleTap = (screenPoint, mapPoint)
+                            model.lastSingleTap = (screenPoint, mapPoint)
                         }
                         .selectionColor(.yellow)
                         .confirmationDialog(
@@ -255,8 +250,9 @@ struct TraceUtilityNetworkView: View {
                         .task {
                             await setup()
                         }
-                        .task(id: lastSingleTap?.mapPoint) {
-                            guard case .settingPoints = tracingActivity, let lastSingleTap else {
+                        .task(id: model.lastSingleTap?.mapPoint) {
+                            guard case .settingPoints = tracingActivity,
+                                  let lastSingleTap = model.lastSingleTap else {
                                 return
                             }
                             if let feature = await identifyFeatureAt(
