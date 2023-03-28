@@ -19,167 +19,6 @@ struct TraceUtilityNetworkView: View {
     /// The view model for the sample.
     @StateObject private var model = TraceUtilityNetworkView.Model()
     
-    // MARK: Methods
-    
-    /// Adds the provided utility element to the parameters of the pending trace and a corresponding
-    /// starting location or barrier graphic to the map.
-    /// - Parameters:
-    ///   - element: The utility element to be added to the pending trace.
-    ///   - point: The location on the map where the element's visual indicator should be added.
-    private func add(_ element: UtilityElement, at point: Geometry) {
-        guard let pendingTraceParameters = model.pendingTraceParameters,
-              case .settingPoints(let pointType) = model.tracingActivity else { return }
-        let graphic = Graphic(
-            geometry: point,
-            attributes: [String(describing: PointType.self): pointType.rawValue]
-        )
-        switch pointType {
-        case.barrier:
-            pendingTraceParameters.addBarrier(element)
-        case .start:
-            pendingTraceParameters.addStartingLocation(element)
-        }
-        model.points.addGraphic(graphic)
-        model.lastAddedElement = element
-    }
-    
-    /// Adds a provided feature to the pending trace.
-    ///
-    /// For junction features with more than one terminal, the user should be prompted to pick a
-    /// terminal. For edge features, the fractional point along the feature's edge should be
-    /// computed.
-    /// - Parameters:
-    ///   - feature: The feature to be added to the pending trace.
-    ///   - mapPoint: The location on the map where the feature was discovered. If the feature is a
-    ///   junction type, the feature's geometry will be used instead.
-    private func add(_ feature: ArcGISFeature, at mapPoint: Point) {
-        if let element = network?.makeElement(arcGISFeature: feature),
-           let geometry = feature.geometry,
-           let table = feature.table as? ArcGISFeatureTable,
-           let networkSource = network?.definition?.networkSource(named: table.tableName) {
-            switch networkSource.kind {
-            case .junction:
-                add(element, at: geometry)
-                if element.assetType.terminalConfiguration?.terminals.count ?? .zero > 1 {
-                    model.terminalSelectorIsOpen.toggle()
-                }
-            case .edge:
-                if let line = GeometryEngine.makeGeometry(from: geometry, z: nil) as? Polyline {
-                    element.fractionAlongEdge = GeometryEngine.polyline(
-                        line,
-                        fractionalLengthClosestTo: mapPoint,
-                        tolerance: -1
-                    )
-                    updateUserHint(withMessage: String(format: "fractionAlongEdge: %.3f", element.fractionAlongEdge))
-                    add(element, at: mapPoint)
-                }
-            @unknown default:
-                return
-            }
-        }
-    }
-    
-    /// Identifies the first discoverable feature at the provided screen point.
-    /// - Parameters:
-    ///   - screenPoint: The location on the screen where the identify operation is desired.
-    ///   - proxy: The map view proxy to perform the identify operation with.
-    /// - Returns: The first discoverable feature or `nil` if none were identified.
-    private func identifyFeatureAt(_ screenPoint: CGPoint, with proxy: MapViewProxy) async -> ArcGISFeature? {
-        guard let feature = try? await proxy.identifyLayers(
-            screenPoint: screenPoint,
-            tolerance: 10
-        ).first?.geoElements.first as? ArcGISFeature else {
-            return nil
-        }
-        return feature
-    }
-    
-    /// Resets all of the important stateful values for when a trace is cancelled or completed.
-    private func reset() {
-        model.map.operationalLayers.forEach { ($0 as? FeatureLayer)?.clearSelection() }
-        model.points.removeAllGraphics()
-        model.pendingTraceParameters = nil
-        model.tracingActivity = .none
-    }
-    
-    /// Performs important tasks including adding credentials, loading and adding operational layers.
-    private func setup() async {
-        do {
-            try await ArcGISEnvironment.authenticationManager.arcGISCredentialStore.add(.publicSample)
-            try await network?.load()
-        } catch {
-            model.hint = "An error occurred while loading the network."
-            return
-        }
-        featureLayerURLs.forEach { url in
-            let table = ServiceFeatureTable(url: url)
-            let layer = FeatureLayer(featureTable: table)
-            if table.serviceLayerID == 3 {
-                layer.renderer = UniqueValueRenderer(
-                    fieldNames: ["ASSETGROUP"],
-                    uniqueValues: [.lowVoltage, .mediumVoltage],
-                    defaultSymbol: SimpleLineSymbol()
-                )
-            }
-            model.map.addOperationalLayer(layer)
-        }
-    }
-    
-    /// Runs a trace with the pending trace configuration and selects features in the map that
-    /// correspond to the element results.
-    ///
-    /// Note that elements are grouped by network source prior to selection so that all selections
-    /// per operational layer can be made at once.
-    private func trace() async {
-        guard let pendingTraceParameters = model.pendingTraceParameters else { return }
-        do {
-            let traceResults = try await network?.trace(using: pendingTraceParameters)
-                .filter { $0 is UtilityElementTraceResult }
-            for result in traceResults as? [UtilityElementTraceResult] ?? [] {
-                let groups = Dictionary(grouping: result.elements) { $0.networkSource.name }
-                for (networkName, elements) in groups {
-                    guard let layer = self.model.map.operationalLayers.first(
-                        where: { ($0 as? FeatureLayer)?.featureTable?.tableName == networkName }
-                    ) as? FeatureLayer else { continue }
-                    let features = try await network?.features(for: elements) ?? []
-                    layer.selectFeatures(features)
-                }
-            }
-            model.tracingActivity = .viewingResults
-        } catch {
-            model.tracingActivity = .none
-            updateUserHint(withMessage: "An error occurred")
-        }
-    }
-    
-    /// Updates the textual user hint. If no message is provided a default hint is used.
-    /// - Parameter message: The message to display to the user.
-    private func updateUserHint(withMessage message: String? = nil) {
-        if let message {
-            model.hint = message
-        } else {
-            switch model.tracingActivity {
-            case .none:
-                model.hint = ""
-            case .settingPoints(let pointType):
-                switch pointType {
-                case .start:
-                    model.hint = "Tap on the map to add a Start Location."
-                case .barrier:
-                    model.hint = "Tap on the map to add a Barrier."
-                }
-            case .settingType:
-                model.hint = "Choose the trace type"
-            case .tracing:
-                model.hint = "Tracing..."
-            case .viewingResults:
-                model.hint = "Trace completed."
-            }
-        }
-    }
-    
-    // MARK: Views
-    
     var body: some View {
         GeometryReader { geometryProxy in
             VStack(spacing: .zero) {
@@ -193,53 +32,53 @@ struct TraceUtilityNetworkView: View {
                         viewpoint: .initialViewpoint,
                         graphicsOverlays: [model.points]
                     )
-                        .onSingleTapGesture { screenPoint, mapPoint in
-                            model.lastSingleTap = (screenPoint, mapPoint)
+                    .onSingleTapGesture { screenPoint, mapPoint in
+                        model.lastSingleTap = (screenPoint, mapPoint)
+                    }
+                    .selectionColor(.yellow)
+                    .confirmationDialog(
+                        "Select trace type",
+                        isPresented: $model.traceTypeSelectorIsOpen,
+                        titleVisibility: .visible,
+                        actions: { traceTypePickerButtons }
+                    )
+                    .confirmationDialog(
+                        "Select terminal",
+                        isPresented: $model.terminalSelectorIsOpen,
+                        titleVisibility: .visible,
+                        actions: { terminalPickerButtons }
+                    )
+                    .onChange(of: model.traceTypeSelectorIsOpen) { _ in
+                        // If type selection is closed and a new trace wasn't initialized we can
+                        // figure that the user opted to cancel.
+                        if !model.traceTypeSelectorIsOpen && model.pendingTraceParameters == nil {
+                            model.reset()
                         }
-                        .selectionColor(.yellow)
-                        .confirmationDialog(
-                            "Select trace type",
-                            isPresented: $model.traceTypeSelectorIsOpen,
-                            titleVisibility: .visible,
-                            actions: { traceTypePickerButtons }
-                        )
-                        .confirmationDialog(
-                            "Select terminal",
-                            isPresented: $model.terminalSelectorIsOpen,
-                            titleVisibility: .visible,
-                            actions: { terminalPickerButtons }
-                        )
-                        .onChange(of: model.traceTypeSelectorIsOpen) { _ in
-                            // If type selection is closed and a new trace wasn't initialized we can
-                            // figure that the user opted to cancel.
-                            if !model.traceTypeSelectorIsOpen && model.pendingTraceParameters == nil {
-                                reset()
-                            }
+                    }
+                    .onDisappear {
+                        ArcGISEnvironment.authenticationManager.arcGISCredentialStore.removeAll()
+                    }
+                    .task {
+                        await model.setup()
+                    }
+                    .task(id: model.lastSingleTap?.mapPoint) {
+                        guard case .settingPoints = model.tracingActivity,
+                              let lastSingleTap = model.lastSingleTap else {
+                            return
                         }
-                        .onDisappear {
-                            ArcGISEnvironment.authenticationManager.arcGISCredentialStore.removeAll()
+                        if let feature = await model.identifyFeatureAt(
+                            lastSingleTap.screenPoint,
+                            with: mapViewProxy
+                        ) {
+                            model.add(feature, at: lastSingleTap.mapPoint)
                         }
-                        .task {
-                            await setup()
+                    }
+                    .task(id: model.tracingActivity) {
+                        model.updateUserHint()
+                        if model.tracingActivity == .tracing {
+                            await model.trace()
                         }
-                        .task(id: model.lastSingleTap?.mapPoint) {
-                            guard case .settingPoints = model.tracingActivity,
-                                  let lastSingleTap = model.lastSingleTap else {
-                                return
-                            }
-                            if let feature = await identifyFeatureAt(
-                                lastSingleTap.screenPoint,
-                                with: mapViewProxy
-                            ) {
-                                add(feature, at: lastSingleTap.mapPoint)
-                            }
-                        }
-                        .task(id: model.tracingActivity) {
-                            updateUserHint()
-                            if model.tracingActivity == .tracing {
-                                await trace()
-                            }
-                        }
+                    }
                 }
                 traceManager
                     .frame(width: geometryProxy.size.width)
@@ -271,25 +110,10 @@ struct TraceUtilityNetworkView: View {
                     .padding()
             case .viewingResults:
                 Button("Reset", role: .destructive) {
-                    reset()
+                    model.reset()
                 }
                 .padding()
             }
-        }
-    }
-}
-
-private extension ArcGISCredential {
-    /// The public credentials for the data in this sample.
-    /// - Note: Never hardcode login information in a production application. This is done solely
-    /// for the sake of the sample.
-    static var publicSample: ArcGISCredential {
-        get async throws {
-            try await TokenCredential.credential(
-                for: .samplePortal,
-                username: "viewer01",
-                password: "I68VGU^nMurF"
-            )
         }
     }
 }
@@ -311,35 +135,19 @@ extension TraceUtilityNetworkView {
         .disabled(model.pendingTraceParameters?.startingLocations.isEmpty ?? true)
         .padding()
         Button("Reset", role: .destructive) {
-            reset()
+            model.reset()
         }
         .padding()
     }
     
     /// The domain network for this sample.
     private var electricDistribution: UtilityDomainNetwork? {
-        network?.definition?.domainNetwork(named: "ElectricDistribution")
-    }
-    
-    /// The URLs of the relevant feature layers for this sample.
-    ///
-    /// The feature layers allow us to modify the visual rendering style of different elements in
-    /// the network.
-    private var featureLayerURLs: [URL] {
-        return [
-            .featureService.appendingPathComponent("0"),
-            .featureService.appendingPathComponent("3")
-        ]
+        model.network?.definition?.domainNetwork(named: "ElectricDistribution")
     }
     
     /// The utility tier for this sample.
     private var mediumVoltageRadial: UtilityTier? {
         electricDistribution?.tier(named: "Medium Voltage Radial")
-    }
-    
-    /// The utility network for this sample.
-    private var network: UtilityNetwork? {
-        model.map.utilityNetworks.first
     }
     
     /// Determines whether the user is setting starting points or barriers.
@@ -372,7 +180,7 @@ extension TraceUtilityNetworkView {
         ForEach(model.lastAddedElement?.assetType.terminalConfiguration?.terminals ?? []) { terminal in
             Button(terminal.name) {
                 model.lastAddedElement?.terminal = terminal
-                updateUserHint(withMessage: "terminal: \(terminal.name)")
+                model.updateUserHint(withMessage: "terminal: \(terminal.name)")
             }
         }
     }
@@ -393,50 +201,6 @@ extension TraceUtilityNetworkView {
                 model.tracingActivity = .settingPoints(pointType: .start)
             }
         }
-    }
-}
-
-private extension UIColor {
-    /// A custom color for electrical lines in the utility network.
-    static var darkCyan: UIColor {
-        .init(red: 0, green: 0.55, blue: 0.55, alpha: 1)
-    }
-}
-
-private extension UniqueValue {
-    /// The rendering style for low voltage lines in the utility network.
-    static var lowVoltage: UniqueValue {
-        .init(
-            label: "Low voltage",
-            symbol: SimpleLineSymbol(style: .dash, color: .darkCyan, width: 3),
-            values: [3]
-        )
-    }
-    
-    /// The rendering style for medium voltage lines in the utility network.
-    static var mediumVoltage: UniqueValue {
-        .init(
-            label: "Medium voltage",
-            symbol: SimpleLineSymbol(style: .solid, color: .darkCyan, width: 3),
-            values: [5]
-        )
-    }
-}
-
-private extension URL {
-    /// The server containing the data for this sample.
-    static var sampleServer7: URL {
-        URL(string: "https://sampleserver7.arcgisonline.com")!
-    }
-    
-    /// The feature service containing the data for this sample.
-    static var featureService: URL {
-        sampleServer7.appendingPathComponent("server/rest/services/UtilityNetwork/NapervilleElectric/FeatureServer")
-    }
-    
-    /// The portal containing the data for this sample.
-    static var samplePortal: URL {
-        sampleServer7.appendingPathComponent("portal/sharing/rest")
     }
 }
 

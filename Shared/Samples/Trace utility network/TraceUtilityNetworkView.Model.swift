@@ -13,11 +13,24 @@
 // limitations under the License.
 
 import ArcGIS
-import Foundation
+import UIKit.UIColor
 
 extension TraceUtilityNetworkView {
     /// The model used to manage the state of the trace view.
     class Model: ObservableObject {
+        // MARK: Properties
+        
+        /// The URLs of the relevant feature layers for this sample.
+        ///
+        /// The feature layers allow us to modify the visual rendering style of different elements in
+        /// the network.
+        private var featureLayerURLs: [URL] {
+            return [
+                .featureService.appendingPathComponent("0"),
+                .featureService.appendingPathComponent("3")
+            ]
+        }
+        
         /// The textual hint shown to the user.
         @Published var hint: String?
         
@@ -32,6 +45,19 @@ extension TraceUtilityNetworkView {
         ///
         /// Monitoring these values allows for an asynchronous identification task when they change.
         @Published var lastSingleTap: (screenPoint: CGPoint, mapPoint: Point)?
+        
+        /// The map contains the utility network and operational layers on which trace results will
+        /// be selected.
+        let map = {
+            let map = Map(item: PortalItem.napervilleElectricalNetwork)
+            map.basemap = Basemap(style: .arcGISStreetsNight)
+            return map
+        }()
+        
+        /// The utility network for this sample.
+        var network: UtilityNetwork? {
+            map.utilityNetworks.first
+        }
         
         /// The parameters for the pending trace.
         ///
@@ -51,14 +77,6 @@ extension TraceUtilityNetworkView {
         /// The current tracing related activity.
         @Published var tracingActivity: TracingActivity?
         
-        /// The map contains the utility network and operational layers on which trace results will
-        /// be selected.
-        let map = {
-            let map = Map(item: PortalItem.napervilleElectricalNetwork)
-            map.basemap = Basemap(style: .arcGISStreetsNight)
-            return map
-        }()
-        
         /// The graphics overlay on which starting point and barrier symbols will be drawn.
         var points: GraphicsOverlay = {
             let overlay = GraphicsOverlay()
@@ -73,6 +91,180 @@ extension TraceUtilityNetworkView {
             )
             return overlay
         }()
+        
+        // MARK: Methods
+        
+        /// Adds the provided utility element to the parameters of the pending trace and a corresponding
+        /// starting location or barrier graphic to the map.
+        /// - Parameters:
+        ///   - element: The utility element to be added to the pending trace.
+        ///   - point: The location on the map where the element's visual indicator should be added.
+        private func add(_ element: UtilityElement, at point: Geometry) {
+            guard let pendingTraceParameters,
+                  case .settingPoints(let pointType) = tracingActivity else { return }
+            let graphic = Graphic(
+                geometry: point,
+                attributes: [String(describing: PointType.self): pointType.rawValue]
+            )
+            switch pointType {
+            case.barrier:
+                pendingTraceParameters.addBarrier(element)
+            case .start:
+                pendingTraceParameters.addStartingLocation(element)
+            }
+            points.addGraphic(graphic)
+            lastAddedElement = element
+        }
+        
+        /// Adds a provided feature to the pending trace.
+        ///
+        /// For junction features with more than one terminal, the user should be prompted to pick a
+        /// terminal. For edge features, the fractional point along the feature's edge should be
+        /// computed.
+        /// - Parameters:
+        ///   - feature: The feature to be added to the pending trace.
+        ///   - mapPoint: The location on the map where the feature was discovered. If the feature is a
+        ///   junction type, the feature's geometry will be used instead.
+        func add(_ feature: ArcGISFeature, at mapPoint: Point) {
+            if let element = network?.makeElement(arcGISFeature: feature),
+               let geometry = feature.geometry,
+               let table = feature.table as? ArcGISFeatureTable,
+               let networkSource = network?.definition?.networkSource(named: table.tableName) {
+                switch networkSource.kind {
+                case .junction:
+                    add(element, at: geometry)
+                    if element.assetType.terminalConfiguration?.terminals.count ?? .zero > 1 {
+                        terminalSelectorIsOpen.toggle()
+                    }
+                case .edge:
+                    if let line = GeometryEngine.makeGeometry(from: geometry, z: nil) as? Polyline {
+                        element.fractionAlongEdge = GeometryEngine.polyline(
+                            line,
+                            fractionalLengthClosestTo: mapPoint,
+                            tolerance: -1
+                        )
+                        updateUserHint(withMessage: String(format: "fractionAlongEdge: %.3f", element.fractionAlongEdge))
+                        add(element, at: mapPoint)
+                    }
+                @unknown default:
+                    return
+                }
+            }
+        }
+        
+        /// Identifies the first discoverable feature at the provided screen point.
+        /// - Parameters:
+        ///   - screenPoint: The location on the screen where the identify operation is desired.
+        ///   - proxy: The map view proxy to perform the identify operation with.
+        /// - Returns: The first discoverable feature or `nil` if none were identified.
+        func identifyFeatureAt(_ screenPoint: CGPoint, with proxy: MapViewProxy) async -> ArcGISFeature? {
+            guard let feature = try? await proxy.identifyLayers(
+                screenPoint: screenPoint,
+                tolerance: 10
+            ).first?.geoElements.first as? ArcGISFeature else {
+                return nil
+            }
+            return feature
+        }
+        
+        /// Resets all of the important stateful values for when a trace is cancelled or completed.
+        func reset() {
+            map.operationalLayers.forEach { ($0 as? FeatureLayer)?.clearSelection() }
+            points.removeAllGraphics()
+            pendingTraceParameters = nil
+            tracingActivity = .none
+        }
+        
+        /// Performs important tasks including adding credentials, loading and adding operational layers.
+        func setup() async {
+            do {
+                try await ArcGISEnvironment.authenticationManager.arcGISCredentialStore.add(.publicSample)
+                try await network?.load()
+            } catch {
+                hint = "An error occurred while loading the network."
+                return
+            }
+            featureLayerURLs.forEach { url in
+                let table = ServiceFeatureTable(url: url)
+                let layer = FeatureLayer(featureTable: table)
+                if table.serviceLayerID == 3 {
+                    layer.renderer = UniqueValueRenderer(
+                        fieldNames: ["ASSETGROUP"],
+                        uniqueValues: [.lowVoltage, .mediumVoltage],
+                        defaultSymbol: SimpleLineSymbol()
+                    )
+                }
+                map.addOperationalLayer(layer)
+            }
+        }
+        
+        /// Runs a trace with the pending trace configuration and selects features in the map that
+        /// correspond to the element results.
+        ///
+        /// Note that elements are grouped by network source prior to selection so that all selections
+        /// per operational layer can be made at once.
+        func trace() async {
+            guard let pendingTraceParameters = pendingTraceParameters else { return }
+            do {
+                let traceResults = try await network?.trace(using: pendingTraceParameters)
+                    .filter { $0 is UtilityElementTraceResult }
+                for result in traceResults as? [UtilityElementTraceResult] ?? [] {
+                    let groups = Dictionary(grouping: result.elements) { $0.networkSource.name }
+                    for (networkName, elements) in groups {
+                        guard let layer = map.operationalLayers.first(
+                            where: { ($0 as? FeatureLayer)?.featureTable?.tableName == networkName }
+                        ) as? FeatureLayer else { continue }
+                        let features = try await network?.features(for: elements) ?? []
+                        layer.selectFeatures(features)
+                    }
+                }
+                tracingActivity = .viewingResults
+            } catch {
+                tracingActivity = .none
+                updateUserHint(withMessage: "An error occurred")
+            }
+        }
+        
+        /// Updates the textual user hint. If no message is provided a default hint is used.
+        /// - Parameter message: The message to display to the user.
+        func updateUserHint(withMessage message: String? = nil) {
+            if let message {
+                hint = message
+            } else {
+                switch tracingActivity {
+                case .none:
+                    hint = ""
+                case .settingPoints(let pointType):
+                    switch pointType {
+                    case .start:
+                        hint = "Tap on the map to add a Start Location."
+                    case .barrier:
+                        hint = "Tap on the map to add a Barrier."
+                    }
+                case .settingType:
+                    hint = "Choose the trace type"
+                case .tracing:
+                    hint = "Tracing..."
+                case .viewingResults:
+                    hint = "Trace completed."
+                }
+            }
+        }
+    }
+}
+
+private extension ArcGISCredential {
+    /// The public credentials for the data in this sample.
+    /// - Note: Never hardcode login information in a production application. This is done solely
+    /// for the sake of the sample.
+    static var publicSample: ArcGISCredential {
+        get async throws {
+            try await TokenCredential.credential(
+                for: .samplePortal,
+                username: "viewer01",
+                password: "I68VGU^nMurF"
+            )
+        }
     }
 }
 
@@ -95,5 +287,49 @@ private extension SimpleMarkerSymbol {
     /// The symbol for starting location elements.
     static var startingLocation: SimpleMarkerSymbol {
         .init(style: .cross, color: .green, size: 20)
+    }
+}
+
+private extension UniqueValue {
+    /// The rendering style for low voltage lines in the utility network.
+    static var lowVoltage: UniqueValue {
+        .init(
+            label: "Low voltage",
+            symbol: SimpleLineSymbol(style: .dash, color: .darkCyan, width: 3),
+            values: [3]
+        )
+    }
+    
+    /// The rendering style for medium voltage lines in the utility network.
+    static var mediumVoltage: UniqueValue {
+        .init(
+            label: "Medium voltage",
+            symbol: SimpleLineSymbol(style: .solid, color: .darkCyan, width: 3),
+            values: [5]
+        )
+    }
+}
+
+private extension UIColor {
+    /// A custom color for electrical lines in the utility network.
+    static var darkCyan: UIColor {
+        .init(red: 0, green: 0.55, blue: 0.55, alpha: 1)
+    }
+}
+
+private extension URL {
+    /// The server containing the data for this sample.
+    static var sampleServer7: URL {
+        URL(string: "https://sampleserver7.arcgisonline.com")!
+    }
+    
+    /// The feature service containing the data for this sample.
+    static var featureService: URL {
+        sampleServer7.appendingPathComponent("server/rest/services/UtilityNetwork/NapervilleElectric/FeatureServer")
+    }
+    
+    /// The portal containing the data for this sample.
+    static var samplePortal: URL {
+        sampleServer7.appendingPathComponent("portal/sharing/rest")
     }
 }
