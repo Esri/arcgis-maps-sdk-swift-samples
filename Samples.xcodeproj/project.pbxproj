@@ -77,6 +77,8 @@
 		75DD736729D35FF40010229D /* ChangeMapViewBackgroundView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4D2ADC5529C4F612003B367F /* ChangeMapViewBackgroundView.swift */; };
 		75DD736829D35FF40010229D /* ChangeMapViewBackgroundView.SettingsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4D2ADC5829C4F612003B367F /* ChangeMapViewBackgroundView.SettingsView.swift */; };
 		75DD736929D35FF40010229D /* ChangeMapViewBackgroundView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4D2ADC6129C5071C003B367F /* ChangeMapViewBackgroundView.Model.swift */; };
+		75DD739529D38B1B0010229D /* NavigateRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DD739129D38B1B0010229D /* NavigateRouteView.swift */; };
+		75DD739929D38B420010229D /* NavigateRouteView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 75DD739129D38B1B0010229D /* NavigateRouteView.swift */; };
 		88F93CC129C3D59D0006B28E /* SketchOnMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F93CC029C3D59C0006B28E /* SketchOnMapView.swift */; };
 		88F93CC229C4D3480006B28E /* SketchOnMapView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 88F93CC029C3D59C0006B28E /* SketchOnMapView.swift */; };
 		E000E7602869E33D005D87C5 /* ClipGeometryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E000E75F2869E33D005D87C5 /* ClipGeometryView.swift */; };
@@ -196,6 +198,7 @@
 				E03CB06B2889879D002B27D9 /* DownloadVectorTilesToLocalCacheView.swift in Copy Source Code Files */,
 				E03CB06A288894C4002B27D9 /* FindRouteView.swift in Copy Source Code Files */,
 				E03CB0692888944D002B27D9 /* GenerateOfflineMapView.swift in Copy Source Code Files */,
+				75DD739929D38B420010229D /* NavigateRouteView.swift in Copy Source Code Files */,
 				0039A4F02885C50300592C86 /* ProjectGeometryView.swift in Copy Source Code Files */,
 				0039A4F12885C50300592C86 /* SearchWithGeocodeView.swift in Copy Source Code Files */,
 				0039A4F22885C50300592C86 /* SelectFeaturesInFeatureLayerView.swift in Copy Source Code Files */,
@@ -255,6 +258,7 @@
 		4D2ADC6129C5071C003B367F /* ChangeMapViewBackgroundView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeMapViewBackgroundView.Model.swift; sourceTree = "<group>"; };
 		4D2ADC6629C50BD6003B367F /* AddDynamicEntityLayerView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDynamicEntityLayerView.Model.swift; sourceTree = "<group>"; };
 		4D2ADC6829C50C4C003B367F /* AddDynamicEntityLayerView.SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDynamicEntityLayerView.SettingsView.swift; sourceTree = "<group>"; };
+		75DD739129D38B1B0010229D /* NavigateRouteView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigateRouteView.swift; sourceTree = "<group>"; };
 		88F93CC029C3D59C0006B28E /* SketchOnMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SketchOnMapView.swift; sourceTree = "<group>"; };
 		E000E75F2869E33D005D87C5 /* ClipGeometryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipGeometryView.swift; sourceTree = "<group>"; };
 		E000E762286A0B18005D87C5 /* CutGeometryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutGeometryView.swift; sourceTree = "<group>"; };
@@ -381,6 +385,7 @@
 				E066DD33285CF3A0004D3D5B /* Find route */,
 				E088E1722863B5E600413100 /* Generate offline map */,
 				0044288C29C90BD500160767 /* Get elevation at point on surface */,
+				75DD739029D38B1B0010229D /* Navigate route */,
 				E0EA0B75286638FD00C9621D /* Project geometry */,
 				00CB913628481475005C2C5D /* Search with geocode */,
 				E004A6F4284FA3C5002A1FE6 /* Select features in feature layer */,
@@ -587,6 +592,14 @@
 				4D2ADC6129C5071C003B367F /* ChangeMapViewBackgroundView.Model.swift */,
 			);
 			path = "Change map view background";
+			sourceTree = "<group>";
+		};
+		75DD739029D38B1B0010229D /* Navigate route */ = {
+			isa = PBXGroup;
+			children = (
+				75DD739129D38B1B0010229D /* NavigateRouteView.swift */,
+			);
+			path = "Navigate route";
 			sourceTree = "<group>";
 		};
 		88F93CBE29C3D4E30006B28E /* Sketch on map */ = {
@@ -995,6 +1008,7 @@
 				E066DD382860AB28004D3D5B /* StyleGraphicsWithRendererView.swift in Sources */,
 				00B04FB5283EEBA80026C882 /* DisplayOverviewMapView.swift in Sources */,
 				4D2ADC5D29C4F612003B367F /* ChangeMapViewBackgroundView.SettingsView.swift in Sources */,
+				75DD739529D38B1B0010229D /* NavigateRouteView.swift in Sources */,
 				0074ABBF28174BCF0037244A /* DisplayMapView.swift in Sources */,
 				0086F40128E3770A00974721 /* ShowViewshedFromPointInSceneView.swift in Sources */,
 				0044289229C90C0B00160767 /* GetElevationAtPointOnSurfaceView.swift in Sources */,
