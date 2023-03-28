@@ -37,7 +37,6 @@ struct QueryFeatureTableView: View {
         MapViewReader { mapViewProxy in
             MapView(map: model.map, viewpoint: .statesViewpoint)
                 .alert(isPresented: $isShowingAlert, presentingError: error)
-
                 .overlay(alignment: .topTrailing) {
                     HStack {
                         SearchField(
@@ -104,7 +103,9 @@ private extension QueryFeatureTableView {
         var selectedFeatures: [Feature] = []
         
         // Create a feature table using a url.
-        let featureTable = ServiceFeatureTable(url: URL(string: "https://services.arcgis.com/jIL9msH9OI208GCb/arcgis/rest/services/USA_Daytime_Population_2016/FeatureServer/0")!)
+        let featureTable = ServiceFeatureTable(
+             url: URL(string: "https://services.arcgis.com/jIL9msH9OI208GCb/arcgis/rest/services/USA_Daytime_Population_2016/FeatureServer/0")!
+)
         var featureLayer: FeatureLayer?
 
         init() {
