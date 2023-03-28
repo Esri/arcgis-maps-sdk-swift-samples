@@ -203,8 +203,8 @@
 				0039A4F92885C50300592C86 /* ShowResultOfSpatialOperationsView.swift in Copy Source Code Files */,
 				0039A4FA2885C50300592C86 /* StyleGraphicsWithRendererView.swift in Copy Source Code Files */,
 				0039A4FB2885C50300592C86 /* StyleGraphicsWithSymbolsView.swift in Copy Source Code Files */,
-				75DD735B29D353B70010229D /* TraceUtilityNetworkView.swift in Copy Source Code Files */,
 				75DD737429D367030010229D /* TraceUtilityNetworkView.Model.swift in Copy Source Code Files */,
+				75DD735B29D353B70010229D /* TraceUtilityNetworkView.swift in Copy Source Code Files */,
 			);
 			name = "Copy Source Code Files";
 			runOnlyForDeploymentPostprocessing = 0;
