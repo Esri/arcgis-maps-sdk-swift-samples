@@ -39,13 +39,13 @@ extension TraceUtilityNetworkView {
         /// contained within this value.
         @Published var pendingTraceParameters: UtilityTraceParameters?
         
-        /// A Boolean value indicating if the user is selecting a terminal for an element.
+        /// A Boolean value indicating whether the terminal selection menu is open.
         ///
         /// When a utility element has more than one terminal, the user is presented with a menu of the
         /// available terminal names.
         @Published var terminalSelectorIsOpen = false
         
-        /// A Boolean value indicating if the user is selecting a trace type.
+        /// A Boolean value indicating if the trace type selection menu is open.
         @Published var traceTypeSelectorIsOpen = false
         
         /// The map contains the utility network and operational layers on which trace results will
