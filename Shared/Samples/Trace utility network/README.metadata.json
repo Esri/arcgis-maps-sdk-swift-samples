@@ -53,6 +53,7 @@
     ],
     "snippets": [
         "TraceUtilityNetworkView.swift",
+        "TraceUtilityNetworkView.Enums.swift",
         "TraceUtilityNetworkView.Model.swift"
     ],
     "title": "Trace utility network"

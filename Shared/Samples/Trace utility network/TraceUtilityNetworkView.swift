@@ -19,22 +19,6 @@ struct TraceUtilityNetworkView: View {
     /// The view model for the sample.
     @StateObject private var model = TraceUtilityNetworkView.Model()
     
-    // MARK: Enums
-    
-    /// The types of points used during a utility network trace.
-    enum PointType: String {
-        case barrier
-        case start
-    }
-    
-    /// The different activities a user will traverse while performing a utility network trace.
-    enum TracingActivity: Equatable {
-        case settingPoints(pointType: PointType)
-        case settingType
-        case tracing
-        case viewingResults
-    }
-    
     // MARK: Methods
     
     /// Adds the provided utility element to the parameters of the pending trace and a corresponding
