@@ -19,12 +19,6 @@ struct TraceUtilityNetworkView: View {
     /// The view model for the sample.
     @StateObject private var model = TraceUtilityNetworkView.Model()
     
-    /// A Boolean value indicating if the user is selecting a terminal for an element.
-    ///
-    /// When a utility element has more than one terminal, the user is presented with a menu of the
-    /// available terminal names.
-    @State private var terminalSelectionIsOpen = false
-    
     /// A Boolean value indicating if the user is selecting a trace type.
     @State private var traceTypeSelectionIsOpen = false
     
@@ -89,7 +83,7 @@ struct TraceUtilityNetworkView: View {
             case .junction:
                 add(element, at: geometry)
                 if element.assetType.terminalConfiguration?.terminals.count ?? .zero > 1 {
-                    terminalSelectionIsOpen.toggle()
+                    model.terminalSelectionIsOpen.toggle()
                 }
             case .edge:
                 if let line = GeometryEngine.makeGeometry(from: geometry, z: nil) as? Polyline {
@@ -233,7 +227,7 @@ struct TraceUtilityNetworkView: View {
                         )
                         .confirmationDialog(
                             "Select terminal",
-                            isPresented: $terminalSelectionIsOpen,
+                            isPresented: $model.terminalSelectionIsOpen,
                             titleVisibility: .visible,
                             actions: { terminalPickerButtons }
                         )
