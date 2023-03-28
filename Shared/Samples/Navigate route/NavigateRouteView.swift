@@ -34,9 +34,9 @@ struct NavigateRouteView: View {
         )
         .overlay(alignment: .top) {
             Text(model.statusText)
-                .padding(2)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .background(.ultraThinMaterial)
+                .padding(8)
+                .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
         }
         .task {
             // Solves the route and sets the navigation.
