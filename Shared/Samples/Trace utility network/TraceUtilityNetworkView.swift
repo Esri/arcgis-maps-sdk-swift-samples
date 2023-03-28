@@ -46,25 +46,10 @@ struct TraceUtilityNetworkView: View {
     /// The current tracing related activity.
     @State private var tracingActivity: TracingActivity?
     
-    /// The graphics overlay on which starting point and barrier symbols will be drawn.
-    private var points: GraphicsOverlay = {
-        let overlay = GraphicsOverlay()
-        let barrierUniqueValue = UniqueValue(
-            symbol: SimpleMarkerSymbol.barrier,
-            values: [PointType.barrier.rawValue]
-        )
-        overlay.renderer = UniqueValueRenderer(
-            fieldNames: [String(describing: PointType.self)],
-            uniqueValues: [barrierUniqueValue],
-            defaultSymbol: SimpleMarkerSymbol.startingLocation
-        )
-        return overlay
-    }()
-    
     // MARK: Enums
     
     /// The types of points used during a utility network trace.
-    private enum PointType: String {
+    enum PointType: String {
         case barrier
         case start
     }
@@ -97,7 +82,7 @@ struct TraceUtilityNetworkView: View {
         case .start:
             pendingTraceParameters.addStartingLocation(element)
         }
-        points.addGraphic(graphic)
+        model.points.addGraphic(graphic)
         lastAddedElement = element
     }
     
@@ -155,7 +140,7 @@ struct TraceUtilityNetworkView: View {
     /// Resets all of the important stateful values for when a trace is cancelled or completed.
     private func reset() {
         model.map.operationalLayers.forEach { ($0 as? FeatureLayer)?.clearSelection() }
-        points.removeAllGraphics()
+        model.points.removeAllGraphics()
         model.pendingTraceParameters = nil
         tracingActivity = .none
     }
@@ -246,7 +231,11 @@ struct TraceUtilityNetworkView: View {
                         .padding([.bottom])
                 }
                 MapViewReader { mapViewProxy in
-                    MapView(map: model.map, viewpoint: .initialViewpoint, graphicsOverlays: [points])
+                    MapView(
+                        map: model.map,
+                        viewpoint: .initialViewpoint,
+                        graphicsOverlays: [model.points]
+                    )
                         .onSingleTapGesture { screenPoint, mapPoint in
                             lastSingleTap = (screenPoint, mapPoint)
                         }
@@ -344,18 +333,6 @@ private extension ArcGISCredential {
                 password: "I68VGU^nMurF"
             )
         }
-    }
-}
-
-private extension SimpleMarkerSymbol {
-    /// The symbol for barrier elements.
-    static var barrier: SimpleMarkerSymbol {
-        .init(style: .x, color: .red, size: 20)
-    }
-    
-    /// The symbol for starting location elements.
-    static var startingLocation: SimpleMarkerSymbol {
-        .init(style: .cross, color: .green, size: 20)
     }
 }
 

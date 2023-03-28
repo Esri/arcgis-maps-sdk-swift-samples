@@ -31,6 +31,21 @@ extension TraceUtilityNetworkView {
             map.basemap = Basemap(style: .arcGISStreetsNight)
             return map
         }()
+        
+        /// The graphics overlay on which starting point and barrier symbols will be drawn.
+        var points: GraphicsOverlay = {
+            let overlay = GraphicsOverlay()
+            let barrierUniqueValue = UniqueValue(
+                symbol: SimpleMarkerSymbol.barrier,
+                values: [PointType.barrier.rawValue]
+            )
+            overlay.renderer = UniqueValueRenderer(
+                fieldNames: [String(describing: PointType.self)],
+                uniqueValues: [barrierUniqueValue],
+                defaultSymbol: SimpleMarkerSymbol.startingLocation
+            )
+            return overlay
+        }()
     }
 }
 
@@ -41,5 +56,17 @@ private extension PortalItem {
             portal: .arcGISOnline(connection: .authenticated),
             id: .init("471eb0bf37074b1fbb972b1da70fb310")!
         )
+    }
+}
+
+private extension SimpleMarkerSymbol {
+    /// The symbol for barrier elements.
+    static var barrier: SimpleMarkerSymbol {
+        .init(style: .x, color: .red, size: 20)
+    }
+    
+    /// The symbol for starting location elements.
+    static var startingLocation: SimpleMarkerSymbol {
+        .init(style: .cross, color: .green, size: 20)
     }
 }
