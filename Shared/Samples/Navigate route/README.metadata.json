@@ -41,7 +41,7 @@
         "VoiceGuidance"
     ],
     "snippets": [
-        "NavigateARouteView.swift"
+        "NavigateRouteView.swift"
     ],
-    "title": "Navigate a route"
+    "title": "Navigate route"
 }
