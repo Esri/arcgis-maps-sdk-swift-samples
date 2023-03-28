@@ -78,7 +78,7 @@ struct NavigateRouteView: View {
     }
 }
 
-private extension NavigateARouteView {
+private extension NavigateRouteView {
     /// A view model for this sample.
     @MainActor
     class Model: ObservableObject {
