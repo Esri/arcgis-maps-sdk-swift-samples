@@ -218,7 +218,7 @@ struct TraceUtilityNetworkView: View {
                         .selectionColor(.yellow)
                         .confirmationDialog(
                             "Select trace type",
-                            isPresented: $model.traceTypeSelectionIsOpen,
+                            isPresented: $model.traceTypeSelectorIsOpen,
                             titleVisibility: .visible,
                             actions: { traceTypePickerButtons }
                         )
@@ -228,10 +228,10 @@ struct TraceUtilityNetworkView: View {
                             titleVisibility: .visible,
                             actions: { terminalPickerButtons }
                         )
-                        .onChange(of: model.traceTypeSelectionIsOpen) { _ in
+                        .onChange(of: model.traceTypeSelectorIsOpen) { _ in
                             // If type selection is closed and a new trace wasn't initialized we can
                             // figure that the user opted to cancel.
-                            if !model.traceTypeSelectionIsOpen && model.pendingTraceParameters == nil {
+                            if !model.traceTypeSelectorIsOpen && model.pendingTraceParameters == nil {
                                 reset()
                             }
                         }
@@ -276,7 +276,7 @@ struct TraceUtilityNetworkView: View {
                 Button("Start a New Trace") {
                     withAnimation {
                         tracingActivity = .settingType
-                        model.traceTypeSelectionIsOpen.toggle()
+                        model.traceTypeSelectorIsOpen.toggle()
                     }
                 }
                 .padding()
