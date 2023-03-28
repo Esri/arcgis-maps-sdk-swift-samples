@@ -39,6 +39,9 @@ struct TraceUtilityNetworkView: View {
         return map
     }()
     
+    /// The view model for the sample.
+    @StateObject private var model = Model()
+    
     /// The parameters for the pending trace.
     ///
     /// Important trace information like the trace type, starting points, and barriers is contained
