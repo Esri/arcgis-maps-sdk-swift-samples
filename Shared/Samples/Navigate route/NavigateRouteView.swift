@@ -168,8 +168,8 @@ private extension NavigateRouteView {
             }
             
             // Creates the graphics for the route remaining and traversed.
-            let routeRemainingGraphic = Graphic(symbol: SimpleLineSymbol(style: .dash, color: .systemPurple, width: 5))
-            let routeTraversedGraphic = Graphic(symbol: SimpleLineSymbol(style: .solid, color: .systemBlue, width: 3))
+            routeRemainingGraphic = Graphic(symbol: SimpleLineSymbol(style: .dash, color: .systemPurple, width: 5))
+            routeTraversedGraphic = Graphic(symbol: SimpleLineSymbol(style: .solid, color: .systemBlue, width: 3))
             
             // Creates the graphics overlay for the stops and route.
             stopGraphicsOverlay = GraphicsOverlay(graphics: stopGraphics)
