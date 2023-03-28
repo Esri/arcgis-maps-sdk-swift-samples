@@ -255,7 +255,7 @@ private extension NavigateRouteView {
         /// When new statuses are delivered, update the route's traversed and remaining graphics.
         private func trackStatus() async {
             guard let routeTracker else { return }
-            for try await status in routeTracker.$trackingStatus {
+            for await status in routeTracker.$trackingStatus {
                 if let status {
                     routeTraversedGraphic.geometry = status.routeProgress.traversedGeometry
                     routeRemainingGraphic.geometry = status.routeProgress.remainingGeometry
