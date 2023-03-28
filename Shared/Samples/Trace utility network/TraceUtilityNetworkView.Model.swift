@@ -45,6 +45,9 @@ extension TraceUtilityNetworkView {
         /// available terminal names.
         @Published var terminalSelectorIsOpen = false
         
+        /// A Boolean value indicating if the user is selecting a trace type.
+        @Published var traceTypeSelectionIsOpen = false
+        
         /// The map contains the utility network and operational layers on which trace results will
         /// be selected.
         let map = {

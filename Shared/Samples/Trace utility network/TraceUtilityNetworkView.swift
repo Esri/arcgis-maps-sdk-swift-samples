@@ -19,9 +19,6 @@ struct TraceUtilityNetworkView: View {
     /// The view model for the sample.
     @StateObject private var model = TraceUtilityNetworkView.Model()
     
-    /// A Boolean value indicating if the user is selecting a trace type.
-    @State private var traceTypeSelectionIsOpen = false
-    
     /// The current tracing related activity.
     @State private var tracingActivity: TracingActivity?
     
@@ -221,7 +218,7 @@ struct TraceUtilityNetworkView: View {
                         .selectionColor(.yellow)
                         .confirmationDialog(
                             "Select trace type",
-                            isPresented: $traceTypeSelectionIsOpen,
+                            isPresented: $model.traceTypeSelectionIsOpen,
                             titleVisibility: .visible,
                             actions: { traceTypePickerButtons }
                         )
@@ -231,10 +228,10 @@ struct TraceUtilityNetworkView: View {
                             titleVisibility: .visible,
                             actions: { terminalPickerButtons }
                         )
-                        .onChange(of: traceTypeSelectionIsOpen) { _ in
+                        .onChange(of: model.traceTypeSelectionIsOpen) { _ in
                             // If type selection is closed and a new trace wasn't initialized we can
                             // figure that the user opted to cancel.
-                            if !traceTypeSelectionIsOpen && model.pendingTraceParameters == nil {
+                            if !model.traceTypeSelectionIsOpen && model.pendingTraceParameters == nil {
                                 reset()
                             }
                         }
@@ -279,7 +276,7 @@ struct TraceUtilityNetworkView: View {
                 Button("Start a New Trace") {
                     withAnimation {
                         tracingActivity = .settingType
-                        traceTypeSelectionIsOpen.toggle()
+                        model.traceTypeSelectionIsOpen.toggle()
                     }
                 }
                 .padding()
