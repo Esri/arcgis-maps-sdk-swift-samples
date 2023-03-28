@@ -1,9 +1,9 @@
-# Feature layer query
+# Query feature table
 
 Find features in a feature table which match an SQL query.
 
-![Feature layer query options](feature-layer-query-1.png)
-![Feature layer query results](feature-layer-query-2.png)
+![Query feature table options](query-feature-table-1.png)
+![Query feature table results](query-faeture-table-2.png)
 
 ## Use case
 

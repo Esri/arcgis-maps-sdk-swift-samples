@@ -16,7 +16,7 @@ import SwiftUI
 import ArcGIS
 import ArcGISToolkit
 
-struct FeatureLayerQueryView: View {
+struct QueryFeatureTableView: View {
     @StateObject private var model = Model()
     
     /// A Boolean value indicating whether to show an alert.
@@ -94,7 +94,7 @@ struct FeatureLayerQueryView: View {
     }
 }
 
-private extension FeatureLayerQueryView {
+private extension QueryFeatureTableView {
     class Model: ObservableObject {
         /// A map with a topographic basemap style.
         let map = Map(basemapStyle: .arcGISTopographic)
