@@ -189,6 +189,7 @@ extension TraceUtilityNetworkView {
         ForEach(supportedTraceTypes, id: \.self) { type in
             Button(type.displayName) {
                 model.makeTraceParameters(withTraceType: type)
+                model.tracingActivity = .settingPoints(pointType: .start)
             }
         }
     }

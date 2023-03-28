@@ -185,7 +185,6 @@ extension TraceUtilityNetworkView {
                 startingLocations: []
             )
             pendingTraceParameters?.traceConfiguration = mediumVoltageRadial?.defaultTraceConfiguration
-            tracingActivity = .settingPoints(pointType: .start)
         }
         
         /// Resets all of the important stateful values for when a trace is cancelled or completed.
