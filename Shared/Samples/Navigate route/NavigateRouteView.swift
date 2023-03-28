@@ -267,7 +267,7 @@ private extension NavigateRouteView {
                     case .notReached, .approaching:
                         statusText = """
                         Distance remaining: \(status.routeProgress.remainingDistance.distanceRemainingText)
-                        Time remaining: \(timeFormatter.string(from: status.routeProgress.remainingTime) ?? "")
+                        Time remaining: \(timeFormatter.string(from: status.routeProgress.remainingTime)!)
                         """
                         if status.currentManeuverIndex + 1 < directions.count {
                             statusText.append("\nNext direction: \(directions[status.currentManeuverIndex + 1].text)")
