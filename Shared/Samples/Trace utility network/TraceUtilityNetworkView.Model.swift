@@ -18,6 +18,12 @@ import Foundation
 extension TraceUtilityNetworkView {
     /// The model used to manage the state of the trace view.
     class Model: ObservableObject {
+        /// The parameters for the pending trace.
+        ///
+        /// Important trace information like the trace type, starting points, and barriers is contained
+        /// within this value.
+        @Published var pendingTraceParameters: UtilityTraceParameters?
+        
         /// The map contains the utility network and operational layers on which trace results will
         /// be selected.
         let map = {
