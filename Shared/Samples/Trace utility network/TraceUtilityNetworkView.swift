@@ -40,7 +40,7 @@ struct TraceUtilityNetworkView: View {
     }()
     
     /// The view model for the sample.
-    @StateObject private var model = Model()
+    @StateObject private var model = TraceUtilityNetworkView.Model()
     
     /// The parameters for the pending trace.
     ///
