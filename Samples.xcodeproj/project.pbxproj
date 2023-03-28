@@ -328,7 +328,7 @@
 				E004A6EE284E4B7A002A1FE6 /* Download vector tiles to local cache */,
 				E066DD33285CF3A0004D3D5B /* Find route */,
 				E088E1722863B5E600413100 /* Generate offline map */,
-				E008221328760149002AD138 /* Navigate a route */,
+				E008221328760149002AD138 /* Navigate route */,
 				E0EA0B75286638FD00C9621D /* Project geometry */,
 				00CB913628481475005C2C5D /* Search with geocode */,
 				E004A6F4284FA3C5002A1FE6 /* Select features in feature layer */,
@@ -579,12 +579,12 @@
 			path = "Select features in feature layer";
 			sourceTree = "<group>";
 		};
-		E008221328760149002AD138 /* Navigate a route */ = {
+		E008221328760149002AD138 /* Navigate route */ = {
 			isa = PBXGroup;
 			children = (
 				E008221428760157002AD138 /* NavigateARouteView.swift */,
 			);
-			path = "Navigate a route";
+			path = "Navigate route";
 			sourceTree = "<group>";
 		};
 		E041ABC3287CAFEB0056009B /* Web */ = {
