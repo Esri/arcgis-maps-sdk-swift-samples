@@ -153,7 +153,11 @@ extension TraceUtilityNetworkView {
                             fractionalLengthClosestTo: mapPoint,
                             tolerance: -1
                         )
-                        updateUserHint(withMessage: String(format: "fractionAlongEdge: %.3f", element.fractionAlongEdge))
+                        Task {
+                            await updateUserHint(
+                                withMessage: String(format: "fractionAlongEdge: %.3f", element.fractionAlongEdge)
+                            )
+                        }
                         add(element, at: mapPoint)
                     }
                 @unknown default:
@@ -201,7 +205,9 @@ extension TraceUtilityNetworkView {
                 try await ArcGISEnvironment.authenticationManager.arcGISCredentialStore.add(.publicSample)
                 try await network?.load()
             } catch {
-                updateUserHint(withMessage: "An error occurred while loading the network.")
+                Task {
+                    await updateUserHint(withMessage: "An error occurred while loading the network.")
+                }
                 return
             }
             featureLayerURLs.forEach { url in
@@ -243,27 +249,24 @@ extension TraceUtilityNetworkView {
         ///
         /// If no message is provided a default hint is used.
         /// - Parameter message: The message to display to the user.
-        func updateUserHint(withMessage message: String? = nil) {
-            DispatchQueue.main.async { [weak self] in
-                guard let self else { return }
-                if let message {
-                    self.hint = message
-                } else {
-                    switch self.tracingActivity {
-                    case .none:
-                        self.hint = ""
-                    case .settingPoints(let pointType):
-                        switch pointType {
-                        case .start:
-                            self.hint = "Tap on the map to add a Start Location."
-                        case .barrier:
-                            self.hint = "Tap on the map to add a Barrier."
-                        }
-                    case .tracing:
-                        self.hint = "Tracing..."
-                    case .viewingResults:
-                        self.hint = "Trace completed."
+        @MainActor func updateUserHint(withMessage message: String? = nil) {
+            if let message {
+                hint = message
+            } else {
+                switch tracingActivity {
+                case .none:
+                    hint = ""
+                case .settingPoints(let pointType):
+                    switch pointType {
+                    case .start:
+                        hint = "Tap on the map to add a Start Location."
+                    case .barrier:
+                        hint = "Tap on the map to add a Barrier."
                     }
+                case .tracing:
+                    hint = "Tracing..."
+                case .viewingResults:
+                    hint = "Trace completed."
                 }
             }
         }
