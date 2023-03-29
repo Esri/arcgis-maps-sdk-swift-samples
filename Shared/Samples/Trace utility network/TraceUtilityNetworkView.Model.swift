@@ -257,7 +257,7 @@ extension TraceUtilityNetworkView {
                 case .settingPoints(let pointType):
                     switch pointType {
                     case .start:
-                        hint = "Tap on the map to add a Start Location."
+                        hint = "Tap on the map to add a start location."
                     case .barrier:
                         hint = "Tap on the map to add a Barrier."
                     }
