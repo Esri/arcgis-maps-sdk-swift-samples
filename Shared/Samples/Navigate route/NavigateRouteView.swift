@@ -291,7 +291,7 @@ private extension NavigateRouteView {
             }
         }
         
-        /// Monitor the asynchronous stream of auto-pan modes.
+        /// Monitors the asynchronous stream of auto-pan modes.
         ///
         /// Updates the current auto-pan mode if it does not match the location display's auto-pan
         /// mode.
