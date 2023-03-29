@@ -17,6 +17,7 @@ extension TraceUtilityNetworkView {
     enum PointType: String {
         /// A point which marks a location for a trace to stop.
         case barrier
+        /// A point which marks a location for a trace to begin.
         case start
     }
     
