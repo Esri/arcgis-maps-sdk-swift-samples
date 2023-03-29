@@ -60,7 +60,7 @@ struct DownloadPreplannedMapAreaView: View {
                 }
             }
             .task {
-                // Make the offline map models when the view is first shown.
+                // Makes the offline map models when the view is first shown.
                 await model.makeOfflineMapModels()
             }
     }

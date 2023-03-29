@@ -58,7 +58,7 @@ extension DownloadPreplannedMapAreaView {
         @Published private(set) var canRemoveDownloadedMaps = false
         
         init() {
-            // Create temp directory.
+            // Creates temp directory.
             temporaryDirectory = FileManager.createTemporaryDirectory()
             
             // Initializes the online map and offline map task.
@@ -83,7 +83,7 @@ extension DownloadPreplannedMapAreaView {
         }
         
         deinit {
-            // Removes the temporary directory
+            // Removes the temporary directory.
             try? FileManager.default.removeItem(at: temporaryDirectory)
         }
         
@@ -98,7 +98,7 @@ extension DownloadPreplannedMapAreaView {
             case .offlineMap(let info):
                 if info.canDownload {
                     // If we have not yet downloaded or started downloading, then kick off a
-                    // download and reset selection to prevous selection since we have to download
+                    // download and reset selection to previous selection since we have to download
                     // the offline map.
                     selectedMap = oldValue
                     Task { [weak self] in
@@ -133,19 +133,19 @@ extension DownloadPreplannedMapAreaView {
             }
         }
         
-        // Removes all downloaded maps.
+        /// Removes all downloaded maps.
         func removeDownloadedMaps() {
             // Sets the current map to the online web map.
             selectedMap = .onlineWebMap
             
-            // Update state.
+            // Updates state.
             canRemoveDownloadedMaps = false
             
             Task {
-                // Cancel all current download jobs.
+                // Cancels all current download jobs.
                 await cancelAllJobs()
                 
-                // Remove each download.
+                // Removes each download.
                 allOfflineMapModels.forEach { $0.removeDownloadedContent() }
             }
         }
@@ -241,7 +241,7 @@ private extension OfflineMapModel {
         // Awaits the output of the job and assigns the result.
         result = await job.result.map { $0.mobileMapPackage }
         
-        // Set the job to nil
+        // Sets the job to nil
         self.job = nil
     }
     
@@ -274,7 +274,7 @@ private extension OfflineMapModel {
     
     /// Cancels current download.
     func cancelDownloading() async {
-        guard let job = job else {
+        guard let job else {
             return
         }
         await job.cancel()
