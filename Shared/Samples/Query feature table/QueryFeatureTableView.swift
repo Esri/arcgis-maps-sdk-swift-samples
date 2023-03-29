@@ -105,7 +105,7 @@ private extension QueryFeatureTableView {
         // Create a feature table using a url.
         let featureTable = ServiceFeatureTable(
              url: URL(string: "https://services.arcgis.com/jIL9msH9OI208GCb/arcgis/rest/services/USA_Daytime_Population_2016/FeatureServer/0")!
-)
+        )
         var featureLayer: FeatureLayer?
 
         init() {
