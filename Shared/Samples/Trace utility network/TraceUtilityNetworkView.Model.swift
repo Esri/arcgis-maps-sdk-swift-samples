@@ -221,7 +221,7 @@ extension TraceUtilityNetworkView {
         /// Runs a trace with the pending trace configuration and selects features in the map that
         /// correspond to the element results.
         ///
-        /// Note that elements are grouped by network source prior to selection so that all selections
+        /// - Note: Elements are grouped by network source prior to selection so that all selections
         /// per operational layer can be made at once.
         func trace() async throws {
             guard let pendingTraceParameters = pendingTraceParameters else { return }
