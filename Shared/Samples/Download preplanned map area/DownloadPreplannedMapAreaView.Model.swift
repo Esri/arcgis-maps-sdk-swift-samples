@@ -88,8 +88,8 @@ extension DownloadPreplannedMapAreaView {
         }
         
         /// Updates the displayed map based on the given preplanned map area. If the preplanned map
-        /// area is not nil, the preplanned map area will be downloaded if necessary and updates the map
-        /// to the currently selected preplanned map area. If the preplanned map area is nil, then the map
+        /// area is not `nil`, the preplanned map area will be downloaded if necessary and updates the map
+        /// to the currently selected preplanned map area. If the preplanned map area is `nil`, then the map
         /// is set to the online web map.
         private func selectedMapDidChange(from oldValue: SelectedMap) {
             switch selectedMap {
