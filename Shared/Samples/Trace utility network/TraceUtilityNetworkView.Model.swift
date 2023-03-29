@@ -205,9 +205,7 @@ extension TraceUtilityNetworkView {
                 try await ArcGISEnvironment.authenticationManager.arcGISCredentialStore.add(.publicSample)
                 try await network?.load()
             } catch {
-                Task {
-                    await updateUserHint(withMessage: "An error occurred while loading the network.")
-                }
+                await updateUserHint(withMessage: "An error occurred while loading the network.")
                 return
             }
             featureLayerURLs.forEach { url in
