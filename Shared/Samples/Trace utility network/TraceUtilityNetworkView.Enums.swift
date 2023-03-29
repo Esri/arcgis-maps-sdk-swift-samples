@@ -15,6 +15,7 @@
 extension TraceUtilityNetworkView {
     /// The types of points used during a utility network trace.
     enum PointType: String {
+        /// A point which marks a location for a trace to stop.
         case barrier
         case start
     }
