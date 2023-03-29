@@ -314,6 +314,7 @@ private extension NavigateRouteView {
             }
         }
         
+        /// Resets relevant stateful properties.
         func resetNavigation() async {
             guard !isResettingRoute else { return }
             isResettingRoute = true
