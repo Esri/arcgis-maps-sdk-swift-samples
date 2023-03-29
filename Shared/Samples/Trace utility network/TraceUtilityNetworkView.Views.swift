@@ -37,7 +37,7 @@ extension TraceUtilityNetworkView {
         .padding()
     }
     
-    /// A binding to the type of starting point being set.
+    /// A binding to the type of the starting point being set.
     ///
     /// - Note: This should only be used when the user is setting starting points or barriers. If
     /// this condition isn't present, gets will be inaccurate and sets will be ignored.
