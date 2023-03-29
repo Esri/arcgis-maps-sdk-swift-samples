@@ -239,7 +239,9 @@ extension TraceUtilityNetworkView {
             }
         }
         
-        /// Updates the textual user hint. If no message is provided a default hint is used.
+        /// Updates the textual user hint. 
+        /// 
+        /// If no message is provided a default hint is used.
         /// - Parameter message: The message to display to the user.
         func updateUserHint(withMessage message: String? = nil) {
             if let message {
