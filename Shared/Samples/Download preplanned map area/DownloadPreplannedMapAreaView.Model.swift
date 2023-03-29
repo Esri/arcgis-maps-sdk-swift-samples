@@ -165,12 +165,16 @@ extension DownloadPreplannedMapAreaView.Model {
 class OfflineMapModel: ObservableObject, Identifiable {
     /// The preplanned map area.
     let preplannedMapArea: PreplannedMapArea
+    
     /// The task to use to take the area offline.
     let offlineMapTask: OfflineMapTask
+    
     /// The directory where the mmpk will be stored.
     let mmpkDirectory: URL
+    
     /// The currently running download job.
     @Published private(set) var job: DownloadPreplannedOfflineMapJob?
+    
     /// The result of the download job.
     @Published private(set) var result: Result<MobileMapPackage, Error>?
     
