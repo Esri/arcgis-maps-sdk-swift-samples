@@ -72,14 +72,6 @@
 		4D2ADC6929C50C4C003B367F /* AddDynamicEntityLayerView.SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2ADC6829C50C4C003B367F /* AddDynamicEntityLayerView.SettingsView.swift */; };
 		4D2ADC6A29C50D91003B367F /* AddDynamicEntityLayerView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4D2ADC6629C50BD6003B367F /* AddDynamicEntityLayerView.Model.swift */; };
 		4D2ADC6B29C50D91003B367F /* AddDynamicEntityLayerView.SettingsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4D2ADC6829C50C4C003B367F /* AddDynamicEntityLayerView.SettingsView.swift */; };
-		75DD73A629D4C7960010229D /* TraceUtilityNetworkView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DD739F29D4C7960010229D /* TraceUtilityNetworkView.Model.swift */; };
-		75DD73A829D4C7960010229D /* TraceUtilityNetworkView.Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DD73A129D4C7960010229D /* TraceUtilityNetworkView.Enums.swift */; };
-		75DD73AA29D4C7960010229D /* TraceUtilityNetworkView.Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DD73A329D4C7960010229D /* TraceUtilityNetworkView.Views.swift */; };
-		75DD73AB29D4C7960010229D /* TraceUtilityNetworkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DD73A429D4C7960010229D /* TraceUtilityNetworkView.swift */; };
-		75DD73AD29D4C7BB0010229D /* TraceUtilityNetworkView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 75DD739F29D4C7960010229D /* TraceUtilityNetworkView.Model.swift */; };
-		75DD73AE29D4C7BB0010229D /* TraceUtilityNetworkView.Enums.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 75DD73A129D4C7960010229D /* TraceUtilityNetworkView.Enums.swift */; };
-		75DD73AF29D4C7BB0010229D /* TraceUtilityNetworkView.Views.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 75DD73A329D4C7960010229D /* TraceUtilityNetworkView.Views.swift */; };
-		75DD73B029D4C7BB0010229D /* TraceUtilityNetworkView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 75DD73A429D4C7960010229D /* TraceUtilityNetworkView.swift */; };
 		88F93CC129C3D59D0006B28E /* SketchOnMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F93CC029C3D59C0006B28E /* SketchOnMapView.swift */; };
 		88F93CC229C4D3480006B28E /* SketchOnMapView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 88F93CC029C3D59C0006B28E /* SketchOnMapView.swift */; };
 		E000E7602869E33D005D87C5 /* ClipGeometryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E000E75F2869E33D005D87C5 /* ClipGeometryView.swift */; };
@@ -207,10 +199,6 @@
 				0039A4F92885C50300592C86 /* ShowResultOfSpatialOperationsView.swift in Copy Source Code Files */,
 				0039A4FA2885C50300592C86 /* StyleGraphicsWithRendererView.swift in Copy Source Code Files */,
 				0039A4FB2885C50300592C86 /* StyleGraphicsWithSymbolsView.swift in Copy Source Code Files */,
-				75DD73AD29D4C7BB0010229D /* TraceUtilityNetworkView.Model.swift in Copy Source Code Files */,
-				75DD73AE29D4C7BB0010229D /* TraceUtilityNetworkView.Enums.swift in Copy Source Code Files */,
-				75DD73AF29D4C7BB0010229D /* TraceUtilityNetworkView.Views.swift in Copy Source Code Files */,
-				75DD73B029D4C7BB0010229D /* TraceUtilityNetworkView.swift in Copy Source Code Files */,
 			);
 			name = "Copy Source Code Files";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -257,10 +245,6 @@
 		4D2ADC6129C5071C003B367F /* ChangeMapViewBackgroundView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeMapViewBackgroundView.Model.swift; sourceTree = "<group>"; };
 		4D2ADC6629C50BD6003B367F /* AddDynamicEntityLayerView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDynamicEntityLayerView.Model.swift; sourceTree = "<group>"; };
 		4D2ADC6829C50C4C003B367F /* AddDynamicEntityLayerView.SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDynamicEntityLayerView.SettingsView.swift; sourceTree = "<group>"; };
-		75DD739F29D4C7960010229D /* TraceUtilityNetworkView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TraceUtilityNetworkView.Model.swift; sourceTree = "<group>"; };
-		75DD73A129D4C7960010229D /* TraceUtilityNetworkView.Enums.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TraceUtilityNetworkView.Enums.swift; sourceTree = "<group>"; };
-		75DD73A329D4C7960010229D /* TraceUtilityNetworkView.Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TraceUtilityNetworkView.Views.swift; sourceTree = "<group>"; };
-		75DD73A429D4C7960010229D /* TraceUtilityNetworkView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TraceUtilityNetworkView.swift; sourceTree = "<group>"; };
 		88F93CC029C3D59C0006B28E /* SketchOnMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SketchOnMapView.swift; sourceTree = "<group>"; };
 		E000E75F2869E33D005D87C5 /* ClipGeometryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipGeometryView.swift; sourceTree = "<group>"; };
 		E000E762286A0B18005D87C5 /* CutGeometryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutGeometryView.swift; sourceTree = "<group>"; };
@@ -402,7 +386,6 @@
 				88F93CBE29C3D4E30006B28E /* Sketch on map */,
 				E066DD362860AB0B004D3D5B /* Style graphics with renderer */,
 				E004A6E42846A609002A1FE6 /* Style graphics with symbols */,
-				75DD739E29D4C7960010229D /* Trace utility network */,
 			);
 			path = Samples;
 			sourceTree = "<group>";
@@ -585,17 +568,6 @@
 				4D2ADC6129C5071C003B367F /* ChangeMapViewBackgroundView.Model.swift */,
 			);
 			path = "Change map view background";
-			sourceTree = "<group>";
-		};
-		75DD739E29D4C7960010229D /* Trace utility network */ = {
-			isa = PBXGroup;
-			children = (
-				75DD739F29D4C7960010229D /* TraceUtilityNetworkView.Model.swift */,
-				75DD73A129D4C7960010229D /* TraceUtilityNetworkView.Enums.swift */,
-				75DD73A329D4C7960010229D /* TraceUtilityNetworkView.Views.swift */,
-				75DD73A429D4C7960010229D /* TraceUtilityNetworkView.swift */,
-			);
-			path = "Trace utility network";
 			sourceTree = "<group>";
 		};
 		88F93CBE29C3D4E30006B28E /* Sketch on map */ = {
@@ -969,7 +941,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				75DD73A629D4C7960010229D /* TraceUtilityNetworkView.Model.swift in Sources */,
 				E000E7602869E33D005D87C5 /* ClipGeometryView.swift in Sources */,
 				4D2ADC6729C50BD6003B367F /* AddDynamicEntityLayerView.Model.swift in Sources */,
 				E004A6E928493BCE002A1FE6 /* ShowDeviceLocationView.swift in Sources */,
@@ -983,7 +954,6 @@
 				E004A6ED2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift in Sources */,
 				E041ABD7287DB04D0056009B /* SampleInfoView.swift in Sources */,
 				E0082217287755AC002AD138 /* View+Sheet.swift in Sources */,
-				75DD73AB29D4C7960010229D /* TraceUtilityNetworkView.swift in Sources */,
 				00181B462846AD7100654571 /* View+Alert.swift in Sources */,
 				E0FE32E728747778002C6ACA /* BrowseBuildingFloorsView.swift in Sources */,
 				E0EA0B772866390E00C9621D /* ProjectGeometryView.swift in Sources */,
@@ -1022,9 +992,7 @@
 				E004A6F0284E4B9B002A1FE6 /* DownloadVectorTilesToLocalCacheView.swift in Sources */,
 				4D2ADC4329C26D05003B367F /* AddDynamicEntityLayerView.swift in Sources */,
 				0042E24528E4F82C001F33D6 /* ShowViewshedFromPointInSceneView.ViewshedSettingsView.swift in Sources */,
-				75DD73A829D4C7960010229D /* TraceUtilityNetworkView.Enums.swift in Sources */,
 				00CB9138284814A4005C2C5D /* SearchWithGeocodeView.swift in Sources */,
-				75DD73AA29D4C7960010229D /* TraceUtilityNetworkView.Views.swift in Sources */,
 				00E5401C27F3CCA200CF66D5 /* SamplesApp.swift in Sources */,
 				E066DD4028610F55004D3D5B /* AddSceneLayerFromServiceView.swift in Sources */,
 			);
