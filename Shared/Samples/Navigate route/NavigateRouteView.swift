@@ -282,7 +282,7 @@ private extension NavigateRouteView {
             }
         }
         
-        /// Monitor the asynchronous stream of voice guidances.
+        /// Monitors the asynchronous stream of voice guidances.
         private func trackVoiceGuidance() async {
             guard let routeTracker else { return }
             for try await voiceGuidance in routeTracker.voiceGuidances {
