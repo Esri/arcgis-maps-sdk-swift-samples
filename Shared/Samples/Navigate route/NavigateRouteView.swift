@@ -275,7 +275,6 @@ private extension NavigateRouteView {
                             try? await routeTracker.switchToNextDestination()
                         } else {
                             await locationDisplay.dataSource.stop()
-                            isNavigatingRoute = false
                         }
                     }
                 }
