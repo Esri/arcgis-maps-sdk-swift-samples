@@ -259,7 +259,7 @@ extension TraceUtilityNetworkView {
                     case .start:
                         hint = "Tap on the map to add a start location."
                     case .barrier:
-                        hint = "Tap on the map to add a Barrier."
+                        hint = "Tap on the map to add a barrier."
                     }
                 case .tracing:
                     hint = "Tracing..."
