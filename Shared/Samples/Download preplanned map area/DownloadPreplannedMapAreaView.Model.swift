@@ -87,10 +87,9 @@ extension DownloadPreplannedMapAreaView {
             try? FileManager.default.removeItem(at: temporaryDirectory)
         }
         
-        /// Updates the displayed map based on the given preplanned map area. If the preplanned map
-        /// area is not `nil`, the preplanned map area will be downloaded if necessary and updates the map
-        /// to the currently selected preplanned map area. If the preplanned map area is `nil`, then the map
-        /// is set to the online web map.
+        /// Handles a selection of a map.
+        /// If the selected map is an offline map and it has not yet been taken offline, then
+        /// it will start downloading. Otherwise the selected map will be used as the displayed map.
         private func selectedMapDidChange(from oldValue: SelectedMap) {
             switch selectedMap {
             case .onlineWebMap:
