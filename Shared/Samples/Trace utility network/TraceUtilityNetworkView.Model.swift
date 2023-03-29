@@ -179,7 +179,7 @@ extension TraceUtilityNetworkView {
         
         /// Makes new utility trace parameters with the provided trace type.
         /// - Parameter type: The trace type.
-        func makeTraceParameters(withTraceType type: UtilityTraceParameters.TraceType) {
+        func makeTraceParameters(with type: UtilityTraceParameters.TraceType) {
             pendingTraceParameters = UtilityTraceParameters(
                 traceType: type,
                 startingLocations: []
