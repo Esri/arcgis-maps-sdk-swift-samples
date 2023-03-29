@@ -36,18 +36,6 @@ struct TraceUtilityNetworkView: View {
                         model.lastSingleTap = (screenPoint, mapPoint)
                     }
                     .selectionColor(.yellow)
-                    .confirmationDialog(
-                        "Select trace type",
-                        isPresented: $model.traceTypeSelectorIsOpen,
-                        titleVisibility: .visible,
-                        actions: { traceTypePickerButtons }
-                    )
-                    .confirmationDialog(
-                        "Select terminal",
-                        isPresented: $model.terminalSelectorIsOpen,
-                        titleVisibility: .visible,
-                        actions: { terminalPickerButtons }
-                    )
                     .onChange(of: model.traceTypeSelectorIsOpen) { _ in
                         // If type selection is closed and a new trace wasn't initialized we can
                         // figure that the user opted to cancel.

@@ -25,8 +25,6 @@ extension TraceUtilityNetworkView {
     enum TracingActivity: Equatable {
         /// Indicates the user is setting starting points and barriers.
         case settingPoints(pointType: PointType)
-        /// Indicates the user is setting the trace type.
-        case settingType
         /// Indicates the user has started a trace and is awaiting results.
         case tracing
         /// Indicates the user is viewing trace results.

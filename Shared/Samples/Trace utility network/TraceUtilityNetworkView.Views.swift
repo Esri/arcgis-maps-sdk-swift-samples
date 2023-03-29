@@ -74,15 +74,20 @@ extension TraceUtilityNetworkView {
             case .none:
                 Button("Start a New Trace") {
                     withAnimation {
-                        model.tracingActivity = .settingType
                         model.traceTypeSelectorIsOpen.toggle()
                     }
                 }
                 .padding()
+                .confirmationDialog("Trace Type", isPresented: $model.traceTypeSelectorIsOpen) {
+                    traceTypePickerButtons
+                }
             case .settingPoints:
                 controlsForSettingPoints
-            case .settingType:
-                EmptyView()
+                    .alert(
+                        "Select terminal",
+                        isPresented: $model.terminalSelectorIsOpen,
+                        actions: { terminalPickerButtons }
+                    )
             case .tracing:
                 ProgressView()
                     .progressViewStyle(CircularProgressViewStyle())

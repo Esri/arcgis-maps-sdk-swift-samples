@@ -201,7 +201,7 @@ extension TraceUtilityNetworkView {
                 try await ArcGISEnvironment.authenticationManager.arcGISCredentialStore.add(.publicSample)
                 try await network?.load()
             } catch {
-                hint = "An error occurred while loading the network."
+                updateUserHint(withMessage: "An error occurred while loading the network.")
                 return
             }
             featureLayerURLs.forEach { url in
@@ -239,30 +239,31 @@ extension TraceUtilityNetworkView {
             }
         }
         
-        /// Updates the textual user hint. 
-        /// 
+        /// Updates the textual user hint.
+        ///
         /// If no message is provided a default hint is used.
         /// - Parameter message: The message to display to the user.
         func updateUserHint(withMessage message: String? = nil) {
-            if let message {
-                hint = message
-            } else {
-                switch tracingActivity {
-                case .none:
-                    hint = ""
-                case .settingPoints(let pointType):
-                    switch pointType {
-                    case .start:
-                        hint = "Tap on the map to add a Start Location."
-                    case .barrier:
-                        hint = "Tap on the map to add a Barrier."
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
+                if let message {
+                    self.hint = message
+                } else {
+                    switch self.tracingActivity {
+                    case .none:
+                        self.hint = ""
+                    case .settingPoints(let pointType):
+                        switch pointType {
+                        case .start:
+                            self.hint = "Tap on the map to add a Start Location."
+                        case .barrier:
+                            self.hint = "Tap on the map to add a Barrier."
+                        }
+                    case .tracing:
+                        self.hint = "Tracing..."
+                    case .viewingResults:
+                        self.hint = "Trace completed."
                     }
-                case .settingType:
-                    hint = "Choose the trace type"
-                case .tracing:
-                    hint = "Tracing..."
-                case .viewingResults:
-                    hint = "Trace completed."
                 }
             }
         }
