@@ -50,31 +50,29 @@ struct ChangeViewpointView: View {
                     .task(id: viewpointType) {
                         switch viewpointType {
                         case .centerAndScale:
-                            _ = try? await mapViewProxy.setViewpointCenter(model.londonEast, scale: 4e4)
+                            await mapViewProxy.setViewpointCenter(model.londonEast, scale: 4e4)
                         case .geometry:
-                            _ = try? await mapViewProxy.setViewpointGeometry(
+                            await mapViewProxy.setViewpointGeometry(
                                 model.griffithParkGeometry,
                                 padding: 50
                             )
                         case .animate:
-                            do {
-                                if let center = visibleArea?.extent.center {
-                                    let currentScale = scale
-                                    let targetScale = currentScale / 2
-                                    // Zoom in at the current location with animation.
-                                    let finishedWithoutInterruption = try await mapViewProxy.setViewpoint(
-                                        Viewpoint(center: center, scale: targetScale),
+                            if let center = visibleArea?.extent.center {
+                                let currentScale = scale
+                                let targetScale = currentScale / 2
+                                // Zoom in at the current location with animation.
+                                let finishedWithoutInterruption = await mapViewProxy.setViewpoint(
+                                    Viewpoint(center: center, scale: targetScale),
+                                    duration: 5
+                                )
+                                if finishedWithoutInterruption {
+                                    // If the zoom in finishes, zoom out with animation.
+                                    await mapViewProxy.setViewpoint(
+                                        Viewpoint(center: center, scale: currentScale),
                                         duration: 5
                                     )
-                                    if finishedWithoutInterruption {
-                                        // If the zoom in finishes, zoom out with animation.
-                                        try await mapViewProxy.setViewpoint(
-                                            Viewpoint(center: center, scale: currentScale),
-                                            duration: 5
-                                        )
-                                    }
                                 }
-                            } catch {}
+                            }
                         }
                     }
                 HStack {
