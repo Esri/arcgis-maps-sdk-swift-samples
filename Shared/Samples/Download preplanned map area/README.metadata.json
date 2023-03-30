@@ -1,0 +1,33 @@
+{
+    "category": "Maps",
+    "description": "Take a map offline using a preplanned map area.",
+    "ignore": false,
+    "images": [
+        "download-preplanned-map-area.png"
+    ],
+    "keywords": [
+        "map area",
+        "offline",
+        "pre-planned",
+        "preplanned",
+        "DownloadPreplannedOfflineMapResult",
+        "OfflineMapTask",
+        "OfflineMapTask.makeDefaultDownloadPreplannedOfflineMapParameters(preplannedMapArea:)",
+        "OfflineMapTask.makeDownloadPreplannedOfflineMapJob(parameters:downloadDirectory:)",
+        "PreplannedMapArea"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "DownloadPreplannedOfflineMapResult",
+        "OfflineMapTask",
+        "OfflineMapTask.makeDefaultDownloadPreplannedOfflineMapParameters(preplannedMapArea:)",
+        "OfflineMapTask.makeDownloadPreplannedOfflineMapJob(parameters:downloadDirectory:)",
+        "PreplannedMapArea"
+    ],
+    "snippets": [
+        "DownloadPreplannedMapAreaView.swift",
+        "DownloadPreplannedMapAreaView.MapPicker.swift",
+        "DownloadPreplannedMapAreaView.Model.swift"
+    ],
+    "title": "Download preplanned map area"
+}
