@@ -36,9 +36,9 @@ struct QueryFeatureTableView: View {
                 .alert(isPresented: $isShowingAlert, presentingError: error)
                 // Makes the search bar.
                 .searchable(text: $searchBarText, prompt: Text("Search state names"))
-                .onSubmit(of: .search, {
+                .onSubmit(of: .search) {
                     model.currentQuery = searchBarText
-                })
+                }
                 // A task that runs when the query text changes.
                 .task(id: model.currentQuery) {
                     // Makes sure we have a query string.
