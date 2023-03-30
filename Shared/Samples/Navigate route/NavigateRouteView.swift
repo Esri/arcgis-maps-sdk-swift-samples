@@ -254,7 +254,6 @@ private extension NavigateRouteView {
         ///
         /// When new statuses are delivered, update the route's traversed and remaining graphics.
         private func trackStatus() async {
-            guard let routeTracker else { return }
             for await status in routeTracker.$trackingStatus {
                 if let status {
                     routeTraversedGraphic.geometry = status.routeProgress.traversedGeometry
@@ -283,7 +282,6 @@ private extension NavigateRouteView {
         
         /// Monitors the asynchronous stream of voice guidances.
         private func trackVoiceGuidance() async {
-            guard let routeTracker else { return }
             for try await voiceGuidance in routeTracker.voiceGuidances {
                 speechSynthesizer.stopSpeaking(at: .word)
                 speechSynthesizer.speak(AVSpeechUtterance(string: voiceGuidance.text))
@@ -320,6 +318,7 @@ private extension NavigateRouteView {
             locationDisplay.autoPanMode = .off
             await locationDisplay.dataSource.stop()
             setNavigation()
+            routeTraversedGraphic.geometry = nil
             speechSynthesizer.stopSpeaking(at: .immediate)
             statusText = Self.defaultStatus
             isResettingRoute = false
