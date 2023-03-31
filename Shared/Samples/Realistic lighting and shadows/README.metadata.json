@@ -16,7 +16,7 @@
         "time",
         "Scene",
         "SceneView",
-        "SceneView.SunLighting",
+        "SceneView.SunLighting"
     ],
     "redirect_from": [],
     "relevant_apis": [
