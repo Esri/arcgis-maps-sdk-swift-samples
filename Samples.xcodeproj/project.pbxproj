@@ -345,6 +345,14 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		0023DE5029D648FA0098243A /* macOS */ = {
+			isa = PBXGroup;
+			children = (
+				00ACF554293E6C6A0059B2A9 /* Samples.entitlements */,
+			);
+			path = macOS;
+			sourceTree = "<group>";
+		};
 		003D7C332821EBCC009DDFD2 /* Scripts */ = {
 			isa = PBXGroup;
 			children = (
@@ -542,11 +550,11 @@
 			isa = PBXGroup;
 			children = (
 				00966EE62811F64D009D3DD7 /* iOS */,
+				0023DE5029D648FA0098243A /* macOS */,
 				00CCB8A6285D059300BBAB70 /* Portal Data */,
 				00E5401427F3CCA200CF66D5 /* Products */,
 				003D7C332821EBCC009DDFD2 /* Scripts */,
 				00E5400B27F3CCA100CF66D5 /* Shared */,
-				00ACF554293E6C6A0059B2A9 /* Samples.entitlements */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1194,7 +1202,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Samples.entitlements;
+				CODE_SIGN_ENTITLEMENTS = macOS/Samples.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1224,7 +1232,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Samples.entitlements;
+				CODE_SIGN_ENTITLEMENTS = macOS/Samples.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;

@@ -37,6 +37,8 @@
 	<string>Your location is used to show your position on the map.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
+		<key>UISceneConfigurations</key>
+		<dict/>
 		<key>UIApplicationSupportsMultipleScenes</key>
 		<false/>
 	</dict>
