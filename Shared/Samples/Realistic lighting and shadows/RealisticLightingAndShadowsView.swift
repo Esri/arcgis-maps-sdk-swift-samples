@@ -62,10 +62,8 @@ struct RealisticLightingAndShadowsView: View {
         .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
                 Text(dateTimeText)
-                Button {
+                Button("Mode") {
                     isShowingSettings = true
-                } label: {
-                    Text("Mode")
                 }
                 .alert("Choose a lighting mode for the scene view.", isPresented: $isShowingSettings) {
                     ForEach(SceneView.SunLighting?.allCases, id: \.self) { mode in
@@ -117,8 +115,8 @@ extension RealisticLightingAndShadowsView {
         }()
         
         /// The range of possible date second values.
-        /// The range is 0 to 86,340 seconds ((60 seconds *60 minutes *24 hours)  - 60 seconds),
-        /// which means 12 am to 11:59 pm
+        /// The range is 0 to 86,340 seconds ((60 seconds * 60 minutes * 24 hours)  - 60 seconds),
+        /// which means 12 am to 11:59 pm.
         static var dateSecondValueRange: ClosedRange<Float> { 0...86340 }
     }
 }
