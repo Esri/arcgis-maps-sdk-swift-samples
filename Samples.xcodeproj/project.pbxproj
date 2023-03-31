@@ -59,10 +59,12 @@
 		00E5401C27F3CCA200CF66D5 /* SamplesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5400C27F3CCA100CF66D5 /* SamplesApp.swift */; };
 		00E5401E27F3CCA200CF66D5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5400D27F3CCA100CF66D5 /* ContentView.swift */; };
 		00E5402027F3CCA200CF66D5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00E5400E27F3CCA200CF66D5 /* Assets.xcassets */; };
-		1C0C1C3929D34DAE005C8B24 /* ChangeViewpointView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0C1C3429D34DAE005C8B24 /* ChangeViewpointView.swift */; };
-		1C0C1C3D29D34DDD005C8B24 /* ChangeViewpointView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C0C1C3429D34DAE005C8B24 /* ChangeViewpointView.swift */; };
 		108EC04129D25B2C000F35D0 /* QueryFeatureTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108EC04029D25B2C000F35D0 /* QueryFeatureTableView.swift */; };
 		108EC04229D25B55000F35D0 /* QueryFeatureTableView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 108EC04029D25B2C000F35D0 /* QueryFeatureTableView.swift */; };
+		1C0C1C3929D34DAE005C8B24 /* ChangeViewpointView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0C1C3429D34DAE005C8B24 /* ChangeViewpointView.swift */; };
+		1C0C1C3D29D34DDD005C8B24 /* ChangeViewpointView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C0C1C3429D34DAE005C8B24 /* ChangeViewpointView.swift */; };
+		1C0C1C5329D7673D005C8B24 /* RealisticLightingAndShadowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0C1C4F29D7673D005C8B24 /* RealisticLightingAndShadowsView.swift */; };
+		1C0C1C5729D76768005C8B24 /* RealisticLightingAndShadowsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C0C1C4F29D7673D005C8B24 /* RealisticLightingAndShadowsView.swift */; };
 		1C42E04729D2396B004FC4BE /* ShowPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C42E04329D2396B004FC4BE /* ShowPopupView.swift */; };
 		1C42E04A29D239D2004FC4BE /* ShowPopupView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C42E04329D2396B004FC4BE /* ShowPopupView.swift */; };
 		218F35B829C28F4A00502022 /* AuthenticateWithOAuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218F35B329C28F4A00502022 /* AuthenticateWithOAuthView.swift */; };
@@ -177,14 +179,12 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				1C0C1C5729D76768005C8B24 /* RealisticLightingAndShadowsView.swift in Copy Source Code Files */,
 				883C121729C914E100062FF9 /* DownloadPreplannedMapAreaView.MapPicker.swift in Copy Source Code Files */,
 				883C121829C914E100062FF9 /* DownloadPreplannedMapAreaView.Model.swift in Copy Source Code Files */,
 				883C121929C914E100062FF9 /* DownloadPreplannedMapAreaView.swift in Copy Source Code Files */,
 				1C0C1C3D29D34DDD005C8B24 /* ChangeViewpointView.swift in Copy Source Code Files */,
 				1C42E04A29D239D2004FC4BE /* ShowPopupView.swift in Copy Source Code Files */,
-				108EC04329D25D6D000F35D0 /* ChangeMapViewBackgroundView.swift in Copy Source Code Files */,
-				108EC04429D25D6D000F35D0 /* ChangeMapViewBackgroundView.SettingsView.swift in Copy Source Code Files */,
-				108EC04529D25D6D000F35D0 /* ChangeMapViewBackgroundView.Model.swift in Copy Source Code Files */,
 				108EC04229D25B55000F35D0 /* QueryFeatureTableView.swift in Copy Source Code Files */,
 				88F93CC229C4D3480006B28E /* SketchOnMapView.swift in Copy Source Code Files */,
 				0044289329C9234300160767 /* GetElevationAtPointOnSurfaceView.swift in Copy Source Code Files */,
@@ -264,8 +264,9 @@
 		00E5400E27F3CCA200CF66D5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		00E5401327F3CCA200CF66D5 /* Samples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Samples.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E5402A27F775EA00CF66D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1C0C1C3429D34DAE005C8B24 /* ChangeViewpointView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeViewpointView.swift; sourceTree = "<group>"; };
 		108EC04029D25B2C000F35D0 /* QueryFeatureTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueryFeatureTableView.swift; sourceTree = "<group>"; };
+		1C0C1C3429D34DAE005C8B24 /* ChangeViewpointView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeViewpointView.swift; sourceTree = "<group>"; };
+		1C0C1C4F29D7673D005C8B24 /* RealisticLightingAndShadowsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealisticLightingAndShadowsView.swift; sourceTree = "<group>"; };
 		1C42E04329D2396B004FC4BE /* ShowPopupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowPopupView.swift; sourceTree = "<group>"; };
 		218F35B329C28F4A00502022 /* AuthenticateWithOAuthView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticateWithOAuthView.swift; sourceTree = "<group>"; };
 		4D2ADC3F29C26D05003B367F /* AddDynamicEntityLayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDynamicEntityLayerView.swift; sourceTree = "<group>"; };
@@ -416,6 +417,7 @@
 				75DD739029D38B1B0010229D /* Navigate route */,
 				E0EA0B75286638FD00C9621D /* Project geometry */,
 				108EC03F29D25AE1000F35D0 /* Query feature table */,
+				1C0C1C4E29D7673D005C8B24 /* Realistic lighting and shadows */,
 				00CB913628481475005C2C5D /* Search with geocode */,
 				E004A6F4284FA3C5002A1FE6 /* Select features in feature layer */,
 				00B042E3282EDC690072E1B4 /* Set basemap */,
@@ -579,6 +581,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		108EC03F29D25AE1000F35D0 /* Query feature table */ = {
+			isa = PBXGroup;
+			children = (
+				108EC04029D25B2C000F35D0 /* QueryFeatureTableView.swift */,
+			);
+			path = "Query feature table";
+			sourceTree = "<group>";
+		};
 		1C0C1C3229D34DAE005C8B24 /* Change viewpoint */ = {
 			isa = PBXGroup;
 			children = (
@@ -587,12 +597,12 @@
 			path = "Change viewpoint";
 			sourceTree = "<group>";
 		};
-		108EC03F29D25AE1000F35D0 /* Query feature table */ = {
+		1C0C1C4E29D7673D005C8B24 /* Realistic lighting and shadows */ = {
 			isa = PBXGroup;
 			children = (
-				108EC04029D25B2C000F35D0 /* QueryFeatureTableView.swift */,
+				1C0C1C4F29D7673D005C8B24 /* RealisticLightingAndShadowsView.swift */,
 			);
-			path = "Query feature table";
+			path = "Realistic lighting and shadows";
 			sourceTree = "<group>";
 		};
 		1C42E04129D2396B004FC4BE /* Show popup */ = {
@@ -1054,6 +1064,7 @@
 				E088E1572862579D00413100 /* SetSurfacePlacementModeView.swift in Sources */,
 				E004A6C128414332002A1FE6 /* SetViewpointRotationView.swift in Sources */,
 				883C121529C9136600062FF9 /* DownloadPreplannedMapAreaView.MapPicker.swift in Sources */,
+				1C0C1C5329D7673D005C8B24 /* RealisticLightingAndShadowsView.swift in Sources */,
 				00E5401E27F3CCA200CF66D5 /* ContentView.swift in Sources */,
 				E066DD382860AB28004D3D5B /* StyleGraphicsWithRendererView.swift in Sources */,
 				108EC04129D25B2C000F35D0 /* QueryFeatureTableView.swift in Sources */,
