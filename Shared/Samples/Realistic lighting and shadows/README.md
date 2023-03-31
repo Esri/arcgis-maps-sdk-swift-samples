@@ -21,9 +21,9 @@ Select one of the three lighting options to show that lighting effect on the `Sc
 
 ## Relevant API
 
-* SceneView.SunLighting
 * Scene
 * SceneView
+* SceneView.SunLighting
 
 ## Tags
 
