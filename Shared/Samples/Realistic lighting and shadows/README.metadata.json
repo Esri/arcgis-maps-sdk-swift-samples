@@ -14,9 +14,9 @@
         "shadows",
         "sun",
         "time",
-        "SceneVie.SunLighting",
         "Scene",
-        "SceneView"
+        "SceneView",
+        "SceneView.SunLighting",
     ],
     "redirect_from": [],
     "relevant_apis": [
