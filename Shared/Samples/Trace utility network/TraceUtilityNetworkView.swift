@@ -21,59 +21,63 @@ struct TraceUtilityNetworkView: View {
     
     var body: some View {
         GeometryReader { geometryProxy in
-            VStack(spacing: .zero) {
+            MapViewReader { mapViewProxy in
+                MapView(
+                    map: model.map,
+                    viewpoint: .initialViewpoint,
+                    graphicsOverlays: [model.points]
+                )
+                .onSingleTapGesture { screenPoint, mapPoint in
+                    model.lastSingleTap = (screenPoint, mapPoint)
+                }
+                .selectionColor(.yellow)
+                .onChange(of: model.traceTypeSelectorIsOpen) { _ in
+                    // If type selection is closed and a new trace wasn't initialized we can
+                    // figure that the user opted to cancel.
+                    if !model.traceTypeSelectorIsOpen && model.pendingTraceParameters == nil {
+                        model.reset()
+                    }
+                }
+                .onDisappear {
+                    ArcGISEnvironment.authenticationManager.arcGISCredentialStore.removeAll()
+                }
+                .task {
+                    await model.setup()
+                }
+                .task(id: model.lastSingleTap?.mapPoint) {
+                    guard case .settingPoints = model.tracingActivity,
+                          let lastSingleTap = model.lastSingleTap else {
+                        return
+                    }
+                    if let feature = await model.identifyFeatureAt(
+                        lastSingleTap.screenPoint,
+                        with: mapViewProxy
+                    ) {
+                        model.add(feature, at: lastSingleTap.mapPoint)
+                    }
+                }
+                .task(id: model.tracingActivity) {
+                    model.updateUserHint()
+                    if model.tracingActivity == .tracing {
+                        do {
+                            try await model.trace()
+                            model.tracingActivity = .viewingResults
+                        } catch {
+                            model.tracingActivity = .none
+                            model.updateUserHint(withMessage: "An error occurred")
+                        }
+                    }
+                }
+            }
+            .overlay(alignment: .top) {
                 if let hint = model.hint {
                     Text(hint)
                         .padding([.bottom])
+                        .frame(maxWidth: .infinity)
+                        .background(.thinMaterial)
                 }
-                MapViewReader { mapViewProxy in
-                    MapView(
-                        map: model.map,
-                        viewpoint: .initialViewpoint,
-                        graphicsOverlays: [model.points]
-                    )
-                    .onSingleTapGesture { screenPoint, mapPoint in
-                        model.lastSingleTap = (screenPoint, mapPoint)
-                    }
-                    .selectionColor(.yellow)
-                    .onChange(of: model.traceTypeSelectorIsOpen) { _ in
-                        // If type selection is closed and a new trace wasn't initialized we can
-                        // figure that the user opted to cancel.
-                        if !model.traceTypeSelectorIsOpen && model.pendingTraceParameters == nil {
-                            model.reset()
-                        }
-                    }
-                    .onDisappear {
-                        ArcGISEnvironment.authenticationManager.arcGISCredentialStore.removeAll()
-                    }
-                    .task {
-                        await model.setup()
-                    }
-                    .task(id: model.lastSingleTap?.mapPoint) {
-                        guard case .settingPoints = model.tracingActivity,
-                              let lastSingleTap = model.lastSingleTap else {
-                            return
-                        }
-                        if let feature = await model.identifyFeatureAt(
-                            lastSingleTap.screenPoint,
-                            with: mapViewProxy
-                        ) {
-                            model.add(feature, at: lastSingleTap.mapPoint)
-                        }
-                    }
-                    .task(id: model.tracingActivity) {
-                        model.updateUserHint()
-                        if model.tracingActivity == .tracing {
-                            do {
-                                try await model.trace()
-                                model.tracingActivity = .viewingResults
-                            } catch {
-                                model.tracingActivity = .none
-                                model.updateUserHint(withMessage: "An error occurred")
-                            }
-                        }
-                    }
-                }
+            }
+            .overlay(alignment: .bottom) {
                 traceMenu
                     .frame(width: geometryProxy.size.width)
                     .background(.thinMaterial)
