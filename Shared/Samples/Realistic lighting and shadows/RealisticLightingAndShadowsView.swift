@@ -23,7 +23,7 @@ struct RealisticLightingAndShadowsView: View {
     @State var isShowingSettings = false
     
     /// The date second value controlled by the slider.
-    @State private var dateSecond: Float = 43170
+    @State private var dateSecond: Float = Model.dateSecondsAfternoon
     
     @State private var dateTimeText: String = DateFormatter.localizedString(
         from: Calendar.current.startOfDay(for: Date()),
@@ -38,7 +38,7 @@ struct RealisticLightingAndShadowsView: View {
     @State private var lightingMode: SceneView.SunLighting = .lightAndShadows
     
     /// The sun date that gets passed into the scene view.
-    @State private var sunDate: Date = Calendar.current.startOfDay(for: Date()).advanced(by: TimeInterval(43170))
+    @State private var sunDate: Date = Calendar.current.startOfDay(for: Date()).advanced(by: TimeInterval(Model.dateSecondsAfternoon))
     
     var body: some View {
         VStack {
@@ -118,6 +118,9 @@ extension RealisticLightingAndShadowsView {
         /// The range is 0 to 86,340 seconds ((60 seconds * 60 minutes * 24 hours)  - 60 seconds),
         /// which means 12 am to 11:59 pm.
         static var dateSecondValueRange: ClosedRange<Float> { 0...86340 }
+        
+        /// The number of seconds to represent 12 pm (60 seconds * 60 minutes * 12 hours).
+        static var dateSecondsAfternoon: Float = 43170
     }
 }
 
