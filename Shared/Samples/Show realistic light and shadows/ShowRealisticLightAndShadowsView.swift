@@ -27,7 +27,7 @@ struct ShowRealisticLightAndShadowsView: View {
     
     /// The formatted text of the date controlled by the slider.
     @State private var dateTimeText: String = DateFormatter.localizedString(
-        from: Calendar.current.startOfDay(for: .now),
+        from: Date.now,
         dateStyle: .medium,
         timeStyle: .short
     )
@@ -39,7 +39,7 @@ struct ShowRealisticLightAndShadowsView: View {
     @State private var lightingMode: SceneView.SunLighting = .lightAndShadows
     
     /// The sun date that gets passed into the scene view.
-    @State private var sunDate: Date = Calendar.current.startOfDay(for: .now).advanced(by: TimeInterval(Model.dateSecondBeforeNoon))
+    @State private var sunDate: Date = Date.now.advanced(by: TimeInterval(Model.dateSecondBeforeNoon))
     
     var body: some View {
         VStack {
@@ -80,7 +80,7 @@ struct ShowRealisticLightAndShadowsView: View {
     private func sliderValueChanged(toValue value: Float) {
         // A DateComponents struct to encapsulate the minute value from the slider.
         let dateComponents = DateComponents(second: Int(value))
-        let startOfToday = Calendar.current.startOfDay(for: .now)
+        let startOfToday = Date.now
         let date = Calendar.current.date(byAdding: dateComponents, to: startOfToday)!
         dateTimeText = DateFormatter.localizedString(from: date, dateStyle: .medium, timeStyle: .short)
         sunDate = date
@@ -139,6 +139,6 @@ private extension SceneView.SunLighting {
     }
 }
 
-//private extension Date {
-//    let now = Calendar.current.startOfDay(for: .now)
-//}
+private extension Date {
+    static let now = Calendar.current.startOfDay(for: .now)
+}
