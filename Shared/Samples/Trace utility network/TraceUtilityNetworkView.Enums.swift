@@ -19,6 +19,16 @@ extension TraceUtilityNetworkView {
         case barrier
         /// A point which marks a location for a trace to begin.
         case start
+        
+        /// A displayable name the point type.
+        var label: String {
+            switch self {
+            case .barrier:
+                return "Barrier"
+            case .start:
+                return "Start"
+            }
+        }
     }
     
     /// The different activities a user will traverse while performing a utility network trace.

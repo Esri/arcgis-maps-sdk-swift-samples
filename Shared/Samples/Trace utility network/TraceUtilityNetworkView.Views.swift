@@ -21,7 +21,7 @@ extension TraceUtilityNetworkView {
     private var controlsForSettingPoints: some View {
         Picker("Add starting points & barriers", selection: pointType) {
             ForEach([PointType.start, PointType.barrier], id: \.self) { type in
-                Text(String(describing: type).capitalized).tag(type)
+                Text(type.label).tag(type)
             }
         }
         .padding()
