@@ -25,7 +25,7 @@
         "SceneView.SunLighting"
     ],
     "snippets": [
-        "RealisticLightingAndShadowsView.swift"
+        "ShowRealisticLightAndShadowsView.swift"
     ],
-    "title": "Realistic lighting and shadows"
+    "title": "Show realistic light and shadows"
 }

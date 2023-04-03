@@ -15,18 +15,19 @@
 import SwiftUI
 import ArcGIS
 
-struct RealisticLightingAndShadowsView: View {
+struct ShowRealisticLightAndShadowsView: View {
     /// The view model for this sample.
     @StateObject private var model = Model()
     
     /// A Boolean value indicating whether the settings view should be presented.
-    @State var isShowingSettings = false
+    @State private var isShowingSettings = false
     
     /// The date second value controlled by the slider.
-    @State private var dateSecond: Float = Model.dateSecondsAfternoon
+    @State private var dateSecond: Float = Model.dateSecondBeforeNoon
     
+    /// The formatted text of the date controlled by the slider.
     @State private var dateTimeText: String = DateFormatter.localizedString(
-        from: Calendar.current.startOfDay(for: Date()),
+        from: Calendar.current.startOfDay(for: .now),
         dateStyle: .medium,
         timeStyle: .short
     )
@@ -38,7 +39,7 @@ struct RealisticLightingAndShadowsView: View {
     @State private var lightingMode: SceneView.SunLighting = .lightAndShadows
     
     /// The sun date that gets passed into the scene view.
-    @State private var sunDate: Date = Calendar.current.startOfDay(for: Date()).advanced(by: TimeInterval(Model.dateSecondsAfternoon))
+    @State private var sunDate: Date = Calendar.current.startOfDay(for: .now).advanced(by: TimeInterval(Model.dateSecondBeforeNoon))
     
     var body: some View {
         VStack {
@@ -47,7 +48,6 @@ struct RealisticLightingAndShadowsView: View {
                 .sunLighting(lightingMode)
                 .sunDate(sunDate)
             
-            VStack {
                 Slider(value: $dateSecond, in: Model.dateSecondValueRange) {
                 } minimumValueLabel: {
                     Text("AM")
@@ -56,8 +56,7 @@ struct RealisticLightingAndShadowsView: View {
                 }
                 .frame(maxWidth: 540)
                 .onChange(of: dateSecond, perform: sliderValueChanged(toValue:))
-            }
-            .padding()
+                .padding()
         }
         .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
@@ -65,10 +64,10 @@ struct RealisticLightingAndShadowsView: View {
                 Button("Mode") {
                     isShowingSettings = true
                 }
-                .alert("Choose a lighting mode for the scene view.", isPresented: $isShowingSettings) {
-                    ForEach(SceneView.SunLighting?.allCases, id: \.self) { mode in
+                .confirmationDialog("Choose a lighting mode for the scene view.", isPresented: $isShowingSettings) {
+                    ForEach(SceneView.SunLighting.allCases, id: \.self) { mode in
                         Button(mode.label) {
-                            lightingMode = mode!
+                            lightingMode = mode
                         }
                     }
                 }
@@ -76,28 +75,28 @@ struct RealisticLightingAndShadowsView: View {
         }
     }
     
-    /// Handle slider value changed event and set the scene view's sun date.
+    /// Handles slider value changed event and set the scene view's sun date.
     /// - Parameter value: The slider's value.
     private func sliderValueChanged(toValue value: Float) {
         // A DateComponents struct to encapsulate the minute value from the slider.
         let dateComponents = DateComponents(second: Int(value))
-        let startOfToday = Calendar.current.startOfDay(for: Date())
+        let startOfToday = Calendar.current.startOfDay(for: .now)
         let date = Calendar.current.date(byAdding: dateComponents, to: startOfToday)!
         dateTimeText = DateFormatter.localizedString(from: date, dateStyle: .medium, timeStyle: .short)
         sunDate = date
     }
 }
 
-extension RealisticLightingAndShadowsView {
+extension ShowRealisticLightAndShadowsView {
     /// The model used to store the geo model and other expensive objects
     /// used in this view.
     class Model: ObservableObject {
         /// A scene with buildings.
         let scene: ArcGIS.Scene = {
-            // Create a scene layer from buildings REST service.
+            // Creates a scene layer from buildings REST service.
             let buildingsURL = URL(string: "https://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/DevA_BuildingShells/SceneServer")!
             let buildingsLayer = ArcGISSceneLayer(url: buildingsURL)
-            // Create an elevation source from Terrain3D REST service.
+            // Creates an elevation source from Terrain3D REST service.
             let elevationServiceURL = URL(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!
             let elevationSource = ArcGISTiledElevationSource(url: elevationServiceURL)
             let surface = Surface()
@@ -120,11 +119,11 @@ extension RealisticLightingAndShadowsView {
         static var dateSecondValueRange: ClosedRange<Float> { 0...86340 }
         
         /// The number of seconds to represent 12 pm (60 seconds * 60 minutes * 12 hours).
-        static var dateSecondsAfternoon: Float = 43170
+        static let dateSecondBeforeNoon: Float = 43170
     }
 }
 
-private extension Optional where Wrapped == SceneView.SunLighting {
+private extension SceneView.SunLighting {
     static var allCases: [Self] { [.lightAndShadows, .light, .off] }
     
     /// A human-readable label of the sun lighting mode.
@@ -134,8 +133,12 @@ private extension Optional where Wrapped == SceneView.SunLighting {
             return "Light And Shadows"
         case .light:
             return "Light only"
-        case .off, .none:
+        case .off:
             return "No Light"
         }
     }
 }
+
+//private extension Date {
+//    let now = Calendar.current.startOfDay(for: .now)
+//}
