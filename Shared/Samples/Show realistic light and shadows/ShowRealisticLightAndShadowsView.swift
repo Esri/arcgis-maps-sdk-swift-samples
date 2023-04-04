@@ -46,6 +46,7 @@ struct ShowRealisticLightAndShadowsView: View {
                 .sunDate(sunDate)
             
             Slider(value: $dateSecond, in: Model.dateSecondValueRange) {
+                Text("Time of day")
             } minimumValueLabel: {
                 Text("AM")
             } maximumValueLabel: {
