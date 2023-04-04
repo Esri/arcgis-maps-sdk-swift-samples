@@ -28,5 +28,4 @@ The sample loads with the default globe camera controller. To rotate and fix the
 
 ## Tags
 
-3D, camera, camera controller
-
+3D, camera, camera controllers
