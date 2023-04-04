@@ -27,36 +27,32 @@ struct ShowRealisticLightAndShadowsView: View {
     
     /// The formatted text of the date controlled by the slider.
     @State private var dateTimeText: String = DateFormatter.localizedString(
-        from: Date.now,
+        from: .startOfDay.advanced(by: TimeInterval(Model.dateSecondsNoon)),
         dateStyle: .medium,
         timeStyle: .short
     )
-    
-    /// The atmosphere effect of the scene view.
-    @State private var atmosphereEffect: SceneView.AtmosphereEffect = .realistic
-    
     /// The sun lighting mode of the scene view.
     @State private var lightingMode: SceneView.SunLighting = .lightAndShadows
     
     /// The sun date that gets passed into the scene view.
-    @State private var sunDate: Date = Date.now.advanced(by: TimeInterval(Model.dateSecondBeforeNoon))
+    @State private var sunDate = Date.startOfDay.advanced(by: TimeInterval(Model.dateSecondBeforeNoon))
     
     var body: some View {
         VStack {
             SceneView(scene: model.scene)
-                .atmosphereEffect(atmosphereEffect)
+                .atmosphereEffect(.realistic)
                 .sunLighting(lightingMode)
                 .sunDate(sunDate)
             
-                Slider(value: $dateSecond, in: Model.dateSecondValueRange) {
-                } minimumValueLabel: {
-                    Text("AM")
-                } maximumValueLabel: {
-                    Text("PM")
-                }
-                .frame(maxWidth: 540)
-                .onChange(of: dateSecond, perform: sliderValueChanged(toValue:))
-                .padding()
+            Slider(value: $dateSecond, in: Model.dateSecondValueRange) {
+            } minimumValueLabel: {
+                Text("AM")
+            } maximumValueLabel: {
+                Text("PM")
+            }
+            .frame(maxWidth: 540)
+            .onChange(of: dateSecond, perform: sliderValueChanged(toValue:))
+            .padding()
         }
         .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
@@ -64,7 +60,7 @@ struct ShowRealisticLightAndShadowsView: View {
                 Button("Mode") {
                     isShowingSettings = true
                 }
-                .confirmationDialog("Choose a lighting mode for the scene view.", isPresented: $isShowingSettings) {
+                .confirmationDialog("Choose a lighting mode for the scene view.", isPresented: $isShowingSettings, titleVisibility: .visible) {
                     ForEach(SceneView.SunLighting.allCases, id: \.self) { mode in
                         Button(mode.label) {
                             lightingMode = mode
@@ -78,12 +74,10 @@ struct ShowRealisticLightAndShadowsView: View {
     /// Handles slider value changed event and set the scene view's sun date.
     /// - Parameter value: The slider's value.
     private func sliderValueChanged(toValue value: Float) {
-        // A DateComponents struct to encapsulate the minute value from the slider.
+        // A DateComponents struct to encapsulate the second value from the slider.
         let dateComponents = DateComponents(second: Int(value))
-        let startOfToday = Date.now
-        let date = Calendar.current.date(byAdding: dateComponents, to: startOfToday)!
-        dateTimeText = DateFormatter.localizedString(from: date, dateStyle: .medium, timeStyle: .short)
-        sunDate = date
+        sunDate = Calendar.current.date(byAdding: dateComponents, to: .startOfDay)!
+        dateTimeText = DateFormatter.localizedString(from: sunDate, dateStyle: .medium, timeStyle: .short)
     }
 }
 
@@ -118,14 +112,15 @@ extension ShowRealisticLightAndShadowsView {
         /// which means 12 am to 11:59 pm.
         static var dateSecondValueRange: ClosedRange<Float> { 0...86340 }
         
-        /// The number of seconds to represent 12 pm (60 seconds * 60 minutes * 12 hours).
+        /// The number of seconds to represent 11:59 am (60 seconds * 60 minutes * 12 hours) - 1 minute.
         static let dateSecondBeforeNoon: Float = 43170
+        
+        /// The number of seconds to represent 12 pm (60 seconds * 60 minutes * 12 hours).
+        static let dateSecondsNoon: Float = 43200
     }
 }
 
 private extension SceneView.SunLighting {
-    static var allCases: [Self] { [.lightAndShadows, .light, .off] }
-    
     /// A human-readable label of the sun lighting mode.
     var label: String {
         switch self {
@@ -140,5 +135,5 @@ private extension SceneView.SunLighting {
 }
 
 private extension Date {
-    static let now = Calendar.current.startOfDay(for: .now)
+    static let startOfDay = Calendar.current.startOfDay(for: .now)
 }
