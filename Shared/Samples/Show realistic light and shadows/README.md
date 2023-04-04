@@ -16,8 +16,8 @@ Select one of the three lighting options to show that lighting effect on the `Sc
 
 1. Create a `Scene` and display it in a `SceneView`.
 2. Create a `Calendar` to define the time of day.
-3. Set the sun time to the scene view's `sunTime` property.
-4. Set the `sunLighting` property of the scene view to `off`, `light`, or `lightAndShadows`.
+3. Set the sun time to the scene view using the `sunDate(_:)` modifier.
+4. Set the sun lighting of the scene view to `off`, `light`, or `lightAndShadows` using the `sunLighting(_:)` modifier.
 
 ## Relevant API
 
