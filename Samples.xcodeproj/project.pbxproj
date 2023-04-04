@@ -65,6 +65,7 @@
 		1C0C1C3D29D34DDD005C8B24 /* ChangeViewpointView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C0C1C3429D34DAE005C8B24 /* ChangeViewpointView.swift */; };
 		1C42E04729D2396B004FC4BE /* ShowPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C42E04329D2396B004FC4BE /* ShowPopupView.swift */; };
 		1C42E04A29D239D2004FC4BE /* ShowPopupView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C42E04329D2396B004FC4BE /* ShowPopupView.swift */; };
+		1C965C4829DBA8CD002F8536 /* Bristol in Resources */ = {isa = PBXBuildFile; fileRef = 1C965C4729DBA8CD002F8536 /* Bristol */; settings = {ASSET_TAGS = (ChooseCameraController, ); }; };
 		1C9B74D929DB54560038B06F /* ChooseCameraControllerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9B74D529DB54560038B06F /* ChooseCameraControllerView.swift */; };
 		1C9B74DE29DB56860038B06F /* ChooseCameraControllerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C9B74D529DB54560038B06F /* ChooseCameraControllerView.swift */; };
 		218F35B829C28F4A00502022 /* AuthenticateWithOAuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218F35B329C28F4A00502022 /* AuthenticateWithOAuthView.swift */; };
@@ -270,6 +271,7 @@
 		108EC04029D25B2C000F35D0 /* QueryFeatureTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueryFeatureTableView.swift; sourceTree = "<group>"; };
 		1C0C1C3429D34DAE005C8B24 /* ChangeViewpointView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeViewpointView.swift; sourceTree = "<group>"; };
 		1C42E04329D2396B004FC4BE /* ShowPopupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowPopupView.swift; sourceTree = "<group>"; };
+		1C965C4729DBA8CD002F8536 /* Bristol */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Bristol; path = ../../../../../Desktop/Bristol; sourceTree = "<group>"; };
 		1C9B74D529DB54560038B06F /* ChooseCameraControllerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChooseCameraControllerView.swift; sourceTree = "<group>"; };
 		218F35B329C28F4A00502022 /* AuthenticateWithOAuthView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticateWithOAuthView.swift; sourceTree = "<group>"; };
 		4D2ADC3F29C26D05003B367F /* AddDynamicEntityLayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDynamicEntityLayerView.swift; sourceTree = "<group>"; };
@@ -510,6 +512,7 @@
 		00CCB8A6285D059300BBAB70 /* Portal Data */ = {
 			isa = PBXGroup;
 			children = (
+				1C965C4629DBA879002F8536 /* 681d6f7694644709a7c830ec57a2d72b */,
 				00D4EF8128638BF100B9CC30 /* cb1b20748a9f4d128dad8a87244e3e37 */,
 				00C94A0228B53DCC004E42D9 /* 7c4c679ab06a4df19dc497f577f111bd */,
 				00D4EF8328638BF100B9CC30 /* 15a7cbd3af1e47cfa5d2c6b93dc44fc2 */,
@@ -606,6 +609,14 @@
 				1C42E04329D2396B004FC4BE /* ShowPopupView.swift */,
 			);
 			path = "Show popup";
+			sourceTree = "<group>";
+		};
+		1C965C4629DBA879002F8536 /* 681d6f7694644709a7c830ec57a2d72b */ = {
+			isa = PBXGroup;
+			children = (
+				1C965C4729DBA8CD002F8536 /* Bristol */,
+			);
+			path = 681d6f7694644709a7c830ec57a2d72b;
 			sourceTree = "<group>";
 		};
 		1C9B74D229DB54560038B06F /* Choose camera controller */ = {
@@ -897,6 +908,7 @@
 				KnownAssetTags = (
 					AddFeatureLayers,
 					AddRasterFromFile,
+					ChooseCameraController,
 					DisplayMapFromMobileMapPackage,
 				);
 				LastSwiftUpdateCheck = 1330;
@@ -938,6 +950,7 @@
 				E041AC1A287F54580056009B /* highlight.min.js in Resources */,
 				00E5402027F3CCA200CF66D5 /* Assets.xcassets in Resources */,
 				00C94A0D28B53DE1004E42D9 /* raster-file in Resources */,
+				1C965C4829DBA8CD002F8536 /* Bristol in Resources */,
 				E041AC20288077B90056009B /* xcode.css in Resources */,
 				00D4EF9028638BF100B9CC30 /* LA_Trails.geodatabase in Resources */,
 				00D4EF9A28638BF100B9CC30 /* AuroraCO.gpkg in Resources */,
