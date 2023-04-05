@@ -178,9 +178,9 @@ extension TraceUtilityNetworkView {
             ).first?.geoElements.first as? ArcGISFeature
         }
         
-        /// Makes new utility trace parameters with the provided trace type.
+        /// Initializes the pending trace parameters with the provided trace type.
         /// - Parameter type: The trace type.
-        func makeTraceParameters(with type: UtilityTraceParameters.TraceType) {
+        func initializeTraceParameters(with type: UtilityTraceParameters.TraceType) {
             pendingTraceParameters = UtilityTraceParameters(
                 traceType: type,
                 startingLocations: []
