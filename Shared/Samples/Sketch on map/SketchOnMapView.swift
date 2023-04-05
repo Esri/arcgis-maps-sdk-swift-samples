@@ -203,7 +203,7 @@ extension GeometryEditorMenu {
             canUndo = geometryEditor.canUndo
             canRedo = geometryEditor.canRedo
             canClearCurrentSketch = geometry.map { !$0.isEmpty } ?? false
-            canSave = sketchIsValidForSaving
+            canSave = geometry?.sketchIsValid ?? false
         }
     }
     
@@ -261,32 +261,13 @@ extension GeometryEditorMenu {
             return SimpleMarkerSymbol(style: .circle, color: .blue, size: 20)
         case is Polyline:
             return SimpleLineSymbol(color: .blue, width: 2)
-        case is Polygon:
+        case is ArcGIS.Polygon:
             return SimpleFillSymbol(
                 color: .gray.withAlphaComponent(0.5),
                 outline: SimpleLineSymbol(color: .blue, width: 2)
             )
         default:
             fatalError("Unexpected geometry type")
-        }
-    }
-    
-    /// A Boolean value indicating if the sketch is in a state in which it can be saved
-    /// to a graphics overlay.
-    private var sketchIsValidForSaving: Bool {
-        guard let geometry else { return false }
-        
-        switch geometry {
-        case let point as Point:
-            return PointBuilder(point: point).sketchIsValid
-        case let multipoint as Multipoint:
-            return MultipointBuilder(multipoint: multipoint).sketchIsValid
-        case let polyline as Polyline:
-            return PolylineBuilder(polyline: polyline).sketchIsValid
-        case let polygon as Polygon:
-            return PolygonBuilder(polygon: polygon).sketchIsValid
-        default:
-            fatalError("Unsupported geometry type")
         }
     }
 }
