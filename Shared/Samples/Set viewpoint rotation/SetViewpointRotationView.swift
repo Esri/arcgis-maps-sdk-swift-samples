@@ -41,7 +41,7 @@ struct SetViewpointRotationView: View {
                     Compass(
                         viewpointRotation: $rotation
                     )
-                    .autoHideDisabled(true)
+                    .autoHideDisabled()
                     .padding()
                 }
             
