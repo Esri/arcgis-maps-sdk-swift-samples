@@ -172,13 +172,10 @@ extension TraceUtilityNetworkView {
         ///   - proxy: The map view proxy to perform the identify operation with.
         /// - Returns: The first discoverable feature or `nil` if none were identified.
         func identifyFeatureAt(_ screenPoint: CGPoint, with proxy: MapViewProxy) async -> ArcGISFeature? {
-            guard let feature = try? await proxy.identifyLayers(
+            try? await proxy.identifyLayers(
                 screenPoint: screenPoint,
                 tolerance: 10
-            ).first?.geoElements.first as? ArcGISFeature else {
-                return nil
-            }
-            return feature
+            ).first?.geoElements.first as? ArcGISFeature
         }
         
         /// Makes new utility trace parameters with the provided trace type.
