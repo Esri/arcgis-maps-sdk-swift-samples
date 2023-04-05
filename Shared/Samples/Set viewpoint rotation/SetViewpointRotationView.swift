@@ -38,11 +38,9 @@ struct SetViewpointRotationView: View {
                     rotation = viewpoint.rotation
                 }
                 .overlay(alignment: .topTrailing) {
-                    Compass(
-                        viewpointRotation: $rotation,
-                        autoHide: false
-                    )
-                    .padding()
+                    Compass(viewpointRotation: $rotation)
+                        .autoHideDisabled()
+                        .padding()
                 }
             
             HStack {
