@@ -39,9 +39,9 @@ struct SetViewpointRotationView: View {
                 }
                 .overlay(alignment: .topTrailing) {
                     Compass(
-                        viewpointRotation: $rotation,
-                        autoHide: false
+                        viewpointRotation: $rotation
                     )
+                    .autoHideDisabled(true)
                     .padding()
                 }
             
