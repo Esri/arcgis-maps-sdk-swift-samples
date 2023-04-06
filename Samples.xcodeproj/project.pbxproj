@@ -39,6 +39,7 @@
 		0044289329C9234300160767 /* GetElevationAtPointOnSurfaceView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 0044289129C90C0B00160767 /* GetElevationAtPointOnSurfaceView.swift */; };
 		0044CDDF2995C39E004618CE /* ShowDeviceLocationHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0044CDDE2995C39E004618CE /* ShowDeviceLocationHistoryView.swift */; };
 		0044CDE02995D4DD004618CE /* ShowDeviceLocationHistoryView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 0044CDDE2995C39E004618CE /* ShowDeviceLocationHistoryView.swift */; };
+		004FE87129DF5D8700075217 /* Bristol in Resources */ = {isa = PBXBuildFile; fileRef = 004FE87029DF5D8700075217 /* Bristol */; settings = {ASSET_TAGS = (ChooseCameraController, ); }; };
 		006C835528B40682004AEB7F /* BrowseBuildingFloorsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E0FE32E628747778002C6ACA /* BrowseBuildingFloorsView.swift */; };
 		006C835628B40682004AEB7F /* DisplayMapFromMobileMapPackageView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = F111CCC0288B5D5600205358 /* DisplayMapFromMobileMapPackageView.swift */; };
 		0074ABBF28174BCF0037244A /* DisplayMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0074ABBE28174BCF0037244A /* DisplayMapView.swift */; };
@@ -66,7 +67,6 @@
 		1C42E04729D2396B004FC4BE /* ShowPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C42E04329D2396B004FC4BE /* ShowPopupView.swift */; };
 		1C42E04A29D239D2004FC4BE /* ShowPopupView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C42E04329D2396B004FC4BE /* ShowPopupView.swift */; };
 		1C965C3929DB9176002F8536 /* ShowRealisticLightAndShadowsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C9B74C529DB43580038B06F /* ShowRealisticLightAndShadowsView.swift */; };
-		1C965C5629DF82ED002F8536 /* Bristol in Resources */ = {isa = PBXBuildFile; fileRef = 1C965C5529DF82ED002F8536 /* Bristol */; settings = {ASSET_TAGS = (ChangeCameraController, ); }; };
 		1C9B74C929DB43580038B06F /* ShowRealisticLightAndShadowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9B74C529DB43580038B06F /* ShowRealisticLightAndShadowsView.swift */; };
 		1C9B74D929DB54560038B06F /* ChangeCameraControllerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9B74D529DB54560038B06F /* ChangeCameraControllerView.swift */; };
 		1C9B74DE29DB56860038B06F /* ChangeCameraControllerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C9B74D529DB54560038B06F /* ChangeCameraControllerView.swift */; };
@@ -247,6 +247,7 @@
 		0042E24428E4F82B001F33D6 /* ShowViewshedFromPointInSceneView.ViewshedSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowViewshedFromPointInSceneView.ViewshedSettingsView.swift; sourceTree = "<group>"; };
 		0044289129C90C0B00160767 /* GetElevationAtPointOnSurfaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetElevationAtPointOnSurfaceView.swift; sourceTree = "<group>"; };
 		0044CDDE2995C39E004618CE /* ShowDeviceLocationHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowDeviceLocationHistoryView.swift; sourceTree = "<group>"; };
+		004FE87029DF5D8700075217 /* Bristol */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Bristol; sourceTree = "<group>"; };
 		0074ABBE28174BCF0037244A /* DisplayMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayMapView.swift; sourceTree = "<group>"; };
 		0074ABC128174F430037244A /* Sample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sample.swift; sourceTree = "<group>"; };
 		0074ABCA2817B8DB0037244A /* SamplesApp+Samples.swift.tache */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "SamplesApp+Samples.swift.tache"; sourceTree = "<group>"; };
@@ -271,7 +272,6 @@
 		108EC04029D25B2C000F35D0 /* QueryFeatureTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueryFeatureTableView.swift; sourceTree = "<group>"; };
 		1C0C1C3429D34DAE005C8B24 /* ChangeViewpointView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeViewpointView.swift; sourceTree = "<group>"; };
 		1C42E04329D2396B004FC4BE /* ShowPopupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowPopupView.swift; sourceTree = "<group>"; };
-		1C965C5529DF82ED002F8536 /* Bristol */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Bristol; path = ../../../../../Desktop/Bristol; sourceTree = "<group>"; };
 		1C9B74C529DB43580038B06F /* ShowRealisticLightAndShadowsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowRealisticLightAndShadowsView.swift; sourceTree = "<group>"; };
 		1C9B74D529DB54560038B06F /* ChangeCameraControllerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeCameraControllerView.swift; sourceTree = "<group>"; };
 		218F35B329C28F4A00502022 /* AuthenticateWithOAuthView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticateWithOAuthView.swift; sourceTree = "<group>"; };
@@ -616,7 +616,7 @@
 		1C965C4629DBA879002F8536 /* 681d6f7694644709a7c830ec57a2d72b */ = {
 			isa = PBXGroup;
 			children = (
-				1C965C5529DF82ED002F8536 /* Bristol */,
+				004FE87029DF5D8700075217 /* Bristol */,
 			);
 			path = 681d6f7694644709a7c830ec57a2d72b;
 			sourceTree = "<group>";
@@ -918,7 +918,7 @@
 				KnownAssetTags = (
 					AddFeatureLayers,
 					AddRasterFromFile,
-					ChangeCameraController,
+					ChooseCameraController,
 					DisplayMapFromMobileMapPackage,
 				);
 				LastSwiftUpdateCheck = 1330;
@@ -960,7 +960,7 @@
 				E041AC1A287F54580056009B /* highlight.min.js in Resources */,
 				00E5402027F3CCA200CF66D5 /* Assets.xcassets in Resources */,
 				00C94A0D28B53DE1004E42D9 /* raster-file in Resources */,
-				1C965C5629DF82ED002F8536 /* Bristol in Resources */,
+				004FE87129DF5D8700075217 /* Bristol in Resources */,
 				E041AC20288077B90056009B /* xcode.css in Resources */,
 				00D4EF9028638BF100B9CC30 /* LA_Trails.geodatabase in Resources */,
 				00D4EF9A28638BF100B9CC30 /* AuroraCO.gpkg in Resources */,
