@@ -178,14 +178,15 @@ extension TraceUtilityNetworkView {
             ).first?.geoElements.first as? ArcGISFeature
         }
         
-        /// Initializes the pending trace parameters with the provided trace type.
+        /// Sets the pending trace parameters with the provided trace type.
         /// - Parameter type: The trace type.
-        func initializeTraceParameters(with type: UtilityTraceParameters.TraceType) {
+        func setTraceParameters(ofType type: UtilityTraceParameters.TraceType) {
             pendingTraceParameters = UtilityTraceParameters(
                 traceType: type,
                 startingLocations: []
             )
             pendingTraceParameters?.traceConfiguration = mediumVoltageRadial?.defaultTraceConfiguration
+            tracingActivity = .settingPoints(pointType: .start)
         }
         
         /// Resets all of the important stateful values for when a trace is cancelled or completed.
