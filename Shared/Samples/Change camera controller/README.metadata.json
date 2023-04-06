@@ -8,14 +8,14 @@
     "keywords": [
         "3D",
         "camera controller",
+        "orbit",
+        "tracking",
         "Camera",
         "GlobeCameraController",
-        "Orbit",
         "OrbitGeoElementCameraController",
         "OrbitLocationCameraController",
         "Scene",
-        "SceneView",
-        "Tracking"
+        "SceneView"
     ],
     "offline_data": [
         "681d6f7694644709a7c830ec57a2d72b"
