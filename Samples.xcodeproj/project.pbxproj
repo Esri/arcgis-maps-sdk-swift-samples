@@ -65,7 +65,9 @@
 		1C0C1C3D29D34DDD005C8B24 /* ChangeViewpointView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C0C1C3429D34DAE005C8B24 /* ChangeViewpointView.swift */; };
 		1C42E04729D2396B004FC4BE /* ShowPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C42E04329D2396B004FC4BE /* ShowPopupView.swift */; };
 		1C42E04A29D239D2004FC4BE /* ShowPopupView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C42E04329D2396B004FC4BE /* ShowPopupView.swift */; };
+		1C965C3929DB9176002F8536 /* ShowRealisticLightAndShadowsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C9B74C529DB43580038B06F /* ShowRealisticLightAndShadowsView.swift */; };
 		1C965C4829DBA8CD002F8536 /* Bristol in Resources */ = {isa = PBXBuildFile; fileRef = 1C965C4729DBA8CD002F8536 /* Bristol */; settings = {ASSET_TAGS = (ChooseCameraController, ); }; };
+		1C9B74C929DB43580038B06F /* ShowRealisticLightAndShadowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9B74C529DB43580038B06F /* ShowRealisticLightAndShadowsView.swift */; };
 		1C9B74D929DB54560038B06F /* ChooseCameraControllerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9B74D529DB54560038B06F /* ChooseCameraControllerView.swift */; };
 		1C9B74DE29DB56860038B06F /* ChooseCameraControllerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C9B74D529DB54560038B06F /* ChooseCameraControllerView.swift */; };
 		218F35B829C28F4A00502022 /* AuthenticateWithOAuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218F35B329C28F4A00502022 /* AuthenticateWithOAuthView.swift */; };
@@ -181,14 +183,12 @@
 			dstSubfolderSpec = 7;
 			files = (
 				1C9B74DE29DB56860038B06F /* ChooseCameraControllerView.swift in Copy Source Code Files */,
+				1C965C3929DB9176002F8536 /* ShowRealisticLightAndShadowsView.swift in Copy Source Code Files */,
 				883C121729C914E100062FF9 /* DownloadPreplannedMapAreaView.MapPicker.swift in Copy Source Code Files */,
 				883C121829C914E100062FF9 /* DownloadPreplannedMapAreaView.Model.swift in Copy Source Code Files */,
 				883C121929C914E100062FF9 /* DownloadPreplannedMapAreaView.swift in Copy Source Code Files */,
 				1C0C1C3D29D34DDD005C8B24 /* ChangeViewpointView.swift in Copy Source Code Files */,
 				1C42E04A29D239D2004FC4BE /* ShowPopupView.swift in Copy Source Code Files */,
-				108EC04329D25D6D000F35D0 /* ChangeMapViewBackgroundView.swift in Copy Source Code Files */,
-				108EC04429D25D6D000F35D0 /* ChangeMapViewBackgroundView.SettingsView.swift in Copy Source Code Files */,
-				108EC04529D25D6D000F35D0 /* ChangeMapViewBackgroundView.Model.swift in Copy Source Code Files */,
 				108EC04229D25B55000F35D0 /* QueryFeatureTableView.swift in Copy Source Code Files */,
 				88F93CC229C4D3480006B28E /* SketchOnMapView.swift in Copy Source Code Files */,
 				0044289329C9234300160767 /* GetElevationAtPointOnSurfaceView.swift in Copy Source Code Files */,
@@ -272,6 +272,7 @@
 		1C0C1C3429D34DAE005C8B24 /* ChangeViewpointView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeViewpointView.swift; sourceTree = "<group>"; };
 		1C42E04329D2396B004FC4BE /* ShowPopupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowPopupView.swift; sourceTree = "<group>"; };
 		1C965C4729DBA8CD002F8536 /* Bristol */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Bristol; path = ../../../../../Desktop/Bristol; sourceTree = "<group>"; };
+		1C9B74C529DB43580038B06F /* ShowRealisticLightAndShadowsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowRealisticLightAndShadowsView.swift; sourceTree = "<group>"; };
 		1C9B74D529DB54560038B06F /* ChooseCameraControllerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChooseCameraControllerView.swift; sourceTree = "<group>"; };
 		218F35B329C28F4A00502022 /* AuthenticateWithOAuthView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticateWithOAuthView.swift; sourceTree = "<group>"; };
 		4D2ADC3F29C26D05003B367F /* AddDynamicEntityLayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDynamicEntityLayerView.swift; sourceTree = "<group>"; };
@@ -432,6 +433,7 @@
 				E004A6E728493BBB002A1FE6 /* Show device location */,
 				0044CDD72995C352004618CE /* Show device location history */,
 				1C42E04129D2396B004FC4BE /* Show popup */,
+				1C9B74C429DB43580038B06F /* Show realistic light and shadows */,
 				E004A6F1284E4F80002A1FE6 /* Show result of spatial operations */,
 				E066DD392860C9EE004D3D5B /* Show result of spatial relationships */,
 				0086F3FC28E3770900974721 /* Show viewshed from point in scene */,
@@ -617,6 +619,14 @@
 				1C965C4729DBA8CD002F8536 /* Bristol */,
 			);
 			path = 681d6f7694644709a7c830ec57a2d72b;
+			sourceTree = "<group>";
+		};
+		1C9B74C429DB43580038B06F /* Show realistic light and shadows */ = {
+			isa = PBXGroup;
+			children = (
+				1C9B74C529DB43580038B06F /* ShowRealisticLightAndShadowsView.swift */,
+			);
+			path = "Show realistic light and shadows";
 			sourceTree = "<group>";
 		};
 		1C9B74D229DB54560038B06F /* Choose camera controller */ = {
@@ -1080,6 +1090,7 @@
 				E088E1572862579D00413100 /* SetSurfacePlacementModeView.swift in Sources */,
 				E004A6C128414332002A1FE6 /* SetViewpointRotationView.swift in Sources */,
 				883C121529C9136600062FF9 /* DownloadPreplannedMapAreaView.MapPicker.swift in Sources */,
+				1C9B74C929DB43580038B06F /* ShowRealisticLightAndShadowsView.swift in Sources */,
 				00E5401E27F3CCA200CF66D5 /* ContentView.swift in Sources */,
 				E066DD382860AB28004D3D5B /* StyleGraphicsWithRendererView.swift in Sources */,
 				108EC04129D25B2C000F35D0 /* QueryFeatureTableView.swift in Sources */,
