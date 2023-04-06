@@ -144,7 +144,7 @@ extension GeometryEditorMenu {
             } label: {
                 Label("Delete Selected Element", systemImage: "xmark.square.fill")
             }
-            .disabled(model.selection == nil || !(model.selection?.canBeDeleted ?? false))
+            .disabled(deleteButtonIsDisabled)
             
             Button(role: .destructive) {
                 model.geometryEditor.clearGeometry()
@@ -168,6 +168,17 @@ extension GeometryEditorMenu {
                 Label("Cancel Sketch", systemImage: "xmark")
             }
         }
+    }
+}
+
+extension GeometryEditorMenu {
+    /// A Boolean value indicating whether the selection can be deleted.
+    ///
+    /// In some instances deleting the selection may be invalid. One example would be the mid vertex
+    /// of a line.
+    var deleteButtonIsDisabled: Bool {
+        guard let selection = model.selection else { return true }
+        return !selection.canBeDeleted
     }
 }
 
