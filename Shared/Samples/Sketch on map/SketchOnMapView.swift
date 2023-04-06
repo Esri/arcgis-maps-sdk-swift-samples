@@ -144,7 +144,7 @@ extension GeometryEditorMenu {
             } label: {
                 Label("Delete Selected Element", systemImage: "xmark.square.fill")
             }
-            .disabled(model.selection == nil)
+            .disabled(model.selection == nil || !(model.selection?.canBeDeleted ?? false))
             
             Button(role: .destructive) {
                 model.geometryEditor.clearGeometry()
