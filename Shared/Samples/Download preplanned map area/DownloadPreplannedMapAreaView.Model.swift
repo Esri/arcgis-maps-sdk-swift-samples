@@ -170,7 +170,7 @@ class OfflineMapModel: ObservableObject, Identifiable {
     let offlineMapTask: OfflineMapTask
     
     /// The directory where the mmpk will be stored.
-    let mmpkDirectory: URL
+    let mmpkDirectory: URL?
     
     /// The currently running download job.
     @Published private(set) var job: DownloadPreplannedOfflineMapJob?
@@ -181,9 +181,17 @@ class OfflineMapModel: ObservableObject, Identifiable {
     init(preplannedMapArea: PreplannedMapArea, offlineMapTask: OfflineMapTask, temporaryDirectory: URL) {
         self.preplannedMapArea = preplannedMapArea
         self.offlineMapTask = offlineMapTask
-        self.mmpkDirectory = temporaryDirectory
-            .appendingPathComponent(preplannedMapArea.portalItem.id.rawValue)
-            .appendingPathExtension("mmpk")
+        
+        let mmpkDirectory: URL?
+        if let itemID = preplannedMapArea.portalItem.id {
+            mmpkDirectory = temporaryDirectory
+                .appendingPathComponent(itemID.rawValue)
+                .appendingPathExtension("mmpk")
+        } else {
+            mmpkDirectory = nil
+        }
+        
+        self.mmpkDirectory = mmpkDirectory
     }
     
     deinit {
@@ -219,6 +227,8 @@ private extension OfflineMapModel {
     func download() async {
         precondition(canDownload)
         
+        guard let mmpkDirectory else { return }
+        
         let parameters: DownloadPreplannedOfflineMapParameters
         
         do {
@@ -229,7 +239,7 @@ private extension OfflineMapModel {
             self.result = .failure(error)
             return
         }
-            
+        
         // Creates the download preplanned offline map job.
         let job = offlineMapTask.makeDownloadPreplannedOfflineMapJob(
             parameters: parameters,
@@ -286,6 +296,8 @@ private extension OfflineMapModel {
     
     /// Removes the downloaded offline map (mmpk) from disk.
     func removeDownloadedContent() {
+        guard let mmpkDirectory else { return }
+        
         result = nil
         try? FileManager.default.removeItem(at: mmpkDirectory)
     }
