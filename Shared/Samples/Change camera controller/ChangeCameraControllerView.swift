@@ -13,10 +13,9 @@
 // limitations under the License.
 
 import ArcGIS
-import ArcGISToolkit
 import SwiftUI
 
-struct ChooseCameraControllerView: View {
+struct ChangeCameraControllerView: View {
     /// A scene with imagery basemap style and a tiled elevation source.
     @State private var scene: ArcGIS.Scene = {
         // Creates a scene.
@@ -58,16 +57,19 @@ struct ChooseCameraControllerView: View {
     }()
     
     /// A graphics overlay containing an airplane graphic.
-    private static let graphicsOverlay: GraphicsOverlay = {
-        let graphicsOverlay = GraphicsOverlay(graphics: [Graphic.airplane])
+    @State private var graphicsOverlay: GraphicsOverlay = {
+        let planePosition = Point(x: -109.937516, y: 38.456714, z: 5000, spatialReference: .wgs84)
+        let planeSymbol = ModelSceneSymbol(url: URL.bristol, scale: 100)
+        let planeGraphic = Graphic(geometry: planePosition, symbol: planeSymbol)
+        let graphicsOverlay = GraphicsOverlay(graphics: [planeGraphic])
         graphicsOverlay.sceneProperties.surfacePlacement = .absolute
         return graphicsOverlay
     }()
     
     /// A Boolean value indicating whether the settings view should be presented.
-    @State var isShowingSettings = false
+    @State private var isShowingSettings = false
     
-    /// The sun lighting mode of the scene view.
+    /// The camera controller kind of the scene view.
     @State private var cameraControllerKind: CameraControllerKind = .globe
     
     enum CameraControllerKind: CaseIterable {
@@ -86,37 +88,33 @@ struct ChooseCameraControllerView: View {
     }
     
     /// The camera controller of the scene view.
-    @State private var cameraController: CameraController {
-        didSet {
-            _ = GlobeCameraController()
-        }
-    }
+    @State private var cameraController: CameraController = GlobeCameraController()
     
     init() {
-        cameraController = Self.makeCameraController(kind: .crater)
+        cameraController = makeCameraController(kind: .crater)
     }
     
     var body: some View {
-        VStack {
-            SceneView(
-                scene: scene,
-                cameraController: cameraController,
-                graphicsOverlays: [ChooseCameraControllerView.graphicsOverlay]
-            )
-            Menu("Camera Controllers") {
-                ForEach(CameraControllerKind.allCases, id: \.self) { kind in
-                    Button(kind.label) {
-                        cameraControllerKind = kind
+        SceneView(
+            scene: scene,
+            cameraController: cameraController,
+            graphicsOverlays: [graphicsOverlay]
+        )
+        .toolbar {
+            ToolbarItem(placement: .bottomBar) {
+                Menu("Camera Controllers") {
+                    ForEach(CameraControllerKind.allCases, id: \.self) { kind in
+                        Button(kind.label) {
+                            cameraControllerKind = kind
+                            cameraController = makeCameraController(kind: kind)
+                        }
                     }
                 }
-            }
-            .onChange(of: cameraControllerKind) { newValue in
-                cameraController = Self.makeCameraController(kind: newValue)
             }
         }
     }
     
-    static func makeCameraController(kind: CameraControllerKind) -> CameraController {
+    func makeCameraController(kind: CameraControllerKind) -> CameraController {
         switch kind {
         case .crater:
             let targetLocation = Point(
@@ -133,7 +131,7 @@ struct ChooseCameraControllerView: View {
             cameraController.cameraHeadingOffset = 150
             return cameraController
         case .plane:
-            guard let targetGraphic = graphicsOverlay.graphics.first else { return GlobeCameraController() }
+            let targetGraphic = graphicsOverlay.graphics.first!
             let cameraController = OrbitGeoElementCameraController(
                 target: targetGraphic,
                 distance: 5000
@@ -149,13 +147,4 @@ struct ChooseCameraControllerView: View {
 
 private extension URL {
     static var bristol: URL { Bundle.main.url(forResource: "Bristol", withExtension: "dae", subdirectory: "Bristol")! }
-}
-
-private extension Graphic {
-    static var airplane: Graphic {
-        let planePosition = Point(x: -109.937516, y: 38.456714, z: 5000, spatialReference: .wgs84)
-        let planeSymbol = ModelSceneSymbol(url: URL.bristol, scale: 100)
-        let planeGraphic = Graphic(geometry: planePosition, symbol: planeSymbol)
-        return planeGraphic
-    }
 }

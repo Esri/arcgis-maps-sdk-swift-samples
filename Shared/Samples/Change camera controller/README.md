@@ -1,8 +1,8 @@
-# Choose camera controller
+# Change camera controller
 
 Control the behavior of the camera in a scene.
 
-![Choose camera controller sample](choose-camera-controller.png)
+![Change camera controller sample](change-camera-controller.png)
 
 ## Use case
 
@@ -28,4 +28,4 @@ The sample loads with the default globe camera controller. To rotate and fix the
 
 ## Tags
 
-3D, camera controller
+3D, camera controller, orbit, tracking
