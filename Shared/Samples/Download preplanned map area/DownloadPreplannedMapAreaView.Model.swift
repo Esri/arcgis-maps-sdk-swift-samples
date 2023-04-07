@@ -72,7 +72,7 @@ extension DownloadPreplannedMapAreaView {
             self.offlineMapModels = await Result {
                 try await offlineMapTask.preplannedMapAreas
                     .sorted(using: KeyPathComparator(\.portalItem.title))
-                    .map {
+                    .compactMap {
                         OfflineMapModel(
                             preplannedMapArea: $0,
                             offlineMapTask: offlineMapTask,
@@ -170,7 +170,7 @@ class OfflineMapModel: ObservableObject, Identifiable {
     let offlineMapTask: OfflineMapTask
     
     /// The directory where the mmpk will be stored.
-    let mmpkDirectory: URL?
+    let mmpkDirectory: URL
     
     /// The currently running download job.
     @Published private(set) var job: DownloadPreplannedOfflineMapJob?
@@ -178,20 +178,17 @@ class OfflineMapModel: ObservableObject, Identifiable {
     /// The result of the download job.
     @Published private(set) var result: Result<MobileMapPackage, Error>?
     
-    init(preplannedMapArea: PreplannedMapArea, offlineMapTask: OfflineMapTask, temporaryDirectory: URL) {
+    init?(preplannedMapArea: PreplannedMapArea, offlineMapTask: OfflineMapTask, temporaryDirectory: URL) {
         self.preplannedMapArea = preplannedMapArea
         self.offlineMapTask = offlineMapTask
         
-        let mmpkDirectory: URL?
         if let itemID = preplannedMapArea.portalItem.id {
-            mmpkDirectory = temporaryDirectory
+            self.mmpkDirectory = temporaryDirectory
                 .appendingPathComponent(itemID.rawValue)
                 .appendingPathExtension("mmpk")
         } else {
-            mmpkDirectory = nil
+            return nil
         }
-        
-        self.mmpkDirectory = mmpkDirectory
     }
     
     deinit {
@@ -226,9 +223,7 @@ private extension OfflineMapModel {
     /// - Precondition: `canDownload`
     func download() async {
         precondition(canDownload)
-        
-        guard let mmpkDirectory else { return }
-        
+                
         let parameters: DownloadPreplannedOfflineMapParameters
         
         do {
@@ -296,8 +291,6 @@ private extension OfflineMapModel {
     
     /// Removes the downloaded offline map (mmpk) from disk.
     func removeDownloadedContent() {
-        guard let mmpkDirectory else { return }
-        
         result = nil
         try? FileManager.default.removeItem(at: mmpkDirectory)
     }
