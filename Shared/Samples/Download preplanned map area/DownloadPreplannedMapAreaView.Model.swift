@@ -223,7 +223,7 @@ private extension OfflineMapModel {
     /// - Precondition: `canDownload`
     func download() async {
         precondition(canDownload)
-                
+        
         let parameters: DownloadPreplannedOfflineMapParameters
         
         do {
