@@ -72,7 +72,7 @@ extension DownloadPreplannedMapAreaView {
             self.offlineMapModels = await Result {
                 try await offlineMapTask.preplannedMapAreas
                     .sorted(using: KeyPathComparator(\.portalItem.title))
-                    .map {
+                    .compactMap {
                         OfflineMapModel(
                             preplannedMapArea: $0,
                             offlineMapTask: offlineMapTask,
@@ -178,12 +178,17 @@ class OfflineMapModel: ObservableObject, Identifiable {
     /// The result of the download job.
     @Published private(set) var result: Result<MobileMapPackage, Error>?
     
-    init(preplannedMapArea: PreplannedMapArea, offlineMapTask: OfflineMapTask, temporaryDirectory: URL) {
+    init?(preplannedMapArea: PreplannedMapArea, offlineMapTask: OfflineMapTask, temporaryDirectory: URL) {
         self.preplannedMapArea = preplannedMapArea
         self.offlineMapTask = offlineMapTask
-        self.mmpkDirectory = temporaryDirectory
-            .appendingPathComponent(preplannedMapArea.portalItem.id.rawValue)
-            .appendingPathExtension("mmpk")
+        
+        if let itemID = preplannedMapArea.portalItem.id {
+            self.mmpkDirectory = temporaryDirectory
+                .appendingPathComponent(itemID.rawValue)
+                .appendingPathExtension("mmpk")
+        } else {
+            return nil
+        }
     }
     
     deinit {
@@ -229,7 +234,7 @@ private extension OfflineMapModel {
             self.result = .failure(error)
             return
         }
-            
+        
         // Creates the download preplanned offline map job.
         let job = offlineMapTask.makeDownloadPreplannedOfflineMapJob(
             parameters: parameters,
