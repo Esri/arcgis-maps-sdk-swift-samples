@@ -59,7 +59,7 @@ struct ChangeCameraControllerView: View {
     /// A graphics overlay containing an airplane graphic.
     @State private var graphicsOverlay: GraphicsOverlay = {
         let planePosition = Point(x: -109.937516, y: 38.456714, z: 5000, spatialReference: .wgs84)
-        let planeSymbol = ModelSceneSymbol(url: URL.bristol, scale: 100)
+        let planeSymbol = ModelSceneSymbol(url: .bristol, scale: 100)
         let planeGraphic = Graphic(geometry: planePosition, symbol: planeSymbol)
         let graphicsOverlay = GraphicsOverlay(graphics: [planeGraphic])
         graphicsOverlay.sceneProperties.surfacePlacement = .absolute
@@ -90,10 +90,6 @@ struct ChangeCameraControllerView: View {
     /// The camera controller of the scene view.
     @State private var cameraController: CameraController = GlobeCameraController()
     
-    init() {
-        cameraController = makeCameraController(kind: .crater)
-    }
-    
     var body: some View {
         SceneView(
             scene: scene,
@@ -114,6 +110,9 @@ struct ChangeCameraControllerView: View {
         }
     }
     
+    /// Creates a camera controller with the given kind of camera controller.
+    /// - Parameter kind: The camera controller kind.
+    /// - Returns: A camera controller.
     func makeCameraController(kind: CameraControllerKind) -> CameraController {
         switch kind {
         case .crater:
