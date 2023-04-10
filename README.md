@@ -4,8 +4,8 @@ This repository contains Swift sample code demonstrating the capabilities of [Ar
 
 ## Requirements
 
-* [ArcGIS Maps SDK for Swift](https://developers.arcgis.com/swift/) 200.0 (or newer)
-* [ArcGIS Maps SDK for Swift Toolkit](https://github.com/Esri/arcgis-maps-sdk-swift-toolkit) 200.0 (or newer)
+* [ArcGIS Maps SDK for Swift](https://developers.arcgis.com/swift/) 200.1 (or newer)
+* [ArcGIS Maps SDK for Swift Toolkit](https://github.com/Esri/arcgis-maps-sdk-swift-toolkit) 200.1 (or newer)
 * Xcode 14.0 (or newer)
 
 The *ArcGIS Maps SDK for Swift Samples app* has a *Target SDK* version of *15.0*, meaning that it can run on devices with *iOS 15.0* or newer.
