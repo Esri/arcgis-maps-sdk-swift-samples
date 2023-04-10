@@ -32,19 +32,24 @@ struct SetBasemapView: View {
     }()
     
     var body: some View {
-        MapView(map: map)
-            .overlay(alignment: .topTrailing) {
-                if isShowingBasemapGallery {
-                    BasemapGallery(geoModel: map)
-                        .style(.automatic())
-                }
-            }
-            .toolbar {
-                ToolbarItem(placement: .primaryAction) {
-                    Toggle(isOn: $isShowingBasemapGallery) {
-                        Label("Show base map", systemImage: "map")
+        GeometryReader { geometryProxy in
+            MapView(map: map)
+                .overlay(alignment: .topTrailing) {
+                    if isShowingBasemapGallery {
+                        BasemapGallery(geoModel: map)
+                            .style(.automatic())
+                            .frame(maxWidth: geometryProxy.size.width / 3)
+                            .esriBorder()
+                            .padding()
                     }
                 }
-            }
+                .toolbar {
+                    ToolbarItem(placement: .primaryAction) {
+                        Toggle(isOn: $isShowingBasemapGallery) {
+                            Label("Show base map", systemImage: "map")
+                        }
+                    }
+                }
+        }
     }
 }
