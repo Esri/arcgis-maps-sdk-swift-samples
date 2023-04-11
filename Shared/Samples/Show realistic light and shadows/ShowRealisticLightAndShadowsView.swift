@@ -129,6 +129,8 @@ private extension SceneView.SunLighting {
             return "Light only"
         case .off:
             return "No Light"
+        @unknown default:
+            return "Unknown"
         }
     }
 }
