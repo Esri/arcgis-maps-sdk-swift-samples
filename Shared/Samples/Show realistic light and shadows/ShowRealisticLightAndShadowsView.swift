@@ -51,21 +51,28 @@ struct ShowRealisticLightAndShadowsView: View {
             }
             .frame(maxWidth: 540)
             .onChange(of: dateSecond, perform: sliderValueChanged(toValue:))
-            .padding()
+            .padding(.horizontal)
+        }
+        .overlay(alignment: .top) {
+            dateTimeOverlay
         }
         .toolbar {
-            ToolbarItemGroup(placement: .bottomBar) {
-                Text(dateTimeText)
-                
-                Menu("Mode") {
-                    Picker("Choose a lighting mode for the scene view.", selection: $lightingMode) {
-                        ForEach(SceneView.SunLighting.allCases, id: \.self) { mode in
-                            Text(mode.label)
-                        }
+            ToolbarItem(placement: .bottomBar) {
+                Picker("Choose a lighting mode for the scene view.", selection: $lightingMode) {
+                    ForEach(SceneView.SunLighting.allCases, id: \.self) { mode in
+                        Text(mode.label)
                     }
                 }
             }
         }
+    }
+    
+    /// An overlay showing the date time adjusted by the slider.
+    var dateTimeOverlay: some View {
+        Text(dateTimeText)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 6)
+            .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
     }
     
     /// Handles slider value changed event and set the scene view's sun date.
