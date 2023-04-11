@@ -97,7 +97,7 @@ extension DisplayDeviceLocationWithNMEADataSourcesView {
             
             Task {
                 // Stop the location display, which in turn stop the data source.
-                await nmeaLocationDataSource.stop()
+                await locationDisplay.dataSource.stop()
                 
                 // Reset NMEA location data source.
                 nmeaLocationDataSource = nil
@@ -126,14 +126,11 @@ extension DisplayDeviceLocationWithNMEADataSourcesView {
         }
         
         /// The Bluetooth accessory picker connected to a supported accessory.
-        @discardableResult
-        func accessoryDidConnect(connectedAccessory: EAAccessory, protocolString: String) -> Bool {
+        func accessoryDidConnect(connectedAccessory: EAAccessory, protocolString: String) {
             if let dataSource = NMEALocationDataSource(accessory: connectedAccessory, protocol: protocolString) {
                 nmeaLocationDataSource = dataSource
                 start()
-                return true
             }
-            return false
         }
         
         /// Starts the location data source and awaits location and satellite updates.
@@ -152,23 +149,33 @@ extension DisplayDeviceLocationWithNMEADataSourcesView {
             
             Task {
                 // Start the data source
-                try? await nmeaLocationDataSource.start()
+                try await locationDisplay.dataSource.start()
                 
                 // Set the autopan mode to `.recenter`
                 autoPanMode = .recenter
                 
-                // Set up a TaskGroup to get asynchronous
-                // location and satellite updates.
-                await withTaskGroup(of: Void.self) { [weak self] taskGroup in
-                    guard let self else { return }
-                    taskGroup.addTask { await self.locations() }
-                    taskGroup.addTask { await self.satellites() }
+//                // Set up a TaskGroup to get asynchronous
+//                // location and satellite updates.
+//                await withTaskGroup(of: Void.self) { [weak self] taskGroup in
+//                    guard let self else { return }
+//                    taskGroup.addTask { await self.locations() }
+//                    taskGroup.addTask { await self.satellites() }
+//                }
+                
+                // Make sure everything is dealloc'ed (check deinit()?)
+                // if you can kick things off from the view (.task) that is good.
+                // Figure out RunLoop stuff...
+                Task {
+                    await observeLocations()
+                }
+                Task {
+                    await observeSatellites()
                 }
             }
         }
         
         /// Starts iterating over location udpates and set the accuracy status.
-        func locations() async {
+        func observeLocations() async {
             for await location in nmeaLocationDataSource.locations {
                 guard let nmeaLocation = location as? NMEALocation,
                       nmeaLocationDataSource.status == .started else { return }
@@ -190,7 +197,7 @@ extension DisplayDeviceLocationWithNMEADataSourcesView {
         }
         
         /// Starts iterating over satellite udpates and set the satellite status.
-        func satellites() async {
+        func observeSatellites() async {
             for await satellites in nmeaLocationDataSource.satellites {
                 guard nmeaLocationDataSource.status == .started else { return }
                 

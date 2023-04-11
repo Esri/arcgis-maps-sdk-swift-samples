@@ -78,6 +78,7 @@ struct DisplayDeviceLocationWithNMEADataSourcesView: View {
     }
     
     func selectDevice() {
+        print("selectDevice()")
         if let (accessory, protocolString) = model.firstSupportedAccessoryWithProtocol() {
             // Use the supported accessory directly if it's already connected.
             model.accessoryDidConnect(connectedAccessory: accessory, protocolString: protocolString)
@@ -94,17 +95,13 @@ struct DisplayDeviceLocationWithNMEADataSourcesView: View {
                         self.error = nil
                         return
                     default:
-                        self.error = AccessoryError(detail: "The specified accessory could not be found, perhaps because it was turned off prior to connection.")
+                        self.error = AccessoryError(detail: "Selecting an accessory failed for an unknown reason.")
                     }
                     isShowingAlert = (self.error != nil)
                 } else if let (accessory, protocolString) = model.firstSupportedAccessoryWithProtocol() {
                     // Proceed with supported and connected accessory, and
                     // ignore other accessories that aren't supported.
-                    let result = model.accessoryDidConnect(connectedAccessory: accessory, protocolString: protocolString)
-                    if !result {
-                        self.error = AccessoryError(detail: "Selecting an accessory failed for an unknown reason.")
-                        isShowingAlert = true
-                    }
+                    model.accessoryDidConnect(connectedAccessory: accessory, protocolString: protocolString)
                 }
             }
         }
