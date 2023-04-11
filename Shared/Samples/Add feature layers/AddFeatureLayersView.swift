@@ -190,7 +190,7 @@ private extension AddFeatureLayersView {
             switch self {
             case .serviceFeatureTable: return "Service Feature Table"
             case .portalItem: return "Portal Item"
-            case .geodatabase: return "Geodatabase"
+            case .geodatabase: return "Mobile Geodatabase"
             case .geoPackage: return "GeoPackage"
             case .shapefile: return "Shapefile"
             }
