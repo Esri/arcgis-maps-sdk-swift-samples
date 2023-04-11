@@ -87,6 +87,14 @@ struct DisplayDeviceLocationWithNMEADataSourcesView: View {
             model.accessoryDidConnect(connectedAccessory: accessory, protocolString: protocolString)
         } else {
             // Show a picker to pair the device with a Bluetooth accessory.
+            // NOTE: the Bluetooth accessory picker is currently not supported
+            // for Apple Silicon Macs - https://developer.apple.com/documentation/externalaccessory/eaaccessorymanager/1613913-showbluetoothaccessorypicker/
+            // "On Apple silicon, this method displays an alert to let the user
+            // know that the Bluetooth accessory picker is unavailable."
+            // Also, it appears that there is currently a bug with
+            // `showBluetoothAccessoryPicker` - https://developer.apple.com/forums/thread/690320
+            // The work-around is to ensure your device is already connected and it's
+            // protocol is in the app's list of protocol strings in the plist.info table.
             EAAccessoryManager.shared().showBluetoothAccessoryPicker(withNameFilter: nil) { error in
                 if let error = error as? EABluetoothAccessoryPickerError,
                    error.code != .alreadyConnected {
