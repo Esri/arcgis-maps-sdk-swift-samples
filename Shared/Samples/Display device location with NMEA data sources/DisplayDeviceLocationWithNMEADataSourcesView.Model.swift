@@ -17,18 +17,18 @@ import SwiftUI
 import ExternalAccessory
 
 extension DisplayDeviceLocationWithNMEADataSourcesView {
-    /// The model used to store the geo model and other expensive objects
-    /// used in this view.
-    @MainActor
+    /// The model used to store the geo model and other expensive objects used in this view.
     class Model: ObservableObject {
-        /// A map with imagery basemap.
+        /// A map with a navigation basemap.
         let map = Map(basemapStyle: .arcGISNavigation)
         
         /// The current autopan mode.
-        var autoPanMode: LocationDisplay.AutoPanMode = .recenter {
-            didSet {
-                locationDisplay.autoPanMode = autoPanMode
-                isRecenterButtonDisabled = nmeaLocationDataSource == nil || autoPanMode == .recenter
+        var autoPanMode: LocationDisplay.AutoPanMode {
+            get {
+                locationDisplay.autoPanMode
+            }
+            set {
+                locationDisplay.autoPanMode = newValue
             }
         }
         
@@ -48,7 +48,11 @@ extension DisplayDeviceLocationWithNMEADataSourcesView {
         @Published var satelliteStatus: String = "Satellites info will be shown here."
         
         /// The location display used in the map view.
-        var locationDisplay = LocationDisplay()
+        var locationDisplay: LocationDisplay = {
+            let locationDisplay = LocationDisplay()
+            locationDisplay.autoPanMode = .recenter
+            return locationDisplay
+        }()
         
         /// An NMEA location data source, to parse NMEA data.
         var nmeaLocationDataSource: NMEALocationDataSource!
@@ -75,37 +79,19 @@ extension DisplayDeviceLocationWithNMEADataSourcesView {
             "com.geneq.sxbluegpssource"
         ]
         
-        init() {
-            Task {
-                // Watch for changes in the location display's autopan mode.
-                for await mode in locationDisplay.$autoPanMode {
-                    if autoPanMode != mode {
-                        autoPanMode = mode
-                    }
-                }
-            }
+        /// The observation tasks created during starting the data source.
+        private var observationTasks = [Task<Void, Never>]()
+        
+        deinit {
+            cancelObservationTasks()
         }
         
-        /// Reset the sample, stopping the data source, resetting button states and status strings.
-        func reset() {
-            // Reset buttons states.
-            isResetButtonDisabled = true
-            isSourceButtonDisabled = false
-            // Reset the status text.
-            accuracyStatus = "Accuracy info will be shown here."
-            satelliteStatus = "Satellites info will be shown here."
-            
-            Task {
-                // Stop the location display, which in turn stop the data source.
-                await locationDisplay.dataSource.stop()
-                
-                // Reset NMEA location data source.
-                nmeaLocationDataSource = nil
-                autoPanMode = .off
+        /// Cancel and remove tasks from list of observation tasks.
+        private func cancelObservationTasks() {
+            observationTasks.forEach { task in
+                task.cancel()
             }
-            
-            // Pause the mock data generation.
-            mockNMEADataSource.stop()
+            observationTasks.removeAll()
         }
         
         /// Get the first connected and supported Bluetooth accessory with its
@@ -133,6 +119,32 @@ extension DisplayDeviceLocationWithNMEADataSourcesView {
             }
         }
         
+        /// Reset the sample, stops the data source, cancels tasks, and resets button states and status strings.
+        func reset() {
+            // Reset buttons states.
+            isResetButtonDisabled = true
+            isSourceButtonDisabled = false
+            
+            // Reset the status text.
+            accuracyStatus = "Accuracy info will be shown here."
+            satelliteStatus = "Satellites info will be shown here."
+            
+            // Reset NMEA location data source.
+            nmeaLocationDataSource = nil
+            autoPanMode = .off
+
+            Task {
+                // Stop the location display, which in turn stop the data source.
+                await locationDisplay.dataSource.stop()
+            }
+            
+            // Cancel the autoPan, location, and satellite observation tasks.
+            cancelObservationTasks()
+            
+            // Pause the mock data generation.
+            mockNMEADataSource.stop()
+        }
+
         /// Starts the location data source and awaits location and satellite updates.
         /// - Parameter usingMockedData: Indicates that the location datasource should use mocked data.
         func start(usingMockedData: Bool = false) {
@@ -147,80 +159,93 @@ extension DisplayDeviceLocationWithNMEADataSourcesView {
                 mockNMEADataSource.start(with: nmeaLocationDataSource)
             }
             
+            // Set the autopan mode to `.recenter`
+            autoPanMode = .recenter
+
             Task {
                 // Start the data source
                 try await locationDisplay.dataSource.start()
-                
-                // Set the autopan mode to `.recenter`
-                autoPanMode = .recenter
-                
-//                // Set up a TaskGroup to get asynchronous
-//                // location and satellite updates.
-//                await withTaskGroup(of: Void.self) { [weak self] taskGroup in
-//                    guard let self else { return }
-//                    taskGroup.addTask { await self.locations() }
-//                    taskGroup.addTask { await self.satellites() }
-//                }
-                
-                // Make sure everything is dealloc'ed (check deinit()?)
-                // if you can kick things off from the view (.task) that is good.
-                // Figure out RunLoop stuff...
-                Task {
-                    await observeLocations()
-                }
-                Task {
-                    await observeSatellites()
+            }
+            
+            // Kick off tasks to monitor autoPan, locations, and satellites.
+            observationTasks.append(
+                contentsOf: [
+                    observeAutoPanTask,
+                    observeLocationsTask,
+                    observeSatellitesTask
+                ]
+            )
+        }
+        
+        /// A detached task observing location display autoPan changes.
+        var observeAutoPanTask: Task<Void, Never> {
+            Task.detached { [unowned self] in
+                defer { print("mode in locationDisplay.$autoPanMode task ending") }
+                for await mode in locationDisplay.$autoPanMode {
+                    await MainActor.run {
+                        isRecenterButtonDisabled = nmeaLocationDataSource == nil || mode == .recenter
+                    }
                 }
             }
         }
         
-        /// Starts iterating over location udpates and set the accuracy status.
-        func observeLocations() async {
-            for await location in nmeaLocationDataSource.locations {
-                guard let nmeaLocation = location as? NMEALocation,
-                      nmeaLocationDataSource.status == .started else { return }
-                let horizontalAccuracy = Measurement(
-                    value: nmeaLocation.horizontalAccuracy,
-                    unit: UnitLength.meters
-                )
-                let verticalAccuracy = Measurement(
-                    value: nmeaLocation.verticalAccuracy,
-                    unit: UnitLength.meters
-                )
-                let accuracyText = String(
-                    format: "Accuracy - Horizontal: %@; Vertical: %@",
-                    distanceFormatter.string(from: horizontalAccuracy),
-                    distanceFormatter.string(from: verticalAccuracy)
-                )
-                accuracyStatus = accuracyText
+        /// A detached task observing location data source location changes.
+        var observeLocationsTask: Task<Void, Never> {
+            Task.detached { [unowned self] in
+                defer { print("location in nmeaLocationDataSource.locations task ending") }
+                for await location in nmeaLocationDataSource.locations {
+                    guard let nmeaLocation = location as? NMEALocation,
+                          nmeaLocationDataSource.status == .started else { return }
+                    let horizontalAccuracy = Measurement(
+                        value: nmeaLocation.horizontalAccuracy,
+                        unit: UnitLength.meters
+                    )
+                    let verticalAccuracy = Measurement(
+                        value: nmeaLocation.verticalAccuracy,
+                        unit: UnitLength.meters
+                    )
+                    let accuracyText = String(
+                        format: "Accuracy - Horizontal: %@; Vertical: %@",
+                        distanceFormatter.string(from: horizontalAccuracy),
+                        distanceFormatter.string(from: verticalAccuracy)
+                    )
+                    await MainActor.run {
+                        accuracyStatus = accuracyText
+                    }
+                }
             }
         }
         
-        /// Starts iterating over satellite udpates and set the satellite status.
-        func observeSatellites() async {
-            for await satellites in nmeaLocationDataSource.satellites {
-                guard nmeaLocationDataSource.status == .started else { return }
-                
-                // Update the satellites info status text.
-                let satelliteSystems = satellites.filter {
-                    $0.system != nil
+        /// A detached task observing NMEA location data source satellite changes.
+        var observeSatellitesTask: Task<Void, Never> {
+            Task.detached { [unowned self] in
+                defer { print("satellites in nmeaLocationDataSource.satellites task ending") }
+                for await satellites in nmeaLocationDataSource.satellites {
+                    guard nmeaLocationDataSource.status == .started else { return }
+                    
+                    // Update the satellites info status text.
+                    let satelliteSystems = satellites.filter {
+                        $0.system != nil
+                    }
+                    let satelliteSystemsText = ListFormatter.localizedString(
+                        byJoining: Set(satellites.map(\.system!.label)).sorted()
+                    )
+                    let idText = ListFormatter.localizedString(
+                        byJoining: satelliteSystems.map { String($0.id) }
+                    )
+                    await MainActor.run {
+                        satelliteStatus = String(
+                            format: """
+                                    %d satellites in view
+                                    System(s): %@
+                                    IDs: %@
+                                    """,
+                            satellites.count,
+                            satelliteSystemsText,
+                            idText
+                        )
+                    }
                 }
-                let satelliteSystemsText = ListFormatter.localizedString(
-                    byJoining: Set(satellites.map(\.system!.label)).sorted()
-                )
-                let idText = ListFormatter.localizedString(
-                    byJoining: satelliteSystems.map { String($0.id) }
-                )
-                satelliteStatus = String(
-                    format: """
-            %d satellites in view
-            System(s): %@
-            IDs: %@
-            """,
-                    satellites.count,
-                    satelliteSystemsText,
-                    idText
-                )
             }
         }
     }

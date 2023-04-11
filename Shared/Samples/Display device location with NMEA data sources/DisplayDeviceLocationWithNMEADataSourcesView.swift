@@ -75,10 +75,13 @@ struct DisplayDeviceLocationWithNMEADataSourcesView: View {
                     model.start(usingMockedData: true)
                 }
             }
+            .onDisappear {
+                // Reset the model to stop the data source and observations.
+                model.reset()
+            }
     }
     
     func selectDevice() {
-        print("selectDevice()")
         if let (accessory, protocolString) = model.firstSupportedAccessoryWithProtocol() {
             // Use the supported accessory directly if it's already connected.
             model.accessoryDidConnect(connectedAccessory: accessory, protocolString: protocolString)
