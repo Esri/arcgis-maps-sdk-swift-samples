@@ -275,6 +275,8 @@ private extension NavigateRouteView {
                         } else {
                             await locationDisplay.dataSource.stop()
                         }
+                    @unknown default:
+                        break
                     }
                 }
             }
