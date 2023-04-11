@@ -19,9 +19,6 @@ struct ShowRealisticLightAndShadowsView: View {
     /// The view model for this sample.
     @StateObject private var model = Model()
     
-    /// A Boolean value indicating whether the settings view should be presented.
-    @State private var isShowingSettings = false
-    
     /// The date second value controlled by the slider.
     @State private var dateSecond: Float = Model.dateSecondsNoon
     
