@@ -99,11 +99,13 @@ struct ChangeCameraControllerView: View {
         .toolbar {
             ToolbarItem(placement: .bottomBar) {
                 Menu("Camera Controllers") {
-                    ForEach(CameraControllerKind.allCases, id: \.self) { kind in
-                        Button(kind.label) {
-                            cameraControllerKind = kind
-                            cameraController = makeCameraController(kind: kind)
+                    Picker("Choose a camera controller for the scene view.", selection: $cameraControllerKind) {
+                        ForEach(CameraControllerKind.allCases, id: \.self) { kind in
+                            Text(kind.label)
                         }
+                    }
+                    .task(id: cameraControllerKind) {
+                        cameraController = makeCameraController(kind: cameraControllerKind)
                     }
                 }
             }
