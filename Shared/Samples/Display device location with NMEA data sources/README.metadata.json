@@ -31,6 +31,7 @@
         "NMEASatelliteInfo"
     ],
     "snippets": [
+        "DisplayDeviceLocationWithNMEADataSourcesView.Model.swift",
         "DisplayDeviceLocationWithNMEADataSourcesView.swift",
         "SimulatedNMEADataSource.swift"
     ],
