@@ -1,0 +1,36 @@
+{
+    "category": "Scenes",
+    "description": "Control the behavior of the camera in a scene.",
+    "ignore": false,
+    "images": [
+        "change-camera-controller.png"
+    ],
+    "keywords": [
+        "3D",
+        "camera controller",
+        "orbit",
+        "tracking",
+        "Camera",
+        "GlobeCameraController",
+        "OrbitGeoElementCameraController",
+        "OrbitLocationCameraController",
+        "Scene",
+        "SceneView"
+    ],
+    "offline_data": [
+        "681d6f7694644709a7c830ec57a2d72b"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Camera",
+        "GlobeCameraController",
+        "OrbitGeoElementCameraController",
+        "OrbitLocationCameraController",
+        "Scene",
+        "SceneView"
+    ],
+    "snippets": [
+        "ChangeCameraControllerView.swift"
+    ],
+    "title": "Change camera controller"
+}

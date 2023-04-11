@@ -99,6 +99,8 @@ extension ConnectionStatus: CustomStringConvertible {
             return "Disconnected"
         case .failed:
             return "Failed"
+        @unknown default:
+            return "Unknown"
         }
     }
 }
