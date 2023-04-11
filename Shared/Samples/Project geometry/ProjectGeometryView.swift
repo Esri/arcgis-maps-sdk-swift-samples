@@ -22,8 +22,8 @@ struct ProjectGeometryView: View {
     /// The point where the map was tapped in its original spatial reference (Web Mercator).
     @State private var originalPoint: Point!
     
-    /// The tap location.
-    @State private var tapLocation: Point!
+    /// The projected location after normalization and projection.
+    @State private var projectedPoint: Point!
     
     /// The view model for the sample.
     @StateObject private var model = Model()
@@ -31,13 +31,12 @@ struct ProjectGeometryView: View {
     var body: some View {
         MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
             .onSingleTapGesture { _, mapPoint in
-                tapLocation = mapPoint
                 if calloutPlacement == nil {
                     // Sets the original point to where the map was tapped.
                     originalPoint = GeometryEngine.normalizeCentralMeridian(of: mapPoint) as? Point
                     
                     // Projects the original point from Web Mercator to WGS 84.
-                    let projectedPoint = GeometryEngine.project(originalPoint!, into: .wgs84)!
+                    projectedPoint = GeometryEngine.project(originalPoint!, into: .wgs84)!
                     
                     // Updates the geometry of the point graphic.
                     model.pointGraphic.geometry = projectedPoint
@@ -56,7 +55,7 @@ struct ProjectGeometryView: View {
                         Text("Coordinates")
                             .fontWeight(.medium)
                         Text("Original: \(originalPoint.xyCoordinates)")
-                        Text("Projected: \(tapLocation.xyCoordinates)")
+                        Text("Projected: \(projectedPoint.xyCoordinates)")
                     }
                     .font(.callout)
                 }
