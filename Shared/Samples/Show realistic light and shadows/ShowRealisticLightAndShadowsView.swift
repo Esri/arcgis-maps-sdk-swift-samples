@@ -59,13 +59,13 @@ struct ShowRealisticLightAndShadowsView: View {
         .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
                 Text(dateTimeText)
-                Button("Mode") {
-                    isShowingSettings = true
-                }
-                .confirmationDialog("Choose a lighting mode for the scene view.", isPresented: $isShowingSettings, titleVisibility: .visible) {
-                    ForEach(SceneView.SunLighting.allCases, id: \.self) { mode in
-                        Button(mode.label) {
-                            lightingMode = mode
+                
+                Menu("Mode") {
+                    Picker("Choose a lighting mode for the scene view.", selection: $lightingMode) {
+                        ForEach(SceneView.SunLighting.allCases, id: \.self) { mode in
+                            Button(mode.label) {
+                                lightingMode = mode
+                            }
                         }
                     }
                 }
