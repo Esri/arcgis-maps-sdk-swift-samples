@@ -22,7 +22,7 @@ struct ProjectGeometryView: View {
     /// The point where the map was tapped in its original spatial reference (Web Mercator).
     @State private var originalPoint: Point!
     
-    /// The projected location after normalization and projection.
+    /// The projected location after normalization.
     @State private var projectedPoint: Point!
     
     /// The view model for the sample.
