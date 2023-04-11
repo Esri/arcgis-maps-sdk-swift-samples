@@ -63,9 +63,7 @@ struct ShowRealisticLightAndShadowsView: View {
                 Menu("Mode") {
                     Picker("Choose a lighting mode for the scene view.", selection: $lightingMode) {
                         ForEach(SceneView.SunLighting.allCases, id: \.self) { mode in
-                            Button(mode.label) {
-                                lightingMode = mode
-                            }
+                            Text(mode.label)
                         }
                     }
                 }
