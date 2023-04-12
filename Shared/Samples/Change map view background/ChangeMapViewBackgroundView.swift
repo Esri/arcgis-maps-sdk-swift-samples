@@ -32,11 +32,11 @@ struct ChangeMapViewBackgroundView: View {
                     Button("Background Grid Settings") {
                         isShowingSettings = true
                     }
+                    .sheet(isPresented: $isShowingSettings, detents: [.medium], dragIndicatorVisibility: .visible) {
+                        SettingsView()
+                            .environmentObject(model)
+                    }
                 }
-            }
-            .sheet(isPresented: $isShowingSettings, detents: [.medium], dragIndicatorVisibility: .visible) {
-                SettingsView()
-                    .environmentObject(model)
             }
     }
 }
