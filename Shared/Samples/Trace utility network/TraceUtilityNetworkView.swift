@@ -40,6 +40,19 @@ struct TraceUtilityNetworkView: View {
             .onDisappear {
                 ArcGISEnvironment.authenticationManager.arcGISCredentialStore.removeAll()
             }
+            .overlay(alignment: .center) {
+                if model.tracingActivity == .traceRunning,
+                   let type = model.pendingTraceParameters?.traceType {
+                    VStack {
+                        Text("Running \(String(describing: type)) trace...")
+                        ProgressView()
+                            .progressViewStyle(.circular)
+                    }
+                    .padding(6)
+                    .background(.thinMaterial)
+                    .cornerRadius(10)
+                }
+            }
             .overlay(alignment: .top) {
                 if let hint = model.hint {
                     Text(hint)

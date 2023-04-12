@@ -268,7 +268,7 @@ extension TraceUtilityNetworkView {
                 case .traceFailed(let description):
                     hint = "Trace failed.\n\(description)"
                 case .traceRunning:
-                    hint = "Tracing..."
+                    hint = nil
                 }
             }
         }

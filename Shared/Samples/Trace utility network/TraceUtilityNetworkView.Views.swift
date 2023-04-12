@@ -19,22 +19,25 @@ extension TraceUtilityNetworkView {
     /// The buttons and picker shown to the user while setting points.
     @ViewBuilder
     private var controlsForSettingPoints: some View {
-        Picker("Add starting points & barriers", selection: pointType) {
-            ForEach([PointType.start, PointType.barrier], id: \.self) { type in
-                Text(type.label).tag(type)
+        Group {
+            Picker("Add starting points & barriers", selection: pointType) {
+                ForEach([PointType.start, PointType.barrier], id: \.self) { type in
+                    Text(type.label).tag(type)
+                }
             }
+            .padding()
+            .pickerStyle(.segmented)
+            Button("Trace") {
+                model.tracingActivity = .traceRunning
+            }
+            .disabled(model.pendingTraceParameters?.startingLocations.isEmpty ?? true)
+            .padding()
+            Button("Reset", role: .destructive) {
+                model.reset()
+            }
+            .padding()
         }
-        .padding()
-        .pickerStyle(.segmented)
-        Button("Trace") {
-            model.tracingActivity = .traceRunning
-        }
-        .disabled(model.pendingTraceParameters?.startingLocations.isEmpty ?? true)
-        .padding()
-        Button("Reset", role: .destructive) {
-            model.reset()
-        }
-        .padding()
+        .disabled(model.tracingActivity == .traceRunning)
     }
     
     /// A binding to the type of the starting point being set.
@@ -81,7 +84,7 @@ extension TraceUtilityNetworkView {
                 .confirmationDialog("Trace Type", isPresented: $model.traceTypeSelectorIsOpen) {
                     traceTypePickerButtons
                 }
-            case .settingPoints:
+            case .settingPoints, .traceRunning:
                 controlsForSettingPoints
                     .alert(
                         "Select terminal",
@@ -93,10 +96,6 @@ extension TraceUtilityNetworkView {
                     model.reset()
                 }
                 .padding()
-            case .traceRunning:
-                ProgressView()
-                    .progressViewStyle(CircularProgressViewStyle())
-                    .padding()
             }
         }
     }
