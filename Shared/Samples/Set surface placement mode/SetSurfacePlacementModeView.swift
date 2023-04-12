@@ -144,6 +144,8 @@ private extension SetSurfacePlacementModeView {
             // Creates symbols for the graphic.
             let markerSymbol = SimpleMarkerSymbol(style: .triangle, color: .red, size: 20)
             let textSymbol = TextSymbol(text: surfacePlacement.label, color: .blue, size: 20, horizontalAlignment: .left)
+            textSymbol.haloColor = .cyan
+            textSymbol.haloWidth = 2
             
             // Adds an offset to avoid overlapping the text and marker symbols.
             textSymbol.offsetY = 20
