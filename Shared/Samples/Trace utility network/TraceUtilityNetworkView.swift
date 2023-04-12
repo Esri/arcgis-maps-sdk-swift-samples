@@ -58,13 +58,12 @@ struct TraceUtilityNetworkView: View {
                 }
                 .task(id: model.tracingActivity) {
                     model.updateUserHint()
-                    if model.tracingActivity == .tracing {
+                    if model.tracingActivity == .traceRunning {
                         do {
                             try await model.trace()
-                            model.tracingActivity = .viewingResults
+                            model.tracingActivity = .traceCompleted
                         } catch {
-                            model.tracingActivity = .none
-                            model.updateUserHint(withMessage: "An error occurred")
+                            model.tracingActivity = .traceErrored(description: error.localizedDescription)
                         }
                     }
                 }

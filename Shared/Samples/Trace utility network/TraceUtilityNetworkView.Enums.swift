@@ -31,13 +31,15 @@ extension TraceUtilityNetworkView {
         }
     }
     
-    /// The different activities a user will traverse while performing a utility network trace.
+    /// The different states of a utility network trace.
     enum TracingActivity: Equatable {
-        /// Indicates the user is setting starting points and barriers.
+        /// Starting points and barriers are being added.
         case settingPoints(pointType: PointType)
-        /// Indicates the user has started a trace and is awaiting results.
-        case tracing
-        /// Indicates the user is viewing trace results.
-        case viewingResults
+        /// The trace completed successfully.
+        case traceCompleted
+        /// The trace experienced an error.
+        case traceErrored(description: String)
+        /// The trace is running.
+        case traceRunning
     }
 }

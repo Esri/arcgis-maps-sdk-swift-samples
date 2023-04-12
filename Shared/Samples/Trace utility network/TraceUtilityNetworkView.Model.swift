@@ -259,10 +259,12 @@ extension TraceUtilityNetworkView {
                     case .barrier:
                         hint = "Tap on the map to add a barrier."
                     }
-                case .tracing:
-                    hint = "Tracing..."
-                case .viewingResults:
+                case .traceCompleted:
                     hint = "Trace completed."
+                case .traceErrored(let description):
+                    hint = "An error occurred.\n\(description)"
+                case .traceRunning:
+                    hint = "Tracing..."
                 }
             }
         }

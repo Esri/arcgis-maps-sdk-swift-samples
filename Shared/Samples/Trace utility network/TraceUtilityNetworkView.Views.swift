@@ -27,7 +27,7 @@ extension TraceUtilityNetworkView {
         .padding()
         .pickerStyle(.segmented)
         Button("Trace") {
-            model.tracingActivity = .tracing
+            model.tracingActivity = .traceRunning
         }
         .disabled(model.pendingTraceParameters?.startingLocations.isEmpty ?? true)
         .padding()
@@ -88,15 +88,15 @@ extension TraceUtilityNetworkView {
                         isPresented: $model.terminalSelectorIsOpen,
                         actions: { terminalPickerButtons }
                     )
-            case .tracing:
-                ProgressView()
-                    .progressViewStyle(CircularProgressViewStyle())
-                    .padding()
-            case .viewingResults:
+            case .traceCompleted, .traceErrored:
                 Button("Reset", role: .destructive) {
                     model.reset()
                 }
                 .padding()
+            case .traceRunning:
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle())
+                    .padding()
             }
         }
     }
