@@ -40,6 +40,14 @@ struct TraceUtilityNetworkView: View {
             .onDisappear {
                 ArcGISEnvironment.authenticationManager.arcGISCredentialStore.removeAll()
             }
+            .overlay(alignment: .top) {
+                if let hint = model.hint {
+                    Text(hint)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 6)
+                        .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
+                }
+            }
             .task {
                 await model.setup()
             }
@@ -70,14 +78,6 @@ struct TraceUtilityNetworkView: View {
                 ToolbarItemGroup(placement: .bottomBar) {
                     traceMenu
                 }
-            }
-        }
-        .overlay(alignment: .top) {
-            if let hint = model.hint {
-                Text(hint)
-                    .padding([.bottom])
-                    .frame(maxWidth: .infinity)
-                    .background(.thinMaterial)
             }
         }
     }

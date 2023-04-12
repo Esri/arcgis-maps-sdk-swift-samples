@@ -255,7 +255,7 @@ extension TraceUtilityNetworkView {
             } else {
                 switch tracingActivity {
                 case .none:
-                    hint = ""
+                    hint = nil
                 case .settingPoints(let pointType):
                     switch pointType {
                     case .start:
