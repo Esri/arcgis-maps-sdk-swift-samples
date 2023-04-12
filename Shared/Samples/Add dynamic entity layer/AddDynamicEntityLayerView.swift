@@ -51,6 +51,10 @@ struct AddDynamicEntityLayerView: View {
                     Button("Dynamic Entity Settings") {
                         isShowingSettings = true
                     }
+                    .sheet(isPresented: $isShowingSettings, detents: [.medium], dragIndicatorVisibility: .visible) {
+                        SettingsView()
+                            .environmentObject(model)
+                    }
                 }
             }
             .overlay(alignment: .top) {
@@ -62,10 +66,6 @@ struct AddDynamicEntityLayerView: View {
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 6)
                 .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
-            }
-            .sheet(isPresented: $isShowingSettings, detents: [.medium], dragIndicatorVisibility: .visible) {
-                SettingsView()
-                    .environmentObject(model)
             }
             .task {
                 // This will update `connectionStatus` when the stream service
