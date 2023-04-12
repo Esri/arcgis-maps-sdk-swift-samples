@@ -88,7 +88,7 @@ extension TraceUtilityNetworkView {
                         isPresented: $model.terminalSelectorIsOpen,
                         actions: { terminalPickerButtons }
                     )
-            case .traceCompleted, .traceErrored:
+            case .traceCompleted, .traceFailed:
                 Button("Reset", role: .destructive) {
                     model.reset()
                 }

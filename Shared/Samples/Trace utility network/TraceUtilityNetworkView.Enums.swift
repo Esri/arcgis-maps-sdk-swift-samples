@@ -37,8 +37,8 @@ extension TraceUtilityNetworkView {
         case settingPoints(pointType: PointType)
         /// The trace completed successfully.
         case traceCompleted
-        /// The trace experienced an error.
-        case traceErrored(description: String)
+        /// The trace failed.
+        case traceFailed(description: String)
         /// The trace is running.
         case traceRunning
     }

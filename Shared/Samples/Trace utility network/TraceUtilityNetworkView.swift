@@ -63,7 +63,7 @@ struct TraceUtilityNetworkView: View {
                             try await model.trace()
                             model.tracingActivity = .traceCompleted
                         } catch {
-                            model.tracingActivity = .traceErrored(description: error.localizedDescription)
+                            model.tracingActivity = .traceFailed(description: error.localizedDescription)
                         }
                     }
                 }
