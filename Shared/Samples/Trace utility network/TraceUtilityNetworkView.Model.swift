@@ -29,10 +29,14 @@ extension TraceUtilityNetworkView {
         ///
         /// The feature layers allow us to modify the visual rendering style of different elements in
         /// the network.
+        ///
+        /// - Note: The electric distribution line feature layer (ID 3) is placed on the map first,
+        /// followed by the electric distribution device feature layer (ID 0) so that the junction
+        /// based features in the latter feature layer are easier to select.
         private var featureLayerURLs: [URL] {
             return [
-                .featureService.appendingPathComponent("0"),
-                .featureService.appendingPathComponent("3")
+                .featureService.appendingPathComponent("3"),
+                .featureService.appendingPathComponent("0")
             ]
         }
         
