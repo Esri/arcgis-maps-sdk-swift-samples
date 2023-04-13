@@ -122,6 +122,23 @@ extension TraceUtilityNetworkView {
 private extension UtilityTraceParameters.TraceType {
     /// The name of this trace type, capitalized.
     var displayName: String {
-        String(describing: self).capitalized
+        switch self {
+        case .connected:
+            return "Connected"
+        case .downstream:
+            return "Downstream"
+        case .isolation:
+            return "Isolation"
+        case .loops:
+            return "Loops"
+        case .shortestPath:
+            return "Shortest Path"
+        case .subnetwork:
+            return "Subnetwork"
+        case .upstream:
+            return "Upstream"
+        @unknown default:
+            return "Unknown"
+        }
     }
 }
