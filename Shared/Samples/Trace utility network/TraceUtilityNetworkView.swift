@@ -62,10 +62,10 @@ struct TraceUtilityNetworkView: View {
                       let lastSingleTap = model.lastSingleTap else {
                     return
                 }
-                if let feature = await model.identifyFeatureAt(
-                    lastSingleTap.screenPoint,
-                    with: mapViewProxy
-                ) {
+                if let feature = try? await mapViewProxy.identifyLayers(
+                    screenPoint: lastSingleTap.screenPoint,
+                    tolerance: 10
+                ).first?.geoElements.first as? ArcGISFeature {
                     model.add(feature, at: lastSingleTap.mapPoint)
                 }
             }

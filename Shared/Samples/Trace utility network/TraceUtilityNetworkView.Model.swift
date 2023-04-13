@@ -167,18 +167,6 @@ extension TraceUtilityNetworkView {
             }
         }
         
-        /// Identifies the first discoverable feature at the provided screen point.
-        /// - Parameters:
-        ///   - screenPoint: The location on the screen where the identify operation is desired.
-        ///   - proxy: The map view proxy to perform the identify operation with.
-        /// - Returns: The first discoverable feature or `nil` if none were identified.
-        func identifyFeatureAt(_ screenPoint: CGPoint, with proxy: MapViewProxy) async -> ArcGISFeature? {
-            try? await proxy.identifyLayers(
-                screenPoint: screenPoint,
-                tolerance: 10
-            ).first?.geoElements.first as? ArcGISFeature
-        }
-        
         /// Sets the pending trace parameters with the provided trace type.
         /// - Parameter type: The trace type.
         func setTraceParameters(ofType type: UtilityTraceParameters.TraceType) {
