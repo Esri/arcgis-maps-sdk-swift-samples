@@ -56,4 +56,4 @@ The [Naperville electrical](https://sampleserver7.arcgisonline.com/server/rest/s
 
 ## Tags
 
-condition barriers, downstream trace, network analysis, subnetwork trace, trace configuration, traversability, upstream trace, utility network, validate consistency
+condition barriers, downstream trace, network analysis, subnetwork trace, toolkit, trace configuration, traversability, upstream trace, utility network, validate consistency
