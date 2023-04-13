@@ -81,6 +81,14 @@
 		4D2ADC6929C50C4C003B367F /* AddDynamicEntityLayerView.SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2ADC6829C50C4C003B367F /* AddDynamicEntityLayerView.SettingsView.swift */; };
 		4D2ADC6A29C50D91003B367F /* AddDynamicEntityLayerView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4D2ADC6629C50BD6003B367F /* AddDynamicEntityLayerView.Model.swift */; };
 		4D2ADC6B29C50D91003B367F /* AddDynamicEntityLayerView.SettingsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4D2ADC6829C50C4C003B367F /* AddDynamicEntityLayerView.SettingsView.swift */; };
+		7573E81A29D6134C00BEED9C /* TraceUtilityNetworkView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7573E81329D6134C00BEED9C /* TraceUtilityNetworkView.Model.swift */; };
+		7573E81C29D6134C00BEED9C /* TraceUtilityNetworkView.Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7573E81529D6134C00BEED9C /* TraceUtilityNetworkView.Enums.swift */; };
+		7573E81E29D6134C00BEED9C /* TraceUtilityNetworkView.Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7573E81729D6134C00BEED9C /* TraceUtilityNetworkView.Views.swift */; };
+		7573E81F29D6134C00BEED9C /* TraceUtilityNetworkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7573E81829D6134C00BEED9C /* TraceUtilityNetworkView.swift */; };
+		7573E82129D6136C00BEED9C /* TraceUtilityNetworkView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 7573E81329D6134C00BEED9C /* TraceUtilityNetworkView.Model.swift */; };
+		7573E82229D6136C00BEED9C /* TraceUtilityNetworkView.Enums.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 7573E81529D6134C00BEED9C /* TraceUtilityNetworkView.Enums.swift */; };
+		7573E82329D6136C00BEED9C /* TraceUtilityNetworkView.Views.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 7573E81729D6134C00BEED9C /* TraceUtilityNetworkView.Views.swift */; };
+		7573E82429D6136C00BEED9C /* TraceUtilityNetworkView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 7573E81829D6134C00BEED9C /* TraceUtilityNetworkView.swift */; };
 		75DD736729D35FF40010229D /* ChangeMapViewBackgroundView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4D2ADC5529C4F612003B367F /* ChangeMapViewBackgroundView.swift */; };
 		75DD736829D35FF40010229D /* ChangeMapViewBackgroundView.SettingsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4D2ADC5829C4F612003B367F /* ChangeMapViewBackgroundView.SettingsView.swift */; };
 		75DD736929D35FF40010229D /* ChangeMapViewBackgroundView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4D2ADC6129C5071C003B367F /* ChangeMapViewBackgroundView.Model.swift */; };
@@ -230,6 +238,10 @@
 				0039A4F92885C50300592C86 /* ShowResultOfSpatialOperationsView.swift in Copy Source Code Files */,
 				0039A4FA2885C50300592C86 /* StyleGraphicsWithRendererView.swift in Copy Source Code Files */,
 				0039A4FB2885C50300592C86 /* StyleGraphicsWithSymbolsView.swift in Copy Source Code Files */,
+				7573E82129D6136C00BEED9C /* TraceUtilityNetworkView.Model.swift in Copy Source Code Files */,
+				7573E82229D6136C00BEED9C /* TraceUtilityNetworkView.Enums.swift in Copy Source Code Files */,
+				7573E82329D6136C00BEED9C /* TraceUtilityNetworkView.Views.swift in Copy Source Code Files */,
+				7573E82429D6136C00BEED9C /* TraceUtilityNetworkView.swift in Copy Source Code Files */,
 			);
 			name = "Copy Source Code Files";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -281,6 +293,10 @@
 		4D2ADC6129C5071C003B367F /* ChangeMapViewBackgroundView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeMapViewBackgroundView.Model.swift; sourceTree = "<group>"; };
 		4D2ADC6629C50BD6003B367F /* AddDynamicEntityLayerView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDynamicEntityLayerView.Model.swift; sourceTree = "<group>"; };
 		4D2ADC6829C50C4C003B367F /* AddDynamicEntityLayerView.SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDynamicEntityLayerView.SettingsView.swift; sourceTree = "<group>"; };
+		7573E81329D6134C00BEED9C /* TraceUtilityNetworkView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TraceUtilityNetworkView.Model.swift; sourceTree = "<group>"; };
+		7573E81529D6134C00BEED9C /* TraceUtilityNetworkView.Enums.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TraceUtilityNetworkView.Enums.swift; sourceTree = "<group>"; };
+		7573E81729D6134C00BEED9C /* TraceUtilityNetworkView.Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TraceUtilityNetworkView.Views.swift; sourceTree = "<group>"; };
+		7573E81829D6134C00BEED9C /* TraceUtilityNetworkView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TraceUtilityNetworkView.swift; sourceTree = "<group>"; };
 		75DD739129D38B1B0010229D /* NavigateRouteView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigateRouteView.swift; sourceTree = "<group>"; };
 		883C121429C9136600062FF9 /* DownloadPreplannedMapAreaView.MapPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadPreplannedMapAreaView.MapPicker.swift; sourceTree = "<group>"; };
 		88F93CC029C3D59C0006B28E /* SketchOnMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SketchOnMapView.swift; sourceTree = "<group>"; };
@@ -440,6 +456,7 @@
 				88F93CBE29C3D4E30006B28E /* Sketch on map */,
 				E066DD362860AB0B004D3D5B /* Style graphics with renderer */,
 				E004A6E42846A609002A1FE6 /* Style graphics with symbols */,
+				7573E81229D6134C00BEED9C /* Trace utility network */,
 			);
 			path = Samples;
 			sourceTree = "<group>";
@@ -663,6 +680,17 @@
 				4D2ADC6129C5071C003B367F /* ChangeMapViewBackgroundView.Model.swift */,
 			);
 			path = "Change map view background";
+			sourceTree = "<group>";
+		};
+		7573E81229D6134C00BEED9C /* Trace utility network */ = {
+			isa = PBXGroup;
+			children = (
+				7573E81329D6134C00BEED9C /* TraceUtilityNetworkView.Model.swift */,
+				7573E81529D6134C00BEED9C /* TraceUtilityNetworkView.Enums.swift */,
+				7573E81729D6134C00BEED9C /* TraceUtilityNetworkView.Views.swift */,
+				7573E81829D6134C00BEED9C /* TraceUtilityNetworkView.swift */,
+			);
+			path = "Trace utility network";
 			sourceTree = "<group>";
 		};
 		75DD739029D38B1B0010229D /* Navigate route */ = {
@@ -1061,6 +1089,8 @@
 				E004A6E928493BCE002A1FE6 /* ShowDeviceLocationView.swift in Sources */,
 				F111CCC1288B5D5600205358 /* DisplayMapFromMobileMapPackageView.swift in Sources */,
 				218F35B829C28F4A00502022 /* AuthenticateWithOAuthView.swift in Sources */,
+				7573E81C29D6134C00BEED9C /* TraceUtilityNetworkView.Enums.swift in Sources */,
+				7573E81A29D6134C00BEED9C /* TraceUtilityNetworkView.Model.swift in Sources */,
 				0005580C28185C0600224BC6 /* SampleList.swift in Sources */,
 				E004A6E028466279002A1FE6 /* ShowCalloutView.swift in Sources */,
 				E000E763286A0B18005D87C5 /* CutGeometryView.swift in Sources */,
@@ -1081,9 +1111,11 @@
 				E004A6F3284E4FEB002A1FE6 /* ShowResultOfSpatialOperationsView.swift in Sources */,
 				F1E71BF1289473760064C33F /* AddRasterFromFileView.swift in Sources */,
 				00B04273282EC59E0072E1B4 /* AboutView.swift in Sources */,
+				7573E81F29D6134C00BEED9C /* TraceUtilityNetworkView.swift in Sources */,
 				4D2ADC6929C50C4C003B367F /* AddDynamicEntityLayerView.SettingsView.swift in Sources */,
 				1C42E04729D2396B004FC4BE /* ShowPopupView.swift in Sources */,
 				E066DD3B2860CA08004D3D5B /* ShowResultOfSpatialRelationshipsView.swift in Sources */,
+				7573E81E29D6134C00BEED9C /* TraceUtilityNetworkView.Views.swift in Sources */,
 				4D2ADC5A29C4F612003B367F /* ChangeMapViewBackgroundView.swift in Sources */,
 				0044CDDF2995C39E004618CE /* ShowDeviceLocationHistoryView.swift in Sources */,
 				E041ABC0287CA9F00056009B /* WebView.swift in Sources */,
