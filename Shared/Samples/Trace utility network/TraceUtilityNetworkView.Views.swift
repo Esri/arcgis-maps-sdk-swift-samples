@@ -98,7 +98,7 @@ extension TraceUtilityNetworkView {
         }
     }
     
-    /// Buttons for each the supported trace types.
+    /// Buttons for the supported trace types.
     ///
     /// When a trace type is selected, the pending trace is initialized as a new instance of trace
     /// parameters. The trace configuration can also be set. The user should set trace points next.
