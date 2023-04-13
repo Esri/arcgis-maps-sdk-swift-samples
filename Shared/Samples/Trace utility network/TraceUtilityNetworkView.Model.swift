@@ -89,7 +89,7 @@ extension TraceUtilityNetworkView {
         @Published var tracingActivity: TracingActivity?
         
         /// The graphics overlay on which starting point and barrier symbols will be drawn.
-        var points: GraphicsOverlay = {
+        let points: GraphicsOverlay = {
             let overlay = GraphicsOverlay()
             let barrierUniqueValue = UniqueValue(
                 symbol: SimpleMarkerSymbol.barrier,
