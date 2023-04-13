@@ -19,7 +19,7 @@ extension TraceUtilityNetworkView {
     /// The buttons and picker shown to the user while setting points.
     @ViewBuilder
     private var controlsForSettingPoints: some View {
-        HStack {
+        Group {
             Picker("Add starting points & barriers", selection: pointType) {
                 ForEach([PointType.start, PointType.barrier], id: \.self) { type in
                     Text(type.label)
