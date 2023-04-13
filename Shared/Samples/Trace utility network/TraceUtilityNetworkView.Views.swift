@@ -79,13 +79,7 @@ extension TraceUtilityNetworkView {
         HStack(spacing: 5) {
             switch model.tracingActivity {
             case .none:
-                Button("Start a New Trace") {
-                    withAnimation {
-                        model.traceTypeSelectorIsOpen.toggle()
-                    }
-                }
-                .padding()
-                .confirmationDialog("Trace Type", isPresented: $model.traceTypeSelectorIsOpen) {
+                Menu("Start a New Trace") {
                     traceTypePickerButtons
                 }
             case .settingPoints, .traceRunning:

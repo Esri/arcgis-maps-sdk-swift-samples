@@ -30,13 +30,6 @@ struct TraceUtilityNetworkView: View {
                 model.lastSingleTap = (screenPoint, mapPoint)
             }
             .selectionColor(.yellow)
-            .onChange(of: model.traceTypeSelectorIsOpen) { _ in
-                // If type selection is closed and a new trace wasn't initialized we can
-                // figure that the user opted to cancel.
-                if !model.traceTypeSelectorIsOpen && model.pendingTraceParameters == nil {
-                    model.reset()
-                }
-            }
             .onDisappear {
                 ArcGISEnvironment.authenticationManager.arcGISCredentialStore.removeAll()
             }
