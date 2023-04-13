@@ -110,6 +110,9 @@ extension TraceUtilityNetworkView {
         /// - Parameters:
         ///   - element: The utility element to be added to the pending trace.
         ///   - point: The location on the map where the element's visual indicator should be added.
+        ///
+        /// Adding custom attributes to the graphic allows us to apply different rendering styles
+        /// for starting point and barrier graphics.
         private func add(_ element: UtilityElement, at point: Geometry) {
             guard let pendingTraceParameters,
                   case .settingPoints(let pointType) = tracingActivity else { return }
