@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import SwiftUI
+import UIKit.UIDevice
 
 struct SampleList: View {
     /// A Boolean value that indicates whether the user is searching.
@@ -71,6 +72,9 @@ private extension SampleList {
         /// A string representation of the selected sample.
         let selection: String?
         
+        /// The current device type.
+        let deviceType = UIDevice.current.userInterfaceIdiom
+        
         /// A Boolean value indicating whether to show the sample's description
         @State private var isShowingDescription = false
         
@@ -82,7 +86,7 @@ private extension SampleList {
                     VStack(alignment: .leading, spacing: 5) {
                         Text(sample.name)
                         if isShowingDescription {
-                            if #available(iOS 16, *) {
+                            if #available(iOS 16, *), deviceType != .phone {
                                 Text(sample.description)
                                     .foregroundColor(selection == sample.name ? .white.opacity(0.8) : .secondary)
                                     .font(.caption)
@@ -100,11 +104,14 @@ private extension SampleList {
                     Button {
                         isShowingDescription.toggle()
                     } label: {
-                        Image(systemName: isShowingDescription ? "info.circle.fill" : "info.circle")
-                            .foregroundColor(selection == sample.name ? .white : .accentColor)
+                        if #available(iOS 16, *), deviceType != .phone {
+                            Image(systemName: isShowingDescription ? "info.circle.fill" : "info.circle")
+                                .foregroundColor(selection == sample.name ? .white : .accentColor)
+                        } else {
+                            Image(systemName: isShowingDescription ? "info.circle.fill" : "info.circle")
+                        }
                     }
                     .buttonStyle(.borderless)
-                    .foregroundColor(selection == sample.name ? .white : .accentColor)
                 }
                 .animation(.easeOut(duration: 0.2), value: isShowingDescription)
             }
