@@ -90,7 +90,6 @@ private extension SampleList {
                                 Text(sample.description)
                                     .foregroundColor(selection == sample.name ? .white.opacity(0.8) : .secondary)
                                     .font(.caption)
-                                    .foregroundColor(.secondary)
                                     .transition(.move(edge: .top).combined(with: .opacity))
                             } else {
                                 Text(sample.description)
