@@ -22,7 +22,7 @@ extension TraceUtilityNetworkView {
         Group {
             Picker("Add starting points & barriers", selection: pointType) {
                 ForEach([PointType.start, PointType.barrier], id: \.self) { type in
-                    Text(type.label).tag(type)
+                    Text(type.label)
                 }
             }
             .padding()
