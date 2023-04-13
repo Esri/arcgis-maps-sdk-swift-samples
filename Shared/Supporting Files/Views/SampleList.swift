@@ -27,6 +27,9 @@ struct SampleList: View {
     /// A Boolean value that indicates whether to present the about view.
     @State private var isAboutViewPresented = false
     
+    /// A string representation of the selected sample.
+    @State var selection: String?
+    
     /// The samples to display in the list. Searching adjusts this value.
     private var displayedSamples: [Sample] {
         if !isSearching {
@@ -41,8 +44,8 @@ struct SampleList: View {
     }
     
     var body: some View {
-        List(displayedSamples, id: \.name) { sample in
-            SampleRow(sample: sample)
+        List(displayedSamples, id: \.name, selection: $selection) { sample in
+            SampleRow(sample: sample, selection: selection)
         }
         .navigationTitle("Samples")
         .toolbar {
@@ -65,6 +68,9 @@ private extension SampleList {
         /// The sample displayed in the row.
         let sample: Sample
         
+        /// A string representation of the selected sample.
+        let selection: String?
+        
         /// A Boolean value indicating whether to show the sample's description
         @State private var isShowingDescription = false
         
@@ -76,10 +82,18 @@ private extension SampleList {
                     VStack(alignment: .leading, spacing: 5) {
                         Text(sample.name)
                         if isShowingDescription {
-                            Text(sample.description)
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                                .transition(.move(edge: .top).combined(with: .opacity))
+                            if #available(iOS 16, *) {
+                                Text(sample.description)
+                                    .foregroundColor(selection == sample.name ? .white.opacity(0.8) : .secondary)
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                                    .transition(.move(edge: .top).combined(with: .opacity))
+                            } else {
+                                Text(sample.description)
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                                    .transition(.move(edge: .top).combined(with: .opacity))
+                            }
                         }
                     }
                     Spacer()
@@ -87,8 +101,10 @@ private extension SampleList {
                         isShowingDescription.toggle()
                     } label: {
                         Image(systemName: isShowingDescription ? "info.circle.fill" : "info.circle")
+                            .foregroundColor(selection == sample.name ? .white : .accentColor)
                     }
                     .buttonStyle(.borderless)
+                    .foregroundColor(selection == sample.name ? .white : .accentColor)
                 }
                 .animation(.easeOut(duration: 0.2), value: isShowingDescription)
             }
