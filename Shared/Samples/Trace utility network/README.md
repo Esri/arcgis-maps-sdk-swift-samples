@@ -54,6 +54,8 @@ Tap "Start a new trace" to select the type of trace using the confirmation dialo
 
 The [Naperville electrical](https://sampleserver7.arcgisonline.com/server/rest/services/UtilityNetwork/NapervilleElectric/FeatureServer) network feature service, hosted on ArcGIS Online, contains a utility network used to run the subnetwork-based trace shown in this sample.
 
+A `UtilityNetworkTrace` toolkit component can be used for various utility network related use cases. For information about setting up the toolkit, as well as code for the underlying component, visit the [toolkit repository](https://github.com/Esri/arcgis-maps-sdk-swift-toolkit).
+
 ## Tags
 
-condition barriers, downstream trace, network analysis, subnetwork trace, trace configuration, traversability, toolkit, upstream trace, utility network, validate consistency
+condition barriers, downstream trace, network analysis, subnetwork trace, toolkit, trace configuration, traversability, upstream trace, utility network, validate consistency
