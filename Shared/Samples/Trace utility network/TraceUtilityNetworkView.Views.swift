@@ -19,23 +19,27 @@ extension TraceUtilityNetworkView {
     /// The buttons and picker shown to the user while setting points.
     @ViewBuilder
     private var controlsForSettingPoints: some View {
-        Group {
+        HStack {
             Picker("Add starting points & barriers", selection: pointType) {
                 ForEach([PointType.start, PointType.barrier], id: \.self) { type in
                     Text(type.label)
                 }
             }
-            .padding()
             .pickerStyle(.segmented)
+            .frame(minWidth: 100, maxWidth: 300)
+            
+            Spacer()
+            
             Button("Trace") {
                 model.tracingActivity = .traceRunning
             }
             .disabled(model.pendingTraceParameters?.startingLocations.isEmpty ?? true)
-            .padding()
+            
+            Spacer()
+            
             Button("Reset", role: .destructive) {
                 model.reset()
             }
-            .padding()
         }
         .disabled(model.tracingActivity == .traceRunning)
     }
