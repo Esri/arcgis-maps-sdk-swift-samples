@@ -76,7 +76,7 @@ extension TraceUtilityNetworkView {
     
     /// The menu at the bottom of the screen that guides the user through running a trace.
     var traceMenu: some View {
-        HStack(spacing: 5) {
+        Group {
             switch model.tracingActivity {
             case .none:
                 Menu("Start a New Trace") {
