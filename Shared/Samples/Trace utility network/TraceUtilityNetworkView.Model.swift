@@ -69,7 +69,7 @@ extension TraceUtilityNetworkView {
         }
         
         /// The utility network for this sample.
-        var network: UtilityNetwork? {
+        private var network: UtilityNetwork? {
             map.utilityNetworks.first
         }
         
