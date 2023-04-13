@@ -78,6 +78,22 @@ private extension SampleList {
         /// A Boolean value indicating whether to show the sample's description
         @State private var isShowingDescription = false
         
+        var sampleForegroundColor: Color {
+            selection == sample.name ? .white.opacity(0.8) : .secondary
+        }
+        
+        var descriptionTextColor: Color {
+            selection == sample.name ? .white : .accentColor
+        }
+        
+        var selectionColorIsAccentColor: Bool {
+            if #available(iOS 16, *), deviceType != .phone {
+                return true
+            } else {
+                return false
+            }
+        }
+        
         var body: some View {
             NavigationLink {
                 SampleDetailView(sample: sample)
@@ -86,29 +102,19 @@ private extension SampleList {
                     VStack(alignment: .leading, spacing: 5) {
                         Text(sample.name)
                         if isShowingDescription {
-                            if #available(iOS 16, *), deviceType != .phone {
-                                Text(sample.description)
-                                    .foregroundColor(selection == sample.name ? .white.opacity(0.8) : .secondary)
-                                    .font(.caption)
-                                    .transition(.move(edge: .top).combined(with: .opacity))
-                            } else {
-                                Text(sample.description)
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
-                                    .transition(.move(edge: .top).combined(with: .opacity))
-                            }
+                            Text(sample.description)
+                                .font(.caption)
+                                .foregroundColor(selectionColorIsAccentColor ? sampleForegroundColor : .secondary)
+                                .transition(.move(edge: .top).combined(with: .opacity))
                         }
                     }
                     Spacer()
                     Button {
                         isShowingDescription.toggle()
                     } label: {
-                        if #available(iOS 16, *), deviceType != .phone {
-                            Image(systemName: isShowingDescription ? "info.circle.fill" : "info.circle")
-                                .foregroundColor(selection == sample.name ? .white : .accentColor)
-                        } else {
-                            Image(systemName: isShowingDescription ? "info.circle.fill" : "info.circle")
-                        }
+                        Image(systemName: "info.circle")
+                            .symbolVariant(isShowingDescription ? .fill : .none)
+                            .foregroundColor(selectionColorIsAccentColor ? descriptionTextColor : .accentColor)
                     }
                     .buttonStyle(.borderless)
                 }
