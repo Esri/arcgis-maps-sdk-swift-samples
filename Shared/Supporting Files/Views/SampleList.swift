@@ -19,12 +19,6 @@ struct SampleList: View {
     /// A Boolean value that indicates whether the user is searching.
     @Environment(\.isSearching) private var isSearching
     
-    /// The horizontal size class of the enviroment.
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    
-    /// The vertical size class of the enviroment.
-    @Environment(\.verticalSizeClass) var verticalSizeClass
-    
     /// All samples that will be displayed in the list.
     let samples: [Sample]
     
@@ -52,7 +46,7 @@ struct SampleList: View {
     
     var body: some View {
         List(displayedSamples, id: \.name, selection: $selection) { sample in
-            SampleRow(sample: sample, selection: selection, horizontalSizeClass: horizontalSizeClass, verticalSizeClass: verticalSizeClass)
+            SampleRow(sample: sample, selection: selection)
         }
         .navigationTitle("Samples")
         .toolbar {
@@ -72,6 +66,12 @@ struct SampleList: View {
 
 private extension SampleList {
     struct SampleRow: View {
+        /// The horizontal size class of the enviroment.
+        @Environment(\.horizontalSizeClass) var horizontalSizeClass
+        
+        /// The vertical size class of the enviroment.
+        @Environment(\.verticalSizeClass) var verticalSizeClass
+        
         /// The sample displayed in the row.
         let sample: Sample
         
@@ -80,12 +80,6 @@ private extension SampleList {
         
         /// The current device type.
         let deviceType = UIDevice.current.userInterfaceIdiom
-        
-        /// The horizontal size class of the device.
-        let horizontalSizeClass: UserInterfaceSizeClass?
-        
-        /// The vertical size class of the device.
-        let verticalSizeClass: UserInterfaceSizeClass?
         
         /// A Boolean value indicating whether to show the sample's description
         @State private var isShowingDescription = false
