@@ -3,7 +3,7 @@
 Find features in a feature table which match an SQL query.
 
 ![Query feature table options](query-feature-table-1.png)
-![Query feature table results](query-faeture-table-2.png)
+![Query feature table results](query-feature-table-2.png)
 
 ## Use case
 
