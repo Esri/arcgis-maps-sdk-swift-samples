@@ -35,7 +35,7 @@ struct BrowseBuildingFloorsView: View {
     @State private var isMapLoaded = false
     
     /// A floor-aware web map of Building L on the Esri Redlands campus.
-    @StateObject private var map = Map(
+    @State private var map = Map(
         item: PortalItem(
             portal: .arcGISOnline(connection: .anonymous),
             id: .esriBuildingL

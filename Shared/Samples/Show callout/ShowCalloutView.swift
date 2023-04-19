@@ -17,31 +17,35 @@ import ArcGIS
 
 struct ShowCalloutView: View {
     /// A map with a topographic basemap style.
-    @StateObject private var map = Map(basemapStyle: .arcGISTopographic)
+    @State private var map = Map(basemapStyle: .arcGISTopographic)
     
     /// A location callout placement.
-    @State private var calloutPlacement: LocationCalloutPlacement?
+    @State private var calloutPlacement: CalloutPlacement?
+    
+    /// The tap location.
+    @State private var tapLocation: Point!
     
     var body: some View {
         MapView(map: map)
             .onSingleTapGesture { _, mapPoint in
+                tapLocation = mapPoint
                 if calloutPlacement == nil {
                     // Projects the point to the WGS 84 spatial reference.
                     let location = GeometryEngine.project(mapPoint, into: .wgs84)!
                     // Shows the callout at the tapped location.
-                    calloutPlacement = LocationCalloutPlacement(location: location)
+                    calloutPlacement = CalloutPlacement.location(location)
                 } else {
                     // Hides the callout.
                     calloutPlacement = nil
                 }
             }
-            .callout(placement: $calloutPlacement.animation(.default.speed(4))) { callout in
+            .callout(placement: $calloutPlacement.animation(.default.speed(2))) { _ in
                 VStack(alignment: .leading) {
                     Text("Location")
                         .font(.headline)
                     Text(
-                        CoordinateFormatter.toLatitudeLongitude(
-                            point: callout.location,
+                        CoordinateFormatter.latitudeLongitudeString(
+                            from: tapLocation,
                             format: .decimalDegrees,
                             decimalPlaces: 2
                         )

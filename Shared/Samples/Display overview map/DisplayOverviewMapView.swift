@@ -18,19 +18,7 @@ import ArcGISToolkit
 
 struct DisplayOverviewMapView: View {
     /// A map with imagery basemap and a tourist attraction feature layer.
-    @StateObject private var map = makeMap()
-    
-    /// The current viewpoint of the map view.
-    @State private var viewpoint = Viewpoint(
-        center: Point(x: -123.12052, y: 49.28299, spatialReference: .wgs84),
-        scale: 1e5
-    )
-    
-    /// The visible area marked with a red rectangle on the overview map.
-    @State private var visibleArea: ArcGIS.Polygon?
-    
-    /// Creates a map.
-    private static func makeMap() -> Map {
+    @State private var map: Map = {
         let featureLayer = FeatureLayer(
             item: PortalItem(
                 portal: .arcGISOnline(connection: .anonymous),
@@ -40,7 +28,16 @@ struct DisplayOverviewMapView: View {
         let map = Map(basemapStyle: .arcGISTopographic)
         map.addOperationalLayer(featureLayer)
         return map
-    }
+    }()
+    
+    /// The current viewpoint of the map view.
+    @State private var viewpoint = Viewpoint(
+        center: Point(x: -123.12052, y: 49.28299, spatialReference: .wgs84),
+        scale: 1e5
+    )
+    
+    /// The visible area marked with a red rectangle on the overview map.
+    @State private var visibleArea: ArcGIS.Polygon?
     
     var body: some View {
         MapView(map: map, viewpoint: viewpoint)

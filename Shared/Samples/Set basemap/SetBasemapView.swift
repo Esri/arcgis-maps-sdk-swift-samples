@@ -17,33 +17,39 @@ import ArcGIS
 import ArcGISToolkit
 
 struct SetBasemapView: View {
-    /// A map with imagery basemap.
-    @StateObject private var map = Map(basemapStyle: .arcGISImagery)
-    
-    /// The initial viewpoint of the map.
-    private let initialViewpoint = Viewpoint(
-        center: Point(x: -118.4, y: 33.7, spatialReference: .wgs84),
-        scale: 1e6
-    )
-    
     /// A Boolean value that indicates whether to show the basemap gallery.
     @State private var isShowingBasemapGallery = false
     
+    /// A map with imagery basemap.
+    @State private var map: Map = {
+        let map = Map(basemapStyle: .arcGISImagery)
+        // The initial viewpoint of the map.
+        map.initialViewpoint = Viewpoint(
+            center: Point(x: -118.4, y: 33.7, spatialReference: .wgs84),
+            scale: 1e6
+        )
+        return map
+    }()
+    
     var body: some View {
-        MapView(map: map, viewpoint: initialViewpoint)
-            .overlay(alignment: .topTrailing) {
-                if isShowingBasemapGallery {
-                    BasemapGallery(geoModel: map)
-                        .style(.automatic())
-                        .esriBorder()
-                }
-            }
-            .toolbar {
-                ToolbarItem(placement: .primaryAction) {
-                    Toggle(isOn: $isShowingBasemapGallery) {
-                        Label("Show base map", systemImage: "map")
+        GeometryReader { geometryProxy in
+            MapView(map: map)
+                .overlay(alignment: .topTrailing) {
+                    if isShowingBasemapGallery {
+                        BasemapGallery(geoModel: map)
+                            .style(.automatic())
+                            .frame(maxWidth: geometryProxy.size.width / 3)
+                            .esriBorder()
+                            .padding()
                     }
                 }
-            }
+                .toolbar {
+                    ToolbarItem(placement: .primaryAction) {
+                        Toggle(isOn: $isShowingBasemapGallery) {
+                            Label("Show base map", systemImage: "map")
+                        }
+                    }
+                }
+        }
     }
 }

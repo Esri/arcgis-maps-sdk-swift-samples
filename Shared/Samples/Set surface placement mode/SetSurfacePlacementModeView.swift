@@ -60,7 +60,8 @@ struct SetSurfacePlacementModeView: View {
 }
 
 private extension SetSurfacePlacementModeView {
-    /// A view model for this sample.
+    /// The model used to store the geo model and other expensive objects
+    /// used in this view.
     class Model: ObservableObject {
         /// The range of possible z-values. The z-value range is 0 to 140 meters in this sample.
         let zValueRange = Measurement.zMin...Measurement.zMax
@@ -92,8 +93,8 @@ private extension SetSurfacePlacementModeView {
             // Creates the scene with an initial viewpoint.
             let scene = Scene(basemapStyle: .arcGISImagery)
             let point = Point(x: -4.4595, y: 48.3889, z: 80, spatialReference: .wgs84)
-            let camera = Camera(locationPoint: point, heading: 330, pitch: 97, roll: 0)
-            scene.initialViewpoint = Viewpoint(targetExtent: point, camera: camera)
+            let camera = Camera(location: point, heading: 330, pitch: 97, roll: 0)
+            scene.initialViewpoint = Viewpoint(boundingGeometry: point, camera: camera)
             
             // Creates and adds an elevation source to a surface and sets it
             // to the scene's base surface.
@@ -143,6 +144,8 @@ private extension SetSurfacePlacementModeView {
             // Creates symbols for the graphic.
             let markerSymbol = SimpleMarkerSymbol(style: .triangle, color: .red, size: 20)
             let textSymbol = TextSymbol(text: surfacePlacement.label, color: .blue, size: 20, horizontalAlignment: .left)
+            textSymbol.haloColor = .cyan
+            textSymbol.haloWidth = 2
             
             // Adds an offset to avoid overlapping the text and marker symbols.
             textSymbol.offsetY = 20

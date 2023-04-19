@@ -17,18 +17,15 @@ import ArcGIS
 
 struct DisplaySceneView: View {
     /// A scene with imagery basemap style and a tiled elevation source.
-    @StateObject private var scene = makeScene()
-    
-    /// Makes a scene.
-    private static func makeScene() -> ArcGIS.Scene {
+    @State private var scene: ArcGIS.Scene = {
         // Creates a scene.
         let scene = Scene(basemapStyle: .arcGISImageryStandard)
         
         // Sets the initial viewpoint of the scene.
         scene.initialViewpoint = Viewpoint(
-            latitude: 45.74,
-            longitude: 6.88,
-            scale: 4_500,
+            latitude: .nan,
+            longitude: .nan,
+            scale: .nan,
             camera: Camera(
                 latitude: 45.74,
                 longitude: 6.88,
@@ -52,7 +49,7 @@ struct DisplaySceneView: View {
         // Sets the surface to the scene's base surface.
         scene.baseSurface = surface
         return scene
-    }
+    }()
     
     var body: some View {
         // Creates a scene view with the scene.

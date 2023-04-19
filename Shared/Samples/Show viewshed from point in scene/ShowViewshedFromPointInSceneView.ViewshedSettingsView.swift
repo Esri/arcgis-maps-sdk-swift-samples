@@ -23,7 +23,7 @@ extension ShowViewshedFromPointInSceneView {
             List {
                 Section("Visibility") {
                     Toggle("Analysis Overlay", isOn: $model.isAnalysisOverlayVisible)
-                    Toggle("Frustum Outline", isOn: $model.isFrustumOutlineVisible)
+                    Toggle("Frustum Outline", isOn: $model.frustumOutlineIsVisible)
                 }
                 
                 Section("Colors") {

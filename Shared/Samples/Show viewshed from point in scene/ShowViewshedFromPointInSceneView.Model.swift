@@ -16,6 +16,8 @@ import ArcGIS
 import SwiftUI
 
 extension ShowViewshedFromPointInSceneView {
+    /// The model used to store the geo model and other expensive objects
+    /// used in this view.
     class Model: ObservableObject {
         /// The location viewshed used in the sample.
         let viewshed: LocationViewshed
@@ -55,9 +57,9 @@ extension ShowViewshedFromPointInSceneView {
         }
         
         /// A Boolean value indicating whether the frustum outline is visible or not.
-        @Published var isFrustumOutlineVisible: Bool {
+        @Published var frustumOutlineIsVisible: Bool {
             didSet {
-                viewshed.isFrustumOutlineVisible = isFrustumOutlineVisible
+                viewshed.frustumOutlineIsVisible = frustumOutlineIsVisible
             }
         }
         
@@ -115,14 +117,14 @@ extension ShowViewshedFromPointInSceneView {
                 verticalAngle: 90,
                 minDistance: 50,
                 maxDistance: 1000
-            )!
+            )
             
             analysisOverlay = AnalysisOverlay(analyses: [viewshed])
             isAnalysisOverlayVisible = analysisOverlay.isVisible
             
             // Initialize published properties from viewshed's properties.
             locationZ = viewshed.location.z!
-            isFrustumOutlineVisible = viewshed.isFrustumOutlineVisible
+            frustumOutlineIsVisible = viewshed.frustumOutlineIsVisible
             heading = viewshed.heading
             pitch = viewshed.pitch
             horizontalAngle = viewshed.horizontalAngle
@@ -138,13 +140,13 @@ extension ShowViewshedFromPointInSceneView {
             
             // Sets the initial viewpoint of the scene.
             let camera = Camera(
-                lookAtPoint: Point(x: -4.50, y: 48.4, z: 100.0, spatialReference: .wgs84),
+                lookingAt: Point(x: -4.50, y: 48.4, z: 100.0, spatialReference: .wgs84),
                 distance: 200,
                 heading: 20,
                 pitch: 70,
                 roll: 0
             )
-            scene.initialViewpoint = Viewpoint(targetExtent: camera.location, camera: camera)
+            scene.initialViewpoint = Viewpoint(boundingGeometry: camera.location, camera: camera)
             
             // Creates a surface.
             let surface = Surface()
