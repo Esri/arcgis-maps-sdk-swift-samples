@@ -44,7 +44,6 @@ struct DisplayDeviceLocationWithNMEADataSourcesView: View {
             }
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
-                    Spacer()
                     Button("Source") {
                         shouldShowSource = true
                     }

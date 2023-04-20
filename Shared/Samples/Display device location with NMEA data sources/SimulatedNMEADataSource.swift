@@ -29,8 +29,8 @@ class SimulatedNMEADataSource {
     /// The NMEA location data source to push data to.
     var nmeaLocationDataSource: NMEALocationDataSource?
     
-    /// Load locations from NMEA sentences.
-    /// Read mock NMEA sentences line by line and group them by the timestamp.
+    /// Loads locations from NMEA sentences.
+    /// Reads mock NMEA sentences line by line and group them by the timestamp.
     /// - Parameters:
     ///   - nmeaSourceFile: The URL of the NMEA source file.
     ///   - speed: The playback speed multiplier.

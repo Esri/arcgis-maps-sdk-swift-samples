@@ -42,13 +42,13 @@ extension DisplayDeviceLocationWithNMEADataSourcesView {
         @Published var isSourceButtonDisabled = false
         
         /// A string containing GPS accuracy.
-        @Published var accuracyStatus: String = "Accuracy info will be shown here."
+        @Published var accuracyStatus = "Accuracy info will be shown here."
         
         /// A string containing satellite information.
-        @Published var satelliteStatus: String = "Satellites info will be shown here."
+        @Published var satelliteStatus = "Satellites info will be shown here."
         
         /// The location display used in the map view.
-        var locationDisplay: LocationDisplay = {
+        let locationDisplay: LocationDisplay = {
             let locationDisplay = LocationDisplay()
             locationDisplay.autoPanMode = .recenter
             return locationDisplay
@@ -59,10 +59,10 @@ extension DisplayDeviceLocationWithNMEADataSourcesView {
         
         /// A mock data source to read NMEA sentences from a local file, and generate
         /// mock NMEA data every fixed amount of time.
-        let mockNMEADataSource = SimulatedNMEADataSource(nmeaSourceFile: Bundle.main.url(forResource: "Redlands", withExtension: "nmea")!, speed: 1.5)
+        private let mockNMEADataSource = SimulatedNMEADataSource(nmeaSourceFile: Bundle.main.url(forResource: "Redlands", withExtension: "nmea")!, speed: 1.5)
         
         /// A formatter for the accuracy distance string.
-        let distanceFormatter: MeasurementFormatter = {
+        private let distanceFormatter: MeasurementFormatter = {
             let formatter = MeasurementFormatter()
             formatter.unitOptions = .naturalScale
             formatter.numberFormatter.minimumFractionDigits = 1
@@ -73,7 +73,7 @@ extension DisplayDeviceLocationWithNMEADataSourcesView {
         /// The protocols used in this sample to get NMEA sentences.
         /// They are also specified in the `Info.plist` to allow the app to
         /// communicate with external accessory hardware.
-        let supportedProtocolStrings = [
+        private let supportedProtocolStrings = [
             "com.bad-elf.gps",
             "com.eos-gnss.positioningsource",
             "com.geneq.sxbluegpssource"
@@ -97,7 +97,7 @@ extension DisplayDeviceLocationWithNMEADataSourcesView {
         /// Get the first connected and supported Bluetooth accessory with its
         /// protocol string.
         /// - Returns: A tuple of the accessory and its protocol,
-        ///            or nil if no supported accessory exists.
+        /// or `nil` if no supported accessory exists.
         func firstSupportedAccessoryWithProtocol() -> (EAAccessory, String)? {
             for accessory in EAAccessoryManager.shared().connectedAccessories {
                 // The protocol string to establish the EASession.
