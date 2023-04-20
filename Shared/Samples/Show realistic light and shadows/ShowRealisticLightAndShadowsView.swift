@@ -19,9 +19,6 @@ struct ShowRealisticLightAndShadowsView: View {
     /// The view model for this sample.
     @StateObject private var model = Model()
     
-    /// A Boolean value indicating whether the settings view should be presented.
-    @State private var isShowingSettings = false
-    
     /// The date second value controlled by the slider.
     @State private var dateSecond: Float = Model.dateSecondsNoon
     
@@ -54,23 +51,28 @@ struct ShowRealisticLightAndShadowsView: View {
             }
             .frame(maxWidth: 540)
             .onChange(of: dateSecond, perform: sliderValueChanged(toValue:))
-            .padding()
+            .padding(.horizontal)
+        }
+        .overlay(alignment: .top) {
+            dateTimeOverlay
         }
         .toolbar {
-            ToolbarItemGroup(placement: .bottomBar) {
-                Text(dateTimeText)
-                Button("Mode") {
-                    isShowingSettings = true
-                }
-                .confirmationDialog("Choose a lighting mode for the scene view.", isPresented: $isShowingSettings, titleVisibility: .visible) {
+            ToolbarItem(placement: .bottomBar) {
+                Picker("Choose a lighting mode for the scene view.", selection: $lightingMode) {
                     ForEach(SceneView.SunLighting.allCases, id: \.self) { mode in
-                        Button(mode.label) {
-                            lightingMode = mode
-                        }
+                        Text(mode.label)
                     }
                 }
             }
         }
+    }
+    
+    /// An overlay showing the date time adjusted by the slider.
+    var dateTimeOverlay: some View {
+        Text(dateTimeText)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 6)
+            .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
     }
     
     /// Handles slider value changed event and set the scene view's sun date.

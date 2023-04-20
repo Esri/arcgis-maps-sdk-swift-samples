@@ -31,17 +31,19 @@ struct SetViewpointRotationView: View {
     
     var body: some View {
         VStack {
-            MapView(map: map, viewpoint: Viewpoint(center: center, scale: scale, rotation: rotation))
-                .onViewpointChanged(kind: .centerAndScale) { viewpoint in
-                    center = viewpoint.targetGeometry.extent.center
-                    scale = viewpoint.targetScale
-                    rotation = viewpoint.rotation
-                }
-                .overlay(alignment: .topTrailing) {
-                    Compass(viewpointRotation: $rotation)
-                        .autoHideDisabled()
-                        .padding()
-                }
+            MapViewReader { mapViewProxy in
+                MapView(map: map, viewpoint: Viewpoint(center: center, scale: scale, rotation: rotation))
+                    .onViewpointChanged(kind: .centerAndScale) { viewpoint in
+                        center = viewpoint.targetGeometry.extent.center
+                        scale = viewpoint.targetScale
+                        rotation = viewpoint.rotation
+                    }
+                    .overlay(alignment: .topTrailing) {
+                        Compass(rotation: rotation, mapViewProxy: mapViewProxy)
+                            .autoHideDisabled()
+                            .padding()
+                    }
+            }
             
             HStack {
                 // Create a slider to rotate the map.
