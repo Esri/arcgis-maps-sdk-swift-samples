@@ -183,7 +183,8 @@ extension GeometryEditorMenu {
 }
 
 /// An object that acts as a view model for the geometry editor menu.
-@MainActor class GeometryEditorMenuModel: ObservableObject {
+@MainActor
+class GeometryEditorMenuModel: ObservableObject {
     /// The geometry editor.
     let geometryEditor: GeometryEditor
     
