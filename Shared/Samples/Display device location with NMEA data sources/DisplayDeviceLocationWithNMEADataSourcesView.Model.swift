@@ -39,7 +39,7 @@ extension DisplayDeviceLocationWithNMEADataSourcesView {
         @Published var isResetButtonDisabled = true
         
         /// A Boolean value specifying if the "source" button should be disabled.
-        @Published var isSourceButtonDisabled = false
+        @Published var isSourceMenuDisabled = false
         
         /// A string containing GPS accuracy.
         @Published var accuracyStatus = "Accuracy info will be shown here."
@@ -55,19 +55,23 @@ extension DisplayDeviceLocationWithNMEADataSourcesView {
         }()
         
         /// An NMEA location data source, to parse NMEA data.
-        var nmeaLocationDataSource: NMEALocationDataSource!
+        private var nmeaLocationDataSource: NMEALocationDataSource!
         
         /// A mock data source to read NMEA sentences from a local file, and generate
         /// mock NMEA data every fixed amount of time.
         private let mockNMEADataSource = SimulatedNMEADataSource(nmeaSourceFile: Bundle.main.url(forResource: "Redlands", withExtension: "nmea")!, speed: 1.5)
         
-        /// A formatter for the accuracy distance string.
-        private let distanceFormatter: MeasurementFormatter = {
-            let formatter = MeasurementFormatter()
-            formatter.unitOptions = .naturalScale
-            formatter.numberFormatter.minimumFractionDigits = 1
-            formatter.numberFormatter.maximumFractionDigits = 1
-            return formatter
+        /// A format style for the accuracy distance string.
+        private let formatStyle: Measurement<UnitLength>.FormatStyle = {
+            Measurement<UnitLength>.FormatStyle.measurement(
+                width: .abbreviated,
+                usage: .general,
+                numberFormatStyle: .number.precision(.fractionLength(1))
+            )
+        }()
+        
+        private let listFormatStyle: ListFormatStyle<StringStyle, Array> = {
+            .list(type: .and, width: .narrow)
         }()
         
         /// The protocols used in this sample to get NMEA sentences.
@@ -123,7 +127,7 @@ extension DisplayDeviceLocationWithNMEADataSourcesView {
         func reset() {
             // Reset buttons states.
             isResetButtonDisabled = true
-            isSourceButtonDisabled = false
+            isSourceMenuDisabled = false
             
             // Reset the status text.
             accuracyStatus = "Accuracy info will be shown here."
@@ -148,10 +152,14 @@ extension DisplayDeviceLocationWithNMEADataSourcesView {
         /// Starts the location data source and awaits location and satellite updates.
         /// - Parameter usingMockedData: Indicates that the location datasource should use mocked data.
         func start(usingMockedData: Bool = false) {
+            if usingMockedData {
+                nmeaLocationDataSource = NMEALocationDataSource(receiverSpatialReference: .wgs84)
+            }
+            
             // Set NMEA location data source for location display.
             locationDisplay.dataSource = nmeaLocationDataSource
             // Set buttons states.
-            isSourceButtonDisabled = true
+            isSourceMenuDisabled = true
             isResetButtonDisabled = false
             
             // Start the data source and location display.
@@ -194,21 +202,23 @@ extension DisplayDeviceLocationWithNMEADataSourcesView {
             Task.detached { [unowned self] in
                 defer { print("location in nmeaLocationDataSource.locations task ending") }
                 for await location in nmeaLocationDataSource.locations {
-                    guard let nmeaLocation = location as? NMEALocation,
-                          nmeaLocationDataSource.status == .started else { return }
+                    guard let nmeaLocation = location as? NMEALocation else { return }
                     let horizontalAccuracy = Measurement(
                         value: nmeaLocation.horizontalAccuracy,
                         unit: UnitLength.meters
                     )
+                    
                     let verticalAccuracy = Measurement(
                         value: nmeaLocation.verticalAccuracy,
                         unit: UnitLength.meters
                     )
+                    
                     let accuracyText = String(
                         format: "Accuracy - Horizontal: %@; Vertical: %@",
-                        distanceFormatter.string(from: horizontalAccuracy),
-                        distanceFormatter.string(from: verticalAccuracy)
+                        horizontalAccuracy.formatted(formatStyle),
+                        verticalAccuracy.formatted(formatStyle)
                     )
+                    
                     await MainActor.run {
                         accuracyStatus = accuracyText
                     }
@@ -227,12 +237,16 @@ extension DisplayDeviceLocationWithNMEADataSourcesView {
                     let satelliteSystems = satellites.filter {
                         $0.system != nil
                     }
-                    let satelliteSystemsText = ListFormatter.localizedString(
-                        byJoining: Set(satellites.map(\.system!.label)).sorted()
-                    )
-                    let idText = ListFormatter.localizedString(
-                        byJoining: satelliteSystems.map { String($0.id) }
-                    )
+                    
+                    let satelliteLabels = Set(satelliteSystems
+                        .map(\.system!.label))
+                        .sorted()
+                        .formatted(listFormatStyle)
+                    
+                    let satellliteIDs = satelliteSystems
+                        .map { String($0.id) }
+                        .formatted(listFormatStyle)
+                    
                     await MainActor.run {
                         satelliteStatus = String(
                             format: """
@@ -241,8 +255,8 @@ extension DisplayDeviceLocationWithNMEADataSourcesView {
                                     IDs: %@
                                     """,
                             satellites.count,
-                            satelliteSystemsText,
-                            idText
+                            satelliteLabels,
+                            satellliteIDs
                         )
                     }
                 }

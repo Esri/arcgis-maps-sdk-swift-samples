@@ -20,9 +20,6 @@ struct DisplayDeviceLocationWithNMEADataSourcesView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
-    /// A Boolean value indicating whether the source sheet is being shown or not.
-    @State private var shouldShowSource = false
-    
     /// A Boolean value indicating whether to show an alert.
     @State private var isShowingAlert = false
     
@@ -44,10 +41,15 @@ struct DisplayDeviceLocationWithNMEADataSourcesView: View {
             }
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
-                    Button("Source") {
-                        shouldShowSource = true
+                    Menu("Source") {
+                        Button("Mock Data") {
+                            model.start(usingMockedData: true)
+                        }
+                        Button("Device") {
+                            selectDevice()
+                        }
                     }
-                    .disabled(model.isSourceButtonDisabled)
+                    .disabled(model.isSourceMenuDisabled)
                     Spacer()
                     Button("Recenter") {
                         model.autoPanMode = .recenter
@@ -61,19 +63,6 @@ struct DisplayDeviceLocationWithNMEADataSourcesView: View {
                 }
             }
             .accessoryAlert(isPresented: $isShowingAlert, presentingError: error)
-            .confirmationDialog(
-                "Choose an NMEA data source.",
-                isPresented: $shouldShowSource,
-                titleVisibility: .visible
-            ) {
-                Button("Device") {
-                    selectDevice()
-                }
-                Button("Mock Data") {
-                    model.nmeaLocationDataSource = NMEALocationDataSource(receiverSpatialReference: .wgs84)
-                    model.start(usingMockedData: true)
-                }
-            }
             .onDisappear {
                 // Reset the model to stop the data source and observations.
                 model.reset()
@@ -87,7 +76,7 @@ struct DisplayDeviceLocationWithNMEADataSourcesView: View {
         } else {
             // Show a picker to pair the device with a Bluetooth accessory.
             // NOTE: the Bluetooth accessory picker is currently not supported
-            // for Apple Silicon Macs - https://developer.apple.com/documentation/externalaccessory/eaaccessorymanager/1613913-showbluetoothaccessorypicker/
+            // for Apple Silicon devices - https://developer.apple.com/documentation/externalaccessory/eaaccessorymanager/1613913-showbluetoothaccessorypicker/
             // "On Apple silicon, this method displays an alert to let the user
             // know that the Bluetooth accessory picker is unavailable."
             // Also, it appears that there is currently a bug with
