@@ -188,7 +188,6 @@ extension DisplayDeviceLocationWithNMEADataSourcesView {
         /// A detached task observing location display autoPan changes.
         var observeAutoPanTask: Task<Void, Never> {
             Task.detached { [unowned self] in
-                defer { print("mode in locationDisplay.$autoPanMode task ending") }
                 for await mode in locationDisplay.$autoPanMode {
                     await MainActor.run {
                         isRecenterButtonDisabled = nmeaLocationDataSource == nil || mode == .recenter
@@ -200,7 +199,6 @@ extension DisplayDeviceLocationWithNMEADataSourcesView {
         /// A detached task observing location data source location changes.
         var observeLocationsTask: Task<Void, Never> {
             Task.detached { [unowned self] in
-                defer { print("location in nmeaLocationDataSource.locations task ending") }
                 for await location in nmeaLocationDataSource.locations {
                     guard let nmeaLocation = location as? NMEALocation else { return }
                     let horizontalAccuracy = Measurement(
@@ -229,7 +227,6 @@ extension DisplayDeviceLocationWithNMEADataSourcesView {
         /// A detached task observing NMEA location data source satellite changes.
         var observeSatellitesTask: Task<Void, Never> {
             Task.detached { [unowned self] in
-                defer { print("satellites in nmeaLocationDataSource.satellites task ending") }
                 for await satellites in nmeaLocationDataSource.satellites {
                     guard nmeaLocationDataSource.status == .started else { return }
                     
