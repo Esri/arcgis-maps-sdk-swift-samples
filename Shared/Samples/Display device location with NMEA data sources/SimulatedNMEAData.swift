@@ -16,7 +16,7 @@ import Foundation
 import ArcGIS
 
 /// A data source simulating NMEA data.
-class SimulatedNMEADataSource {
+class SimulatedNMEAData {
     /// The playback speed multiplier.
     private let playbackSpeed: Double
     

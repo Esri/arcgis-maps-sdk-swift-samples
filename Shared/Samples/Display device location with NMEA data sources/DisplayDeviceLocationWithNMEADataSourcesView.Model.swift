@@ -59,7 +59,7 @@ extension DisplayDeviceLocationWithNMEADataSourcesView {
         
         /// A mock data source to read NMEA sentences from a local file, and generate
         /// mock NMEA data every fixed amount of time.
-        private let mockNMEADataSource = SimulatedNMEADataSource(nmeaSourceFile: Bundle.main.url(forResource: "Redlands", withExtension: "nmea")!, speed: 1.5)
+        private let mockNMEADataSource = SimulatedNMEAData(nmeaSourceFile: Bundle.main.url(forResource: "Redlands", withExtension: "nmea")!, speed: 1.5)
         
         /// A format style for the accuracy distance string.
         private let formatStyle: Measurement<UnitLength>.FormatStyle = {
