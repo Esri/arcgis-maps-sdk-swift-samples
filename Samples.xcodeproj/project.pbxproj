@@ -87,6 +87,7 @@
 		4D2ADC6929C50C4C003B367F /* AddDynamicEntityLayerView.SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2ADC6829C50C4C003B367F /* AddDynamicEntityLayerView.SettingsView.swift */; };
 		4D2ADC6A29C50D91003B367F /* AddDynamicEntityLayerView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4D2ADC6629C50BD6003B367F /* AddDynamicEntityLayerView.Model.swift */; };
 		4D2ADC6B29C50D91003B367F /* AddDynamicEntityLayerView.SettingsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4D2ADC6829C50C4C003B367F /* AddDynamicEntityLayerView.SettingsView.swift */; };
+		4DD058102A0D3F6B00A59B34 /* DisplayDeviceLocationWithNMEADataSourcesView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4D126D7D29CA43D200CFB7A7 /* DisplayDeviceLocationWithNMEADataSourcesView.Model.swift */; };
 		7573E81A29D6134C00BEED9C /* TraceUtilityNetworkView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7573E81329D6134C00BEED9C /* TraceUtilityNetworkView.Model.swift */; };
 		7573E81C29D6134C00BEED9C /* TraceUtilityNetworkView.Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7573E81529D6134C00BEED9C /* TraceUtilityNetworkView.Enums.swift */; };
 		7573E81E29D6134C00BEED9C /* TraceUtilityNetworkView.Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7573E81729D6134C00BEED9C /* TraceUtilityNetworkView.Views.swift */; };
@@ -195,6 +196,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				4DD058102A0D3F6B00A59B34 /* DisplayDeviceLocationWithNMEADataSourcesView.Model.swift in Copy Source Code Files */,
 				4D126D7329CA1EFD00CFB7A7 /* DisplayDeviceLocationWithNMEADataSourcesView.swift in Copy Source Code Files */,
 				4D126D7429CA1EFD00CFB7A7 /* SimulatedNMEAData.swift in Copy Source Code Files */,
 				1C9B74DE29DB56860038B06F /* ChangeCameraControllerView.swift in Copy Source Code Files */,
@@ -590,8 +592,8 @@
 			children = (
 				00966EE62811F64D009D3DD7 /* iOS */,
 				0023DE5029D648FA0098243A /* macOS */,
-				00E5401427F3CCA200CF66D5 /* Products */,
 				00CCB8A6285D059300BBAB70 /* Portal Data */,
+				00E5401427F3CCA200CF66D5 /* Products */,
 				003D7C332821EBCC009DDFD2 /* Scripts */,
 				00E5400B27F3CCA100CF66D5 /* Shared */,
 			);
