@@ -240,7 +240,7 @@ extension DisplayDeviceLocationWithNMEADataSourcesView {
                         .sorted()
                         .formatted(listFormatStyle)
                     
-                    let satellliteIDs = satelliteSystems
+                    let satelliteIDs = satelliteSystems
                         .map { String($0.id) }
                         .formatted(listFormatStyle)
                     
@@ -253,7 +253,7 @@ extension DisplayDeviceLocationWithNMEADataSourcesView {
                                     """,
                             satellites.count,
                             satelliteLabels,
-                            satellliteIDs
+                            satelliteIDs
                         )
                     }
                 }
