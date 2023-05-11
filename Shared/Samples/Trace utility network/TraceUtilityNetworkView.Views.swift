@@ -17,8 +17,7 @@ import SwiftUI
 
 extension TraceUtilityNetworkView {
     /// The buttons and picker shown to the user while setting points.
-    @ViewBuilder
-    private var controlsForSettingPoints: some View {
+    @ViewBuilder private var controlsForSettingPoints: some View {
         Group {
             Picker("Add starting points & barriers", selection: pointType) {
                 ForEach([PointType.start, PointType.barrier], id: \.self) { type in
@@ -64,8 +63,7 @@ extension TraceUtilityNetworkView {
     }
     
     /// Buttons for each the available terminals on the last added utility element.
-    @ViewBuilder
-    var terminalPickerButtons: some View {
+    @ViewBuilder var terminalPickerButtons: some View {
         ForEach(model.lastAddedElement?.assetType.terminalConfiguration?.terminals ?? []) { terminal in
             Button(terminal.name) {
                 model.lastAddedElement?.terminal = terminal
@@ -102,8 +100,7 @@ extension TraceUtilityNetworkView {
     ///
     /// When a trace type is selected, the pending trace is initialized as a new instance of trace
     /// parameters. The trace configuration can also be set. The user should set trace points next.
-    @ViewBuilder
-    var traceTypePickerButtons: some View {
+    @ViewBuilder var traceTypePickerButtons: some View {
         ForEach(supportedTraceTypes, id: \.self) { type in
             Button(type.displayName) {
                 model.setTraceParameters(ofType: type)
