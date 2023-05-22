@@ -2,7 +2,9 @@
     "category": "Maps",
     "description": "Restrict zooming between specific scale ranges.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "set-min-and-max-scale.png"
+    ],
     "keywords": [
         "area of interest",
         "level of detail",
