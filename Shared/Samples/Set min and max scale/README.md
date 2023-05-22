@@ -20,10 +20,10 @@ Zoom in and out of the map. The zoom extents of the map are limited between the 
 
 ## Relevant API
 
-- ArcGISMap
-- Basemap
-- MapView
-- ViewPoint
+* Basemap
+* Map
+* MapView
+* Viewpoint
 
 ## Tags
 
