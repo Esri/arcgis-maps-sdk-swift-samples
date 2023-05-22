@@ -12,10 +12,10 @@
         "minimum",
         "scale",
         "viewpoint",
-        "ArcGISMap",
         "Basemap",
+        "Map",
         "MapView",
-        "ViewPoint"
+        "Viewpoint"
     ],
     "redirect_from": [],
     "relevant_apis": [
