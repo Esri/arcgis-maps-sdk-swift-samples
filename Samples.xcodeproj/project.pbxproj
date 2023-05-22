@@ -101,6 +101,7 @@
 		88F93CC129C3D59D0006B28E /* SketchOnMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F93CC029C3D59C0006B28E /* SketchOnMapView.swift */; };
 		88F93CC229C4D3480006B28E /* SketchOnMapView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 88F93CC029C3D59C0006B28E /* SketchOnMapView.swift */; };
 		D7EAF3512A1C011000D822C4 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = D7EAF3502A1C011000D822C4 /* README.md */; };
+		D7EAF3562A1C017800D822C4 /* README.metadata.json in Resources */ = {isa = PBXBuildFile; fileRef = D7EAF3552A1C017800D822C4 /* README.metadata.json */; };
 		E000E7602869E33D005D87C5 /* ClipGeometryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E000E75F2869E33D005D87C5 /* ClipGeometryView.swift */; };
 		E000E763286A0B18005D87C5 /* CutGeometryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E000E762286A0B18005D87C5 /* CutGeometryView.swift */; };
 		E004A6C128414332002A1FE6 /* SetViewpointRotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6BD28414332002A1FE6 /* SetViewpointRotationView.swift */; };
@@ -302,6 +303,7 @@
 		883C121429C9136600062FF9 /* DownloadPreplannedMapAreaView.MapPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadPreplannedMapAreaView.MapPicker.swift; sourceTree = "<group>"; };
 		88F93CC029C3D59C0006B28E /* SketchOnMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SketchOnMapView.swift; sourceTree = "<group>"; };
 		D7EAF3502A1C011000D822C4 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		D7EAF3552A1C017800D822C4 /* README.metadata.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = README.metadata.json; sourceTree = "<group>"; };
 		E000E75F2869E33D005D87C5 /* ClipGeometryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipGeometryView.swift; sourceTree = "<group>"; };
 		E000E762286A0B18005D87C5 /* CutGeometryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutGeometryView.swift; sourceTree = "<group>"; };
 		E004A6BD28414332002A1FE6 /* SetViewpointRotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetViewpointRotationView.swift; sourceTree = "<group>"; };
@@ -715,6 +717,7 @@
 		D7EAF34F2A1C011000D822C4 /* Set min and max scale */ = {
 			isa = PBXGroup;
 			children = (
+				D7EAF3552A1C017800D822C4 /* README.metadata.json */,
 				D7EAF3502A1C011000D822C4 /* README.md */,
 			);
 			path = "Set min and max scale";
@@ -996,6 +999,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E041AC1E288076A60056009B /* info.css in Resources */,
+				D7EAF3562A1C017800D822C4 /* README.metadata.json in Resources */,
 				E041AC1A287F54580056009B /* highlight.min.js in Resources */,
 				00E5402027F3CCA200CF66D5 /* Assets.xcassets in Resources */,
 				00C94A0D28B53DE1004E42D9 /* raster-file in Resources */,
