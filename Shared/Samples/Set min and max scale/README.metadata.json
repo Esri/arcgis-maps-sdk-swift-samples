@@ -19,10 +19,10 @@
     ],
     "redirect_from": [],
     "relevant_apis": [
-        "ArcGISMap",
         "Basemap",
+        "Map",
         "MapView",
-        "ViewPoint"
+        "Viewpoint"
     ],
     "snippets": [
         "SetMinAndMaxScaleView.swift"
