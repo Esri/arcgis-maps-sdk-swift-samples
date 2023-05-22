@@ -12,17 +12,17 @@
         "minimum",
         "scale",
         "viewpoint",
-        "ArcGISMap",
         "Basemap",
+        "Map",
         "MapView",
-        "ViewPoint"
+        "Viewpoint"
     ],
     "redirect_from": [],
     "relevant_apis": [
-        "ArcGISMap",
         "Basemap",
+        "Map",
         "MapView",
-        "ViewPoint"
+        "Viewpoint"
     ],
     "snippets": [
         "SetMinAndMaxScaleView.swift"
