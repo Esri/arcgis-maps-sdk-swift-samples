@@ -15,7 +15,7 @@ Zoom in and out of the map. The zoom extents of the map are limited between the 
 ## How it works
 
 1. Instantiate a `Map` object.
-2. Set the minimum and maximum scale using the `minScale` and `maxScale` properties of `ArcGISMap`.
+2. Set the minimum and maximum scale using the `minScale` and `maxScale` properties of `Map`.
 3. Set the map to a `MapView` object.
 
 ## Relevant API
