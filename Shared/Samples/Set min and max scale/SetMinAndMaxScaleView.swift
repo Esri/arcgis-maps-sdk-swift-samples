@@ -12,23 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 import ArcGIS
 import SwiftUI
 
-struct SampleNameView: View {
-    /// The model used to store the geo model and other expensive objects
-    /// used in this view.
-    private class Model: ObservableObject {
-        /// A map with imagery basemap.
-        let map = Map(basemapStyle: .arcGISImagery)
-    }
-    
-    /// The view model for the sample.
-    @StateObject private var model = Model()
+struct SetMinAndMaxScaleView: View {
+    /// A map with streets basemap with the min and max scale set.
+    @State private var map: Map = {
+        let map = Map(basemapStyle: .arcGISStreets)
+        map.initialViewpoint = Viewpoint(center: Point(x: -355_453, y: 7_548_720, spatialReference: .webMercator), scale: 3_000)
+        
+        map.minScale = 8_000
+        map.maxScale = 2_000
+        return map
+    }()
     
     var body: some View {
         // Creates a map view to display the map.
-        MapView(map: model.map)
+        MapView(map: map)
     }
 }
