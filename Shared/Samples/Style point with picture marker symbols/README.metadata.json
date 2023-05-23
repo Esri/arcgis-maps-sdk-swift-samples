@@ -1,0 +1,22 @@
+{
+    "category": "Display information",
+    "description": "Use pictures for markers.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "graphics",
+        "marker",
+        "picture",
+        "symbol",
+        "visualization",
+        "PictureMarkerSymbol"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "PictureMarkerSymbol"
+    ],
+    "snippets": [
+        "StylePointWithPictureMarkerSymbolsView.swift"
+    ],
+    "title": "Style point with picture marker symbols"
+}
