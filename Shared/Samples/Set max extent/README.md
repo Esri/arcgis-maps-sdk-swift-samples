@@ -22,8 +22,8 @@ The application loads with a map whose maximum extent has been set to the border
 
 ## Relevant API
 
-* Map
 * Envelope
+* Map
 
 ## Tags
 
