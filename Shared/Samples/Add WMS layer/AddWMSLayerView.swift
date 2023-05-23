@@ -15,19 +15,29 @@
 import ArcGIS
 import SwiftUI
 
-struct SampleNameView: View {
-    /// The model used to store the geo model and other expensive objects
-    /// used in this view.
-    private class Model: ObservableObject {
-        /// A map with imagery basemap.
-        let map = Map(basemapStyle: .arcGISImagery)
-    }
-    
-    /// The view model for the sample.
-    @StateObject private var model = Model()
+struct AddWMSLayerView: View {
+    /// A map with light gray basemap.
+    @State private var map: Map = {
+        let map = Map(basemapStyle: .arcGISLightGrayBase)
+        map.initialViewpoint = Viewpoint(
+            latitude: 39, longitude: -98, scale: 3.6978595474472E7
+        )
+        // a URL to the GetCapabilities endpoint of a WMS service
+        let wmsServiceURL = URL(string: "https://www.ncei.noaa.gov/products/radar/next-generation-weather-radar")!
+        // the names of the layers to load at the WMS service
+        let wmsServiceLayerNames = ["1"]
+        
+        // initialize the WMS layer with the service URL and uniquely identifying WMS layer names
+        let wmsLayer = WMSLayer(url: wmsServiceURL, layerNames: wmsServiceLayerNames)
+        
+        // load the WMS layer
+        map.addOperationalLayer(wmsLayer)
+        
+        return map
+    }()
     
     var body: some View {
         // Creates a map view to display the map.
-        MapView(map: model.map)
+        MapView(map: map)
     }
 }
