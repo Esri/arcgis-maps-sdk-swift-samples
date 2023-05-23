@@ -19,7 +19,10 @@ struct SetMinAndMaxScaleView: View {
     /// A map with streets basemap with the min and max scale set.
     @State private var map: Map = {
         let map = Map(basemapStyle: .arcGISStreets)
-        map.initialViewpoint = Viewpoint(center: Point(x: -355_453, y: 7_548_720, spatialReference: .webMercator), scale: 3_000)
+        map.initialViewpoint = Viewpoint(
+            center: Point(x: -355_453, y: 7_548_720, spatialReference: .webMercator),
+            scale: 3_000
+        )
         
         map.minScale = 8_000
         map.maxScale = 2_000
