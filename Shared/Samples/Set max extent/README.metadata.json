@@ -12,12 +12,12 @@
         "mapview",
         "max extent",
         "zoom",
-        "ArcGISMap",
+        "Map",
         "Envelope"
     ],
     "redirect_from": [],
     "relevant_apis": [
-        "ArcGISMap",
+        "Map",
         "Envelope"
     ],
     "snippets": [
