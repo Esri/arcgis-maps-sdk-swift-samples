@@ -15,7 +15,7 @@
 import ArcGIS
 import SwiftUI
 
-struct SetMinAndMaxScaleView: View {
+struct SetMaxExtentView: View {
     /// The model with graphics overlay use to show the extent envelope
     /// graphic.
     private class Model: ObservableObject {

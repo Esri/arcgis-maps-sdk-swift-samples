@@ -12,7 +12,7 @@
         "mapview",
         "max extent",
         "zoom",
-        "Envelope"
+        "Envelope",
         "Map"
     ],
     "redirect_from": [],
