@@ -15,7 +15,7 @@ The application loads with a map whose maximum extent has been set to the border
 ## How it works
 
 1. Create a `Map` object.
-2. Create an envelop of the extent using `Envelope(Point(x, y), Point(x, y))`
+2. Create an envelop of the maximum extent.
 3. Set the maximum extent of the map with `map.maxExtent = envelope`.
 4. Set the map to a `MapView` object.
 5. Set `maxExtent` to `nil` to disable the maximum extent of the map.
