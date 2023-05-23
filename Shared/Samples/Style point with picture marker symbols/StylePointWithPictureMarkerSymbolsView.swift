@@ -22,7 +22,7 @@ struct StylePointWithPictureMarkerSymbolsView: View {
         return graphicsOverlay
     }()
     
-    /// A map with topographic basemap and centered on Harman's Cross, England.
+    /// A map with topographic basemap and centered on Harman's Cross in England.
     @State private var map: Map = {
         let map = Map(basemapStyle: .arcGISTopographic)
         map.initialViewpoint = Viewpoint(
