@@ -12,13 +12,13 @@
         "mapview",
         "max extent",
         "zoom",
-        "Map",
         "Envelope"
+        "Map"
     ],
     "redirect_from": [],
     "relevant_apis": [
-        "Map",
-        "Envelope"
+        "Envelope",
+        "Map"
     ],
     "snippets": [
         "SetMaxExtentView.swift"
