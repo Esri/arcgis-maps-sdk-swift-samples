@@ -101,6 +101,7 @@
 		88F93CC129C3D59D0006B28E /* SketchOnMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F93CC029C3D59C0006B28E /* SketchOnMapView.swift */; };
 		88F93CC229C4D3480006B28E /* SketchOnMapView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 88F93CC029C3D59C0006B28E /* SketchOnMapView.swift */; };
 		D7E557622A1D743100B9FB09 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = D7E557612A1D743100B9FB09 /* README.md */; };
+		D7E557642A1D748B00B9FB09 /* AddWMSLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E557632A1D748A00B9FB09 /* AddWMSLayerView.swift */; };
 		E000E7602869E33D005D87C5 /* ClipGeometryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E000E75F2869E33D005D87C5 /* ClipGeometryView.swift */; };
 		E000E763286A0B18005D87C5 /* CutGeometryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E000E762286A0B18005D87C5 /* CutGeometryView.swift */; };
 		E004A6C128414332002A1FE6 /* SetViewpointRotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6BD28414332002A1FE6 /* SetViewpointRotationView.swift */; };
@@ -302,6 +303,7 @@
 		883C121429C9136600062FF9 /* DownloadPreplannedMapAreaView.MapPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadPreplannedMapAreaView.MapPicker.swift; sourceTree = "<group>"; };
 		88F93CC029C3D59C0006B28E /* SketchOnMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SketchOnMapView.swift; sourceTree = "<group>"; };
 		D7E557612A1D743100B9FB09 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		D7E557632A1D748A00B9FB09 /* AddWMSLayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AddWMSLayerView.swift; path = "Shared/Samples/Add WMS layer/AddWMSLayerView.swift"; sourceTree = SOURCE_ROOT; };
 		E000E75F2869E33D005D87C5 /* ClipGeometryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipGeometryView.swift; sourceTree = "<group>"; };
 		E000E762286A0B18005D87C5 /* CutGeometryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutGeometryView.swift; sourceTree = "<group>"; };
 		E004A6BD28414332002A1FE6 /* SetViewpointRotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetViewpointRotationView.swift; sourceTree = "<group>"; };
@@ -715,6 +717,7 @@
 		D7E557602A1D743100B9FB09 /* Add WMS layer */ = {
 			isa = PBXGroup;
 			children = (
+				D7E557632A1D748A00B9FB09 /* AddWMSLayerView.swift */,
 				D7E557612A1D743100B9FB09 /* README.md */,
 			);
 			path = "Add WMS layer";
@@ -1117,6 +1120,7 @@
 				E070A0A3286F3B6000F2B606 /* DownloadPreplannedMapAreaView.swift in Sources */,
 				E0EA0B772866390E00C9621D /* ProjectGeometryView.swift in Sources */,
 				0042E24328E4BF8F001F33D6 /* ShowViewshedFromPointInSceneView.Model.swift in Sources */,
+				D7E557642A1D748B00B9FB09 /* AddWMSLayerView.swift in Sources */,
 				0005580A2817C51E00224BC6 /* SampleDetailView.swift in Sources */,
 				4D2ADC6229C5071C003B367F /* ChangeMapViewBackgroundView.Model.swift in Sources */,
 				0074ABCD2817BCC30037244A /* SamplesApp+Samples.swift.tache in Sources */,
