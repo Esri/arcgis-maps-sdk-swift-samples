@@ -16,28 +16,44 @@ import ArcGIS
 import SwiftUI
 
 struct AddWMSLayerView: View {
-    /// A map with light gray basemap.
+    /// A Boolean value indicating whether to show an alert.
+    @State private var isShowingAlert = false
+    
+    /// The error shown in the alert.
+    @State private var error: Error? {
+        didSet { isShowingAlert = error != nil }
+    }
+    
+    /// A map with light gray basemap centered on the USA.
     @State private var map: Map = {
         let map = Map(basemapStyle: .arcGISLightGrayBase)
         map.initialViewpoint = Viewpoint(
             latitude: 39, longitude: -98, scale: 3.6978595474472E7
         )
-        // a URL to the GetCapabilities endpoint of a WMS service
-        let wmsServiceURL = URL(string: "https://www.ncei.noaa.gov/products/radar/next-generation-weather-radar")!
-        // the names of the layers to load at the WMS service
-        let wmsServiceLayerNames = ["1"]
-        
-        // initialize the WMS layer with the service URL and uniquely identifying WMS layer names
-        let wmsLayer = WMSLayer(url: wmsServiceURL, layerNames: wmsServiceLayerNames)
-        
-        // load the WMS layer
-        map.addOperationalLayer(wmsLayer)
-        
         return map
     }()
     
     var body: some View {
         // Creates a map view to display the map.
         MapView(map: map)
+            .task {
+                guard map.operationalLayers.isEmpty else { return }
+                do {
+                    // A URL to the GetCapabilities endpoint of a WMS service
+                    let wmsServiceURL = URL(string: "https://gis.ncdc.noaa.gov/arcgis/services/cdo/nexrad/MapServer/WMSServer?request=GetCapabilities&service=WMS")!
+                    // the names of the layers to load at the WMS service
+                    let wmsServiceLayerNames = ["1"]
+                    // Initialize the WMS layer with the service URL and uniquely identifying WMS layer names
+                    let wmsLayer = WMSLayer(url: wmsServiceURL, layerNames: wmsServiceLayerNames)
+                    // Load the WMS layer
+                    try await wmsLayer.load()
+                    // Adds the WMS layer to the map's operational layer.
+                    map.addOperationalLayer(wmsLayer)
+                } catch {
+                    // Presents an error message if the URL fails to load.
+                    self.error = error
+                }
+            }
+            .alert(isPresented: $isShowingAlert, presentingError: error)
     }
 }
