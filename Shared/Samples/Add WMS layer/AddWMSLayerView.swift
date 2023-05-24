@@ -39,14 +39,18 @@ struct AddWMSLayerView: View {
             .task {
                 guard map.operationalLayers.isEmpty else { return }
                 do {
-                    // A URL to the GetCapabilities endpoint of a WMS service
+                    // A URL to the GetCapabilities endpoint of a WMS service.
                     let wmsServiceURL = URL(string: "https://gis.ncdc.noaa.gov/arcgis/services/cdo/nexrad/MapServer/WMSServer?request=GetCapabilities&service=WMS")!
-                    // the names of the layers to load at the WMS service
+                    
+                    // The names of the layers to load at the WMS service.
                     let wmsServiceLayerNames = ["1"]
-                    // Initialize the WMS layer with the service URL and uniquely identifying WMS layer names
+                    
+                    // Initialize the WMS layer with the service URL and uniquely identifying WMS layer names.
                     let wmsLayer = WMSLayer(url: wmsServiceURL, layerNames: wmsServiceLayerNames)
-                    // Load the WMS layer
+                    
+                    // Load the WMS layer.
                     try await wmsLayer.load()
+                    
                     // Adds the WMS layer to the map's operational layer.
                     map.addOperationalLayer(wmsLayer)
                 } catch {
