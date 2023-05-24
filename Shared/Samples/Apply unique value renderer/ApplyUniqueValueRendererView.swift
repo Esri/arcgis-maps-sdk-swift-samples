@@ -28,40 +28,41 @@ struct ApplyUniqueValueRendererView: View {
     @State private var map: Map = {
         let map = Map(basemapStyle: .arcGISTopographic)
         let centerPoint = Point(x: -12966000.5, y: 4441498.5, spatialReference: .webMercator)
-        map.initialViewpoint = Viewpoint(center: centerPoint, scale: 4e7)
-        
+        map.initialViewpoint = Viewpoint(center: centerPoint, scale: 5e7)
         return map
     }()
     
-    /// Creates a unique value renderer configured to render California as red,
-    /// Arizona as green, and Nevada as blue.
+    /// Creates a unique value renderer configured to render the Pacific states
+    /// as blue, the Mountain states as green, and the West South Central states
+    /// as brown.
     private func makeUniqueValueRenderer() -> UniqueValueRenderer {
-        // Instantiate a new unique value renderer
-        let renderer = UniqueValueRenderer()
+        // Instantiate a new unique value renderer.
+        let regionRenderer = UniqueValueRenderer()
         
-        // Set the field to use for the unique values
-        // (You can add multiple fields to be used for the renderer in the form of a list, in this case we are only adding a single field)
-        renderer.addFieldNames(["STATE_ABBR"])
+        // Add the "SUB_REGION" field to the renderer.
+        regionRenderer.addFieldNames(["SUB_REGION"])
+        
+        // Define a line symbol to use for the region fill symbol outlines.
+        let stateOutlineSymbol = SimpleLineSymbol(style: .solid, color: .white, width: 0.7)
+        
+        // Define distinct fill symbols for the regions (use the same outline symbol).
+        let pacificFillSymbol = SimpleFillSymbol(style: .solid, color: .blue, outline: stateOutlineSymbol)
+        let mountainFillSymbol = SimpleFillSymbol(style: .solid, color: .green, outline: stateOutlineSymbol)
+        let westSouthCentralFillSymbol = SimpleFillSymbol(style: .solid, color: .brown, outline: stateOutlineSymbol)
             
-        // Create symbols to be used in the renderer
-        let defaultSymbol = SimpleFillSymbol(color: .clear, outline: SimpleLineSymbol(style: .solid, color: .gray, width: 2))
-        let californiaSymbol = SimpleFillSymbol(style: .solid, color: .red, outline: SimpleLineSymbol(style: .solid, color: .red, width: 2))
-        let arizonaSymbol = SimpleFillSymbol(style: .solid, color: .green, outline: SimpleLineSymbol(style: .solid, color: .green, width: 2))
-        let nevadaSymbol = SimpleFillSymbol(style: .solid, color: .blue, outline: SimpleLineSymbol(style: .solid, color: .blue, width: 2))
+        // Create unique values.
+        let pacificValue = UniqueValue(description: "Pacific Region", label: "Pacific", symbol: pacificFillSymbol, values: ["Pacific"])
+        let mountainValue = UniqueValue(description: "Rocky Mountain Region", label: "Mountain", symbol: mountainFillSymbol, values: ["Mountain"])
+        let westSouthCentralValue = UniqueValue(description: "West South Central Region", label: "West South Central", symbol: westSouthCentralFillSymbol, values: ["West South Central"])
+        
+        // Set the default region fill symbol for regions not explicitly defined in the renderer.
+        let defaultFillSymbol = SimpleFillSymbol(style: .cross, color: .gray)
+        regionRenderer.defaultSymbol = defaultFillSymbol
+        regionRenderer.defaultLabel = "Other"
             
-        // Set the default symbol
-        renderer.defaultSymbol = defaultSymbol
-        renderer.defaultLabel = "Other"
-            
-        // Create unique values
-        let californiaValue = UniqueValue(description: "State of California", label: "California", symbol: californiaSymbol, values: ["CA"])
-        let arizonaValue = UniqueValue(description: "State of Arizona", label: "Arizona", symbol: arizonaSymbol, values: ["AZ"])
-        let nevadaValue = UniqueValue(description: "State of Nevada", label: "Nevada", symbol: nevadaSymbol, values: ["NV"])
-            
-        // Add the values to the renderer
-        renderer.addUniqueValues([californiaValue, arizonaValue, nevadaValue])
-            
-        return renderer
+        // Add the values to the renderer.
+        regionRenderer.addUniqueValues([pacificValue, mountainValue, westSouthCentralValue])
+        return regionRenderer
         }
     
     var body: some View {
@@ -70,16 +71,22 @@ struct ApplyUniqueValueRendererView: View {
             .task {
                 guard map.operationalLayers.isEmpty else { return }
                 do {
-                    // Create feature layer
-                    let featureTable = ServiceFeatureTable(url: URL(
-                        string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Census/MapServer/3")!
-                    )
+                    // Create URL to the census feature service.
+                    let serviceURL = URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Census/MapServer/3")!
+                    
+                    // Create service feature table.
+                    let featureTable = ServiceFeatureTable(url: serviceURL)
+                    
+                    // Create a new feature layer using the service feature table.
                     let featureLayer = FeatureLayer(featureTable: featureTable)
-                    // Load feature layer
-                    try await featureLayer.load()
-                    // Make unique value renderer and assign it to the feature layer
+                    
+                    // Make unique value renderer and assign it to the feature layer.
                     featureLayer.renderer = makeUniqueValueRenderer()
-                    // Add the layer to the map as operational layer
+                    
+                    // Load feature layer.
+                    try await featureLayer.load()
+                    
+                    // Add the layer to the map as operational layer.
                     map.addOperationalLayer(featureLayer)
                 } catch {
                     // Presents an error message if the URL fails to load.
