@@ -24,11 +24,12 @@ struct ApplyUniqueValueRendererView: View {
         didSet { isShowingAlert = error != nil }
     }
     
-    /// A map with topographic basemap.
+    /// A map with topographic basemap centered on western United States.
     @State private var map: Map = {
         let map = Map(basemapStyle: .arcGISTopographic)
-        let centerPoint = Point(x: -12966000.5, y: 4441498.5, spatialReference: .webMercator)
-        map.initialViewpoint = Viewpoint(center: centerPoint, scale: 5e7)
+        let centerPoint = Point(x: -12356253.6, y: 3842795.4, spatialReference: .webMercator)
+        map.initialViewpoint = Viewpoint(center: centerPoint, scale: 52681563.2)
+        
         return map
     }()
     
