@@ -33,52 +33,53 @@ struct StylePointWithPictureMarkerSymbolsView: View {
         return map
     }()
     
-   /// Adds a picture maker from an image in assets
+   /// Adds a picture maker from an image in the project assets.
     private func addPictureMarkerSymbolFromImage() {
         let imageName = "PinBlueStar"
         
-        // Create pin symbol using the image
+        // Create pin symbol using the image.
         let pinSymbol = PictureMarkerSymbol(image: UIImage(named: imageName)!)
         
-        // Change offsets, so the symbol aligns properly to the point
+        // Change offsets, so the symbol aligns properly to the point.
         pinSymbol.offsetY = pinSymbol.image!.size.height / 2
         
-        // Location for pin
+        // Create the location for pin.
         let pinPoint = Point(x: -226773, y: 6550477, spatialReference: .webMercator)
         
-        // Graphic for pin
+        // Create the graphic for pin.
         let pinGraphic = Graphic(geometry: pinPoint, symbol: pinSymbol)
         
-        // Add the graphic to the overlay
+        // Add the graphic to the overlay.
         self.graphicsOverlay.addGraphic(pinGraphic)
     }
     
-    /// Adds a picture marker using a remote image
+    /// Adds a picture marker using a remote image.
     private func addPictureMarkerSymbolFromURL() {
         let imageURL = URL(string: "https://static.arcgis.com/images/Symbols/OutdoorRecreation/Camping.png")!
             
+        // Create pin symbol using the URL.
         let campsiteSymbol = PictureMarkerSymbol(url: imageURL)
             
-        // Optionally set the size
-        // (if not set, the size in pixels of the image will be used)
+        // Optionally set the size.
+        // (If not set, the size in pixels of the image will be used.)
         campsiteSymbol.width = 24
         campsiteSymbol.height = 24
             
-        // Location for campsite
+        // Create the location for campsite.
         let campsitePoint = Point(x: -223560, y: 6552021, spatialReference: .webMercator)
             
-        // Graphic for campsite
+        // Create the graphic for campsite.
         let campsiteGraphic = Graphic(geometry: campsitePoint, symbol: campsiteSymbol)
             
-        // Add the graphic to the overlay
+        // Add the graphic to the overlay.
         self.graphicsOverlay.addGraphic(campsiteGraphic)
     }
     
     init() {
-        // Add picture marker symbol using a remote image
+        // Add picture marker symbol using a remote image.
         self.addPictureMarkerSymbolFromURL()
         
-        // Add picture marker symbol using image in assets
+        // Add picture marker symbol using image in assets.
         self.addPictureMarkerSymbolFromImage()
     }
 
