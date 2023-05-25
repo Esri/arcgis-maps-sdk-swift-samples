@@ -61,24 +61,24 @@ struct StylePointWithPictureMarkerSymbolsView: View {
         let imageURL = URL(
             string: "https://static.arcgis.com/images/Symbols/OutdoorRecreation/Camping.png"
         )!
-            
+        
         // Create pin symbol using the URL.
         let campsiteSymbol = PictureMarkerSymbol(url: imageURL)
-            
+        
         // Optionally set the size.
         // (If not set, the size in pixels of the image will be used.)
         campsiteSymbol.width = 24
         campsiteSymbol.height = 24
-            
+        
         // Create the location for campsite.
         let campsitePoint = Point(x: -223560, y: 6552021, spatialReference: .webMercator)
-            
+        
         // Create the graphic for campsite.
         let campsiteGraphic = Graphic(geometry: campsitePoint, symbol: campsiteSymbol)
-            
+        
         return campsiteGraphic
     }
-
+    
     var body: some View {
         // Create a map view to display the map and point graphics.
         MapView(map: map, graphicsOverlays: [graphicsOverlay])
