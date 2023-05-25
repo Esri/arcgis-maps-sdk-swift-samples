@@ -16,15 +16,15 @@ import SwiftUI
 
 struct AboutView: View {
     var body: some View {
-        if #available(iOS 16, *) {
-            NavigationStack {
-                AboutList()
-            }
-        } else {
+//        if #available(iOS 16, *) {
+//            NavigationStack {
+//                AboutList()
+//            }
+//        } else {
             NavigationView {
                 AboutList()
             }
-        }
+       // }
     }
 }
 
