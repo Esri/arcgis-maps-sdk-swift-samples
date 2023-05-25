@@ -68,7 +68,7 @@ struct StylePointWithPictureMarkerSymbolsView: View {
         let campsiteGraphic = Graphic(geometry: campsitePoint, symbol: campsiteSymbol)
             
         // Add the graphic to the overlay.
-        self.graphicsOverlay.addGraphic(campsiteGraphic)
+        graphicsOverlay.addGraphic(campsiteGraphic)
     }
     
     init() {
