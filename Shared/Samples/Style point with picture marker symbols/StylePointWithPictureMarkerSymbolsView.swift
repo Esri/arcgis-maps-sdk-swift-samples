@@ -35,7 +35,7 @@ struct StylePointWithPictureMarkerSymbolsView: View {
         return map
     }()
     
-    /// Create a picture marker symbol from an image in the project assets.
+    /// Creates a picture marker symbol from an image in the project assets.
     private static func makePictureMarkerSymbolFromImage() -> Graphic {
         let imageName = "PinBlueStar"
         
