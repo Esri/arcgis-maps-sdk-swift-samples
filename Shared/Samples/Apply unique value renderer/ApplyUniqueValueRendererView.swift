@@ -33,7 +33,7 @@ struct ApplyUniqueValueRendererView: View {
         return map
     }()
     
-    /// Creates a unique value renderer configured to render the Pacific states
+    /// Create a unique value renderer configured to render the Pacific states
     /// as blue, the Mountain states as green, and the West South Central states
     /// as brown.
     private func makeUniqueValueRenderer() -> UniqueValueRenderer {
@@ -67,7 +67,7 @@ struct ApplyUniqueValueRendererView: View {
         }
     
     var body: some View {
-        // Creates a map view to display the map.
+        // Create a map view to display the map.
         MapView(map: map)
             .task {
                 guard map.operationalLayers.isEmpty else { return }
@@ -90,7 +90,7 @@ struct ApplyUniqueValueRendererView: View {
                     // Add the layer to the map as operational layer.
                     map.addOperationalLayer(featureLayer)
                 } catch {
-                    // Presents an error message if the URL fails to load.
+                    // Present an error message if the URL fails to load.
                     self.error = error
                 }
             }
