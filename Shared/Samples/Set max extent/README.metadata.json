@@ -1,0 +1,27 @@
+{
+    "category": "Maps",
+    "description": "Limit the view of a map to a particular area.",
+    "ignore": false,
+    "images": [
+        "set-max-extent.png"
+    ],
+    "keywords": [
+        "extent",
+        "limit panning",
+        "map",
+        "mapview",
+        "max extent",
+        "zoom",
+        "Envelope",
+        "Map"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Envelope",
+        "Map"
+    ],
+    "snippets": [
+        "SetMaxExtentView.swift"
+    ],
+    "title": "Set max extent"
+}

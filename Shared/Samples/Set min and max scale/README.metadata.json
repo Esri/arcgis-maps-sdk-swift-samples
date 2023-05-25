@@ -1,0 +1,31 @@
+{
+    "category": "Maps",
+    "description": "Restrict zooming between specific scale ranges.",
+    "ignore": false,
+    "images": [
+        "set-min-and-max-scale.png"
+    ],
+    "keywords": [
+        "area of interest",
+        "level of detail",
+        "maximum",
+        "minimum",
+        "scale",
+        "viewpoint",
+        "Basemap",
+        "Map",
+        "MapView",
+        "Viewpoint"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Basemap",
+        "Map",
+        "MapView",
+        "Viewpoint"
+    ],
+    "snippets": [
+        "SetMinAndMaxScaleView.swift"
+    ],
+    "title": "Set min and max scale"
+}
