@@ -16,14 +16,25 @@ import ArcGIS
 import SwiftUI
 
 struct CreateBuffersAroundPointsView: View {
-    /// The model used to store the geo model and other expensive objects
-    /// used in this view.
     private class Model: ObservableObject {
         /// A map with layers centerd on Texas.
         var map = Map()
         
-        /// An array for the all the graphic overlays
+        /// An array for the the graphic overlays.
         var graphicsOverlays: [GraphicsOverlay] = []
+        
+        /// Graphics overlay for the boundry around the valid area of use for the
+        /// spatial reference.
+        var boundaryGraphicsOverlay: GraphicsOverlay
+        
+        /// Graphics overlay for the buffers
+        var bufferGraphicsOverlay: GraphicsOverlay
+        
+        /// Graphics overlay for the points of the tapped locations
+        var tappedLocationsGraphicsOverlay: GraphicsOverlay
+        
+        /// A dictionary for the tapped points.
+        var bufferPoints : [(point: Point, radius: Double)] = []
         
         init() {
             /// A polygon that represents the valid area of use for the spatial reference.
@@ -42,13 +53,14 @@ struct CreateBuffersAroundPointsView: View {
             map = makeMap(spatialReference: statePlaneNorthCentralTexas!, viewpointGeometry: boundaryPolygon)
             
             // Create graphics overlayers
-            graphicsOverlays.append(makeBoundaryGraphicsOveraly(boundaryGeometry: boundaryPolygon))
-            graphicsOverlays.append(makeBufferGraphicsOverlay())
-            graphicsOverlays.append(makeTappedLocationsGraphicsOverlay())
+            boundaryGraphicsOverlay = makeBoundaryGraphicsOveraly(boundaryGeometry: boundaryPolygon)
+            bufferGraphicsOverlay = makeBufferGraphicsOverlay()
+            tappedLocationsGraphicsOverlay = makeTappedLocationsGraphicsOverlay()
+            graphicsOverlays.append(contentsOf: [boundaryGraphicsOverlay, bufferGraphicsOverlay, tappedLocationsGraphicsOverlay])
             
-            // create a white cross marker symbol to show where the user clicked
+            // Create a white cross marker symbol to show where the user clicked
             let markerSymbol = SimpleMarkerSymbol(style: .cross, color: .white, size: 14)
-            // create a semi-transparent
+            // Create a semi-transparent
             let fillSymbol = SimpleFillSymbol(style: .solid, color: .purple, outline: SimpleLineSymbol(style: .solid, color: .red, width: 3))
         }
         
@@ -66,7 +78,7 @@ struct CreateBuffersAroundPointsView: View {
             return map
         }
         
-        /// Creates a graphics overlay to show the spatial reference's valid area.
+        /// Create a graphics overlay to show the spatial reference's valid area.
         private func makeBoundaryGraphicsOveraly(boundaryGeometry: Geometry) -> GraphicsOverlay {
             let graphicsOverlay = GraphicsOverlay()
             let lineSymbol = SimpleLineSymbol(style: .dash, color: .red, width: 5)
@@ -75,7 +87,7 @@ struct CreateBuffersAroundPointsView: View {
             return graphicsOverlay
         }
         
-        /// Creates a graphics overlay for the buffer graphics.
+        /// Create a graphics overlay for the buffer graphics.
         private func makeBufferGraphicsOverlay() -> GraphicsOverlay {
             let graphicsOverlay = GraphicsOverlay()
             let bufferPolygonOutlineSymbol = SimpleLineSymbol(style: .solid, color: .systemGreen, width: 3)
@@ -84,12 +96,42 @@ struct CreateBuffersAroundPointsView: View {
             return graphicsOverlay
         }
         
-        // Creates a graphics overlay for the tapped locations graphics
-        func makeTappedLocationsGraphicsOverlay() -> GraphicsOverlay {
+        /// Create a graphics overlay for the tapped locations graphics
+        private func makeTappedLocationsGraphicsOverlay() -> GraphicsOverlay {
             let graphicsOverlay = GraphicsOverlay()
             let circleSymbol = SimpleMarkerSymbol(style: .circle, color: .red, size: 10)
             graphicsOverlay.renderer = SimpleRenderer(symbol: circleSymbol)
             return graphicsOverlay
+        }
+        
+        /// Draw points and their buffers on the basemap
+        func drawBuffers() {
+            // Clear existing buffers graphics before drawing.
+            bufferGraphicsOverlay.removeAllGraphics()
+            tappedLocationsGraphicsOverlay.removeAllGraphics()
+
+            guard !bufferPoints.isEmpty else {
+                return
+            }
+            
+            // Reduce the tuples into points and radii arrays.
+            let (points, radii) = bufferPoints.reduce(into: ([Point](), [Double]())) { (result, pointAndRadius) in
+                    result.0.append(pointAndRadius.point)
+                    result.1.append(pointAndRadius.radius)
+            }
+
+            // Create the buffers.
+            // Notice: the radius distances has the same unit of the map's spatial reference's unit.
+            // In this case, the statePlaneNorthCentralTexas spatial reference uses US feet.
+            
+            let geometry = Geometrt
+            if let bufferPolygon = GeometryEngine.bufferGeometries(points, distances: radii, unionResults: unionIsOn) {
+                // Add graphics symbolizing the tap point.
+                tappedLocationsGraphicsOverlay.addGraphics((from: points.map { Graphic(geometry: $0, symbol: nil) })
+                                                           
+                // Add graphics of the buffer polygons.
+                bufferGraphicsOverlay.graphics.addObjects(from: bufferPolygon.map { AGSGraphic(geometry: $0, symbol: nil) })
+            }
         }
     }
     
@@ -99,20 +141,20 @@ struct CreateBuffersAroundPointsView: View {
     /// A Boolean value indicating whether union is on.
     @State private var unionIsOn = false
     
-    /// A point representing where the user has tapped.
-    @State private var tapLocation: Point!
+    /// A Point representing where the user has tapped on the map.
+    @State private var tapPoint: Point!
     
     /// A Boolean value indicating whether the input box is showing on the screen.
     @State private var inputBoxIsPresented = false
     
-    ///
-    @State private var bufferRadiusInput: String = ""
+    /// The buffer radius input obtained from the user.
+    @State private var radiusInput: String = ""
     
     var body: some View {
-        // Creates a map view to display the map.
+        // Create a map view to display the map.
         MapView(map: model.map, graphicsOverlays: model.graphicsOverlays)
             .onSingleTapGesture { _, mapPoint in
-                tapLocation = mapPoint
+                tapPoint = mapPoint
                 inputBoxIsPresented.toggle()
             }
             .toolbar {
@@ -126,17 +168,23 @@ struct CreateBuffersAroundPointsView: View {
                     }
                 }
             }
-            .alert("Login", isPresented: $inputBoxIsPresented, actions: {
-                TextField("100", text: $bufferRadiusInput)
-                
-                
-                
+            .alert("Buffer Radius", isPresented: $inputBoxIsPresented, actions: {
+                TextField("100", text: $radiusInput)
+                    .keyboardType(.numberPad)
                 Button("Done", action: {
+                    // Update the buffer radius with the text value.
+                    let radiusInMiles = Measurement(value: Double(radiusInput)!, unit: UnitLength.miles)
+                    // The spatial reference in this sample uses US feet as its unit.
+                    let radiusInFeet = radiusInMiles.converted(to: .feet).value
                     
+                    model.bufferPoints.append((point: tapPoint!, radius: radiusInFeet))
+                    radiusInput = ""
                 })
-                Button("Cancel", role: .cancel, action: {})
+                Button("Cancel", role: .cancel, action: {
+                    radiusInput = ""
+                })
             }, message: {
-                Text("Please enter your username and password.")
+                Text("Please a number between 0 and 300 miles.")
             })
     }
 }
