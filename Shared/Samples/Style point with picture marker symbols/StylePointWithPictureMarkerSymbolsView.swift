@@ -46,7 +46,7 @@ struct StylePointWithPictureMarkerSymbolsView: View {
         let pinGraphic = Graphic(geometry: pinPoint, symbol: pinSymbol)
         
         // Add the graphic to the overlay.
-        self.graphicsOverlay.addGraphic(pinGraphic)
+        graphicsOverlay.addGraphic(pinGraphic)
     }
     
     /// Adds a picture marker using a remote image.
