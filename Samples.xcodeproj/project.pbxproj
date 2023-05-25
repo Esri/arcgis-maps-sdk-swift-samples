@@ -96,7 +96,6 @@
 		75DD739929D38B420010229D /* NavigateRouteView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 75DD739129D38B1B0010229D /* NavigateRouteView.swift */; };
 		79302F852A1ED4E30002336A /* CreateAndSaveKMLView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79302F842A1ED4E30002336A /* CreateAndSaveKMLView.Model.swift */; };
 		79302F872A1ED71B0002336A /* CreateAndSaveKMLView.Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79302F862A1ED71B0002336A /* CreateAndSaveKMLView.Views.swift */; };
-		79B3425A2A1FD87A00034F05 /* ArcGISToolkit in Frameworks */ = {isa = PBXBuildFile; productRef = 79B342592A1FD87A00034F05 /* ArcGISToolkit */; };
 		79B7B80A2A1BF8EC00F57C27 /* CreateAndSaveKMLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B7B8092A1BF8EC00F57C27 /* CreateAndSaveKMLView.swift */; };
 		79B7B80B2A1BFDE700F57C27 /* CreateAndSaveKMLView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 79B7B8092A1BF8EC00F57C27 /* CreateAndSaveKMLView.swift */; };
 		883C121529C9136600062FF9 /* DownloadPreplannedMapAreaView.MapPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 883C121429C9136600062FF9 /* DownloadPreplannedMapAreaView.MapPicker.swift */; };
@@ -976,7 +975,7 @@
 			);
 			name = Samples;
 			packageProductDependencies = (
-				79B342592A1FD87A00034F05 /* ArcGISToolkit */,
+				00C43AEC2947DC350099AE34 /* ArcGISToolkit */,
 			);
 			productName = "arcgis-swift-sdk-samples (iOS)";
 			productReference = 00E5401327F3CCA200CF66D5 /* Samples.app */;
@@ -1014,7 +1013,7 @@
 			);
 			mainGroup = 00E5400627F3CCA100CF66D5;
 			packageReferences = (
-				79B342582A1FD87A00034F05 /* XCRemoteSwiftPackageReference "arcgis-maps-sdk-swift-toolkit" */,
+				00C43AEB2947DC350099AE34 /* XCRemoteSwiftPackageReference "arcgis-maps-sdk-swift-toolkit" */,
 			);
 			productRefGroup = 00E5401427F3CCA200CF66D5 /* Products */;
 			projectDirPath = "";
@@ -1327,7 +1326,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = P8HGHS7JQ8;
+				DEVELOPMENT_TEAM = "";
 				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -1358,7 +1357,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = P8HGHS7JQ8;
+				DEVELOPMENT_TEAM = "";
 				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -1405,9 +1404,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		79B342582A1FD87A00034F05 /* XCRemoteSwiftPackageReference "arcgis-maps-sdk-swift-toolkit" */ = {
+		00C43AEB2947DC350099AE34 /* XCRemoteSwiftPackageReference "arcgis-maps-sdk-swift-toolkit" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Esri/arcgis-maps-sdk-swift-toolkit";
+			repositoryURL = "https://github.com/Esri/arcgis-maps-sdk-swift-toolkit/";
 			requirement = {
 				kind = upToNextMinorVersion;
 				minimumVersion = 200.1.0;
@@ -1416,9 +1415,8 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		79B342592A1FD87A00034F05 /* ArcGISToolkit */ = {
+		00C43AEC2947DC350099AE34 /* ArcGISToolkit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 00C43AEB2947DC350099AE34 /* XCRemoteSwiftPackageReference "arcgis-maps-sdk-swift-toolkit" */;
 			productName = ArcGISToolkit;
 		};
 /* End XCSwiftPackageProductDependency section */
