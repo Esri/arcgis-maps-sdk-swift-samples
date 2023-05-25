@@ -36,6 +36,7 @@ struct StylePointWithPictureMarkerSymbolsView: View {
     }()
     
     /// Creates a picture marker symbol from an image in the project assets.
+    /// - Returns: A picture marker symbol
     private static func makePictureMarkerSymbolFromImage() -> Graphic {
         let imageName = "PinBlueStar"
         
@@ -55,6 +56,7 @@ struct StylePointWithPictureMarkerSymbolsView: View {
     }
     
     /// Creates a picture marker symbol using a remote image.
+    /// - Returns: A picture marker symbol
     private static func makePictureMarkerSymbolFromURL() -> Graphic {
         let imageURL = URL(
             string: "https://static.arcgis.com/images/Symbols/OutdoorRecreation/Camping.png"
