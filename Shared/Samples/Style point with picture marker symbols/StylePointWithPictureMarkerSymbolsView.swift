@@ -17,10 +17,7 @@ import SwiftUI
 
 struct StylePointWithPictureMarkerSymbolsView: View {
     /// The graphics overlay to hold the point graphics.
-    @State private var graphicsOverlay: GraphicsOverlay = {
-        let graphicsOverlay = GraphicsOverlay()
-        return graphicsOverlay
-    }()
+    @State private var graphicsOverlay = GraphicsOverlay()
     
     /// A map with topographic basemap and centered on Harman's Cross in England.
     @State private var map: Map = {
