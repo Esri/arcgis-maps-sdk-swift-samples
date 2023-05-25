@@ -16,8 +16,14 @@ import ArcGIS
 import SwiftUI
 
 struct StylePointWithPictureMarkerSymbolsView: View {
-    /// A graphics overlay to hold the point graphics.
-    @State private var graphicsOverlay = GraphicsOverlay()
+    /// A graphics overlay to hold the picture marker symbol graphics.
+    @State private var graphicsOverlay: GraphicsOverlay = {
+        let graphics = [
+            makePictureMarkerSymbolFromImage(),
+            makePictureMarkerSymbolFromURL()
+        ]
+        return GraphicsOverlay(graphics: graphics)
+    }()
     
     /// A map with topographic basemap and centered on Harman's Cross in England.
     @State private var map: Map = {
@@ -29,8 +35,8 @@ struct StylePointWithPictureMarkerSymbolsView: View {
         return map
     }()
     
-    /// Add a picture maker from an image in the project assets.
-    private func addPictureMarkerSymbolFromImage() {
+    /// Create a picture marker symbol from an image in the project assets.
+    private static func makePictureMarkerSymbolFromImage() -> Graphic {
         let imageName = "PinBlueStar"
         
         // Create pin symbol using the image.
@@ -45,12 +51,11 @@ struct StylePointWithPictureMarkerSymbolsView: View {
         // Create the graphic for pin.
         let pinGraphic = Graphic(geometry: pinPoint, symbol: pinSymbol)
         
-        // Add the graphic to the overlay.
-        graphicsOverlay.addGraphic(pinGraphic)
+        return pinGraphic
     }
     
-    /// Add a picture marker using a remote image.
-    private func addPictureMarkerSymbolFromURL() {
+    /// Create a picture marker symbol using a remote image.
+    private static func makePictureMarkerSymbolFromURL() -> Graphic {
         let imageURL = URL(string: "https://static.arcgis.com/images/Symbols/OutdoorRecreation/Camping.png")!
             
         // Create pin symbol using the URL.
@@ -67,19 +72,11 @@ struct StylePointWithPictureMarkerSymbolsView: View {
         // Create the graphic for campsite.
         let campsiteGraphic = Graphic(geometry: campsitePoint, symbol: campsiteSymbol)
             
-        // Add the graphic to the overlay.
-        graphicsOverlay.addGraphic(campsiteGraphic)
+        return campsiteGraphic
     }
 
     var body: some View {
         // Create a map view to display the map and point graphics.
         MapView(map: map, graphicsOverlays: [graphicsOverlay])
-            .task {
-                // Add picture marker symbol using a remote image.
-                addPictureMarkerSymbolFromURL()
-                            
-                // Add picture marker symbol using image in assets.
-                addPictureMarkerSymbolFromImage()
-            }
     }
 }
