@@ -29,7 +29,7 @@ struct StylePointWithPictureMarkerSymbolsView: View {
         return map
     }()
     
-   /// Adds a picture maker from an image in the project assets.
+    /// Adds a picture maker from an image in the project assets.
     private func addPictureMarkerSymbolFromImage() {
         let imageName = "PinBlueStar"
         
