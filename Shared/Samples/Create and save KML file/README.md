@@ -28,6 +28,7 @@ Tap on the sketch button in the toolbar to add a new KML. Select a type of featu
 
 ## Relevant API
 
+* GeometryEditor
 * GeometryEngine
 * KMLDataset
 * KMLDocument
@@ -36,7 +37,6 @@ Tap on the sketch button in the toolbar to add a new KML. Select a type of featu
 * KMLNode
 * KMLPlacemark
 * KMLStyle
-* GeometryEditor
 
 ## Tags
 
