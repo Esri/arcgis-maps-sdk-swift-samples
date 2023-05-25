@@ -54,7 +54,7 @@ struct StylePointWithPictureMarkerSymbolsView: View {
         return pinGraphic
     }
     
-    /// Create a picture marker symbol using a remote image.
+    /// Creates a picture marker symbol using a remote image.
     private static func makePictureMarkerSymbolFromURL() -> Graphic {
         let imageURL = URL(
             string: "https://static.arcgis.com/images/Symbols/OutdoorRecreation/Camping.png"
