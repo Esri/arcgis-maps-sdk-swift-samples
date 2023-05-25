@@ -16,28 +16,104 @@ import ArcGIS
 import SwiftUI
 
 struct CreateBuffersAroundPointsView: View {
+    /// The view model for the sample.
+    @StateObject private var model = Model()
+    
+    var body: some View {
+        // Create a map view to display the map.
+        MapView(map: model.map, graphicsOverlays: model.graphicsOverlays)
+            .onSingleTapGesture { _, mapPoint in
+                // Save point and bring up input box when map is tapped.s
+                model.tappedPoint = mapPoint
+                model.inputBoxIsPresented.toggle()
+            }
+            .overlay(alignment: .top) {
+                Text(model.getStatusText())
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .padding(8)
+                    .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
+            }
+            .toolbar {
+                // Union toggle switch.
+                ToolbarItem(placement: .bottomBar) {
+                    Toggle("Union", isOn: $model.shouldUnion)
+                        .toggleStyle(.switch)
+                        .onChange(of: model.shouldUnion) { _ in
+                            if !model.bufferPoints.isEmpty {
+                                model.drawBuffers()
+                            }
+                        }
+                }
+                // Clear button.
+                ToolbarItem(placement: .bottomBar) {
+                    Button("Clear") {
+                        model.clearBufferPoints()
+                    }
+                }
+            }
+        // Buffer radius text box.
+            .alert("Buffer Radius", isPresented: $model.inputBoxIsPresented, actions: {
+                TextField("100", text: $model.radiusInput)
+                    .keyboardType(.numberPad)
+                // Input done button.
+                Button("Done", action: {
+                    model.addBufferPoint()
+                    model.radiusInput = ""
+                    model.drawBuffers()
+                })
+                // Input cancel button.
+                Button("Cancel", role: .cancel, action: {
+                    model.radiusInput = ""
+                })
+                //Input message.
+            }, message: {
+                Text("Please enter a number between 0 and 300 miles.")
+            })
+    }
+}
+
+private extension CreateBuffersAroundPointsView {
+    // The view model for this sample.
     private class Model: ObservableObject {
+        /// A Boolean value indicating whether union is on.
+        @Published var shouldUnion = false
+        
+        /// A Point representing where the user has tapped on the map.
+        @Published var tappedPoint: Point!
+        
+        /// A Boolean value indicating whether the input box is showing on the screen.
+        @Published var inputBoxIsPresented = false
+        
+        /// The buffer radius input obtained from the user.
+        @Published var radiusInput: String = ""
+        
+        /// The status text to display to the user.
+        var status = Status.addPoints
+        
         /// A map with layers centerd on Texas.
         var map = Map()
         
-        /// An array for the the graphic overlays.
+        /// An Array for the the graphic overlays.
         var graphicsOverlays: [GraphicsOverlay] = []
-        
-        /// Graphics overlay for the boundry around the valid area of use for the
-        /// spatial reference.
-        var boundaryGraphicsOverlay: GraphicsOverlay
-        
-        /// Graphics overlay for the buffers
-        var bufferGraphicsOverlay: GraphicsOverlay
-        
-        /// Graphics overlay for the points of the tapped locations
-        var tappedLocationsGraphicsOverlay: GraphicsOverlay
         
         /// An Array for the tapped points and their radii
         var bufferPoints: [(point: Point, radius: Double)] = []
         
-        /// A Boolean for whether the buffers should union.
-        var shouldUnion: Bool = false
+        /// A graphics overlay for the boundry around the valid area of use.
+        private var boundaryGraphicsOverlay: GraphicsOverlay
+        
+        /// A graphics overlay for the buffers.
+        private var bufferGraphicsOverlay: GraphicsOverlay
+        
+        /// A graphics overlay for the points of the tapped locations.
+        private var tappedPointsGraphicsOverlay: GraphicsOverlay
+        
+        /// An Enum for the sample status as shown in the overlay
+        enum Status {
+            case addPoints
+            case buffersCreated
+            case outOfBoundsTap
+        }
         
         init() {
             /// A Polygon that represents the valid area of use for the spatial reference.
@@ -53,28 +129,36 @@ struct CreateBuffersAroundPointsView: View {
                 return polygon!
             }()
             
-            map = makeMap(spatialReference: statePlaneNorthCentralTexas!, viewpointGeometry: boundaryPolygon)
+            // Create map.
+            map = CreateBuffersAroundPointsView.Model.makeMap(
+                spatialReference: statePlaneNorthCentralTexas!, viewpointGeometry: boundaryPolygon
+            )
             
-            // Create graphics overlayers
-            boundaryGraphicsOverlay = makeBoundaryGraphicsOveraly(boundaryGeometry: boundaryPolygon)
-            bufferGraphicsOverlay = makeBufferGraphicsOverlay()
-            tappedLocationsGraphicsOverlay = makeTappedLocationsGraphicsOverlay()
-            graphicsOverlays.append(contentsOf: [boundaryGraphicsOverlay, bufferGraphicsOverlay, tappedLocationsGraphicsOverlay])
-            
-            // Create a white cross marker symbol to show where the user clicked
-            let markerSymbol = SimpleMarkerSymbol(style: .cross, color: .white, size: 14)
-            // Create a semi-transparent
-            let fillSymbol = SimpleFillSymbol(style: .solid, color: .purple, outline: SimpleLineSymbol(style: .solid, color: .red, width: 3))
+            // Create graphics overlays.
+            boundaryGraphicsOverlay = CreateBuffersAroundPointsView.Model.makeBoundaryGraphicsOveraly(
+                boundaryGeometry: boundaryPolygon
+            )
+            bufferGraphicsOverlay = CreateBuffersAroundPointsView.Model.makeBufferGraphicsOverlay()
+            tappedPointsGraphicsOverlay = CreateBuffersAroundPointsView.Model.makeTappedPointsGraphicsOverlay()
+            graphicsOverlays.append(
+                contentsOf: [boundaryGraphicsOverlay, bufferGraphicsOverlay, tappedPointsGraphicsOverlay]
+            )
         }
         
-        /// Create a map with some image laters
+        /// Create a map from a spatial reference with image layers.
+        /// - Parameters:
+        ///   - spatialReference: The spatial reference the map is derived from.
+        ///   - viewpointGeometry: The geometry to center the viewpoint on.
+        /// - Returns: A new 'Map' object with added base layers.
         private static func makeMap(spatialReference: SpatialReference, viewpointGeometry: Geometry) -> Map {
             // Create a map with a basemap.
             let map = Map(spatialReference: spatialReference)
             map.initialViewpoint = Viewpoint(boundingGeometry: viewpointGeometry)
             
             // Add some base layers (counties, cities, and highways).
-            let mapServiceURL = URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer")!
+            let mapServiceURL = URL(
+                string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer"
+            )!
             let usaLayer = ArcGISMapImageLayer(url: mapServiceURL)
             map.basemap!.addBaseLayer(usaLayer)
             
@@ -82,7 +166,9 @@ struct CreateBuffersAroundPointsView: View {
         }
         
         /// Create a graphics overlay to show the spatial reference's valid area.
-        private func makeBoundaryGraphicsOveraly(boundaryGeometry: Geometry) -> GraphicsOverlay {
+        /// - Parameter boundaryGeometry: The geometry to create the boundry graphic from.
+        /// - Returns: A new 'GraphicsOverlay' object with a boundry graphic added.
+        private static func makeBoundaryGraphicsOveraly(boundaryGeometry: Geometry) -> GraphicsOverlay {
             let graphicsOverlay = GraphicsOverlay()
             let lineSymbol = SimpleLineSymbol(style: .dash, color: .red, width: 5)
             let boundaryGraphic = Graphic(geometry: boundaryGeometry, symbol: lineSymbol)
@@ -91,7 +177,8 @@ struct CreateBuffersAroundPointsView: View {
         }
         
         /// Create a graphics overlay for the buffer graphics.
-        private func makeBufferGraphicsOverlay() -> GraphicsOverlay {
+        /// - Returns: A new 'GraphicsOverlay' object to be used for the buffers.
+        private static func makeBufferGraphicsOverlay() -> GraphicsOverlay {
             let graphicsOverlay = GraphicsOverlay()
             let bufferPolygonOutlineSymbol = SimpleLineSymbol(style: .solid, color: .systemGreen, width: 3)
             let bufferPolygonFillSymbol = SimpleFillSymbol(style: .solid, color: UIColor.yellow.withAlphaComponent(0.6), outline: bufferPolygonOutlineSymbol)
@@ -99,97 +186,76 @@ struct CreateBuffersAroundPointsView: View {
             return graphicsOverlay
         }
         
-        /// Create a graphics overlay for the tapped locations graphics
-        private func makeTappedLocationsGraphicsOverlay() -> GraphicsOverlay {
+        /// Create a graphics overlay for the tapped points graphics.
+        /// - Returns: A new 'GraphicsOverlay' object to be used for the tapped points.
+        private static func makeTappedPointsGraphicsOverlay() -> GraphicsOverlay {
             let graphicsOverlay = GraphicsOverlay()
             let circleSymbol = SimpleMarkerSymbol(style: .circle, color: .red, size: 10)
             graphicsOverlay.renderer = SimpleRenderer(symbol: circleSymbol)
             return graphicsOverlay
         }
         
-        /// Draw points and their buffers on the basemap
+        /// Draw points and their buffers on the map.
         func drawBuffers() {
             // Clear existing buffers graphics before drawing.
             bufferGraphicsOverlay.removeAllGraphics()
-            tappedLocationsGraphicsOverlay.removeAllGraphics()
-
+            tappedPointsGraphicsOverlay.removeAllGraphics()
+            
             guard !bufferPoints.isEmpty else {
                 return
             }
             
-            // Reduce the tuples into points and radii arrays.
+            // Reduce the bufferPoints tuples into points and radii arrays.
             let (points, radii) = bufferPoints.reduce(into: ([Point](), [Double]())) { (result, pointAndRadius) in
-                    result.0.append(pointAndRadius.point)
-                    result.1.append(pointAndRadius.radius)
+                result.0.append(pointAndRadius.point)
+                result.1.append(pointAndRadius.radius)
             }
-
+            
             // Create the buffers.
             // Notice: the radius distances has the same unit of the map's spatial reference's unit.
             // In this case, the statePlaneNorthCentralTexas spatial reference uses US feet.
             let bufferPolygon = GeometryEngine.buffer(around: points, distances: radii, shouldUnion: shouldUnion)
             
-            // Add the tapped point graphics.
-            for point in points {
-                tappedLocationsGraphicsOverlay.addGraphic(Graphic(geometry: point))
+            // Add the tapped points to the tappedPointsGraphicsOverlas.
+            points.forEach { point in
+                tappedPointsGraphicsOverlay.addGraphic(Graphic(geometry: point))
             }
-                    
-            // Add the buffer graphics.
-            for buffer in bufferPolygon {
+            
+            // Add the buffers to the bufferGraphicsOverlay.
+            bufferPolygon.forEach { buffer in
                 bufferGraphicsOverlay.addGraphic(Graphic(geometry: buffer))
             }
         }
-    }
-    
-    /// The view model for the sample.
-    @StateObject private var model = Model()
-    
-    /// A Boolean value indicating whether union is on.
-    @State private var unionIsOn = false
-    
-    /// A Point representing where the user has tapped on the map.
-    @State private var tapPoint: Point!
-    
-    /// A Boolean value indicating whether the input box is showing on the screen.
-    @State private var inputBoxIsPresented = false
-    
-    /// The buffer radius input obtained from the user.
-    @State private var radiusInput: String = ""
-    
-    var body: some View {
-        // Create a map view to display the map.
-        MapView(map: model.map, graphicsOverlays: model.graphicsOverlays)
-            .onSingleTapGesture { _, mapPoint in
-                tapPoint = mapPoint
-                inputBoxIsPresented.toggle()
+        
+        /// Add a point with its radisu to the bufferPoints Array.
+        func addBufferPoint() {
+            // Update the buffer radius with the text value.
+            let radiusInMiles = Measurement(value: Double(radiusInput)!, unit: UnitLength.miles)
+            
+            // The spatial reference in this sample uses US feet as its unit.
+            let radiusInFeet = radiusInMiles.converted(to: .feet).value
+            
+            // Add point with radius to bufferPoints Array.
+            bufferPoints.append((point: tappedPoint!, radius: radiusInFeet))
+        }
+        
+        /// Clears the points and buffers from off the screen.
+        func clearBufferPoints() {
+            bufferPoints.removeAll()
+            bufferGraphicsOverlay.removeAllGraphics()
+            tappedPointsGraphicsOverlay.removeAllGraphics()
+        }
+        
+        ///
+        func getStatusText() -> String {
+            switch status {
+            case .addPoints:
+                return " "
+            case .buffersCreated:
+                return "Buffers Created."
+            case .outOfBoundsTap:
+                return "Tap withing the boundary to add buffer."
             }
-            .toolbar {
-                ToolbarItem(placement: .bottomBar) {
-                    Toggle("Union", isOn: $unionIsOn)
-                        .toggleStyle(.switch)
-                }
-                ToolbarItem(placement: .bottomBar) {
-                    Button("Clear") {
-                        print()
-                    }
-                }
-            }
-            .alert("Buffer Radius", isPresented: $inputBoxIsPresented, actions: {
-                TextField("100", text: $radiusInput)
-                    .keyboardType(.numberPad)
-                Button("Done", action: {
-                    // Update the buffer radius with the text value.
-                    let radiusInMiles = Measurement(value: Double(radiusInput)!, unit: UnitLength.miles)
-                    // The spatial reference in this sample uses US feet as its unit.
-                    let radiusInFeet = radiusInMiles.converted(to: .feet).value
-                    
-                    model.bufferPoints.append((point: tapPoint!, radius: radiusInFeet))
-                    radiusInput = ""
-                })
-                Button("Cancel", role: .cancel, action: {
-                    radiusInput = ""
-                })
-            }, message: {
-                Text("Please a number between 0 and 300 miles.")
-            })
+        }
     }
 }
