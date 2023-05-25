@@ -106,7 +106,7 @@ extension CreateAndSaveKMLView {
             let currentPlacemark = KMLPlacemark(geometry: kmlGeometry)
             currentPlacemark.style = kmlStyle
             kmlDocument.addChildNode(currentPlacemark)
-                        
+            
             stop()
             canClearSavedSketches = true
             fileExporterButtonIsDisabled = false

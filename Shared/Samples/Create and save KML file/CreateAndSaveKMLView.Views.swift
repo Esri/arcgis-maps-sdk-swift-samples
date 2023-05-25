@@ -138,7 +138,7 @@ extension CreateAndSaveKMLView {
             } label: {
                 Text("Red")
             }
-
+            
             Button {
                 model.kmlStyle = KMLStyle(lineColor: .yellow)
                 model.startGeometryEditor(withType: Polyline.self)
