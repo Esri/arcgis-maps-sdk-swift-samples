@@ -26,7 +26,6 @@ struct StylePointWithPictureMarkerSymbolsView: View {
             center: Point(x: -225166.5, y: 6551249, spatialReference: .webMercator),
             scale: 1e5
         )
-        
         return map
     }()
     
