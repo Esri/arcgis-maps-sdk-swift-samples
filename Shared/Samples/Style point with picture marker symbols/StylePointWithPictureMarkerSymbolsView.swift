@@ -16,7 +16,7 @@ import ArcGIS
 import SwiftUI
 
 struct StylePointWithPictureMarkerSymbolsView: View {
-    /// The graphics overlay to hold the point graphics.
+    /// A graphics overlay to hold the point graphics.
     @State private var graphicsOverlay = GraphicsOverlay()
     
     /// A map with topographic basemap and centered on Harman's Cross in England.
@@ -29,7 +29,7 @@ struct StylePointWithPictureMarkerSymbolsView: View {
         return map
     }()
     
-    /// Adds a picture maker from an image in the project assets.
+    /// Add a picture maker from an image in the project assets.
     private func addPictureMarkerSymbolFromImage() {
         let imageName = "PinBlueStar"
         
@@ -49,7 +49,7 @@ struct StylePointWithPictureMarkerSymbolsView: View {
         graphicsOverlay.addGraphic(pinGraphic)
     }
     
-    /// Adds a picture marker using a remote image.
+    /// Add a picture marker using a remote image.
     private func addPictureMarkerSymbolFromURL() {
         let imageURL = URL(string: "https://static.arcgis.com/images/Symbols/OutdoorRecreation/Camping.png")!
             
@@ -70,17 +70,16 @@ struct StylePointWithPictureMarkerSymbolsView: View {
         // Add the graphic to the overlay.
         graphicsOverlay.addGraphic(campsiteGraphic)
     }
-    
-    init() {
-        // Add picture marker symbol using a remote image.
-        self.addPictureMarkerSymbolFromURL()
-        
-        // Add picture marker symbol using image in assets.
-        self.addPictureMarkerSymbolFromImage()
-    }
 
     var body: some View {
-        // Creates a map view to display the map and point graphics.
+        // Create a map view to display the map and point graphics.
         MapView(map: map, graphicsOverlays: [graphicsOverlay])
+            .task {
+                // Add picture marker symbol using a remote image.
+                addPictureMarkerSymbolFromURL()
+                            
+                // Add picture marker symbol using image in assets.
+                addPictureMarkerSymbolFromImage()
+            }
     }
 }
