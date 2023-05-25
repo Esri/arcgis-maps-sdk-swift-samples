@@ -33,11 +33,14 @@ struct CreateBuffersAroundPointsView: View {
         /// Graphics overlay for the points of the tapped locations
         var tappedLocationsGraphicsOverlay: GraphicsOverlay
         
-        /// A dictionary for the tapped points.
-        var bufferPoints : [(point: Point, radius: Double)] = []
+        /// An Array for the tapped points and their radii
+        var bufferPoints: [(point: Point, radius: Double)] = []
+        
+        /// A Boolean for whether the buffers should union.
+        var shouldUnion: Bool = false
         
         init() {
-            /// A polygon that represents the valid area of use for the spatial reference.
+            /// A Polygon that represents the valid area of use for the spatial reference.
             let statePlaneNorthCentralTexas = SpatialReference(wkid: WKID(32038)!)
             let boundaryPolygon = {
                 let boundaryPoints = [
@@ -65,7 +68,7 @@ struct CreateBuffersAroundPointsView: View {
         }
         
         /// Create a map with some image laters
-        private func makeMap(spatialReference: SpatialReference, viewpointGeometry: Geometry) -> Map {
+        private static func makeMap(spatialReference: SpatialReference, viewpointGeometry: Geometry) -> Map {
             // Create a map with a basemap.
             let map = Map(spatialReference: spatialReference)
             map.initialViewpoint = Viewpoint(boundingGeometry: viewpointGeometry)
@@ -123,14 +126,16 @@ struct CreateBuffersAroundPointsView: View {
             // Create the buffers.
             // Notice: the radius distances has the same unit of the map's spatial reference's unit.
             // In this case, the statePlaneNorthCentralTexas spatial reference uses US feet.
+            let bufferPolygon = GeometryEngine.buffer(around: points, distances: radii, shouldUnion: shouldUnion)
             
-            let geometry = Geometrt
-            if let bufferPolygon = GeometryEngine.bufferGeometries(points, distances: radii, unionResults: unionIsOn) {
-                // Add graphics symbolizing the tap point.
-                tappedLocationsGraphicsOverlay.addGraphics((from: points.map { Graphic(geometry: $0, symbol: nil) })
-                                                           
-                // Add graphics of the buffer polygons.
-                bufferGraphicsOverlay.graphics.addObjects(from: bufferPolygon.map { AGSGraphic(geometry: $0, symbol: nil) })
+            // Add the tapped point graphics.
+            for point in points {
+                tappedLocationsGraphicsOverlay.addGraphic(Graphic(geometry: point))
+            }
+                    
+            // Add the buffer graphics.
+            for buffer in bufferPolygon {
+                bufferGraphicsOverlay.addGraphic(Graphic(geometry: buffer))
             }
         }
     }
