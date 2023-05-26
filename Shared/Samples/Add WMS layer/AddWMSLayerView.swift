@@ -28,7 +28,7 @@ struct AddWMSLayerView: View {
     @State private var map: Map = {
         let map = Map(basemapStyle: .arcGISLightGrayBase)
         map.initialViewpoint = Viewpoint(
-            latitude: 39, longitude: -98, scale: 3.6978595474472E7
+            latitude: 39, longitude: -98, scale: 4e7
         )
         return map
     }()
