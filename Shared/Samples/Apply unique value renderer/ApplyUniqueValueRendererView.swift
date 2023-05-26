@@ -42,7 +42,7 @@ struct ApplyUniqueValueRendererView: View {
     /// Creates a unique value renderer configured to render the Pacific states
     /// as blue, the Mountain states as green, and the West South Central states
     /// as brown.
-    /// - Returns: A 'UniqueValueRenderer' object to be added to a featureLayer.
+    /// - Returns: A `UniqueValueRenderer` object to be added to a featureLayer.
     private static func makeUniqueValueRenderer() -> UniqueValueRenderer {
         // Define a line symbol to use for the region fill symbol outlines.
         let stateOutlineSymbol = SimpleLineSymbol(style: .solid, color: .white, width: 0.7)
