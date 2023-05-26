@@ -10,11 +10,11 @@ Creating buffers is a core concept in GIS proximity analysis that allows you to 
 
 ## How to use the sample
 
-Tap on the map to add points. Tap the "Create Buffer(s)" button to draw buffer(s) around the points (the size of the buffer is determined by the value entered by the user). Toggle on "Union" if you want the result to union (combine) the buffers. Tap "Clear" button to start over. The red dashed envelope shows the area where you can expect reasonable results for planar buffer operations with the North Central Texas State Plane spatial reference.
+Tap on the map to add points. Toggle on "Union" toggle if you want the result to union (combine) the buffers. Tap the "Clear" button to start over. The red dashed envelope shows the area where you can expect reasonable results for planar buffer operations with the North Central Texas State Plane spatial reference.
 
 ## How it works
 
-1. Use `GeometryEngine.buffer(points, distances, union)` to create a `Polygon`. The parameter `points` are the points to buffer around, `distances` are the buffer distances for each point (in meters) and `union` is a boolean for whether the results should be unioned.
+1. Use `GeometryEngine.buffer(around, distances, shouldUnion)` to create a `Polygon`. The parameter `around` are the points to buffer around, `distances` are the buffer distances for each point (in meters) and `shouldUnion` is a boolean for whether the results should be unioned.
 2. Add the resulting polygons (if not unioned) or single polygon (if unioned) to the map's `GraphicsOverlay` as a `Graphic`.
 
 ## Relevant API
