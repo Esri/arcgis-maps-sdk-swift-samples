@@ -16,14 +16,6 @@ import ArcGIS
 import SwiftUI
 
 struct ApplyUniqueValueRendererView: View {
-    /// A Boolean value indicating whether to show an alert.
-    @State private var isShowingAlert = false
-    
-    /// The error shown in the alert.
-    @State private var error: Error? {
-        didSet { isShowingAlert = error != nil }
-    }
-    
     /// A map with topographic basemap centered on western United States.
     @State private var map: Map = {
         let map = Map(basemapStyle: .arcGISTopographic)
@@ -79,6 +71,5 @@ struct ApplyUniqueValueRendererView: View {
     var body: some View {
         // Create a map view to display the map.
         MapView(map: map)
-            .alert(isPresented: $isShowingAlert, presentingError: error)
     }
 }
