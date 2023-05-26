@@ -55,7 +55,12 @@ struct ApplyUniqueValueRendererView: View {
         // Create the unique values for each region.
         let pacificValue = UniqueValue(description: "Pacific Region", label: "Pacific", symbol: pacificFillSymbol, values: ["Pacific"])
         let mountainValue = UniqueValue(description: "Rocky Mountain Region", label: "Mountain", symbol: mountainFillSymbol, values: ["Mountain"])
-        let westSouthCentralValue = UniqueValue(description: "West South Central Region", label: "West South Central", symbol: westSouthCentralFillSymbol, values: ["West South Central"])
+        let westSouthCentralValue = UniqueValue(
+            description: "West South Central Region",
+            label: "West South Central",
+            symbol: westSouthCentralFillSymbol,
+            values: ["West South Central"]
+        )
         
         // Create the default region fill symbol for regions not explicitly defined in the renderer.
         let defaultFillSymbol = SimpleFillSymbol(style: .cross, color: .gray)
