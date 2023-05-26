@@ -34,16 +34,16 @@ struct AddWMSLayerView: View {
     }()
     
     var body: some View {
-        // Creates a map view to display the map.
+        // Create a map view to display the map.
         MapView(map: map)
             .task {
                 guard map.operationalLayers.isEmpty else { return }
                 do {
                     // A URL to the GetCapabilities endpoint of a WMS service.
-                    let wmsServiceURL = URL(string: "https://gis.ncdc.noaa.gov/arcgis/services/cdo/nexrad/MapServer/WMSServer?request=GetCapabilities&service=WMS")!
+                    let wmsServiceURL = URL(string: "https://nowcoast.noaa.gov/geoserver/observations/weather_radar/wms")!
                     
                     // The names of the layers to load at the WMS service.
-                    let wmsServiceLayerNames = ["1"]
+                    let wmsServiceLayerNames = ["conus_base_reflectivity_mosaic"]
                     
                     // Initialize the WMS layer with the service URL and uniquely identifying WMS layer names.
                     let wmsLayer = WMSLayer(url: wmsServiceURL, layerNames: wmsServiceLayerNames)
@@ -51,10 +51,10 @@ struct AddWMSLayerView: View {
                     // Load the WMS layer.
                     try await wmsLayer.load()
                     
-                    // Adds the WMS layer to the map's operational layer.
+                    // Add the WMS layer to the map's operational layer.
                     map.addOperationalLayer(wmsLayer)
                 } catch {
-                    // Presents an error message if the URL fails to load.
+                    // Present an error message if the URL fails to load.
                     self.error = error
                 }
             }
