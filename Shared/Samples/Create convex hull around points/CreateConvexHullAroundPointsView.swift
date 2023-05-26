@@ -18,104 +18,107 @@ import SwiftUI
 struct CreateConvexHullAroundPointsView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
-
+    
     var body: some View {
         // Create a map view to display the map.
-        MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
+        MapView(map: model.map, graphicsOverlays: model.graphicsOverlays)
             .onSingleTapGesture { _, mapPoint in
-                model.graphicsOverlay.addGraphic(Graphic(geometry: mapPoint, symbol: model.markerSymbol))
+                model.inputPoints.append(mapPoint)
+                model.pointsGraphicsOverlay.addGraphic(Graphic(geometry: mapPoint, symbol: model.markerSymbol))
+                model.createIsDisabled = false
+                model.resetIsDisabled = false
             }
             .toolbar {
-                // Create button for
+                // Create button for making the convex hull.
                 ToolbarItem(placement: .bottomBar) {
                     Button("Create") {
                         model.createConvexHull()
                     }
                     .disabled(model.createIsDisabled)
                 }
-                // Reset button.
+                // Reset button for removing all the points on the map.
                 ToolbarItem(placement: .bottomBar) {
                     Button("Reset") {
+                        model.inputPoints.removeAll()
+                        model.pointsGraphicsOverlay.removeAllGraphics()
+                        model.convexHullGraphicsOverlay.removeAllGraphics()
+                        model.createIsDisabled = true
+                        model.resetIsDisabled = true
                     }
                     .disabled(model.resetIsDisabled)
                 }
             }
-            .alert(isPresented: $model.isShowingAlert, presentingError: model.error)
     }
 }
 
 private extension CreateConvexHullAroundPointsView {
     // The view model for this sample.
     private class Model: ObservableObject {
-        /// The graphics overlay for the convex hull and points.
-        let graphicsOverlay = GraphicsOverlay()
-        
-        /// A simple marker symbol to display where the user tapped/clicked on the map.
-        let markerSymbol = SimpleMarkerSymbol(style: .circle, color: .red, size: 10)
-        
-        /// A simple line symbol for the outline of the convex hull graphic(s).
-        let lineSymbol = SimpleLineSymbol(style: .solid, color: .blue, width: 4)
-        
-        /// A simple fill symbol for the convex hull graphic(s) - a hollow polygon with a thick red outline.
-        lazy var fillSymbol = SimpleFillSymbol(color: .red, outline: lineSymbol)
-        
-        /// The graphic for the convex hull.
-        var convexHullGraphic: Graphic?
-        
-        /// An Array of inputteed points to be used in creating the convexHull.
-        var inputPoints: [Point] = []
-        
-        
-        /// A Boolean value indicating whether to show an alert.
-        @Published var isShowingAlert = false
-        
-        /// The error shown in the alert.
-        @Published var error: Error? {
-            didSet { isShowingAlert = error != nil }
-        }
-        
-        /// A Bool indicate whether the create button can be pressed.
-        @State var createIsDisabled = false
-        
-        /// A Bool indicate whether the reset button can be pressed.
-        @State var resetIsDisabled = true
-        
         /// A map with a topographic basemap.
         var map: Map = {
             let map = Map(basemapStyle: .arcGISTopographic)
             return map
         }()
         
-        /// Called in response to the Create convex hull button being tapped.
+        /// An Array of inputted points to be used in creating the convexHull.
+        var inputPoints: [Point] = []
+        
+        /// An Array that contains the graphics overlays for the sample.
+        lazy var graphicsOverlays: [GraphicsOverlay] = [
+            pointsGraphicsOverlay,
+            convexHullGraphicsOverlay
+        ]
+        
+        /// A GraphicsOverlay for the inputted points graphics.
+        var pointsGraphicsOverlay = GraphicsOverlay()
+        
+        /// A GraphicsOverlay for the convex hull graphic.
+        var convexHullGraphicsOverlay = GraphicsOverlay()
+        
+        /// A red simple marker symbol to display where the user tapped on the map.
+        let markerSymbol = SimpleMarkerSymbol(style: .circle, color: .red, size: 10)
+        
+        /// A blue simple line symbol for the outline of the convex hull graphic.
+        private let lineSymbol = SimpleLineSymbol(style: .solid, color: .blue, width: 4)
+        
+        /// A hollow polygon simple fill symbol for the convex hull graphic.
+        private lazy var fillSymbol = SimpleFillSymbol(style: .noFill, outline: lineSymbol)
+        
+        /// A Bool indicate whether the create button can be pressed.
+        @Published var createIsDisabled = true
+        
+        /// A Bool indicate whether the reset button can be pressed.
+        @Published var resetIsDisabled = true
+        
+        /// Create the convex hull graphic using the inputPoints.
         func createConvexHull() {
-            if let normalizedPoints = GeometryEngine.normalizeCentralMeridian(of: Multipoint(points: inputPoints)),
-               let convexHullGeometry = GeometryEngine.convexHull(for: normalizedPoints) {
-                // Set the symbol depending on the geometry type of the convex hull.
-                let symbol: Symbol
-                switch convexHullGeometry {
-                case is Point:
-                    symbol = markerSymbol
-                case is Polyline:
-                    symbol = lineSymbol
-                default:
-                    symbol = fillSymbol
+            // Normalize points.
+            if let normalizedPoints = GeometryEngine.normalizeCentralMeridian(of: Multipoint(points: inputPoints)) {
+                // Create convex hull geometry.
+                if let convexHullGeometry = GeometryEngine.convexHull(for: normalizedPoints) {
+                    // Set the symbol depending on the geometry type of the convex hull.
+                    let symbol: Symbol?
+                    
+                    switch convexHullGeometry {
+                    case is Point:
+                        symbol = markerSymbol
+                    case is Polyline:
+                        symbol = lineSymbol
+                    case is Polygon:
+                        symbol = fillSymbol
+                    default:
+                        symbol = nil
+                    }
+                    
+                    // Remove the existing graphic for convex hull.
+                    convexHullGraphicsOverlay.removeAllGraphics()
+                    
+                    // Create the convex hull graphic.
+                    let convexHullGraphic = Graphic(geometry: convexHullGeometry, symbol: symbol)
+                    convexHullGraphicsOverlay.addGraphic(convexHullGraphic)
+                    
+                    createIsDisabled = true
                 }
-                
-                // Remove the existing graphic for convex hull if there is one.
-                if let existingGraphic = convexHullGraphic {
-                    graphicsOverlay.removeGraphic(existingGraphic)
-                }
-                
-                let graphic = Graphic(geometry: convexHullGeometry, symbol: symbol)
-                convexHullGraphic = graphic
-                graphicsOverlay.addGraphic(convexHullGraphic!)
-                print("ran")
-                // $createIsDisabled.toggle()
-            } else {
-                // Present an alert if there is a problem with the
-                // AGSGeometryEngine operations.
-                // error = Error("Geometry Engine Failed!")
-                print("error")
             }
         }
     }
