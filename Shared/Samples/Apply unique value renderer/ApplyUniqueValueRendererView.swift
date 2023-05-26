@@ -33,7 +33,7 @@ struct ApplyUniqueValueRendererView: View {
         return map
     }()
     
-    /// Create a unique value renderer configured to render the Pacific states
+    /// Creates a unique value renderer configured to render the Pacific states
     /// as blue, the Mountain states as green, and the West South Central states
     /// as brown.
     private func makeUniqueValueRenderer() -> UniqueValueRenderer {
