@@ -27,21 +27,31 @@ struct ApplyUniqueValueRendererView: View {
     /// A map with topographic basemap centered on western United States.
     @State private var map: Map = {
         let map = Map(basemapStyle: .arcGISTopographic)
+        
+        // Center map on western United States
         let centerPoint = Point(x: -12356253.6, y: 3842795.4, spatialReference: .webMercator)
         map.initialViewpoint = Viewpoint(center: centerPoint, scale: 52681563.2)
+        
+        // Create a service feature table from the census feature service.
+        let featureTable = ServiceFeatureTable(url: URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Census/MapServer/3")!)
+        
+        // Create a feature layer from the service feature table.
+        let featureLayer = FeatureLayer(featureTable: featureTable)
+        
+        // Set a unique value renderer to the feature layer.
+        featureLayer.renderer = makeUniqueValueRenderer()
+        
+        // Add the feature layer to the map.
+        map.addOperationalLayer(featureLayer)
+        
         return map
     }()
     
     /// Creates a unique value renderer configured to render the Pacific states
     /// as blue, the Mountain states as green, and the West South Central states
     /// as brown.
-    private func makeUniqueValueRenderer() -> UniqueValueRenderer {
-        // Instantiate a new unique value renderer.
-        let regionRenderer = UniqueValueRenderer()
-        
-        // Add the "SUB_REGION" field to the renderer.
-        regionRenderer.addFieldNames(["SUB_REGION"])
-        
+    /// - Returns: A 'UniqueValueRenderer' object to be added to a featureLayer.
+    private static func makeUniqueValueRenderer() -> UniqueValueRenderer {
         // Define a line symbol to use for the region fill symbol outlines.
         let stateOutlineSymbol = SimpleLineSymbol(style: .solid, color: .white, width: 0.7)
         
@@ -49,49 +59,26 @@ struct ApplyUniqueValueRendererView: View {
         let pacificFillSymbol = SimpleFillSymbol(style: .solid, color: .blue, outline: stateOutlineSymbol)
         let mountainFillSymbol = SimpleFillSymbol(style: .solid, color: .green, outline: stateOutlineSymbol)
         let westSouthCentralFillSymbol = SimpleFillSymbol(style: .solid, color: .brown, outline: stateOutlineSymbol)
-            
-        // Create unique values.
+        
+        // Create the unique values for each region.
         let pacificValue = UniqueValue(description: "Pacific Region", label: "Pacific", symbol: pacificFillSymbol, values: ["Pacific"])
         let mountainValue = UniqueValue(description: "Rocky Mountain Region", label: "Mountain", symbol: mountainFillSymbol, values: ["Mountain"])
         let westSouthCentralValue = UniqueValue(description: "West South Central Region", label: "West South Central", symbol: westSouthCentralFillSymbol, values: ["West South Central"])
         
-        // Set the default region fill symbol for regions not explicitly defined in the renderer.
+        // Create the default region fill symbol for regions not explicitly defined in the renderer.
         let defaultFillSymbol = SimpleFillSymbol(style: .cross, color: .gray)
-        regionRenderer.defaultSymbol = defaultFillSymbol
-        regionRenderer.defaultLabel = "Other"
-            
-        // Add the values to the renderer.
-        regionRenderer.addUniqueValues([pacificValue, mountainValue, westSouthCentralValue])
-        return regionRenderer
-        }
+        
+        return UniqueValueRenderer(
+            fieldNames: ["SUB_REGION"],
+            uniqueValues: [pacificValue, mountainValue, westSouthCentralValue],
+            defaultLabel: "Other",
+            defaultSymbol: defaultFillSymbol
+        )
+    }
     
     var body: some View {
         // Create a map view to display the map.
         MapView(map: map)
-            .task {
-                do {
-                    // Create URL to the census feature service.
-                    let serviceURL = URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Census/MapServer/3")!
-                    
-                    // Create service feature table.
-                    let featureTable = ServiceFeatureTable(url: serviceURL)
-                    
-                    // Create a new feature layer using the service feature table.
-                    let featureLayer = FeatureLayer(featureTable: featureTable)
-                    
-                    // Make unique value renderer and assign it to the feature layer.
-                    featureLayer.renderer = makeUniqueValueRenderer()
-                    
-                    // Load feature layer.
-                    try await featureLayer.load()
-                    
-                    // Add the layer to the map as operational layer.
-                    map.addOperationalLayer(featureLayer)
-                } catch {
-                    // Present an error message if the URL fails to load.
-                    self.error = error
-                }
-            }
             .alert(isPresented: $isShowingAlert, presentingError: error)
     }
 }
