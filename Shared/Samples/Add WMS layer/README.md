@@ -26,7 +26,7 @@ The map will load automatically when the sample starts.
 
 ## About the data
 
-This sample uses a [U.S. National Weather Service radar map](https://nowcoast.noaa.gov/geoserver/observations/weather_radar/wms). Because WMS services generate map images on-the-fly, this layer is always up-to-date with the latest [NOAA NEXRAD radar](https://www.ncei.noaa.gov/products/radar/next-generation-weather-radar) observations.
+This sample uses a [U.S. National Weather Service radar map](https://nowcoast.noaa.gov/geoserver/observations/weather_radar/wms). Because WMS services generate map images on-the-fly, this layer is always up-to-date with the latest [NOAA nowCOAST](https://nowcoast.noaa.gov/): real-Time coastal observations, forecasts and warnings.
 
 ## Tags
 
