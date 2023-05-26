@@ -29,7 +29,6 @@ struct ApplyUniqueValueRendererView: View {
         let map = Map(basemapStyle: .arcGISTopographic)
         let centerPoint = Point(x: -12356253.6, y: 3842795.4, spatialReference: .webMercator)
         map.initialViewpoint = Viewpoint(center: centerPoint, scale: 52681563.2)
-        
         return map
     }()
     
