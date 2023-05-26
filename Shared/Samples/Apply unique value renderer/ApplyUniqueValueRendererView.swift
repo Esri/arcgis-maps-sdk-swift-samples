@@ -69,7 +69,6 @@ struct ApplyUniqueValueRendererView: View {
         // Create a map view to display the map.
         MapView(map: map)
             .task {
-                guard map.operationalLayers.isEmpty else { return }
                 do {
                     // Create URL to the census feature service.
                     let serviceURL = URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Census/MapServer/3")!
