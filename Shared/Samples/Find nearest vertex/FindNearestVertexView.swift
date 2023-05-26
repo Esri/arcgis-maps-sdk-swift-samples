@@ -16,39 +16,40 @@ import ArcGIS
 import SwiftUI
 
 struct FindNearestVertexView: View {
-    /// The model used to store the geo model and other expensive objects
-    /// used in this view.
-    private class Model: ObservableObject {
-        /// A map with imagery basemap.
-        let map = Map(basemapStyle: .arcGISImagery)
-    }
-    
     /// The view model for the sample.
     @StateObject private var model = Model()
     
-    /// A map with a topographic basemape.
-    @State private var map: Map = {
-        let map = Map(basemapStyle: .arcGISTopographic)
-        map.initialViewpoint = Viewpoint(
-            center: Point(x: -355_453, y: 7_548_720, spatialReference: .webMercator),
-            scale: 3_000
-        )
-        return map
-    }()
-    
-
-    @State private var viewpoint = Viewpoint(
-        center: Point(x: -117, y: 34, spatialReference: .wgs84),
-        scale: 1e5
-    )
-    
     var body: some View {
         // Create a map view to display the map.
-        MapView(map: map)
-            .onViewpointChanged(kind: .centerAndScale) {
-                viewpoint = $0
-                print(viewpoint)
+        MapView(map: model.map)
+            .onSingleTapGesture { _, mapPoint in
             }
     }
 }
 
+private extension FindNearestVertexView {
+    // The view model for this sample.
+    private class Model: ObservableObject {
+        /// The spatial reference for the sample.
+        let statePlaneCaliforniaZone5: SpatialReference
+        
+        /// A map with a topographic basemap.
+        var map: Map = Map()
+        
+        
+        init() {
+            statePlaneCaliforniaZone5 = SpatialReference(wkid: WKID(2229)!)!
+            
+            map = {
+                let map = Map(spatialReference: statePlaneCaliforniaZone5)
+                let usStatesGeneralizedLayer = FeatureLayer(
+                    item: PortalItem(
+                        portal: .arcGISOnline(connection: .anonymous),
+                        id: Item.ID(rawValue: "99fd67933e754a1181cc755146be21ca")!))
+                map.basemap.baseLayers.add(usStatesGeneralizedLayer)
+                return map
+            }()
+            
+        }
+    }
+}
