@@ -77,11 +77,6 @@ struct StylePointWithPictureMarkerSymbolsView: View {
         // property here, so we don't need to explicitly load it. The symbol
         // will be loaded automatically prior to drawing.
         
-        // Ensure the campsite symbol loaded.
-        guard campsiteSymbol.loadStatus != .failed else {
-            return Graphic()
-        }
-        
         // Optionally set the size.
         // (If not set, the size in pixels of the image will be used.)
         campsiteSymbol.width = 24
