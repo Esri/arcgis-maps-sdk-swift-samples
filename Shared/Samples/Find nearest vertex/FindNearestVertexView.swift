@@ -77,7 +77,7 @@ private extension FindNearestVertexView {
         /// The blue circle graphic for the nearest vertex point.
         let nearestVertexGraphic: Graphic = {
             let symbol = SimpleMarkerSymbol(style: .circle, color: .blue, size: 15)
-            return Graphic( symbol: symbol)
+            return Graphic(symbol: symbol)
         }()
         
         /// The red diamond graphic for the nearest coordinate point.
