@@ -70,6 +70,13 @@ struct StylePointWithPictureMarkerSymbolsView: View {
         // Create pin symbol using the URL.
         let campsiteSymbol = PictureMarkerSymbol(url: imageURL)
         
+        // FYI, for picture marker symbols created with the
+        // `PictureMarkerSymbol(url: URL)` initializer, the `image` property
+        // will be `nil` until the symbol is loaded using the
+        // `func load() async throws` method. We are not accessing that
+        // property here, so we don't need to explicitly load it. The symbol
+        // will be loaded automatically prior to drawing.
+        
         // Ensure the campsite symbol loaded.
         guard campsiteSymbol.loadStatus != .failed else {
             return Graphic()
