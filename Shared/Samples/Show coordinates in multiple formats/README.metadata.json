@@ -1,0 +1,30 @@
+{
+    "category": "Geometry",
+    "description": "Format coordinates in a variety of common notations.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "USNG",
+        "UTM",
+        "convert",
+        "coordinate",
+        "decimal degrees",
+        "degree minutes seconds",
+        "format",
+        "latitude",
+        "longitude",
+        "CoordinateFormatter",
+        "CoordinateFormatter.LatitudeLongitudeFormat",
+        "CoordinateFormatter.UTMConversionMode"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "CoordinateFormatter",
+        "CoordinateFormatter.LatitudeLongitudeFormat",
+        "CoordinateFormatter.UTMConversionMode"
+    ],
+    "snippets": [
+        "ShowCoordinatesInMultipleFormatsView.swift"
+    ],
+    "title": "Show coordinates in multiple formats"
+}
