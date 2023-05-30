@@ -23,7 +23,9 @@ struct FindNearestVertexView: View {
         // Create a map view to display the map.
         MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
             .onSingleTapGesture { _, mapPoint in
-                model.tapLocation = mapPoint
+                // Normalize map point.
+                guard let normalizedMapPoint = GeometryEngine.normalizeCentralMeridian(of: mapPoint) as? Point else { return }
+                model.tapLocation = normalizedMapPoint
                 if model.calloutPlacement == nil {
                     // Draw the point graphics.
                     model.drawNearestPoints()
@@ -60,13 +62,13 @@ private extension FindNearestVertexView {
     // The view model for the sample.
     private class Model: ObservableObject {
         /// A map with a generalized US states feature layer and centered on
-        /// the example polygon.
+        /// the example polygon in California.
         var map = Map()
         
         /// The GraphicsOverlay for the point and polygon graphics.
         let graphicsOverlay = GraphicsOverlay()
         
-        /// The orange cross graphic for the tapped location point.
+        /// The orange cross graphic for the tap location point.
         let tapLocationGraphic: Graphic = {
             let symbol = SimpleMarkerSymbol(style: .x, color: .orange, size: 15)
             return Graphic(symbol: symbol)
