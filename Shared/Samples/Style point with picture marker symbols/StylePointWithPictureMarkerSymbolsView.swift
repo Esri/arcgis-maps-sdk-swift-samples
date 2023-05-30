@@ -43,11 +43,6 @@ struct StylePointWithPictureMarkerSymbolsView: View {
         // Create pin symbol using the image.
         let pinSymbol = PictureMarkerSymbol(image: UIImage(named: imageName)!)
         
-        // Ensure the pin symbol loaded.
-        guard pinSymbol.loadStatus != .failed else {
-            return Graphic()
-        }
-        
         // Change offsets, so the symbol aligns properly to the point.
         pinSymbol.offsetY = pinSymbol.image!.size.height / 2
         
