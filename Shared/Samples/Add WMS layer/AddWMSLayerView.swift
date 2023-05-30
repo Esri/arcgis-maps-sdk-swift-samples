@@ -20,7 +20,7 @@ struct AddWMSLayerView: View {
     @State private var map: Map = {
         let map = Map(basemapStyle: .arcGISLightGrayBase)
         
-        // Center the map on the United States
+        // Center the map on the United States.
         map.initialViewpoint = Viewpoint(
             latitude: 39, longitude: -98, scale: 4e7
         )
