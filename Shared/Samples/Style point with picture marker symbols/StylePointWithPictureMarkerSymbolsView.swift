@@ -43,6 +43,11 @@ struct StylePointWithPictureMarkerSymbolsView: View {
         // Create pin symbol using the image.
         let pinSymbol = PictureMarkerSymbol(image: UIImage(named: imageName)!)
         
+        // Ensure the pin symbol loaded.
+        guard pinSymbol.loadStatus != .failed else {
+            return Graphic()
+        }
+        
         // Change offsets, so the symbol aligns properly to the point.
         pinSymbol.offsetY = pinSymbol.image!.size.height / 2
         
@@ -64,6 +69,11 @@ struct StylePointWithPictureMarkerSymbolsView: View {
         
         // Create pin symbol using the URL.
         let campsiteSymbol = PictureMarkerSymbol(url: imageURL)
+        
+        // Ensure the campsite symbol loaded.
+        guard campsiteSymbol.loadStatus != .failed else {
+            return Graphic()
+        }
         
         // Optionally set the size.
         // (If not set, the size in pixels of the image will be used.)
