@@ -16,38 +16,38 @@ import ArcGIS
 import SwiftUI
 
 struct ShowCoordinatesInMultipleFormatsView: View {
-    /// The model used to store the geo model and other expensive objects
-    /// used in this view.
-    private class Model: ObservableObject {
-        /// A map with imagery basemap.
-        let map = Map(basemapStyle: .arcGISImagery)
-    }
-    
     /// The view model for the sample.
     @StateObject private var model = Model()
     
-    /// A map with a topographic basemap.
-    @State private var map: Map = {
-        let map = Map(basemapStyle: .arcGISTopographic)
-        map.initialViewpoint = Viewpoint(
-            center: Point(x: -355_453, y: 7_548_720, spatialReference: .webMercator),
-            scale: 3_000
-        )
-        return map
-    }()
-    
-    @State private var viewpoint = Viewpoint(
-        center: Point(x: -117, y: 34, spatialReference: .wgs84),
-        scale: 1e5
-    )
-    
     var body: some View {
         // Create a map view to display the map.
-        MapView(map: map)
-            .onViewpointChanged(kind: .centerAndScale) {
-                viewpoint = $0
-                print(viewpoint)
+        MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
+            .onSingleTapGesture { _, mapPoint in
+                model.tapLocation = mapPoint
             }
     }
 }
 
+private extension ShowCoordinatesInMultipleFormatsView {
+    // The view model for the sample.
+    private class Model: ObservableObject {
+        /// A map with an imagery basemap.
+        var map = Map(basemapStyle: .arcGISImageryStandard)
+        
+        /// The GraphicsOverlay for the point graphic.
+        var graphicsOverlay = GraphicsOverlay()
+        
+        /// The yellow cross Graphic for the tap location point.
+        let tapLocationGraphic: Graphic = {
+            let yellowCrossSymbol = SimpleMarkerSymbol(style: .cross, color: .yellow, size: 20)
+            return Graphic(symbol: yellowCrossSymbol)
+        }()
+        
+        /// The tap location point.
+        @Published var tapLocation: Point!
+        
+        init() {
+            graphicsOverlay.addGraphic(tapLocationGraphic)
+        }
+    }
+}
