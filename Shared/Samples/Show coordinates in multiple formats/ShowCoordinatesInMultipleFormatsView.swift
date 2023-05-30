@@ -20,11 +20,50 @@ struct ShowCoordinatesInMultipleFormatsView: View {
     @StateObject private var model = Model()
     
     var body: some View {
-        // Create a map view to display the map.
-        MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
-            .onSingleTapGesture { _, mapPoint in
-                model.tapLocation = mapPoint
-            }
+        VStack {
+            // Different coordinate format text fields.
+            CoordinateTextField(
+                title: "Decimal Degrees",
+                text: $model.latLongDDTextField)
+            CoordinateTextField(
+                title: "Degrees, Minutes, Seconds",
+                text: $model.latLongDMSTextField)
+            CoordinateTextField(
+                title: "UTM",
+                text: $model.utmTextField)
+            CoordinateTextField(
+                title: "USNG",
+                text: $model.usngTextField)
+            
+            // Create a map view to display the map.
+            MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
+                .onSingleTapGesture { _, mapPoint in
+                    model.mapPoint = mapPoint
+                    model.pointGraphic.geometry = mapPoint
+                    model.updateCoordinateFieldsForPoint()
+                }
+        }
+    }
+}
+
+struct CoordinateTextField: View {
+    /// The TextField title.
+    var title: String
+    
+    /// The TextField text.
+    @Binding var text: String
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text(title)
+                .padding([.leading, .top], 8)
+                .padding(.bottom, -5)
+            TextField("", text: $text)
+                .textInputAutocapitalization(.never)
+                .disableAutocorrection(true)
+                .textFieldStyle(.roundedBorder)
+                .padding([.leading, .trailing, .bottom], 8)
+        }
     }
 }
 
@@ -35,19 +74,42 @@ private extension ShowCoordinatesInMultipleFormatsView {
         var map = Map(basemapStyle: .arcGISImageryStandard)
         
         /// The GraphicsOverlay for the point graphic.
-        var graphicsOverlay = GraphicsOverlay()
+        lazy var graphicsOverlay = GraphicsOverlay(graphics: [pointGraphic])
         
-        /// The yellow cross Graphic for the tap location point.
-        let tapLocationGraphic: Graphic = {
+        /// The yellow cross Graphic for the map point.
+        lazy var pointGraphic: Graphic = {
             let yellowCrossSymbol = SimpleMarkerSymbol(style: .cross, color: .yellow, size: 20)
-            return Graphic(symbol: yellowCrossSymbol)
+            return Graphic(geometry: mapPoint, symbol: yellowCrossSymbol)
         }()
         
-        /// The tap location point.
-        @Published var tapLocation: Point!
+        /// The point on the map.
+        @Published var mapPoint = Point(latitude: 0, longitude: 0)
+        
+        ///
+        @Published var latLongDDTextField = ""
+        
+        ///
+        @Published var latLongDMSTextField = ""
+        
+        ///
+        @Published var utmTextField = ""
+        
+        ///
+        @Published var usngTextField = ""
         
         init() {
-            graphicsOverlay.addGraphic(tapLocationGraphic)
+            updateCoordinateFieldsForPoint()
+        }
+        
+        // Use CoordinateFormatter to generate a string for the given point.
+        func updateCoordinateFieldsForPoint() {
+            latLongDDTextField = CoordinateFormatter.latitudeLongitudeString(from: mapPoint, format: .decimalDegrees, decimalPlaces: 4)
+            
+            latLongDMSTextField = CoordinateFormatter.latitudeLongitudeString(from: mapPoint, format: .degreesMinutesSeconds, decimalPlaces: 1)
+            
+            utmTextField = CoordinateFormatter.utmString(from: mapPoint, conversionMode: .latitudeBandIndicators, addSpaces: true)
+            
+            usngTextField = CoordinateFormatter.usngString(from: mapPoint, precision: 4, addSpaces: true)
         }
     }
 }
