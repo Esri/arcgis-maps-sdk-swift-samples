@@ -756,7 +756,7 @@
 				D754E3222A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift */,
 			);
 			path = "Style point with picture marker symbols";
-      sourceTree = "<group>";
+			sourceTree = "<group>";
 		};
 		D7E557602A1D743100B9FB09 /* Add WMS layer */ = {
 			isa = PBXGroup;
