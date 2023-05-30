@@ -25,7 +25,7 @@ struct AddWMSLayerView: View {
             latitude: 39, longitude: -98, scale: 4e7
         )
         
-        // A URL to the GetCapabilities endpoint of a WMS service.
+        // A URL to a weather radar WMS service.
         let wmsServiceURL = URL(string: "https://nowcoast.noaa.gov/geoserver/observations/weather_radar/wms")!
         
         // The names of the layers to load at the WMS service.
