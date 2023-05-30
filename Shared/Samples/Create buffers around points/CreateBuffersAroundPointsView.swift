@@ -98,7 +98,7 @@ private extension CreateBuffersAroundPointsView {
         /// A Map centered on Texas with image layers.
         var map = Map()
         
-        /// An Array for the the graphic overlays.
+        /// An Array for the graphic overlays.
         var graphicsOverlays: [GraphicsOverlay] = []
         
         /// An Array for the tapped points and their radii.
