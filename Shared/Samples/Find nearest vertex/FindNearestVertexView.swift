@@ -23,7 +23,37 @@ struct FindNearestVertexView: View {
         // Create a map view to display the map.
         MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
             .onSingleTapGesture { _, mapPoint in
-                model.tapPoint = mapPoint
+                model.tapLocation = mapPoint
+                
+                if model.calloutPlacement == nil {
+                    // Draw the point graphics.
+                    model.drawNearestPoints()
+                    // Project the point to the WGS 84 spatial reference.
+                    let location = GeometryEngine.project(mapPoint, into: .wgs84)!
+                    // Show the callout at the tapped location.
+                    model.calloutPlacement = CalloutPlacement.location(location)
+                } else {
+                    // Remove points and hide callout.
+                    model.tapLocationGraphic.geometry = nil
+                    model.nearestCoordinateGraphic.geometry = nil
+                    model.nearestVertexGraphic.geometry = nil
+                    model.calloutPlacement = nil
+                }
+            }
+            .callout(placement: $model.calloutPlacement.animation(.default.speed(2))) { _ in
+                VStack(alignment: .leading) {
+                    Text("Proxmity Result")
+                        .font(.headline)
+                    Text(
+                        CoordinateFormatter.latitudeLongitudeString(
+                            from: model.tapLocation,
+                            format: .decimalDegrees,
+                            decimalPlaces: 1
+                        )
+                    )
+                    .font(.callout)
+                }
+                .padding(5)
             }
     }
 }
@@ -34,18 +64,15 @@ private extension FindNearestVertexView {
         /// A map with a
         var map = Map()
         
-        ///
-        var graphicsOverlay = GraphicsOverlay()
+        /// The GraphicsOverlay for the point and polygon graphics.
+        let graphicsOverlay: GraphicsOverlay
+        
+        /// The example polygon geometry near San Bernardino County, California.
+        private var polygon: Polygon
         
         /// The orange cross graphic for the tapped location point.
-        let tappedLocationGraphic: Graphic = {
+        let tapLocationGraphic: Graphic = {
             let symbol = SimpleMarkerSymbol(style: .x, color: .orange, size: 15)
-            return Graphic(symbol: symbol)
-        }()
-        
-        /// The red diamond graphic for the nearest coordinate point.
-        let nearestCoordinateGraphic: Graphic = {
-            let symbol = SimpleMarkerSymbol(style: .diamond, color: .red, size: 10)
             return Graphic(symbol: symbol)
         }()
         
@@ -55,15 +82,28 @@ private extension FindNearestVertexView {
             return Graphic( symbol: symbol)
         }()
         
-        ///
-        @Published var tapPoint: Point!
+        /// The red diamond graphic for the nearest coordinate point.
+        let nearestCoordinateGraphic: Graphic = {
+            let symbol = SimpleMarkerSymbol(style: .diamond, color: .red, size: 10)
+            return Graphic(symbol: symbol)
+        }()
+        
+        /// A location callout placement.
+        @Published var calloutPlacement: CalloutPlacement?
+        
+        /// The tap locations.
+        @Published var tapLocation: Point!
+        
+        @Published var nearestCooridnateDistance: String?
+        
+        @Published var nearestVertexDistance: String?
         
         init() {
             // The spatial reference for the sample.
             let statePlaneCaliforniaZone5 = SpatialReference(wkid: WKID(2229)!)!
             
             /// The example polygon geometry near San Bernardino County, California.
-            let polygon: Polygon = {
+            polygon = {
                 let polygonBuilder = PolygonBuilder(spatialReference: statePlaneCaliforniaZone5)
                 polygonBuilder.add(Point(x: 6627416.41469281, y: 1804532.53233782))
                 polygonBuilder.add(Point(x: 6669147.89779046, y: 2479145.16609522))
@@ -73,42 +113,72 @@ private extension FindNearestVertexView {
                 return polygonBuilder.toGeometry()
             }()
             
-            map = {
-                let map = Map(spatialReference: statePlaneCaliforniaZone5)
-                
-                // Center map on polygon
-                map.initialViewpoint = Viewpoint(
-                    center: polygon.extent.center,
-                    scale: 8e6)
-                
-                // Add feature layer to map.
-                let usStatesGeneralizedLayer = FeatureLayer(
-                    item: PortalItem(
-                        portal: .arcGISOnline(connection: .anonymous),
-                        id: Item.ID(rawValue: "99fd67933e754a1181cc755146be21ca")!))
-                map.addOperationalLayer(usStatesGeneralizedLayer)
-                
-                return map
-            }()
+            map = FindNearestVertexView.Model.makeMap(
+                spatialReference: statePlaneCaliforniaZone5,
+                polygon: polygon
+            )
             
-            graphicsOverlay = {
-                let polygonFillSymbol = SimpleFillSymbol(
-                    style: .forwardDiagonal,
-                    color: .green,
-                    outline: SimpleLineSymbol(style: .solid, color: .green, width: 2)
-                )
-                // The graphic for the polygon.
-                let polygonGraphic = Graphic(geometry: polygon, symbol: polygonFillSymbol)
-                
-                let graphicsOverlay = GraphicsOverlay()
-                graphicsOverlay.addGraphics([
-                    polygonGraphic,
-                    nearestCoordinateGraphic,
-                    tappedLocationGraphic,
-                    nearestVertexGraphic
-                ])
-                return graphicsOverlay
-            }()
+            graphicsOverlay = FindNearestVertexView.Model.makeGraphicsOverlay(polygon: polygon)
+            graphicsOverlay.addGraphics([
+                tapLocationGraphic,
+                nearestCoordinateGraphic,
+                nearestVertexGraphic
+            ])
+        }
+        
+        ///
+        private static func makeMap(spatialReference: SpatialReference, polygon: Polygon) -> Map {
+            let map = Map(spatialReference: spatialReference)
+            
+            // Center map on polygon
+            map.initialViewpoint = Viewpoint(
+                center: polygon.extent.center,
+                scale: 8e6)
+            
+            // Add feature layer to map.
+            let usStatesGeneralizedLayer = FeatureLayer(
+                item: PortalItem(
+                    portal: .arcGISOnline(connection: .anonymous),
+                    id: Item.ID(rawValue: "99fd67933e754a1181cc755146be21ca")!))
+            map.addOperationalLayer(usStatesGeneralizedLayer)
+            
+            return map
+        }
+        
+        ///
+        private static func makeGraphicsOverlay(polygon: Polygon) -> GraphicsOverlay {
+            let polygonFillSymbol = SimpleFillSymbol(
+                style: .forwardDiagonal,
+                color: .green,
+                outline: SimpleLineSymbol(style: .solid, color: .green, width: 2)
+            )
+            // The graphic for the polygon.
+            let polygonGraphic = Graphic(geometry: polygon, symbol: polygonFillSymbol)
+            
+            return GraphicsOverlay(graphics: [polygonGraphic])
+        }
+        
+        func drawNearestPoints() {
+            // Get nearest vertex and nearest coordinate results.
+            let nearestVertexResult = GeometryEngine.nearestVertex(in: polygon, to: tapLocation)!
+            let nearestCoordinateResult = GeometryEngine.nearestCoordinate(in: polygon, to: tapLocation)!
+            
+            // Set the geometries for the tapped, nearest coordinate, and
+            // nearest vertex point graphics.
+            tapLocationGraphic.geometry = tapLocation
+            nearestVertexGraphic.geometry = nearestVertexResult.coordinate
+            nearestCoordinateGraphic.geometry = nearestCoordinateResult.coordinate
+            
+            // Get the distance to the nearest vertex in the polygon.
+            let distanceVertex = Measurement(
+                value: nearestVertexResult.distance,
+                unit: UnitLength.feet
+            )
+            // Get the distance to the nearest coordinate in the polygon.
+            let distanceCoordinate = Measurement(
+                value: nearestCoordinateResult.distance,
+                unit: UnitLength.feet
+            )
         }
     }
 }
