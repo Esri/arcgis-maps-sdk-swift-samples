@@ -1,0 +1,25 @@
+{
+    "category": "Layers",
+    "description": "Display a WMS layer using a WMS service URL.",
+    "ignore": false,
+    "images": [
+        "add-wms-layer.png"
+    ],
+    "keywords": [
+        "OGC",
+        "web map service",
+        "Map",
+        "MapView",
+        "WMSLayer"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Map",
+        "MapView",
+        "WMSLayer"
+    ],
+    "snippets": [
+        "AddWMSLayerView.swift"
+    ],
+    "title": "Add WMS layer"
+}

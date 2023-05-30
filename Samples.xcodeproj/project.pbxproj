@@ -103,9 +103,11 @@
 		D734FA0C2A183A5B00246D7E /* SetMaxExtentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D734FA092A183A5B00246D7E /* SetMaxExtentView.swift */; };
 		D75362D22A1E886700D83028 /* ApplyUniqueValueRendererView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75362D12A1E886700D83028 /* ApplyUniqueValueRendererView.swift */; };
 		D75362D32A1E8C8800D83028 /* ApplyUniqueValueRendererView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D75362D12A1E886700D83028 /* ApplyUniqueValueRendererView.swift */; };
+		D7E557682A1D768800B9FB09 /* AddWMSLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E557672A1D768800B9FB09 /* AddWMSLayerView.swift */; };
 		D7E9EF292A1D2219000C4865 /* SetMinAndMaxScaleView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7EAF3592A1C023800D822C4 /* SetMinAndMaxScaleView.swift */; };
 		D7E9EF2A2A1D29F2000C4865 /* SetMaxExtentView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D734FA092A183A5B00246D7E /* SetMaxExtentView.swift */; };
 		D7EAF35A2A1C023800D822C4 /* SetMinAndMaxScaleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7EAF3592A1C023800D822C4 /* SetMinAndMaxScaleView.swift */; };
+		D7F2784C2A1D76F5002E4567 /* AddWMSLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7E557672A1D768800B9FB09 /* AddWMSLayerView.swift */; };
 		E000E7602869E33D005D87C5 /* ClipGeometryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E000E75F2869E33D005D87C5 /* ClipGeometryView.swift */; };
 		E000E763286A0B18005D87C5 /* CutGeometryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E000E762286A0B18005D87C5 /* CutGeometryView.swift */; };
 		E004A6C128414332002A1FE6 /* SetViewpointRotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6BD28414332002A1FE6 /* SetViewpointRotationView.swift */; };
@@ -196,6 +198,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				D7F2784C2A1D76F5002E4567 /* AddWMSLayerView.swift in Copy Source Code Files */,
 				D75362D32A1E8C8800D83028 /* ApplyUniqueValueRendererView.swift in Copy Source Code Files */,
 				D7E9EF2A2A1D29F2000C4865 /* SetMaxExtentView.swift in Copy Source Code Files */,
 				D7E9EF292A1D2219000C4865 /* SetMinAndMaxScaleView.swift in Copy Source Code Files */,
@@ -311,6 +314,7 @@
 		88F93CC029C3D59C0006B28E /* SketchOnMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SketchOnMapView.swift; sourceTree = "<group>"; };
 		D734FA092A183A5B00246D7E /* SetMaxExtentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetMaxExtentView.swift; sourceTree = "<group>"; };
 		D75362D12A1E886700D83028 /* ApplyUniqueValueRendererView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplyUniqueValueRendererView.swift; sourceTree = "<group>"; };
+		D7E557672A1D768800B9FB09 /* AddWMSLayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddWMSLayerView.swift; sourceTree = "<group>"; };
 		D7EAF3592A1C023800D822C4 /* SetMinAndMaxScaleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetMinAndMaxScaleView.swift; sourceTree = "<group>"; };
 		E000E75F2869E33D005D87C5 /* ClipGeometryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipGeometryView.swift; sourceTree = "<group>"; };
 		E000E762286A0B18005D87C5 /* CutGeometryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutGeometryView.swift; sourceTree = "<group>"; };
@@ -432,6 +436,7 @@
 				00D4EF7E2863840D00B9CC30 /* Add feature layers */,
 				F19A316128906F0D003B7EF9 /* Add raster from file */,
 				E066DD3E28610F3F004D3D5B /* Add scene layer from service */,
+				D7E557602A1D743100B9FB09 /* Add WMS layer */,
 				D75362CC2A1E862B00D83028 /* Apply unique value renderer */,
 				218F35B229C28F4A00502022 /* Authenticate with OAuth */,
 				E0FE32E528747762002C6ACA /* Browse building floors */,
@@ -738,6 +743,14 @@
 				D75362D12A1E886700D83028 /* ApplyUniqueValueRendererView.swift */,
 			);
 			path = "Apply unique value renderer";
+			sourceTree = "<group>";
+		};
+		D7E557602A1D743100B9FB09 /* Add WMS layer */ = {
+			isa = PBXGroup;
+			children = (
+				D7E557672A1D768800B9FB09 /* AddWMSLayerView.swift */,
+			);
+			path = "Add WMS layer";
 			sourceTree = "<group>";
 		};
 		D7EAF34F2A1C011000D822C4 /* Set min and max scale */ = {
@@ -1144,6 +1157,7 @@
 				E070A0A3286F3B6000F2B606 /* DownloadPreplannedMapAreaView.swift in Sources */,
 				E0EA0B772866390E00C9621D /* ProjectGeometryView.swift in Sources */,
 				0042E24328E4BF8F001F33D6 /* ShowViewshedFromPointInSceneView.Model.swift in Sources */,
+				D7E557682A1D768800B9FB09 /* AddWMSLayerView.swift in Sources */,
 				0005580A2817C51E00224BC6 /* SampleDetailView.swift in Sources */,
 				4D2ADC6229C5071C003B367F /* ChangeMapViewBackgroundView.Model.swift in Sources */,
 				0074ABCD2817BCC30037244A /* SamplesApp+Samples.swift.tache in Sources */,
