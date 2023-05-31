@@ -113,7 +113,7 @@ private extension CreateBuffersAroundPointsView {
         private var tapPointsGraphicsOverlay: GraphicsOverlay
         
         /// A 'Polygon' that represents the valid area of use for the spatial reference.
-        private let boundaryPolygon: Polygon
+        private let boundaryPolygon: ArcGIS.Polygon
         
         init() {
             /// The 'SpatialReference' for the sample.
