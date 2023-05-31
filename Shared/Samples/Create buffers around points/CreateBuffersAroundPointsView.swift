@@ -127,8 +127,8 @@ private extension CreateBuffersAroundPointsView {
                     Point(latitude: 34.580, longitude: -94.000),
                     Point(latitude: 31.720, longitude: -94.000)
                 ]
-                let polygon = GeometryEngine.project(Polygon(points: boundaryPoints), into: statePlaneNorthCentralTexas)
-                return polygon!
+                let polygon = GeometryEngine.project(Polygon(points: boundaryPoints), into: statePlaneNorthCentralTexas)!
+                return polygon
             }()
             
             // Create map.
