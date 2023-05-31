@@ -95,7 +95,7 @@ private extension CreateBuffersAroundPointsView {
         @Published var status = Status.addPoints
         
         /// A Map centered on Texas with image layers.
-        var map = Map()
+        let map: Map
         
         /// An Array for the graphic overlays.
         var graphicsOverlays: [GraphicsOverlay] = []
