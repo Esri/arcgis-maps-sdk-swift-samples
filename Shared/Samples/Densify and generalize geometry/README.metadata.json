@@ -1,0 +1,32 @@
+{
+    "category": "Geometry",
+    "description": "A multipart geometry can be densified by adding interpolated points at regular intervals. Generalizing multipart geometry simplifies it while preserving its general shape. Densifying a multipart geometry adds more vertices at regular intervals.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "densify",
+        "generalize",
+        "simplify",
+        "GeometryEngine",
+        "Multipoint",
+        "Point",
+        "PointCollection",
+        "Polyline",
+        "SimpleLineSymbol",
+        "SpatialReference"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "GeometryEngine",
+        "Multipoint",
+        "Point",
+        "PointCollection",
+        "Polyline",
+        "SimpleLineSymbol",
+        "SpatialReference"
+    ],
+    "snippets": [
+        "DensifyAndGeneralizeGeometryView.swift"
+    ],
+    "title": "Densify and generalize geometry"
+}
