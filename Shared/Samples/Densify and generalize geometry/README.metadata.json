@@ -28,6 +28,7 @@
         "SpatialReference"
     ],
     "snippets": [
+        "DensifyAndGeneralizeGeometryView.SettingsView.swift",
         "DensifyAndGeneralizeGeometryView.swift"
     ],
     "title": "Densify and generalize geometry"
