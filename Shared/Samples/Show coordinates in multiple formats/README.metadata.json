@@ -2,7 +2,9 @@
     "category": "Geometry",
     "description": "Format coordinates in a variety of common notations.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "show-coordinates-in-multiple-formats.png"
+    ],
     "keywords": [
         "USNG",
         "UTM",

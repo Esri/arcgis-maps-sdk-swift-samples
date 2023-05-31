@@ -15,8 +15,14 @@ Tap on the map to see a callout with the tapped location's coordinate formatted 
 ## How it works
 
 1. Get or create a map `Point` with a spatial reference.
-2. Use one of the static "to" methods on `CoordinateFormatter` such as `CoordinateFormatter.toLatitudeLongitude(point, CoordinateFormatter.LatitudeLongitudeFormat.DECIMAL_DEGREES, 4)` to get the formatted string.
-3. To go from a formatted string to a `Point`, use one of the "from" static methods like `CoordinateFormatter.fromUtm(coordinateString, map.getSpatialReference(), CoordinateFormatter.UtmConversionMode.LATITUDE_BAND_INDICATORS)`.
+2. To get the formatted string, use one of the static methods below.
+    * `class CoordinateFormatter.latitudeLongitudeString(from:format:decimalPlaces:)`
+    * `class CoordinateFormatter.utmString(from:conversionMode:addSpaces:)`
+    * `class CoordinateFormatter.usngString(from:precision:addSpaces:)`
+3. To get an `Point` from a formatted string, use one of the static methods below.
+    * `class CoordinateFormatter.point(fromLatitudeLongitudeString:spatialReference:)`
+    * `class CoordinateFormatter.point(fromUTMString:spatialReference:conversionMode:)`
+    * `class CoordinateFormatter.point(fromUSNGString:spatialReference:)`
 
 ## Relevant API
 

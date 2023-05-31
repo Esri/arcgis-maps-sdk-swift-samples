@@ -21,36 +21,66 @@ struct ShowCoordinatesInMultipleFormatsView: View {
     
     var body: some View {
         VStack {
-            // Different coordinate format text fields.
             CoordinateTextField(
                 title: "Decimal Degrees",
-                text: $model.latLongDDTextField)
+                text: $model.latLongDDTextField
+            )
+            .onSubmit {
+                model.updateMapPoint(
+                    point: CoordinateFormatter.point(
+                        fromLatitudeLongitudeString: model.latLongDDTextField,
+                        spatialReference: model.mapPoint.spatialReference
+                    )!)
+            }
             CoordinateTextField(
                 title: "Degrees, Minutes, Seconds",
-                text: $model.latLongDMSTextField)
+                text: $model.latLongDMSTextField
+            )
+            .onSubmit {
+                model.updateMapPoint(
+                    point: CoordinateFormatter.point(
+                        fromLatitudeLongitudeString: model.latLongDMSTextField,
+                        spatialReference: model.mapPoint.spatialReference
+                    )!)
+            }
             CoordinateTextField(
                 title: "UTM",
-                text: $model.utmTextField)
+                text: $model.utmTextField
+            )
+            .onSubmit {
+                model.updateMapPoint(
+                    point: CoordinateFormatter.point(
+                        fromUTMString: model.utmTextField,
+                        spatialReference: model.mapPoint.spatialReference,
+                        conversionMode: .latitudeBandIndicators
+                    )!)
+            }
             CoordinateTextField(
                 title: "USNG",
-                text: $model.usngTextField)
+                text: $model.usngTextField
+            )
+            .onSubmit {
+                model.updateMapPoint(
+                    point: CoordinateFormatter.point(
+                        fromUSNGString: model.usngTextField,
+                        spatialReference: model.mapPoint.spatialReference
+                    )!)
+            }
             
             // Create a map view to display the map.
             MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
                 .onSingleTapGesture { _, mapPoint in
-                    model.mapPoint = mapPoint
-                    model.pointGraphic.geometry = mapPoint
-                    model.updateCoordinateFieldsForPoint()
+                    model.updateMapPoint(point: mapPoint)
                 }
         }
     }
 }
 
 struct CoordinateTextField: View {
-    /// The TextField title.
+    /// The 'String' title.
     var title: String
     
-    /// The TextField text.
+    /// The 'String' text.
     @Binding var text: String
     
     var body: some View {
@@ -69,47 +99,68 @@ struct CoordinateTextField: View {
 
 private extension ShowCoordinatesInMultipleFormatsView {
     // The view model for the sample.
-    private class Model: ObservableObject {
-        /// A map with an imagery basemap.
+    class Model: ObservableObject {
+        /// A 'Map' with an imagery basemap.
         var map = Map(basemapStyle: .arcGISImageryStandard)
         
-        /// The GraphicsOverlay for the point graphic.
+        /// The 'GraphicsOverlay' for the point graphic.
         lazy var graphicsOverlay = GraphicsOverlay(graphics: [pointGraphic])
         
-        /// The yellow cross Graphic for the map point.
-        lazy var pointGraphic: Graphic = {
+        /// A yellow cross 'Graphic' for the map point.
+        private var pointGraphic: Graphic = {
             let yellowCrossSymbol = SimpleMarkerSymbol(style: .cross, color: .yellow, size: 20)
-            return Graphic(geometry: mapPoint, symbol: yellowCrossSymbol)
+            return Graphic(symbol: yellowCrossSymbol)
         }()
         
-        /// The point on the map.
-        @Published var mapPoint = Point(latitude: 0, longitude: 0)
+        /// The 'Point' on the map.
+        @Published var mapPoint: Point!
         
-        ///
+        /// The decimal degrees text.
         @Published var latLongDDTextField = ""
         
-        ///
+        /// The degree minute seconds text.
         @Published var latLongDMSTextField = ""
         
-        ///
+        /// The UTM text.
         @Published var utmTextField = ""
         
-        ///
+        /// the USNG text.
         @Published var usngTextField = ""
         
         init() {
-            updateCoordinateFieldsForPoint()
+            updateMapPoint(point: Point(latitude: 0, longitude: 0))
         }
         
-        // Use CoordinateFormatter to generate a string for the given point.
-        func updateCoordinateFieldsForPoint() {
-            latLongDDTextField = CoordinateFormatter.latitudeLongitudeString(from: mapPoint, format: .decimalDegrees, decimalPlaces: 4)
+        /// Updates the mapPoint, its graphic, and the corresponding coordinates.
+        /// - Parameter point: A 'Point' used to update the mapPoint.
+        func updateMapPoint(point: Point) {
+            mapPoint = point
+            pointGraphic.geometry = point
+            updateCoordinateFields()
+        }
+        
+        /// Generates strings for mapPoint using 'CoordinateFormatter'.
+        private func updateCoordinateFields() {
+            latLongDDTextField = CoordinateFormatter.latitudeLongitudeString(
+                from: mapPoint,
+                format: .decimalDegrees,
+                decimalPlaces: 4
+            )
             
-            latLongDMSTextField = CoordinateFormatter.latitudeLongitudeString(from: mapPoint, format: .degreesMinutesSeconds, decimalPlaces: 1)
+            latLongDMSTextField = CoordinateFormatter.latitudeLongitudeString(
+                from: mapPoint,
+                format: .degreesMinutesSeconds,
+                decimalPlaces: 1)
             
-            utmTextField = CoordinateFormatter.utmString(from: mapPoint, conversionMode: .latitudeBandIndicators, addSpaces: true)
+            utmTextField = CoordinateFormatter.utmString(
+                from: mapPoint,
+                conversionMode: .latitudeBandIndicators,
+                addSpaces: true)
             
-            usngTextField = CoordinateFormatter.usngString(from: mapPoint, precision: 4, addSpaces: true)
+            usngTextField = CoordinateFormatter.usngString(
+                from: mapPoint,
+                precision: 4,
+                addSpaces: true)
         }
     }
 }
