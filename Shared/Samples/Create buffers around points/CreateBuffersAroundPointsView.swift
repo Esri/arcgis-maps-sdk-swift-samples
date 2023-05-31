@@ -133,7 +133,8 @@ private extension CreateBuffersAroundPointsView {
             
             // Create map.
             map = CreateBuffersAroundPointsView.Model.makeMap(
-                spatialReference: statePlaneNorthCentralTexas, viewpointGeometry: boundaryPolygon
+                spatialReference: statePlaneNorthCentralTexas, 
+                viewpointGeometry: boundaryPolygon
             )
             
             // Create graphics overlays.
