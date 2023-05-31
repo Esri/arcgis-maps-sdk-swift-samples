@@ -112,7 +112,7 @@ private extension CreateBuffersAroundPointsView {
         private var tapPointsGraphicsOverlay: GraphicsOverlay
         
         /// A 'Polygon' that represents the valid area of use for the spatial reference.
-        private let boundaryPolygon: Polygon
+        private let boundaryPolygon: ArcGIS.Polygon
         
         init() {
             /// The 'SpatialReference' for the sample.
@@ -132,7 +132,8 @@ private extension CreateBuffersAroundPointsView {
             
             // Create map.
             map = CreateBuffersAroundPointsView.Model.makeMap(
-                spatialReference: statePlaneNorthCentralTexas, viewpointGeometry: boundaryPolygon
+                spatialReference: statePlaneNorthCentralTexas, 
+                viewpointGeometry: boundaryPolygon
             )
             
             // Create graphics overlays.
