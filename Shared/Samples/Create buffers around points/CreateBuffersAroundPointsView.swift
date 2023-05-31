@@ -38,8 +38,8 @@ struct CreateBuffersAroundPointsView: View {
                     .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
             }
             .toolbar {
-                // Union toggle switch.
-                ToolbarItem(placement: .bottomBar) {
+                ToolbarItemGroup(placement: .bottomBar) {
+                    // Union toggle switch.
                     Toggle("Union", isOn: $model.shouldUnion)
                         .toggleStyle(.switch)
                         .onChange(of: model.shouldUnion) { _ in
@@ -47,29 +47,28 @@ struct CreateBuffersAroundPointsView: View {
                                 model.drawBuffers()
                             }
                         }
-                }
-                // Clear button.
-                ToolbarItem(placement: .bottomBar) {
+                    // Clear button.
                     Button("Clear") {
                         model.clearBufferPoints()
                         model.status = .addPoints
                     }
+                    .disabled(model.bufferPoints.isEmpty)
                 }
             }
             .alert("Buffer Radius", isPresented: $model.inputBoxIsPresented, actions: {
                 TextField("100", text: $model.radiusInput)
                     .keyboardType(.numberPad)
                 // Input done button.
-                Button("Done", action: {
+                Button("Done") {
                     model.addBufferPoint()
                     model.radiusInput = ""
                     model.drawBuffers()
                     model.status = Status.bufferCreated
-                })
+                }
                 // Input cancel button.
-                Button("Cancel", role: .cancel, action: {
+                Button("Cancel") {
                     model.radiusInput = ""
-                })
+                }
                 // Input box message.
             }, message: {
                 Text("Please enter a number between 0 and 300 miles.")
@@ -123,10 +122,10 @@ private extension CreateBuffersAroundPointsView {
             // Create boundary polygon.
             boundaryPolygon = {
                 let boundaryPoints = [
-                    Point(x: -103.070, y: 31.720, spatialReference: .wgs84),
-                    Point(x: -103.070, y: 34.580, spatialReference: .wgs84),
-                    Point(x: -94.000, y: 34.580, spatialReference: .wgs84),
-                    Point(x: -94.00, y: 31.720, spatialReference: .wgs84)
+                    Point(latitude: 31.720, longitude: -103.070),
+                    Point(latitude: 34.580, longitude: -103.070),
+                    Point(latitude: 34.580, longitude: -94.000),
+                    Point(latitude: 31.720, longitude: -94.000)
                 ]
                 let polygon = GeometryEngine.project(Polygon(points: boundaryPoints), into: statePlaneNorthCentralTexas)
                 return polygon!
@@ -250,14 +249,16 @@ private extension CreateBuffersAroundPointsView {
                 return
             }
             
-            // Update the buffer radius with the text value.
-            let radiusInMiles = Measurement(value: Double(radiusInput)!, unit: UnitLength.miles)
-            
-            // The spatial reference in this sample uses US feet as its unit.
-            let radiusInFeet = radiusInMiles.converted(to: .feet).value
-            
-            // Add point with radius to bufferPoints Array.
-            bufferPoints.append((point: tappedPoint!, radius: radiusInFeet))
+            if let radius = Double(radiusInput) {
+                // Update the buffer radius with the text value.
+                let radiusInMiles = Measurement(value: radius, unit: UnitLength.miles)
+                
+                // The spatial reference in this sample uses US feet as its unit.
+                let radiusInFeet = radiusInMiles.converted(to: .feet).value
+                
+                // Add point with radius to bufferPoints Array.
+                bufferPoints.append((point: tappedPoint!, radius: radiusInFeet))
+            }
         }
         
         /// Clear the bufferPoints and related graphics.
