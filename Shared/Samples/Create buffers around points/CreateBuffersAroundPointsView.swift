@@ -63,7 +63,6 @@ struct CreateBuffersAroundPointsView: View {
                     model.addBufferPoint()
                     model.radiusInput = ""
                     model.drawBuffers()
-                    model.status = Status.bufferCreated
                 }
                 // Input alert cancel button.
                 Button("Cancel") {
@@ -248,8 +247,14 @@ private extension CreateBuffersAroundPointsView {
                 return
             }
             
-            // Ensure there is input.
+            // Ensure that there is input.
             if let radius = Double(radiusInput) {
+                // Ensure that the input is valid.
+                guard radius > 0 && radius < 300 else {
+                    status = .invalidInput
+                    return
+                }
+                
                 // Update the buffer radius with the text value.
                 let radiusInMiles = Measurement(value: radius, unit: UnitLength.miles)
                 
@@ -258,6 +263,7 @@ private extension CreateBuffersAroundPointsView {
                 
                 // Add point with radius to bufferPoints Array.
                 bufferPoints.append((point: tapPoint!, radius: radiusInFeet))
+                status = .bufferCreated
             }
         }
         
@@ -276,6 +282,7 @@ private extension CreateBuffersAroundPointsView {
         case addPoints
         case bufferCreated
         case outOfBoundsTap
+        case invalidInput
         case noPoints
     }
     
@@ -289,8 +296,10 @@ private extension CreateBuffersAroundPointsView {
             return "Buffer created."
         case .outOfBoundsTap:
             return "Tap within the boundary to add buffer."
+        case .invalidInput:
+            return "Enter a value between 0 and 300 to create a buffer."
         case .noPoints:
-            return "Please add a point to draw the buffers."
+            return "Add a point to draw the buffers."
         }
     }
 }
