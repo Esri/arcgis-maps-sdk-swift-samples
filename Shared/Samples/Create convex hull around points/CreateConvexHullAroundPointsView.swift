@@ -53,10 +53,7 @@ private extension CreateConvexHullAroundPointsView {
     // The view model for this sample.
     private class Model: ObservableObject {
         /// A 'Map' with a topographic basemap.
-        var map: Map = {
-            let map = Map(basemapStyle: .arcGISTopographic)
-            return map
-        }()
+        let map = Map(basemapStyle: .arcGISTopographic)
         
         /// An 'Array' of input points to be used in creating the convexHull.
         var inputPoints: [Point] = []
