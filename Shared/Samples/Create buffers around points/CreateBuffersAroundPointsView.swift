@@ -158,11 +158,10 @@ private extension CreateBuffersAroundPointsView {
             map.initialViewpoint = Viewpoint(boundingGeometry: viewpointGeometry)
             
             // Add some base layers (counties, cities, and highways).
-            let mapServiceURL = URL(
+            let usaLayer = ArcGISMapImageLayer(url: URL(
                 string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer"
-            )!
-            let usaLayer = ArcGISMapImageLayer(url: mapServiceURL)
-            map.basemap!.addBaseLayer(usaLayer)
+            )!)
+            map.basemap = Basemap(baseLayer: usaLayer)
             
             return map
         }
