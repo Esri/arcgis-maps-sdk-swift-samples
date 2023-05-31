@@ -19,31 +19,36 @@ struct CreateConvexHullAroundPointsView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
+    /// A 'Bool' indicate whether the create button can be pressed.
+    @State var createIsDisabled = true
+    
+    /// A 'Bool' indicate whether the reset button can be pressed.
+    @State var resetIsDisabled = true
+    
     var body: some View {
         // Create a map view to display the map.
         MapView(map: model.map, graphicsOverlays: model.graphicsOverlays)
             .onSingleTapGesture { _, mapPoint in
                 model.inputPoints.append(mapPoint)
                 model.pointsGraphicsOverlay.addGraphic(Graphic(geometry: mapPoint, symbol: model.markerSymbol))
-                model.createIsDisabled = false
-                model.resetIsDisabled = false
+                createIsDisabled = false
+                resetIsDisabled = false
             }
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
                     // Create button.
                     Button("Create") {
                         model.createConvexHull()
+                        createIsDisabled = true
                     }
-                    .disabled(model.createIsDisabled)
+                    .disabled(createIsDisabled)
                     // Reset button.
                     Button("Reset") {
-                        model.inputPoints.removeAll()
-                        model.pointsGraphicsOverlay.removeAllGraphics()
-                        model.convexHullGraphicsOverlay.removeAllGraphics()
-                        model.createIsDisabled = true
-                        model.resetIsDisabled = true
+                        model.reset()
+                        createIsDisabled = true
+                        resetIsDisabled = true
                     }
-                    .disabled(model.resetIsDisabled)
+                    .disabled(resetIsDisabled)
                 }
             }
     }
@@ -64,10 +69,10 @@ private extension CreateConvexHullAroundPointsView {
         }
         
         /// A 'GraphicsOverlay' for the input points graphics.
-        var pointsGraphicsOverlay = GraphicsOverlay()
+        let pointsGraphicsOverlay = GraphicsOverlay()
         
         /// A 'GraphicsOverlay' for the convex hull graphic.
-        var convexHullGraphicsOverlay = GraphicsOverlay()
+        private let convexHullGraphicsOverlay = GraphicsOverlay()
         
         /// A red simple marker symbol to display where the user tapped on the map.
         let markerSymbol = SimpleMarkerSymbol(style: .circle, color: .red, size: 10)
@@ -78,11 +83,12 @@ private extension CreateConvexHullAroundPointsView {
         /// A hollow polygon simple fill symbol for the convex hull graphic.
         private lazy var fillSymbol = SimpleFillSymbol(style: .noFill, outline: lineSymbol)
         
-        /// A 'Bool' indicate whether the create button can be pressed.
-        @Published var createIsDisabled = true
-        
-        /// A 'Bool' indicate whether the reset button can be pressed.
-        @Published var resetIsDisabled = true
+        /// Reset the points and graphics.
+        func reset() {
+            inputPoints.removeAll()
+            pointsGraphicsOverlay.removeAllGraphics()
+            convexHullGraphicsOverlay.removeAllGraphics()
+        }
         
         /// Create the convex hull graphic using the inputPoints.
         func createConvexHull() {
@@ -109,8 +115,6 @@ private extension CreateConvexHullAroundPointsView {
                     // Create the convex hull graphic.
                     let convexHullGraphic = Graphic(geometry: convexHullGeometry, symbol: symbol)
                     convexHullGraphicsOverlay.addGraphic(convexHullGraphic)
-                    
-                    createIsDisabled = true
                 }
             }
         }
