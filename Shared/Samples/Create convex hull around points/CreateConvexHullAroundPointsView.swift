@@ -29,15 +29,13 @@ struct CreateConvexHullAroundPointsView: View {
                 model.resetIsDisabled = false
             }
             .toolbar {
-                // Create button for making the convex hull.
-                ToolbarItem(placement: .bottomBar) {
+                ToolbarItemGroup(placement: .bottomBar) {
+                    // Create button.
                     Button("Create") {
                         model.createConvexHull()
                     }
                     .disabled(model.createIsDisabled)
-                }
-                // Reset button for removing all the points on the map.
-                ToolbarItem(placement: .bottomBar) {
+                    // Reset button.
                     Button("Reset") {
                         model.inputPoints.removeAll()
                         model.pointsGraphicsOverlay.removeAllGraphics()
@@ -54,25 +52,25 @@ struct CreateConvexHullAroundPointsView: View {
 private extension CreateConvexHullAroundPointsView {
     // The view model for this sample.
     private class Model: ObservableObject {
-        /// A map with a topographic basemap.
+        /// A 'Map' with a topographic basemap.
         var map: Map = {
             let map = Map(basemapStyle: .arcGISTopographic)
             return map
         }()
         
-        /// An Array of inputted points to be used in creating the convexHull.
+        /// An 'Array' of input points to be used in creating the convexHull.
         var inputPoints: [Point] = []
         
-        /// An Array that contains the graphics overlays for the sample.
+        /// An 'Array' that contains the graphics overlays for the sample.
         lazy var graphicsOverlays: [GraphicsOverlay] = [
             pointsGraphicsOverlay,
             convexHullGraphicsOverlay
         ]
         
-        /// A GraphicsOverlay for the inputted points graphics.
+        /// A 'GraphicsOverlay' for the input points graphics.
         var pointsGraphicsOverlay = GraphicsOverlay()
         
-        /// A GraphicsOverlay for the convex hull graphic.
+        /// A 'GraphicsOverlay' for the convex hull graphic.
         var convexHullGraphicsOverlay = GraphicsOverlay()
         
         /// A red simple marker symbol to display where the user tapped on the map.
@@ -84,10 +82,10 @@ private extension CreateConvexHullAroundPointsView {
         /// A hollow polygon simple fill symbol for the convex hull graphic.
         private lazy var fillSymbol = SimpleFillSymbol(style: .noFill, outline: lineSymbol)
         
-        /// A Bool indicate whether the create button can be pressed.
+        /// A 'Bool' indicate whether the create button can be pressed.
         @Published var createIsDisabled = true
         
-        /// A Bool indicate whether the reset button can be pressed.
+        /// A 'Bool' indicate whether the reset button can be pressed.
         @Published var resetIsDisabled = true
         
         /// Create the convex hull graphic using the inputPoints.
@@ -98,7 +96,6 @@ private extension CreateConvexHullAroundPointsView {
                 if let convexHullGeometry = GeometryEngine.convexHull(for: normalizedPoints) {
                     // Set the symbol depending on the geometry type of the convex hull.
                     let symbol: Symbol?
-                    
                     switch convexHullGeometry {
                     case is Point:
                         symbol = markerSymbol
