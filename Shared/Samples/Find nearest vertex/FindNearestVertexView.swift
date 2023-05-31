@@ -61,32 +61,32 @@ struct FindNearestVertexView: View {
 private extension FindNearestVertexView {
     // The view model for the sample.
     private class Model: ObservableObject {
-        /// A map with a generalized US states feature layer and centered on
+        /// A 'Map' with a generalized US states feature layer and centered on
         /// the example polygon in California.
         var map = Map()
         
-        /// The GraphicsOverlay for the point and polygon graphics.
+        /// The 'GraphicsOverlay' for the point and polygon graphics.
         let graphicsOverlay = GraphicsOverlay()
         
-        /// The orange cross graphic for the tap location point.
+        /// An orange cross 'Graphic' for the tap location point.
         let tapLocationGraphic: Graphic = {
             let symbol = SimpleMarkerSymbol(style: .x, color: .orange, size: 15)
             return Graphic(symbol: symbol)
         }()
         
-        /// The blue circle graphic for the nearest vertex point.
+        /// A blue circle 'Graphic' for the nearest vertex point.
         let nearestVertexGraphic: Graphic = {
             let symbol = SimpleMarkerSymbol(style: .circle, color: .blue, size: 15)
             return Graphic(symbol: symbol)
         }()
         
-        /// The red diamond graphic for the nearest coordinate point.
+        /// A red diamond 'Graphic' for the nearest coordinate point.
         let nearestCoordinateGraphic: Graphic = {
             let symbol = SimpleMarkerSymbol(style: .diamond, color: .red, size: 10)
             return Graphic(symbol: symbol)
         }()
         
-        /// The example polygon geometry near San Bernardino County, California.
+        /// The example 'Polygon' near San Bernardino County, California.
         private var polygon: Polygon
         
         /// A distance formatter to format distance measurements and units.
