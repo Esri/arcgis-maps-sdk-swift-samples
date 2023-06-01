@@ -278,7 +278,7 @@ private extension CreateBuffersAroundPointsView {
 }
 
 private extension CreateBuffersAroundPointsView {
-    /// An 'Enum' for the sample status.
+    /// An enumeration for the sample status.
     enum Status {
         case addPoints
         case bufferCreated
