@@ -96,7 +96,7 @@ private extension CreateBuffersAroundPointsView {
         /// A map centered on Texas with image layers.
         let map: Map
         
-        /// An 'Array' for the graphic overlays.
+        /// The graphics overlays used in this sample.
         var graphicsOverlays: [GraphicsOverlay] = []
         
         /// An 'Array' for the tapped points and their radii.
