@@ -18,9 +18,9 @@ Pan and zoom around the map. Observe graphics that show utility associations bet
 2. Add a `FeatureLayer` to the map for every `UtilityNetworkSource` of type `edge` or `junction`.
 3. Create a `GraphicsOverlay` for the utility associations.
 4. When the sample is opened and every time the viewpoint changes, do the following steps.
-5. Get the extent of the map view's target geometry by using `MapView.currentViewpoint(kind:)`.
+5. Get the extent of the map view's target geometry by using `MapView.onViewpointChanged(kind:)`.
 6. Get the associations that are within the current extent using `UtilityNetwork.associations(forExtent:)`.
-7. Get the `UtilityAssociationType` for each association.
+7. Get the `UtilityAssociation.Kind` for each association.
 8. Create a `Graphic` using the `Geometry` property of the association and a preferred symbol.
 9. Add the graphic to the graphics overlay.
 
@@ -29,7 +29,7 @@ Pan and zoom around the map. Observe graphics that show utility associations bet
 * GraphicsOverlay
 * ServiceGeodatabase
 * UtilityAssociation
-* UtilityAssociationType
+* UtilityAssociation.Kind
 * UtilityNetwork
 
 ## About the data
