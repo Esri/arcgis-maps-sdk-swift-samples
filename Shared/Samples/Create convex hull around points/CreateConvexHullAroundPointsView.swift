@@ -19,10 +19,10 @@ struct CreateConvexHullAroundPointsView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
-    /// A 'Bool' indicate whether the create button can be pressed.
+    /// A Boolean indicate whether the create button can be pressed.
     @State var createIsDisabled = true
     
-    /// A 'Bool' indicate whether the reset button can be pressed.
+    /// A Boolean indicate whether the reset button can be pressed.
     @State var resetIsDisabled = true
     
     var body: some View {
@@ -57,21 +57,21 @@ struct CreateConvexHullAroundPointsView: View {
 private extension CreateConvexHullAroundPointsView {
     // The view model for this sample.
     private class Model: ObservableObject {
-        /// A 'Map' with a topographic basemap.
+        /// A map with a topographic basemap.
         let map = Map(basemapStyle: .arcGISTopographic)
         
-        /// An 'Array' of input points to be used in creating the convexHull.
+        /// An array of input points to be used in creating the convexHull.
         var inputPoints: [Point] = []
         
-        /// An 'Array' that contains the graphics overlays for the sample.
+        /// An array that contains the graphics overlays for the sample.
         var graphicsOverlays: [GraphicsOverlay] {
             [pointsGraphicsOverlay, convexHullGraphicsOverlay]
         }
         
-        /// A 'GraphicsOverlay' for the input points graphics.
+        /// The graphics overlay for the input points graphics.
         let pointsGraphicsOverlay = GraphicsOverlay()
         
-        /// A 'GraphicsOverlay' for the convex hull graphic.
+        /// The graphics overlay for the convex hull graphic.
         private let convexHullGraphicsOverlay = GraphicsOverlay()
         
         /// A red simple marker symbol to display where the user tapped on the map.
