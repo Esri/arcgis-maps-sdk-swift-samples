@@ -102,7 +102,7 @@ private extension CreateBuffersAroundPointsView {
         /// An 'Array' for the tapped points and their radii.
         var bufferPoints: [(point: Point, radius: Double)] = []
         
-        /// A 'GraphicsOverlay' for the boundary around the valid area of use.
+        /// The  graphics overlay for the boundary around the valid area of use.
         private var boundaryGraphicsOverlay: GraphicsOverlay
         
         /// A 'GraphicsOverlay' for the points' buffers.
