@@ -41,6 +41,18 @@ struct SetUpLocationDrivenGeotriggersView: View {
                 }
             }
             .alert(isPresented: $isShowingAlert, presentingError: error)
+            .toolbar {
+                ToolbarItemGroup(placement: .bottomBar) {
+                    // Create button.
+                    Button("Current Selction") {
+                    }
+                    .disabled(model.currentSectionBarButtonItem)
+                    // Reset button.
+                    Button("Point of Interest") {
+                    }
+                    .disabled(model.pointOfInterestBarButtonItem)
+                }
+            }
     }
 }
 
@@ -64,8 +76,41 @@ private extension SetUpLocationDrivenGeotriggersView {
             return locationDisplay
         }()
         
+        /// The name of the current garden section feature. If currently not in any
+        /// garden section, it will be `nil`.
+        var currentSectionName: String? {
+            featureNamesInFenceGeotrigger[sectionFenceGeotriggerName]?.last
+        }
+        /// The names of nearby point-of-interest features.
+        var nearbyPOINames: [String] {
+            featureNamesInFenceGeotrigger[poiFenceGeotriggerName] ?? []
+        }
+        
+        /// A dictionary for the feature names in each fence geotrigger.
+        /// - Key: The name of a fence geotrigger.
+        /// - Value: An array of names of features within the fence.
+        var featureNamesInFenceGeotrigger: [String: [String]] = [:] {
+            didSet {
+                currentSectionBarButtonItem = currentSectionName != nil
+                pointOfInterestBarButtonItem = !nearbyPOINames.isEmpty
+            }
+        }
+        
+        /// A dictionary for nearby features.
+        var nearbyFeatures: [String: ArcGISFeature] = [:]
+        /// An array of observers for geotrigger monitor notifications.
+        var observers: [NSObjectProtocol] = []
+        /// An array of geotrigger monitors.
+        var geotriggerMonitors: [GeotriggerMonitor] = []
+        
         /// A simulated location data source for demo purposes.
         lazy var simulatedLocationDataSource = locationDataSource
+        
+        /// A Boolean indicating
+        @Published var currentSectionBarButtonItem = false
+        
+        /// A Boolean
+        @Published var pointOfInterestBarButtonItem = false
         
         /// Create a map.
         func makeMap() -> Map {
@@ -91,18 +136,16 @@ private extension SetUpLocationDrivenGeotriggersView {
         
         /// Create a simulated location data source from a GeoJSON.
         func makeDataSource(polylineJSONString: String) -> SimulatedLocationDataSource {
-            let simulatedDataSource = SimulatedLocationDataSource()
-            let jsonObject = try? JSONSerialization.jsonObject(
-                with: polylineJSONString.data(using: .utf8)!
-            ) as? String
-            let routePolyline = try? Polyline.fromJSON(jsonObject!)
             // Densify the polyline to control the simulation speed.
+            let routePolyline = try? Polyline.fromJSON(polylineJSONString)
             let densifiedRoute = GeometryEngine.geodeticDensify(
                 routePolyline!,
                 maxSegmentLength: 5.0,
                 lengthUnit: .meters,
                 curveType: .geodesic
             ) as! Polyline
+            
+            let simulatedDataSource = SimulatedLocationDataSource()
             simulatedDataSource.setSimulatedLocations(with: densifiedRoute)
             return simulatedDataSource
         }
@@ -129,12 +172,13 @@ private extension SetUpLocationDrivenGeotriggersView {
                 messageExpression: ArcadeExpression(expression: "$fenceFeature.name"),
                 name: fenceGeotriggerName
             )
-            /*
+            
             // Create and start the geotrigger monitor.
             let geotriggerMonitor = GeotriggerMonitor(geotrigger: fenceGeotrigger)
             //geotriggerMonitor.start()
             geotriggerMonitors.append(geotriggerMonitor)
             
+            /*
             // Observe geotrigger notifications.
             let observer = NotificationCenter.default.addObserver(
                 forName: .AGSGeotriggerMonitorDidTrigger,
