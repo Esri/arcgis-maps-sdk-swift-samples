@@ -1,0 +1,29 @@
+{
+    "category": "Scenes",
+    "description": "Animate a series of images with an image overlay.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "3d",
+        "animation",
+        "drone",
+        "dynamic",
+        "image frame",
+        "image overlay",
+        "real time",
+        "rendering",
+        "ImageFrame",
+        "ImageOverlay",
+        "SceneView"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "ImageFrame",
+        "ImageOverlay",
+        "SceneView"
+    ],
+    "snippets": [
+        "AnimateImagesWithImageOverlayView.swift"
+    ],
+    "title": "Animate images with image overlay"
+}
