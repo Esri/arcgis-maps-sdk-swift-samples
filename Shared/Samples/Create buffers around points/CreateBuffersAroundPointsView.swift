@@ -147,7 +147,7 @@ private extension CreateBuffersAroundPointsView {
             )
         }
         
-        /// Create a 'Map' with image layers from a 'SpatialReference'.
+        /// Creates a map with image layers from a spatial reference.
         /// - Parameters:
         ///   - spatialReference: The 'SpatialReference' the 'Map' is derived from.
         ///   - viewpointGeometry: The 'Geometry' to center the map's viewpoint on.
