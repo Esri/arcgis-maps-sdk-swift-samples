@@ -93,7 +93,7 @@ private extension CreateBuffersAroundPointsView {
         /// The status of the sample.
         @Published var status = Status.addPoints
         
-        /// A 'Map' centered on Texas with image layers.
+        /// A map centered on Texas with image layers.
         let map: Map
         
         /// An 'Array' for the graphic overlays.
