@@ -81,7 +81,7 @@ private extension CreateBuffersAroundPointsView {
         /// A Boolean value indicating whether union is on.
         @Published var shouldUnion = false
         
-        /// A 'Point' representing where the user has tapped on the map.
+        /// The map point where the map was tapped.
         @Published var tapPoint: Point!
         
         /// A 'Bool' value indicating whether the input box is showing.
