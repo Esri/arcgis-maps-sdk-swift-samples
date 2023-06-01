@@ -115,7 +115,7 @@ private extension CreateBuffersAroundPointsView {
         private let boundaryPolygon: ArcGIS.Polygon
         
         init() {
-            /// The 'SpatialReference' for the sample.
+            /// The spatial reference for the sample.
             let statePlaneNorthCentralTexas = SpatialReference(wkid: WKID(32038)!)!
             
             // Create boundary polygon.
