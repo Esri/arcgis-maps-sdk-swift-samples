@@ -84,7 +84,7 @@ private extension CreateBuffersAroundPointsView {
         /// The map point where the map was tapped.
         @Published var tapPoint: Point!
         
-        /// A 'Bool' value indicating whether the input box is showing.
+        /// A Boolean value indicating whether the input box is showing.
         @Published var inputBoxIsPresented = false
         
         /// The input obtained from the user for the buffer radius of a point.
@@ -99,16 +99,16 @@ private extension CreateBuffersAroundPointsView {
         /// The graphics overlays used in this sample.
         var graphicsOverlays: [GraphicsOverlay] = []
         
-        /// An 'Array' for the tapped points and their radii.
+        /// An array of the tapped points and their radii.
         var bufferPoints: [(point: Point, radius: Double)] = []
         
-        /// The  graphics overlay for the boundary around the valid area of use.
+        /// The graphics overlay for the boundary around the valid area of use.
         private var boundaryGraphicsOverlay: GraphicsOverlay
         
-        /// A 'GraphicsOverlay' for the points' buffers.
+        /// The graphics overlay for the points' buffers.
         private var bufferGraphicsOverlay: GraphicsOverlay
         
-        /// A 'GraphicsOverlay' for the points of the tapped locations.
+        /// The graphics overlay for the points of the tapped locations.
         private var tapPointsGraphicsOverlay: GraphicsOverlay
         
         /// A polygon that represents the valid area of use for the spatial reference.
@@ -132,7 +132,7 @@ private extension CreateBuffersAroundPointsView {
             
             // Create map.
             map = CreateBuffersAroundPointsView.Model.makeMap(
-                spatialReference: statePlaneNorthCentralTexas, 
+                spatialReference: statePlaneNorthCentralTexas,
                 viewpointGeometry: boundaryPolygon
             )
             
@@ -147,7 +147,7 @@ private extension CreateBuffersAroundPointsView {
             )
         }
         
-        /// Creates a map with image layers from a spatial reference.
+        /// Create a map with image layers from a spatial reference.
         /// - Parameters:
         ///   - spatialReference: The 'SpatialReference' the 'Map' is derived from.
         ///   - viewpointGeometry: The 'Geometry' to center the map's viewpoint on.
@@ -166,7 +166,7 @@ private extension CreateBuffersAroundPointsView {
             return map
         }
         
-        /// Create a 'GraphicsOverlay' to show the spatial reference's valid area.
+        /// Create a graphics overlay to show the spatial reference's valid area.
         /// - Parameter boundaryGeometry: The 'Geometry' to create the boundary graphic from.
         /// - Returns: A new 'GraphicsOverlay' object with a boundary graphic added.
         private static func makeBoundaryGraphicsOverlay(boundaryGeometry: Geometry) -> GraphicsOverlay {
@@ -177,7 +177,7 @@ private extension CreateBuffersAroundPointsView {
             return graphicsOverlay
         }
         
-        /// Create a 'GraphicsOverlay' for the buffer graphics.
+        /// Create a graphics overlay for the buffer graphics.
         /// - Returns: A new 'GraphicsOverlay' object to be used for the buffers.
         private static func makeBufferGraphicsOverlay() -> GraphicsOverlay {
             let graphicsOverlay = GraphicsOverlay()
@@ -187,7 +187,7 @@ private extension CreateBuffersAroundPointsView {
             return graphicsOverlay
         }
         
-        /// Create a 'GraphicsOverlay' for the tapped points graphics.
+        /// Create a graphics overlay for the tapped points graphics.
         /// - Returns: A new 'GraphicsOverlay' object to be used for the tapped points.
         private static func makeTappedPointsGraphicsOverlay() -> GraphicsOverlay {
             let graphicsOverlay = GraphicsOverlay()
@@ -196,7 +196,7 @@ private extension CreateBuffersAroundPointsView {
             return graphicsOverlay
         }
         
-        /// Check if a 'Point' is within the valid area of use for this sample.
+        /// Check if a point is within the valid area of use for this sample.
         /// - Parameter point: A 'Point' to validate.
         /// - Returns: A 'Bool' indicating whether it is within bounds.
         func isWithinBounds(_ point: Point) -> Bool {
@@ -240,7 +240,7 @@ private extension CreateBuffersAroundPointsView {
             }
         }
         
-        /// Add a 'Point' with its radius to the bufferPoints 'Array'.
+        /// Add a point with its radius to the bufferPoints array.
         func addBufferPoint() {
             // Check to ensure the tapPoint is within the boundary
             guard isWithinBounds(tapPoint) else {
@@ -268,7 +268,7 @@ private extension CreateBuffersAroundPointsView {
             }
         }
         
-        /// Clear the bufferPoints and related graphics.
+        /// Clear the bufferPoints array and related graphics.
         func clearBufferPoints() {
             bufferPoints.removeAll()
             bufferGraphicsOverlay.removeAllGraphics()
