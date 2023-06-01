@@ -77,10 +77,10 @@ struct ShowCoordinatesInMultipleFormatsView: View {
 }
 
 struct CoordinateTextField: View {
-    /// The 'String' title.
+    /// The title string.
     var title: String
     
-    /// The 'String' text.
+    /// The text string.
     @Binding var text: String
     
     var body: some View {
@@ -100,19 +100,19 @@ struct CoordinateTextField: View {
 private extension ShowCoordinatesInMultipleFormatsView {
     // The view model for the sample.
     class Model: ObservableObject {
-        /// A 'Map' with an imagery basemap.
+        /// A map with an imagery basemap.
         var map = Map(basemapStyle: .arcGISImageryStandard)
         
-        /// The 'GraphicsOverlay' for the point graphic.
+        /// The graphics overlay for the point graphic.
         lazy var graphicsOverlay = GraphicsOverlay(graphics: [pointGraphic])
         
-        /// A yellow cross 'Graphic' for the map point.
+        /// A yellow cross graphic for the map point.
         private var pointGraphic: Graphic = {
             let yellowCrossSymbol = SimpleMarkerSymbol(style: .cross, color: .yellow, size: 20)
             return Graphic(symbol: yellowCrossSymbol)
         }()
         
-        /// The 'Point' on the map.
+        /// The point on the map.
         @Published var mapPoint: Point!
         
         /// The decimal degrees text.
