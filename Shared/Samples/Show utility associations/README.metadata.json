@@ -15,7 +15,7 @@
         "GraphicsOverlay",
         "ServiceGeodatabase",
         "UtilityAssociation",
-        "UtilityAssociationType",
+        "UtilityAssociation.Kind",
         "UtilityNetwork"
     ],
     "redirect_from": [],
@@ -23,7 +23,7 @@
         "GraphicsOverlay",
         "ServiceGeodatabase",
         "UtilityAssociation",
-        "UtilityAssociationType",
+        "UtilityAssociation.Kind",
         "UtilityNetwork"
     ],
     "snippets": [
