@@ -61,32 +61,32 @@ struct FindNearestVertexView: View {
 private extension FindNearestVertexView {
     // The view model for the sample.
     private class Model: ObservableObject {
-        /// A 'Map' with a generalized US states feature layer and centered on
+        /// A map with a generalized US states feature layer and centered on
         /// the example polygon in California.
         var map = Map()
         
-        /// The 'GraphicsOverlay' for the point and polygon graphics.
+        /// The graphics overlay for the point and polygon graphics.
         let graphicsOverlay = GraphicsOverlay()
         
-        /// An orange cross 'Graphic' for the tap location point.
+        /// An orange cross graphic for the tap location point.
         let tapLocationGraphic: Graphic = {
             let symbol = SimpleMarkerSymbol(style: .x, color: .orange, size: 15)
             return Graphic(symbol: symbol)
         }()
         
-        /// A blue circle 'Graphic' for the nearest vertex point.
+        /// A blue circle graphic for the nearest vertex point.
         let nearestVertexGraphic: Graphic = {
             let symbol = SimpleMarkerSymbol(style: .circle, color: .blue, size: 15)
             return Graphic(symbol: symbol)
         }()
         
-        /// A red diamond 'Graphic' for the nearest coordinate point.
+        /// A red diamond graphic for the nearest coordinate point.
         let nearestCoordinateGraphic: Graphic = {
             let symbol = SimpleMarkerSymbol(style: .diamond, color: .red, size: 10)
             return Graphic(symbol: symbol)
         }()
         
-        /// The example 'Polygon' near San Bernardino County, California.
+        /// The example polygon near San Bernardino County, California.
         private var polygon: Polygon
         
         /// A distance formatter to format distance measurements and units.
@@ -137,7 +137,7 @@ private extension FindNearestVertexView {
                 let usStatesGeneralizedLayer = FeatureLayer(
                     item: PortalItem(
                         portal: .arcGISOnline(connection: .anonymous),
-                        id: Item.ID(rawValue: "99fd67933e754a1181cc755146be21ca")!))
+                        id: .usStatesGeneralized))
                 map.addOperationalLayer(usStatesGeneralizedLayer)
                 
                 return map
@@ -190,4 +190,9 @@ private extension FindNearestVertexView {
             nearestCoordinateDistance = distanceFormatter.string(from: coordinateDistance)
         }
     }
+}
+
+private extension PortalItem.ID {
+    /// The ID used in the "US States Generalized" portal item.
+    static var usStatesGeneralized: Self { Self("99fd67933e754a1181cc755146be21ca")! }
 }
