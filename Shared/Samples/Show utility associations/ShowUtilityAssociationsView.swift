@@ -16,14 +16,44 @@ import ArcGIS
 import SwiftUI
 
 struct ShowUtilityAssociationsView: View {
-   @State private var map = makeMap()
+    /// The map with the utility network.
+    @State private var map = makeMap()
     
     /// A container for associations results.
     @State var associationsOverlay = GraphicsOverlay()
     
+    /// The current viewpoint of the map.
+    @State var viewpoint: Viewpoint?
+    
+    /// The scale of the viewpoint.
+    @State var scale = 0.0
+    
+    /// A Boolean value indicating if the sample is authenticated.
+    @State var isAuthenticated = false
+    
+    /// An image that represents an attachment symbol.
+    @State var attachmentImage: Image?
+    
+    /// An image that represents a connectivity symbol.
+    @State var connectivityImage: Image?
+    
+    /// The max scale for the viewpoint.
+    let maxScale = 2000.0
+    
     /// The utility network for this sample.
     private var network: UtilityNetwork? {
         map.utilityNetworks.first
+    }
+    
+    /// The legend at the bottom of the screen.
+    private var legend: some View {
+        HStack {
+            attachmentImage
+            Text("Attachment")
+            Spacer()
+            connectivityImage
+            Text("Connectivity")
+        }
     }
     
     var body: some View {
@@ -33,14 +63,23 @@ struct ShowUtilityAssociationsView: View {
             viewpoint: .initialViewpoint,
             graphicsOverlays: [associationsOverlay]
         )
-        .onViewpointChanged(kind: .centerAndScale) { newViewpoint in
-            addAssociationGraphics()
+        .onViewpointChanged(kind: .centerAndScale) {
+            scale = $0.targetScale
+        }
+        .onViewpointChanged(kind: .boundingGeometry) {
+            viewpoint = $0
+            Task { try await addAssociationGraphics() }
+        }
+        .onDisappear {
+            ArcGISEnvironment.authenticationManager.arcGISCredentialStore.removeAll()
         }
         .task {
             await setup()
         }
-        .onDisappear {
-            ArcGISEnvironment.authenticationManager.arcGISCredentialStore.removeAll()
+        .toolbar {
+            ToolbarItemGroup(placement: .bottomBar) {
+                legend
+            }
         }
     }
     
@@ -54,12 +93,13 @@ struct ShowUtilityAssociationsView: View {
     /// Performs important tasks including adding credentials, loading and adding operational layers.
     func setup() async {
         do {
+            try await createSwatches()
             try await ArcGISEnvironment.authenticationManager.arcGISCredentialStore.add(.publicSample)
+            isAuthenticated = true
             try await network?.load()
             addLayers()
             createRenderer()
-            createSwatches()
-            addAssociationGraphics()
+            try await addAssociationGraphics()
         } catch {
             return
         }
@@ -73,7 +113,7 @@ struct ShowUtilityAssociationsView: View {
             
             // Add all edges that are not subnet lines to the map.
             let edgeLayers = sourcesByType[.edge]!
-                .filter { $0.usageKind != .subnetLine}
+                .filter { $0.usageKind != .subnetLine }
                 .map { FeatureLayer(featureTable: $0.featureTable) }
             
             map.addOperationalLayers(edgeLayers)
@@ -97,25 +137,52 @@ struct ShowUtilityAssociationsView: View {
         )
     }
     
-    func addAssociationGraphics() {
-        
+    func addAssociationGraphics() async throws {
+        // Check if the current viewpoint is outside of the max scale.
+        guard isAuthenticated, scale <= maxScale else { return }
+        if let viewpoint {
+            let extent = viewpoint.targetGeometry.extent
+            // Get all of the associations in extent of the viewpoint.
+            if let network {
+                let associations = try await network.associations(forExtent: extent)
+                associations.forEach {
+                    // If it the current association does not exist, add it to the graphics overlay.
+                    let associationGID = $0.globalID
+                    guard !associationsOverlay.graphics.contains(where: {
+                        $0.attributes["GlobalId"] as? UUID == associationGID
+                    }) else { return }
+                    
+                    let symbol: Symbol
+                    switch $0.kind {
+                    case .attachment:
+                        symbol = LineSymbol.attachment
+                    case .connectivity:
+                        symbol = LineSymbol.connectivity
+                    default:
+                        return
+                    }
+                    associationsOverlay.addGraphic(
+                        Graphic(
+                            geometry: $0.geometry,
+                            attributes: [
+                                "GlobalId": associationGID,
+                                "AssociationType": $0.kind
+                            ],
+                            symbol: symbol
+                        )
+                    )
+                }
+            }
+        }
     }
     
-    // Populate the legend.
-    func createSwatches() {
+    // Create swatches for the legend.
+    func createSwatches() async throws {
+        let attachmentUIImage = try await LineSymbol.attachment.makeSwatch(scale: 1.0)
+        attachmentImage = Image(uiImage: attachmentUIImage)
         
-    }
-}
-
-private extension LineSymbol {
-    /// A green dot.
-    static var attachment: LineSymbol {
-        SimpleLineSymbol(style: .dot, color: .green, width: 5)
-    }
-    
-    /// A red dot.
-    static var connectivity: LineSymbol {
-        SimpleLineSymbol(style: .dot, color: .red, width: 5)
+        let connectivityUIImage = try await LineSymbol.connectivity.makeSwatch(scale: 1.0)
+        connectivityImage = Image(uiImage: connectivityUIImage)
     }
 }
 
@@ -131,6 +198,18 @@ private extension ArcGISCredential {
                 password: "I68VGU^nMurF"
             )
         }
+    }
+}
+
+private extension LineSymbol {
+    /// A green dot.
+    static var attachment: LineSymbol {
+        SimpleLineSymbol(style: .dot, color: .green, width: 5)
+    }
+    
+    /// A red dot.
+    static var connectivity: LineSymbol {
+        SimpleLineSymbol(style: .dot, color: .red, width: 5)
     }
 }
 
