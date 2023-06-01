@@ -287,7 +287,7 @@ private extension CreateBuffersAroundPointsView {
         case noPoints
     }
     
-    /// Get the text message associated with the current status for the overlay.
+    /// Gets the text message associated with the current status for the overlay.
     /// - Returns: A 'String' status message.
     func getStatusText(_ status: Status) -> String {
         switch status {
