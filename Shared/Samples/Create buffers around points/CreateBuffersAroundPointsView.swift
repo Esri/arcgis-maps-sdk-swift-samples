@@ -78,7 +78,7 @@ struct CreateBuffersAroundPointsView: View {
 private extension CreateBuffersAroundPointsView {
     // The view model for this sample.
     class Model: ObservableObject {
-        /// A 'Bool' value indicating whether union is on.
+        /// A Boolean value indicating whether union is on.
         @Published var shouldUnion = false
         
         /// A 'Point' representing where the user has tapped on the map.
