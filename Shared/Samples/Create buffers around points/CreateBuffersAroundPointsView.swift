@@ -47,7 +47,6 @@ struct CreateBuffersAroundPointsView: View {
                                 model.drawBuffers()
                             }
                         }
-                    // Clear button.
                     Button("Clear") {
                         model.clearBufferPoints()
                         model.status = .addPoints
