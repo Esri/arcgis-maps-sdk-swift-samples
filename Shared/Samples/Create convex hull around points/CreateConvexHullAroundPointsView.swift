@@ -112,7 +112,7 @@ private extension CreateConvexHullAroundPointsView {
                     symbol = markerSymbol
                 case is Polyline:
                     symbol = lineSymbol
-                case is Polygon:
+                case is ArcGIS.Polygon:
                     symbol = fillSymbol
                 default:
                     symbol = nil
