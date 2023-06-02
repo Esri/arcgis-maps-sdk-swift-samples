@@ -26,46 +26,49 @@ struct AnimateImagesWithImageOverlayView: View {
     @State private var isShowingSpeedOptions = false
     
     var body: some View {
-        // Create a scene view to display the scene.
-        SceneView(scene: model.scene, imageOverlays: [model.imageOverlay])
-            .toolbar {
-                ToolbarItemGroup(placement: .bottomBar) {
-                    VStack {
-                        HStack {
-                            Button(startStopButtonText) {
-                                startStopButtonText = startStopButtonText == "Start" ? "Stop" : "Start"
-                                model.displayLink.isPaused.toggle()
-                            }
-                            Spacer()
-                            Button("Speed") {
-                                isShowingSpeedOptions = true
-                            }
-                        }
-                        HStack {
-                            Slider(value: $model.imageOverlay.opacity, in: 0.0...1.0, step: 0.01)
-                            Text(model.percentageFormatter.string(from: model.imageOverlay.opacity as NSNumber)!)
-                        }
+        VStack {
+            // Create a scene view to display the scene.
+            SceneView(scene: model.scene, imageOverlays: [model.imageOverlay])
+                .confirmationDialog("Choose playback speed", isPresented: $isShowingSpeedOptions, titleVisibility: .visible) {
+                    Button("Fast") {
+                        model.displayLink.preferredFramesPerSecond = 60
+                    }
+                    Button("Medium") {
+                        model.displayLink.preferredFramesPerSecond = 30
+                    }
+                    Button("Slow") {
+                        model.displayLink.preferredFramesPerSecond = 15
                     }
                 }
-            }
-            .confirmationDialog("Choose playback speed", isPresented: $isShowingSpeedOptions, titleVisibility: .visible) {
-                Button("Fast") {
-                    model.displayLink.preferredFramesPerSecond = 60
+                .onAppear {
+                    model.setImageFrame()
                 }
-                Button("Medium") {
-                    model.displayLink.preferredFramesPerSecond = 30
+                .onDisappear {
+                    // Invalidate display link before exiting.
+                    model.displayLink.invalidate()
                 }
-                Button("Slow") {
-                    model.displayLink.preferredFramesPerSecond = 15
+            VStack {
+                HStack {
+                    Slider(value: $model.imageOverlay.opacity, in: 0.0...1.0, step: 0.01)
+                    VStack {
+                        Text("Opacity")
+                        Text(model.percentageFormatter.string(from: model.imageOverlay.opacity as NSNumber)!)
+                    }
                 }
+                .padding([.top, .horizontal])
+                HStack {
+                    Button(startStopButtonText) {
+                        startStopButtonText = startStopButtonText == "Start" ? "Stop" : "Start"
+                        model.displayLink.isPaused.toggle()
+                    }
+                    Spacer()
+                    Button("Speed") {
+                        isShowingSpeedOptions = true
+                    }
+                }
+                .padding()
             }
-            .onAppear {
-                model.setImageFrame()
-            }
-            .onDisappear {
-                // Invalidate display link before exiting.
-                model.displayLink.invalidate()
-            }
+        }
     }
 }
 
@@ -96,8 +99,10 @@ private extension AnimateImagesWithImageOverlayView {
         /// Set the image frame to the next one.
         @objc
         func setImageFrame() {
-            let frame = ImageFrame(image: imagesIterator.next()!, extent: pacificSouthwestEnvelope)
-            imageOverlay.imageFrame = frame
+            if let image = imagesIterator.next() {
+                let frame = ImageFrame(image: image, extent: .pacificSouthwestExtent)
+                imageOverlay.imageFrame = frame
+            }
         }
         
         /// An iterator to hold and loop through the overlay images.
@@ -109,13 +114,6 @@ private extension AnimateImagesWithImageOverlayView {
                 .map { UIImage(contentsOfFile: $0.path)! }
             return CircularIterator(elements: images)
         }()
-        
-        /// An envelope of the pacific southwest sector for displaying the image frame.
-        private let pacificSouthwestEnvelope = Envelope(
-            center: Point(latitude: 35.131016955536694, longitude: -120.0724273439448),
-            width: 15.09589635986124,
-            height: -14.3770441522488
-        )
         
         /// A formatter to format percentage strings.
         let percentageFormatter: NumberFormatter = {
@@ -166,6 +164,15 @@ private extension AnimateImagesWithImageOverlayView {
             }
         }
     }
+}
+
+private extension Envelope {
+    /// An envelope of the pacific southwest sector for displaying the image frame.
+    static var pacificSouthwestExtent = Envelope(
+        center: Point(latitude: 35.131016955536694, longitude: -120.0724273439448),
+        width: 15.09589635986124,
+        height: -14.3770441522488
+    )
 }
 
 private extension URL {
