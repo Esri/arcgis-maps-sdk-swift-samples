@@ -19,7 +19,7 @@ struct CreateConvexHullAroundPointsView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
-    /// A Boolean indicate whether the create button can be pressed.
+    /// A Boolean value indicating whether the create button can be pressed.
     @State private var createIsDisabled = true
     
     /// A Boolean indicate whether the reset button can be pressed.
