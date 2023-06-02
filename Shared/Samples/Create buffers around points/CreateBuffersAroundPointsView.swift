@@ -57,7 +57,6 @@ struct CreateBuffersAroundPointsView: View {
             .alert("Buffer Radius", isPresented: $model.inputBoxIsPresented, actions: {
                 TextField("100", text: $model.radiusInput)
                     .keyboardType(.numberPad)
-                // Input alert done button.
                 Button("Done") {
                     model.addBufferPoint()
                     model.radiusInput = ""
