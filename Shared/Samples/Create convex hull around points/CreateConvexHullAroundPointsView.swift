@@ -65,7 +65,7 @@ private extension CreateConvexHullAroundPointsView {
         
         /// An array that contains the graphics overlays for the sample.
         var graphicsOverlays: [GraphicsOverlay] {
-            [pointsGraphicsOverlay, convexHullGraphicsOverlay]
+            return [pointsGraphicsOverlay, convexHullGraphicsOverlay]
         }
         
         /// The graphics overlay for the input points graphics.
