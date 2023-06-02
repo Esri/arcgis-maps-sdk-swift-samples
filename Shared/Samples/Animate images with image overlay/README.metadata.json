@@ -16,6 +16,9 @@
         "ImageOverlay",
         "SceneView"
     ],
+    "offline_data": [
+        "d1453556d91e46dea191c20c398b82cd"
+    ],
     "redirect_from": [],
     "relevant_apis": [
         "ImageFrame",
