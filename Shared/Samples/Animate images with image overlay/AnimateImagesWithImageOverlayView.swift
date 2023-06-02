@@ -29,18 +29,8 @@ struct AnimateImagesWithImageOverlayView: View {
         VStack {
             // Create a scene view to display the scene.
             SceneView(scene: model.scene, imageOverlays: [model.imageOverlay])
-                .confirmationDialog("Choose playback speed", isPresented: $isShowingSpeedOptions, titleVisibility: .visible) {
-                    Button("Fast") {
-                        model.displayLink.preferredFramesPerSecond = 60
-                    }
-                    Button("Medium") {
-                        model.displayLink.preferredFramesPerSecond = 30
-                    }
-                    Button("Slow") {
-                        model.displayLink.preferredFramesPerSecond = 15
-                    }
-                }
                 .onAppear {
+                    // Load first image.
                     model.setImageFrame()
                 }
                 .onDisappear {
@@ -69,6 +59,17 @@ struct AnimateImagesWithImageOverlayView: View {
                 .padding()
             }
         }
+        .confirmationDialog("Choose playback speed", isPresented: $isShowingSpeedOptions, titleVisibility: .visible) {
+            Button("Fast") {
+                model.displayLink.preferredFramesPerSecond = 60
+            }
+            Button("Medium") {
+                model.displayLink.preferredFramesPerSecond = 30
+            }
+            Button("Slow") {
+                model.displayLink.preferredFramesPerSecond = 15
+            }
+        }
     }
 }
 
@@ -88,22 +89,11 @@ private extension AnimateImagesWithImageOverlayView {
             let surface = Surface()
             surface.addElevationSource(elevationSource)
             scene.baseSurface = surface
-            
             return scene
         }()
         
-        /// A timer to synchronize image overlay animation to the refresh rate
-        /// of the display.
+        /// A timer to synchronize image overlay animation to the refresh rate of the display.
         var displayLink: CADisplayLink!
-        
-        /// Set the image frame to the next one.
-        @objc
-        func setImageFrame() {
-            if let image = imagesIterator.next() {
-                let frame = ImageFrame(image: image, extent: .pacificSouthwestExtent)
-                imageOverlay.imageFrame = frame
-            }
-        }
         
         /// An iterator to hold and loop through the overlay images.
         private var imagesIterator: CircularIterator<UIImage> = {
@@ -142,6 +132,15 @@ private extension AnimateImagesWithImageOverlayView {
             // Add to main thread common mode run loop, so it is not effected by UI events.
             newDisplayLink.add(to: .main, forMode: .common)
             displayLink = newDisplayLink
+        }
+        
+        /// Set the image frame to the next one.
+        @objc
+        func setImageFrame() {
+            if let image = imagesIterator.next() {
+                let frame = ImageFrame(image: image, extent: .pacificSouthwestExtent)
+                imageOverlay.imageFrame = frame
+            }
         }
     }
     
