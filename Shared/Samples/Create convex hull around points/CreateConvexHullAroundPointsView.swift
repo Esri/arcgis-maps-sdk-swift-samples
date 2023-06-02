@@ -67,7 +67,7 @@ private extension CreateConvexHullAroundPointsView {
         }
         
         /// The graphics overlay for the input points graphics.
-        var pointsGraphicsOverlay: GraphicsOverlay
+        let pointsGraphicsOverlay: GraphicsOverlay
         
         /// The graphics overlay for the convex hull graphic.
         private let convexHullGraphicsOverlay: GraphicsOverlay
