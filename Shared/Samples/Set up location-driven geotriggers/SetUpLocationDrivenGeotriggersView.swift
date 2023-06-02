@@ -19,28 +19,11 @@ struct SetUpLocationDrivenGeotriggersView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
-    /// A Boolean value indicating whether to show an alert.
-    @State private var isShowingAlert = false
-    
-    /// The error shown in the alert.
-    @State private var error: Error? {
-        didSet { isShowingAlert = error != nil }
-    }
-    
     var body: some View {
         // Create a map view to display the map.
         MapView(map: model.map)
             .locationDisplay(model.locationDisplay)
-            .task {
-                do {
-                    try await model.map.load()
-                    try await model.locationDisplay.dataSource.start()
-                } catch {
-                    // Present an error message if the raster fails to load.
-                    self.error = error
-                }
-            }
-            .alert(isPresented: $isShowingAlert, presentingError: error)
+            .alert(isPresented: $model.isShowingAlert, presentingError: model.alertError)
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
                     // Create button.
@@ -60,21 +43,13 @@ private extension SetUpLocationDrivenGeotriggersView {
     /// The view model for the sample.
     class Model: ObservableObject {
         /// A map
-        lazy var map: Map = {
-            let map = makeMap()
-            return map
-        }()
+        lazy var map = makeMap()
         
         ///
         lazy var locationDataSource = makeDataSource(polylineJSONString: walkingTourPolylineJSON)
         
         /// The location display for the sample
-        lazy var locationDisplay: LocationDisplay = {
-            let locationDisplay = LocationDisplay(dataSource: locationDataSource)
-            locationDisplay.autoPanMode = .recenter
-            locationDisplay.initialZoomScale = 1000
-            return locationDisplay
-        }()
+        lazy var locationDisplay = makeLocationDisplay()
         
         /// The name of the current garden section feature. If currently not in any
         /// garden section, it will be `nil`.
@@ -106,10 +81,18 @@ private extension SetUpLocationDrivenGeotriggersView {
         /// A simulated location data source for demo purposes.
         lazy var simulatedLocationDataSource = locationDataSource
         
+        /// A Boolean value indicating whether to show an alert.
+        @Published var isShowingAlert = false
+        
+        /// The error shown in the alert.
+        @Published var alertError: Error? {
+            didSet { isShowingAlert = alertError != nil }
+        }
+        
         /// A Boolean indicating
         @Published var currentSectionBarButtonItem = false
         
-        /// A Boolean
+        /// A Boolean indicating
         @Published var pointOfInterestBarButtonItem = false
         
         /// Create a map.
@@ -119,19 +102,29 @@ private extension SetUpLocationDrivenGeotriggersView {
                 portal: .arcGISOnline(connection: .anonymous),
                 id: Item.ID(rawValue: "6ab0e91dc39e478cae4f408e1a36a308")!
             ))
-            
-            // Get the service feature tables from the map's operational layers.
-            if let operationalLayers = map.operationalLayers as? [FeatureLayer],
-               let gardenSectionsLayer = operationalLayers.first(where: { $0.item?.id == Item.ID(rawValue: "1ba816341ea04243832136379b8951d9") }),
-               let gardenPOIsLayer = operationalLayers.first(where: { $0.item?.id == Item.ID(rawValue: "7c6280c290c34ae8aeb6b5c4ec841167") }),
-               let gardenSections = gardenSectionsLayer.featureTable as? ServiceFeatureTable,
-               let gardenPOIs = gardenPOIsLayer.featureTable as? ServiceFeatureTable {
-                // Create geotriggers for each of the service feature tables.
-                let geotriggerFeed = LocationGeotriggerFeed(locationDataSource: locationDataSource)
-                startMonitoring(feed: geotriggerFeed, featureTable: gardenSections, bufferDistance: 0.0, fenceGeotriggerName: sectionFenceGeotriggerName)
-                startMonitoring(feed: geotriggerFeed, featureTable: gardenPOIs, bufferDistance: 10.0, fenceGeotriggerName: poiFenceGeotriggerName)
+            Task {
+                do {
+                    try await map.load()
+                } catch {
+                    alertError = error
+                }
             }
             return map
+        }
+    
+        /// Create and start a location display.
+        func makeLocationDisplay() -> LocationDisplay {
+            let locationDisplay = LocationDisplay(dataSource: locationDataSource)
+            locationDisplay.autoPanMode = .recenter
+            locationDisplay.initialZoomScale = 1000
+            Task {
+                do {
+                    try await locationDisplay.dataSource.start()
+                } catch {
+                    alertError = error
+                }
+            }
+            return locationDisplay
         }
         
         /// Create a simulated location data source from a GeoJSON.
@@ -144,10 +137,24 @@ private extension SetUpLocationDrivenGeotriggersView {
                 lengthUnit: .meters,
                 curveType: .geodesic
             ) as! Polyline
-            
             let simulatedDataSource = SimulatedLocationDataSource()
             simulatedDataSource.setSimulatedLocations(with: densifiedRoute)
             return simulatedDataSource
+        }
+        
+        /// Start geotriggers.
+        func startMonitoring() {
+            // Get the service feature tables from the map's operational layers.
+            if let operationalLayers = map.operationalLayers as? [FeatureLayer],
+               let gardenSectionsLayer = operationalLayers.first(where: { $0.item?.id == Item.ID(rawValue: "1ba816341ea04243832136379b8951d9") }),
+               let gardenPOIsLayer = operationalLayers.first(where: { $0.item?.id == Item.ID(rawValue: "7c6280c290c34ae8aeb6b5c4ec841167") }),
+               let gardenSections = gardenSectionsLayer.featureTable as? ServiceFeatureTable,
+               let gardenPOIs = gardenPOIsLayer.featureTable as? ServiceFeatureTable {
+                // Create geotriggers for each of the service feature tables.
+                let geotriggerFeed = LocationGeotriggerFeed(locationDataSource: locationDataSource)
+                makeGeotrigger(feed: geotriggerFeed, featureTable: gardenSections, bufferDistance: 0.0, fenceGeotriggerName: sectionFenceGeotriggerName)
+                makeGeotrigger(feed: geotriggerFeed, featureTable: gardenPOIs, bufferDistance: 10.0, fenceGeotriggerName: poiFenceGeotriggerName)
+            }
         }
         
         /// Create a geotrigger monitor and start observing its notifications.
@@ -158,7 +165,7 @@ private extension SetUpLocationDrivenGeotriggersView {
         ///   - bufferDistance: A buffer distance in meters to apply to the features
         ///   when checking if an `AGSFenceGeotrigger` condition is met.
         ///   - fenceGeotriggerName: The name for the `AGSFenceGeotrigger`.
-        func startMonitoring(feed: GeotriggerFeed, featureTable: ServiceFeatureTable, bufferDistance: Double, fenceGeotriggerName: String) {
+        func makeGeotrigger(feed: GeotriggerFeed, featureTable: ServiceFeatureTable, bufferDistance: Double, fenceGeotriggerName: String) {
             let fenceParameters = FeatureFenceParameters(
                 featureTable: featureTable,
                 bufferDistance: bufferDistance
@@ -175,21 +182,31 @@ private extension SetUpLocationDrivenGeotriggersView {
             
             // Create and start the geotrigger monitor.
             let geotriggerMonitor = GeotriggerMonitor(geotrigger: fenceGeotrigger)
-            //geotriggerMonitor.start()
-            geotriggerMonitors.append(geotriggerMonitor)
+
+            Task {
+                do {
+                    try await geotriggerMonitor.start()
+                    geotriggerMonitors.append(geotriggerMonitor)
+                } catch {
+                    alertError = error
+                }
+            }
             
-            /*
-            // Observe geotrigger notifications.
-            let observer = NotificationCenter.default.addObserver(
-                forName: .AGSGeotriggerMonitorDidTrigger,
-                object: geotriggerMonitor,
-                queue: nil,
-                using: { [weak self] note in self?.handleGeotriggerNotification(note) }
-            )
-            observers.append(observer)
-             */
+             // Observe geotrigger notifications.
+             let observer = NotificationCenter.default.addObserver(
+             forName: .none,
+             object: geotriggerMonitor,
+             queue: nil,
+             using: { [weak self] note in handleGeotriggerNotification(note) }
+             )
+             observers.append(observer)
         }
     }
+}
+
+/// Handle the notifications posted by `AGSGeotriggerMonitor` when the fence
+/// geotrigger condition has been met.
+func handleGeotriggerNotification(_ notification: Notification) {
 }
 
 private extension SetUpLocationDrivenGeotriggersView {
