@@ -64,7 +64,6 @@ struct CreateBuffersAroundPointsView: View {
                     model.radiusInput = ""
                     model.drawBuffers()
                 }
-                // Input alert cancel button.
                 Button("Cancel") {
                     model.radiusInput = ""
                 }
