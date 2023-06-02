@@ -23,7 +23,7 @@ struct CreateConvexHullAroundPointsView: View {
     @State private var createIsDisabled = true
     
     /// A Boolean indicate whether the reset button can be pressed.
-    @State var resetIsDisabled = true
+    @State private var resetIsDisabled = true
     
     var body: some View {
         // Create a map view to display the map.
