@@ -55,7 +55,7 @@ struct CreateConvexHullAroundPointsView: View {
 }
 
 private extension CreateConvexHullAroundPointsView {
-    // The view model for this sample.
+    /// The view model for this sample.
     private class Model: ObservableObject {
         /// A map with a topographic basemap.
         let map = Map(basemapStyle: .arcGISTopographic)
