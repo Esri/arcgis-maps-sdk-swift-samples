@@ -2,7 +2,9 @@
     "category": "Scenes",
     "description": "Animate a series of images with an image overlay.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "animate-images-with-image-overlay.gifs"
+    ],
     "keywords": [
         "3d",
         "animation",

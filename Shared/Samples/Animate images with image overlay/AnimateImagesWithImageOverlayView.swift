@@ -19,7 +19,10 @@ struct AnimateImagesWithImageOverlayView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
-    /// A Boolean indicating wHether the speed options sheet is showing
+    /// The text for the the start stop button.
+    @State var startStopButtonText = "Start"
+    
+    /// A Boolean indicating whether the speed options sheet is showing.
     @State private var isShowingSpeedOptions = false
     
     var body: some View {
@@ -29,23 +32,39 @@ struct AnimateImagesWithImageOverlayView: View {
                 ToolbarItemGroup(placement: .bottomBar) {
                     VStack {
                         HStack {
-                            Button(model.startStopButtonText) {
-                                model.startStopButtonText = model.startStopButtonText == "Start" ? "Stop" : "Start"
+                            Button(startStopButtonText) {
+                                startStopButtonText = startStopButtonText == "Start" ? "Stop" : "Start"
                                 model.displayLink.isPaused.toggle()
                             }
                             Spacer()
                             Button("Speed") {
-                                model.displayLink.preferredFramesPerSecond = 30
+                                isShowingSpeedOptions = true
                             }
                         }
                         HStack {
-                            Slider(value: $model.opacity, in: 0.0...1.0, step: 0.01) { _ in
-                                model.imageOverlay.opacity = model.opacity
-                            }
-                            Text(model.percentageFormatter.string(from: model.opacity as NSNumber)!)
+                            Slider(value: $model.imageOverlay.opacity, in: 0.0...1.0, step: 0.01)
+                            Text(model.percentageFormatter.string(from: model.imageOverlay.opacity as NSNumber)!)
                         }
                     }
                 }
+            }
+            .confirmationDialog("Choose playback speed", isPresented: $isShowingSpeedOptions, titleVisibility: .visible) {
+                Button("Fast") {
+                    model.displayLink.preferredFramesPerSecond = 60
+                }
+                Button("Medium") {
+                    model.displayLink.preferredFramesPerSecond = 30
+                }
+                Button("Slow") {
+                    model.displayLink.preferredFramesPerSecond = 15
+                }
+            }
+            .onAppear {
+                model.setImageFrame()
+            }
+            .onDisappear {
+                // Invalidate display link before exiting.
+                model.displayLink.invalidate()
             }
     }
 }
@@ -53,28 +72,21 @@ struct AnimateImagesWithImageOverlayView: View {
 private extension AnimateImagesWithImageOverlayView {
     /// The view model for the sample.
     class Model: ObservableObject {
-        /// A scene
-        var scene: ArcGIS.Scene = {
+        /// A scene with a dark gray base and centered on southern California.
+        let scene: ArcGIS.Scene = {
             // Creates a scene and sets an initial viewpoint.
             let scene = Scene(basemapStyle: .arcGISDarkGrayBase)
             let point = Point(x: -116.621, y: 24.7773, z: 856977.0, spatialReference: .wgs84)
             let camera = Camera(location: point, heading: 353.994, pitch: 48.5495, roll: 0)
             scene.initialViewpoint = Viewpoint(boundingGeometry: point, camera: camera)
             
-            // Add base surface.
+            // Add base surface from elevation service.
             let elevationSource = ArcGISTiledElevationSource(url: .elevationService)
             let surface = Surface()
             surface.addElevationSource(elevationSource)
             scene.baseSurface = surface
             
             return scene
-        }()
-        
-        /// The image overlay to show image frames.
-        lazy var imageOverlay: ImageOverlay = {
-            let imageOverlay = ImageOverlay()
-            imageOverlay.opacity = opacity
-            return imageOverlay
         }()
         
         /// A timer to synchronize image overlay animation to the refresh rate
@@ -89,10 +101,9 @@ private extension AnimateImagesWithImageOverlayView {
         }
         
         /// An iterator to hold and loop through the overlay images.
-        private lazy var imagesIterator: CircularIterator<UIImage> = {
+        private var imagesIterator: CircularIterator<UIImage> = {
             // Get the URLs to images added to the project's folder reference.
             let imageURLs = Bundle.main.urls(forResourcesWithExtension: "png", subdirectory: "PacificSouthWest2") ?? []
-            print(imageURLs)
             let images = imageURLs
                 .sorted { $0.lastPathComponent < $1.lastPathComponent }
                 .map { UIImage(contentsOfFile: $0.path)! }
@@ -100,7 +111,7 @@ private extension AnimateImagesWithImageOverlayView {
         }()
         
         /// An envelope of the pacific southwest sector for displaying the image frame.
-        let pacificSouthwestEnvelope = Envelope(
+        private let pacificSouthwestEnvelope = Envelope(
             center: Point(latitude: 35.131016955536694, longitude: -120.0724273439448),
             width: 15.09589635986124,
             height: -14.3770441522488
@@ -114,14 +125,15 @@ private extension AnimateImagesWithImageOverlayView {
             return formatter
         }()
         
-        /// The text for the the start stop button.
-        @Published var startStopButtonText = "Start"
-        
-        /// The opacity of the image overlay.
-        @Published var opacity: Float = 1.0
-        
         /// The frame rate speed of the image overlay
         @Published var fpsSpeed = 30
+        
+        /// The image overlay to show image frames.
+        @Published var imageOverlay: ImageOverlay = {
+            let imageOverlay = ImageOverlay()
+            imageOverlay.opacity = 0.5
+            return imageOverlay
+        }()
         
         init() {
             // Create new display link.
@@ -161,7 +173,4 @@ private extension URL {
     static var elevationService: URL {
         URL(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!
     }
-    
-    /// Los Angeles Trailheads geodatabase.
-    static var laTrails: URL { Bundle.main.url(forResource: "LA_Trails", withExtension: "geodatabase")! }
 }
