@@ -94,7 +94,7 @@ private extension CreateBuffersAroundPointsView {
         let map: Map
         
         /// The graphics overlays used in this sample.
-        var graphicsOverlays: [GraphicsOverlay] = []
+        var graphicsOverlays: [GraphicsOverlay] { [boundaryGraphicsOverlay, bufferGraphicsOverlay, tapPointsGraphicsOverlay] }
         
         /// An array of the tapped points and their radii.
         var bufferPoints: [(point: Point, radius: Double)] = []
