@@ -19,7 +19,7 @@ struct DensifyAndGeneralizeGeometryView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
-    /// A 'Boolean' value indicate whether the option sheet is showing.
+    /// A Boolean value indicate whether the option sheet is showing.
     @State private var isShowingOptions = false
     
     var body: some View {
@@ -31,7 +31,6 @@ struct DensifyAndGeneralizeGeometryView: View {
                         isShowingOptions = true
                     }
                     .sheet(isPresented: $isShowingOptions, detents: [.medium], dragIndicatorVisibility: .visible) {
-                        // The densify and generalize options view.
                         OptionsView()
                             .environmentObject(model)
                     }
@@ -43,7 +42,7 @@ struct DensifyAndGeneralizeGeometryView: View {
 extension DensifyAndGeneralizeGeometryView {
     /// The view model for the sample.
     class Model: ObservableObject {
-        /// A 'Map' with a Streets (Night) basemap centered on the polyline.
+        /// A map with a Streets (Night) basemap centered on the polyline.
         lazy var map: Map = {
             let map = Map(basemapStyle: .arcGISStreetsNight)
             
@@ -54,7 +53,7 @@ extension DensifyAndGeneralizeGeometryView {
             return map
         }()
         
-        /// The 'GraphicsOverlay' for all of the graphic.
+        /// The graphics overlay for all of the graphics.
         lazy var graphicsOverlay: GraphicsOverlay = {
             let graphicsOverlay = GraphicsOverlay()
             let multipoint = Multipoint(points: pointCollection)
@@ -79,22 +78,22 @@ extension DensifyAndGeneralizeGeometryView {
             return graphicsOverlay
         }()
         
-        /// The base 'Polyline' geometry that is densified and generalized.
+        /// The base polyline geometry that is densified and generalized.
         lazy var originalPolyline = Polyline(points: pointCollection)
         
-        /// The 'Graphic' for displaying the points of the resultant geometry.
+        /// The graphic for displaying the points of the resultant geometry.
         let resultPointsGraphic: Graphic = {
             let symbol = SimpleMarkerSymbol(style: .circle, color: .magenta, size: 7)
             return Graphic(symbol: symbol)
         }()
         
-        /// The 'Graphic' for displaying the lines of the resultant geometry.
+        /// The graphic for displaying the lines of the resultant geometry.
         let resultPolylineGraphic: Graphic = {
             let symbol = SimpleLineSymbol(style: .solid, color: .magenta, width: 3)
             return Graphic(symbol: symbol)
         }()
         
-        /// A 'MutablePointCollection' from which the original polyline and
+        /// A mutable point collection from which the original polyline and
         /// mulitpoint geometries are made.
         private let pointCollection: MutablePointCollection = {
             // The spatial reference for the sample.
@@ -122,13 +121,13 @@ extension DensifyAndGeneralizeGeometryView {
             return collection
         }()
         
-        /// A 'Boolean' indicating whether to generalize.
+        /// A Boolean indicating whether to generalize.
         @Published var shouldGeneralize = false
         
         /// The max deviation for generalization.
         @Published var maxDeviation = 10.0
         
-        /// A 'Boolean' indicating whether to densify.
+        /// A Boolean indicating whether to densify.
         @Published var shouldDensify = false
         
         /// The max segment length for densifying.
