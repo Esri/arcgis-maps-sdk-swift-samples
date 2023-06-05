@@ -139,9 +139,6 @@ private extension CreateBuffersAroundPointsView {
             )
             bufferGraphicsOverlay = CreateBuffersAroundPointsView.Model.makeBufferGraphicsOverlay()
             tapPointsGraphicsOverlay = CreateBuffersAroundPointsView.Model.makeTappedPointsGraphicsOverlay()
-            graphicsOverlays.append(
-                contentsOf: [boundaryGraphicsOverlay, bufferGraphicsOverlay, tapPointsGraphicsOverlay]
-            )
         }
         
         /// Create a map with image layers from a spatial reference.
