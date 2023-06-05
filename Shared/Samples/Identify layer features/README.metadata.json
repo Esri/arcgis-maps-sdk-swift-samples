@@ -1,0 +1,27 @@
+{
+    "category": "Maps",
+    "description": "Identify features in all layers in a map.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "identify",
+        "recursion",
+        "recursive",
+        "sublayers",
+        "IdentifyLayerResult",
+        "IdentifyLayerResult.LayerContent.Name",
+        "IdentifyLayerResult.SublayerResults",
+        "MapView.IdentifyLayersAsync"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "IdentifyLayerResult",
+        "IdentifyLayerResult.LayerContent.Name",
+        "IdentifyLayerResult.SublayerResults",
+        "MapView.IdentifyLayersAsync"
+    ],
+    "snippets": [
+        "IdentifyLayerFeaturesView.swift"
+    ],
+    "title": "Identify layer features"
+}
