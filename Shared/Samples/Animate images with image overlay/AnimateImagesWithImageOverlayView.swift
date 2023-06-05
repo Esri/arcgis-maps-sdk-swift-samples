@@ -126,9 +126,11 @@ private extension AnimateImagesWithImageOverlayView {
         init() {
             // Create new display link.
             let newDisplayLink = CADisplayLink(target: self, selector: #selector(setImageFrame))
+            
             // Inherit the frame rate from existing display link, or set to default 60 fps.
             newDisplayLink.preferredFramesPerSecond = displayLink?.preferredFramesPerSecond ?? 60
             newDisplayLink.isPaused = true
+            
             // Add to main thread common mode run loop, so it is not effected by UI events.
             newDisplayLink.add(to: .main, forMode: .common)
             displayLink = newDisplayLink
@@ -146,7 +148,10 @@ private extension AnimateImagesWithImageOverlayView {
     
     /// A generic circular iterator.
     private struct CircularIterator<Element>: IteratorProtocol {
+        /// An array of elements to be iterated over.
         let elements: [Element]
+        
+        /// The iterator for the elements.
         private var elementIterator: Array<Element>.Iterator
         
         init(elements: [Element]) {
@@ -154,6 +159,9 @@ private extension AnimateImagesWithImageOverlayView {
             elementIterator = elements.makeIterator()
         }
         
+        /// Moves to the next element if there is one or starts over by creating
+        /// a new iterator.
+        /// - Returns: The next element.
         mutating func next() -> Element? {
             if let next = elementIterator.next() {
                 return next
