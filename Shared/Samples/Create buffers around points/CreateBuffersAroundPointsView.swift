@@ -100,7 +100,7 @@ private extension CreateBuffersAroundPointsView {
         var bufferPoints: [(point: Point, radius: Double)] = []
         
         /// The graphics overlay for the boundary around the valid area of use.
-        private var boundaryGraphicsOverlay: GraphicsOverlay
+        private let boundaryGraphicsOverlay: GraphicsOverlay
         
         /// The graphics overlay for the points' buffers.
         private var bufferGraphicsOverlay: GraphicsOverlay
