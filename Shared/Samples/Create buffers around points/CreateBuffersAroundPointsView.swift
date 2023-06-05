@@ -73,7 +73,7 @@ struct CreateBuffersAroundPointsView: View {
 }
 
 private extension CreateBuffersAroundPointsView {
-    // The view model for this sample.
+    /// The view model for this sample.
     class Model: ObservableObject {
         /// A Boolean value indicating whether union is on.
         @Published var shouldUnion = false
