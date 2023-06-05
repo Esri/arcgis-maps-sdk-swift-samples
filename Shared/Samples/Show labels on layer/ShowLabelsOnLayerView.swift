@@ -50,6 +50,11 @@ private extension ShowLabelsOnLayerView {
         private func makeMap() -> Map {
             // Create a map with a light gray canvas basemap.
             let map = Map(basemapStyle: .arcGISLightGrayBase)
+            // center: Point(latitude: 2150308.5, longitude: -10626699.4)
+            map.initialViewpoint = Viewpoint(
+                center: Point(x: -10626699.4, y: 2150308.5),
+                scale: 74016655.9
+            )
             
             // Create a feature table from the URL.
             let featureTable = ServiceFeatureTable(url: .usaCongressionalDistricts)
@@ -75,7 +80,6 @@ private extension ShowLabelsOnLayerView {
             return map
         }
         
-
         /// Add labels to a feature layer.
         /// - Parameter layer: The 'FeatureLayer' to add the labels to.
         private func addLabels(to layer: FeatureLayer) {
@@ -114,7 +118,7 @@ private extension ShowLabelsOnLayerView {
             let labelDefinition = LabelDefinition(labelExpression: arcadeLabelExpression, textSymbol: textSymbol)
             labelDefinition.placement = .polygonAlwaysHorizontal
             labelDefinition.whereClause = whereStatement
-            print(labelDefinition)
+            
             return labelDefinition
         }
     }
