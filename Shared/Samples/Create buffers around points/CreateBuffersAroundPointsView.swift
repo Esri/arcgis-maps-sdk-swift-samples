@@ -19,20 +19,23 @@ struct CreateBuffersAroundPointsView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
+    /// The status of the sample.
+    @State private var status = Status.addPoints
+    
     var body: some View {
         // Create a map view to display the map.
         MapView(map: model.map, graphicsOverlays: model.graphicsOverlays)
             .onSingleTapGesture { _, mapPoint in
                 // Update tapPoint and bring up input box if point is within bounds.
-                if model.isWithinBounds(mapPoint) {
+                if model.boundaryContains(mapPoint) {
                     model.tapPoint = mapPoint
                     model.inputBoxIsPresented.toggle()
                 } else {
-                    model.status = .outOfBoundsTap
+                    status = .outOfBoundsTap
                 }
             }
             .overlay(alignment: .top) {
-                Text(getStatusText(model.status))
+                Text(status.label)
                     .frame(maxWidth: .infinity, alignment: .center)
                     .padding(8)
                     .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
@@ -49,7 +52,7 @@ struct CreateBuffersAroundPointsView: View {
                         }
                     Button("Clear") {
                         model.clearBufferPoints()
-                        model.status = .addPoints
+                        status = .addPoints
                     }
                     .disabled(model.bufferPoints.isEmpty)
                 }
@@ -58,9 +61,22 @@ struct CreateBuffersAroundPointsView: View {
                 TextField("100", text: $model.radiusInput)
                     .keyboardType(.numberPad)
                 Button("Done") {
-                    model.addBufferPoint()
+                    // Check to ensure the tapPoint is within the boundary
+                    guard model.boundaryContains(model.tapPoint) else {
+                        status = .outOfBoundsTap
+                        return
+                    }
+                    
+                    // Ensure that the input is valid.
+                    if let radius = Double(model.radiusInput),
+                       radius > 0 && radius < 300 {
+                        model.addBufferPoint()
+                        model.drawBuffers()
+                        status = .bufferCreated
+                    } else {
+                        status = .invalidInput
+                    }
                     model.radiusInput = ""
-                    model.drawBuffers()
                 }
                 Button("Cancel") {
                     model.radiusInput = ""
@@ -86,9 +102,6 @@ private extension CreateBuffersAroundPointsView {
         
         /// The input obtained from the user for the buffer radius of a point.
         @Published var radiusInput: String = ""
-        
-        /// The status of the sample.
-        @Published var status = Status.addPoints
         
         /// A map centered on Texas with image layers.
         let map: Map
@@ -128,24 +141,24 @@ private extension CreateBuffersAroundPointsView {
             }()
             
             // Create map.
-            map = CreateBuffersAroundPointsView.Model.makeMap(
+            map = Self.makeMap(
                 spatialReference: statePlaneNorthCentralTexas,
                 viewpointGeometry: boundaryPolygon
             )
             
             // Create graphics overlays.
-            boundaryGraphicsOverlay = CreateBuffersAroundPointsView.Model.makeBoundaryGraphicsOverlay(
+            boundaryGraphicsOverlay = Self.makeBoundaryGraphicsOverlay(
                 boundaryGeometry: boundaryPolygon
             )
-            bufferGraphicsOverlay = CreateBuffersAroundPointsView.Model.makeBufferGraphicsOverlay()
-            tapPointsGraphicsOverlay = CreateBuffersAroundPointsView.Model.makeTappedPointsGraphicsOverlay()
+            bufferGraphicsOverlay = Self.makeBufferGraphicsOverlay()
+            tapPointsGraphicsOverlay = Self.makeTappedPointsGraphicsOverlay()
         }
         
         /// Create a map with image layers from a spatial reference.
         /// - Parameters:
         ///   - spatialReference: The `SpatialReference` the `Map` is derived from.
-        ///   - viewpointGeometry: The 'Geometry' to center the map's viewpoint on.
-        /// - Returns: A new 'Map' object with added base layers.
+        ///   - viewpointGeometry: The `Geometry` to center the map's viewpoint on.
+        /// - Returns: A new `Map` object with added base layers.
         private static func makeMap(spatialReference: SpatialReference, viewpointGeometry: Geometry) -> Map {
             // Create a map with the spatial reference.
             let map = Map(spatialReference: spatialReference)
@@ -161,8 +174,8 @@ private extension CreateBuffersAroundPointsView {
         }
         
         /// Create a graphics overlay to show the spatial reference's valid area.
-        /// - Parameter boundaryGeometry: The 'Geometry' to create the boundary graphic from.
-        /// - Returns: A new 'GraphicsOverlay' object with a boundary graphic added.
+        /// - Parameter boundaryGeometry: The `Geometry` to create the boundary graphic from.
+        /// - Returns: A new `GraphicsOverlay` object with a boundary graphic added.
         private static func makeBoundaryGraphicsOverlay(boundaryGeometry: Geometry) -> GraphicsOverlay {
             let graphicsOverlay = GraphicsOverlay()
             let lineSymbol = SimpleLineSymbol(style: .dash, color: .red, width: 5)
@@ -172,7 +185,7 @@ private extension CreateBuffersAroundPointsView {
         }
         
         /// Create a graphics overlay for the buffer graphics.
-        /// - Returns: A new 'GraphicsOverlay' object to be used for the buffers.
+        /// - Returns: A new `GraphicsOverlay` object to be used for the buffers.
         private static func makeBufferGraphicsOverlay() -> GraphicsOverlay {
             let graphicsOverlay = GraphicsOverlay()
             let bufferPolygonOutlineSymbol = SimpleLineSymbol(style: .solid, color: .systemGreen, width: 3)
@@ -182,7 +195,7 @@ private extension CreateBuffersAroundPointsView {
         }
         
         /// Create a graphics overlay for the tapped points graphics.
-        /// - Returns: A new 'GraphicsOverlay' object to be used for the tapped points.
+        /// - Returns: A new `GraphicsOverlay` object to be used for the tapped points.
         private static func makeTappedPointsGraphicsOverlay() -> GraphicsOverlay {
             let graphicsOverlay = GraphicsOverlay()
             let circleSymbol = SimpleMarkerSymbol(style: .circle, color: .red, size: 10)
@@ -191,9 +204,9 @@ private extension CreateBuffersAroundPointsView {
         }
         
         /// Check if a point is within the valid area of use for this sample.
-        /// - Parameter point: A 'Point' to validate.
-        /// - Returns: A 'Bool' indicating whether it is within bounds.
-        func isWithinBounds(_ point: Point) -> Bool {
+        /// - Parameter point: A `Point` to validate.
+        /// - Returns: A `Bool` indicating whether it is within bounds.
+        func boundaryContains(_ point: Point) -> Bool {
             guard GeometryEngine.doesGeometry(boundaryPolygon, contain: point) else {
                 return false
             }
@@ -202,12 +215,6 @@ private extension CreateBuffersAroundPointsView {
         
         /// Draw points and their buffers on the map.
         func drawBuffers() {
-            // Ensure that there points to draw
-            guard !bufferPoints.isEmpty else {
-                status = .noPoints
-                return
-            }
-            
             // Clear existing buffers graphics before drawing.
             bufferGraphicsOverlay.removeAllGraphics()
             tapPointsGraphicsOverlay.removeAllGraphics()
@@ -236,30 +243,14 @@ private extension CreateBuffersAroundPointsView {
         
         /// Add a point with its radius to the bufferPoints array.
         func addBufferPoint() {
-            // Check to ensure the tapPoint is within the boundary
-            guard isWithinBounds(tapPoint) else {
-                status = .outOfBoundsTap
-                return
-            }
+            // Update the buffer radius with the text value.
+            let radiusInMiles = Measurement(value: Double(radiusInput)!, unit: UnitLength.miles)
             
-            // Ensure that there is input.
-            if let radius = Double(radiusInput) {
-                // Ensure that the input is valid.
-                guard radius > 0 && radius < 300 else {
-                    status = .invalidInput
-                    return
-                }
-                
-                // Update the buffer radius with the text value.
-                let radiusInMiles = Measurement(value: radius, unit: UnitLength.miles)
-                
-                // The spatial reference in this sample uses US feet as its unit.
-                let radiusInFeet = radiusInMiles.converted(to: .feet).value
-                
-                // Add point with radius to bufferPoints Array.
-                bufferPoints.append((point: tapPoint, radius: radiusInFeet))
-                status = .bufferCreated
-            }
+            // The spatial reference in this sample uses US feet as its unit.
+            let radiusInFeet = radiusInMiles.converted(to: .feet).value
+            
+            // Add point with radius to bufferPoints Array.
+            bufferPoints.append((point: tapPoint, radius: radiusInFeet))
         }
         
         /// Clear the bufferPoints array and related graphics.
@@ -274,27 +265,17 @@ private extension CreateBuffersAroundPointsView {
 private extension CreateBuffersAroundPointsView {
     /// An enumeration for the sample status.
     enum Status {
-        case addPoints
-        case bufferCreated
-        case outOfBoundsTap
-        case invalidInput
-        case noPoints
-    }
-    
-    /// Gets the text message associated with the current status for the overlay.
-    /// - Returns: A 'String' status message.
-    func getStatusText(_ status: Status) -> String {
-        switch status {
-        case .addPoints:
-            return "Tap on the map to add buffers."
-        case .bufferCreated:
-            return "Buffer created."
-        case .outOfBoundsTap:
-            return "Tap within the boundary to add buffer."
-        case .invalidInput:
-            return "Enter a value between 0 and 300 to create a buffer."
-        case .noPoints:
-            return "Add a point to draw the buffers."
+        case addPoints, bufferCreated, outOfBoundsTap, invalidInput, noPoints
+        
+        /// The text message associated with the current status for the overlay.
+        var label: String {
+            switch self {
+            case .addPoints: return "Tap on the map to add buffers."
+            case .bufferCreated: return "Buffer created."
+            case .outOfBoundsTap: return "Tap within the boundary to add buffer."
+            case .invalidInput: return "Enter a value between 0 and 300 to create a buffer."
+            case .noPoints: return "Add a point to draw the buffers."
+            }
         }
     }
 }
