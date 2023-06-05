@@ -2,7 +2,9 @@
     "category": "Maps",
     "description": "Identify features in all layers in a map.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "identify-layer-features.png"
+    ],
     "keywords": [
         "identify",
         "recursion",

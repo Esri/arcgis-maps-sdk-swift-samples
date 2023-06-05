@@ -19,9 +19,10 @@ struct IdentifyLayerFeaturesView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
-    ///
+    /// The tapped screen point.
     @State var tapScreenPoint: CGPoint!
     
+    /// A Boolean indicating if the progress view is showing.
     @State var isShowingProgress = false
     
     var body: some View {
@@ -34,6 +35,7 @@ struct IdentifyLayerFeaturesView: View {
                         tapScreenPoint = screenPoint
                     }
                     .task(id: tapScreenPoint) {
+                        // Identify layers using the screen point.
                         if let screenPoint = tapScreenPoint,
                            let results = try? await proxy.identifyLayers(
                             screenPoint: screenPoint,
@@ -45,13 +47,13 @@ struct IdentifyLayerFeaturesView: View {
                         }
                         isShowingProgress = false
                     }
-                    .alert(isPresented: $model.isShowingErrorAlert, presentingError: model.alertError)
                     .alert(isPresented: $model.isShowingLayerAlert) {
                         Alert(
                             title: Text(model.layerAlertTitle),
                             message: Text(model.layerAlertMessage)
                         )
                     }
+                    .alert(isPresented: $model.isShowingErrorAlert, presentingError: model.alertError)
             }
             ProgressView()
                 .hidden(!isShowingProgress)
@@ -62,24 +64,22 @@ struct IdentifyLayerFeaturesView: View {
 private extension IdentifyLayerFeaturesView {
     /// The view model for the sample.
     class Model: ObservableObject {
-        /// A map
+        /// A map with a world cities image layer and damage assessment feature layer.
         var map: Map!
         
         /// A Boolean value indicating whether to show a layer alert.
         @Published var isShowingLayerAlert = false
         
-        /// The title for layer feature alert.
+        /// The title for the identify layer result alert.
         @Published var layerAlertTitle = ""
         
-        @Published var layerAlert: Alert!
-        
-        /// The message for layer feature alert.
+        /// The message for the identify layer result alert.
         @Published var layerAlertMessage = ""
         
         /// A Boolean value indicating whether to show an error alert.
         @Published var isShowingErrorAlert = false
         
-        /// The error shown in the alert.
+        /// The error shown in the error alert.
         @Published var alertError: Error? {
             didSet { isShowingErrorAlert = alertError != nil }
         }
@@ -88,10 +88,12 @@ private extension IdentifyLayerFeaturesView {
             map = makeMap()
         }
         
-        /// Creates a map.
+        /// Creates a map with an image and feature layer.
         private func makeMap() -> Map {
             // Create a map with a topographic basemap.
             let map = Map(basemapStyle: .arcGISTopographic)
+            
+            // Center on the USA.
             map.initialViewpoint = Viewpoint(
                 center: Point(x: -10977012.785807, y: 4514257.550369, spatialReference: .webMercator),
                 scale: 68015210
@@ -105,48 +107,52 @@ private extension IdentifyLayerFeaturesView {
                     // Hide Continent and World layers.
                     mapImageLayer.subLayerContents[1].isVisible = false
                     mapImageLayer.subLayerContents[2].isVisible = false
+                    map.addOperationalLayer(mapImageLayer)
                 } catch {
                     alertError = error
                 }
             }
-            map.addOperationalLayer(mapImageLayer)
             
             // Add feature layer.
             let featureTable = ServiceFeatureTable(url: .damageAssessment)
             Task {
                 do {
                     try await featureTable.load()
+                    let featureLayer = FeatureLayer(featureTable: featureTable)
+                    map.addOperationalLayer(featureLayer)
                 } catch {
                     alertError = error
                 }
             }
-            let featureLayer = FeatureLayer(featureTable: featureTable)
-            map.addOperationalLayer(featureLayer)
             
             return map
         }
         
+        /// Update the identify layer result alert text based on the identify layer results.
+        /// - Parameter results: An `Array` of `IdentifyLayerResult`s to handle.
         func handleIdentifyResults(_ results: [IdentifyLayerResult]) {
-            var messageString = ""
-            var totalCount = 0
-            for (i, identifyLayerResult) in results.enumerated() {
-                let count = geoElementsCountFromResult(identifyLayerResult)
+            var alertMessageString = ""
+            var totalGeoElementsCount = 0
+            
+            for (iCount, identifyLayerResult) in results.enumerated() {
+                // Create alert message the from geoElement count and the layer name.
+                let geoElementsCount = geoElementsCountFromResult(identifyLayerResult)
                 let layerName = identifyLayerResult.layerContent.name
-                messageString.append("\(layerName): \(count)")
+                alertMessageString.append("\(layerName): \(geoElementsCount)")
                 
                 // Add new line character if not the final element in array.
-                if i != results.count - 1 {
-                    messageString.append(" \n ")
+                if iCount != results.count - 1 {
+                    alertMessageString.append("\n")
                 }
                 
                 // Update total count.
-                totalCount += count
+                totalGeoElementsCount += geoElementsCount
             }
             
-            if totalCount > 0 {
+            if totalGeoElementsCount > 0 {
                 // Show the results if any elements were found.
                 layerAlertTitle = "Number of elements found"
-                layerAlertMessage = messageString
+                layerAlertMessage = alertMessageString
             } else {
                 // Notify user that no elements were found.
                 layerAlertTitle = "No element found"
@@ -154,8 +160,10 @@ private extension IdentifyLayerFeaturesView {
             }
         }
         
+        /// Count the geoElements from an identify layer result.
+        /// - Parameter result: The `IdentifyLayerResult` to count.
+        /// - Returns: An `Int` count of the geoElements
         private func geoElementsCountFromResult(_ result: IdentifyLayerResult) -> Int {
-            // Create temp array.
             var tempResults = [result]
             
             // Using Depth First Search approach to handle recursion.
@@ -169,9 +177,8 @@ private extension IdentifyLayerFeaturesView {
                 // Update count with geoElements from the result.
                 count += identifyResult.geoElements.count
                 
-                // Check if the result has any sublayer results.
-                // If yes then add those result objects in the tempResults
-                // array after the current result.
+                // Check if the result has any sublayer results. If so, add those
+                // result objects in the tempResults array after the current result.
                 if !identifyResult.sublayerResults.isEmpty {
                     tempResults.insert(contentsOf: identifyResult.sublayerResults, at: index + 1)
                 }
@@ -186,7 +193,7 @@ private extension IdentifyLayerFeaturesView {
 }
 
 private extension URL {
-    /// A world cities sample image layer URL.
+    /// A world cities image layer URL.
     static var worldCities: URL {
         URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/SampleWorldCities/MapServer")!
     }
@@ -198,7 +205,11 @@ private extension URL {
 }
 
 private extension View {
-    @ViewBuilder func hidden(_ hidden: Bool) -> some View {
+    @ViewBuilder
+    /// Hides or shows a view based on a Boolean.
+    /// - Parameter hidden: A `Bool` indicating whether the view should be hidden.
+    /// - Returns: A `View`, self either hidden or not.
+    func hidden(_ hidden: Bool) -> some View {
         if hidden == true {
             self.hidden()
         } else {
