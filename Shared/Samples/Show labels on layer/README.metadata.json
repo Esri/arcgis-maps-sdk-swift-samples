@@ -2,7 +2,9 @@
     "category": "Layers",
     "description": "Display custom labels on a feature layer.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "show-labels-on-layer.png"
+    ],
     "keywords": [
         "arcade",
         "attribute",
