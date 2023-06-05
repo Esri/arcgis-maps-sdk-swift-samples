@@ -103,7 +103,7 @@ private extension CreateBuffersAroundPointsView {
         private let boundaryGraphicsOverlay: GraphicsOverlay
         
         /// The graphics overlay for the points' buffers.
-        private var bufferGraphicsOverlay: GraphicsOverlay
+        private let bufferGraphicsOverlay: GraphicsOverlay
         
         /// The graphics overlay for the points of the tapped locations.
         private var tapPointsGraphicsOverlay: GraphicsOverlay
