@@ -176,7 +176,7 @@ private extension CreateBuffersAroundPointsView {
         private static func makeBufferGraphicsOverlay() -> GraphicsOverlay {
             let graphicsOverlay = GraphicsOverlay()
             let bufferPolygonOutlineSymbol = SimpleLineSymbol(style: .solid, color: .systemGreen, width: 3)
-            let bufferPolygonFillSymbol = SimpleFillSymbol(style: .solid, color: UIColor.yellow.withAlphaComponent(0.6), outline: bufferPolygonOutlineSymbol)
+            let bufferPolygonFillSymbol = SimpleFillSymbol(style: .solid, color: .yellow.withAlphaComponent(0.6), outline: bufferPolygonOutlineSymbol)
             graphicsOverlay.renderer = SimpleRenderer(symbol: bufferPolygonFillSymbol)
             return graphicsOverlay
         }
