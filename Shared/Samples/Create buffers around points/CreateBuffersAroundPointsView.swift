@@ -143,7 +143,7 @@ private extension CreateBuffersAroundPointsView {
         
         /// Create a map with image layers from a spatial reference.
         /// - Parameters:
-        ///   - spatialReference: The 'SpatialReference' the 'Map' is derived from.
+        ///   - spatialReference: The `SpatialReference` the `Map` is derived from.
         ///   - viewpointGeometry: The 'Geometry' to center the map's viewpoint on.
         /// - Returns: A new 'Map' object with added base layers.
         private static func makeMap(spatialReference: SpatialReference, viewpointGeometry: Geometry) -> Map {
