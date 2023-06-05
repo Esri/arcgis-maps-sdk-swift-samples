@@ -257,7 +257,7 @@ private extension CreateBuffersAroundPointsView {
                 let radiusInFeet = radiusInMiles.converted(to: .feet).value
                 
                 // Add point with radius to bufferPoints Array.
-                bufferPoints.append((point: tapPoint!, radius: radiusInFeet))
+                bufferPoints.append((point: tapPoint, radius: radiusInFeet))
                 status = .bufferCreated
             }
         }
