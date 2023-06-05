@@ -61,7 +61,7 @@ struct CreateBuffersAroundPointsView: View {
                 TextField("100", text: $model.radiusInput)
                     .keyboardType(.numberPad)
                 Button("Done") {
-                    // Check to ensure the tapPoint is within the boundary
+                    // Check to ensure the tapPoint is within the boundary.
                     guard model.boundaryContains(model.tapPoint) else {
                         status = .outOfBoundsTap
                         return
