@@ -20,6 +20,7 @@ struct ShowCoordinatesInMultipleFormatsView: View {
     @StateObject private var model = Model()
     
     var body: some View {
+        // Input text fields.
         VStack {
             CoordinateTextField(
                 title: "Decimal Degrees",
@@ -132,7 +133,7 @@ private extension ShowCoordinatesInMultipleFormatsView {
         }
         
         /// Updates the mapPoint, its graphic, and the corresponding coordinates.
-        /// - Parameter point: A 'Point' used to update the mapPoint.
+        /// - Parameter point: A `Point` used to update the mapPoint.
         func updateMapPoint(point: Point) {
             mapPoint = point
             pointGraphic.geometry = point
