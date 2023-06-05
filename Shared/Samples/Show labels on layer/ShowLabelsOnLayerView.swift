@@ -46,11 +46,10 @@ private extension ShowLabelsOnLayerView {
         }
         
         /// Create a map with a feature layer and labels.
-        /// - Returns: A new 'Map' object.
+        /// - Returns: A new `Map` object.
         private func makeMap() -> Map {
             // Create a map with a light gray canvas basemap.
             let map = Map(basemapStyle: .arcGISLightGrayBase)
-            // center: Point(latitude: 2150308.5, longitude: -10626699.4)
             map.initialViewpoint = Viewpoint(
                 center: Point(x: -10626699.4, y: 2150308.5),
                 scale: 74016655.9
@@ -81,7 +80,7 @@ private extension ShowLabelsOnLayerView {
         }
         
         /// Add labels to a feature layer.
-        /// - Parameter layer: The 'FeatureLayer' to add the labels to.
+        /// - Parameter layer: The `FeatureLayer` to add the labels to.
         private func addLabels(to layer: FeatureLayer) {
             // Create label definitions for the two groups.
             let democratDefinition = makeLabelDefinition(party: "Democrat", color: .blue)
@@ -96,9 +95,9 @@ private extension ShowLabelsOnLayerView {
         
         /// Creates a label definition for the given PARTY field value and color.
         /// - Parameters:
-        ///   - party: A 'String' representing the party.
-        ///   - color: The 'UIColor' for the label.
-        /// - Returns: A new 'LabelDefinition' object.
+        ///   - party: A `String` representing the party.
+        ///   - color: The `UIColor` for the label.
+        /// - Returns: A new `LabelDefinition` object.
         private func makeLabelDefinition(party: String, color: UIColor) -> LabelDefinition {
             // The styling for the label.
             let textSymbol = TextSymbol()
