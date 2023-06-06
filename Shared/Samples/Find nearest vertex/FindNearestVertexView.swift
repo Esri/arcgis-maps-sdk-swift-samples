@@ -20,7 +20,6 @@ struct FindNearestVertexView: View {
     @StateObject private var model = Model()
     
     var body: some View {
-        // Create a map view to display the map.
         MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
             .onSingleTapGesture { _, mapPoint in
                 // Normalize map point.
