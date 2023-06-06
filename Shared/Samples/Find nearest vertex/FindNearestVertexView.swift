@@ -87,7 +87,7 @@ private extension FindNearestVertexView {
         }()
         
         /// The example polygon near San Bernardino County, California.
-        private var polygon: Polygon
+        private var polygon: ArcGIS.Polygon
         
         /// A distance formatter to format distance measurements and units.
         private let distanceFormatter: MeasurementFormatter = {
