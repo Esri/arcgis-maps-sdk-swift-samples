@@ -18,7 +18,7 @@ import SwiftUI
 extension DensifyAndGeneralizeGeometryView {
     struct OptionsView: View {
         /// The view model for the sample.
-        @EnvironmentObject private var model: Model
+        @ObservedObject var model: Model
         
         var body: some View {
             List {

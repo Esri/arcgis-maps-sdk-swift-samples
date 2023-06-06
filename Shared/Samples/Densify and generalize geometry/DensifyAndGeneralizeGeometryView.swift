@@ -31,8 +31,7 @@ struct DensifyAndGeneralizeGeometryView: View {
                         isShowingOptions = true
                     }
                     .sheet(isPresented: $isShowingOptions, detents: [.medium], dragIndicatorVisibility: .visible) {
-                        OptionsView()
-                            .environmentObject(model)
+                        OptionsView(model: model)
                     }
                 }
             }
