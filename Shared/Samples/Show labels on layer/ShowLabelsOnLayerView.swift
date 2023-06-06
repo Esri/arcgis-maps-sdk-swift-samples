@@ -16,110 +16,90 @@ import ArcGIS
 import SwiftUI
 
 struct ShowLabelsOnLayerView: View {
-    /// The view model for the sample.
-    @StateObject private var model = Model()
+    /// A map with a light gray canvas basemap centered on the USA.
+    private var map = {
+        let map = Map(basemapStyle: .arcGISLightGrayBase)
+        map.initialViewpoint = Viewpoint(
+            center: Point(x: -10626699.4, y: 2150308.5),
+            scale: 74016655.9
+        )
+        return map
+    }()
+    
+    /// A Boolean value indicating whether to show an alert.
+    @State private var isShowingAlert = false
+    
+    /// The error shown in the alert.
+    @State private var error: Error? {
+        didSet { isShowingAlert = error != nil }
+    }
     
     var body: some View {
         // Create a map view to display the map.
-        MapView(map: model.map)
-            .alert(isPresented: $model.isShowingAlert, presentingError: model.alertError)
+        MapView(map: map)
+            .task {
+                do {
+                    // Create a feature table from the URL.
+                    let featureTable = ServiceFeatureTable(url: .usaCongressionalDistricts)
+                    
+                    try await featureTable.load()
+                    
+                    // Create a feature layer from the table.
+                    let featureLayer = FeatureLayer(featureTable: featureTable)
+                    
+                    // Add the layer to the map.
+                    map.addOperationalLayer(featureLayer)
+                    
+                    // Add labels to the layer.
+                    addLabels(to: featureLayer)
+                } catch {
+                    // Present an error if feature table fails to load.
+                    self.error = error
+                }
+            }
+            .alert(isPresented: $isShowingAlert, presentingError: error)
     }
 }
 
 private extension ShowLabelsOnLayerView {
-    /// The view model for the sample.
-    class Model: ObservableObject {
-        /// A map with a light gray canvas basemap with a USA congressional
-        /// districts feature layer and labels.
-        var map: Map!
+    /// Add labels to a feature layer.
+    /// - Parameter layer: The `FeatureLayer` to add the labels to.
+    func addLabels(to layer: FeatureLayer) {
+        // Create label definitions for the two groups.
+        let democratDefinition = makeLabelDefinition(party: "Democrat", color: .blue)
+        let republicanDefinition = makeLabelDefinition(party: "Republican", color: .red)
         
-        /// A Boolean value indicating whether to show an alert.
-        @Published var isShowingAlert = false
+        // Add the label definitions to the layer.
+        layer.addLabelDefinitions([democratDefinition, republicanDefinition])
         
-        /// The error shown in the alert.
-        @Published var alertError: Error? {
-            didSet { isShowingAlert = alertError != nil }
-        }
+        // Turn on labeling.
+        layer.labelsAreEnabled = true
+    }
+    
+    /// Create a label definition for the given PARTY field value and color.
+    /// - Parameters:
+    ///   - party: A `String` representing the party.
+    ///   - color: The `UIColor` for the label.
+    /// - Returns: A new `LabelDefinition` object.
+    private func makeLabelDefinition(party: String, color: UIColor) -> LabelDefinition {
+        // The styling for the label.
+        let textSymbol = TextSymbol(color: color, size: 12)
+        textSymbol.haloColor = .white
+        textSymbol.haloWidth = 2
         
-        init() {
-            map = makeMap()
-        }
+        // An SQL WHERE statement for filtering the features this label applies to.
+        let whereStatement = "PARTY = '\(party)'"
         
-        /// Create a map with a feature layer and labels.
-        /// - Returns: A new `Map` object.
-        private func makeMap() -> Map {
-            // Create a map with a light gray canvas basemap.
-            let map = Map(basemapStyle: .arcGISLightGrayBase)
-            map.initialViewpoint = Viewpoint(
-                center: Point(x: -10626699.4, y: 2150308.5),
-                scale: 74016655.9
-            )
-            
-            // Create a feature table from the URL.
-            let featureTable = ServiceFeatureTable(url: .usaCongressionalDistricts)
-            
-            // Present error if feature table fails to load.
-            Task {
-                do {
-                    try await featureTable.load()
-                } catch {
-                    alertError = error
-                }
-            }
-            
-            // Create a feature layer from the table.
-            let featureLayer = FeatureLayer(featureTable: featureTable)
-            
-            // Add the layer to the map.
-            map.addOperationalLayer(featureLayer)
-            
-            // Add labels to the layer.
-            addLabels(to: featureLayer)
-            
-            return map
-        }
+        // An expression that specifies the content of the label using the table's attributes.
+        let expression = "$feature.NAME + ' (' + left($feature.PARTY,1) + ')\\nDistrict' + $feature.CDFIPS"
         
-        /// Add labels to a feature layer.
-        /// - Parameter layer: The `FeatureLayer` to add the labels to.
-        private func addLabels(to layer: FeatureLayer) {
-            // Create label definitions for the two groups.
-            let democratDefinition = makeLabelDefinition(party: "Democrat", color: .blue)
-            let republicanDefinition = makeLabelDefinition(party: "Republican", color: .red)
-            
-            // Add the label definitions to the layer.
-            layer.addLabelDefinitions([democratDefinition, republicanDefinition])
-            
-            // Turn on labeling.
-            layer.labelsAreEnabled = true
-        }
+        // Make an arcade label expression.
+        let arcadeLabelExpression = ArcadeLabelExpression(arcadeString: expression)
+        let labelDefinition = LabelDefinition(labelExpression: arcadeLabelExpression, textSymbol: textSymbol)
+        labelDefinition.placement = .polygonAlwaysHorizontal
+        labelDefinition.whereClause = whereStatement
         
-        /// Creates a label definition for the given PARTY field value and color.
-        /// - Parameters:
-        ///   - party: A `String` representing the party.
-        ///   - color: The `UIColor` for the label.
-        /// - Returns: A new `LabelDefinition` object.
-        private func makeLabelDefinition(party: String, color: UIColor) -> LabelDefinition {
-            // The styling for the label.
-            let textSymbol = TextSymbol()
-            textSymbol.size = 12
-            textSymbol.haloColor = .white
-            textSymbol.haloWidth = 2
-            textSymbol.color = color
-            
-            // An SQL WHERE statement for filtering the features this label applies to.
-            let whereStatement = "PARTY = '\(party)'"
-            
-            // An expression that specifies the content of the label using the table's attributes.
-            let expression = "$feature.NAME + ' (' + left($feature.PARTY,1) + ')\\nDistrict' + $feature.CDFIPS"
-            
-            // Make an arcade label expression.
-            let arcadeLabelExpression = ArcadeLabelExpression(arcadeString: expression)
-            let labelDefinition = LabelDefinition(labelExpression: arcadeLabelExpression, textSymbol: textSymbol)
-            labelDefinition.placement = .polygonAlwaysHorizontal
-            labelDefinition.whereClause = whereStatement
-            
-            return labelDefinition
-        }
+        return labelDefinition
     }
 }
 
