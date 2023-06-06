@@ -28,10 +28,8 @@ struct FindNearestVertexView: View {
                 if model.calloutPlacement == nil {
                     // Draw the point graphics.
                     model.drawNearestPoints()
-                    // Project the point to the WGS 84 spatial reference.
-                    let location = GeometryEngine.project(mapPoint, into: .wgs84)!
                     // Show the callout at the tapped location.
-                    model.calloutPlacement = CalloutPlacement.location(location)
+                    model.calloutPlacement = CalloutPlacement.location(normalizedMapPoint)
                 } else {
                     // Remove points and hide callout.
                     model.tapLocationGraphic.geometry = nil
