@@ -31,7 +31,7 @@ private extension ShowLabelsOnLayerView {
     class Model: ObservableObject {
         /// A map with a light gray canvas basemap with a USA congressional
         /// districts feature layer and labels.
-        var map: Map!
+        let map = makeMap()
         
         /// A Boolean value indicating whether to show an alert.
         @Published var isShowingAlert = false
