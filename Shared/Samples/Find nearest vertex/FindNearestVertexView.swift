@@ -159,7 +159,7 @@ private extension FindNearestVertexView {
             ])
         }
         
-        /// Draw the nearest coordinate and vertex to the tapLocation on the
+        /// Draws the nearest coordinate and vertex to the tapLocation on the
         /// example polygon.
         func drawNearestPoints() {
             // Get nearest vertex and nearest coordinate results.
