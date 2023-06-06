@@ -12,38 +12,105 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import ArcGIS
 import SwiftUI
+import ArcGIS
+import ArcGISToolkit
 
 struct SetUpLocationDrivenGeotriggersView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
+    /// The popup to be shown as the result of the layer identify operation.
+    @State private var popup: Popup?
+    
+    /// A Boolean indicate whether to show the popup.
+    @State var isShowingPopup = false
+
     var body: some View {
-        // Create a map view to display the map.
         MapView(map: model.map)
             .locationDisplay(model.locationDisplay)
-            .alert(isPresented: $model.isShowingAlert, presentingError: model.alertError)
-            .toolbar {
-                ToolbarItemGroup(placement: .bottomBar) {
-                    // Create button.
-                    Button("Current Selction") {
-                    }
-                    .disabled(model.currentSectionBarButtonItem)
-                    // Reset button.
-                    Button("Point of Interest") {
-                    }
-                    .disabled(model.pointOfInterestBarButtonItem)
+            .task {
+                // Start geotrigger monitoring once the map loads.
+                do {
+                    try await model.map.load()
+                    model.startMonitoring()
+                } catch {
+                    model.alertError = error
                 }
             }
+            .overlay(alignment: .top) {
+                VStack {
+                    Text("\(model.fenceGeotriggerString)\n")
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    
+                    Text(model.nearbyFeaturesString)
+                        .foregroundColor(.orange)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.top, -24)
+                }
+                .padding(8)
+                .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
+            }
+            .toolbar {
+                ToolbarItemGroup(placement: .bottomBar) {
+                    Button("Current Selection") {
+                        let sectionFeature = model.nearbyFeatures[model.currentSectionName!]!
+                        popup = Popup(geoElement: sectionFeature)
+                        isShowingPopup = true
+                    }
+                    .disabled(!model.currentSectionBarButtonItem)
+                    .opacity(isShowingPopup ? 0 : 1)
+
+                    Button("Point of Interest") {
+                        let poiFeature = model.nearbyFeatures[model.nearbyPOINames.first!]!
+                        popup = Popup(geoElement: poiFeature)
+                        isShowingPopup = true
+                    }
+                    .disabled(!model.pointOfInterestBarButtonItem)
+                    .opacity(isShowingPopup ? 0 : 1)
+                }
+            }
+            .floatingPanel(
+                selectedDetent: .constant(.full),
+                horizontalAlignment: .leading,
+                isPresented: $isShowingPopup
+            ) {
+                Group {
+                    if let popup = popup {
+                        PopupView(popup: popup, isPresented: $isShowingPopup)
+                            .showCloseButton(true)
+                    }
+                }
+                .padding()
+            }
+            .task(id: isShowingPopup) {
+                // Stop location updates when the popup is showing.
+                if isShowingPopup {
+                    await model.locationDisplay.dataSource.stop()
+                } else {
+                    do {
+                        try await model.locationDisplay.dataSource.start()
+                    } catch {
+                        model.alertError = error
+                    }
+                }
+            }
+            .alert(isPresented: $model.isShowingAlert, presentingError: model.alertError)
     }
 }
 
 private extension SetUpLocationDrivenGeotriggersView {
     /// The view model for the sample.
     class Model: ObservableObject {
-        /// A map
-        lazy var map = makeMap()
+        /// A map of the Santa Barbara Botanic Garden
+        var map: Map = {
+            // Load a map with predefined tile basemap, feature styles, and labels.
+            let map = Map(item: PortalItem(
+                portal: .arcGISOnline(connection: .anonymous),
+                id: .santaBarbaraBotanicGardenMap
+            ))
+            return map
+        }()
         
         ///
         lazy var locationDataSource = makeDataSource(polylineJSONString: walkingTourPolylineJSON)
@@ -61,6 +128,12 @@ private extension SetUpLocationDrivenGeotriggersView {
             featureNamesInFenceGeotrigger[poiFenceGeotriggerName] ?? []
         }
         
+        /// The label to display fence geotrigger notification status.
+        @Published var fenceGeotriggerString = "Fence geotrigger info will be shown here."
+        
+        /// The label to display names of the currently nearby features.
+        @Published var nearbyFeaturesString = "Nearby features will be shown here."
+        
         /// A dictionary for the feature names in each fence geotrigger.
         /// - Key: The name of a fence geotrigger.
         /// - Value: An array of names of features within the fence.
@@ -73,8 +146,7 @@ private extension SetUpLocationDrivenGeotriggersView {
         
         /// A dictionary for nearby features.
         var nearbyFeatures: [String: ArcGISFeature] = [:]
-        /// An array of observers for geotrigger monitor notifications.
-        var observers: [NSObjectProtocol] = []
+        
         /// An array of geotrigger monitors.
         var geotriggerMonitors: [GeotriggerMonitor] = []
         
@@ -95,29 +167,12 @@ private extension SetUpLocationDrivenGeotriggersView {
         /// A Boolean indicating
         @Published var pointOfInterestBarButtonItem = false
         
-        /// Create a map.
-        func makeMap() -> Map {
-            // Load a map with predefined tile basemap, feature styles, and labels.
-            let map = Map(item: PortalItem(
-                portal: .arcGISOnline(connection: .anonymous),
-                id: Item.ID(rawValue: "6ab0e91dc39e478cae4f408e1a36a308")!
-            ))
-            Task {
-                do {
-                    try await map.load()
-                } catch {
-                    alertError = error
-                }
-            }
-            return map
-        }
-    
         /// Create and start a location display.
         func makeLocationDisplay() -> LocationDisplay {
             let locationDisplay = LocationDisplay(dataSource: locationDataSource)
             locationDisplay.autoPanMode = .recenter
             locationDisplay.initialZoomScale = 1000
-            Task {
+            Task.detached { [unowned self] in
                 do {
                     try await locationDisplay.dataSource.start()
                 } catch {
@@ -182,8 +237,7 @@ private extension SetUpLocationDrivenGeotriggersView {
             
             // Create and start the geotrigger monitor.
             let geotriggerMonitor = GeotriggerMonitor(geotrigger: fenceGeotrigger)
-
-            Task {
+            Task.detached { [unowned self] in
                 do {
                     try await geotriggerMonitor.start()
                     geotriggerMonitors.append(geotriggerMonitor)
@@ -192,21 +246,65 @@ private extension SetUpLocationDrivenGeotriggersView {
                 }
             }
             
-             // Observe geotrigger notifications.
-             let observer = NotificationCenter.default.addObserver(
-             forName: .none,
-             object: geotriggerMonitor,
-             queue: nil,
-             using: { [weak self] note in handleGeotriggerNotification(note) }
-             )
-             observers.append(observer)
+            // Observe geotrigger notifications.
+            Task.detached { [unowned self] in
+                for await notification in geotriggerMonitor.notifications {
+                    handleGeotriggerNotification(notification as! FenceGeotriggerNotificationInfo)
+                }
+            }
+        }
+        
+        /// Handle the notifications posted by `AGSGeotriggerMonitor` when the fence
+        /// geotrigger condition has been met.
+        func handleGeotriggerNotification(_ fenceNotificationInfo: FenceGeotriggerNotificationInfo) {
+            // `AGSFenceGeotriggerNotificationInfo` provides information about the
+            // geotrigger monitor and the (fence) geotrigger that was triggered.
+            
+            // The feature name from the Arcade expression.
+            let featureName = fenceNotificationInfo.message
+            let fenceFeature = fenceNotificationInfo.fenceGeoElement as! ArcGISFeature
+            let geotriggerName = fenceNotificationInfo.geotriggerMonitor.geotrigger.name
+            
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                switch fenceNotificationInfo.fenceNotificationType {
+                case .entered:
+                    // The user enters a geofence: add the feature for future querying.
+                    self.featureNamesInFenceGeotrigger[geotriggerName, default: []].append(featureName)
+                    self.nearbyFeatures[featureName] = fenceFeature
+                case .exited:
+                    // The user leaves the geofence: remove the feature from the dicts.
+                    if let poppedFeatureName = self.featureNamesInFenceGeotrigger[geotriggerName]?.popLast() {
+                        self.nearbyFeatures.removeValue(forKey: poppedFeatureName)
+                    }
+                @unknown default:
+                    fatalError("Unexpected fence notification type.")
+                }
+                
+                // Update status labels.
+                self.updateStatusLabels(featureName: featureName, notificationType: fenceNotificationInfo.fenceNotificationType)
+            }
+        }
+        
+        ///
+        func updateStatusLabels(featureName: String, notificationType: FenceGeotriggerNotificationInfo.NotificationType) {
+            let typeString = notificationType == .entered ? "Entered" : "Exited"
+            let fenceGeotriggerText = String(format: "%@ the geofence of %@", typeString, featureName)
+            let nearbyFeaturesText: String
+            if nearbyFeatures.keys.isEmpty {
+                nearbyFeaturesText = "No nearby features."
+            } else {
+                nearbyFeaturesText = String(format: "Nearby: %@", ListFormatter.localizedString(byJoining: nearbyFeatures.keys.sorted()))
+            }
+            fenceGeotriggerString = fenceGeotriggerText
+            nearbyFeaturesString = nearbyFeaturesText
         }
     }
 }
 
-/// Handle the notifications posted by `AGSGeotriggerMonitor` when the fence
-/// geotrigger condition has been met.
-func handleGeotriggerNotification(_ notification: Notification) {
+private extension PortalItem.ID {
+    /// The portal item ID of a web map to be displayed on the map.
+    static var santaBarbaraBotanicGardenMap: Self { Self("6ab0e91dc39e478cae4f408e1a36a308")! }
 }
 
 private extension SetUpLocationDrivenGeotriggersView {
