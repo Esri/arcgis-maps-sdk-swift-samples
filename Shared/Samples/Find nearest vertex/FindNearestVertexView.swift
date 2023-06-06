@@ -56,8 +56,8 @@ struct FindNearestVertexView: View {
 }
 
 private extension FindNearestVertexView {
-    // The view model for the sample.
-    private class Model: ObservableObject {
+    /// The view model for the sample.
+    class Model: ObservableObject {
         /// A map with a generalized US states feature layer and centered on
         /// the example polygon in California.
         var map = Map()
