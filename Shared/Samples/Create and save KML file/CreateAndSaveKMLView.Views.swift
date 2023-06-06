@@ -56,7 +56,7 @@ extension CreateAndSaveKMLView {
             } label: {
                 Label("Clear Current Sketch", systemImage: "trash")
             }
-            .disabled(!model.canClearCurrentSketch)
+            .disabled(model.clearButtonIsDisabled)
             
             Divider()
             

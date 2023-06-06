@@ -7,7 +7,7 @@ Construct a KML document and save it as a KMZ file.
 
 ## Use case
 
-If you need to create and save data on the fly, you can use KML to create points, lines, and areas by sketching on the map, customizing the style, and serializing them as KML nodes in a KML Document. Once complete, you can share the KML data with others that are using a KML reading application, such as ArcGIS Earth.
+If you need to create and save data on the fly, you can use KML to create points, lines, and polygons by sketching on the map, customizing the style, and serializing them as KML nodes in a KML Document. Once complete, you can share the KML data with others that are using a KML reading application, such as ArcGIS Earth.
 
 ## How to use the sample
 

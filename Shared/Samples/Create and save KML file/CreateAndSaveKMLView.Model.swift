@@ -17,7 +17,8 @@ import Combine
 
 extension CreateAndSaveKMLView {
     /// The model used to store the geo model and other expensive objects used in this view.
-    @MainActor class Model: ObservableObject {
+    @MainActor
+    class Model: ObservableObject {
         /// A dark gray map.
         let map = Map(basemapStyle: .arcGISDarkGray)
         
@@ -33,14 +34,14 @@ extension CreateAndSaveKMLView {
         /// A KMZ file that can be exported with the system's file exporter.
         var kmzFile = KMZFile(document: .init())
         
-        /// A Boolean value indicating if the geometry can be cleared from the geometry editor.
-        @Published private(set) var canClearCurrentSketch = false
+        /// A Boolean value indicating if the clear button is disabled.
+        @Published private(set) var clearButtonIsDisabled = true
         
         /// A Boolean value indicating if the saved sketches can be cleared.
         @Published private(set) var canClearSavedSketches = false
         
         /// A Boolean value indicating if the geometry editor has started.
-        @Published var isStarted = false
+        @Published private(set) var isStarted = false
         
         /// A Boolean value indicating if the geometry can be saved to a graphics overlay.
         @Published private(set) var canSave = false
@@ -48,7 +49,7 @@ extension CreateAndSaveKMLView {
         /// The current geometry of the geometry editor.
         @Published private(set) var geometry: Geometry? {
             didSet {
-                canClearCurrentSketch = geometry.map { !$0.isEmpty } ?? false
+                clearButtonIsDisabled = geometry.map(\.isEmpty) ?? true
                 canSave = geometry?.sketchIsValid ?? false
             }
         }
