@@ -33,7 +33,7 @@ struct FindNearestVertexView: View {
                 tapLocation = normalizedMapPoint
                 if calloutPlacement == nil {
                     // Draw the point graphics.
-                    model.drawNearestPoints(point: tapLocation)
+                    model.updateNearestPoints(point: tapLocation)
                     // Show the callout at the tapped location.
                     calloutPlacement = CalloutPlacement.location(normalizedMapPoint)
                 } else {
@@ -62,11 +62,11 @@ private extension FindNearestVertexView {
         /// A map with a generalized US states feature layer and centered on
         /// the example polygon in California.
         let map: Map = {
-            let map = Map(spatialReference: statePlaneCaliforniaZone5)
+            let map = Map(spatialReference: .statePlaneCaliforniaZone5)
             
             // Center map on the example polygon.
             map.initialViewpoint = Viewpoint(
-                center: polygon.extent.center,
+                center: .sanBernardinoCounty.extent.center,
                 scale: 8e6
             )
             
@@ -74,7 +74,9 @@ private extension FindNearestVertexView {
             let usStatesGeneralizedLayer = FeatureLayer(
                 item: PortalItem(
                     portal: .arcGISOnline(connection: .anonymous),
-                    id: .usStatesGeneralized))
+                    id: .usStatesGeneralized
+                )
+            )
             map.addOperationalLayer(usStatesGeneralizedLayer)
             
             return map
@@ -101,25 +103,11 @@ private extension FindNearestVertexView {
             return Graphic(symbol: symbol)
         }()
         
-        /// The nearest coordinate on the polygon to the tapLocation.
+        /// The nearest coordinate distance on the polygon to the tap location.
         var nearestCoordinateDistance: String = ""
         
-        /// The nearest vertex on the polygon to the tapLocation.
+        /// The nearest vertex distance on the polygon to the tap location.
         var nearestVertexDistance: String = ""
-        
-        /// The spatial reference for the sample.
-        let statePlaneCaliforniaZone5 = SpatialReference(wkid: WKID(2229)!)!
-        
-        /// The example polygon near San Bernardino County, California.
-        private lazy var polygon: ArcGIS.Polygon = {
-            let polygonBuilder = PolygonBuilder(spatialReference: statePlaneCaliforniaZone5)
-            polygonBuilder.add(Point(x: 6627416.41469281, y: 1804532.53233782))
-            polygonBuilder.add(Point(x: 6669147.89779046, y: 2479145.16609522))
-            polygonBuilder.add(Point(x: 7265673.02678292, y: 2484254.50442408))
-            polygonBuilder.add(Point(x: 7676192.55880379, y: 2001458.66365744))
-            polygonBuilder.add(Point(x: 7175695.94143837, y: 1840722.34474458))
-            return polygonBuilder.toGeometry()
-        }()
         
         init() {
             // Create graphic for the example polygon.
@@ -129,8 +117,9 @@ private extension FindNearestVertexView {
                 outline: SimpleLineSymbol(style: .solid, color: .green, width: 2)
             )
             let polygonGraphic = Graphic(
-                geometry: polygon,
-                symbol: polygonFillSymbol)
+                geometry: .sanBernardinoCounty,
+                symbol: polygonFillSymbol
+            )
             
             // Add graphics to the graphicOverlay.
             graphicsOverlay.addGraphics([
@@ -143,10 +132,10 @@ private extension FindNearestVertexView {
         
         /// Draws the nearest coordinate and vertex to the point on the example polygon.
         /// - Parameter point: A `Point` to measure against.
-        func drawNearestPoints(point: Point) {
+        func updateNearestPoints(point: Point) {
             // Get nearest vertex and coordinate to the point.
-            let nearestVertexResult = GeometryEngine.nearestVertex(in: polygon, to: point)!
-            let nearestCoordinateResult = GeometryEngine.nearestCoordinate(in: polygon, to: point)!
+            let nearestVertexResult = GeometryEngine.nearestVertex(in: .sanBernardinoCounty, to: point)!
+            let nearestCoordinateResult = GeometryEngine.nearestCoordinate(in: .sanBernardinoCounty, to: point)!
             
             // Set the geometries for the tapped, nearest coordinate, and
             // nearest vertex point graphics.
@@ -175,6 +164,25 @@ private extension FindNearestVertexView {
             nearestCoordinateDistance = coordinateDistance.formatted(formatStyle)
         }
     }
+}
+
+private extension Geometry {
+    /// A polygon near San Bernardino County, California.
+    static let sanBernardinoCounty: ArcGIS.Polygon = {
+        let polygonBuilder = PolygonBuilder(spatialReference: .statePlaneCaliforniaZone5)
+        polygonBuilder.add(Point(x: 6627416.41469281, y: 1804532.53233782))
+        polygonBuilder.add(Point(x: 6669147.89779046, y: 2479145.16609522))
+        polygonBuilder.add(Point(x: 7265673.02678292, y: 2484254.50442408))
+        polygonBuilder.add(Point(x: 7676192.55880379, y: 2001458.66365744))
+        polygonBuilder.add(Point(x: 7175695.94143837, y: 1840722.34474458))
+        return polygonBuilder.toGeometry()
+    }()
+}
+
+
+private extension SpatialReference {
+    /// The spatial reference for the sample.
+    static var statePlaneCaliforniaZone5: Self { SpatialReference(wkid: WKID(2229)!)! }
 }
 
 private extension PortalItem.ID {
