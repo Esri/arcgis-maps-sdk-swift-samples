@@ -61,7 +61,7 @@ private extension FindNearestVertexView {
     class Model: ObservableObject {
         /// A map with a generalized US states feature layer and centered on
         /// the example polygon in California.
-        lazy var map = {
+        let map: Map = {
             let map = Map(spatialReference: statePlaneCaliforniaZone5)
             
             // Center map on the example polygon.
