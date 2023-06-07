@@ -80,7 +80,7 @@ struct CoordinateTextField: View {
     /// The title string.
     var title: String
     
-    /// The text string.
+    /// The text in the text field.
     @Binding var text: String
     
     var body: some View {
