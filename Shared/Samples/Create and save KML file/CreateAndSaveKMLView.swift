@@ -48,6 +48,11 @@ struct CreateAndSaveKMLView: View {
                     }
                 }
             }
+            .task {
+                for await geometry in model.geometryEditor.$geometry {
+                    model.geometry = geometry
+                }
+            }
             .fileExporter(isPresented: $model.showingFileExporter, document: model.kmzFile, contentType: .kmz) { result in
                 switch result {
                 case .success:

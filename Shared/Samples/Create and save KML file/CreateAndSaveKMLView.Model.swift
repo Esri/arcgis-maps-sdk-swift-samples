@@ -47,7 +47,7 @@ extension CreateAndSaveKMLView {
         @Published private(set) var canSave = false
         
         /// The current geometry of the geometry editor.
-        @Published private(set) var geometry: Geometry? {
+        @Published var geometry: Geometry? {
             didSet {
                 clearButtonIsDisabled = geometry.map(\.isEmpty) ?? true
                 canSave = geometry?.sketchIsValid ?? false
@@ -73,12 +73,6 @@ extension CreateAndSaveKMLView {
             self.geometryEditor = GeometryEditor()
             
             resetKMLLayer()
-            
-            Task { [weak self, geometryEditor] in
-                for await geometry in geometryEditor.$geometry {
-                    self?.geometry = geometry
-                }
-            }
         }
         
         /// Clears all the saved sketches on the graphics overlay.
