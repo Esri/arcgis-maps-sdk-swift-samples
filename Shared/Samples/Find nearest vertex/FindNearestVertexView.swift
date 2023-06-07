@@ -165,7 +165,6 @@ private extension FindNearestVertexView {
                 value: nearestVertexResult.distance,
                 unit: UnitLength.feet
             )
-            // nearestVertexDistance = distanceFormatter.string(from: vertexDistance)
             nearestVertexDistance = vertexDistance.formatted(formatStyle)
             
             // Set the distance to the nearest coordinate in the polygon.
