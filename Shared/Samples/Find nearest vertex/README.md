@@ -22,11 +22,11 @@ Tap anywhere on the map. An orange cross will show at that location. A blue circ
 
 ## Relevant API
 
-* Geometry
-* ProximityResult
 * class GeometryEngine.nearestCoordinate(in:to:)
 * class GeometryEngine.nearestVertex(in:to:)
 * class GeometryEngine.normalizeCentralMeridian(of:)
+* Geometry
+* ProximityResult
 
 ## Additional information
 
