@@ -145,8 +145,8 @@ private extension FindNearestVertexView {
         /// - Parameter point: A `Point` to measure against.
         func drawNearestPoints(point: Point) {
             // Get nearest vertex and coordinate to the point.
-            var nearestVertexResult = GeometryEngine.nearestVertex(in: polygon, to: point)!
-            var nearestCoordinateResult = GeometryEngine.nearestCoordinate(in: polygon, to: point)!
+            let nearestVertexResult = GeometryEngine.nearestVertex(in: polygon, to: point)!
+            let nearestCoordinateResult = GeometryEngine.nearestCoordinate(in: polygon, to: point)!
             
             // Set the geometries for the tapped, nearest coordinate, and
             // nearest vertex point graphics.
