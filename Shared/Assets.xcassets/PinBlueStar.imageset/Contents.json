@@ -1,0 +1,23 @@
+{
+  "images" : [
+    {
+      "filename" : "iOS_Pin_BlueStar24.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "iOS_Pin_BlueStar48.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "iOS_Pin_BlueStar72.png",
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
