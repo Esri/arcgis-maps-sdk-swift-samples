@@ -150,17 +150,20 @@ private extension ShowCoordinatesInMultipleFormatsView {
             latLongDMSString = CoordinateFormatter.latitudeLongitudeString(
                 from: mapPoint,
                 format: .degreesMinutesSeconds,
-                decimalPlaces: 1)
+                decimalPlaces: 1
+            )
             
             utmString = CoordinateFormatter.utmString(
                 from: mapPoint,
                 conversionMode: .latitudeBandIndicators,
-                addSpaces: true)
+                addSpaces: true
+            )
             
             usngString = CoordinateFormatter.usngString(
                 from: mapPoint,
                 precision: 4,
-                addSpaces: true)
+                addSpaces: true
+            )
         }
     }
 }
