@@ -35,7 +35,7 @@ struct SetUpLocationDrivenGeotriggersView: View {
                     try await model.map.load()
                     model.startMonitoring()
                 } catch {
-                    model.alertError = error
+                    model.error = error
                 }
             }
             .overlay(alignment: .top) {
@@ -58,7 +58,7 @@ struct SetUpLocationDrivenGeotriggersView: View {
                         popup = Popup(geoElement: sectionFeature)
                         isShowingPopup = true
                     }
-                    .disabled(!model.currentSectionBarButtonItem)
+                    .disabled(!model.hasCurrentSection)
                     .opacity(isShowingPopup ? 0 : 1)
 
                     Button("Point of Interest") {
@@ -66,7 +66,7 @@ struct SetUpLocationDrivenGeotriggersView: View {
                         popup = Popup(geoElement: poiFeature)
                         isShowingPopup = true
                     }
-                    .disabled(!model.pointOfInterestBarButtonItem)
+                    .disabled(!model.hasPointOfInterest)
                     .opacity(isShowingPopup ? 0 : 1)
                 }
             }
@@ -91,18 +91,18 @@ struct SetUpLocationDrivenGeotriggersView: View {
                     do {
                         try await model.locationDisplay.dataSource.start()
                     } catch {
-                        model.alertError = error
+                        model.error = error
                     }
                 }
             }
-            .alert(isPresented: $model.isShowingAlert, presentingError: model.alertError)
+            .alert(isPresented: $model.isShowingAlert, presentingError: model.error)
     }
 }
 
 private extension SetUpLocationDrivenGeotriggersView {
     /// The view model for the sample.
     class Model: ObservableObject {
-        /// A map of the Santa Barbara Botanic Garden
+        /// A map of the Santa Barbara Botanic Garden.
         var map: Map = {
             // Load a map with predefined tile basemap, feature styles, and labels.
             let map = Map(item: PortalItem(
@@ -112,60 +112,57 @@ private extension SetUpLocationDrivenGeotriggersView {
             return map
         }()
         
-        ///
+        /// The simulated location data source for the sample.
         lazy var locationDataSource = makeDataSource(polylineJSONString: walkingTourPolylineJSON)
         
         /// The location display for the sample
         lazy var locationDisplay = makeLocationDisplay()
         
-        /// The name of the current garden section feature. If currently not in any
-        /// garden section, it will be `nil`.
+        /// An array of geotrigger monitors.
+        var geotriggerMonitors: [GeotriggerMonitor] = []
+        
+        /// The name of the current garden section feature.
         var currentSectionName: String? {
             featureNamesInFenceGeotrigger[sectionFenceGeotriggerName]?.last
         }
+        
         /// The names of nearby point-of-interest features.
         var nearbyPOINames: [String] {
             featureNamesInFenceGeotrigger[poiFenceGeotriggerName] ?? []
         }
-        
-        /// The label to display fence geotrigger notification status.
-        @Published var fenceGeotriggerString = "Fence geotrigger info will be shown here."
-        
-        /// The label to display names of the currently nearby features.
-        @Published var nearbyFeaturesString = "Nearby features will be shown here."
         
         /// A dictionary for the feature names in each fence geotrigger.
         /// - Key: The name of a fence geotrigger.
         /// - Value: An array of names of features within the fence.
         var featureNamesInFenceGeotrigger: [String: [String]] = [:] {
             didSet {
-                currentSectionBarButtonItem = currentSectionName != nil
-                pointOfInterestBarButtonItem = !nearbyPOINames.isEmpty
+                hasCurrentSection = currentSectionName != nil
+                hasPointOfInterest = !nearbyPOINames.isEmpty
             }
         }
         
         /// A dictionary for nearby features.
         var nearbyFeatures: [String: ArcGISFeature] = [:]
         
-        /// An array of geotrigger monitors.
-        var geotriggerMonitors: [GeotriggerMonitor] = []
+        /// A string for the fence geotrigger notification status.
+        @Published var fenceGeotriggerString = "Fence geotrigger info will be shown here."
         
-        /// A simulated location data source for demo purposes.
-        lazy var simulatedLocationDataSource = locationDataSource
+        /// A string for the display names of the currently nearby features.
+        @Published var nearbyFeaturesString = "Nearby features will be shown here."
+        
+        /// A Boolean indicating whether there is a current section.
+        @Published var hasCurrentSection = false
+        
+        /// A Boolean indicating whether there is a point of interest.
+        @Published var hasPointOfInterest = false
         
         /// A Boolean value indicating whether to show an alert.
         @Published var isShowingAlert = false
         
         /// The error shown in the alert.
-        @Published var alertError: Error? {
-            didSet { isShowingAlert = alertError != nil }
+        @Published var error: Error? {
+            didSet { isShowingAlert = error != nil }
         }
-        
-        /// A Boolean indicating
-        @Published var currentSectionBarButtonItem = false
-        
-        /// A Boolean indicating
-        @Published var pointOfInterestBarButtonItem = false
         
         /// Create and start a location display.
         func makeLocationDisplay() -> LocationDisplay {
@@ -176,7 +173,7 @@ private extension SetUpLocationDrivenGeotriggersView {
                 do {
                     try await locationDisplay.dataSource.start()
                 } catch {
-                    alertError = error
+                    self.error = error
                 }
             }
             return locationDisplay
@@ -242,7 +239,7 @@ private extension SetUpLocationDrivenGeotriggersView {
                     try await geotriggerMonitor.start()
                     geotriggerMonitors.append(geotriggerMonitor)
                 } catch {
-                    alertError = error
+                    self.error = error
                 }
             }
             
