@@ -77,7 +77,7 @@ struct ShowCoordinatesInMultipleFormatsView: View {
 }
 
 struct CoordinateTextField: View {
-    /// The title string.
+    /// The title of the text field.
     var title: String
     
     /// The text in the text field.
