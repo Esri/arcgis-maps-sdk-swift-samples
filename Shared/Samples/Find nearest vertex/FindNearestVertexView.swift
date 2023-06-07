@@ -35,7 +35,7 @@ struct FindNearestVertexView: View {
                     // Draw the point graphics.
                     model.updateNearestPoints(point: tapLocation)
                     // Show the callout at the tapped location.
-                    calloutPlacement = CalloutPlacement.location(normalizedMapPoint)
+                    calloutPlacement = CalloutPlacement.location(tapLocation)
                 } else {
                     // Remove points and hide callout.
                     model.tapLocationGraphic.geometry = nil
