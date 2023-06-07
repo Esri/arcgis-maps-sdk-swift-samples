@@ -10,7 +10,7 @@ The coordinate formatter can format a map location in WGS84 in a number of commo
 
 ## How to use the sample
 
-Tap on the map to see a callout with the tapped location's coordinate formatted in 4 different ways. You can also put a coordinate string in any of these formats in the text field. Hit return and the coordinate string will be parsed to a map location which the callout will move to.
+Tap on the map to see the text fields update with the tapped location's coordinates formatted in 4 different ways. You can also put a coordinate string in the corresponding text field. Tap return and the coordinate string will be parsed to a map location which will move the map point and update the other text fields' coordinate strings.
 
 ## How it works
 

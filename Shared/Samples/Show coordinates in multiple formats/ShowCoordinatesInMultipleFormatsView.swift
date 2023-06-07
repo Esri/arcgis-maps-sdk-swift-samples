@@ -27,45 +27,57 @@ struct ShowCoordinatesInMultipleFormatsView: View {
                 text: $model.latLongDDString
             )
             .onSubmit {
-                model.updateMapPoint(
-                    point: CoordinateFormatter.point(
-                        fromLatitudeLongitudeString: model.latLongDDString,
-                        spatialReference: model.mapPoint.spatialReference
-                    )!)
+                if let point = CoordinateFormatter.point(
+                    fromLatitudeLongitudeString: model.latLongDDString,
+                    spatialReference: model.mapPoint.spatialReference
+                ) {
+                    model.updateMapPoint(point: point)
+                } else {
+                    model.updateMapPoint(point: model.mapPoint)
+                }
             }
             CoordinateTextField(
                 title: "Degrees, Minutes, Seconds",
                 text: $model.latLongDMSString
             )
             .onSubmit {
-                model.updateMapPoint(
-                    point: CoordinateFormatter.point(
-                        fromLatitudeLongitudeString: model.latLongDMSString,
-                        spatialReference: model.mapPoint.spatialReference
-                    )!)
+                if let point = CoordinateFormatter.point(
+                    fromLatitudeLongitudeString: model.latLongDMSString,
+                    spatialReference: model.mapPoint.spatialReference
+                ) {
+                    model.updateMapPoint(point: point)
+                } else {
+                    model.updateMapPoint(point: model.mapPoint)
+                }
             }
             CoordinateTextField(
                 title: "UTM",
                 text: $model.utmString
             )
             .onSubmit {
-                model.updateMapPoint(
-                    point: CoordinateFormatter.point(
-                        fromUTMString: model.utmString,
-                        spatialReference: model.mapPoint.spatialReference,
-                        conversionMode: .latitudeBandIndicators
-                    )!)
+                if let point = CoordinateFormatter.point(
+                    fromUTMString: model.utmString,
+                    spatialReference: model.mapPoint.spatialReference,
+                    conversionMode: .latitudeBandIndicators
+                ) {
+                    model.updateMapPoint(point: point)
+                } else {
+                    model.updateMapPoint(point: model.mapPoint)
+                }
             }
             CoordinateTextField(
                 title: "USNG",
                 text: $model.usngString
             )
             .onSubmit {
-                model.updateMapPoint(
-                    point: CoordinateFormatter.point(
-                        fromUSNGString: model.usngString,
-                        spatialReference: model.mapPoint.spatialReference
-                    )!)
+                if let point = CoordinateFormatter.point(
+                    fromUSNGString: model.usngString,
+                    spatialReference: model.mapPoint.spatialReference
+                ) {
+                    model.updateMapPoint(point: point)
+                } else {
+                    model.updateMapPoint(point: model.mapPoint)
+                }
             }
             
             MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
@@ -101,13 +113,13 @@ private extension ShowCoordinatesInMultipleFormatsView {
     // The view model for the sample.
     class Model: ObservableObject {
         /// A map with an imagery basemap.
-        var map: Map
+        var map = Map(basemapStyle: .arcGISImageryStandard)
         
         /// The graphics overlay for the point graphic.
         let graphicsOverlay: GraphicsOverlay
         
         /// A yellow cross graphic for the map point.
-        private let pointGraphic: Graphic
+        private let pointGraphic = Graphic(symbol: SimpleMarkerSymbol(style: .cross, color: .yellow, size: 20))
         
         /// The point on the map.
         @Published var mapPoint: Point!
@@ -121,12 +133,10 @@ private extension ShowCoordinatesInMultipleFormatsView {
         /// The UTM text.
         @Published var utmString = ""
         
-        /// the USNG text.
+        /// Tshe USNG text.
         @Published var usngString = ""
         
         init() {
-            map = Map(basemapStyle: .arcGISImageryStandard)
-            pointGraphic = Graphic(symbol: SimpleMarkerSymbol(style: .cross, color: .yellow, size: 20))
             graphicsOverlay = GraphicsOverlay(graphics: [pointGraphic])
             updateMapPoint(point: Point(latitude: 0, longitude: 0))
         }
