@@ -55,7 +55,7 @@ struct SetUpLocationDrivenGeotriggersView: View {
             .toolbar {
                 // Bottom button toolbar.
                 ToolbarItemGroup(placement: .bottomBar) {
-                    Button("Current Selection") {
+                    Button("Current Section") {
                         let sectionFeature = model.nearbyFeatures[model.currentSectionName!]!
                         popup = Popup(geoElement: sectionFeature)
                         isShowingPopup = true
