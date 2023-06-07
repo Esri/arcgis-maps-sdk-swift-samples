@@ -179,7 +179,6 @@ private extension Geometry {
     }()
 }
 
-
 private extension SpatialReference {
     /// The spatial reference for the sample.
     static var statePlaneCaliforniaZone5: Self { SpatialReference(wkid: WKID(2229)!)! }
