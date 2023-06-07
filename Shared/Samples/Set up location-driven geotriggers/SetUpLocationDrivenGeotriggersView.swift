@@ -20,12 +20,12 @@ struct SetUpLocationDrivenGeotriggersView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
-    /// The popup to be shown as the result of the layer identify operation.
+    /// The popup to show the feature information.
     @State private var popup: Popup?
     
-    /// A Boolean indicate whether to show the popup.
+    /// A Boolean value indicating whether to show the popup.
     @State var isShowingPopup = false
-
+    
     var body: some View {
         MapView(map: model.map)
             .locationDisplay(model.locationDisplay)
@@ -33,17 +33,18 @@ struct SetUpLocationDrivenGeotriggersView: View {
                 // Start geotrigger monitoring once the map loads.
                 do {
                     try await model.map.load()
-                    model.startMonitoring()
+                    model.startGeotriggerMonitoring()
                 } catch {
                     model.error = error
                 }
             }
             .overlay(alignment: .top) {
+                // Status text overlay.
                 VStack {
-                    Text("\(model.fenceGeotriggerString)\n")
+                    Text("\(model.fenceGeotriggerText)\n")
                         .frame(maxWidth: .infinity, alignment: .leading)
                     
-                    Text(model.nearbyFeaturesString)
+                    Text(model.nearbyFeaturesText)
                         .foregroundColor(.orange)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.top, -24)
@@ -52,6 +53,7 @@ struct SetUpLocationDrivenGeotriggersView: View {
                 .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
             }
             .toolbar {
+                // Bottom button toolbar.
                 ToolbarItemGroup(placement: .bottomBar) {
                     Button("Current Selection") {
                         let sectionFeature = model.nearbyFeatures[model.currentSectionName!]!
@@ -60,7 +62,7 @@ struct SetUpLocationDrivenGeotriggersView: View {
                     }
                     .disabled(!model.hasCurrentSection)
                     .opacity(isShowingPopup ? 0 : 1)
-
+                    
                     Button("Point of Interest") {
                         let poiFeature = model.nearbyFeatures[model.nearbyPOINames.first!]!
                         popup = Popup(geoElement: poiFeature)
@@ -76,6 +78,7 @@ struct SetUpLocationDrivenGeotriggersView: View {
                 isPresented: $isShowingPopup
             ) {
                 Group {
+                    // Feature info popup.
                     if let popup = popup {
                         PopupView(popup: popup, isPresented: $isShowingPopup)
                             .showCloseButton(true)
@@ -103,23 +106,19 @@ private extension SetUpLocationDrivenGeotriggersView {
     /// The view model for the sample.
     class Model: ObservableObject {
         /// A map of the Santa Barbara Botanic Garden.
-        var map: Map = {
-            // Load a map with predefined tile basemap, feature styles, and labels.
-            let map = Map(item: PortalItem(
-                portal: .arcGISOnline(connection: .anonymous),
-                id: .santaBarbaraBotanicGardenMap
-            ))
-            return map
-        }()
+        let map = Map(item: PortalItem(
+            portal: .arcGISOnline(connection: .anonymous),
+            id: .santaBarbaraBotanicGardenMap
+        ))
         
-        /// The simulated location data source for the sample.
-        lazy var locationDataSource = makeDataSource(polylineJSONString: walkingTourPolylineJSON)
-        
-        /// The location display for the sample
+        /// The location display for the map view.
         lazy var locationDisplay = makeLocationDisplay()
         
+        /// The route simulated location data source.
+        private lazy var locationDataSource = makeDataSource()
+        
         /// An array of geotrigger monitors.
-        var geotriggerMonitors: [GeotriggerMonitor] = []
+        private var geotriggerMonitors: [GeotriggerMonitor] = []
         
         /// The name of the current garden section feature.
         var currentSectionName: String? {
@@ -131,32 +130,32 @@ private extension SetUpLocationDrivenGeotriggersView {
             featureNamesInFenceGeotrigger[poiFenceGeotriggerName] ?? []
         }
         
+        /// A dictionary for nearby features.
+        var nearbyFeatures: [String: ArcGISFeature] = [:]
+        
         /// A dictionary for the feature names in each fence geotrigger.
         /// - Key: The name of a fence geotrigger.
         /// - Value: An array of names of features within the fence.
-        var featureNamesInFenceGeotrigger: [String: [String]] = [:] {
+        private var featureNamesInFenceGeotrigger: [String: [String]] = [:] {
             didSet {
                 hasCurrentSection = currentSectionName != nil
                 hasPointOfInterest = !nearbyPOINames.isEmpty
             }
         }
         
-        /// A dictionary for nearby features.
-        var nearbyFeatures: [String: ArcGISFeature] = [:]
-        
         /// A string for the fence geotrigger notification status.
-        @Published var fenceGeotriggerString = "Fence geotrigger info will be shown here."
+        @Published var fenceGeotriggerText = "Fence geotrigger info will be shown here."
         
-        /// A string for the display names of the currently nearby features.
-        @Published var nearbyFeaturesString = "Nearby features will be shown here."
+        /// A string for the display name of the currently nearby feature.
+        @Published var nearbyFeaturesText = "Nearby features will be shown here."
         
-        /// A Boolean indicating whether there is a current section.
+        /// A Boolean value indicating whether there is a current section.
         @Published var hasCurrentSection = false
         
-        /// A Boolean indicating whether there is a point of interest.
+        /// A Boolean value indicating whether there is a point-of-interest.
         @Published var hasPointOfInterest = false
         
-        /// A Boolean value indicating whether to show an alert.
+        /// A Boolean value indicating whether to show an error alert.
         @Published var isShowingAlert = false
         
         /// The error shown in the alert.
@@ -164,42 +163,19 @@ private extension SetUpLocationDrivenGeotriggersView {
             didSet { isShowingAlert = error != nil }
         }
         
-        /// Create and start a location display.
-        func makeLocationDisplay() -> LocationDisplay {
-            let locationDisplay = LocationDisplay(dataSource: locationDataSource)
-            locationDisplay.autoPanMode = .recenter
-            locationDisplay.initialZoomScale = 1000
-            Task.detached { [unowned self] in
-                do {
-                    try await locationDisplay.dataSource.start()
-                } catch {
-                    self.error = error
-                }
-            }
-            return locationDisplay
+        /// The handle for the geotrigger monitor notification task.
+        private var notificationTaskHandle: Task<Void, Never>!
+        
+        deinit {
+            notificationTaskHandle.cancel()
         }
         
-        /// Create a simulated location data source from a GeoJSON.
-        func makeDataSource(polylineJSONString: String) -> SimulatedLocationDataSource {
-            // Densify the polyline to control the simulation speed.
-            let routePolyline = try? Polyline.fromJSON(polylineJSONString)
-            let densifiedRoute = GeometryEngine.geodeticDensify(
-                routePolyline!,
-                maxSegmentLength: 5.0,
-                lengthUnit: .meters,
-                curveType: .geodesic
-            ) as! Polyline
-            let simulatedDataSource = SimulatedLocationDataSource()
-            simulatedDataSource.setSimulatedLocations(with: densifiedRoute)
-            return simulatedDataSource
-        }
-        
-        /// Start geotriggers.
-        func startMonitoring() {
+        /// Creates geotriggers from the map's operational layers.
+        func startGeotriggerMonitoring() {
             // Get the service feature tables from the map's operational layers.
             if let operationalLayers = map.operationalLayers as? [FeatureLayer],
-               let gardenSectionsLayer = operationalLayers.first(where: { $0.item?.id == Item.ID(rawValue: "1ba816341ea04243832136379b8951d9") }),
-               let gardenPOIsLayer = operationalLayers.first(where: { $0.item?.id == Item.ID(rawValue: "7c6280c290c34ae8aeb6b5c4ec841167") }),
+               let gardenSectionsLayer = operationalLayers.first(where: { $0.item?.id == .gardenSectionsLayer }),
+               let gardenPOIsLayer = operationalLayers.first(where: { $0.item?.id == .gardenPOIsLayer }),
                let gardenSections = gardenSectionsLayer.featureTable as? ServiceFeatureTable,
                let gardenPOIs = gardenPOIsLayer.featureTable as? ServiceFeatureTable {
                 // Create geotriggers for each of the service feature tables.
@@ -211,17 +187,18 @@ private extension SetUpLocationDrivenGeotriggersView {
         
         /// Create a geotrigger monitor and start observing its notifications.
         /// - Parameters:
-        ///   - feed: The `AGSGeotriggerFeed` that is monitored for changes.
-        ///   - featureTable: The `AGSFeatureTable` that contains the features to use
-        ///    in the `AGSFeatureFenceParameters`.
-        ///   - bufferDistance: A buffer distance in meters to apply to the features
-        ///   when checking if an `AGSFenceGeotrigger` condition is met.
-        ///   - fenceGeotriggerName: The name for the `AGSFenceGeotrigger`.
-        func makeGeotrigger(feed: GeotriggerFeed, featureTable: ServiceFeatureTable, bufferDistance: Double, fenceGeotriggerName: String) {
+        ///   - feed: The `GeotriggerFeed` that is monitored for changes.
+        ///   - featureTable: The `ServiceFeatureTable` that contains the features
+        ///   to use in the `FeatureFenceParameters`.
+        ///   - bufferDistance: The `Double` buffer distance in meters to apply to
+        ///   the features when checking if an `FenceGeotrigger` condition is met.
+        ///   - fenceGeotriggerName: The name for the `FenceGeotrigger`.
+        private func makeGeotrigger(feed: GeotriggerFeed, featureTable: ServiceFeatureTable, bufferDistance: Double, fenceGeotriggerName: String) {
             let fenceParameters = FeatureFenceParameters(
                 featureTable: featureTable,
                 bufferDistance: bufferDistance
             )
+            
             // The Arcade expression in the fence geotrigger returns the value for
             // the "name" field of the feature that triggered the monitor.
             let fenceGeotrigger = FenceGeotrigger(
@@ -243,34 +220,35 @@ private extension SetUpLocationDrivenGeotriggersView {
                 }
             }
             
-            // Observe geotrigger notifications.
-            Task.detached { [unowned self] in
+            // Handle posted geotrigger notifications.
+            notificationTaskHandle = Task {
                 for await notification in geotriggerMonitor.notifications {
                     handleGeotriggerNotification(notification as! FenceGeotriggerNotificationInfo)
                 }
             }
         }
         
-        /// Handle the notifications posted by `AGSGeotriggerMonitor` when the fence
-        /// geotrigger condition has been met.
-        func handleGeotriggerNotification(_ fenceNotificationInfo: FenceGeotriggerNotificationInfo) {
-            // `AGSFenceGeotriggerNotificationInfo` provides information about the
-            // geotrigger monitor and the (fence) geotrigger that was triggered.
-            
+        /// Handle a notification posted by a geotrigger monitor when a fence geotrigger
+        /// condition has been met.
+        /// - Parameter fenceNotificationInfo: The `FenceGeotriggerNotificationInfo`
+        /// which provides information about the geotrigger monitor and the fence
+        /// geotrigger that was triggered.
+        private func handleGeotriggerNotification(_ fenceNotificationInfo: FenceGeotriggerNotificationInfo) {
             // The feature name from the Arcade expression.
             let featureName = fenceNotificationInfo.message
             let fenceFeature = fenceNotificationInfo.fenceGeoElement as! ArcGISFeature
             let geotriggerName = fenceNotificationInfo.geotriggerMonitor.geotrigger.name
             
+            // Handle notification types.
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
                 switch fenceNotificationInfo.fenceNotificationType {
                 case .entered:
-                    // The user enters a geofence: add the feature for future querying.
+                    // The user entered a geofence: add the feature for future querying.
                     self.featureNamesInFenceGeotrigger[geotriggerName, default: []].append(featureName)
                     self.nearbyFeatures[featureName] = fenceFeature
                 case .exited:
-                    // The user leaves the geofence: remove the feature from the dicts.
+                    // The user left the geofence: remove the feature from the dicts.
                     if let poppedFeatureName = self.featureNamesInFenceGeotrigger[geotriggerName]?.popLast() {
                         self.nearbyFeatures.removeValue(forKey: poppedFeatureName)
                     }
@@ -278,34 +256,80 @@ private extension SetUpLocationDrivenGeotriggersView {
                     fatalError("Unexpected fence notification type.")
                 }
                 
-                // Update status labels.
-                self.updateStatusLabels(featureName: featureName, notificationType: fenceNotificationInfo.fenceNotificationType)
+                // Update the status texts.
+                self.updateStatusText(featureName: featureName, notificationType: fenceNotificationInfo.fenceNotificationType)
             }
         }
         
-        ///
-        func updateStatusLabels(featureName: String, notificationType: FenceGeotriggerNotificationInfo.NotificationType) {
+        /// Update the status texts with the feature name and notification type.
+        /// - Parameters:
+        ///   - featureName: The name of the feature.
+        ///   - notificationType: The fence `NotificationType`.
+        private func updateStatusText(featureName: String, notificationType: FenceGeotriggerNotificationInfo.NotificationType) {
+            // Set fence geotrigger text.
             let typeString = notificationType == .entered ? "Entered" : "Exited"
-            let fenceGeotriggerText = String(format: "%@ the geofence of %@", typeString, featureName)
-            let nearbyFeaturesText: String
-            if nearbyFeatures.keys.isEmpty {
-                nearbyFeaturesText = "No nearby features."
+            self.fenceGeotriggerText = String(format: "%@ the geofence of %@", typeString, featureName)
+            
+            // Set nearby features text.
+            if nearbyFeatures.isEmpty {
+                self.nearbyFeaturesText = "No nearby features."
             } else {
-                nearbyFeaturesText = String(format: "Nearby: %@", ListFormatter.localizedString(byJoining: nearbyFeatures.keys.sorted()))
+                self.nearbyFeaturesText = String(format: "Nearby: %@", ListFormatter.localizedString(byJoining: nearbyFeatures.keys.sorted()))
             }
-            fenceGeotriggerString = fenceGeotriggerText
-            nearbyFeaturesString = nearbyFeaturesText
+        }
+        
+        /// Create a simulated location data source route from a GeoJSON string.
+        /// - Returns: A new `SimulatedLocationDataSource` object for the example route.
+        private func makeDataSource() -> SimulatedLocationDataSource {
+            // Densify the polyline to control the simulation speed.
+            let routePolyline = try? Polyline.fromJSON(walkingTourPolylineJSON)
+            let densifiedRoute = GeometryEngine.geodeticDensify(
+                routePolyline!,
+                maxSegmentLength: 5.0,
+                lengthUnit: .meters,
+                curveType: .geodesic
+            ) as! Polyline
+            
+            // Create simulated data source with the route polyline.
+            return SimulatedLocationDataSource(polyline: densifiedRoute)
+        }
+        
+        /// Create and start a location display from the location data source.
+        /// - Returns: A new `LocationDisplay` object.
+        private func makeLocationDisplay() -> LocationDisplay {
+            let locationDisplay = LocationDisplay(dataSource: locationDataSource)
+            locationDisplay.autoPanMode = .recenter
+            locationDisplay.initialZoomScale = 1000
+            Task.detached { [unowned self] in
+                do {
+                    try await locationDisplay.dataSource.start()
+                } catch {
+                    self.error = error
+                }
+            }
+            return locationDisplay
         }
     }
 }
 
 private extension PortalItem.ID {
-    /// The portal item ID of a web map to be displayed on the map.
+    /// The portal item ID of a Santa Barbara Botanic Garden web map.
     static var santaBarbaraBotanicGardenMap: Self { Self("6ab0e91dc39e478cae4f408e1a36a308")! }
 }
 
+private extension Item.ID {
+    /// The Santa Barbara Botanic Garden Sections layer id.
+    static var gardenSectionsLayer: Self { Self("1ba816341ea04243832136379b8951d9")! }
+    
+    /// The Santa Barbara Botanic Garden Points of Interest layer id.
+    static var gardenPOIsLayer: Self { Self("7c6280c290c34ae8aeb6b5c4ec841167")! }
+}
+
 private extension SetUpLocationDrivenGeotriggersView {
+    /// The section fence geotrigger name.
     static let sectionFenceGeotriggerName = "Section Fence Geotrigger"
+    
+    /// The point-of-interest geotrigger name.
     static let poiFenceGeotriggerName = "POI Fence Geotrigger"
     
     /// A path in Santa Barbara Botanic Garden in GeoJSON format.
