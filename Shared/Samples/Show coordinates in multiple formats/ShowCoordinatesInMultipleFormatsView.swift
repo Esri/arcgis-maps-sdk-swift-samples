@@ -68,7 +68,6 @@ struct ShowCoordinatesInMultipleFormatsView: View {
                     )!)
             }
             
-            // Create a map view to display the map.
             MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
                 .onSingleTapGesture { _, mapPoint in
                     model.updateMapPoint(point: mapPoint)
