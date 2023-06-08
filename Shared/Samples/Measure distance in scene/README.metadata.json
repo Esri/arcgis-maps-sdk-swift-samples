@@ -1,0 +1,25 @@
+{
+    "category": "Analysis",
+    "description": "Measure distances between two points in 3D.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "3D",
+        "analysis",
+        "distance",
+        "measure",
+        "AnalysisOverlay",
+        "LocationDistanceMeasurement",
+        "MeasurementChangedEvent"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "AnalysisOverlay",
+        "LocationDistanceMeasurement",
+        "MeasurementChangedEvent"
+    ],
+    "snippets": [
+        "MeasureDistanceInSceneView.swift"
+    ],
+    "title": "Measure distance in scene"
+}
