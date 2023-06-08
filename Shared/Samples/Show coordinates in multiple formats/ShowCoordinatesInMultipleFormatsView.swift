@@ -149,7 +149,7 @@ private extension ShowCoordinatesInMultipleFormatsView {
             updateCoordinateFields()
         }
         
-        /// Generates strings for `mapPoint` using 'CoordinateFormatter'.
+        /// Generates strings for `mapPoint` using `CoordinateFormatter`.
         private func updateCoordinateFields() {
             latLongDDString = CoordinateFormatter.latitudeLongitudeString(
                 from: mapPoint,
