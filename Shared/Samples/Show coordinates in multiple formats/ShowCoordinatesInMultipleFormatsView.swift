@@ -133,7 +133,7 @@ private extension ShowCoordinatesInMultipleFormatsView {
         /// The UTM text.
         @Published var utmString = ""
         
-        /// Tshe USNG text.
+        /// The USNG text.
         @Published var usngString = ""
         
         init() {
