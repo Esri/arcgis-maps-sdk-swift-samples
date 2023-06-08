@@ -113,7 +113,7 @@ private extension ShowCoordinatesInMultipleFormatsView {
     // The view model for the sample.
     class Model: ObservableObject {
         /// A map with an imagery basemap.
-        var map = Map(basemapStyle: .arcGISImageryStandard)
+        let map = Map(basemapStyle: .arcGISImageryStandard)
         
         /// The graphics overlay for the point graphic.
         let graphicsOverlay: GraphicsOverlay
