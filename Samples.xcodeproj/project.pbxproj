@@ -208,7 +208,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
-
 				D7EF5D762A26A1EE00FEBDE5 /* ShowCoordinatesInMultipleFormatsView.swift in Copy Source Code Files */,
 				D78666AE2A21629200C60110 /* FindNearestVertexView.swift in Copy Source Code Files */,
 				D7E440D82A1ECEB3005D74DE /* CreateBuffersAroundPointsView.swift in Copy Source Code Files */,
