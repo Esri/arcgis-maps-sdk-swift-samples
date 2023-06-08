@@ -109,6 +109,7 @@
 		D754E3242A1D66C20006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D754E3222A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift */; };
 		D78666AD2A2161F100C60110 /* FindNearestVertexView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78666AC2A2161F100C60110 /* FindNearestVertexView.swift */; };
 		D78666AE2A21629200C60110 /* FindNearestVertexView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D78666AC2A2161F100C60110 /* FindNearestVertexView.swift */; };
+		D7ABA2FD2A3287C10021822B /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = D7ABA2FC2A3287C10021822B /* README.md */; };
 		D7E440D72A1ECE7D005D74DE /* CreateBuffersAroundPointsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E440D62A1ECE7D005D74DE /* CreateBuffersAroundPointsView.swift */; };
 		D7E440D82A1ECEB3005D74DE /* CreateBuffersAroundPointsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7E440D62A1ECE7D005D74DE /* CreateBuffersAroundPointsView.swift */; };
 		D7E557682A1D768800B9FB09 /* AddWMSLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E557672A1D768800B9FB09 /* AddWMSLayerView.swift */; };
@@ -329,6 +330,7 @@
 		D75362D12A1E886700D83028 /* ApplyUniqueValueRendererView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplyUniqueValueRendererView.swift; sourceTree = "<group>"; };
 		D754E3222A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StylePointWithPictureMarkerSymbolsView.swift; sourceTree = "<group>"; };
 		D78666AC2A2161F100C60110 /* FindNearestVertexView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindNearestVertexView.swift; sourceTree = "<group>"; };
+		D7ABA2FC2A3287C10021822B /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D7E440D62A1ECE7D005D74DE /* CreateBuffersAroundPointsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateBuffersAroundPointsView.swift; sourceTree = "<group>"; };
 		D7E557672A1D768800B9FB09 /* AddWMSLayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddWMSLayerView.swift; sourceTree = "<group>"; };
 		D7EAF3592A1C023800D822C4 /* SetMinAndMaxScaleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetMinAndMaxScaleView.swift; sourceTree = "<group>"; };
@@ -491,6 +493,7 @@
 				1C9B74C429DB43580038B06F /* Show realistic light and shadows */,
 				E004A6F1284E4F80002A1FE6 /* Show result of spatial operations */,
 				E066DD392860C9EE004D3D5B /* Show result of spatial relationships */,
+				D7ABA2FB2A3287C10021822B /* Show viewshed from geoelement in scene */,
 				0086F3FC28E3770900974721 /* Show viewshed from point in scene */,
 				88F93CBE29C3D4E30006B28E /* Sketch on map */,
 				E066DD362860AB0B004D3D5B /* Style graphics with renderer */,
@@ -787,6 +790,14 @@
 				D78666AC2A2161F100C60110 /* FindNearestVertexView.swift */,
 			);
 			path = "Find nearest vertex";
+			sourceTree = "<group>";
+		};
+		D7ABA2FB2A3287C10021822B /* Show viewshed from geoelement in scene */ = {
+			isa = PBXGroup;
+			children = (
+				D7ABA2FC2A3287C10021822B /* README.md */,
+			);
+			path = "Show viewshed from geoelement in scene";
 			sourceTree = "<group>";
 		};
 		D7E440D12A1ECBC2005D74DE /* Create buffers around points */ = {
@@ -1097,6 +1108,7 @@
 				00D4EF9028638BF100B9CC30 /* LA_Trails.geodatabase in Resources */,
 				00D4EF9A28638BF100B9CC30 /* AuroraCO.gpkg in Resources */,
 				F111CCC4288B641900205358 /* Yellowstone.mmpk in Resources */,
+				D7ABA2FD2A3287C10021822B /* README.md in Resources */,
 				00D4EFB12863CE6300B9CC30 /* ScottishWildlifeTrust_reserves in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
