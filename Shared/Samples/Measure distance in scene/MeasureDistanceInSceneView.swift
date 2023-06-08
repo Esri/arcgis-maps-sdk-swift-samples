@@ -19,9 +19,22 @@ struct MeasureDistanceInSceneView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
+    @State private var systemSelection = "metric"
+    
     var body: some View {
         SceneView(scene: model.scene, analysisOverlays: [model.analysisOverlay])
             .alert(isPresented: $model.isShowingAlert, presentingError: model.error)
+        
+        Text("Direct: \(model.directMeasurementText)")
+        Text("Horizontal: \(model.horizontalMeasurementText)")
+        Text("Vertical: \(model.verticalMeasurementText)")
+        
+        Picker("", selection: $systemSelection) {
+            Text("Imperial").tag("imperial")
+            Text("Metric").tag("metric")
+        }
+        .pickerStyle(.segmented)
+        .padding()
     }
 }
 
@@ -61,12 +74,54 @@ private extension MeasureDistanceInSceneView {
             return LocationDistanceMeasurement(startLocation: startPoint, endLocation: endPoint)
         }()
         
+        /// A string for the direct measurement.
+        @Published var directMeasurementText = ""
+        
+        /// A string for the direct measurement.
+        @Published var horizontalMeasurementText = ""
+        
+        /// A string for the direct measurement.
+        @Published var verticalMeasurementText = ""
+        
         /// A Boolean value indicating whether to show an alert.
         @Published var isShowingAlert = false
         
         /// The error shown in the alert.
         @Published var error: Error? {
             didSet { isShowingAlert = error != nil }
+        }
+        
+        init() {
+            updateMeasurementTexts()
+        }
+        
+        /// Update the measurement texts with
+        func updateMeasurementTexts() {
+            if locationDistanceMeasurement.startLocation != locationDistanceMeasurement.endLocation {
+                print(1)
+                if let directDistance = locationDistanceMeasurement.directDistance {
+                    print(2)
+                    if let horizontalDistance = locationDistanceMeasurement.horizontalDistance {
+                        print(3)
+                        if let verticalDistance = locationDistanceMeasurement.verticalDistance {
+                            print(4)
+                            // The format style with 2 decimal points.
+                            let formatStyle = Measurement<UnitLength>.FormatStyle(
+                                width: .abbreviated,
+                                numberFormatStyle: .number.precision(.fractionLength(2))
+                            )
+                            
+                            directMeasurementText = directDistance.formatted(formatStyle)
+                            horizontalMeasurementText = horizontalDistance.formatted(formatStyle)
+                            verticalMeasurementText = verticalDistance.formatted(formatStyle)
+                        }
+                    }
+                }
+            } else {
+                directMeasurementText = "--"
+                horizontalMeasurementText = "--"
+                verticalMeasurementText = "--"
+            }
         }
     }
 }
