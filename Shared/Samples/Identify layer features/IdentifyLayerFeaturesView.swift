@@ -22,17 +22,32 @@ struct IdentifyLayerFeaturesView: View {
     /// The tapped screen point.
     @State var tapScreenPoint: CGPoint!
     
-    /// A Boolean indicating if the progress view is showing.
-    @State var isShowingProgress = false
-    
     var body: some View {
         ZStack {
             MapViewReader { proxy in
-                // Create a map view to display the map.
                 MapView(map: model.map)
                     .onSingleTapGesture { screenPoint, _ in
-                        isShowingProgress = true
                         tapScreenPoint = screenPoint
+                    }
+                    .task {
+                        do {
+                            // Add map image layer.
+                            let mapImageLayer = ArcGISMapImageLayer(url: .worldCities)
+                            try await mapImageLayer.load()
+                            
+                            // Hide continent and world layers.
+                            mapImageLayer.subLayerContents[1].isVisible = false
+                            mapImageLayer.subLayerContents[2].isVisible = false
+                            model.map.addOperationalLayer(mapImageLayer)
+                            
+                            // Add feature layer.
+                            let featureTable = ServiceFeatureTable(url: .damageAssessment)
+                            try await featureTable.load()
+                            let featureLayer = FeatureLayer(featureTable: featureTable)
+                            model.map.addOperationalLayer(featureLayer)
+                        } catch {
+                            model.error = error
+                        }
                     }
                     .task(id: tapScreenPoint) {
                         // Identify layers using the screen point.
@@ -45,7 +60,6 @@ struct IdentifyLayerFeaturesView: View {
                             model.handleIdentifyResults(results)
                             model.isShowingLayerAlert = true
                         }
-                        isShowingProgress = false
                     }
                     .alert(isPresented: $model.isShowingLayerAlert) {
                         Alert(
@@ -53,10 +67,8 @@ struct IdentifyLayerFeaturesView: View {
                             message: Text(model.layerAlertMessage)
                         )
                     }
-                    .alert(isPresented: $model.isShowingErrorAlert, presentingError: model.alertError)
+                    .alert(isPresented: $model.isShowingErrorAlert, presentingError: model.error)
             }
-            ProgressView()
-                .hidden(!isShowingProgress)
         }
     }
 }
@@ -64,8 +76,17 @@ struct IdentifyLayerFeaturesView: View {
 private extension IdentifyLayerFeaturesView {
     /// The view model for the sample.
     class Model: ObservableObject {
-        /// A map with a world cities image layer and damage assessment feature layer.
-        var map: Map!
+        /// A map with a topographic basemap centered on the United States..
+        let map: Map = {
+            let map = Map(basemapStyle: .arcGISTopographic)
+            
+            // Center the map on the USA.
+            map.initialViewpoint = Viewpoint(
+                center: Point(x: -10977012.785807, y: 4514257.550369, spatialReference: .webMercator),
+                scale: 68015210
+            )
+            return map
+        }()
         
         /// A Boolean value indicating whether to show a layer alert.
         @Published var isShowingLayerAlert = false
@@ -80,56 +101,12 @@ private extension IdentifyLayerFeaturesView {
         @Published var isShowingErrorAlert = false
         
         /// The error shown in the error alert.
-        @Published var alertError: Error? {
-            didSet { isShowingErrorAlert = alertError != nil }
-        }
-        
-        init() {
-            map = makeMap()
-        }
-        
-        /// Creates a map with an image and feature layer.
-        private func makeMap() -> Map {
-            // Create a map with a topographic basemap.
-            let map = Map(basemapStyle: .arcGISTopographic)
-            
-            // Center on the USA.
-            map.initialViewpoint = Viewpoint(
-                center: Point(x: -10977012.785807, y: 4514257.550369, spatialReference: .webMercator),
-                scale: 68015210
-            )
-            
-            // Add map image layer.
-            let mapImageLayer = ArcGISMapImageLayer(url: .worldCities)
-            Task {
-                do {
-                    try await mapImageLayer.load()
-                    // Hide Continent and World layers.
-                    mapImageLayer.subLayerContents[1].isVisible = false
-                    mapImageLayer.subLayerContents[2].isVisible = false
-                    map.addOperationalLayer(mapImageLayer)
-                } catch {
-                    alertError = error
-                }
-            }
-            
-            // Add feature layer.
-            let featureTable = ServiceFeatureTable(url: .damageAssessment)
-            Task {
-                do {
-                    try await featureTable.load()
-                    let featureLayer = FeatureLayer(featureTable: featureTable)
-                    map.addOperationalLayer(featureLayer)
-                } catch {
-                    alertError = error
-                }
-            }
-            
-            return map
+        @Published var error: Error? {
+            didSet { isShowingErrorAlert = error != nil }
         }
         
         /// Update the identify layer result alert text based on the identify layer results.
-        /// - Parameter results: An `Array` of `IdentifyLayerResult`s to handle.
+        /// - Parameter results: An `IdentifyLayerResult Array` to handle.
         func handleIdentifyResults(_ results: [IdentifyLayerResult]) {
             var alertMessageString = ""
             var totalGeoElementsCount = 0
@@ -201,19 +178,5 @@ private extension URL {
     /// A damage assessment feature layer URL.
     static var damageAssessment: URL {
         URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/DamageAssessment/FeatureServer/0")!
-    }
-}
-
-private extension View {
-    @ViewBuilder
-    /// Hides or shows a view based on a Boolean.
-    /// - Parameter hidden: A `Bool` indicating whether the view should be hidden.
-    /// - Returns: A `View`, self either hidden or not.
-    func hidden(_ hidden: Bool) -> some View {
-        if hidden == true {
-            self.hidden()
-        } else {
-            self
-        }
     }
 }
