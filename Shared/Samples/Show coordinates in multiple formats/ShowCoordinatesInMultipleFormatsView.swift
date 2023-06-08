@@ -19,6 +19,9 @@ struct ShowCoordinatesInMultipleFormatsView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
+    /// The tapped point on the map.
+    @State private var mapPoint: Point!
+    
     var body: some View {
         // Input text fields.
         VStack {
@@ -29,11 +32,11 @@ struct ShowCoordinatesInMultipleFormatsView: View {
             .onSubmit {
                 if let point = CoordinateFormatter.point(
                     fromLatitudeLongitudeString: model.latLongDDString,
-                    spatialReference: model.mapPoint.spatialReference
+                    spatialReference: mapPoint.spatialReference
                 ) {
-                    model.updateMapPoint(point: point)
+                    model.updateCoordinates(point: point)
                 } else {
-                    model.updateMapPoint(point: model.mapPoint)
+                    model.updateCoordinates(point: mapPoint)
                 }
             }
             CoordinateTextField(
@@ -43,11 +46,11 @@ struct ShowCoordinatesInMultipleFormatsView: View {
             .onSubmit {
                 if let point = CoordinateFormatter.point(
                     fromLatitudeLongitudeString: model.latLongDMSString,
-                    spatialReference: model.mapPoint.spatialReference
+                    spatialReference: mapPoint.spatialReference
                 ) {
-                    model.updateMapPoint(point: point)
+                    model.updateCoordinates(point: point)
                 } else {
-                    model.updateMapPoint(point: model.mapPoint)
+                    model.updateCoordinates(point: mapPoint)
                 }
             }
             CoordinateTextField(
@@ -57,12 +60,12 @@ struct ShowCoordinatesInMultipleFormatsView: View {
             .onSubmit {
                 if let point = CoordinateFormatter.point(
                     fromUTMString: model.utmString,
-                    spatialReference: model.mapPoint.spatialReference,
+                    spatialReference: mapPoint.spatialReference,
                     conversionMode: .latitudeBandIndicators
                 ) {
-                    model.updateMapPoint(point: point)
+                    model.updateCoordinates(point: point)
                 } else {
-                    model.updateMapPoint(point: model.mapPoint)
+                    model.updateCoordinates(point: mapPoint)
                 }
             }
             CoordinateTextField(
@@ -72,17 +75,19 @@ struct ShowCoordinatesInMultipleFormatsView: View {
             .onSubmit {
                 if let point = CoordinateFormatter.point(
                     fromUSNGString: model.usngString,
-                    spatialReference: model.mapPoint.spatialReference
+                    spatialReference: mapPoint.spatialReference
                 ) {
-                    model.updateMapPoint(point: point)
+                    model.updateCoordinates(point: point)
                 } else {
-                    model.updateMapPoint(point: model.mapPoint)
+                    model.updateCoordinates(point: mapPoint)
                 }
             }
             
             MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
                 .onSingleTapGesture { _, mapPoint in
-                    model.updateMapPoint(point: mapPoint)
+                    /// Updates the `mapPoint`, its graphic, and the corresponding coordinates.
+                    self.mapPoint = mapPoint
+                    model.updateCoordinates(point: mapPoint)
                 }
         }
     }
@@ -121,9 +126,6 @@ private extension ShowCoordinatesInMultipleFormatsView {
         /// A yellow cross graphic for the map point.
         private let pointGraphic = Graphic(symbol: SimpleMarkerSymbol(style: .cross, color: .yellow, size: 20))
         
-        /// The point on the map.
-        @Published var mapPoint: Point!
-        
         /// The decimal degrees text.
         @Published var latLongDDString = ""
         
@@ -138,19 +140,19 @@ private extension ShowCoordinatesInMultipleFormatsView {
         
         init() {
             graphicsOverlay = GraphicsOverlay(graphics: [pointGraphic])
-            updateMapPoint(point: Point(latitude: 0, longitude: 0))
+            updateCoordinates(point: Point(latitude: 0, longitude: 0))
         }
         
-        /// Updates the `mapPoint`, its graphic, and the corresponding coordinates.
-        /// - Parameter point: A `Point` used to update the `mapPoint`.
-        func updateMapPoint(point: Point) {
-            mapPoint = point
+        /// Updates the map point graphic and the corresponding coordinates.
+        /// - Parameter point: A `Point` used to update.
+        func updateCoordinates(point: Point) {
             pointGraphic.geometry = point
-            updateCoordinateFields()
+            updateCoordinateFields(mapPoint: point)
         }
         
-        /// Generates strings for `mapPoint` using `CoordinateFormatter`.
-        private func updateCoordinateFields() {
+        /// Generates and updates the coordinate strings using the coordinate formatter.
+        /// - Parameter mapPoint: A `Point` to get coordinates from.
+        private func updateCoordinateFields(mapPoint: Point) {
             latLongDDString = CoordinateFormatter.latitudeLongitudeString(
                 from: mapPoint,
                 format: .decimalDegrees,
