@@ -19,22 +19,35 @@ struct MeasureDistanceInSceneView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
-    @State private var systemSelection = "metric"
+    /// The unit system for the location distance measurement.
+    @State private var unitSystemSelection: UnitSystem = .metric
     
     var body: some View {
         SceneView(scene: model.scene, analysisOverlays: [model.analysisOverlay])
-            .alert(isPresented: $model.isShowingAlert, presentingError: model.error)
+            .onSingleTapGesture { _, scenePoint in
+                model.updateMeasurementTexts()
+            }
+            .onLongPressGesture() { _, scenePoint in
+                model.updateMeasurementTexts()
+            }
+            .onAppear {
+                model.updateMeasurementTexts()
+            }
         
         Text("Direct: \(model.directMeasurementText)")
         Text("Horizontal: \(model.horizontalMeasurementText)")
         Text("Vertical: \(model.verticalMeasurementText)")
         
-        Picker("", selection: $systemSelection) {
-            Text("Imperial").tag("imperial")
-            Text("Metric").tag("metric")
+        Picker("", selection: $unitSystemSelection) {
+            Text("Imperial").tag(UnitSystem.imperial)
+            Text("Metric").tag(UnitSystem.metric)
         }
         .pickerStyle(.segmented)
         .padding()
+        .onChange(of: unitSystemSelection) { _ in
+            model.locationDistanceMeasurement.unitSystem = unitSystemSelection
+            model.updateMeasurementTexts()
+        }
     }
 }
 
@@ -68,7 +81,7 @@ private extension MeasureDistanceInSceneView {
         lazy var analysisOverlay = AnalysisOverlay(analyses: [locationDistanceMeasurement])
         
         /// The location distance measurement analysis.
-        private let locationDistanceMeasurement: LocationDistanceMeasurement = {
+        let locationDistanceMeasurement: LocationDistanceMeasurement = {
             let startPoint = Point(x: -4.494677, y: 48.384472, z: 24.772694, spatialReference: .wgs84)
             let endPoint = Point(x: -4.495646, y: 48.384377, z: 58.501115, spatialReference: .wgs84)
             return LocationDistanceMeasurement(startLocation: startPoint, endLocation: endPoint)
@@ -82,41 +95,27 @@ private extension MeasureDistanceInSceneView {
         
         /// A string for the direct measurement.
         @Published var verticalMeasurementText = ""
-        
-        /// A Boolean value indicating whether to show an alert.
-        @Published var isShowingAlert = false
-        
-        /// The error shown in the alert.
-        @Published var error: Error? {
-            didSet { isShowingAlert = error != nil }
-        }
-        
-        init() {
-            updateMeasurementTexts()
-        }
+
         
         /// Update the measurement texts with
         func updateMeasurementTexts() {
-            if locationDistanceMeasurement.startLocation != locationDistanceMeasurement.endLocation {
-                print(1)
-                if let directDistance = locationDistanceMeasurement.directDistance {
-                    print(2)
-                    if let horizontalDistance = locationDistanceMeasurement.horizontalDistance {
-                        print(3)
-                        if let verticalDistance = locationDistanceMeasurement.verticalDistance {
-                            print(4)
-                            // The format style with 2 decimal points.
-                            let formatStyle = Measurement<UnitLength>.FormatStyle(
-                                width: .abbreviated,
-                                numberFormatStyle: .number.precision(.fractionLength(2))
-                            )
-                            
-                            directMeasurementText = directDistance.formatted(formatStyle)
-                            horizontalMeasurementText = horizontalDistance.formatted(formatStyle)
-                            verticalMeasurementText = verticalDistance.formatted(formatStyle)
-                        }
-                    }
-                }
+            print(locationDistanceMeasurement.directDistance)
+            print(locationDistanceMeasurement.verticalDistance)
+            print(locationDistanceMeasurement.horizontalDistance)
+            
+            if locationDistanceMeasurement.startLocation != locationDistanceMeasurement.endLocation,
+               let directDistance = locationDistanceMeasurement.directDistance,
+               let horizontalDistance = locationDistanceMeasurement.horizontalDistance,
+               let verticalDistance = locationDistanceMeasurement.verticalDistance {
+                // The format style with 2 decimal points.
+                let formatStyle = Measurement<UnitLength>.FormatStyle(
+                    width: .abbreviated,
+                    numberFormatStyle: .number.precision(.fractionLength(2))
+                )
+                
+                directMeasurementText = directDistance.formatted(formatStyle)
+                horizontalMeasurementText = horizontalDistance.formatted(formatStyle)
+                verticalMeasurementText = verticalDistance.formatted(formatStyle)
             } else {
                 directMeasurementText = "--"
                 horizontalMeasurementText = "--"
