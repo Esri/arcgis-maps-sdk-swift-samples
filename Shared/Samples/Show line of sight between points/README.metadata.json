@@ -2,7 +2,9 @@
     "category": "Analysis",
     "description": "Perform a line of sight analysis between two points in real time.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "show-line-of-sight-between-points.png"
+    ],
     "keywords": [
         "3D",
         "line of sight",

@@ -16,23 +16,73 @@ import SwiftUI
 import ArcGIS
 import ArcGISToolkit
 
-struct SetUpLocationDrivenGeotriggersView: View {
-    /// The view model for the sample.
-    @StateObject private var model = Model()
+struct ShowLineOfSightBetweenPointsView: View {
+    /// A scene with an imagery basemap and centered on mountains in Chile.
+    private let scene: ArcGIS.Scene = {
+        // Creates a scene.
+        let scene = Scene(basemapStyle: .arcGISImagery)
+        
+        // Add elevation source to the base surface of the scene with the service URL.
+        let elevationSource = ArcGISTiledElevationSource(url: .worldElevationService)
+        scene.baseSurface.addElevationSource(elevationSource)
+        
+        // Set scene the viewpoint specified by the camera position.
+        let point = Point(x: -73.0870, y: -49.3460, z: 5046, spatialReference: .wgs84)
+        let camera = Camera(location: point, heading: 11, pitch: 62, roll: 0)
+        scene.initialViewpoint = Viewpoint(boundingGeometry: point, camera: camera)
+        
+        return scene
+    }()
     
+    /// The analysis overlay for the line of sight analysis.
+    private let analysisOverlay = AnalysisOverlay()
+    
+    /// The line of sight analysis.
+    @State private var lineOfSight: LocationLineOfSight?
+    
+    /// A Boolean value indicating whether to should the target instructions.
+    @State private var shouldShowTargetInstruction = false
     
     var body: some View {
-        MapView(map: model.map)
-    }
-
-private extension ShowLineOfSightBetweenPointsView {
-    /// The view model for the sample.
-    class Model: ObservableObject {
-        /// A map of the Santa Barbara Botanic Garden.
-        let map = Map(item: PortalItem(
-            portal: .arcGISOnline(connection: .anonymous),
-            id: .santaBarbaraBotanicGardenMap
-        ))
+        SceneView(scene: scene, analysisOverlays: [analysisOverlay])
+            .onSingleTapGesture { _, scenePoint in
+                // User tapped to place line of sight observer.
+                if lineOfSight == nil {
+                    // Create and set initial line of sight analysis with tapped scene point.
+                    lineOfSight = LocationLineOfSight(observerLocation: scenePoint!, targetLocation: scenePoint!)
+                    analysisOverlay.addAnalysis(lineOfSight!)
+                    shouldShowTargetInstruction = true
+                } else {
+                    // Update the observer location.
+                    lineOfSight?.observerLocation = scenePoint!
+                }
+            }
+            .onLongPressGesture {  _, scenePoint in
+                // Update the target location on long press.
+                lineOfSight?.targetLocation = scenePoint!
+            }
+            .overlay(alignment: .top) {
+                // Instruction texts.
+                VStack {
+                    Text("Tap on the map to set the observer location.")
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(8)
+                        .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
+                    
+                    Text("Tap and hold to set the line of sight target.")
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(8)
+                        .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
+                        .padding(.top, -8)
+                        .opacity(shouldShowTargetInstruction ? 1 : 0)
+                }
+            }
     }
 }
 
+private extension URL {
+    /// A world elevation service from Terrain3D ArcGIS REST service.
+    static var worldElevationService: URL {
+        URL(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!
+    }
+}
