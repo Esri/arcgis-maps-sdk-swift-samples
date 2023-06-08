@@ -21,7 +21,7 @@
     "relevant_apis": [
         "SubtypeFeatureLayer",
         "UtilityAssociation",
-        "UtilityAssociationType",
+        "UtilityAssociation.Kind",
         "UtilityElement",
         "UtilityNetwork"
     ],
