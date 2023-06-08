@@ -107,6 +107,7 @@
 		D75362D32A1E8C8800D83028 /* ApplyUniqueValueRendererView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D75362D12A1E886700D83028 /* ApplyUniqueValueRendererView.swift */; };
 		D754E3232A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D754E3222A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift */; };
 		D754E3242A1D66C20006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D754E3222A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift */; };
+		D7ABA2F72A3256610021822B /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = D7ABA2F62A3256610021822B /* README.md */; };
 		D7E440D72A1ECE7D005D74DE /* CreateBuffersAroundPointsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E440D62A1ECE7D005D74DE /* CreateBuffersAroundPointsView.swift */; };
 		D7E440D82A1ECEB3005D74DE /* CreateBuffersAroundPointsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7E440D62A1ECE7D005D74DE /* CreateBuffersAroundPointsView.swift */; };
 		D7E557682A1D768800B9FB09 /* AddWMSLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E557672A1D768800B9FB09 /* AddWMSLayerView.swift */; };
@@ -325,6 +326,7 @@
 		D744FD162A2112D90084A66C /* CreateConvexHullAroundPointsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateConvexHullAroundPointsView.swift; sourceTree = "<group>"; };
 		D75362D12A1E886700D83028 /* ApplyUniqueValueRendererView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplyUniqueValueRendererView.swift; sourceTree = "<group>"; };
 		D754E3222A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StylePointWithPictureMarkerSymbolsView.swift; sourceTree = "<group>"; };
+		D7ABA2F62A3256610021822B /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D7E440D62A1ECE7D005D74DE /* CreateBuffersAroundPointsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateBuffersAroundPointsView.swift; sourceTree = "<group>"; };
 		D7E557672A1D768800B9FB09 /* AddWMSLayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddWMSLayerView.swift; sourceTree = "<group>"; };
 		D7EAF3592A1C023800D822C4 /* SetMinAndMaxScaleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetMinAndMaxScaleView.swift; sourceTree = "<group>"; };
@@ -469,6 +471,7 @@
 				E066DD33285CF3A0004D3D5B /* Find route */,
 				E088E1722863B5E600413100 /* Generate offline map */,
 				0044288C29C90BD500160767 /* Get elevation at point on surface */,
+				D7ABA2F52A3256610021822B /* Measure distance in scene */,
 				75DD739029D38B1B0010229D /* Navigate route */,
 				E0EA0B75286638FD00C9621D /* Project geometry */,
 				108EC03F29D25AE1000F35D0 /* Query feature table */,
@@ -774,6 +777,14 @@
 				D754E3222A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift */,
 			);
 			path = "Style point with picture marker symbols";
+			sourceTree = "<group>";
+		};
+		D7ABA2F52A3256610021822B /* Measure distance in scene */ = {
+			isa = PBXGroup;
+			children = (
+				D7ABA2F62A3256610021822B /* README.md */,
+			);
+			path = "Measure distance in scene";
 			sourceTree = "<group>";
 		};
 		D7E440D12A1ECBC2005D74DE /* Create buffers around points */ = {
@@ -1084,6 +1095,7 @@
 				00D4EF9028638BF100B9CC30 /* LA_Trails.geodatabase in Resources */,
 				00D4EF9A28638BF100B9CC30 /* AuroraCO.gpkg in Resources */,
 				F111CCC4288B641900205358 /* Yellowstone.mmpk in Resources */,
+				D7ABA2F72A3256610021822B /* README.md in Resources */,
 				00D4EFB12863CE6300B9CC30 /* ScottishWildlifeTrust_reserves in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
