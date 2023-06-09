@@ -76,7 +76,7 @@ private extension ShowLabelsOnLayerView {
         layer.labelsAreEnabled = true
     }
     
-    /// Create a label definition for the given PARTY field value and color.
+    /// Creates a label definition for the given PARTY field value and color.
     /// - Parameters:
     ///   - party: A `String` representing the party.
     ///   - color: The `UIColor` for the label.
