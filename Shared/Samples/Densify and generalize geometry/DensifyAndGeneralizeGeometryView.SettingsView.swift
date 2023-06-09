@@ -25,7 +25,7 @@ extension DensifyAndGeneralizeGeometryView {
                 // Generalize toggle and slider.
                 Section {
                     Toggle("Generalize", isOn: $model.shouldGeneralize)
-                        . onChange(of: model.shouldGeneralize) { _ in
+                        .onChange(of: model.shouldGeneralize) { _ in
                             model.updateGraphics()
                         }
                     VStack {
