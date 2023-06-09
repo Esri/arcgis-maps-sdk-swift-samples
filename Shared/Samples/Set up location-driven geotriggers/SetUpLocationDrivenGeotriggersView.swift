@@ -115,7 +115,7 @@ private extension SetUpLocationDrivenGeotriggersView {
         lazy var locationDisplay = makeLocationDisplay()
         
         /// The route simulated location data source.
-        private lazy var locationDataSource = makeDataSource()
+        private let locationDataSource: SimulatedLocationDataSource
         
         /// An array of geotrigger monitors.
         private var geotriggerMonitors: [GeotriggerMonitor] = []
@@ -165,6 +165,21 @@ private extension SetUpLocationDrivenGeotriggersView {
         
         /// The handle for the geotrigger monitor notification task.
         private var notificationTaskHandle: Task<Void, Never>!
+        
+        init() {
+            // Make data source
+            // Densify the polyline to control the simulation speed.
+            let routePolyline = try? Polyline.fromJSON(walkingTourPolylineJSON)
+            let densifiedRoute = GeometryEngine.geodeticDensify(
+                routePolyline!,
+                maxSegmentLength: 5.0,
+                lengthUnit: .meters,
+                curveType: .geodesic
+            ) as! Polyline
+            
+            // Create simulated data source with the route polyline.
+            locationDataSource = SimulatedLocationDataSource(polyline: densifiedRoute)
+        }
         
         deinit {
             notificationTaskHandle.cancel()
@@ -278,22 +293,6 @@ private extension SetUpLocationDrivenGeotriggersView {
             }
         }
         
-        /// Create a simulated location data source route from a GeoJSON string.
-        /// - Returns: A new `SimulatedLocationDataSource` object for the example route.
-        private func makeDataSource() -> SimulatedLocationDataSource {
-            // Densify the polyline to control the simulation speed.
-            let routePolyline = try? Polyline.fromJSON(walkingTourPolylineJSON)
-            let densifiedRoute = GeometryEngine.geodeticDensify(
-                routePolyline!,
-                maxSegmentLength: 5.0,
-                lengthUnit: .meters,
-                curveType: .geodesic
-            ) as! Polyline
-            
-            // Create simulated data source with the route polyline.
-            return SimulatedLocationDataSource(polyline: densifiedRoute)
-        }
-        
         /// Create and start a location display from the location data source.
         /// - Returns: A new `LocationDisplay` object.
         private func makeLocationDisplay() -> LocationDisplay {
@@ -318,10 +317,10 @@ private extension PortalItem.ID {
 }
 
 private extension Item.ID {
-    /// The Santa Barbara Botanic Garden Sections layer id.
+    /// An id Santa Barbara Botanic Garden Sections layer.
     static var gardenSectionsLayer: Self { Self("1ba816341ea04243832136379b8951d9")! }
     
-    /// The Santa Barbara Botanic Garden Points of Interest layer id.
+    /// An id for Santa Barbara Botanic Garden Points of Interest layer.
     static var gardenPOIsLayer: Self { Self("7c6280c290c34ae8aeb6b5c4ec841167")! }
 }
 
