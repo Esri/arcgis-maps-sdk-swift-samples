@@ -17,7 +17,7 @@ import SwiftUI
 
 struct ShowLabelsOnLayerView: View {
     /// A map with a light gray canvas basemap centered on the USA.
-    private var map = {
+    @State private var map: Map = {
         let map = Map(basemapStyle: .arcGISLightGrayBase)
         map.initialViewpoint = Viewpoint(
             center: Point(x: -10626699.4, y: 2150308.5),
