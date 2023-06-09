@@ -18,7 +18,7 @@ import ArcGISToolkit
 
 struct ShowLineOfSightBetweenPointsView: View {
     /// A scene with an imagery basemap and centered on mountains in Chile.
-    private let scene: ArcGIS.Scene = {
+    @State private var scene: ArcGIS.Scene = {
         // Creates a scene.
         let scene = Scene(basemapStyle: .arcGISImagery)
         
@@ -35,7 +35,7 @@ struct ShowLineOfSightBetweenPointsView: View {
     }()
     
     /// The analysis overlay for the line of sight analysis.
-    private let analysisOverlay = AnalysisOverlay()
+    @State private var analysisOverlay = AnalysisOverlay()
     
     /// The line of sight analysis.
     @State private var lineOfSight: LocationLineOfSight?
