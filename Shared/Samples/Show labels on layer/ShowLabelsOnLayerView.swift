@@ -35,7 +35,6 @@ struct ShowLabelsOnLayerView: View {
     }
     
     var body: some View {
-        // Create a map view to display the map.
         MapView(map: map)
             .task {
                 do {
