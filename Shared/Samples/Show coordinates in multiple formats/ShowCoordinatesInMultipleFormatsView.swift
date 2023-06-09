@@ -107,7 +107,7 @@ struct CoordinateTextField: View {
                 .padding(.bottom, -5)
             TextField("", text: $text)
                 .textInputAutocapitalization(.never)
-                .disableAutocorrection(true)
+                .autocorrectionDisabled()
                 .textFieldStyle(.roundedBorder)
                 .padding([.leading, .trailing, .bottom], 8)
         }
