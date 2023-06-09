@@ -19,7 +19,7 @@ Pan and zoom around the United States. Labels for congressional districts will b
 4. Create an `ArcadeLabelExpression` for the label definition.
     * You can use fields of the feature by using `$feature.field_name` in the expression.
 5. Create a new `LabelDefinition` from the arcade label expression and text symbol.
-6. Add the definition to the feature layer with `featureLayer.addLabelDefinition(labelDefinition)` .
+6. Add the definition to the feature layer with `featureLayer.addLabelDefinition(labelDefinition)`.
 7. Lastly, enable labels on the layer using `featureLayer.labelsAreEnabled`.
 
 ## Relevant API
