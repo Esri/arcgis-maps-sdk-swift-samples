@@ -31,10 +31,10 @@ struct DisplayContentOfUtilityNetworkContainerView: View {
     /// The map point where the map was tapped.
     @State private var mapPoint: Point?
     
-    /// The point where to identify a graphic.
+    /// The point to identify a graphic.
     @State private var screenPoint: CGPoint?
     
-    /// The viewpoint before the map view zoom into the container's extent.
+    /// The viewpoint before the map view zooms into the container's extent.
     @State private var previousViewpoint: Viewpoint?
     
     /// The current viewpoint of the map view.
@@ -72,7 +72,7 @@ struct DisplayContentOfUtilityNetworkContainerView: View {
                     }
                 }
                 .task {
-                    // Configures the utility network and fetch legend info.
+                    // Configures the utility network and fetches legend info.
                     await model.setup()
                 }
                 .task(id: screenPoint) {

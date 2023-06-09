@@ -6,7 +6,7 @@ A utility network container allows a dense collection of features to be represen
 
 ## Use case
 
-Offering a container view for features aids in the review for valid structural attachment and containment relationships and helps determine if a dataset has an association role set. Container views often model a cluster of electrical devices on a pole top or inside a cabinet or vault.
+Offering a container view for features aids in the review for valid, structural attachment, and containment relationships. It also helps determine if a dataset has an association role set. Container views often model a cluster of electrical devices on a pole top or inside a cabinet or vault.
 
 ## How to use the sample
 
@@ -15,7 +15,7 @@ Tap a container feature to show all features inside the container. The container
 ## How it works
 
 1. Load a web map that includes ArcGIS Pro [Subtype Group Layers](https://pro.arcgis.com/en/pro-app/help/mapping/layer-properties/subtype-layers.htm) with only container features visible (i.e. fuse bank, switch bank, transformer bank, hand hole and junction box).
-2. Create a `MapView` and add `onSingleTapGesture(perform:)` modifier to detect tap events.
+2. Create a `MapView` and add the `onSingleTapGesture(perform:)` modifier to detect tap events.
 3. Create and load a `UtilityNetwork`.
 4. Add a `GraphicsOverlay` for displaying a container view.
 5. Identify the tapped feature and create an `UtilityElement` from it.
@@ -38,7 +38,7 @@ Tap a container feature to show all features inside the container. The container
 
 ## About the data
 
-The [Naperville electric network feature service](https://sampleserver7.arcgisonline.com/server/rest/services/UtilityNetwork/NapervilleElectric/FeatureServer), hosted on ArcGIS Online, contains a utility network used to find associations shown in this sample and a web map portal item, [Naperville Electric Containers](https://sampleserver7.arcgisonline.com/portal/home/item.html?id=813eda749a9444e4a9d833a4db19e1c8), that uses the same feature service endpoint, but displays only container features.
+The [Naperville electric network feature service](https://sampleserver7.arcgisonline.com/server/rest/services/UtilityNetwork/NapervilleElectric/FeatureServer), hosted on ArcGIS Online, contains a utility network used to find associations shown in this sample. The [Naperville Electric Containers](https://sampleserver7.arcgisonline.com/portal/home/item.html?id=813eda749a9444e4a9d833a4db19e1c8) web map portal item, uses the same feature service endpoint, but displays only container features.
 
 ## Tags
 
