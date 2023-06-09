@@ -48,7 +48,7 @@ struct ShowUtilityAssociationsView: View {
             Task { try await model.addAssociationGraphics(viewpoint: viewpoint, scale: scale) }
         }
         .task {
-            await model.setup()
+            try? await model.setup()
             try? await model.addAssociationGraphics(viewpoint: viewpoint, scale: scale)
         }
         .toolbar {
@@ -130,9 +130,9 @@ private extension ShowUtilityAssociationsView {
         // MARK: Methods
         
         /// Performs important tasks including adding credentials, loading and adding operational layers.
-        func setup() async {
-            try? await ArcGISEnvironment.authenticationManager.arcGISCredentialStore.add(.publicSample)
-            try? await network.load()
+        func setup() async throws {
+            try await ArcGISEnvironment.authenticationManager.arcGISCredentialStore.add(.publicSample)
+            try await network.load()
             addLayers()
         }
         
