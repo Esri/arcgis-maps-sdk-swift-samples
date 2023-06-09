@@ -23,7 +23,6 @@ struct DensifyAndGeneralizeGeometryView: View {
     @State private var isShowingOptions = false
     
     var body: some View {
-        // Create a map view to display the map.
         MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
@@ -42,43 +41,13 @@ extension DensifyAndGeneralizeGeometryView {
     /// The view model for the sample.
     class Model: ObservableObject {
         /// A map with a Streets (Night) basemap centered on the polyline.
-        lazy var map: Map = {
-            let map = Map(basemapStyle: .arcGISStreetsNight)
-            
-            // Set the initial viewpoint to show the extent of the graphics.
-            map.initialViewpoint = Viewpoint(
-                center: originalPolyline.extent.center,
-                scale: 65907)
-            return map
-        }()
+        let map: Map
         
         /// The graphics overlay for all of the graphics.
-        lazy var graphicsOverlay: GraphicsOverlay = {
-            let graphicsOverlay = GraphicsOverlay()
-            let multipoint = Multipoint(points: pointCollection)
-            
-            // Create graphics for displaying the base points and lines.
-            let originalPolylineGraphic = Graphic(
-                geometry: originalPolyline,
-                symbol: SimpleLineSymbol(style: .dot, color: .red, width: 3)
-            )
-            let originalPointsGraphic = Graphic(
-                geometry: multipoint,
-                symbol: SimpleMarkerSymbol(style: .circle, color: .red, size: 7)
-            )
-            
-            // Add the graphics in the order we want them to appear, back to front.
-            graphicsOverlay.addGraphics([
-                originalPointsGraphic,
-                originalPolylineGraphic,
-                resultPointsGraphic,
-                resultPolylineGraphic
-            ])
-            return graphicsOverlay
-        }()
+        let graphicsOverlay: GraphicsOverlay
         
         /// The base polyline geometry that is densified and generalized.
-        lazy var originalPolyline = Polyline(points: pointCollection)
+        let originalPolyline: Polyline
         
         /// The graphic for displaying the points of the resultant geometry.
         let resultPointsGraphic: Graphic = {
@@ -97,26 +66,27 @@ extension DensifyAndGeneralizeGeometryView {
         private let pointCollection: MutablePointCollection = {
             // The spatial reference for the sample.
             let spatialReference = SpatialReference(wkid: WKID(rawValue: 32126)!)
-            var collection = MutablePointCollection(spatialReference: spatialReference)
-            collection.append(contentsOf: [
-                Point(x: 2330611.130549, y: 202360.002957),
-                Point(x: 2330583.834672, y: 202525.984012),
-                Point(x: 2330574.164902, y: 202691.488009),
-                Point(x: 2330689.292623, y: 203170.045888),
-                Point(x: 2330696.773344, y: 203317.495798),
-                Point(x: 2330691.419723, y: 203380.917080),
-                Point(x: 2330435.065296, y: 203816.662457),
-                Point(x: 2330369.500800, y: 204329.861789),
-                Point(x: 2330400.929891, y: 204712.129673),
-                Point(x: 2330484.300447, y: 204927.797132),
-                Point(x: 2330514.469919, y: 205000.792463),
-                Point(x: 2330638.099138, y: 205271.601116),
-                Point(x: 2330725.315888, y: 205631.231308),
-                Point(x: 2330755.640702, y: 206433.354860),
-                Point(x: 2330680.644719, y: 206660.240923),
-                Point(x: 2330386.957926, y: 207340.947204),
-                Point(x: 2330485.861737, y: 207742.298501)
-            ])
+            var collection = MutablePointCollection(
+                points: [
+                    Point(x: 2330611.130549, y: 202360.002957),
+                    Point(x: 2330583.834672, y: 202525.984012),
+                    Point(x: 2330574.164902, y: 202691.488009),
+                    Point(x: 2330689.292623, y: 203170.045888),
+                    Point(x: 2330696.773344, y: 203317.495798),
+                    Point(x: 2330691.419723, y: 203380.917080),
+                    Point(x: 2330435.065296, y: 203816.662457),
+                    Point(x: 2330369.500800, y: 204329.861789),
+                    Point(x: 2330400.929891, y: 204712.129673),
+                    Point(x: 2330484.300447, y: 204927.797132),
+                    Point(x: 2330514.469919, y: 205000.792463),
+                    Point(x: 2330638.099138, y: 205271.601116),
+                    Point(x: 2330725.315888, y: 205631.231308),
+                    Point(x: 2330755.640702, y: 206433.354860),
+                    Point(x: 2330680.644719, y: 206660.240923),
+                    Point(x: 2330386.957926, y: 207340.947204),
+                    Point(x: 2330485.861737, y: 207742.298501)
+                ],
+                spatialReference: spatialReference)
             return collection
         }()
         
@@ -131,6 +101,40 @@ extension DensifyAndGeneralizeGeometryView {
         
         /// The max segment length for densifying.
         @Published var maxSegmentLength = 100.0
+        
+        init() {
+            originalPolyline = Polyline(points: pointCollection)
+            
+            // Create map.
+            map = Map(basemapStyle: .arcGISStreetsNight)
+            
+            // Set the initial viewpoint to show the extent of the graphics.
+            map.initialViewpoint = Viewpoint(
+                center: originalPolyline.extent.center,
+                scale: 65907
+            )
+            
+            // Create graphics overlay.
+            let multipoint = Multipoint(points: pointCollection)
+            
+            // Create graphics for displaying the base points and lines.
+            let originalPolylineGraphic = Graphic(
+                geometry: originalPolyline,
+                symbol: SimpleLineSymbol(style: .dot, color: .red, width: 3)
+            )
+            let originalPointsGraphic = Graphic(
+                geometry: multipoint,
+                symbol: SimpleMarkerSymbol(style: .circle, color: .red, size: 7)
+            )
+            
+            // Add the graphics in the order we want them to appear, back to front.
+            graphicsOverlay = GraphicsOverlay(graphics: [
+                originalPointsGraphic,
+                originalPolylineGraphic,
+                resultPointsGraphic,
+                resultPolylineGraphic
+            ])
+        }
         
         /// Reset the model values to the originals.
         func reset() {
