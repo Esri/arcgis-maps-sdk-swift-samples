@@ -19,10 +19,10 @@ struct AnimateImagesWithImageOverlayView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
-    /// The text for the the start stop button.
+    /// The text for the start stop button.
     @State var startStopButtonText = "Start"
     
-    /// A Boolean indicating whether the speed options sheet is showing.
+    /// A Boolean value indicating whether the speed options sheet is showing.
     @State private var isShowingSpeedOptions = false
     
     var body: some View {
@@ -151,7 +151,7 @@ private extension AnimateImagesWithImageOverlayView {
         /// An array of elements to be iterated over.
         let elements: [Element]
         
-        /// The iterator for the elements.
+        /// The element iterator.
         private var elementIterator: Array<Element>.Iterator
         
         init(elements: [Element]) {
