@@ -13,9 +13,6 @@ Labeling features is useful to visually display a key piece of information or at
 Pan and zoom around the United States. Labels for congressional districts will be shown in red for Republican districts and blue for Democrat districts. Notice how labels pop into view as you zoom in.
 
 ## How it works
-
-To show custom labels on a feature layer:
-
 1. Create a `ServiceFeatureTable` using a feature service URL.
 2. Create a `FeatureLayer` from the service feature table.
 3. Create a `TextSymbol` to use for displaying the label text.
