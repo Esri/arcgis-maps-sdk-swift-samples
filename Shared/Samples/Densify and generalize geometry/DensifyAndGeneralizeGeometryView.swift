@@ -93,7 +93,7 @@ extension DensifyAndGeneralizeGeometryView {
         }()
         
         /// A mutable point collection from which the original polyline and
-        /// mulitpoint geometries are made.
+        /// multipoint geometries are made.
         private let pointCollection: MutablePointCollection = {
             // The spatial reference for the sample.
             let spatialReference = SpatialReference(wkid: WKID(rawValue: 32126)!)
