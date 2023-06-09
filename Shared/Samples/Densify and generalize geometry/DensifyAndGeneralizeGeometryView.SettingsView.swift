@@ -42,7 +42,7 @@ extension DensifyAndGeneralizeGeometryView {
                 // Densify toggle and slider.
                 Section {
                     Toggle("Densify", isOn: $model.shouldDensify)
-                        . onChange(of: model.shouldDensify) { _ in
+                        .onChange(of: model.shouldDensify) { _ in
                             model.updateGraphics()
                         }
                     VStack {
