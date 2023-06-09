@@ -25,13 +25,13 @@ struct MeasureDistanceInSceneView: View {
     var body: some View {
         SceneView(scene: model.scene, analysisOverlays: [model.analysisOverlay])
             .onSingleTapGesture { _, scenePoint in
-                model.updateMeasurementTexts()
+                if model.locationDistanceMeasurement.startLocation != model.locationDistanceMeasurement.endLocation {
+                    model.locationDistanceMeasurement.startLocation = scenePoint!
+                }
+                model.locationDistanceMeasurement.endLocation = scenePoint!
             }
-            .onLongPressGesture() { _, scenePoint in
-                model.updateMeasurementTexts()
-            }
-            .onAppear {
-                model.updateMeasurementTexts()
+            .task {
+                await model.startMeasurementMonitoring()
             }
         
         Text("Direct: \(model.directMeasurementText)")
@@ -46,7 +46,6 @@ struct MeasureDistanceInSceneView: View {
         .padding()
         .onChange(of: unitSystemSelection) { _ in
             model.locationDistanceMeasurement.unitSystem = unitSystemSelection
-            model.updateMeasurementTexts()
         }
     }
 }
@@ -55,30 +54,9 @@ private extension MeasureDistanceInSceneView {
     /// The view model for the sample.
     class Model: ObservableObject {
         /// A scene with an imagery basemap and centered on mountains in Chile.
-        let scene: ArcGIS.Scene
-        
-        /// An analysis overlay for location distance measurement.
-        let analysisOverlay: AnalysisOverlay
-        
-        /// The location distance measurement analysis.
-        let locationDistanceMeasurement: LocationDistanceMeasurement = {
-            let startPoint = Point(x: -4.494677, y: 48.384472, z: 24.772694, spatialReference: .wgs84)
-            let endPoint = Point(x: -4.495646, y: 48.384377, z: 58.501115, spatialReference: .wgs84)
-            return LocationDistanceMeasurement(startLocation: startPoint, endLocation: endPoint)
-        }()
-        
-        /// A string for the direct measurement.
-        @Published var directMeasurementText = ""
-        
-        /// A string for the direct measurement.
-        @Published var horizontalMeasurementText = ""
-        
-        /// A string for the direct measurement.
-        @Published var verticalMeasurementText = ""
-        
-        init() {
+        lazy var scene: ArcGIS.Scene = {
             // Create scene.
-            scene = Scene(basemapStyle: .arcGISTopographic)
+            let scene = Scene(basemapStyle: .arcGISTopographic)
             
             // Add elevation source to the base surface of the scene with the service URL.
             let elevationSource = ArcGISTiledElevationSource(url: .elevationService)
@@ -95,29 +73,54 @@ private extension MeasureDistanceInSceneView {
             let camera = Camera(lookingAt: lookAtPoint, distance: 200, heading: 0, pitch: 45, roll: 0)
             scene.initialViewpoint = Viewpoint(boundingGeometry: lookAtPoint, camera: camera)
             
-            // Create analysis overlay.
-            analysisOverlay = AnalysisOverlay(analyses: [locationDistanceMeasurement])
-        }
+            return scene
+        }()
+        
+        /// An analysis overlay for location distance measurement.
+        lazy var analysisOverlay = AnalysisOverlay(analyses: [locationDistanceMeasurement])
+        
+        /// The location distance measurement analysis.
+        let locationDistanceMeasurement: LocationDistanceMeasurement = {
+            let startPoint = Point(x: -4.494677, y: 48.384472, z: 24.772694, spatialReference: .wgs84)
+            let endPoint = Point(x: -4.495646, y: 48.384377, z: 58.501115, spatialReference: .wgs84)
+            return LocationDistanceMeasurement(startLocation: startPoint, endLocation: endPoint)
+        }()
+        
+        /// A measurement formatter for converting the distances to strings.
+        let measurementFormatter: MeasurementFormatter = {
+            let measurementFormatter = MeasurementFormatter()
+            measurementFormatter.numberFormatter.minimumFractionDigits = 2
+            measurementFormatter.numberFormatter.maximumFractionDigits = 2
+            return measurementFormatter
+        }()
+        
+        /// A string for the direct measurement.
+        @Published var directMeasurementText = ""
+        
+        /// A string for the direct measurement.
+        @Published var horizontalMeasurementText = ""
+        
+        /// A string for the direct measurement.
+        @Published var verticalMeasurementText = ""
         
         /// Update the measurement texts with
-        func updateMeasurementTexts() {
-            print(locationDistanceMeasurement.directDistance)
-            print(locationDistanceMeasurement.verticalDistance)
-            print(locationDistanceMeasurement.horizontalDistance)
-            
+        @MainActor
+        func startMeasurementMonitoring() async {
+            for await _ in locationDistanceMeasurement.measurements {
+                updateMeasurementText()
+            }
+        }
+        
+        /// Update the measurement texts with the distances from the location distance measurement.
+        private func updateMeasurementText() {
             if locationDistanceMeasurement.startLocation != locationDistanceMeasurement.endLocation,
-               let directDistance = locationDistanceMeasurement.directDistance,
+               var directDistance = locationDistanceMeasurement.directDistance,
                let horizontalDistance = locationDistanceMeasurement.horizontalDistance,
                let verticalDistance = locationDistanceMeasurement.verticalDistance {
-                // The format style with 2 decimal points.
-                let formatStyle = Measurement<UnitLength>.FormatStyle(
-                    width: .abbreviated,
-                    numberFormatStyle: .number.precision(.fractionLength(2))
-                )
-                
-                directMeasurementText = directDistance.formatted(formatStyle)
-                horizontalMeasurementText = horizontalDistance.formatted(formatStyle)
-                verticalMeasurementText = verticalDistance.formatted(formatStyle)
+                measurementFormatter.unitOptions = .providedUnit
+                directMeasurementText = measurementFormatter.string(from: directDistance)
+                horizontalMeasurementText = measurementFormatter.string(from: horizontalDistance)
+                verticalMeasurementText = measurementFormatter.string(from: verticalDistance)
             } else {
                 directMeasurementText = "--"
                 horizontalMeasurementText = "--"
