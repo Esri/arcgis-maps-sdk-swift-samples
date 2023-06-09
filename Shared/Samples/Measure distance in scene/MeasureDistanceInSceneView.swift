@@ -55,30 +55,10 @@ private extension MeasureDistanceInSceneView {
     /// The view model for the sample.
     class Model: ObservableObject {
         /// A scene with an imagery basemap and centered on mountains in Chile.
-        lazy var scene: ArcGIS.Scene = {
-            // Creates a scene.
-            let scene = Scene(basemapStyle: .arcGISTopographic)
-            
-            // Add elevation source to the base surface of the scene with the service URL.
-            let elevationSource = ArcGISTiledElevationSource(url: .elevationService)
-            scene.baseSurface.addElevationSource(elevationSource)
-            
-            // Create the building layer and add it to the scene.
-            let buildingsLayer = ArcGISSceneLayer(url: .brestBuildingsService)
-            // Offset the altitude to avoid clipping with the elevation source.
-            buildingsLayer.altitudeOffset = 2
-            scene.addOperationalLayer(buildingsLayer)
-            
-            // Set scene the viewpoint specified by the camera position.
-            let lookAtPoint = Envelope(min: locationDistanceMeasurement.startLocation, max: locationDistanceMeasurement.endLocation).center
-            let camera = Camera(lookingAt: lookAtPoint, distance: 200, heading: 0, pitch: 45, roll: 0)
-            scene.initialViewpoint = Viewpoint(boundingGeometry: lookAtPoint, camera: camera)
-            
-            return scene
-        }()
+        let scene: ArcGIS.Scene
         
         /// An analysis overlay for location distance measurement.
-        lazy var analysisOverlay = AnalysisOverlay(analyses: [locationDistanceMeasurement])
+        let analysisOverlay: AnalysisOverlay
         
         /// The location distance measurement analysis.
         let locationDistanceMeasurement: LocationDistanceMeasurement = {
@@ -95,7 +75,29 @@ private extension MeasureDistanceInSceneView {
         
         /// A string for the direct measurement.
         @Published var verticalMeasurementText = ""
-
+        
+        init() {
+            // Create scene.
+            scene = Scene(basemapStyle: .arcGISTopographic)
+            
+            // Add elevation source to the base surface of the scene with the service URL.
+            let elevationSource = ArcGISTiledElevationSource(url: .elevationService)
+            scene.baseSurface.addElevationSource(elevationSource)
+            
+            // Create the building layer and add it to the scene.
+            let buildingsLayer = ArcGISSceneLayer(url: .brestBuildingsService)
+            // Offset the altitude to avoid clipping with the elevation source.
+            buildingsLayer.altitudeOffset = 2
+            scene.addOperationalLayer(buildingsLayer)
+            
+            // Set scene the viewpoint specified by the camera position.
+            let lookAtPoint = Envelope(min: locationDistanceMeasurement.startLocation, max: locationDistanceMeasurement.endLocation).center
+            let camera = Camera(lookingAt: lookAtPoint, distance: 200, heading: 0, pitch: 45, roll: 0)
+            scene.initialViewpoint = Viewpoint(boundingGeometry: lookAtPoint, camera: camera)
+            
+            // Create analysis overlay.
+            analysisOverlay = AnalysisOverlay(analyses: [locationDistanceMeasurement])
+        }
         
         /// Update the measurement texts with
         func updateMeasurementTexts() {
