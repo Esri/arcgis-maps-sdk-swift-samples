@@ -20,10 +20,10 @@ struct ShowUtilityAssociationsView: View {
     @StateObject private var model = Model()
     
     /// The current viewpoint of the map.
-    @State var viewpoint: Viewpoint = .initialViewpoint
+    @State private var viewpoint: Viewpoint = .initialViewpoint
     
     /// The scale of the viewpoint.
-    @State var scale: Double = .zero
+    @State private var scale: Double = .zero
     
     /// An image that represents an attachment symbol.
     @State private var attachmentImage: UIImage?
@@ -49,11 +49,7 @@ struct ShowUtilityAssociationsView: View {
         }
         .task {
             await model.setup()
-            do {
-                try await model.addAssociationGraphics(viewpoint: viewpoint, scale: scale)
-            } catch {
-                return
-            }
+            try? await model.addAssociationGraphics(viewpoint: viewpoint, scale: scale)
         }
         .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
@@ -135,19 +131,15 @@ private extension ShowUtilityAssociationsView {
         
         /// Performs important tasks including adding credentials, loading and adding operational layers.
         func setup() async {
-            do {
-                try await ArcGISEnvironment.authenticationManager.arcGISCredentialStore.add(.publicSample)
-                try await network.load()
-                addLayers()
-            } catch {
-                return
-            }
+            try? await ArcGISEnvironment.authenticationManager.arcGISCredentialStore.add(.publicSample)
+            try? await network.load()
+            addLayers()
         }
         
         private func addLayers() {
             // Get all the edges and junctions in the network.
             guard let networkSources = network.definition?.networkSources else { return }
-            let sourcesByType = Dictionary(grouping: networkSources) { $0.kind }
+            let sourcesByType = Dictionary(grouping: networkSources, by: \.kind)
             
             // Add all edges that are not subnet lines to the map.
             let edgeLayers = sourcesByType[.edge, default: []]
