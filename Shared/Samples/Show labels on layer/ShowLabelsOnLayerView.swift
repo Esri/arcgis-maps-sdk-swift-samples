@@ -39,13 +39,16 @@ struct ShowLabelsOnLayerView: View {
         MapView(map: map)
             .task {
                 do {
-                    // Create a feature table from the URL.
-                    let featureTable = ServiceFeatureTable(url: .usaCongressionalDistricts)
+                    // Create a portal item from an id.
+                    let portalItem = PortalItem(
+                        portal: .arcGISOnline(connection: .anonymous),
+                        id: .usaCongressionalDistricts
+                    )
                     
-                    try await featureTable.load()
+                    try await portalItem.load()
                     
-                    // Create a feature layer from the table.
-                    let featureLayer = FeatureLayer(featureTable: featureTable)
+                    // Create a feature layer from the portal item.
+                    let featureLayer = FeatureLayer(item: portalItem)
                     
                     // Add the layer to the map.
                     map.addOperationalLayer(featureLayer)
@@ -62,7 +65,7 @@ struct ShowLabelsOnLayerView: View {
 }
 
 private extension ShowLabelsOnLayerView {
-    /// Adds labels to a feature layer.
+    /// Add labels to a feature layer.
     /// - Parameter layer: The `FeatureLayer` to add the labels to.
     func addLabels(to layer: FeatureLayer) {
         // Create label definitions for the two groups.
@@ -76,7 +79,7 @@ private extension ShowLabelsOnLayerView {
         layer.labelsAreEnabled = true
     }
     
-    /// Creates a label definition for the given PARTY field value and color.
+    /// Create a label definition for the given PARTY field value and color.
     /// - Parameters:
     ///   - party: A `String` representing the party.
     ///   - color: The `UIColor` for the label.
@@ -103,9 +106,7 @@ private extension ShowLabelsOnLayerView {
     }
 }
 
-private extension URL {
-    /// A feature table URL for a USA Congressional Districts Analysis.
-    static var usaCongressionalDistricts: URL {
-        URL(string: "https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/USA_Congressional_Districts_analysis/FeatureServer/0")!
-    }
+private extension PortalItem.ID {
+    /// An id for a USA Congressional Districts Analysis feature table.
+    static var usaCongressionalDistricts: Self { Self("cc6a869374434bee9fefad45e291b779 ")! }
 }
