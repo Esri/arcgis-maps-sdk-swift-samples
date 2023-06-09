@@ -20,7 +20,7 @@ struct ShowCoordinatesInMultipleFormatsView: View {
     @StateObject private var model = Model()
     
     /// The tapped point on the map.
-    @State private var mapPoint: Point!
+    @State private var mapPoint = Point(latitude: 0, longitude: 0)
     
     var body: some View {
         // Input text fields.
