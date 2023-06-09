@@ -62,7 +62,7 @@ struct ShowLabelsOnLayerView: View {
 }
 
 private extension ShowLabelsOnLayerView {
-    /// Add labels to a feature layer.
+    /// Adds labels to a feature layer.
     /// - Parameter layer: The `FeatureLayer` to add the labels to.
     func addLabels(to layer: FeatureLayer) {
         // Create label definitions for the two groups.
