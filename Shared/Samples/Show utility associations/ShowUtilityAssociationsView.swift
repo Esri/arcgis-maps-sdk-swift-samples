@@ -19,33 +19,41 @@ struct ShowUtilityAssociationsView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
+    /// The current viewpoint of the map.
+    @State var viewpoint: Viewpoint = .initialViewpoint
+    
+    /// The scale of the viewpoint.
+    @State var scale: Double = .zero
+    
     /// An image that represents an attachment symbol.
-    @State var attachmentImage: Image?
+    @State private var attachmentImage: UIImage?
     
     /// An image that represents a connectivity symbol.
-    @State var connectivityImage: Image?
+    @State private var connectivityImage: UIImage?
+    
+    /// The display scale of this environment.
+    @Environment(\.displayScale) private var displayScale
     
     var body: some View {
-        // Creates a map view to display the map.
         MapView(
             map: model.map,
-            viewpoint: .initialViewpoint,
             graphicsOverlays: [model.associationsOverlay]
         )
-        .onViewpointChanged(kind: .centerAndScale) {
-            model.scale = $0.targetScale
+        .onScaleChanged {
+            scale = $0
+            Task { try await model.addAssociationGraphics(viewpoint: viewpoint, scale: scale) }
         }
         .onViewpointChanged(kind: .boundingGeometry) {
-            model.viewpoint = $0
-            Task { try await model.addAssociationGraphics() }
-        }
-        .onDisappear {
-            ArcGISEnvironment.authenticationManager.arcGISCredentialStore.removeAll()
+            viewpoint = $0
+            Task { try await model.addAssociationGraphics(viewpoint: viewpoint, scale: scale) }
         }
         .task {
             await model.setup()
-            attachmentImage = model.attachmentImage
-            connectivityImage = model.connectivityImage
+            do {
+                try await model.addAssociationGraphics(viewpoint: viewpoint, scale: scale)
+            } catch {
+                return
+            }
         }
         .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
@@ -59,12 +67,35 @@ private extension ShowUtilityAssociationsView {
     /// The legend at the bottom of the screen.
     var legend: some View {
         HStack {
-            attachmentImage
-            Text("Attachment")
+            Label {
+                Text("Attachment")
+            } icon: {
+                if let attachmentImage {
+                    Image(uiImage: attachmentImage)
+                } else {
+                    Color.clear
+                }
+            }
+            .task(id: displayScale) {
+                attachmentImage = try? await Symbol.attachment
+                    .makeSwatch(scale: displayScale)
+            }
             Spacer()
-            connectivityImage
-            Text("Connectivity")
+            Label {
+                Text("Connectivity")
+            } icon: {
+                if let connectivityImage {
+                    Image(uiImage: connectivityImage)
+                } else {
+                    Color.clear
+                }
+            }
+            .task(id: displayScale) {
+                connectivityImage = try? await Symbol.connectivity
+                    .makeSwatch(scale: displayScale)
+            }
         }
+        .labelStyle(.titleAndIcon)
     }
 }
 
@@ -75,136 +106,121 @@ private extension ShowUtilityAssociationsView {
         // MARK: Properties
         
         /// The map with the utility network.
-        var map = makeMap()
-        
-        /// A container for associations results.
-        var associationsOverlay = GraphicsOverlay()
-        
-        /// The current viewpoint of the map.
-        var viewpoint: Viewpoint?
-        
-        /// The scale of the viewpoint.
-        var scale = 0.0
-        
-        /// An image that represents an attachment symbol.
-        var attachmentImage: Image?
-        
-        /// An image that represents a connectivity symbol.
-        var connectivityImage: Image?
-        
-        /// A Boolean value indicating if the sample is authenticated.
-        private var isAuthenticated = false
-        
-        /// The max scale for the viewpoint.
-        private let maxScale = 2000.0
+        let map = Map(basemapStyle: .arcGISTopographic)
         
         /// The utility network for this sample.
-        private var network: UtilityNetwork? {
-            map.utilityNetworks.first
+        private let network = UtilityNetwork(url: .utilityNetwork)
+        
+        /// A container for associations results.
+        let associationsOverlay = makeAssociationsOverlay()
+        
+        /// A Boolean value indicating if the sample is authenticated.
+        private var isAuthenticated: Bool {
+            !ArcGISEnvironment.authenticationManager.arcGISCredentialStore.credentials.isEmpty
+        }
+        
+        /// The max scale for the viewpoint.
+        private var maxScale: Double { 2_000 }
+        
+        init() {
+            map.initialViewpoint = .initialViewpoint
+            map.addUtilityNetwork(network)
+        }
+        
+        deinit {
+            ArcGISEnvironment.authenticationManager.arcGISCredentialStore.removeAll()
         }
         
         // MARK: Methods
         
-        /// Makes a map from a utility network.
-        private static func makeMap() -> Map {
-            let map = Map(basemapStyle: .arcGISTopographic)
-            map.addUtilityNetwork(UtilityNetwork(url: .utilityNetwork))
-            return map
-        }
-        
         /// Performs important tasks including adding credentials, loading and adding operational layers.
         func setup() async {
             do {
-                try await createSwatches()
                 try await ArcGISEnvironment.authenticationManager.arcGISCredentialStore.add(.publicSample)
-                isAuthenticated = true
-                try await network?.load()
+                try await network.load()
                 addLayers()
-                createRenderer()
-                try await addAssociationGraphics()
             } catch {
                 return
             }
         }
         
         private func addLayers() {
-            guard let network else { return }
             // Get all the edges and junctions in the network.
-            if let networkSources = network.definition?.networkSources {
-                let sourcesByType = Dictionary(grouping: networkSources) { $0.kind }
-                
-                // Add all edges that are not subnet lines to the map.
-                let edgeLayers = sourcesByType[.edge]!
-                    .filter { $0.usageKind != .subnetLine }
-                    .map { FeatureLayer(featureTable: $0.featureTable) }
-                
-                map.addOperationalLayers(edgeLayers)
-                
-                // Add all the junctions to the map.
-                let junctionLayers = sourcesByType[.junction]!.map { FeatureLayer(featureTable: $0.featureTable) }
-                map.addOperationalLayers(junctionLayers)
-            }
+            guard let networkSources = network.definition?.networkSources else { return }
+            let sourcesByType = Dictionary(grouping: networkSources) { $0.kind }
+            
+            // Add all edges that are not subnet lines to the map.
+            let edgeLayers = sourcesByType[.edge, default: []]
+                .filter { $0.usageKind != .subnetLine }
+                .map { FeatureLayer(featureTable: $0.featureTable) }
+            
+            map.addOperationalLayers(edgeLayers)
+            
+            // Add all the junctions to the map.
+            let junctionLayers = sourcesByType[.junction, default: []]
+                .map { FeatureLayer(featureTable: $0.featureTable) }
+            map.addOperationalLayers(junctionLayers)
         }
         
-        private func createRenderer() {
-            // Create a renderer for the associations.
-            let attachmentValue = UniqueValue(description: "Attachment", label: "", symbol: LineSymbol.attachment, values: [UtilityAssociation.Kind.attachment])
+        static func makeAssociationsOverlay() -> GraphicsOverlay {
+            let attachmentValue = UniqueValue(
+                description: "Attachment",
+                label: "",
+                symbol: .attachment,
+                values: [UtilityAssociation.Kind.attachment]
+            )
+            let connectivityValue = UniqueValue(
+                description: "Connectivity",
+                label: "",
+                symbol: .connectivity,
+                values: [UtilityAssociation.Kind.connectivity]
+            )
             
-            let connectivityValue = UniqueValue(description: "Connectivity", label: "", symbol: LineSymbol.connectivity, values: [UtilityAssociation.Kind.connectivity])
-            
-            associationsOverlay.renderer = UniqueValueRenderer(
+            let renderer = UniqueValueRenderer(
                 fieldNames: ["AssociationType"],
                 uniqueValues: [attachmentValue, connectivityValue],
                 defaultLabel: ""
             )
+            
+            let overlay = GraphicsOverlay()
+            overlay.renderer = renderer
+            return overlay
         }
         
-        func addAssociationGraphics() async throws {
+        func addAssociationGraphics(viewpoint: Viewpoint, scale: Double) async throws {
             // Check if the current viewpoint is outside of the max scale.
             guard isAuthenticated, scale <= maxScale else { return }
-            if let viewpoint {
-                let extent = viewpoint.targetGeometry.extent
-                // Get all of the associations in extent of the viewpoint.
-                if let network {
-                    let associations = try await network.associations(forExtent: extent)
-                    associations.forEach {
-                        // If it the current association does not exist, add it to the graphics overlay.
-                        let associationGID = $0.globalID
-                        guard !associationsOverlay.graphics.contains(where: {
-                            $0.attributes["GlobalId"] as? UUID == associationGID
-                        }) else { return }
-                        
-                        let symbol: Symbol
-                        switch $0.kind {
-                        case .attachment:
-                            symbol = LineSymbol.attachment
-                        case .connectivity:
-                            symbol = LineSymbol.connectivity
-                        default:
-                            return
-                        }
-                        associationsOverlay.addGraphic(
-                            Graphic(
-                                geometry: $0.geometry,
-                                attributes: [
-                                    "GlobalId": associationGID,
-                                    "AssociationType": $0.kind
-                                ],
-                                symbol: symbol
-                            )
-                        )
-                    }
+            let extent = viewpoint.targetGeometry.extent
+            // Get all of the associations in extent of the viewpoint.
+            let associations = try await network.associations(forExtent: extent)
+            let existingAssociationIDs = associationsOverlay.graphics.map { $0.attributes["GlobalId"] as? UUID }
+            let graphics: [Graphic] = associations
+                .compactMap { association in
+                    let associationID = association.globalID
+                    guard !existingAssociationIDs.contains(associationID),
+                          let symbol = symbol(for: association.kind) else { return nil }
+                    
+                    return Graphic(
+                        geometry: association.geometry,
+                        attributes: [
+                            "GlobalId": associationID,
+                            "AssociationType": association.kind
+                        ],
+                        symbol: symbol
+                    )
                 }
-            }
+            associationsOverlay.addGraphics(graphics)
         }
         
-        // Create swatches for the legend.
-        private func createSwatches() async throws {
-            let attachmentUIImage = try await LineSymbol.attachment.makeSwatch(scale: 1.0)
-            attachmentImage = Image(uiImage: attachmentUIImage)
-            
-            let connectivityUIImage = try await LineSymbol.connectivity.makeSwatch(scale: 1.0)
-            connectivityImage = Image(uiImage: connectivityUIImage)
+        func symbol(for associationKind: UtilityAssociation.Kind) -> Symbol? {
+            switch associationKind {
+            case .attachment:
+                return Symbol.attachment
+            case .connectivity:
+                return Symbol.connectivity
+            default:
+                return nil
+            }
         }
     }
 }
@@ -224,7 +240,7 @@ private extension ArcGISCredential {
     }
 }
 
-private extension LineSymbol {
+private extension Symbol {
     /// A green dot.
     static var attachment: LineSymbol {
         SimpleLineSymbol(style: .dot, color: .green, width: 5)
