@@ -115,6 +115,9 @@ private extension ShowUtilityAssociationsView {
             !ArcGISEnvironment.authenticationManager.arcGISCredentialStore.credentials.isEmpty
         }
         
+        /// A Boolean value indicating if graphics are being added to the associations overlay.
+        private var isAddingGraphics = false
+        
         /// The max scale for the viewpoint.
         private var maxScale: Double { 2_000 }
         
@@ -181,7 +184,8 @@ private extension ShowUtilityAssociationsView {
         
         func addAssociationGraphics(viewpoint: Viewpoint, scale: Double) async throws {
             // Check if the current viewpoint is outside of the max scale.
-            guard isAuthenticated, scale <= maxScale else { return }
+            guard isAuthenticated, scale <= maxScale, !isAddingGraphics else { return }
+            isAddingGraphics = true
             let extent = viewpoint.targetGeometry.extent
             // Get all of the associations in extent of the viewpoint.
             let associations = try await network.associations(forExtent: extent)
@@ -202,6 +206,7 @@ private extension ShowUtilityAssociationsView {
                     )
                 }
             associationsOverlay.addGraphics(graphics)
+            isAddingGraphics = false
         }
         
         func symbol(for associationKind: UtilityAssociation.Kind) -> Symbol? {
