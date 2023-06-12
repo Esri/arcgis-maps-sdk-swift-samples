@@ -20,7 +20,7 @@ struct ShowCoordinatesInMultipleFormatsView: View {
     @StateObject private var model = Model()
     
     /// The tapped point on the map.
-    @State private var mapPoint = Point(latitude: 0, longitude: 0)
+    @State private var tappedPoint = Point(latitude: 0, longitude: 0)
     
     var body: some View {
         // Input text fields.
@@ -32,11 +32,11 @@ struct ShowCoordinatesInMultipleFormatsView: View {
             .onSubmit {
                 if let point = CoordinateFormatter.point(
                     fromLatitudeLongitudeString: model.latLongDDString,
-                    spatialReference: mapPoint.spatialReference
+                    spatialReference: tappedPoint.spatialReference
                 ) {
                     model.updateCoordinates(point: point)
                 } else {
-                    model.updateCoordinates(point: mapPoint)
+                    model.updateCoordinates(point: tappedPoint)
                 }
             }
             CoordinateTextField(
@@ -46,11 +46,11 @@ struct ShowCoordinatesInMultipleFormatsView: View {
             .onSubmit {
                 if let point = CoordinateFormatter.point(
                     fromLatitudeLongitudeString: model.latLongDMSString,
-                    spatialReference: mapPoint.spatialReference
+                    spatialReference: tappedPoint.spatialReference
                 ) {
                     model.updateCoordinates(point: point)
                 } else {
-                    model.updateCoordinates(point: mapPoint)
+                    model.updateCoordinates(point: tappedPoint)
                 }
             }
             CoordinateTextField(
@@ -60,12 +60,12 @@ struct ShowCoordinatesInMultipleFormatsView: View {
             .onSubmit {
                 if let point = CoordinateFormatter.point(
                     fromUTMString: model.utmString,
-                    spatialReference: mapPoint.spatialReference,
+                    spatialReference: tappedPoint.spatialReference,
                     conversionMode: .latitudeBandIndicators
                 ) {
                     model.updateCoordinates(point: point)
                 } else {
-                    model.updateCoordinates(point: mapPoint)
+                    model.updateCoordinates(point: tappedPoint)
                 }
             }
             CoordinateTextField(
@@ -75,18 +75,18 @@ struct ShowCoordinatesInMultipleFormatsView: View {
             .onSubmit {
                 if let point = CoordinateFormatter.point(
                     fromUSNGString: model.usngString,
-                    spatialReference: mapPoint.spatialReference
+                    spatialReference: tappedPoint.spatialReference
                 ) {
                     model.updateCoordinates(point: point)
                 } else {
-                    model.updateCoordinates(point: mapPoint)
+                    model.updateCoordinates(point: tappedPoint)
                 }
             }
             
             MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
                 .onSingleTapGesture { _, mapPoint in
                     /// Updates the `mapPoint`, its graphic, and the corresponding coordinates.
-                    self.mapPoint = mapPoint
+                    self.tappedPoint = mapPoint
                     model.updateCoordinates(point: mapPoint)
                 }
         }
