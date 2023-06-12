@@ -25,16 +25,21 @@ struct ShowViewshedFromGeoelementInSceneView: View {
                   graphicsOverlays: [model.graphicsOverlay],
                   analysisOverlays: [model.analysisOverlay]
         )
-        .alert(isPresented: $model.isShowingAlert, presentingError: model.error)
+        .onSingleTapGesture { _, mapPoint in
+            // Start a timer to animate the tank towards the new waypoint.
+            model.waypoint = mapPoint
+            model.animationTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
+                model.animate()
+            }
+        }
     }
 }
 
 private extension ShowViewshedFromGeoelementInSceneView {
     /// The view model for the sample.
     class Model: ObservableObject {
-        /// A scene with an imagery basemap and centered on mountains in Chile.
+        /// A scene with an imagery basemap.
         let scene: ArcGIS.Scene = {
-            // Creates a scene.
             let scene = Scene(basemapStyle: .arcGISImagery)
             
             // Add elevation source to the base surface of the scene with the service URL.
@@ -44,7 +49,7 @@ private extension ShowViewshedFromGeoelementInSceneView {
             // Create the building layer and add it to the scene.
             let buildingsLayer = ArcGISSceneLayer(url: .brestBuildingsService)
             // Offset the altitude to avoid clipping with the elevation source.
-            buildingsLayer.altitudeOffset = -45
+            buildingsLayer.altitudeOffset = -45                                     /// TODO
             scene.addOperationalLayer(buildingsLayer)
             
             // Set scene the viewpoint specified by the camera position.
@@ -55,21 +60,56 @@ private extension ShowViewshedFromGeoelementInSceneView {
             return scene
         }()
         
+        /// A camera controller set to follow the tank.
+        let cameraController: CameraController
+        
+        /// The graphics overlay for the tank graphic.
+        let graphicsOverlay: GraphicsOverlay = {
+            let graphicsOverlay = GraphicsOverlay()
+            graphicsOverlay.sceneProperties = LayerSceneProperties(surfacePlacement: .relative)
+            
+            // Set up the heading expression for the tank.
+            let renderer3D = SimpleRenderer()
+            let sceneProperties = RendererSceneProperties(headingExpression: "[heading] + 90", pitchExpression: "[pitch]", rollExpression: "[roll]")
+            sceneProperties.headingExpression = "[HEADING]"
+            renderer3D.sceneProperties = sceneProperties
+            graphicsOverlay.renderer = renderer3D
+            
+            return graphicsOverlay
+        }()
+        
+        /// The analysis overlay for the tank's viewshed.
+        let analysisOverlay = AnalysisOverlay()
+        
         /// The graphic for the tank.
         let tankGraphic: Graphic = {
-            // let tankSymbol = ModelSceneSymbol(name: "bradle", extension: "3ds", scale: 10.0)
-            // tankSymbol.heading = 90.0
-            // tankSymbol.anchorPosition = .bottom
+            let tankSymbol = ModelSceneSymbol(url: .bradleyTank, scale: 10.0)
+            tankSymbol.heading = 90.0
+            tankSymbol.anchorPosition = .bottom
             let tankGraphic = Graphic(
                 geometry: Point(x: -4.506390, y: 48.385624, spatialReference: .wgs84),
-                //vsymbol: tankSymbol,
-                attributes: ["HEADING": 0.0]
+                attributes: ["HEADING": 0.0],
+                symbol: tankSymbol
             )
             return tankGraphic
         }()
         
-        /// The analysis overlay
-        lazy var analysisOverlay: AnalysisOverlay = {
+        /// The point for the tank to move toward.
+        var waypoint: Point!
+        
+        /// The timer for the moving tank animation.
+        var animationTimer: Timer!
+        
+        init() {
+            // Create camera controller.
+            cameraController = OrbitGeoElementCameraController(
+                target: tankGraphic,
+                distance: 200.0
+            )
+            
+            // Add tank graphic to graphics overlay.
+            graphicsOverlay.addGraphic(tankGraphic)
+            
             // Create a viewshed to attach to the tank.
             let geoElementViewshed = GeoElementViewshed(
                 geoElement: tankGraphic,
@@ -84,46 +124,57 @@ private extension ShowViewshedFromGeoelementInSceneView {
             // Offset viewshed observer location to top of tank.
             geoElementViewshed.offsetZ = 3.0
             
-            // Create an analysis overlay to add the viewshed to the scene view
-            return AnalysisOverlay(analyses: [geoElementViewshed])
-        }()
+            // Add the viewshed to the analysisOverlay to add to the scene.
+            analysisOverlay.addAnalysis(geoElementViewshed)
+        }
         
-        /// The graphics overlay for the tank.
-        lazy var graphicsOverlay: GraphicsOverlay = {
-            let graphicsOverlay = GraphicsOverlay(graphics: [tankGraphic])
-            graphicsOverlay.sceneProperties = LayerSceneProperties(surfacePlacement: .relative)
+        /// Animate the tank moving from its current point to the waypoint.
+        func animate() {
+            // Get point from the current tank position.
+            guard let tankLocation = tankGraphic.geometry as? Point else { return }
             
-            // Set up heading expression for tank.
-            let renderer3D = SimpleRenderer()
-            let sceneProperties = RendererSceneProperties(headingExpression: "[heading] + 90", pitchExpression: "[pitch]", rollExpression: "[roll]")
-            sceneProperties.headingExpression = "[HEADING]"
-            renderer3D.sceneProperties = sceneProperties
-            graphicsOverlay.renderer = renderer3D
+            // Get the distance from the current tank location to the waypoint.
+            guard let distanceResult = GeometryEngine.geodeticDistance(
+                from: tankLocation,
+                to: waypoint,
+                distanceUnit: LinearUnit.meters,
+                azimuthUnit: AngularUnit.degrees,
+                curveType: .geodesic
+            ) else { return }
             
-            return graphicsOverlay
-        }()
-        
-        /// A camera controller set to follow the tank
-        lazy var cameraController: CameraController = {
-            let cameraController = OrbitGeoElementCameraController(
-                target: tankGraphic,
-                distance: 200.0
-            )
-            cameraController.cameraPitchOffset = 45.0
-            return cameraController
-        }()
-        
-        /// A Boolean value indicating whether to show an alert.
-        @Published var isShowingAlert = false
-        
-        /// The error shown in the alert.
-        @Published var error: Error? {
-            didSet { isShowingAlert = error != nil }
+            // Move toward waypoint a short distance.
+            let locations = GeometryEngine.geodeticMove(
+                [tankLocation],
+                distance: 1.0,
+                distanceUnit: LinearUnit.meters,
+                azimuth: distanceResult.azimuth1.value,
+                azimuthUnit: AngularUnit.degrees,
+                curveType: .geodesic)
+            tankGraphic.geometry = locations.first
+            
+            // Set tank graphic heading.
+            if let heading = tankGraphic.attributes["HEADING"] as? Double {
+                tankGraphic.setAttributeValue(
+                    heading + ((distanceResult.azimuth1.value - heading) / 10),
+                    forKey: "HEADING"
+                )
+            }
+            
+            // Stop the animation when we're within 5 meters of the waypoint
+            if distanceResult.distance.value <= 5 {
+                waypoint = nil
+                animationTimer?.invalidate()
+            }
         }
     }
 }
 
 private extension URL {
+    /// The on-demand resource URL for the Bradley tank.
+    static var bradleyTank: URL {
+        Bundle.main.url(forResource: "bradle", withExtension: "3ds", subdirectory: "bradley_low_3ds")!
+    }
+    
     /// A scene service URL for buildings in Brest, France.
     static var brestElevationService: URL {
         URL(string: "https://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/Buildings_Brest/SceneServer/layers/0")!
