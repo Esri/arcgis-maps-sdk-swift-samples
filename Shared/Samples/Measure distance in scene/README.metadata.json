@@ -2,7 +2,9 @@
     "category": "Analysis",
     "description": "Measure distances between two points in 3D.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "measure-distance-in-scene.png"
+    ],
     "keywords": [
         "3D",
         "analysis",

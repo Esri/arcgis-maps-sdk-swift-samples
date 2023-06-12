@@ -34,7 +34,7 @@ struct MeasureDistanceInSceneView: View {
     /// The unit system for the location distance measurement, selected by the picker.
     @State private var unitSystemSelection: UnitSystem = .metric
     
-    /// The location distance measurement analysis.
+    /// The location distance measurement.
     private let locationDistanceMeasurement = LocationDistanceMeasurement(
         startLocation: Point(x: -4.494677, y: 48.384472, z: 24.772694, spatialReference: .wgs84),
         endLocation: Point(x: -4.495646, y: 48.384377, z: 58.501115, spatialReference: .wgs84)
@@ -71,36 +71,38 @@ struct MeasureDistanceInSceneView: View {
     }
     
     var body: some View {
-        SceneView(scene: scene, analysisOverlays: [analysisOverlay])
-            .onSingleTapGesture { _, scenePoint in
-                if locationDistanceMeasurement.startLocation != locationDistanceMeasurement.endLocation {
-                    locationDistanceMeasurement.startLocation = scenePoint!
+        VStack {
+            SceneView(scene: scene, analysisOverlays: [analysisOverlay])
+                .onSingleTapGesture { _, scenePoint in
+                    if locationDistanceMeasurement.startLocation != locationDistanceMeasurement.endLocation {
+                        locationDistanceMeasurement.startLocation = scenePoint!
+                    }
+                    locationDistanceMeasurement.endLocation = scenePoint!
                 }
-                locationDistanceMeasurement.endLocation = scenePoint!
-            }
-            .task {
-                // Set distance text when there are measurements updates.
-                for await measurements in locationDistanceMeasurement.measurements {
-                    directDistanceText = measurementFormatter.string(from: measurements.directDistance)
-                    horizontalDistanceText = measurementFormatter.string(from: measurements.horizontalDistance)
-                    verticalDistanceText = measurementFormatter.string(from: measurements.verticalDistance)
+                .task {
+                    // Set distance text when there are measurements updates.
+                    for await measurements in locationDistanceMeasurement.measurements {
+                        directDistanceText = measurementFormatter.string(from: measurements.directDistance)
+                        horizontalDistanceText = measurementFormatter.string(from: measurements.horizontalDistance)
+                        verticalDistanceText = measurementFormatter.string(from: measurements.verticalDistance)
+                    }
                 }
+            
+            // Distance texts.
+            Text("Direct: \(directDistanceText)")
+            Text("Horizontal: \(horizontalDistanceText)")
+            Text("Vertical: \(verticalDistanceText)")
+            
+            // Unit system picker.
+            Picker("", selection: $unitSystemSelection) {
+                Text("Imperial").tag(UnitSystem.imperial)
+                Text("Metric").tag(UnitSystem.metric)
             }
-        
-        // Distance texts.
-        Text("Direct: \(directDistanceText)")
-        Text("Horizontal: \(horizontalDistanceText)")
-        Text("Vertical: \(verticalDistanceText)")
-        
-        // Unit system picker.
-        Picker("", selection: $unitSystemSelection) {
-            Text("Imperial").tag(UnitSystem.imperial)
-            Text("Metric").tag(UnitSystem.metric)
-        }
-        .pickerStyle(.segmented)
-        .padding()
-        .onChange(of: unitSystemSelection) { _ in
-            locationDistanceMeasurement.unitSystem = unitSystemSelection
+            .pickerStyle(.segmented)
+            .padding()
+            .onChange(of: unitSystemSelection) { _ in
+                locationDistanceMeasurement.unitSystem = unitSystemSelection
+            }
         }
     }
 }
