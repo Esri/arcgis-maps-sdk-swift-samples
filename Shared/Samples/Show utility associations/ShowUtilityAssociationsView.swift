@@ -185,7 +185,7 @@ private extension ShowUtilityAssociationsView {
             let extent = viewpoint.targetGeometry.extent
             // Get all of the associations in extent of the viewpoint.
             let associations = try await network.associations(forExtent: extent)
-            let existingAssociationIDs = associationsOverlay.graphics.map { $0.attributes["GlobalId"] as? UUID }
+            let existingAssociationIDs = Set(associationsOverlay.graphics.map { $0.attributes["GlobalId"] as! UUID } )
             let graphics: [Graphic] = associations
                 .compactMap { association in
                     let associationID = association.globalID
