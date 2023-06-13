@@ -16,28 +16,72 @@ import SwiftUI
 import ArcGIS
 
 struct ManageOperationalLayersView: View {
-    /// The view model for the sample.
-    @StateObject private var model = Model()
+    /// A map with a topographic basemap and centered on western USA.
+    @State private var map = {
+        let map = Map(basemapStyle: .arcGISTopographic)
+        map.initialViewpoint = Viewpoint(
+            center: Point(x: -133e5, y: 45e5, spatialReference: .webMercator),
+            scale: 2e7
+        )
+        return map
+    }()
+    
+    /// An array for every layer on the map or that could be added to the map.
+    @State private var allLayers: [Layer] = []
+    
+    /// The layers present in `allLayers` but not in the map's `operationalLayers`.
+    private var removedLayers: [Layer] {
+        // allLayers.filter { map.operationalLayers.contains(where: <#T##(Layer) throws -> Bool#>) }
+        []
+    }
+    
+    /// A Boolean value
+    @State private var isShowing = false
+    
+    /// A Boolean value indicating whether to show an alert.
+    @State private var isShowingAlert = false
+    
+    /// The error shown in the alert.
+    @State private var error: Error? {
+        didSet { isShowingAlert = error != nil }
+    }
     
     var body: some View {
-        MapView(map: model.map)
-            .alert(isPresented: $model.isShowingAlert, presentingError: model.error)
+        MapView(map: map)
+            .task {
+                do {
+                    // Add layers from urls.
+                    let elevationImageLayer = ArcGISMapImageLayer(url: .worldElevations)
+                    try await elevationImageLayer.load()
+                    
+                    let censusTiledLayer = ArcGISMapImageLayer(url: .censusTiles)
+                    try await censusTiledLayer.load()
+                    
+                    allLayers = [elevationImageLayer, censusTiledLayer]
+                    map.addOperationalLayers(allLayers)
+                } catch {
+                    self.error = error
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .bottomBar) {
+                    Button("Manage Layers") {
+                        isShowing.toggle()
+                    }
+                }
+            }
+            .alert(isPresented: $isShowingAlert, presentingError: error)
     }
 }
 
-private extension ManageOperationalLayersView {
-    /// The view model for the sample.
-    class Model: ObservableObject {
-        /// A map of the Santa Barbara Botanic Garden.
-        let map = Map()
-        
-        /// A Boolean value indicating whether to show an alert.
-        @Published var isShowingAlert = false
-        
-        /// The error shown in the alert.
-        @Published var error: Error? {
-            didSet { isShowingAlert = error != nil }
-        }
-        
+private extension URL {
+    /// A world elevations image layer URL.
+    static var worldElevations: URL {
+        URL(string: "https://sampleserver5.arcgisonline.com/arcgis/rest/services/Elevation/WorldElevations/MapServer")!
+    }
+    
+    /// A census tiled layer URL.
+    static var censusTiles: URL {
+        URL(string: "https://sampleserver5.arcgisonline.com/arcgis/rest/services/Census/MapServer")!
     }
 }
