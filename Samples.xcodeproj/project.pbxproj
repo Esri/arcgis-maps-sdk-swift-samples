@@ -109,6 +109,8 @@
 		D734FA0C2A183A5B00246D7E /* SetMaxExtentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D734FA092A183A5B00246D7E /* SetMaxExtentView.swift */; };
 		D744FD172A2112D90084A66C /* CreateConvexHullAroundPointsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D744FD162A2112D90084A66C /* CreateConvexHullAroundPointsView.swift */; };
 		D744FD182A2113C70084A66C /* CreateConvexHullAroundPointsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D744FD162A2112D90084A66C /* CreateConvexHullAroundPointsView.swift */; };
+		D75101812A2E493600B8FA48 /* ShowLabelsOnLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75101802A2E493600B8FA48 /* ShowLabelsOnLayerView.swift */; };
+		D75101822A2E497F00B8FA48 /* ShowLabelsOnLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D75101802A2E493600B8FA48 /* ShowLabelsOnLayerView.swift */; };
 		D75362D22A1E886700D83028 /* ApplyUniqueValueRendererView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75362D12A1E886700D83028 /* ApplyUniqueValueRendererView.swift */; };
 		D75362D32A1E8C8800D83028 /* ApplyUniqueValueRendererView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D75362D12A1E886700D83028 /* ApplyUniqueValueRendererView.swift */; };
 		D754E3232A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D754E3222A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift */; };
@@ -214,6 +216,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				D75101822A2E497F00B8FA48 /* ShowLabelsOnLayerView.swift in Copy Source Code Files */,
 				D7EF5D762A26A1EE00FEBDE5 /* ShowCoordinatesInMultipleFormatsView.swift in Copy Source Code Files */,
 				79A47DFB2A20286800D7C5B9 /* CreateAndSaveKMLView.Model.swift in Copy Source Code Files */,
 				79A47DFC2A20286800D7C5B9 /* CreateAndSaveKMLView.Views.swift in Copy Source Code Files */,
@@ -341,6 +344,7 @@
 		88F93CC029C3D59C0006B28E /* SketchOnMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SketchOnMapView.swift; sourceTree = "<group>"; };
 		D734FA092A183A5B00246D7E /* SetMaxExtentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetMaxExtentView.swift; sourceTree = "<group>"; };
 		D744FD162A2112D90084A66C /* CreateConvexHullAroundPointsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateConvexHullAroundPointsView.swift; sourceTree = "<group>"; };
+		D75101802A2E493600B8FA48 /* ShowLabelsOnLayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowLabelsOnLayerView.swift; sourceTree = "<group>"; };
 		D75362D12A1E886700D83028 /* ApplyUniqueValueRendererView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplyUniqueValueRendererView.swift; sourceTree = "<group>"; };
 		D754E3222A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StylePointWithPictureMarkerSymbolsView.swift; sourceTree = "<group>"; };
 		D78666AC2A2161F100C60110 /* FindNearestVertexView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindNearestVertexView.swift; sourceTree = "<group>"; };
@@ -505,6 +509,7 @@
 				D7EF5D712A269E2D00FEBDE5 /* Show coordinates in multiple formats */,
 				E004A6E728493BBB002A1FE6 /* Show device location */,
 				0044CDD72995C352004618CE /* Show device location history */,
+				D751017D2A2E490800B8FA48 /* Show labels on layer */,
 				1C42E04129D2396B004FC4BE /* Show popup */,
 				1C9B74C429DB43580038B06F /* Show realistic light and shadows */,
 				E004A6F1284E4F80002A1FE6 /* Show result of spatial operations */,
@@ -791,6 +796,14 @@
 				D744FD162A2112D90084A66C /* CreateConvexHullAroundPointsView.swift */,
 			);
 			path = "Create convex hull around points";
+			sourceTree = "<group>";
+		};
+		D751017D2A2E490800B8FA48 /* Show labels on layer */ = {
+			isa = PBXGroup;
+			children = (
+				D75101802A2E493600B8FA48 /* ShowLabelsOnLayerView.swift */,
+			);
+			path = "Show labels on layer";
 			sourceTree = "<group>";
 		};
 		D75362CC2A1E862B00D83028 /* Apply unique value renderer */ = {
@@ -1286,6 +1299,7 @@
 				E004A6DC28465C70002A1FE6 /* DisplaySceneView.swift in Sources */,
 				E066DD35285CF3B3004D3D5B /* FindRouteView.swift in Sources */,
 				E004A6F6284FA42A002A1FE6 /* SelectFeaturesInFeatureLayerView.swift in Sources */,
+				D75101812A2E493600B8FA48 /* ShowLabelsOnLayerView.swift in Sources */,
 				E08953F12891899600E077CF /* EnvironmentValues+SampleInfoVisibility.swift in Sources */,
 				00B042E8282EDC690072E1B4 /* SetBasemapView.swift in Sources */,
 				E004A6E62846A61F002A1FE6 /* StyleGraphicsWithSymbolsView.swift in Sources */,
