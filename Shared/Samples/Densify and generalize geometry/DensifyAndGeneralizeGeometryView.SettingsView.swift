@@ -35,7 +35,7 @@ extension DensifyAndGeneralizeGeometryView {
                             Text(String(Int(model.maxDeviation)))
                         }
                         Slider(value: $model.maxDeviation, in: 1...250)
-                            .onChange(of: model.maxSegmentLength) { _ in
+                            .onChange(of: model.maxDeviation) { _ in
                                 model.updateGraphics()
                             }
                     }

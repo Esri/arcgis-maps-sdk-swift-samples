@@ -47,16 +47,16 @@ extension DensifyAndGeneralizeGeometryView {
         let graphicsOverlay: GraphicsOverlay
         
         /// The base polyline geometry that is densified and generalized.
-        let originalPolyline: Polyline
+        private let originalPolyline: Polyline
         
         /// The graphic for displaying the points of the resultant geometry.
-        let resultPointsGraphic: Graphic = {
+        private let resultPointsGraphic: Graphic = {
             let symbol = SimpleMarkerSymbol(style: .circle, color: .magenta, size: 7)
             return Graphic(symbol: symbol)
         }()
         
         /// The graphic for displaying the lines of the resultant geometry.
-        let resultPolylineGraphic: Graphic = {
+        private let resultPolylineGraphic: Graphic = {
             let symbol = SimpleLineSymbol(style: .solid, color: .magenta, width: 3)
             return Graphic(symbol: symbol)
         }()
