@@ -34,9 +34,10 @@ extension DensifyAndGeneralizeGeometryView {
                             Spacer()
                             Text(String(Int(model.maxDeviation)))
                         }
-                        Slider(value: $model.maxDeviation, in: 1...250) { _ in
-                            model.updateGraphics()
-                        }
+                        Slider(value: $model.maxDeviation, in: 1...250)
+                            .onChange(of: model.maxSegmentLength) { _ in
+                                model.updateGraphics()
+                            }
                     }
                 }
                 // Densify toggle and slider.
@@ -51,9 +52,10 @@ extension DensifyAndGeneralizeGeometryView {
                             Spacer()
                             Text(String(Int(model.maxSegmentLength)))
                         }
-                        Slider(value: $model.maxSegmentLength, in: 50...500) { _ in
-                            model.updateGraphics()
-                        }
+                        Slider(value: $model.maxSegmentLength, in: 50...500)
+                            .onChange(of: model.maxSegmentLength) { _ in
+                                model.updateGraphics()
+                            }
                     }
                 }
                 // Reset button that resets the model's values.

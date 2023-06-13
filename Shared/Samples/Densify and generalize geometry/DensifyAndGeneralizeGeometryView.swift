@@ -40,8 +40,8 @@ struct DensifyAndGeneralizeGeometryView: View {
 extension DensifyAndGeneralizeGeometryView {
     /// The view model for the sample.
     class Model: ObservableObject {
-        /// A map with a Streets (Night) basemap centered on the polyline.
-        let map: Map
+        /// A map with a Streets (Night) basemap.
+        let map = Map(basemapStyle: .arcGISStreetsNight)
         
         /// The graphics overlay for all of the graphics.
         let graphicsOverlay: GraphicsOverlay
@@ -105,10 +105,7 @@ extension DensifyAndGeneralizeGeometryView {
         init() {
             originalPolyline = Polyline(points: pointCollection)
             
-            // Create map.
-            map = Map(basemapStyle: .arcGISStreetsNight)
-            
-            // Set the initial viewpoint to show the extent of the graphics.
+            // Set the initial viewpoint to show the extent of the polyline.
             map.initialViewpoint = Viewpoint(
                 center: originalPolyline.extent.center,
                 scale: 65907
