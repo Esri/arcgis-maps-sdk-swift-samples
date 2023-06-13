@@ -26,10 +26,19 @@ struct ShowViewshedFromGeoelementInSceneView: View {
                   analysisOverlays: [model.analysisOverlay]
         )
         .onSingleTapGesture { _, mapPoint in
-            // Start a timer to animate the tank towards the new waypoint.
+            // Start a timer to animate the tank moving towards the new waypoint.
             model.waypoint = mapPoint
             model.animationTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
                 model.animate()
+            }
+        }
+        .overlay(alignment: .top) {
+            // Instruction text.
+            VStack {
+                Text("Tap on the map to move the tank and update the viewshed.")
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(8)
+                    .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
             }
         }
     }
@@ -43,13 +52,11 @@ private extension ShowViewshedFromGeoelementInSceneView {
             let scene = Scene(basemapStyle: .arcGISImagery)
             
             // Add elevation source to the base surface of the scene with the service URL.
-            let elevationSource = ArcGISTiledElevationSource(url: .brestElevationService)
+            let elevationSource = ArcGISTiledElevationSource(url: .worldElevationService)
             scene.baseSurface.addElevationSource(elevationSource)
             
             // Create the building layer and add it to the scene.
             let buildingsLayer = ArcGISSceneLayer(url: .brestBuildingsService)
-            // Offset the altitude to avoid clipping with the elevation source.
-            buildingsLayer.altitudeOffset = -45                                     /// TODO
             scene.addOperationalLayer(buildingsLayer)
             
             // Set scene the viewpoint specified by the camera position.
@@ -175,9 +182,9 @@ private extension URL {
         Bundle.main.url(forResource: "bradle", withExtension: "3ds", subdirectory: "bradley_low_3ds")!
     }
     
-    /// A scene service URL for buildings in Brest, France.
-    static var brestElevationService: URL {
-        URL(string: "https://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/Buildings_Brest/SceneServer/layers/0")!
+    /// A world elevation service from Terrain3D ArcGIS REST service.
+    static var worldElevationService: URL {
+        URL(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!
     }
     
     /// A scene service URL for buildings in Brest, France.
