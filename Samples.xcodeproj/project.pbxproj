@@ -66,10 +66,12 @@
 		1C0C1C3D29D34DDD005C8B24 /* ChangeViewpointView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C0C1C3429D34DAE005C8B24 /* ChangeViewpointView.swift */; };
 		1C42E04729D2396B004FC4BE /* ShowPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C42E04329D2396B004FC4BE /* ShowPopupView.swift */; };
 		1C42E04A29D239D2004FC4BE /* ShowPopupView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C42E04329D2396B004FC4BE /* ShowPopupView.swift */; };
+		1C929F092A27B86800134252 /* ShowUtilityAssociationsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1CAF831B2A20305F000E1E60 /* ShowUtilityAssociationsView.swift */; };
 		1C965C3929DB9176002F8536 /* ShowRealisticLightAndShadowsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C9B74C529DB43580038B06F /* ShowRealisticLightAndShadowsView.swift */; };
 		1C9B74C929DB43580038B06F /* ShowRealisticLightAndShadowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9B74C529DB43580038B06F /* ShowRealisticLightAndShadowsView.swift */; };
 		1C9B74D929DB54560038B06F /* ChangeCameraControllerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9B74D529DB54560038B06F /* ChangeCameraControllerView.swift */; };
 		1C9B74DE29DB56860038B06F /* ChangeCameraControllerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C9B74D529DB54560038B06F /* ChangeCameraControllerView.swift */; };
+		1CAF831F2A20305F000E1E60 /* ShowUtilityAssociationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAF831B2A20305F000E1E60 /* ShowUtilityAssociationsView.swift */; };
 		218F35B829C28F4A00502022 /* AuthenticateWithOAuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218F35B329C28F4A00502022 /* AuthenticateWithOAuthView.swift */; };
 		218F35C229C290BF00502022 /* AuthenticateWithOAuthView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 218F35B329C28F4A00502022 /* AuthenticateWithOAuthView.swift */; };
 		4D2ADC4329C26D05003B367F /* AddDynamicEntityLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2ADC3F29C26D05003B367F /* AddDynamicEntityLayerView.swift */; };
@@ -111,6 +113,8 @@
 		D744FD182A2113C70084A66C /* CreateConvexHullAroundPointsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D744FD162A2112D90084A66C /* CreateConvexHullAroundPointsView.swift */; };
 		D751018E2A2E962D00B8FA48 /* IdentifyLayerFeaturesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D751018D2A2E962D00B8FA48 /* IdentifyLayerFeaturesView.swift */; };
 		D751018F2A2E966C00B8FA48 /* IdentifyLayerFeaturesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D751018D2A2E962D00B8FA48 /* IdentifyLayerFeaturesView.swift */; };
+		D75101812A2E493600B8FA48 /* ShowLabelsOnLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75101802A2E493600B8FA48 /* ShowLabelsOnLayerView.swift */; };
+		D75101822A2E497F00B8FA48 /* ShowLabelsOnLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D75101802A2E493600B8FA48 /* ShowLabelsOnLayerView.swift */; };
 		D75362D22A1E886700D83028 /* ApplyUniqueValueRendererView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75362D12A1E886700D83028 /* ApplyUniqueValueRendererView.swift */; };
 		D75362D32A1E8C8800D83028 /* ApplyUniqueValueRendererView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D75362D12A1E886700D83028 /* ApplyUniqueValueRendererView.swift */; };
 		D754E3232A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D754E3222A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift */; };
@@ -217,6 +221,7 @@
 			dstSubfolderSpec = 7;
 			files = (
 				D751018F2A2E966C00B8FA48 /* IdentifyLayerFeaturesView.swift in Copy Source Code Files */,
+				D75101822A2E497F00B8FA48 /* ShowLabelsOnLayerView.swift in Copy Source Code Files */,
 				D7EF5D762A26A1EE00FEBDE5 /* ShowCoordinatesInMultipleFormatsView.swift in Copy Source Code Files */,
 				79A47DFB2A20286800D7C5B9 /* CreateAndSaveKMLView.Model.swift in Copy Source Code Files */,
 				79A47DFC2A20286800D7C5B9 /* CreateAndSaveKMLView.Views.swift in Copy Source Code Files */,
@@ -227,6 +232,7 @@
 				D754E3242A1D66C20006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift in Copy Source Code Files */,
 				D7F2784C2A1D76F5002E4567 /* AddWMSLayerView.swift in Copy Source Code Files */,
 				D75362D32A1E8C8800D83028 /* ApplyUniqueValueRendererView.swift in Copy Source Code Files */,
+				1C929F092A27B86800134252 /* ShowUtilityAssociationsView.swift in Copy Source Code Files */,
 				D7E9EF2A2A1D29F2000C4865 /* SetMaxExtentView.swift in Copy Source Code Files */,
 				D7E9EF292A1D2219000C4865 /* SetMinAndMaxScaleView.swift in Copy Source Code Files */,
 				1C9B74DE29DB56860038B06F /* ChangeCameraControllerView.swift in Copy Source Code Files */,
@@ -325,6 +331,7 @@
 		1C42E04329D2396B004FC4BE /* ShowPopupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowPopupView.swift; sourceTree = "<group>"; };
 		1C9B74C529DB43580038B06F /* ShowRealisticLightAndShadowsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowRealisticLightAndShadowsView.swift; sourceTree = "<group>"; };
 		1C9B74D529DB54560038B06F /* ChangeCameraControllerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeCameraControllerView.swift; sourceTree = "<group>"; };
+		1CAF831B2A20305F000E1E60 /* ShowUtilityAssociationsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowUtilityAssociationsView.swift; sourceTree = "<group>"; };
 		218F35B329C28F4A00502022 /* AuthenticateWithOAuthView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticateWithOAuthView.swift; sourceTree = "<group>"; };
 		4D2ADC3F29C26D05003B367F /* AddDynamicEntityLayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDynamicEntityLayerView.swift; sourceTree = "<group>"; };
 		4D2ADC5529C4F612003B367F /* ChangeMapViewBackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeMapViewBackgroundView.swift; sourceTree = "<group>"; };
@@ -345,6 +352,7 @@
 		D734FA092A183A5B00246D7E /* SetMaxExtentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetMaxExtentView.swift; sourceTree = "<group>"; };
 		D744FD162A2112D90084A66C /* CreateConvexHullAroundPointsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateConvexHullAroundPointsView.swift; sourceTree = "<group>"; };
 		D751018D2A2E962D00B8FA48 /* IdentifyLayerFeaturesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentifyLayerFeaturesView.swift; sourceTree = "<group>"; };
+		D75101802A2E493600B8FA48 /* ShowLabelsOnLayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowLabelsOnLayerView.swift; sourceTree = "<group>"; };
 		D75362D12A1E886700D83028 /* ApplyUniqueValueRendererView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplyUniqueValueRendererView.swift; sourceTree = "<group>"; };
 		D754E3222A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StylePointWithPictureMarkerSymbolsView.swift; sourceTree = "<group>"; };
 		D78666AC2A2161F100C60110 /* FindNearestVertexView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindNearestVertexView.swift; sourceTree = "<group>"; };
@@ -510,10 +518,12 @@
 				D7EF5D712A269E2D00FEBDE5 /* Show coordinates in multiple formats */,
 				E004A6E728493BBB002A1FE6 /* Show device location */,
 				0044CDD72995C352004618CE /* Show device location history */,
+				D751017D2A2E490800B8FA48 /* Show labels on layer */,
 				1C42E04129D2396B004FC4BE /* Show popup */,
 				1C9B74C429DB43580038B06F /* Show realistic light and shadows */,
 				E004A6F1284E4F80002A1FE6 /* Show result of spatial operations */,
 				E066DD392860C9EE004D3D5B /* Show result of spatial relationships */,
+				1CAF831A2A20305F000E1E60 /* Show utility associations */,
 				0086F3FC28E3770900974721 /* Show viewshed from point in scene */,
 				88F93CBE29C3D4E30006B28E /* Sketch on map */,
 				E066DD362860AB0B004D3D5B /* Style graphics with renderer */,
@@ -717,6 +727,14 @@
 			path = "Change camera controller";
 			sourceTree = "<group>";
 		};
+		1CAF831A2A20305F000E1E60 /* Show utility associations */ = {
+			isa = PBXGroup;
+			children = (
+				1CAF831B2A20305F000E1E60 /* ShowUtilityAssociationsView.swift */,
+			);
+			path = "Show utility associations";
+			sourceTree = "<group>";
+		};
 		218F35B229C28F4A00502022 /* Authenticate with OAuth */ = {
 			isa = PBXGroup;
 			children = (
@@ -804,6 +822,14 @@
 				D751018D2A2E962D00B8FA48 /* IdentifyLayerFeaturesView.swift */,
 			);
 			path = "Identify layer features";
+      sourceTree = "<group>";
+		};
+		D751017D2A2E490800B8FA48 /* Show labels on layer */ = {
+			isa = PBXGroup;
+			children = (
+				D75101802A2E493600B8FA48 /* ShowLabelsOnLayerView.swift */,
+			);
+			path = "Show labels on layer";
 			sourceTree = "<group>";
 		};
 		D75362CC2A1E862B00D83028 /* Apply unique value renderer */ = {
@@ -1278,6 +1304,7 @@
 				0044CDDF2995C39E004618CE /* ShowDeviceLocationHistoryView.swift in Sources */,
 				E041ABC0287CA9F00056009B /* WebView.swift in Sources */,
 				E088E1572862579D00413100 /* SetSurfacePlacementModeView.swift in Sources */,
+				1CAF831F2A20305F000E1E60 /* ShowUtilityAssociationsView.swift in Sources */,
 				E004A6C128414332002A1FE6 /* SetViewpointRotationView.swift in Sources */,
 				883C121529C9136600062FF9 /* DownloadPreplannedMapAreaView.MapPicker.swift in Sources */,
 				1C9B74C929DB43580038B06F /* ShowRealisticLightAndShadowsView.swift in Sources */,
@@ -1300,6 +1327,7 @@
 				E004A6DC28465C70002A1FE6 /* DisplaySceneView.swift in Sources */,
 				E066DD35285CF3B3004D3D5B /* FindRouteView.swift in Sources */,
 				E004A6F6284FA42A002A1FE6 /* SelectFeaturesInFeatureLayerView.swift in Sources */,
+				D75101812A2E493600B8FA48 /* ShowLabelsOnLayerView.swift in Sources */,
 				E08953F12891899600E077CF /* EnvironmentValues+SampleInfoVisibility.swift in Sources */,
 				00B042E8282EDC690072E1B4 /* SetBasemapView.swift in Sources */,
 				E004A6E62846A61F002A1FE6 /* StyleGraphicsWithSymbolsView.swift in Sources */,
