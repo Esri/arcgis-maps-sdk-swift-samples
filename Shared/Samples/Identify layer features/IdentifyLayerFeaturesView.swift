@@ -27,7 +27,7 @@ struct IdentifyLayerFeaturesView: View {
     }()
     
     /// The tapped screen point.
-    @State var tapScreenPoint: CGPoint!
+    @State var tapScreenPoint: CGPoint?
     
     /// The string text for the identify layer results overlay.
     @State var overlayText = "Tap on the map to identify feature layers."
