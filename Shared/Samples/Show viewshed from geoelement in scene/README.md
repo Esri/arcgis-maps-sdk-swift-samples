@@ -6,7 +6,7 @@ Analyze the viewshed for an object (`GeoElement`) in a scene.
 
 ## Use case
 
-A viewshed analysis is a type of visual analysis you can perform on a scene. The viewshed aims to answer the question 'What can I see from a given location?'. The output is an overlay with two different colors - one representing the visible areas (green) and the other representing the obstructed areas (red).
+A viewshed analysis is a type of visual analysis you can perform on a scene. The viewshed aims to answer the question 'What can I see from a given location?'. The output is an overlay with two different colors: one representing the visible areas (green) and the other representing the obstructed areas (red).
 
 ## How to use the sample
 
