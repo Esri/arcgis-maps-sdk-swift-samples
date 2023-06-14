@@ -25,7 +25,7 @@ Tap to identify features. The text overlay will update to show all layers with f
 
 ## Additional information
 
-The GeoView supports two methods of identify: `identifyLayer()`, which identifies features within a specific layer and `identifyLayers()`, which identifies features for all layers in the current view.
+The GeoView supports two methods of identify: `identifyLayer`, which identifies features within a specific layer and `identifyLayers`, which identifies features for all layers in the current view.
 
 ## Tags
 
