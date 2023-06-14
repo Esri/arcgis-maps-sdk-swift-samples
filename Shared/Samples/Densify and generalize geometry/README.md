@@ -12,7 +12,7 @@ Densifying a multipart geometry can be used to more accurately represent curved 
 
 ## How to use the sample
 
-Tap the Option button to open the settings. Use the sliders to control the parameters of the densify and generalize methods. You can deselect the toggles for either method to remove its effect from the result polyline.
+Tap the "Option" button to open the settings. Use the sliders to control the parameters of the densify and generalize methods. You can deselect the toggles for either method to remove its effect from the result polyline.
 
 ## How it works
 
