@@ -160,7 +160,7 @@ extension DensifyAndGeneralizeGeometryView {
                     removeDegenerateParts: true
                 ) as! Polyline
             }
-            // Densify the points of the polyline with the specified max segment
+            // Densify the points of the polyline with the specified max segment.
             if shouldDensify {
                 resultPolyline = GeometryEngine.densify(
                     resultPolyline,
