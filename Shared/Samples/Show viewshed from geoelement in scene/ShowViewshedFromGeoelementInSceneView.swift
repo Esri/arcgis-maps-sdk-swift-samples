@@ -77,7 +77,11 @@ private extension ShowViewshedFromGeoelementInSceneView {
             
             // Set up the heading expression for the tank.
             let renderer3D = SimpleRenderer()
-            let sceneProperties = RendererSceneProperties(headingExpression: "[heading] + 90", pitchExpression: "[pitch]", rollExpression: "[roll]")
+            let sceneProperties = RendererSceneProperties(
+                headingExpression: "[heading] + 90",
+                pitchExpression: "[pitch]",
+                rollExpression: "[roll]"
+            )
             sceneProperties.headingExpression = "[HEADING]"
             renderer3D.sceneProperties = sceneProperties
             graphicsOverlay.renderer = renderer3D
