@@ -5,16 +5,13 @@ Run a filtered trace to locate operable features that will isolate an area from 
 ![Image of run valve isolation trace with category comparison](run-valve-isolation-trace-1.png)
 ![Image of run valve isolation trace with filter barriers](run-valve-isolation-trace-2.png)
 
-
 ## Use case
 
 Determine the set of operable features required to stop a network's resource, effectively isolating an area of the network. For example, you can choose to return only accessible and operable valves: ones that are not paved over or rusted shut.
 
-
 ## How to use the sample
 
 Tap on one or more features to use as filter barriers or create and set the configuration's filter barriers by selecting a utility category. Toggle "Isolated Features" to update trace configuration. Tap "Trace" to run a subnetwork-based isolation trace. Tap "Reset" to clear filter barriers and trace results.
-
 
 ## How it works
 
