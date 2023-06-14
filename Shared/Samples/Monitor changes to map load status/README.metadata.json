@@ -1,0 +1,24 @@
+{
+    "category": "Maps",
+    "description": "Determine the map's load status which can be: `NOT_LOADED`, `FAILED_TO_LOAD`, `LOADING`, `LOADED`.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "load status",
+        "loadable pattern",
+        "map",
+        "LoadStatusChangedListener/LoadStatusChanged signal",
+        "Map",
+        "MapView"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "LoadStatusChangedListener/LoadStatusChanged signal",
+        "Map",
+        "MapView"
+    ],
+    "snippets": [
+        "MonitorChangesToMapLoadStatusView.swift"
+    ],
+    "title": "Monitor changes to map load status"
+}
