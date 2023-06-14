@@ -159,7 +159,7 @@ private extension ShowViewshedFromGeoelementInSceneView {
             let locations = GeometryEngine.geodeticMove(
                 [tankLocation],
                 distance: 1,
-                distanceUnit: LinearUnit.meters,
+                distanceUnit: .meters,
                 azimuth: distanceResult.azimuth1.value,
                 azimuthUnit: distanceResult.azimuth1.unit.angularUnit,
                 curveType: .geodesic
