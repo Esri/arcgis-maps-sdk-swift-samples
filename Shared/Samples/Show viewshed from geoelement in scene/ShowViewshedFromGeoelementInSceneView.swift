@@ -20,10 +20,11 @@ struct ShowViewshedFromGeoelementInSceneView: View {
     @StateObject private var model = Model()
     
     var body: some View {
-        SceneView(scene: model.scene,
-                  cameraController: model.cameraController,
-                  graphicsOverlays: [model.graphicsOverlay],
-                  analysisOverlays: [model.analysisOverlay]
+        SceneView(
+            scene: model.scene,
+            cameraController: model.cameraController,
+            graphicsOverlays: [model.graphicsOverlay],
+            analysisOverlays: [model.analysisOverlay]
         )
         .onSingleTapGesture { _, mapPoint in
             // Start a timer to animate the tank moving towards the new waypoint.
