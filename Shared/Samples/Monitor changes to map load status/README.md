@@ -1,6 +1,6 @@
 # Monitor changes to map load status
 
-Determine the map's load status which can be: `NOT_LOADED`, `FAILED_TO_LOAD`, `LOADING`, `LOADED`.
+Determine the map's load status which can be: `notLoaded`, `failedToLoad`, `loading`, or `loaded`.
 
 ![Image of monitor changes to map load status](monitor-changes-to-map-toad-status.png)
 
@@ -10,7 +10,7 @@ Knowing the map's load state may be required before subsequent actions can be ex
 
 ## How to use the sample
 
-Click on the button to reload the ArcGISMap. The load status of the ArcGISMap will be displayed on screen.
+Open the sample to load the map. The load status will be displayed on screen.
 
 ## How it works
 
@@ -22,8 +22,8 @@ The `LoadStatus` is `LOADED` when any of the following criteria are met:
 
 ## Relevant API
 
+* LoadStatus
 * Map
-* LoadStatusChangedListener/LoadStatusChanged signal
 * MapView
 
 ## Tags

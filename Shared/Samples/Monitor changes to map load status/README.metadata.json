@@ -1,19 +1,21 @@
 {
     "category": "Maps",
-    "description": "Determine the map's load status which can be: `NOT_LOADED`, `FAILED_TO_LOAD`, `LOADING`, `LOADED`.",
+    "description": "Determine the map's load status which can be: `notLoaded`, `failedToLoad`, `loading`, or `loaded`.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "monitor-changes-to-map-toad-status.png"
+    ],
     "keywords": [
         "load status",
         "loadable pattern",
         "map",
-        "LoadStatusChangedListener/LoadStatusChanged signal",
+        "LoadStatus",
         "Map",
         "MapView"
     ],
     "redirect_from": [],
     "relevant_apis": [
-        "LoadStatusChangedListener/LoadStatusChanged signal",
+        "LoadStatus",
         "Map",
         "MapView"
     ],
