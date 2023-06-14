@@ -158,7 +158,7 @@ private extension ShowViewshedFromGeoelementInSceneView {
                 distance: 1.0,
                 distanceUnit: LinearUnit.meters,
                 azimuth: distanceResult.azimuth1.value,
-                azimuthUnit: AngularUnit.degrees,
+                azimuthUnit: distanceResult.azimuth1.unit.angularUnit,
                 curveType: .geodesic
             )
             tankGraphic.geometry = locations.first
