@@ -40,7 +40,7 @@ struct ShowLineOfSightBetweenPointsView: View {
     /// The line of sight analysis.
     @State private var lineOfSight: LocationLineOfSight?
     
-    /// A Boolean value indicating whether to should the target instructions.
+    /// A Boolean value indicating whether to show the target instructions.
     @State private var shouldShowTargetInstruction = false
     
     var body: some View {
