@@ -96,30 +96,21 @@ private extension IdentifyLayerFeaturesView {
     /// Update the overlay text based on the identify layer results.
     /// - Parameter results: An `IdentifyLayerResult` array to handle.
     func handleIdentifyResults(_ results: [IdentifyLayerResult]) {
-        // Create overlay message from the results.
-        var alertMessageString = ""
-        var totalGeoElementsCount = 0
-        for (i, identifyLayerResult) in results.enumerated() {
-            // Create alert message the from geoElement count and the layer name.
-            let geoElementsCount = geoElementsCountFromResult(identifyLayerResult)
+        // Get layer names and geoelement counts from the results.
+        let layerNameElementCount: [(layerName: String, geoElementsCount: Int)] = results.map { identifyLayerResult in
             let layerName = identifyLayerResult.layerContent.name
-            alertMessageString.append("\(layerName): \(geoElementsCount)")
-            
-            // Add new line character if not the final element in array.
-            if i < results.count - 1 {
-                alertMessageString.append("\n")
-            }
-            
-            // Update total count.
-            totalGeoElementsCount += geoElementsCount
+            let geoElementsCount = geoElementsCountFromResult(identifyLayerResult)
+            return (layerName, geoElementsCount)
         }
         
+        let alertMessageString = layerNameElementCount
+            .map { "\($0.layerName): \($0.geoElementsCount)" }
+            .joined(separator: "\n")
+        
+        let totalGeoElementsCount = layerNameElementCount.map(\.geoElementsCount).reduce(0, +)
+        
         // Update overlay text with the geo-elements found if any.
-        if totalGeoElementsCount > 0 {
-            overlayText = alertMessageString
-        } else {
-            overlayText = "No element found."
-        }
+        overlayText = totalGeoElementsCount > 0 ? alertMessageString : "No element found."
     }
     
     /// Counts the geo-elements from an identify layer result using recursion.
