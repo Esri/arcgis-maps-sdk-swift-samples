@@ -63,32 +63,29 @@ extension DensifyAndGeneralizeGeometryView {
         
         /// A mutable point collection from which the original polyline and
         /// multipoint geometries are made.
-        private let pointCollection: MutablePointCollection = {
-            // The spatial reference for the sample.
-            let spatialReference = SpatialReference(wkid: WKID(rawValue: 32126)!)
-            var collection = MutablePointCollection(
-                points: [
-                    Point(x: 2330611.130549, y: 202360.002957),
-                    Point(x: 2330583.834672, y: 202525.984012),
-                    Point(x: 2330574.164902, y: 202691.488009),
-                    Point(x: 2330689.292623, y: 203170.045888),
-                    Point(x: 2330696.773344, y: 203317.495798),
-                    Point(x: 2330691.419723, y: 203380.917080),
-                    Point(x: 2330435.065296, y: 203816.662457),
-                    Point(x: 2330369.500800, y: 204329.861789),
-                    Point(x: 2330400.929891, y: 204712.129673),
-                    Point(x: 2330484.300447, y: 204927.797132),
-                    Point(x: 2330514.469919, y: 205000.792463),
-                    Point(x: 2330638.099138, y: 205271.601116),
-                    Point(x: 2330725.315888, y: 205631.231308),
-                    Point(x: 2330755.640702, y: 206433.354860),
-                    Point(x: 2330680.644719, y: 206660.240923),
-                    Point(x: 2330386.957926, y: 207340.947204),
-                    Point(x: 2330485.861737, y: 207742.298501)
-                ],
-                spatialReference: spatialReference)
-            return collection
-        }()
+        private let pointCollection = MutablePointCollection(
+            points: [
+                Point(x: 2330611.130549, y: 202360.002957),
+                Point(x: 2330583.834672, y: 202525.984012),
+                Point(x: 2330574.164902, y: 202691.488009),
+                Point(x: 2330689.292623, y: 203170.045888),
+                Point(x: 2330696.773344, y: 203317.495798),
+                Point(x: 2330691.419723, y: 203380.917080),
+                Point(x: 2330435.065296, y: 203816.662457),
+                Point(x: 2330369.500800, y: 204329.861789),
+                Point(x: 2330400.929891, y: 204712.129673),
+                Point(x: 2330484.300447, y: 204927.797132),
+                Point(x: 2330514.469919, y: 205000.792463),
+                Point(x: 2330638.099138, y: 205271.601116),
+                Point(x: 2330725.315888, y: 205631.231308),
+                Point(x: 2330755.640702, y: 206433.354860),
+                Point(x: 2330680.644719, y: 206660.240923),
+                Point(x: 2330386.957926, y: 207340.947204),
+                Point(x: 2330485.861737, y: 207742.298501)
+            ],
+            // The spatial reference for the sample, NAD83 / Oregon North.
+            spatialReference: SpatialReference(wkid: WKID(rawValue: 32126)!)
+        )
         
         /// A Boolean indicating whether to generalize.
         @Published var shouldGeneralize = false
