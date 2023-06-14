@@ -19,6 +19,9 @@ struct ShowViewshedFromGeoelementInSceneView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
+    /// The timer for the moving tank animation.
+    @State private var animationTimer: Timer!
+    
     var body: some View {
         SceneView(
             scene: model.scene,
@@ -29,8 +32,11 @@ struct ShowViewshedFromGeoelementInSceneView: View {
         .onSingleTapGesture { _, mapPoint in
             // Start a timer to animate the tank moving towards the new waypoint.
             model.waypoint = mapPoint
-            model.animationTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
+            animationTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
                 model.animate()
+                if model.waypoint == nil {
+                    animationTimer.invalidate()
+                }
             }
         }
         .overlay(alignment: .top) {
@@ -93,8 +99,8 @@ private extension ShowViewshedFromGeoelementInSceneView {
         
         /// The graphic for the tank.
         let tankGraphic: Graphic = {
-            let tankSymbol = ModelSceneSymbol(url: .bradleyTank, scale: 10.0)
-            tankSymbol.heading = 90.0
+            let tankSymbol = ModelSceneSymbol(url: .bradleyTank, scale: 10)
+            tankSymbol.heading = 90
             tankSymbol.anchorPosition = .bottom
             let tankGraphic = Graphic(
                 geometry: Point(x: -4.506390, y: 48.385624, spatialReference: .wgs84),
@@ -107,14 +113,11 @@ private extension ShowViewshedFromGeoelementInSceneView {
         /// The point for the tank to move toward.
         var waypoint: Point!
         
-        /// The timer for the moving tank animation.
-        var animationTimer: Timer!
-        
         init() {
             // Create camera controller.
             cameraController = OrbitGeoElementCameraController(
                 target: tankGraphic,
-                distance: 200.0
+                distance: 200
             )
             
             // Add tank graphic to graphics overlay.
@@ -123,16 +126,16 @@ private extension ShowViewshedFromGeoelementInSceneView {
             // Create a viewshed to attach to the tank.
             let geoElementViewshed = GeoElementViewshed(
                 geoElement: tankGraphic,
-                horizontalAngle: 90.0,
-                verticalAngle: 40.0,
-                headingOffset: 0.0,
-                pitchOffset: 0.0,
+                horizontalAngle: 90,
+                verticalAngle: 40,
+                headingOffset: 0,
+                pitchOffset: 0,
                 minDistance: 0.1,
-                maxDistance: 250.0
+                maxDistance: 250
             )
             
             // Offset viewshed observer location to top of tank.
-            geoElementViewshed.offsetZ = 3.0
+            geoElementViewshed.offsetZ = 3
             
             // Add the viewshed to the analysisOverlay to add to the scene.
             analysisOverlay.addAnalysis(geoElementViewshed)
@@ -155,7 +158,7 @@ private extension ShowViewshedFromGeoelementInSceneView {
             // Move toward waypoint a short distance.
             let locations = GeometryEngine.geodeticMove(
                 [tankLocation],
-                distance: 1.0,
+                distance: 1,
                 distanceUnit: LinearUnit.meters,
                 azimuth: distanceResult.azimuth1.value,
                 azimuthUnit: distanceResult.azimuth1.unit.angularUnit,
@@ -171,10 +174,9 @@ private extension ShowViewshedFromGeoelementInSceneView {
                 )
             }
             
-            // Stop the animation when we're within 5 meters of the waypoint
+            // Reset waypoint to stop animation when within 5 meters of the waypoint.
             if distanceResult.distance.value <= 5 {
                 waypoint = nil
-                animationTimer?.invalidate()
             }
         }
     }

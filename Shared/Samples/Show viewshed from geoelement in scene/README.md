@@ -1,6 +1,6 @@
 # Show viewshed from geoelement in scene
 
-Analyze the viewshed for an object (`GeoElement`) in a scene.
+Analyze the viewshed for an object (GeoElement) in a scene.
 
 ![Image of show viewshed from geoelement in scene sample](show-viewshed-from-geoelement-in-scene.png)
 
@@ -26,17 +26,9 @@ Tap to set a destination for the vehicle (a `GeoElement`). The vehicle will 'dri
 * AnalysisOverlay
 * GeodeticDistanceResult
 * GeoElementViewshed
-* static GeometryEngine.geodeticDistance(from:to:distanceUnit:azimuthUnit:curveType:) (used to animate the vehicle)
 * ModelSceneSymbol
 * OrbitGeoElementCameraController
-
-## Offline data
-
-Offline sample data will be downloaded by the sample viewer automatically.
-
-Link | Local Location
----------|-------|
-|[Model Marker Symbol Data](https://www.arcgis.com/home/item.html?id=07d62a792ab6496d9b772a24efea45d0)| `<userhome>`/ArcGIS/Runtime/Data/3D/bradley_low_3ds/bradle.3ds |
+* static GeometryEngine.geodeticDistance(from:to:distanceUnit:azimuthUnit:curveType:) (used to animate the vehicle)
 
 ## About the data
 
