@@ -29,14 +29,15 @@ struct ManageOperationalLayersView: View {
     /// An array for every layer on the map or that could be added to the map.
     @State private var allLayers: [Layer] = []
     
-    /// The layers present in `allLayers` but not in the map's `operationalLayers`.
+    /// The layers present in all layers but not in the map's operational Layers.
     private var removedLayers: [Layer] {
-        // allLayers.filter { map.operationalLayers.contains(where: <#T##(Layer) throws -> Bool#>) }
-        []
+        allLayers.filter { layer in
+            !map.operationalLayers.contains(where: { $0.name == layer.name })
+        }
     }
     
     /// A Boolean value
-    @State private var isShowing = false
+    @State private var isShowingOptions = false
     
     /// A Boolean value indicating whether to show an alert.
     @State private var isShowingAlert = false
@@ -66,7 +67,26 @@ struct ManageOperationalLayersView: View {
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
                     Button("Manage Layers") {
-                        isShowing.toggle()
+                        isShowingOptions.toggle()
+                    }
+                }
+            }
+            .sheet(isPresented: $isShowingOptions, detents: [.medium], dragIndicatorVisibility: .visible) {
+                List {
+                    Section(header: Text("Operational Layers")) {
+                        ForEach(map.operationalLayers, id: \.name) { layer in
+                            Text(layer.name)
+                        }
+                        .onMove {
+                            allLayers.move(fromOffsets: $0, toOffset: $1)
+                            map.removeAllOperationalLayers()
+                            map.addOperationalLayers(allLayers)
+                        }
+                    }
+                    Section(header: Text("Removed Layers")) {
+                        ForEach(removedLayers, id: \.name) { layer in
+                            Text(layer.name)
+                        }
                     }
                 }
             }
