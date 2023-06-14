@@ -139,7 +139,7 @@ extension DensifyAndGeneralizeGeometryView {
             updateGraphics()
         }
         
-        /// Update the result polyline and multipoint graphics after densifying
+        /// Updates the result polyline and multipoint graphics after densifying
         /// and generalizing.
         func updateGraphics() {
             // Reset the result graphics if there are no operations to do.
