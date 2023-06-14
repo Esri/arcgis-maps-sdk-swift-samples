@@ -14,7 +14,7 @@ Tap to identify features. The text overlay will update to show all layers with f
 
 ## How it works
 
-1. The tapped position is passed to `MapView.IdentifyLayers`
+1. The tapped position is passed to `MapViewProxy.identifyLayers(screenPoint:tolerance:returnPopupsOnly:maximumResultsPerLayer:)` method.
 2. For each `IdentifyLayerResult` in the results, features are counted.
     * Note: there is one identify result per layer with matching features; if the feature count is 0, that means a sublayer contains the matching features.
 
