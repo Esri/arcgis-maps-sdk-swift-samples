@@ -60,7 +60,8 @@ struct ShowLineOfSightBetweenPointsView: View {
             }
             .onLongPressGesture {  _, scenePoint in
                 // Update the target location on long press.
-                lineOfSight?.targetLocation = scenePoint!
+                guard let scenePoint else { return }
+                lineOfSight?.targetLocation = scenePoint
             }
             .overlay(alignment: .top) {
                 // Instruction texts.
