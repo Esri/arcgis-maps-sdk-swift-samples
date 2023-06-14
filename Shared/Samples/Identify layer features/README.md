@@ -23,7 +23,6 @@ Tap to identify features. The text overlay will update to show all layers with f
 * IdentifyLayerResult
 * IdentifyLayerResult.LayerContent.Name
 * IdentifyLayerResult.SublayerResults
-* MapView.IdentifyLayersAsync
 
 ## Additional information
 
