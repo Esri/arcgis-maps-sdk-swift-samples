@@ -59,7 +59,6 @@ struct RunValveIsolationTraceView: View {
                     Menu(model.selectedCategory?.name ?? "Category") {
                         ForEach(model.filterBarrierCategories, id: \.self) { category in
                             Button(category.name) {
-                                print("category: \(category)")
                                 model.selectedCategory = category
                                 model.statusText = "\(category.name) selected."
                             }
@@ -76,9 +75,14 @@ struct RunValveIsolationTraceView: View {
                         }
                     } label: {
                         Text(model.traceEnabled ? "Trace" : "Reset")
-                    }.disabled(model.selectedCategory == nil && !model.traceEnabled)
+                    }.disabled((model.selectedCategory == nil && !model.traceEnabled) || model.hasFilterBarriers)
                 }
             }
+            .alert(
+                "Select terminal",
+                isPresented: $model.terminalSelectorIsOpen,
+                actions: { terminalPickerButtons }
+            )
             .overlay(alignment: .center) {
                 if model.tracingActivity != .none {
                     VStack {
@@ -90,6 +94,18 @@ struct RunValveIsolationTraceView: View {
                     .background(.thinMaterial)
                     .cornerRadius(10)
                 }
+            }
+        }
+    }
+    
+    /// Buttons for each the available terminals on the last added utility element.
+    @ViewBuilder
+    var terminalPickerButtons: some View {
+        ForEach(model.lastAddedElement?.assetType.terminalConfiguration?.terminals ?? []) { terminal in
+            Button(terminal.name) {
+                model.lastAddedElement?.terminal = terminal
+                model.terminalSelectorIsOpen = false
+                model.addTerminal()
             }
         }
     }
@@ -143,6 +159,23 @@ private extension RunValveIsolationTraceView {
         /// The selected filter barrier category.
         @Published var selectedCategory: UtilityCategory? = nil
         
+        var hasFilterBarriers: Bool {
+            traceParameters.filterBarriers.isEmpty
+        }
+        
+        /// A Boolean value indicating whether the terminal selection menu is open.
+        ///
+        /// When a utility element has more than one terminal, the user is presented with a menu of the
+        /// available terminal names.
+        @Published var terminalSelectorIsOpen = false
+        
+        /// The last element that was added to either the list of starting points or barriers.
+        ///
+        /// When an element contains more than one terminal, the user should be presented with the
+        /// option to select a terminal. Keeping a reference to the last added element provides ease
+        /// of access to save the user's choice.
+        @Published var lastAddedElement: UtilityElement?
+        
         /// The filter barrier identifer.
         static let filterBarrierIdentifier = "filter barrier"
         
@@ -183,6 +216,7 @@ private extension RunValveIsolationTraceView {
         }
         
         /// Load the service geodatabase and initialize the layers.
+        @MainActor
         func loadServiceGeodatabase() async throws {
             // Loads the geodatabase if it does not exist.
             if serviceGeodatabase == nil {
@@ -259,7 +293,6 @@ private extension RunValveIsolationTraceView {
                 startingLocation.terminal = assetType.terminalConfiguration?.terminals.first(where: { $0.name == terminalName })
                 return startingLocation
             } else {
-                print("makeStartingLocation() is nil")
                 return nil
             }
         }
@@ -281,7 +314,11 @@ private extension RunValveIsolationTraceView {
                 .compactMap { $0 as? UtilityElementTraceResult }
             traceEnabled = false
             traceCompleted = true
-            statusText = "Trace with \(selectedCategory!.name) cetegory completed."
+            if traceParameters.filterBarriers.isEmpty {
+                statusText = "Trace with \(selectedCategory!.name) cetegory completed."
+            } else {
+                statusText = "Trace with filter barriers completed."
+            }
             tracingActivity = .none
             
             for result in traceResults {
@@ -353,10 +390,16 @@ private extension RunValveIsolationTraceView {
             
             switch element.networkSource.kind {
             case .junction:
-                // If the user tapped on a junction, get the asset's terminal(s).
-                if let terminal = element.assetType.terminalConfiguration?.terminals.first {
-                    element.terminal = terminal
-                    statusText = "Juntion element with terminal \(terminal.name) added to the filter barriers."
+                lastAddedElement = element
+                if let terminals = element.assetType.terminalConfiguration?.terminals {
+                    if terminals.count > 1 {
+                        terminalSelectorIsOpen.toggle()
+                        return
+                    } else {
+                        if let terminal = terminals.first {
+                            statusText = "Juntion element with terminal \(terminal.name) added to the filter barriers."
+                        }
+                    }
                 }
             case .edge:
                 if let line = GeometryEngine.makeGeometry(from: geometry, z: nil) as? Polyline {
@@ -368,12 +411,21 @@ private extension RunValveIsolationTraceView {
                     statusText = String(format: "Edge element at fractionAlongEdge %.3f added to the filter barriers.", element.fractionAlongEdge)
                 }
             }
-
-            traceParameters.addBarrier(element)
+            
+            traceParameters.addFilterBarrier(element)
+            lastAddedElement = element
             let point = geometry as? Point ?? location
             addGraphic(for: point, traceLocationType: RunValveIsolationTraceView.Model.filterBarrierIdentifier)
-           }
-
+        }
+        
+        func addTerminal() {
+            if let terminal = lastAddedElement?.terminal, let lastAddedElement, let lastSingleTap {
+                traceParameters.addFilterBarrier(lastAddedElement)
+                statusText = "Juntion element with terminal \(terminal.name) added to the filter barriers."
+                addGraphic(for: lastSingleTap.mapPoint, traceLocationType: RunValveIsolationTraceView.Model.filterBarrierIdentifier)
+            }
+        }
+        
         /// The different states of a utility network trace.
         enum TracingActivity: CaseIterable {
             case loadingServiceGeodatabase, loadingNetwork, startingLocation, runningTrace, none
