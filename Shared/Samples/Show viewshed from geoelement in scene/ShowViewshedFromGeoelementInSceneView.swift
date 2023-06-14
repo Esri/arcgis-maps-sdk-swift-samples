@@ -148,8 +148,8 @@ private extension ShowViewshedFromGeoelementInSceneView {
             guard let distanceResult = GeometryEngine.geodeticDistance(
                 from: tankLocation,
                 to: waypoint,
-                distanceUnit: LinearUnit.meters,
-                azimuthUnit: AngularUnit.degrees,
+                distanceUnit: .meters,
+                azimuthUnit: .degrees,
                 curveType: .geodesic
             ) else { return }
             
