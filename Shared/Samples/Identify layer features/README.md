@@ -22,7 +22,6 @@ Tap to identify features. The text overlay will update to show all layers with f
 
 * IdentifyLayerResult
 * LayerContent
-* IdentifyLayerResult.SublayerResults
 
 ## Additional information
 
