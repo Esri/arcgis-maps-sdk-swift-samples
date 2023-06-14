@@ -115,15 +115,6 @@ struct DisplayContentOfUtilityNetworkContainerView: View {
                         }
                     }
                 }
-                .onAppear {
-                    // Updates the URL session challenge handler to use the
-                    // specified credentials and tokens for any challenges.
-                    ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = ChallengeHandler()
-                }
-                .onDisappear {
-                    // Resets the URL session challenge handler to use default handling.
-                    ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = nil
-                }
         }
     }
     
@@ -159,18 +150,5 @@ struct DisplayContentOfUtilityNetworkContainerView: View {
         }
         .navigationViewStyle(.stack)
         .frame(idealWidth: 320, idealHeight: 428)
-    }
-}
-
-/// The authentication model used to handle challenges and credentials.
-private struct ChallengeHandler: ArcGISAuthenticationChallengeHandler {
-    func handleArcGISAuthenticationChallenge(
-        _ challenge: ArcGISAuthenticationChallenge
-    ) async throws -> ArcGISAuthenticationChallenge.Disposition {
-        // NOTE: Never hardcode login information in a production application.
-        // This is done solely for the sake of the sample.
-        return .continueWithCredential(
-            try await TokenCredential.credential(for: challenge, username: "viewer01", password: "I68VGU^nMurF")
-        )
     }
 }

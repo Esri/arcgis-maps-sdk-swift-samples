@@ -257,3 +257,19 @@ struct LegendItem {
     /// The image swatch of the legend item.
     let image: UIImage
 }
+
+// MARK: Authentication
+
+/// The authentication model used to handle challenges and credentials.
+private struct ChallengeHandler: ArcGISAuthenticationChallengeHandler {
+    func handleArcGISAuthenticationChallenge(
+        _ challenge: ArcGISAuthenticationChallenge
+    ) async throws -> ArcGISAuthenticationChallenge.Disposition {
+        // NOTE: Never hardcode login information in a production application.
+        // This is done solely for the sake of the sample.
+        return .continueWithCredential(
+            // Credentials for sample server 7 services.
+            try await TokenCredential.credential(for: challenge, username: "viewer01", password: "I68VGU^nMurF")
+        )
+    }
+}
