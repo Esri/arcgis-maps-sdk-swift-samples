@@ -1,5 +1,5 @@
 {
-    "category": "Analysis",
+    "category": "",
     "description": "Analyze the viewshed for an object (GeoElement) in a scene.",
     "ignore": false,
     "images": [
@@ -16,21 +16,18 @@
         "AnalysisOverlay",
         "GeoElementViewshed",
         "GeodeticDistanceResult",
-        "GeometryEngine.DistanceGeodetic (used to animate the vehicle)",
         "ModelSceneSymbol",
-        "OrbitGeoElementCameraController"
-    ],
-    "offline_data": [
-        "07d62a792ab6496d9b772a24efea45d0"
+        "OrbitGeoElementCameraController",
+        "static GeometryEngine.geodeticDistance(from:to:distanceUnit:azimuthUnit:curveType:) (used to animate the vehicle)"
     ],
     "redirect_from": [],
     "relevant_apis": [
         "AnalysisOverlay",
         "GeoElementViewshed",
         "GeodeticDistanceResult",
-        "GeometryEngine.DistanceGeodetic (used to animate the vehicle)",
         "ModelSceneSymbol",
-        "OrbitGeoElementCameraController"
+        "OrbitGeoElementCameraController",
+        "static GeometryEngine.geodeticDistance(from:to:distanceUnit:azimuthUnit:curveType:) (used to animate the vehicle)"
     ],
     "snippets": [
         "ShowViewshedFromGeoelementInSceneView.swift"
