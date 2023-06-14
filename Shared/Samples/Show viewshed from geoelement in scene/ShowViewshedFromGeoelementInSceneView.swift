@@ -35,12 +35,10 @@ struct ShowViewshedFromGeoelementInSceneView: View {
         }
         .overlay(alignment: .top) {
             // Instruction text.
-            VStack {
-                Text("Tap on the map to move the tank and update the viewshed.")
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(8)
-                    .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
-            }
+            Text("Tap on the map to move the tank and update the viewshed.")
+                .padding(8)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
         }
     }
 }
