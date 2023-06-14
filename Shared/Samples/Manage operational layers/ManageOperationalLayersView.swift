@@ -16,6 +16,9 @@ import SwiftUI
 import ArcGIS
 
 struct ManageOperationalLayersView: View {
+    /// The view model for the sample.
+    @StateObject private var layersList = LayersList()
+    
     /// A map with a topographic basemap and centered on western USA.
     @State private var map = {
         let map = Map(basemapStyle: .arcGISTopographic)
@@ -25,16 +28,6 @@ struct ManageOperationalLayersView: View {
         )
         return map
     }()
-    
-    /// An array for every layer on the map or that could be added to the map.
-    @State private var allLayers: [Layer] = []
-    
-    /// The layers present in all layers but not in the map's operational Layers.
-    private var removedLayers: [Layer] {
-        allLayers.filter { layer in
-            !map.operationalLayers.contains(where: { $0.name == layer.name })
-        }
-    }
     
     /// A Boolean value
     @State private var isShowingOptions = false
@@ -58,8 +51,8 @@ struct ManageOperationalLayersView: View {
                     let censusTiledLayer = ArcGISMapImageLayer(url: .censusTiles)
                     try await censusTiledLayer.load()
                     
-                    allLayers = [elevationImageLayer, censusTiledLayer]
-                    map.addOperationalLayers(allLayers)
+                    layersList.allLayers = [elevationImageLayer, censusTiledLayer]
+                    map.addOperationalLayers(layersList.allLayers)
                 } catch {
                     self.error = error
                 }
@@ -72,20 +65,52 @@ struct ManageOperationalLayersView: View {
                 }
             }
             .sheet(isPresented: $isShowingOptions, detents: [.medium], dragIndicatorVisibility: .visible) {
-                List {
-                    Section(header: Text("Operational Layers")) {
-                        ForEach(map.operationalLayers, id: \.name) { layer in
-                            Text(layer.name)
-                        }
-                        .onMove {
-                            allLayers.move(fromOffsets: $0, toOffset: $1)
-                            map.removeAllOperationalLayers()
-                            map.addOperationalLayers(allLayers)
+                VStack {
+                    ZStack {
+                        Text("Manage Layers")
+                            .font(.title3)
+                        HStack {
+                            Spacer()
+                            EditButton()
                         }
                     }
-                    Section(header: Text("Removed Layers")) {
-                        ForEach(removedLayers, id: \.name) { layer in
-                            Text(layer.name)
+                    .padding()
+                    List {
+                        Section(header: Text("Operational Layers")) {
+                            ForEach(map.operationalLayers, id: \.name) { layer in
+                                Text(layer.name)
+                            }
+                            .onMove {
+                                /// TODO: make work when there are removed layers
+                                layersList.allLayers.move(fromOffsets: $0, toOffset: $1)
+                                map.removeAllOperationalLayers()
+                                map.addOperationalLayers(layersList.allLayers)
+                            }
+                            .onDelete { indexSet in
+                                layersList.removedLayers = map.operationalLayers
+                                map.removeAllOperationalLayers()
+                                for i in indexSet {
+                                    // let layer = map.operationalLayers[i]
+                                    // map.removeOperationalLayer(layer)
+                                }
+                            }
+                        }
+                        Section(header: Text("Removed Layers")) {
+                            ForEach(layersList.removedLayers, id: \.name) { layer in
+                                HStack {
+                                    Button {
+                                        map.addOperationalLayer(layer)
+                                        layersList.removedLayers.removeAll(where: { $0.name == layer.name })
+                                    } label: {
+                                        Image(systemName: "plus.circle.fill")
+                                            .foregroundColor(.green)
+                                            .padding(.leading, 0)
+                                            .font(.system(size: 18))
+                                    }
+                                    Text(layer.name)
+                                }
+                            }
+                            .deleteDisabled(true)
                         }
                     }
                 }
@@ -94,6 +119,27 @@ struct ManageOperationalLayersView: View {
     }
 }
 
+private extension ManageOperationalLayersView {
+    /// The view model for the sample.
+    class LayersList: ObservableObject {
+        /// An array for every layer on the map or that could be added to the map.
+        @Published var allLayers: [Layer] = []
+        
+        /// An array for all the layers on the map.
+        @Published var operationalLayers: [Layer] = []
+        
+        /// An array for all the layers not on the map.
+        @Published var removedLayers: [Layer] = []
+        
+        ///
+        func addLayer() {
+            
+        }
+        
+        ///
+    }
+}
+    
 private extension URL {
     /// A world elevations image layer URL.
     static var worldElevations: URL {
