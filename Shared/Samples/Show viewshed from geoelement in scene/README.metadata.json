@@ -1,5 +1,5 @@
 {
-    "category": "",
+    "category": "Analysis",
     "description": "Analyze the viewshed for an object (GeoElement) in a scene.",
     "ignore": false,
     "images": [
