@@ -55,8 +55,8 @@ Tap on one or more features to use as filter barriers or create and set the conf
 * UtilityTier
 * UtilityTraceFilter
 * UtilityTraceParameters
-* UtilityTraceResult
 * UtilityTraceParameters.TraceType
+* UtilityTraceResult
 
 ## About the data
 

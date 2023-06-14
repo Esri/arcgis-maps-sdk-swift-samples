@@ -30,8 +30,8 @@
         "UtilityTier",
         "UtilityTraceFilter",
         "UtilityTraceParameters",
-        "UtilityTraceResult",
-        "UtilityTraceParameters.TraceType"
+        "UtilityTraceParameters.TraceType",
+        "UtilityTraceResult"
     ],
     "redirect_from": [],
     "relevant_apis": [
@@ -49,8 +49,8 @@
         "UtilityTier",
         "UtilityTraceFilter",
         "UtilityTraceParameters",
-        "UtilityTraceResult",
-        "UtilityTraceParameters.TraceType"
+        "UtilityTraceParameters.TraceType",
+        "UtilityTraceResult"
     ],
     "snippets": [
         "RunValveIsolationTraceView.swift"
