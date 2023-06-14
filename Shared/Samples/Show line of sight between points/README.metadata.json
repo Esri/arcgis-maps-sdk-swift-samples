@@ -1,0 +1,27 @@
+{
+    "category": "Analysis",
+    "description": "Perform a line of sight analysis between two points in real time.",
+    "ignore": false,
+    "images": [
+        "show-line-of-sight-between-points.png"
+    ],
+    "keywords": [
+        "3D",
+        "line of sight",
+        "visibility",
+        "visibility analysis",
+        "AnalysisOverlay",
+        "LocationLineOfSight",
+        "SceneView"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "AnalysisOverlay",
+        "LocationLineOfSight",
+        "SceneView"
+    ],
+    "snippets": [
+        "ShowLineOfSightBetweenPointsView.swift"
+    ],
+    "title": "Show line of sight between points"
+}
