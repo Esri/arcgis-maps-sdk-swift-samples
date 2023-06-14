@@ -2,7 +2,7 @@
 
 Analyze the viewshed for an object (`GeoElement`) in a scene.
 
-![Image of show viewshed from geoelement in scene](show-viewshed-from-geoelement-in-scene.png)
+![Image of show viewshed from geoelement in scene sample](show-viewshed-from-geoelement-in-scene.png)
 
 ## Use case
 
