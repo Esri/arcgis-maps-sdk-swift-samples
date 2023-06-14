@@ -130,7 +130,7 @@ extension DensifyAndGeneralizeGeometryView {
             ])
         }
         
-        /// Reset the model values to the originals.
+        /// Resets the model values to the originals.
         func reset() {
             shouldDensify = false
             maxDeviation = 10.0
