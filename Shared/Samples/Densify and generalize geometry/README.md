@@ -17,7 +17,7 @@ Tap the "Option" button to open the settings. Use the sliders to control the par
 ## How it works
 
 1. Use the static method `static GeometryEngine.densify(_:maxSegmentLength:)` to densify the polyline object. The resulting polyline object will have more points along the line, so that there are no points greater than `maxSegmentLength` from the next point.
-2. Use the static method `GeometryEngine.generalize(polyline, maxDeviation, true)` to generalize the polyline object. The resulting polyline object will have points shifted from the original line to simplify the shape. None of these points can deviate farther from the original line than `maxDeviation`. The last parameter, `removeDegenerateParts`, will clean up extraneous parts of a multipart geometry. This will have no effect in this sample as the polyline does not contain extraneous parts.
+2. Use the static method `static GeometryEngine.generalize(_:maxDeviation:removeDegenerateParts:)` to generalize the polyline object. The resulting polyline object will have points shifted from the original line to simplify the shape. None of these points can deviate farther from the original line than `maxDeviation`. The last parameter, `removeDegenerateParts`, will clean up extraneous parts of a multipart geometry. This will have no effect in this sample as the polyline does not contain extraneous parts.
 3. Note that `maxSegmentLength` and `maxDeviation` are in the units of the geometry's coordinate system. In this example, a cartesian coordinate system is used and at a small enough scale that geodesic distances are not required.
 
 ## Relevant API
