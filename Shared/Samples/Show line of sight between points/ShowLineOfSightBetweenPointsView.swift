@@ -26,7 +26,7 @@ struct ShowLineOfSightBetweenPointsView: View {
         let elevationSource = ArcGISTiledElevationSource(url: .worldElevationService)
         scene.baseSurface.addElevationSource(elevationSource)
         
-        // Set scene the viewpoint specified by the camera position.
+        // Set scene to the viewpoint specified by the camera position.
         let point = Point(x: -73.0870, y: -49.3460, z: 5046, spatialReference: .wgs84)
         let camera = Camera(location: point, heading: 11, pitch: 62, roll: 0)
         scene.initialViewpoint = Viewpoint(boundingGeometry: point, camera: camera)
