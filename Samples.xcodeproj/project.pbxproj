@@ -108,6 +108,10 @@
 		883C121929C914E100062FF9 /* DownloadPreplannedMapAreaView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E070A0A2286F3B6000F2B606 /* DownloadPreplannedMapAreaView.swift */; };
 		88F93CC129C3D59D0006B28E /* SketchOnMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F93CC029C3D59C0006B28E /* SketchOnMapView.swift */; };
 		88F93CC229C4D3480006B28E /* SketchOnMapView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 88F93CC029C3D59C0006B28E /* SketchOnMapView.swift */; };
+		D710996D2A27D9210065A1C1 /* DensifyAndGeneralizeGeometryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D710996C2A27D9210065A1C1 /* DensifyAndGeneralizeGeometryView.swift */; };
+		D710996E2A27D9B30065A1C1 /* DensifyAndGeneralizeGeometryView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D710996C2A27D9210065A1C1 /* DensifyAndGeneralizeGeometryView.swift */; };
+		D71099702A2802FA0065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D710996F2A2802FA0065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift */; };
+		D71099712A280D830065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D710996F2A2802FA0065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift */; };
 		D734FA0C2A183A5B00246D7E /* SetMaxExtentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D734FA092A183A5B00246D7E /* SetMaxExtentView.swift */; };
 		D744FD172A2112D90084A66C /* CreateConvexHullAroundPointsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D744FD162A2112D90084A66C /* CreateConvexHullAroundPointsView.swift */; };
 		D744FD182A2113C70084A66C /* CreateConvexHullAroundPointsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D744FD162A2112D90084A66C /* CreateConvexHullAroundPointsView.swift */; };
@@ -218,6 +222,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				D71099712A280D830065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift in Copy Source Code Files */,
+				D710996E2A27D9B30065A1C1 /* DensifyAndGeneralizeGeometryView.swift in Copy Source Code Files */,
 				D75101822A2E497F00B8FA48 /* ShowLabelsOnLayerView.swift in Copy Source Code Files */,
 				D7EF5D762A26A1EE00FEBDE5 /* ShowCoordinatesInMultipleFormatsView.swift in Copy Source Code Files */,
 				79A47DFB2A20286800D7C5B9 /* CreateAndSaveKMLView.Model.swift in Copy Source Code Files */,
@@ -346,6 +352,8 @@
 		79B7B8092A1BF8EC00F57C27 /* CreateAndSaveKMLView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAndSaveKMLView.swift; sourceTree = "<group>"; };
 		883C121429C9136600062FF9 /* DownloadPreplannedMapAreaView.MapPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadPreplannedMapAreaView.MapPicker.swift; sourceTree = "<group>"; };
 		88F93CC029C3D59C0006B28E /* SketchOnMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SketchOnMapView.swift; sourceTree = "<group>"; };
+		D710996C2A27D9210065A1C1 /* DensifyAndGeneralizeGeometryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DensifyAndGeneralizeGeometryView.swift; sourceTree = "<group>"; };
+		D710996F2A2802FA0065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DensifyAndGeneralizeGeometryView.SettingsView.swift; sourceTree = "<group>"; };
 		D734FA092A183A5B00246D7E /* SetMaxExtentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetMaxExtentView.swift; sourceTree = "<group>"; };
 		D744FD162A2112D90084A66C /* CreateConvexHullAroundPointsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateConvexHullAroundPointsView.swift; sourceTree = "<group>"; };
 		D75101802A2E493600B8FA48 /* ShowLabelsOnLayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowLabelsOnLayerView.swift; sourceTree = "<group>"; };
@@ -489,6 +497,7 @@
 				D744FD132A2112360084A66C /* Create convex hull around points */,
 				E004A6EB28495538002A1FE6 /* Create planar and geodetic buffers */,
 				E000E761286A0B07005D87C5 /* Cut geometry */,
+				D71099692A27D8880065A1C1 /* Densify and generalize geometry */,
 				0074ABB328174B830037244A /* Display map */,
 				F111CCBD288B548400205358 /* Display map from mobile map package */,
 				00B04FB3283EEB830026C882 /* Display overview map */,
@@ -793,6 +802,15 @@
 				88F93CC029C3D59C0006B28E /* SketchOnMapView.swift */,
 			);
 			path = "Sketch on map";
+			sourceTree = "<group>";
+		};
+		D71099692A27D8880065A1C1 /* Densify and generalize geometry */ = {
+			isa = PBXGroup;
+			children = (
+				D710996C2A27D9210065A1C1 /* DensifyAndGeneralizeGeometryView.swift */,
+				D710996F2A2802FA0065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift */,
+			);
+			path = "Densify and generalize geometry";
 			sourceTree = "<group>";
 		};
 		D734FA072A183A5A00246D7E /* Set max extent */ = {
@@ -1264,6 +1282,7 @@
 				001C6DE127FE8A9400D472C2 /* AppSecrets.swift.masque in Sources */,
 				E0D04FF228A5390000747989 /* DownloadPreplannedMapAreaView.Model.swift in Sources */,
 				00CCB8A5285BAF8700BBAB70 /* OnDemandResource.swift in Sources */,
+				D71099702A2802FA0065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift in Sources */,
 				E004A6ED2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift in Sources */,
 				E041ABD7287DB04D0056009B /* SampleInfoView.swift in Sources */,
 				E0082217287755AC002AD138 /* View+Sheet.swift in Sources */,
@@ -1307,6 +1326,7 @@
 				0044289229C90C0B00160767 /* GetElevationAtPointOnSurfaceView.swift in Sources */,
 				D7E440D72A1ECE7D005D74DE /* CreateBuffersAroundPointsView.swift in Sources */,
 				00D4EF802863842100B9CC30 /* AddFeatureLayersView.swift in Sources */,
+				D710996D2A27D9210065A1C1 /* DensifyAndGeneralizeGeometryView.swift in Sources */,
 				88F93CC129C3D59D0006B28E /* SketchOnMapView.swift in Sources */,
 				1C0C1C3929D34DAE005C8B24 /* ChangeViewpointView.swift in Sources */,
 				D734FA0C2A183A5B00246D7E /* SetMaxExtentView.swift in Sources */,
