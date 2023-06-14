@@ -1,6 +1,6 @@
 # Show viewshed from geoelement in scene
 
-Analyze the viewshed for an object (GeoElement) in a scene.
+Analyze the viewshed for an object (`GeoElement`) in a scene.
 
 ![Image of show viewshed from geoelement in scene](show-viewshed-from-geoelement-in-scene.png)
 
