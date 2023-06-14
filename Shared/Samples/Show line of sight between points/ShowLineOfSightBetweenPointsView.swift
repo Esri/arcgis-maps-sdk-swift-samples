@@ -47,14 +47,15 @@ struct ShowLineOfSightBetweenPointsView: View {
         SceneView(scene: scene, analysisOverlays: [analysisOverlay])
             .onSingleTapGesture { _, scenePoint in
                 // User tapped to place line of sight observer.
+                guard let scenePoint else { return }
                 if lineOfSight == nil {
                     // Create and set initial line of sight analysis with tapped scene point.
-                    lineOfSight = LocationLineOfSight(observerLocation: scenePoint!, targetLocation: scenePoint!)
+                    lineOfSight = LocationLineOfSight(observerLocation: scenePoint, targetLocation: scenePoint)
                     analysisOverlay.addAnalysis(lineOfSight!)
                     shouldShowTargetInstruction = true
                 } else {
                     // Update the observer location.
-                    lineOfSight?.observerLocation = scenePoint!
+                    lineOfSight?.observerLocation = scenePoint
                 }
             }
             .onLongPressGesture {  _, scenePoint in
