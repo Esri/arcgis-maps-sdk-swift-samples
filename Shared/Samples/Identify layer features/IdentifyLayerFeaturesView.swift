@@ -94,7 +94,7 @@ struct IdentifyLayerFeaturesView: View {
 
 private extension IdentifyLayerFeaturesView {
     /// Update the overlay text based on the identify layer results.
-    /// - Parameter results: An `IdentifyLayerResult Array` to handle.
+    /// - Parameter results: An `IdentifyLayerResult` array to handle.
     func handleIdentifyResults(_ results: [IdentifyLayerResult]) {
         // Create overlay message from the results.
         var alertMessageString = ""
