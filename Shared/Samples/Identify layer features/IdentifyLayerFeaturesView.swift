@@ -93,7 +93,7 @@ struct IdentifyLayerFeaturesView: View {
 }
 
 private extension IdentifyLayerFeaturesView {
-    /// Update the overlay text based on the identify layer results.
+    /// Updates the overlay text based on the identify layer results.
     /// - Parameter results: An `IdentifyLayerResult` array to handle.
     func handleIdentifyResults(_ results: [IdentifyLayerResult]) {
         // Get layer names and geoelement counts from the results.
