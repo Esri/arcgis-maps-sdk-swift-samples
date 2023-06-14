@@ -59,8 +59,7 @@ struct RunValveIsolationTraceView: View {
                     Menu(model.selectedCategory?.name ?? "Category") {
                         ForEach(model.filterBarrierCategories, id: \.self) { category in
                             Button(category.name) {
-                                model.selectedCategory = category
-                                model.statusText = "\(category.name) selected."
+                                model.selectCategory(category)
                             }
                         }
                     }
@@ -75,14 +74,10 @@ struct RunValveIsolationTraceView: View {
                         }
                     } label: {
                         Text(model.traceEnabled ? "Trace" : "Reset")
-                    }.disabled((model.selectedCategory == nil && !model.traceEnabled) || model.hasFilterBarriers)
+                    }
+                    .disabled(!model.traceEnabled && !model.resetEnabled)
                 }
             }
-            .alert(
-                "Select terminal",
-                isPresented: $model.terminalSelectorIsOpen,
-                actions: { terminalPickerButtons }
-            )
             .overlay(alignment: .center) {
                 if model.tracingActivity != .none {
                     VStack {
@@ -95,6 +90,11 @@ struct RunValveIsolationTraceView: View {
                     .cornerRadius(10)
                 }
             }
+            .alert(
+                "Select terminal",
+                isPresented: $model.terminalSelectorIsOpen,
+                actions: { terminalPickerButtons }
+            )
         }
     }
     
@@ -127,9 +127,29 @@ private extension RunValveIsolationTraceView {
         private var layers: [FeatureLayer] = []
         
         /// The last locations in the screen and map where a tap occurred.
-        ///
-        /// Monitoring these values allows for an asynchronous identification task when they change.
         @Published var lastSingleTap: (screenPoint: CGPoint, mapPoint: Point)?
+        
+        /// The last element that was added to the list of filter barriers.
+        ///
+        /// When an element contains more than one terminal, the user should be presented with the
+        /// option to select a terminal. Keeping a reference to the last added element provides ease
+        /// of access to save the user's choice.
+        @Published var lastAddedElement: UtilityElement?
+        
+        /// The current tracing related activity.
+        @Published var tracingActivity: TracingActivity = .loadingServiceGeodatabase
+        
+        /// The base trace parameters.
+        @Published var traceParameters: UtilityTraceParameters = UtilityTraceParameters(traceType: .isolation, startingLocations: [])
+        
+        /// The point geometry of the starting location.
+        @Published var startingLocationPoint: Point!
+        
+        /// The filter barrier categories.
+        @Published var filterBarrierCategories: [UtilityCategory] = []
+        
+        /// The selected filter barrier category.
+        @Published var selectedCategory: UtilityCategory? = nil
         
         /// A Boolean value indicating whether to include isolated features in the
         /// trace results when used in conjunction with an isolation trace.
@@ -138,46 +158,23 @@ private extension RunValveIsolationTraceView {
         /// A Boolean value indicating whether the trace is completed.
         @Published var traceCompleted = false
         
-        /// The current tracing related activity.
-        @Published var tracingActivity: TracingActivity = .loadingServiceGeodatabase
-        
-        /// The point geometry of the starting location.
-        @Published var startingLocationPoint: Point!
-        
-        /// The base trace parameters.
-        @Published var traceParameters: UtilityTraceParameters = UtilityTraceParameters(traceType: .isolation, startingLocations: [])
-        
         /// A Boolean value indicating if tracing is enabled.
-        @Published var traceEnabled = true
+        @Published var traceEnabled = false
+        
+        /// A Boolean value indicating if the reseting the trace is enabled.
+        @Published var resetEnabled = false
+        
+        /// A Boolean value indicating if the user has added filter barriers to the trace parameters.
+        @Published var hasFilterBarriers: Bool = false
+        
+        /// A Boolean value indicating whether the terminal selection menu is open.
+        @Published var terminalSelectorIsOpen = false
         
         /// The status text to display to the user.
         @Published var statusText: String =  "Loading Utility Network…"
         
-        /// The filter barrier categories.
-        @Published var filterBarrierCategories: [UtilityCategory] = []
-        
-        /// The selected filter barrier category.
-        @Published var selectedCategory: UtilityCategory? = nil
-        
-        var hasFilterBarriers: Bool {
-            traceParameters.filterBarriers.isEmpty
-        }
-        
-        /// A Boolean value indicating whether the terminal selection menu is open.
-        ///
-        /// When a utility element has more than one terminal, the user is presented with a menu of the
-        /// available terminal names.
-        @Published var terminalSelectorIsOpen = false
-        
-        /// The last element that was added to either the list of starting points or barriers.
-        ///
-        /// When an element contains more than one terminal, the user should be presented with the
-        /// option to select a terminal. Keeping a reference to the last added element provides ease
-        /// of access to save the user's choice.
-        @Published var lastAddedElement: UtilityElement?
-        
         /// The filter barrier identifer.
-        static let filterBarrierIdentifier = "filter barrier"
+        private static let filterBarrierIdentifier = "filter barrier"
         
         /// The graphic overlay to display starting location and filter barriers.
         let parametersOverlay: GraphicsOverlay = {
@@ -217,7 +214,7 @@ private extension RunValveIsolationTraceView {
         
         /// Load the service geodatabase and initialize the layers.
         @MainActor
-        func loadServiceGeodatabase() async throws {
+        private func loadServiceGeodatabase() async throws {
             // Loads the geodatabase if it does not exist.
             if serviceGeodatabase == nil {
                 serviceGeodatabase = ServiceGeodatabase(url: .featureServiceURL)
@@ -237,7 +234,7 @@ private extension RunValveIsolationTraceView {
         
         /// Load the utility network.
         @MainActor
-        func loadUtilityNetwork() async throws {
+        private func loadUtilityNetwork() async throws {
             try? await utilityNetwork.load()
             statusText = """
                             Utility network loaded.
@@ -256,23 +253,12 @@ private extension RunValveIsolationTraceView {
                         tracingActivity = .none
                         
                         // Get available utility categories.
-                        if utilityNetwork.definition != nil {
-                            filterBarrierCategories = utilityNetwork.definition!.categories
+                        if let definition = utilityNetwork.definition {
+                            filterBarrierCategories = definition.categories
                         }
-                        
                     }
                 }
             }
-        }
-        
-        /// Adds a graphic to the graphics overlay.
-        /// - Parameters:
-        ///   - location: The `Point` location to place the graphic..
-        ///   - traceLocationType: The textual description of the trace location type.
-        func addGraphic(for location: Point, traceLocationType: String) {
-            parametersOverlay.addGraphic(
-                Graphic(geometry: location, attributes: ["TraceLocationType": traceLocationType], symbol: nil)
-            )
         }
         
         /// When the utility network is loaded, create a`UtilityElement`
@@ -297,6 +283,27 @@ private extension RunValveIsolationTraceView {
             }
         }
         
+        /// Adds a graphic to the graphics overlay.
+        /// - Parameters:
+        ///   - location: The `Point` location to place the graphic..
+        ///   - traceLocationType: The textual description of the trace location type.
+        private func addGraphic(for location: Point, traceLocationType: String) {
+            parametersOverlay.addGraphic(
+                Graphic(
+                    geometry: location,
+                    attributes: ["TraceLocationType": traceLocationType],
+                    symbol: nil
+                )
+            )
+        }
+        
+        /// Sets the selected filter barrier category and updates the status text.
+        func selectCategory(_ category: UtilityCategory) {
+            selectedCategory = category
+            traceEnabled = true
+            statusText = "\(category.name) selected."
+        }
+        
         /// Runs a trace with the pending trace configuration and selects features in the map that
         /// correspond to the element results.
         @MainActor
@@ -314,8 +321,8 @@ private extension RunValveIsolationTraceView {
                 .compactMap { $0 as? UtilityElementTraceResult }
             traceEnabled = false
             traceCompleted = true
-            if traceParameters.filterBarriers.isEmpty {
-                statusText = "Trace with \(selectedCategory!.name) cetegory completed."
+            if !hasFilterBarriers, let selectedCategory {
+                statusText = "Trace with \(selectedCategory.name.lowercased()) category completed."
             } else {
                 statusText = "Trace with filter barriers completed."
             }
@@ -334,6 +341,7 @@ private extension RunValveIsolationTraceView {
                     layer.selectFeatures(features)
                 }
             }
+            resetEnabled = true
         }
         
         /// Resets the state values for when a trace is cancelled or completed.
@@ -342,12 +350,14 @@ private extension RunValveIsolationTraceView {
             // Reset the trace if it is already completed.
             layers.forEach { $0.clearSelection() }
             traceParameters.removeAllBarriers()
+            hasFilterBarriers = false
             parametersOverlay.removeAllGraphics()
             traceCompleted = false
+            traceEnabled = true
+            resetEnabled = false
             selectedCategory = nil
             // Add back the starting location.
             addGraphic(for: startingLocationPoint, traceLocationType:  "starting point")
-            traceEnabled = true
             statusText = "Tap on the map to add filter barriers, or run the trace directly without filter barriers."
         }
         
@@ -386,8 +396,6 @@ private extension RunValveIsolationTraceView {
             guard let geometry = feature.geometry,
                   let element = utilityNetwork.makeElement(arcGISFeature: feature) else { return }
             
-            selectedCategory = filterBarrierCategories.first( where: { $0.name == "Isolating"} )
-            
             switch element.networkSource.kind {
             case .junction:
                 lastAddedElement = element
@@ -416,13 +424,20 @@ private extension RunValveIsolationTraceView {
             lastAddedElement = element
             let point = geometry as? Point ?? location
             addGraphic(for: point, traceLocationType: RunValveIsolationTraceView.Model.filterBarrierIdentifier)
+            traceEnabled = true
+            hasFilterBarriers = true
         }
         
+        /// Adds the filter barrier of the user selected terminal to the trace parameters.
         func addTerminal() {
             if let terminal = lastAddedElement?.terminal, let lastAddedElement, let lastSingleTap {
                 traceParameters.addFilterBarrier(lastAddedElement)
                 statusText = "Juntion element with terminal \(terminal.name) added to the filter barriers."
-                addGraphic(for: lastSingleTap.mapPoint, traceLocationType: RunValveIsolationTraceView.Model.filterBarrierIdentifier)
+                hasFilterBarriers = true
+                addGraphic(
+                    for: lastSingleTap.mapPoint,
+                    traceLocationType: RunValveIsolationTraceView.Model.filterBarrierIdentifier
+                )
             }
         }
         
@@ -459,13 +474,6 @@ private extension ArcGISCredential {
     }
 }
 
-private extension URL {
-    /// The URL to the feature service for running the isolation trace.
-    static var featureServiceURL: URL {
-        URL(string: "https://sampleserver7.arcgisonline.com/server/rest/services/UtilityNetwork/NapervilleGas/FeatureServer")!
-    }
-}
-
 extension UtilityCategory: Equatable {
     public static func == (lhs: UtilityCategory, rhs: UtilityCategory) -> Bool {
         lhs.name == rhs.name
@@ -475,5 +483,12 @@ extension UtilityCategory: Equatable {
 extension UtilityCategory: Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(name)
+    }
+}
+
+private extension URL {
+    /// The URL to the feature service for running the isolation trace.
+    static var featureServiceURL: URL {
+        URL(string: "https://sampleserver7.arcgisonline.com/server/rest/services/UtilityNetwork/NapervilleGas/FeatureServer")!
     }
 }

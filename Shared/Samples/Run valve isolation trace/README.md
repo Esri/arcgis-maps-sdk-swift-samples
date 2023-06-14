@@ -40,7 +40,7 @@ Tap on one or more features to use as filter barriers or create and set the conf
     If "Trace" is tapped with filter barriers:
     * Update `includesIsolatedFeatures` property of the default configuration from step 6.
     * Run `UtilityNetwork.trace(parameters:)` with the specified parameters.
-12. For every `FeatureLayer` in this map with trace result elements, select features by converting `UtilityElement`(s) to `ArcGISFeature`(s) using `UtilityNetwork.features(for:completion:)`.
+12. For every `FeatureLayer` in this map with trace result elements, select features by converting `UtilityElement`(s) to `ArcGISFeature`(s) using `UtilityNetwork.features(for:)`.
 
 ## Relevant API
 
@@ -48,7 +48,7 @@ Tap on one or more features to use as filter barriers or create and set the conf
 * ServiceGeodatabase
 * UtilityCategory
 * UtilityCategoryComparison
-* UtilityCategoryComparisonOperator
+* UtilityCategoryComparison.Operator
 * UtilityDomainNetwork
 * UtilityElement
 * UtilityElementTraceResult
