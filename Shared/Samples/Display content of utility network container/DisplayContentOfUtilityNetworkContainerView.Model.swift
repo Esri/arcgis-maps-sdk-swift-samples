@@ -38,22 +38,17 @@ extension DisplayContentOfUtilityNetworkContainerView {
         /// A line symbol to show the connectivity association.
         private let connectivitySymbol = SimpleLineSymbol(style: .dot, color: .red, width: 3)
         
+        /// The feature layers that allow us to fetch the legend symbols of
+        /// different elements in the network.
+        private let featureLayers: [FeatureLayer] = [
+            .featureService.appendingPathComponent("1"), .featureService.appendingPathComponent("5")
+        ].map { FeatureLayer(featureTable: ServiceFeatureTable(url: $0)) }
+        
         /// The utility network for this sample.
         private var network: UtilityNetwork!
         
         /// The legends for elements in the utility network.
-        var legendItems: [LegendItem] = []
-        
-        /// The URLs of the relevant feature layers for this sample.
-        ///
-        /// The feature layers allow us to fetch the legend symbols of different elements in
-        /// the network.
-        private var featureLayerURLs: [URL] {
-            return [
-                .featureService.appendingPathComponent("1"),
-                .featureService.appendingPathComponent("5")
-            ]
-        }
+        private(set) var legendItems: [LegendItem] = []
         
         // MARK: Methods
         
@@ -61,28 +56,30 @@ extension DisplayContentOfUtilityNetworkContainerView {
         func setup() async {
             // Loads the utility network.
             do {
-                try await map.load()
+                // Updates the URL session challenge handler to use the
+                // specified credentials and tokens for any challenges.
+                ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = ChallengeHandler()
+                
+                // Creates and loads the utility network.
                 network = UtilityNetwork(url: .featureService, map: map)
                 try await network.load()
+                await setStatusMessage("Tap on a container to see its content.")
             } catch {
                 await setStatusMessage("An error occurred while loading the network.")
-                return
             }
-           
-            // Gets the legend info from feature layers.
-            let featureLayers = featureLayerURLs.map {
-                FeatureLayer(featureTable: ServiceFeatureTable(url: $0))
-            }
-            legendItems = await makeLegendInfoItems(featureLayers: featureLayers)
-            await setStatusMessage("Tap on a container to see its content.")
+        }
+        
+        deinit {
+            // Resets the URL session challenge handler to use default handling.
+            ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = nil
         }
         
         // MARK: Legend
         
         /// Creates legend items with a name and an image.
-        /// - Parameter featureLayers: The feature layers to gather the legends.
+        /// - Parameter displayScale: The display scale for the swatch images.
         /// - Returns: An array of legends.
-        private func makeLegendInfoItems(featureLayers: [FeatureLayer]) async -> [LegendItem] {
+        func updateLegendInfoItems(displayScale: CGFloat) async {
             await setStatusMessage("Getting Legend Info…")
             // The legend info array that contains all the info from each feature layer.
             let legendInfos: [LegendInfo] = await withTaskGroup(of: [LegendInfo].self) { group in
@@ -96,7 +93,8 @@ extension DisplayContentOfUtilityNetworkContainerView {
                 return infos
             }
             
-            // The symbols used to display the container view boundary and associations.
+            // The symbols used to display the container view boundary
+            // and associations.
             let additionalSymbolItems = [
                 ("Bounding Box", boundingBoxSymbol),
                 ("Attachment", attachmentSymbol),
@@ -119,7 +117,7 @@ extension DisplayContentOfUtilityNetworkContainerView {
                 var items: [LegendItem] = []
                 for (name, symbol) in featureLayerSymbolItems.filter({ $0.0 != "Unknown" }) + additionalSymbolItems {
                     group.addTask {
-                        if let swatch = try? await symbol.makeSwatch(scale: 1) {
+                        if let swatch = try? await symbol.makeSwatch(scale: displayScale) {
                             return LegendItem(name: name, image: swatch)
                         } else {
                             return nil
@@ -131,12 +129,14 @@ extension DisplayContentOfUtilityNetworkContainerView {
                 }
                 return items
             }
-            return legendItems.sorted { $0.name < $1.name }
+            // Updates the legend items in the model.
+            self.legendItems = legendItems.sorted { $0.name < $1.name }
         }
         
         // MARK: Network Association Graphics
         
-        /// Creates graphics for the associations and content in the container element.
+        /// Creates graphics for the associations and content in the
+        /// container element.
         /// - Parameter feature: The container element's feature.
         func handleIdentifiedFeature(_ feature: ArcGISFeature) async throws {
             let containerElement = network.makeElement(arcGISFeature: feature)!

@@ -16,6 +16,9 @@ import ArcGIS
 import SwiftUI
 
 struct DisplayContentOfUtilityNetworkContainerView: View {
+    /// The display scale of this environment.
+    @Environment(\.displayScale) private var displayScale
+    
     /// The view model for the sample.
     @StateObject private var model = Model()
     
@@ -60,8 +63,12 @@ struct DisplayContentOfUtilityNetworkContainerView: View {
                         Button("Show Legend") {
                             isShowingLegend = true
                         }
-                        .sheet(isPresented: $isShowingLegend, detents: [.medium, .large]) {
+                        .sheet(isPresented: $isShowingLegend, detents: [.medium]) {
                             sheetContent
+                        }
+                        .task(id: displayScale) {
+                            // Updates the legend info when display scale changes.
+                            await model.updateLegendInfoItems(displayScale: displayScale)
                         }
                         Spacer()
                         Button("Exit Container View") {
