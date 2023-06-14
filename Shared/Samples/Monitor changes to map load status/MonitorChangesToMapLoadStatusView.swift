@@ -32,8 +32,9 @@ struct MonitorChangesToMapLoadStatusView: View {
                     .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
             }
             .task {
-                // Listen for load status updates and set the load status text
+                // Listen for load status changes.
                 for await loadStatus in map.$loadStatus {
+                    // Set the load status text when the load status updates.
                     loadStatusText = loadStatus.title
                 }
             }
