@@ -122,7 +122,7 @@ private extension IdentifyLayerFeaturesView {
         }
     }
     
-    /// Count the geo-elements from an identify layer result using recursion.
+    /// Counts the geo-elements from an identify layer result using recursion.
     /// - Parameter result: The `IdentifyLayerResult` to count.
     /// - Returns: The count of the geo-elements.
     private func geoElementsCountFromResult(_ identifyResult: IdentifyLayerResult) -> Int {
