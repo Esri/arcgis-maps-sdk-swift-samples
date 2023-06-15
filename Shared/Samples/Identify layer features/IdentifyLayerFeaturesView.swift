@@ -77,7 +77,7 @@ struct IdentifyLayerFeaturesView: View {
                             returnPopupsOnly: false,
                             maximumResultsPerLayer: 10
                            ) {
-                            handleIdentifyResults(results)
+                            identifyLayerResultInfo(results)
                         }
                     }
                     .overlay(alignment: .top) {
@@ -95,7 +95,7 @@ struct IdentifyLayerFeaturesView: View {
 private extension IdentifyLayerFeaturesView {
     /// Updates the overlay text based on the identify layer results.
     /// - Parameter results: An `IdentifyLayerResult` array to handle.
-    func handleIdentifyResults(_ results: [IdentifyLayerResult]) {
+    func identifyLayerResultInfo(_ results: [IdentifyLayerResult]) {
         // Get layer names and geoelement counts from the results.
         let layerNameElementCount: [(layerName: String, geoElementsCount: Int)] = results.map { identifyLayerResult in
             let layerName = identifyLayerResult.layerContent.name
@@ -103,14 +103,14 @@ private extension IdentifyLayerFeaturesView {
             return (layerName, geoElementsCount)
         }
         
-        let alertMessageString = layerNameElementCount
+        let message = layerNameElementCount
             .map { "\($0.layerName): \($0.geoElementsCount)" }
             .joined(separator: "\n")
         
         let totalGeoElementsCount = layerNameElementCount.map(\.geoElementsCount).reduce(0, +)
         
         // Update overlay text with the geo-elements found if any.
-        overlayText = totalGeoElementsCount > 0 ? alertMessageString : "No element found."
+        overlayText = totalGeoElementsCount > 0 ? message : "No element found."
     }
     
     /// Counts the geo-elements from an identify layer result using recursion.
