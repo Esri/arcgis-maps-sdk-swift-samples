@@ -77,7 +77,7 @@ struct IdentifyLayerFeaturesView: View {
                             returnPopupsOnly: false,
                             maximumResultsPerLayer: 10
                            ) {
-                            identifyLayerResultInfo(results)
+                            handleIdentifyResults(results)
                         }
                     }
                     .overlay(alignment: .top) {
@@ -95,19 +95,19 @@ struct IdentifyLayerFeaturesView: View {
 private extension IdentifyLayerFeaturesView {
     /// Updates the overlay text based on the identify layer results.
     /// - Parameter results: An `IdentifyLayerResult` array to handle.
-    func identifyLayerResultInfo(_ results: [IdentifyLayerResult]) {
+    func handleIdentifyResults(_ results: [IdentifyLayerResult]) {
         // Get layer names and geoelement counts from the results.
-        let layerNameElementCount: [(layerName: String, geoElementsCount: Int)] = results.map { identifyLayerResult in
+        let identifyLayerResultInfo: [(layerName: String, geoElementsCount: Int)] = results.map { identifyLayerResult in
             let layerName = identifyLayerResult.layerContent.name
             let geoElementsCount = geoElementsCountFromResult(identifyLayerResult)
             return (layerName, geoElementsCount)
         }
         
-        let message = layerNameElementCount
+        let message = identifyLayerResultInfo
             .map { "\($0.layerName): \($0.geoElementsCount)" }
             .joined(separator: "\n")
         
-        let totalGeoElementsCount = layerNameElementCount.map(\.geoElementsCount).reduce(0, +)
+        let totalGeoElementsCount = identifyLayerResultInfo.map(\.geoElementsCount).reduce(0, +)
         
         // Update overlay text with the geo-elements found if any.
         overlayText = totalGeoElementsCount > 0 ? message : "No element found."
