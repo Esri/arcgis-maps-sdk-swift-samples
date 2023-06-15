@@ -14,7 +14,7 @@ Open the sample to load the map. The load status will be displayed on screen.
 
 ## How it works
 
-The `LoadStatus` is `LOADED` when any of the following criteria are met:
+The `LoadStatus` is `loaded` when any of the following criteria are met:
 
 * The map has a valid spatial reference.
 * The map has an an initial viewpoint.
