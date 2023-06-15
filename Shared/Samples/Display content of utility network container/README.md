@@ -14,7 +14,7 @@ Tap a container feature to show all features inside the container. The container
 
 ## How it works
 
-1. Load a web map that includes ArcGIS Pro [Subtype Group Layers](https://pro.arcgis.com/en/pro-app/help/mapping/layer-properties/subtype-layers.htm) with only container features visible (i.e. fuse bank, switch bank, transformer bank, hand hole and junction box).
+1. Load a web map that includes ArcGIS Pro [Subtype Group Layers](https://pro.arcgis.com/en/pro-app/help/mapping/layer-properties/subtype-layers.htm) with only container features visible (i.e. fuse bank, switch bank, transformer bank, hand hole, and junction box).
 2. Create a `MapView` and add the `onSingleTapGesture(perform:)` modifier to detect tap events.
 3. Create and load a `UtilityNetwork`.
 4. Add a `GraphicsOverlay` for displaying a container view.

@@ -13,7 +13,8 @@
 // limitations under the License.
 
 import ArcGIS
-import SwiftUI
+import Combine
+import UIKit
 
 extension DisplayContentOfUtilityNetworkContainerView {
     /// The model used to manage the state of the trace view.
@@ -40,9 +41,14 @@ extension DisplayContentOfUtilityNetworkContainerView {
         
         /// The feature layers that allow us to fetch the legend symbols of
         /// different elements in the network.
-        private let featureLayers: [FeatureLayer] = [
-            .featureService.appendingPathComponent("1"), .featureService.appendingPathComponent("5")
-        ].map { FeatureLayer(featureTable: ServiceFeatureTable(url: $0)) }
+        private let featureLayers: [FeatureLayer] = {
+           let layerIDs = [1, 5]
+            return layerIDs.map { layerID in
+                let url: URL = .featureService.appendingPathComponent("\(layerID)")
+                let table = ServiceFeatureTable(url: url)
+                return FeatureLayer(featureTable: table)
+            }
+        }()
         
         /// The utility network for this sample.
         private var network: UtilityNetwork!
@@ -83,10 +89,10 @@ extension DisplayContentOfUtilityNetworkContainerView {
             await setStatusMessage("Getting Legend Info…")
             // The legend info array that contains all the info from each feature layer.
             let legendInfos: [LegendInfo] = await withTaskGroup(of: [LegendInfo].self) { group in
-                var infos: [LegendInfo] = []
                 for layer in featureLayers {
                     group.addTask { (try? await layer.legendInfos) ?? [] }
                 }
+                var infos: [LegendInfo] = []
                 for await infosFromLayer in group {
                     infos.append(contentsOf: infosFromLayer)
                 }
