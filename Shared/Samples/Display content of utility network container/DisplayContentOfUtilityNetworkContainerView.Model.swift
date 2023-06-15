@@ -98,27 +98,27 @@ extension DisplayContentOfUtilityNetworkContainerView {
             
             // The symbols used to display the container view boundary
             // and associations.
-            let additionalSymbolItems = [
-                ("Bounding Box", boundingBoxSymbol),
-                ("Attachment", attachmentSymbol),
-                ("Connectivity", connectivitySymbol)
+            var symbolsByName: [String: Symbol] = [
+                "Bounding Box": boundingBoxSymbol,
+                "Attachment": attachmentSymbol,
+                "Connectivity": connectivitySymbol
             ]
             
-            // The symbols from the legend info.
-            let featureLayerSymbolItems: [(String, Symbol)] = legendInfos.compactMap { legendInfo in
-                if !legendInfo.name.isEmpty,
-                   let symbol = legendInfo.symbol {
-                    return (legendInfo.name, symbol)
-                } else {
-                    return nil
+            // Adds the other legends to the dictionary.
+            for legendInfo in legendInfos {
+                let name = legendInfo.name
+                guard !name.isEmpty && name != "Unknown",
+                      let symbol = legendInfo.symbol else {
+                    continue
                 }
+                symbolsByName[name] = symbol
             }
             
             // Creates swatches from each symbol.
             await setStatusMessage("Getting Legend Symbol Swatches…")
             let legendItems: [LegendItem] = await withTaskGroup(of: LegendItem?.self) { group in
                 var items: [LegendItem] = []
-                for (name, symbol) in featureLayerSymbolItems.filter({ $0.0 != "Unknown" }) + additionalSymbolItems {
+                for (name, symbol) in symbolsByName {
                     group.addTask {
                         if let swatch = try? await symbol.makeSwatch(scale: displayScale) {
                             return LegendItem(name: name, image: swatch)
