@@ -25,7 +25,7 @@ extension DisplayContentOfUtilityNetworkContainerView {
         @Published var statusMessage = ""
         
         /// The Naperville Electric Containers web map.
-        let map = Map(item: PortalItem.napervilleElectricalNetwork)
+        let map = Map(item: .napervilleElectricalNetwork())
         
         /// The graphics overlay to display utility network graphics.
         let graphicsOverlay = GraphicsOverlay()
@@ -42,7 +42,7 @@ extension DisplayContentOfUtilityNetworkContainerView {
         /// The feature layers that allow us to fetch the legend symbols of
         /// different elements in the network.
         private let featureLayers: [FeatureLayer] = {
-           let layerIDs = [1, 5]
+            let layerIDs = [1, 5]
             return layerIDs.map { layerID in
                 let url: URL = .featureService.appendingPathComponent("\(layerID)")
                 let table = ServiceFeatureTable(url: url)
@@ -227,9 +227,9 @@ extension DisplayContentOfUtilityNetworkContainerView {
     }
 }
 
-private extension PortalItem {
+private extension Item {
     /// A web map portal item for the Naperville Electric Containers.
-    static var napervilleElectricalNetwork: PortalItem {
+    static func napervilleElectricalNetwork() -> PortalItem {
         PortalItem(
             // Sample server 7 authentication required.
             portal: Portal(url: .samplePortal, connection: .authenticated),
