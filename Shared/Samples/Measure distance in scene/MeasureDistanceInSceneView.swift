@@ -21,7 +21,7 @@ struct MeasureDistanceInSceneView: View {
         let scene = ArcGIS.Scene(basemapStyle: .arcGISTopographic)
         
         // Add elevation source to the base surface of the scene with the service URL.
-        let elevationSource = ArcGISTiledElevationSource(url: .elevationService)
+        let elevationSource = ArcGISTiledElevationSource(url: .brestElevationService)
         scene.baseSurface.addElevationSource(elevationSource)
         
         // Create the building layer and add it to the scene.
@@ -46,8 +46,8 @@ struct MeasureDistanceInSceneView: View {
     /// The unit system for the location distance measurement, selected by the picker.
     @State private var unitSystemSelection: UnitSystem = .metric
     
-    /// The point on the screen where the user tapped.
-    @State private var screenPoint: CGPoint?
+    /// The overlay instruction message text.
+    @State private var instructionText: String = .startMessage
     
     /// The location distance measurement.
     private let locationDistanceMeasurement = LocationDistanceMeasurement(
@@ -73,7 +73,7 @@ struct MeasureDistanceInSceneView: View {
         let camera = Camera(lookingAt: lookAtPoint, distance: 200, heading: 0, pitch: 45, roll: 0)
         scene.initialViewpoint = Viewpoint(boundingGeometry: lookAtPoint, camera: camera)
         
-        // Create analysis overlay.
+        // Add location distance measurement to the analysis overlay to display it.
         analysisOverlay.addAnalysis(locationDistanceMeasurement)
     }
     
@@ -82,7 +82,36 @@ struct MeasureDistanceInSceneView: View {
             SceneViewReader { sceneViewProxy in
                 SceneView(scene: scene, analysisOverlays: [analysisOverlay])
                     .onSingleTapGesture { screenPoint, _ in
-                        self.screenPoint = screenPoint
+                        // Set the start and end locations when tapped.
+                        Task {
+                            guard let location = try? await sceneViewProxy.location(
+                                fromScreenPoint: screenPoint
+                            ) else { return }
+                            
+                            if locationDistanceMeasurement.startLocation != locationDistanceMeasurement.endLocation {
+                                locationDistanceMeasurement.startLocation = location
+                                instructionText = .endMessage
+                            } else {
+                                instructionText = .startMessage
+                            }
+                            locationDistanceMeasurement.endLocation = location
+                        }
+                    }
+                    .onDragGesture { _, _ in
+                        if locationDistanceMeasurement.startLocation == locationDistanceMeasurement.endLocation {
+                            return true
+                        }
+                        return false
+                    } onChanged: { screenPoint, _ in
+                        // Move the end location on drag.
+                        Task {
+                            guard let location = try? await sceneViewProxy.location(
+                                fromScreenPoint: screenPoint
+                            ) else { return }
+                            locationDistanceMeasurement.endLocation = location
+                        }
+                    } onEnded: { _, _ in
+                        instructionText = .startMessage
                     }
                     .task {
                         // Set distance text when there is a measurements update.
@@ -92,17 +121,12 @@ struct MeasureDistanceInSceneView: View {
                             verticalDistanceText = measurementFormatter.string(from: measurements.verticalDistance)
                         }
                     }
-                    .task(id: screenPoint) {
-                        // Update the location distance measurement start and end locations.
-                        guard let screenPoint else { return }
-                        guard let location = try? await sceneViewProxy.location(
-                            fromScreenPoint: screenPoint
-                        ) else { return }
-                        
-                        if locationDistanceMeasurement.startLocation != locationDistanceMeasurement.endLocation {
-                            locationDistanceMeasurement.startLocation = location
-                        }
-                        locationDistanceMeasurement.endLocation = location
+                    .overlay(alignment: .top) {
+                        // Instruction text.
+                        Text(instructionText)
+                            .frame(maxWidth: .infinity, alignment: .center)
+                            .padding(8)
+                            .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
                     }
             }
             
@@ -125,9 +149,17 @@ struct MeasureDistanceInSceneView: View {
     }
 }
 
+private extension String {
+    /// The user instruction message for setting the start location.
+    static let startMessage = "Tap on the map to set the start location."
+    
+    /// The user instruction message for setting the end location.
+    static let endMessage = "Tap and drag on the map to set the end location."
+}
+
 private extension URL {
-    /// A elevation image service URL.
-    static var elevationService: URL {
+    /// A elevation image service URL for Brest, France.
+    static var brestElevationService: URL {
         URL(string: "https://scene.arcgis.com/arcgis/rest/services/BREST_DTM_1M/ImageServer")!
     }
     
