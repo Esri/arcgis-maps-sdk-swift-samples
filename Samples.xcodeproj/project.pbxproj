@@ -122,6 +122,7 @@
 		D752D9462A3A6F80003EB25E /* MonitorChangesToMapLoadStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D752D9452A3A6F7F003EB25E /* MonitorChangesToMapLoadStatusView.swift */; };
 		D752D9472A3A6FC0003EB25E /* MonitorChangesToMapLoadStatusView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D752D9452A3A6F7F003EB25E /* MonitorChangesToMapLoadStatusView.swift */; };
 		D752D95D2A3BCDD4003EB25E /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = D752D95C2A3BCDD4003EB25E /* README.md */; };
+		D752D95F2A3BCE06003EB25E /* DisplayMapFromPortalItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D752D95E2A3BCE06003EB25E /* DisplayMapFromPortalItemView.swift */; };
 		D75362D22A1E886700D83028 /* ApplyUniqueValueRendererView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75362D12A1E886700D83028 /* ApplyUniqueValueRendererView.swift */; };
 		D75362D32A1E8C8800D83028 /* ApplyUniqueValueRendererView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D75362D12A1E886700D83028 /* ApplyUniqueValueRendererView.swift */; };
 		D754E3232A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D754E3222A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift */; };
@@ -370,6 +371,7 @@
 		D751018D2A2E962D00B8FA48 /* IdentifyLayerFeaturesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentifyLayerFeaturesView.swift; sourceTree = "<group>"; };
 		D752D9452A3A6F7F003EB25E /* MonitorChangesToMapLoadStatusView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonitorChangesToMapLoadStatusView.swift; sourceTree = "<group>"; };
 		D752D95C2A3BCDD4003EB25E /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		D752D95E2A3BCE06003EB25E /* DisplayMapFromPortalItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayMapFromPortalItemView.swift; sourceTree = "<group>"; };
 		D75362D12A1E886700D83028 /* ApplyUniqueValueRendererView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplyUniqueValueRendererView.swift; sourceTree = "<group>"; };
 		D754E3222A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StylePointWithPictureMarkerSymbolsView.swift; sourceTree = "<group>"; };
 		D78666AC2A2161F100C60110 /* FindNearestVertexView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindNearestVertexView.swift; sourceTree = "<group>"; };
@@ -874,6 +876,7 @@
 		D752D95B2A3BCDD4003EB25E /* Display map from portal item */ = {
 			isa = PBXGroup;
 			children = (
+				D752D95E2A3BCE06003EB25E /* DisplayMapFromPortalItemView.swift */,
 				D752D95C2A3BCDD4003EB25E /* README.md */,
 			);
 			path = "Display map from portal item";
@@ -1340,6 +1343,7 @@
 				E0082217287755AC002AD138 /* View+Sheet.swift in Sources */,
 				00181B462846AD7100654571 /* View+Alert.swift in Sources */,
 				E0FE32E728747778002C6ACA /* BrowseBuildingFloorsView.swift in Sources */,
+				D752D95F2A3BCE06003EB25E /* DisplayMapFromPortalItemView.swift in Sources */,
 				E070A0A3286F3B6000F2B606 /* DownloadPreplannedMapAreaView.swift in Sources */,
 				E0EA0B772866390E00C9621D /* ProjectGeometryView.swift in Sources */,
 				0042E24328E4BF8F001F33D6 /* ShowViewshedFromPointInSceneView.Model.swift in Sources */,
