@@ -122,6 +122,7 @@
 		D752D9462A3A6F80003EB25E /* MonitorChangesToMapLoadStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D752D9452A3A6F7F003EB25E /* MonitorChangesToMapLoadStatusView.swift */; };
 		D752D9472A3A6FC0003EB25E /* MonitorChangesToMapLoadStatusView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D752D9452A3A6F7F003EB25E /* MonitorChangesToMapLoadStatusView.swift */; };
 		D752D95F2A3BCE06003EB25E /* DisplayMapFromPortalItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D752D95E2A3BCE06003EB25E /* DisplayMapFromPortalItemView.swift */; };
+		D752D9602A3BCE63003EB25E /* DisplayMapFromPortalItemView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D752D95E2A3BCE06003EB25E /* DisplayMapFromPortalItemView.swift */; };
 		D75362D22A1E886700D83028 /* ApplyUniqueValueRendererView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75362D12A1E886700D83028 /* ApplyUniqueValueRendererView.swift */; };
 		D75362D32A1E8C8800D83028 /* ApplyUniqueValueRendererView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D75362D12A1E886700D83028 /* ApplyUniqueValueRendererView.swift */; };
 		D754E3232A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D754E3222A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift */; };
@@ -229,6 +230,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				D752D9602A3BCE63003EB25E /* DisplayMapFromPortalItemView.swift in Copy Source Code Files */,
 				D751018F2A2E966C00B8FA48 /* IdentifyLayerFeaturesView.swift in Copy Source Code Files */,
 				D752D9472A3A6FC0003EB25E /* MonitorChangesToMapLoadStatusView.swift in Copy Source Code Files */,
 				D7CC34002A3147FF00198EDF /* ShowLineOfSightBetweenPointsView.swift in Copy Source Code Files */,
