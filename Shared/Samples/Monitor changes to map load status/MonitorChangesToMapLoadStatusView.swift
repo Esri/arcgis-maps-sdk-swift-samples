@@ -34,7 +34,6 @@ struct MonitorChangesToMapLoadStatusView: View {
             .task {
                 // Listen for load status changes.
                 for await loadStatus in map.$loadStatus {
-                    // Set the load status text when the load status updates.
                     loadStatusText = loadStatus.title
                 }
             }
