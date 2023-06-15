@@ -17,22 +17,37 @@ import ArcGIS
 
 struct MeasureDistanceInSceneView: View {
     /// A scene with an imagery basemap.
-    @State private var scene = ArcGIS.Scene(basemapStyle: .arcGISTopographic)
+    @State private var scene = {
+        let scene = ArcGIS.Scene(basemapStyle: .arcGISTopographic)
+        
+        // Add elevation source to the base surface of the scene with the service URL.
+        let elevationSource = ArcGISTiledElevationSource(url: .elevationService)
+        scene.baseSurface.addElevationSource(elevationSource)
+        
+        // Create the building layer and add it to the scene.
+        let buildingsLayer = ArcGISSceneLayer(url: .brestBuildingsService)
+        scene.addOperationalLayer(buildingsLayer)
+        
+        return scene
+    }()
     
     /// An analysis overlay for location distance measurement.
     @State private var analysisOverlay = AnalysisOverlay()
     
-    /// A string for the direct distance measurement of the location distance measurement.
+    /// A string for the direct distance of the location distance measurement.
     @State private var directDistanceText = "--"
     
-    /// A string for the horizontal distance measurement of the location distance measurement.
+    /// A string for the horizontal distance of the location distance measurement.
     @State private var horizontalDistanceText = "--"
     
-    /// A string for the vertical distance measurement of the location distance measurement.
+    /// A string for the vertical distance of the location distance measurement.
     @State private var verticalDistanceText = "--"
     
     /// The unit system for the location distance measurement, selected by the picker.
     @State private var unitSystemSelection: UnitSystem = .metric
+    
+    /// The point on the screen where the user tapped.
+    @State private var screenPoint: CGPoint?
     
     /// The location distance measurement.
     private let locationDistanceMeasurement = LocationDistanceMeasurement(
@@ -50,15 +65,7 @@ struct MeasureDistanceInSceneView: View {
     }()
     
     init() {
-        // Add elevation source to the base surface of the scene with the service URL.
-        let elevationSource = ArcGISTiledElevationSource(url: .elevationService)
-        scene.baseSurface.addElevationSource(elevationSource)
-        
-        // Create the building layer and add it to the scene.
-        let buildingsLayer = ArcGISSceneLayer(url: .brestBuildingsService)
-        scene.addOperationalLayer(buildingsLayer)
-        
-        // Set scene the viewpoint specified by the camera position.
+        // Set scene the viewpoint specified by the location distance measurement.
         let lookAtPoint = Envelope(
             min: locationDistanceMeasurement.startLocation,
             max: locationDistanceMeasurement.endLocation
@@ -72,21 +79,32 @@ struct MeasureDistanceInSceneView: View {
     
     var body: some View {
         VStack {
-            SceneView(scene: scene, analysisOverlays: [analysisOverlay])
-                .onSingleTapGesture { _, scenePoint in
-                    if locationDistanceMeasurement.startLocation != locationDistanceMeasurement.endLocation {
-                        locationDistanceMeasurement.startLocation = scenePoint!
+            SceneViewReader { sceneViewProxy in
+                SceneView(scene: scene, analysisOverlays: [analysisOverlay])
+                    .onSingleTapGesture { screenPoint, _ in
+                        self.screenPoint = screenPoint
                     }
-                    locationDistanceMeasurement.endLocation = scenePoint!
-                }
-                .task {
-                    // Set distance text when there are measurements updates.
-                    for await measurements in locationDistanceMeasurement.measurements {
-                        directDistanceText = measurementFormatter.string(from: measurements.directDistance)
-                        horizontalDistanceText = measurementFormatter.string(from: measurements.horizontalDistance)
-                        verticalDistanceText = measurementFormatter.string(from: measurements.verticalDistance)
+                    .task {
+                        // Set distance text when there is a measurements update.
+                        for await measurements in locationDistanceMeasurement.measurements {
+                            directDistanceText = measurementFormatter.string(from: measurements.directDistance)
+                            horizontalDistanceText = measurementFormatter.string(from: measurements.horizontalDistance)
+                            verticalDistanceText = measurementFormatter.string(from: measurements.verticalDistance)
+                        }
                     }
-                }
+                    .task(id: screenPoint) {
+                        // Update the location distance measurement start and end locations.
+                        guard let screenPoint else { return }
+                        guard let location = try? await sceneViewProxy.location(
+                            fromScreenPoint: screenPoint
+                        ) else { return }
+                        
+                        if locationDistanceMeasurement.startLocation != locationDistanceMeasurement.endLocation {
+                            locationDistanceMeasurement.startLocation = location
+                        }
+                        locationDistanceMeasurement.endLocation = location
+                    }
+            }
             
             // Distance texts.
             Text("Direct: \(directDistanceText)")
