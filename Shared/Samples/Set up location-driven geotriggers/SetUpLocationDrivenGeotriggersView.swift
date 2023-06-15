@@ -112,7 +112,7 @@ private extension SetUpLocationDrivenGeotriggersView {
         ))
         
         /// The location display for the map view.
-        lazy var locationDisplay = makeLocationDisplay()
+        let locationDisplay: LocationDisplay
         
         /// The route simulated location data source.
         private let locationDataSource: SimulatedLocationDataSource
