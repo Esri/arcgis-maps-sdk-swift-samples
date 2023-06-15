@@ -1,6 +1,6 @@
 # Monitor changes to map load status
 
-Determine the map's load status which can be: `notLoaded`, `failedToLoad`, `loading`, or `loaded`.
+Determine the map's load status which can be: `notLoaded`, `failed`, `loading`, or `loaded`.
 
 ![Image of monitor changes to map load status](monitor-changes-to-map-toad-status.png)
 
