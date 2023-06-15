@@ -51,28 +51,25 @@ extension DisplayContentOfUtilityNetworkContainerView {
         }()
         
         /// The utility network for this sample.
-        private var network: UtilityNetwork!
+        private let network: UtilityNetwork
         
         /// The legends for elements in the utility network.
         private(set) var legendItems: [LegendItem] = []
         
         // MARK: Methods
         
-        /// Performs tasks including loading the network and adding legends.
-        func setup() async {
-            // Loads the utility network.
-            do {
-                // Updates the URL session challenge handler to use the
-                // specified credentials and tokens for any challenges.
-                ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = ChallengeHandler()
-                
-                // Creates and loads the utility network.
-                network = UtilityNetwork(url: .featureService, map: map)
-                try await network.load()
-                await setStatusMessage("Tap on a container to see its content.")
-            } catch {
-                await setStatusMessage("An error occurred while loading the network.")
-            }
+        /// Loads the utility network.
+        func loadUtilityNetwork() async throws {
+            try await network.load()
+        }
+        
+        init() {
+            // Updates the URL session challenge handler to use the
+            // specified credentials and tokens for any challenges.
+            ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = ChallengeHandler()
+            
+            // Creates the utility network.
+            network = UtilityNetwork(url: .featureService, map: map)
         }
         
         deinit {

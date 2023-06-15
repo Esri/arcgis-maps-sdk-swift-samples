@@ -79,8 +79,13 @@ struct DisplayContentOfUtilityNetworkContainerView: View {
                     }
                 }
                 .task {
-                    // Configures the utility network and fetches legend info.
-                    await model.setup()
+                    // Loads the utility network.
+                    do {
+                        try await model.loadUtilityNetwork()
+                        model.statusMessage = "Tap on a container to see its content."
+                    } catch {
+                        model.statusMessage = "An error occurred while loading the network."
+                    }
                 }
                 .task(id: screenPoint) {
                     guard let screenPoint else { return }
