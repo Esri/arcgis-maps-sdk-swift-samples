@@ -27,8 +27,8 @@ Observe a virtual walking tour of the Santa Barbara Botanic Garden. Information 
 * ArcadeExpression
 * FeatureFenceParameters
 * FenceGeotrigger
-* FenceGeotriggerNotificationInfo
 * FenceGeotrigger.RuleType
+* FenceGeotriggerNotificationInfo
 * GeoElement
 * Geotrigger
 * GeotriggerFeed
