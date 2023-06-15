@@ -75,6 +75,8 @@
 		1C9B74C929DB43580038B06F /* ShowRealisticLightAndShadowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9B74C529DB43580038B06F /* ShowRealisticLightAndShadowsView.swift */; };
 		1C9B74D929DB54560038B06F /* ChangeCameraControllerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9B74D529DB54560038B06F /* ChangeCameraControllerView.swift */; };
 		1C9B74DE29DB56860038B06F /* ChangeCameraControllerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C9B74D529DB54560038B06F /* ChangeCameraControllerView.swift */; };
+		1CAB8CEE2A3BBC9F002AA649 /* SetVisibilityOfSubtypeFeatureLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAB8CEA2A3BBC9F002AA649 /* SetVisibilityOfSubtypeFeatureLayerView.swift */; };
+		1CAB8CF62A3BCFD8002AA649 /* SetVisibilityOfSubtypeFeatureLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1CAB8CEA2A3BBC9F002AA649 /* SetVisibilityOfSubtypeFeatureLayerView.swift */; };
 		1CAF831F2A20305F000E1E60 /* ShowUtilityAssociationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAF831B2A20305F000E1E60 /* ShowUtilityAssociationsView.swift */; };
 		218F35B829C28F4A00502022 /* AuthenticateWithOAuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218F35B329C28F4A00502022 /* AuthenticateWithOAuthView.swift */; };
 		218F35C229C290BF00502022 /* AuthenticateWithOAuthView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 218F35B329C28F4A00502022 /* AuthenticateWithOAuthView.swift */; };
@@ -244,6 +246,7 @@
 				00EB803A2A31506F00AC2B07 /* DisplayContentOfUtilityNetworkContainerView.swift in Copy Source Code Files */,
 				00EB803B2A31506F00AC2B07 /* DisplayContentOfUtilityNetworkContainerView.Model.swift in Copy Source Code Files */,
 				D751018F2A2E966C00B8FA48 /* IdentifyLayerFeaturesView.swift in Copy Source Code Files */,
+				1CAB8CF62A3BCFD8002AA649 /* SetVisibilityOfSubtypeFeatureLayerView.swift in Copy Source Code Files */,
 				D752D9472A3A6FC0003EB25E /* MonitorChangesToMapLoadStatusView.swift in Copy Source Code Files */,
 				D7CC34002A3147FF00198EDF /* ShowLineOfSightBetweenPointsView.swift in Copy Source Code Files */,
 				D71099712A280D830065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift in Copy Source Code Files */,
@@ -360,6 +363,7 @@
 		1C42E04329D2396B004FC4BE /* ShowPopupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowPopupView.swift; sourceTree = "<group>"; };
 		1C9B74C529DB43580038B06F /* ShowRealisticLightAndShadowsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowRealisticLightAndShadowsView.swift; sourceTree = "<group>"; };
 		1C9B74D529DB54560038B06F /* ChangeCameraControllerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeCameraControllerView.swift; sourceTree = "<group>"; };
+		1CAB8CEA2A3BBC9F002AA649 /* SetVisibilityOfSubtypeFeatureLayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetVisibilityOfSubtypeFeatureLayerView.swift; sourceTree = "<group>"; };
 		1CAF831B2A20305F000E1E60 /* ShowUtilityAssociationsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowUtilityAssociationsView.swift; sourceTree = "<group>"; };
 		218F35B329C28F4A00502022 /* AuthenticateWithOAuthView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticateWithOAuthView.swift; sourceTree = "<group>"; };
 		4D2ADC3F29C26D05003B367F /* AddDynamicEntityLayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDynamicEntityLayerView.swift; sourceTree = "<group>"; };
@@ -555,6 +559,7 @@
 				D7EAF34F2A1C011000D822C4 /* Set min and max scale */,
 				E088E1552862578800413100 /* Set surface placement mode */,
 				E004A6B928414332002A1FE6 /* Set viewpoint rotation */,
+				1CAB8CE82A3BBC9F002AA649 /* Set visibility of subtype feature layer */,
 				E004A6DE2846626A002A1FE6 /* Show callout */,
 				D7EF5D712A269E2D00FEBDE5 /* Show coordinates in multiple formats */,
 				E004A6E728493BBB002A1FE6 /* Show device location */,
@@ -777,6 +782,14 @@
 				1C9B74D529DB54560038B06F /* ChangeCameraControllerView.swift */,
 			);
 			path = "Change camera controller";
+			sourceTree = "<group>";
+		};
+		1CAB8CE82A3BBC9F002AA649 /* Set visibility of subtype feature layer */ = {
+			isa = PBXGroup;
+			children = (
+				1CAB8CEA2A3BBC9F002AA649 /* SetVisibilityOfSubtypeFeatureLayerView.swift */,
+			);
+			path = "Set visibility of subtype feature layer";
 			sourceTree = "<group>";
 		};
 		1CAF831A2A20305F000E1E60 /* Show utility associations */ = {
@@ -1395,6 +1408,7 @@
 				0005580A2817C51E00224BC6 /* SampleDetailView.swift in Sources */,
 				4D2ADC6229C5071C003B367F /* ChangeMapViewBackgroundView.Model.swift in Sources */,
 				0074ABCD2817BCC30037244A /* SamplesApp+Samples.swift.tache in Sources */,
+				1CAB8CEE2A3BBC9F002AA649 /* SetVisibilityOfSubtypeFeatureLayerView.swift in Sources */,
 				E004A6F3284E4FEB002A1FE6 /* ShowResultOfSpatialOperationsView.swift in Sources */,
 				D751018E2A2E962D00B8FA48 /* IdentifyLayerFeaturesView.swift in Sources */,
 				F1E71BF1289473760064C33F /* AddRasterFromFileView.swift in Sources */,
