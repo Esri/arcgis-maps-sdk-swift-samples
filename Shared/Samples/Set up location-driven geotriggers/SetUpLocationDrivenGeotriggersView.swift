@@ -299,13 +299,6 @@ private extension SetUpLocationDrivenGeotriggersView {
             let locationDisplay = LocationDisplay(dataSource: locationDataSource)
             locationDisplay.autoPanMode = .recenter
             locationDisplay.initialZoomScale = 1000
-            Task.detached { [unowned self] in
-                do {
-                    try await locationDisplay.dataSource.start()
-                } catch {
-                    self.error = error
-                }
-            }
             return locationDisplay
         }
     }
