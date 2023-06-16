@@ -53,7 +53,9 @@
         "UtilityTraceResult"
     ],
     "snippets": [
-        "RunValveIsolationTraceView.swift"
+        "RunValveIsolationTraceView.swift",
+        "RunValveIsolationTraceView.Enums.swift",
+        "RunValveIsolationTraceView.Model.swift"
     ],
     "title": "Run valve isolation trace"
 }
