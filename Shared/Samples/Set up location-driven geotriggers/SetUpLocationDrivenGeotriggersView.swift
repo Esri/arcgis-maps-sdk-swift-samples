@@ -41,7 +41,7 @@ struct SetUpLocationDrivenGeotriggersView: View {
             .overlay(alignment: .top) {
                 // Status text overlay.
                 VStack {
-                    Text("\(model.fenceGeotriggerText)")
+                    Text(model.fenceGeotriggerText)
                         .frame(maxWidth: .infinity, alignment: .leading)
                     
                     Text(model.nearbyFeaturesText)
