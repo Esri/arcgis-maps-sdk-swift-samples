@@ -90,35 +90,36 @@ struct DisplayContentOfUtilityNetworkContainerView: View {
                 }
                 .task(id: screenPoint) {
                     guard let screenPoint else { return }
-                    if let identifyResults = try? await proxy.identifyLayers(screenPoint: screenPoint, tolerance: 5) {
-                        // The features identified are as part of its sublayer's result.
-                        guard let layerResult = identifyResults.first(where: { $0.layerContent is SubtypeFeatureLayer }) else { return }
-                        
-                        // Gets the top selected feature.
-                        guard let containerFeature = (layerResult.sublayerResults.lazy
-                            .flatMap { $0.geoElements.compactMap { $0 as? ArcGISFeature } }
-                            .first) else {
-                            return
-                        }
-                        
-                        do {
-                            // Displays the container feature's content.
-                            try await model.handleIdentifiedFeature(containerFeature)
-                        } catch {
-                            model.statusMessage = "An error occurred while getting the associations."
-                            resetMapView(proxy)
-                            return
-                        }
-                        
-                        // Sets UI states to focus on the container's content.
-                        model.setOperationalLayersVisibility(isVisible: false)
-                        // Turns off user interaction to avoid straying away from the container view.
-                        isMapViewUserInteractionEnabled = false
-                        previousViewpoint = viewpoint
-                        if let extent = model.graphicsOverlay.extent {
-                            await proxy.setViewpointGeometry(extent, padding: 20)
-                            isShowingContainer = true
-                        }
+                    // The identify results from the touch point.
+                    guard let identifyResults = try? await proxy.identifyLayers(screenPoint: screenPoint, tolerance: 5) else { return }
+                    // The features identified are as part of its sublayer's result.
+                    guard let layerResult = identifyResults.first(where: { $0.layerContent is SubtypeFeatureLayer }) else { return }
+                    // The top selected feature.
+                    guard let containerFeature = (layerResult.sublayerResults
+                        .lazy
+                        .flatMap { $0.geoElements.compactMap { $0 as? ArcGISFeature } })
+                        .first
+                    else {
+                        return
+                    }
+                    
+                    do {
+                        // Displays the container feature's content.
+                        try await model.handleIdentifiedFeature(containerFeature)
+                    } catch {
+                        model.statusMessage = "An error occurred while getting the associations."
+                        resetMapView(proxy)
+                        return
+                    }
+                    
+                    // Sets UI states to focus on the container's content.
+                    model.setOperationalLayersVisibility(isVisible: false)
+                    // Turns off user interaction to avoid straying away from the container view.
+                    isMapViewUserInteractionEnabled = false
+                    previousViewpoint = viewpoint
+                    if let extent = model.graphicsOverlay.extent {
+                        await proxy.setViewpointGeometry(extent, padding: 20)
+                        isShowingContainer = true
                     }
                 }
         }
