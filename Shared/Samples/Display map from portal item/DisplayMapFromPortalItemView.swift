@@ -28,14 +28,11 @@ struct DisplayMapFromPortalItemView: View {
     /// The different map options the user can choose from.
     private static let mapOptions = [
         PortalItemMap(title: "Terrestrial Ecosystems of the World",
-                      thumbnailImage: "TerrestrialEcosystemsThumbnail",
-                      portalID: .terrestrialEcosystems),
+                      id: .terrestrialEcosystems),
         PortalItemMap(title: "Recent Hurricanes, Cyclones and Typhoons",
-                      thumbnailImage: "HurricanesCyclonesTyphoonsThumbnail",
-                      portalID: .hurricanesCyclonesTyphoons),
+                      id: .hurricanesCyclonesTyphoons),
         PortalItemMap(title: "Geology of United States",
-                      thumbnailImage: "USGeologyThumbnail",
-                      portalID: .usGeology)
+                      id: .usGeology)
     ]
     
     var body: some View {
@@ -58,7 +55,6 @@ struct DisplayMapFromPortalItemView: View {
                         } label: {
                             ZStack {
                                 HStack {
-                                    Image(uiImage: mapOption.thumbnailImage)
                                     Text(mapOption.title)
                                     Spacer()
                                     Image(systemName: "checkmark")
@@ -76,26 +72,23 @@ struct DisplayMapFromPortalItemView: View {
 private extension DisplayMapFromPortalItemView {
     /// A model for the maps the user may toggle between.
     struct PortalItemMap: Equatable, Identifiable {
-        /// An id to conform to `Identifiable`.
-        let id = UUID()
-        
         /// The text title of the map.
         let title: String
         
-        /// The UI thumbnail Image associated with the map.
-        let thumbnailImage: UIImage
+        /// The portal item id.
+        let id: PortalItem.ID
         
         /// The portal item used to create the map.
         let portalItem: PortalItem
         
-        init(title: String, thumbnailImage: String, portalID: PortalItem.ID) {
+        init(title: String, id: PortalItem.ID) {
             self.title = title
-            self.thumbnailImage = UIImage(named: thumbnailImage)!
+            self.id = id
             
             // Create portal item from id.
             self.portalItem = PortalItem(
                 portal: .arcGISOnline(connection: .anonymous),
-                id: portalID
+                id: id
             )
         }
         
