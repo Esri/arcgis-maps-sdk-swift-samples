@@ -10,7 +10,7 @@ The distance measurement analysis allows you to add to your app the same interac
 
 ## How to use the sample
 
-Choose a unit system for the measurement in the segmented control. Tap any location in the scene to start measuring. Then drag to an end location, and lift your finger to complete the measure. Tap a new location to clear and start a new measurement.
+Choose a unit system for the measurement in the segmented control. Tap any location in the scene to start measuring. Then tap and drag to an end location, and lift your finger to complete the measure. Tap a new location to start a new measurement.
 
 ## How it works
 

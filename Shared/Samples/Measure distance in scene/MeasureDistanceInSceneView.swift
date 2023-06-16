@@ -16,23 +16,8 @@ import SwiftUI
 import ArcGIS
 
 struct MeasureDistanceInSceneView: View {
-    /// A scene with an imagery basemap.
-    @State private var scene = {
-        let scene = ArcGIS.Scene(basemapStyle: .arcGISTopographic)
-        
-        // Add elevation source to the base surface of the scene with the service URL.
-        let elevationSource = ArcGISTiledElevationSource(url: .brestElevationService)
-        scene.baseSurface.addElevationSource(elevationSource)
-        
-        // Create the building layer and add it to the scene.
-        let buildingsLayer = ArcGISSceneLayer(url: .brestBuildingsService)
-        scene.addOperationalLayer(buildingsLayer)
-        
-        return scene
-    }()
-    
-    /// An analysis overlay for location distance measurement.
-    @State private var analysisOverlay = AnalysisOverlay()
+    /// The view model for the sample.
+    @StateObject private var model = Model()
     
     /// A string for the direct distance of the location distance measurement.
     @State private var directDistanceText = "--"
@@ -49,76 +34,54 @@ struct MeasureDistanceInSceneView: View {
     /// The overlay instruction message text.
     @State private var instructionText: String = .startMessage
     
-    /// The location distance measurement.
-    private let locationDistanceMeasurement = LocationDistanceMeasurement(
-        startLocation: Point(x: -4.494677, y: 48.384472, z: 24.772694, spatialReference: .wgs84),
-        endLocation: Point(x: -4.495646, y: 48.384377, z: 58.501115, spatialReference: .wgs84)
-    )
-    
-    /// A measurement formatter for converting the distances to strings.
-    private let measurementFormatter: MeasurementFormatter = {
-        let measurementFormatter = MeasurementFormatter()
-        measurementFormatter.unitOptions = .providedUnit
-        measurementFormatter.numberFormatter.minimumFractionDigits = 2
-        measurementFormatter.numberFormatter.maximumFractionDigits = 2
-        return measurementFormatter
-    }()
-    
-    init() {
-        // Set scene the viewpoint specified by the location distance measurement.
-        let lookAtPoint = Envelope(
-            min: locationDistanceMeasurement.startLocation,
-            max: locationDistanceMeasurement.endLocation
-        ).center
-        let camera = Camera(lookingAt: lookAtPoint, distance: 200, heading: 0, pitch: 45, roll: 0)
-        scene.initialViewpoint = Viewpoint(boundingGeometry: lookAtPoint, camera: camera)
-        
-        // Add location distance measurement to the analysis overlay to display it.
-        analysisOverlay.addAnalysis(locationDistanceMeasurement)
-    }
-    
     var body: some View {
         VStack {
             SceneViewReader { sceneViewProxy in
-                SceneView(scene: scene, analysisOverlays: [analysisOverlay])
+                SceneView(scene: model.scene, analysisOverlays: [model.analysisOverlay])
                     .onSingleTapGesture { screenPoint, _ in
-                        // Set the start and end locations when tapped.
+                        // Set the start and end locations when the screen is tapped.
                         Task {
                             guard let location = try? await sceneViewProxy.location(
                                 fromScreenPoint: screenPoint
                             ) else { return }
                             
-                            if locationDistanceMeasurement.startLocation != locationDistanceMeasurement.endLocation {
-                                locationDistanceMeasurement.startLocation = location
+                            if model.locationDistanceMeasurement.startLocation != model.locationDistanceMeasurement.endLocation {
+                                model.locationDistanceMeasurement.startLocation = location
                                 instructionText = .endMessage
                             } else {
                                 instructionText = .startMessage
                             }
-                            locationDistanceMeasurement.endLocation = location
+                            model.locationDistanceMeasurement.endLocation = location
                         }
                     }
                     .onDragGesture { _, _ in
-                        if locationDistanceMeasurement.startLocation == locationDistanceMeasurement.endLocation {
+                        if model.locationDistanceMeasurement.startLocation == model.locationDistanceMeasurement.endLocation {
                             return true
                         }
                         return false
                     } onChanged: { screenPoint, _ in
-                        // Move the end location on drag.
+                        // Move the end location on drag gesture.
                         Task {
                             guard let location = try? await sceneViewProxy.location(
                                 fromScreenPoint: screenPoint
                             ) else { return }
-                            locationDistanceMeasurement.endLocation = location
+                            model.locationDistanceMeasurement.endLocation = location
                         }
                     } onEnded: { _, _ in
                         instructionText = .startMessage
                     }
                     .task {
                         // Set distance text when there is a measurements update.
-                        for await measurements in locationDistanceMeasurement.measurements {
-                            directDistanceText = measurementFormatter.string(from: measurements.directDistance)
-                            horizontalDistanceText = measurementFormatter.string(from: measurements.horizontalDistance)
-                            verticalDistanceText = measurementFormatter.string(from: measurements.verticalDistance)
+                        for await measurements in model.locationDistanceMeasurement.measurements {
+                            directDistanceText = model.measurementFormatter.string(
+                                from: measurements.directDistance
+                            )
+                            horizontalDistanceText = model.measurementFormatter.string(
+                                from: measurements.horizontalDistance
+                            )
+                            verticalDistanceText = model.measurementFormatter.string(
+                                from: measurements.verticalDistance
+                            )
                         }
                     }
                     .overlay(alignment: .top) {
@@ -143,8 +106,58 @@ struct MeasureDistanceInSceneView: View {
             .pickerStyle(.segmented)
             .padding()
             .onChange(of: unitSystemSelection) { _ in
-                locationDistanceMeasurement.unitSystem = unitSystemSelection
+                model.locationDistanceMeasurement.unitSystem = unitSystemSelection
             }
+        }
+    }
+}
+
+private extension MeasureDistanceInSceneView {
+    /// The view model for the sample.
+    class Model: ObservableObject {
+        /// A scene with an imagery basemap.
+        let scene = {
+            let scene = ArcGIS.Scene(basemapStyle: .arcGISTopographic)
+            
+            // Add elevation source to the base surface of the scene with the service URL.
+            let elevationSource = ArcGISTiledElevationSource(url: .brestElevationService)
+            scene.baseSurface.addElevationSource(elevationSource)
+            
+            // Create the building layer and add it to the scene.
+            let buildingsLayer = ArcGISSceneLayer(url: .brestBuildingsService)
+            scene.addOperationalLayer(buildingsLayer)
+            
+            return scene
+        }()
+        
+        /// An analysis overlay for location distance measurement.
+        let analysisOverlay = AnalysisOverlay()
+        /// The location distance measurement.
+        let locationDistanceMeasurement = LocationDistanceMeasurement(
+            startLocation: Point(x: -4.494677, y: 48.384472, z: 24.772694, spatialReference: .wgs84),
+            endLocation: Point(x: -4.495646, y: 48.384377, z: 58.501115, spatialReference: .wgs84)
+        )
+        
+        /// A measurement formatter for converting the distances to strings.
+        let measurementFormatter: MeasurementFormatter = {
+            let measurementFormatter = MeasurementFormatter()
+            measurementFormatter.unitOptions = .providedUnit
+            measurementFormatter.numberFormatter.minimumFractionDigits = 2
+            measurementFormatter.numberFormatter.maximumFractionDigits = 2
+            return measurementFormatter
+        }()
+        
+        init() {
+            // Set scene the viewpoint specified by the location distance measurement.
+            let lookAtPoint = Envelope(
+                min: locationDistanceMeasurement.startLocation,
+                max: locationDistanceMeasurement.endLocation
+            ).center
+            let camera = Camera(lookingAt: lookAtPoint, distance: 200, heading: 0, pitch: 45, roll: 0)
+            scene.initialViewpoint = Viewpoint(boundingGeometry: lookAtPoint, camera: camera)
+            
+            // Add location distance measurement to the analysis overlay to display it.
+            analysisOverlay.addAnalysis(locationDistanceMeasurement)
         }
     }
 }
@@ -163,7 +176,7 @@ private extension URL {
         URL(string: "https://scene.arcgis.com/arcgis/rest/services/BREST_DTM_1M/ImageServer")!
     }
     
-    /// A scene service URL for buildings in Brest, France.
+    /// A scene service URL for the buildings in Brest, France.
     static var brestBuildingsService: URL {
         URL(string: "https://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/Buildings_Brest/SceneServer/layers/0")!
     }
