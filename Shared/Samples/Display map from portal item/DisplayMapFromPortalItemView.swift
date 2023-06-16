@@ -91,6 +91,8 @@ private extension DisplayMapFromPortalItemView {
         init(title: String, thumbnailImage: String, portalID: PortalItem.ID) {
             self.title = title
             self.thumbnailImage = UIImage(named: thumbnailImage)!
+            
+            // Create portal item from id.
             self.portalItem = PortalItem(
                 portal: .arcGISOnline(connection: .anonymous),
                 id: portalID

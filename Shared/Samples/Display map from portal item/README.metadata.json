@@ -2,7 +2,9 @@
     "category": "Maps",
     "description": "Display a web map.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "display-map-from-portal-item.png"
+    ],
     "keywords": [
         "portal item",
         "web map",

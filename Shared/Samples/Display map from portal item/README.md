@@ -10,13 +10,13 @@ For displaying web maps stored on ArcGIS Online.
 
 ## How to use the sample
 
-A web map can be selected from the drop-down list. On selection the web map displays in the map view.
+Tap the button to see a list of other web maps. Upon selection, the web map displays in the map view.
 
 ## How it works
 
 1. Create a `Portal`.
-2. Create a `PortalItem` using the Portal and the web map ID: `new PortalItem(portal, ID)`.
-3. Create an `ArcGISMap` using the portal item.
+2. Create a `PortalItem` using the Portal and the web map ID: `PortalItem(portal:id:)`.
+3. Create an `Map` using the portal item: `Map(item:)`.
 4. Set the map to the `MapView`.
 
 ## Relevant API
