@@ -109,13 +109,8 @@ private extension SetUpLocationDrivenGeotriggersView {
         /// The location display for the map view.
         let locationDisplay: LocationDisplay
         
-        /// The route simulated location data source.
-        private let locationDataSource: SimulatedLocationDataSource
-        
-        /// An array of geotrigger monitors.
-        private var geotriggerMonitors: [GeotriggerMonitor] = []
-        
-        /// The name of the current garden section feature.
+        /// The name of the current garden section feature. Will be `nil` if there
+        /// is not a current garden section.
         var currentSectionName: String? {
             featureNamesInFenceGeotrigger[sectionFenceGeotriggerName]?.last
         }
@@ -127,6 +122,12 @@ private extension SetUpLocationDrivenGeotriggersView {
         
         /// A dictionary for nearby features.
         var nearbyFeatures: [String: ArcGISFeature] = [:]
+        
+        /// The route simulated location data source.
+        private let locationDataSource: SimulatedLocationDataSource
+        
+        /// An array of geotrigger monitors.
+        private var geotriggerMonitors: [GeotriggerMonitor] = []
         
         /// A dictionary for the feature names in each fence geotrigger.
         /// - Key: The name of a fence geotrigger.
@@ -158,8 +159,8 @@ private extension SetUpLocationDrivenGeotriggersView {
             didSet { isShowingAlert = error != nil }
         }
         
-        /// The handle for the geotrigger monitor notification task.
-        private var notificationTaskHandle: Task<Void, Never>!
+        /// The handles for all the async tasks.
+        private var taskHandles: [Task<Void, Never>] = []
         
         init() {
             // Create simulated data source with the route polyline.
@@ -170,10 +171,13 @@ private extension SetUpLocationDrivenGeotriggersView {
         }
         
         deinit {
-            notificationTaskHandle.cancel()
+            // Cancel all task handle when class is deconstructed.
+            for handle in taskHandles {
+                handle.cancel()
+            }
         }
         
-        /// Creates geotriggers from the map's operational layers.
+        /// Creates and starts geotriggers from the map's operational layers.
         func startGeotriggerMonitoring() {
             // Get the service feature tables from the map's operational layers.
             if let operationalLayers = map.operationalLayers as? [FeatureLayer],
@@ -183,12 +187,36 @@ private extension SetUpLocationDrivenGeotriggersView {
                let gardenPOIs = gardenPOIsLayer.featureTable as? ServiceFeatureTable {
                 // Create geotriggers for each of the service feature tables.
                 let geotriggerFeed = LocationGeotriggerFeed(locationDataSource: locationDataSource)
-                makeGeotrigger(feed: geotriggerFeed, featureTable: gardenSections, bufferDistance: 0.0, fenceGeotriggerName: sectionFenceGeotriggerName)
-                makeGeotrigger(feed: geotriggerFeed, featureTable: gardenPOIs, bufferDistance: 10.0, fenceGeotriggerName: poiFenceGeotriggerName)
+                let gardenSectionsGeotrigger = makeGeotriggerMonitor(
+                    feed: geotriggerFeed,
+                    featureTable: gardenSections,
+                    bufferDistance: 0.0,
+                    fenceGeotriggerName: sectionFenceGeotriggerName
+                )
+                let gardenPOIsGeotrigger = makeGeotriggerMonitor(
+                    feed: geotriggerFeed,
+                    featureTable: gardenPOIs,
+                    bufferDistance: 10.0,
+                    fenceGeotriggerName: poiFenceGeotriggerName
+                )
+                geotriggerMonitors.append(contentsOf: [
+                    gardenSectionsGeotrigger,
+                    gardenPOIsGeotrigger
+                ])
+                
+                // Start the geotrigger monitors and handle posted geotrigger notifications.
+                for geotriggerMonitor in geotriggerMonitors {
+                    taskHandles.append( Task {
+                        try? await geotriggerMonitor.start()
+                        for await notification in geotriggerMonitor.notifications {
+                            handleGeotriggerNotification(notification as! FenceGeotriggerNotificationInfo)
+                        }
+                    })
+                }
             }
         }
         
-        /// Create a geotrigger monitor and start observing its notifications.
+        /// Create a geotrigger monitor.
         /// - Parameters:
         ///   - feed: The `GeotriggerFeed` that is monitored for changes.
         ///   - featureTable: The `ServiceFeatureTable` that contains the features
@@ -196,7 +224,8 @@ private extension SetUpLocationDrivenGeotriggersView {
         ///   - bufferDistance: The `Double` buffer distance in meters to apply to
         ///   the features when checking if an `FenceGeotrigger` condition is met.
         ///   - fenceGeotriggerName: The name for the `FenceGeotrigger`.
-        private func makeGeotrigger(feed: GeotriggerFeed, featureTable: ServiceFeatureTable, bufferDistance: Double, fenceGeotriggerName: String) {
+        /// - Returns: A new `GeotriggerMonitor` object.
+        private func makeGeotriggerMonitor(feed: GeotriggerFeed, featureTable: ServiceFeatureTable, bufferDistance: Double, fenceGeotriggerName: String) -> GeotriggerMonitor {
             let fenceParameters = FeatureFenceParameters(
                 featureTable: featureTable,
                 bufferDistance: bufferDistance
@@ -212,23 +241,8 @@ private extension SetUpLocationDrivenGeotriggersView {
                 name: fenceGeotriggerName
             )
             
-            // Create and start the geotrigger monitor.
-            let geotriggerMonitor = GeotriggerMonitor(geotrigger: fenceGeotrigger)
-            Task.detached { [unowned self] in
-                do {
-                    try await geotriggerMonitor.start()
-                    geotriggerMonitors.append(geotriggerMonitor)
-                } catch {
-                    self.error = error
-                }
-            }
-            
-            // Handle posted geotrigger notifications.
-            notificationTaskHandle = Task {
-                for await notification in geotriggerMonitor.notifications {
-                    handleGeotriggerNotification(notification as! FenceGeotriggerNotificationInfo)
-                }
-            }
+            // Create and return geotrigger.
+            return GeotriggerMonitor(geotrigger: fenceGeotrigger)
         }
         
         /// Handle a notification posted by a geotrigger monitor when a fence geotrigger
@@ -272,7 +286,7 @@ private extension SetUpLocationDrivenGeotriggersView {
         private func updateStatusText(featureName: String, notificationType: FenceGeotriggerNotificationInfo.NotificationType) {
             // Set fence geotrigger text.
             let typeString = notificationType == .entered ? "Entered" : "Exited"
-            self.fenceGeotriggerText = String(format: "%@ the geofence of %@", typeString, featureName)
+            fenceGeotriggerText = String(format: "%@ the geofence of %@", typeString, featureName)
             
             // Set nearby features text.
             if nearbyFeatures.isEmpty {
