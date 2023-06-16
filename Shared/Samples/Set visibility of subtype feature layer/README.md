@@ -1,0 +1,34 @@
+# Set visibility of subtype feature layer
+
+Display a composite layer of all the subtype values in a feature class.
+
+![Set visibility of subtype feature layer](set-visibility-of-subtype-feature-layer.png)
+
+## Use case
+
+This is useful for controlling labeling, visibility, and symbology of a given subtype as though they are distinct layers on the map.
+
+## How to use the sample
+
+The sample loads with the sublayer visible on the map. Toggle its visibility by tapping the first switch. Toggle between the sublayer's original renderer and an alternate renderer using the second switch. Tap the
+ "Set Current to Minimum Scale" button to set the sublayer's minimum scale to the current map scale.
+
+## How it works
+
+1. Create a `SubtypeFeatureLayer` from a `ServiceFeatureTable` that defines a subtype, and add it to the `Map`.
+2. Get a `SubtypeSublayer` from the subtype feature layer using its name.
+3. Enable the sublayer's labels and define them with `LabelDefinition`.
+    * Use `SimpleLabelExpression` to set the expression for label definitions.
+4. Make a switch to toggle the sublayer's visibility.
+5. Create an alternate renderer by making a `SimpleRenderer`.
+6. Get the current map scale and make it the minimum map scale.
+
+## Relevant API
+
+* AnalysisOverlay
+* LocationLineOfSight
+* SceneView
+
+## Tags
+
+3D, line of sight, visibility, visibility analysis
