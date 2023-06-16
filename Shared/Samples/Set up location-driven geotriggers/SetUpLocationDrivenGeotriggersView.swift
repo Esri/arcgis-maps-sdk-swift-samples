@@ -268,6 +268,7 @@ private extension SetUpLocationDrivenGeotriggersView {
         /// - Parameters:
         ///   - featureName: The name of the feature.
         ///   - notificationType: The fence `NotificationType`.
+        @MainActor
         private func updateStatusText(featureName: String, notificationType: FenceGeotriggerNotificationInfo.NotificationType) {
             // Set fence geotrigger text.
             let typeString = notificationType == .entered ? "Entered" : "Exited"
