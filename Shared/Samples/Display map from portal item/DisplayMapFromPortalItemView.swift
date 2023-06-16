@@ -16,14 +16,30 @@ import SwiftUI
 import ArcGIS
 
 struct DisplayMapFromPortalItemView: View {
-    /// The view model for the sample.
-    @StateObject private var model = Model()
+    /// The current portal item map.
+    @State private var currentMap = mapOptions.first!
+    
+    /// A map to display on the screen.
+    @State private var map = Map(item: mapOptions.first!.portalItem)
     
     /// A Boolean indicating whether to show the map options sheet.
     @State private var isShowingMapOptions = false
-
+    
+    /// The different map options the user can choose from.
+    private static let mapOptions = [
+        PortalItemMap(title: "Terrestrial Ecosystems of the World",
+                      thumbnailImage: "TerrestrialEcosystemsThumbnail",
+                      portalID: .terrestrialEcosystems),
+        PortalItemMap(title: "Recent Hurricanes, Cyclones and Typhoons",
+                      thumbnailImage: "HurricanesCyclonesTyphoonsThumbnail",
+                      portalID: .hurricanesCyclonesTyphoons),
+        PortalItemMap(title: "Geology of United States",
+                      thumbnailImage: "USGeologyThumbnail",
+                      portalID: .usGeology)
+    ]
+    
     var body: some View {
-        MapView(map: model.map)
+        MapView(map: map)
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
                     Button("Maps") {
@@ -33,10 +49,12 @@ struct DisplayMapFromPortalItemView: View {
             }
             .sheet(isPresented: $isShowingMapOptions, detents: [.medium], dragIndicatorVisibility: .visible) {
                 List {
-                    ForEach(model.mapOptions) { mapOption in
+                    // Map options list.
+                    ForEach(DisplayMapFromPortalItemView.mapOptions) { mapOption in
                         Button {
-                            model.currentMap = mapOption
-                            model.map = Map(item: mapOption.portalItem)
+                            currentMap = mapOption
+                            map = Map(item: currentMap.portalItem)
+                            isShowingMapOptions = false
                         } label: {
                             ZStack {
                                 HStack {
@@ -44,7 +62,7 @@ struct DisplayMapFromPortalItemView: View {
                                     Text(mapOption.title)
                                     Spacer()
                                     Image(systemName: "checkmark")
-                                        .opacity(model.currentMap == mapOption ? 1 : 0)
+                                        .opacity(currentMap == mapOption ? 1 : 0)
                                 }
                             }
                         }
@@ -56,37 +74,18 @@ struct DisplayMapFromPortalItemView: View {
 }
 
 private extension DisplayMapFromPortalItemView {
-    /// The view model for the sample.
-    class Model: ObservableObject {
-        /// TODO: rename images
-        let mapOptions = [
-            PortalItemMap(title: "Terrestrial Ecosystems of the World",
-                          thumbnailImage: "OpenMapURLThumbnail1",
-                          portalID: .terrestrialEcosystems),
-            PortalItemMap(title: "Recent Hurricanes, Cyclones and Typhoons",
-                          thumbnailImage: "OpenMapURLThumbnail2",
-                          portalID: .hurricanesCyclonesTyphoons),
-            PortalItemMap(title: "Geology of United States",
-                          thumbnailImage: "OpenMapURLThumbnail3",
-                          portalID: .usGeology)
-        ]
-        
-        /// The map at URL of the current map.
-        @Published var currentMap: PortalItemMap
-        
-        /// A map to display on the screen.
-        @Published var map: Map
-        
-        init() {
-            currentMap = mapOptions.first!
-            map = Map(item: mapOptions.first!.portalItem)
-        }
-    }
     /// A model for the maps the user may toggle between.
     struct PortalItemMap: Equatable, Identifiable {
+        /// An id to conform to `Identifiable`.
         let id = UUID()
+        
+        /// The text title of the map.
         let title: String
+        
+        /// The UI thumbnail Image associated with the map.
         let thumbnailImage: UIImage
+        
+        /// The portal item used to create the map.
         let portalItem: PortalItem
         
         init(title: String, thumbnailImage: String, portalID: PortalItem.ID) {
@@ -98,11 +97,11 @@ private extension DisplayMapFromPortalItemView {
             )
         }
         
-        /// <#Description#>
+        /// Compares two portal item map objects together to conform to `Equatable`.
         /// - Parameters:
-        ///   - lhs: <#lhs description#>
-        ///   - rhs: <#rhs description#>
-        /// - Returns: <#description#>
+        ///   - lhs: The left hand side `PortalItemMap`.
+        ///   - rhs: The right hand side `PortalItemMap`.
+        /// - Returns: A `Bool` indicating whether the object were equal.
         static func ==(lhs: PortalItemMap, rhs: PortalItemMap) -> Bool {
             return lhs.id == rhs.id
         }
