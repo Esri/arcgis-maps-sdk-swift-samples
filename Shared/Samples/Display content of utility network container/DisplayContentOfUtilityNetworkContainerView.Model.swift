@@ -117,7 +117,6 @@ extension DisplayContentOfUtilityNetworkContainerView {
             // Creates swatches from each symbol.
             await setStatusMessage("Getting Legend Symbol Swatches…")
             let legendItems: [LegendItem] = await withTaskGroup(of: LegendItem?.self) { group in
-                var items: [LegendItem] = []
                 for (name, symbol) in symbolsByName {
                     group.addTask {
                         if let swatch = try? await symbol.makeSwatch(scale: displayScale) {
@@ -127,13 +126,14 @@ extension DisplayContentOfUtilityNetworkContainerView {
                         }
                     }
                 }
+                var items: [LegendItem] = []
                 for await legendItem in group where legendItem != nil {
                     items.append(legendItem!)
                 }
                 return items
             }
             // Updates the legend items in the model.
-            self.legendItems = legendItems.sorted { $0.name < $1.name }
+            self.legendItems = legendItems.sorted(using: KeyPathComparator(\.name))
         }
         
         // MARK: Network Association Graphics
@@ -147,11 +147,13 @@ extension DisplayContentOfUtilityNetworkContainerView {
             let contentGraphics = try await makeGraphicsForContentElements(contentElements, within: containerElement)
             graphicsOverlay.addGraphics(contentGraphics)
             
+            let message: String
             if contentGraphics.count == 1 {
-                await setStatusMessage("This feature contains no associations.")
+                message = "This feature contains no associations."
             } else {
-                await setStatusMessage("Contained associations are shown.")
+                message = "Contained associations are shown."
             }
+            await setStatusMessage(message)
             
             if let extent = graphicsOverlay.extent {
                 let associationsGraphics = try await makeGraphicsForAssociations(within: extent)
@@ -168,14 +170,13 @@ extension DisplayContentOfUtilityNetworkContainerView {
             // Gets the containment associations from the element to display its content.
             let containmentAssociations = try await network.associations(for: containerElement, ofKind: .containment)
             // Determines the relationship of each element and add it to the content elements.
-            let contentElements: [UtilityElement] = containmentAssociations.map { association in
+            return containmentAssociations.map { association in
                 if association.fromElement.objectID == containerElement.objectID {
                     return association.toElement
                 } else {
                     return association.fromElement
                 }
             }
-            return contentElements
         }
         
         /// Creates the graphics for the utility elements within a container.
@@ -256,7 +257,6 @@ private extension URL {
 struct LegendItem {
     /// The description label of the legend item.
     let name: String
-    
     /// The image swatch of the legend item.
     let image: UIImage
 }

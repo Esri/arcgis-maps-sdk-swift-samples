@@ -54,8 +54,8 @@ struct DisplayContentOfUtilityNetworkContainerView: View {
                 }
                 .overlay(alignment: .top) {
                     Text(model.statusMessage)
-                        .frame(maxWidth: .infinity)
                         .padding(.vertical, 6)
+                        .frame(maxWidth: .infinity)
                         .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
                 }
                 .toolbar {
@@ -94,7 +94,7 @@ struct DisplayContentOfUtilityNetworkContainerView: View {
                         guard let layerResult = identifyResults.first(where: { $0.layerContent is SubtypeFeatureLayer }) else { return }
                         
                         // Gets the top selected feature.
-                        guard let containerFeature = (layerResult.sublayerResults
+                        guard let containerFeature = (layerResult.sublayerResults.lazy
                             .flatMap { $0.geoElements.compactMap { $0 as? ArcGISFeature } }
                             .first) else {
                             return
@@ -141,7 +141,11 @@ struct DisplayContentOfUtilityNetworkContainerView: View {
     private var sheetContent: some View {
         NavigationView {
             List(model.legendItems, id: \.name) { legend in
-                Label(title: { Text(legend.name) }, icon: { Image(uiImage: legend.image) })
+                Label {
+                    Text(legend.name)
+                } icon: {
+                    Image(uiImage: legend.image)
+                }
             }
             .navigationTitle("Legend")
             .navigationBarTitleDisplayMode(.inline)
