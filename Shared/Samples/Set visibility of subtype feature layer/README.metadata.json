@@ -29,7 +29,9 @@
         "SubtypeSublayer"
     ],
     "snippets": [
-        "SetVisibilityOfSubtypeFeatureLayerView.swift"
+        "SetVisibilityOfSubtypeFeatureLayerView.swift",
+        "SetVisibilityOfSubtypeFeatureLayerView.Model.swift",
+        "SetVisibilityOfSubtypeFeatureLayerView.Views.swift"
     ],
     "title": "Set visibility of subtype feature layer"
 }
