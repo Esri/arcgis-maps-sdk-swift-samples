@@ -18,6 +18,7 @@ import UIKit
 
 extension DisplayContentOfUtilityNetworkContainerView {
     /// The model used to manage the state of the trace view.
+    @MainActor
     class Model: ObservableObject {
         // MARK: Properties
         
@@ -82,7 +83,6 @@ extension DisplayContentOfUtilityNetworkContainerView {
         /// Creates legend items with a name and an image.
         /// - Parameter displayScale: The display scale for the swatch images.
         /// - Returns: An array of legends.
-        @MainActor
         func updateLegendInfoItems(displayScale: CGFloat) async {
             setStatusMessage("Getting Legend Info…")
             // The legend info array that contains all the info from each feature layer.
@@ -154,7 +154,7 @@ extension DisplayContentOfUtilityNetworkContainerView {
             } else {
                 message = "Contained associations are shown."
             }
-            await setStatusMessage(message)
+            setStatusMessage(message)
             
             if let extent = graphicsOverlay.extent {
                 let associationsGraphics = try await makeGraphics(forAssociationsWithin: extent)
@@ -219,7 +219,6 @@ extension DisplayContentOfUtilityNetworkContainerView {
         
         /// Sets status message.
         /// - Parameter message: A message of the current status.
-        @MainActor
         private func setStatusMessage(_ message: String) {
             statusMessage = message
         }
