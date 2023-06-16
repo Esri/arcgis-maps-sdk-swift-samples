@@ -19,71 +19,103 @@ struct DisplayMapFromPortalItemView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
-    @State private var isShowingMapsSheet = false
-    
+    /// A Boolean indicating whether to show the map options sheet.
+    @State private var isShowingMapOptions = false
+
     var body: some View {
         MapView(map: model.map)
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
                     Button("Maps") {
-                        isShowingMapsSheet = true
+                        isShowingMapOptions = true
                     }
                 }
             }
-            .sheet(isPresented: $isShowingMapsSheet, detents: [.medium], dragIndicatorVisibility: .visible) {
+            .sheet(isPresented: $isShowingMapOptions, detents: [.medium], dragIndicatorVisibility: .visible) {
                 List {
-                    ForEach(model.mapOptions, id: \.portalID) { mapOption in
+                    ForEach(model.mapOptions) { mapOption in
                         Button {
-                            model.map = Map(url: mapOption.url!)!
+                            model.currentMap = mapOption
+                            model.map = Map(item: mapOption.portalItem)
                         } label: {
-                            Text(mapOption.title)
+                            ZStack {
+                                HStack {
+                                    Image(uiImage: mapOption.thumbnailImage)
+                                    Text(mapOption.title)
+                                    Spacer()
+                                    Image(systemName: "checkmark")
+                                        .opacity(model.currentMap == mapOption ? 1 : 0)
+                                }
+                            }
                         }
+                        .foregroundColor(.black)
                     }
                 }
             }
-            .alert(isPresented: $model.isShowingAlert, presentingError: model.error)
     }
 }
 
 private extension DisplayMapFromPortalItemView {
     /// The view model for the sample.
     class Model: ObservableObject {
-        /// A map of the Santa Barbara Botanic Garden.
-        var map: Map
-        
-        let mapOptions: [MapAtURL] = [
-            MapAtURL(title: "Terrestrial Ecosystems of the World",
-                     thumbnailImage: UIImage(named: "OpenMapURLThumbnail1")!,
-                     portalID: "5be0bc3ee36c4e058f7b3cebc21c74e6"),
-            MapAtURL(title: "Recent Hurricanes, Cyclones and Typhoons",
-                     thumbnailImage: UIImage(named: "OpenMapURLThumbnail2")!,
-                     portalID: "064f2e898b094a17b84e4a4cd5e5f549"),
-            MapAtURL(title: "Geology of United States",
-                     thumbnailImage: UIImage(named: "OpenMapURLThumbnail3")!,
-                     portalID: "92ad152b9da94dee89b9e387dfe21acd")
+        /// TODO: rename images
+        let mapOptions = [
+            PortalItemMap(title: "Terrestrial Ecosystems of the World",
+                          thumbnailImage: "OpenMapURLThumbnail1",
+                          portalID: .terrestrialEcosystems),
+            PortalItemMap(title: "Recent Hurricanes, Cyclones and Typhoons",
+                          thumbnailImage: "OpenMapURLThumbnail2",
+                          portalID: .hurricanesCyclonesTyphoons),
+            PortalItemMap(title: "Geology of United States",
+                          thumbnailImage: "OpenMapURLThumbnail3",
+                          portalID: .usGeology)
         ]
         
-        /// A Boolean value indicating whether to show an alert.
-        @Published var isShowingAlert = false
+        /// The map at URL of the current map.
+        @Published var currentMap: PortalItemMap
         
-        /// The error shown in the alert.
-        @Published var error: Error? {
-            didSet { isShowingAlert = error != nil }
-        }
+        /// A map to display on the screen.
+        @Published var map: Map
         
         init() {
-            map = Map(url: mapOptions.first!.url!)!
+            currentMap = mapOptions.first!
+            map = Map(item: mapOptions.first!.portalItem)
         }
     }
-    
     /// A model for the maps the user may toggle between.
-    struct MapAtURL {
-        var title: String
-        var thumbnailImage: UIImage
-        var portalID: String
+    struct PortalItemMap: Equatable, Identifiable {
+        let id = UUID()
+        let title: String
+        let thumbnailImage: UIImage
+        let portalItem: PortalItem
         
-        var url: URL? {
-            return URL(string: "https://www.arcgis.com/home/item.html?id=\(portalID)")
+        init(title: String, thumbnailImage: String, portalID: PortalItem.ID) {
+            self.title = title
+            self.thumbnailImage = UIImage(named: thumbnailImage)!
+            self.portalItem = PortalItem(
+                portal: .arcGISOnline(connection: .anonymous),
+                id: portalID
+            )
+        }
+        
+        /// <#Description#>
+        /// - Parameters:
+        ///   - lhs: <#lhs description#>
+        ///   - rhs: <#rhs description#>
+        /// - Returns: <#description#>
+        static func ==(lhs: PortalItemMap, rhs: PortalItemMap) -> Bool {
+            return lhs.id == rhs.id
         }
     }
+}
+
+private extension PortalItem.ID {
+    /// The portal item ID of the Terrestrial Ecosystems of the World map.
+    static var terrestrialEcosystems: Self { Self("5be0bc3ee36c4e058f7b3cebc21c74e6")! }
+    
+    /// The portal item ID of the Recent Hurricanes, Cyclones and Typhoons map.
+    static var hurricanesCyclonesTyphoons: Self { Self("064f2e898b094a17b84e4a4cd5e5f549")! }
+    
+    /// The portal item ID of the Geology of United States map.
+    static var usGeology: Self { Self("92ad152b9da94dee89b9e387dfe21acd")! }
 }
