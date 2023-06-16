@@ -54,7 +54,7 @@ extension DisplayContentOfUtilityNetworkContainerView {
         private let network: UtilityNetwork
         
         /// The legends for elements in the utility network.
-        private(set) var legendItems: [LegendItem] = []
+        @Published private(set) var legendItems: [LegendItem] = []
         
         // MARK: Methods
         
@@ -82,8 +82,9 @@ extension DisplayContentOfUtilityNetworkContainerView {
         /// Creates legend items with a name and an image.
         /// - Parameter displayScale: The display scale for the swatch images.
         /// - Returns: An array of legends.
+        @MainActor
         func updateLegendInfoItems(displayScale: CGFloat) async {
-            await setStatusMessage("Getting Legend Info…")
+            setStatusMessage("Getting Legend Info…")
             // The legend info array that contains all the info from each feature layer.
             let legendInfos: [LegendInfo] = await withTaskGroup(of: [LegendInfo].self) { group in
                 for layer in featureLayers {
@@ -115,7 +116,7 @@ extension DisplayContentOfUtilityNetworkContainerView {
             }
             
             // Creates swatches from each symbol.
-            await setStatusMessage("Getting Legend Symbol Swatches…")
+            setStatusMessage("Getting Legend Symbol Swatches…")
             let legendItems: [LegendItem] = await withTaskGroup(of: LegendItem?.self) { group in
                 for (name, symbol) in symbolsByName {
                     group.addTask {
