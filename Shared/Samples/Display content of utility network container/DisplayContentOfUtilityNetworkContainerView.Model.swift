@@ -144,8 +144,8 @@ extension DisplayContentOfUtilityNetworkContainerView {
         /// - Parameter feature: The container element's feature.
         func handleIdentifiedFeature(_ feature: ArcGISFeature) async throws {
             let containerElement = network.makeElement(arcGISFeature: feature)!
-            let contentElements = try await makeContentElements(containerElement: containerElement)
-            let contentGraphics = try await makeGraphicsForContentElements(contentElements, within: containerElement)
+            let contentElements = try await contentElements(for: containerElement)
+            let contentGraphics = try await makeGraphics(for: contentElements, within: containerElement)
             graphicsOverlay.addGraphics(contentGraphics)
             
             let message: String
@@ -157,17 +157,17 @@ extension DisplayContentOfUtilityNetworkContainerView {
             await setStatusMessage(message)
             
             if let extent = graphicsOverlay.extent {
-                let associationsGraphics = try await makeGraphicsForAssociations(within: extent)
+                let associationsGraphics = try await makeGraphics(forAssociationsWithin: extent)
                 let boundingBoxGraphic = Graphic(geometry: GeometryEngine.buffer(around: extent, distance: 0.05)!, symbol: boundingBoxSymbol)
                 graphicsOverlay.addGraphics(associationsGraphics)
                 graphicsOverlay.addGraphic(boundingBoxGraphic)
             }
         }
         
-        /// Creates content elements within the container element.
+        /// Gets content elements within the container element.
         /// - Parameter containerElement: The container element.
         /// - Returns: An array of utility elements in the container.
-        private func makeContentElements(containerElement: UtilityElement) async throws -> [UtilityElement] {
+        private func contentElements(for containerElement: UtilityElement) async throws -> [UtilityElement] {
             // Gets the containment associations from the element to display its content.
             let containmentAssociations = try await network.associations(for: containerElement, ofKind: .containment)
             // Determines the relationship of each element and add it to the content elements.
@@ -185,7 +185,7 @@ extension DisplayContentOfUtilityNetworkContainerView {
         ///   - contentElements: The elements within the container.
         ///   - containerElement: The container element.
         /// - Returns: An array of graphics.
-        private func makeGraphicsForContentElements(_ contentElements: [UtilityElement], within containerElement: UtilityElement)  async throws -> [Graphic] {
+        private func makeGraphics(for contentElements: [UtilityElement], within containerElement: UtilityElement)  async throws -> [Graphic] {
             let contentFeatures = try await network.features(for: contentElements)
             let graphics: [Graphic] = contentFeatures.compactMap { feature in
                 guard let featureTable = feature.table as? ServiceFeatureTable,
@@ -200,7 +200,7 @@ extension DisplayContentOfUtilityNetworkContainerView {
         /// Creates the associations graphics for elements in the container.
         /// - Parameter boundingExtent: The boundary for the container.
         /// - Returns: An array of association relationship graphics.
-        private func makeGraphicsForAssociations(within boundingExtent: Envelope) async throws -> [Graphic] {
+        private func makeGraphics(forAssociationsWithin boundingExtent: Envelope) async throws -> [Graphic] {
             let containmentAssociations = try await network.associations(forExtent: boundingExtent)
             let graphics: [Graphic] = containmentAssociations.map { association in
                 let symbol = association.kind == .attachment ? attachmentSymbol : connectivitySymbol
