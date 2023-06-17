@@ -55,7 +55,10 @@ extension DisplayContentOfUtilityNetworkContainerView {
         private let network: UtilityNetwork
         
         /// The legends for elements in the utility network.
-        @Published private(set) var legendItems: [LegendItem] = []
+        private(set) var legendItems: [LegendItem] = []
+        
+        /// A Boolean value indicating whether the legend items are constructed.
+        var legendItemsAreEmpty: Bool { legendItems.isEmpty }
         
         // MARK: Methods
         
@@ -84,7 +87,7 @@ extension DisplayContentOfUtilityNetworkContainerView {
         /// - Parameter displayScale: The display scale for the swatch images.
         /// - Returns: An array of legends.
         func updateLegendInfoItems(displayScale: CGFloat) async {
-            setStatusMessage("Getting Legend Info…")
+            statusMessage = "Getting Legend Info…"
             // The legend info array that contains all the info from each feature layer.
             let legendInfos: [LegendInfo] = await withTaskGroup(of: [LegendInfo].self) { group in
                 for layer in featureLayers {
@@ -116,7 +119,7 @@ extension DisplayContentOfUtilityNetworkContainerView {
             }
             
             // Creates swatches from each symbol.
-            setStatusMessage("Getting Legend Symbol Swatches…")
+            statusMessage = "Getting Legend Symbol Swatches…"
             let legendItems: [LegendItem] = await withTaskGroup(of: LegendItem?.self) { group in
                 for (name, symbol) in symbolsByName {
                     group.addTask {
@@ -154,7 +157,7 @@ extension DisplayContentOfUtilityNetworkContainerView {
             } else {
                 message = "Contained associations are shown."
             }
-            setStatusMessage(message)
+            statusMessage = message
             
             if let extent = graphicsOverlay.extent {
                 let associationsGraphics = try await makeGraphics(forAssociationsWithin: extent)
@@ -215,12 +218,6 @@ extension DisplayContentOfUtilityNetworkContainerView {
         /// - Parameter isVisible: A Boolean to make the map visible or not.
         func setOperationalLayersVisibility(isVisible: Bool) {
             map.operationalLayers.forEach { $0.isVisible = isVisible }
-        }
-        
-        /// Sets status message.
-        /// - Parameter message: A message of the current status.
-        private func setStatusMessage(_ message: String) {
-            statusMessage = message
         }
     }
 }

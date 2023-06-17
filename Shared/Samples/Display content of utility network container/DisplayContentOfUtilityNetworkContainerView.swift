@@ -63,7 +63,7 @@ struct DisplayContentOfUtilityNetworkContainerView: View {
                         Button("Show Legend") {
                             isShowingLegend = true
                         }
-                        .disabled(model.legendItems.isEmpty)
+                        .disabled(model.legendItemsAreEmpty)
                         .sheet(isPresented: $isShowingLegend, detents: [.medium]) {
                             sheetContent
                         }
