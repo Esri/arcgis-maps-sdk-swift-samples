@@ -112,7 +112,7 @@
 		D710996E2A27D9B30065A1C1 /* DensifyAndGeneralizeGeometryView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D710996C2A27D9210065A1C1 /* DensifyAndGeneralizeGeometryView.swift */; };
 		D71099702A2802FA0065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D710996F2A2802FA0065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift */; };
 		D71099712A280D830065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D710996F2A2802FA0065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift */; };
-		D722BD202A420D7E002C2087 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = D722BD1F2A420D7E002C2087 /* README.md */; };
+		D722BD222A420DAD002C2087 /* ShowExtrudedFeaturesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D722BD212A420DAD002C2087 /* ShowExtrudedFeaturesView.swift */; };
 		D734FA0C2A183A5B00246D7E /* SetMaxExtentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D734FA092A183A5B00246D7E /* SetMaxExtentView.swift */; };
 		D744FD172A2112D90084A66C /* CreateConvexHullAroundPointsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D744FD162A2112D90084A66C /* CreateConvexHullAroundPointsView.swift */; };
 		D744FD182A2113C70084A66C /* CreateConvexHullAroundPointsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D744FD162A2112D90084A66C /* CreateConvexHullAroundPointsView.swift */; };
@@ -364,7 +364,7 @@
 		88F93CC029C3D59C0006B28E /* SketchOnMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SketchOnMapView.swift; sourceTree = "<group>"; };
 		D710996C2A27D9210065A1C1 /* DensifyAndGeneralizeGeometryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DensifyAndGeneralizeGeometryView.swift; sourceTree = "<group>"; };
 		D710996F2A2802FA0065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DensifyAndGeneralizeGeometryView.SettingsView.swift; sourceTree = "<group>"; };
-		D722BD1F2A420D7E002C2087 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		D722BD212A420DAD002C2087 /* ShowExtrudedFeaturesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowExtrudedFeaturesView.swift; sourceTree = "<group>"; };
 		D734FA092A183A5B00246D7E /* SetMaxExtentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetMaxExtentView.swift; sourceTree = "<group>"; };
 		D744FD162A2112D90084A66C /* CreateConvexHullAroundPointsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateConvexHullAroundPointsView.swift; sourceTree = "<group>"; };
 		D75101802A2E493600B8FA48 /* ShowLabelsOnLayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowLabelsOnLayerView.swift; sourceTree = "<group>"; };
@@ -834,7 +834,7 @@
 		D722BD1E2A420D7E002C2087 /* Show extruded features */ = {
 			isa = PBXGroup;
 			children = (
-				D722BD1F2A420D7E002C2087 /* README.md */,
+				D722BD212A420DAD002C2087 /* ShowExtrudedFeaturesView.swift */,
 			);
 			path = "Show extruded features";
 			sourceTree = "<group>";
@@ -1227,7 +1227,6 @@
 				00D4EF9028638BF100B9CC30 /* LA_Trails.geodatabase in Resources */,
 				00D4EF9A28638BF100B9CC30 /* AuroraCO.gpkg in Resources */,
 				F111CCC4288B641900205358 /* Yellowstone.mmpk in Resources */,
-				D722BD202A420D7E002C2087 /* README.md in Resources */,
 				00D4EFB12863CE6300B9CC30 /* ScottishWildlifeTrust_reserves in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1386,6 +1385,7 @@
 				D734FA0C2A183A5B00246D7E /* SetMaxExtentView.swift in Sources */,
 				E004A6DC28465C70002A1FE6 /* DisplaySceneView.swift in Sources */,
 				E066DD35285CF3B3004D3D5B /* FindRouteView.swift in Sources */,
+				D722BD222A420DAD002C2087 /* ShowExtrudedFeaturesView.swift in Sources */,
 				E004A6F6284FA42A002A1FE6 /* SelectFeaturesInFeatureLayerView.swift in Sources */,
 				D75101812A2E493600B8FA48 /* ShowLabelsOnLayerView.swift in Sources */,
 				E08953F12891899600E077CF /* EnvironmentValues+SampleInfoVisibility.swift in Sources */,
