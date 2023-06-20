@@ -13,9 +13,9 @@
         "height",
         "renderer",
         "scene",
-        "ExtrusionExpression",
-        "ExtrusionMode",
         "FeatureLayer",
+        "RendererSceneProperties",
+        "RendererSceneProperties.ExtrusionMode",
         "SceneProperties",
         "ServiceFeatureTable",
         "SimpleRenderer"
