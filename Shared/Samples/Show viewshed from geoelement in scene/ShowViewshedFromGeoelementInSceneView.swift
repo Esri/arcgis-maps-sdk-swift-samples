@@ -64,11 +64,6 @@ private extension ShowViewshedFromGeoelementInSceneView {
             let buildingsLayer = ArcGISSceneLayer(url: .brestBuildingsService)
             scene.addOperationalLayer(buildingsLayer)
             
-            // Set scene the viewpoint specified by the camera position.
-            let point = Point(x: -73.0870, y: -49.3460, z: 5046, spatialReference: .wgs84)
-            let camera = Camera(location: point, heading: 11, pitch: 62, roll: 0)
-            scene.initialViewpoint = Viewpoint(boundingGeometry: point, camera: camera)
-            
             return scene
         }()
         
@@ -111,7 +106,7 @@ private extension ShowViewshedFromGeoelementInSceneView {
         }()
         
         /// The point for the tank to move toward.
-        var waypoint: Point!
+        var waypoint: Point?
         
         init() {
             // Create camera controller.
@@ -145,11 +140,12 @@ private extension ShowViewshedFromGeoelementInSceneView {
         func animate() {
             // Get point from the current tank position.
             guard let tankLocation = tankGraphic.geometry as? Point else { return }
+            guard let point = waypoint else { return }
             
             // Get the distance from the current tank location to the waypoint.
             guard let distanceResult = GeometryEngine.geodeticDistance(
                 from: tankLocation,
-                to: waypoint,
+                to: point,
                 distanceUnit: .meters,
                 azimuthUnit: .degrees,
                 curveType: .geodesic
@@ -168,6 +164,7 @@ private extension ShowViewshedFromGeoelementInSceneView {
             
             // Set tank graphic heading.
             if let heading = tankGraphic.attributes["HEADING"] as? Double {
+                // Divide by 10 to make the animation more smooth.
                 tankGraphic.setAttributeValue(
                     heading + ((distanceResult.azimuth1.value - heading) / 10),
                     forKey: "HEADING"
