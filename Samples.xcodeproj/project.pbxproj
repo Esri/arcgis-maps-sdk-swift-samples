@@ -113,6 +113,7 @@
 		D71099702A2802FA0065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D710996F2A2802FA0065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift */; };
 		D71099712A280D830065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D710996F2A2802FA0065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift */; };
 		D722BD222A420DAD002C2087 /* ShowExtrudedFeaturesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D722BD212A420DAD002C2087 /* ShowExtrudedFeaturesView.swift */; };
+		D722BD232A420DEC002C2087 /* ShowExtrudedFeaturesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D722BD212A420DAD002C2087 /* ShowExtrudedFeaturesView.swift */; };
 		D734FA0C2A183A5B00246D7E /* SetMaxExtentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D734FA092A183A5B00246D7E /* SetMaxExtentView.swift */; };
 		D744FD172A2112D90084A66C /* CreateConvexHullAroundPointsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D744FD162A2112D90084A66C /* CreateConvexHullAroundPointsView.swift */; };
 		D744FD182A2113C70084A66C /* CreateConvexHullAroundPointsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D744FD162A2112D90084A66C /* CreateConvexHullAroundPointsView.swift */; };
@@ -229,6 +230,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				D722BD232A420DEC002C2087 /* ShowExtrudedFeaturesView.swift in Copy Source Code Files */,
 				D751018F2A2E966C00B8FA48 /* IdentifyLayerFeaturesView.swift in Copy Source Code Files */,
 				D752D9472A3A6FC0003EB25E /* MonitorChangesToMapLoadStatusView.swift in Copy Source Code Files */,
 				D7CC34002A3147FF00198EDF /* ShowLineOfSightBetweenPointsView.swift in Copy Source Code Files */,
