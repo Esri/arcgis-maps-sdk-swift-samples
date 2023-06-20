@@ -21,9 +21,10 @@ struct ShowExtrudedFeaturesView: View {
         let scene = Scene(basemapStyle: .arcGISTopographic)
         
         // Set the scene view's viewpoint specified by the camera position.
-        let point = Point(x: -99.659448, y: 20.513652, z: 12_940_924, spatialReference: .wgs84)
+        let distance = 12_940_924.0
+        let point = Point(x: -99.659448, y: 20.513652, z: distance, spatialReference: .wgs84)
         let camera = Camera(lookingAt: point, distance: 0, heading: 0, pitch: 15, roll: 0)
-        scene.initialViewpoint = Viewpoint(boundingGeometry: point, camera: camera)
+        scene.initialViewpoint = Viewpoint(center: point, scale: distance, camera: camera)
         
         return scene
     }()
@@ -102,7 +103,7 @@ private extension ShowExtrudedFeaturesView {
         var extrusionExpression: String {
             switch self {
             case .totalPopulation:
-                return "[POP2007]/ 10"
+                return "[POP2007] / 10"
             case .populationDensity:
                 // The offset makes the extrusion look better over Alaska.
                 let offset = 100_000

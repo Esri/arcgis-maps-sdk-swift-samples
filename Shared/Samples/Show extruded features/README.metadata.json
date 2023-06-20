@@ -22,9 +22,9 @@
     ],
     "redirect_from": [],
     "relevant_apis": [
-        "ExtrusionExpression",
-        "ExtrusionMode",
         "FeatureLayer",
+        "RendererSceneProperties",
+        "RendererSceneProperties.ExtrusionMode",
         "SceneProperties",
         "ServiceFeatureTable",
         "SimpleRenderer"
