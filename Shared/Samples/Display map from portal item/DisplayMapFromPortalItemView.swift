@@ -22,9 +22,6 @@ struct DisplayMapFromPortalItemView: View {
     /// A map to display on the screen.
     @State private var map = Map(item: mapOptions.first!.portalItem)
     
-    /// A Boolean indicating whether to show the map options sheet.
-    @State private var isShowingMapOptions = false
-    
     /// The different map options the user can choose from.
     private static let mapOptions = [
         PortalItemMap(title: "Terrestrial Ecosystems of the World",
@@ -39,30 +36,15 @@ struct DisplayMapFromPortalItemView: View {
         MapView(map: map)
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
-                    Button("Maps") {
-                        isShowingMapOptions = true
-                    }
-                }
-            }
-            .sheet(isPresented: $isShowingMapOptions, detents: [.medium], dragIndicatorVisibility: .visible) {
-                List {
-                    // Map options list.
-                    ForEach(DisplayMapFromPortalItemView.mapOptions) { mapOption in
-                        Button {
-                            currentMap = mapOption
-                            map = Map(item: currentMap.portalItem)
-                            isShowingMapOptions = false
-                        } label: {
-                            ZStack {
-                                HStack {
-                                    Text(mapOption.title)
-                                    Spacer()
-                                    Image(systemName: "checkmark")
-                                        .opacity(currentMap == mapOption ? 1 : 0)
-                                }
-                            }
+                    Picker("", selection: $currentMap) {
+                        ForEach(DisplayMapFromPortalItemView.mapOptions) { mapOption in
+                            Text(mapOption.title).tag(mapOption)
                         }
-                        .foregroundColor(.black)
+                    }
+                    .pickerStyle(.menu)
+                    .labelsHidden()
+                    .onChange(of: currentMap) { _ in
+                        map = Map(item: currentMap.portalItem)
                     }
                 }
             }
@@ -71,11 +53,11 @@ struct DisplayMapFromPortalItemView: View {
 
 private extension DisplayMapFromPortalItemView {
     /// A model for the maps the user may toggle between.
-    struct PortalItemMap: Equatable, Identifiable {
+    struct PortalItemMap: Equatable, Identifiable, Hashable {
         /// The text title of the map.
         let title: String
         
-        /// The portal item id.
+        /// The portal item id for the map.
         let id: PortalItem.ID
         
         /// The portal item used to create the map.
@@ -85,7 +67,7 @@ private extension DisplayMapFromPortalItemView {
             self.title = title
             self.id = id
             
-            // Create portal item from id.
+            // Create portal item from portal item id.
             self.portalItem = PortalItem(
                 portal: .arcGISOnline(connection: .anonymous),
                 id: id
@@ -97,8 +79,14 @@ private extension DisplayMapFromPortalItemView {
         ///   - lhs: The left hand side `PortalItemMap`.
         ///   - rhs: The right hand side `PortalItemMap`.
         /// - Returns: A `Bool` indicating whether the object were equal.
-        static func ==(lhs: PortalItemMap, rhs: PortalItemMap) -> Bool {
+        static func == (lhs: PortalItemMap, rhs: PortalItemMap) -> Bool {
             return lhs.id == rhs.id
+        }
+        
+        /// Specifies to hash using the id to conform to `Hashable`.
+        /// - Parameter hasher: The `Hasher`.
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(id)
         }
     }
 }
