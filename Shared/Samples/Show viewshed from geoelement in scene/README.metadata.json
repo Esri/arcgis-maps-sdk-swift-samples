@@ -20,9 +20,6 @@
         "OrbitGeoElementCameraController",
         "static GeometryEngine.geodeticDistance(from:to:distanceUnit:azimuthUnit:curveType:)"
     ],
-    "offline_data": [
-        "07d62a792ab6496d9b772a24efea45d0"
-    ],
     "redirect_from": [],
     "relevant_apis": [
         "AnalysisOverlay",
@@ -30,7 +27,7 @@
         "GeodeticDistanceResult",
         "ModelSceneSymbol",
         "OrbitGeoElementCameraController",
-        "static GeometryEngine.geodeticDistance(from:to:distanceUnit:azimuthUnit:curveType:) (used to animate the vehicle)"
+        "static GeometryEngine.geodeticDistance(from:to:distanceUnit:azimuthUnit:curveType:)"
     ],
     "snippets": [
         "ShowViewshedFromGeoelementInSceneView.swift"
