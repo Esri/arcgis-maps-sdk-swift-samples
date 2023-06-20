@@ -11,8 +11,7 @@
         "distance",
         "measure",
         "AnalysisOverlay",
-        "LocationDistanceMeasurement",
-        "MeasurementChangedEvent"
+        "LocationDistanceMeasurement"
     ],
     "redirect_from": [],
     "relevant_apis": [
