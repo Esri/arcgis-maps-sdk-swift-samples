@@ -148,7 +148,7 @@ private extension MeasureDistanceInSceneView {
         }()
         
         init() {
-            // Set scene the viewpoint specified by the location distance measurement.
+            // Set scene to the viewpoint specified by the location distance measurement.
             let lookAtPoint = Envelope(
                 min: locationDistanceMeasurement.startLocation,
                 max: locationDistanceMeasurement.endLocation
