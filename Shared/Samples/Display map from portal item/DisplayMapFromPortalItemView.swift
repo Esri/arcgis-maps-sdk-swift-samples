@@ -97,7 +97,7 @@ private extension DisplayMapFromPortalItemView {
         ///   - lhs: The left hand side `PortalItemMap`.
         ///   - rhs: The right hand side `PortalItemMap`.
         /// - Returns: A `Bool` indicating whether the object were equal.
-        static func ==(lhs: PortalItemMap, rhs: PortalItemMap) -> Bool {
+        static func == (lhs: PortalItemMap, rhs: PortalItemMap) -> Bool {
             return lhs.id == rhs.id
         }
     }
