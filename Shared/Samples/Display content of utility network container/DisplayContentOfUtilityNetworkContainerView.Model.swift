@@ -25,6 +25,9 @@ extension DisplayContentOfUtilityNetworkContainerView {
         /// The status message shown to the user.
         @Published var statusMessage = ""
         
+        /// The legends for elements in the utility network.
+        @Published private(set) var legendItems: [LegendItem] = []
+        
         /// The Naperville Electric Containers web map.
         let map = Map(item: .napervilleElectricalNetwork())
         
@@ -53,12 +56,6 @@ extension DisplayContentOfUtilityNetworkContainerView {
         
         /// The utility network for this sample.
         private let network: UtilityNetwork
-        
-        /// The legends for elements in the utility network.
-        private(set) var legendItems: [LegendItem] = []
-        
-        /// A Boolean value indicating whether the legend items are constructed.
-        var legendItemsAreEmpty: Bool { legendItems.isEmpty }
         
         // MARK: Methods
         
@@ -220,6 +217,14 @@ extension DisplayContentOfUtilityNetworkContainerView {
             map.operationalLayers.forEach { $0.isVisible = isVisible }
         }
     }
+    
+    /// A struct for displaying legend info in a list row.
+    struct LegendItem {
+        /// The description label of the legend item.
+        let name: String
+        /// The image swatch of the legend item.
+        let image: UIImage
+    }
 }
 
 private extension Item {
@@ -248,14 +253,6 @@ private extension URL {
     static var samplePortal: URL {
         sampleServer7.appendingPathComponent("portal")
     }
-}
-
-/// A struct for displaying legend info in a list row.
-struct LegendItem {
-    /// The description label of the legend item.
-    let name: String
-    /// The image swatch of the legend item.
-    let image: UIImage
 }
 
 // MARK: Authentication
