@@ -16,7 +16,7 @@ import SwiftUI
 import ArcGIS
 
 struct ShowExtrudedFeaturesView: View {
-    /// A scene with a topographic basemap and centered on the US.
+    /// A scene with a topographic basemap centered on the US.
     @State private var scene: ArcGIS.Scene = {
         let scene = Scene(basemapStyle: .arcGISTopographic)
         
@@ -29,15 +29,15 @@ struct ShowExtrudedFeaturesView: View {
     }()
     
     /// The renderer of the feature layer.
-    private let renderer: Renderer = {
+    @State private var renderer: SimpleRenderer = {
         // Setup the symbols used to display the features (US states) from the table.
         let lineSymbol = SimpleLineSymbol(style: .solid, color: .blue, width: 1.0)
         let fillSymbol = SimpleFillSymbol(style: .solid, color: .blue, outline: lineSymbol)
         return SimpleRenderer(symbol: fillSymbol)
     }()
     
-    /// The
-    @State private var statisticSelection =  Statistic.totalPopulation
+    /// The population statistic selection of the picker.
+    @State private var statisticSelection = Statistic.totalPopulation
     
     /// A Boolean value indicating whether to show an error alert.
     @State private var isShowingAlert = false
@@ -49,7 +49,6 @@ struct ShowExtrudedFeaturesView: View {
     
     var body: some View {
         VStack {
-            
             SceneView(scene: scene)
                 .task {
                     do {
@@ -63,14 +62,15 @@ struct ShowExtrudedFeaturesView: View {
                         // Feature layer must be rendered dynamically for extrusion to work.
                         featureLayer.renderingMode = .dynamic
                         
-                        let sceneProperties = renderer.sceneProperties
-                        sceneProperties.extrusionMode = .absoluteHeight
-                        sceneProperties.extrusionExpression = Statistic.totalPopulation.extrusionExpression
+                        // Set the renderer scene properties.
+                        renderer.sceneProperties.extrusionMode = .baseHeight
+                        renderer.sceneProperties.extrusionExpression = Statistic.totalPopulation.extrusionExpression
                         
                         // Set the renderer on the layer and add the layer to the scene.
                         featureLayer.renderer = renderer
                         scene.addOperationalLayer(featureLayer)
                     } catch {
+                        // Present error if the feature table fails to load.
                         self.error = error
                     }
                 }
@@ -84,14 +84,16 @@ struct ShowExtrudedFeaturesView: View {
             .pickerStyle(.segmented)
             .padding()
             .onChange(of: statisticSelection) { _ in
-                print("changed")
+                if let statistic = Statistic(rawValue: statisticSelection.rawValue) {
+                    renderer.sceneProperties.extrusionExpression = statistic.extrusionExpression
+                }
             }
         }
     }
 }
 
 private extension ShowExtrudedFeaturesView {
-    ///
+    /// A enum for the different population statistics.
     enum Statistic: Int {
         case totalPopulation
         case populationDensity

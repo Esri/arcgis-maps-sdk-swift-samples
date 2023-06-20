@@ -2,7 +2,9 @@
     "category": "Scenes",
     "description": "Extrude features based on their attributes.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "show-extruded-features.png"
+    ],
     "keywords": [
         "3D",
         "extrude",
