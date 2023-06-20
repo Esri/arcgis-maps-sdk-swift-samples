@@ -28,7 +28,7 @@ Tap to set a destination for the vehicle (a `GeoElement`). The vehicle will 'dri
 * GeoElementViewshed
 * ModelSceneSymbol
 * OrbitGeoElementCameraController
-* static GeometryEngine.geodeticDistance(from:to:distanceUnit:azimuthUnit:curveType:) (used to animate the vehicle)
+* static GeometryEngine.geodeticDistance(from:to:distanceUnit:azimuthUnit:curveType:)
 
 ## About the data
 
