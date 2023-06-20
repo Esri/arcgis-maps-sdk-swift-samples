@@ -1,0 +1,34 @@
+{
+    "category": "Scenes",
+    "description": "Extrude features based on their attributes.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "3D",
+        "extrude",
+        "extrusion",
+        "extrusion expression",
+        "height",
+        "renderer",
+        "scene",
+        "ExtrusionExpression",
+        "ExtrusionMode",
+        "FeatureLayer",
+        "SceneProperties",
+        "ServiceFeatureTable",
+        "SimpleRenderer"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "ExtrusionExpression",
+        "ExtrusionMode",
+        "FeatureLayer",
+        "SceneProperties",
+        "ServiceFeatureTable",
+        "SimpleRenderer"
+    ],
+    "snippets": [
+        "ShowExtrudedFeaturesView.swift"
+    ],
+    "title": "Show extruded features"
+}
