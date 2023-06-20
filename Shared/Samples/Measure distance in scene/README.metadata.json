@@ -17,8 +17,7 @@
     "redirect_from": [],
     "relevant_apis": [
         "AnalysisOverlay",
-        "LocationDistanceMeasurement",
-        "MeasurementChangedEvent"
+        "LocationDistanceMeasurement"
     ],
     "snippets": [
         "MeasureDistanceInSceneView.swift"

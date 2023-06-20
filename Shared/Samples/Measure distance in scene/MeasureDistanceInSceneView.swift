@@ -120,7 +120,7 @@ private extension MeasureDistanceInSceneView {
             let scene = ArcGIS.Scene(basemapStyle: .arcGISTopographic)
             
             // Add elevation source to the base surface of the scene with the service URL.
-            let elevationSource = ArcGISTiledElevationSource(url: .brestElevationService)
+            let elevationSource = ArcGISTiledElevationSource(url: .worldElevationService)
             scene.baseSurface.addElevationSource(elevationSource)
             
             // Create the building layer and add it to the scene.
@@ -171,9 +171,9 @@ private extension String {
 }
 
 private extension URL {
-    /// A elevation image service URL for Brest, France.
-    static var brestElevationService: URL {
-        URL(string: "https://scene.arcgis.com/arcgis/rest/services/BREST_DTM_1M/ImageServer")!
+    /// A world elevation service from Terrain3D ArcGIS REST service.
+    static var worldElevationService: URL {
+        URL(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!
     }
     
     /// A scene service URL for the buildings in Brest, France.

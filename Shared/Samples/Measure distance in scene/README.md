@@ -23,7 +23,6 @@ Choose a unit system for the measurement in the segmented control. Tap any locat
 
 * AnalysisOverlay
 * LocationDistanceMeasurement
-* MeasurementChangedEvent
 
 ## Additional information
 
