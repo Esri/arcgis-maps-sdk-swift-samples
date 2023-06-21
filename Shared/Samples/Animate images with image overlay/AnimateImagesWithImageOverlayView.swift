@@ -85,7 +85,7 @@ private extension AnimateImagesWithImageOverlayView {
             scene.initialViewpoint = Viewpoint(boundingGeometry: point, camera: camera)
             
             // Add base surface from elevation service.
-            let elevationSource = ArcGISTiledElevationSource(url: .elevationService)
+            let elevationSource = ArcGISTiledElevationSource(url: .worldElevationService)
             let surface = Surface()
             surface.addElevationSource(elevationSource)
             scene.baseSurface = surface
@@ -183,8 +183,8 @@ private extension Envelope {
 }
 
 private extension URL {
-    /// An elevation service from Terrain3D REST service.
-    static var elevationService: URL {
+    /// A world elevation service from Terrain3D ArcGIS REST service.
+    static var worldElevationService: URL {
         URL(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!
     }
 }
