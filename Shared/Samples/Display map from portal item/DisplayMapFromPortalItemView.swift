@@ -42,15 +42,15 @@ struct DisplayMapFromPortalItemView: View {
         MapView(map: map)
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
-                    Picker("", selection: $currentMap) {
-                        ForEach(DisplayMapFromPortalItemView.mapOptions) { mapOption in
-                            Text(mapOption.title).tag(mapOption)
+                    Menu("Maps") {
+                        Picker("", selection: $currentMap) {
+                            ForEach(DisplayMapFromPortalItemView.mapOptions) { mapOption in
+                                Text(mapOption.title).tag(mapOption)
+                            }
                         }
-                    }
-                    .pickerStyle(.menu)
-                    .labelsHidden()
-                    .onChange(of: currentMap) { _ in
-                        map = Map(item: currentMap.portalItem)
+                        .onChange(of: currentMap) { _ in
+                            map = Map(item: currentMap.portalItem)
+                        }
                     }
                 }
             }
