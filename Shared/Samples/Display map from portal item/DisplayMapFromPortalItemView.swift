@@ -24,12 +24,18 @@ struct DisplayMapFromPortalItemView: View {
     
     /// The different map options the user can choose from.
     private static let mapOptions = [
-        PortalItemMap(title: "Terrestrial Ecosystems of the World",
-                      id: .terrestrialEcosystems),
-        PortalItemMap(title: "Recent Hurricanes, Cyclones and Typhoons",
-                      id: .hurricanesCyclonesTyphoons),
-        PortalItemMap(title: "Geology of United States",
-                      id: .usGeology)
+        PortalItemMap(
+            title: "Terrestrial Ecosystems of the World",
+            id: .terrestrialEcosystems
+        ),
+        PortalItemMap(
+            title: "Recent Hurricanes, Cyclones and Typhoons",
+            id: .hurricanesCyclonesTyphoons
+        ),
+        PortalItemMap(
+            title: "Geology of United States",
+            id: .usGeology
+        )
     ]
     
     var body: some View {
@@ -53,7 +59,7 @@ struct DisplayMapFromPortalItemView: View {
 
 private extension DisplayMapFromPortalItemView {
     /// A model for the maps the user may toggle between.
-    struct PortalItemMap: Equatable, Identifiable, Hashable {
+    struct PortalItemMap: Hashable, Identifiable {
         /// The text title of the map.
         let title: String
         
