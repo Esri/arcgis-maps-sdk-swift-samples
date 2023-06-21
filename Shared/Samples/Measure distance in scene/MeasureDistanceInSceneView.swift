@@ -57,8 +57,9 @@ struct MeasureDistanceInSceneView: View {
                     .onDragGesture { _, _ in
                         if model.locationDistanceMeasurement.startLocation == model.locationDistanceMeasurement.endLocation {
                             return true
+                        } else {
+                            return false
                         }
-                        return false
                     } onChanged: { screenPoint, _ in
                         // Move the end location on drag gesture.
                         Task {
@@ -140,7 +141,7 @@ private extension MeasureDistanceInSceneView {
                 max: locationDistanceMeasurement.endLocation
             ).center
             let camera = Camera(lookingAt: lookAtPoint, distance: 200, heading: 0, pitch: 45, roll: 0)
-            scene.initialViewpoint = Viewpoint(boundingGeometry: lookAtPoint, camera: camera)
+            scene.initialViewpoint = Viewpoint(latitude: .nan, longitude: .nan, scale: .nan, camera: camera)
             
             // Add location distance measurement to the analysis overlay to display it.
             analysisOverlay.addAnalysis(locationDistanceMeasurement)
