@@ -209,7 +209,7 @@ private extension SetUpLocationDrivenGeotriggersView {
                     taskHandles.append( Task {
                         try? await geotriggerMonitor.start()
                         for await notification in geotriggerMonitor.notifications {
-                            handleGeotriggerNotification(notification as! FenceGeotriggerNotificationInfo)
+                            await handleGeotriggerNotification(notification as! FenceGeotriggerNotificationInfo)
                         }
                     })
                 }
@@ -250,6 +250,7 @@ private extension SetUpLocationDrivenGeotriggersView {
         /// - Parameter fenceNotificationInfo: The `FenceGeotriggerNotificationInfo`
         /// which provides information about the geotrigger monitor and the fence
         /// geotrigger that was triggered.
+        @MainActor
         private func handleGeotriggerNotification(_ fenceNotificationInfo: FenceGeotriggerNotificationInfo) {
             // The feature name from the Arcade expression.
             let featureName = fenceNotificationInfo.message
@@ -257,32 +258,28 @@ private extension SetUpLocationDrivenGeotriggersView {
             let geotriggerName = fenceNotificationInfo.geotriggerMonitor.geotrigger.name
             
             // Handle notification types.
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                switch fenceNotificationInfo.fenceNotificationType {
-                case .entered:
-                    // The user entered a geofence: add the feature for future querying.
-                    self.featureNamesInFenceGeotrigger[geotriggerName, default: []].append(featureName)
-                    self.nearbyFeatures[featureName] = fenceFeature
-                case .exited:
-                    // The user left the geofence: remove the feature from the dicts.
-                    if let poppedFeatureName = self.featureNamesInFenceGeotrigger[geotriggerName]?.popLast() {
-                        self.nearbyFeatures.removeValue(forKey: poppedFeatureName)
-                    }
-                @unknown default:
-                    fatalError("Unexpected fence notification type.")
+            switch fenceNotificationInfo.fenceNotificationType {
+            case .entered:
+                // The user entered a geofence: add the feature for future querying.
+                self.featureNamesInFenceGeotrigger[geotriggerName, default: []].append(featureName)
+                self.nearbyFeatures[featureName] = fenceFeature
+            case .exited:
+                // The user left the geofence: remove the feature from the dicts.
+                if let poppedFeatureName = self.featureNamesInFenceGeotrigger[geotriggerName]?.popLast() {
+                    self.nearbyFeatures.removeValue(forKey: poppedFeatureName)
                 }
-                
-                // Update the status texts.
-                self.updateStatusText(featureName: featureName, notificationType: fenceNotificationInfo.fenceNotificationType)
+            @unknown default:
+                fatalError("Unexpected fence notification type.")
             }
+            
+            // Update the status texts.
+            updateStatusText(featureName: featureName, notificationType: fenceNotificationInfo.fenceNotificationType)
         }
         
         /// Update the status texts with the feature name and notification type.
         /// - Parameters:
         ///   - featureName: The name of the feature.
         ///   - notificationType: The fence `NotificationType`.
-        @MainActor
         private func updateStatusText(featureName: String, notificationType: FenceGeotriggerNotificationInfo.NotificationType) {
             // Set fence geotrigger text.
             let typeString = notificationType == .entered ? "Entered" : "Exited"
