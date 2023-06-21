@@ -73,15 +73,9 @@ struct MeasureDistanceInSceneView: View {
                     .task {
                         // Set distance text when there is a measurements update.
                         for await measurements in model.locationDistanceMeasurement.measurements {
-                            directDistanceText = model.measurementFormatter.string(
-                                from: measurements.directDistance
-                            )
-                            horizontalDistanceText = model.measurementFormatter.string(
-                                from: measurements.horizontalDistance
-                            )
-                            verticalDistanceText = model.measurementFormatter.string(
-                                from: measurements.verticalDistance
-                            )
+                            directDistanceText = measurements.directDistance.formatted(.distance)
+                            horizontalDistanceText = measurements.horizontalDistance.formatted(.distance)
+                            verticalDistanceText = measurements.verticalDistance.formatted(.distance)
                         }
                     }
                     .overlay(alignment: .top) {
@@ -138,15 +132,6 @@ private extension MeasureDistanceInSceneView {
             endLocation: Point(x: -4.495646, y: 48.384377, z: 58.501115, spatialReference: .wgs84)
         )
         
-        /// A measurement formatter for converting the distances to strings.
-        let measurementFormatter: MeasurementFormatter = {
-            let measurementFormatter = MeasurementFormatter()
-            measurementFormatter.unitOptions = .providedUnit
-            measurementFormatter.numberFormatter.minimumFractionDigits = 2
-            measurementFormatter.numberFormatter.maximumFractionDigits = 2
-            return measurementFormatter
-        }()
-        
         init() {
             // Set scene to the viewpoint specified by the location distance measurement.
             let lookAtPoint = Envelope(
@@ -159,6 +144,13 @@ private extension MeasureDistanceInSceneView {
             // Add location distance measurement to the analysis overlay to display it.
             analysisOverlay.addAnalysis(locationDistanceMeasurement)
         }
+    }
+}
+
+private extension FormatStyle where Self == Measurement<UnitLength>.FormatStyle {
+    /// The format style for the distances.
+    static var distance: Self {
+        .measurement(width: .abbreviated, usage: .asProvided, numberFormatStyle: .number.precision(.fractionLength(2)))
     }
 }
 
