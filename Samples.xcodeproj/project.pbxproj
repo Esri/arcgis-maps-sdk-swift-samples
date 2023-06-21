@@ -46,6 +46,8 @@
 		0074ABC428174F430037244A /* Sample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0074ABC128174F430037244A /* Sample.swift */; };
 		0074ABCD2817BCC30037244A /* SamplesApp+Samples.swift.tache in Sources */ = {isa = PBXBuildFile; fileRef = 0074ABCA2817B8DB0037244A /* SamplesApp+Samples.swift.tache */; };
 		0086F40128E3770A00974721 /* ShowViewshedFromPointInSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0086F3FD28E3770900974721 /* ShowViewshedFromPointInSceneView.swift */; };
+		00A7A1462A2FC58300F035F7 /* DisplayContentOfUtilityNetworkContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A7A1432A2FC58300F035F7 /* DisplayContentOfUtilityNetworkContainerView.swift */; };
+		00A7A14A2A2FC5B700F035F7 /* DisplayContentOfUtilityNetworkContainerView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A7A1492A2FC5B700F035F7 /* DisplayContentOfUtilityNetworkContainerView.Model.swift */; };
 		00B04273282EC59E0072E1B4 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B04272282EC59E0072E1B4 /* AboutView.swift */; };
 		00B042E8282EDC690072E1B4 /* SetBasemapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B042E5282EDC690072E1B4 /* SetBasemapView.swift */; };
 		00B04FB5283EEBA80026C882 /* DisplayOverviewMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B04FB4283EEBA80026C882 /* DisplayOverviewMapView.swift */; };
@@ -60,6 +62,8 @@
 		00E5401C27F3CCA200CF66D5 /* SamplesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5400C27F3CCA100CF66D5 /* SamplesApp.swift */; };
 		00E5401E27F3CCA200CF66D5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5400D27F3CCA100CF66D5 /* ContentView.swift */; };
 		00E5402027F3CCA200CF66D5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00E5400E27F3CCA200CF66D5 /* Assets.xcassets */; };
+		00EB803A2A31506F00AC2B07 /* DisplayContentOfUtilityNetworkContainerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 00A7A1432A2FC58300F035F7 /* DisplayContentOfUtilityNetworkContainerView.swift */; };
+		00EB803B2A31506F00AC2B07 /* DisplayContentOfUtilityNetworkContainerView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 00A7A1492A2FC5B700F035F7 /* DisplayContentOfUtilityNetworkContainerView.Model.swift */; };
 		108EC04129D25B2C000F35D0 /* QueryFeatureTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108EC04029D25B2C000F35D0 /* QueryFeatureTableView.swift */; };
 		108EC04229D25B55000F35D0 /* QueryFeatureTableView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 108EC04029D25B2C000F35D0 /* QueryFeatureTableView.swift */; };
 		1C0C1C3929D34DAE005C8B24 /* ChangeViewpointView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0C1C3429D34DAE005C8B24 /* ChangeViewpointView.swift */; };
@@ -231,6 +235,8 @@
 			dstSubfolderSpec = 7;
 			files = (
 				D769C2132A29057200030F61 /* SetUpLocationDrivenGeotriggersView.swift in Copy Source Code Files */,
+				00EB803A2A31506F00AC2B07 /* DisplayContentOfUtilityNetworkContainerView.swift in Copy Source Code Files */,
+				00EB803B2A31506F00AC2B07 /* DisplayContentOfUtilityNetworkContainerView.Model.swift in Copy Source Code Files */,
 				D751018F2A2E966C00B8FA48 /* IdentifyLayerFeaturesView.swift in Copy Source Code Files */,
 				D752D9472A3A6FC0003EB25E /* MonitorChangesToMapLoadStatusView.swift in Copy Source Code Files */,
 				D7CC34002A3147FF00198EDF /* ShowLineOfSightBetweenPointsView.swift in Copy Source Code Files */,
@@ -324,6 +330,8 @@
 		0074ABC128174F430037244A /* Sample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sample.swift; sourceTree = "<group>"; };
 		0074ABCA2817B8DB0037244A /* SamplesApp+Samples.swift.tache */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "SamplesApp+Samples.swift.tache"; sourceTree = "<group>"; };
 		0086F3FD28E3770900974721 /* ShowViewshedFromPointInSceneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowViewshedFromPointInSceneView.swift; sourceTree = "<group>"; };
+		00A7A1432A2FC58300F035F7 /* DisplayContentOfUtilityNetworkContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayContentOfUtilityNetworkContainerView.swift; sourceTree = "<group>"; };
+		00A7A1492A2FC5B700F035F7 /* DisplayContentOfUtilityNetworkContainerView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayContentOfUtilityNetworkContainerView.Model.swift; sourceTree = "<group>"; };
 		00ACF554293E6C6A0059B2A9 /* Samples.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Samples.entitlements; sourceTree = "<group>"; };
 		00B04272282EC59E0072E1B4 /* AboutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		00B042E5282EDC690072E1B4 /* SetBasemapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetBasemapView.swift; sourceTree = "<group>"; };
@@ -514,6 +522,7 @@
 				E004A6EB28495538002A1FE6 /* Create planar and geodetic buffers */,
 				E000E761286A0B07005D87C5 /* Cut geometry */,
 				D71099692A27D8880065A1C1 /* Densify and generalize geometry */,
+				00A7A1422A2FC58300F035F7 /* Display content of utility network container */,
 				0074ABB328174B830037244A /* Display map */,
 				F111CCBD288B548400205358 /* Display map from mobile map package */,
 				00B04FB3283EEB830026C882 /* Display overview map */,
@@ -591,6 +600,15 @@
 				00E5402A27F775EA00CF66D5 /* Info.plist */,
 			);
 			path = iOS;
+			sourceTree = "<group>";
+		};
+		00A7A1422A2FC58300F035F7 /* Display content of utility network container */ = {
+			isa = PBXGroup;
+			children = (
+				00A7A1432A2FC58300F035F7 /* DisplayContentOfUtilityNetworkContainerView.swift */,
+				00A7A1492A2FC5B700F035F7 /* DisplayContentOfUtilityNetworkContainerView.Model.swift */,
+			);
+			path = "Display content of utility network container";
 			sourceTree = "<group>";
 		};
 		00B042E3282EDC690072E1B4 /* Set basemap */ = {
@@ -1324,6 +1342,7 @@
 				4D2ADC6729C50BD6003B367F /* AddDynamicEntityLayerView.Model.swift in Sources */,
 				E004A6E928493BCE002A1FE6 /* ShowDeviceLocationView.swift in Sources */,
 				F111CCC1288B5D5600205358 /* DisplayMapFromMobileMapPackageView.swift in Sources */,
+				00A7A1462A2FC58300F035F7 /* DisplayContentOfUtilityNetworkContainerView.swift in Sources */,
 				218F35B829C28F4A00502022 /* AuthenticateWithOAuthView.swift in Sources */,
 				79B7B80A2A1BF8EC00F57C27 /* CreateAndSaveKMLView.swift in Sources */,
 				7573E81C29D6134C00BEED9C /* TraceUtilityNetworkView.Enums.swift in Sources */,
@@ -1395,6 +1414,7 @@
 				E004A6E62846A61F002A1FE6 /* StyleGraphicsWithSymbolsView.swift in Sources */,
 				E088E1742863B5F800413100 /* GenerateOfflineMapView.swift in Sources */,
 				0074ABC428174F430037244A /* Sample.swift in Sources */,
+				00A7A14A2A2FC5B700F035F7 /* DisplayContentOfUtilityNetworkContainerView.Model.swift in Sources */,
 				E004A6F0284E4B9B002A1FE6 /* DownloadVectorTilesToLocalCacheView.swift in Sources */,
 				4D2ADC4329C26D05003B367F /* AddDynamicEntityLayerView.swift in Sources */,
 				D7EAF35A2A1C023800D822C4 /* SetMinAndMaxScaleView.swift in Sources */,
