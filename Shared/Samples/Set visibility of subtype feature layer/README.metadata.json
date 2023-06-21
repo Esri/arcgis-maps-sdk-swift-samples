@@ -3,7 +3,7 @@
     "description": "Display a composite layer of all the subtype values in a feature class.",
     "ignore": false,
     "images": [
-        "set-visibility-of-subtype-sublayer.png"
+        "set-visibility-of-subtype-feature-layer.png"
     ],
     "keywords": [
         "asset group",
@@ -29,9 +29,9 @@
         "SubtypeSublayer"
     ],
     "snippets": [
-        "SetVisibilityOfSubtypeSublayerView.swift",
-        "SetVisibilityOfSubtypeSublayerView.Model.swift",
-        "SetVisibilityOfSubtypeSublayerView.Views.swift"
+        "SetVisibilityOfSubtypeFeatureLayerView.swift",
+        "SetVisibilityOfSubtypeFeatureLayerView.Model.swift",
+        "SetVisibilityOfSubtypeFeatureLayerView.Views.swift"
     ],
-    "title": "Set visibility of subtype sublayer"
+    "title": "Set visibility of subtype feature layer"
 }

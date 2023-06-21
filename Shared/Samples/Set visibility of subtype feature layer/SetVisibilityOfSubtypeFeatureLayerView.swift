@@ -15,7 +15,7 @@
 import SwiftUI
 import ArcGIS
 
-struct SetVisibilityOfSubtypeSublayerView: View {
+struct SetVisibilityOfSubtypeFeatureLayerView: View {
     /// The view model for the sample.
     @StateObject var model = Model()
     

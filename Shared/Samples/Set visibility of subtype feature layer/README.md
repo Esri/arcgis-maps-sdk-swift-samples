@@ -1,8 +1,8 @@
-# Set visibility of subtype sublayer
+# Set visibility of subtype feature layer
 
 Display a composite layer of all the subtype values in a feature class.
 
-![Set visibility of subtype sublayer](set-visibility-of-subtype-sublayer.png)
+![Set visibility of subtype feature layer](set-visibility-of-subtype-feature-layer.png)
 
 ## Use case
 

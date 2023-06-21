@@ -15,7 +15,7 @@
 import SwiftUI
 import ArcGIS
 
-extension SetVisibilityOfSubtypeSublayerView {
+extension SetVisibilityOfSubtypeFeatureLayerView {
     /// The view model for this sample.
     class Model: ObservableObject {
         /// A map with a streets basemap style.
