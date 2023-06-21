@@ -379,7 +379,6 @@
 		D75101802A2E493600B8FA48 /* ShowLabelsOnLayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowLabelsOnLayerView.swift; sourceTree = "<group>"; };
 		D751018D2A2E962D00B8FA48 /* IdentifyLayerFeaturesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentifyLayerFeaturesView.swift; sourceTree = "<group>"; };
 		D752D9452A3A6F7F003EB25E /* MonitorChangesToMapLoadStatusView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonitorChangesToMapLoadStatusView.swift; sourceTree = "<group>"; };
-		D752D9512A3BB309003EB25E /* arcgis-maps-sdk-swift-toolkit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "arcgis-maps-sdk-swift-toolkit"; path = "../arcgis-maps-sdk-swift-toolkit"; sourceTree = "<group>"; };
 		D75362D12A1E886700D83028 /* ApplyUniqueValueRendererView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplyUniqueValueRendererView.swift; sourceTree = "<group>"; };
 		D754E3222A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StylePointWithPictureMarkerSymbolsView.swift; sourceTree = "<group>"; };
 		D78666AC2A2161F100C60110 /* FindNearestVertexView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindNearestVertexView.swift; sourceTree = "<group>"; };
@@ -692,7 +691,6 @@
 		00E5400627F3CCA100CF66D5 = {
 			isa = PBXGroup;
 			children = (
-				D752D9512A3BB309003EB25E /* arcgis-maps-sdk-swift-toolkit */,
 				00966EE62811F64D009D3DD7 /* iOS */,
 				0023DE5029D648FA0098243A /* macOS */,
 				00CCB8A6285D059300BBAB70 /* Portal Data */,
