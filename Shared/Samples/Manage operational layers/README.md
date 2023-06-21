@@ -2,7 +2,8 @@
 
 Add, remove, and reorder operational layers in a map.
 
-![Image of manage operational layers](manage-operational-layers.png)
+![Image of manage operational layers 1](manage-operational-layers-1.png)
+![Image of manage operational layers 2](manage-operational-layers-2.png)
 
 ## Use case
 
@@ -12,20 +13,19 @@ The order of operational layers in a map determines the visual hierarchy of laye
 
 ## How to use the sample
 
-When the app starts, a list displays the operational layers that are currently displayed in the map. Right-click on the list item to remove the layer, or left-click to move it to the top. The map will be updated automatically.
+Tap the "Manage Layers" button to display the operational layers that are currently displayed in the map. In the first section, tap the "Edit" button  and the "-" button to remove a layer, or tap and hold the reordering control and drag to reorder a layer. The map will be updated automatically.
 
-The second list shows layers that have been removed from the map. Click one to add it to the map.
+The second section shows layers that have been removed from the map. Tap the "+" button one to add it back to the map.
 
 ## How it works
 
-1. Get the operational layers `LayerList` from the map using `map.getOperationalLayers()`.
-2. Add or remove layers using `layerList.add(layer)` and `layerList.remove(layer)` respectively. The last layer in the list will be rendered on top.
+1. Get the operational layers from the map's `operationalLayers` property.
+2. Add a layer using `map.addOperationalLayer(newOperationalLayer:)` or remove a layer using `map.removeOperationalLayer(operationalLayer:)`. The last layer in the array will be rendered on top.
 
 ## Relevant API
 
-* Map
 * ArcGISMapImageLayer
-* LayerList
+* Map
 
 ## Additional information
 
