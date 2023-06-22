@@ -221,10 +221,16 @@ extension RunValveIsolationTraceView {
                 return
             }
             traceParameters.traceConfiguration = configuration
-            
-            let traceResults = try await utilityNetwork
-                .trace(using: traceParameters)
-                .compactMap { $0 as? UtilityElementTraceResult }
+            var traceResults = [UtilityElementTraceResult]()
+            do {
+                traceResults = try await utilityNetwork
+                    .trace(using: traceParameters)
+                    .compactMap { $0 as? UtilityElementTraceResult }
+            } catch {
+                statusText = "Trace failed."
+                traceEnabled = true
+                traceCompleted = false
+            }
             traceEnabled = false
             traceCompleted = true
             if !hasFilterBarriers, let selectedCategory {
