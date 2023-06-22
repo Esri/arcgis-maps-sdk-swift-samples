@@ -138,8 +138,8 @@ private extension ShowViewshedFromGeoelementInSceneView {
         /// Animate the tank moving from its current point to the waypoint.
         func animate() {
             // Get point from the current tank position.
-            guard let tankLocation = tankGraphic.geometry as? Point else { return }
-            guard let point = waypoint else { return }
+            guard let tankLocation = tankGraphic.geometry as? Point,
+                  let point = waypoint else { return }
             
             // Get the distance from the current tank location to the waypoint.
             guard let distanceResult = GeometryEngine.geodeticDistance(
