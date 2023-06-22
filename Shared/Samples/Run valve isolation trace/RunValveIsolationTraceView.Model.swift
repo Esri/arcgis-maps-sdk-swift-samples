@@ -258,14 +258,14 @@ extension RunValveIsolationTraceView {
         
         /// Resets the state values for when a trace is cancelled or completed.
         func reset() {
-            guard traceCompleted else { return }
+            precondition(traceCompleted, "Trace must be completed.")
             // Reset the trace if it is already completed.
             layers.forEach { $0.clearSelection() }
             traceParameters.removeAllBarriers()
             hasFilterBarriers = false
             parametersOverlay.removeAllGraphics()
             traceCompleted = false
-            traceEnabled = true
+            traceEnabled = false
             resetEnabled = false
             selectedCategory = nil
             // Add back the starting location.
