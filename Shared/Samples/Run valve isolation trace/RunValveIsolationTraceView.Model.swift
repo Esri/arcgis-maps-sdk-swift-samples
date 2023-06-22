@@ -273,7 +273,7 @@ extension RunValveIsolationTraceView {
                 .domainNetwork(named: "Pipeline")?
                 .tier(named: "Pipe Distribution System")?
                 .defaultTraceConfiguration
-            else { return nil }
+            else { fatalError("Utility network does not have a default trace configuration.") }
             if let category = category {
                 // Note: `UtilityNetworkAttributeComparison` or `UtilityCategoryComparison`
                 // with `UtilityCategoryComparisonOperator.doesNotExist` can also be used.
