@@ -39,7 +39,11 @@ struct RunValveIsolationTraceView: View {
                     .multilineTextAlignment(.center)
             }
             .task {
-                try? await model.setup()
+                do {
+                    try await model.setup()
+                } catch {
+                    model.statusText = error.localizedDescription
+                }
                 await mapViewProxy.setViewpointCenter(model.startingLocationPoint, scale: 3_000)
             }
             .task(id: lastSingleTap?.mapPoint) {
