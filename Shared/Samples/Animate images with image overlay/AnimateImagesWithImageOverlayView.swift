@@ -30,7 +30,8 @@ struct AnimateImagesWithImageOverlayView: View {
             // Create a scene view to display the scene.
             SceneView(scene: model.scene, imageOverlays: [model.imageOverlay])
                 .onAppear {
-                    // Load first image.
+                    // Create display link and load first image.
+                    model.displayLink = model.makeDisplayLink()
                     model.setImageFrame()
                 }
                 .onDisappear {
@@ -113,6 +114,12 @@ private extension AnimateImagesWithImageOverlayView {
         }()
         
         init() {
+            displayLink = makeDisplayLink()
+        }
+        
+        /// Creates a display link timer for the image overlay animation.
+        /// - Returns: A new `CADisplayLink` object.
+        func makeDisplayLink() -> CADisplayLink {
             // Create new display link.
             let newDisplayLink = CADisplayLink(target: self, selector: #selector(setImageFrame))
             
@@ -122,7 +129,7 @@ private extension AnimateImagesWithImageOverlayView {
             
             // Add to main thread common mode run loop, so it is not effected by UI events.
             newDisplayLink.add(to: .main, forMode: .common)
-            displayLink = newDisplayLink
+            return newDisplayLink
         }
         
         /// Sets the image frame to the next one.
