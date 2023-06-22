@@ -19,6 +19,9 @@ struct RunValveIsolationTraceView: View {
     /// The view model for the sample.
     @StateObject var model = Model()
     
+    /// The last locations in the screen and map where a tap occurred.
+    @State var lastSingleTap: (screenPoint: CGPoint, mapPoint: Point)?
+    
     var body: some View {
         MapViewReader { mapViewProxy in
             MapView(
@@ -26,7 +29,7 @@ struct RunValveIsolationTraceView: View {
                 graphicsOverlays: [model.parametersOverlay]
             )
             .onSingleTapGesture { screenPoint, mapPoint in
-                model.lastSingleTap = (screenPoint, mapPoint)
+                lastSingleTap = (screenPoint, mapPoint)
             }
             .overlay(alignment: .top) {
                 Text(model.statusText)
@@ -39,8 +42,8 @@ struct RunValveIsolationTraceView: View {
                 try? await model.setup()
                 await mapViewProxy.setViewpointCenter(model.startingLocationPoint, scale: 3_000)
             }
-            .task(id: model.lastSingleTap?.mapPoint) {
-                guard let lastSingleTap = model.lastSingleTap else {
+            .task(id: lastSingleTap?.mapPoint) {
+                guard let lastSingleTap = lastSingleTap else {
                     return
                 }
                 if let feature = try? await mapViewProxy.identifyLayers(
@@ -104,7 +107,7 @@ struct RunValveIsolationTraceView: View {
             Button(terminal.name) {
                 model.lastAddedElement?.terminal = terminal
                 model.terminalSelectorIsOpen = false
-                model.addTerminal()
+                model.addTerminal(to: lastSingleTap!.mapPoint)
             }
         }
     }
