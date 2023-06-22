@@ -216,6 +216,8 @@ extension RunValveIsolationTraceView {
             
             guard let configuration = makeTraceConfiguration(category: selectedCategory) else {
                 statusText = "Failed to get trace configuration."
+                tracingActivity = .none
+                resetEnabled = true
                 return
             }
             traceParameters.traceConfiguration = configuration
