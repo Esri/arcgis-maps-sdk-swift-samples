@@ -84,9 +84,8 @@ struct ShowExtrudedFeaturesView: View {
             }
             .pickerStyle(.segmented)
             .padding()
-            .onChange(of: statisticSelection) { _ in
-                if let statistic = Statistic(rawValue: statisticSelection.rawValue) {
-                    renderer.sceneProperties.extrusionExpression = statistic.extrusionExpression
+            .onChange(of: statisticSelection) { newValue in
+                featureLayer.renderer?.sceneProperties.extrusionExpression = newValue.extrusionExpression
                 }
             }
         }
