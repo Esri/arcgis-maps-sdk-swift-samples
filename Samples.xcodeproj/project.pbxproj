@@ -126,6 +126,8 @@
 		D751018F2A2E966C00B8FA48 /* IdentifyLayerFeaturesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D751018D2A2E962D00B8FA48 /* IdentifyLayerFeaturesView.swift */; };
 		D752D9462A3A6F80003EB25E /* MonitorChangesToMapLoadStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D752D9452A3A6F7F003EB25E /* MonitorChangesToMapLoadStatusView.swift */; };
 		D752D9472A3A6FC0003EB25E /* MonitorChangesToMapLoadStatusView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D752D9452A3A6F7F003EB25E /* MonitorChangesToMapLoadStatusView.swift */; };
+		D752D95F2A3BCE06003EB25E /* DisplayMapFromPortalItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D752D95E2A3BCE06003EB25E /* DisplayMapFromPortalItemView.swift */; };
+		D752D9602A3BCE63003EB25E /* DisplayMapFromPortalItemView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D752D95E2A3BCE06003EB25E /* DisplayMapFromPortalItemView.swift */; };
 		D75362D22A1E886700D83028 /* ApplyUniqueValueRendererView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75362D12A1E886700D83028 /* ApplyUniqueValueRendererView.swift */; };
 		D75362D32A1E8C8800D83028 /* ApplyUniqueValueRendererView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D75362D12A1E886700D83028 /* ApplyUniqueValueRendererView.swift */; };
 		D754E3232A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D754E3222A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift */; };
@@ -236,6 +238,7 @@
 			dstSubfolderSpec = 7;
 			files = (
 				D7ABA3002A3288970021822B /* ShowViewshedFromGeoelementInSceneView.swift in Copy Source Code Files */,
+				D752D9602A3BCE63003EB25E /* DisplayMapFromPortalItemView.swift in Copy Source Code Files */,
 				00EB803A2A31506F00AC2B07 /* DisplayContentOfUtilityNetworkContainerView.swift in Copy Source Code Files */,
 				00EB803B2A31506F00AC2B07 /* DisplayContentOfUtilityNetworkContainerView.Model.swift in Copy Source Code Files */,
 				D751018F2A2E966C00B8FA48 /* IdentifyLayerFeaturesView.swift in Copy Source Code Files */,
@@ -381,6 +384,7 @@
 		D75101802A2E493600B8FA48 /* ShowLabelsOnLayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowLabelsOnLayerView.swift; sourceTree = "<group>"; };
 		D751018D2A2E962D00B8FA48 /* IdentifyLayerFeaturesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentifyLayerFeaturesView.swift; sourceTree = "<group>"; };
 		D752D9452A3A6F7F003EB25E /* MonitorChangesToMapLoadStatusView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonitorChangesToMapLoadStatusView.swift; sourceTree = "<group>"; };
+		D752D95E2A3BCE06003EB25E /* DisplayMapFromPortalItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayMapFromPortalItemView.swift; sourceTree = "<group>"; };
 		D75362D12A1E886700D83028 /* ApplyUniqueValueRendererView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplyUniqueValueRendererView.swift; sourceTree = "<group>"; };
 		D754E3222A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StylePointWithPictureMarkerSymbolsView.swift; sourceTree = "<group>"; };
 		D78666AC2A2161F100C60110 /* FindNearestVertexView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindNearestVertexView.swift; sourceTree = "<group>"; };
@@ -527,6 +531,7 @@
 				00A7A1422A2FC58300F035F7 /* Display content of utility network container */,
 				0074ABB328174B830037244A /* Display map */,
 				F111CCBD288B548400205358 /* Display map from mobile map package */,
+				D752D95B2A3BCDD4003EB25E /* Display map from portal item */,
 				00B04FB3283EEB830026C882 /* Display overview map */,
 				E004A6D528465C70002A1FE6 /* Display scene */,
 				E070A0A1286F3B3400F2B606 /* Download preplanned map area */,
@@ -900,6 +905,14 @@
 				D752D9452A3A6F7F003EB25E /* MonitorChangesToMapLoadStatusView.swift */,
 			);
 			path = "Monitor changes to map load status";
+			sourceTree = "<group>";
+		};
+		D752D95B2A3BCDD4003EB25E /* Display map from portal item */ = {
+			isa = PBXGroup;
+			children = (
+				D752D95E2A3BCE06003EB25E /* DisplayMapFromPortalItemView.swift */,
+			);
+			path = "Display map from portal item";
 			sourceTree = "<group>";
 		};
 		D75362CC2A1E862B00D83028 /* Apply unique value renderer */ = {
@@ -1374,6 +1387,7 @@
 				00181B462846AD7100654571 /* View+Alert.swift in Sources */,
 				D7ABA2FF2A32881C0021822B /* ShowViewshedFromGeoelementInSceneView.swift in Sources */,
 				E0FE32E728747778002C6ACA /* BrowseBuildingFloorsView.swift in Sources */,
+				D752D95F2A3BCE06003EB25E /* DisplayMapFromPortalItemView.swift in Sources */,
 				E070A0A3286F3B6000F2B606 /* DownloadPreplannedMapAreaView.swift in Sources */,
 				E0EA0B772866390E00C9621D /* ProjectGeometryView.swift in Sources */,
 				0042E24328E4BF8F001F33D6 /* ShowViewshedFromPointInSceneView.Model.swift in Sources */,

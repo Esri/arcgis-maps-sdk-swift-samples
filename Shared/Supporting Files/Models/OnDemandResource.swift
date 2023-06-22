@@ -54,7 +54,7 @@ final class OnDemandResource: ObservableObject {
         request.progress
             .publisher(for: \.fractionCompleted, options: .new)
             .receive(on: DispatchQueue.main)
-            .map { $0 < 1 ? .inProgress($0) : .downloaded }
+            .map { .inProgress($0) }
             .sink { [weak self] in self?.requestState = $0 }
             .store(in: &cancellables)
     }
@@ -77,6 +77,7 @@ final class OnDemandResource: ObservableObject {
         } else {
             do {
                 try await request.beginAccessingResources()
+                requestState = .downloaded
             } catch {
                 if (error as NSError).code != NSUserCancelledError {
                     self.error = error
