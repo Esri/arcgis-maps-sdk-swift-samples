@@ -17,87 +17,93 @@ import ArcGIS
 
 struct ShowExtrudedFeaturesView: View {
     /// A scene with a topographic basemap centered on the US.
-    @State private var scene: ArcGIS.Scene = {
-        let scene = Scene(basemapStyle: .arcGISTopographic)
-        
-        // Set the scene view's viewpoint specified by the camera position.
-        let distance = 12_940_924.0
-        let point = Point(x: -99.659448, y: 20.513652, z: distance, spatialReference: .wgs84)
-        let camera = Camera(lookingAt: point, distance: 0, heading: 0, pitch: 15, roll: 0)
-        scene.initialViewpoint = Viewpoint(center: point, scale: distance, camera: camera)
-        
-        return scene
-    }()
-    
-    /// The renderer of the feature layer.
-    let renderer: SimpleRenderer = {
-        // Setup the symbols used to display the features (US states) from the table.
-        let lineSymbol = SimpleLineSymbol(style: .solid, color: .blue, width: 1.0)
-        let fillSymbol = SimpleFillSymbol(style: .solid, color: .blue, outline: lineSymbol)
-        return SimpleRenderer(symbol: fillSymbol)
-    }()
+    @State private var scene: ArcGIS.Scene = makeScene()
     
     /// The population statistic selection of the picker.
     @State private var statisticSelection = Statistic.totalPopulation
     
-    /// A Boolean value indicating whether to show an error alert.
-    @State private var isShowingAlert = false
-    
-    /// The error shown in the alert.
-    @State private var error: Error? {
-        didSet { isShowingAlert = error != nil }
+    /// The feature layer on the scene.
+    private var featureLayer: FeatureLayer {
+        scene.operationalLayers.last as! FeatureLayer
     }
     
     var body: some View {
         VStack {
             SceneView(scene: scene)
-                .task {
-                    do {
-                        // Create service feature table from US census feature service.
-                        let featureTable = ServiceFeatureTable(url: .censusMapStates)
-                        try await featureTable.load()
-                        
-                        // Create feature layer from service feature table.
-                        let featureLayer = FeatureLayer(featureTable: featureTable)
-                        
-                        // Feature layer must be rendered dynamically for extrusion to work.
-                        featureLayer.renderingMode = .dynamic
-                        
-                        // Set the renderer scene properties.
-                        renderer.sceneProperties.extrusionMode = .baseHeight
-                        renderer.sceneProperties.extrusionExpression = Statistic.totalPopulation.extrusionExpression
-                        
-                        // Set the renderer on the layer and add the layer to the scene.
-                        featureLayer.renderer = renderer
-                        scene.addOperationalLayer(featureLayer)
-                    } catch {
-                        // Present error if the feature table fails to load.
-                        self.error = error
-                    }
-                }
-                .alert(isPresented: $isShowingAlert, presentingError: error)
             
             // Unit system picker.
             Picker("", selection: $statisticSelection) {
-                Text("Total Population").tag(Statistic.totalPopulation)
-                Text("Population Density").tag(Statistic.populationDensity)
+                ForEach(Statistic.allCases, id: \.self) { stat in
+                    Text(stat.label)
+                }
             }
             .pickerStyle(.segmented)
             .padding()
-            .onChange(of: statisticSelection) { _ in
-                if let statistic = Statistic(rawValue: statisticSelection.rawValue) {
-                    renderer.sceneProperties.extrusionExpression = statistic.extrusionExpression
-                }
+            .onChange(of: statisticSelection) { newValue in
+                featureLayer.renderer?.sceneProperties.extrusionExpression = newValue.extrusionExpression
             }
         }
     }
 }
 
 private extension ShowExtrudedFeaturesView {
+    /// Creates a scene with a feature layer.
+    /// - Returns: A new `ArcGIS.Scene` object.
+    private static func makeScene() -> ArcGIS.Scene {
+        let scene = Scene(basemapStyle: .arcGISTopographic)
+        
+        // Set the scene view's viewpoint specified by the camera position.
+        let point = Point(x: -99.659448, y: 20.513652, z: 12_940_924.0, spatialReference: .wgs84)
+        let camera = Camera(lookingAt: point, distance: 0, heading: 0, pitch: 15, roll: 0)
+        scene.initialViewpoint = Viewpoint(center: point, scale: .nan, camera: camera)
+        
+        // Add the extruded feature layer to the scene.
+        scene.addOperationalLayer(makeFeatureLayer())
+        return scene
+    }
+    
+    /// Creates a feature layer from the US census feature service.
+    /// - Returns: A new `FeatureLayer`
+    private static func makeFeatureLayer() -> FeatureLayer {
+        let featureTable = ServiceFeatureTable(url: .censusMapStates)
+        let featureLayer = FeatureLayer(featureTable: featureTable)
+        
+        // Feature layer must be rendered dynamically for extrusion to work.
+        featureLayer.renderingMode = .dynamic
+        
+        // Set the symbol used to display the features (US states) from the table.
+        let fillSymbol = SimpleFillSymbol(
+            style: .solid,
+            color: .blue,
+            outline: SimpleLineSymbol(color: .white.withAlphaComponent(0.5))
+        )
+        let renderer = SimpleRenderer(symbol: fillSymbol)
+        
+        // Set the renderer scene properties.
+        renderer.sceneProperties.extrusionMode = .baseHeight
+        renderer.sceneProperties.extrusionExpression = Statistic.totalPopulation.extrusionExpression
+        
+        // Set the renderer on the layer.
+        featureLayer.renderer = renderer
+        return featureLayer
+    }
+}
+
+private extension ShowExtrudedFeaturesView {
     /// A enum for the different population statistics.
-    enum Statistic: Int {
+    enum Statistic: CaseIterable {
         case totalPopulation
         case populationDensity
+        
+        /// A human-readable label for the statistic.
+        var label: String {
+            switch self {
+            case .totalPopulation:
+                return "Total Population"
+            case .populationDensity:
+                return "Population Density"
+            }
+        }
         
         /// The extrusion expression for the statistic.
         var extrusionExpression: String {
