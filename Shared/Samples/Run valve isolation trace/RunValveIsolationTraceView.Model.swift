@@ -139,7 +139,7 @@ extension RunValveIsolationTraceView {
         /// Load the utility network.
         @MainActor
         private func loadUtilityNetwork() async throws {
-            try? await utilityNetwork.load()
+            try await utilityNetwork.load()
             statusText = """
                             Utility network loaded.
                             Tap on the map to add filter barriers or run the trace directly without filter barriers.
