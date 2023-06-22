@@ -29,9 +29,9 @@ struct ShowViewshedFromGeoelementInSceneView: View {
             graphicsOverlays: [model.graphicsOverlay],
             analysisOverlays: [model.analysisOverlay]
         )
-        .onSingleTapGesture { _, mapPoint in
+        .onSingleTapGesture { _, scenePoint in
             // Start a timer to animate the tank moving towards the new waypoint.
-            model.waypoint = mapPoint
+            model.waypoint = scenePoint
             animationTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
                 model.animate()
                 if model.waypoint == nil {
@@ -78,11 +78,10 @@ private extension ShowViewshedFromGeoelementInSceneView {
             // Set up the heading expression for the tank.
             let renderer3D = SimpleRenderer()
             let sceneProperties = RendererSceneProperties(
-                headingExpression: "[heading] + 90",
+                headingExpression: "[heading]",
                 pitchExpression: "[pitch]",
                 rollExpression: "[roll]"
             )
-            sceneProperties.headingExpression = "[HEADING]"
             renderer3D.sceneProperties = sceneProperties
             graphicsOverlay.renderer = renderer3D
             
@@ -98,8 +97,8 @@ private extension ShowViewshedFromGeoelementInSceneView {
             tankSymbol.heading = 90
             tankSymbol.anchorPosition = .bottom
             let tankGraphic = Graphic(
-                geometry: Point(x: -4.506390, y: 48.385624, spatialReference: .wgs84),
-                attributes: ["HEADING": 0.0],
+                geometry: Point(latitude: 48.385624, longitude: -4.506390),
+                attributes: ["heading": 0.0],
                 symbol: tankSymbol
             )
             return tankGraphic
@@ -163,11 +162,11 @@ private extension ShowViewshedFromGeoelementInSceneView {
             tankGraphic.geometry = locations.first
             
             // Set tank graphic heading.
-            if let heading = tankGraphic.attributes["HEADING"] as? Double {
+            if let heading = tankGraphic.attributes["heading"] as? Double {
                 // Divide by 10 to make the animation more smooth.
                 tankGraphic.setAttributeValue(
                     heading + ((distanceResult.azimuth1.value - heading) / 10),
-                    forKey: "HEADING"
+                    forKey: "heading"
                 )
             }
             
