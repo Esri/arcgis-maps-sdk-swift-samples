@@ -52,22 +52,15 @@ struct AnimateImagesWithImageOverlayView: View {
                         model.displayLink.isPaused.toggle()
                     }
                     Spacer()
-                    Button("Speed") {
-                        isShowingSpeedOptions = true
+                    Menu("Speed") {
+                        Picker("", selection: $model.displayLink.preferredFramesPerSecond) {
+                            Text("Slow").tag(15)
+                            Text("Medium").tag(30)
+                            Text("Fast").tag(60)
+                        }
                     }
                 }
                 .padding()
-            }
-        }
-        .confirmationDialog("Choose playback speed", isPresented: $isShowingSpeedOptions, titleVisibility: .visible) {
-            Button("Fast") {
-                model.displayLink.preferredFramesPerSecond = 60
-            }
-            Button("Medium") {
-                model.displayLink.preferredFramesPerSecond = 30
-            }
-            Button("Slow") {
-                model.displayLink.preferredFramesPerSecond = 15
             }
         }
     }
@@ -83,7 +76,7 @@ private extension AnimateImagesWithImageOverlayView {
             let point = Point(x: -116.621, y: 24.7773, z: 856977.0, spatialReference: .wgs84)
             let camera = Camera(location: point, heading: 353.994, pitch: 48.5495, roll: 0)
             scene.initialViewpoint = Viewpoint(latitude: .nan, longitude: .nan, scale: .nan, camera: camera)
-
+            
             // Add base surface from elevation service.
             let elevationSource = ArcGISTiledElevationSource(url: .worldElevationService)
             let surface = Surface()
