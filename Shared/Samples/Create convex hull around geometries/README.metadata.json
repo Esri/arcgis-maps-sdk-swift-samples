@@ -2,7 +2,9 @@
     "category": "Geometry",
     "description": "Generate convex hull polygon(s) from multiple input geometries.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "create-convex-hull-around-geometries.png"
+    ],
     "keywords": [
         "analysis",
         "geometry",
@@ -10,13 +12,11 @@
         "perimeter",
         "union",
         "GeometryEngine.ConvexHull",
-        "Graphic.ZIndex",
         "GraphicsOverlay"
     ],
     "redirect_from": [],
     "relevant_apis": [
         "GeometryEngine.ConvexHull",
-        "Graphic.ZIndex",
         "GraphicsOverlay"
     ],
     "snippets": [

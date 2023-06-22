@@ -10,19 +10,19 @@ Creating a convex hull allows for analysis to define the polygon with the least 
 
 ## How to use the sample
 
-Click the 'Create Convex Hull' button to create convex hull(s) from the polygon graphics. If the 'Union' checkbox is checked, the resulting output will be one polygon being the convex hull for the two input polygons. If the 'Union' checkbox is un-checked, the resulting output will have two convex hull polygons - one for each of the two input polygons. Click the 'Clear' button to start over.
+Tap on the "Create" button to create convex hull(s) from the polygon graphics. If the 'Union' toggle is on, the resulting output will be one polygon being the convex hull for the two input polygons. If the 'Union' toggle is off, the resulting output will have two convex hull polygons - one for each of the two input polygons. Tap "Reset" to start over and remove the convex hull(s).
+
 
 ## How it works
 
 1. Create an `Map` and display it in a `MapView`.
 2. Create two input polygon graphics and add them to a `GraphicsOverlay`.
-3. Call `GeometryEngine.convexHull(inputGeometries, boolean)`, specifying a list of geometries for which to generate the convex hull. Set the boolean parameter to `true` to generate a convex hull for the union of the geometries. Set it to `false` to create a convex hull for each individual geometry.
-4. Loop through the returned geometries and add them as graphics for display on the map.
+3. Call `GeometryEngine.convexHull(for:shouldMerge:)`, specifying a list of geometries for which to generate the convex hull. Set the `shouldMerge:` parameter to `true` to generate a convex hull for the union of the geometries. Set it to `false` to create a convex hull for each individual geometry.
+4. Loop through the returned geometries and add them to a Graphics Overlay to display on the map.
 
 ## Relevant API
 
 * GeometryEngine.ConvexHull
-* Graphic.ZIndex
 * GraphicsOverlay
 
 ## Tags

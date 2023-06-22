@@ -16,125 +16,84 @@ import ArcGIS
 import SwiftUI
 
 struct CreateConvexHullAroundGeometriesView: View {
-    /// The view model for the sample.
-    @StateObject private var model = Model()
+    /// A map with a topographic basemap.
+    @State private var map = Map(basemapStyle: .arcGISTopographic)
     
-    /// A Boolean value indicating whether the create button can be pressed.
-    @State private var createIsDisabled = true
+    /// The graphics overlay for the geometry graphics.
+    @State private var geometriesGraphicsOverlay: GraphicsOverlay = {
+        let polygonFillSymbol = SimpleFillSymbol(
+            style: .forwardDiagonal,
+            color: .systemBlue,
+            outline: SimpleLineSymbol(style: .solid, color: .blue, width: 2)
+        )
+        
+        // Create graphics for the example polygons.
+        let polygonGraphic1 = Graphic(geometry: .polygon1, symbol: polygonFillSymbol)
+        let polygonGraphic2 = Graphic(geometry: .polygon2, symbol: polygonFillSymbol)
+        return GraphicsOverlay(graphics: [polygonGraphic1, polygonGraphic2])
+    }()
     
-    /// A Boolean indicate whether the reset button can be pressed.
-    @State private var resetIsDisabled = true
+    /// The graphics overlay for the convex hull graphics.
+    @State private var convexHullGraphicsOverlay = GraphicsOverlay()
+    
+    /// A Boolean indicating whether the button is set to create.
+    @State private var createIsOn = true
+    
+    /// A Boolean indicating whether the convex hull geometries should union.
+    @State private var shouldUnion = false
     
     var body: some View {
-        // Create a map view to display the map.
-        MapView(map: model.map, graphicsOverlays: model.graphicsOverlays)
-            .onSingleTapGesture { _, mapPoint in
-                model.inputPoints.append(mapPoint)
-                model.geometriesGraphicsOverlay.addGraphic(Graphic(geometry: mapPoint))
-                createIsDisabled = false
-                resetIsDisabled = false
-            }
+        MapView(map: map, graphicsOverlays: [convexHullGraphicsOverlay, geometriesGraphicsOverlay])
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
-                    Button("Create") {
-                        model.createConvexHull()
-                        createIsDisabled = true
+                    Toggle("Union", isOn: $shouldUnion)
+                        .toggleStyle(.switch)
+                        .onChange(of: shouldUnion) { _ in
+                            createConvexHulls()
+                        }
+                    Button(createIsOn ? "Create" : "Reset") {
+                        if createIsOn {
+                            createConvexHulls()
+                            createIsOn = false
+                        } else {
+                            convexHullGraphicsOverlay.removeAllGraphics()
+                            createIsOn = true
+                        }
                     }
-                    .disabled(createIsDisabled)
-                    Button("Reset") {
-                        model.convexHullGraphicsOverlay.removeAllGraphics()
-                        createIsDisabled = true
-                        resetIsDisabled = true
-                    }
-                    .disabled(resetIsDisabled)
                 }
             }
     }
 }
 
 private extension CreateConvexHullAroundGeometriesView {
-    /// The view model for this sample.
-    private class Model: ObservableObject {
-        /// A map with a topographic basemap.
-        let map = Map(basemapStyle: .arcGISTopographic)
+    /// Creates convex hulls from the example polygons.
+    func createConvexHulls() {
+        let convexHullGeometries = GeometryEngine.convexHull(
+            for: [
+                .polygon1,
+                .polygon2
+            ],
+            shouldMerge: shouldUnion
+        )
+        let convexHullFillSymbol = SimpleFillSymbol(
+            style: .noFill,
+            color: .systemBlue,
+            outline: SimpleLineSymbol(style: .solid, color: .red, width: 4)
+        )
         
-        /// An array of input points to be used in creating the convexHull.
-        var inputPoints: [Point] = []
-        
-        /// An array that contains the graphics overlays for the sample.
-        var graphicsOverlays: [GraphicsOverlay] {
-            return [geometriesGraphicsOverlay, convexHullGraphicsOverlay]
-        }
-        
-        /// The graphics overlay for the input points graphics.
-        let geometriesGraphicsOverlay: GraphicsOverlay = {
-            let polygonFillSymbol = SimpleFillSymbol(
-                style: .forwardDiagonal,
-                color: .systemBlue,
-                outline: SimpleLineSymbol(style: .solid, color: .blue, width: 2)
-            )
-            let polygonGraphic1 = Graphic(
-                geometry: .polygon1,
-                symbol: polygonFillSymbol
-            )
-            polygonGraphic1.zIndex = 1
-            let polygonGraphic2 = Graphic(
-                geometry: .polygon2,
-                symbol: polygonFillSymbol
-            )
-            polygonGraphic2.zIndex = 1
-            return GraphicsOverlay(graphics: [polygonGraphic1, polygonGraphic2])
-        }()
-        
-        /// The graphics overlay for the convex hull graphic.
-        let convexHullGraphicsOverlay = GraphicsOverlay()
-        
-        /// A red simple marker symbol to display where the user tapped on the map.
-        private let markerSymbol: SimpleMarkerSymbol
-        
-        /// A blue simple line symbol for the outline of the convex hull graphic.
-        private let lineSymbol: SimpleLineSymbol
-        
-        /// A hollow polygon simple fill symbol for the convex hull graphic.
-        private var fillSymbol: SimpleFillSymbol
-        
-        init() {
-            markerSymbol = SimpleMarkerSymbol(style: .circle, color: .red, size: 10)
-            lineSymbol = SimpleLineSymbol(style: .solid, color: .blue, width: 4)
-            fillSymbol = SimpleFillSymbol(style: .noFill, outline: lineSymbol)
-        }
-        
-        /// Create the convex hull graphic using the inputPoints.
-        func createConvexHull() {
-            // Normalize points and create convex hull geometry.
-            if let normalizedPoints = GeometryEngine.normalizeCentralMeridian(of: Multipoint(points: inputPoints)),
-               let convexHullGeometry = GeometryEngine.convexHull(for: normalizedPoints) {
-                // Set the symbol depending on the geometry type of the convex hull.
-                let symbol: Symbol?
-                switch convexHullGeometry {
-                case is Point:
-                    symbol = markerSymbol
-                case is Polyline:
-                    symbol = lineSymbol
-                case is ArcGIS.Polygon:
-                    symbol = fillSymbol
-                default:
-                    symbol = nil
-                }
-                
-                // Remove the existing graphic for convex hull.
-                convexHullGraphicsOverlay.removeAllGraphics()
-                
-                // Create the convex hull graphic.
-                let convexHullGraphic = Graphic(geometry: convexHullGeometry, symbol: symbol)
-                convexHullGraphicsOverlay.addGraphic(convexHullGraphic)
-            }
+        // Create and add graphic to graphics overlay for each geometry.
+        convexHullGraphicsOverlay.removeAllGraphics()
+        for geometry in convexHullGeometries {
+            let convexHullGraphic = Graphic(geometry: geometry, symbol: convexHullFillSymbol)
+            // Set Z index so convex hull appears below geometries
+            convexHullGraphic.zIndex = 0
+            convexHullGraphicsOverlay.addGraphic(convexHullGraphic)
         }
     }
 }
 
 private extension Geometry {
-    /// An example polygon.
+    /// Example polygon 1.
     static let polygon1: ArcGIS.Polygon = Polygon(
         points: [
             Point(x: -4983189.15470412, y: 8679428.55774286),
@@ -153,7 +112,7 @@ private extension Geometry {
         spatialReference: .webMercator
     )
     
-    /// An example polygon.
+    /// Example polygon 2.
     static let polygon2: ArcGIS.Polygon = Polygon(
         points: [
             Point(x: 5993520.19456882, y: -1063938.49607736),
