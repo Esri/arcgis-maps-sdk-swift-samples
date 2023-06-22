@@ -30,7 +30,7 @@ struct ShowExtrudedFeaturesView: View {
     }()
     
     /// The renderer of the feature layer.
-    @State private var renderer: SimpleRenderer = {
+    let renderer: SimpleRenderer = {
         // Setup the symbols used to display the features (US states) from the table.
         let lineSymbol = SimpleLineSymbol(style: .solid, color: .blue, width: 1.0)
         let fillSymbol = SimpleFillSymbol(style: .solid, color: .blue, outline: lineSymbol)
@@ -84,8 +84,9 @@ struct ShowExtrudedFeaturesView: View {
             }
             .pickerStyle(.segmented)
             .padding()
-            .onChange(of: statisticSelection) { newValue in
-                featureLayer.renderer?.sceneProperties.extrusionExpression = newValue.extrusionExpression
+            .onChange(of: statisticSelection) { _ in
+                if let statistic = Statistic(rawValue: statisticSelection.rawValue) {
+                    renderer.sceneProperties.extrusionExpression = statistic.extrusionExpression
                 }
             }
         }
