@@ -78,12 +78,12 @@ private extension AnimateImagesWithImageOverlayView {
     class Model: ObservableObject {
         /// A scene with a dark gray base and centered on southern California.
         let scene: ArcGIS.Scene = {
-            // Creates a scene and sets an initial viewpoint.
+            // Creates a scene and set an initial viewpoint.
             let scene = Scene(basemapStyle: .arcGISDarkGrayBase)
             let point = Point(x: -116.621, y: 24.7773, z: 856977.0, spatialReference: .wgs84)
             let camera = Camera(location: point, heading: 353.994, pitch: 48.5495, roll: 0)
-            scene.initialViewpoint = Viewpoint(boundingGeometry: point, camera: camera)
-            
+            scene.initialViewpoint = Viewpoint(latitude: .nan, longitude: .nan, scale: .nan, camera: camera)
+
             // Add base surface from elevation service.
             let elevationSource = ArcGISTiledElevationSource(url: .worldElevationService)
             let surface = Surface()
