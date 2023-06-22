@@ -42,7 +42,7 @@ struct AnimateImagesWithImageOverlayView: View {
                     Slider(value: $model.imageOverlay.opacity, in: 0.0...1.0, step: 0.01)
                     VStack {
                         Text("Opacity")
-                        Text(model.percentageFormatter.string(from: model.imageOverlay.opacity as NSNumber)!)
+                        Text(model.imageOverlay.opacity, format: .percent.precision(.fractionLength(0)))
                     }
                 }
                 .padding([.top, .horizontal])
@@ -111,14 +111,6 @@ private extension AnimateImagesWithImageOverlayView {
             width: 15.09589635986124,
             height: -14.3770441522488
         )
-        
-        /// A formatter to format percentage strings.
-        let percentageFormatter: NumberFormatter = {
-            let formatter = NumberFormatter()
-            formatter.numberStyle = .percent
-            formatter.multiplier = 100
-            return formatter
-        }()
         
         /// The image overlay to show image frames.
         @Published var imageOverlay: ImageOverlay = {
