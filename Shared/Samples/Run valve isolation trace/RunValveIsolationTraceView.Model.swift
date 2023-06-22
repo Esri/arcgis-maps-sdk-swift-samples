@@ -30,9 +30,6 @@ extension RunValveIsolationTraceView {
         /// The service geodatabase feature layers.
         private var layers: [FeatureLayer] = []
         
-        /// The last locations in the screen and map where a tap occurred.
-        @Published var lastSingleTap: (screenPoint: CGPoint, mapPoint: Point)?
-        
         /// The last element that was added to the list of filter barriers.
         ///
         /// When an element contains more than one terminal, the user should be presented with the
@@ -305,7 +302,8 @@ extension RunValveIsolationTraceView {
         ///   - feature: The geo element retrieved as a `Feature`.
         ///   - location: The `Point` used to identify utility elements in the utility network.
         func addFilterBarrier(for feature: ArcGISFeature, at location: Point) {
-            guard let geometry = feature.geometry,
+            guard !resetEnabled,
+                  let geometry = feature.geometry,
                   let element = utilityNetwork.makeElement(arcGISFeature: feature) else { return }
             
             switch element.networkSource.kind {
@@ -341,13 +339,13 @@ extension RunValveIsolationTraceView {
         }
         
         /// Adds the filter barrier of the user selected terminal to the trace parameters.
-        func addTerminal() {
-            if let terminal = lastAddedElement?.terminal, let lastAddedElement, let lastSingleTap {
+        func addTerminal(to point: Point) {
+            if let terminal = lastAddedElement?.terminal, let lastAddedElement {
                 traceParameters.addFilterBarrier(lastAddedElement)
                 statusText = "Juntion element with terminal \(terminal.name) added to the filter barriers."
                 hasFilterBarriers = true
                 addGraphic(
-                    for: lastSingleTap.mapPoint,
+                    for: point,
                     traceLocationType: RunValveIsolationTraceView.Model.filterBarrierIdentifier
                 )
             }
