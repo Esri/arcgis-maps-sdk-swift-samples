@@ -1,0 +1,27 @@
+{
+    "category": "Maps",
+    "description": "Display a web map.",
+    "ignore": false,
+    "images": [
+        "display-map-from-portal-item.png"
+    ],
+    "keywords": [
+        "portal item",
+        "web map",
+        "Map",
+        "MapView",
+        "Portal",
+        "PortalItem"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Map",
+        "MapView",
+        "Portal",
+        "PortalItem"
+    ],
+    "snippets": [
+        "DisplayMapFromPortalItemView.swift"
+    ],
+    "title": "Display map from portal item"
+}
