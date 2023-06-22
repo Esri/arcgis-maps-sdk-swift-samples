@@ -27,7 +27,7 @@ The sample loads a map of the Southwestern United States. Tap the "Start" or "St
 
 ## About the data
 
-These radar images were captured by the US National Weather Service (NWS). They highlight the Pacific Southwest sector which is made up of part the western United States and Mexico. For more information visit the [National Weather Service](https://www.weather.gov/jetstream/gis) website. The archive for radar images can be downloaded from [ArcGIS Online](https://runtime.maps.arcgis.com/home/item.html?id=d1453556d91e46dea191c20c398b82cd).
+These radar images were captured by the US National Weather Service (NWS). They highlight the Pacific Southwest sector which is made up of part the western United States and Mexico. For more information visit the [NOAA Jetstream](https://www.noaa.gov/jetstream) website. The archive for radar images can be downloaded from [ArcGIS Online](https://arcgis.com/home/item.html?id=d1453556d91e46dea191c20c398b82cd).
 
 ## Additional information
 

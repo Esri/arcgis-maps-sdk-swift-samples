@@ -113,9 +113,6 @@ private extension AnimateImagesWithImageOverlayView {
             return formatter
         }()
         
-        /// The frame rate speed of the image overlay
-        @Published var fpsSpeed = 30
-        
         /// The image overlay to show image frames.
         @Published var imageOverlay: ImageOverlay = {
             let imageOverlay = ImageOverlay()
@@ -136,7 +133,7 @@ private extension AnimateImagesWithImageOverlayView {
             displayLink = newDisplayLink
         }
         
-        /// Set the image frame to the next one.
+        /// Sets the image frame to the next one.
         @objc
         func setImageFrame() {
             if let image = imagesIterator.next() {
