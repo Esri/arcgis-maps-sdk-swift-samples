@@ -105,6 +105,13 @@ private extension AnimateImagesWithImageOverlayView {
             return CircularIterator(elements: images)
         }()
         
+        /// An envelope of the pacific southwest sector for displaying the image frame.
+        private let pacificSouthwestEnvelope = Envelope(
+            center: Point(latitude: 35.131016955536694, longitude: -120.0724273439448),
+            width: 15.09589635986124,
+            height: -14.3770441522488
+        )
+        
         /// A formatter to format percentage strings.
         let percentageFormatter: NumberFormatter = {
             let formatter = NumberFormatter()
@@ -137,7 +144,7 @@ private extension AnimateImagesWithImageOverlayView {
         @objc
         func setImageFrame() {
             if let image = imagesIterator.next() {
-                let frame = ImageFrame(image: image, extent: .pacificSouthwestExtent)
+                let frame = ImageFrame(image: image, extent: pacificSouthwestEnvelope)
                 imageOverlay.imageFrame = frame
             }
         }
@@ -168,15 +175,6 @@ private extension AnimateImagesWithImageOverlayView {
             }
         }
     }
-}
-
-private extension Envelope {
-    /// An envelope of the pacific southwest sector for displaying the image frame.
-    static var pacificSouthwestExtent = Envelope(
-        center: Point(latitude: 35.131016955536694, longitude: -120.0724273439448),
-        width: 15.09589635986124,
-        height: -14.3770441522488
-    )
 }
 
 private extension URL {
