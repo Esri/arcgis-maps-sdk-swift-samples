@@ -104,7 +104,7 @@ struct RunValveIsolationTraceView: View {
                     } header: {
                         Text("Category")
                     } footer: {
-                        Text("Choose a category to run the valve isolation trace. The selected utility category defines constraints and conditions based upon specific characteristics of asset types in the utility network")
+                        Text("Choose a category to run the valve isolation trace. The selected utility category defines constraints and conditions based upon specific characteristics of asset types in the utility network.")
                     }
                     Section {
                         Toggle(isOn: $model.includesIsolatedFeatures) {
