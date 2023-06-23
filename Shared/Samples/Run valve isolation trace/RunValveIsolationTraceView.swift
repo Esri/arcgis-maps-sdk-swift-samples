@@ -108,6 +108,8 @@ struct RunValveIsolationTraceView: View {
                         Toggle(isOn: $model.includesIsolatedFeatures) {
                             Text("Include Isolated Features")
                         }
+                    } header: {
+                        Text("Other Options")
                     } footer: {
                         Text("Choose whether or not the trace should include isolated features. This means that...")
                     }
