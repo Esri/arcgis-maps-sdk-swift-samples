@@ -52,6 +52,9 @@ extension RunValveIsolationTraceView {
         /// The selected filter barrier category.
         @Published var selectedCategory: UtilityCategory?
         
+        /// The previously selected filter barrier category.
+        @Published var previousCategory: UtilityCategory?
+        
         /// A Boolean value indicating whether to include isolated features in the
         /// trace results when used in conjunction with an isolation trace.
         @Published var includesIsolatedFeatures = true
@@ -211,8 +214,17 @@ extension RunValveIsolationTraceView {
         /// Sets the selected filter barrier category and updates the status text.
         func selectCategory(_ category: UtilityCategory) {
             selectedCategory = category
+            previousCategory = category
             statusText = "\(category.name) selected."
             traceEnabled = true
+        }
+        
+        /// Unselects the selected filter barrier category and updates the status text.
+        func unselectCategory(_ category: UtilityCategory) {
+            selectedCategory = nil
+            previousCategory = nil
+            traceEnabled = hasFilterBarriers
+            statusText = "Tap on the map to add filter barriers, or run the trace directly without filter barriers."
         }
         
         /// Runs a trace with the pending trace configuration and selects features in the map that

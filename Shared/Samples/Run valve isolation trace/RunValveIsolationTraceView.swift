@@ -93,7 +93,11 @@ struct RunValveIsolationTraceView: View {
                             // tappable.
                             .contentShape(Rectangle())
                             .onTapGesture {
-                                model.selectCategory(category)
+                                if category.name == model.previousCategory?.name {
+                                    model.unselectCategory(category)
+                                } else {
+                                    model.selectCategory(category)
+                                }
                             }
                         }
                     } header: {
