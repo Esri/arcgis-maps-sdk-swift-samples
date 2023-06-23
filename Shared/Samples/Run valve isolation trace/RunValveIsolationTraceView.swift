@@ -59,30 +59,42 @@ struct RunValveIsolationTraceView: View {
             }
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
-                    Toggle("Isolated\nFeatures", isOn: $model.includesIsolatedFeatures)
-                        .toggleStyle(.switch)
-                        .disabled(model.traceCompleted)
-                    Spacer()
-                    Menu(model.selectedCategory?.name ?? "Category") {
-                        ForEach(model.filterBarrierCategories, id: \.self) { category in
-                            Button(category.name) {
-                                model.selectCategory(category)
+                    VStack {
+                        HStack {
+                            Menu(model.selectedCategory?.name ?? "Category") {
+                                ForEach(model.filterBarrierCategories, id: \.self) { category in
+                                    Button(category.name) {
+                                        model.selectCategory(category)
+                                    }
+                                }
                             }
+                            .disabled(model.traceCompleted)
+                            Spacer()
+                            Button {
+                                if model.traceEnabled {
+                                    Task { try await model.trace() }
+                                } else {
+                                    model.reset()
+                                    Task { await mapViewProxy.setViewpointCenter(model.startingLocationPoint, scale: 3_000) }
+                                }
+                            } label: {
+                                Text(model.traceEnabled ? "Trace" : "Reset")
+                            }
+                            .disabled(!model.traceEnabled && !model.resetEnabled)
                         }
-                    }
-                    .disabled(model.traceCompleted)
-                    Spacer()
-                    Button {
-                        if model.traceEnabled {
-                            Task { try await model.trace() }
-                        } else {
-                            model.reset()
-                            Task { await mapViewProxy.setViewpointCenter(model.startingLocationPoint, scale: 3_000) }
+                        .padding([.top], 10)
+                        
+                        HStack {
+                            Toggle("", isOn: $model.includesIsolatedFeatures)
+                                .toggleStyle(.switch)
+                                .disabled(model.traceCompleted)
+                                .labelsHidden()
+                                .frame(alignment: .leading)
+                            Text("Include Isolated Features")
+                            Spacer()
                         }
-                    } label: {
-                        Text(model.traceEnabled ? "Trace" : "Reset")
+                        .padding([.bottom], 10)
                     }
-                    .disabled(!model.traceEnabled && !model.resetEnabled)
                 }
             }
             .overlay(alignment: .center) {
