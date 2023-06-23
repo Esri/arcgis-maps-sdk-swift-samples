@@ -83,8 +83,8 @@ struct ManageOperationalLayersView: View {
                             ForEach(operationalLayers, id: \.name) { layer in
                                 Text(layer.name)
                             }
-                            .onMove {
-                                operationalLayers.move(fromOffsets: $0, toOffset: $1)
+                            .onMove { fromOffsets, toOffset in
+                                operationalLayers.move(fromOffsets: fromOffsets, toOffset: toOffset)
                                 map.removeAllOperationalLayers()
                                 map.addOperationalLayers(operationalLayers)
                             }
