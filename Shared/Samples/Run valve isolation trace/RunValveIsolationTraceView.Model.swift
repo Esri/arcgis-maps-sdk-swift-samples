@@ -255,19 +255,22 @@ extension RunValveIsolationTraceView {
         
         /// Resets the state values for when a trace is cancelled or completed.
         func reset() {
-            precondition(traceCompleted, "Trace must be completed.")
-            // Reset the trace if it is already completed.
             layers.forEach { $0.clearSelection() }
             traceParameters.removeAllBarriers()
-            hasFilterBarriers = false
             parametersOverlay.removeAllGraphics()
-            traceCompleted = false
-            traceEnabled = false
-            resetEnabled = false
-            selectedCategory = nil
             // Add back the starting location.
             addGraphic(for: startingLocationPoint, traceLocationType: "starting point")
             statusText = "Tap on the map to add filter barriers, or run the trace directly without filter barriers."
+            hasFilterBarriers = false
+            resetEnabled = false
+            if traceCompleted {
+                // Reset the trace if it is already completed.
+                traceCompleted = false
+                traceEnabled = false
+                selectedCategory = nil
+            } else {
+                traceEnabled = selectedCategory != nil ? true : false
+            }
         }
         
         /// Get the utility tier's trace configuration and apply category comparison.
@@ -302,7 +305,7 @@ extension RunValveIsolationTraceView {
         ///   - feature: The geo element retrieved as a `Feature`.
         ///   - location: The `Point` used to identify utility elements in the utility network.
         func addFilterBarrier(for feature: ArcGISFeature, at location: Point) {
-            guard !resetEnabled,
+            guard !traceCompleted,
                   let geometry = feature.geometry,
                   let element = utilityNetwork.makeElement(arcGISFeature: feature) else { return }
             
@@ -337,6 +340,7 @@ extension RunValveIsolationTraceView {
             let point = geometry as? Point ?? location
             addGraphic(for: point, traceLocationType: RunValveIsolationTraceView.Model.filterBarrierIdentifier)
             traceEnabled = true
+            resetEnabled = true
             hasFilterBarriers = true
         }
         
@@ -346,6 +350,7 @@ extension RunValveIsolationTraceView {
                 traceParameters.addFilterBarrier(lastAddedElement)
                 statusText = "Juntion element with terminal \(terminal.name) added to the filter barriers."
                 hasFilterBarriers = true
+                traceEnabled = true
                 addGraphic(
                     for: point,
                     traceLocationType: RunValveIsolationTraceView.Model.filterBarrierIdentifier
