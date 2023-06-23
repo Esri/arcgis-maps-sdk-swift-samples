@@ -122,7 +122,7 @@ struct RunValveIsolationTraceView: View {
             .overlay(alignment: .center) {
                 if model.tracingActivity != .none {
                     VStack {
-                        Text(model.tracingActivity.description)
+                        Text(model.tracingActivity.label)
                         ProgressView()
                             .progressViewStyle(.circular)
                     }

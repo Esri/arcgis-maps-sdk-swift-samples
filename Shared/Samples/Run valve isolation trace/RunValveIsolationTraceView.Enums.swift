@@ -14,11 +14,11 @@
 
 extension RunValveIsolationTraceView {
     /// The different states of a utility network trace.
-    enum TracingActivity: CaseIterable, CustomStringConvertible {
+    enum TracingActivity: CaseIterable {
         case loadingServiceGeodatabase, loadingNetwork, startingLocation, runningTrace, none
         
         /// A human-readable label for the tracing activity.
-        var description: String {
+        var label: String {
             switch self {
             case .loadingServiceGeodatabase: return "Loading service geodatabase…"
             case .loadingNetwork: return "Loading utility network…"
