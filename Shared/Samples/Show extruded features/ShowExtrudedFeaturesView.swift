@@ -32,7 +32,7 @@ struct ShowExtrudedFeaturesView: View {
             SceneView(scene: scene)
             
             // Unit system picker.
-            Picker("", selection: $statisticSelection) {
+            Picker("Statistic", selection: $statisticSelection) {
                 ForEach(Statistic.allCases, id: \.self) { stat in
                     Text(stat.label)
                 }
