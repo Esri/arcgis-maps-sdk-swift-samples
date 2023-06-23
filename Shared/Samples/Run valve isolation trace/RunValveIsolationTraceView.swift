@@ -81,7 +81,7 @@ struct RunValveIsolationTraceView: View {
             }
             .sheet(isPresented: $isConfigurationPresented) {
                 Form {
-                    Section("Category") {
+                    Section {
                         List(model.filterBarrierCategories, id: \.self, selection: $model.selectedCategory) { category in
                             HStack {
                                 Text(category.name)
@@ -99,9 +99,17 @@ struct RunValveIsolationTraceView: View {
                             }
                         }
                         .disabled(model.traceCompleted)
+                    } header: {
+                        Text("Category")
+                    } footer: {
+                        Text("Choose a category to run the valve isolation trace... This means that... more instructions here...")
                     }
-                    Toggle(isOn: $model.includesIsolatedFeatures) {
-                        Text("Include Isolated Features")
+                    Section {
+                        Toggle(isOn: $model.includesIsolatedFeatures) {
+                            Text("Include Isolated Features")
+                        }
+                    } footer: {
+                        Text("Choose whether or not the trace should include isolated features. This means that...")
                     }
                     .toggleStyle(.switch)
                     .disabled(model.traceCompleted)
