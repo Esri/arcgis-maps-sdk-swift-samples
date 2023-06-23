@@ -26,7 +26,6 @@ Tap the bottom buttons to switch between using population density and total popu
 * FeatureLayer
 * RendererSceneProperties
 * RendererSceneProperties.ExtrusionMode
-* SceneProperties
 * ServiceFeatureTable
 * SimpleRenderer
 
