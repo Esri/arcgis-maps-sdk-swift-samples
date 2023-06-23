@@ -55,11 +55,8 @@ struct MeasureDistanceInSceneView: View {
                         }
                     }
                     .onDragGesture { _, _ in
-                        if model.locationDistanceMeasurement.startLocation == model.locationDistanceMeasurement.endLocation {
-                            return true
-                        } else {
-                            return false
-                        }
+                        // Drag gesture is active when user has first set the start location.
+                        return model.locationDistanceMeasurement.startLocation == model.locationDistanceMeasurement.endLocation
                     } onChanged: { screenPoint, _ in
                         // Move the end location on drag gesture.
                         Task {
