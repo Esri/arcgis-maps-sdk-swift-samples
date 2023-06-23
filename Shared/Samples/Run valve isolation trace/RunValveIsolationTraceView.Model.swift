@@ -249,6 +249,7 @@ extension RunValveIsolationTraceView {
             configurationSheetDisabled = false
             traceEnabled = true
             traceCompleted = true
+            resetEnabled = true
             do {
                 for result in traceResults {
                     let groups = Dictionary(grouping: result.elements, by: \.networkSource.name)
@@ -271,6 +272,7 @@ extension RunValveIsolationTraceView {
         
         /// Removes all added filter barriers.
         func reset() {
+            layers.forEach { $0.clearSelection() }
             traceParameters.removeAllBarriers()
             parametersOverlay.removeAllGraphics()
             // Add back the starting location.
