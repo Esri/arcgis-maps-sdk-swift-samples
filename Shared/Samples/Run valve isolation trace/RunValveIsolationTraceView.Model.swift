@@ -211,12 +211,7 @@ extension RunValveIsolationTraceView {
         func trace() async throws {
             tracingActivity = .runningTrace
             
-            guard let configuration = makeTraceConfiguration(category: selectedCategory) else {
-                statusText = "Failed to get trace configuration."
-                tracingActivity = .none
-                resetEnabled = true
-                return
-            }
+            let configuration = makeTraceConfiguration(category: selectedCategory)
             traceParameters.traceConfiguration = configuration
             var traceResults = [UtilityElementTraceResult]()
             do {
@@ -227,6 +222,7 @@ extension RunValveIsolationTraceView {
                 statusText = "Trace failed."
                 traceEnabled = true
                 traceCompleted = false
+                throw error
             }
             traceEnabled = false
             traceCompleted = true
@@ -271,7 +267,7 @@ extension RunValveIsolationTraceView {
         }
         
         /// Get the utility tier's trace configuration and apply category comparison.
-        private func makeTraceConfiguration(category: UtilityCategory?) -> UtilityTraceConfiguration? {
+        private func makeTraceConfiguration(category: UtilityCategory?) -> UtilityTraceConfiguration {
             // Get a default trace configuration from a tier in the network.
             guard let configuration = utilityNetwork
                 .definition?
