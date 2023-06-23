@@ -37,16 +37,12 @@ struct RunValveIsolationTraceView: View {
             .overlay(alignment: .top) {
                 Text(model.statusText)
                     .frame(maxWidth: .infinity, alignment: .center)
-                    .padding(8)
+                    .padding(10)
                     .background(.ultraThinMaterial, ignoresSafeAreaEdges: .horizontal)
                     .multilineTextAlignment(.center)
             }
             .task {
-                do {
-                    try await model.setup()
-                } catch {
-                    model.statusText = error.localizedDescription
-                }
+                await model.setup()
                 await mapViewProxy.setViewpointCenter(model.startingLocationPoint, scale: 3_000)
             }
             .task(id: lastSingleTap?.mapPoint) {
@@ -67,10 +63,10 @@ struct RunValveIsolationTraceView: View {
                     } label: {
                         Text("Configuration")
                     }
-                    .disabled(model.traceCompleted)
+                    .disabled(model.configurationSheetDisabled)
                     Spacer()
                     Button("Trace") {
-                        Task { try await model.trace() }
+                        Task { await model.trace() }
                     }
                     .disabled(!model.traceEnabled)
                     Spacer()

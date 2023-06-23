@@ -74,6 +74,9 @@ extension RunValveIsolationTraceView {
         /// A Boolean value indicating whether the terminal selection menu is open.
         @Published var terminalSelectorIsOpen = false
         
+        /// A Boolean value indicating whether the configuration sheet is disabled.
+        @Published var configurationSheetDisabled = false
+        
         /// The status text to display to the user.
         @Published var statusText: String = "Loading Utility Network…"
         
@@ -110,10 +113,14 @@ extension RunValveIsolationTraceView {
         }
         
         /// Performs important tasks including adding credentials, loading and adding operational layers.
-        func setup() async throws {
-            try await ArcGISEnvironment.authenticationManager.arcGISCredentialStore.add(.publicSample)
-            try await loadServiceGeodatabase()
-            try await loadUtilityNetwork()
+        func setup() async {
+            do {
+                try await ArcGISEnvironment.authenticationManager.arcGISCredentialStore.add(.publicSample)
+                try await loadServiceGeodatabase()
+                try await loadUtilityNetwork()
+            } catch {
+                statusText = error.localizedDescription
+            }
         }
         
         /// Load the service geodatabase and initialize the layers.
@@ -141,8 +148,7 @@ extension RunValveIsolationTraceView {
         private func loadUtilityNetwork() async throws {
             try await utilityNetwork.load()
             statusText = """
-                            Utility network loaded.
-                            Tap on the map to add filter barriers or run the trace directly without filter barriers.
+                            Tap on the map to add filter barriers or run the trace directly without filter barriers by specifying a category through the 'Configuration' menu.
                         """
             tracingActivity = .startingLocation
             if let startingLocation = makeStartingLocation() {
@@ -212,8 +218,9 @@ extension RunValveIsolationTraceView {
         /// Runs a trace with the pending trace configuration and selects features in the map that
         /// correspond to the element results.
         @MainActor
-        func trace() async throws {
+        func trace() async {
             tracingActivity = .runningTrace
+            configurationSheetDisabled = true
             
             let configuration = makeTraceConfiguration(category: selectedCategory)
             traceParameters.traceConfiguration = configuration
@@ -226,31 +233,36 @@ extension RunValveIsolationTraceView {
                 statusText = "Trace failed."
                 traceEnabled = true
                 traceCompleted = false
-                throw error
+                configurationSheetDisabled = false
+                return
             }
-            traceEnabled = false
-            traceCompleted = true
             if !hasFilterBarriers, let selectedCategory {
                 statusText = "Trace with \(selectedCategory.name.lowercased()) category completed."
             } else {
                 statusText = "Trace with filter barriers completed."
             }
             tracingActivity = .none
-            
-            for result in traceResults {
-                let groups = Dictionary(grouping: result.elements, by: \.networkSource.name)
-                if groups.isEmpty {
-                    statusText = "Trace completed with no output."
-                }
-                for (networkName, elements) in groups {
-                    guard let layer = map.operationalLayers.first(
-                        where: { ($0 as? FeatureLayer)?.featureTable?.tableName == networkName }
-                    ) as? FeatureLayer else { continue }
-                    let features = try await utilityNetwork.features(for: elements)
-                    layer.selectFeatures(features)
-                }
-            }
+            configurationSheetDisabled = false
+            traceEnabled = false
+            traceCompleted = true
             resetEnabled = true
+            do {
+                for result in traceResults {
+                    let groups = Dictionary(grouping: result.elements, by: \.networkSource.name)
+                    if groups.isEmpty {
+                        statusText = "Trace completed with no output."
+                    }
+                    for (networkName, elements) in groups {
+                        guard let layer = map.operationalLayers.first(
+                            where: { ($0 as? FeatureLayer)?.featureTable?.tableName == networkName }
+                        ) as? FeatureLayer else { continue }
+                        let features = try await utilityNetwork.features(for: elements)
+                        layer.selectFeatures(features)
+                    }
+                }
+            } catch {
+                statusText = error.localizedDescription
+            }
         }
         
         /// Resets the state values for when a trace is cancelled or completed.
@@ -267,7 +279,6 @@ extension RunValveIsolationTraceView {
                 // Reset the trace if it is already completed.
                 traceCompleted = false
                 traceEnabled = false
-                selectedCategory = nil
             } else {
                 traceEnabled = selectedCategory != nil ? true : false
             }
