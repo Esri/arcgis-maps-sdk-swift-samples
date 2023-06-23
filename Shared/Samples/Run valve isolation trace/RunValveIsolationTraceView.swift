@@ -61,14 +61,14 @@ struct RunValveIsolationTraceView: View {
                 ToolbarItemGroup(placement: .bottomBar) {
                     VStack {
                         HStack {
-                            Menu(model.selectedCategory?.name ?? "Category") {
+                            Menu("Category") {
                                 ForEach(model.filterBarrierCategories, id: \.self) { category in
                                     Button(category.name) {
                                         model.selectCategory(category)
                                     }
                                 }
                             }
-                            .disabled(model.traceCompleted)
+                            .disabled(model.traceCompleted && model.categoriesLoaded)
                             Spacer()
                             Button {
                                 if model.traceEnabled {

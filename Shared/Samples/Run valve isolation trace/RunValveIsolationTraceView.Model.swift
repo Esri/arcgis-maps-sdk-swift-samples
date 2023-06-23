@@ -59,6 +59,9 @@ extension RunValveIsolationTraceView {
         /// A Boolean value indicating whether the trace is completed.
         @Published var traceCompleted = false
         
+        /// A Boolean value indicating whether the filter barrier categories have loaded.
+        @Published var categoriesLoaded = false
+        
         /// A Boolean value indicating if tracing is enabled.
         @Published var traceEnabled = false
         
@@ -156,6 +159,7 @@ extension RunValveIsolationTraceView {
                         // Get available utility categories.
                         if let definition = utilityNetwork.definition {
                             filterBarrierCategories = definition.categories
+                            categoriesLoaded = true
                         }
                     }
                 }
