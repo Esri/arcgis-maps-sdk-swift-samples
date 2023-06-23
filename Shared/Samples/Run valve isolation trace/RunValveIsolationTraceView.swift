@@ -112,6 +112,11 @@ struct RunValveIsolationTraceView: View {
                     }
                     .toggleStyle(.switch)
                 }
+                Button("Done") {
+                    isConfigurationPresented.toggle()
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.large)
             }
             .overlay(alignment: .center) {
                 if model.tracingActivity != .none {
