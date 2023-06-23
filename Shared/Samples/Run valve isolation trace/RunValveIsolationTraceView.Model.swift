@@ -346,6 +346,7 @@ extension RunValveIsolationTraceView {
             let point = geometry as? Point ?? location
             addGraphic(for: point, traceLocationType: RunValveIsolationTraceView.Model.filterBarrierIdentifier)
             resetEnabled = true
+            traceEnabled = true
             hasFilterBarriers = true
         }
         
