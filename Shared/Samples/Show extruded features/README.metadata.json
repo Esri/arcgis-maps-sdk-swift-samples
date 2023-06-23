@@ -16,7 +16,6 @@
         "FeatureLayer",
         "RendererSceneProperties",
         "RendererSceneProperties.ExtrusionMode",
-        "SceneProperties",
         "ServiceFeatureTable",
         "SimpleRenderer"
     ],
@@ -25,7 +24,6 @@
         "FeatureLayer",
         "RendererSceneProperties",
         "RendererSceneProperties.ExtrusionMode",
-        "SceneProperties",
         "ServiceFeatureTable",
         "SimpleRenderer"
     ],
