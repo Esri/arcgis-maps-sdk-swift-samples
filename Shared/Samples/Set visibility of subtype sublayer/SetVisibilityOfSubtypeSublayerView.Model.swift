@@ -36,11 +36,6 @@ extension SetVisibilityOfSubtypeSublayerView {
         /// The status text to display to the user.
         @Published var statusText = ""
         
-        /// A Boolean value indicating if the sample is authenticated.
-        private var isAuthenticated: Bool {
-            !ArcGISEnvironment.authenticationManager.arcGISCredentialStore.credentials.isEmpty
-        }
-        
         /// The  subtype sublayer's label definition.
         private var labelDefinition: LabelDefinition = {
             // Make and stylize the text symbol.
