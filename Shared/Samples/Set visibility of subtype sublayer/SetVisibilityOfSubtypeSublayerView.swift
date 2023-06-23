@@ -44,7 +44,16 @@ struct SetVisibilityOfSubtypeSublayerView: View {
                 }
             }
             .task {
-                try? await model.setup()
+                await model.setup()
+            }
+            .overlay(alignment: .top) {
+                if !model.statusText.isEmpty {
+                    Text(model.statusText)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .padding(10)
+                        .background(.ultraThinMaterial, ignoresSafeAreaEdges: .horizontal)
+                        .multilineTextAlignment(.center)
+                }
             }
     }
 }

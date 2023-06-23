@@ -25,13 +25,16 @@ extension SetVisibilityOfSubtypeSublayerView {
         private let featureTable = ServiceFeatureTable(url: .featureServiceURL)
         
         /// A subtype feature layer created from the service feature table.
-        private var subtypeFeatureLayer: SubtypeFeatureLayer!
+        private let subtypeFeatureLayer: SubtypeFeatureLayer
         
         /// The subtype sublayer of the subtype feature layer in this sample.
-        private var subtypeSublayer: SubtypeSublayer!
+        private var subtypeSublayer: SubtypeSublayer?
         
         /// The renderer of the subtype feature layer.
-        private var originalRenderer: Renderer!
+        private var originalRenderer: Renderer?
+        
+        /// The status text to display to the user.
+        @Published var statusText = ""
         
         /// A Boolean value indicating if the sample is authenticated.
         private var isAuthenticated: Bool {
@@ -84,6 +87,8 @@ extension SetVisibilityOfSubtypeSublayerView {
         
         init() {
             map.initialViewpoint = .initialViewpoint
+            subtypeFeatureLayer = SubtypeFeatureLayer(featureTable: featureTable)
+            subtypeFeatureLayer.scalesSymbols = false
         }
         
         deinit {
@@ -91,30 +96,32 @@ extension SetVisibilityOfSubtypeSublayerView {
         }
         
         /// Performs important tasks including adding credentials, loading and adding operational layers.
-        func setup() async throws {
-            try await ArcGISEnvironment.authenticationManager.arcGISCredentialStore.add(.publicSample)
-            guard isAuthenticated else { return }
-            subtypeFeatureLayer = SubtypeFeatureLayer(featureTable: featureTable)
-            subtypeFeatureLayer.scalesSymbols = false
-            try await subtypeFeatureLayer.load()
-            map.addOperationalLayer(subtypeFeatureLayer)
-            subtypeSublayer = subtypeFeatureLayer.sublayer(withSubtypeName: "Street Light")
-            subtypeSublayer.labelsAreEnabled = true
-            originalRenderer = subtypeSublayer.renderer
-            subtypeSublayer.addLabelDefinition(labelDefinition)
+        @MainActor
+        func setup() async {
+            do {
+                try await ArcGISEnvironment.authenticationManager.arcGISCredentialStore.add(.publicSample)
+                try await subtypeFeatureLayer.load()
+                map.addOperationalLayer(subtypeFeatureLayer)
+                subtypeSublayer = subtypeFeatureLayer.sublayer(withSubtypeName: "Street Light")
+                subtypeSublayer?.labelsAreEnabled = true
+                originalRenderer = subtypeSublayer?.renderer
+                subtypeSublayer?.addLabelDefinition(labelDefinition)
+            } catch {
+                statusText = error.localizedDescription
+            }
         }
         
         func toggleSublayer() {
-            subtypeSublayer.isVisible = showsSublayer
+            subtypeSublayer?.isVisible = showsSublayer
         }
         
         func toggleRenderer() {
             if showsOriginalRenderer {
-                subtypeSublayer.renderer = originalRenderer
+                subtypeSublayer?.renderer = originalRenderer
             } else {
                 let symbol = SimpleMarkerSymbol(style: .diamond, color: .systemPink, size: 20)
                 let alternativeRenderer = SimpleRenderer(symbol: symbol)
-                subtypeSublayer.renderer = alternativeRenderer
+                subtypeSublayer?.renderer = alternativeRenderer
             }
         }
         
@@ -124,7 +131,7 @@ extension SetVisibilityOfSubtypeSublayerView {
         
         func setMinimumScale() {
             minimumScaleText = currentScaleText
-            subtypeSublayer.minScale = currentScale
+            subtypeSublayer?.minScale = currentScale
         }
     }
 }
