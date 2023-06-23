@@ -324,6 +324,8 @@ extension RunValveIsolationTraceView {
                     )
                     statusText = String(format: "Edge element at fractionAlongEdge %.3f added to the filter barriers.", element.fractionAlongEdge)
                 }
+            @unknown default:
+                return
             }
             
             traceParameters.addFilterBarrier(element)
