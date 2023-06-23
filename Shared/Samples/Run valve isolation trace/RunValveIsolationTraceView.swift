@@ -22,6 +22,8 @@ struct RunValveIsolationTraceView: View {
     /// The last locations in the screen and map where a tap occurred.
     @State var lastSingleTap: (screenPoint: CGPoint, mapPoint: Point)?
     
+    @State var isConfigurationPresented = false
+    
     var body: some View {
         MapViewReader { mapViewProxy in
             MapView(
@@ -59,42 +61,50 @@ struct RunValveIsolationTraceView: View {
             }
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
-                    VStack {
-                        HStack {
-                            Menu(model.selectedCategory?.name ?? "Category") {
-                                ForEach(model.filterBarrierCategories, id: \.self) { category in
-                                    Button(category.name) {
-                                        model.selectCategory(category)
-                                    }
-                                }
-                            }
-                            .disabled(model.traceCompleted)
-                            Spacer()
-                            Button {
-                                if model.traceEnabled {
-                                    Task { try await model.trace() }
-                                } else {
-                                    model.reset()
-                                    Task { await mapViewProxy.setViewpointCenter(model.startingLocationPoint, scale: 3_000) }
-                                }
-                            } label: {
-                                Text(model.traceEnabled ? "Trace" : "Reset")
-                            }
-                            .disabled(!model.traceEnabled && !model.resetEnabled)
-                        }
-                        .padding([.top], 10)
-                        
-                        HStack {
-                            Toggle("", isOn: $model.includesIsolatedFeatures)
-                                .toggleStyle(.switch)
-                                .disabled(model.traceCompleted)
-                                .labelsHidden()
-                                .frame(alignment: .leading)
-                            Text("Include Isolated Features")
-                            Spacer()
-                        }
-                        .padding([.bottom], 10)
+                    Button {
+                        isConfigurationPresented.toggle()
+                    } label: {
+                        Text("Configuration")
                     }
+                    Button {
+                        if model.traceEnabled {
+                            Task { try await model.trace() }
+                        } else {
+                            model.reset()
+                            Task { await mapViewProxy.setViewpointCenter(model.startingLocationPoint, scale: 3_000) }
+                        }
+                    } label: {
+                        Text(model.traceEnabled ? "Trace" : "Reset")
+                    }
+                    .disabled(!model.traceEnabled && !model.resetEnabled)
+                }
+            }
+            .sheet(isPresented: $isConfigurationPresented) {
+                Form {
+                    Section("Category") {
+                        List(model.filterBarrierCategories, id: \.self, selection: $model.selectedCategory) { category in
+                            HStack {
+                                Text(category.name)
+                                Spacer()
+                                if category == model.selectedCategory {
+                                    Image(systemName: "checkmark")
+                                        .foregroundColor(.accentColor)
+                                }
+                            }
+                            // Allows the whole row to be tapped. Without this only the text is
+                            // tappable.
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                                model.selectCategory(category)
+                            }
+                        }
+                        .disabled(model.traceCompleted)
+                    }
+                    Toggle(isOn: $model.includesIsolatedFeatures) {
+                        Text("Include Isolated Features")
+                    }
+                    .toggleStyle(.switch)
+                    .disabled(model.traceCompleted)
                 }
             }
             .overlay(alignment: .center) {
