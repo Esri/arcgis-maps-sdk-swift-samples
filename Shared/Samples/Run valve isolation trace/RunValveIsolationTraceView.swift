@@ -96,7 +96,6 @@ struct RunValveIsolationTraceView: View {
                                 model.selectCategory(category)
                             }
                         }
-                        .disabled(model.traceCompleted)
                     } header: {
                         Text("Category")
                     } footer: {
@@ -112,7 +111,6 @@ struct RunValveIsolationTraceView: View {
                         Text("Choose whether or not the trace should include isolated features. This means that isolated features are included in the trace results when used in conjunction with an isolation trace.")
                     }
                     .toggleStyle(.switch)
-                    .disabled(model.traceCompleted)
                 }
             }
             .overlay(alignment: .center) {

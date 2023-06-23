@@ -211,16 +211,20 @@ extension RunValveIsolationTraceView {
         /// Sets the selected filter barrier category and updates the status text.
         func selectCategory(_ category: UtilityCategory) {
             selectedCategory = category
-            traceEnabled = true
             statusText = "\(category.name) selected."
+            traceEnabled = true
         }
         
         /// Runs a trace with the pending trace configuration and selects features in the map that
         /// correspond to the element results.
         @MainActor
         func trace() async {
+            // Clear previous trace results.
+            layers.forEach { $0.clearSelection() }
+            
             tracingActivity = .runningTrace
             configurationSheetDisabled = true
+            traceEnabled = false
             
             let configuration = makeTraceConfiguration(category: selectedCategory)
             traceParameters.traceConfiguration = configuration
@@ -243,14 +247,14 @@ extension RunValveIsolationTraceView {
             }
             tracingActivity = .none
             configurationSheetDisabled = false
-            traceEnabled = false
+            traceEnabled = true
             traceCompleted = true
-            resetEnabled = true
             do {
                 for result in traceResults {
                     let groups = Dictionary(grouping: result.elements, by: \.networkSource.name)
                     if groups.isEmpty {
                         statusText = "Trace completed with no output."
+                        return
                     }
                     for (networkName, elements) in groups {
                         guard let layer = map.operationalLayers.first(
@@ -265,9 +269,8 @@ extension RunValveIsolationTraceView {
             }
         }
         
-        /// Resets the state values for when a trace is cancelled or completed.
+        /// Removes all added filter barriers.
         func reset() {
-            layers.forEach { $0.clearSelection() }
             traceParameters.removeAllBarriers()
             parametersOverlay.removeAllGraphics()
             // Add back the starting location.
@@ -275,13 +278,6 @@ extension RunValveIsolationTraceView {
             statusText = "Tap on the map to add filter barriers, or run the trace directly without filter barriers."
             hasFilterBarriers = false
             resetEnabled = false
-            if traceCompleted {
-                // Reset the trace if it is already completed.
-                traceCompleted = false
-                traceEnabled = false
-            } else {
-                traceEnabled = selectedCategory != nil ? true : false
-            }
         }
         
         /// Get the utility tier's trace configuration and apply category comparison.
@@ -316,8 +312,7 @@ extension RunValveIsolationTraceView {
         ///   - feature: The geo element retrieved as a `Feature`.
         ///   - location: The `Point` used to identify utility elements in the utility network.
         func addFilterBarrier(for feature: ArcGISFeature, at location: Point) {
-            guard !traceCompleted,
-                  let geometry = feature.geometry,
+            guard let geometry = feature.geometry,
                   let element = utilityNetwork.makeElement(arcGISFeature: feature) else { return }
             
             switch element.networkSource.kind {
@@ -350,7 +345,6 @@ extension RunValveIsolationTraceView {
             lastAddedElement = element
             let point = geometry as? Point ?? location
             addGraphic(for: point, traceLocationType: RunValveIsolationTraceView.Model.filterBarrierIdentifier)
-            traceEnabled = true
             resetEnabled = true
             hasFilterBarriers = true
         }
@@ -361,7 +355,6 @@ extension RunValveIsolationTraceView {
                 traceParameters.addFilterBarrier(lastAddedElement)
                 statusText = "Juntion element with terminal \(terminal.name) added to the filter barriers."
                 hasFilterBarriers = true
-                traceEnabled = true
                 addGraphic(
                     for: point,
                     traceLocationType: RunValveIsolationTraceView.Model.filterBarrierIdentifier
