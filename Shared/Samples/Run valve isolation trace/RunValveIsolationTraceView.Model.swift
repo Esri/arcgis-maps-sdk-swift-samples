@@ -376,6 +376,22 @@ extension RunValveIsolationTraceView {
                 )
             }
         }
+        
+        /// The different states of a utility network trace.
+        enum TracingActivity: CaseIterable {
+            case loadingServiceGeodatabase, loadingNetwork, startingLocation, runningTrace, none
+            
+            /// A human-readable label for the tracing activity.
+            var label: String {
+                switch self {
+                case .loadingServiceGeodatabase: return "Loading service geodatabase…"
+                case .loadingNetwork: return "Loading utility network…"
+                case .startingLocation: return "Getting starting location feature…"
+                case .runningTrace: return "Running isolation trace…"
+                case .none: return ""
+                }
+            }
+        }
     }
 }
 
