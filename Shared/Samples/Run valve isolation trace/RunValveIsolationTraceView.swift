@@ -63,7 +63,7 @@ struct RunValveIsolationTraceView: View {
                     } label: {
                         Text("Configuration")
                     }
-                    .disabled(model.configurationSheetDisabled)
+                    .disabled(model.tracingActivity == .runningTrace)
                     Spacer()
                     Button("Trace") {
                         Task { await model.trace() }
@@ -89,9 +89,9 @@ struct RunValveIsolationTraceView: View {
                 }
             }
             .overlay(alignment: .center) {
-                if model.tracingActivity != .none {
+                if model.tracingActivity != nil {
                     VStack {
-                        Text(model.tracingActivity.label)
+                        Text(model.tracingActivity?.label ?? "")
                         ProgressView()
                             .progressViewStyle(.circular)
                     }
@@ -122,11 +122,11 @@ struct RunValveIsolationTraceView: View {
     @ViewBuilder var configurationView: some View {
         Form {
             Section {
-                List(model.filterBarrierCategories, id: \.self, selection: $model.selectedCategory) { category in
+                List(model.filterBarrierCategories, id: \.name, selection: $model.selectedCategory) { category in
                     HStack {
                         Text(category.name)
                         Spacer()
-                        if category == model.selectedCategory {
+                        if category === model.selectedCategory {
                             Image(systemName: "checkmark")
                                 .foregroundColor(.accentColor)
                         }
@@ -166,5 +166,17 @@ struct RunValveIsolationTraceView: View {
             }
         }
         .navigationViewStyle(.stack)
+    }
+}
+
+extension RunValveIsolationTraceView.Model.TracingActivity {
+    /// A human-readable label for the tracing activity.
+    var label: String {
+        switch self {
+        case .loadingServiceGeodatabase: return "Loading service geodatabase…"
+        case .loadingNetwork: return "Loading utility network…"
+        case .startingLocation: return "Getting starting location feature…"
+        case .runningTrace: return "Running isolation trace…"
+        }
     }
 }

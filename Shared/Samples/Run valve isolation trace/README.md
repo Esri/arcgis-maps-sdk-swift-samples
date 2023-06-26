@@ -15,7 +15,7 @@ Tap on one or more features to use as filter barriers or create and set the conf
 
 ## How it works
 
-1. Create a `MapView` object.
+1. Create a `MapView` instance.
 2. Create and load a `ServiceGeodatabase` with a feature service URL and get tables with their layer IDs.
 3. Create a `Map` object that contains `FeatureLayer`(s) created from the service geodatabase's tables.
 4. Create and load a `UtilityNetwork` with the same feature service URL and map. Use the `onSingleTapGesture` modifier to listen for tap events on the map view.
