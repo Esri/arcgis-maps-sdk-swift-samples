@@ -161,14 +161,10 @@ struct RunValveIsolationTraceView: View {
         .navigationTitle("Configuration")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button {
-                    isConfigurationPresented.toggle()
-                } label: {
-                    Text("Done")
-                        .foregroundColor(.blue)
-                }
+            ToolbarItem(placement: .confirmationAction) {
+                Button("Done") { isConfigurationPresented.toggle() }
             }
         }
+        .navigationViewStyle(.stack)
     }
 }
