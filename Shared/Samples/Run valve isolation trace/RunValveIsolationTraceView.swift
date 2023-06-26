@@ -78,43 +78,14 @@ struct RunValveIsolationTraceView: View {
                 }
             }
             .sheet(isPresented: $isConfigurationPresented) {
-                Form {
-                    Section {
-                        List(model.filterBarrierCategories, id: \.self, selection: $model.selectedCategory) { category in
-                            HStack {
-                                Text(category.name)
-                                Spacer()
-                                if category == model.selectedCategory {
-                                    Image(systemName: "checkmark")
-                                        .foregroundColor(.accentColor)
-                                }
-                            }
-                            // Allows the whole row to be tapped. Without this only the text is
-                            // tappable.
-                            .contentShape(Rectangle())
-                            .onTapGesture {
-                                if category.name == model.previousCategory?.name {
-                                    model.unselectCategory(category)
-                                } else {
-                                    model.selectCategory(category)
-                                }
-                            }
-                        }
-                    } header: {
-                        Text("Category")
-                    } footer: {
-                        Text("Choose a category to run the valve isolation trace. The selected utility category defines constraints and conditions based upon specific characteristics of asset types in the utility network.")
+                if #available(iOS 16, *) {
+                    NavigationStack {
+                        configurationView
                     }
-                    Section {
-                        Toggle(isOn: $model.includesIsolatedFeatures) {
-                            Text("Include Isolated Features")
-                        }
-                    } header: {
-                        Text("Other Options")
-                    } footer: {
-                        Text("Choose whether or not the trace should include isolated features. This means that isolated features are included in the trace results when used in conjunction with an isolation trace.")
+                } else {
+                    NavigationView {
+                        configurationView
                     }
-                    .toggleStyle(.switch)
                 }
             }
             .overlay(alignment: .center) {
@@ -144,6 +115,59 @@ struct RunValveIsolationTraceView: View {
                 model.lastAddedElement?.terminal = terminal
                 model.terminalSelectorIsOpen = false
                 model.addTerminal(to: lastSingleTap!.mapPoint)
+            }
+        }
+    }
+    
+    @ViewBuilder var configurationView: some View {
+        Form {
+            Section {
+                List(model.filterBarrierCategories, id: \.self, selection: $model.selectedCategory) { category in
+                    HStack {
+                        Text(category.name)
+                        Spacer()
+                        if category == model.selectedCategory {
+                            Image(systemName: "checkmark")
+                                .foregroundColor(.accentColor)
+                        }
+                    }
+                    // Allows the whole row to be tapped. Without this only the text is
+                    // tappable.
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        if category.name == model.previousCategory?.name {
+                            model.unselectCategory(category)
+                        } else {
+                            model.selectCategory(category)
+                        }
+                    }
+                }
+            } header: {
+                Text("Category")
+            } footer: {
+                Text("Choose a category to run the valve isolation trace. The selected utility category defines constraints and conditions based upon specific characteristics of asset types in the utility network.")
+            }
+            Section {
+                Toggle(isOn: $model.includesIsolatedFeatures) {
+                    Text("Include Isolated Features")
+                }
+            } header: {
+                Text("Other Options")
+            } footer: {
+                Text("Choose whether or not the trace should include isolated features. This means that isolated features are included in the trace results when used in conjunction with an isolation trace.")
+            }
+            .toggleStyle(.switch)
+        }
+        .navigationTitle("Configuration")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    isConfigurationPresented.toggle()
+                } label: {
+                    Text("Done")
+                        .foregroundColor(.blue)
+                }
             }
         }
     }
