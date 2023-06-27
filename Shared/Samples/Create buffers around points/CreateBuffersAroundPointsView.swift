@@ -22,7 +22,7 @@ struct CreateBuffersAroundPointsView: View {
     /// The status of the sample.
     @State private var status = Status.addPoints
     
-    /// The map point where the map was tapped.
+    /// The point where the map was tapped.
     @State private var tapPoint: Point?
     
     /// A Boolean value indicating whether union is on.
@@ -32,7 +32,7 @@ struct CreateBuffersAroundPointsView: View {
     @State private var inputBoxIsPresented = false
     
     /// The input obtained from the user for the buffer radius of a point.
-    @State private var radiusInput: String = ""
+    @State private var bufferRadius: Double = 100
     
     var body: some View {
         // Create a map view to display the map.
@@ -59,7 +59,7 @@ struct CreateBuffersAroundPointsView: View {
                         .toggleStyle(.switch)
                         .onChange(of: shouldUnion) { _ in
                             if !model.bufferPoints.isEmpty {
-                                model.drawBuffers(shouldUnion: shouldUnion)
+                                model.drawBuffers(unioned: shouldUnion)
                             }
                         }
                     Button("Clear") {
@@ -70,10 +70,9 @@ struct CreateBuffersAroundPointsView: View {
                 }
             }
             .alert("Buffer Radius", isPresented: $inputBoxIsPresented, actions: {
-                TextField("100", text: $radiusInput)
+                TextField("radius in miles", value: $bufferRadius, format: .number)
                     .keyboardType(.numberPad)
                 Button("Done") {
-                    defer { radiusInput.removeAll() }
                     guard let tapPoint else {
                         preconditionFailure("Missing tap point")
                     }
@@ -82,10 +81,9 @@ struct CreateBuffersAroundPointsView: View {
                     // Check to ensure the tapPoint is within the boundary.
                     if model.boundaryContains(tapPoint) {
                         // Ensure that the input is valid.
-                        if let radius = Double(radiusInput),
-                           radius > 0 && radius < 300 {
-                            model.addBuffer(point: tapPoint, radius: radius)
-                            model.drawBuffers(shouldUnion: shouldUnion)
+                        if bufferRadius > 0 && bufferRadius < 300 {
+                            model.addBuffer(point: tapPoint, radius: bufferRadius)
+                            model.drawBuffers(unioned: shouldUnion)
                             newStatus = .bufferCreated
                         } else {
                             newStatus = .invalidInput
@@ -94,10 +92,11 @@ struct CreateBuffersAroundPointsView: View {
                         newStatus = .outOfBoundsTap
                     }
                     status = newStatus
+                    
+                    // Set the radius to default value.
+                    bufferRadius = 100
                 }
-                Button("Cancel") {
-                    radiusInput.removeAll()
-                }
+                Button("Cancel", role: .cancel) { bufferRadius = 100 }
                 // Input alert message.
             }, message: {
                 Text("Please enter a number between 0 and 300 miles.")
@@ -219,8 +218,8 @@ private extension CreateBuffersAroundPointsView {
         }
         
         /// Draws points and their buffers on the map.
-        /// - Parameter shouldUnion: A Boolean indicating whether the buffers should union.
-        func drawBuffers(shouldUnion: Bool) {
+        /// - Parameter unioned: A Boolean indicating whether the buffers should union.
+        func drawBuffers(unioned: Bool) {
             // Clear existing buffers graphics before drawing.
             bufferGraphicsOverlay.removeAllGraphics()
             tapPointsGraphicsOverlay.removeAllGraphics()
@@ -234,7 +233,7 @@ private extension CreateBuffersAroundPointsView {
             // Create the buffers.
             // Notice: the radius distances has the same unit of the map's spatial reference's unit.
             // In this case, the statePlaneNorthCentralTexas spatial reference uses US feet.
-            let bufferPolygon = GeometryEngine.buffer(around: points, distances: radii, shouldUnion: shouldUnion)
+            let bufferPolygon = GeometryEngine.buffer(around: points, distances: radii, shouldUnion: unioned)
             
             // Add the tap points to the tapPointsGraphicsOverlay.
             points.forEach { point in
