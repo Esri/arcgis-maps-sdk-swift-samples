@@ -20,10 +20,7 @@ struct AnimateImagesWithImageOverlayView: View {
     @StateObject private var model = Model()
     
     /// The text for the start stop button.
-    @State var startStopButtonText = "Start"
-    
-    /// A Boolean value indicating whether the speed options sheet is showing.
-    @State private var isShowingSpeedOptions = false
+    @State private var startStopButtonText = "Start"
     
     var body: some View {
         VStack {
@@ -54,7 +51,7 @@ struct AnimateImagesWithImageOverlayView: View {
                     }
                     Spacer()
                     Menu("Speed") {
-                        Picker("", selection: $model.displayLink.preferredFramesPerSecond) {
+                        Picker("Speed Selection", selection: $model.displayLink.preferredFramesPerSecond) {
                             Text("Slow").tag(15)
                             Text("Medium").tag(30)
                             Text("Fast").tag(60)
@@ -87,7 +84,7 @@ private extension AnimateImagesWithImageOverlayView {
         }()
         
         /// A timer to synchronize image overlay animation to the refresh rate of the display.
-        var displayLink: CADisplayLink!
+        @Published var displayLink: CADisplayLink!
         
         /// An iterator to hold and loop through the overlay images.
         private var imagesIterator: CircularIterator<UIImage> = {
