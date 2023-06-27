@@ -49,7 +49,7 @@ struct AnimateImagesWithImageOverlayView: View {
                 .padding([.top, .horizontal])
                 HStack {
                     Button(startStopButtonText) {
-                        startStopButtonText = startStopButtonText == "Start" ? "Stop" : "Start"
+                        startStopButtonText = model.displayLink.isPaused ? "Stop" : "Start"
                         model.displayLink.isPaused.toggle()
                     }
                     Spacer()
