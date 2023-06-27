@@ -15,7 +15,7 @@ The sample loads a map of the Southwestern United States. Tap the "Start" or "St
 ## How it works
 
 1. Create an `ImageOverlay` and add it to the `SceneView`.
-2. Set up a timer with an initial interval time of 68ms, which will display approximately 15 `ImageFrame`s per second.
+2. Set up a timer with an initial preferred frames per second of 60.
 3. Connect to the timeout signal from the timer.
 4. Create a new image frame every timeout and set it on the image overlay.
 
