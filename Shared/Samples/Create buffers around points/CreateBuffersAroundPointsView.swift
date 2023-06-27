@@ -39,12 +39,12 @@ struct CreateBuffersAroundPointsView: View {
         MapView(map: model.map, graphicsOverlays: model.graphicsOverlays)
             .onSingleTapGesture { _, mapPoint in
                 // Update tapPoint and bring up input box if point is within bounds.
-                if model.boundaryContains(mapPoint) {
-                    tapPoint = mapPoint
-                    inputBoxIsPresented = true
-                } else {
+                guard model.boundaryContains(mapPoint) else {
                     status = .outOfBoundsTap
+                    return
                 }
+                tapPoint = mapPoint
+                inputBoxIsPresented = true
             }
             .overlay(alignment: .top) {
                 Text(status.label)
@@ -58,9 +58,8 @@ struct CreateBuffersAroundPointsView: View {
                     Toggle("Union", isOn: $shouldUnion)
                         .toggleStyle(.switch)
                         .onChange(of: shouldUnion) { _ in
-                            if !model.bufferPoints.isEmpty {
-                                model.drawBuffers(shouldUnion: shouldUnion)
-                            }
+                            guard !model.bufferPoints.isEmpty else { return }
+                            model.drawBuffers(shouldUnion: shouldUnion)
                         }
                     Button("Clear") {
                         model.clearBufferPoints()
@@ -73,22 +72,23 @@ struct CreateBuffersAroundPointsView: View {
                 TextField("100", text: $radiusInput)
                     .keyboardType(.numberPad)
                 Button("Done") {
-                    // Check to ensure the tapPoint is within the boundary.
+                    defer { radiusInput.removeAll() }
+                    
+                    // Ensure the tapPoint is within the boundary.
                     guard let tapPoint, model.boundaryContains(tapPoint) else {
                         status = .outOfBoundsTap
                         return
                     }
                     
                     // Ensure that the input is valid.
-                    if let radius = Double(radiusInput),
-                       radius > 0 && radius < 300 {
-                        model.addBuffer(point: tapPoint, radius: radius)
-                        model.drawBuffers(shouldUnion: shouldUnion)
-                        status = .bufferCreated
-                    } else {
+                    guard let radius = Double(radiusInput),
+                          radius > 0 && radius < 300 else {
                         status = .invalidInput
+                        return
                     }
-                    radiusInput.removeAll()
+                    model.addBuffer(point: tapPoint, radius: radius)
+                    model.drawBuffers(shouldUnion: shouldUnion)
+                    status = .bufferCreated
                 }
                 Button("Cancel") {
                     radiusInput.removeAll()
