@@ -70,7 +70,7 @@ struct AnimateImagesWithImageOverlayView: View {
 private extension AnimateImagesWithImageOverlayView {
     /// The view model for the sample.
     class Model: ObservableObject {
-        /// A scene with a dark gray base and centered on southern California.
+        /// A scene with a dark gray base and centered on Southern California.
         let scene: ArcGIS.Scene = {
             // Creates a scene and set an initial viewpoint.
             let scene = Scene(basemapStyle: .arcGISDarkGrayBase)
