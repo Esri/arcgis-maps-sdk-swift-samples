@@ -73,22 +73,27 @@ struct CreateBuffersAroundPointsView: View {
                 TextField("100", text: $radiusInput)
                     .keyboardType(.numberPad)
                 Button("Done") {
+                    defer { radiusInput.removeAll() }
+                    guard let tapPoint else {
+                        preconditionFailure("Missing tap point")
+                    }
+
+                    let newStatus: Status
                     // Check to ensure the tapPoint is within the boundary.
-                    guard let tapPoint, model.boundaryContains(tapPoint) else {
-                        status = .outOfBoundsTap
-                        return
-                    }
-                    
-                    // Ensure that the input is valid.
-                    if let radius = Double(radiusInput),
-                       radius > 0 && radius < 300 {
-                        model.addBuffer(point: tapPoint, radius: radius)
-                        model.drawBuffers(shouldUnion: shouldUnion)
-                        status = .bufferCreated
+                    if model.boundaryContains(tapPoint) {
+                        // Ensure that the input is valid.
+                        if let radius = Double(radiusInput),
+                           radius > 0 && radius < 300 {
+                            model.addBuffer(point: tapPoint, radius: radius)
+                            model.drawBuffers(shouldUnion: shouldUnion)
+                            newStatus = .bufferCreated
+                        } else {
+                            newStatus = .invalidInput
+                        }
                     } else {
-                        status = .invalidInput
+                        newStatus = .outOfBoundsTap
                     }
-                    radiusInput.removeAll()
+                    status = newStatus
                 }
                 Button("Cancel") {
                     radiusInput.removeAll()
