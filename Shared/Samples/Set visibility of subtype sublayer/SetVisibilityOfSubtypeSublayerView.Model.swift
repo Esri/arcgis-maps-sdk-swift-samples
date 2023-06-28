@@ -28,16 +28,16 @@ extension SetVisibilityOfSubtypeSublayerView {
         private let subtypeFeatureLayer: SubtypeFeatureLayer
         
         /// The subtype sublayer of the subtype feature layer in this sample.
-        private var subtypeSublayer: SubtypeSublayer?
+        private(set) var subtypeSublayer: SubtypeSublayer?
         
         /// The renderer of the subtype feature layer.
-        private var originalRenderer: Renderer?
+        private(set) var originalRenderer: Renderer?
         
         /// The status text to display to the user.
-        @Published var statusText = ""
+        @Published private(set) var statusText = ""
         
         /// The  subtype sublayer's label definition.
-        private var labelDefinition: LabelDefinition = {
+        private(set) var labelDefinition: LabelDefinition = {
             // Make and stylize the text symbol.
             let textSymbol = TextSymbol()
             textSymbol.backgroundColor = .clear
