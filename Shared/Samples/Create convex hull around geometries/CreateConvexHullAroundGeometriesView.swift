@@ -52,12 +52,10 @@ struct CreateConvexHullAroundGeometriesView: View {
                             if !createIsOn {
                                 convexHullGraphicsOverlay.removeAllGraphics()
                                 convexHullGraphicsOverlay.addGraphics(
-                                    convexHullGraphicsOverlay.addGraphics(
-                                         makeConvexHullGraphics(
-                                             for: [.polygon1, .polygon2],
-                                            unioned: shouldUnion
-                                         )
-                                     )
+                                    makeConvexHullGraphics(
+                                        for: [.polygon1, .polygon2],
+                                        unioned: shouldUnion
+                                    )
                                 )
                             }
                         }
@@ -65,7 +63,10 @@ struct CreateConvexHullAroundGeometriesView: View {
                         if createIsOn {
                             convexHullGraphicsOverlay.removeAllGraphics()
                             convexHullGraphicsOverlay.addGraphics(
-                                makeConvexHullGraphics(for: [.polygon1, .polygon2], unioned: shouldUnion)
+                                makeConvexHullGraphics(
+                                    for: [.polygon1, .polygon2],
+                                    unioned: shouldUnion
+                                )
                             )
                             createIsOn = false
                         } else {
