@@ -77,8 +77,9 @@ private let sampleMetadata: [SampleMetadata] = {
     let decoder = JSONDecoder()
     // Converts snake-case key "offline_data" to camel-case "offlineData".
     decoder.keyDecodingStrategy = .convertFromSnakeCase
-    // Does a shallow traverse of the top level of samples directory.
+    
     do {
+        // Does a shallow traverse of the top level of samples directory.
         return try FileManager.default.contentsOfDirectory(at: samplesDirectoryURL, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles])
             .filter(\.hasDirectoryPath)
             .map { url in
