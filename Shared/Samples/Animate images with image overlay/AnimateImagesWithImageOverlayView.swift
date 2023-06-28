@@ -97,7 +97,7 @@ private extension AnimateImagesWithImageOverlayView {
         }()
         
         /// An envelope of the pacific southwest sector for displaying the image frame.
-        private let pacificSouthwestEnvelope = Envelope(
+        private let pacificSouthwest = Envelope(
             center: Point(latitude: 35.131016955536694, longitude: -120.0724273439448),
             width: 15.09589635986124,
             height: -14.3770441522488
@@ -133,7 +133,7 @@ private extension AnimateImagesWithImageOverlayView {
         @objc
         func setImageFrame() {
             if let image = imagesIterator.next() {
-                let frame = ImageFrame(image: image, extent: pacificSouthwestEnvelope)
+                let frame = ImageFrame(image: image, extent: pacificSouthwest)
                 imageOverlay.imageFrame = frame
             }
         }
