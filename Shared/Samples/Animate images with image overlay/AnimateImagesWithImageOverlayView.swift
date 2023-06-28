@@ -26,11 +26,6 @@ struct AnimateImagesWithImageOverlayView: View {
         VStack {
             // Create a scene view to display the scene.
             SceneView(scene: model.scene, imageOverlays: [model.imageOverlay])
-                .onAppear {
-                    // Create display link and load first image.
-                    model.displayLink = model.makeDisplayLink()
-                    model.setImageFrame()
-                }
             VStack {
                 HStack {
                     Slider(value: $model.imageOverlay.opacity, in: 0.0...1.0, step: 0.01)
@@ -107,7 +102,9 @@ private extension AnimateImagesWithImageOverlayView {
         }()
         
         init() {
+            // Create display link and load first image.
             displayLink = makeDisplayLink()
+            setImageFrame()
         }
         
         deinit {
