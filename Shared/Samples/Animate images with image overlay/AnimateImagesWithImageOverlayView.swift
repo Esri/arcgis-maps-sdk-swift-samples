@@ -31,10 +31,6 @@ struct AnimateImagesWithImageOverlayView: View {
                     model.displayLink = model.makeDisplayLink()
                     model.setImageFrame()
                 }
-                .onDisappear {
-                    // Invalidate display link before exiting.
-                    model.displayLink.invalidate()
-                }
             VStack {
                 HStack {
                     Slider(value: $model.imageOverlay.opacity, in: 0.0...1.0, step: 0.01)
@@ -112,6 +108,11 @@ private extension AnimateImagesWithImageOverlayView {
         
         init() {
             displayLink = makeDisplayLink()
+        }
+        
+        deinit {
+            // Invalidate display link before exiting.
+            displayLink.invalidate()
         }
         
         /// Creates a display link timer for the image overlay animation.
