@@ -31,6 +31,8 @@ import Foundation
 private struct SampleMetadata: Decodable {
     /// The title of the sample.
     let title: String
+    /// The category of the sample.
+    let category: String
     /// The description of the sample.
     let description: String
     /// The relative paths to the code snippets.
@@ -103,6 +105,7 @@ private let sampleStructs = sampleMetadata
         return """
         struct \(sample.structName): Sample {
             var name: String { \"\(sample.title)\" }
+            var category: String { \"\(sample.category)\" }
             var description: String { \"\(sample.description)\" }
             var snippets: [String] { \(sample.snippets) }
             var tags: Set<String> { \(sample.keywords) }

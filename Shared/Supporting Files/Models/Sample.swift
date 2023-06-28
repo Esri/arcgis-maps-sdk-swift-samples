@@ -19,6 +19,9 @@ protocol Sample {
     /// The name of the sample.
     var name: String { get }
     
+    /// The description of the sample.
+    var category: String { get }
+    
     /// A brief description of the sample's functionalities.
     var description: String { get }
     
