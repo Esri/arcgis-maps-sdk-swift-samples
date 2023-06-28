@@ -12,9 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Foundation
-import SwiftUI
 import ArcGIS
+import SwiftUI
 
 extension ChangeMapViewBackgroundView {
     /// The model used to store the geo model and other expensive objects
