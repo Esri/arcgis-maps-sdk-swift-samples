@@ -71,20 +71,23 @@ let templateURL = URL(fileURLWithPath: arguments[2], isDirectory: false)
 let outputFileURL = URL(fileURLWithPath: arguments[3], isDirectory: false)
 
 private let sampleMetadata: [SampleMetadata] = {
+    // Finds all subdirectories under the root samples directory.
+    let decoder = JSONDecoder()
+    // Converts snake-case key "offline_data" to camel-case "offlineData".
+    decoder.keyDecodingStrategy = .convertFromSnakeCase
+    // Does a shallow traverse of the top level of samples directory.
     do {
-        // Finds all subdirectories under the root samples directory.
-        let decoder = JSONDecoder()
-        // Converts snake-case key "offline_data" to camel-case "offlineData".
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
-        // Does a shallow traverse of the top level of samples directory.
         return try FileManager.default.contentsOfDirectory(at: samplesDirectoryURL, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles])
             .filter(\.hasDirectoryPath)
-            .compactMap { url in
+            .map { url in
                 // Try to access the metadata file under a subdirectory.
-                guard let data = try? Data(contentsOf: url.appendingPathComponent("README.metadata.json")) else {
-                    return nil
+                do {
+                    let data = try Data(contentsOf: url.appendingPathComponent("README.metadata.json"))
+                    return try decoder.decode(SampleMetadata.self, from: data)
+                } catch {
+                    print("Error '\(url.lastPathComponent)' sample couldn’t be decoded.")
+                    exit(1)
                 }
-                return try? decoder.decode(SampleMetadata.self, from: data)
             }
             .sorted { $0.title < $1.title }
     } catch {
