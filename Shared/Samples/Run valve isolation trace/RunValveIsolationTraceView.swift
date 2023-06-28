@@ -122,7 +122,7 @@ struct RunValveIsolationTraceView: View {
     @ViewBuilder var configurationView: some View {
         Form {
             Section {
-                List(model.filterBarrierCategories, id: \.name, selection: $model.selectedCategory) { category in
+                List(model.filterBarrierCategories, id: \.name) { category in
                     HStack {
                         Text(category.name)
                         Spacer()

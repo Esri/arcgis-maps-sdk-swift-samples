@@ -400,18 +400,6 @@ private extension ArcGISCredential {
     }
 }
 
-extension UtilityCategory: Equatable {
-    public static func == (lhs: UtilityCategory, rhs: UtilityCategory) -> Bool {
-        lhs.name == rhs.name
-    }
-}
-
-extension UtilityCategory: Hashable {
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(name)
-    }
-}
-
 private extension URL {
     /// The URL to the feature service for running the isolation trace.
     static var featureServiceURL: URL {
