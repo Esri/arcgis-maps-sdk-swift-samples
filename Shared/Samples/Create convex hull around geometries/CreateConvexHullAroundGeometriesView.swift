@@ -49,11 +49,19 @@ struct CreateConvexHullAroundGeometriesView: View {
                     Toggle("Union", isOn: $shouldUnion)
                         .toggleStyle(.switch)
                         .onChange(of: shouldUnion) { _ in
-                            createConvexHulls()
+                            if !createIsOn {
+                                convexHullGraphicsOverlay.removeAllGraphics()
+                                convexHullGraphicsOverlay.addGraphics(
+                                    makeConvexHullGraphics(for: [.polygon1, .polygon2], unioned: shouldUnion)
+                                )
+                            }
                         }
                     Button(createIsOn ? "Create" : "Reset") {
                         if createIsOn {
-                            createConvexHulls()
+                            convexHullGraphicsOverlay.removeAllGraphics()
+                            convexHullGraphicsOverlay.addGraphics(
+                                makeConvexHullGraphics(for: [.polygon1, .polygon2], unioned: shouldUnion)
+                            )
                             createIsOn = false
                         } else {
                             convexHullGraphicsOverlay.removeAllGraphics()
@@ -66,29 +74,29 @@ struct CreateConvexHullAroundGeometriesView: View {
 }
 
 private extension CreateConvexHullAroundGeometriesView {
-    /// Creates convex hulls from the example polygons.
-    func createConvexHulls() {
-        let convexHullGeometries = GeometryEngine.convexHull(
-            for: [
-                .polygon1,
-                .polygon2
-            ],
-            shouldMerge: shouldUnion
-        )
+    /// Creates convex hulls graphic(s) from passed geometries.
+    /// - Parameters:
+    ///   - geometries: A `Geometry Array` to create the convex hull geometries from.
+    ///   - unioned: A `Bool` indicating whether to union the convex hull geometries.
+    /// - Returns: A `Graphics Array` of the created convex hull graphic(s).
+    func makeConvexHullGraphics(for geometries: [Geometry], unioned: Bool) -> [Graphic] {
+        // Create convex hull geometries.
+        let convexHullGeometries = GeometryEngine.convexHull(for: geometries, shouldMerge: unioned)
+        
+        // Create fill symbol for the convex hull graphics.
         let convexHullFillSymbol = SimpleFillSymbol(
             style: .noFill,
             color: .systemBlue,
             outline: SimpleLineSymbol(style: .solid, color: .red, width: 4)
         )
         
-        // Create and add graphic to graphics overlay for each geometry.
-        convexHullGraphicsOverlay.removeAllGraphics()
+        // Create a graphic for each convex hull geometry.
+        var graphics: [Graphic] = []
         for geometry in convexHullGeometries {
             let convexHullGraphic = Graphic(geometry: geometry, symbol: convexHullFillSymbol)
-            // Set Z index so convex hull appears below geometries
-            convexHullGraphic.zIndex = 0
-            convexHullGraphicsOverlay.addGraphic(convexHullGraphic)
+            graphics.append(convexHullGraphic)
         }
+        return graphics
     }
 }
 
