@@ -11,12 +11,12 @@
         "outline",
         "perimeter",
         "union",
-        "GeometryEngine.ConvexHull",
+        "GeometryEngine",
         "GraphicsOverlay"
     ],
     "redirect_from": [],
     "relevant_apis": [
-        "GeometryEngine.ConvexHull",
+        "GeometryEngine",
         "GraphicsOverlay"
     ],
     "snippets": [
