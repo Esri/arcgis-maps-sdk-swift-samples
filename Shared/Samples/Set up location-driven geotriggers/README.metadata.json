@@ -46,7 +46,7 @@
         "SimulatedLocationDataSource"
     ],
     "snippets": [
-        "SetUpLocationDrivenGeotriggersView.swift"
+        "SetUpLocationDrivenGeotriggersView.swift",
         "SetUpLocationDrivenGeotriggersView.Model.swift"
     ],
     "title": "Set up location-driven geotriggers"
