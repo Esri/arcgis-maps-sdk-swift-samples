@@ -62,7 +62,7 @@ private extension AnimateImagesWithImageOverlayView {
         let scene: ArcGIS.Scene = {
             // Creates a scene and set an initial viewpoint.
             let scene = Scene(basemapStyle: .arcGISDarkGrayBase)
-            let point = Point(x: -116.621, y: 24.7773, z: 856977.0, spatialReference: .wgs84)
+            let point = Point(x: -116.621, y: 24.7773, z: 856977, spatialReference: .wgs84)
             let camera = Camera(location: point, heading: 353.994, pitch: 48.5495, roll: 0)
             scene.initialViewpoint = Viewpoint(latitude: .nan, longitude: .nan, scale: .nan, camera: camera)
             
@@ -75,7 +75,7 @@ private extension AnimateImagesWithImageOverlayView {
         }()
         
         /// A timer to synchronize image overlay animation to the refresh rate of the display.
-        @Published var displayLink: CADisplayLink!
+        @Published var displayLink = CADisplayLink()
         
         /// An iterator to hold and loop through the overlay images.
         private var imagesIterator: CircularIterator<UIImage> = {
@@ -119,7 +119,7 @@ private extension AnimateImagesWithImageOverlayView {
             let newDisplayLink = CADisplayLink(target: self, selector: #selector(setImageFrame))
             
             // Inherit the frame rate from existing display link, or set to default 60 fps.
-            newDisplayLink.preferredFramesPerSecond = displayLink?.preferredFramesPerSecond ?? 60
+            newDisplayLink.preferredFramesPerSecond = 60
             newDisplayLink.isPaused = true
             
             // Add to main thread common mode run loop, so it is not effected by UI events.
