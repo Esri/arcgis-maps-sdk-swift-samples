@@ -10,8 +10,7 @@ Creating a convex hull allows for analysis to define the polygon with the least 
 
 ## How to use the sample
 
-Tap on the "Create" button to create convex hull(s) from the polygon graphics. If the 'Union' toggle is on, the resulting output will be one polygon being the convex hull for the two input polygons. If the 'Union' toggle is off, the resulting output will have two convex hull polygons - one for each of the two input polygons. Tap "Reset" to start over and remove the convex hull(s).
-
+Tap on the "Create" button to create convex hull(s) from the polygon graphics. If the "Union" toggle is on, the resulting output will be one polygon being the convex hull for the two input polygons. If the "Union" toggle is off, the resulting output will have two convex hull polygons - one for each of the two input polygons. Tap "Reset" to start over and remove the convex hull(s).
 
 ## How it works
 
