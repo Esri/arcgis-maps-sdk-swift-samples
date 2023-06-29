@@ -73,7 +73,6 @@ let templateURL = URL(fileURLWithPath: arguments[2], isDirectory: false)
 let outputFileURL = URL(fileURLWithPath: arguments[3], isDirectory: false)
 
 private let sampleMetadata: [SampleMetadata] = {
-    // Finds all subdirectories under the root samples directory.
     let decoder = JSONDecoder()
     // Converts snake-case key "offline_data" to camel-case "offlineData".
     decoder.keyDecodingStrategy = .convertFromSnakeCase
@@ -83,7 +82,7 @@ private let sampleMetadata: [SampleMetadata] = {
         return try FileManager.default.contentsOfDirectory(at: samplesDirectoryURL, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles])
             .filter(\.hasDirectoryPath)
             .map { url in
-                // Try to access the metadata file under a subdirectory.
+                // Gets the metadata JSON under each subdirectory.
                 do {
                     let data = try Data(contentsOf: url.appendingPathComponent("README.metadata.json"))
                     return try decoder.decode(SampleMetadata.self, from: data)
