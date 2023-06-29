@@ -31,6 +31,8 @@ import Foundation
 private struct SampleMetadata: Decodable {
     /// The title of the sample.
     let title: String
+    /// The category of the sample.
+    let category: String
     /// The description of the sample.
     let description: String
     /// The relative paths to the code snippets.
@@ -71,24 +73,27 @@ let templateURL = URL(fileURLWithPath: arguments[2], isDirectory: false)
 let outputFileURL = URL(fileURLWithPath: arguments[3], isDirectory: false)
 
 private let sampleMetadata: [SampleMetadata] = {
+    let decoder = JSONDecoder()
+    // Converts snake-case key "offline_data" to camel-case "offlineData".
+    decoder.keyDecodingStrategy = .convertFromSnakeCase
+    
     do {
-        // Finds all subdirectories under the root samples directory.
-        let decoder = JSONDecoder()
-        // Converts snake-case key "offline_data" to camel-case "offlineData".
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
         // Does a shallow traverse of the top level of samples directory.
         return try FileManager.default.contentsOfDirectory(at: samplesDirectoryURL, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles])
             .filter(\.hasDirectoryPath)
-            .compactMap { url in
-                // Try to access the metadata file under a subdirectory.
-                guard let data = try? Data(contentsOf: url.appendingPathComponent("README.metadata.json")) else {
-                    return nil
+            .map { url in
+                // Gets the metadata JSON under each subdirectory.
+                do {
+                    let data = try Data(contentsOf: url.appendingPathComponent("README.metadata.json"))
+                    return try decoder.decode(SampleMetadata.self, from: data)
+                } catch {
+                    print("error: '\(url.lastPathComponent)' sample couldn’t be decoded.")
+                    exit(1)
                 }
-                return try? decoder.decode(SampleMetadata.self, from: data)
             }
             .sorted { $0.title < $1.title }
     } catch {
-        print("Error decoding Samples: \(error.localizedDescription)")
+        print("error: Decoding Samples: \(error.localizedDescription)")
         exit(1)
     }
 }()
@@ -100,6 +105,7 @@ private let sampleStructs = sampleMetadata
         return """
         struct \(sample.structName): Sample {
             var name: String { \"\(sample.title)\" }
+            var category: String { \"\(sample.category)\" }
             var description: String { \"\(sample.description)\" }
             var snippets: [String] { \(sample.snippets) }
             var tags: Set<String> { \(sample.keywords) }
@@ -127,6 +133,6 @@ do {
         .replacingOccurrences(of: "/* structs */", with: sampleStructs)
     try content.write(to: outputFileURL, atomically: true, encoding: .utf8)
 } catch {
-    print("Error reading or writing template file: \(error.localizedDescription)")
+    print("error: Reading or writing template file: \(error.localizedDescription)")
     exit(1)
 }
