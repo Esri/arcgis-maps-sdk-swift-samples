@@ -1,5 +1,5 @@
 {
-    "category": "Maps",
+    "category": "Maps and Scenes",
     "description": "Set a map's basemap. A basemap is beneath all layers on a map and is used to provide visual reference for the operational layers.",
     "ignore": false,
     "images": [
