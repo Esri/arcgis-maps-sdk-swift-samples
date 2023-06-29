@@ -133,6 +133,8 @@
 		D75362D32A1E8C8800D83028 /* ApplyUniqueValueRendererView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D75362D12A1E886700D83028 /* ApplyUniqueValueRendererView.swift */; };
 		D754E3232A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D754E3222A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift */; };
 		D754E3242A1D66C20006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D754E3222A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift */; };
+		D7634FAF2A43B7AC00F8AEFB /* CreateConvexHullAroundGeometriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7634FAE2A43B7AC00F8AEFB /* CreateConvexHullAroundGeometriesView.swift */; };
+		D7634FB02A43B8B000F8AEFB /* CreateConvexHullAroundGeometriesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7634FAE2A43B7AC00F8AEFB /* CreateConvexHullAroundGeometriesView.swift */; };
 		D78666AD2A2161F100C60110 /* FindNearestVertexView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78666AC2A2161F100C60110 /* FindNearestVertexView.swift */; };
 		D78666AE2A21629200C60110 /* FindNearestVertexView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D78666AC2A2161F100C60110 /* FindNearestVertexView.swift */; };
 		D7ABA2F92A32579C0021822B /* MeasureDistanceInSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7ABA2F82A32579C0021822B /* MeasureDistanceInSceneView.swift */; };
@@ -238,6 +240,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				D7634FB02A43B8B000F8AEFB /* CreateConvexHullAroundGeometriesView.swift in Copy Source Code Files */,
 				D7ABA2FA2A32760D0021822B /* MeasureDistanceInSceneView.swift in Copy Source Code Files */,
 				D722BD232A420DEC002C2087 /* ShowExtrudedFeaturesView.swift in Copy Source Code Files */,
 				D752D9602A3BCE63003EB25E /* DisplayMapFromPortalItemView.swift in Copy Source Code Files */,
@@ -389,6 +392,7 @@
 		D752D95E2A3BCE06003EB25E /* DisplayMapFromPortalItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayMapFromPortalItemView.swift; sourceTree = "<group>"; };
 		D75362D12A1E886700D83028 /* ApplyUniqueValueRendererView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplyUniqueValueRendererView.swift; sourceTree = "<group>"; };
 		D754E3222A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StylePointWithPictureMarkerSymbolsView.swift; sourceTree = "<group>"; };
+		D7634FAE2A43B7AC00F8AEFB /* CreateConvexHullAroundGeometriesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateConvexHullAroundGeometriesView.swift; sourceTree = "<group>"; };
 		D78666AC2A2161F100C60110 /* FindNearestVertexView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindNearestVertexView.swift; sourceTree = "<group>"; };
 		D7ABA2F82A32579C0021822B /* MeasureDistanceInSceneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeasureDistanceInSceneView.swift; sourceTree = "<group>"; };
 		D7CC33FD2A31475C00198EDF /* ShowLineOfSightBetweenPointsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowLineOfSightBetweenPointsView.swift; sourceTree = "<group>"; };
@@ -526,6 +530,7 @@
 				E000E75E2869E325005D87C5 /* Clip geometry */,
 				79B7B8082A1BF8B300F57C27 /* Create and save KML file */,
 				D7E440D12A1ECBC2005D74DE /* Create buffers around points */,
+				D7B3C5C02A43B71E001DA4D8 /* Create convex hull around geometries */,
 				D744FD132A2112360084A66C /* Create convex hull around points */,
 				E004A6EB28495538002A1FE6 /* Create planar and geodetic buffers */,
 				E000E761286A0B07005D87C5 /* Cut geometry */,
@@ -947,6 +952,14 @@
 				D7ABA2F82A32579C0021822B /* MeasureDistanceInSceneView.swift */,
 			);
 			path = "Measure distance in scene";
+			sourceTree = "<group>";
+		};
+		D7B3C5C02A43B71E001DA4D8 /* Create convex hull around geometries */ = {
+			isa = PBXGroup;
+			children = (
+				D7634FAE2A43B7AC00F8AEFB /* CreateConvexHullAroundGeometriesView.swift */,
+			);
+			path = "Create convex hull around geometries";
 			sourceTree = "<group>";
 		};
 		D7CC33FB2A31475C00198EDF /* Show line of sight between points */ = {
@@ -1415,6 +1428,7 @@
 				883C121529C9136600062FF9 /* DownloadPreplannedMapAreaView.MapPicker.swift in Sources */,
 				1C9B74C929DB43580038B06F /* ShowRealisticLightAndShadowsView.swift in Sources */,
 				00E5401E27F3CCA200CF66D5 /* ContentView.swift in Sources */,
+				D7634FAF2A43B7AC00F8AEFB /* CreateConvexHullAroundGeometriesView.swift in Sources */,
 				E066DD382860AB28004D3D5B /* StyleGraphicsWithRendererView.swift in Sources */,
 				108EC04129D25B2C000F35D0 /* QueryFeatureTableView.swift in Sources */,
 				00B04FB5283EEBA80026C882 /* DisplayOverviewMapView.swift in Sources */,
