@@ -88,13 +88,13 @@ private let sampleMetadata: [SampleMetadata] = {
                     let data = try Data(contentsOf: url.appendingPathComponent("README.metadata.json"))
                     return try decoder.decode(SampleMetadata.self, from: data)
                 } catch {
-                    print("Error '\(url.lastPathComponent)' sample couldn’t be decoded.")
+                    print("error: '\(url.lastPathComponent)' sample couldn’t be decoded.")
                     exit(1)
                 }
             }
             .sorted { $0.title < $1.title }
     } catch {
-        print("Error decoding Samples: \(error.localizedDescription)")
+        print("error: Decoding Samples: \(error.localizedDescription)")
         exit(1)
     }
 }()
@@ -134,6 +134,6 @@ do {
         .replacingOccurrences(of: "/* structs */", with: sampleStructs)
     try content.write(to: outputFileURL, atomically: true, encoding: .utf8)
 } catch {
-    print("Error reading or writing template file: \(error.localizedDescription)")
+    print("error: Reading or writing template file: \(error.localizedDescription)")
     exit(1)
 }
