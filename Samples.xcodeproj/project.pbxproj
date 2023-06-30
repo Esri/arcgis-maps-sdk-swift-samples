@@ -76,9 +76,7 @@
 		1C9B74D929DB54560038B06F /* ChangeCameraControllerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9B74D529DB54560038B06F /* ChangeCameraControllerView.swift */; };
 		1C9B74DE29DB56860038B06F /* ChangeCameraControllerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C9B74D529DB54560038B06F /* ChangeCameraControllerView.swift */; };
 		1CAB8D4B2A3CEAB0002AA649 /* RunValveIsolationTraceView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAB8D442A3CEAB0002AA649 /* RunValveIsolationTraceView.Model.swift */; };
-		1CAB8D4C2A3CEAB0002AA649 /* RunValveIsolationTraceView.Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAB8D452A3CEAB0002AA649 /* RunValveIsolationTraceView.Enums.swift */; };
 		1CAB8D4E2A3CEAB0002AA649 /* RunValveIsolationTraceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAB8D472A3CEAB0002AA649 /* RunValveIsolationTraceView.swift */; };
-		1CAB8D4F2A3CEB43002AA649 /* RunValveIsolationTraceView.Enums.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1CAB8D452A3CEAB0002AA649 /* RunValveIsolationTraceView.Enums.swift */; };
 		1CAB8D502A3CEB43002AA649 /* RunValveIsolationTraceView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1CAB8D442A3CEAB0002AA649 /* RunValveIsolationTraceView.Model.swift */; };
 		1CAB8D512A3CEB43002AA649 /* RunValveIsolationTraceView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1CAB8D472A3CEAB0002AA649 /* RunValveIsolationTraceView.swift */; };
 		1CAF831F2A20305F000E1E60 /* ShowUtilityAssociationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAF831B2A20305F000E1E60 /* ShowUtilityAssociationsView.swift */; };
@@ -246,7 +244,6 @@
 				D751018F2A2E966C00B8FA48 /* IdentifyLayerFeaturesView.swift in Copy Source Code Files */,
 				D752D9472A3A6FC0003EB25E /* MonitorChangesToMapLoadStatusView.swift in Copy Source Code Files */,
 				D7CC34002A3147FF00198EDF /* ShowLineOfSightBetweenPointsView.swift in Copy Source Code Files */,
-				1CAB8D4F2A3CEB43002AA649 /* RunValveIsolationTraceView.Enums.swift in Copy Source Code Files */,
 				1CAB8D502A3CEB43002AA649 /* RunValveIsolationTraceView.Model.swift in Copy Source Code Files */,
 				1CAB8D512A3CEB43002AA649 /* RunValveIsolationTraceView.swift in Copy Source Code Files */,
 				D71099712A280D830065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift in Copy Source Code Files */,
@@ -364,7 +361,6 @@
 		1C9B74C529DB43580038B06F /* ShowRealisticLightAndShadowsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowRealisticLightAndShadowsView.swift; sourceTree = "<group>"; };
 		1C9B74D529DB54560038B06F /* ChangeCameraControllerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeCameraControllerView.swift; sourceTree = "<group>"; };
 		1CAB8D442A3CEAB0002AA649 /* RunValveIsolationTraceView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunValveIsolationTraceView.Model.swift; sourceTree = "<group>"; };
-		1CAB8D452A3CEAB0002AA649 /* RunValveIsolationTraceView.Enums.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunValveIsolationTraceView.Enums.swift; sourceTree = "<group>"; };
 		1CAB8D472A3CEAB0002AA649 /* RunValveIsolationTraceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunValveIsolationTraceView.swift; sourceTree = "<group>"; };
 		1CAF831B2A20305F000E1E60 /* ShowUtilityAssociationsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowUtilityAssociationsView.swift; sourceTree = "<group>"; };
 		218F35B329C28F4A00502022 /* AuthenticateWithOAuthView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticateWithOAuthView.swift; sourceTree = "<group>"; };
@@ -785,7 +781,6 @@
 		1CAB8D402A3CEAB0002AA649 /* Run valve isolation trace */ = {
 			isa = PBXGroup;
 			children = (
-				1CAB8D452A3CEAB0002AA649 /* RunValveIsolationTraceView.Enums.swift */,
 				1CAB8D442A3CEAB0002AA649 /* RunValveIsolationTraceView.Model.swift */,
 				1CAB8D472A3CEAB0002AA649 /* RunValveIsolationTraceView.swift */,
 			);
@@ -1442,7 +1437,6 @@
 				E004A6F0284E4B9B002A1FE6 /* DownloadVectorTilesToLocalCacheView.swift in Sources */,
 				1CAB8D4E2A3CEAB0002AA649 /* RunValveIsolationTraceView.swift in Sources */,
 				4D2ADC4329C26D05003B367F /* AddDynamicEntityLayerView.swift in Sources */,
-				1CAB8D4C2A3CEAB0002AA649 /* RunValveIsolationTraceView.Enums.swift in Sources */,
 				D7EAF35A2A1C023800D822C4 /* SetMinAndMaxScaleView.swift in Sources */,
 				0042E24528E4F82C001F33D6 /* ShowViewshedFromPointInSceneView.ViewshedSettingsView.swift in Sources */,
 				1C9B74D929DB54560038B06F /* ChangeCameraControllerView.swift in Sources */,
