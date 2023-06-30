@@ -17,13 +17,13 @@ import SwiftUI
 
 struct RunValveIsolationTraceView: View {
     /// The view model for the sample.
-    @StateObject var model = Model()
+    @StateObject private var model = Model()
     
     /// The last locations in the screen and map where a tap occurred.
-    @State var lastSingleTap: (screenPoint: CGPoint, mapPoint: Point)?
+    @State private var lastSingleTap: (screenPoint: CGPoint, mapPoint: Point)?
     
     /// A Boolean value indicating if the configuration sheet is presented.
-    @State var isConfigurationPresented = false
+    @State private var isConfigurationPresented = false
     
     var body: some View {
         MapViewReader { mapViewProxy in
@@ -36,8 +36,8 @@ struct RunValveIsolationTraceView: View {
             }
             .overlay(alignment: .top) {
                 Text(model.statusText)
-                    .frame(maxWidth: .infinity, alignment: .center)
                     .padding(10)
+                    .frame(maxWidth: .infinity, alignment: .center)
                     .background(.ultraThinMaterial, ignoresSafeAreaEdges: .horizontal)
                     .multilineTextAlignment(.center)
             }
@@ -89,9 +89,9 @@ struct RunValveIsolationTraceView: View {
                 }
             }
             .overlay(alignment: .center) {
-                if model.tracingActivity != nil {
+                if let tracingActivity = model.tracingActivity {
                     VStack {
-                        Text(model.tracingActivity?.label ?? "")
+                        Text(tracingActivity.label)
                         ProgressView()
                             .progressViewStyle(.circular)
                     }
@@ -101,7 +101,7 @@ struct RunValveIsolationTraceView: View {
                 }
             }
             .alert(
-                "Select terminal",
+                "Select Terminal",
                 isPresented: $model.terminalSelectorIsOpen,
                 actions: { terminalPickerButtons }
             )
@@ -110,11 +110,14 @@ struct RunValveIsolationTraceView: View {
     
     /// Buttons for each the available terminals on the last added utility element.
     @ViewBuilder var terminalPickerButtons: some View {
-        ForEach(model.lastAddedElement?.assetType.terminalConfiguration?.terminals ?? []) { terminal in
-            Button(terminal.name) {
-                model.lastAddedElement?.terminal = terminal
-                model.terminalSelectorIsOpen = false
-                model.addTerminal(to: lastSingleTap!.mapPoint)
+        if let lastAddedElement = model.lastAddedElement,
+           let terminalConfiguration = lastAddedElement.assetType.terminalConfiguration {
+            ForEach(terminalConfiguration.terminals) { terminal in
+                Button(terminal.name) {
+                    lastAddedElement.terminal = terminal
+                    model.terminalSelectorIsOpen = false
+                    model.addTerminal(to: lastSingleTap!.mapPoint)
+                }
             }
         }
     }
@@ -162,7 +165,7 @@ struct RunValveIsolationTraceView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
-                Button("Done") { isConfigurationPresented.toggle() }
+                Button("Done") { isConfigurationPresented = false }
             }
         }
         .navigationViewStyle(.stack)

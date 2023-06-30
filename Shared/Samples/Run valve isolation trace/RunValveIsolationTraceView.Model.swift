@@ -335,7 +335,7 @@ extension RunValveIsolationTraceView {
                         return
                     } else {
                         if let terminal = terminals.first {
-                            statusText = "Juntion element with terminal \(terminal.name) added to the filter barriers."
+                            statusText = "Junction element with terminal \(terminal.name) added to the filter barriers."
                         }
                     }
                 }
