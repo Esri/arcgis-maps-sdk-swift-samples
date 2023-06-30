@@ -140,7 +140,7 @@ private extension AnimateImagesWithImageOverlayView {
     /// A generic circular iterator.
     private struct CircularIterator<Element>: IteratorProtocol {
         /// An array of elements to be iterated over.
-        let elements: [Element]
+        private let elements: [Element]
         
         /// The element iterator.
         private var elementIterator: Array<Element>.Iterator
