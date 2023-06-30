@@ -118,7 +118,7 @@ private extension AnimateImagesWithImageOverlayView {
             // Create new display link.
             let newDisplayLink = CADisplayLink(target: self, selector: #selector(setImageFrame))
             
-            // Inherit the frame rate from existing display link, or set to default 60 fps.
+            // Set the default frame rate to 60 fps.
             newDisplayLink.preferredFramesPerSecond = 60
             newDisplayLink.isPaused = true
             
