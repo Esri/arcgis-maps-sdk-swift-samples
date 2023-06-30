@@ -346,7 +346,7 @@ extension RunValveIsolationTraceView {
                         fractionalLengthClosestTo: location,
                         tolerance: -1
                     )
-                    statusText = String(format: "Edge element at fractionAlongEdge %.3f added to the filter barriers.", element.fractionAlongEdge)
+                    statusText = String(format: "Edge element at distance %.3f along edge added to the filter barriers.", element.fractionAlongEdge)
                 }
             @unknown default:
                 return
