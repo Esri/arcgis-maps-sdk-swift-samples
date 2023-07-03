@@ -20,31 +20,76 @@ struct SetUpLocationDrivenGeotriggersView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
-    /// The popup to show the feature information.
-    @State private var popup: Popup?
+    /// A Boolean value indicating whether to show an alert.
+    @State private var isShowingAlert = false
+    
+    /// The error shown in the alert.
+    @State private var error: Error? {
+        didSet { isShowingAlert = error != nil }
+    }
     
     /// A Boolean value indicating whether to show the popup.
-    @State var isShowingPopup = false
+    @State private var isShowingPopup = false
+    
+    /// A string for the fence geotrigger notification status.
+    @State private var fenceGeotriggerText = ""
+    
+    /// A string for the display name of the currently nearby feature.
+    @State private var nearbyFeaturesText = ""
+    
+    /// Starts the geotrigger monitors and handles posted notifications.
+    /// - Parameter geotriggerMonitors: The geotrigger monitors to start.
+    private func startGeotriggerMonitors(_ geotriggerMonitors: [GeotriggerMonitor]) async throws {
+        await withThrowingTaskGroup(of: Void.self) { group in
+            for monitor in geotriggerMonitors {
+                group.addTask {
+                    try await monitor.start()
+                    for await newNotification in monitor.notifications where newNotification is FenceGeotriggerNotificationInfo {
+                        await model.handleGeotriggerNotification(newNotification as! FenceGeotriggerNotificationInfo)
+                    }
+                }
+            }
+        }
+    }
     
     var body: some View {
         MapView(map: model.map)
             .locationDisplay(model.locationDisplay)
             .task {
-                // Start geotrigger monitoring once the map loads.
                 do {
+                    // Load the map and its operational layers.
                     try await model.map.load()
-                    model.startGeotriggerMonitoring()
+                    
+                    // Create the geotrigger monitors.
+                    let monitors = model.makeGeotriggerMonitors()
+                    
+                    // Start geotrigger monitoring.
+                    if !monitors.isEmpty {
+                        try await startGeotriggerMonitors(monitors)
+                    }
                 } catch {
-                    model.error = error
+                    self.error = error
+                }
+            }
+            .task(id: model.fenceGeotriggerStatus) {
+                // Set fence geotrigger text.
+                fenceGeotriggerText = model.fenceGeotriggerStatus.label
+                
+                // Set nearby features text.
+                let features = model.nearbyFeatures
+                if features.isEmpty {
+                    nearbyFeaturesText = "No nearby features."
+                } else {
+                    nearbyFeaturesText = String(format: "Nearby: %@", ListFormatter.localizedString(byJoining: features.keys.sorted()))
                 }
             }
             .overlay(alignment: .top) {
                 // Status text overlay.
                 VStack {
-                    Text(model.fenceGeotriggerText)
+                    Text(fenceGeotriggerText)
                         .frame(maxWidth: .infinity, alignment: .leading)
                     
-                    Text(model.nearbyFeaturesText)
+                    Text(nearbyFeaturesText)
                         .foregroundColor(.orange)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
@@ -52,19 +97,16 @@ struct SetUpLocationDrivenGeotriggersView: View {
                 .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
             }
             .toolbar {
-                // Bottom button toolbar.
                 ToolbarItemGroup(placement: .bottomBar) {
                     Button("Current Section") {
-                        let sectionFeature = model.nearbyFeatures[model.currentSectionName!]!
-                        popup = Popup(geoElement: sectionFeature)
+                        model.setSectionPopup()
                         isShowingPopup = true
                     }
                     .disabled(!model.hasCurrentSection)
                     .opacity(isShowingPopup ? 0 : 1)
                     
                     Button("Point of Interest") {
-                        let poiFeature = model.nearbyFeatures[model.nearbyPOINames.first!]!
-                        popup = Popup(geoElement: poiFeature)
+                        model.setPOIPopup()
                         isShowingPopup = true
                     }
                     .disabled(!model.hasPointOfInterest)
@@ -77,8 +119,7 @@ struct SetUpLocationDrivenGeotriggersView: View {
                 isPresented: $isShowingPopup
             ) {
                 Group {
-                    // Feature info popup.
-                    if let popup = popup {
+                    if let popup = model.popup {
                         PopupView(popup: popup, isPresented: $isShowingPopup)
                             .showCloseButton(true)
                     }
@@ -86,13 +127,35 @@ struct SetUpLocationDrivenGeotriggersView: View {
                 .padding()
             }
             .task(id: isShowingPopup) {
-                // Stop location updates when the popup is showing.
                 if isShowingPopup {
+                    // Stop location updates when the popup is showing.
                     await model.locationDisplay.dataSource.stop()
                 } else {
+                    // Start location updates when no popup is showing.
                     try? await model.locationDisplay.dataSource.start()
                 }
             }
-            .alert(isPresented: $model.isShowingAlert, presentingError: model.error)
+            .alert(isPresented: $isShowingAlert, presentingError: error)
+    }
+}
+
+extension SetUpLocationDrivenGeotriggersView {
+    /// The status of a fence geotrigger monitor.
+    enum FenceGeotriggerStatus: Equatable {
+        case notSet
+        case entered(featureName: String)
+        case exited(featureName: String)
+        
+        /// A human-readable label for the geotrigger status.
+        var label: String {
+            switch self {
+            case .notSet:
+                return "Fence geotrigger info will be shown here."
+            case .entered(featureName: let featureName):
+                return "Entered the geofence of \(featureName)"
+            case .exited(featureName: let featureName):
+                return "Exited the geofence of \(featureName)"
+            }
+        }
     }
 }
