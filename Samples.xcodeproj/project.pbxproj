@@ -135,6 +135,11 @@
 		D754E3242A1D66C20006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D754E3222A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift */; };
 		D769C2122A29019B00030F61 /* SetUpLocationDrivenGeotriggersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D769C2112A29019B00030F61 /* SetUpLocationDrivenGeotriggersView.swift */; };
 		D769C2132A29057200030F61 /* SetUpLocationDrivenGeotriggersView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D769C2112A29019B00030F61 /* SetUpLocationDrivenGeotriggersView.swift */; };
+		D7634FAF2A43B7AC00F8AEFB /* CreateConvexHullAroundGeometriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7634FAE2A43B7AC00F8AEFB /* CreateConvexHullAroundGeometriesView.swift */; };
+		D7634FB02A43B8B000F8AEFB /* CreateConvexHullAroundGeometriesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7634FAE2A43B7AC00F8AEFB /* CreateConvexHullAroundGeometriesView.swift */; };
+		D77570C02A2942F800F490CD /* AnimateImagesWithImageOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77570BF2A2942F800F490CD /* AnimateImagesWithImageOverlayView.swift */; };
+		D77570C12A2943D900F490CD /* AnimateImagesWithImageOverlayView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D77570BF2A2942F800F490CD /* AnimateImagesWithImageOverlayView.swift */; };
+		D77572AE2A295DDE00F490CD /* PacificSouthWest2 in Resources */ = {isa = PBXBuildFile; fileRef = D77572AD2A295DDD00F490CD /* PacificSouthWest2 */; settings = {ASSET_TAGS = (AnimateImagesWithImageOverlay, ); }; };
 		D78666AD2A2161F100C60110 /* FindNearestVertexView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78666AC2A2161F100C60110 /* FindNearestVertexView.swift */; };
 		D78666AE2A21629200C60110 /* FindNearestVertexView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D78666AC2A2161F100C60110 /* FindNearestVertexView.swift */; };
 		D79EE76E2A4CEA5D005A52AE /* SetUpLocationDrivenGeotriggersView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79EE76D2A4CEA5D005A52AE /* SetUpLocationDrivenGeotriggersView.Model.swift */; };
@@ -244,6 +249,8 @@
 			files = (
 				D79EE76F2A4CEA7F005A52AE /* SetUpLocationDrivenGeotriggersView.Model.swift in Copy Source Code Files */,
 				D769C2132A29057200030F61 /* SetUpLocationDrivenGeotriggersView.swift in Copy Source Code Files */,
+				D77570C12A2943D900F490CD /* AnimateImagesWithImageOverlayView.swift in Copy Source Code Files */,
+				D7634FB02A43B8B000F8AEFB /* CreateConvexHullAroundGeometriesView.swift in Copy Source Code Files */,
 				D7ABA2FA2A32760D0021822B /* MeasureDistanceInSceneView.swift in Copy Source Code Files */,
 				D722BD232A420DEC002C2087 /* ShowExtrudedFeaturesView.swift in Copy Source Code Files */,
 				D752D9602A3BCE63003EB25E /* DisplayMapFromPortalItemView.swift in Copy Source Code Files */,
@@ -396,6 +403,9 @@
 		D75362D12A1E886700D83028 /* ApplyUniqueValueRendererView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplyUniqueValueRendererView.swift; sourceTree = "<group>"; };
 		D754E3222A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StylePointWithPictureMarkerSymbolsView.swift; sourceTree = "<group>"; };
 		D769C2112A29019B00030F61 /* SetUpLocationDrivenGeotriggersView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetUpLocationDrivenGeotriggersView.swift; sourceTree = "<group>"; };
+		D7634FAE2A43B7AC00F8AEFB /* CreateConvexHullAroundGeometriesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateConvexHullAroundGeometriesView.swift; sourceTree = "<group>"; };
+		D77570BF2A2942F800F490CD /* AnimateImagesWithImageOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimateImagesWithImageOverlayView.swift; sourceTree = "<group>"; };
+		D77572AD2A295DDD00F490CD /* PacificSouthWest2 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = PacificSouthWest2; sourceTree = "<group>"; };
 		D78666AC2A2161F100C60110 /* FindNearestVertexView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindNearestVertexView.swift; sourceTree = "<group>"; };
 		D79EE76D2A4CEA5D005A52AE /* SetUpLocationDrivenGeotriggersView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetUpLocationDrivenGeotriggersView.Model.swift; sourceTree = "<group>"; };
 		D7ABA2F82A32579C0021822B /* MeasureDistanceInSceneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeasureDistanceInSceneView.swift; sourceTree = "<group>"; };
@@ -525,6 +535,7 @@
 				F19A316128906F0D003B7EF9 /* Add raster from file */,
 				E066DD3E28610F3F004D3D5B /* Add scene layer from service */,
 				D7E557602A1D743100B9FB09 /* Add WMS layer */,
+				D77570BC2A29427200F490CD /* Animate images with image overlay */,
 				D75362CC2A1E862B00D83028 /* Apply unique value renderer */,
 				218F35B229C28F4A00502022 /* Authenticate with OAuth */,
 				E0FE32E528747762002C6ACA /* Browse building floors */,
@@ -534,6 +545,7 @@
 				E000E75E2869E325005D87C5 /* Clip geometry */,
 				79B7B8082A1BF8B300F57C27 /* Create and save KML file */,
 				D7E440D12A1ECBC2005D74DE /* Create buffers around points */,
+				D7B3C5C02A43B71E001DA4D8 /* Create convex hull around geometries */,
 				D744FD132A2112360084A66C /* Create convex hull around points */,
 				E004A6EB28495538002A1FE6 /* Create planar and geodetic buffers */,
 				E000E761286A0B07005D87C5 /* Cut geometry */,
@@ -665,6 +677,7 @@
 		00CCB8A6285D059300BBAB70 /* Portal Data */ = {
 			isa = PBXGroup;
 			children = (
+				D77572AC2A295DC100F490CD /* d1453556d91e46dea191c20c398b82cd */,
 				1C965C4629DBA879002F8536 /* 681d6f7694644709a7c830ec57a2d72b */,
 				00D4EF8128638BF100B9CC30 /* cb1b20748a9f4d128dad8a87244e3e37 */,
 				00C94A0228B53DCC004E42D9 /* 7c4c679ab06a4df19dc497f577f111bd */,
@@ -951,6 +964,22 @@
 			path = "Set up location-driven geotriggers";
 			sourceTree = "<group>";
 		};
+		D77570BC2A29427200F490CD /* Animate images with image overlay */ = {
+			isa = PBXGroup;
+			children = (
+				D77570BF2A2942F800F490CD /* AnimateImagesWithImageOverlayView.swift */,
+			);
+			path = "Animate images with image overlay";
+			sourceTree = "<group>";
+		};
+		D77572AC2A295DC100F490CD /* d1453556d91e46dea191c20c398b82cd */ = {
+			isa = PBXGroup;
+			children = (
+				D77572AD2A295DDD00F490CD /* PacificSouthWest2 */,
+			);
+			path = d1453556d91e46dea191c20c398b82cd;
+			sourceTree = "<group>";
+		};
 		D78666A92A21616D00C60110 /* Find nearest vertex */ = {
 			isa = PBXGroup;
 			children = (
@@ -965,6 +994,14 @@
 				D7ABA2F82A32579C0021822B /* MeasureDistanceInSceneView.swift */,
 			);
 			path = "Measure distance in scene";
+			sourceTree = "<group>";
+		};
+		D7B3C5C02A43B71E001DA4D8 /* Create convex hull around geometries */ = {
+			isa = PBXGroup;
+			children = (
+				D7634FAE2A43B7AC00F8AEFB /* CreateConvexHullAroundGeometriesView.swift */,
+			);
+			path = "Create convex hull around geometries";
 			sourceTree = "<group>";
 		};
 		D7CC33FB2A31475C00198EDF /* Show line of sight between points */ = {
@@ -1244,6 +1281,7 @@
 				KnownAssetTags = (
 					AddFeatureLayers,
 					AddRasterFromFile,
+					AnimateImagesWithImageOverlay,
 					ChangeCameraController,
 					DisplayMapFromMobileMapPackage,
 				);
@@ -1291,6 +1329,7 @@
 				00D4EF9028638BF100B9CC30 /* LA_Trails.geodatabase in Resources */,
 				00D4EF9A28638BF100B9CC30 /* AuroraCO.gpkg in Resources */,
 				F111CCC4288B641900205358 /* Yellowstone.mmpk in Resources */,
+				D77572AE2A295DDE00F490CD /* PacificSouthWest2 in Resources */,
 				00D4EFB12863CE6300B9CC30 /* ScottishWildlifeTrust_reserves in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1407,6 +1446,7 @@
 				E0FE32E728747778002C6ACA /* BrowseBuildingFloorsView.swift in Sources */,
 				D752D95F2A3BCE06003EB25E /* DisplayMapFromPortalItemView.swift in Sources */,
 				E070A0A3286F3B6000F2B606 /* DownloadPreplannedMapAreaView.swift in Sources */,
+				D77570C02A2942F800F490CD /* AnimateImagesWithImageOverlayView.swift in Sources */,
 				E0EA0B772866390E00C9621D /* ProjectGeometryView.swift in Sources */,
 				0042E24328E4BF8F001F33D6 /* ShowViewshedFromPointInSceneView.Model.swift in Sources */,
 				D7E557682A1D768800B9FB09 /* AddWMSLayerView.swift in Sources */,
@@ -1435,6 +1475,7 @@
 				883C121529C9136600062FF9 /* DownloadPreplannedMapAreaView.MapPicker.swift in Sources */,
 				1C9B74C929DB43580038B06F /* ShowRealisticLightAndShadowsView.swift in Sources */,
 				00E5401E27F3CCA200CF66D5 /* ContentView.swift in Sources */,
+				D7634FAF2A43B7AC00F8AEFB /* CreateConvexHullAroundGeometriesView.swift in Sources */,
 				E066DD382860AB28004D3D5B /* StyleGraphicsWithRendererView.swift in Sources */,
 				108EC04129D25B2C000F35D0 /* QueryFeatureTableView.swift in Sources */,
 				00B04FB5283EEBA80026C882 /* DisplayOverviewMapView.swift in Sources */,
