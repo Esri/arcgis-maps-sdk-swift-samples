@@ -56,7 +56,7 @@ struct ManageOperationalLayersView: View {
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
                     Button("Manage Layers") {
-                        isShowingSheet.toggle()
+                        isShowingSheet = true
                     }
                 }
             }
@@ -94,6 +94,7 @@ struct ManageLayersSheetView: View {
                             } label: {
                                 Image(systemName: "minus.circle.fill")
                                     .foregroundColor(.red)
+                                    .imageScale(.large)
                             }
                             Text(layer.name)
                         }
@@ -117,6 +118,7 @@ struct ManageLayersSheetView: View {
                             } label: {
                                 Image(systemName: "plus.circle.fill")
                                     .foregroundColor(.green)
+                                    .imageScale(.large)
                             }
                             Text(layer.name)
                         }
