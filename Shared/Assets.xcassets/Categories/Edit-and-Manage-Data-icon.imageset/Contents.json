@@ -1,0 +1,23 @@
+{
+  "images" : [
+    {
+      "filename" : "iOS8_TabBar_Edit30.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "iOS8_TabBar_Edit60.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "iOS8_TabBar_Edit90.png",
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

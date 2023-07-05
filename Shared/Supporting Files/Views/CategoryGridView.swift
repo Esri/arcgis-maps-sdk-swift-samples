@@ -15,8 +15,60 @@
 import SwiftUI
 
 struct CategoryGridView: View {
+    /// All samples retrieved from the Samples directory.
+    let samples: [Sample]
+    
+    /// The search query in the search bar.
+    @State private var query = ""
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        if #available(iOS 16, *) {
+            NavigationSplitView {
+                sidebar
+            } detail: {
+                detail
+            }
+        } else {
+            NavigationView {
+                sidebar
+                detail
+            }
+        }
+    }
+    
+    var sidebar: some View {
+        SampleList(samples: samples, query: $query)
+            .searchable(text: $query, prompt: "Search By Sample Name")
+    }
+    
+    var detail: some View {
+        Text("Select a sample from the list.")
     }
 }
 
+
+private extension CategoryGridView {
+    struct CategoryTileInfo {
+        /// The title of the category.
+        let title: String
+        
+        ///
+        let background: UIImage?
+        
+        ///
+        var backgroundImage: String {
+            title.replacingOccurrences(of: " ", with: "-") + "-bg"
+        }
+        
+        ///
+        var iconImage: String {
+            title.replacingOccurrences(of: " ", with: "-") + "-icon"
+        }
+        
+        init(_ title: String) {
+            self.title = title
+            
+            background = UIImage(named: title.replacingOccurrences(of: " ", with: "-") + "-bg")
+        }
+    }
+}
