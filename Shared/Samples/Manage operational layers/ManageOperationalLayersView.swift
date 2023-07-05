@@ -71,6 +71,9 @@ struct ManageLayersSheetView: View {
     /// The map with the operational layers.
     @Binding var map: Map
     
+    /// The action to dismiss the manage layers sheet.
+    @Environment(\.dismiss) private var dismiss
+    
     /// An array for all the layers currently on the map.
     @State private var operationalLayers: [Layer] = []
     
@@ -127,6 +130,11 @@ struct ManageLayersSheetView: View {
             }
             .navigationTitle("Manage Layers")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") { dismiss() }
+                }
+            }
         }
         .onAppear {
             operationalLayers = map.operationalLayers
