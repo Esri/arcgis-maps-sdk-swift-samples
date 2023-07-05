@@ -84,14 +84,14 @@ private let sampleMetadata: [SampleMetadata] = {
             .filter(\.hasDirectoryPath)
             .compactMap { url in
                 // Gets the metadata JSON under each subdirectory.
+                let metadataFile = url.appendingPathComponent("README.metadata.json")
+                guard fileManager.fileExists(atPath: metadataFile.path) else {
+                    // Sometimes when Git switches branches, it leaves an empty directory
+                    // that causes the decoder to throw an error. Here we skip the directories
+                    // that don't have the metadata JSON file.
+                    return nil
+                }
                 do {
-                    let metadataFile = url.appendingPathComponent("README.metadata.json")
-                    guard fileManager.fileExists(atPath: metadataFile.path) else {
-                        // Sometimes when Git switches branches, it leaves an empty directory
-                        // that causes the decoder to throw an error. Here we skip the directories
-                        // that don't have the metadata JSON file.
-                        return nil
-                    }
                     let data = try Data(contentsOf: metadataFile)
                     return try decoder.decode(SampleMetadata.self, from: data)
                 } catch {
