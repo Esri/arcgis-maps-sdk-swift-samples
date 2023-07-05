@@ -1,5 +1,5 @@
 {
-    "category": "Scenes",
+    "category": "Layers",
     "description": "Display an ArcGIS scene layer from a service.",
     "ignore": false,
     "images": [

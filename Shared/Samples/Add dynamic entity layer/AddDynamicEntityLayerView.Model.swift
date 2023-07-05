@@ -12,8 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import SwiftUI
 import ArcGIS
+import Combine
+import Foundation
 
 extension AddDynamicEntityLayerView {
     /// The model used to store the geo model and other expensive objects
