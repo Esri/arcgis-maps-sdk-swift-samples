@@ -111,6 +111,14 @@ struct ManageLayersSheetView: View {
                     map.removeAllOperationalLayers()
                     map.addOperationalLayers(operationalLayers)
                 }
+                .onDelete { indexSet in
+                    // Remove layer from map on swipe to delete.
+                    for i in indexSet {
+                        map.removeOperationalLayer(operationalLayers[i])
+                        removedLayers.append(operationalLayers[i])
+                        operationalLayers.remove(at: i)
+                    }
+                }
             }
             
             Section(header: Text("Removed Layers")) {
