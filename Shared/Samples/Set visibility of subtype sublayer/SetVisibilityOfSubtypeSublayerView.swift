@@ -38,8 +38,7 @@ struct SetVisibilityOfSubtypeSublayerView: View {
                         model.isShowingSettings.toggle()
                     }
                     .sheet(isPresented: $model.isShowingSettings, detents: [.medium], dragIndicatorVisibility: .visible) {
-                        SettingsView()
-                            .environmentObject(model)
+                        SettingsView(model: model)
                     }
                 }
             }
