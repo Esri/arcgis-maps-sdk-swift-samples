@@ -121,7 +121,7 @@ extension SetVisibilityOfSubtypeSublayerView {
         }
         
         func formatCurrentScaleText() {
-            currentScaleText = String(format: "1:%@", scaleFormatter.string(from: currentScale as NSNumber)!)
+            currentScaleText = "1:\(currentScale.formatted(.decimal))"
         }
         
         func setMinimumScale() {
@@ -143,6 +143,13 @@ private extension ArcGISCredential {
                 password: "I68VGU^nMurF"
             )
         }
+    }
+}
+
+private extension FormatStyle where Self == FloatingPointFormatStyle<Double> {
+    /// Formats the double with zero decimals places of precision.
+    static var decimal: Self {
+        Self.number.precision(.fractionLength(0))
     }
 }
 
