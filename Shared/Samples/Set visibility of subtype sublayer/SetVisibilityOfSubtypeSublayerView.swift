@@ -19,6 +19,14 @@ struct SetVisibilityOfSubtypeSublayerView: View {
     /// The view model for the sample.
     @StateObject var model = Model()
     
+    /// A Boolean value indicating whether to show an alert.
+    @State private var isShowingAlert = false
+    
+    /// The error shown in the alert.
+    @State private var error: Error? {
+        didSet { isShowingAlert = error != nil }
+    }
+    
     var body: some View {
         MapView(map: model.map)
             .onScaleChanged { scale in
@@ -43,16 +51,13 @@ struct SetVisibilityOfSubtypeSublayerView: View {
                 }
             }
             .task {
-                await model.setup()
-            }
-            .overlay(alignment: .top) {
-                if !model.statusText.isEmpty {
-                    Text(model.statusText)
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        .padding(10)
-                        .background(.ultraThinMaterial, ignoresSafeAreaEdges: .horizontal)
-                        .multilineTextAlignment(.center)
+                do {
+                    try await model.setup()
+                } catch {
+                    // Presents an error message if the raster fails to load.
+                    self.error = error
                 }
             }
+            .alert(isPresented: $isShowingAlert, presentingError: error)
     }
 }

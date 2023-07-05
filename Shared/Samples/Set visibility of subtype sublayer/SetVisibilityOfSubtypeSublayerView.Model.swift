@@ -33,9 +33,6 @@ extension SetVisibilityOfSubtypeSublayerView {
         /// The renderer of the subtype feature layer.
         private(set) var originalRenderer: Renderer?
         
-        /// The status text to display to the user.
-        @Published private(set) var statusText = ""
-        
         /// The  subtype sublayer's label definition.
         private(set) var labelDefinition: LabelDefinition = {
             // Make and stylize the text symbol.
@@ -92,18 +89,14 @@ extension SetVisibilityOfSubtypeSublayerView {
         
         /// Performs important tasks including adding credentials, loading and adding operational layers.
         @MainActor
-        func setup() async {
-            do {
-                try await ArcGISEnvironment.authenticationManager.arcGISCredentialStore.add(.publicSample)
-                try await subtypeFeatureLayer.load()
-                map.addOperationalLayer(subtypeFeatureLayer)
-                subtypeSublayer = subtypeFeatureLayer.sublayer(withSubtypeName: "Street Light")
-                subtypeSublayer?.labelsAreEnabled = true
-                originalRenderer = subtypeSublayer?.renderer
-                subtypeSublayer?.addLabelDefinition(labelDefinition)
-            } catch {
-                statusText = error.localizedDescription
-            }
+        func setup() async throws {
+            try await ArcGISEnvironment.authenticationManager.arcGISCredentialStore.add(.publicSample)
+            try await subtypeFeatureLayer.load()
+            map.addOperationalLayer(subtypeFeatureLayer)
+            subtypeSublayer = subtypeFeatureLayer.sublayer(withSubtypeName: "Street Light")
+            subtypeSublayer?.labelsAreEnabled = true
+            originalRenderer = subtypeSublayer?.renderer
+            subtypeSublayer?.addLabelDefinition(labelDefinition)
         }
         
         func toggleSublayer() {
