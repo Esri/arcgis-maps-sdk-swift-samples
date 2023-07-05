@@ -28,21 +28,19 @@ extension SetVisibilityOfSubtypeSublayerView {
         private let subtypeFeatureLayer: SubtypeFeatureLayer
         
         /// The subtype sublayer of the subtype feature layer in this sample.
-        private(set) var subtypeSublayer: SubtypeSublayer?
+        private var subtypeSublayer: SubtypeSublayer?
         
         /// The renderer of the subtype feature layer.
-        private(set) var originalRenderer: Renderer?
+        private var originalRenderer: Renderer?
         
         /// The  subtype sublayer's label definition.
         private(set) var labelDefinition: LabelDefinition = {
             // Make and stylize the text symbol.
-            let textSymbol = TextSymbol()
+            let textSymbol = TextSymbol(color: .blue, size: 10.5)
             textSymbol.backgroundColor = .clear
             textSymbol.outlineColor = .white
-            textSymbol.color = .blue
             textSymbol.haloColor = .white
             textSymbol.haloWidth = 2
-            textSymbol.size = 10.5
             // Make a label definition and adjust its properties.
             let labelExpression = SimpleLabelExpression(simpleExpression: "[nominalvoltage]")
             let labelDefinition = LabelDefinition(labelExpression: labelExpression, textSymbol: textSymbol)
@@ -69,13 +67,13 @@ extension SetVisibilityOfSubtypeSublayerView {
         @Published var showsOriginalRenderer = true
         
         /// The current scale of the map.
-        @Published var currentScale: Double = .zero
+        var currentScale: Double = .zero
         
         /// The map's current scale value in text.
         @Published var currentScaleText: String = ""
         
         /// The subtype sublayer's minimum scale value in text.
-        @Published var minimumScaleText: String = "Not Set"
+        @Published private(set) var minimumScaleText: String = "Not Set"
         
         init() {
             map.initialViewpoint = .initialViewpoint

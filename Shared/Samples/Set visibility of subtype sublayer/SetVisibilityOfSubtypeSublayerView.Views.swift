@@ -21,7 +21,7 @@ extension SetVisibilityOfSubtypeSublayerView {
         @ObservedObject var model: Model
         
         var body: some View {
-            List {
+            Form {
                 Section("Layers") {
                     Toggle("Show Sublayer", isOn: $model.showsSublayer)
                         .onChange(of: model.showsSublayer) { _ in
