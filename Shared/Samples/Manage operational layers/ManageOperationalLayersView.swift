@@ -58,10 +58,10 @@ struct ManageOperationalLayersView: View {
                     Button("Manage Layers") {
                         isShowingSheet = true
                     }
+                    .sheet(isPresented: $isShowingSheet, detents: [.medium], dragIndicatorVisibility: .visible) {
+                        ManageLayersSheetView(map: $map)
+                    }
                 }
-            }
-            .sheet(isPresented: $isShowingSheet, detents: [.medium], dragIndicatorVisibility: .visible) {
-                ManageLayersSheetView(map: $map)
             }
             .alert(isPresented: $isShowingAlert, presentingError: error)
     }
@@ -84,13 +84,13 @@ struct ManageLayersSheetView: View {
                     header: Text("Operational Layers"),
                     footer: Text("Tap and hold on a list item to drag and reorder the layers.")
                 ) {
-                    ForEach(operationalLayers, id: \.name) { layer in
+                    ForEach(operationalLayers, id: \.id) { layer in
                         HStack {
                             Button {
                                 // Remove layer from map on minus button press.
                                 map.removeOperationalLayer(layer)
                                 removedLayers.append(layer)
-                                operationalLayers.removeAll(where: { $0.name == layer.name })
+                                operationalLayers.removeAll(where: { $0.id == layer.id })
                             } label: {
                                 Image(systemName: "minus.circle.fill")
                                     .foregroundColor(.red)
@@ -108,13 +108,13 @@ struct ManageLayersSheetView: View {
                 }
                 
                 Section(header: Text("Removed Layers")) {
-                    ForEach(removedLayers, id: \.name) { layer in
+                    ForEach(removedLayers, id: \.id) { layer in
                         HStack {
                             Button {
                                 // Add layer to map on plus button press.
                                 map.addOperationalLayer(layer)
                                 operationalLayers.append(layer)
-                                removedLayers.removeAll(where: { $0.name == layer.name })
+                                removedLayers.removeAll(where: { $0.id == layer.id })
                             } label: {
                                 Image(systemName: "plus.circle.fill")
                                     .foregroundColor(.green)
