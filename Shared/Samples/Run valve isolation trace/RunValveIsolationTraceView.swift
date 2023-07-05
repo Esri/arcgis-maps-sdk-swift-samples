@@ -25,6 +25,10 @@ struct RunValveIsolationTraceView: View {
     /// A Boolean value indicating if the configuration sheet is presented.
     @State private var isConfigurationPresented = false
     
+    /// A Boolean value indicating whether to include isolated features in the
+    /// trace results when used in conjunction with an isolation trace.
+    @State private var includesIsolatedFeatures = true
+    
     var body: some View {
         MapViewReader { mapViewProxy in
             MapView(
@@ -46,7 +50,7 @@ struct RunValveIsolationTraceView: View {
                 await mapViewProxy.setViewpointCenter(model.startingLocationPoint, scale: 3_000)
             }
             .task(id: lastSingleTap?.mapPoint) {
-                guard let lastSingleTap = lastSingleTap else {
+                guard let lastSingleTap else {
                     return
                 }
                 if let feature = try? await mapViewProxy.identifyLayers(
@@ -56,14 +60,17 @@ struct RunValveIsolationTraceView: View {
                     model.addFilterBarrier(for: feature, at: lastSingleTap.mapPoint)
                 }
             }
+            .onChange(of: includesIsolatedFeatures) { newValue in
+                model.includesIsolatedFeatures = newValue
+            }
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
-                    Button {
+                    Button("Configuration") {
                         isConfigurationPresented.toggle()
-                    } label: {
-                        Text("Configuration")
                     }
-                    .disabled(model.tracingActivity == .runningTrace)
+                    .disabled(model.tracingActivity == .runningTrace ||
+                              model.tracingActivity == .loadingServiceGeodatabase ||
+                              model.tracingActivity == .loadingNetwork)
                     Spacer()
                     Button("Trace") {
                         Task { await model.trace() }
@@ -138,7 +145,7 @@ struct RunValveIsolationTraceView: View {
                     // tappable.
                     .contentShape(Rectangle())
                     .onTapGesture {
-                        if category.name == model.previousCategory?.name {
+                        if category.name == model.selectedCategory?.name {
                             model.unselectCategory(category)
                         } else {
                             model.selectCategory(category)

@@ -40,32 +40,26 @@ extension RunValveIsolationTraceView {
         @Published private(set) var lastAddedElement: UtilityElement?
         
         /// The current tracing related activity.
-        @Published private(set) var tracingActivity: TracingActivity?
+        @Published private(set) var tracingActivity: TracingActivity? = .loadingServiceGeodatabase
         
         /// The base trace parameters.
-        @Published private(set) var traceParameters = UtilityTraceParameters(traceType: .isolation, startingLocations: [])
+        private var traceParameters = UtilityTraceParameters(traceType: .isolation, startingLocations: [])
         
         /// The point geometry of the starting location.
-        @Published private(set) var startingLocationPoint: Point!
+        private(set) var startingLocationPoint: Point!
         
         /// The filter barrier categories.
-        @Published private(set) var filterBarrierCategories: [UtilityCategory] = []
+        private(set) var filterBarrierCategories: [UtilityCategory] = []
         
         /// The selected filter barrier category.
-        @Published var selectedCategory: UtilityCategory?
-        
-        /// The previously selected filter barrier category.
-        @Published private(set) var previousCategory: UtilityCategory?
+        @Published private(set) var selectedCategory: UtilityCategory?
         
         /// A Boolean value indicating whether to include isolated features in the
         /// trace results when used in conjunction with an isolation trace.
-        @Published var includesIsolatedFeatures = true
+        var includesIsolatedFeatures = true
         
         /// A Boolean value indicating whether the trace is completed.
-        @Published private(set) var traceCompleted = false
-        
-        /// A Boolean value indicating whether the filter barrier categories have loaded.
-        @Published private(set) var categoriesLoaded = false
+        private var traceCompleted = false
         
         /// A Boolean value indicating if tracing is enabled.
         @Published private(set) var traceEnabled = false
@@ -74,7 +68,7 @@ extension RunValveIsolationTraceView {
         @Published private(set) var resetEnabled = false
         
         /// A Boolean value indicating if the user has added filter barriers to the trace parameters.
-        @Published private(set) var hasFilterBarriers = false
+        private var hasFilterBarriers = false
         
         /// A Boolean value indicating whether the terminal selection menu is open.
         @Published var terminalSelectorIsOpen = false
@@ -82,7 +76,7 @@ extension RunValveIsolationTraceView {
         /// The status text to display to the user.
         @Published var statusText: String = "Loading Utility Network…"
         
-        /// The filter barrier identifer.
+        /// The filter barrier identifier.
         private static let filterBarrierIdentifier = "filter barrier"
         
         /// The graphic overlay to display starting location and filter barriers.
@@ -168,7 +162,6 @@ extension RunValveIsolationTraceView {
                 // Get available utility categories.
                 if let definition = utilityNetwork.definition {
                     filterBarrierCategories = definition.categories
-                    categoriesLoaded = true
                 }
             }
         }
@@ -210,7 +203,6 @@ extension RunValveIsolationTraceView {
         /// Sets the selected filter barrier category and updates the status text.
         func selectCategory(_ category: UtilityCategory) {
             selectedCategory = category
-            previousCategory = category
             statusText = "\(category.name) selected."
             traceEnabled = true
         }
@@ -218,7 +210,6 @@ extension RunValveIsolationTraceView {
         /// Unselects the selected filter barrier category and updates the status text.
         func unselectCategory(_ category: UtilityCategory) {
             selectedCategory = nil
-            previousCategory = nil
             traceEnabled = hasFilterBarriers
             statusText = "Tap on the map to add filter barriers, or run the trace directly without filter barriers."
         }
@@ -251,10 +242,12 @@ extension RunValveIsolationTraceView {
             } else {
                 statusText = "Trace with filter barriers completed."
             }
-            tracingActivity = .none
-            traceEnabled = true
-            traceCompleted = true
-            resetEnabled = true
+            defer {
+                tracingActivity = .none
+                traceEnabled = true
+                traceCompleted = true
+                resetEnabled = true
+            }
             do {
                 let elements = traceResults.flatMap(\.elements)
                 guard !elements.isEmpty else {
@@ -365,8 +358,9 @@ extension RunValveIsolationTraceView {
         func addTerminal(to point: Point) {
             guard let terminal = lastAddedElement?.terminal, let lastAddedElement else { return }
             traceParameters.addFilterBarrier(lastAddedElement)
-            statusText = "Juntion element with terminal \(terminal.name) added to the filter barriers."
+            statusText = "Junction element with terminal \(terminal.name) added to the filter barriers."
             hasFilterBarriers = true
+            resetEnabled = true
             addGraphic(
                 for: point,
                 traceLocationType: RunValveIsolationTraceView.Model.filterBarrierIdentifier
