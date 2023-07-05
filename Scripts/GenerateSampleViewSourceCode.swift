@@ -77,14 +77,22 @@ private let sampleMetadata: [SampleMetadata] = {
     // Converts snake-case key "offline_data" to camel-case "offlineData".
     decoder.keyDecodingStrategy = .convertFromSnakeCase
     
+    let fileManager = FileManager.default
     do {
         // Does a shallow traverse of the top level of samples directory.
-        return try FileManager.default.contentsOfDirectory(at: samplesDirectoryURL, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles])
+        return try fileManager.contentsOfDirectory(at: samplesDirectoryURL, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles])
             .filter(\.hasDirectoryPath)
-            .map { url in
+            .compactMap { url in
                 // Gets the metadata JSON under each subdirectory.
+                let metadataFile = url.appendingPathComponent("README.metadata.json")
+                guard fileManager.fileExists(atPath: metadataFile.path) else {
+                    // Sometimes when Git switches branches, it leaves an empty directory
+                    // that causes the decoder to throw an error. Here we skip the directories
+                    // that don't have the metadata JSON file.
+                    return nil
+                }
                 do {
-                    let data = try Data(contentsOf: url.appendingPathComponent("README.metadata.json"))
+                    let data = try Data(contentsOf: metadataFile)
                     return try decoder.decode(SampleMetadata.self, from: data)
                 } catch {
                     print("error: '\(url.lastPathComponent)' sample couldn’t be decoded.")
