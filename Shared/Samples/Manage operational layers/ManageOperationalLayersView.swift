@@ -60,7 +60,7 @@ struct ManageOperationalLayersView: View {
                     }
                     .sheet(isPresented: $isShowingSheet, detents: [.medium], dragIndicatorVisibility: .visible) {
                         NavigationView {
-                            ManageLayersSheetView(map: $map)
+                            ManageLayersSheetView(map: map)
                                 .navigationTitle("Manage Layers")
                                 .navigationBarTitleDisplayMode(.inline)
                         }
@@ -73,7 +73,7 @@ struct ManageOperationalLayersView: View {
 
 struct ManageLayersSheetView: View {
     /// The map with the operational layers.
-    @Binding var map: Map
+    let map: Map
     
     /// The action to dismiss the manage layers sheet.
     @Environment(\.dismiss) private var dismiss
