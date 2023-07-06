@@ -109,19 +109,17 @@ extension SetVisibilityOfSubtypeSublayerView {
 }
 
 extension SetVisibilityOfSubtypeSublayerView.Model {
-    enum SetupError: Error {
+    enum SetupError: LocalizedError {
         case cannotFindSublayer
-    }
-}
-
-extension SetVisibilityOfSubtypeSublayerView.Model.SetupError: LocalizedError {
-    var errorDescription: String? {
-        switch self {
-        case .cannotFindSublayer:
-            return NSLocalizedString(
-                "Cannot find subtype sublayer.",
-                comment: "Error thrown when subtype sublayer cannot be found."
-            )
+        
+        var errorDescription: String? {
+            switch self {
+            case .cannotFindSublayer:
+                return NSLocalizedString(
+                    "Cannot find subtype sublayer.",
+                    comment: "Error thrown when subtype sublayer cannot be found."
+                )
+            }
         }
     }
 }
