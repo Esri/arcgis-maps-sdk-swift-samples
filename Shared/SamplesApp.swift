@@ -23,7 +23,7 @@ struct SamplesApp: App {
     
     var body: some SwiftUI.Scene {
         WindowGroup {
-            ContentView(
+            CategoryGridView(
                 samples: Self.samples
                 #if targetEnvironment(macCatalyst)
                     // On-demand resources aren't available on Mac Catalyst yet.
