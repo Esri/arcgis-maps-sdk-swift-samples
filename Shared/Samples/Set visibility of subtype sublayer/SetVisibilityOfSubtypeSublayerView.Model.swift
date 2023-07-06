@@ -74,7 +74,9 @@ extension SetVisibilityOfSubtypeSublayerView {
             try await ArcGISEnvironment.authenticationManager.arcGISCredentialStore.add(.publicSample)
             try await subtypeFeatureLayer.load()
             map.addOperationalLayer(subtypeFeatureLayer)
-            guard let subtypeSublayer = subtypeFeatureLayer.sublayer(withSubtypeName: "Street Light") else { fatalError("Failed to initialize subtype sublayer") }
+            guard let subtypeSublayer = subtypeFeatureLayer.sublayer(withSubtypeName: "Street Light") else {
+                throw SetupError.cannotFindSublayer
+            }
             subtypeSublayer.labelsAreEnabled = true
             originalRenderer = subtypeSublayer.renderer
             subtypeSublayer.addLabelDefinition(labelDefinition)
@@ -103,6 +105,12 @@ extension SetVisibilityOfSubtypeSublayerView {
             minimumScaleText = currentScaleText
             subtypeSublayer?.minScale = currentScale
         }
+    }
+}
+
+extension SetVisibilityOfSubtypeSublayerView.Model {
+    enum SetupError: Error {
+        case cannotFindSublayer
     }
 }
 
