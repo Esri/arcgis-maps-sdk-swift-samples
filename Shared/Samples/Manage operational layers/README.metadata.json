@@ -1,0 +1,27 @@
+{
+    "category": "Maps",
+    "description": "Add, remove, and reorder operational layers in a map.",
+    "ignore": false,
+    "images": [
+        "manage-operational-layers-1.png",
+        "manage-operational-layers-2.png"
+    ],
+    "keywords": [
+        "add",
+        "delete",
+        "layer",
+        "map",
+        "remove",
+        "ArcGISMapImageLayer",
+        "Map"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "ArcGISMapImageLayer",
+        "Map"
+    ],
+    "snippets": [
+        "ManageOperationalLayersView.swift"
+    ],
+    "title": "Manage operational layers"
+}
