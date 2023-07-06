@@ -114,6 +114,18 @@ extension SetVisibilityOfSubtypeSublayerView.Model {
     }
 }
 
+extension SetVisibilityOfSubtypeSublayerView.Model.SetupError: LocalizedError {
+    var errorDescription: String? {
+        switch self {
+        case .cannotFindSublayer:
+            return NSLocalizedString(
+                "Cannot find subtype sublayer.",
+                comment: "Error thrown when subtype sublayer cannot be found."
+            )
+        }
+    }
+}
+
 private extension ArcGISCredential {
     /// The public credentials for the data in this sample.
     /// - Note: Never hardcode login information in a production application. This is done solely
