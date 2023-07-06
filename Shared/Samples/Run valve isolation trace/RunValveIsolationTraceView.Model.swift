@@ -43,10 +43,10 @@ extension RunValveIsolationTraceView {
         @Published private(set) var tracingActivity: TracingActivity? = .loadingServiceGeodatabase
         
         /// The base trace parameters.
-        private var traceParameters = UtilityTraceParameters(traceType: .isolation, startingLocations: [])
+        private let traceParameters = UtilityTraceParameters(traceType: .isolation, startingLocations: [])
         
         /// The point geometry of the starting location.
-        private(set) var startingLocationPoint: Point!
+        private(set) var startingLocationPoint: Point?
         
         /// The filter barrier categories.
         private(set) var filterBarrierCategories: [UtilityCategory] = []
@@ -68,7 +68,7 @@ extension RunValveIsolationTraceView {
         @Published private(set) var resetEnabled = false
         
         /// A Boolean value indicating if the user has added filter barriers to the trace parameters.
-        private var hasFilterBarriers = false
+        private var hasFilterBarriers: Bool { traceParameters.filterBarriers.isEmpty }
         
         /// A Boolean value indicating whether the terminal selection menu is open.
         @Published var terminalSelectorIsOpen = false
@@ -119,8 +119,7 @@ extension RunValveIsolationTraceView {
             }
         }
         
-        /// Load the service geodatabase and initialize the layers.
-        @MainActor
+        /// Loads the service geodatabase and initialize the layers.
         private func loadServiceGeodatabase() async throws {
             tracingActivity = .loadingServiceGeodatabase
             defer { tracingActivity = nil }
@@ -136,8 +135,7 @@ extension RunValveIsolationTraceView {
             }
         }
         
-        /// Load the utility network.
-        @MainActor
+        /// Loads the utility network.
         private func loadUtilityNetwork() async throws {
             tracingActivity = .loadingNetwork
             defer { tracingActivity = nil }
@@ -155,8 +153,8 @@ extension RunValveIsolationTraceView {
                 // Get the geometry of the starting location as a point.
                 // Then draw the starting location on the map.
                 
+                addGraphic(for: point, traceLocationType: "starting point")
                 startingLocationPoint = point
-                addGraphic(for: startingLocationPoint, traceLocationType: "starting point")
                 tracingActivity = .none
                 
                 // Get available utility categories.
@@ -166,7 +164,7 @@ extension RunValveIsolationTraceView {
             }
         }
         
-        /// When the utility network is loaded, create a`UtilityElement`
+        /// When the utility network is loaded, create a `UtilityElement`
         /// from the asset type to use as the starting location for the trace.
         private func makeStartingLocation() -> UtilityElement? {
             // Constants for creating the default starting location.
@@ -190,7 +188,7 @@ extension RunValveIsolationTraceView {
         
         /// Adds a graphic to the graphics overlay.
         /// - Parameters:
-        ///   - location: The `Point` location to place the graphic..
+        ///   - location: The `Point` location to place the graphic.
         ///   - traceLocationType: The textual description of the trace location type.
         private func addGraphic(for location: Point, traceLocationType: String) {
             let graphic = Graphic(
@@ -216,7 +214,6 @@ extension RunValveIsolationTraceView {
         
         /// Runs a trace with the pending trace configuration and selects features in the map that
         /// correspond to the element results.
-        @MainActor
         func trace() async {
             // Clear previous trace results.
             layers.forEach { $0.clearSelection() }
@@ -248,18 +245,19 @@ extension RunValveIsolationTraceView {
                 traceCompleted = true
                 resetEnabled = true
             }
+            
+            let elements = traceResults.flatMap(\.elements)
+            guard !elements.isEmpty else {
+                statusText = "Trace completed with no output."
+                return
+            }
+            
+            let groups = Dictionary(grouping: elements, by: \.networkSource.name)
+            if groups.isEmpty {
+                statusText = "Trace completed with no output."
+                return
+            }
             do {
-                let elements = traceResults.flatMap(\.elements)
-                guard !elements.isEmpty else {
-                    statusText = "Trace completed with no output."
-                    return
-                }
-                
-                let groups = Dictionary(grouping: elements, by: \.networkSource.name)
-                if groups.isEmpty {
-                    statusText = "Trace completed with no output."
-                    return
-                }
                 for (networkName, elements) in groups {
                     guard let layer = map.operationalLayers.first(
                         where: { ($0 as? FeatureLayer)?.featureTable?.tableName == networkName }
@@ -278,13 +276,14 @@ extension RunValveIsolationTraceView {
             traceParameters.removeAllBarriers()
             parametersOverlay.removeAllGraphics()
             // Add back the starting location.
-            addGraphic(for: startingLocationPoint, traceLocationType: "starting point")
+            if let startingLocationPoint {
+                addGraphic(for: startingLocationPoint, traceLocationType: "starting point")
+            }
             statusText = "Tap on the map to add filter barriers, or run the trace directly without filter barriers."
-            hasFilterBarriers = false
             resetEnabled = false
         }
         
-        /// Get the utility tier's trace configuration and apply category comparison.
+        /// Gets the utility tier's trace configuration and apply category comparison.
         private func makeTraceConfiguration(category: UtilityCategory?) -> UtilityTraceConfiguration {
             // Get a default trace configuration from a tier in the network.
             guard let configuration = utilityNetwork
@@ -351,15 +350,13 @@ extension RunValveIsolationTraceView {
             addGraphic(for: point, traceLocationType: RunValveIsolationTraceView.Model.filterBarrierIdentifier)
             resetEnabled = true
             traceEnabled = true
-            hasFilterBarriers = true
         }
         
         /// Adds the filter barrier of the user selected terminal to the trace parameters.
         func addTerminal(to point: Point) {
-            guard let terminal = lastAddedElement?.terminal, let lastAddedElement else { return }
+            guard let lastAddedElement, let terminal = lastAddedElement.terminal else { return }
             traceParameters.addFilterBarrier(lastAddedElement)
             statusText = "Junction element with terminal \(terminal.name) added to the filter barriers."
-            hasFilterBarriers = true
             resetEnabled = true
             addGraphic(
                 for: point,

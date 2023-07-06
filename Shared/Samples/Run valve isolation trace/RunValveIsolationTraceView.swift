@@ -47,7 +47,9 @@ struct RunValveIsolationTraceView: View {
             }
             .task {
                 await model.setup()
-                await mapViewProxy.setViewpointCenter(model.startingLocationPoint, scale: 3_000)
+                if let point = model.startingLocationPoint {
+                    await mapViewProxy.setViewpointCenter(point, scale: 3_000)
+                }
             }
             .task(id: lastSingleTap?.mapPoint) {
                 guard let lastSingleTap else {
@@ -79,7 +81,9 @@ struct RunValveIsolationTraceView: View {
                     Spacer()
                     Button("Reset") {
                         model.reset()
-                        Task { await mapViewProxy.setViewpointCenter(model.startingLocationPoint, scale: 3_000) }
+                        if let point = model.startingLocationPoint {
+                            Task { await mapViewProxy.setViewpointCenter(model.startingLocationPoint!, scale: 3_000) }
+                        }
                     }
                     .disabled(!model.resetEnabled)
                 }

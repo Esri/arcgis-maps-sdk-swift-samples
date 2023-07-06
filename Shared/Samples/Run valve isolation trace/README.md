@@ -26,7 +26,7 @@ Tap on one or more features to use as filter barriers or create and set the conf
 9. When the map view is tapped, identify which feature is at the tap location, and add a `Graphic` to represent a filter barrier.
 10. Create a `UtilityElement` for the identified feature and add this element to the trace parameters' `filterBarriers` property.
     * If the element is a junction with more than one terminal, display a terminal picker. Then set the junction's `terminal` property with the selected terminal.
-    * If it is an edge, set its `fractionAlongEdge` property using `GeometryEngine.polyline(_:fractionalLengthClosestTo:tolerance:)` method.  
+    * If it is an edge, set its `fractionAlongEdge` property using `GeometryEngine.polyline(_:fractionalLengthClosestTo:tolerance:)` method.
 11. If "Trace" is tapped without filter barriers:
     * Create a new `UtilityCategoryComparison` with the selected category and `UtilityCategoryComparison.Operator.exists`.
     * Assign this condition to `UtilityTraceFilter.barriers` from the default configuration from step 6.
