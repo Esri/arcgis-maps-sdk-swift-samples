@@ -46,7 +46,6 @@ struct CategoryGridView: View {
                     NavigationLink {
                         SampleListView(samples: samples.filter { $0.category == category })
                             .navigationTitle(category)
-                            //.navigationBarTitleDisplayMode(.inline)
                     } label: {
                         CategoryTitleView(category: category)
                     }
@@ -62,7 +61,7 @@ private extension CategoryGridView {
         /// The color scheme to detect dark mode.
         @Environment(\.colorScheme) private var colorScheme
         
-        /// The category name.
+        /// The category name used to load the images from assets.
         let category: String
         
         var body: some View {

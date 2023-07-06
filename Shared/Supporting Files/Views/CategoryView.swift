@@ -27,15 +27,6 @@ struct CategoryView: View {
     /// A Boolean value that indicates whether to present the about view.
     @State private var isAboutViewPresented = false
     
-    /// The samples to display in the list. Searching adjusts this value.
-    private var displayedSamples: [Sample] {
-        if query.isEmpty {
-            return []
-        } else {
-            return samples.filter { $0.name.localizedCaseInsensitiveContains(query) }
-        }
-    }
-    
     var body: some View {
         VStack {
             if !isSearching {
