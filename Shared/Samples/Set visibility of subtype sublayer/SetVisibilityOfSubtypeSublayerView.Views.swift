@@ -20,33 +20,36 @@ extension SetVisibilityOfSubtypeSublayerView {
         /// The view model for the sample.
         @ObservedObject var model: Model
         
+        /// A Boolean value indicating whether to show the subtype sublayer.
+        @State var showsSublayer = true
+        
+        /// A Boolean value indicating whether to show the subtype sublayer's renderer.
+        @State var showsOriginalRenderer = true
+        
         var body: some View {
             Form {
                 Section("Layers") {
-                    Toggle("Show Sublayer", isOn: $model.showsSublayer)
-                        .onChange(of: model.showsSublayer) { _ in
-                            model.toggleSublayer()
+                    Toggle("Show Sublayer", isOn: $showsSublayer)
+                        .onChange(of: showsSublayer) { newValue in
+                            model.toggleSublayer(isVisible: newValue)
                         }
-                    Toggle("Show Original Renderer", isOn: $model.showsOriginalRenderer)
-                        .onChange(of: model.showsOriginalRenderer) { _ in
-                            model.toggleRenderer()
+                    Toggle("Show Original Renderer", isOn: $showsOriginalRenderer)
+                        .onChange(of: showsOriginalRenderer) { newValue in
+                            model.toggleRenderer(showsOriginalRenderer: newValue)
                         }
                 }
                 Section("Sublayer Minimum Scale") {
-                    VStack {
-                        HStack {
-                            Text("Minimum Scale")
-                            Spacer()
-                            Text(model.minimumScaleText)
-                                .foregroundColor(.secondary)
-                        }
+                    HStack {
+                        Text("Minimum Scale")
+                        Spacer()
+                        Text(model.minimumScaleText)
+                            .foregroundColor(.secondary)
                     }
                     HStack {
-                        Spacer()
                         Button("Set Current to Minimum Scale") {
                             model.setMinimumScale()
                         }
-                        Spacer()
+                        .frame(maxWidth: .infinity, alignment: .center)
                     }
                 }
             }

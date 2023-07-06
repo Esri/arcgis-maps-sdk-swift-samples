@@ -19,6 +19,9 @@ struct SetVisibilityOfSubtypeSublayerView: View {
     /// The view model for the sample.
     @StateObject var model = Model()
     
+    /// A Boolean value indicating whether the settings should be presented.
+    @State private var isShowingSettings = false
+    
     /// A Boolean value indicating whether to show an alert.
     @State private var isShowingAlert = false
     
@@ -43,9 +46,9 @@ struct SetVisibilityOfSubtypeSublayerView: View {
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
                     Button("Settings") {
-                        model.isShowingSettings.toggle()
+                        isShowingSettings.toggle()
                     }
-                    .sheet(isPresented: $model.isShowingSettings, detents: [.medium], dragIndicatorVisibility: .visible) {
+                    .sheet(isPresented: $isShowingSettings, detents: [.medium], dragIndicatorVisibility: .visible) {
                         SettingsView(model: model)
                     }
                 }
@@ -54,7 +57,7 @@ struct SetVisibilityOfSubtypeSublayerView: View {
                 do {
                     try await model.setup()
                 } catch {
-                    // Presents an error message if the raster fails to load.
+                    // Presents an error message if the subtype layer fails to load.
                     self.error = error
                 }
             }

@@ -17,6 +17,7 @@ import ArcGIS
 
 extension SetVisibilityOfSubtypeSublayerView {
     /// The view model for this sample.
+    @MainActor
     class Model: ObservableObject {
         /// A map with a streets basemap style.
         let map = Map(basemapStyle: .arcGISStreetsNight)
@@ -28,13 +29,13 @@ extension SetVisibilityOfSubtypeSublayerView {
         private let subtypeFeatureLayer: SubtypeFeatureLayer
         
         /// The subtype sublayer of the subtype feature layer in this sample.
-        private var subtypeSublayer: SubtypeSublayer?
+        var subtypeSublayer: SubtypeSublayer?
         
         /// The renderer of the subtype feature layer.
         private var originalRenderer: Renderer?
         
         /// The  subtype sublayer's label definition.
-        private(set) var labelDefinition: LabelDefinition = {
+        private let labelDefinition: LabelDefinition = {
             // Make and stylize the text symbol.
             let textSymbol = TextSymbol(color: .blue, size: 10.5)
             textSymbol.backgroundColor = .clear
@@ -48,23 +49,6 @@ extension SetVisibilityOfSubtypeSublayerView {
             labelDefinition.usesCodedValues = true
             return labelDefinition
         }()
-        
-        // The formatter used to generate strings from scale values.
-        private let scaleFormatter: NumberFormatter = {
-            let numberFormatter = NumberFormatter()
-            numberFormatter.numberStyle = .decimal
-            numberFormatter.maximumFractionDigits = 0
-            return numberFormatter
-        }()
-        
-        /// A Boolean value indicating whether the settings should be presented.
-        @Published var isShowingSettings = false
-        
-        /// A Boolean value indicating whether to show the subtype sublayer.
-        @Published var showsSublayer = true
-        
-        /// A Boolean value indicating whether to show the subtype sublayer's renderer.
-        @Published var showsOriginalRenderer = true
         
         /// The current scale of the map.
         var currentScale: Double = .zero
@@ -86,7 +70,6 @@ extension SetVisibilityOfSubtypeSublayerView {
         }
         
         /// Performs important tasks including adding credentials, loading and adding operational layers.
-        @MainActor
         func setup() async throws {
             try await ArcGISEnvironment.authenticationManager.arcGISCredentialStore.add(.publicSample)
             try await subtypeFeatureLayer.load()
@@ -97,11 +80,11 @@ extension SetVisibilityOfSubtypeSublayerView {
             subtypeSublayer?.addLabelDefinition(labelDefinition)
         }
         
-        func toggleSublayer() {
-            subtypeSublayer?.isVisible = showsSublayer
+        func toggleSublayer(isVisible: Bool) {
+            subtypeSublayer?.isVisible = isVisible
         }
         
-        func toggleRenderer() {
+        func toggleRenderer(showsOriginalRenderer: Bool) {
             if showsOriginalRenderer {
                 subtypeSublayer?.renderer = originalRenderer
             } else {
