@@ -29,7 +29,7 @@ extension SetVisibilityOfSubtypeSublayerView {
         private let subtypeFeatureLayer: SubtypeFeatureLayer
         
         /// The subtype sublayer of the subtype feature layer in this sample.
-        private var subtypeSublayer: SubtypeSublayer?
+        private var subtypeSublayer: SubtypeSublayer!
         
         /// The renderer of the subtype feature layer.
         private var originalRenderer: Renderer?
@@ -74,23 +74,24 @@ extension SetVisibilityOfSubtypeSublayerView {
             try await ArcGISEnvironment.authenticationManager.arcGISCredentialStore.add(.publicSample)
             try await subtypeFeatureLayer.load()
             map.addOperationalLayer(subtypeFeatureLayer)
-            subtypeSublayer = subtypeFeatureLayer.sublayer(withSubtypeName: "Street Light")
-            subtypeSublayer?.labelsAreEnabled = true
-            originalRenderer = subtypeSublayer?.renderer
-            subtypeSublayer?.addLabelDefinition(labelDefinition)
+            guard let subtypeSublayer = subtypeFeatureLayer.sublayer(withSubtypeName: "Street Light") else { fatalError("Failed to initialize subtype sublayer") }
+            subtypeSublayer.labelsAreEnabled = true
+            originalRenderer = subtypeSublayer.renderer
+            subtypeSublayer.addLabelDefinition(labelDefinition)
+            self.subtypeSublayer = subtypeSublayer
         }
         
         func toggleSublayer(isVisible: Bool) {
-            subtypeSublayer?.isVisible = isVisible
+            subtypeSublayer.isVisible = isVisible
         }
         
         func toggleRenderer(showsOriginalRenderer: Bool) {
             if showsOriginalRenderer {
-                subtypeSublayer?.renderer = originalRenderer
+                subtypeSublayer.renderer = originalRenderer
             } else {
                 let symbol = SimpleMarkerSymbol(style: .diamond, color: .systemPink, size: 20)
                 let alternativeRenderer = SimpleRenderer(symbol: symbol)
-                subtypeSublayer?.renderer = alternativeRenderer
+                subtypeSublayer.renderer = alternativeRenderer
             }
         }
         
@@ -100,7 +101,7 @@ extension SetVisibilityOfSubtypeSublayerView {
         
         func setMinimumScale() {
             minimumScaleText = currentScaleText
-            subtypeSublayer?.minScale = currentScale
+            subtypeSublayer.minScale = currentScale
         }
     }
 }
