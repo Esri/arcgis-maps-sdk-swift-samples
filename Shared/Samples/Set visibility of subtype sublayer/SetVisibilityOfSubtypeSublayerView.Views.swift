@@ -21,10 +21,10 @@ extension SetVisibilityOfSubtypeSublayerView {
         @ObservedObject var model: Model
         
         /// A Boolean value indicating whether to show the subtype sublayer.
-        @State var showsSublayer = true
+        @State private var showsSublayer = true
         
         /// A Boolean value indicating whether to show the subtype sublayer's renderer.
-        @State var showsOriginalRenderer = true
+        @State private var showsOriginalRenderer = true
         
         var body: some View {
             Form {
