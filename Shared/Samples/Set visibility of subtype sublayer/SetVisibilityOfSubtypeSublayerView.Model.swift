@@ -29,7 +29,7 @@ extension SetVisibilityOfSubtypeSublayerView {
         private let subtypeFeatureLayer: SubtypeFeatureLayer
         
         /// The subtype sublayer of the subtype feature layer in this sample.
-        var subtypeSublayer: SubtypeSublayer?
+        private var subtypeSublayer: SubtypeSublayer?
         
         /// The renderer of the subtype feature layer.
         private var originalRenderer: Renderer?
