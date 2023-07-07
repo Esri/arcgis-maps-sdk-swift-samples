@@ -16,28 +16,26 @@ import SwiftUI
 
 struct CategoryGridView: View {
     /// All samples that will be shown in the categories.
-    let samples: [Sample]
+    private let samples: [Sample]
     
-    /// The different sample categories.
-    private let categories = [
-        "Analysis",
-        "Augmented Reality",
-        "Cloud and Portal",
-        "Edit and Manage Data",
-        "Layers",
-        "Maps",
-        "Routing and Logistics",
-        "Scenes",
-        "Search and Query",
-        "Utility Networks",
-        "Visualization"
-    ]
+    /// The different sample categories generated from the samples list.
+    private let categories: [String]
     
     /// The columns for the grid.
     private let columns = [
         GridItem(.flexible()),
         GridItem(.flexible())
     ]
+    
+    init(samples: [Sample]) {
+        self.samples = samples
+        
+        var categoriesSet = Set<String>()
+        for sample in samples {
+            categoriesSet.insert(sample.category)
+        }
+        categories = Array(categoriesSet).sorted()
+    }
     
     var body: some View {
         ScrollView {
