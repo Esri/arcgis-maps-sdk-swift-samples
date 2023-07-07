@@ -28,9 +28,24 @@ Choose phases to be included in the report. Tap "Run" to initiate a downstream t
 
 ## Relevant API
 
-* LoadStatus
-* Map
-* MapView
+* UtilityAssetType
+* UtilityCategoryComparison
+* UtilityDomainNetwork
+* UtilityElement
+* UtilityElementTraceResult
+* UtilityNetwork
+* UtilityNetworkAttribute
+* UtilityNetworkAttributeComparison
+* UtilityNetworkDefinition
+* UtilityNetworkSource
+* UtilityTerminal
+* UtilityTier
+* UtilityTraceConfiguration
+* UtilityTraceFunction
+* UtilityTraceParameters
+* UtilityTraceResult
+* UtilityTraceType
+* UtilityTraversability
 
 ## Tags
 
