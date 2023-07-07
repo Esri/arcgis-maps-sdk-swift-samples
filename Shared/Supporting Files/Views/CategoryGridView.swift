@@ -65,7 +65,7 @@ private extension CategoryGridView {
         let category: String
         
         var body: some View {
-            Image("\(category.lowercased().replacingOccurrences(of: " ", with: "-"))-bg")
+            Image("\(category.replacingOccurrences(of: " ", with: "-"))-bg")
                 .resizable()
                 .overlay {
                     ZStack {
@@ -73,7 +73,7 @@ private extension CategoryGridView {
                         Circle()
                             .foregroundColor(.primary)
                             .frame(width: 50, height: 50)
-                        Image("\(category.lowercased().replacingOccurrences(of: " ", with: "-"))-icon")
+                        Image("\(category.replacingOccurrences(of: " ", with: "-"))-icon")
                             .colorInvert(colorScheme == .light)
                         VStack {
                             Spacer()
