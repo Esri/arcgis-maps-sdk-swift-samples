@@ -68,6 +68,12 @@
 		108EC04229D25B55000F35D0 /* QueryFeatureTableView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 108EC04029D25B2C000F35D0 /* QueryFeatureTableView.swift */; };
 		1C0C1C3929D34DAE005C8B24 /* ChangeViewpointView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0C1C3429D34DAE005C8B24 /* ChangeViewpointView.swift */; };
 		1C0C1C3D29D34DDD005C8B24 /* ChangeViewpointView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C0C1C3429D34DAE005C8B24 /* ChangeViewpointView.swift */; };
+		1C19B4F12A578E46001D2506 /* CreateLoadReportView.Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C19B4EB2A578E46001D2506 /* CreateLoadReportView.Views.swift */; };
+		1C19B4F32A578E46001D2506 /* CreateLoadReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C19B4ED2A578E46001D2506 /* CreateLoadReportView.swift */; };
+		1C19B4F52A578E46001D2506 /* CreateLoadReportView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C19B4EF2A578E46001D2506 /* CreateLoadReportView.Model.swift */; };
+		1C19B4F72A578E69001D2506 /* CreateLoadReportView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C19B4EF2A578E46001D2506 /* CreateLoadReportView.Model.swift */; };
+		1C19B4F82A578E69001D2506 /* CreateLoadReportView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C19B4ED2A578E46001D2506 /* CreateLoadReportView.swift */; };
+		1C19B4F92A578E69001D2506 /* CreateLoadReportView.Views.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C19B4EB2A578E46001D2506 /* CreateLoadReportView.Views.swift */; };
 		1C42E04729D2396B004FC4BE /* ShowPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C42E04329D2396B004FC4BE /* ShowPopupView.swift */; };
 		1C42E04A29D239D2004FC4BE /* ShowPopupView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C42E04329D2396B004FC4BE /* ShowPopupView.swift */; };
 		1C43BC7F2A43781200509BF8 /* SetVisibilityOfSubtypeSublayerView.Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C43BC792A43781100509BF8 /* SetVisibilityOfSubtypeSublayerView.Views.swift */; };
@@ -257,6 +263,9 @@
 			files = (
 				D79EE76F2A4CEA7F005A52AE /* SetUpLocationDrivenGeotriggersView.Model.swift in Copy Source Code Files */,
 				D769C2132A29057200030F61 /* SetUpLocationDrivenGeotriggersView.swift in Copy Source Code Files */,
+				1C19B4F72A578E69001D2506 /* CreateLoadReportView.Model.swift in Copy Source Code Files */,
+				1C19B4F82A578E69001D2506 /* CreateLoadReportView.swift in Copy Source Code Files */,
+				1C19B4F92A578E69001D2506 /* CreateLoadReportView.Views.swift in Copy Source Code Files */,
 				D752D9412A39162F003EB25E /* ManageOperationalLayersView.swift in Copy Source Code Files */,
 				D77570C12A2943D900F490CD /* AnimateImagesWithImageOverlayView.swift in Copy Source Code Files */,
 				D7634FB02A43B8B000F8AEFB /* CreateConvexHullAroundGeometriesView.swift in Copy Source Code Files */,
@@ -382,6 +391,9 @@
 		00E5402A27F775EA00CF66D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		108EC04029D25B2C000F35D0 /* QueryFeatureTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueryFeatureTableView.swift; sourceTree = "<group>"; };
 		1C0C1C3429D34DAE005C8B24 /* ChangeViewpointView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeViewpointView.swift; sourceTree = "<group>"; };
+		1C19B4EB2A578E46001D2506 /* CreateLoadReportView.Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateLoadReportView.Views.swift; sourceTree = "<group>"; };
+		1C19B4ED2A578E46001D2506 /* CreateLoadReportView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateLoadReportView.swift; sourceTree = "<group>"; };
+		1C19B4EF2A578E46001D2506 /* CreateLoadReportView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateLoadReportView.Model.swift; sourceTree = "<group>"; };
 		1C42E04329D2396B004FC4BE /* ShowPopupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowPopupView.swift; sourceTree = "<group>"; };
 		1C43BC792A43781100509BF8 /* SetVisibilityOfSubtypeSublayerView.Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetVisibilityOfSubtypeSublayerView.Views.swift; sourceTree = "<group>"; };
 		1C43BC7C2A43781100509BF8 /* SetVisibilityOfSubtypeSublayerView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetVisibilityOfSubtypeSublayerView.Model.swift; sourceTree = "<group>"; };
@@ -563,6 +575,7 @@
 				D7E440D12A1ECBC2005D74DE /* Create buffers around points */,
 				D7B3C5C02A43B71E001DA4D8 /* Create convex hull around geometries */,
 				D744FD132A2112360084A66C /* Create convex hull around points */,
+				1C19B4EA2A578E46001D2506 /* Create load report */,
 				E004A6EB28495538002A1FE6 /* Create planar and geodetic buffers */,
 				E000E761286A0B07005D87C5 /* Cut geometry */,
 				D71099692A27D8880065A1C1 /* Densify and generalize geometry */,
@@ -785,6 +798,16 @@
 				1C0C1C3429D34DAE005C8B24 /* ChangeViewpointView.swift */,
 			);
 			path = "Change viewpoint";
+			sourceTree = "<group>";
+		};
+		1C19B4EA2A578E46001D2506 /* Create load report */ = {
+			isa = PBXGroup;
+			children = (
+				1C19B4EF2A578E46001D2506 /* CreateLoadReportView.Model.swift */,
+				1C19B4ED2A578E46001D2506 /* CreateLoadReportView.swift */,
+				1C19B4EB2A578E46001D2506 /* CreateLoadReportView.Views.swift */,
+			);
+			path = "Create load report";
 			sourceTree = "<group>";
 		};
 		1C42E04129D2396B004FC4BE /* Show popup */ = {
@@ -1475,6 +1498,7 @@
 				001C6DE127FE8A9400D472C2 /* AppSecrets.swift.masque in Sources */,
 				E0D04FF228A5390000747989 /* DownloadPreplannedMapAreaView.Model.swift in Sources */,
 				00CCB8A5285BAF8700BBAB70 /* OnDemandResource.swift in Sources */,
+				1C19B4F32A578E46001D2506 /* CreateLoadReportView.swift in Sources */,
 				D71099702A2802FA0065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift in Sources */,
 				E004A6ED2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift in Sources */,
 				E041ABD7287DB04D0056009B /* SampleInfoView.swift in Sources */,
@@ -1501,6 +1525,7 @@
 				4D2ADC6929C50C4C003B367F /* AddDynamicEntityLayerView.SettingsView.swift in Sources */,
 				1C42E04729D2396B004FC4BE /* ShowPopupView.swift in Sources */,
 				79302F872A1ED71B0002336A /* CreateAndSaveKMLView.Views.swift in Sources */,
+				1C19B4F12A578E46001D2506 /* CreateLoadReportView.Views.swift in Sources */,
 				E066DD3B2860CA08004D3D5B /* ShowResultOfSpatialRelationshipsView.swift in Sources */,
 				7573E81E29D6134C00BEED9C /* TraceUtilityNetworkView.Views.swift in Sources */,
 				4D2ADC5A29C4F612003B367F /* ChangeMapViewBackgroundView.swift in Sources */,
@@ -1546,6 +1571,7 @@
 				E004A6F0284E4B9B002A1FE6 /* DownloadVectorTilesToLocalCacheView.swift in Sources */,
 				4D2ADC4329C26D05003B367F /* AddDynamicEntityLayerView.swift in Sources */,
 				D7EAF35A2A1C023800D822C4 /* SetMinAndMaxScaleView.swift in Sources */,
+				1C19B4F52A578E46001D2506 /* CreateLoadReportView.Model.swift in Sources */,
 				0042E24528E4F82C001F33D6 /* ShowViewshedFromPointInSceneView.ViewshedSettingsView.swift in Sources */,
 				1C9B74D929DB54560038B06F /* ChangeCameraControllerView.swift in Sources */,
 				D78666AD2A2161F100C60110 /* FindNearestVertexView.swift in Sources */,
