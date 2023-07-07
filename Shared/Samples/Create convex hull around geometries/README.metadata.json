@@ -1,5 +1,5 @@
 {
-    "category": "Analysis",
+    "category": "Geometry",
     "description": "Generate convex hull polygon(s) from multiple input geometries.",
     "ignore": false,
     "images": [
