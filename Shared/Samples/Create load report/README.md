@@ -49,4 +49,4 @@ Choose phases to be included in the report. Tap "Run" to initiate a downstream t
 
 ## Tags
 
-load status, loadable pattern, map
+condition barriers, downstream trace, network analysis, subnetwork trace, trace configuration, traversability, upstream trace, utility network, validate consistency
