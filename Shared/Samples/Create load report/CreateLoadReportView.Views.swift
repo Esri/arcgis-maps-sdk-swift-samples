@@ -23,7 +23,7 @@ extension CreateLoadReportView {
         var body: some View {
             Form {
                 Section("Phases, Total Customers(C), Total Load(L)") {
-                    ForEach(model.includedPhases.sorted { $0.name < $1.name }, id: \.name) { phase in
+                    ForEach(model.includedPhases, id: \.name) { phase in
                         HStack {
                             Image(systemName: "minus.circle.fill")
                                 .foregroundColor(.red)
@@ -34,7 +34,7 @@ extension CreateLoadReportView {
                                 }
                             Text("Phase: \(phase.name)")
                             Spacer()
-                            Text(model.summaryForPhase(phase) ?? "N/A")
+                            Text(model.summaryForPhase(phase))
                         }
                     }
                     .onDelete { indexSet in
@@ -43,7 +43,7 @@ extension CreateLoadReportView {
                 }
                 if !model.excludedPhases.isEmpty {
                     Section("More Phases") {
-                        ForEach(model.excludedPhases.sorted { $0.name < $1.name }, id: \.name) { phase in
+                        ForEach(model.excludedPhases, id: \.name) { phase in
                             HStack {
                                 Image(systemName: "plus.circle.fill")
                                     .foregroundColor(.green)

@@ -25,13 +25,13 @@ extension CreateLoadReportView {
         private let utilityNetwork = UtilityNetwork(url: .utilityNetwork)
         
         /// The initial conditional expression.
-        private var initialExpression: UtilityTraceConditionalExpression!
+        private var initialExpression: UtilityTraceConditionalExpression?
         
         /// The trace parameters for creating load reports.
-        private var traceParameters: UtilityTraceParameters!
+        private var traceParameters: UtilityTraceParameters?
         
         /// The network attributes for the comparison.
-        private var phasesNetworkAttribute: UtilityNetworkAttribute!
+        private var phasesNetworkAttribute: UtilityNetworkAttribute?
         
         /// A list of possible phases populated from the network's attributes.
         /// By default, they are not included in the load report.
@@ -44,15 +44,7 @@ extension CreateLoadReportView {
         private var allPhases = [CodedValue]()
         
         /// The phase summaries in the load report.
-        @Published private(set) var summaries = [CodedValue: PhaseSummary]()
-        
-        /// The number formatter for phase summaries.
-        private let numberFormatter: NumberFormatter = {
-            let formatter = NumberFormatter()
-            formatter.numberStyle = .decimal
-            formatter.usesGroupingSeparator = true
-            return formatter
-        }()
+        private var summaries = [CodedValue: PhaseSummary]()
         
         /// A Boolean value indicating if the run button is enabled.
         @Published private(set) var runEnabled = false
@@ -93,12 +85,13 @@ extension CreateLoadReportView {
             let traceParameters = UtilityTraceParameters(traceType: .downstream, startingLocations: [startingLocation])
             traceParameters.addResultTypes([.elements, .functionOutputs])
             
+            guard let definition = utilityNetwork.definition else { return }
             // The service category for counting total customers.
-            if let serviceCategory = utilityNetwork.definition?.categories.first(where: { $0.name == "ServicePoint" }),
+            if let serviceCategory = definition.categories.first(where: { $0.name == "ServicePoint" }),
                // The load attribute for counting total load.
-               let loadAttribute = utilityNetwork.definition?.networkAttributes.first(where: { $0.name == "Service Load" }),
+               let loadAttribute = definition.networkAttributes.first(where: { $0.name == "Service Load" }),
                // The phase attribute for getting total phase current load.
-               let phasesNetworkAttribute = utilityNetwork.definition?.networkAttributes.first(where: { $0.name == "Phases Current" }) {
+               let phasesNetworkAttribute = definition.networkAttributes.first(where: { $0.name == "Phases Current" }) {
                 self.phasesNetworkAttribute = phasesNetworkAttribute
                 // Get possible coded phase values from the attributes.
                 if let domain = phasesNetworkAttribute.domain as? CodedValueDomain {
@@ -161,6 +154,10 @@ extension CreateLoadReportView {
         
         func run() async throws {
             statusText = "Creating load report…"
+            
+            guard let phasesNetworkAttribute,
+                  let initialExpression,
+                  let traceParameters else { return }
             
             for phase in includedPhases {
                 guard let phaseCode = phase.code else { continue }
@@ -227,20 +224,16 @@ extension CreateLoadReportView {
         }
         
         func sortPhases() {
-            includedPhases = includedPhases.sorted { $0.name < $1.name }
-            excludedPhases = excludedPhases.sorted { $0.name < $1.name }
+            includedPhases.sort { $0.name < $1.name }
+            excludedPhases.sort { $0.name < $1.name }
         }
         
-        func summaryForPhase(_ phase: CodedValue) -> String? {
+        func summaryForPhase(_ phase: CodedValue) -> LocalizedStringKey {
+            let format: IntegerFormatStyle<Int> = .number
             if let summary = summaries[phase] {
-                let formattedString = String(
-                    format: "C: %@  L: %@",
-                    numberFormatter.string(from: summary.totalCustomers as NSNumber)!,
-                    numberFormatter.string(from: summary.totalLoad as NSNumber)!
-                )
-                return formattedString
+                return "C: \(summary.totalCustomers, format: format)  L: \(summary.totalLoad, format: format)"
             } else {
-                return nil
+                return "N/A"
             }
         }
         
@@ -282,7 +275,7 @@ extension CodedValue: Hashable {
     }
 }
 
-extension CreateLoadReportView {
+private extension CreateLoadReportView {
     /// A struct for the phase summary, which contains the total customers
     /// and total load for the phase.
     struct PhaseSummary {
