@@ -68,7 +68,7 @@ extension RunValveIsolationTraceView {
         @Published private(set) var resetEnabled = false
         
         /// A Boolean value indicating if the user has added filter barriers to the trace parameters.
-        private var hasFilterBarriers: Bool { traceParameters.filterBarriers.isEmpty }
+        private var hasFilterBarriers: Bool { !traceParameters.filterBarriers.isEmpty }
         
         /// A Boolean value indicating whether the terminal selection menu is open.
         @Published var terminalSelectorIsOpen = false
@@ -223,29 +223,24 @@ extension RunValveIsolationTraceView {
             
             let configuration = makeTraceConfiguration(category: selectedCategory)
             traceParameters.traceConfiguration = configuration
-            let traceResults: [UtilityElementTraceResult]
             do {
-                traceResults = try await utilityNetwork
+                let traceResults = try await utilityNetwork
                     .trace(using: traceParameters)
                     .compactMap { $0 as? UtilityElementTraceResult }
+                try await handleTraceResults(traceResults)
             } catch {
                 statusText = "Trace failed."
                 traceEnabled = true
                 traceCompleted = false
                 return
             }
-            if !hasFilterBarriers, let selectedCategory {
-                statusText = "Trace with \(selectedCategory.name.lowercased()) category completed."
-            } else {
-                statusText = "Trace with filter barriers completed."
-            }
-            defer {
-                tracingActivity = .none
-                traceEnabled = true
-                traceCompleted = true
-                resetEnabled = true
-            }
-            
+            tracingActivity = .none
+            traceEnabled = true
+            traceCompleted = true
+            resetEnabled = true
+        }
+        
+        func handleTraceResults(_ traceResults: [UtilityElementTraceResult]) async throws {
             let elements = traceResults.flatMap(\.elements)
             guard !elements.isEmpty else {
                 statusText = "Trace completed with no output."
@@ -267,6 +262,11 @@ extension RunValveIsolationTraceView {
                 }
             } catch {
                 statusText = error.localizedDescription
+            }
+            if !hasFilterBarriers, let selectedCategory {
+                statusText = "Trace with \(selectedCategory.name.lowercased()) category completed."
+            } else {
+                statusText = "Trace with filter barriers completed."
             }
         }
         
