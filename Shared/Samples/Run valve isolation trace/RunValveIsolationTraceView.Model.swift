@@ -273,7 +273,7 @@ extension RunValveIsolationTraceView {
         /// Removes all added filter barriers.
         func reset() {
             layers.forEach { $0.clearSelection() }
-            traceParameters.removeAllBarriers()
+            traceParameters.removeAllFilterBarriers()
             parametersOverlay.removeAllGraphics()
             // Add back the starting location.
             if let startingLocationPoint {
