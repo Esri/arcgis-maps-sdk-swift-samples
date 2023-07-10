@@ -16,28 +16,6 @@ import ArcGIS
 import SwiftUI
 
 extension CreateLoadReportView {
-    fileprivate struct PhaseSummaries {
-        private var storage = [ObjectIdentifier: PhaseSummary]()
-        
-        mutating func setSummary(_ summary: PhaseSummary, forPhase phase: CodedValue) {
-            storage[ObjectIdentifier(phase)] = summary
-        }
-        
-        mutating func summary(forPhase phase: CodedValue) -> PhaseSummary? {
-            storage[ObjectIdentifier(phase)]
-        }
-        
-        mutating func removeSummary(forPhase phase: CodedValue) {
-            storage[ObjectIdentifier(phase)] = nil
-        }
-        
-        mutating func removeAll() {
-            storage.removeAll()
-        }
-    }
-}
-
-extension CreateLoadReportView {
     /// The model used to store the geo model and other expensive objects
     /// used in this view.
     @MainActor
@@ -281,6 +259,37 @@ private extension CreateLoadReportView {
     struct PhaseSummary {
         let totalCustomers: Int
         let totalLoad: Int
+    }
+    
+    /// A struct for the load report's phase summaries.
+    struct PhaseSummaries {
+        private var storage = [ObjectIdentifier: PhaseSummary]()
+        
+        /// Sets the summary for a phase.
+        /// - Parameters:
+        ///   - summary: The summary for the phase.
+        ///   - phase: The phase to set the summary for.
+        mutating func setSummary(_ summary: PhaseSummary, forPhase phase: CodedValue) {
+            storage[ObjectIdentifier(phase)] = summary
+        }
+        
+        /// Gets the summary for a phase.
+        /// - Parameter phase: The phase to get the summary for.
+        /// - Returns: The summary for the given phase.
+        mutating func summary(forPhase phase: CodedValue) -> PhaseSummary? {
+            storage[ObjectIdentifier(phase)]
+        }
+        
+        /// Removes a phase summary.
+        /// - Parameter phase: The phase to remove from the load report.
+        mutating func removeSummary(forPhase phase: CodedValue) {
+            storage[ObjectIdentifier(phase)] = nil
+        }
+        
+        /// Removes all phase summaries.
+        mutating func removeAll() {
+            storage.removeAll()
+        }
     }
 }
 
