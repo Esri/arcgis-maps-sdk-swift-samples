@@ -49,9 +49,6 @@ extension CreateLoadReportView {
         /// A Boolean value indicating if the run button is enabled.
         @Published private(set) var runEnabled = false
         
-        /// A Boolean value indicating if the reset button is enabled.
-        @Published private(set) var resetEnabled = false
-        
         /// The status text to display to the user.
         @Published private(set) var statusText: String?
         
@@ -196,7 +193,6 @@ extension CreateLoadReportView {
                     totalLoad: totalLoad
                 )
             }
-            resetEnabled = true
             statusText = nil
         }
         
@@ -235,11 +231,6 @@ extension CreateLoadReportView {
             } else {
                 return "N/A"
             }
-        }
-        
-        func reset() {
-            summaries.removeAll()
-            resetEnabled = false
         }
         
         deinit {

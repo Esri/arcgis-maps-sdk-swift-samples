@@ -40,11 +40,6 @@ struct CreateLoadReportView: View {
             .alert(isPresented: $isShowingAlert, presentingError: error)
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
-                    Button("Reset") {
-                        model.reset()
-                    }
-                    .disabled(!model.resetEnabled)
-                    Spacer()
                     Button("Run") {
                         Task { try await model.run() }
                     }
