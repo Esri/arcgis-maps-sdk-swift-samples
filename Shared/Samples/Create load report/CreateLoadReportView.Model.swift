@@ -173,6 +173,7 @@ extension CreateLoadReportView {
         
         func run() async throws {
             statusText = "Creating load report…"
+            defer { statusText = nil }
             
             guard let phasesNetworkAttribute,
                   let initialExpression,
@@ -218,7 +219,6 @@ extension CreateLoadReportView {
                     forPhase: phase
                 )
             }
-            statusText = nil
         }
         
         func addPhase(_ phase: CodedValue) {

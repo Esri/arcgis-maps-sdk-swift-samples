@@ -33,7 +33,7 @@ struct CreateLoadReportView: View {
                 do {
                     try await model.setup()
                 } catch {
-                    // Presents an error message if the utility network fails to load.
+                    // Presents an error message if setup fails. This could occur if the utility network fails to load.
                     self.error = error
                 }
             }
@@ -41,7 +41,13 @@ struct CreateLoadReportView: View {
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
                     Button("Run") {
-                        Task { try await model.run() }
+                        Task {
+                            do {
+                                try await model.run()
+                            } catch {
+                                self.error = error
+                            }
+                        }
                     }
                     .disabled(!model.runEnabled)
                 }
@@ -55,7 +61,7 @@ struct CreateLoadReportView: View {
                             ProgressView()
                                 .progressViewStyle(.circular)
                         }
-                        .padding(6)
+                        .padding()
                         .background(.ultraThickMaterial)
                         .cornerRadius(10)
                         .shadow(radius: 50)
