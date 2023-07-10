@@ -54,9 +54,6 @@ extension RunValveIsolationTraceView {
         /// The selected filter barrier category.
         @Published private(set) var selectedCategory: UtilityCategory?
         
-        /// A Boolean value indicating whether the trace is completed.
-        private var traceCompleted = false
-        
         /// A Boolean value indicating if tracing is enabled.
         @Published private(set) var traceEnabled = false
         
@@ -227,12 +224,10 @@ extension RunValveIsolationTraceView {
             } catch {
                 statusText = "Trace failed."
                 traceEnabled = true
-                traceCompleted = false
                 return
             }
             tracingActivity = .none
             traceEnabled = true
-            traceCompleted = true
             resetEnabled = true
         }
         
