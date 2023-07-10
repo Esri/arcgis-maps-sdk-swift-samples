@@ -68,10 +68,10 @@ extension CreateLoadReportView {
             try await loadUtilityNetwork()
         }
         
-        /// Load the utility network.
+        /// Loads the utility network.
         private func loadUtilityNetwork() async throws {
             statusText = "Loading utility network…"
-            try? await utilityNetwork.load()
+            try await utilityNetwork.load()
             statusText = nil
             
             guard let startingLocation = makeStartingLocation(),
@@ -120,7 +120,7 @@ extension CreateLoadReportView {
             }
         }
         
-        /// When the utility network is loaded, create a`UtilityElement`
+        /// When the utility network is loaded, create a `UtilityElement`
         /// from the asset type to use as the starting location for the trace.
         private func makeStartingLocation() -> UtilityElement? {
             // Constants for creating the default starting location.
@@ -142,7 +142,7 @@ extension CreateLoadReportView {
             }
         }
         
-        /// Get the utility tier's trace configuration.
+        /// Gets the utility tier's trace configuration.
         private func getTraceConfiguration() -> UtilityTraceConfiguration? {
             // Get a default trace configuration from a tier in the network.
             utilityNetwork
