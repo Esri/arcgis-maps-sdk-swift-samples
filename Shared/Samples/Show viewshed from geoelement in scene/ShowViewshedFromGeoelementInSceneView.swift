@@ -28,9 +28,8 @@ struct ShowViewshedFromGeoelementInSceneView: View {
         )
         .onSingleTapGesture { _, scenePoint in
             // Move the tank to the scene point on a screen tap.
-            if let scenePoint {
-                model.move(toWaypoint: scenePoint)
-            }
+            guard let scenePoint else { return }
+            model.move(toWaypoint: scenePoint)
         }
         .overlay(alignment: .top) {
             // Instruction text.
