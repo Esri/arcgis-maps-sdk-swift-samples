@@ -16,6 +16,28 @@ import ArcGIS
 import SwiftUI
 
 extension CreateLoadReportView {
+    fileprivate struct PhaseSummaries {
+        private var storage = [ObjectIdentifier: PhaseSummary]()
+        
+        mutating func setSummary(_ summary: PhaseSummary, forPhase phase: CodedValue) {
+            storage[ObjectIdentifier(phase)] = summary
+        }
+        
+        mutating func summary(forPhase phase: CodedValue) -> PhaseSummary? {
+            storage[ObjectIdentifier(phase)]
+        }
+        
+        mutating func removeSummary(forPhase phase: CodedValue) {
+            storage[ObjectIdentifier(phase)] = nil
+        }
+        
+        mutating func removeAll() {
+            storage.removeAll()
+        }
+    }
+}
+
+extension CreateLoadReportView {
     /// The model used to store the geo model and other expensive objects
     /// used in this view.
     @MainActor
@@ -44,7 +66,7 @@ extension CreateLoadReportView {
         private var allPhases = [CodedValue]()
         
         /// The phase summaries in the load report.
-        private var summaries = [CodedValue: PhaseSummary]()
+        private var summaries = PhaseSummaries()
         
         /// A Boolean value indicating if the run button is enabled.
         @Published private(set) var runEnabled = false
@@ -188,9 +210,12 @@ extension CreateLoadReportView {
                         break
                     }
                 }
-                summaries[phase] = PhaseSummary(
-                    totalCustomers: totalCustomers,
-                    totalLoad: totalLoad
+                summaries.setSummary(
+                    PhaseSummary(
+                        totalCustomers: totalCustomers,
+                        totalLoad: totalLoad
+                    ),
+                    forPhase: phase
                 )
             }
             statusText = nil
@@ -198,25 +223,21 @@ extension CreateLoadReportView {
         
         func addPhase(_ phase: CodedValue) {
             includedPhases.append(phase)
-            excludedPhases = excludedPhases.filter { $0 != phase }
+            excludedPhases = excludedPhases.filter { $0.name != phase.name }
             sortPhases()
             runEnabled = true
         }
         
         func deletePhase(_ phase: CodedValue) {
             excludedPhases.append(phase)
-            includedPhases = includedPhases.filter { $0 != phase }
+            includedPhases = includedPhases.filter { $0.name != phase.name }
             sortPhases()
-            summaries[phase] = nil
+            summaries.removeSummary(forPhase: phase)
         }
         
         func deletePhase(atOffsets indexSet: IndexSet) {
-            includedPhases.remove(atOffsets: indexSet)
-            let union = Set(includedPhases).union(Set(excludedPhases))
-            let subtraction = Set(allPhases).subtracting(Array(union))
-            if let phase = subtraction.first {
-                deletePhase(phase)
-            }
+            guard let index = indexSet.first else { return }
+            deletePhase(includedPhases[index])
         }
         
         func sortPhases() {
@@ -226,7 +247,7 @@ extension CreateLoadReportView {
         
         func summaryForPhase(_ phase: CodedValue) -> LocalizedStringKey {
             let format: IntegerFormatStyle<Int> = .number
-            if let summary = summaries[phase] {
+            if let summary = summaries.summary(forPhase: phase) {
                 return "C: \(summary.totalCustomers, format: format)  L: \(summary.totalLoad, format: format)"
             } else {
                 return "N/A"
@@ -251,18 +272,6 @@ private extension ArcGISCredential {
                 password: "I68VGU^nMurF"
             )
         }
-    }
-}
-
-extension CodedValue: Equatable {
-    public static func == (lhs: CodedValue, rhs: CodedValue) -> Bool {
-        lhs.name == rhs.name
-    }
-}
-
-extension CodedValue: Hashable {
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(name)
     }
 }
 
