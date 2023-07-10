@@ -69,11 +69,11 @@ extension CreateLoadReportView {
         private func loadUtilityNetwork() async throws {
             statusText = "Loading utility network…"
             try await utilityNetwork.load()
-            statusText = nil
+            defer { statusText = nil }
             
             guard let startingLocation = makeStartingLocation(),
                   // Get the base condition and trace configuration from a default tier.
-                  let traceConfiguration = getTraceConfiguration() else { return }
+                  let traceConfiguration = getTraceConfiguration() else { throw LoadError.cannotLoadNetwork }
             
             // Set the default expression.
             initialExpression = traceConfiguration.traversability?.barriers as? UtilityTraceConditionalExpression
@@ -82,7 +82,7 @@ extension CreateLoadReportView {
             let traceParameters = UtilityTraceParameters(traceType: .downstream, startingLocations: [startingLocation])
             traceParameters.addResultTypes([.elements, .functionOutputs])
             
-            guard let definition = utilityNetwork.definition else { return }
+            guard let definition = utilityNetwork.definition else { throw LoadError.cannotLoadNetwork }
             // The service category for counting total customers.
             if let serviceCategory = definition.categories.first(where: { $0.name == "ServicePoint" }),
                // The load attribute for counting total load.
@@ -155,7 +155,7 @@ extension CreateLoadReportView {
             
             guard let phasesNetworkAttribute,
                   let initialExpression,
-                  let traceParameters else { return }
+                  let traceParameters else { throw LoadError.cannotGenerateReport }
             
             for phase in includedPhases {
                 guard let phaseCode = phase.code else { continue }
@@ -289,6 +289,28 @@ private extension CreateLoadReportView {
         /// Removes all phase summaries.
         mutating func removeAll() {
             storage.removeAll()
+        }
+    }
+}
+
+extension CreateLoadReportView.Model {
+    enum LoadError: LocalizedError {
+        case cannotLoadNetwork,
+             cannotGenerateReport
+        
+        var errorDescription: String? {
+            switch self {
+            case .cannotLoadNetwork:
+                return NSLocalizedString(
+                    "Failed to load the utility network.",
+                    comment: "Error thrown when the utility network fails to load."
+                )
+            case .cannotGenerateReport:
+                return NSLocalizedString(
+                    "Cannot generate the load report.",
+                    comment: "Error thrown when the load report cannot be generated."
+                )
+            }
         }
     }
 }
