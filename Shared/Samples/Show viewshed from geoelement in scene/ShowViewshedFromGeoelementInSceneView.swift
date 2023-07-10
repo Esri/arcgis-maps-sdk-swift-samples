@@ -19,9 +19,6 @@ struct ShowViewshedFromGeoelementInSceneView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
-    /// The timer for the moving tank animation.
-    @State private var animationTimer: Timer!
-    
     var body: some View {
         SceneView(
             scene: model.scene,
