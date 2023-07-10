@@ -54,10 +54,6 @@ extension RunValveIsolationTraceView {
         /// The selected filter barrier category.
         @Published private(set) var selectedCategory: UtilityCategory?
         
-        /// A Boolean value indicating whether to include isolated features in the
-        /// trace results when used in conjunction with an isolation trace.
-        var includesIsolatedFeatures = true
-        
         /// A Boolean value indicating whether the trace is completed.
         private var traceCompleted = false
         
@@ -214,14 +210,14 @@ extension RunValveIsolationTraceView {
         
         /// Runs a trace with the pending trace configuration and selects features in the map that
         /// correspond to the element results.
-        func trace() async {
+        func trace(includesIsolatedFeatures: Bool) async {
             // Clear previous trace results.
             layers.forEach { $0.clearSelection() }
             
             tracingActivity = .runningTrace
             traceEnabled = false
             
-            let configuration = makeTraceConfiguration(category: selectedCategory)
+            let configuration = makeTraceConfiguration(category: selectedCategory, includesIsolatedFeatures: includesIsolatedFeatures)
             traceParameters.traceConfiguration = configuration
             do {
                 let traceResults = try await utilityNetwork
@@ -284,7 +280,7 @@ extension RunValveIsolationTraceView {
         }
         
         /// Gets the utility tier's trace configuration and apply category comparison.
-        private func makeTraceConfiguration(category: UtilityCategory?) -> UtilityTraceConfiguration {
+        private func makeTraceConfiguration(category: UtilityCategory?, includesIsolatedFeatures: Bool) -> UtilityTraceConfiguration {
             // Get a default trace configuration from a tier in the network.
             guard let configuration = utilityNetwork
                 .definition?

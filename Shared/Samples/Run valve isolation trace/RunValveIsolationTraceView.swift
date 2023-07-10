@@ -62,9 +62,6 @@ struct RunValveIsolationTraceView: View {
                     model.addFilterBarrier(for: feature, at: lastSingleTap.mapPoint)
                 }
             }
-            .onChange(of: includesIsolatedFeatures) { newValue in
-                model.includesIsolatedFeatures = newValue
-            }
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
                     Button("Configuration") {
@@ -75,7 +72,7 @@ struct RunValveIsolationTraceView: View {
                               model.tracingActivity == .loadingNetwork)
                     Spacer()
                     Button("Trace") {
-                        Task { await model.trace() }
+                        Task { await model.trace(includesIsolatedFeatures: includesIsolatedFeatures) }
                     }
                     .disabled(!model.traceEnabled)
                     Spacer()
@@ -162,7 +159,7 @@ struct RunValveIsolationTraceView: View {
                 Text("Choose a category to run the valve isolation trace. The selected utility category defines constraints and conditions based upon specific characteristics of asset types in the utility network.")
             }
             Section {
-                Toggle(isOn: $model.includesIsolatedFeatures) {
+                Toggle(isOn: $includesIsolatedFeatures) {
                     Text("Include Isolated Features")
                 }
             } header: {
