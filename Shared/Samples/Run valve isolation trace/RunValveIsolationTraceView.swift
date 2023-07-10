@@ -103,7 +103,7 @@ struct RunValveIsolationTraceView: View {
                         ProgressView()
                             .progressViewStyle(.circular)
                     }
-                    .padding(6)
+                    .padding()
                     .background(.thinMaterial)
                     .cornerRadius(10)
                 }
