@@ -71,9 +71,9 @@ extension CreateLoadReportView {
             try await utilityNetwork.load()
             defer { statusText = nil }
             
-            guard let startingLocation = makeStartingLocation(),
-                  // Get the base condition and trace configuration from a default tier.
-                  let traceConfiguration = getTraceConfiguration() else { throw LoadError.cannotLoadNetwork }
+            let startingLocation = try makeStartingLocation()
+            // Get the base condition and trace configuration from a default tier.
+            let traceConfiguration = try getTraceConfiguration()
             
             // Set the default expression.
             initialExpression = traceConfiguration.traversability?.barriers as? UtilityTraceConditionalExpression
@@ -82,7 +82,7 @@ extension CreateLoadReportView {
             let traceParameters = UtilityTraceParameters(traceType: .downstream, startingLocations: [startingLocation])
             traceParameters.addResultTypes([.elements, .functionOutputs])
             
-            guard let definition = utilityNetwork.definition else { throw LoadError.cannotLoadNetwork }
+            guard let definition = utilityNetwork.definition else { throw SetupError.networkDefinitionNotFound }
             // The service category for counting total customers.
             if let serviceCategory = definition.categories.first(where: { $0.name == "ServicePoint" }),
                // The load attribute for counting total load.
@@ -119,7 +119,7 @@ extension CreateLoadReportView {
         
         /// When the utility network is loaded, create a `UtilityElement`
         /// from the asset type to use as the starting location for the trace.
-        private func makeStartingLocation() -> UtilityElement? {
+        private func makeStartingLocation() throws -> UtilityElement {
             // Constants for creating the default starting location.
             let networkSourceName = "Electric Distribution Device"
             let assetGroupName = "Circuit Breaker"
@@ -135,18 +135,22 @@ extension CreateLoadReportView {
                 startingLocation.terminal = assetType.terminalConfiguration?.terminals.first(where: { $0.name == terminalName })
                 return startingLocation
             } else {
-                return nil
+                throw SetupError.startingLocationNotFound
             }
         }
         
         /// Gets the utility tier's trace configuration.
-        private func getTraceConfiguration() -> UtilityTraceConfiguration? {
+        private func getTraceConfiguration() throws -> UtilityTraceConfiguration {
             // Get a default trace configuration from a tier in the network.
-            utilityNetwork
+            if let configuration = utilityNetwork
                 .definition?
                 .domainNetwork(named: "ElectricDistribution")?
                 .tier(named: "Medium Voltage Radial")?
-                .defaultTraceConfiguration
+                .defaultTraceConfiguration {
+                return configuration
+            } else {
+                throw SetupError.traceConfigurationNotFound
+            }
         }
         
         func run() async throws {
@@ -155,7 +159,7 @@ extension CreateLoadReportView {
             
             guard let phasesNetworkAttribute,
                   let initialExpression,
-                  let traceParameters else { throw LoadError.cannotGenerateReport }
+                  let traceParameters else { return }
             
             for phase in includedPhases {
                 guard let phaseCode = phase.code else { continue }
@@ -294,21 +298,27 @@ private extension CreateLoadReportView {
 }
 
 extension CreateLoadReportView.Model {
-    enum LoadError: LocalizedError {
-        case cannotLoadNetwork,
-             cannotGenerateReport
+    enum SetupError: LocalizedError {
+        case startingLocationNotFound,
+             traceConfigurationNotFound,
+             networkDefinitionNotFound
         
         var errorDescription: String? {
             switch self {
-            case .cannotLoadNetwork:
+            case .startingLocationNotFound:
                 return NSLocalizedString(
-                    "Failed to load the utility network.",
-                    comment: "Error thrown when the utility network fails to load."
+                    "Cannot find starting location.",
+                    comment: "Error thrown when starting location cannot be found."
                 )
-            case .cannotGenerateReport:
+            case .traceConfigurationNotFound:
                 return NSLocalizedString(
-                    "Cannot generate the load report.",
-                    comment: "Error thrown when the load report cannot be generated."
+                    "Cannot find trace configuration.",
+                    comment: "Error thrown when the trace configuration cannot be found."
+                )
+            case .networkDefinitionNotFound:
+                return NSLocalizedString(
+                    "Cannot find utility network definition.",
+                    comment: "Error thrown when the utility network definition cannot be found."
                 )
             }
         }

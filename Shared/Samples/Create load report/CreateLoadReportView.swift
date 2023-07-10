@@ -35,6 +35,7 @@ struct CreateLoadReportView: View {
                 } catch {
                     // Presents an error message if setup fails. This could occur if the utility network fails to load.
                     self.error = error
+                    fatalError("Failed to setup sample.")
                 }
             }
             .alert(isPresented: $isShowingAlert, presentingError: error)
