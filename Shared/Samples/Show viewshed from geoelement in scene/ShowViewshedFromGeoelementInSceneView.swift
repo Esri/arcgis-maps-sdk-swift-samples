@@ -30,13 +30,9 @@ struct ShowViewshedFromGeoelementInSceneView: View {
             analysisOverlays: [model.analysisOverlay]
         )
         .onSingleTapGesture { _, scenePoint in
-            // Start a timer to animate the tank moving towards the new waypoint.
-            model.waypoint = scenePoint
-            animationTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
-                model.animate()
-                if model.waypoint == nil {
-                    animationTimer.invalidate()
-                }
+            // Move the tank to the scene point on a screen tap.
+            if let scenePoint {
+                model.move(toWaypoint: scenePoint)
             }
         }
         .overlay(alignment: .top) {
@@ -45,6 +41,9 @@ struct ShowViewshedFromGeoelementInSceneView: View {
                 .padding(8)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
+        }
+        .onDisappear {
+            model.stopMoving()
         }
     }
 }
@@ -92,7 +91,7 @@ private extension ShowViewshedFromGeoelementInSceneView {
         let analysisOverlay = AnalysisOverlay()
         
         /// The graphic for the tank.
-        let tankGraphic: Graphic = {
+        private let tankGraphic: Graphic = {
             let tankSymbol = ModelSceneSymbol(url: .bradleyTank, scale: 10)
             tankSymbol.heading = 90
             tankSymbol.anchorPosition = .bottom
@@ -105,7 +104,16 @@ private extension ShowViewshedFromGeoelementInSceneView {
         }()
         
         /// The point for the tank to move toward.
-        var waypoint: Point?
+        private var waypoint: Point? {
+            didSet {
+                if waypoint == nil {
+                    stopMoving()
+                }
+            }
+        }
+        
+        /// The timer for the moving tank animation.
+        private var animationTimer: Timer?
         
         init() {
             // Create camera controller.
@@ -135,8 +143,24 @@ private extension ShowViewshedFromGeoelementInSceneView {
             analysisOverlay.addAnalysis(geoElementViewshed)
         }
         
-        /// Animate the tank moving from its current point to the waypoint.
-        func animate() {
+        /// Moves the tank to a point.
+        /// - Parameter waypoint: The `Point` to move the tank to.
+        func move(toWaypoint waypoint: Point) {
+            self.waypoint = waypoint
+            
+            // Start a timer to animate the tank moving towards the new waypoint.
+            animationTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
+                self.animate()
+            }
+        }
+        
+        /// Stops moving the tank.
+        func stopMoving() {
+            animationTimer?.invalidate()
+        }
+        
+        /// Animates the tank moving from its current point to the waypoint.
+        private func animate() {
             // Get point from the current tank position.
             guard let tankLocation = tankGraphic.geometry as? Point,
                   let point = waypoint else { return }
