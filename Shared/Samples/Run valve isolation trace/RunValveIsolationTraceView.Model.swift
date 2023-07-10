@@ -207,14 +207,14 @@ extension RunValveIsolationTraceView {
         
         /// Runs a trace with the pending trace configuration and selects features in the map that
         /// correspond to the element results.
-        func trace(includesIsolatedFeatures: Bool) async {
+        func trace(includeIsolatedFeatures: Bool) async {
             // Clear previous trace results.
             layers.forEach { $0.clearSelection() }
             
             tracingActivity = .runningTrace
             traceEnabled = false
             
-            let configuration = makeTraceConfiguration(category: selectedCategory, includesIsolatedFeatures: includesIsolatedFeatures)
+            let configuration = makeTraceConfiguration(category: selectedCategory, includeIsolatedFeatures: includeIsolatedFeatures)
             traceParameters.traceConfiguration = configuration
             do {
                 let traceResults = try await utilityNetwork
@@ -275,7 +275,7 @@ extension RunValveIsolationTraceView {
         }
         
         /// Gets the utility tier's trace configuration and apply category comparison.
-        private func makeTraceConfiguration(category: UtilityCategory?, includesIsolatedFeatures: Bool) -> UtilityTraceConfiguration {
+        private func makeTraceConfiguration(category: UtilityCategory?, includeIsolatedFeatures: Bool) -> UtilityTraceConfiguration {
             // Get a default trace configuration from a tier in the network.
             guard let configuration = utilityNetwork
                 .definition?
@@ -295,7 +295,7 @@ extension RunValveIsolationTraceView {
                 filter.barriers = comparison
                 configuration.filter = filter
             }
-            configuration.includesIsolatedFeatures = includesIsolatedFeatures
+            configuration.includesIsolatedFeatures = includeIsolatedFeatures
             return configuration
         }
         

@@ -27,7 +27,7 @@ struct RunValveIsolationTraceView: View {
     
     /// A Boolean value indicating whether to include isolated features in the
     /// trace results when used in conjunction with an isolation trace.
-    @State private var includesIsolatedFeatures = true
+    @State private var includeIsolatedFeatures = true
     
     var body: some View {
         MapViewReader { mapViewProxy in
@@ -72,7 +72,7 @@ struct RunValveIsolationTraceView: View {
                               model.tracingActivity == .loadingNetwork)
                     Spacer()
                     Button("Trace") {
-                        Task { await model.trace(includesIsolatedFeatures: includesIsolatedFeatures) }
+                        Task { await model.trace(includeIsolatedFeatures: includeIsolatedFeatures) }
                     }
                     .disabled(!model.traceEnabled)
                     Spacer()
@@ -159,7 +159,7 @@ struct RunValveIsolationTraceView: View {
                 Text("Choose a category to run the valve isolation trace. The selected utility category defines constraints and conditions based upon specific characteristics of asset types in the utility network.")
             }
             Section {
-                Toggle(isOn: $includesIsolatedFeatures) {
+                Toggle(isOn: $includeIsolatedFeatures) {
                     Text("Include Isolated Features")
                 }
             } header: {
