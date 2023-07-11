@@ -54,20 +54,20 @@ struct MeasureDistanceInSceneView: View {
                             model.locationDistanceMeasurement.endLocation = location
                         }
                     }
-//                    .onDragGesture { _, _ in
-//                        // Drag gesture is active when user has first set the start location.
-//                        return model.locationDistanceMeasurement.startLocation == model.locationDistanceMeasurement.endLocation
-//                    } onChanged: { screenPoint, _ in
-//                        // Move the end location on drag gesture.
-//                        Task {
-//                            guard let location = try? await sceneViewProxy.location(
-//                                fromScreenPoint: screenPoint
-//                            ) else { return }
-//                            model.locationDistanceMeasurement.endLocation = location
-//                        }
-//                    } onEnded: { _, _ in
-//                        instructionText = .startMessage
-//                    }
+                    .onDragGesture { _, _ in
+                        // Drag gesture is active when user has first set the start location.
+                        return model.locationDistanceMeasurement.startLocation == model.locationDistanceMeasurement.endLocation
+                    } onChanged: { screenPoint, _ in
+                        // Move the end location on drag gesture.
+                        Task {
+                            guard let location = try? await sceneViewProxy.location(
+                                fromScreenPoint: screenPoint
+                            ) else { return }
+                            model.locationDistanceMeasurement.endLocation = location
+                        }
+                    } onEnded: { _, _ in
+                        instructionText = .startMessage
+                    }
                     .task {
                         // Set distance text when there is a measurements update.
                         for await measurements in model.locationDistanceMeasurement.measurements {
