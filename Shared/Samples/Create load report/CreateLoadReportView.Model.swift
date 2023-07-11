@@ -54,11 +54,6 @@ extension CreateLoadReportView {
         /// The status text to display to the user.
         @Published private(set) var statusText: String?
         
-        /// A Boolean value indicating if the sample is authenticated.
-        private var isAuthenticated: Bool {
-            !ArcGISEnvironment.authenticationManager.arcGISCredentialStore.credentials.isEmpty
-        }
-        
         /// An error that occurred during setup.
         @Published private(set) var setupError: Error? {
             didSet { updateRunEnabled() }
