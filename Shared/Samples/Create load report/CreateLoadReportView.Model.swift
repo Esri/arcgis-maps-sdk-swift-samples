@@ -56,8 +56,24 @@ extension CreateLoadReportView {
         
         /// An error that occurred during setup.
         @Published private(set) var setupError: Error? {
-            didSet { updateRunEnabled() }
+            didSet {
+                updateRunEnabled()
+                isShowingSetupError = setupError != nil
+            }
         }
+        
+        /// A Boolean value indicating whether a setup error is showing.
+        @Published var isShowingSetupError = false
+        
+        /// An error that occurred creating the load report.
+        @Published private(set) var loadReportError: Error? {
+            didSet {
+                isShowingLoadReportError = loadReportError != nil
+            }
+        }
+        
+        /// A Boolean value indicating whether a load report error is showing.
+        @Published var isShowingLoadReportError = false
         
         // MARK: Methods
         
@@ -180,7 +196,7 @@ extension CreateLoadReportView {
         /// - Precondition: `phasesNetworkAttribute != nil`
         /// - Precondition: `initialExpression != nil`
         /// - Precondition: `traceParameters != nil`
-        func createLoadReport() async throws {
+        func createLoadReport() async {
             precondition(setupError == nil)
             
             guard let phasesNetworkAttribute,
@@ -205,30 +221,35 @@ extension CreateLoadReportView {
                     rightExpression: phasesAttributeComparison
                 )
                 
-                let traceResults = try await utilityNetwork.trace(using: traceParameters)
-                
-                var totalCustomers = 0
-                var totalLoad = 0
-                
-                for result in traceResults {
-                    switch result {
-                    case let elementResult as UtilityElementTraceResult:
-                        // Get the unique customers count.
-                        totalCustomers = Set(elementResult.elements.map(\.objectID)).count
-                    case let functionResult as UtilityFunctionTraceResult:
-                        // Get the total load with a function output.
-                        totalLoad = Int(functionResult.functionOutputs[1].result as! Double)
-                    default:
-                        break
+                do {
+                    let traceResults = try await utilityNetwork.trace(using: traceParameters)
+                    
+                    var totalCustomers = 0
+                    var totalLoad = 0
+                    
+                    for result in traceResults {
+                        switch result {
+                        case let elementResult as UtilityElementTraceResult:
+                            // Get the unique customers count.
+                            totalCustomers = Set(elementResult.elements.map(\.objectID)).count
+                        case let functionResult as UtilityFunctionTraceResult:
+                            // Get the total load with a function output.
+                            totalLoad = Int(functionResult.functionOutputs[1].result as! Double)
+                        default:
+                            break
+                        }
                     }
+                    summaries.setSummary(
+                        PhaseSummary(
+                            totalCustomers: totalCustomers,
+                            totalLoad: totalLoad
+                        ),
+                        forPhase: phase
+                    )
+                } catch {
+                    loadReportError = error
+                    return
                 }
-                summaries.setSummary(
-                    PhaseSummary(
-                        totalCustomers: totalCustomers,
-                        totalLoad: totalLoad
-                    ),
-                    forPhase: phase
-                )
             }
         }
         

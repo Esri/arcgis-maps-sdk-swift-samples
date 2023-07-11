@@ -19,29 +19,18 @@ struct CreateLoadReportView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
-    /// A Boolean value indicating whether to show an alert.
-    @State private var isShowingAlert = false
-    
-    /// The error shown in the alert.
-    @State private var error: Error? {
-        didSet { isShowingAlert = error != nil }
-    }
-    
     var body: some View {
         LoadReportView(model: model)
             .task {
                 await model.setup()
             }
-            .alert(isPresented: $isShowingAlert, presentingError: error)
+            .alert(isPresented: $model.isShowingSetupError, presentingError: model.setupError)
+            .alert(isPresented: $model.isShowingLoadReportError, presentingError: model.loadReportError)
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
                     Button("Run") {
                         Task {
-                            do {
-                                try await model.createLoadReport()
-                            } catch {
-                                self.error = error
-                            }
+                            await model.createLoadReport()
                         }
                     }
                     .disabled(!model.runEnabled)
