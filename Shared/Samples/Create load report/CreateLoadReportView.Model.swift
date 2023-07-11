@@ -39,7 +39,7 @@ extension CreateLoadReportView {
         
         /// A list of phases that are included in the load report.
         @Published private(set) var includedPhases = [CodedValue]() {
-            didSet { updateRunEnabled() }
+            didSet { updateAllowsCreateLoadReport() }
         }
         
         /// A list of possible phases populated from the network's attributes.
@@ -48,16 +48,16 @@ extension CreateLoadReportView {
         /// The phase summaries in the load report.
         private var summaries = PhaseSummaries()
         
-        /// A Boolean value indicating if the run button is enabled.
-        @Published private(set) var runEnabled = false
+        /// A Boolean value indicating if the load report can be generated.
+        @Published private(set) var allowsCreateLoadReport = false
         
         /// The status text to display to the user.
         @Published private(set) var statusText: String?
         
         /// An error that occurred during setup.
-        @Published private(set) var setupError: Error? {
+        private(set) var setupError: Error? {
             didSet {
-                updateRunEnabled()
+                updateAllowsCreateLoadReport()
                 isShowingSetupError = setupError != nil
             }
         }
@@ -66,7 +66,7 @@ extension CreateLoadReportView {
         @Published var isShowingSetupError = false
         
         /// An error that occurred creating the load report.
-        @Published private(set) var loadReportError: Error? {
+        private(set) var loadReportError: Error? {
             didSet {
                 isShowingLoadReportError = loadReportError != nil
             }
@@ -77,8 +77,8 @@ extension CreateLoadReportView {
         
         // MARK: Methods
         
-        private func updateRunEnabled() {
-            runEnabled = setupError == nil && !includedPhases.isEmpty
+        private func updateAllowsCreateLoadReport() {
+            allowsCreateLoadReport = setupError == nil && !includedPhases.isEmpty
         }
         
         /// Performs important tasks including adding credentials, loading and adding operational layers.
@@ -192,12 +192,9 @@ extension CreateLoadReportView {
         }
         
         /// Creates the load report.
-        /// - Precondition: `setupError == nil`
-        /// - Precondition: `phasesNetworkAttribute != nil`
-        /// - Precondition: `initialExpression != nil`
-        /// - Precondition: `traceParameters != nil`
+        /// - Precondition: `allowsCreateLoadReport`
         func createLoadReport() async {
-            precondition(setupError == nil)
+            precondition(allowsCreateLoadReport)
             
             guard let phasesNetworkAttribute,
                   let initialExpression,

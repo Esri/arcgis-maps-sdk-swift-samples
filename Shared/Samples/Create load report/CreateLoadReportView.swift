@@ -33,7 +33,7 @@ struct CreateLoadReportView: View {
                             await model.createLoadReport()
                         }
                     }
-                    .disabled(!model.runEnabled)
+                    .disabled(!model.allowsCreateLoadReport)
                 }
             }
             .overlay(alignment: .center) {
