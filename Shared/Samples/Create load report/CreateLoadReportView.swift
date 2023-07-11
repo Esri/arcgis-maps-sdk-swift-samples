@@ -30,13 +30,7 @@ struct CreateLoadReportView: View {
     var body: some View {
         LoadReportView(model: model)
             .task {
-                do {
-                    try await model.setup()
-                } catch {
-                    // Presents an error message if setup fails. This could occur if the utility network fails to load.
-                    self.error = error
-                    fatalError("Failed to setup sample.")
-                }
+                await model.setup()
             }
             .alert(isPresented: $isShowingAlert, presentingError: error)
             .toolbar {
@@ -44,7 +38,7 @@ struct CreateLoadReportView: View {
                     Button("Run") {
                         Task {
                             do {
-                                try await model.run()
+                                try await model.createLoadReport()
                             } catch {
                                 self.error = error
                             }

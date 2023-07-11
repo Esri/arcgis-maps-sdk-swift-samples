@@ -38,7 +38,9 @@ extension CreateLoadReportView {
         @Published private(set) var excludedPhases = [CodedValue]()
         
         /// A list of phases that are included in the load report.
-        @Published private(set) var includedPhases = [CodedValue]()
+        @Published private(set) var includedPhases = [CodedValue]() {
+            didSet { updateRunEnabled() }
+        }
         
         /// A list of possible phases populated from the network's attributes.
         private var allPhases = [CodedValue]()
@@ -57,19 +59,36 @@ extension CreateLoadReportView {
             !ArcGISEnvironment.authenticationManager.arcGISCredentialStore.credentials.isEmpty
         }
         
-        // MARK: Methods
-        
-        /// Performs important tasks including adding credentials, loading and adding operational layers.
-        func setup() async throws {
-            try await ArcGISEnvironment.authenticationManager.arcGISCredentialStore.add(.publicSample)
-            try await loadUtilityNetwork()
+        /// An error that occurred during setup.
+        @Published private(set) var setupError: Error? {
+            didSet { updateRunEnabled() }
         }
         
-        /// Loads the utility network.
-        private func loadUtilityNetwork() async throws {
-            statusText = "Loading utility network…"
-            try await utilityNetwork.load()
+        // MARK: Methods
+        
+        private func updateRunEnabled() {
+            runEnabled = setupError == nil && !includedPhases.isEmpty
+        }
+        
+        /// Performs important tasks including adding credentials, loading and adding operational layers.
+        func setup() async {
+            do {
+                try await ArcGISEnvironment.authenticationManager.arcGISCredentialStore.add(.publicSample)
+                try await setupTraceParameters()
+            } catch {
+                self.setupError = error
+            }
+        }
+        
+        /// Loads the utility network and sets up the trace parameters and other information
+        /// used for running this sample.
+        private func setupTraceParameters() async throws {
             defer { statusText = nil }
+            statusText = "Loading utility network…"
+            
+            try await utilityNetwork.load()
+            
+            statusText = "Setting up trace parameters…"
             
             let startingLocation = try makeStartingLocation()
             // Get the base condition and trace configuration from a default tier.
@@ -82,39 +101,47 @@ extension CreateLoadReportView {
             let traceParameters = UtilityTraceParameters(traceType: .downstream, startingLocations: [startingLocation])
             traceParameters.addResultTypes([.elements, .functionOutputs])
             
-            guard let definition = utilityNetwork.definition else { throw SetupError.networkDefinitionNotFound }
-            // The service category for counting total customers.
-            if let serviceCategory = definition.categories.first(where: { $0.name == "ServicePoint" }),
-               // The load attribute for counting total load.
-               let loadAttribute = definition.networkAttributes.first(where: { $0.name == "Service Load" }),
-               // The phase attribute for getting total phase current load.
-               let phasesNetworkAttribute = definition.networkAttributes.first(where: { $0.name == "Phases Current" }) {
-                self.phasesNetworkAttribute = phasesNetworkAttribute
-                // Get possible coded phase values from the attributes.
-                if let domain = phasesNetworkAttribute.domain as? CodedValueDomain {
-                    excludedPhases = domain.codedValues.sorted { $0.name < $1.name }
-                    allPhases = excludedPhases
-                }
-                // Create a comparison to check the existence of service points.
-                let serviceCategoryComparison = UtilityCategoryComparison(
-                    category: serviceCategory,
-                    operator: .exists
-                )
-                let addLoadAttributeFunction = UtilityTraceFunction(
-                    functionType: .add,
-                    networkAttribute: loadAttribute,
-                    condition: serviceCategoryComparison
-                )
-                // Create function input and output condition.
-                traceConfiguration.addFunction(addLoadAttributeFunction)
-                traceConfiguration.outputCondition = serviceCategoryComparison
-                // Set to false to ensure that service points with incorrect phasing
-                // (which therefore act as barriers) are not counted with results.
-                traceConfiguration.includesBarriers = false
-                // Assign the trace configuration to trace parameters.
-                traceParameters.traceConfiguration = traceConfiguration
-                self.traceParameters = traceParameters
+            guard let definition = utilityNetwork.definition else { throw SetupError() }
+            
+            guard
+                // The service category for counting total customers.
+                let serviceCategory = definition.categories.first(where: { $0.name == "ServicePoint" }),
+                // The load attribute for counting total load.
+                let loadAttribute = definition.networkAttributes.first(where: { $0.name == "Service Load" }),
+                // The phase attribute for getting total phase current load.
+                let phasesNetworkAttribute = definition.networkAttributes.first(where: { $0.name == "Phases Current" })
+            else {
+                throw SetupError()
             }
+            
+            self.phasesNetworkAttribute = phasesNetworkAttribute
+            
+            // Get possible coded phase values from the attributes.
+            guard let domain = phasesNetworkAttribute.domain as? CodedValueDomain else {
+                throw SetupError()
+            }
+            excludedPhases = domain.codedValues.sorted { $0.name < $1.name }
+            allPhases = excludedPhases
+            
+            // Create a comparison to check the existence of service points.
+            let serviceCategoryComparison = UtilityCategoryComparison(
+                category: serviceCategory,
+                operator: .exists
+            )
+            let addLoadAttributeFunction = UtilityTraceFunction(
+                functionType: .add,
+                networkAttribute: loadAttribute,
+                condition: serviceCategoryComparison
+            )
+            // Create function input and output condition.
+            traceConfiguration.addFunction(addLoadAttributeFunction)
+            traceConfiguration.outputCondition = serviceCategoryComparison
+            // Set to false to ensure that service points with incorrect phasing
+            // (which therefore act as barriers) are not counted with results.
+            traceConfiguration.includesBarriers = false
+            // Assign the trace configuration to trace parameters.
+            traceParameters.traceConfiguration = traceConfiguration
+            self.traceParameters = traceParameters
         }
         
         /// When the utility network is loaded, create a `UtilityElement`
@@ -135,7 +162,7 @@ extension CreateLoadReportView {
                 startingLocation.terminal = assetType.terminalConfiguration?.terminals.first(where: { $0.name == terminalName })
                 return startingLocation
             } else {
-                throw SetupError.startingLocationNotFound
+                throw SetupError()
             }
         }
         
@@ -149,17 +176,24 @@ extension CreateLoadReportView {
                 .defaultTraceConfiguration {
                 return configuration
             } else {
-                throw SetupError.traceConfigurationNotFound
+                throw SetupError()
             }
         }
         
-        func run() async throws {
-            statusText = "Creating load report…"
-            defer { statusText = nil }
+        /// Creates the load report.
+        /// - Precondition: `setupError == nil`
+        /// - Precondition: `phasesNetworkAttribute != nil`
+        /// - Precondition: `initialExpression != nil`
+        /// - Precondition: `traceParameters != nil`
+        func createLoadReport() async throws {
+            precondition(setupError == nil)
             
             guard let phasesNetworkAttribute,
                   let initialExpression,
-                  let traceParameters else { return }
+                  let traceParameters else { preconditionFailure() }
+            
+            statusText = "Creating load report…"
+            defer { statusText = nil }
             
             for phase in includedPhases {
                 guard let phaseCode = phase.code else { continue }
@@ -207,7 +241,6 @@ extension CreateLoadReportView {
             includedPhases.append(phase)
             excludedPhases = excludedPhases.filter { $0.name != phase.name }
             sortPhases()
-            runEnabled = true
         }
         
         func deletePhase(_ phase: CodedValue) {
@@ -298,29 +331,12 @@ private extension CreateLoadReportView {
 }
 
 extension CreateLoadReportView.Model {
-    enum SetupError: LocalizedError {
-        case startingLocationNotFound,
-             traceConfigurationNotFound,
-             networkDefinitionNotFound
-        
+    struct SetupError: LocalizedError {
         var errorDescription: String? {
-            switch self {
-            case .startingLocationNotFound:
-                return NSLocalizedString(
-                    "Cannot find starting location.",
-                    comment: "Error thrown when starting location cannot be found."
-                )
-            case .traceConfigurationNotFound:
-                return NSLocalizedString(
-                    "Cannot find trace configuration.",
-                    comment: "Error thrown when the trace configuration cannot be found."
-                )
-            case .networkDefinitionNotFound:
-                return NSLocalizedString(
-                    "Cannot find utility network definition.",
-                    comment: "Error thrown when the utility network definition cannot be found."
-                )
-            }
+            return NSLocalizedString(
+                "Cannot find data required to setup the sample.",
+                comment: "Error thrown when the setup for the sample fails."
+            )
         }
     }
 }
