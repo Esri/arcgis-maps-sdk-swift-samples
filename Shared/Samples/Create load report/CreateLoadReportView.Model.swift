@@ -77,6 +77,7 @@ extension CreateLoadReportView {
         
         // MARK: Methods
         
+        /// Updates the Boolean value indicating if the load report can be generated.
         private func updateAllowsCreateLoadReport() {
             allowsCreateLoadReport = setupError == nil && !includedPhases.isEmpty
         }
@@ -251,12 +252,16 @@ extension CreateLoadReportView {
             }
         }
         
+        /// Adds the provided phase to the included phases.
+        /// - Parameter phase: The phase to add.
         func addPhase(_ phase: CodedValue) {
             includedPhases.append(phase)
             excludedPhases = excludedPhases.filter { $0.name != phase.name }
             sortPhases()
         }
         
+        /// Deletes the provided phase from the included phases.
+        /// - Parameter phase: The phase to delete.
         func deletePhase(_ phase: CodedValue) {
             excludedPhases.append(phase)
             includedPhases = includedPhases.filter { $0.name != phase.name }
@@ -264,16 +269,22 @@ extension CreateLoadReportView {
             summaries.removeSummary(forPhase: phase)
         }
         
+        /// Deletes the provided phase from the included phases.
+        /// - Parameter indexSet: The index set corresponding to the phase to delete.
         func deletePhase(atOffsets indexSet: IndexSet) {
             guard let index = indexSet.first else { return }
             deletePhase(includedPhases[index])
         }
         
-        func sortPhases() {
+        /// Sorts the included and exluded phases by name.
+        private func sortPhases() {
             includedPhases.sort { $0.name < $1.name }
             excludedPhases.sort { $0.name < $1.name }
         }
         
+        /// Creates a summary for the provided phase.
+        /// - Parameter phase: The phase to generate a summary for.
+        /// - Returns: A localized string key representing the summary for the provided phase.
         func summaryForPhase(_ phase: CodedValue) -> LocalizedStringKey {
             let format: IntegerFormatStyle<Int> = .number
             if let summary = summaries.summary(forPhase: phase) {
@@ -345,6 +356,7 @@ private extension CreateLoadReportView {
 }
 
 extension CreateLoadReportView.Model {
+    /// An error returned when data required to setup the sample cannot be found.
     struct SetupError: LocalizedError {
         var errorDescription: String? {
             return NSLocalizedString(
