@@ -203,22 +203,22 @@ extension CreateLoadReportView {
             statusText = "Creating load report…"
             defer { statusText = nil }
             
-            for phase in includedPhases {
-                guard let phaseCode = phase.code else { continue }
-                
-                // Create a conditional expression.
-                let phasesAttributeComparison = UtilityNetworkAttributeComparison(
-                    networkAttribute: phasesNetworkAttribute,
-                    operator: .doesNotIncludeAny,
-                    value: phaseCode
-                )!
-                // Chain it with the base condition using an OR operator.
-                traceParameters.traceConfiguration?.traversability?.barriers = UtilityTraceOrCondition(
-                    leftExpression: initialExpression,
-                    rightExpression: phasesAttributeComparison
-                )
-                
-                do {
+            do {
+                for phase in includedPhases {
+                    guard let phaseCode = phase.code else { continue }
+                    
+                    // Create a conditional expression.
+                    let phasesAttributeComparison = UtilityNetworkAttributeComparison(
+                        networkAttribute: phasesNetworkAttribute,
+                        operator: .doesNotIncludeAny,
+                        value: phaseCode
+                    )!
+                    // Chain it with the base condition using an OR operator.
+                    traceParameters.traceConfiguration?.traversability?.barriers = UtilityTraceOrCondition(
+                        leftExpression: initialExpression,
+                        rightExpression: phasesAttributeComparison
+                    )
+                    
                     let traceResults = try await utilityNetwork.trace(using: traceParameters)
                     
                     var totalCustomers = 0
@@ -243,10 +243,11 @@ extension CreateLoadReportView {
                         ),
                         forPhase: phase
                     )
-                } catch {
-                    loadReportError = error
-                    return
                 }
+            } catch {
+                // On error, remove any summaries already generated.
+                summaries.removeAll()
+                loadReportError = error
             }
         }
         
