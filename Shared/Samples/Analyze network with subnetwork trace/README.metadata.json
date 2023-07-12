@@ -17,10 +17,10 @@
         "validate consistency",
         "CodedValueDomain",
         "UtilityAssetType",
-        "UtilityNetworkAttributeComparison.Operator",
         "UtilityCategory",
         "UtilityCategoryComparison",
         "UtilityCategoryComparisonOperator",
+        "UtilityNetworkAttributeComparison.Operator",
         "UtilityDomainNetwork",
         "UtilityElement",
         "UtilityElementTraceResult",
@@ -42,7 +42,6 @@
     "relevant_apis": [
         "CodedValueDomain",
         "UtilityAssetType",
-        "UtilityNetworkAttributeComparison.Operator",
         "UtilityCategory",
         "UtilityCategoryComparison",
         "UtilityCategoryComparisonOperator",
@@ -52,6 +51,7 @@
         "UtilityNetwork",
         "UtilityNetworkAttribute",
         "UtilityNetworkAttributeComparison",
+        "UtilityNetworkAttributeComparison.Operator",
         "UtilityNetworkDefinition",
         "UtilityTerminal",
         "UtilityTier",
@@ -65,8 +65,7 @@
     ],
     "snippets": [
         "AnalyzeNetworkWithSubnetworkTraceView.swift",
-        "AnalyzeNetworkWithSubnetworkTraceView.Model.swift",
-        "AnalyzeNetworkWithSubnetworkTraceView.Views.swift"
+        "AnalyzeNetworkWithSubnetworkTraceView.Model.swift"
     ],
     "title": "Analyze network with subnetwork trace"
 }

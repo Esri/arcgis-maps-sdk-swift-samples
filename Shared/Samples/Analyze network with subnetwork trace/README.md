@@ -35,7 +35,6 @@ Example barrier conditions for the default dataset:
 
 * CodedValueDomain
 * UtilityAssetType
-* UtilityNetworkAttributeComparison.Operator
 * UtilityCategory
 * UtilityCategoryComparison
 * UtilityCategoryComparisonOperator
@@ -45,6 +44,7 @@ Example barrier conditions for the default dataset:
 * UtilityNetwork
 * UtilityNetworkAttribute
 * UtilityNetworkAttributeComparison
+* UtilityNetworkAttributeComparison.Operator
 * UtilityNetworkDefinition
 * UtilityTerminal
 * UtilityTier
