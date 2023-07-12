@@ -201,6 +201,7 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
                 Button("Cancel") {
                     isConditionMenuPresented.toggle()
                     model.clearSelection()
+                    inputValue = nil
                 }
             }
         }
