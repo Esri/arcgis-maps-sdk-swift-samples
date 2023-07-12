@@ -82,13 +82,13 @@ extension CreateLoadReportView {
             allowsCreateLoadReport = setupError == nil && !includedPhases.isEmpty
         }
         
-        /// Performs important tasks including adding credentials, loading and adding operational layers.
+        /// Performs important tasks including adding credentials, loading the utility network and setting trace parameters.
         func setup() async {
             do {
                 try await ArcGISEnvironment.authenticationManager.arcGISCredentialStore.add(.publicSample)
                 try await setupTraceParameters()
             } catch {
-                self.setupError = error
+                setupError = error
             }
         }
         
