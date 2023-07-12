@@ -379,6 +379,14 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
             }
         }
         
+        /// Deletes a conditional expression.
+        func deleteConditionalExpression(atOffsets indexSet: IndexSet) {
+            guard let index = indexSet.first else { return }
+            let condition = conditions[index]
+            conditions = conditions.filter { $0 != condition }
+            traceConditionalExpressions.remove(atOffsets: indexSet)
+        }
+        
         /// Converts the values to matching data types.
         ///
         /// - Note: The input value can either be an `CodedValue` populated from the left hand side

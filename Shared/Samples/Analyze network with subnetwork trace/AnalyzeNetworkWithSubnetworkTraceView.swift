@@ -110,6 +110,9 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
                 ForEach(model.conditions, id: \.self) { condition in
                     Text(condition)
                 }
+                .onDelete { indexSet in
+                    model.deleteConditionalExpression(atOffsets: indexSet)
+                }
             } header: {
                 Text("List of conditions")
             } footer: {
