@@ -1476,7 +1476,6 @@
 				79B7B80A2A1BF8EC00F57C27 /* CreateAndSaveKMLView.swift in Sources */,
 				7573E81C29D6134C00BEED9C /* TraceUtilityNetworkView.Enums.swift in Sources */,
 				7573E81A29D6134C00BEED9C /* TraceUtilityNetworkView.Model.swift in Sources */,
-				0005580C28185C0600224BC6 /* SampleList.swift in Sources */,
 				D752D9402A39154C003EB25E /* ManageOperationalLayersView.swift in Sources */,
 				D7ABA2F92A32579C0021822B /* MeasureDistanceInSceneView.swift in Sources */,
 				E004A6E028466279002A1FE6 /* ShowCalloutView.swift in Sources */,
