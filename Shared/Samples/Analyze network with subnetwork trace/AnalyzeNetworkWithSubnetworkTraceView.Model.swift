@@ -470,9 +470,9 @@ private extension URL {
 }
 
 private extension UtilityCategoryComparison.Operator {
-    /// An extension of `AGSUtilityCategoryComparisonOperator` that returns a human readable description.
-    /// - Note: You may also create a `AGSUtilityCategoryComparison` with
-    ///         `AGSUtilityNetworkDefinition.categories` and `AGSUtilityCategoryComparisonOperator`.
+    /// An extension of `UtilityCategoryComparison.Operator` that returns a human readable description.
+    /// - Note: You may also create a `UtilityCategoryComparison` with
+    ///         `UtilityNetworkDefinition.categories` and `UtilityCategoryComparison.Operator`.
     var title: String {
         switch self {
         case .exists: return "Exists"
