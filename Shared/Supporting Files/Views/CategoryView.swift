@@ -27,6 +27,11 @@ struct CategoryView: View {
     /// A Boolean value that indicates whether to present the about view.
     @State private var isAboutViewPresented = false
     
+    /// The samples to display in the search list. Searching adjusts this value.
+    private var displayedSamples: [Sample] {
+        searchSamples()
+    }
+    
     var body: some View {
         Group {
             if !isSearching {

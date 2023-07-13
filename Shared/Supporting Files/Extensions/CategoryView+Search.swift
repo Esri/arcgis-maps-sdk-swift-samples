@@ -15,8 +15,9 @@
 import SwiftUI
 
 extension CategoryView {
-    /// The samples to display in the search list. Searching adjusts this value.
-    var displayedSamples: [Sample] {
+    /// Searches the sample list using the query.
+    /// - Returns: A `Sample Array`.
+    func searchSamples() -> [Sample] {
         if query.isEmpty {
             return []
         } else {
