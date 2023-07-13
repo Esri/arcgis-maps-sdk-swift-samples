@@ -61,6 +61,7 @@ private extension CategoryGridView {
         var body: some View {
             Image("\(category.replacingOccurrences(of: " ", with: "-"))-bg")
                 .resizable()
+                .aspectRatio(contentMode: .fit)
                 .overlay {
                     ZStack {
                         Color.secondary
