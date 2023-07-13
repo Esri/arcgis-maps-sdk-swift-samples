@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "navdirections.png",
+      "filename" : "Routing-and-Logistics-icon@1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "navdirections@2x.png",
+      "filename" : "Routing-and-Logistics-icon@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "navdirections@3x.png",
+      "filename" : "Routing-and-Logistics-icon@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

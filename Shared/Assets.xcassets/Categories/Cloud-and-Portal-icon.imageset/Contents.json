@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "cloud.png",
+      "filename" : "Cloud-and-Portal-icon@1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "cloud@2x.png",
+      "filename" : "Cloud-and-Portal-icon@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "cloud@3x.png",
+      "filename" : "Cloud-and-Portal-icon@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

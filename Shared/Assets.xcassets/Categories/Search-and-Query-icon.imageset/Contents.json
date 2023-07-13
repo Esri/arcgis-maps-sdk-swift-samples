@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "iOS8_TabBar_Find30.png",
+      "filename" : "Search-and-Query-icon@1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "iOS8_TabBar_Find60.png",
+      "filename" : "Search-and-Query-icon@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "iOS8_TabBar_Find90.png",
+      "filename" : "Search-and-Query-icon@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

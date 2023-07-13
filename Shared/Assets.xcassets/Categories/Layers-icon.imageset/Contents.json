@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "layers.png",
+      "filename" : "Layers-icon@1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "layers@2x.png",
+      "filename" : "Layers-icon@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "layers@3x.png",
+      "filename" : "Layers-icon@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

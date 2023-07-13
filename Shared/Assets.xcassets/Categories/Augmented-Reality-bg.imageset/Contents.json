@@ -1,17 +1,16 @@
 {
   "images" : [
     {
-      "filename" : "Augmented_reality@1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Augmented_reality@2x.png",
+      "filename" : "Augmented-Reality-bg@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Augmented_reality@3x.png",
+      "filename" : "Augmented-Reality-bg@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

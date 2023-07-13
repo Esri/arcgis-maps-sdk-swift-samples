@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "geometry.png",
+      "filename" : "Utility-Networks-icon@1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "geometry@2x.png",
+      "filename" : "Utility-Networks-icon@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "geometry@3x.png",
+      "filename" : "Utility-Networks-icon@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

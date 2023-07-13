@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "iOS8_TabBar_Edit30.png",
+      "filename" : "Edit-and-Manage-Data-icon@1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "iOS8_TabBar_Edit60.png",
+      "filename" : "Edit-and-Manage-Data-icon@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "iOS8_TabBar_Edit90.png",
+      "filename" : "Edit-and-Manage-Data-icon@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
