@@ -68,7 +68,7 @@ private extension CategoryGridView {
                     ZStack {
                         Color.secondary
                         Circle()
-                            .foregroundColor(.primary)
+                            .foregroundColor(.primary.opacity(0.75))
                             .frame(width: 50, height: 50)
                         Image("\(category.replacingOccurrences(of: " ", with: "-"))-icon")
                             .colorInvert(colorScheme == .light)
