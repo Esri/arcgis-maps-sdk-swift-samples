@@ -1,4 +1,4 @@
-// Copyright 2022 Esri
+// Copyright 2023 Esri
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,12 +29,8 @@ struct CategoryGridView: View {
     
     init(samples: [Sample]) {
         self.samples = samples
-        
-        var categoriesSet = Set<String>()
-        for sample in samples {
-            categoriesSet.insert(sample.category)
-        }
-        categories = Array(categoriesSet).sorted()
+        let categoriesSet = Set(samples.map(\.category))
+        categories = categoriesSet.sorted()
     }
     
     var body: some View {
@@ -73,15 +69,10 @@ private extension CategoryGridView {
                             .frame(width: 50, height: 50)
                         Image("\(category.replacingOccurrences(of: " ", with: "-"))-icon")
                             .colorInvert(colorScheme == .light)
-                        VStack {
-                            Spacer()
-                            Spacer()
-                            Spacer()
-                            Text(category)
-                                .foregroundColor(colorScheme == .dark ? .black : .white)
-                                .frame(maxWidth: .infinity)
-                            Spacer()
-                        }
+                        Text(category)
+                            .foregroundColor(colorScheme == .dark ? .black : .white)
+                            .frame(maxWidth: .infinity)
+                            .offset(y: 45)
                     }
                 }
                 .cornerRadius(15)
