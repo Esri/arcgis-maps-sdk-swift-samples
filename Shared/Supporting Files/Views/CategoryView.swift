@@ -28,7 +28,7 @@ struct CategoryView: View {
     @State private var isAboutViewPresented = false
     
     var body: some View {
-        VStack {
+        Group {
             if !isSearching {
                 CategoryGridView(samples: samples)
             } else {
