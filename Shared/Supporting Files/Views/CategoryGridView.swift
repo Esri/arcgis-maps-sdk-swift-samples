@@ -54,9 +54,6 @@ struct CategoryGridView: View {
 
 private extension CategoryGridView {
     struct CategoryTitleView: View {
-        /// The color scheme to detect dark mode.
-        @Environment(\.colorScheme) private var colorScheme
-        
         /// The category name used to load the images from assets.
         let category: String
         
@@ -66,14 +63,14 @@ private extension CategoryGridView {
                 .aspectRatio(contentMode: .fit)
                 .overlay {
                     ZStack {
-                        Color.secondary
+                        Color(red: 0.24, green: 0.24, blue: 0.26, opacity: 0.6)
                         Circle()
-                            .foregroundColor(.primary.opacity(0.75))
+                            .foregroundColor(.black.opacity(0.75))
                             .frame(width: 50, height: 50)
                         Image("\(category.replacingOccurrences(of: " ", with: "-"))-icon")
-                            .colorInvert(colorScheme == .light)
+                            .colorInvert()
                         Text(category)
-                            .foregroundColor(colorScheme == .dark ? .black : .white)
+                            .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
                             .offset(y: 45)
                     }
@@ -82,16 +79,3 @@ private extension CategoryGridView {
     }
 }
 
-private extension View {
-    @ViewBuilder
-    /// Inverts the colors of a view based on a Boolean.
-    /// - Parameter inverted: A `Bool` that indicates whether to invert the colors.
-    /// - Returns: A new `View`.
-    func colorInvert(_ inverted: Bool) -> some View {
-        if inverted {
-            self.colorInvert()
-        } else {
-            self
-        }
-    }
-}
