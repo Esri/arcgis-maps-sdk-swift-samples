@@ -43,6 +43,8 @@ struct CategoryGridView: View {
                     } label: {
                         CategoryTitleView(category: category)
                     }
+                    .clipShape(RoundedRectangle(cornerRadius: 15))
+                    .contentShape(RoundedRectangle(cornerRadius: 30))
                 }
             }
             .padding(8)
@@ -76,7 +78,6 @@ private extension CategoryGridView {
                             .offset(y: 45)
                     }
                 }
-                .cornerRadius(15)
         }
     }
 }
