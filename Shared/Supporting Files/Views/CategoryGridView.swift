@@ -71,7 +71,6 @@ private extension CategoryGridView {
                             .colorInvert()
                         Text(category)
                             .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
                             .offset(y: 45)
                     }
                 }
