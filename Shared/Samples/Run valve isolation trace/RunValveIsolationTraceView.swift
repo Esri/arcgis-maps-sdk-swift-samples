@@ -79,7 +79,7 @@ struct RunValveIsolationTraceView: View {
                     Button("Reset") {
                         model.reset()
                         if let point = model.startingLocationPoint {
-                            Task { await mapViewProxy.setViewpointCenter(model.startingLocationPoint!, scale: 3_000) }
+                            Task { await mapViewProxy.setViewpointCenter(point, scale: 3_000) }
                         }
                     }
                     .disabled(!model.resetEnabled)
