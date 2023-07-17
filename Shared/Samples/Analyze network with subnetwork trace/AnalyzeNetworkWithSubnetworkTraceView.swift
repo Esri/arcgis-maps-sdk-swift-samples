@@ -195,9 +195,9 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
                     TextField("Comparison value", value: $inputValue, format: .number, prompt: Text("Value"))
                         .multilineTextAlignment(.trailing)
                         .lineLimit(1)
-                        .onSubmit {
-                            selectedValue = inputValue
-                        }
+                }
+                .onChange(of: inputValue) { value in
+                    selectedValue = value
                 }
                 .disabled(selectedAttribute == nil && selectedComparison == nil)
             }
