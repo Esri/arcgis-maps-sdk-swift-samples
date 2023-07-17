@@ -55,65 +55,53 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
     }
     
     var body: some View {
-        Form {
-            Section("Trace Options") {
-                Toggle("Includes barriers", isOn: $includesBarriers)
-                Toggle("Includes containers", isOn: $includesContainers)
-            }
-            Section {
-                ForEach(model.conditions, id: \.self) { condition in
-                    Text(condition)
-                }
-                .onDelete { indexSet in
-                    model.deleteConditionalExpression(atOffsets: indexSet)
-                }
-            } header: {
-                Text("Conditions")
-            } footer: {
-                Text(model.expressionString)
-            }
-        }
-        .task {
-            do {
-                try await model.setup()
-            } catch {
-                self.error = error
-            }
-        }
-        .alert(isPresented: $isPresentingError, presentingError: error)
-        .alert("Trace Result", isPresented: $presentTraceResults, actions: {}, message: {
-            let elementString = model.traceResultsCount == 0 ? "No" : model.traceResultsCount.formatted()
-            Text("\(elementString) element(s) found.")
-        })
-        .sheet(isPresented: $isConditionMenuPresented) {
-            if #available(iOS 16, *) {
-                NavigationStack {
-                    conditionMenu
-                }
-            } else {
-                NavigationView {
-                    conditionMenu
-                }
-            }
-        }
-        .overlay(alignment: .center) {
-            if !model.statusText.isEmpty {
-                ZStack {
-                    Color.clear.background(.ultraThinMaterial)
-                    VStack {
-                        Text(model.statusText)
-                        ProgressView()
-                            .progressViewStyle(.circular)
+        if !model.isSetUp {
+            loadingView
+                .task {
+                    do {
+                        try await model.setup()
+                    } catch {
+                        self.error = error
                     }
-                    .padding()
-                    .background(.ultraThickMaterial)
-                    .cornerRadius(10)
-                    .shadow(radius: 50)
+                }
+        } else {
+            Form {
+                Section("Trace Options") {
+                    Toggle("Includes barriers", isOn: $includesBarriers)
+                    Toggle("Includes containers", isOn: $includesContainers)
+                }
+                Section {
+                    ForEach(model.conditions, id: \.self) { condition in
+                        Text(condition)
+                    }
+                    .onDelete { indexSet in
+                        model.deleteConditionalExpression(atOffsets: indexSet)
+                    }
+                } header: {
+                    Text("Conditions")
+                } footer: {
+                    Text(model.expressionString)
                 }
             }
-        }
-        .toolbar {
-            ToolbarItemGroup(placement: .bottomBar) { if model.isSetUp { toolbarItems } }
+            .alert("Trace Result", isPresented: $presentTraceResults, actions: {}, message: {
+                let elementString = model.traceResultsCount == 0 ? "No" : model.traceResultsCount.formatted()
+                Text("\(elementString) element(s) found.")
+            })
+            .sheet(isPresented: $isConditionMenuPresented) {
+                if #available(iOS 16, *) {
+                    NavigationStack {
+                        conditionMenu
+                    }
+                } else {
+                    NavigationView {
+                        conditionMenu
+                    }
+                }
+            }
+            .overlay(alignment: .center) { loadingView }
+            .toolbar {
+                ToolbarItemGroup(placement: .bottomBar) { toolbarItems }
+            }
         }
     }
     
@@ -141,6 +129,24 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
             }
         }
         .disabled(!model.traceEnabled)
+    }
+    
+    @ViewBuilder var loadingView: some View {
+        ZStack {
+            if !model.statusText.isEmpty {
+                Color.clear.background(.ultraThinMaterial)
+                VStack {
+                    Text(model.statusText)
+                    ProgressView()
+                        .progressViewStyle(.circular)
+                }
+                .padding()
+                .background(.ultraThickMaterial)
+                .cornerRadius(10)
+                .shadow(radius: 50)
+            }
+        }
+        .alert(isPresented: $isPresentingError, presentingError: error)
     }
     
     @ViewBuilder var conditionMenu: some View {
