@@ -19,7 +19,7 @@ extension CategoryView {
     /// - Returns: A set of samples matching the query criteria.
     func searchSamples() -> [Sample] {
         if query.isEmpty {
-            return []
+            return samples
         } else {
             return samples.filter { $0.name.localizedCaseInsensitiveContains(query) }
         }
