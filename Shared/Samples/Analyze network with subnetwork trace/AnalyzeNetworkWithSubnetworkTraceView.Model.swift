@@ -62,34 +62,15 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
         @Published private(set) var traceResultsCount = 0
         
         /// An error that occurred during setup.
-        @Published private(set) var setupError: Error? {
-            didSet {
-                isShowingSetupError = setupError != nil
-            }
-        }
-        
-        /// A Boolean value indicating whether a setup error is showing.
-        @Published var isShowingSetupError = false
+        @Published private(set) var setupError: Error?
         
         /// An error that occurred while running the utility network trace.
-        @Published private(set) var tracingError: Error? {
-            didSet {
-                isShowingTracingError = tracingError != nil
-            }
-        }
-        
-        /// A Boolean value indicating whether a tracing error is showing.
-        @Published var isShowingTracingError = false
+        @Published private(set) var tracingError: Error?
         
         /// An error that occurred creating the conditional expression.
-        @Published private(set) var createExpressionError: Error? {
-            didSet {
-                isShowingCreateExpressionError = createExpressionError != nil
-            }
-        }
+        @Published private(set) var createExpressionError: Error?
         
-        /// A Boolean value indicating whether a create conditional expression error is showing.
-        @Published var isShowingCreateExpressionError = false
+        @Published private(set) var isSetUp = false
         
         deinit {
             ArcGISEnvironment.authenticationManager.arcGISCredentialStore.removeAll()
@@ -98,12 +79,12 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
         // MARK: Methods
         
         /// Performs important tasks including adding credentials, loading utility network and setting trace parameters.
-        func setup() async {
+        func setup() async throws {
             do {
                 try await ArcGISEnvironment.authenticationManager.arcGISCredentialStore.add(.publicSample)
                 try await setupTraceParameters()
             } catch {
-                self.setupError = error
+                throw error
             }
         }
         
@@ -152,6 +133,7 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
             
             self.configuration = utilityTierConfiguration
             traceEnabled = true
+            isSetUp = true
         }
         
         /// When the utility network is loaded, creates a `UtilityElement`
@@ -179,7 +161,7 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
         ///   - includeBarriers: A Boolean value indicating whether to include barriers in the trace results.
         ///   - includeContainers: A Boolean value indicating whether to include containment features in the trace results.
         /// - Precondition: `startingLocation` and `configuration`are not `nil`.
-        func trace(includeBarriers: Bool, includeContainers: Bool) async {
+        func trace(includeBarriers: Bool, includeContainers: Bool) async throws {
             defer { statusText = "" }
             defer { traceEnabled = true }
             traceEnabled = false
@@ -207,7 +189,7 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
                 // Display the number of elements found by the trace.
                 traceResultsCount = elementResult?.elements.count ?? .zero
             } catch {
-                tracingError = error
+                throw error
             }
         }
         
@@ -327,7 +309,7 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
             attribute: UtilityNetworkAttribute,
             comparison: UtilityNetworkAttributeComparison.Operator,
             value: Any
-        ) {
+        ) throws {
             let convertedValue: Any
             
             if let codedValue = value as? CodedValue, attribute.domain is CodedValueDomain {
@@ -344,7 +326,7 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
                 traceConditionalExpressions.append(expression)
                 conditions.append(string(for: expression))
             } else {
-                createExpressionError = InitExpressionError()
+                throw InitExpressionError()
             }
         }
         

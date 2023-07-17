@@ -46,6 +46,14 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
     /// A Boolean value indicating whether to include containment features in the trace results.
     @State private var includesContainers = true
     
+    /// A Boolean value indicating whether to show an alert.
+    @State private var isPresentingError = false
+    
+    /// The error shown in the alert.
+    @State private var error: Error? {
+        didSet { isPresentingError = error != nil }
+    }
+    
     var body: some View {
         Form {
             Section("Trace Options") {
@@ -65,15 +73,14 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
                 Text(model.expressionString)
             }
         }
-        .toolbar {
-            ToolbarItemGroup(placement: .bottomBar) { toolbarItems }
-        }
         .task {
-            await model.setup()
+            do {
+                try await model.setup()
+            } catch {
+                self.error = error
+            }
         }
-        .alert(isPresented: $model.isShowingSetupError, presentingError: model.setupError)
-        .alert(isPresented: $model.isShowingTracingError, presentingError: model.tracingError)
-        .alert(isPresented: $model.isShowingCreateExpressionError, presentingError: model.createExpressionError)
+        .alert(isPresented: $isPresentingError, presentingError: error)
         .alert("Trace Result", isPresented: $presentTraceResults, actions: {}, message: {
             let elementString = model.traceResultsCount == 0 ? "No" : model.traceResultsCount.formatted()
             Text("\(elementString) element(s) found.")
@@ -105,6 +112,9 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
                 }
             }
         }
+        .toolbar {
+            ToolbarItemGroup(placement: .bottomBar) { if model.isSetUp { toolbarItems } }
+        }
     }
     
     @ViewBuilder var toolbarItems: some View {
@@ -122,8 +132,12 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
         Spacer()
         Button("Trace") {
             Task {
-                await model.trace(includeBarriers: includesBarriers, includeContainers: includesContainers)
-                presentTraceResults = true
+                do {
+                    try await model.trace(includeBarriers: includesBarriers, includeContainers: includesContainers)
+                    presentTraceResults = true
+                } catch {
+                    self.error = error
+                }
             }
         }
         .disabled(!model.traceEnabled)
@@ -194,15 +208,19 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
                         // show error
                         return
                     }
-                    model.addConditionalExpression(
-                        attribute: attribute,
-                        comparison: comparison,
-                        value: value
-                    )
-                    selectedAttribute = nil
-                    selectedComparison = nil
-                    selectedValue = nil
-                    inputValue = nil
+                    do {
+                        try model.addConditionalExpression(
+                            attribute: attribute,
+                            comparison: comparison,
+                            value: value
+                        )
+                        selectedAttribute = nil
+                        selectedComparison = nil
+                        selectedValue = nil
+                        inputValue = nil
+                    } catch {
+                        self.error = error
+                    }
                 }
                 .disabled(
                     selectedAttribute == nil ||
