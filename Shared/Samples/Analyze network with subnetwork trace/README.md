@@ -2,7 +2,7 @@
 
 Get a server-defined trace configuration for a given tier and modify its traversability scope, add new condition barriers, and control what is included in the subnetwork trace result.
 
-![Analyze network with subnetwork trace](analyze-network-with-subnetwork-trace.png)
+![Image of Analyze network with subnetwork trace sample](analyze-network-with-subnetwork-trace.png)
 
 ## Use case
 
@@ -24,7 +24,7 @@ Example barrier conditions for the default dataset:
 2. Populate the choice list for the comparison source with the non-system defined `UtilityNetworkDefinition.networkAttributes`. Populate the choice list for the comparison operator with the enum values from `UtilityAttributeComparisonOperator`.
 3. Create a `UtilityElement` from this asset type to use as the starting location for the trace.
 4. Update the selected barrier expression and the checked options in the UI using this tier's `TraceConfiguration`.
-5. When an attribute has been selected, if its `Domain` is a `CodedValueDomain`, populate the choice list for the comparison value with its `CodedValues`. Otherwise, display a `UITextField` for entering an attribute value.
+5. When an attribute has been selected, if its `Domain` is a `CodedValueDomain`, populate the choice list for the comparison value with its `CodedValues`. Otherwise, display a `TextField` for entering an attribute value.
 6. When "Add" is tapped, create a new `UtilityNetworkAttributeComparison` using the selected comparison source, operator, and selected or typed value. Use the selected source's `dataType` to convert the comparison value to the correct data type.
 7. If the traversability's list of `barriers` is not empty, create an `UtilityTraceOrCondition` with the existing `barriers` and the new comparison from step 6.
 8. When "Trace" is tapped, create `UtilityTraceParameters` passing in `subnetwork` and the default starting location. Set its `traceConfiguration` with the modified options, selections, and expression; then trace the utility network with `UtilityNetwork.trace(using:)`.

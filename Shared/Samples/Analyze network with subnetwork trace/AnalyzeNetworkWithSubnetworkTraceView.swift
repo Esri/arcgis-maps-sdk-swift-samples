@@ -12,95 +12,41 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import SwiftUI
 import ArcGIS
+import SwiftUI
 
 struct AnalyzeNetworkWithSubnetworkTraceView: View {
     /// The view model for the sample.
-    @StateObject var model = Model()
+    @StateObject private var model = Model()
+    
+    /// The attribute selected by the user.
+    @State var selectedAttribute: UtilityNetworkAttribute?
+    
+    /// The comparison selected by the user.
+    @State var selectedComparison: UtilityNetworkAttributeComparison.Operator?
+    
+    /// The value selected by the user.
+    @State var selectedValue: Any?
     
     /// A Boolean value indicating if the add condition menu is presented.
-    @State var isConditionMenuPresented = false
+    @State private var isConditionMenuPresented = false
     
     /// A Boolean value indicating whether the input box is showing.
-    @State var inputBoxIsPresented = false
+    @State private var inputBoxIsPresented = false
     
     /// The value input by the user.
-    @State var inputValue: Double?
+    @State private var inputValue: Double?
     
     /// A Boolean value indicating if the trace results should be presented in an alert.
-    @State var presentTraceResults = false
+    @State private var presentTraceResults = false
     
     /// A Boolean value indicating whether to include barriers in the trace results.
-    @State var includesBarriers = true
+    @State private var includesBarriers = true
     
     /// A Boolean value indicating whether to include containment features in the trace results.
-    @State var includesContainers = true
+    @State private var includesContainers = true
     
     var body: some View {
-        settingsView
-            .toolbar {
-                ToolbarItemGroup(placement: .bottomBar) {
-                    Button("Reset") {
-                        model.reset()
-                    }
-                    .disabled(!model.resetEnabled)
-                    Spacer()
-                    Button {
-                        isConditionMenuPresented.toggle()
-                    } label: {
-                        Image(systemName: "plus")
-                            .imageScale(.large)
-                    }
-                    Spacer()
-                    Button("Trace") {
-                        Task {
-                            await model.trace(includeBarriers: includesBarriers, includeContainers: includesContainers)
-                            presentTraceResults = true
-                        }
-                    }
-                    .disabled(!model.traceEnabled)
-                }
-            }
-            .task {
-                await model.setup()
-            }
-            .alert(isPresented: $model.isShowingSetupError, presentingError: model.setupError)
-            .alert(isPresented: $model.isShowingTracingError, presentingError: model.tracingError)
-            .alert(isPresented: $model.isShowingCreateExpressionError, presentingError: model.createExpressionError)
-            .alert("Trace Result", isPresented: $presentTraceResults, actions: {}, message: {
-                Text("\(model.traceResultsCount?.description ?? "No") element(s) found.")
-            })
-            .sheet(isPresented: $isConditionMenuPresented) {
-                if #available(iOS 16, *) {
-                    NavigationStack {
-                        conditionMenu
-                    }
-                } else {
-                    NavigationView {
-                        conditionMenu
-                    }
-                }
-            }
-            .overlay(alignment: .center) {
-                if let statusText = model.statusText {
-                    ZStack {
-                        Color.clear.background(.ultraThinMaterial)
-                        VStack {
-                            Text(statusText)
-                            ProgressView()
-                                .progressViewStyle(.circular)
-                        }
-                        .padding()
-                        .background(.ultraThickMaterial)
-                        .cornerRadius(10)
-                        .shadow(radius: 50)
-                    }
-                }
-            }
-    }
-    
-    @ViewBuilder var settingsView: some View {
         Form {
             Section("Trace Options") {
                 Toggle("Includes barriers", isOn: $includesBarriers)
@@ -114,11 +60,73 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
                     model.deleteConditionalExpression(atOffsets: indexSet)
                 }
             } header: {
-                Text("List of conditions")
+                Text("Conditions")
             } footer: {
                 Text(model.expressionString)
             }
         }
+        .toolbar {
+            ToolbarItemGroup(placement: .bottomBar) { toolbarItems }
+        }
+        .task {
+            await model.setup()
+        }
+        .alert(isPresented: $model.isShowingSetupError, presentingError: model.setupError)
+        .alert(isPresented: $model.isShowingTracingError, presentingError: model.tracingError)
+        .alert(isPresented: $model.isShowingCreateExpressionError, presentingError: model.createExpressionError)
+        .alert("Trace Result", isPresented: $presentTraceResults, actions: {}, message: {
+            let elementString = model.traceResultsCount == 0 ? "No" : model.traceResultsCount.formatted()
+            Text("\(elementString) element(s) found.")
+        })
+        .sheet(isPresented: $isConditionMenuPresented) {
+            if #available(iOS 16, *) {
+                NavigationStack {
+                    conditionMenu
+                }
+            } else {
+                NavigationView {
+                    conditionMenu
+                }
+            }
+        }
+        .overlay(alignment: .center) {
+            if !model.statusText.isEmpty {
+                ZStack {
+                    Color.clear.background(.ultraThinMaterial)
+                    VStack {
+                        Text(model.statusText)
+                        ProgressView()
+                            .progressViewStyle(.circular)
+                    }
+                    .padding()
+                    .background(.ultraThickMaterial)
+                    .cornerRadius(10)
+                    .shadow(radius: 50)
+                }
+            }
+        }
+    }
+    
+    @ViewBuilder var toolbarItems: some View {
+        Button("Reset") {
+            model.reset()
+        }
+        .disabled(model.conditions.count == 1)
+        Spacer()
+        Button {
+            isConditionMenuPresented = true
+        } label: {
+            Image(systemName: "plus")
+                .imageScale(.large)
+        }
+        Spacer()
+        Button("Trace") {
+            Task {
+                await model.trace(includeBarriers: includesBarriers, includeContainers: includesContainers)
+                presentTraceResults = true
+            }
+        }
+        .disabled(!model.traceEnabled)
     }
     
     @ViewBuilder var conditionMenu: some View {
@@ -126,59 +134,52 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
             NavigationLink {
                 attributesView
             } label: {
-                Text("Attributes")
-                Spacer()
-                Text(model.selectedAttribute?.name ?? "")
-                    .frame(maxWidth: .infinity, alignment: .trailing)
+                HStack {
+                    Text("Attributes")
+                    if let selectedAttribute = selectedAttribute {
+                        Spacer()
+                        Text(selectedAttribute.name)
+                            .foregroundColor(.secondary)
+                    }
+                }
             }
             NavigationLink {
                 operatorsView
             } label: {
-                Text("Comparison")
-                Spacer()
-                Text(model.selectedComparison?.title ?? "")
-                    .frame(maxWidth: .infinity, alignment: .trailing)
-            }
-            if model.selectedAttribute?.domain as? CodedValueDomain != nil {
                 HStack {
-                    NavigationLink {
-                        valuesView
-                    } label: {
-                        Text("Value")
+                    Text("Comparison")
+                    if let selectedComparison = selectedComparison {
                         Spacer()
-                        if let value = model.selectedValue as? CodedValue {
+                        Text(selectedComparison.title)
+                            .foregroundColor(.secondary)
+                    }
+                }
+            }
+            if selectedAttribute?.domain as? CodedValueDomain != nil {
+                NavigationLink {
+                    valuesView
+                } label: {
+                    HStack {
+                        Text("Value")
+                        if let value = selectedValue as? CodedValue {
+                            Spacer()
                             Text(value.name)
-                                .frame(maxWidth: .infinity, alignment: .trailing)
+                                .foregroundColor(.secondary)
                         }
                     }
                 }
-                .disabled(model.selectedAttribute == nil && model.selectedComparison == nil)
+                .disabled(selectedAttribute == nil && selectedComparison == nil)
             } else {
                 HStack {
                     Text("Value")
-                    Spacer()
-                    if let value = inputValue {
-                        Text(value.formatted())
-                    }
+                    TextField("Comparison value", value: $inputValue, format: .number, prompt: Text("Value"))
+                        .multilineTextAlignment(.trailing)
+                        .lineLimit(1)
+                        .onSubmit {
+                            selectedValue = inputValue
+                        }
                 }
-                .contentShape(Rectangle())
-                .disabled(model.selectedAttribute == nil && model.selectedComparison == nil)
-                .onTapGesture {
-                    inputBoxIsPresented = true
-                }
-                .alert("Provide a comparison value", isPresented: $inputBoxIsPresented, actions: {
-                    TextField("10", value: $inputValue, format: .number)
-                        .keyboardType(.numberPad)
-                    Button("Done") {
-                        inputBoxIsPresented = false
-                        model.selectedValue = inputValue
-                    }
-                    Button("Cancel") {
-                        inputBoxIsPresented = false
-                        model.selectedValue = nil
-                        inputValue = nil
-                    }
-                })
+                .disabled(selectedAttribute == nil && selectedComparison == nil)
             }
         }
         .navigationTitle("Add Condition")
@@ -186,21 +187,35 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
                 Button("Done") {
-                    isConditionMenuPresented.toggle()
-                    model.addConditionalExpression()
-                    model.selectedValue = nil
+                    isConditionMenuPresented = false
+                    guard let attribute = selectedAttribute,
+                          let comparison = selectedComparison,
+                          let value = selectedValue else {
+                        // show error
+                        return
+                    }
+                    model.addConditionalExpression(
+                        attribute: attribute,
+                        comparison: comparison,
+                        value: value
+                    )
+                    selectedAttribute = nil
+                    selectedComparison = nil
+                    selectedValue = nil
                     inputValue = nil
                 }
                 .disabled(
-                    model.selectedAttribute == nil ||
-                    model.selectedComparison == nil ||
-                    model.selectedValue == nil
+                    selectedAttribute == nil ||
+                    selectedComparison == nil ||
+                    selectedValue == nil
                 )
             }
             ToolbarItem(placement: .cancellationAction) {
                 Button("Cancel") {
-                    isConditionMenuPresented.toggle()
-                    model.clearSelection()
+                    isConditionMenuPresented = false
+                    selectedAttribute = nil
+                    selectedComparison = nil
+                    selectedValue = nil
                     inputValue = nil
                 }
             }
@@ -213,55 +228,63 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
             HStack {
                 Text(attribute.name)
                 Spacer()
-                if attribute === model.selectedAttribute {
+                if attribute === selectedAttribute {
                     Image(systemName: "checkmark")
                         .foregroundColor(.accentColor)
                 }
             }
             .contentShape(Rectangle())
             .onTapGesture {
-                model.selectedAttribute = attribute
+                selectedAttribute = attribute
             }
+            .navigationTitle("Attributes")
         }
     }
     
     @ViewBuilder var operatorsView: some View {
         Section {
-            List(model.attributeComparisonOperators, id: \.self) { comparison in
+            List(UtilityNetworkAttributeComparison.Operator.allCases, id: \.self) { comparison in
                 HStack {
                     Text(comparison.title)
                     Spacer()
-                    if comparison == model.selectedComparison {
+                    if comparison == selectedComparison {
                         Image(systemName: "checkmark")
                             .foregroundColor(.accentColor)
                     }
                 }
                 .contentShape(Rectangle())
                 .onTapGesture {
-                    model.selectedComparison = comparison
+                    selectedComparison = comparison
                 }
             }
         }
+        .navigationTitle("Operators")
     }
     
     @ViewBuilder var valuesView: some View {
-        if let domain = model.selectedAttribute?.domain as? CodedValueDomain {
+        if let domain = selectedAttribute?.domain as? CodedValueDomain {
             Section {
                 List(domain.codedValues, id: \.name) { value in
                     HStack {
                         Text(value.name)
                         Spacer()
-                        if value === model.selectedValue as? CodedValue {
+                        if value === selectedValue as? CodedValue {
                             Image(systemName: "checkmark")
                                 .foregroundColor(.accentColor)
                         }
                     }
                     .contentShape(Rectangle())
                     .onTapGesture {
-                        model.selectedValue = value
+                        selectedValue = value
                     }
                 }
             }
+            .navigationTitle("Values")
         }
+    }
+}
+
+private extension UtilityNetworkAttributeComparison.Operator {
+    static var allCases: [UtilityNetworkAttributeComparison.Operator] { [.equal, .notEqual, .greaterThan, .greaterThanEqual, .lessThan, .lessThanEqual, .includesTheValues, .doesNotIncludeTheValues, .includesAny, .doesNotIncludeAny]
     }
 }

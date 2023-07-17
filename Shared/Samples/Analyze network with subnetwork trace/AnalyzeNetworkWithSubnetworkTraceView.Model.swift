@@ -13,7 +13,8 @@
 // limitations under the License.
 
 import ArcGIS
-import UIKit
+import SwiftUI
+import Combine
 
 extension AnalyzeNetworkWithSubnetworkTraceView {
     /// The view model for this sample.
@@ -23,15 +24,10 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
         private let utilityNetwork = UtilityNetwork(url: .featureServiceURL)
         
         /// An array of condition expressions.
-        private var traceConditionalExpressions = [UtilityTraceConditionalExpression]()
+        private var traceConditionalExpressions: [UtilityTraceConditionalExpression] = []
         
         /// An array of string representations of condition expressions.
-        @Published private(set) var conditions = [String]()
-        
-        /// The operator to chain conditions together, i.e. `AND` or `OR`.
-        /// - Note: You may also combine expressions with `UtilityTraceAndCondition`.
-        ///         i.e. `UtilityTraceAndCondition.init`
-        private let chainExpressionsOperator = UtilityTraceOrCondition.init
+        @Published private(set) var conditions: [String] = []
         
         /// The utility element to start the trace from.
         private var startingLocation: UtilityElement?
@@ -45,44 +41,28 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
         /// A chained expression string.
         var expressionString: String {
             if let expression = chainExpressions(
-                using: chainExpressionsOperator,
                 expressions: traceConditionalExpressions
             ) {
-                return expressionToString(expression)
+                return string(for: expression)
             } else {
                 return "Expressions failed to convert to string."
             }
         }
         
-        /// The attribute selected by the user.
-        @Published var selectedAttribute: UtilityNetworkAttribute?
-        
         /// An array of possible network attributes.
-        @Published var possibleAttributes = [UtilityNetworkAttribute]()
-        
-        /// All cases of utility network attribute comparison operators.
-        @Published private(set) var attributeComparisonOperators = UtilityNetworkAttributeComparison.Operator.allCases
-        
-        /// The comparison selected by the user.
-        @Published var selectedComparison: UtilityNetworkAttributeComparison.Operator?
-        
-        /// The value selected by the user.
-        @Published var selectedValue: Any?
-        
-        /// A Boolean value indicating if the reseting the trace is enabled.
-        @Published private(set) var resetEnabled = false
+        @Published private(set) var possibleAttributes: [UtilityNetworkAttribute] = []
         
         /// A Boolean value indicating if running the trace is enabled.
         @Published private(set) var traceEnabled = false
         
         /// The status text to display to the user.
-        @Published private(set) var statusText: String? = "Loading utility network…"
+        @Published private(set) var statusText: String = "Loading utility network…"
         
         /// The number of trace results from a trace.
-        @Published private(set) var traceResultsCount: Int?
+        @Published private(set) var traceResultsCount = 0
         
         /// An error that occurred during setup.
-        private(set) var setupError: Error? {
+        @Published private(set) var setupError: Error? {
             didSet {
                 isShowingSetupError = setupError != nil
             }
@@ -92,7 +72,7 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
         @Published var isShowingSetupError = false
         
         /// An error that occurred while running the utility network trace.
-        private(set) var tracingError: Error? {
+        @Published private(set) var tracingError: Error? {
             didSet {
                 isShowingTracingError = tracingError != nil
             }
@@ -102,7 +82,7 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
         @Published var isShowingTracingError = false
         
         /// An error that occurred creating the conditional expression.
-        private(set) var createExpressionError: Error? {
+        @Published private(set) var createExpressionError: Error? {
             didSet {
                 isShowingCreateExpressionError = createExpressionError != nil
             }
@@ -110,11 +90,6 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
         
         /// A Boolean value indicating whether a create conditional expression error is showing.
         @Published var isShowingCreateExpressionError = false
-        
-        /// A Boolean value indicating if the sample is authenticated.
-        private var isAuthenticated: Bool {
-            !ArcGISEnvironment.authenticationManager.arcGISCredentialStore.credentials.isEmpty
-        }
         
         deinit {
             ArcGISEnvironment.authenticationManager.arcGISCredentialStore.removeAll()
@@ -135,7 +110,7 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
         /// Loads the utility network and sets the trace parameters and other information
         /// used for running this sample.
         private func setupTraceParameters() async throws {
-            defer { statusText = nil }
+            defer { statusText = "" }
             
             // Constants for creating the default trace configuration.
             let domainNetworkName = "ElectricDistribution"
@@ -166,7 +141,7 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
             
             if !traceConditionalExpressions.contains(where: { $0 === expression }) {
                 traceConditionalExpressions.append(expression)
-                conditions.append(expressionToString(expression))
+                conditions.append(string(for: expression))
             }
             
             // Set the traversability scope.
@@ -189,15 +164,14 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
             let globalID = UUID(uuidString: "1CAF7740-0BF4-4113-8DB2-654E18800028")!
             
             // Create a default starting location.
-            if let networkSource = self.utilityNetwork.definition?.networkSource(named: deviceTableName),
-               let assetType = networkSource.assetGroup(named: assetGroupName)?.assetType(named: assetTypeName),
-               let startingLocation = utilityNetwork.makeElement(assetType: assetType, globalID: globalID) {
-                // Set the terminal for this location. (For our case, use the "Load" terminal.)
-                startingLocation.terminal = startingLocation.assetType.terminalConfiguration?.terminals.first(where: { $0.name == "Load" })
-                return startingLocation
-            } else {
+            guard let networkSource = self.utilityNetwork.definition?.networkSource(named: deviceTableName),
+                  let assetType = networkSource.assetGroup(named: assetGroupName)?.assetType(named: assetTypeName),
+                  let startingLocation = utilityNetwork.makeElement(assetType: assetType, globalID: globalID) else {
                 throw SetupError()
             }
+            // Set the terminal for this location. (For our case, use the "Load" terminal.)
+            startingLocation.terminal = startingLocation.assetType.terminalConfiguration?.terminals.first(where: { $0.name == "Load" })
+            return startingLocation
         }
         
         /// Runs a trace with the pending trace configuration.
@@ -206,7 +180,7 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
         ///   - includeContainers: A Boolean value indicating whether to include containment features in the trace results.
         /// - Precondition: `startingLocation` and `configuration`are not `nil`.
         func trace(includeBarriers: Bool, includeContainers: Bool) async {
-            defer { statusText = nil }
+            defer { statusText = "" }
             defer { traceEnabled = true }
             traceEnabled = false
             statusText = "Tracing…"
@@ -219,7 +193,6 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
             configuration.includesBarriers = includeBarriers
             configuration.includesContainers = includeContainers
             configuration.traversability?.barriers = chainExpressions(
-                using: chainExpressionsOperator,
                 expressions: traceConditionalExpressions
             )
             parameters.traceConfiguration = configuration
@@ -228,12 +201,11 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
                 // Trace the utility network.
                 let traceResults = try await utilityNetwork
                     .trace(using: parameters)
-                    .compactMap { $0 as? UtilityElementTraceResult }
-                
-                if let elementResult = traceResults.first {
-                    // Display the number of elements found by the trace.
-                    traceResultsCount = elementResult.elements.count
-                }
+                let elementResult = traceResults.first(
+                    where: { $0 is UtilityElementTraceResult }
+                ) as! UtilityElementTraceResult?
+                // Display the number of elements found by the trace.
+                traceResultsCount = elementResult?.elements.count ?? .zero
             } catch {
                 tracingError = error
             }
@@ -243,38 +215,41 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
         func reset() {
             // Reset the barrier condition to the initial value.
             configuration?.traversability?.barriers = initialExpression
-            // Reset the conditions.
-            conditions.removeAll()
             if let initialExpression = initialExpression {
                 // Add back the initial expression.
                 traceConditionalExpressions = [initialExpression]
-                conditions.append(expressionToString(initialExpression))
+                conditions = [string(for: initialExpression)]
             } else {
                 traceConditionalExpressions.removeAll()
+                conditions.removeAll()
             }
-            resetEnabled = false
-            statusText = nil
+            statusText = ""
         }
         
         /// Chains the conditional expressions together with AND or OR operators.
         ///
         /// - Parameters:
         ///   - chainingOperator: An operator closure which is the initializer
-        ///                       of either `UtilityTraceAndCondition` or `UtilityTraceOrCondition`.
+        ///   of either `UtilityTraceAndCondition` or `UtilityTraceOrCondition`.
         ///   - expressions: An array of `UtilityTraceConditionalExpression`s.
         /// - Returns: The chained conditional expression.
-        func chainExpressions(using chainingOperator: (UtilityTraceConditionalExpression, UtilityTraceConditionalExpression) -> UtilityTraceConditionalExpression, expressions: [UtilityTraceConditionalExpression]) -> UtilityTraceConditionalExpression? {
+        func chainExpressions(
+            expressions: [UtilityTraceConditionalExpression]
+        ) -> UtilityTraceConditionalExpression? {
             guard let firstExpression = expressions.first else { return nil }
+            /// The operator to chain conditions together, i.e. `AND` or `OR`.
+            /// - Note: You may also combine expressions with
+            /// `UtilityTraceAndCondition`. i.e. `UtilityTraceAndCondition.init`
+            let chainingOperator = UtilityTraceOrCondition.init
             return expressions.dropFirst().reduce(firstExpression) { leftCondition, rightCondition in
                 chainingOperator(leftCondition, rightCondition)
             }
         }
         
         /// Converts a `UtilityTraceConditionalExpression` into a readable string.
-        ///
         /// - Parameter expression: A `UtilityTraceConditionalExpression`.
         /// - Returns: A string describing the expression.
-        private func expressionToString(_ expression: UtilityTraceConditionalExpression) -> String {
+        private func string(for expression: UtilityTraceConditionalExpression) -> String {
             switch expression {
             case let categoryComparison as UtilityCategoryComparison:
                 return "`\(categoryComparison.category.name)` \(categoryComparison.operator.title)"
@@ -307,13 +282,13 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
                 }
             case let andCondition as UtilityTraceAndCondition:
                 return """
-                    (\(expressionToString(andCondition.leftExpression))) AND
-                    (\(expressionToString(andCondition.rightExpression)))
+                    (\(string(for: andCondition.leftExpression))) AND
+                    (\(string(for: andCondition.rightExpression)))
                     """
             case let orCondition as UtilityTraceOrCondition:
                 return """
-                    (\(expressionToString(orCondition.leftExpression))) OR
-                    (\(expressionToString(orCondition.rightExpression)))
+                    (\(string(for: orCondition.leftExpression))) OR
+                    (\(string(for: orCondition.rightExpression)))
                     """
             default:
                 fatalError("Unknown trace condition expression type")
@@ -321,7 +296,6 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
         }
         
         /// Compares two attribute values.
-        ///
         /// - Parameters:
         ///   - dataType: A `UtilityNetworkAttributeDataType` enum that tells the type of 2 values.
         ///   - value1: The lhs value to compare.
@@ -338,10 +312,10 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
             case .integer:
                 if let value1 = value1 as? Int16,
                    let value2 = value2 as? Int {
-                    return value1 == value2 ? true : false
+                    return value1 == value2
                 } else if let value1 = value1 as? Int16,
                           let value2 = value2 as? Int16 {
-                    return value1 == value2 ? true : false
+                    return value1 == value2
                 } else {
                     return false
                 }
@@ -349,12 +323,11 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
         }
         
         /// Adds a conditional expression.
-        /// - Precondition: `selectedAttribute`, `selectedComparison` and `selectedValue` are not`nil`
-        func addConditionalExpression() {
-            defer { clearSelection() }
-            guard let attribute = selectedAttribute,
-                  let comparison = selectedComparison,
-                  let value = selectedValue else { preconditionFailure() }
+        func addConditionalExpression(
+            attribute: UtilityNetworkAttribute,
+            comparison: UtilityNetworkAttributeComparison.Operator,
+            value: Any
+        ) {
             let convertedValue: Any
             
             if let codedValue = value as? CodedValue, attribute.domain is CodedValueDomain {
@@ -368,12 +341,8 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
                 operator: comparison,
                 value: convertedValue
             ) {
-                // Append the new conditional expression if it is not a duplicate.
-                if !traceConditionalExpressions.contains(where: { $0 === expression }) {
-                    traceConditionalExpressions.append(expression)
-                    conditions.append(expressionToString(expression))
-                    resetEnabled = true
-                }
+                traceConditionalExpressions.append(expression)
+                conditions.append(string(for: expression))
             } else {
                 createExpressionError = InitExpressionError()
             }
@@ -388,7 +357,6 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
         }
         
         /// Converts the values to matching data types.
-        ///
         /// - Note: The input value can either be an `CodedValue` populated from the left hand side
         ///         attribute's domain, or a numeric value entered by the user.
         /// - Parameters:
@@ -415,13 +383,6 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
                 return value as! Bool
             }
         }
-        
-        /// Clears selected menu values.
-        func clearSelection() {
-            selectedAttribute = nil
-            selectedComparison = nil
-            selectedValue = nil
-        }
     }
 }
 
@@ -432,7 +393,7 @@ private extension ArcGISCredential {
     static var publicSample: ArcGISCredential {
         get async throws {
             try await TokenCredential.credential(
-                for: URL.featureServiceURL,
+                for: .featureServiceURL,
                 username: "viewer01",
                 password: "I68VGU^nMurF"
             )
@@ -444,9 +405,9 @@ extension AnalyzeNetworkWithSubnetworkTraceView.Model {
     /// An error returned when data required to setup the sample cannot be found.
     struct SetupError: LocalizedError {
         var errorDescription: String? {
-            return NSLocalizedString(
-                "Cannot find data required to setup the sample.",
-                comment: "Error thrown when the setup for the sample fails."
+            .init(
+                localized: "Cannot find data required to setup the sample.",
+                comment: "Description of error thrown when the setup for the sample fails."
             )
         }
     }
@@ -454,9 +415,9 @@ extension AnalyzeNetworkWithSubnetworkTraceView.Model {
     /// An error returned when the conditional expression cannot be initialized.
     struct InitExpressionError: LocalizedError {
         var errorDescription: String? {
-            return NSLocalizedString(
-                "Could not initialize conditional expression.",
-                comment: "Error thrown when the conditional expression cannot be initialized."
+            .init(
+                localized: "Could not initialize conditional expression.",
+                comment: "Description of error thrown when the conditional expression cannot be initialized."
             )
         }
     }
@@ -472,7 +433,7 @@ private extension URL {
 private extension UtilityCategoryComparison.Operator {
     /// An extension of `UtilityCategoryComparison.Operator` that returns a human readable description.
     /// - Note: You may also create a `UtilityCategoryComparison` with
-    ///         `UtilityNetworkDefinition.categories` and `UtilityCategoryComparison.Operator`.
+    /// `UtilityNetworkDefinition.categories` and `UtilityCategoryComparison.Operator`.
     var title: String {
         switch self {
         case .exists: return "Exists"
@@ -483,8 +444,6 @@ private extension UtilityCategoryComparison.Operator {
 }
 
 extension UtilityNetworkAttributeComparison.Operator {
-    static var allCases: [UtilityNetworkAttributeComparison.Operator] { [.equal, .notEqual, .greaterThan, .greaterThanEqual, .lessThan, .lessThanEqual, .includesTheValues, .doesNotIncludeTheValues, .includesAny, .doesNotIncludeAny] }
-    
     /// A human-readable label for each utility attribute comparison operator.
     var title: String {
         switch self {
