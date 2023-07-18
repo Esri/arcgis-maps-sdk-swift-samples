@@ -218,7 +218,7 @@ private extension CreateBuffersAroundPointsView {
         }
         
         /// Draws points and their buffers on the map.
-        /// - Parameter unioned: A Boolean indicating whether the buffers should union.
+        /// - Parameter unioned: A Boolean indicating whether the buffers should be unioned.
         func drawBuffers(unioned: Bool) {
             // Clear existing buffers graphics before drawing.
             bufferGraphicsOverlay.removeAllGraphics()
