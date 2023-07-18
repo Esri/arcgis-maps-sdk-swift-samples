@@ -20,13 +20,13 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
     @StateObject private var model = Model()
     
     /// The attribute selected by the user.
-    @State var selectedAttribute: UtilityNetworkAttribute?
+    @State private var selectedAttribute: UtilityNetworkAttribute?
     
     /// The comparison selected by the user.
-    @State var selectedComparison: UtilityNetworkAttributeComparison.Operator?
+    @State private var selectedComparison: UtilityNetworkAttributeComparison.Operator?
     
     /// The value selected by the user.
-    @State var selectedValue: Any?
+    @State private var selectedValue: Any?
     
     /// A Boolean value indicating if the add condition menu is presented.
     @State private var isConditionMenuPresented = false
@@ -84,8 +84,11 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
                 }
             }
             .alert("Trace Result", isPresented: $presentTraceResults, actions: {}, message: {
-                let elementString = model.traceResultsCount == 0 ? "No" : model.traceResultsCount.formatted()
-                Text("\(elementString) element(s) found.")
+                if model.traceResultsCount == 0 {
+                    Text("No element(s) found.")
+                } else {
+                    Text("\(model.traceResultsCount, format: .number) element(s) found.")
+                }
             })
             .sheet(isPresented: $isConditionMenuPresented) {
                 if #available(iOS 16, *) {
@@ -261,8 +264,8 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
             .onTapGesture {
                 selectedAttribute = attribute
             }
-            .navigationTitle("Attributes")
         }
+        .navigationTitle("Attributes")
     }
     
     @ViewBuilder var operatorsView: some View {

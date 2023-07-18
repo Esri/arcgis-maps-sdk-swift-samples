@@ -40,9 +40,7 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
         
         /// A chained expression string.
         var expressionString: String {
-            if let expression = chainExpressions(
-                expressions: traceConditionalExpressions
-            ) {
+            if let expression = chainExpressions(traceConditionalExpressions) {
                 return string(for: expression)
             } else {
                 return "Expressions failed to convert to string."
@@ -61,15 +59,7 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
         /// The number of trace results from a trace.
         @Published private(set) var traceResultsCount = 0
         
-        /// An error that occurred during setup.
-        @Published private(set) var setupError: Error?
-        
-        /// An error that occurred while running the utility network trace.
-        @Published private(set) var tracingError: Error?
-        
-        /// An error that occurred creating the conditional expression.
-        @Published private(set) var createExpressionError: Error?
-        
+        /// A Boolean value indicating if the sample has been setup.
         @Published private(set) var isSetUp = false
         
         deinit {
@@ -174,9 +164,7 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
             guard let configuration = configuration else { preconditionFailure() }
             configuration.includesBarriers = includeBarriers
             configuration.includesContainers = includeContainers
-            configuration.traversability?.barriers = chainExpressions(
-                expressions: traceConditionalExpressions
-            )
+            configuration.traversability?.barriers = chainExpressions(traceConditionalExpressions)
             parameters.traceConfiguration = configuration
             
             do {
@@ -209,14 +197,10 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
         }
         
         /// Chains the conditional expressions together with AND or OR operators.
-        ///
-        /// - Parameters:
-        ///   - chainingOperator: An operator closure which is the initializer
-        ///   of either `UtilityTraceAndCondition` or `UtilityTraceOrCondition`.
-        ///   - expressions: An array of `UtilityTraceConditionalExpression`s.
+        /// - Parameter expressions: An array of `UtilityTraceConditionalExpression`s.
         /// - Returns: The chained conditional expression.
         func chainExpressions(
-            expressions: [UtilityTraceConditionalExpression]
+            _ expressions: [UtilityTraceConditionalExpression]
         ) -> UtilityTraceConditionalExpression? {
             guard let firstExpression = expressions.first else { return nil }
             /// The operator to chain conditions together, i.e. `AND` or `OR`.
