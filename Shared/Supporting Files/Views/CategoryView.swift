@@ -22,7 +22,7 @@ struct CategoryView: View {
     let samples: [Sample]
     
     /// The search query in the search bar.
-    @Binding var query: String
+    @Binding private(set) var query: String
     
     /// A Boolean value that indicates whether to present the about view.
     @State private var isAboutViewPresented = false
@@ -44,7 +44,7 @@ struct CategoryView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
-                    isAboutViewPresented.toggle()
+                    isAboutViewPresented = true
                 } label: {
                     Image(systemName: "info.circle")
                 }
