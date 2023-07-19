@@ -85,7 +85,7 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
             }
             .alert("Trace Result", isPresented: $presentTraceResults, actions: {}, message: {
                 if model.traceResultsCount == 0 {
-                    Text("No element(s) found.")
+                    Text("No element found.")
                 } else {
                     Text("\(model.traceResultsCount, format: .number) element(s) found.")
                 }
