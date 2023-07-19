@@ -34,26 +34,38 @@ private extension SampleListView {
         @State private var isShowingDescription = false
         
         var body: some View {
-            NavigationLink {
-                SampleDetailView(sample: sample)
-            } label: {
-                HStack {
-                    VStack(alignment: .leading, spacing: 5) {
+            ZStack {
+                NavigationLink {
+                    SampleDetailView(sample: sample)
+                } label: {
+                    EmptyView()
+                }
+                .frame(width: 0)
+                .opacity(0)
+                
+                VStack(alignment: .leading, spacing: 5) {
+                    HStack {
                         Text(sample.name)
-                        if isShowingDescription {
-                            Text(sample.description)
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                                .transition(.move(edge: .top).combined(with: .opacity))
+                        Spacer()
+                        Button {
+                            isShowingDescription.toggle()
+                        } label: {
+                            Image(systemName: "chevron.right.circle")
+                                .rotationEffect(isShowingDescription ? .degrees(90) : .zero)
                         }
+                        .buttonStyle(.borderless)
                     }
-                    Spacer()
-                    Button {
-                        isShowingDescription.toggle()
-                    } label: {
-                        Image(systemName: isShowingDescription ? "info.circle.fill" : "info.circle")
+                    
+                    if isShowingDescription {
+                        Group {
+                            Text("Category: \(sample.category)")
+                                .bold()
+                            Text(sample.description)
+                                .foregroundColor(.secondary)
+                        }
+                        .font(.caption)
+                        .transition(.move(edge: .top).combined(with: .opacity))
                     }
-                    .buttonStyle(.borderless)
                 }
                 .animation(.easeOut(duration: 0.2), value: isShowingDescription)
             }
