@@ -15,13 +15,50 @@
 import SwiftUI
 
 extension CategoryView {
-    /// Searches the sample list using the query.
-    /// - Returns: A set of samples matching the query criteria.
-    func searchSamples() -> [Sample] {
-        if query.isEmpty {
-            return samples
-        } else {
-            return samples.filter { $0.name.localizedCaseInsensitiveContains(query) }
+    /// Searches the samples using the sample's name and the query.
+    /// - Returns: The samples whose name partially matches the query.
+    func searchSamplesNames() -> [Sample] {
+        guard !query.isEmpty else { return samples }
+        
+        // Preform a partial text search using the sample's name and the query.
+        let nameSearchResults = samples.filter { sample in
+            sample.name.localizedCaseInsensitiveContains(query)
         }
+        return nameSearchResults
+    }
+    
+    /// Searches the samples using the sample's description and the query.
+    /// - Returns: The samples whose description partially matches the query.
+    func searchSamplesDescriptions() -> [Sample] {
+        // The samples already found by name with query.
+        let previousSearchResults = searchSamplesNames()
+        
+        // Preform a partial text search using the sample's descriptions and
+        // the query for the samples that are not already found by name.
+        let descriptionSearchResults = samples.filter { sample in
+            sample.description.localizedCaseInsensitiveContains(query) &&
+            !previousSearchResults.contains { searchResultSample in
+                searchResultSample.name == sample.name
+            }
+        }
+        return descriptionSearchResults
+    }
+    
+    /// Searches the samples using the sample's tags and the query.
+    /// - Returns: The samples which have a tag that fully matches the query.
+    func searchSamplesTags() -> [Sample] {
+        // The samples already found by name or description with query.
+        let previousSearchResults = searchSamplesNames() + searchSamplesDescriptions()
+        
+        // Preform a full text search using the sample's tags and the query for
+        // the samples that are not already found by name or description.
+        let tagsSearchResults = samples.filter { sample in
+            sample.tags.contains { tag in
+                tag.localizedCaseInsensitiveCompare(query) == .orderedSame
+            } && !previousSearchResults.contains { searchResultSample in
+                searchResultSample.name == sample.name
+            }
+        }
+        return tagsSearchResults
     }
 }

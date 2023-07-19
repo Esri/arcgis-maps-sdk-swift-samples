@@ -19,7 +19,7 @@ struct SampleListView: View {
     let samples: [Sample]
     
     var body: some View {
-        List(samples, id: \.name) { sample in
+        ForEach(samples, id: \.name) { sample in
             SampleRow(sample: sample)
         }
     }

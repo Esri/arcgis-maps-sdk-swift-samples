@@ -24,20 +24,49 @@ struct CategoryView: View {
     /// The search query in the search bar.
     @Binding private(set) var query: String
     
+    /// The samples to display in the name section of the search list.
+    @State private var nameSearchResults: [Sample] = []
+    
+    /// The samples to display in the description section of the search list.
+    @State private var descriptionSearchResults: [Sample] = []
+    
+    /// The samples to display in the tags section of the search list.
+    @State private var tagsSearchResults: [Sample] = []
+    
     /// A Boolean value that indicates whether to present the about view.
     @State private var isAboutViewPresented = false
-    
-    /// The samples to display in the search list. Searching adjusts this value.
-    private var displayedSamples: [Sample] {
-        searchSamples()
-    }
     
     var body: some View {
         Group {
             if !isSearching {
                 CategoryGridView(samples: samples)
             } else {
-                SampleListView(samples: displayedSamples)
+                // The search results list.
+                List {
+                    if !nameSearchResults.isEmpty {
+                        Section(header: Text("Name")) {
+                            SampleListView(samples: nameSearchResults)
+                        }
+                    }
+                    if !descriptionSearchResults.isEmpty {
+                        Section(header: Text("Description")) {
+                            SampleListView(samples: descriptionSearchResults)
+                        }
+                    }
+                    if !tagsSearchResults.isEmpty {
+                        Section(header: Text("Tags")) {
+                            SampleListView(samples: tagsSearchResults)
+                        }
+                    }
+                }
+                .onChange(of: query) { _ in
+                    nameSearchResults = searchSamplesNames()
+                    descriptionSearchResults = searchSamplesDescriptions()
+                    tagsSearchResults = searchSamplesTags()
+                }
+                .onAppear {
+                    nameSearchResults = searchSamplesNames()
+                }
             }
         }
         .navigationTitle("Samples")
