@@ -18,9 +18,17 @@ struct SampleListView: View {
     /// All samples that will be displayed in the list.
     let samples: [Sample]
     
+    /// The search query from the search bar.
+    let query: String
+    
+    init(samples: [Sample], query: String = "") {
+        self.samples = samples
+        self.query = query
+    }
+    
     var body: some View {
         ForEach(samples, id: \.name) { sample in
-            SampleRow(sample: sample)
+            SampleRow(sample: sample, boldedText: query)
         }
     }
 }
@@ -29,6 +37,9 @@ private extension SampleListView {
     struct SampleRow: View {
         /// The sample displayed in the row.
         let sample: Sample
+        
+        /// The text to bold.
+        let boldedText: String
         
         /// A Boolean value that indicates whether to show the sample's description.
         @State private var isShowingDescription = false
@@ -39,9 +50,10 @@ private extension SampleListView {
             } label: {
                 HStack {
                     VStack(alignment: .leading, spacing: 5) {
-                        Text(sample.name)
+                        Text(.init(boldSubstring(sample.name, substring: boldedText)))
+                        
                         if isShowingDescription {
-                            Text(sample.description)
+                            Text(.init(boldSubstring(sample.description, substring: boldedText)))
                                 .font(.caption)
                                 .foregroundColor(.secondary)
                                 .transition(.move(edge: .top).combined(with: .opacity))
@@ -57,6 +69,35 @@ private extension SampleListView {
                 }
                 .animation(.easeOut(duration: 0.2), value: isShowingDescription)
             }
+        }
+        
+        /// Bolds the first occurrence of substring within a given string using markdown.
+        /// - Parameters:
+        ///   - text: The `String` containing the substring.
+        ///   - substring: The substring to bold.
+        /// - Returns: The `String` with the bolded substring.
+        func boldSubstring(_ text: String, substring: String) -> String {
+            if let range = text.localizedLowercase.range(of: substring.localizedLowercase) {
+                var boldedText = text
+                
+                // Add "**" to the front of the substring.
+                let lowerIndex = boldedText.distance(from: boldedText.startIndex, to: range.lowerBound)
+                boldedText.insert(contentsOf: "**", at: boldedText.index(
+                    boldedText.startIndex,
+                    offsetBy: lowerIndex
+                ))
+                
+                // Add "**" to the end of the substring.
+                let upperIndex = boldedText.distance(from: boldedText.startIndex, to: range.upperBound)
+                boldedText.insert(contentsOf: "**", at: boldedText.index(
+                    boldedText.startIndex,
+                    offsetBy: upperIndex + 2
+                ))
+
+                return boldedText
+            }
+            
+            return text
         }
     }
 }
