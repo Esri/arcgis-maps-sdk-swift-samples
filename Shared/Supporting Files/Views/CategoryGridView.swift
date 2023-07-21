@@ -38,8 +38,11 @@ struct CategoryGridView: View {
             LazyVGrid(columns: columns) {
                 ForEach(categories, id: \.self) { category in
                     NavigationLink {
-                        SampleListView(samples: samples.filter { $0.category == category })
-                            .navigationTitle(category)
+                        SampleListView(
+                            samples: samples.filter { $0.category == category },
+                            shouldShowCategory: false
+                        )
+                        .navigationTitle(category)
                     } label: {
                         CategoryTitleView(category: category)
                     }

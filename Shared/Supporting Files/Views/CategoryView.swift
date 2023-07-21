@@ -37,7 +37,7 @@ struct CategoryView: View {
             if !isSearching {
                 CategoryGridView(samples: samples)
             } else {
-                SampleListView(samples: displayedSamples)
+                SampleListView(samples: displayedSamples, shouldShowCategory: true)
             }
         }
         .navigationTitle("Samples")

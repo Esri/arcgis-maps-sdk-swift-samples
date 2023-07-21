@@ -18,9 +18,14 @@ struct SampleListView: View {
     /// All samples that will be displayed in the list.
     let samples: [Sample]
     
+    /// A Boolean value indicating whether the row description should include
+    /// the sample's category. We only need this information when the samples
+    /// in the list are from different categories.
+    let shouldShowCategory: Bool
+    
     var body: some View {
         List(samples, id: \.name) { sample in
-            SampleRow(sample: sample)
+            SampleRow(sample: sample, shouldShowCategory: shouldShowCategory)
         }
     }
 }
@@ -30,44 +35,25 @@ private extension SampleListView {
         /// The sample displayed in the row.
         let sample: Sample
         
-        /// A Boolean value that indicates whether to show the sample's description.
-        @State private var isShowingDescription = false
-        
+        /// A Boolean value that indicates whether to show the sample's category.
+        let shouldShowCategory: Bool
+
         var body: some View {
-            ZStack {
-                NavigationLink {
+            DisclosureGroup {
+                VStack(alignment: .leading) {
+                    if shouldShowCategory {
+                        Text("Category: \(sample.category)")
+                            .bold()
+                    }
+                    Text(sample.description)
+                        .foregroundColor(.secondary)
+                }
+                .listRowSeparator(.hidden)
+                .font(.caption)
+            } label: {
+                NavigationLink(sample.name) {
                     SampleDetailView(sample: sample)
-                } label: {
-                    EmptyView()
                 }
-                .frame(width: 0)
-                .opacity(0)
-                
-                VStack(alignment: .leading, spacing: 5) {
-                    HStack {
-                        Text(sample.name)
-                        Spacer()
-                        Button {
-                            isShowingDescription.toggle()
-                        } label: {
-                            Image(systemName: "chevron.right.circle")
-                                .rotationEffect(isShowingDescription ? .degrees(90) : .zero)
-                        }
-                        .buttonStyle(.borderless)
-                    }
-                    
-                    if isShowingDescription {
-                        Group {
-                            Text("Category: \(sample.category)")
-                                .bold()
-                            Text(sample.description)
-                                .foregroundColor(.secondary)
-                        }
-                        .font(.caption)
-                        .transition(.move(edge: .top).combined(with: .opacity))
-                    }
-                }
-                .animation(.easeOut(duration: 0.2), value: isShowingDescription)
             }
         }
     }
