@@ -46,6 +46,7 @@ struct CategoryGridView: View {
                     } label: {
                         CategoryTitleView(category: category)
                     }
+                    .isDetailLink(false)
                     .clipShape(RoundedRectangle(cornerRadius: 15))
                     .contentShape(RoundedRectangle(cornerRadius: 30))
                     .buttonStyle(.plain)
