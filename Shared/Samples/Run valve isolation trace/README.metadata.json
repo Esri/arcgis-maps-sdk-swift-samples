@@ -1,0 +1,60 @@
+{
+    "category": "Utility Networks",
+    "description": "Run a filtered trace to locate operable features that will isolate an area from the flow of network resources.",
+    "ignore": false,
+    "images": [
+        "run-valve-isolation-trace-1.png",
+        "run-valve-isolation-trace-2.png"
+    ],
+    "keywords": [
+        "category comparison",
+        "condition barriers",
+        "filter barriers",
+        "isolated features",
+        "network analysis",
+        "subnetwork trace",
+        "trace configuration",
+        "trace filter",
+        "utility network",
+        "GeometryEngine.polyline(_:fractionalLengthClosestTo:tolerance:)",
+        "ServiceGeodatabase",
+        "UtilityCategory",
+        "UtilityCategoryComparison",
+        "UtilityCategoryComparison.Operator",
+        "UtilityDomainNetwork",
+        "UtilityElement",
+        "UtilityElementTraceResult",
+        "UtilityNetwork",
+        "UtilityNetworkDefinition",
+        "UtilityTerminal",
+        "UtilityTier",
+        "UtilityTraceFilter",
+        "UtilityTraceParameters",
+        "UtilityTraceParameters.TraceType",
+        "UtilityTraceResult"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "GeometryEngine.polyline(_:fractionalLengthClosestTo:tolerance:)",
+        "ServiceGeodatabase",
+        "UtilityCategory",
+        "UtilityCategoryComparison",
+        "UtilityCategoryComparison.Operator",
+        "UtilityDomainNetwork",
+        "UtilityElement",
+        "UtilityElementTraceResult",
+        "UtilityNetwork",
+        "UtilityNetworkDefinition",
+        "UtilityTerminal",
+        "UtilityTier",
+        "UtilityTraceFilter",
+        "UtilityTraceParameters",
+        "UtilityTraceParameters.TraceType",
+        "UtilityTraceResult"
+    ],
+    "snippets": [
+        "RunValveIsolationTraceView.swift",
+        "RunValveIsolationTraceView.Model.swift"
+    ],
+    "title": "Run valve isolation trace"
+}

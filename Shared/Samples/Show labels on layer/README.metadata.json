@@ -1,0 +1,34 @@
+{
+    "category": "Visualization",
+    "description": "Display custom labels on a feature layer.",
+    "ignore": false,
+    "images": [
+        "show-labels-on-layer.png"
+    ],
+    "keywords": [
+        "arcade",
+        "attribute",
+        "deconfliction",
+        "label",
+        "labeling",
+        "string",
+        "symbol",
+        "text",
+        "visualization",
+        "ArcadeLabelExpression",
+        "FeatureLayer",
+        "LabelDefinition",
+        "TextSymbol"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "ArcadeLabelExpression",
+        "FeatureLayer",
+        "LabelDefinition",
+        "TextSymbol"
+    ],
+    "snippets": [
+        "ShowLabelsOnLayerView.swift"
+    ],
+    "title": "Show labels on layer"
+}

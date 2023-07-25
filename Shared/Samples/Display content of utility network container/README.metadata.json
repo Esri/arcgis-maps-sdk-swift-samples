@@ -1,0 +1,33 @@
+{
+    "category": "Utility Networks",
+    "description": "A utility network container allows a dense collection of features to be represented by a single feature, which can be used to reduce map clutter.",
+    "ignore": false,
+    "images": [
+        "display-content-utility-network.png"
+    ],
+    "keywords": [
+        "associations",
+        "connectivity association",
+        "containment association",
+        "structural attachment associations",
+        "utility network",
+        "SubtypeFeatureLayer",
+        "UtilityAssociation",
+        "UtilityAssociation.Kind",
+        "UtilityElement",
+        "UtilityNetwork"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "SubtypeFeatureLayer",
+        "UtilityAssociation",
+        "UtilityAssociation.Kind",
+        "UtilityElement",
+        "UtilityNetwork"
+    ],
+    "snippets": [
+        "DisplayContentOfUtilityNetworkContainerView.swift",
+        "DisplayContentOfUtilityNetworkContainerView.Model.swift"
+    ],
+    "title": "Display content of utility network container"
+}

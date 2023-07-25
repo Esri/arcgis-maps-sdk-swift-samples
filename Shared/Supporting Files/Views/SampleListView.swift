@@ -14,58 +14,23 @@
 
 import SwiftUI
 
-struct SampleList: View {
-    /// A Boolean value that indicates whether the user is searching.
-    @Environment(\.isSearching) private var isSearching
-    
+struct SampleListView: View {
     /// All samples that will be displayed in the list.
     let samples: [Sample]
     
-    /// The search query in the search bar.
-    @Binding var query: String
-    
-    /// A Boolean value that indicates whether to present the about view.
-    @State private var isAboutViewPresented = false
-    
-    /// The samples to display in the list. Searching adjusts this value.
-    private var displayedSamples: [Sample] {
-        if !isSearching {
-            return samples
-        } else {
-            if query.isEmpty {
-                return samples
-            } else {
-                return samples.filter { $0.name.localizedCaseInsensitiveContains(query) }
-            }
-        }
-    }
-    
     var body: some View {
-        List(displayedSamples, id: \.name) { sample in
+        List(samples, id: \.name) { sample in
             SampleRow(sample: sample)
-        }
-        .navigationTitle("Samples")
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button {
-                    isAboutViewPresented.toggle()
-                } label: {
-                    Image(systemName: "info.circle")
-                }
-                .sheet(isPresented: $isAboutViewPresented) {
-                    AboutView()
-                }
-            }
         }
     }
 }
 
-private extension SampleList {
+private extension SampleListView {
     struct SampleRow: View {
         /// The sample displayed in the row.
         let sample: Sample
         
-        /// A Boolean value indicating whether to show the sample's description
+        /// A Boolean value that indicates whether to show the sample's description.
         @State private var isShowingDescription = false
         
         var body: some View {
