@@ -37,7 +37,7 @@ private extension SampleListView {
         
         /// A Boolean value that indicates whether to show the sample's category.
         let shouldShowCategory: Bool
-
+        
         var body: some View {
             DisclosureGroup {
                 VStack(alignment: .leading) {
