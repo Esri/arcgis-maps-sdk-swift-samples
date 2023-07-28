@@ -120,6 +120,8 @@ struct ManageLayersSheetView: View {
                         #if targetEnvironment(macCatalyst)
                         .padding(.top)
                         #endif
+                } footer: {
+                    Text("Tap \"Edit\" to reorder the layers.")
                 }
                 
                 Section {
