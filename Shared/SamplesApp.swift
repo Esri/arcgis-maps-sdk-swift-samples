@@ -19,6 +19,11 @@ import ArcGIS
 struct SamplesApp: App {
     init() {
         license()
+        
+        // Create user defaults favorites array.
+        UserDefaults.standard.register(defaults: [
+            UserDefaults.favoriteSamplesKey: [String]()
+        ])
     }
     
     var body: some SwiftUI.Scene {

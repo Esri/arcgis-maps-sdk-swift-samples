@@ -21,11 +21,15 @@ struct SampleDetailView: View {
     /// A Boolean value that indicates whether to present the sample's information view.
     @State private var isSampleInfoViewPresented = false
     
+    /// Comments
+    @AppStorage("currentSampleIsFavorited") private var isFavorited = false
+    
     /// An object to manage on-demand resources for a sample with dependencies.
     @StateObject private var onDemandResource: OnDemandResource
     
     init(sample: Sample) {
         self.sample = sample
+        self._isFavorited = AppStorage(wrappedValue: sample.isFavorited, "currentSampleIsFavorited")
         self._onDemandResource = StateObject(
             wrappedValue: OnDemandResource(tags: [sample.nameInUpperCamelCase])
         )
@@ -73,7 +77,7 @@ struct SampleDetailView: View {
         .navigationTitle(sample.name)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
+            ToolbarItemGroup(placement: .navigationBarTrailing) {
                 Button {
                     isSampleInfoViewPresented = true
                 } label: {
@@ -89,6 +93,13 @@ struct SampleDetailView: View {
                             SampleInfoView(sample: sample)
                         }
                     }
+                }
+                
+                Button {
+                    isFavorited.toggle()
+                    sample.isFavorited = isFavorited
+                } label: {
+                    Image(systemName: isFavorited ? "star.fill" : "star")
                 }
             }
         }

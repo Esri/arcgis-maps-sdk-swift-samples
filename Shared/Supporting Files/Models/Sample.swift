@@ -59,4 +59,30 @@ extension Sample {
     
     /// By default, a sample doesn't have dependencies.
     var hasDependencies: Bool { false }
+    
+    var isFavorited: Bool {
+        get {
+            UserDefaults.standard.favoriteSamples.contains(name)
+        }
+        nonmutating set {
+            if newValue {
+                UserDefaults.standard.favoriteSamples.insert(name)
+            } else {
+                UserDefaults.standard.favoriteSamples.remove(name)
+            }
+        }
+    }
+}
+
+extension UserDefaults {
+    static let favoriteSamplesKey = "favoriteSamples"
+    
+    var favoriteSamples: Set<String> {
+        get {
+            Set(stringArray(forKey: Self.favoriteSamplesKey)!)
+        }
+        set {
+            set(newValue.sorted(), forKey: Self.favoriteSamplesKey)
+        }
+    }
 }
