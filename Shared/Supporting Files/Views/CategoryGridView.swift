@@ -36,17 +36,16 @@ struct CategoryGridView: View {
     var body: some View {
         ScrollView {
             LazyVGrid(columns: columns) {
+                CategoryTileView(
+                    samples: samples,
+                    name: "Favorites"
+                )
+                
                 ForEach(categories, id: \.self) { category in
-                    NavigationLink {
-                        SampleListView(samples: samples.filter { $0.category == category })
-                            .navigationTitle(category)
-                    } label: {
-                        CategoryTitleView(category: category)
-                    }
-                    .isDetailLink(false)
-                    .clipShape(RoundedRectangle(cornerRadius: 15))
-                    .contentShape(RoundedRectangle(cornerRadius: 30))
-                    .buttonStyle(.plain)
+                    CategoryTileView(
+                        samples: samples.filter { $0.category == category },
+                        name: category
+                    )
                 }
             }
             .padding(8)
@@ -55,28 +54,40 @@ struct CategoryGridView: View {
 }
 
 private extension CategoryGridView {
-    struct CategoryTitleView: View {
+    struct CategoryTileView: View {
+        /// The samples in the category.
+        let samples: [Sample]
+        
         /// The category name used to load the images from assets.
-        let category: String
+        let name: String
         
         var body: some View {
-            Image("\(category.replacingOccurrences(of: " ", with: "-"))-bg")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .overlay {
-                    ZStack {
-                        Color(red: 0.24, green: 0.24, blue: 0.26, opacity: 0.6)
-                        Circle()
-                            .foregroundColor(.black.opacity(0.75))
-                            .frame(width: 50, height: 50)
-                        Image("\(category.replacingOccurrences(of: " ", with: "-"))-icon")
-                            .colorInvert()
-                        Text(category)
-                            .multilineTextAlignment(.center)
-                            .foregroundColor(.white)
-                            .offset(y: 45)
+            NavigationLink {
+                SampleListView(samples: samples)
+                    .navigationTitle(name)
+            } label: {
+                Image("\(name.replacingOccurrences(of: " ", with: "-"))-bg")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .overlay {
+                        ZStack {
+                            Color(red: 0.24, green: 0.24, blue: 0.26, opacity: 0.6)
+                            Circle()
+                                .foregroundColor(.black.opacity(0.75))
+                                .frame(width: 50, height: 50)
+                            Image("\(name.replacingOccurrences(of: " ", with: "-"))-icon")
+                                .colorInvert()
+                            Text(name)
+                                .multilineTextAlignment(.center)
+                                .foregroundColor(.white)
+                                .offset(y: 45)
+                        }
                     }
-                }
+            }
+            .isDetailLink(false)
+            .clipShape(RoundedRectangle(cornerRadius: 15))
+            .contentShape(RoundedRectangle(cornerRadius: 30))
+            .buttonStyle(.plain)
         }
     }
 }
