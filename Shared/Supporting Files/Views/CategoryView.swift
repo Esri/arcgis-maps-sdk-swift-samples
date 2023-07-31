@@ -44,17 +44,17 @@ struct CategoryView: View {
                 // The search results list.
                 List {
                     if !nameSearchResults.isEmpty {
-                        Section(header: Text("Results for Name")) {
+                        Section(header: Text("Name Results")) {
                             SampleListView(samples: nameSearchResults, query: query)
                         }
                     }
                     if !descriptionSearchResults.isEmpty {
-                        Section(header: Text("Results for Description")) {
+                        Section(header: Text("Description Results")) {
                             SampleListView(samples: descriptionSearchResults, query: query)
                         }
                     }
                     if !tagsSearchResults.isEmpty {
-                        Section(header: Text("Results for Tags")) {
+                        Section(header: Text("Tag Results")) {
                             SampleListView(samples: tagsSearchResults, query: query)
                         }
                     }
