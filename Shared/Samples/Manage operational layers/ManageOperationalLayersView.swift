@@ -145,7 +145,7 @@ struct ManageLayersSheetView: View {
                 }
             }
         }
-        .background(Color(.systemGray6))
+        .background(Color(.systemGroupedBackground))
         .onAppear {
             operationalLayers = map.operationalLayers
         }
