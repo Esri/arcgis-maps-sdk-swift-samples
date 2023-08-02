@@ -63,7 +63,7 @@ struct CategoryView: View {
                     }
                 }
                 .onChange(of: query) { _ in
-                    previousSearchResults = []
+                    previousSearchResults.removeAll(keepingCapacity: true)
                     nameSearchResults = searchSamplesNames()
                     descriptionSearchResults = searchSamplesDescriptions()
                     tagsSearchResults = searchSamplesTags()

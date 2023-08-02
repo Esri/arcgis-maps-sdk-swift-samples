@@ -14,7 +14,7 @@
 
 import SwiftUI
 
-extension CategoryView {    
+extension CategoryView {
     /// Searches the samples using the sample's name and the query.
     /// - Returns: The samples whose name partially matches the query.
     func searchSamplesNames() -> [Sample] {
@@ -25,7 +25,7 @@ extension CategoryView {
         let nameSearchResults = samples.filter { sample in
             sample.name.localizedCaseInsensitiveContains(query)
         }
-        previousSearchResults.formUnion(nameSearchResults.map { $0.name })
+        previousSearchResults.formUnion(nameSearchResults.map(\.name))
         return nameSearchResults
     }
     
@@ -38,7 +38,7 @@ extension CategoryView {
             sample.description.localizedCaseInsensitiveContains(query) &&
             !previousSearchResults.contains(sample.name)
         }
-        previousSearchResults.formUnion(descriptionSearchResults.map { $0.name })
+        previousSearchResults.formUnion(descriptionSearchResults.map(\.name))
         return descriptionSearchResults
     }
     
