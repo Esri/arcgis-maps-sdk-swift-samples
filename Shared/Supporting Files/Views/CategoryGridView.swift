@@ -18,7 +18,7 @@ struct CategoryGridView: View {
     /// The names of the favorited samples loaded from user defaults.
     @AppStorage(UserDefaults.favoriteSamplesKey) var favorites: [String] = []
     
-    /// All samples that will be shown in the categories.
+    /// All the samples that will be shown in the categories.
     private let samples: [Sample]
     
     /// The different sample categories generated from the samples list.
@@ -58,7 +58,7 @@ struct CategoryGridView: View {
 
 private extension CategoryGridView {
     struct CategoryTileView: View {
-        /// The samples in the category.
+        /// The samples shown in the category list.
         let samples: [Sample]
         
         /// The category name used to load the images from assets.

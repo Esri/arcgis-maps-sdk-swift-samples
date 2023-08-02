@@ -60,7 +60,7 @@ extension Sample {
     /// By default, a sample doesn't have dependencies.
     var hasDependencies: Bool { false }
     
-    /// A Boolean value that indicates whether a sample is favorited.
+    /// A Boolean value that indicates whether the sample is favorited.
     var isFavorited: Bool {
         get {
             UserDefaults.standard.favoriteSamples.contains(name)
@@ -76,8 +76,10 @@ extension Sample {
 }
 
 extension UserDefaults {
+    /// The user defaults key for the favorite samples.
     static let favoriteSamplesKey = "favoriteSamples"
     
+    /// The names of the favorite samples.
     var favoriteSamples: [String] {
         get {
             Array(rawValue: string(forKey: Self.favoriteSamplesKey) ?? "") ?? []
@@ -92,18 +94,15 @@ extension Array: RawRepresentable where Element: Codable {
     public init?(rawValue: String) {
         guard let data = rawValue.data(using: .utf8),
               let result = try? JSONDecoder().decode([Element].self, from: data)
-        else {
-            return nil
-        }
+        else { return nil }
         self = result
     }
 
+    /// The raw value of the array.
     public var rawValue: String {
         guard let data = try? JSONEncoder().encode(self),
               let result = String(data: data, encoding: .utf8)
-        else {
-            return "[]"
-        }
+        else { return "[]" }
         return result
     }
 }
