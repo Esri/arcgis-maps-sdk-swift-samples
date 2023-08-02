@@ -21,7 +21,7 @@ extension CategoryView {
         // Return all the samples when query is empty.
         guard !query.isEmpty else { return samples }
         
-        // Preform a partial text search using the sample's name and the query.
+        // Perform a partial text search using the sample's name and the query.
         let nameSearchResults = samples.filter { sample in
             sample.name.localizedCaseInsensitiveContains(query)
         }
@@ -34,7 +34,7 @@ extension CategoryView {
         // The samples already found by name with query.
         let previousSearchResults = searchSamplesNames()
         
-        // Preform a partial text search using the sample's description and
+        // Perform a partial text search using the sample's description and
         // the query for the samples that are not already found.
         let descriptionSearchResults = samples.filter { sample in
             sample.description.localizedCaseInsensitiveContains(query) &&
@@ -51,7 +51,7 @@ extension CategoryView {
         // The samples already found by name or description with query.
         let previousSearchResults = searchSamplesNames() + searchSamplesDescriptions()
         
-        // Preform a full text search using the sample's tags and the query for
+        // Perform a full text search using the sample's tags and the query for
         // the samples that are not already found.
         let tagsSearchResults = samples.filter { sample in
             sample.tags.contains { tag in
