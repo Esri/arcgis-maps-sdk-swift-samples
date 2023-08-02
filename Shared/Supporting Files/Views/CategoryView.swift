@@ -36,6 +36,9 @@ struct CategoryView: View {
     /// A Boolean value that indicates whether to present the about view.
     @State private var isAboutViewPresented = false
     
+    /// The names of the samples already found in a previous section.
+    @State var previousSearchResults: Set<String> = []
+    
     var body: some View {
         Group {
             if !isSearching {
@@ -60,6 +63,7 @@ struct CategoryView: View {
                     }
                 }
                 .onChange(of: query) { _ in
+                    previousSearchResults = []
                     nameSearchResults = searchSamplesNames()
                     descriptionSearchResults = searchSamplesDescriptions()
                     tagsSearchResults = searchSamplesTags()
