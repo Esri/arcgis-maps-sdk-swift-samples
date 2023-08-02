@@ -36,9 +36,6 @@ struct CategoryView: View {
     /// A Boolean value that indicates whether to present the about view.
     @State private var isAboutViewPresented = false
     
-    /// The names of the samples already found in a previous section.
-    @State var previousSearchResults: Set<String> = []
-    
     var body: some View {
         Group {
             if !isSearching {
@@ -63,13 +60,10 @@ struct CategoryView: View {
                     }
                 }
                 .onChange(of: query) { _ in
-                    previousSearchResults.removeAll(keepingCapacity: true)
-                    nameSearchResults = searchSamplesNames()
-                    descriptionSearchResults = searchSamplesDescriptions()
-                    tagsSearchResults = searchSamplesTags()
+                    searchSamples(in: samples, with: query)
                 }
                 .onAppear {
-                    nameSearchResults = searchSamplesNames()
+                    searchSamples(in: samples, with: query)
                 }
             }
         }
@@ -86,5 +80,33 @@ struct CategoryView: View {
                 }
             }
         }
+    }
+    
+    /// Searches through a list of samples to find ones that match the query.
+    /// - Parameters:
+    ///   - samples: The `Array` of samples to search through.
+    ///   - query: The `String` to search with.
+    private func searchSamples(in samples: [Sample], with query: String) {
+        // Show all samples in the name section when query is empty.
+        guard !query.isEmpty else {
+            nameSearchResults = samples
+            return
+        }
+        
+        // The names of the samples already found in a previous section.
+        var previousSearchResults: Set<String> = []
+        
+        // Update the name section results.
+        nameSearchResults = searchNames(in: samples, with: query)
+        previousSearchResults.formUnion(nameSearchResults.map(\.name))
+        
+        // Update the description section results.
+        descriptionSearchResults = searchDescriptions(in: samples, with: query)
+            .filter { !previousSearchResults.contains($0.name) }
+        previousSearchResults.formUnion(descriptionSearchResults.map(\.name))
+        
+        // Update the tags section results.
+        tagsSearchResults = searchTags(in: samples, with: query)
+            .filter { !previousSearchResults.contains($0.name) }
     }
 }

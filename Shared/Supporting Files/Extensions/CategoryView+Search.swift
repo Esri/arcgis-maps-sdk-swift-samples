@@ -15,42 +15,43 @@
 import SwiftUI
 
 extension CategoryView {
-    /// Searches the samples using the sample's name and the query.
+    /// Searches through a list of samples using the sample's name and the query.
+    /// - Parameters:
+    ///   - samples: The `Array` of samples to search through.
+    ///   - query: The `String` to search with.
     /// - Returns: The samples whose name partially matches the query.
-    func searchSamplesNames() -> [Sample] {
-        // Return all the samples when query is empty.
-        guard !query.isEmpty else { return samples }
-        
+    func searchNames(in samples: [Sample], with query: String) -> [Sample] {
         // Perform a partial text search using the sample's name and the query.
         let nameSearchResults = samples.filter { sample in
             sample.name.localizedCaseInsensitiveContains(query)
         }
-        previousSearchResults.formUnion(nameSearchResults.map(\.name))
         return nameSearchResults
     }
     
-    /// Searches the samples using the sample's description and the query.
+    /// Searches through a list of samples using the sample's description and the query.
+    /// - Parameters:
+    ///   - samples: The `Array` of samples to search through.
+    ///   - query: The `String` to search with.
     /// - Returns: The samples whose description partially matches the query.
-    func searchSamplesDescriptions() -> [Sample] {
-        // Perform a partial text search using the sample's description and
-        // the query for the samples that are not already found.
+    func searchDescriptions(in samples: [Sample], with query: String) -> [Sample] {
+        // Perform a partial text search using the sample's description and the query.
         let descriptionSearchResults = samples.filter { sample in
-            sample.description.localizedCaseInsensitiveContains(query) &&
-            !previousSearchResults.contains(sample.name)
+            sample.description.localizedCaseInsensitiveContains(query)
         }
-        previousSearchResults.formUnion(descriptionSearchResults.map(\.name))
         return descriptionSearchResults
     }
     
-    /// Searches the samples using the sample's tags and the query.
+    /// Searches through a list of samples using the sample's tags and the query.
+    /// - Parameters:
+    ///   - samples: The `Array` of samples to search through.
+    ///   - query: The `String` to search with.
     /// - Returns: The samples which have a tag that fully matches the query.
-    func searchSamplesTags() -> [Sample] {
-        // Perform a full text search using the sample's tags and the query for
-        // the samples that are not already found.
+    func searchTags(in samples: [Sample], with query: String) -> [Sample] {
+        // Perform a full text search using the sample's tags and the query.
         let tagsSearchResults = samples.filter { sample in
             sample.tags.contains { tag in
                 tag.localizedCaseInsensitiveCompare(query) == .orderedSame
-            } && !previousSearchResults.contains(sample.name)
+            }
         }
         return tagsSearchResults
     }
