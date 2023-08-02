@@ -15,6 +15,9 @@
 import SwiftUI
 
 struct CategoryGridView: View {
+    /// The names of the favorited samples loaded from user defaults.
+    @AppStorage(UserDefaults.favoriteSamplesKey) var favorites: [String] = []
+    
     /// All samples that will be shown in the categories.
     private let samples: [Sample]
     
@@ -37,7 +40,7 @@ struct CategoryGridView: View {
         ScrollView {
             LazyVGrid(columns: columns) {
                 CategoryTileView(
-                    samples: samples,
+                    samples: samples.filter { favorites.contains($0.name) },
                     name: "Favorites"
                 )
                 

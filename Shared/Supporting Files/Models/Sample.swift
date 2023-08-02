@@ -34,9 +34,6 @@ protocol Sample {
     /// A Boolean value that indicates whether a sample has offline data dependencies.
     var hasDependencies: Bool { get }
     
-    /// A Boolean value that indicates whether a sample is favorited.
-    // var isFavorited: Bool { get, set }
-    
     /// Creates the view for the sample.
     func makeBody() -> AnyView
 }
@@ -62,4 +59,51 @@ extension Sample {
     
     /// By default, a sample doesn't have dependencies.
     var hasDependencies: Bool { false }
+    
+    /// A Boolean value that indicates whether a sample is favorited.
+    var isFavorited: Bool {
+        get {
+            UserDefaults.standard.favoriteSamples.contains(name)
+        }
+        nonmutating set {
+            if newValue {
+                UserDefaults.standard.favoriteSamples.append(name)
+            } else {
+                UserDefaults.standard.favoriteSamples.removeAll(where: { $0 == name })
+            }
+        }
+    }
+}
+
+extension UserDefaults {
+    static let favoriteSamplesKey = "favoriteSamples"
+    
+    var favoriteSamples: [String] {
+        get {
+            Array(rawValue: string(forKey: Self.favoriteSamplesKey) ?? "") ?? []
+        }
+        set {
+            set(newValue.rawValue, forKey: Self.favoriteSamplesKey)
+        }
+    }
+}
+
+extension Array: RawRepresentable where Element: Codable {
+    public init?(rawValue: String) {
+        guard let data = rawValue.data(using: .utf8),
+              let result = try? JSONDecoder().decode([Element].self, from: data)
+        else {
+            return nil
+        }
+        self = result
+    }
+
+    public var rawValue: String {
+        guard let data = try? JSONEncoder().encode(self),
+              let result = String(data: data, encoding: .utf8)
+        else {
+            return "[]"
+        }
+        return result
+    }
 }

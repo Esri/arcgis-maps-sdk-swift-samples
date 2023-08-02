@@ -24,6 +24,9 @@ struct SampleDetailView: View {
     /// An object to manage on-demand resources for a sample with dependencies.
     @StateObject private var onDemandResource: OnDemandResource
     
+    /// A Boolean value that indicates whether a sample is favorited.
+    @State private var isFavorited = false
+    
     init(sample: Sample) {
         self.sample = sample
         self._onDemandResource = StateObject(
@@ -73,7 +76,16 @@ struct SampleDetailView: View {
         .navigationTitle(sample.name)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
+            ToolbarItemGroup(placement: .navigationBarTrailing) {
+                // Favorite button.
+                Button {
+                    sample.isFavorited.toggle()
+                    isFavorited.toggle()
+                } label: {
+                    Image(systemName: isFavorited ? "star.fill" : "star")
+                }
+                
+                // Info button.
                 Button {
                     isSampleInfoViewPresented = true
                 } label: {
@@ -91,6 +103,9 @@ struct SampleDetailView: View {
                     }
                 }
             }
+        }
+        .onAppear {
+            isFavorited = sample.isFavorited
         }
     }
 }
