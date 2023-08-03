@@ -80,7 +80,7 @@ struct SampleDetailView: View {
                 // Favorite button.
                 Button {
                     isFavorited.toggle()
-                    sample.isFavorited.toggle()
+                    sample.isFavorited = isFavorited
                 } label: {
                     Image(systemName: isFavorited ? "star.fill" : "star")
                 }

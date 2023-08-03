@@ -1,4 +1,4 @@
-// Copyright 2022 Esri
+// Copyright 2023 Esri
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,8 +19,16 @@ struct SampleListView: View {
     let samples: [Sample]
     
     var body: some View {
-        List(samples, id: \.name) { sample in
+        ForEach(samples, id: \.name) { sample in
             SampleRow(sample: sample)
+        }
+        .onMove { fromOffsets, toOffset in
+            UserDefaults.standard.favoriteSamples.move(fromOffsets: fromOffsets, toOffset: toOffset)
+        }
+        .onDelete { indexSet in
+            for i in indexSet {
+                samples[i].isFavorited = false
+            }
         }
     }
 }
