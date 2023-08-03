@@ -22,10 +22,9 @@ extension CategoryView {
     /// - Returns: The samples whose name partially matches the query.
     func searchNames(in samples: [Sample], with query: String) -> [Sample] {
         // Perform a partial text search using the sample's name and the query.
-        let nameSearchResults = samples.filter { sample in
+        samples.filter { sample in
             sample.name.localizedCaseInsensitiveContains(query)
         }
-        return nameSearchResults
     }
     
     /// Searches through a list of samples using the sample's description and the query.
@@ -35,10 +34,9 @@ extension CategoryView {
     /// - Returns: The samples whose description partially matches the query.
     func searchDescriptions(in samples: [Sample], with query: String) -> [Sample] {
         // Perform a partial text search using the sample's description and the query.
-        let descriptionSearchResults = samples.filter { sample in
+        samples.filter { sample in
             sample.description.localizedCaseInsensitiveContains(query)
         }
-        return descriptionSearchResults
     }
     
     /// Searches through a list of samples using the sample's tags and the query.
@@ -48,11 +46,10 @@ extension CategoryView {
     /// - Returns: The samples which have a tag that fully matches the query.
     func searchTags(in samples: [Sample], with query: String) -> [Sample] {
         // Perform a full text search using the sample's tags and the query.
-        let tagsSearchResults = samples.filter { sample in
+        samples.filter { sample in
             sample.tags.contains { tag in
                 tag.localizedCaseInsensitiveCompare(query) == .orderedSame
             }
         }
-        return tagsSearchResults
     }
 }

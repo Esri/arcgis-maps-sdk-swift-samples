@@ -54,7 +54,7 @@ struct CategoryView: View {
                         }
                     }
                     if !tagsSearchResults.isEmpty {
-                        Section(header: Text("Tag Results")) {
+                        Section(header: Text("Tags Results")) {
                             SampleListView(samples: tagsSearchResults, query: query)
                         }
                     }
