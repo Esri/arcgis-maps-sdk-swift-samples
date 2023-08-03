@@ -76,27 +76,15 @@ private extension SampleListView {
         ///   - text: The `String` containing the substring.
         ///   - substring: The substring to bold.
         /// - Returns: The `String` with the bolded substring.
-        func boldSubstring(_ text: String, substring: String) -> String {
-            if let range = text.localizedLowercase.range(of: substring.localizedLowercase) {
+        private func boldSubstring(_ text: String, substring: String) -> String {
+            if let range = text.range(
+                of: substring.trimmingCharacters(in: .whitespacesAndNewlines),
+                options: .caseInsensitive
+            ) {
                 var boldedText = text
-                
-                // Add "**" to the front of the substring.
-                let lowerIndex = boldedText.distance(from: boldedText.startIndex, to: range.lowerBound)
-                boldedText.insert(contentsOf: "**", at: boldedText.index(
-                    boldedText.startIndex,
-                    offsetBy: lowerIndex
-                ))
-                
-                // Add "**" to the end of the substring.
-                let upperIndex = boldedText.distance(from: boldedText.startIndex, to: range.upperBound)
-                boldedText.insert(contentsOf: "**", at: boldedText.index(
-                    boldedText.startIndex,
-                    offsetBy: upperIndex + 2
-                ))
-
+                boldedText.replaceSubrange(range, with: "**" + text[range] + "**")
                 return boldedText
             }
-            
             return text
         }
     }
