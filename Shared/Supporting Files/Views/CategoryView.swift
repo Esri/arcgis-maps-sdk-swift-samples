@@ -59,8 +59,8 @@ struct CategoryView: View {
                         }
                     }
                 }
-                .onChange(of: query) { _ in
-                    searchSamples(in: samples, with: query)
+                .onChange(of: query) { newQuery in
+                    searchSamples(in: samples, with: newQuery)
                 }
                 .onAppear {
                     searchSamples(in: samples, with: query)
