@@ -118,7 +118,7 @@ private let sampleStructs = sampleMetadata
             var category: String { \"\(sample.category)\" }
             var description: String { \"\(sample.description)\" }
             var snippets: [String] { \(sample.snippets) }
-            var tags: Set<String> { \(Set(sample.keywords).symmetricDifference(Set(sample.relevantApis))) }
+            var tags: Set<String> { \(Set(sample.keywords).subtracting(Set(sample.relevantApis))) }
             \(portalItemIDs.isEmpty ? "" : "var hasDependencies: Bool { true }\n")
             func makeBody() -> AnyView { .init(\(sample.viewName)()) }
         }
