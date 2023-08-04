@@ -36,6 +36,7 @@ private extension SampleListView {
         var body: some View {
             NavigationLink {
                 SampleDetailView(sample: sample)
+                    .id(sample.name)
             } label: {
                 HStack {
                     VStack(alignment: .leading, spacing: 5) {
