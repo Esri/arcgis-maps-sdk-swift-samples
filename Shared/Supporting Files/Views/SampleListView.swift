@@ -50,10 +50,10 @@ private extension SampleListView {
             } label: {
                 HStack {
                     VStack(alignment: .leading, spacing: 5) {
-                        Text(.init(boldSubstring(sample.name, substring: boldedText)))
+                        Text(.init(sample.name.boldingFirstOccurrence(of: boldedText)))
                         
                         if isShowingDescription {
-                            Text(.init(boldSubstring(sample.description, substring: boldedText)))
+                            Text(.init(sample.description.boldingFirstOccurrence(of: boldedText)))
                                 .font(.caption)
                                 .foregroundColor(.secondary)
                                 .transition(.move(edge: .top).combined(with: .opacity))
@@ -70,22 +70,20 @@ private extension SampleListView {
                 .animation(.easeOut(duration: 0.2), value: isShowingDescription)
             }
         }
-        
-        /// Bolds the first occurrence of substring within a given string using markdown.
-        /// - Parameters:
-        ///   - text: The `String` containing the substring.
-        ///   - substring: The substring to bold.
-        /// - Returns: The `String` with the bolded substring.
-        private func boldSubstring(_ text: String, substring: String) -> String {
-            if let range = text.range(
-                of: substring.trimmingCharacters(in: .whitespacesAndNewlines),
-                options: .caseInsensitive
-            ) {
-                var boldedText = text
-                boldedText.replaceSubrange(range, with: "**" + text[range] + "**")
-                return boldedText
-            }
-            return text
+    }
+}
+
+private extension String {
+    /// Bolds the first occurrence of substring within the string using markdown.
+    /// - Parameters:
+    ///   - substring: The substring to bold.
+    /// - Returns: The `String` with the bolded substring.
+    func boldingFirstOccurrence(of substring: String) -> String {
+        guard let range = localizedStandardRange(
+            of: substring.trimmingCharacters(in: .whitespacesAndNewlines)
+        ) else {
+            return self
         }
+        return replacingCharacters(in: range, with: "**\(self[range])**")
     }
 }
