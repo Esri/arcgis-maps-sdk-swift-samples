@@ -45,6 +45,7 @@ struct CategoryGridView: View {
                     } label: {
                         CategoryTitleView(category: category)
                     }
+                    .isDetailLink(false)
                     .clipShape(RoundedRectangle(cornerRadius: 15))
                     .contentShape(RoundedRectangle(cornerRadius: 30))
                     .buttonStyle(.plain)
@@ -73,6 +74,7 @@ private extension CategoryGridView {
                         Image("\(category.replacingOccurrences(of: " ", with: "-"))-icon")
                             .colorInvert()
                         Text(category)
+                            .multilineTextAlignment(.center)
                             .foregroundColor(.white)
                             .offset(y: 45)
                     }

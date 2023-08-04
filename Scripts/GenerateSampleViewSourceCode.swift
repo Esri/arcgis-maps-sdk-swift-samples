@@ -41,6 +41,8 @@ private struct SampleMetadata: Decodable {
     let offlineData: [String]?
     /// The tags and relevant APIs of the sample.
     let keywords: [String]
+    /// The relevant APIs of the sample.
+    let relevantApis: [String]
 }
 
 extension SampleMetadata {
@@ -116,7 +118,7 @@ private let sampleStructs = sampleMetadata
             var category: String { \"\(sample.category)\" }
             var description: String { \"\(sample.description)\" }
             var snippets: [String] { \(sample.snippets) }
-            var tags: Set<String> { \(sample.keywords) }
+            var tags: Set<String> { \(Set(sample.keywords).subtracting(Set(sample.relevantApis))) }
             \(portalItemIDs.isEmpty ? "" : "var hasDependencies: Bool { true }\n")
             func makeBody() -> AnyView { .init(\(sample.viewName)()) }
         }
