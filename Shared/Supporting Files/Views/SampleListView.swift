@@ -51,10 +51,10 @@ private extension SampleListView {
             } label: {
                 HStack {
                     VStack(alignment: .leading, spacing: 5) {
-                        Text(.init(sample.name.boldingFirstOccurrence(of: boldedText)))
+                        Text(sample.name.boldingFirstOccurrence(of: boldedText))
                         
                         if isShowingDescription {
-                            Text(.init(sample.description.boldingFirstOccurrence(of: boldedText)))
+                            Text(sample.description.boldingFirstOccurrence(of: boldedText))
                                 .font(.caption)
                                 .foregroundColor(.secondary)
                                 .transition(.move(edge: .top).combined(with: .opacity))
@@ -76,8 +76,7 @@ private extension SampleListView {
 
 private extension String {
     /// Bolds the first occurrence of substring within the string using markdown.
-    /// - Parameters:
-    ///   - substring: The substring to bold.
+    /// - Parameter substring: The substring to bold.
     /// - Returns: The `String` with the bolded substring.
     func boldingFirstOccurrence(of substring: String) -> String {
         guard let range = localizedStandardRange(
