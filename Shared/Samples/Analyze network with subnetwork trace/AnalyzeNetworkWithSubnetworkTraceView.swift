@@ -116,6 +116,7 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
         Spacer()
         Button {
             isConditionMenuPresented = true
+            inputValue = nil
         } label: {
             Image(systemName: "plus")
                 .imageScale(.large)
