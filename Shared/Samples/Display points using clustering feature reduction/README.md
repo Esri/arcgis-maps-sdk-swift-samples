@@ -14,7 +14,6 @@ Pan and zoom the map to view how clustering is dynamically updated. Toggle clust
 
 ## How it works
 
-
 1. Create a map from a web map `PortalItem`.
 2. Get the cluster enabled layer from the map's operational layers.
 3. Get the `FeatureReduction` from the feature layer and set `isEnabled` to enable or disable clustering on the feature layer.
@@ -32,6 +31,7 @@ Pan and zoom the map to view how clustering is dynamically updated. Toggle clust
 * IdentifyLayerResult
 
 ## About the data
+
 This sample uses a [web map](https://www.arcgis.com/home/item.html?id=8916d50c44c746c1aafae001552bad23) that displays the [Esri Global Power](https://www.arcgis.com/home/item.html?id=eb54b44c65b846cca12914b87b315169) Plants feature layer with feature reduction enabled. When enabled, the aggregate features symbology shows the color of the most common power plant type, and a size relative to the average plant capacity of the cluster.
 
 ## Tags
