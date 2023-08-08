@@ -18,9 +18,9 @@ Pan and zoom the map to view how clustering is dynamically updated. Toggle clust
 2. Get the cluster enabled layer from the map's operational layers.
 3. Get the `FeatureReduction` from the feature layer and set `isEnabled` to enable or disable clustering on the feature layer.
 4. Use the `onSingleTapGesture` modifier to listen for tap events on the map view.
-4. Identify tapped features on the map using `identify(on layer:screenPoint:tolerance:)` on the feature layer and pass in the map screen point location.
-5. Get the `Popup` from the resulting `IdentifyLayerResult` and use it to construct a `PopupView`.
-6. Use a `FloatingPanel` to display the popup information from the `PopupView`.
+5. Identify tapped features on the map using `identify(on layer:screenPoint:tolerance:)` on the feature layer and pass in the map screen point location.
+6. Get the `Popup` from the resulting `IdentifyLayerResult` and use it to construct a `PopupView`.
+7. Use a `FloatingPanel` to display the popup information from the `PopupView`.
 
 ## Relevant API
 
