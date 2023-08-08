@@ -18,7 +18,7 @@ Pan and zoom the map to view how clustering is dynamically updated. Toggle clust
 2. Get the cluster enabled layer from the map's operational layers.
 3. Get the `FeatureReduction` from the feature layer and set `isEnabled` to enable or disable clustering on the feature layer.
 4. Use the `onSingleTapGesture` modifier to listen for tap events on the map view.
-5. Identify tapped features on the map using `identify(on layer:screenPoint:tolerance:)` on the feature layer and pass in the map screen point location.
+5. Identify tapped features on the map using `identify(on:screenPoint:tolerance:returnPopupsOnly:maximumResults:)` on the feature layer and pass in the map screen point location.
 6. Get the `Popup` from the resulting `IdentifyLayerResult` and use it to construct a `PopupView`.
 7. Use a `FloatingPanel` to display the popup information from the `PopupView`.
 
@@ -32,7 +32,7 @@ Pan and zoom the map to view how clustering is dynamically updated. Toggle clust
 
 ## About the data
 
-This sample uses a [web map](https://www.arcgis.com/home/item.html?id=8916d50c44c746c1aafae001552bad23) that displays the [Esri Global Power](https://www.arcgis.com/home/item.html?id=eb54b44c65b846cca12914b87b315169) Plants feature layer with feature reduction enabled. When enabled, the aggregate features symbology shows the color of the most common power plant type, and a size relative to the average plant capacity of the cluster.
+This sample uses a [web map](https://www.arcgis.com/home/item.html?id=8916d50c44c746c1aafae001552bad23) that displays the [Esri Global Power Plants](https://www.arcgis.com/home/item.html?id=eb54b44c65b846cca12914b87b315169) feature layer with feature reduction enabled. When enabled, the aggregate features symbology shows the color of the most common power plant type, and a size relative to the average plant capacity of the cluster.
 
 ## Tags
 

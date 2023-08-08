@@ -21,13 +21,15 @@ struct DisplayPointsUsingClusteringFeatureReductionView: View {
     @State private var map = {
         let portalItem = PortalItem(
             portal: .arcGISOnline(connection: .anonymous),
-            id: Item.ID(rawValue: "8916d50c44c746c1aafae001552bad23")!
+            id: PortalItem.ID("8916d50c44c746c1aafae001552bad23")!
         )
         return Map(item: portalItem)
     }()
     
     /// The power plants feature layer for querying.
-    @State private var layer: FeatureLayer?
+    private var layer: FeatureLayer? {
+        map.operationalLayers.first as? FeatureLayer
+    }
     
     /// The screen point to perform an identify operation.
     @State private var identifyScreenPoint: CGPoint?
@@ -36,13 +38,13 @@ struct DisplayPointsUsingClusteringFeatureReductionView: View {
     @State private var popup: Popup?
     
     /// A Boolean value specifying whether the popup view should be shown or not.
-    @State private var showPopup = false
+    @State private var showsPopup = false
     
     /// A Boolean value specifying whether the layer's feature reduction is shown.
-    @State var showsFeatureReduction = true
+    @State private var showsFeatureReduction = true
     
     /// A Boolean value indicating whether to show an error alert.
-    @State var isShowingAlert = false
+    @State private var isShowingAlert = false
     
     /// The error shown in the error alert.
     @State var error: Error? {
@@ -56,8 +58,8 @@ struct DisplayPointsUsingClusteringFeatureReductionView: View {
                     identifyScreenPoint = screenPoint
                 }
                 .task(id: identifyScreenPoint) {
-                    guard let identifyScreenPoint = identifyScreenPoint,
-                          let layer = self.layer,
+                    guard let identifyScreenPoint,
+                          let layer,
                           let identifyResult = try? await proxy.identify(
                             on: layer,
                             screenPoint: identifyScreenPoint,
@@ -66,16 +68,16 @@ struct DisplayPointsUsingClusteringFeatureReductionView: View {
                           let firstPopup = identifyResult.popups.first
                     else { return }
                     self.popup = firstPopup
-                    self.showPopup = true
+                    self.showsPopup = true
                 }
                 .floatingPanel(
                     selectedDetent: .constant(.half),
                     horizontalAlignment: .leading,
-                    isPresented: $showPopup
+                    isPresented: $showsPopup
                 ) {
                     Group {
                         if let popup = popup {
-                            PopupView(popup: popup, isPresented: $showPopup)
+                            PopupView(popup: popup, isPresented: $showsPopup)
                                 .showCloseButton(true)
                         }
                     }
@@ -93,7 +95,6 @@ struct DisplayPointsUsingClusteringFeatureReductionView: View {
                 .task {
                     do {
                         try await map.load()
-                        layer = map.operationalLayers.first as? FeatureLayer
                         layer?.featureReduction?.isEnabled = true
                     } catch {
                         self.error = error
