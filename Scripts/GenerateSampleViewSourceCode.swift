@@ -67,7 +67,7 @@ extension SampleMetadata {
     /// relevant APIs to the tags. Therefore, dropping the relevant APIs will
     /// give the tags.
     var tags: Set<String> {
-        Set(sample.keywords.dropLast(sample.relevantApis.count))
+        Set(keywords.dropLast(relevantApis.count))
     }
 }
 
