@@ -95,6 +95,7 @@ struct DisplayPointsUsingClusteringFeatureReductionView: View {
                 .task {
                     do {
                         try await map.load()
+                        await proxy.setViewpointScale(1e7)
                         layer?.featureReduction?.isEnabled = true
                     } catch {
                         self.error = error
