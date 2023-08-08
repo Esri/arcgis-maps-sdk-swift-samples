@@ -13,12 +13,12 @@
         "merge",
         "normalize",
         "reduce",
+        "summarize",
         "AggregateGeoElement",
         "FeatureLayer",
         "FeatureReduction",
         "GeoElement",
-        "IdentifyLayerResult",
-        "summarize"
+        "IdentifyLayerResult"
     ],
     "redirect_from": [],
     "relevant_apis": [
