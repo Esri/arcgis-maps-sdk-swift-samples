@@ -59,6 +59,16 @@ extension SampleMetadata {
         // E.g., DisplayMapView -> DisplayMap
         viewName.dropLast(4)
     }
+    
+    /// The tags of a sample.
+    /// - Note: See common-samples/wiki/README.metadata.json#keywords.
+    /// The keywords in the sample metadata combines Tags and Relevant APIs
+    /// from the README. This is done in Scripts/CI/common.py by appending the
+    /// relevant APIs to the tags. Therefore, dropping the relevant APIs will
+    /// give the tags.
+    var tags: Set<String> {
+        Set(sample.keywords.dropLast(sample.relevantApis.count))
+    }
 }
 
 // MARK: Script Entry
@@ -118,7 +128,7 @@ private let sampleStructs = sampleMetadata
             var category: String { \"\(sample.category)\" }
             var description: String { \"\(sample.description)\" }
             var snippets: [String] { \(sample.snippets) }
-            var tags: Set<String> { \(Set(sample.keywords.dropLast(sample.relevantApis.count))) }
+            var tags: Set<String> { \(sample.tags) }
             \(portalItemIDs.isEmpty ? "" : "var hasDependencies: Bool { true }\n")
             func makeBody() -> AnyView { .init(\(sample.viewName)()) }
         }
