@@ -84,10 +84,8 @@ private extension CategoryView {
     struct SearchResult {
         /// The samples which name partially matches the search query.
         let nameMatches: [Sample]
-        
         /// The samples which description partially matches the search query.
         let descriptionMatches: [Sample]
-        
         /// The samples which one of the tags matches the search query.
         let tagMatches: [Sample]
     }
