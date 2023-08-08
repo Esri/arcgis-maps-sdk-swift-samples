@@ -24,46 +24,39 @@ struct CategoryView: View {
     /// The search query in the search bar.
     @Binding private(set) var query: String
     
-    /// The samples to display in the name section of the search list.
-    @State private var nameSearchResults: [Sample] = []
-    
-    /// The samples to display in the description section of the search list.
-    @State private var descriptionSearchResults: [Sample] = []
-    
-    /// The samples to display in the tags section of the search list.
-    @State private var tagsSearchResults: [Sample] = []
-    
     /// A Boolean value that indicates whether to present the about view.
     @State private var isAboutViewPresented = false
+    
+    /// The search result to display in the various sections of the search list.
+    @State private var searchResult = SearchResult(nameMatches: [], descriptionMatches: [], tagMatches: [])
     
     var body: some View {
         Group {
             if !isSearching {
                 CategoryGridView(samples: samples)
             } else {
-                // The search results list.
                 List {
-                    if !nameSearchResults.isEmpty {
+                    if !searchResult.nameMatches.isEmpty {
                         Section(header: Text("Name Results")) {
-                            SampleListView(samples: nameSearchResults, query: query)
+                            SampleListView(samples: searchResult.nameMatches, query: query)
                         }
                     }
-                    if !descriptionSearchResults.isEmpty {
+                    if !searchResult.descriptionMatches.isEmpty {
                         Section(header: Text("Description Results")) {
-                            SampleListView(samples: descriptionSearchResults, query: query)
+                            SampleListView(samples: searchResult.descriptionMatches, query: query)
                         }
                     }
-                    if !tagsSearchResults.isEmpty {
+                    if !searchResult.tagMatches.isEmpty {
                         Section(header: Text("Tags Results")) {
-                            SampleListView(samples: tagsSearchResults, query: query)
+                            SampleListView(samples: searchResult.tagMatches, query: query)
                         }
                     }
                 }
                 .onChange(of: query) { newQuery in
-                    searchSamples(in: samples, with: newQuery)
+                    searchResult = searchSamples(in: samples, with: newQuery)
                 }
                 .onAppear {
-                    searchSamples(in: samples, with: query)
+                    searchResult = searchSamples(in: samples, with: query)
                 }
             }
         }
@@ -81,32 +74,64 @@ struct CategoryView: View {
             }
         }
     }
+}
+
+// MARK: Search
+
+private extension CategoryView {
+    /// A struct that contains various search results to be displayed in
+    /// different sections in a list.
+    struct SearchResult {
+        /// The samples which name partially matches the search query.
+        let nameMatches: [Sample]
+        
+        /// The samples which description partially matches the search query.
+        let descriptionMatches: [Sample]
+        
+        /// The samples which one of the tags matches the search query.
+        let tagMatches: [Sample]
+    }
     
     /// Searches through a list of samples to find ones that match the query.
     /// - Parameters:
-    ///   - samples: The `Array` of samples to search through.
-    ///   - query: The `String` to search with.
-    private func searchSamples(in samples: [Sample], with query: String) {
-        // Show all samples in the name section when query is empty.
-        guard !query.isEmpty else {
-            nameSearchResults = samples
-            return
+    ///   - samples: The samples to search through.
+    ///   - query: The query to search with.
+    private func searchSamples(in samples: [Sample], with query: String) -> SearchResult {
+        let nameMatches: [Sample]
+        let descriptionMatches: [Sample]
+        let tagMatches: [Sample]
+        
+        if query.isEmpty {
+            // Show all samples in the name section when query is empty.
+            nameMatches = samples
+            descriptionMatches = []
+            tagMatches = []
+        } else {
+            // The names of the samples already found in a previous section.
+            var previousSearchResults: Set<String> = []
+            
+            // Partially match a query to a sample's name.
+            nameMatches = samples.filter { $0.name.localizedCaseInsensitiveContains(query) }
+            previousSearchResults.formUnion(nameMatches.map(\.name))
+            
+            // Partially match a query to a sample's description.
+            descriptionMatches = samples.filter { $0.description.localizedCaseInsensitiveContains(query) }
+                .filter { !previousSearchResults.contains($0.name) }
+            previousSearchResults.formUnion(descriptionMatches.map(\.name))
+            
+            // Match a query to one of the sample's tags.
+            tagMatches = samples.filter { sample in
+                sample.tags.contains { tag in
+                    tag.localizedCaseInsensitiveCompare(query) == .orderedSame
+                }
+            }
+            .filter { !previousSearchResults.contains($0.name) }
         }
         
-        // The names of the samples already found in a previous section.
-        var previousSearchResults: Set<String> = []
-        
-        // Update the name section results.
-        nameSearchResults = searchNames(in: samples, with: query)
-        previousSearchResults.formUnion(nameSearchResults.map(\.name))
-        
-        // Update the description section results.
-        descriptionSearchResults = searchDescriptions(in: samples, with: query)
-            .filter { !previousSearchResults.contains($0.name) }
-        previousSearchResults.formUnion(descriptionSearchResults.map(\.name))
-        
-        // Update the tags section results.
-        tagsSearchResults = searchTags(in: samples, with: query)
-            .filter { !previousSearchResults.contains($0.name) }
+        return SearchResult(
+            nameMatches: nameMatches,
+            descriptionMatches: descriptionMatches,
+            tagMatches: tagMatches
+        )
     }
 }

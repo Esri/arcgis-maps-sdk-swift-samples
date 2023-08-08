@@ -77,13 +77,13 @@ private extension SampleListView {
 private extension String {
     /// Bolds the first occurrence of substring within the string using markdown.
     /// - Parameter substring: The substring to bold.
-    /// - Returns: The `String` with the bolded substring.
-    func boldingFirstOccurrence(of substring: String) -> String {
-        guard let range = localizedStandardRange(
-            of: substring.trimmingCharacters(in: .whitespacesAndNewlines)
-        ) else {
-            return self
+    /// - Returns: The attributed string with the bolded substring.
+    func boldingFirstOccurrence(of substring: String) -> AttributedString {
+        if let range = localizedStandardRange(of: substring.trimmingCharacters(in: .whitespacesAndNewlines)),
+           let boldedString = try? AttributedString(markdown: replacingCharacters(in: range, with: "**\(self[range])**")) {
+            return boldedString
+        } else {
+            return AttributedString(self)
         }
-        return replacingCharacters(in: range, with: "**\(self[range])**")
     }
 }
