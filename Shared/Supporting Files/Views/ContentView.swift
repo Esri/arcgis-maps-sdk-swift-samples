@@ -18,29 +18,21 @@ struct ContentView: View {
     /// All samples retrieved from the Samples directory.
     let samples: [Sample]
     
-    /// The search query in the search bar.
-    @State private var query = ""
-    
     var body: some View {
         if #available(iOS 16, *) {
             NavigationSplitView {
                 NavigationStack {
-                    sidebar
+                    Sidebar(samples: samples)
                 }
             } detail: {
                 detail
             }
         } else {
             NavigationView {
-                sidebar
+                Sidebar(samples: samples)
                 detail
             }
         }
-    }
-    
-    var sidebar: some View {
-        CategoryView(samples: samples, query: query)
-            .searchable(text: $query, prompt: "Search")
     }
     
     var detail: some View {

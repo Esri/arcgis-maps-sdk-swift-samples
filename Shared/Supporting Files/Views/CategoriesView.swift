@@ -14,7 +14,7 @@
 
 import SwiftUI
 
-struct CategoryGridView: View {
+struct CategoriesView: View {
     /// All samples that will be shown in the categories.
     private let samples: [Sample]
     
@@ -57,7 +57,7 @@ struct CategoryGridView: View {
     }
 }
 
-private extension CategoryGridView {
+private extension CategoriesView {
     struct CategoryTitleView: View {
         /// The category name used to load the images from assets.
         let category: String

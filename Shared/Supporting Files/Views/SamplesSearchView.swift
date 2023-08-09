@@ -14,7 +14,7 @@
 
 import SwiftUI
 
-struct SearchResultView: View {
+struct SamplesSearchView: View {
     /// All samples retrieved from the Samples directory.
     let samples: [Sample]
     
@@ -59,7 +59,7 @@ struct SearchResultView: View {
 
 // MARK: Search
 
-private extension SearchResultView {
+private extension SamplesSearchView {
     /// A struct that contains various search results to be displayed in
     /// different sections in a list.
     struct SearchResult {
