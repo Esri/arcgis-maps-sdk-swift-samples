@@ -53,7 +53,8 @@ struct SampleRow: View {
                 Button {
                     isShowingDescription.toggle()
                 } label: {
-                    Image(systemName: isShowingDescription ? "info.circle.fill" : "info.circle")
+                    Image(systemName: "info.circle")
+                        .symbolVariant(isShowingDescription ? .fill : .none)
                 }
                 .buttonStyle(.borderless)
             }
