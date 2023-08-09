@@ -119,12 +119,18 @@
 		75DD736929D35FF40010229D /* ChangeMapViewBackgroundView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4D2ADC6129C5071C003B367F /* ChangeMapViewBackgroundView.Model.swift */; };
 		75DD739529D38B1B0010229D /* NavigateRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DD739129D38B1B0010229D /* NavigateRouteView.swift */; };
 		75DD739929D38B420010229D /* NavigateRouteView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 75DD739129D38B1B0010229D /* NavigateRouteView.swift */; };
+		7900C5F62A83FC3F002D430F /* Vessel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7900C5F52A83FC3F002D430F /* Vessel.swift */; };
+		792222DD2A81AA5D00619FFE /* AIS_MarineCadastre_SelectedVessels_CustomDataSource.json in Resources */ = {isa = PBXBuildFile; fileRef = 792222DC2A81AA5D00619FFE /* AIS_MarineCadastre_SelectedVessels_CustomDataSource.json */; settings = {ASSET_TAGS = (AddCustomDynamicEntityDataSource, ); }; };
 		79302F852A1ED4E30002336A /* CreateAndSaveKMLView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79302F842A1ED4E30002336A /* CreateAndSaveKMLView.Model.swift */; };
 		79302F872A1ED71B0002336A /* CreateAndSaveKMLView.Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79302F862A1ED71B0002336A /* CreateAndSaveKMLView.Views.swift */; };
 		79A47DFB2A20286800D7C5B9 /* CreateAndSaveKMLView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 79302F842A1ED4E30002336A /* CreateAndSaveKMLView.Model.swift */; };
 		79A47DFC2A20286800D7C5B9 /* CreateAndSaveKMLView.Views.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 79302F862A1ED71B0002336A /* CreateAndSaveKMLView.Views.swift */; };
 		79B7B80A2A1BF8EC00F57C27 /* CreateAndSaveKMLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B7B8092A1BF8EC00F57C27 /* CreateAndSaveKMLView.swift */; };
 		79B7B80B2A1BFDE700F57C27 /* CreateAndSaveKMLView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 79B7B8092A1BF8EC00F57C27 /* CreateAndSaveKMLView.swift */; };
+		79D84D132A81711A00F45262 /* AddCustomDynamicEntityDataSourceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79D84D0D2A815C5B00F45262 /* AddCustomDynamicEntityDataSourceView.swift */; };
+		79D84D142A81711A00F45262 /* AddCustomDynamicEntityDataSourceView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79D84D0F2A81619900F45262 /* AddCustomDynamicEntityDataSourceView.Model.swift */; };
+		79D84D152A81718F00F45262 /* AddCustomDynamicEntityDataSourceView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 79D84D0D2A815C5B00F45262 /* AddCustomDynamicEntityDataSourceView.swift */; };
+		79D84D162A81718F00F45262 /* AddCustomDynamicEntityDataSourceView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 79D84D0F2A81619900F45262 /* AddCustomDynamicEntityDataSourceView.Model.swift */; };
 		883C121529C9136600062FF9 /* DownloadPreplannedMapAreaView.MapPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 883C121429C9136600062FF9 /* DownloadPreplannedMapAreaView.MapPicker.swift */; };
 		883C121729C914E100062FF9 /* DownloadPreplannedMapAreaView.MapPicker.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 883C121429C9136600062FF9 /* DownloadPreplannedMapAreaView.MapPicker.swift */; };
 		883C121829C914E100062FF9 /* DownloadPreplannedMapAreaView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E0D04FF128A5390000747989 /* DownloadPreplannedMapAreaView.Model.swift */; };
@@ -275,6 +281,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				79D84D152A81718F00F45262 /* AddCustomDynamicEntityDataSourceView.swift in Copy Source Code Files */,
+				79D84D162A81718F00F45262 /* AddCustomDynamicEntityDataSourceView.Model.swift in Copy Source Code Files */,
 				D7ABA3002A3288970021822B /* ShowViewshedFromGeoelementInSceneView.swift in Copy Source Code Files */,
 				1C3B7DCD2A5F652500907443 /* AnalyzeNetworkWithSubnetworkTraceView.Model.swift in Copy Source Code Files */,
 				1C3B7DCE2A5F652500907443 /* AnalyzeNetworkWithSubnetworkTraceView.swift in Copy Source Code Files */,
@@ -435,9 +443,12 @@
 		7573E81729D6134C00BEED9C /* TraceUtilityNetworkView.Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TraceUtilityNetworkView.Views.swift; sourceTree = "<group>"; };
 		7573E81829D6134C00BEED9C /* TraceUtilityNetworkView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TraceUtilityNetworkView.swift; sourceTree = "<group>"; };
 		75DD739129D38B1B0010229D /* NavigateRouteView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigateRouteView.swift; sourceTree = "<group>"; };
+		7900C5F52A83FC3F002D430F /* Vessel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vessel.swift; sourceTree = "<group>"; };
+		792222DC2A81AA5D00619FFE /* AIS_MarineCadastre_SelectedVessels_CustomDataSource.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AIS_MarineCadastre_SelectedVessels_CustomDataSource.json; sourceTree = "<group>"; };
 		79302F842A1ED4E30002336A /* CreateAndSaveKMLView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAndSaveKMLView.Model.swift; sourceTree = "<group>"; };
 		79302F862A1ED71B0002336A /* CreateAndSaveKMLView.Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAndSaveKMLView.Views.swift; sourceTree = "<group>"; };
 		79B7B8092A1BF8EC00F57C27 /* CreateAndSaveKMLView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAndSaveKMLView.swift; sourceTree = "<group>"; };
+		79D84D0F2A81619900F45262 /* AddCustomDynamicEntityDataSourceView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCustomDynamicEntityDataSourceView.Model.swift; sourceTree = "<group>"; };
 		883C121429C9136600062FF9 /* DownloadPreplannedMapAreaView.MapPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadPreplannedMapAreaView.MapPicker.swift; sourceTree = "<group>"; };
 		88F93CC029C3D59C0006B28E /* SketchOnMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SketchOnMapView.swift; sourceTree = "<group>"; };
 		D701D72B2A37C7F7006FF0C8 /* bradley_low_3ds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bradley_low_3ds; sourceTree = "<group>"; };
@@ -589,6 +600,7 @@
 		0074ABB228174B830037244A /* Samples */ = {
 			isa = PBXGroup;
 			children = (
+				79D84D0C2A815BED00F45262 /* Add custom dynamic entity data source */,
 				4D2ADC3E29C26D05003B367F /* Add dynamic entity layer */,
 				00D4EF7E2863840D00B9CC30 /* Add feature layers */,
 				F19A316128906F0D003B7EF9 /* Add raster from file */,
@@ -742,13 +754,14 @@
 		00CCB8A6285D059300BBAB70 /* Portal Data */ = {
 			isa = PBXGroup;
 			children = (
-				D701D7242A37C7E4006FF0C8 /* 07d62a792ab6496d9b772a24efea45d0 */,
-				D77572AC2A295DC100F490CD /* d1453556d91e46dea191c20c398b82cd */,
-				1C965C4629DBA879002F8536 /* 681d6f7694644709a7c830ec57a2d72b */,
-				00D4EF8128638BF100B9CC30 /* cb1b20748a9f4d128dad8a87244e3e37 */,
+				792222DB2A81AA5D00619FFE /* a8a942c228af4fac96baa78ad60f511f */,
 				00C94A0228B53DCC004E42D9 /* 7c4c679ab06a4df19dc497f577f111bd */,
+				D701D7242A37C7E4006FF0C8 /* 07d62a792ab6496d9b772a24efea45d0 */,
 				00D4EF8328638BF100B9CC30 /* 15a7cbd3af1e47cfa5d2c6b93dc44fc2 */,
 				00D4EF8E28638BF100B9CC30 /* 68ec42517cdd439e81b036210483e8e7 */,
+				1C965C4629DBA879002F8536 /* 681d6f7694644709a7c830ec57a2d72b */,
+				00D4EF8128638BF100B9CC30 /* cb1b20748a9f4d128dad8a87244e3e37 */,
+				D77572AC2A295DC100F490CD /* d1453556d91e46dea191c20c398b82cd */,
 				F111CCC2288B63DB00205358 /* e1f3a7254cb845b09450f54937c16061 */,
 			);
 			path = "Portal Data";
@@ -795,6 +808,7 @@
 				00E5401427F3CCA200CF66D5 /* Products */,
 				003D7C332821EBCC009DDFD2 /* Scripts */,
 				00E5400B27F3CCA100CF66D5 /* Shared */,
+				79D84D092A815AC700F45262 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -960,6 +974,13 @@
 			path = "Navigate route";
 			sourceTree = "<group>";
 		};
+			isa = PBXGroup;
+			children = (
+				792222DC2A81AA5D00619FFE /* AIS_MarineCadastre_SelectedVessels_CustomDataSource.json */,
+			);
+			path = a8a942c228af4fac96baa78ad60f511f;
+			sourceTree = "<group>";
+		};
 		79B7B8082A1BF8B300F57C27 /* Create and save KML file */ = {
 			isa = PBXGroup;
 			children = (
@@ -968,6 +989,23 @@
 				79302F862A1ED71B0002336A /* CreateAndSaveKMLView.Views.swift */,
 			);
 			path = "Create and save KML file";
+			sourceTree = "<group>";
+		};
+		79D84D092A815AC700F45262 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		79D84D0C2A815BED00F45262 /* Add custom dynamic entity data source */ = {
+			isa = PBXGroup;
+			children = (
+				79D84D0F2A81619900F45262 /* AddCustomDynamicEntityDataSourceView.Model.swift */,
+				79D84D0D2A815C5B00F45262 /* AddCustomDynamicEntityDataSourceView.swift */,
+				7900C5F52A83FC3F002D430F /* Vessel.swift */,
+			);
+			path = "Add custom dynamic entity data source";
 			sourceTree = "<group>";
 		};
 		88F93CBE29C3D4E30006B28E /* Sketch on map */ = {
@@ -1454,6 +1492,7 @@
 				00E5402027F3CCA200CF66D5 /* Assets.xcassets in Resources */,
 				00C94A0D28B53DE1004E42D9 /* raster-file in Resources */,
 				004FE87129DF5D8700075217 /* Bristol in Resources */,
+				792222DD2A81AA5D00619FFE /* AIS_MarineCadastre_SelectedVessels_CustomDataSource.json in Resources */,
 				E041AC20288077B90056009B /* xcode.css in Resources */,
 				00D4EF9028638BF100B9CC30 /* LA_Trails.geodatabase in Resources */,
 				D701D72C2A37C7F7006FF0C8 /* bradley_low_3ds in Resources */,
@@ -1551,6 +1590,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				79D84D132A81711A00F45262 /* AddCustomDynamicEntityDataSourceView.swift in Sources */,
+				79D84D142A81711A00F45262 /* AddCustomDynamicEntityDataSourceView.Model.swift in Sources */,
 				E000E7602869E33D005D87C5 /* ClipGeometryView.swift in Sources */,
 				4D2ADC6729C50BD6003B367F /* AddDynamicEntityLayerView.Model.swift in Sources */,
 				E004A6E928493BCE002A1FE6 /* ShowDeviceLocationView.swift in Sources */,
@@ -1561,7 +1602,6 @@
 				79B7B80A2A1BF8EC00F57C27 /* CreateAndSaveKMLView.swift in Sources */,
 				7573E81C29D6134C00BEED9C /* TraceUtilityNetworkView.Enums.swift in Sources */,
 				7573E81A29D6134C00BEED9C /* TraceUtilityNetworkView.Model.swift in Sources */,
-				0005580C28185C0600224BC6 /* SampleList.swift in Sources */,
 				1C3B7DC82A5F64FC00907443 /* AnalyzeNetworkWithSubnetworkTraceView.Model.swift in Sources */,
 				D752D9402A39154C003EB25E /* ManageOperationalLayersView.swift in Sources */,
 				D7ABA2F92A32579C0021822B /* MeasureDistanceInSceneView.swift in Sources */,
@@ -1571,6 +1611,7 @@
 				E0D04FF228A5390000747989 /* DownloadPreplannedMapAreaView.Model.swift in Sources */,
 				00CCB8A5285BAF8700BBAB70 /* OnDemandResource.swift in Sources */,
 				1C19B4F32A578E46001D2506 /* CreateLoadReportView.swift in Sources */,
+				7900C5F62A83FC3F002D430F /* Vessel.swift in Sources */,
 				D71099702A2802FA0065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift in Sources */,
 				E004A6ED2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift in Sources */,
 				E041ABD7287DB04D0056009B /* SampleInfoView.swift in Sources */,
