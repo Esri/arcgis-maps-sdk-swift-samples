@@ -22,11 +22,11 @@ Run the sample to view the map and the dynamic entity layer displaying the lates
 
 ## Relevant API
 
-* DynamicEntity
-* DynamicEntityDataSource
 * CustomDynamicEntityDataSource
 * CustomDynamicEntityFeed
 * CustomDynamicEntityFeedEvent
+* DynamicEntity
+* DynamicEntityDataSource
 * DynamicEntityLayer
 * LabelDefinition
 * TrackDisplayProperties
