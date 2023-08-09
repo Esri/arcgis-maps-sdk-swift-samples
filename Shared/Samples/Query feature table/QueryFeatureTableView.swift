@@ -14,7 +14,6 @@
 
 import SwiftUI
 import ArcGIS
-import ArcGISToolkit
 
 struct QueryFeatureTableView: View {
     @StateObject private var model = Model()

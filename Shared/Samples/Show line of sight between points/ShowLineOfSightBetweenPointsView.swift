@@ -14,7 +14,6 @@
 
 import SwiftUI
 import ArcGIS
-import ArcGISToolkit
 
 struct ShowLineOfSightBetweenPointsView: View {
     /// A scene with an imagery basemap and centered on mountains in Chile.
