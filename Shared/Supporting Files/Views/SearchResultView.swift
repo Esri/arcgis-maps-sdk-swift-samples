@@ -27,21 +27,21 @@ struct SearchResultView: View {
     var body: some View {
         List {
             if !searchResult.nameMatches.isEmpty {
-                Section(header: Text("Name Results")) {
+                Section("Name Results") {
                     ForEach(searchResult.nameMatches, id: \.name) { sample in
                         SampleRow(sample: sample, boldedText: query)
                     }
                 }
             }
             if !searchResult.descriptionMatches.isEmpty {
-                Section(header: Text("Description Results")) {
+                Section("Description Results") {
                     ForEach(searchResult.descriptionMatches, id: \.name) { sample in
                         SampleRow(sample: sample, boldedText: query)
                     }
                 }
             }
             if !searchResult.tagMatches.isEmpty {
-                Section(header: Text("Tags Results")) {
+                Section("Tags Results") {
                     ForEach(searchResult.tagMatches, id: \.name) { sample in
                         SampleRow(sample: sample, boldedText: query)
                     }
