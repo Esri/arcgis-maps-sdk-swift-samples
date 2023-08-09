@@ -66,8 +66,8 @@ extension SampleMetadata {
     /// from the README. This is done in Scripts/CI/common.py by appending the
     /// relevant APIs to the tags. Therefore, dropping the relevant APIs will
     /// give the tags.
-    var tags: Set<String> {
-        Set(keywords.dropLast(relevantApis.count))
+    var tags: Array<String>.SubSequence {
+        keywords.dropLast(relevantApis.count)
     }
 }
 
