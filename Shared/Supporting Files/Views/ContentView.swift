@@ -25,19 +25,22 @@ struct ContentView: View {
         if #available(iOS 16, *) {
             NavigationSplitView {
                 NavigationStack {
-                    Sidebar(samples: samples, query: query)
-                        .searchable(text: $query)
+                    sidebar
                 }
             } detail: {
                 detail
             }
         } else {
             NavigationView {
-                Sidebar(samples: samples, query: query)
-                    .searchable(text: $query)
+                sidebar
                 detail
             }
         }
+    }
+    
+    var sidebar: some View {
+        Sidebar(samples: samples, query: query)
+            .searchable(text: $query)
     }
     
     var detail: some View {
