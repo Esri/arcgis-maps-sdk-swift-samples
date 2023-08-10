@@ -15,49 +15,70 @@
 import SwiftUI
 
 struct SamplesSearchView: View {
-    /// All samples retrieved from the Samples directory.
-    let samples: [Sample]
+    /// The samples to be searched.
+    private let samples: [Sample]
     
-    /// The search query in the search bar.
-    let query: String
+    /// The search query.
+    private let query: String
     
     /// The search result to display in the various sections.
-    @State private var searchResult = SearchResult(nameMatches: [], descriptionMatches: [], tagMatches: [])
+    private let searchResult: SearchResult
     
     var body: some View {
         List {
             if !searchResult.nameMatches.isEmpty {
                 Section("Name Results") {
                     ForEach(searchResult.nameMatches, id: \.name) { sample in
-                        SampleRow(sample: sample, boldedText: query)
+                        NavigationLink {
+                            SampleDetailView(sample: sample)
+                                .id(sample.name)
+                        } label: {
+                            SampleRow(sample: sample, query: query)
+                        }
                     }
                 }
             }
             if !searchResult.descriptionMatches.isEmpty {
                 Section("Description Results") {
                     ForEach(searchResult.descriptionMatches, id: \.name) { sample in
-                        SampleRow(sample: sample, boldedText: query)
+                        NavigationLink {
+                            SampleDetailView(sample: sample)
+                                .id(sample.name)
+                        } label: {
+                            SampleRow(sample: sample, query: query)
+                        }
                     }
                 }
             }
             if !searchResult.tagMatches.isEmpty {
                 Section("Tags Results") {
                     ForEach(searchResult.tagMatches, id: \.name) { sample in
-                        SampleRow(sample: sample, boldedText: query)
+                        NavigationLink {
+                            SampleDetailView(sample: sample)
+                                .id(sample.name)
+                        } label: {
+                            SampleRow(sample: sample, query: query)
+                        }
                     }
                 }
             }
-        }
-        .onChange(of: query) { newQuery in
-            searchResult = searchSamples(in: samples, with: newQuery)
-        }
-        .onAppear {
-            searchResult = searchSamples(in: samples, with: query)
         }
     }
 }
 
 // MARK: Search
+
+extension SamplesSearchView {
+    /// Create a sample search view.
+    /// - Parameters:
+    ///   - samples: All samples retrieved from the Samples directory.
+    ///   - query: The search query in the search bar.
+    init(samples: [Sample], query: String) {
+        self.samples = samples
+        self.query = query
+        self.searchResult = Self.searchSamples(in: samples, with: query)
+    }
+}
 
 private extension SamplesSearchView {
     /// A struct that contains various search results to be displayed in
@@ -80,7 +101,7 @@ private extension SamplesSearchView {
     /// - Parameters:
     ///   - samples: The samples to search through.
     ///   - query: The query to search with.
-    private func searchSamples(in samples: [Sample], with query: String) -> SearchResult {
+    private static func searchSamples(in samples: [Sample], with query: String) -> SearchResult {
         let nameMatches: [Sample]
         let descriptionMatches: [Sample]
         let tagMatches: [Sample]

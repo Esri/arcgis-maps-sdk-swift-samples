@@ -15,51 +15,50 @@
 import SwiftUI
 
 struct SampleRow: View {
-    /// The sample displayed in the row.
-    private let sample: Sample
+    /// The name string of the sample with attributes.
+    private let name: AttributedString
     
-    /// The text to bold.
-    private let boldedText: String
+    /// The description string of the sample with attributes.
+    private let description: AttributedString
     
     /// A Boolean value that indicates whether to show the sample's description.
     @State private var isShowingDescription = false
     
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading) {
+                Text(name)
+                
+                if isShowingDescription {
+                    Text(description)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        .transition(.move(edge: .top).combined(with: .opacity))
+                }
+            }
+            Spacer()
+            Button {
+                isShowingDescription.toggle()
+            } label: {
+                Image(systemName: "info.circle")
+                    .symbolVariant(isShowingDescription ? .fill : .none)
+            }
+            .buttonStyle(.borderless)
+        }
+        .animation(.easeOut(duration: 0.2), value: isShowingDescription)
+    }
+}
+
+extension SampleRow {
     /// Creates a sample row.
     /// - Parameters:
     ///   - sample: The sample to display.
-    ///   - boldedText: A string to be bolded in the sample's name or description.
-    init(sample: Sample, boldedText: String = "") {
-        self.sample = sample
-        self.boldedText = boldedText
-    }
-    
-    var body: some View {
-        NavigationLink {
-            SampleDetailView(sample: sample)
-                .id(sample.name)
-        } label: {
-            HStack {
-                VStack(alignment: .leading, spacing: 5) {
-                    Text(sample.name.boldingFirstOccurrence(of: boldedText))
-                    
-                    if isShowingDescription {
-                        Text(sample.description.boldingFirstOccurrence(of: boldedText))
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                            .transition(.move(edge: .top).combined(with: .opacity))
-                    }
-                }
-                Spacer()
-                Button {
-                    isShowingDescription.toggle()
-                } label: {
-                    Image(systemName: "info.circle")
-                        .symbolVariant(isShowingDescription ? .fill : .none)
-                }
-                .buttonStyle(.borderless)
-            }
-            .animation(.easeOut(duration: 0.2), value: isShowingDescription)
-        }
+    ///   - query: A string to be bolded in the sample's name or description.
+    init(sample: Sample, query: String) {
+        self.init(
+            name: sample.name.boldingFirstOccurrence(of: query),
+            description: sample.description.boldingFirstOccurrence(of: query)
+        )
     }
 }
 

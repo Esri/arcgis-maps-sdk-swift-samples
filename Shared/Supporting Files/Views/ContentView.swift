@@ -15,6 +15,9 @@
 import SwiftUI
 
 struct ContentView: View {
+    /// The search query in the search bar.
+    @State private var query = ""
+    
     /// All samples retrieved from the Samples directory.
     let samples: [Sample]
     
@@ -22,14 +25,16 @@ struct ContentView: View {
         if #available(iOS 16, *) {
             NavigationSplitView {
                 NavigationStack {
-                    Sidebar(samples: samples)
+                    Sidebar(samples: samples, query: query)
+                        .searchable(text: $query)
                 }
             } detail: {
                 detail
             }
         } else {
             NavigationView {
-                Sidebar(samples: samples)
+                Sidebar(samples: samples, query: query)
+                    .searchable(text: $query)
                 detail
             }
         }

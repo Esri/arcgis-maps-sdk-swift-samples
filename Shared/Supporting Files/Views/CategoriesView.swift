@@ -38,11 +38,8 @@ struct CategoriesView: View {
             LazyVGrid(columns: columns) {
                 ForEach(categories, id: \.self) { category in
                     NavigationLink {
-                        List(samples.filter { $0.category == category }, id: \.name) { sample in
-                            SampleRow(sample: sample)
-                        }
-                        .listStyle(.sidebar)
-                        .navigationTitle(category)
+                        CategoryList(samples: samples.filter { $0.category == category })
+                            .navigationTitle(category)
                     } label: {
                         CategoryTitleView(category: category)
                     }
@@ -52,12 +49,29 @@ struct CategoriesView: View {
                     .buttonStyle(.plain)
                 }
             }
-            .padding(8)
+            .padding()
         }
     }
 }
 
 private extension CategoriesView {
+    struct CategoryList: View {
+        /// The samples in a category.
+        let samples: [Sample]
+        
+        var body: some View {
+            List(samples, id: \.name) { sample in
+                NavigationLink {
+                    SampleDetailView(sample: sample)
+                        .id(sample.name)
+                } label: {
+                    SampleRow(sample: sample, query: "")
+                }
+            }
+            .listStyle(.sidebar)
+        }
+    }
+    
     struct CategoryTitleView: View {
         /// The category name used to load the images from assets.
         let category: String

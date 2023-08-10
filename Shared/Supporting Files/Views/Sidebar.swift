@@ -18,14 +18,14 @@ struct Sidebar: View {
     /// A Boolean value that indicates whether the user is searching.
     @Environment(\.isSearching) private var isSearching
     
-    /// The search query in the search bar.
-    @State private var query = ""
+    /// A Boolean value that indicates whether to present the about view.
+    @State private var isAboutViewPresented = false
     
     /// All samples retrieved from the Samples directory.
     let samples: [Sample]
     
-    /// A Boolean value that indicates whether to present the about view.
-    @State private var isAboutViewPresented = false
+    /// The search query.
+    let query: String
     
     var body: some View {
         Group {
@@ -36,7 +36,6 @@ struct Sidebar: View {
                 SamplesSearchView(samples: samples, query: query)
             }
         }
-        .searchable(text: $query)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
