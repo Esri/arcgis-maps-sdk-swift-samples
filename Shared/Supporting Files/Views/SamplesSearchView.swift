@@ -15,10 +15,7 @@
 import SwiftUI
 
 struct SamplesSearchView: View {
-    /// The samples to be searched.
-    private let samples: [Sample]
-    
-    /// The search query.
+    /// The search query to highlight.
     private let query: String
     
     /// The search result to display in the various sections.
@@ -74,7 +71,6 @@ extension SamplesSearchView {
     ///   - samples: All samples retrieved from the Samples directory.
     ///   - query: The search query in the search bar.
     init(samples: [Sample], query: String) {
-        self.samples = samples
         self.query = query
         self.searchResult = Self.searchSamples(in: samples, with: query)
     }
