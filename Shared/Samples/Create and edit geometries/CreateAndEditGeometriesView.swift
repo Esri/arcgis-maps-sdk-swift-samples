@@ -334,7 +334,7 @@ class GeometryEditorMenuModel: ObservableObject {
         }
     }
     
-    /// Start editing with the specified tool and geometry type.
+    /// Starts editing with the specified tool and geometry type.
     /// - Parameters:
     ///   - tool: The tool to draw with.
     ///   - geometryType: The type of geometry to draw.
