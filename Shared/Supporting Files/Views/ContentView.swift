@@ -15,11 +15,11 @@
 import SwiftUI
 
 struct ContentView: View {
-    /// The search query in the search bar.
-    @State private var query = ""
-    
     /// All samples retrieved from the Samples directory.
     let samples: [Sample]
+    
+    /// The search query in the search bar.
+    @State private var query = ""
     
     var body: some View {
         if #available(iOS 16, *) {
