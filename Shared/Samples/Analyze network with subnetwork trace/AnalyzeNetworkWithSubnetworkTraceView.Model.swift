@@ -347,6 +347,8 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
                 return value as! Double
             case .boolean:
                 return value as! Bool
+            @unknown default:
+                fatalError("Unexpected utility network attribute data type.")
             }
         }
     }
