@@ -73,6 +73,8 @@ opt_in_rules:
   - vertical_whitespace_opening_braces
   - yoda_condition
 
+attributes:
+  attributes_with_arguments_always_on_line_above: false
 identifier_name:
   min_length:
     # Do not flag short identifiers
