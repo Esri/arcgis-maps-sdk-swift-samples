@@ -64,51 +64,89 @@ extension GeometryEditorMenu {
     private var mainMenuContent: some View {
         VStack {
             Button {
-                model.geometryEditor.tool = VertexTool()
-                model.geometryEditor.start(withType: Point.self)
-                model.isStarted = true
+                model.startEditing(with: VertexTool(), geometryType: Point.self)
             } label: {
                 Label("New Point", systemImage: "smallcircle.filled.circle")
             }
             
             Button {
-                model.geometryEditor.tool = VertexTool()
-                model.geometryEditor.start(withType: Polyline.self)
-                model.isStarted = true
+                model.startEditing(with: VertexTool(), geometryType: Polyline.self)
             } label: {
                 Label("New Line", systemImage: "line.diagonal")
             }
             
             Button {
-                model.geometryEditor.tool = VertexTool()
-                model.geometryEditor.start(withType: Polygon.self)
-                model.isStarted = true
+                model.startEditing(with: VertexTool(), geometryType: Polygon.self)
             } label: {
                 Label("New Area", systemImage: "skew")
             }
             
             Button {
-                model.geometryEditor.tool = VertexTool()
-                model.geometryEditor.start(withType: Multipoint.self)
-                model.isStarted = true
+                model.startEditing(with: VertexTool(), geometryType: Multipoint.self)
             } label: {
                 Label("New Multipoint", systemImage: "hand.point.up.braille")
             }
             
             Button {
-                model.geometryEditor.tool = FreehandTool()
-                model.geometryEditor.start(withType: Polyline.self)
-                model.isStarted = true
+                model.startEditing(with: FreehandTool(), geometryType: Polyline.self)
             } label: {
                 Label("New Freehand Line", systemImage: "scribble")
             }
             
             Button {
-                model.geometryEditor.tool = FreehandTool()
-                model.geometryEditor.start(withType: Polygon.self)
-                model.isStarted = true
+                model.startEditing(with: FreehandTool(), geometryType: Polygon.self)
             } label: {
                 Label("New Freehand Area", systemImage: "lasso")
+            }
+            
+            Menu("Shapes") {
+                Button {
+                    model.startEditing(with: ShapeTool(kind: .arrow), geometryType: Polyline.self)
+                } label: {
+                    Label("New Line Arrow", systemImage: "arrowshape.right")
+                }
+                
+                Button {
+                    model.startEditing(with: ShapeTool(kind: .arrow), geometryType: Polygon.self)
+                } label: {
+                    Label("New Polygon Arrow", systemImage: "arrowshape.right.fill")
+                }
+                
+                Button {
+                    model.startEditing(with: ShapeTool(kind: .rectangle), geometryType: Polyline.self)
+                } label: {
+                    Label("New Line Rectangle", systemImage: "rectangle")
+                }
+                
+                Button {
+                    model.startEditing(with: ShapeTool(kind: .rectangle), geometryType: Polygon.self)
+                } label: {
+                    Label("New Polygon Rectangle", systemImage: "rectangle.fill")
+                }
+                
+                Button {
+                    model.startEditing(with: ShapeTool(kind: .ellipse), geometryType: Polyline.self)
+                } label: {
+                    Label("New Line Ellipse", systemImage: "circle")
+                }
+                
+                Button {
+                    model.startEditing(with: ShapeTool(kind: .ellipse), geometryType: Polygon.self)
+                } label: {
+                    Label("New Polygon Ellipse", systemImage: "circle.fill")
+                }
+                
+                Button {
+                    model.startEditing(with: ShapeTool(kind: .triangle), geometryType: Polyline.self)
+                } label: {
+                    Label("New Line Triangle", systemImage: "triangle")
+                }
+                
+                Button {
+                    model.startEditing(with: ShapeTool(kind: .triangle), geometryType: Polygon.self)
+                } label: {
+                    Label("New Polygon Triangle", systemImage: "triangle.fill")
+                }
             }
             
             Divider()
@@ -145,6 +183,8 @@ extension GeometryEditorMenu {
                 Label("Delete Selected Element", systemImage: "xmark.square.fill")
             }
             .disabled(deleteButtonIsDisabled)
+            
+            Toggle("Uniform Scale", isOn: $model.shouldUniformScale)
             
             Button(role: .destructive) {
                 model.geometryEditor.clearGeometry()
@@ -222,6 +262,17 @@ class GeometryEditorMenuModel: ObservableObject {
     /// A Boolean value indicating if the geometry editor has started.
     @Published var isStarted = false
     
+    /// A Boolean value indicating if the scale mode is uniform.
+    @Published var shouldUniformScale = false {
+        didSet {
+            let scaleMode: GeometryEditorScaleMode = shouldUniformScale ? .uniform : .stretch
+            let tool = geometryEditor.tool
+            (tool as? FreehandTool)?.configuration.scaleMode = scaleMode
+            (tool as? ShapeTool)?.configuration.scaleMode = scaleMode
+            (tool as? VertexTool)?.configuration.scaleMode = scaleMode
+        }
+    }
+    
     /// Creates the geometry menu with a geometry editor.
     /// - Parameter geometryEditor: The geometry editor that the menu should interact with.
     /// - Parameter graphicsOverlay: The graphics overlay that is used to save geometries to.
@@ -281,5 +332,15 @@ class GeometryEditorMenuModel: ObservableObject {
         default:
             fatalError("Unexpected geometry type")
         }
+    }
+    
+    /// Start editing with the specified tool and geometry type.
+    /// - Parameters:
+    ///   - tool: The tool to draw with.
+    ///   - geometryType: The type of geometry to draw.
+    func startEditing(with tool: GeometryEditorTool, geometryType: Geometry.Type) {
+        geometryEditor.tool = tool
+        geometryEditor.start(withType: geometryType)
+        isStarted = true
     }
 }
