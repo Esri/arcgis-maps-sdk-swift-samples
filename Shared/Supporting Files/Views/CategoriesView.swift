@@ -65,7 +65,7 @@ private extension CategoriesView {
                     SampleDetailView(sample: sample)
                         .id(sample.name)
                 } label: {
-                    SampleRow(sample: sample, query: "")
+                    SampleRow(name: AttributedString(sample.name), description: AttributedString(sample.description))
                 }
             }
             .listStyle(.sidebar)

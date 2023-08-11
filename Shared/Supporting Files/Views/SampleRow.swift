@@ -16,10 +16,10 @@ import SwiftUI
 
 struct SampleRow: View {
     /// The name string of the sample with attributes.
-    private let name: AttributedString
+    let name: AttributedString
     
     /// The description string of the sample with attributes.
-    private let description: AttributedString
+    let description: AttributedString
     
     /// A Boolean value that indicates whether to show the sample's description.
     @State private var isShowingDescription = false
