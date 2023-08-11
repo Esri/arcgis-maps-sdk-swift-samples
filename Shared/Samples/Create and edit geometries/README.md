@@ -1,4 +1,4 @@
-# Sketch on map
+# Create and edit geometries
 
 Use the Geometry Editor to edit or sketch a new point, multipoint, line, or polygon geometry on a map.
 

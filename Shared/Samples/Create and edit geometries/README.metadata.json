@@ -27,7 +27,7 @@
         "MapView"
     ],
     "snippets": [
-        "SketchOnMapView.swift"
+        "CreateAndEditGeometriesView.swift"
     ],
-    "title": "Sketch on map"
+    "title": "Create and edit geometries"
 }
