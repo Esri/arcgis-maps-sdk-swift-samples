@@ -41,7 +41,7 @@ struct AddDynamicEntityLayerView: View {
                     Button(isConnected ? "Disconnect" : "Connect") {
                         Task {
                             if isConnected {
-                                try? await model.streamService.disconnect()
+                                await model.streamService.disconnect()
                             } else {
                                 try? await model.streamService.connect()
                             }
