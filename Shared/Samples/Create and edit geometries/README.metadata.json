@@ -3,8 +3,8 @@
     "description": "Use the Geometry Editor to edit or sketch a new point, multipoint, line, or polygon geometry on a map.",
     "ignore": false,
     "images": [
-        "sketch-on-map-1.png",
-        "sketch-on-map-2.png"
+        "create-and-edit-geometries-1.png",
+        "create-and-edit-geometries-2.png"
     ],
     "keywords": [
         "draw",
