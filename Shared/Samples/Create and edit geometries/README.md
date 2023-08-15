@@ -33,4 +33,4 @@ Tap the pencil button to choose a geometry editor tool. Begin interactively sket
 
 ## Tags
 
-draw, edit, sketch
+draw, edit, freehand, geometry editor, sketch, vertex
