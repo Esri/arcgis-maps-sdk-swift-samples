@@ -60,28 +60,30 @@ struct DisplayPointsUsingClusteringFeatureReductionView: View {
                 .task(id: identifyScreenPoint) {
                     guard let identifyScreenPoint,
                           let layer,
-                          let identifyResult = try? await proxy.identify(
-                            on: layer,
-                            screenPoint: identifyScreenPoint,
-                            tolerance: 3
-                          ),
-                          let firstPopup = identifyResult.popups.first
-                    else { return }
-                    self.popup = firstPopup
-                    self.showsPopup = true
+                          let identifyResult = await Result(awaiting: {
+                              try await proxy.identify(
+                                on: layer,
+                                screenPoint: identifyScreenPoint,
+                                tolerance: 3
+                              )
+                          })
+                        .cancellationToNil()
+                    else {
+                        return
+                    }
+                    
+                    self.identifyScreenPoint = nil
+                    self.popup = try? identifyResult.get().popups.first
+                    self.showsPopup = self.popup != nil
                 }
                 .floatingPanel(
                     selectedDetent: .constant(.half),
                     horizontalAlignment: .leading,
                     isPresented: $showsPopup
                 ) {
-                    Group {
-                        if let popup = popup {
-                            PopupView(popup: popup, isPresented: $showsPopup)
-                                .showCloseButton(true)
-                        }
-                    }
-                    .padding()
+                    PopupView(popup: popup!, isPresented: $showsPopup)
+                        .showCloseButton(true)
+                        .padding()
                 }
                 .toolbar {
                     ToolbarItem(placement: .bottomBar) {
