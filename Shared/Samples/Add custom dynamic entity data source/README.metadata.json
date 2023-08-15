@@ -40,8 +40,7 @@
     ],
     "snippets": [
         "AddCustomDynamicEntityDataSourceView.swift",
-        "AddCustomDynamicEntityDataSourceView.Model.swift",
-        "Vessel.swift"
+        "AddCustomDynamicEntityDataSourceView.Vessel.swift"
     ],
     "title": "Add custom dynamic entity data source"
 }
