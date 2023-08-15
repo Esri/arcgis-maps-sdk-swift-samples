@@ -116,6 +116,7 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
         Spacer()
         Button {
             isConditionMenuPresented = true
+            inputValue = nil
         } label: {
             Image(systemName: "plus")
                 .imageScale(.large)
@@ -254,8 +255,8 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
         List(model.possibleAttributes, id: \.name) { attribute in
             HStack {
                 Text(attribute.name)
+                Spacer()
                 if attribute === selectedAttribute {
-                    Spacer()
                     Image(systemName: "checkmark")
                         .foregroundColor(.accentColor)
                 }
@@ -273,8 +274,8 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
             List(UtilityNetworkAttributeComparison.Operator.allCases, id: \.self) { comparison in
                 HStack {
                     Text(comparison.title)
+                    Spacer()
                     if comparison == selectedComparison {
-                        Spacer()
                         Image(systemName: "checkmark")
                             .foregroundColor(.accentColor)
                     }
@@ -294,8 +295,8 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
                 List(domain.codedValues, id: \.name) { value in
                     HStack {
                         Text(value.name)
+                        Spacer()
                         if value === selectedValue as? CodedValue {
-                            Spacer()
                             Image(systemName: "checkmark")
                                 .foregroundColor(.accentColor)
                         }
