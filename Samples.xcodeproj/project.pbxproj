@@ -1474,7 +1474,7 @@
 			);
 			mainGroup = 00E5400627F3CCA100CF66D5;
 			packageReferences = (
-                00C43AEB2947DC350099AE34 /* XCRemoteSwiftPackageReference "arcgis-maps-sdk-swift-toolkit" */,
+				00C43AEB2947DC350099AE34 /* XCRemoteSwiftPackageReference "arcgis-maps-sdk-swift-toolkit" */,
 			);
 			productRefGroup = 00E5401427F3CCA200CF66D5 /* Products */;
 			projectDirPath = "";
