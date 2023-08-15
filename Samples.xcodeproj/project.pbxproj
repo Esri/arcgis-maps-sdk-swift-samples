@@ -810,7 +810,6 @@
 				00E5401427F3CCA200CF66D5 /* Products */,
 				003D7C332821EBCC009DDFD2 /* Scripts */,
 				00E5400B27F3CCA100CF66D5 /* Shared */,
-				79D84D092A815AC700F45262 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1000,13 +999,6 @@
 				79302F862A1ED71B0002336A /* CreateAndSaveKMLView.Views.swift */,
 			);
 			path = "Create and save KML file";
-			sourceTree = "<group>";
-		};
-		79D84D092A815AC700F45262 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		79D84D0C2A815BED00F45262 /* Add custom dynamic entity data source */ = {
@@ -1482,6 +1474,7 @@
 			);
 			mainGroup = 00E5400627F3CCA100CF66D5;
 			packageReferences = (
+                00C43AEB2947DC350099AE34 /* XCRemoteSwiftPackageReference "arcgis-maps-sdk-swift-toolkit" */,
 			);
 			productRefGroup = 00E5401427F3CCA200CF66D5 /* Products */;
 			projectDirPath = "";
