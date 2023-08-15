@@ -42,29 +42,30 @@ struct ShowPopupView: View {
                 }
                 .task(id: identifyScreenPoint) {
                     guard let identifyScreenPoint = identifyScreenPoint,
-                          let identifyResult = try? await proxy.identifyLayers(
-                            screenPoint: identifyScreenPoint,
-                            tolerance: 12,
-                            returnPopupsOnly: false
-                          ),
-                          let firstPopup = identifyResult.first?.popups.first
-                    else { return }
+                          let identifyResult = await Result(awaiting: {
+                              try await proxy.identifyLayers(
+                                screenPoint: identifyScreenPoint,
+                                tolerance: 12,
+                                returnPopupsOnly: false
+                              )
+                          })
+                        .cancellationToNil()
+                    else {
+                        return
+                    }
                     
-                    self.popup = firstPopup
-                    self.showPopup = true
+                    self.identifyScreenPoint = nil
+                    self.popup = try? identifyResult.get().first?.popups.first
+                    self.showPopup = self.popup != nil
                 }
                 .floatingPanel(
                     selectedDetent: .constant(.full),
                     horizontalAlignment: .leading,
                     isPresented: $showPopup
                 ) {
-                    Group {
-                        if let popup = popup {
-                            PopupView(popup: popup, isPresented: $showPopup)
-                                .showCloseButton(true)
-                        }
-                    }
-                    .padding()
+                    PopupView(popup: popup!, isPresented: $showPopup)
+                        .showCloseButton(true)
+                        .padding()
                 }
         }
     }
