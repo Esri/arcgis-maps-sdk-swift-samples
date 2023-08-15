@@ -33,7 +33,7 @@ Run the sample to view the map and the dynamic entity layer displaying the lates
 
 ## About the data
 
-This sample uses a [JSON file containing observations of marine vessels in the Pacific North West](https://www.arcgis.com/home/item.html?id=a8a942c228af4fac96baa78ad60f511f) hosted on ArcGIS Online.
+This sample uses a [JSON Lines file containing observations of marine vessels in the Pacific North West](https://www.arcgis.com/home/item.html?id=a8a942c228af4fac96baa78ad60f511f) hosted on ArcGIS Online.
 
 ## Tags
 

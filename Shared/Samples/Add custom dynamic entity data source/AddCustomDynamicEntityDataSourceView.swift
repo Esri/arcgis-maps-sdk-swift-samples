@@ -17,7 +17,7 @@ import SwiftUI
 
 struct AddCustomDynamicEntityDataSourceView: View {
     /// A map with an ArcGIS oceans basemap style.
-    @State var map: Map = {
+    @State private var map: Map = {
         let map = Map(basemapStyle: .arcGISOceans)
         map.initialViewpoint = Viewpoint(
             latitude: 47.984,
@@ -154,7 +154,7 @@ private extension Array<Field> {
 }
 
 private extension URL {
-    /// The URL to the selected vessels JSON data.
+    /// The URL to the selected vessels JSON Lines data.
     static var selectedVesselsDataSource: URL {
         Bundle.main.url(
             forResource: "AIS_MarineCadastre_SelectedVessels_CustomDataSource",
