@@ -30,7 +30,7 @@ extension AddCustomDynamicEntityDataSourceView.Vessel: Decodable {
         let y: Double
     }
     
-    private enum CodingKeys: String, CodingKey {
+    private enum CodingKeys: CodingKey {
         case geometry
         case attributes
     }
