@@ -40,20 +40,30 @@ struct AddCustomDynamicEntityDataSourceView: View {
         // The meta data for the custom dynamic entity data source.
         let info = DynamicEntityDataSourceInfo(
             entityIDFieldName: "MMSI",
-            fields: .vesselFields
+            fields: [
+                Field(type: .text, name: "MMSI", alias: "MMSI", length: 256),
+                Field(type: .float64, name: "SOG", alias: "SOG", length: 8),
+                Field(type: .float64, name: "COG", alias: "COG", length: 8),
+                Field(type: .text, name: "VesselName", alias: "VesselName", length: 256),
+                Field(type: .text, name: "CallSign", alias: "CallSign", length: 256)
+            ]
         )
         
         info.spatialReference = .wgs84
         
+        // Create our custom data source from our custom data feed.
         let customDataSource = CustomDynamicEntityDataSource(info: info) { VesselFeed() }
         
         _dynamicEntityLayer = .init(initialValue: DynamicEntityLayer(dataSource: customDataSource))
         
+        // Set display tracking properties on the layer.
         let trackDisplayProperties = dynamicEntityLayer.trackDisplayProperties
         trackDisplayProperties.showsPreviousObservations = true
         trackDisplayProperties.showsTrackLine = true
         trackDisplayProperties.maximumObservations = 20
         
+        // Create the label definition so we can show the vessel name on top of
+        // each dynamic entity.
         let labelDefinition = LabelDefinition(
             labelExpression: SimpleLabelExpression(simpleExpression: "[VesselName]"),
             textSymbol: TextSymbol(color: .red, size: 12)
@@ -82,20 +92,20 @@ struct AddCustomDynamicEntityDataSourceView: View {
                     }
                 }
                 .task(id: tappedScreenPoint) {
-                    guard let tappedScreenPoint,
-                          let identifyResult = try? await proxy.identify(
-                            on: dynamicEntityLayer,
-                            screenPoint: tappedScreenPoint,
-                            tolerance: 2
-                          ) else {
+                    let newCalloutPlacement: CalloutPlacement?
+                    if let tappedScreenPoint,
+                       let identifyResult = try? await proxy.identify(
+                        on: dynamicEntityLayer,
+                        screenPoint: tappedScreenPoint,
+                        tolerance: 2
+                       ) {
+                        // Set the callout placement to the observation that was tapped on.
+                        newCalloutPlacement = identifyResult.geoElements.first.map { .geoElement($0) }
+                    } else {
                         // Hides the callout.
-                        calloutPlacement = nil
-                        
-                        return
+                        newCalloutPlacement = nil
                     }
-                    
-                    // Set the callout placement to the observation that was tapped on.
-                    calloutPlacement = identifyResult.geoElements.first.map { .geoElement($0) }
+                    calloutPlacement = newCalloutPlacement
                 }
         }
     }
@@ -103,53 +113,27 @@ struct AddCustomDynamicEntityDataSourceView: View {
 
 /// The vessel feed that is emitting custom dynamic entity events.
 private struct VesselFeed: CustomDynamicEntityFeed {
-    let events: AsyncThrowingStream<CustomDynamicEntityFeedEvent, Error> = .init { continuation in
-        Task.detached {
-            do {
-                let fileHandle = try FileHandle(forReadingFrom: .selectedVesselsDataSource)
-                let decoder = JSONDecoder()
-                
-                // Loop through each line in the JSON file.
-                for try await line in fileHandle.bytes.lines {
-                    // Delay observations to simulate live data.
-                    try await Task.sleep(nanoseconds: 10_000_000)
-                    
-                    let decodable = try decoder.decode(
-                        AddCustomDynamicEntityDataSourceView.Vessel.self,
-                        from: line.data(using: .utf8)!
-                    )
-                    
-                    // The geometry that was decoded from the JSON.
-                    let geometry = decodable.geometry
-                    
-                    // We successfully decoded the vessel JSON so we should
-                    // add that vessel as a new observation.
-                    continuation.yield(.newObservation(
-                        geometry: Point(x: geometry.x, y: geometry.y, spatialReference: .wgs84),
-                        attributes: decodable.attributes
-                    ))
-                }
-                
-                continuation.finish()
-            } catch {
-                continuation.finish(throwing: error)
-            }
-        }
-    }
-}
-
-private extension Array<Field> {
-    /// An array of fields that match the attributes of each observation in the data source.
-    ///
-    /// This schema is derived from the first row in the custom data source.
-    static var vesselFields: Self {
-        return [
-            Field(type: .text, name: "MMSI", alias: "MMSI", length: 256),
-            Field(type: .float64, name: "SOG", alias: "SOG", length: 8),
-            Field(type: .float64, name: "COG", alias: "COG", length: 8),
-            Field(type: .text, name: "VesselName", alias: "VesselName", length: 256),
-            Field(type: .text, name: "CallSign", alias: "CallSign", length: 256)
-        ]
+    typealias Events = AsyncThrowingMapSequence<AsyncLineSequence<URL.AsyncBytes>, CustomDynamicEntityFeedEvent>
+    
+    let events = URL.selectedVesselsDataSource.lines.map { line in
+        // Delay observations to simulate live data.
+        try await Task.sleep(nanoseconds: 10_000_000)
+        
+        let decoder = JSONDecoder()
+        let vessel = try decoder.decode(
+            AddCustomDynamicEntityDataSourceView.Vessel.self,
+            from: line.data(using: .utf8)!
+        )
+        
+        // The location of the vessel that was decoded from the JSON.
+        let location = vessel.geometry
+        
+        // We successfully decoded the vessel JSON so we should
+        // add that vessel as a new observation.
+        return CustomDynamicEntityFeedEvent.newObservation(
+            geometry: Point(x: location.x, y: location.y, spatialReference: .wgs84),
+            attributes: vessel.attributes
+        )
     }
 }
 

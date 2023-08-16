@@ -16,26 +16,26 @@ extension AddCustomDynamicEntityDataSourceView {
     /// A marine vessel that can be decoded from the vessel JSON.
     struct Vessel {
         /// The location of the vessel.
-        let geometry: (x: Double, y: Double)
+        let geometry: Geometry
         /// The attributes of the vessel.
         let attributes: [String: Any]
     }
 }
 extension AddCustomDynamicEntityDataSourceView.Vessel: Decodable {
-    private enum CodingKeys: CodingKey {
+    /// A geometry that gives the location of the vessel.
+    struct Geometry: Decodable {
+        /// The x coordinate of the geometry.
+        let x: Double
+        /// The y coordinate of the geometry.
+        let y: Double
+    }
+    
+    private enum CodingKeys: String, CodingKey {
         case geometry
         case attributes
     }
     
     init(from decoder: Decoder) throws {
-        /// A geometry that gives the location of the vessel.
-        struct Geometry: Decodable {
-            /// The x coordinate of the geometry.
-            let x: Double
-            /// The y coordinate of the geometry.
-            let y: Double
-        }
-        
         /// The attributes that define meta data for the vessel.
         struct Attributes: Decodable {
             enum CodingKeys: String, CodingKey { // swiftlint:disable:this nesting
@@ -66,6 +66,6 @@ extension AddCustomDynamicEntityDataSourceView.Vessel: Decodable {
                 Attributes.CodingKeys.callSign.rawValue: attributes.callSign
             ]
         }()
-        self.init(geometry: (geometry.x, geometry.y), attributes: attributes)
+        self.init(geometry: geometry, attributes: attributes)
     }
 }
