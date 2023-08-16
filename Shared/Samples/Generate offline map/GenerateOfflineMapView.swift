@@ -134,7 +134,7 @@ private extension GenerateOfflineMapView {
         private var offlineMapTask: OfflineMapTask!
         
         /// A URL to a temporary directory where the offline map files are stored.
-        private let temporaryDirectory = makeTemporaryDirectory()
+        private let temporaryDirectory = createTemporaryDirectory()
         
         /// A portal item displaying the Naperville, IL water network.
         private let napervillePortalItem = PortalItem(
@@ -229,12 +229,12 @@ private extension GenerateOfflineMapView {
         }
         
         /// Creates a temporary directory.
-        private static func makeTemporaryDirectory() -> URL {
+        private static func createTemporaryDirectory() -> URL {
             // swiftlint:disable:next force_try
             try! FileManager.default.url(
                 for: .itemReplacementDirectory,
                 in: .userDomainMask,
-                appropriateFor: Bundle.main.bundleURL,
+                appropriateFor: FileManager.default.temporaryDirectory,
                 create: true
             )
         }
