@@ -42,20 +42,14 @@ struct ShowPopupView: View {
                 }
                 .task(id: identifyScreenPoint) {
                     guard let identifyScreenPoint = identifyScreenPoint,
-                          let identifyResult = await Result(awaiting: {
-                              try await proxy.identifyLayers(
-                                screenPoint: identifyScreenPoint,
-                                tolerance: 12,
-                                returnPopupsOnly: false
-                              )
-                          })
-                        .cancellationToNil()
-                    else {
-                        return
-                    }
-                    
+                          let identifyResult = try? await proxy.identifyLayers(
+                            screenPoint: identifyScreenPoint,
+                            tolerance: 12,
+                            returnPopupsOnly: false
+                          )
+                    else { return }
                     self.identifyScreenPoint = nil
-                    self.popup = try? identifyResult.get().first?.popups.first
+                    self.popup = identifyResult.first?.popups.first
                     self.showPopup = self.popup != nil
                 }
                 .floatingPanel(
