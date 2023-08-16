@@ -21,8 +21,13 @@ struct ContentView: View {
     /// The search query in the search bar.
     @State private var query = ""
     
+    /// Available tokens.
+    @State private var tokens: [SearchInput.SampleToken] = []
+    
+    /// The search scope of the samples.
+    @State private var scope = SearchInput.SampleScope.name
+    
     var body: some View {
-        if #available(iOS 16, *) {
             NavigationSplitView {
                 NavigationStack {
                     sidebar
@@ -30,20 +35,69 @@ struct ContentView: View {
             } detail: {
                 detail
             }
-        } else {
-            NavigationView {
-                sidebar
-                detail
+            .searchable(text: $query, tokens: $tokens) { token in
+                Text(token.label)
             }
-        }
+            .searchScopes($scope) {
+                Text("Name").tag(SearchInput.SampleScope.name)
+                Text("Description").tag(SearchInput.SampleScope.description)
+                Text("Tags").tag(SearchInput.SampleScope.tags)
+            }
+            .onChange(of: query) { newValue in
+                if let token = SearchInput.SampleToken(rawValue: newValue.lowercased()) {
+                    tokens.append(token)
+                    query.removeAll(keepingCapacity: true)
+                }
+            }
     }
     
     var sidebar: some View {
-        Sidebar(samples: samples, query: query)
-            .searchable(text: $query)
+        Sidebar(
+            samples: samples,
+            searchInput: SearchInput(
+                query: query.trimmingCharacters(in: .whitespaces),
+                tokens: Set(tokens),
+                scope: scope
+            )
+        )
     }
     
     var detail: some View {
         Text("Select a category from the list.")
     }
+}
+
+struct SearchInput {
+    enum SampleScope {
+        case name
+        case description
+        case tags
+    }
+    
+    enum SampleToken: String, Identifiable, Hashable, CaseIterable {
+        case map
+        case scene
+        case toolkit
+        case utility
+        
+        var label: String {
+            switch self {
+            case .map: return "Map"
+            case .scene: return "Scene"
+            case .toolkit: return "Toolkit"
+            case .utility: return "Utility Network"
+            }
+        }
+        
+        var id: Self { self }
+    }
+    
+    /// The search query to highlight.
+    let query: String
+    
+    /// The token passed in to filter by tags.
+    let tokens: Set<SampleToken>
+
+    /// The scope of the search.
+    let scope: SampleScope
 }

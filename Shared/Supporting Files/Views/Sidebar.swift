@@ -24,8 +24,8 @@ struct Sidebar: View {
     /// All samples retrieved from the Samples directory.
     let samples: [Sample]
     
-    /// The search query.
-    let query: String
+    /// The search input.
+    let searchInput: SearchInput
     
     var body: some View {
         Group {
@@ -33,7 +33,11 @@ struct Sidebar: View {
                 CategoriesView(samples: samples)
                     .navigationTitle("Categories")
             } else {
-                SamplesSearchView(samples: samples, query: query)
+                if searchInput.query.isEmpty && searchInput.tokens.isEmpty {
+                    EmptyView()
+                } else {
+                    SamplesSearchView(samples: samples, searchInput: searchInput)
+                }
             }
         }
         .toolbar {

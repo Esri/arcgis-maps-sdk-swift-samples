@@ -15,47 +15,40 @@
 import SwiftUI
 
 struct SamplesSearchView: View {
-    /// The search query to highlight.
-    private let query: String
+    /// The search input.
+    private let searchInput: SearchInput
     
     /// The search result to display in the various sections.
     private let searchResult: SearchResult
     
     var body: some View {
         List {
-            if !searchResult.nameMatches.isEmpty {
-                Section("Name Results") {
-                    ForEach(searchResult.nameMatches, id: \.name) { sample in
-                        NavigationLink {
-                            SampleDetailView(sample: sample)
-                                .id(sample.name)
-                        } label: {
-                            SampleRow(sample: sample, query: query)
-                        }
+            switch searchInput.scope {
+            case .name:
+                ForEach(searchResult.nameMatches, id: \.name) { sample in
+                    NavigationLink {
+                        SampleDetailView(sample: sample)
+                            .id(sample.name)
+                    } label: {
+                        SampleRow(sample: sample, query: searchInput.query)
                     }
                 }
-            }
-            if !searchResult.descriptionMatches.isEmpty {
-                Section("Description Results") {
-                    ForEach(searchResult.descriptionMatches, id: \.name) { sample in
-                        NavigationLink {
-                            SampleDetailView(sample: sample)
-                                .id(sample.name)
-                        } label: {
-                            SampleRow(sample: sample, query: query)
-                        }
+            case .description:
+                ForEach(searchResult.descriptionMatches, id: \.name) { sample in
+                    NavigationLink {
+                        SampleDetailView(sample: sample)
+                            .id(sample.name)
+                    } label: {
+                        SampleRow(sample: sample, query: searchInput.query)
                     }
                 }
-            }
-            if !searchResult.tagMatches.isEmpty {
-                Section("Tags Results") {
-                    ForEach(searchResult.tagMatches, id: \.name) { sample in
-                        NavigationLink {
-                            SampleDetailView(sample: sample)
-                                .id(sample.name)
-                        } label: {
-                            SampleRow(sample: sample, query: query)
-                        }
+            case .tags:
+                ForEach(searchResult.tagMatches, id: \.name) { sample in
+                    NavigationLink {
+                        SampleDetailView(sample: sample)
+                            .id(sample.name)
+                    } label: {
+                        SampleRow(sample: sample, query: searchInput.query)
                     }
                 }
             }
@@ -70,9 +63,9 @@ extension SamplesSearchView {
     /// - Parameters:
     ///   - samples: All samples retrieved from the Samples directory.
     ///   - query: The search query in the search bar.
-    init(samples: [Sample], query: String) {
-        self.query = query
-        self.searchResult = Self.searchSamples(in: samples, with: query)
+    init(samples: [Sample], searchInput: SearchInput) {
+        self.searchInput = searchInput
+        self.searchResult = Self.searchSamples(in: samples, with: searchInput)
     }
 }
 
@@ -97,36 +90,56 @@ private extension SamplesSearchView {
     /// - Parameters:
     ///   - samples: The samples to search through.
     ///   - query: The query to search with.
-    private static func searchSamples(in samples: [Sample], with query: String) -> SearchResult {
-        let nameMatches: [Sample]
-        let descriptionMatches: [Sample]
-        let tagMatches: [Sample]
+    private static func searchSamples(in samples: [Sample], with input: SearchInput) -> SearchResult {
+        var nameMatches: [Sample] = []
+        var descriptionMatches: [Sample] = []
+        var tagMatches: [Sample] = []
         
-        if query.isEmpty {
+        if input.query.isEmpty && input.tokens.isEmpty {
             // Show all samples in the name section when query is empty.
             nameMatches = samples
-            descriptionMatches = []
-            tagMatches = []
         } else {
-            // The names of the samples already found in a previous section.
-            var previousSearchResults: Set<String> = []
-            
-            // Partially match a query to a sample's name.
-            nameMatches = samples.filter { $0.name.localizedCaseInsensitiveContains(query) }
-            previousSearchResults.formUnion(nameMatches.map(\.name))
-            
-            // Partially match a query to a sample's description.
-            descriptionMatches = samples.filter { $0.description.localizedCaseInsensitiveContains(query) }
-                .filter { !previousSearchResults.contains($0.name) }
-            previousSearchResults.formUnion(descriptionMatches.map(\.name))
-            
-            // Match a query to one of the sample's tags.
-            tagMatches = samples.filter { sample in
-                sample.tags.contains { tag in
-                    tag.localizedCaseInsensitiveCompare(query) == .orderedSame
+            var samplesToFilter = samples
+            if !input.tokens.isEmpty {
+                samplesToFilter = samplesToFilter.filter { sample in
+                    Set(sample.tags.map { $0.lowercased() })
+                        .isSuperset(of: input.tokens.map { $0.label.lowercased() })
                 }
+//                    .filter { sample in
+//                        sample.tags.contains { tag in
+//                            for token in input.tokens {
+//                                if tag.localizedCaseInsensitiveCompare(token.label) == .orderedSame {
+//                                    return true
+//                                }
+//                            }
+//                            return false
+//                        }
+//                    }
             }
-            .filter { !previousSearchResults.contains($0.name) }
+            if !input.query.isEmpty {
+                switch input.scope {
+                case .name:
+                    // Partially match a query to a sample's name.
+                    nameMatches = samplesToFilter
+                        .filter { $0.name.localizedCaseInsensitiveContains(input.query) }
+                case .description:
+                    // Partially match a query to a sample's description.
+                    descriptionMatches = samplesToFilter
+                        .filter { $0.description.localizedCaseInsensitiveContains(input.query) }
+                case .tags:
+                    // Match a query to one of the sample's tags.
+                    tagMatches = samplesToFilter
+                        .filter { sample in
+                            sample.tags.contains { tag in
+                                tag.localizedCaseInsensitiveCompare(input.query) == .orderedSame
+                            }
+                        }
+                }
+            } else {
+                nameMatches = samplesToFilter
+                descriptionMatches = samplesToFilter
+                tagMatches = samplesToFilter
+            }
         }
         
         return SearchResult(
