@@ -284,7 +284,7 @@ private extension DownloadVectorTilesToLocalCacheView {
             try! FileManager.default.url(
                 for: .itemReplacementDirectory,
                 in: .userDomainMask,
-                appropriateFor: FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
+                appropriateFor: FileManager.default.temporaryDirectory,
                 create: true
             )
         }
