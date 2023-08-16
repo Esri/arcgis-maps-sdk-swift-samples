@@ -10,6 +10,8 @@
 		0005580A2817C51E00224BC6 /* SampleDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000558092817C51E00224BC6 /* SampleDetailView.swift */; };
 		00181B462846AD7100654571 /* View+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00181B452846AD7100654571 /* View+Alert.swift */; };
 		001C6DE127FE8A9400D472C2 /* AppSecrets.swift.masque in Sources */ = {isa = PBXBuildFile; fileRef = 001C6DD827FE585A00D472C2 /* AppSecrets.swift.masque */; };
+		00273CF42A82AB5900A7A77D /* SamplesSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00273CF32A82AB5900A7A77D /* SamplesSearchView.swift */; };
+		00273CF62A82AB8700A7A77D /* SampleRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00273CF52A82AB8700A7A77D /* SampleRow.swift */; };
 		0039A4E92885C50300592C86 /* AddSceneLayerFromServiceView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E066DD3F28610F55004D3D5B /* AddSceneLayerFromServiceView.swift */; };
 		0039A4EA2885C50300592C86 /* ClipGeometryView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E000E75F2869E33D005D87C5 /* ClipGeometryView.swift */; };
 		0039A4EB2885C50300592C86 /* CreatePlanarAndGeodeticBuffersView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E004A6EC2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift */; };
@@ -51,6 +53,7 @@
 		00B042E8282EDC690072E1B4 /* SetBasemapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B042E5282EDC690072E1B4 /* SetBasemapView.swift */; };
 		00B04FB5283EEBA80026C882 /* DisplayOverviewMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B04FB4283EEBA80026C882 /* DisplayOverviewMapView.swift */; };
 		00C43AED2947DC350099AE34 /* ArcGISToolkit in Frameworks */ = {isa = PBXBuildFile; productRef = 00C43AEC2947DC350099AE34 /* ArcGISToolkit */; };
+		00C7993B2A845AAF00AFE342 /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00C7993A2A845AAF00AFE342 /* Sidebar.swift */; };
 		00C94A0D28B53DE1004E42D9 /* raster-file in Resources */ = {isa = PBXBuildFile; fileRef = 00C94A0C28B53DE1004E42D9 /* raster-file */; settings = {ASSET_TAGS = (AddRasterFromFile, ); }; };
 		00CB9138284814A4005C2C5D /* SearchWithGeocodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00CB9137284814A4005C2C5D /* SearchWithGeocodeView.swift */; };
 		00CCB8A5285BAF8700BBAB70 /* OnDemandResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00CCB8A4285BAF8700BBAB70 /* OnDemandResource.swift */; };
@@ -135,13 +138,10 @@
 		883C121729C914E100062FF9 /* DownloadPreplannedMapAreaView.MapPicker.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 883C121429C9136600062FF9 /* DownloadPreplannedMapAreaView.MapPicker.swift */; };
 		883C121829C914E100062FF9 /* DownloadPreplannedMapAreaView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E0D04FF128A5390000747989 /* DownloadPreplannedMapAreaView.Model.swift */; };
 		883C121929C914E100062FF9 /* DownloadPreplannedMapAreaView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E070A0A2286F3B6000F2B606 /* DownloadPreplannedMapAreaView.swift */; };
-		88F93CC129C3D59D0006B28E /* SketchOnMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F93CC029C3D59C0006B28E /* SketchOnMapView.swift */; };
-		88F93CC229C4D3480006B28E /* SketchOnMapView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 88F93CC029C3D59C0006B28E /* SketchOnMapView.swift */; };
+		88F93CC129C3D59D0006B28E /* CreateAndEditGeometriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F93CC029C3D59C0006B28E /* CreateAndEditGeometriesView.swift */; };
+		88F93CC229C4D3480006B28E /* CreateAndEditGeometriesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 88F93CC029C3D59C0006B28E /* CreateAndEditGeometriesView.swift */; };
 		D701D72C2A37C7F7006FF0C8 /* bradley_low_3ds in Resources */ = {isa = PBXBuildFile; fileRef = D701D72B2A37C7F7006FF0C8 /* bradley_low_3ds */; settings = {ASSET_TAGS = (ShowViewshedFromGeoelementInScene, ); }; };
-		D70BE5792A5624A80022CA02 /* CategoryGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70BE5782A5624A80022CA02 /* CategoryGridView.swift */; };
-		D70BE57F2A5753B70022CA02 /* SampleListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70BE57E2A5753B70022CA02 /* SampleListView.swift */; };
-		D70BE5832A5766CA0022CA02 /* CategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70BE5822A5766C90022CA02 /* CategoryView.swift */; };
-		D70BE5882A5787530022CA02 /* CategoryView+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70BE5872A5787530022CA02 /* CategoryView+Search.swift */; };
+		D70BE5792A5624A80022CA02 /* CategoriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70BE5782A5624A80022CA02 /* CategoriesView.swift */; };
 		D710996D2A27D9210065A1C1 /* DensifyAndGeneralizeGeometryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D710996C2A27D9210065A1C1 /* DensifyAndGeneralizeGeometryView.swift */; };
 		D710996E2A27D9B30065A1C1 /* DensifyAndGeneralizeGeometryView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D710996C2A27D9210065A1C1 /* DensifyAndGeneralizeGeometryView.swift */; };
 		D71099702A2802FA0065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D710996F2A2802FA0065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift */; };
@@ -331,7 +331,7 @@
 				1C0C1C3D29D34DDD005C8B24 /* ChangeViewpointView.swift in Copy Source Code Files */,
 				1C42E04A29D239D2004FC4BE /* ShowPopupView.swift in Copy Source Code Files */,
 				108EC04229D25B55000F35D0 /* QueryFeatureTableView.swift in Copy Source Code Files */,
-				88F93CC229C4D3480006B28E /* SketchOnMapView.swift in Copy Source Code Files */,
+				88F93CC229C4D3480006B28E /* CreateAndEditGeometriesView.swift in Copy Source Code Files */,
 				0044289329C9234300160767 /* GetElevationAtPointOnSurfaceView.swift in Copy Source Code Files */,
 				4D2ADC6A29C50D91003B367F /* AddDynamicEntityLayerView.Model.swift in Copy Source Code Files */,
 				4D2ADC6B29C50D91003B367F /* AddDynamicEntityLayerView.SettingsView.swift in Copy Source Code Files */,
@@ -385,6 +385,8 @@
 		000558092817C51E00224BC6 /* SampleDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleDetailView.swift; sourceTree = "<group>"; };
 		00181B452846AD7100654571 /* View+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Alert.swift"; sourceTree = "<group>"; };
 		001C6DD827FE585A00D472C2 /* AppSecrets.swift.masque */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AppSecrets.swift.masque; sourceTree = "<group>"; };
+		00273CF32A82AB5900A7A77D /* SamplesSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SamplesSearchView.swift; sourceTree = "<group>"; };
+		00273CF52A82AB8700A7A77D /* SampleRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleRow.swift; sourceTree = "<group>"; };
 		003D7C342821EBCC009DDFD2 /* masquerade */ = {isa = PBXFileReference; lastKnownFileType = text; path = masquerade; sourceTree = "<group>"; };
 		003D7C352821EBCC009DDFD2 /* GenerateSampleViewSourceCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateSampleViewSourceCode.swift; sourceTree = "<group>"; };
 		0042E24228E4BF8F001F33D6 /* ShowViewshedFromPointInSceneView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowViewshedFromPointInSceneView.Model.swift; sourceTree = "<group>"; };
@@ -402,6 +404,7 @@
 		00B04272282EC59E0072E1B4 /* AboutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		00B042E5282EDC690072E1B4 /* SetBasemapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetBasemapView.swift; sourceTree = "<group>"; };
 		00B04FB4283EEBA80026C882 /* DisplayOverviewMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayOverviewMapView.swift; sourceTree = "<group>"; };
+		00C7993A2A845AAF00AFE342 /* Sidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sidebar.swift; sourceTree = "<group>"; };
 		00C94A0C28B53DE1004E42D9 /* raster-file */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "raster-file"; sourceTree = "<group>"; };
 		00CB9137284814A4005C2C5D /* SearchWithGeocodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchWithGeocodeView.swift; sourceTree = "<group>"; };
 		00CCB8A2285AAD7D00BBAB70 /* DowloadPortalItemData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DowloadPortalItemData.swift; sourceTree = "<group>"; };
@@ -451,12 +454,9 @@
 		79B7B8092A1BF8EC00F57C27 /* CreateAndSaveKMLView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAndSaveKMLView.swift; sourceTree = "<group>"; };
 		79D84D0D2A815C5B00F45262 /* AddCustomDynamicEntityDataSourceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCustomDynamicEntityDataSourceView.swift; sourceTree = "<group>"; };
 		883C121429C9136600062FF9 /* DownloadPreplannedMapAreaView.MapPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadPreplannedMapAreaView.MapPicker.swift; sourceTree = "<group>"; };
-		88F93CC029C3D59C0006B28E /* SketchOnMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SketchOnMapView.swift; sourceTree = "<group>"; };
+		88F93CC029C3D59C0006B28E /* CreateAndEditGeometriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAndEditGeometriesView.swift; sourceTree = "<group>"; };
 		D701D72B2A37C7F7006FF0C8 /* bradley_low_3ds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bradley_low_3ds; sourceTree = "<group>"; };
-		D70BE5782A5624A80022CA02 /* CategoryGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryGridView.swift; sourceTree = "<group>"; };
-		D70BE57E2A5753B70022CA02 /* SampleListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleListView.swift; sourceTree = "<group>"; };
-		D70BE5822A5766C90022CA02 /* CategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryView.swift; sourceTree = "<group>"; };
-		D70BE5872A5787530022CA02 /* CategoryView+Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CategoryView+Search.swift"; sourceTree = "<group>"; };
+		D70BE5782A5624A80022CA02 /* CategoriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesView.swift; sourceTree = "<group>"; };
 		D710996C2A27D9210065A1C1 /* DensifyAndGeneralizeGeometryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DensifyAndGeneralizeGeometryView.swift; sourceTree = "<group>"; };
 		D710996F2A2802FA0065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DensifyAndGeneralizeGeometryView.SettingsView.swift; sourceTree = "<group>"; };
 		D722BD212A420DAD002C2087 /* ShowExtrudedFeaturesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowExtrudedFeaturesView.swift; sourceTree = "<group>"; };
@@ -531,12 +531,13 @@
 			isa = PBXGroup;
 			children = (
 				00B04272282EC59E0072E1B4 /* AboutView.swift */,
-				D70BE5782A5624A80022CA02 /* CategoryGridView.swift */,
-				D70BE5822A5766C90022CA02 /* CategoryView.swift */,
+				D70BE5782A5624A80022CA02 /* CategoriesView.swift */,
 				00E5400D27F3CCA100CF66D5 /* ContentView.swift */,
 				000558092817C51E00224BC6 /* SampleDetailView.swift */,
 				E041ABD6287DB04D0056009B /* SampleInfoView.swift */,
-				D70BE57E2A5753B70022CA02 /* SampleListView.swift */,
+				00273CF52A82AB8700A7A77D /* SampleRow.swift */,
+				00273CF32A82AB5900A7A77D /* SamplesSearchView.swift */,
+				00C7993A2A845AAF00AFE342 /* Sidebar.swift */,
 				E041ABBF287CA9F00056009B /* WebView.swift */,
 			);
 			path = Views;
@@ -545,7 +546,6 @@
 		00181B442846AD3900654571 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				D70BE5872A5787530022CA02 /* CategoryView+Search.swift */,
 				E08953F02891899600E077CF /* EnvironmentValues+SampleInfoVisibility.swift */,
 				00181B452846AD7100654571 /* View+Alert.swift */,
 				E0082216287755AC002AD138 /* View+Sheet.swift */,
@@ -616,6 +616,7 @@
 				4D2ADC5329C4F612003B367F /* Change map view background */,
 				1C0C1C3229D34DAE005C8B24 /* Change viewpoint */,
 				E000E75E2869E325005D87C5 /* Clip geometry */,
+				88F93CBE29C3D4E30006B28E /* Create and edit geometries */,
 				79B7B8082A1BF8B300F57C27 /* Create and save KML file */,
 				D7E440D12A1ECBC2005D74DE /* Create buffers around points */,
 				D7B3C5C02A43B71E001DA4D8 /* Create convex hull around geometries */,
@@ -668,7 +669,6 @@
 				1CAF831A2A20305F000E1E60 /* Show utility associations */,
 				D7ABA2FB2A3287C10021822B /* Show viewshed from geoelement in scene */,
 				0086F3FC28E3770900974721 /* Show viewshed from point in scene */,
-				88F93CBE29C3D4E30006B28E /* Sketch on map */,
 				E066DD362860AB0B004D3D5B /* Style graphics with renderer */,
 				E004A6E42846A609002A1FE6 /* Style graphics with symbols */,
 				D754E31D2A1D661D0006C5F1 /* Style point with picture marker symbols */,
@@ -1010,12 +1010,12 @@
 			path = "Add custom dynamic entity data source";
 			sourceTree = "<group>";
 		};
-		88F93CBE29C3D4E30006B28E /* Sketch on map */ = {
+		88F93CBE29C3D4E30006B28E /* Create and edit geometries */ = {
 			isa = PBXGroup;
 			children = (
-				88F93CC029C3D59C0006B28E /* SketchOnMapView.swift */,
+				88F93CC029C3D59C0006B28E /* CreateAndEditGeometriesView.swift */,
 			);
-			path = "Sketch on map";
+			path = "Create and edit geometries";
 			sourceTree = "<group>";
 		};
 		D701D7242A37C7E4006FF0C8 /* 07d62a792ab6496d9b772a24efea45d0 */ = {
@@ -1621,11 +1621,10 @@
 				D752D9462A3A6F80003EB25E /* MonitorChangesToMapLoadStatusView.swift in Sources */,
 				E0082217287755AC002AD138 /* View+Sheet.swift in Sources */,
 				00181B462846AD7100654571 /* View+Alert.swift in Sources */,
+				00273CF62A82AB8700A7A77D /* SampleRow.swift in Sources */,
 				D7ABA2FF2A32881C0021822B /* ShowViewshedFromGeoelementInSceneView.swift in Sources */,
 				E0FE32E728747778002C6ACA /* BrowseBuildingFloorsView.swift in Sources */,
-				D70BE5882A5787530022CA02 /* CategoryView+Search.swift in Sources */,
 				D752D95F2A3BCE06003EB25E /* DisplayMapFromPortalItemView.swift in Sources */,
-				D70BE5832A5766CA0022CA02 /* CategoryView.swift in Sources */,
 				1CAB8D4B2A3CEAB0002AA649 /* RunValveIsolationTraceView.Model.swift in Sources */,
 				E070A0A3286F3B6000F2B606 /* DownloadPreplannedMapAreaView.swift in Sources */,
 				D77570C02A2942F800F490CD /* AnimateImagesWithImageOverlayView.swift in Sources */,
@@ -1654,6 +1653,7 @@
 				E041ABC0287CA9F00056009B /* WebView.swift in Sources */,
 				E088E1572862579D00413100 /* SetSurfacePlacementModeView.swift in Sources */,
 				1CAF831F2A20305F000E1E60 /* ShowUtilityAssociationsView.swift in Sources */,
+				00C7993B2A845AAF00AFE342 /* Sidebar.swift in Sources */,
 				E004A6C128414332002A1FE6 /* SetViewpointRotationView.swift in Sources */,
 				883C121529C9136600062FF9 /* DownloadPreplannedMapAreaView.MapPicker.swift in Sources */,
 				1C9B74C929DB43580038B06F /* ShowRealisticLightAndShadowsView.swift in Sources */,
@@ -1664,7 +1664,7 @@
 				108EC04129D25B2C000F35D0 /* QueryFeatureTableView.swift in Sources */,
 				00B04FB5283EEBA80026C882 /* DisplayOverviewMapView.swift in Sources */,
 				D7CC33FF2A31475C00198EDF /* ShowLineOfSightBetweenPointsView.swift in Sources */,
-				D70BE5792A5624A80022CA02 /* CategoryGridView.swift in Sources */,
+				D70BE5792A5624A80022CA02 /* CategoriesView.swift in Sources */,
 				4D2ADC5D29C4F612003B367F /* ChangeMapViewBackgroundView.SettingsView.swift in Sources */,
 				75DD739529D38B1B0010229D /* NavigateRouteView.swift in Sources */,
 				D75362D22A1E886700D83028 /* ApplyUniqueValueRendererView.swift in Sources */,
@@ -1675,7 +1675,7 @@
 				D7E440D72A1ECE7D005D74DE /* CreateBuffersAroundPointsView.swift in Sources */,
 				00D4EF802863842100B9CC30 /* AddFeatureLayersView.swift in Sources */,
 				D710996D2A27D9210065A1C1 /* DensifyAndGeneralizeGeometryView.swift in Sources */,
-				88F93CC129C3D59D0006B28E /* SketchOnMapView.swift in Sources */,
+				88F93CC129C3D59D0006B28E /* CreateAndEditGeometriesView.swift in Sources */,
 				1C0C1C3929D34DAE005C8B24 /* ChangeViewpointView.swift in Sources */,
 				D734FA0C2A183A5B00246D7E /* SetMaxExtentView.swift in Sources */,
 				E004A6DC28465C70002A1FE6 /* DisplaySceneView.swift in Sources */,
@@ -1688,7 +1688,6 @@
 				00B042E8282EDC690072E1B4 /* SetBasemapView.swift in Sources */,
 				E004A6E62846A61F002A1FE6 /* StyleGraphicsWithSymbolsView.swift in Sources */,
 				E088E1742863B5F800413100 /* GenerateOfflineMapView.swift in Sources */,
-				D70BE57F2A5753B70022CA02 /* SampleListView.swift in Sources */,
 				0074ABC428174F430037244A /* Sample.swift in Sources */,
 				00A7A14A2A2FC5B700F035F7 /* DisplayContentOfUtilityNetworkContainerView.Model.swift in Sources */,
 				E004A6F0284E4B9B002A1FE6 /* DownloadVectorTilesToLocalCacheView.swift in Sources */,
@@ -1698,6 +1697,7 @@
 				1C19B4F52A578E46001D2506 /* CreateLoadReportView.Model.swift in Sources */,
 				0042E24528E4F82C001F33D6 /* ShowViewshedFromPointInSceneView.ViewshedSettingsView.swift in Sources */,
 				1C9B74D929DB54560038B06F /* ChangeCameraControllerView.swift in Sources */,
+				00273CF42A82AB5900A7A77D /* SamplesSearchView.swift in Sources */,
 				D78666AD2A2161F100C60110 /* FindNearestVertexView.swift in Sources */,
 				D744FD172A2112D90084A66C /* CreateConvexHullAroundPointsView.swift in Sources */,
 				00CB9138284814A4005C2C5D /* SearchWithGeocodeView.swift in Sources */,
@@ -1839,7 +1839,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 200.1.0;
+				MARKETING_VERSION = 200.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.esri.arcgis-swift-sdk-samples";
 				PRODUCT_NAME = Samples;
 				SDKROOT = iphoneos;
@@ -1869,7 +1869,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 200.1.0;
+				MARKETING_VERSION = 200.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.esri.arcgis-swift-sdk-samples";
 				PRODUCT_NAME = Samples;
 				SDKROOT = iphoneos;
@@ -1912,7 +1912,7 @@
 			repositoryURL = "https://github.com/Esri/arcgis-maps-sdk-swift-toolkit/";
 			requirement = {
 				kind = upToNextMinorVersion;
-				minimumVersion = 200.1.0;
+				minimumVersion = 200.2.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

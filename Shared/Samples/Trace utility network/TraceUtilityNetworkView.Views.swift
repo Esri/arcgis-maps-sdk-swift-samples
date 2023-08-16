@@ -88,10 +88,11 @@ extension TraceUtilityNetworkView {
                         actions: { terminalPickerButtons }
                     )
             case .traceCompleted, .traceFailed:
+                Spacer()
                 Button("Reset", role: .destructive) {
                     model.reset()
                 }
-                .padding()
+                Spacer()
             }
         }
     }

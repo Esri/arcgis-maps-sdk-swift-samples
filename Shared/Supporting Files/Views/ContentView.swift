@@ -39,8 +39,8 @@ struct ContentView: View {
     }
     
     var sidebar: some View {
-        CategoryView(samples: samples, query: $query)
-            .searchable(text: $query, prompt: "Search By Sample Name")
+        Sidebar(samples: samples, query: query)
+            .searchable(text: $query)
     }
     
     var detail: some View {
