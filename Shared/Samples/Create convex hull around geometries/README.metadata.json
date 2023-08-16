@@ -1,0 +1,26 @@
+{
+    "category": "Analysis",
+    "description": "Generate convex hull polygon(s) from multiple input geometries.",
+    "ignore": false,
+    "images": [
+        "create-convex-hull-around-geometries.png"
+    ],
+    "keywords": [
+        "analysis",
+        "geometry",
+        "outline",
+        "perimeter",
+        "union",
+        "GeometryEngine",
+        "GraphicsOverlay"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "GeometryEngine",
+        "GraphicsOverlay"
+    ],
+    "snippets": [
+        "CreateConvexHullAroundGeometriesView.swift"
+    ],
+    "title": "Create convex hull around geometries"
+}

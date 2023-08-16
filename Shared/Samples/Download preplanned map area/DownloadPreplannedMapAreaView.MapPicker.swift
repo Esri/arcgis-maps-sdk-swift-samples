@@ -91,10 +91,10 @@ extension DownloadPreplannedMapAreaView {
                         case .success:
                             EmptyView()
                         case .failure:
-                            Image(systemName: "exclamationmark.icloud")
+                            Image(systemName: "exclamationmark.circle")
                                 .foregroundColor(.red)
                         case .none:
-                            Image(systemName: "icloud.and.arrow.down")
+                            Image(systemName: "tray.and.arrow.down")
                                 .foregroundColor(.accentColor)
                         }
                     

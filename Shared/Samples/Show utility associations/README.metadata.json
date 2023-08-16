@@ -1,0 +1,33 @@
+{
+    "category": "Utility Networks",
+    "description": "Create graphics for utility associations in a utility network.",
+    "ignore": false,
+    "images": [
+        "show-utility-associations.png"
+    ],
+    "keywords": [
+        "associating",
+        "association",
+        "attachment",
+        "connectivity",
+        "containment",
+        "relationships",
+        "GraphicsOverlay",
+        "ServiceGeodatabase",
+        "UtilityAssociation",
+        "UtilityAssociation.Kind",
+        "UtilityNetwork"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "GraphicsOverlay",
+        "ServiceGeodatabase",
+        "UtilityAssociation",
+        "UtilityAssociation.Kind",
+        "UtilityNetwork"
+    ],
+    "snippets": [
+        "ShowUtilityAssociationsView.swift"
+    ],
+    "title": "Show utility associations"
+}

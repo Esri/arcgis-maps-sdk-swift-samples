@@ -1,0 +1,25 @@
+{
+    "category": "Search and Query",
+    "description": "Identify features in all layers in a map.",
+    "ignore": false,
+    "images": [
+        "identify-layer-features.png"
+    ],
+    "keywords": [
+        "identify",
+        "recursion",
+        "recursive",
+        "sublayers",
+        "IdentifyLayerResult",
+        "LayerContent"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "IdentifyLayerResult",
+        "LayerContent"
+    ],
+    "snippets": [
+        "IdentifyLayerFeaturesView.swift"
+    ],
+    "title": "Identify layer features"
+}

@@ -1,0 +1,24 @@
+{
+    "category": "Analysis",
+    "description": "Create a convex hull for a given set of points. The convex hull is a polygon with shortest perimeter that encloses a set of points.",
+    "ignore": false,
+    "images": [
+        "create-convex-hull-around-points.png"
+    ],
+    "keywords": [
+        "convex hull",
+        "geometry",
+        "spatial analysis",
+        "Geometry",
+        "GeometryEngine"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Geometry",
+        "GeometryEngine"
+    ],
+    "snippets": [
+        "CreateConvexHullAroundPointsView.swift"
+    ],
+    "title": "Create convex hull around points"
+}

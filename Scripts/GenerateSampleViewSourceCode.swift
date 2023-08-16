@@ -31,6 +31,8 @@ import Foundation
 private struct SampleMetadata: Decodable {
     /// The title of the sample.
     let title: String
+    /// The category of the sample.
+    let category: String
     /// The description of the sample.
     let description: String
     /// The relative paths to the code snippets.
@@ -39,6 +41,8 @@ private struct SampleMetadata: Decodable {
     let offlineData: [String]?
     /// The tags and relevant APIs of the sample.
     let keywords: [String]
+    /// The relevant APIs of the sample.
+    let relevantApis: [String]
 }
 
 extension SampleMetadata {
@@ -54,6 +58,16 @@ extension SampleMetadata {
     var structName: Substring {
         // E.g., DisplayMapView -> DisplayMap
         viewName.dropLast(4)
+    }
+    
+    /// The tags of a sample.
+    /// - Note: See common-samples/wiki/README.metadata.json#keywords.
+    /// The keywords in the sample metadata combines Tags and Relevant APIs
+    /// from the README. This is done in Scripts/CI/common.py by appending the
+    /// relevant APIs to the tags. Therefore, dropping the relevant APIs will
+    /// give the tags.
+    var tags: Array<String>.SubSequence {
+        keywords.dropLast(relevantApis.count)
     }
 }
 
@@ -71,24 +85,35 @@ let templateURL = URL(fileURLWithPath: arguments[2], isDirectory: false)
 let outputFileURL = URL(fileURLWithPath: arguments[3], isDirectory: false)
 
 private let sampleMetadata: [SampleMetadata] = {
+    let decoder = JSONDecoder()
+    // Converts snake-case key "offline_data" to camel-case "offlineData".
+    decoder.keyDecodingStrategy = .convertFromSnakeCase
+    
+    let fileManager = FileManager.default
     do {
-        // Finds all subdirectories under the root samples directory.
-        let decoder = JSONDecoder()
-        // Converts snake-case key "offline_data" to camel-case "offlineData".
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
         // Does a shallow traverse of the top level of samples directory.
-        return try FileManager.default.contentsOfDirectory(at: samplesDirectoryURL, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles])
+        return try fileManager.contentsOfDirectory(at: samplesDirectoryURL, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles])
             .filter(\.hasDirectoryPath)
             .compactMap { url in
-                // Try to access the metadata file under a subdirectory.
-                guard let data = try? Data(contentsOf: url.appendingPathComponent("README.metadata.json")) else {
+                // Gets the metadata JSON under each subdirectory.
+                let metadataFile = url.appendingPathComponent("README.metadata.json")
+                guard fileManager.fileExists(atPath: metadataFile.path) else {
+                    // Sometimes when Git switches branches, it leaves an empty directory
+                    // that causes the decoder to throw an error. Here we skip the directories
+                    // that don't have the metadata JSON file.
                     return nil
                 }
-                return try? decoder.decode(SampleMetadata.self, from: data)
+                do {
+                    let data = try Data(contentsOf: metadataFile)
+                    return try decoder.decode(SampleMetadata.self, from: data)
+                } catch {
+                    print("error: '\(url.lastPathComponent)' sample couldn’t be decoded.")
+                    exit(1)
+                }
             }
             .sorted { $0.title < $1.title }
     } catch {
-        print("Error decoding Samples: \(error.localizedDescription)")
+        print("error: Decoding Samples: \(error.localizedDescription)")
         exit(1)
     }
 }()
@@ -100,9 +125,10 @@ private let sampleStructs = sampleMetadata
         return """
         struct \(sample.structName): Sample {
             var name: String { \"\(sample.title)\" }
+            var category: String { \"\(sample.category)\" }
             var description: String { \"\(sample.description)\" }
             var snippets: [String] { \(sample.snippets) }
-            var tags: Set<String> { \(sample.keywords) }
+            var tags: Set<String> { \(sample.tags) }
             \(portalItemIDs.isEmpty ? "" : "var hasDependencies: Bool { true }\n")
             func makeBody() -> AnyView { .init(\(sample.viewName)()) }
         }
@@ -127,6 +153,6 @@ do {
         .replacingOccurrences(of: "/* structs */", with: sampleStructs)
     try content.write(to: outputFileURL, atomically: true, encoding: .utf8)
 } catch {
-    print("Error reading or writing template file: \(error.localizedDescription)")
+    print("error: Reading or writing template file: \(error.localizedDescription)")
     exit(1)
 }

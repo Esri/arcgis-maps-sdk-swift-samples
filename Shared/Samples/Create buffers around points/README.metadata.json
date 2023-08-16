@@ -1,0 +1,27 @@
+{
+    "category": "Analysis",
+    "description": "Generate multiple individual buffers or a single unioned buffer around multiple points.",
+    "ignore": false,
+    "images": [
+        "create-buffers-around-points.png"
+    ],
+    "keywords": [
+        "analysis",
+        "buffer",
+        "geometry",
+        "planar",
+        "Geometry",
+        "GeometryEngine",
+        "SpatialReference"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Geometry",
+        "GeometryEngine",
+        "SpatialReference"
+    ],
+    "snippets": [
+        "CreateBuffersAroundPointsView.swift"
+    ],
+    "title": "Create buffers around points"
+}

@@ -1,0 +1,36 @@
+{
+    "category": "Maps",
+    "description": "Use the Geometry Editor to create new point, multipoint, polyline, or polygon geometries or to edit existing geometries by interacting with a map view.",
+    "ignore": false,
+    "images": [
+        "create-and-edit-geometries-1.png",
+        "create-and-edit-geometries-2.png"
+    ],
+    "keywords": [
+        "draw",
+        "edit",
+        "freehand",
+        "geometry editor",
+        "sketch",
+        "vertex",
+        "Geometry",
+        "GeometryBuilder",
+        "GeometryEditor",
+        "Graphic",
+        "GraphicsOverlay",
+        "MapView"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Geometry",
+        "GeometryBuilder",
+        "GeometryEditor",
+        "Graphic",
+        "GraphicsOverlay",
+        "MapView"
+    ],
+    "snippets": [
+        "CreateAndEditGeometriesView.swift"
+    ],
+    "title": "Create and edit geometries"
+}

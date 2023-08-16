@@ -19,13 +19,16 @@ protocol Sample {
     /// The name of the sample.
     var name: String { get }
     
+    /// The category in which the sample belongs.
+    var category: String { get }
+    
     /// A brief description of the sample's functionalities.
     var description: String { get }
     
     /// The relative paths to the code snippets.
     var snippets: [String] { get }
     
-    /// The tags and relevant APIs of the sample.
+    /// The tags of the sample.
     var tags: Set<String> { get }
     
     /// A Boolean value that indicates whether a sample has offline data dependencies.

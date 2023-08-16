@@ -24,7 +24,9 @@ struct ContentView: View {
     var body: some View {
         if #available(iOS 16, *) {
             NavigationSplitView {
-                sidebar
+                NavigationStack {
+                    sidebar
+                }
             } detail: {
                 detail
             }
@@ -37,11 +39,11 @@ struct ContentView: View {
     }
     
     var sidebar: some View {
-        SampleList(samples: samples, query: $query)
-            .searchable(text: $query, prompt: "Search By Sample Name")
+        Sidebar(samples: samples, query: query)
+            .searchable(text: $query)
     }
     
     var detail: some View {
-        Text("Select a sample from the list.")
+        Text("Select a category from the list.")
     }
 }

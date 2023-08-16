@@ -167,6 +167,10 @@ extension TraceUtilityNetworkView {
                 @unknown default:
                     return
                 }
+            } else {
+                Task {
+                    await updateUserHint(withMessage: "An error occurred while adding element to the trace.")
+                }
             }
         }
         
@@ -238,7 +242,8 @@ extension TraceUtilityNetworkView {
         ///
         /// If no message is provided a default hint is used.
         /// - Parameter message: The message to display to the user.
-        @MainActor func updateUserHint(withMessage message: String? = nil) {
+        @MainActor
+        func updateUserHint(withMessage message: String? = nil) {
             if let message {
                 hint = message
             } else {
