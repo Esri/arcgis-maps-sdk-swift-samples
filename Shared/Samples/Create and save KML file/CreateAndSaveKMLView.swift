@@ -125,7 +125,7 @@ private extension FileManager {
         try! FileManager.default.url(
             for: .itemReplacementDirectory,
             in: .userDomainMask,
-            appropriateFor: Bundle.main.bundleURL,
+            appropriateFor: FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first,
             create: true
         )
     }
