@@ -285,6 +285,8 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
                 } else {
                     return false
                 }
+            @unknown default:
+                fatalError("Unexpected utility network attribute data type.")
             }
         }
         
