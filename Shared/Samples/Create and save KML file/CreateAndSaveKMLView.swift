@@ -106,7 +106,7 @@ final class KMZFile: FileDocument {
     
     /// Saves the KML document as a KMZ file to a temporary location.
     func saveFile() async throws {
-        temporaryDirectory = FileManager.makeTemporaryDirectory()
+        temporaryDirectory = FileManager.createTemporaryDirectory()
         
         if document.name.isEmpty {
             document.name = "Untitled"
@@ -120,7 +120,7 @@ final class KMZFile: FileDocument {
 
 private extension FileManager {
     /// Creates a temporary directory and returns the URL of the created directory.
-    static func makeTemporaryDirectory() -> URL {
+    static func createTemporaryDirectory() -> URL {
         // swiftlint:disable:next force_try
         try! FileManager.default.url(
             for: .itemReplacementDirectory,

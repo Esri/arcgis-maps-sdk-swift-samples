@@ -60,7 +60,7 @@ extension DownloadPreplannedMapAreaView {
         
         init() {
             // Creates temp directory.
-            temporaryDirectory = FileManager.makeTemporaryDirectory()
+            temporaryDirectory = FileManager.createTemporaryDirectory()
             
             // Initializes the online map and offline map task.
             onlineMap = Map(item: portalItem)
@@ -299,7 +299,7 @@ private extension OfflineMapModel {
 
 private extension FileManager {
     /// Creates a temporary directory and returns the URL of the created directory.
-    static func makeTemporaryDirectory() -> URL {
+    static func createTemporaryDirectory() -> URL {
         // swiftlint:disable:next force_try
         try! FileManager.default.url(
             for: .itemReplacementDirectory,
