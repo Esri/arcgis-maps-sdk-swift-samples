@@ -15,6 +15,14 @@
 extension AddCustomDynamicEntityDataSourceView {
     /// A marine vessel that can be decoded from the vessel JSON.
     struct Vessel {
+        /// A geometry that gives the location of the vessel.
+        struct Geometry: Decodable { // swiftlint:disable:this nesting
+            /// The x coordinate of the geometry.
+            let x: Double
+            /// The y coordinate of the geometry.
+            let y: Double
+        }
+        
         /// The location of the vessel.
         let geometry: Geometry
         /// The attributes of the vessel.
@@ -22,14 +30,6 @@ extension AddCustomDynamicEntityDataSourceView {
     }
 }
 extension AddCustomDynamicEntityDataSourceView.Vessel: Decodable {
-    /// A geometry that gives the location of the vessel.
-    struct Geometry: Decodable {
-        /// The x coordinate of the geometry.
-        let x: Double
-        /// The y coordinate of the geometry.
-        let y: Double
-    }
-    
     private enum CodingKeys: CodingKey {
         case geometry
         case attributes

@@ -16,65 +16,19 @@ import ArcGIS
 import SwiftUI
 
 struct AddCustomDynamicEntityDataSourceView: View {
-    /// A map with an ArcGIS oceans basemap style.
-    @State private var map: Map = {
-        let map = Map(basemapStyle: .arcGISOceans)
-        map.initialViewpoint = Viewpoint(
-            latitude: 47.984,
-            longitude: -123.657,
-            scale: 3e6
-        )
-        return map
-    }()
+    /// A map with an ArcGIS oceans basemap style and a dynamic entity layer.
+    @State private var map = makeMap()
     
     /// The dynamic entity layer that is displaying our custom data.
-    @State var dynamicEntityLayer: DynamicEntityLayer
+    private var dynamicEntityLayer: DynamicEntityLayer {
+        map.operationalLayers.first as! DynamicEntityLayer
+    }
     
     /// The point on the screen the user tapped.
     @State private var tappedScreenPoint: CGPoint?
     
     /// The placement of the callout.
     @State private var calloutPlacement: CalloutPlacement?
-    
-    init() {
-        // The meta data for the custom dynamic entity data source.
-        let info = DynamicEntityDataSourceInfo(
-            entityIDFieldName: "MMSI",
-            fields: [
-                Field(type: .text, name: "MMSI", alias: "MMSI", length: 256),
-                Field(type: .float64, name: "SOG", alias: "SOG", length: 8),
-                Field(type: .float64, name: "COG", alias: "COG", length: 8),
-                Field(type: .text, name: "VesselName", alias: "VesselName", length: 256),
-                Field(type: .text, name: "CallSign", alias: "CallSign", length: 256)
-            ]
-        )
-        
-        info.spatialReference = .wgs84
-        
-        // Create our custom data source from our custom data feed.
-        let customDataSource = CustomDynamicEntityDataSource(info: info) { VesselFeed() }
-        
-        _dynamicEntityLayer = .init(initialValue: DynamicEntityLayer(dataSource: customDataSource))
-        
-        // Set display tracking properties on the layer.
-        let trackDisplayProperties = dynamicEntityLayer.trackDisplayProperties
-        trackDisplayProperties.showsPreviousObservations = true
-        trackDisplayProperties.showsTrackLine = true
-        trackDisplayProperties.maximumObservations = 20
-        
-        // Create the label definition so we can show the vessel name on top of
-        // each dynamic entity.
-        let labelDefinition = LabelDefinition(
-            labelExpression: SimpleLabelExpression(simpleExpression: "[VesselName]"),
-            textSymbol: TextSymbol(color: .red, size: 12)
-        )
-        labelDefinition.placement = .pointAboveCenter
-        
-        dynamicEntityLayer.addLabelDefinition(labelDefinition)
-        dynamicEntityLayer.labelsAreEnabled = true
-        
-        map.addOperationalLayer(dynamicEntityLayer)
-    }
     
     var body: some View {
         MapViewReader { proxy in
@@ -109,12 +63,60 @@ struct AddCustomDynamicEntityDataSourceView: View {
                 }
         }
     }
+    
+    /// Makes a map with a dynamic entity layer.
+    static func makeMap() -> Map {
+        let map = Map(basemapStyle: .arcGISOceans)
+        map.initialViewpoint = Viewpoint(
+            latitude: 47.984,
+            longitude: -123.657,
+            scale: 3e6
+        )
+        
+        // The meta data for the custom dynamic entity data source.
+        let info = DynamicEntityDataSourceInfo(
+            entityIDFieldName: "MMSI",
+            fields: [
+                Field(type: .text, name: "MMSI", alias: "MMSI", length: 256),
+                Field(type: .float64, name: "SOG", alias: "SOG", length: 8),
+                Field(type: .float64, name: "COG", alias: "COG", length: 8),
+                Field(type: .text, name: "VesselName", alias: "VesselName", length: 256),
+                Field(type: .text, name: "CallSign", alias: "CallSign", length: 256)
+            ]
+        )
+        
+        info.spatialReference = .wgs84
+        
+        // Create our custom data source from our custom data feed.
+        let customDataSource = CustomDynamicEntityDataSource(info: info) { VesselFeed() }
+        
+        let dynamicEntityLayer = DynamicEntityLayer(dataSource: customDataSource)
+        
+        // Set display tracking properties on the layer.
+        let trackDisplayProperties = dynamicEntityLayer.trackDisplayProperties
+        trackDisplayProperties.showsPreviousObservations = true
+        trackDisplayProperties.showsTrackLine = true
+        trackDisplayProperties.maximumObservations = 20
+        
+        // Create the label definition so we can show the vessel name on top of
+        // each dynamic entity.
+        let labelDefinition = LabelDefinition(
+            labelExpression: SimpleLabelExpression(simpleExpression: "[VesselName]"),
+            textSymbol: TextSymbol(color: .red, size: 12)
+        )
+        labelDefinition.placement = .pointAboveCenter
+        
+        dynamicEntityLayer.addLabelDefinition(labelDefinition)
+        dynamicEntityLayer.labelsAreEnabled = true
+        
+        map.addOperationalLayer(dynamicEntityLayer)
+        
+        return map
+    }
 }
 
 /// The vessel feed that is emitting custom dynamic entity events.
 private struct VesselFeed: CustomDynamicEntityFeed {
-    typealias Events = AsyncThrowingMapSequence<AsyncLineSequence<URL.AsyncBytes>, CustomDynamicEntityFeedEvent>
-    
     let events = URL.selectedVesselsDataSource.lines.map { line in
         // Delay observations to simulate live data.
         try await Task.sleep(nanoseconds: 10_000_000)
