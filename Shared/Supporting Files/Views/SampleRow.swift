@@ -40,6 +40,7 @@ struct SampleRow: View {
             Label {} icon: {
                 Image(systemName: "info.circle")
                     .symbolVariant(isShowingDescription ? .fill : .none)
+                    .imageScale(.medium)
             }
             .onTapGesture {
                 isShowingDescription.toggle()
