@@ -43,6 +43,7 @@ struct SampleInfoView: View {
                     }
                 }
                 .pickerStyle(.segmented)
+                .frame(idealWidth: 320)
             }
             
             ToolbarItem(placement: .confirmationAction) {
@@ -51,13 +52,15 @@ struct SampleInfoView: View {
                 }
             }
             
-            ToolbarItem(placement: .bottomBar) {
+            ToolbarItemGroup(placement: .bottomBar) {
                 if informationMode == .code {
+                    Spacer()
                     Picker("Source Code File Picker", selection: $selectedSnippetIndex) {
                         ForEach(sample.snippetURLs.indices, id: \.self) { index in
                             Text(sample.snippets[index].dropLast(6))
                         }
                     }
+                    Spacer()
                 }
             }
         }
