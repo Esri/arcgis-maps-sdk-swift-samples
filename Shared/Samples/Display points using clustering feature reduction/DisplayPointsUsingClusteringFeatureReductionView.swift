@@ -66,7 +66,7 @@ struct DisplayPointsUsingClusteringFeatureReductionView: View {
                             tolerance: 3
                           )
                     else { return }
-                    self.identifyScreenPoint = nil
+                    defer { self.identifyScreenPoint = nil }
                     self.popup = identifyResult.popups.first
                     self.showsPopup = self.popup != nil
                 }
