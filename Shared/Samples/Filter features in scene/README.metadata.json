@@ -7,14 +7,17 @@
     ],
     "keywords": [
         "3D",
+        "OSM",
         "buildings",
         "disjoint",
         "exclude",
         "extent",
         "filter",
         "hide",
-        "OSM",
-        "polygon"
+        "polygon",
+        "ArcGISSceneLayer",
+        "SceneLayerPolygonFilter",
+        "SceneLayerPolygonFilterSpatialRelationship"
     ],
     "redirect_from": [],
     "relevant_apis": [
