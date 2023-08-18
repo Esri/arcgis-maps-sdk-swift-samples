@@ -66,7 +66,6 @@ struct DisplayPointsUsingClusteringFeatureReductionView: View {
                             tolerance: 3
                           )
                     else { return }
-                    defer { self.identifyScreenPoint = nil }
                     self.popup = identifyResult.popups.first
                     self.showsPopup = self.popup != nil
                 }
@@ -74,7 +73,7 @@ struct DisplayPointsUsingClusteringFeatureReductionView: View {
                     selectedDetent: .constant(.half),
                     horizontalAlignment: .leading,
                     isPresented: $showsPopup
-                ) {
+                ) { [popup] in
                     PopupView(popup: popup!, isPresented: $showsPopup)
                         .showCloseButton(true)
                         .padding()

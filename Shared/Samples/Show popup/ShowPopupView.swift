@@ -48,7 +48,6 @@ struct ShowPopupView: View {
                             returnPopupsOnly: false
                           )
                     else { return }
-                    defer { self.identifyScreenPoint = nil }
                     self.popup = identifyResult.first?.popups.first
                     self.showPopup = self.popup != nil
                 }
@@ -56,7 +55,7 @@ struct ShowPopupView: View {
                     selectedDetent: .constant(.full),
                     horizontalAlignment: .leading,
                     isPresented: $showPopup
-                ) {
+                ) { [popup] in
                     PopupView(popup: popup!, isPresented: $showPopup)
                         .showCloseButton(true)
                         .padding()
