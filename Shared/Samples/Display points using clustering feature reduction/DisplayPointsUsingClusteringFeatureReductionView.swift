@@ -64,24 +64,19 @@ struct DisplayPointsUsingClusteringFeatureReductionView: View {
                             on: layer,
                             screenPoint: identifyScreenPoint,
                             tolerance: 3
-                          ),
-                          let firstPopup = identifyResult.popups.first
+                          )
                     else { return }
-                    self.popup = firstPopup
-                    self.showsPopup = true
+                    self.popup = identifyResult.popups.first
+                    self.showsPopup = self.popup != nil
                 }
                 .floatingPanel(
                     selectedDetent: .constant(.half),
                     horizontalAlignment: .leading,
                     isPresented: $showsPopup
-                ) {
-                    Group {
-                        if let popup = popup {
-                            PopupView(popup: popup, isPresented: $showsPopup)
-                                .showCloseButton(true)
-                        }
-                    }
-                    .padding()
+                ) { [popup] in
+                    PopupView(popup: popup!, isPresented: $showsPopup)
+                        .showCloseButton(true)
+                        .padding()
                 }
                 .toolbar {
                     ToolbarItem(placement: .bottomBar) {

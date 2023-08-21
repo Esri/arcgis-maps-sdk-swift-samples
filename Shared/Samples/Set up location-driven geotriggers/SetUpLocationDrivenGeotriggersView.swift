@@ -118,13 +118,9 @@ struct SetUpLocationDrivenGeotriggersView: View {
                 horizontalAlignment: .leading,
                 isPresented: $isShowingPopup
             ) {
-                Group {
-                    if let popup = model.popup {
-                        PopupView(popup: popup, isPresented: $isShowingPopup)
-                            .showCloseButton(true)
-                    }
-                }
-                .padding()
+                PopupView(popup: model.popup!, isPresented: $isShowingPopup)
+                    .showCloseButton(true)
+                    .padding()
             }
             .task(id: isShowingPopup) {
                 if isShowingPopup {
