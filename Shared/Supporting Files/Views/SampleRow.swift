@@ -32,18 +32,19 @@ struct SampleRow: View {
                 if isShowingDescription {
                     Text(description)
                         .font(.caption)
-                        .foregroundColor(.secondary)
+                        .opacity(0.75)
                         .transition(.move(edge: .top).combined(with: .opacity))
                 }
             }
             Spacer()
-            Button {
-                isShowingDescription.toggle()
-            } label: {
+            Label {} icon: {
                 Image(systemName: "info.circle")
                     .symbolVariant(isShowingDescription ? .fill : .none)
+                    .imageScale(.medium)
             }
-            .buttonStyle(.borderless)
+            .onTapGesture {
+                isShowingDescription.toggle()
+            }
         }
         .animation(.easeOut(duration: 0.2), value: isShowingDescription)
     }
