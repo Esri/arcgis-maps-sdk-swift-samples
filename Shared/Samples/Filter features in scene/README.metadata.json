@@ -17,13 +17,13 @@
         "polygon",
         "ArcGISSceneLayer",
         "SceneLayerPolygonFilter",
-        "SceneLayerPolygonFilterSpatialRelationship"
+        "SceneLayerPolygonFilter.SpatialRelationship"
     ],
     "redirect_from": [],
     "relevant_apis": [
         "ArcGISSceneLayer",
         "SceneLayerPolygonFilter",
-        "SceneLayerPolygonFilterSpatialRelationship"
+        "SceneLayerPolygonFilter.SpatialRelationship"
     ],
     "snippets": [
         "FilterFeaturesInSceneView.swift"
