@@ -17,14 +17,14 @@ The sample initializes showing the 3D buildings OpenStreetMap layer. Click the "
 1. Construct a `Basemap` for the scene using a topographic `ArcGISVectorTileLayer` and the OpenStreetMap 3D Buildings `ArcGISSceneLayer` as baselayers.
 2. Create a `Surface` for the scene and set the World Elevation 3D as an elevation source.
 3. Add the 3D San Francisco Buildings `ArcGISSceneLayer` to the scene's operational layers.
-4. Construct a `SceneLayerPolygonFilter` with the extent of the San Francisco Buildings Scene Layer and the `SceneLayerPolygonFilterSpatialRelationship::Disjoint` enum to hide all features within the extent.
+4. Construct a `SceneLayerPolygonFilter` with the extent of the San Francisco Buildings Scene Layer and the `SceneLayerPolygonFilter.SpatialRelationship.disjoint` enum to hide all features within the extent.
 5. Set the `SceneLayerPolygonFilter` on the OSM Buildings layer to hide all OSM buildings within the extent of the San Francisco Buildings layer.
 
 ## Relevant API
 
 * ArcGISSceneLayer
 * SceneLayerPolygonFilter
-* SceneLayerPolygonFilterSpatialRelationship
+* SceneLayerPolygonFilter.SpatialRelationship
 
 ## About the data
 
@@ -32,9 +32,9 @@ This sample uses the [OpenStreetMap 3D Buildings](https://www.arcgis.com/home/it
 
 ## Additional information
 
-This sample uses `SceneLayerPolygonFilterSpatialRelationship::Disjoint` to hide all features within the extent of the given geometry. You can alternatively use `SceneLayerPolygonFilterSpatialRelationship::Contains` to only show features within the extent of the geometry.
+This sample uses `SceneLayerPolygonFilter.SpatialRelationship.disjoint` to hide all features within the extent of the given geometry. You can alternatively use `SceneLayerPolygonFilter.SpatialRelationship.contains` to only show features within the extent of the geometry.
 
-You can also show or hide features in a scene layer using `ArcGISSceneLayer::setFeatureVisible` or `setFeaturesVisible` and pass in a feature or list of features and a boolean value to set their visibility.
+You can also show or hide features in a scene layer using `ArcGISSceneLayer.setVisible(visible:for feature:)` or `setVisible(visible:for features:)` and pass in a feature or list of features and a boolean value to set their visibility.
 
 ## Tags
 
