@@ -20,7 +20,7 @@ struct FilterFeaturesInSceneView: View {
     @StateObject private var model = Model()
     
     /// The filter state for the scene view.
-    @State var filterState: FilterState = .load
+    @State private var filterState: FilterState = .load
     
     /// A Boolean value indicating whether to show an error alert.
     @State private var isShowingAlert = false
@@ -82,10 +82,10 @@ private extension FilterFeaturesInSceneView {
     /// used in this view.
     class Model: ObservableObject {
         /// The scene for this sample.
-        var scene: ArcGIS.Scene
+        let scene: ArcGIS.Scene
         
         /// The open street map layer for the sample.
-        let osmBuildings: ArcGISSceneLayer
+        private let osmBuildings: ArcGISSceneLayer
         
         /// The San Francisco buildings scene layer for the sample.
         private let buildingsSceneLayer = ArcGISSceneLayer(
@@ -93,13 +93,13 @@ private extension FilterFeaturesInSceneView {
         )
         
         /// The graphics overlay for the scene view.
-        @State var graphicsOverlay = GraphicsOverlay()
+        let graphicsOverlay = GraphicsOverlay()
         
         /// A polygon that shows the extent of the detailed buildings scene layer.
-        private let polygon: ArcGIS.Polygon
+        private let polygon: ArcGIS.Polygon = makeFilteringPolygon()
         
         /// A red extent boundary graphic that represents the full extent of the detailed buildings scene layer.
-        private var sanFransiscoExtentGraphic: Graphic {
+        private var sanFranciscoExtentGraphic: Graphic {
             let simpleFillSymbol = SimpleFillSymbol(
                 style: .solid,
                 color: .clear,
@@ -121,13 +121,13 @@ private extension FilterFeaturesInSceneView {
             let vectorTiledLayer = ArcGISVectorTiledLayer(
                 item: PortalItem(
                     portal: .arcGISOnline(connection: .anonymous),
-                    id: PortalItem.ID("1e7d1784d1ef4b79ba6764d0bd6c3150")!
+                    id: .osmTopographic
                 )
             )
             osmBuildings = ArcGISSceneLayer(
                 item: PortalItem(
                     portal: .arcGISOnline(connection: .anonymous),
-                    id: PortalItem.ID("ca0470dbbddb4db28bad74ed39949e25")!
+                    id: .osmBuildings
                 )
             )
             let basemap = Basemap()
@@ -142,28 +142,18 @@ private extension FilterFeaturesInSceneView {
             scene.baseSurface = surface
             
             // Sets the initial viewpoint of the scene.
-            scene.initialViewpoint = Viewpoint(
-                latitude: .nan,
-                longitude: .nan,
-                scale: .nan,
-                camera: Camera(
-                    location: Point(
-                        x: -122.421,
-                        y: 37.7041,
-                        z: 207
-                    ),
-                    heading: 60,
-                    pitch: 70,
-                    roll: 0
-                )
-            )
-            
+            scene.initialViewpoint = .sanFranciscoBuildings
+        }
+        
+        /// Creates a polygon that represents the detailed buildings scene layer full extent.
+        /// - Returns: A polygon
+        private static func makeFilteringPolygon() -> ArcGIS.Polygon {
             // The buildings scene layer fullExtent.
             let extent = Envelope(
-                xRange: -122.5142594011547 ... -122.35763055368636,
-                yRange: 37.70524346412002...37.83196536874781,
-                zRange: -148.84294207121204...551.8009783856437,
-                spatialReference: SpatialReference(wkid: WKID(4326)!, verticalWKID: WKID(5773)!)
+                xRange: -122.514 ... -122.357,
+                yRange: 37.705...37.831,
+                zRange: -148.843...551.801,
+                spatialReference: SpatialReference(wkid: .wgs84, verticalWKID: WKID(5773)!)
             )
             
             let builder = PolygonBuilder(spatialReference: extent.spatialReference)
@@ -172,12 +162,12 @@ private extension FilterFeaturesInSceneView {
             builder.add(Point(x: extent.xMax, y: extent.yMax))
             builder.add(Point(x: extent.xMin, y: extent.yMax))
             
-            polygon = builder.toGeometry()
+            return builder.toGeometry()
         }
         
         /// Handles the filter state of the sample by either loading, filtering, or reseting the scene.
         /// - Parameter filterState: The filter state of the sample.
-        func handleFilterState(_ filterState: FilterFeaturesInSceneView.FilterState) {
+        func handleFilterState(_ filterState: FilterState) {
             switch filterState {
             case .load:
                 // Show the detailed buildings scene layer and extent graphic.
@@ -195,13 +185,11 @@ private extension FilterFeaturesInSceneView {
         private func loadScene() {
             // Show the detailed buildings scene layer and the extent graphic.
             scene.addOperationalLayer(buildingsSceneLayer)
-            graphicsOverlay.addGraphic(sanFransiscoExtentGraphic)
+            graphicsOverlay.addGraphic(sanFranciscoExtentGraphic)
         }
         
         /// Applies a polygon filter to the open street map buildings layer.
         private func filterScene() {
-            // Hide buildings within the detailed building extent so they don't clip.
-            
             // Initially, the building layer does not have a polygon filter, set it.
             if osmBuildings.polygonFilter == nil {
                 osmBuildings.polygonFilter = SceneLayerPolygonFilter(
@@ -209,7 +197,8 @@ private extension FilterFeaturesInSceneView {
                     spatialRelationship: .disjoint
                 )
             } else {
-                // After the scene is reset, the layer will have a polygon filter, but that filter will not have polygons set.
+                // After the scene is reset, the layer will have a polygon filter, but that filter
+                // will not have polygons set.
                 // Add the polygon back to the polygon filter.
                 osmBuildings.polygonFilter?.addPolygon(polygon)
             }
@@ -225,4 +214,30 @@ private extension FilterFeaturesInSceneView {
             graphicsOverlay.removeAllGraphics()
         }
     }
+}
+
+private extension PortalItem.ID {
+    /// The ID used in the "OpenStreetMap 3D Buildings" portal item.
+    static var osmBuildings: Self { Self("ca0470dbbddb4db28bad74ed39949e25")! }
+    /// The ID used in the "OpenStreetMap Topographic (for 3D)" portal item.
+    static var osmTopographic: Self { Self("1e7d1784d1ef4b79ba6764d0bd6c3150")! }
+}
+
+private extension Viewpoint {
+    /// The initial viewpoint to be displayed when the sample is first opened.
+    static let sanFranciscoBuildings = Viewpoint(
+        latitude: .nan,
+        longitude: .nan,
+        scale: .nan,
+        camera: Camera(
+            location: Point(
+                x: -122.421,
+                y: 37.7041,
+                z: 207
+            ),
+            heading: 60,
+            pitch: 70,
+            roll: 0
+        )
+    )
 }
