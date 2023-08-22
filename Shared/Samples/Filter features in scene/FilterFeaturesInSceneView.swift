@@ -85,7 +85,12 @@ private extension FilterFeaturesInSceneView {
         let scene: ArcGIS.Scene
         
         /// The open street map layer for the sample.
-        private let osmBuildings: ArcGISSceneLayer
+        private let osmBuildings = ArcGISSceneLayer(
+            item: PortalItem(
+                portal: .arcGISOnline(connection: .anonymous),
+                id: .osmBuildings
+            )
+        )
         
         /// The San Francisco buildings scene layer for the sample.
         private let buildingsSceneLayer = ArcGISSceneLayer(
@@ -124,12 +129,6 @@ private extension FilterFeaturesInSceneView {
                     id: .osmTopographic
                 )
             )
-            osmBuildings = ArcGISSceneLayer(
-                item: PortalItem(
-                    portal: .arcGISOnline(connection: .anonymous),
-                    id: .osmBuildings
-                )
-            )
             let basemap = Basemap()
             basemap.addBaseLayers([vectorTiledLayer, osmBuildings])
             scene = Scene(basemap: basemap)
@@ -141,12 +140,12 @@ private extension FilterFeaturesInSceneView {
             surface.addElevationSource(elevationSource)
             scene.baseSurface = surface
             
-            // Sets the initial viewpoint of the scene.
+            // Set the initial viewpoint of the scene.
             scene.initialViewpoint = .sanFranciscoBuildings
         }
         
         /// Creates a polygon that represents the detailed buildings scene layer full extent.
-        /// - Returns: A polygon
+        /// - Returns: A polygon.
         private static func makeFilteringPolygon() -> ArcGIS.Polygon {
             // The buildings scene layer fullExtent.
             let extent = Envelope(
@@ -183,7 +182,6 @@ private extension FilterFeaturesInSceneView {
         
         /// Loads the detailed buildings scene layer and adds an extent graphic.
         private func loadScene() {
-            // Show the detailed buildings scene layer and the extent graphic.
             scene.addOperationalLayer(buildingsSceneLayer)
             graphicsOverlay.addGraphic(sanFranciscoExtentGraphic)
         }
