@@ -35,44 +35,47 @@ struct AddDynamicEntityLayerView: View {
     
     var body: some View {
         // Creates a map view to display the map.
-        MapView(map: model.map, viewpoint: viewpoint)
-            .toolbar {
-                ToolbarItemGroup(placement: .bottomBar) {
-                    Button(isConnected ? "Disconnect" : "Connect") {
-                        Task {
-                            if isConnected {
-                                await model.streamService.disconnect()
-                            } else {
-                                try? await model.streamService.connect()
+        GeometryReader { geometry in
+            MapView(map: model.map, viewpoint: viewpoint)
+                .contentInsets(EdgeInsets(top: 0, leading: 0, bottom: geometry.size.height / 2, trailing: 0))
+                .toolbar {
+                    ToolbarItemGroup(placement: .bottomBar) {
+                        Button(isConnected ? "Disconnect" : "Connect") {
+                            Task {
+                                if isConnected {
+                                    await model.streamService.disconnect()
+                                } else {
+                                    try? await model.streamService.connect()
+                                }
                             }
                         }
-                    }
-                    Spacer()
-                    Button("Dynamic Entity Settings") {
-                        isShowingSettings = true
-                    }
-                    .sheet(isPresented: $isShowingSettings, detents: [.medium], dragIndicatorVisibility: .visible) {
-                        SettingsView()
-                            .environmentObject(model)
+                        Spacer()
+                        Button("Dynamic Entity Settings") {
+                            isShowingSettings = true
+                        }
+                        .sheet(isPresented: $isShowingSettings, detents: [.medium], dragIndicatorVisibility: .visible) {
+                            SettingsView()
+                                .environmentObject(model)
+                        }
                     }
                 }
-            }
-            .overlay(alignment: .top) {
-                HStack {
-                    Text("Status:")
-                    Text(model.connectionStatus)
-                        .italic()
+                .overlay(alignment: .top) {
+                    HStack {
+                        Text("Status:")
+                        Text(model.connectionStatus)
+                            .italic()
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 6)
+                    .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
                 }
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 6)
-                .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
-            }
-            .task {
-                // This will update `connectionStatus` when the stream service
-                // connection status changes.
-                for await status in model.streamService.$connectionStatus {
-                    model.connectionStatus = status.description
+                .task {
+                    // This will update `connectionStatus` when the stream service
+                    // connection status changes.
+                    for await status in model.streamService.$connectionStatus {
+                        model.connectionStatus = status.description
+                    }
                 }
-            }
+        }
     }
 }
