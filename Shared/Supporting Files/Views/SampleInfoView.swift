@@ -43,7 +43,9 @@ struct SampleInfoView: View {
                     }
                 }
                 .pickerStyle(.segmented)
-                .frame(idealWidth: 320)
+                // Set the ideal width to a big value so the segmented control
+                // takes up the entire empty space of the toolbar on iOS 17.
+                .frame(idealWidth: UIScreen.main.bounds.width)
             }
             
             ToolbarItem(placement: .confirmationAction) {
