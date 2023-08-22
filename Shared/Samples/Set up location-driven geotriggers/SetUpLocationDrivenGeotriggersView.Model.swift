@@ -14,7 +14,6 @@
 
 import ArcGIS
 import Combine
-import Foundation
 
 extension SetUpLocationDrivenGeotriggersView {
     /// The view model for the sample.
