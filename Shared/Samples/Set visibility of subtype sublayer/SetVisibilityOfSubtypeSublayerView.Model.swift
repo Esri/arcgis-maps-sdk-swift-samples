@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import ArcGIS
-import Combine
 import Foundation
 
 extension SetVisibilityOfSubtypeSublayerView {
