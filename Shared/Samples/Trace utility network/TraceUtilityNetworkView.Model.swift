@@ -22,7 +22,7 @@ extension TraceUtilityNetworkView {
         
         /// The domain network for this sample.
         private var electricDistribution: UtilityDomainNetwork? {
-            network?.definition?.domainNetwork(named: "ElectricDistribution")
+            network.definition?.domainNetwork(named: "ElectricDistribution")
         }
         
         /// The URLs of the relevant feature layers for this sample.
@@ -69,8 +69,8 @@ extension TraceUtilityNetworkView {
         }
         
         /// The utility network for this sample.
-        private var network: UtilityNetwork? {
-            map.utilityNetworks.first
+        private var network: UtilityNetwork {
+            map.utilityNetworks.first!
         }
         
         /// The parameters for the pending trace.
@@ -140,10 +140,10 @@ extension TraceUtilityNetworkView {
         ///   - mapPoint: The location on the map where the feature was discovered. If the feature is a
         ///   junction type, the feature's geometry will be used instead.
         func add(_ feature: ArcGISFeature, at mapPoint: Point) {
-            if let element = network?.makeElement(arcGISFeature: feature),
+            if let element = network.makeElement(arcGISFeature: feature),
                let geometry = feature.geometry,
                let table = feature.table as? ArcGISFeatureTable,
-               let networkSource = network?.definition?.networkSource(named: table.tableName) {
+               let networkSource = network.definition?.networkSource(named: table.tableName) {
                 switch networkSource.kind {
                 case .junction:
                     add(element, at: geometry)
@@ -197,11 +197,16 @@ extension TraceUtilityNetworkView {
         func setup() async {
             do {
                 try await ArcGISEnvironment.authenticationManager.arcGISCredentialStore.add(.publicSample)
-                try await network?.load()
+                try await map.load()
+                try await network.load()
             } catch {
                 await updateUserHint(withMessage: "An error occurred while loading the network.")
                 return
             }
+            
+            // Clear all sublayers then add the layers relevant for the demo.
+            map.removeAllOperationalLayers()
+            
             featureLayerURLs.forEach { url in
                 let table = ServiceFeatureTable(url: url)
                 let layer = FeatureLayer(featureTable: table)
@@ -222,7 +227,7 @@ extension TraceUtilityNetworkView {
         /// - Note: Elements are grouped by network source prior to selection so that all selections
         /// per operational layer can be made at once.
         func trace() async throws {
-            guard let network, let pendingTraceParameters = pendingTraceParameters else { return }
+            guard let pendingTraceParameters = pendingTraceParameters else { return }
             let traceResults = try await network
                 .trace(using: pendingTraceParameters)
                 .compactMap { $0 as? UtilityElementTraceResult }
