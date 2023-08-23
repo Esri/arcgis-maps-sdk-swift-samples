@@ -73,7 +73,7 @@ struct GenerateOfflineMapView: View {
                         }
                     }
                     .overlay(alignment: .top) {
-                        if model.isOfflineMapGenerated {
+                        if model.offlineMap != nil {
                             Text("Offline map generated.")
                                 .frame(maxWidth: .infinity, alignment: .center)
                                 .padding(8)
@@ -137,9 +137,6 @@ private extension GenerateOfflineMapView {
         
         /// The generate offline map job.
         @Published var generateOfflineMapJob: GenerateOfflineMapJob!
-        
-        /// A Boolean value indicating whether the offline map is generated.
-        @Published var isOfflineMapGenerated = false
         
         /// The offline map task.
         private var offlineMapTask: OfflineMapTask!
@@ -220,7 +217,6 @@ private extension GenerateOfflineMapView {
             do {
                 // Awaits the output of the job.
                 let output = try await generateOfflineMapJob.output
-                isOfflineMapGenerated = true
                 // Sets the offline map to the output's offline map.
                 offlineMap = output.offlineMap
                 // Sets the initial viewpoint of the offline map.
