@@ -13,8 +13,8 @@
 // limitations under the License.
 
 import ArcGIS
-import SwiftUI
 import Combine
+import Foundation
 
 extension AnalyzeNetworkWithSubnetworkTraceView {
     /// The view model for this sample.

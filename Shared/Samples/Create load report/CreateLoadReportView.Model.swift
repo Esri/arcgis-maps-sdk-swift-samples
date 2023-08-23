@@ -13,7 +13,8 @@
 // limitations under the License.
 
 import ArcGIS
-import SwiftUI
+import Combine
+import Foundation
 
 extension CreateLoadReportView {
     /// The model used to store the geo model and other expensive objects
@@ -284,11 +285,11 @@ extension CreateLoadReportView {
         
         /// Creates a summary for the provided phase.
         /// - Parameter phase: The phase to generate a summary for.
-        /// - Returns: A localized string key representing the summary for the provided phase.
-        func summaryForPhase(_ phase: CodedValue) -> LocalizedStringKey {
+        /// - Returns: A string representing the summary for the provided phase.
+        func summaryForPhase(_ phase: CodedValue) -> String {
             let format: IntegerFormatStyle<Int> = .number
             if let summary = summaries.summary(forPhase: phase) {
-                return "C: \(summary.totalCustomers, format: format)  L: \(summary.totalLoad, format: format)"
+                return "C: \(summary.totalCustomers.formatted(format))  L: \(summary.totalLoad.formatted(format))"
             } else {
                 return "N/A"
             }
