@@ -204,7 +204,7 @@ extension TraceUtilityNetworkView {
                 return
             }
             
-            // Clear all sublayers then add the layers relevant for the demo.
+            // Clears all sublayers then add the layers relevant for the demo.
             map.removeAllOperationalLayers()
             
             featureLayerURLs.forEach { url in
