@@ -33,48 +33,70 @@ struct AddDynamicEntityLayerView: View {
         model.streamService.connectionStatus == .connected
     }
     
+    /// The horizontal size class of the environment.
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    
+    /// The vertical size class of the environment.
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
+    
     var body: some View {
         // Creates a map view to display the map.
-        GeometryReader { geometry in
-            MapView(map: model.map, viewpoint: viewpoint)
-                .contentInsets(EdgeInsets(top: 0, leading: 0, bottom: geometry.size.height / 2, trailing: 0))
-                .toolbar {
-                    ToolbarItemGroup(placement: .bottomBar) {
-                        Button(isConnected ? "Disconnect" : "Connect") {
-                            Task {
-                                if isConnected {
-                                    await model.streamService.disconnect()
-                                } else {
-                                    try? await model.streamService.connect()
-                                }
+        MapView(map: model.map, viewpoint: viewpoint)
+            .toolbar {
+                ToolbarItemGroup(placement: .bottomBar) {
+                    Button(isConnected ? "Disconnect" : "Connect") {
+                        Task {
+                            if isConnected {
+                                await model.streamService.disconnect()
+                            } else {
+                                try? await model.streamService.connect()
                             }
                         }
-                        Spacer()
-                        Button("Dynamic Entity Settings") {
-                            isShowingSettings = true
-                        }
-                        .sheet(isPresented: $isShowingSettings, detents: [.medium], dragIndicatorVisibility: .visible) {
-                            SettingsView()
-                                .environmentObject(model)
-                        }
                     }
+                    Spacer()
+                    settingsSheet
                 }
-                .overlay(alignment: .top) {
-                    HStack {
-                        Text("Status:")
-                        Text(model.connectionStatus)
-                            .italic()
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 6)
-                    .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
+            }
+            .overlay(alignment: .top) {
+                HStack {
+                    Text("Status:")
+                    Text(model.connectionStatus)
+                        .italic()
                 }
-                .task {
-                    // This will update `connectionStatus` when the stream service
-                    // connection status changes.
-                    for await status in model.streamService.$connectionStatus {
-                        model.connectionStatus = status.description
-                    }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 6)
+                .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
+            }
+            .task {
+                // This will update `connectionStatus` when the stream service
+                // connection status changes.
+                for await status in model.streamService.$connectionStatus {
+                    model.connectionStatus = status.description
+                }
+            }
+    }
+    
+    @ViewBuilder private var settingsButton: some View {
+        Button("Dynamic Entity Settings") {
+            isShowingSettings = true
+        }
+    }
+    
+    @ViewBuilder private var settingsSheet: some View {
+        if #available(iOS 16, *),
+           horizontalSizeClass == .compact,
+           verticalSizeClass == .regular {
+            settingsButton
+                .sheet(isPresented: $isShowingSettings) {
+                    SettingsView()
+                        .environmentObject(model)
+                        .presentationDetents([.fraction(0.4)])
+                }
+        } else {
+            settingsButton
+                .sheet(isPresented: $isShowingSettings, detents: [.medium]) {
+                    SettingsView()
+                        .environmentObject(model)
                 }
         }
     }
