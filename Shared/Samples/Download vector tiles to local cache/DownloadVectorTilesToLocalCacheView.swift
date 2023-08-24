@@ -141,6 +141,12 @@ struct DownloadVectorTilesToLocalCacheView: View {
                                                 }
                                             }
                                         }
+                                        .overlay(alignment: .top) {
+                                            Text("Vector tiles downloaded.")
+                                                .frame(maxWidth: .infinity, alignment: .center)
+                                                .padding(8)
+                                                .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
+                                        }
                                 }
                                 .highPriorityGesture(DragGesture())
                             }

@@ -72,6 +72,14 @@ struct GenerateOfflineMapView: View {
                             .shadow(radius: 3)
                         }
                     }
+                    .overlay(alignment: .top) {
+                        if model.offlineMap != nil {
+                            Text("Offline map generated.")
+                                .frame(maxWidth: .infinity, alignment: .center)
+                                .padding(8)
+                                .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
+                        }
+                    }
                     .toolbar {
                         ToolbarItem(placement: .bottomBar) {
                             Button("Generate Offline Map") {
