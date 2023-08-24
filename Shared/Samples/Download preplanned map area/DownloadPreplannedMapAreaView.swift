@@ -26,46 +26,43 @@ struct DownloadPreplannedMapAreaView: View {
     @StateObject private var model = Model()
     
     var body: some View {
-        MapView(
-            map: model.currentMap,
-            viewpoint: model.currentMap.initialViewpoint?.zoomedIn()
-        )
-        .overlay(alignment: .top) {
-            mapNameOverlay
-        }
-        .toolbar {
-            ToolbarItemGroup(placement: .bottomBar) {
-                Spacer()
-                
-                Button("Select Map") {
-                    isShowingSelectMapView.toggle()
-                }
-                .sheet(isPresented: $isShowingSelectMapView, detents: [.medium]) {
-                    MapPicker()
-                        .environmentObject(model)
-                }
-                
-                Spacer()
-                
-                Button {
-                    isShowingDeleteAlert = true
-                } label: {
-                    Image(systemName: "trash")
-                }
-                .disabled(!model.canRemoveDownloadedMaps)
-                .alert("Delete All Offline Areas", isPresented: $isShowingDeleteAlert) {
-                    Button("Delete", role: .destructive) {
-                        model.removeDownloadedMaps()
+        MapView(map: model.currentMap,viewpoint: model.currentMap.initialViewpoint?.zoomedIn())
+            .overlay(alignment: .top) {
+                mapNameOverlay
+            }
+            .toolbar {
+                ToolbarItemGroup(placement: .bottomBar) {
+                    Spacer()
+                    
+                    Button("Select Map") {
+                        isShowingSelectMapView.toggle()
                     }
-                } message: {
-                    Text("Are you sure you want to delete all downloaded preplanned map areas?")
+                    .sheet(isPresented: $isShowingSelectMapView, detents: [.medium]) {
+                        MapPicker()
+                            .environmentObject(model)
+                    }
+                    
+                    Spacer()
+                    
+                    Button {
+                        isShowingDeleteAlert = true
+                    } label: {
+                        Image(systemName: "trash")
+                    }
+                    .disabled(!model.canRemoveDownloadedMaps)
+                    .alert("Delete All Offline Areas", isPresented: $isShowingDeleteAlert) {
+                        Button("Delete", role: .destructive) {
+                            model.removeDownloadedMaps()
+                        }
+                    } message: {
+                        Text("Are you sure you want to delete all downloaded preplanned map areas?")
+                    }
                 }
             }
-        }
-        .task {
-            // Makes the offline map models when the view is first shown.
-            await model.makeOfflineMapModels()
-        }
+            .task {
+                // Makes the offline map models when the view is first shown.
+                await model.makeOfflineMapModels()
+            }
     }
     
     var mapNameOverlay: some View {
