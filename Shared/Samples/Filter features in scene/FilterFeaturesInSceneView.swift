@@ -104,22 +104,7 @@ private extension FilterFeaturesInSceneView {
         private let polygon: ArcGIS.Polygon = makeFilteringPolygon()
         
         /// A red extent boundary graphic that represents the full extent of the detailed buildings scene layer.
-        private var sanFranciscoExtentGraphic: Graphic {
-            let simpleFillSymbol = SimpleFillSymbol(
-                style: .solid,
-                color: .clear,
-                outline: SimpleLineSymbol(
-                    style: .solid,
-                    color: .red,
-                    width: 5
-                )
-            )
-            
-            return Graphic(
-                geometry: polygon,
-                symbol: simpleFillSymbol
-            )
-        }
+        private let sanFranciscoExtentGraphic: Graphic
         
         init() {
             // Create basemap.
@@ -129,9 +114,7 @@ private extension FilterFeaturesInSceneView {
                     id: .osmTopographic
                 )
             )
-            let basemap = Basemap()
-            basemap.addBaseLayers([vectorTiledLayer, osmBuildings])
-            scene = Scene(basemap: basemap)
+            scene = Scene(basemap: Basemap(baseLayers: [vectorTiledLayer, osmBuildings]))
             
             // Create scene topography.
             let elevationServiceURL = URL(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!
@@ -142,6 +125,21 @@ private extension FilterFeaturesInSceneView {
             
             // Set the initial viewpoint of the scene.
             scene.initialViewpoint = .sanFranciscoBuildings
+            
+            let simpleFillSymbol = SimpleFillSymbol(
+                style: .solid,
+                color: .clear,
+                outline: SimpleLineSymbol(
+                    style: .solid,
+                    color: .red,
+                    width: 5
+                )
+            )
+            
+            sanFranciscoExtentGraphic = Graphic(
+                geometry: polygon,
+                symbol: simpleFillSymbol
+            )
         }
         
         /// Creates a polygon that represents the detailed buildings scene layer full extent.
