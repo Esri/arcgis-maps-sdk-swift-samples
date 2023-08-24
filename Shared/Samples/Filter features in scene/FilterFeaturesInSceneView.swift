@@ -26,7 +26,7 @@ struct FilterFeaturesInSceneView: View {
     @State private var isShowingAlert = false
     
     /// The error shown in the error alert.
-    @State var error: Error? {
+    @State private var error: Error? {
         didSet { isShowingAlert = error != nil }
     }
     
@@ -188,17 +188,17 @@ private extension FilterFeaturesInSceneView {
         
         /// Applies a polygon filter to the open street map buildings layer.
         private func filterScene() {
-            // Initially, the building layer does not have a polygon filter, set it.
-            if osmBuildings.polygonFilter == nil {
+            if let polygonFilter = osmBuildings.polygonFilter {
+                // After the scene is reset, the layer will have a polygon filter, but that filter
+                // will not have polygons set.
+                // Add the polygon back to the polygon filter.
+                polygonFilter.addPolygon(polygon)
+            } else {
+                // Initially, the building layer does not have a polygon filter, set it.
                 osmBuildings.polygonFilter = SceneLayerPolygonFilter(
                     polygons: [polygon],
                     spatialRelationship: .disjoint
                 )
-            } else {
-                // After the scene is reset, the layer will have a polygon filter, but that filter
-                // will not have polygons set.
-                // Add the polygon back to the polygon filter.
-                osmBuildings.polygonFilter?.addPolygon(polygon)
             }
         }
         
