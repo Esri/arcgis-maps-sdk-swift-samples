@@ -16,6 +16,9 @@ import ArcGIS
 import SwiftUI
 
 struct DownloadPreplannedMapAreaView: View {
+    /// A Boolean value indicating whether to select a map.
+    @State private var isShowingSelectMapView = false
+    
     /// A Boolean value indicating whether to show delete alert.
     @State private var isShowingDeleteAlert = false
     
@@ -23,58 +26,43 @@ struct DownloadPreplannedMapAreaView: View {
     @StateObject private var model = Model()
     
     var body: some View {
-        MapViewReader { mapViewProxy in
-            MapView(map: model.currentMap)
-                .onVisibleAreaChanged { visibleArea in
-                    guard model.offlineMapDidChange else { return }
-                    model.offlineMapDidChange = false
+        MapView(map: model.currentMap)
+            .overlay(alignment: .top) {
+                mapNameOverlay
+            }
+            .toolbar {
+                ToolbarItemGroup(placement: .bottomBar) {
+                    Spacer()
                     
-                    let builder = EnvelopeBuilder(envelope: visibleArea.extent)
-                    builder.expand(by: 0.5)
-                    let zoomEnvelope = builder.toGeometry()
+                    Button("Select Map") {
+                        isShowingSelectMapView.toggle()
+                    }
+                    .sheet(isPresented: $isShowingSelectMapView, detents: [.medium]) {
+                        MapPicker()
+                            .environmentObject(model)
+                    }
                     
-                    Task {
-                        // Zooms offline map in to view all layer content.
-                        await mapViewProxy.setViewpointGeometry(zoomEnvelope)
+                    Spacer()
+                    
+                    Button {
+                        isShowingDeleteAlert = true
+                    } label: {
+                        Image(systemName: "trash")
+                    }
+                    .disabled(!model.canRemoveDownloadedMaps)
+                    .alert("Delete All Offline Areas", isPresented: $isShowingDeleteAlert) {
+                        Button("Delete", role: .destructive) {
+                            model.removeDownloadedMaps()
+                        }
+                    } message: {
+                        Text("Are you sure you want to delete all downloaded preplanned map areas?")
                     }
                 }
-                .overlay(alignment: .top) {
-                    mapNameOverlay
-                }
-                .toolbar {
-                    ToolbarItemGroup(placement: .bottomBar) {
-                        Spacer()
-                        
-                        Button("Select Map") {
-                            model.isShowingSelectMapView = true
-                        }
-                        .sheet(isPresented: $model.isShowingSelectMapView, detents: [.medium]) {
-                            MapPicker()
-                                .environmentObject(model)
-                        }
-                      
-                        Spacer()
-                        
-                        Button {
-                            isShowingDeleteAlert = true
-                        } label: {
-                            Image(systemName: "trash")
-                        }
-                        .disabled(!model.canRemoveDownloadedMaps)
-                        .alert("Delete All Offline Areas", isPresented: $isShowingDeleteAlert) {
-                            Button("Delete", role: .destructive) {
-                                model.removeDownloadedMaps()
-                            }
-                        } message: {
-                            Text("Are you sure you want to delete all downloaded preplanned map areas?")
-                        }
-                    }
-                }
-                .task {
-                    // Makes the offline map models when the view is first shown.
-                    await model.makeOfflineMapModels()
-                }
-        }
+            }
+            .task {
+                // Makes the offline map models when the view is first shown.
+                await model.makeOfflineMapModels()
+            }
     }
     
     var mapNameOverlay: some View {

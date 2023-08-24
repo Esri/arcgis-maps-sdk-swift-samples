@@ -67,10 +67,7 @@ extension DownloadPreplannedMapAreaView {
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .confirmationAction) {
-                        Button("Done") {
-                            model.isShowingSelectMapView = false
-                            dismiss()
-                        }
+                        Button("Done") { dismiss() }
                     }
                 }
             }

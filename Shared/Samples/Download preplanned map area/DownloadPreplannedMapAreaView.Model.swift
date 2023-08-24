@@ -58,12 +58,6 @@ extension DownloadPreplannedMapAreaView {
         /// A Boolean value indicating if the offline content can be deleted.
         @Published private(set) var canRemoveDownloadedMaps = false
         
-        /// A Boolean value indicating whether to select a map.
-        @Published var isShowingSelectMapView = false
-        
-        /// A Boolean value indicating if the selected offline map just changed.
-        @Published var offlineMapDidChange = false
-        
         init() {
             // Creates temp directory.
             temporaryDirectory = FileManager.createTemporaryDirectory()
@@ -114,7 +108,6 @@ extension DownloadPreplannedMapAreaView {
                 } else if case .success(let mmpk) = info.result {
                     // If we have already downloaded, then open the map in the mmpk.
                     offlineMap = mmpk.maps.first
-                    offlineMapDidChange = true
                 } else {
                     // If we have a failure, then keep the online map selected.
                     selectedMap = oldValue
