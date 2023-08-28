@@ -27,7 +27,8 @@ struct SampleDetailView: View {
     /// A Boolean value indicating whether a sample should use on-demand resources.
     var usesOnDemandResources: Bool {
 #if targetEnvironment(macCatalyst)
-        // Mac Catalyst isn't supported by `NSBundleResourceRequest`.
+        // Mac Catalyst isn't supported by `NSBundleResourceRequest`. Instead, Xcode
+        // put the offline data into the app bundle on Mac Catalyst.
         return false
 #else
         return sample.hasDependencies
