@@ -28,7 +28,7 @@ protocol Sample {
     /// The relative paths to the code snippets.
     var snippets: [String] { get }
     
-    /// The tags and relevant APIs of the sample.
+    /// The tags of the sample.
     var tags: Set<String> { get }
     
     /// A Boolean value that indicates whether a sample has offline data dependencies.

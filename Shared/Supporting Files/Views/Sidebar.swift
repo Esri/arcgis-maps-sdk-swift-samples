@@ -14,33 +14,28 @@
 
 import SwiftUI
 
-struct CategoryView: View {
+struct Sidebar: View {
     /// A Boolean value that indicates whether the user is searching.
     @Environment(\.isSearching) private var isSearching
-    
-    /// All samples retrieved from the Samples directory.
-    let samples: [Sample]
-    
-    /// The search query in the search bar.
-    @Binding private(set) var query: String
     
     /// A Boolean value that indicates whether to present the about view.
     @State private var isAboutViewPresented = false
     
-    /// The samples to display in the search list. Searching adjusts this value.
-    private var displayedSamples: [Sample] {
-        searchSamples()
-    }
+    /// All samples retrieved from the Samples directory.
+    let samples: [Sample]
+    
+    /// The search query.
+    let query: String
     
     var body: some View {
         Group {
             if !isSearching {
-                CategoryGridView(samples: samples)
+                CategoriesView(samples: samples)
+                    .navigationTitle("Categories")
             } else {
-                SampleListView(samples: displayedSamples)
+                SamplesSearchView(samples: samples, query: query)
             }
         }
-        .navigationTitle("Samples")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {

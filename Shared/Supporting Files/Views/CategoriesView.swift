@@ -14,7 +14,7 @@
 
 import SwiftUI
 
-struct CategoryGridView: View {
+struct CategoriesView: View {
     /// All samples that will be shown in the categories.
     private let samples: [Sample]
     
@@ -38,7 +38,7 @@ struct CategoryGridView: View {
             LazyVGrid(columns: columns) {
                 ForEach(categories, id: \.self) { category in
                     NavigationLink {
-                        SampleListView(samples: samples.filter { $0.category == category })
+                        CategoryList(samples: samples.filter { $0.category == category })
                             .navigationTitle(category)
                     } label: {
                         CategoryTitleView(category: category)
@@ -49,12 +49,29 @@ struct CategoryGridView: View {
                     .buttonStyle(.plain)
                 }
             }
-            .padding(8)
+            .padding()
         }
     }
 }
 
-private extension CategoryGridView {
+private extension CategoriesView {
+    struct CategoryList: View {
+        /// The samples in a category.
+        let samples: [Sample]
+        
+        var body: some View {
+            List(samples, id: \.name) { sample in
+                NavigationLink {
+                    SampleDetailView(sample: sample)
+                        .id(sample.name)
+                } label: {
+                    SampleRow(name: AttributedString(sample.name), description: AttributedString(sample.description))
+                }
+            }
+            .listStyle(.sidebar)
+        }
+    }
+    
     struct CategoryTitleView: View {
         /// The category name used to load the images from assets.
         let category: String
@@ -72,6 +89,7 @@ private extension CategoryGridView {
                         Image("\(category.replacingOccurrences(of: " ", with: "-"))-icon")
                             .colorInvert()
                         Text(category)
+                            .multilineTextAlignment(.center)
                             .foregroundColor(.white)
                             .offset(y: 45)
                     }

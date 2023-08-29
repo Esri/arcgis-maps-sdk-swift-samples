@@ -59,11 +59,7 @@ struct ManageOperationalLayersView: View {
                         isShowingSheet = true
                     }
                     .sheet(isPresented: $isShowingSheet, detents: [.medium], dragIndicatorVisibility: .visible) {
-                        NavigationView {
-                            ManageLayersSheetView(map: map)
-                                .navigationTitle("Manage Layers")
-                                .navigationBarTitleDisplayMode(.inline)
-                        }
+                        ManageLayersSheetView(map: map)
                     }
                 }
             }
@@ -85,67 +81,73 @@ struct ManageLayersSheetView: View {
     @State private var removedLayers: [Layer] = []
     
     var body: some View {
-        List {
-            Section(
-                header: Text("Operational Layers"),
-                footer: Text("Tap and hold on a list item to drag and reorder the layers.")
-            ) {
-                ForEach(operationalLayers, id: \.id) { layer in
-                    HStack {
-                        Button {
-                            // Remove layer from map on minus button press.
-                            map.removeOperationalLayer(layer)
-                            removedLayers.append(layer)
-                            operationalLayers.removeAll(where: { $0.id == layer.id })
-                        } label: {
+        VStack {
+            ZStack {
+                Text("Manage Layers")
+                    .bold()
+                HStack {
+                    Spacer()
+                    EditButton()
+                }
+            }
+            .padding([.top, .leading, .trailing])
+
+            List {
+                Section {
+                    ForEach(operationalLayers, id: \.id) { layer in
+                        HStack {
                             Image(systemName: "minus.circle.fill")
                                 .foregroundColor(.red)
                                 .imageScale(.large)
+                                .clipped()
+                                .onTapGesture {
+                                    // Remove layer from map on minus press.
+                                    map.removeOperationalLayer(layer)
+                                    removedLayers.append(layer)
+                                    operationalLayers.removeAll(where: { $0.id == layer.id })
+                                }
+                            Text(layer.name)
                         }
-                        Text(layer.name)
                     }
-                }
-                .onMove { fromOffsets, toOffset in
-                    // Reorder the map's operational layers on list item move.
-                    operationalLayers.move(fromOffsets: fromOffsets, toOffset: toOffset)
-                    map.removeAllOperationalLayers()
-                    map.addOperationalLayers(operationalLayers)
-                }
-                .onDelete { indexSet in
-                    // Remove layer from map on swipe to delete.
-                    for i in indexSet {
-                        map.removeOperationalLayer(operationalLayers[i])
-                        removedLayers.append(operationalLayers[i])
-                        operationalLayers.remove(at: i)
+                    .onMove { fromOffsets, toOffset in
+                        // Reorder the map's operational layers on list row move.
+                        operationalLayers.move(fromOffsets: fromOffsets, toOffset: toOffset)
+                        map.removeAllOperationalLayers()
+                        map.addOperationalLayers(operationalLayers)
                     }
+                } header: {
+                    Text("Operational Layers")
+                        #if targetEnvironment(macCatalyst)
+                        .padding(.top)
+                        #endif
+                } footer: {
+                    Text("Tap \"Edit\" to reorder the layers.")
                 }
-            }
-            
-            Section(header: Text("Removed Layers")) {
-                ForEach(removedLayers, id: \.id) { layer in
-                    HStack {
-                        Button {
-                            // Add layer to map on plus button press.
-                            map.addOperationalLayer(layer)
-                            operationalLayers.append(layer)
-                            removedLayers.removeAll(where: { $0.id == layer.id })
-                        } label: {
+                
+                Section {
+                    ForEach(removedLayers, id: \.id) { layer in
+                        HStack {
                             Image(systemName: "plus.circle.fill")
                                 .foregroundColor(.green)
                                 .imageScale(.large)
+                                .clipped()
+                                .onTapGesture {
+                                    // Add layer to map on plus press.
+                                    map.addOperationalLayer(layer)
+                                    operationalLayers.append(layer)
+                                    removedLayers.removeAll(where: { $0.id == layer.id })
+                                }
+                            Text(layer.name)
                         }
-                        Text(layer.name)
                     }
+                } header: {
+                    Text("Removed Layers")
                 }
             }
         }
+        .background(Color(.systemGroupedBackground))
         .onAppear {
             operationalLayers = map.operationalLayers
-        }
-        .toolbar {
-            ToolbarItem(placement: .confirmationAction) {
-                Button("Done") { dismiss() }
-            }
         }
     }
 }

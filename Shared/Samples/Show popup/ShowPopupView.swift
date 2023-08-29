@@ -46,25 +46,19 @@ struct ShowPopupView: View {
                             screenPoint: identifyScreenPoint,
                             tolerance: 12,
                             returnPopupsOnly: false
-                          ),
-                          let firstPopup = identifyResult.first?.popups.first
+                          )
                     else { return }
-                    
-                    self.popup = firstPopup
-                    self.showPopup = true
+                    self.popup = identifyResult.first?.popups.first
+                    self.showPopup = self.popup != nil
                 }
                 .floatingPanel(
                     selectedDetent: .constant(.full),
                     horizontalAlignment: .leading,
                     isPresented: $showPopup
-                ) {
-                    Group {
-                        if let popup = popup {
-                            PopupView(popup: popup, isPresented: $showPopup)
-                                .showCloseButton(true)
-                        }
-                    }
-                    .padding()
+                ) { [popup] in
+                    PopupView(popup: popup!, isPresented: $showPopup)
+                        .showCloseButton(true)
+                        .padding()
                 }
         }
     }

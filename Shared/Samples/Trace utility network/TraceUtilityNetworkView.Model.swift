@@ -167,6 +167,10 @@ extension TraceUtilityNetworkView {
                 @unknown default:
                     return
                 }
+            } else {
+                Task {
+                    await updateUserHint(withMessage: "An error occurred while adding element to the trace.")
+                }
             }
         }
         

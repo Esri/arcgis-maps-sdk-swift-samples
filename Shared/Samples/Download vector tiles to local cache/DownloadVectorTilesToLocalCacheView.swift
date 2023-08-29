@@ -141,6 +141,12 @@ struct DownloadVectorTilesToLocalCacheView: View {
                                                 }
                                             }
                                         }
+                                        .overlay(alignment: .top) {
+                                            Text("Vector tiles downloaded.")
+                                                .frame(maxWidth: .infinity, alignment: .center)
+                                                .padding(8)
+                                                .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
+                                        }
                                 }
                                 .highPriorityGesture(DragGesture())
                             }
@@ -169,7 +175,7 @@ private extension DownloadVectorTilesToLocalCacheView {
         private var vectorTiledLayerResults: ArcGISVectorTiledLayer!
         
         /// A URL to the directory temporarily storing all items.
-        private let temporaryDirectory = makeTemporaryDirectory()
+        private let temporaryDirectory = createTemporaryDirectory()
         
         /// A URL to the temporary directory to store the exported vector tile package.
         private let vtpkTemporaryURL: URL
@@ -279,12 +285,12 @@ private extension DownloadVectorTilesToLocalCacheView {
         
         /// Creates a temporary directory.
         /// - Returns: The URL to the temporary directory.
-        private static func makeTemporaryDirectory() -> URL {
+        private static func createTemporaryDirectory() -> URL {
             // swiftlint:disable:next force_try
             try! FileManager.default.url(
                 for: .itemReplacementDirectory,
                 in: .userDomainMask,
-                appropriateFor: Bundle.main.bundleURL,
+                appropriateFor: FileManager.default.temporaryDirectory,
                 create: true
             )
         }
