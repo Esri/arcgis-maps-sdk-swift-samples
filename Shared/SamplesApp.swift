@@ -23,9 +23,7 @@ struct SamplesApp: App {
     
     var body: some SwiftUI.Scene {
         WindowGroup {
-            ContentView(
-                samples: Self.samples
-            )
+            ContentView(samples: Self.samples)
         }
     }
 }
