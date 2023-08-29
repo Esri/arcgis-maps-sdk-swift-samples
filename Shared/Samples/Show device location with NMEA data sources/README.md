@@ -1,8 +1,8 @@
-# Display device location with NMEA data sources
+# Show device location with NMEA data sources
 
 Parse NMEA sentences and use the results to show device location on the map.
 
-![Image of Display device location with NMEA data sources](display-device-location-with-NMEA-data-sources.png)
+![Image of Show device location with NMEA data sources sample](show-device-location-with-NMEA-data-sources.png)
 
 ## Use case
 

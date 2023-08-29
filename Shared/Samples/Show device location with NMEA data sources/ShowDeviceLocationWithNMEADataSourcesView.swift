@@ -16,7 +16,7 @@ import SwiftUI
 import ArcGIS
 import ExternalAccessory
 
-struct DisplayDeviceLocationWithNMEADataSourcesView: View {
+struct ShowDeviceLocationWithNMEADataSourcesView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     

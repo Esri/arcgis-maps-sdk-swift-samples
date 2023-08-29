@@ -13,10 +13,10 @@
 // limitations under the License.
 
 import ArcGIS
-import SwiftUI
+import Combine
 import ExternalAccessory
 
-extension DisplayDeviceLocationWithNMEADataSourcesView {
+extension ShowDeviceLocationWithNMEADataSourcesView {
     /// The model used to store the geo model and other expensive objects used in this view.
     class Model: ObservableObject {
         /// A map with a navigation basemap.
@@ -33,19 +33,19 @@ extension DisplayDeviceLocationWithNMEADataSourcesView {
         }
         
         /// A Boolean value specifying if the "recenter" button should be disabled.
-        @Published var isRecenterButtonDisabled = true
+        @Published private(set) var isRecenterButtonDisabled = true
         
         /// A Boolean value specifying if the "reset" button should be disabled.
-        @Published var isResetButtonDisabled = true
+        @Published private(set) var isResetButtonDisabled = true
         
         /// A Boolean value specifying if the "source" button should be disabled.
-        @Published var isSourceMenuDisabled = false
+        @Published private(set) var isSourceMenuDisabled = false
         
         /// A string containing GPS accuracy.
-        @Published var accuracyStatus = "Accuracy info will be shown here."
+        @Published private(set) var accuracyStatus = "Accuracy info will be shown here."
         
         /// A string containing satellite information.
-        @Published var satelliteStatus = "Satellites info will be shown here."
+        @Published private(set) var satelliteStatus = "Satellites info will be shown here."
         
         /// The location display used in the map view.
         let locationDisplay: LocationDisplay = {
@@ -136,7 +136,7 @@ extension DisplayDeviceLocationWithNMEADataSourcesView {
             // Reset NMEA location data source.
             nmeaLocationDataSource = nil
             autoPanMode = .off
-
+            
             Task {
                 // Stop the location display, which in turn stop the data source.
                 await locationDisplay.dataSource.stop()
@@ -148,7 +148,7 @@ extension DisplayDeviceLocationWithNMEADataSourcesView {
             // Pause the mock data generation.
             mockNMEADataSource.stop()
         }
-
+        
         /// Starts the location data source and awaits location and satellite updates.
         /// - Parameter usingMockedData: Indicates that the location datasource should use mocked data.
         func start(usingMockedData: Bool = false) {
@@ -169,7 +169,7 @@ extension DisplayDeviceLocationWithNMEADataSourcesView {
             
             // Set the autopan mode to `.recenter`
             autoPanMode = .recenter
-
+            
             Task {
                 // Start the data source
                 try await locationDisplay.dataSource.start()
