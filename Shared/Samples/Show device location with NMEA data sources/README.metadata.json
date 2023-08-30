@@ -33,7 +33,7 @@
     "snippets": [
         "ShowDeviceLocationWithNMEADataSourcesView.swift",
         "ShowDeviceLocationWithNMEADataSourcesView.Model.swift",
-        "SimulatedNMEAData.swift"
+        "SimulatedNMEASentenceFeed.swift"
     ],
     "title": "Show device location with NMEA data sources"
 }

@@ -13,10 +13,9 @@
 // limitations under the License.
 
 import Foundation
-import ArcGIS
 
-/// A data source simulating NMEA data.
-class SimulatedNMEAData {
+/// A data source simulating a hardware that emits NMEA data.
+class SimulatedNMEASentenceFeed {
     /// The playback speed multiplier.
     private let playbackSpeed: Double
     
@@ -26,8 +25,8 @@ class SimulatedNMEAData {
     /// A timer to periodically provide NMEA data updates.
     private var timer: Timer?
     
-    /// The NMEA location data source to push data to.
-    var nmeaLocationDataSource: NMEALocationDataSource?
+    /// An asynchronous stream of NMEA data.
+    var messages: AsyncStream<Data>!
     
     /// Loads locations from NMEA sentences.
     /// Reads mock NMEA sentences line by line and group them by the timestamp.
@@ -54,56 +53,65 @@ class SimulatedNMEAData {
                 }
             }
         }
-        // Create an iterator for the mock data generation.
-        nmeaDataIterator = CircularIterator(elements: dataBySeconds)
-        playbackSpeed = speed
+        
+        if dataBySeconds.isEmpty {
+            fatalError("Fail to create mock NMEA data from local file.")
+        } else {
+            // Create an iterator for the mock data generation.
+            nmeaDataIterator = CircularIterator(elements: dataBySeconds)
+            playbackSpeed = speed
+        }
     }
     
-    func start(with nmeaLocationDataSource: NMEALocationDataSource) {
-        guard !nmeaDataIterator.elements.isEmpty else { return }
-        self.nmeaLocationDataSource = nmeaLocationDataSource
-        
+    /// Starts the mock NMEA data feed.
+    func start() {
         // Invalidate timer to stop previous mock data generation.
         timer?.invalidate()
+        
         // Time interval in second.
-        let interval: TimeInterval = 1 / playbackSpeed
-        // Create a new timer.
-        let newTimer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { [weak self] _ in
-            guard let self = self else { return }
-            let data = self.nmeaDataIterator.next()!
-            
-            // Push the data to the data source.
-            self.nmeaLocationDataSource?.pushData(data)
+        let interval = 1 / playbackSpeed
+        
+        messages = AsyncStream { continuation in
+            // Create a new timer.
+            timer = Timer.scheduledTimer(
+                withTimeInterval: interval,
+                repeats: true
+            ) { [weak self] _ in
+                guard let self = self else { return }
+                let data = self.nmeaDataIterator.next()!
+                continuation.yield(data)
+            }
         }
-        timer = newTimer
     }
     
+    /// Stops the mock NMEA data feed.
     func stop() {
         timer?.invalidate()
         timer = nil
+        messages = nil
     }
     
     deinit {
         stop()
     }
-}
-
-/// A generic circular iterator.
-private struct CircularIterator<Element>: IteratorProtocol {
-    let elements: [Element]
-    private var elementIterator: Array<Element>.Iterator
     
-    init(elements: [Element]) {
-        self.elements = elements
-        elementIterator = elements.makeIterator()
-    }
-    
-    mutating func next() -> Element? {
-        if let next = elementIterator.next() {
-            return next
-        } else {
+    /// A generic circular iterator.
+    struct CircularIterator<Element>: IteratorProtocol {
+        let elements: [Element]
+        private var elementIterator: Array<Element>.Iterator
+        
+        init(elements: [Element]) {
+            self.elements = elements
             elementIterator = elements.makeIterator()
-            return elementIterator.next()
+        }
+        
+        mutating func next() -> Element? {
+            if let next = elementIterator.next() {
+                return next
+            } else {
+                elementIterator = elements.makeIterator()
+                return elementIterator.next()
+            }
         }
     }
 }

@@ -24,10 +24,11 @@ struct ShowDeviceLocationWithNMEADataSourcesView: View {
     @State private var isShowingAlert = false
     
     /// An error returned from the `EAAccessoryManager`.
-    @State private var error: AccessoryError?
+    @State private var error: AccessoryError? {
+        didSet { isShowingAlert = error != nil }
+    }
     
     var body: some View {
-        // Creates a map view to display the map.
         MapView(map: model.map)
             .locationDisplay(model.locationDisplay)
             .overlay(alignment: .top) {
@@ -62,7 +63,11 @@ struct ShowDeviceLocationWithNMEADataSourcesView: View {
                     .disabled(model.isResetButtonDisabled)
                 }
             }
-            .accessoryAlert(isPresented: $isShowingAlert, presentingError: error)
+            .alert("Error", isPresented: $isShowingAlert, presenting: error) { _ in
+                EmptyView()
+            } message: { error in
+                Text(error.detail)
+            }
             .onDisappear {
                 // Reset the model to stop the data source and observations.
                 model.reset()
@@ -77,7 +82,6 @@ struct ShowDeviceLocationWithNMEADataSourcesView: View {
             error = AccessoryError(
                 detail: "There are no supported Bluetooth devices connected. Open up \"Bluetooth Settings\", connect to your supported device, and try again."
             )
-            isShowingAlert = true
         
             // NOTE: The code below shows how to use the built-in Bluetooth picker
             // to pair a device. However there are a couple of issues that
@@ -108,7 +112,6 @@ struct ShowDeviceLocationWithNMEADataSourcesView: View {
 //                    default:
 //                        self.error = AccessoryError(detail: "Selecting an accessory failed for an unknown reason.")
 //                    }
-//                    isShowingAlert = (self.error != nil)
 //                } else if let (accessory, protocolString) = model.firstSupportedAccessoryWithProtocol() {
 //                    // Proceed with supported and connected accessory, and
 //                    // ignore other accessories that aren't supported.
@@ -122,21 +125,4 @@ struct ShowDeviceLocationWithNMEADataSourcesView: View {
 /// An error relating to NMEA accessories.
 struct AccessoryError: Error {
     let detail: String
-}
-
-extension View {
-    /// Shows an alert with the title "Error", the error's `details`
-    /// as the message, and an OK button.
-    /// - Parameters:
-    ///   - isPresented: A binding to a Boolean value that determines whether
-    ///   to present the alert. When the user taps one of the alert’s actions,
-    ///   the system sets this value to false and dismisses the alert.
-    ///   - error: An ``AccessoryError`` to be shown in the alert.
-    func accessoryAlert(isPresented: Binding<Bool>, presentingError error: AccessoryError?) -> some View {
-        alert("Error", isPresented: isPresented, presenting: error) { _ in
-            EmptyView()
-        } message: { error in
-            Text(error.detail)
-        }
-    }
 }

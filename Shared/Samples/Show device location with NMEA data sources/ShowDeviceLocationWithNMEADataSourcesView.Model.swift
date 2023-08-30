@@ -19,6 +19,8 @@ import ExternalAccessory
 extension ShowDeviceLocationWithNMEADataSourcesView {
     /// The model used to store the geo model and other expensive objects used in this view.
     class Model: ObservableObject {
+        // MARK: Properties
+        
         /// A map with a navigation basemap.
         let map = Map(basemapStyle: .arcGISNavigation)
         
@@ -59,46 +61,48 @@ extension ShowDeviceLocationWithNMEADataSourcesView {
         
         /// A mock data source to read NMEA sentences from a local file, and generate
         /// mock NMEA data every fixed amount of time.
-        private let mockNMEADataSource = SimulatedNMEAData(nmeaSourceFile: Bundle.main.url(forResource: "Redlands", withExtension: "nmea")!, speed: 1.5)
+        private let mockNMEADataSource = SimulatedNMEASentenceFeed(
+            nmeaSourceFile: Bundle.main.url(forResource: "Redlands", withExtension: "nmea")!,
+            speed: 1.5
+        )
         
         /// A format style for the accuracy distance string.
-        private let formatStyle: Measurement<UnitLength>.FormatStyle = {
-            Measurement<UnitLength>.FormatStyle.measurement(
-                width: .abbreviated,
-                usage: .general,
-                numberFormatStyle: .number.precision(.fractionLength(1))
-            )
-        }()
+        private let formatStyle = Measurement<UnitLength>.FormatStyle.measurement(
+            width: .abbreviated,
+            usage: .general,
+            numberFormatStyle: .number.precision(.fractionLength(1))
+        )
         
-        private let listFormatStyle: ListFormatStyle<StringStyle, Array> = {
-            .list(type: .and, width: .narrow)
-        }()
+        /// A format style for concatenating an array of text.
+        private let listFormatStyle = ListFormatStyle<StringStyle, Array>.list(type: .and, width: .narrow)
         
         /// The protocols used in this sample to get NMEA sentences.
         /// They are also specified in the `Info.plist` to allow the app to
         /// communicate with external accessory hardware.
-        private let supportedProtocolStrings = [
+        private let supportedProtocolStrings: Set = [
             "com.bad-elf.gps",
             "com.eos-gnss.positioningsource",
             "com.geneq.sxbluegpssource"
         ]
         
-        /// The observation tasks created during starting the data source.
-        private var observationTasks = [Task<Void, Never>]()
+        /// The tasks created during starting the data source.
+        private var tasks = [Task<Void, Never>]()
+        
+        // MARK: Methods
         
         deinit {
-            cancelObservationTasks()
+            clearTasks()
         }
         
-        /// Cancel and remove tasks from list of observation tasks.
-        private func cancelObservationTasks() {
-            observationTasks.forEach { task in
+        /// Cancels and removes tasks.
+        private func clearTasks() {
+            tasks.forEach { task in
                 task.cancel()
             }
-            observationTasks.removeAll()
+            tasks.removeAll()
         }
         
-        /// Get the first connected and supported Bluetooth accessory with its
+        /// Gets the first connected and supported Bluetooth accessory with its
         /// protocol string.
         /// - Returns: A tuple of the accessory and its protocol,
         /// or `nil` if no supported accessory exists.
@@ -123,7 +127,7 @@ extension ShowDeviceLocationWithNMEADataSourcesView {
             }
         }
         
-        /// Reset the sample, stops the data source, cancels tasks, and resets button states and status strings.
+        /// Resets the sample, stops the data source, cancels tasks, and resets button states and status strings.
         func reset() {
             // Reset buttons states.
             isResetButtonDisabled = true
@@ -142,8 +146,8 @@ extension ShowDeviceLocationWithNMEADataSourcesView {
                 await locationDisplay.dataSource.stop()
             }
             
-            // Cancel the autoPan, location, and satellite observation tasks.
-            cancelObservationTasks()
+            // Cancel and remove the autopan, location, and satellite observation tasks.
+            clearTasks()
             
             // Pause the mock data generation.
             mockNMEADataSource.stop()
@@ -154,6 +158,9 @@ extension ShowDeviceLocationWithNMEADataSourcesView {
         func start(usingMockedData: Bool = false) {
             if usingMockedData {
                 nmeaLocationDataSource = NMEALocationDataSource(receiverSpatialReference: .wgs84)
+                // Start the mock data generation.
+                mockNMEADataSource.start()
+                tasks.append(handleNMEAMessagesTask)
             }
             
             // Set NMEA location data source for location display.
@@ -161,11 +168,6 @@ extension ShowDeviceLocationWithNMEADataSourcesView {
             // Set buttons states.
             isSourceMenuDisabled = true
             isResetButtonDisabled = false
-            
-            // Start the data source and location display.
-            if usingMockedData {
-                mockNMEADataSource.start(with: nmeaLocationDataSource)
-            }
             
             // Set the autopan mode to `.recenter`
             autoPanMode = .recenter
@@ -176,7 +178,7 @@ extension ShowDeviceLocationWithNMEADataSourcesView {
             }
             
             // Kick off tasks to monitor autoPan, locations, and satellites.
-            observationTasks.append(
+            tasks.append(
                 contentsOf: [
                     observeAutoPanTask,
                     observeLocationsTask,
@@ -185,8 +187,20 @@ extension ShowDeviceLocationWithNMEADataSourcesView {
             )
         }
         
+        /// A detached task to push the mock data to the NMEA location data source.
+        /// This simulate the case where the NMEA messages coming from a hardware
+        /// need to be manually pushed to the data source.
+        private var handleNMEAMessagesTask: Task<Void, Never> {
+            Task.detached { [unowned self] in
+                for await data in mockNMEADataSource.messages {
+                    // Push the data to the data source.
+                    nmeaLocationDataSource?.pushData(data)
+                }
+            }
+        }
+        
         /// A detached task observing location display autoPan changes.
-        var observeAutoPanTask: Task<Void, Never> {
+        private var observeAutoPanTask: Task<Void, Never> {
             Task.detached { [unowned self] in
                 for await mode in locationDisplay.$autoPanMode {
                     await MainActor.run {
@@ -197,7 +211,7 @@ extension ShowDeviceLocationWithNMEADataSourcesView {
         }
         
         /// A detached task observing location data source location changes.
-        var observeLocationsTask: Task<Void, Never> {
+        private var observeLocationsTask: Task<Void, Never> {
             Task.detached { [unowned self] in
                 for await location in nmeaLocationDataSource.locations {
                     guard let nmeaLocation = location as? NMEALocation else { return }
@@ -225,22 +239,20 @@ extension ShowDeviceLocationWithNMEADataSourcesView {
         }
         
         /// A detached task observing NMEA location data source satellite changes.
-        var observeSatellitesTask: Task<Void, Never> {
+        private var observeSatellitesTask: Task<Void, Never> {
             Task.detached { [unowned self] in
                 for await satellites in nmeaLocationDataSource.satellites {
                     guard nmeaLocationDataSource.status == .started else { return }
                     
                     // Update the satellites info status text.
-                    let satelliteSystems = satellites.filter {
-                        $0.system != nil
-                    }
+                    let satelliteSystems = satellites.compactMap(\.system)
                     
-                    let satelliteLabels = Set(satelliteSystems
-                        .map(\.system!.label))
+                    let satelliteLabels = Set(satelliteSystems)
+                        .map(\.label)
                         .sorted()
                         .formatted(listFormatStyle)
                     
-                    let satelliteIDs = satelliteSystems
+                    let satelliteIDs = satellites
                         .map { String($0.id) }
                         .formatted(listFormatStyle)
                     

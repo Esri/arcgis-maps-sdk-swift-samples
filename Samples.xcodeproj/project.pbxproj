@@ -103,10 +103,10 @@
 		218F35B829C28F4A00502022 /* AuthenticateWithOAuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218F35B329C28F4A00502022 /* AuthenticateWithOAuthView.swift */; };
 		218F35C229C290BF00502022 /* AuthenticateWithOAuthView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 218F35B329C28F4A00502022 /* AuthenticateWithOAuthView.swift */; };
 		4D126D6D29CA1B6000CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D126D6929CA1B6000CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift */; };
-		4D126D7229CA1E1800CFB7A7 /* SimulatedNMEAData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D126D7129CA1E1800CFB7A7 /* SimulatedNMEAData.swift */; };
+		4D126D7229CA1E1800CFB7A7 /* SimulatedNMEASentenceFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D126D7129CA1E1800CFB7A7 /* SimulatedNMEASentenceFeed.swift */; };
 		4D126D7329CA1EFD00CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4D126D6929CA1B6000CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift */; };
-		4D126D7429CA1EFD00CFB7A7 /* SimulatedNMEAData.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4D126D7129CA1E1800CFB7A7 /* SimulatedNMEAData.swift */; };
-		4D126D7C29CA3E6000CFB7A7 /* Redlands.nmea in Resources */ = {isa = PBXBuildFile; fileRef = 4D126D7B29CA3E6000CFB7A7 /* Redlands.nmea */; settings = {ASSET_TAGS = (DisplayDeviceLocationWithNmeaDataSources, ); }; };
+		4D126D7429CA1EFD00CFB7A7 /* SimulatedNMEASentenceFeed.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4D126D7129CA1E1800CFB7A7 /* SimulatedNMEASentenceFeed.swift */; };
+		4D126D7C29CA3E6000CFB7A7 /* Redlands.nmea in Resources */ = {isa = PBXBuildFile; fileRef = 4D126D7B29CA3E6000CFB7A7 /* Redlands.nmea */; settings = {ASSET_TAGS = (ShowDeviceLocationWithNmeaDataSources, ); }; };
 		4D126D7E29CA43D200CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D126D7D29CA43D200CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.Model.swift */; };
 		4D2ADC4329C26D05003B367F /* AddDynamicEntityLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2ADC3F29C26D05003B367F /* AddDynamicEntityLayerView.swift */; };
 		4D2ADC4729C26D2C003B367F /* AddDynamicEntityLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4D2ADC3F29C26D05003B367F /* AddDynamicEntityLayerView.swift */; };
@@ -290,7 +290,7 @@
 			files = (
 				4DD058102A0D3F6B00A59B34 /* ShowDeviceLocationWithNMEADataSourcesView.Model.swift in Copy Source Code Files */,
 				4D126D7329CA1EFD00CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift in Copy Source Code Files */,
-				4D126D7429CA1EFD00CFB7A7 /* SimulatedNMEAData.swift in Copy Source Code Files */,
+				4D126D7429CA1EFD00CFB7A7 /* SimulatedNMEASentenceFeed.swift in Copy Source Code Files */,
 				79D84D152A81718F00F45262 /* AddCustomDynamicEntityDataSourceView.swift in Copy Source Code Files */,
 				1C56B5E72A82C057000381DA /* DisplayPointsUsingClusteringFeatureReductionView.swift in Copy Source Code Files */,
 				D7ABA3002A3288970021822B /* ShowViewshedFromGeoelementInSceneView.swift in Copy Source Code Files */,
@@ -447,7 +447,7 @@
 		1CAF831B2A20305F000E1E60 /* ShowUtilityAssociationsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowUtilityAssociationsView.swift; sourceTree = "<group>"; };
 		218F35B329C28F4A00502022 /* AuthenticateWithOAuthView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticateWithOAuthView.swift; sourceTree = "<group>"; };
 		4D126D6929CA1B6000CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowDeviceLocationWithNMEADataSourcesView.swift; sourceTree = "<group>"; };
-		4D126D7129CA1E1800CFB7A7 /* SimulatedNMEAData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulatedNMEAData.swift; sourceTree = "<group>"; };
+		4D126D7129CA1E1800CFB7A7 /* SimulatedNMEASentenceFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulatedNMEASentenceFeed.swift; sourceTree = "<group>"; };
 		4D126D7B29CA3E6000CFB7A7 /* Redlands.nmea */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Redlands.nmea; sourceTree = "<group>"; };
 		4D126D7D29CA43D200CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowDeviceLocationWithNMEADataSourcesView.Model.swift; sourceTree = "<group>"; };
 		4D2ADC3F29C26D05003B367F /* AddDynamicEntityLayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDynamicEntityLayerView.swift; sourceTree = "<group>"; };
@@ -771,15 +771,15 @@
 		00CCB8A6285D059300BBAB70 /* Portal Data */ = {
 			isa = PBXGroup;
 			children = (
-				D701D7242A37C7E4006FF0C8 /* 07d62a792ab6496d9b772a24efea45d0 */,
-				D77572AC2A295DC100F490CD /* d1453556d91e46dea191c20c398b82cd */,
-				1C965C4629DBA879002F8536 /* 681d6f7694644709a7c830ec57a2d72b */,
-				00D4EF8128638BF100B9CC30 /* cb1b20748a9f4d128dad8a87244e3e37 */,
-				792222DB2A81AA5D00619FFE /* a8a942c228af4fac96baa78ad60f511f */,
 				00C94A0228B53DCC004E42D9 /* 7c4c679ab06a4df19dc497f577f111bd */,
+				D701D7242A37C7E4006FF0C8 /* 07d62a792ab6496d9b772a24efea45d0 */,
 				00D4EF8328638BF100B9CC30 /* 15a7cbd3af1e47cfa5d2c6b93dc44fc2 */,
 				00D4EF8E28638BF100B9CC30 /* 68ec42517cdd439e81b036210483e8e7 */,
+				1C965C4629DBA879002F8536 /* 681d6f7694644709a7c830ec57a2d72b */,
+				792222DB2A81AA5D00619FFE /* a8a942c228af4fac96baa78ad60f511f */,
+				00D4EF8128638BF100B9CC30 /* cb1b20748a9f4d128dad8a87244e3e37 */,
 				4D126D7629CA3B3F00CFB7A7 /* d5bad9f4fee9483791e405880fb466da */,
+				D77572AC2A295DC100F490CD /* d1453556d91e46dea191c20c398b82cd */,
 				F111CCC2288B63DB00205358 /* e1f3a7254cb845b09450f54937c16061 */,
 			);
 			path = "Portal Data";
@@ -965,7 +965,7 @@
 			children = (
 				4D126D6929CA1B6000CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift */,
 				4D126D7D29CA43D200CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.Model.swift */,
-				4D126D7129CA1E1800CFB7A7 /* SimulatedNMEAData.swift */,
+				4D126D7129CA1E1800CFB7A7 /* SimulatedNMEASentenceFeed.swift */,
 			);
 			path = "Show device location with NMEA data sources";
 			sourceTree = "<group>";
@@ -1486,8 +1486,8 @@
 					AddRasterFromFile,
 					AnimateImagesWithImageOverlay,
 					ChangeCameraController,
-					DisplayDeviceLocationWithNmeaDataSources,
 					DisplayMapFromMobileMapPackage,
+					ShowDeviceLocationWithNmeaDataSources,
 					ShowViewshedFromGeoelementInScene,
 				);
 				LastSwiftUpdateCheck = 1330;
@@ -1645,7 +1645,7 @@
 				D7ABA2F92A32579C0021822B /* MeasureDistanceInSceneView.swift in Sources */,
 				E004A6E028466279002A1FE6 /* ShowCalloutView.swift in Sources */,
 				E000E763286A0B18005D87C5 /* CutGeometryView.swift in Sources */,
-				4D126D7229CA1E1800CFB7A7 /* SimulatedNMEAData.swift in Sources */,
+				4D126D7229CA1E1800CFB7A7 /* SimulatedNMEASentenceFeed.swift in Sources */,
 				001C6DE127FE8A9400D472C2 /* AppSecrets.swift.masque in Sources */,
 				E0D04FF228A5390000747989 /* DownloadPreplannedMapAreaView.Model.swift in Sources */,
 				00CCB8A5285BAF8700BBAB70 /* OnDemandResource.swift in Sources */,
