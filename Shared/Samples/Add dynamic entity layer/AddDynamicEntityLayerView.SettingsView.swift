@@ -19,33 +19,48 @@ extension AddDynamicEntityLayerView {
         /// The view model for the sample.
         @EnvironmentObject private var model: Model
         
+        /// The action to dismiss the settings sheet.
+        @Environment(\.dismiss) private var dismiss: DismissAction
+        
         var body: some View {
-            List {
-                Section("Track display properties") {
-                    Toggle("Track Lines", isOn: $model.showsTrackLine)
-                    Toggle("Previous Observations", isOn: $model.showsPreviousObservations)
-                }
-                
-                Section("Observations") {
-                    VStack {
-                        HStack {
-                            Text("Observations per track")
-                            Spacer()
-                            Text(model.maximumObservations.formatted())
-                                .foregroundColor(.secondary)
-                        }
-                        Slider(value: $model.maximumObservations, in: model.maxObservationRange, step: 1)
+            NavigationView {
+                List {
+                    Section("Track display properties") {
+                        Toggle("Track Lines", isOn: $model.showsTrackLine)
+                        Toggle("Previous Observations", isOn: $model.showsPreviousObservations)
                     }
-                    HStack {
-                        Spacer()
-                        Button("Purge All Observations") {
-                            Task {
-                                try? await model.streamService.purgeAll()
+                    
+                    Section("Observations") {
+                        VStack {
+                            HStack {
+                                Text("Observations per track")
+                                Spacer()
+                                Text(model.maximumObservations.formatted())
+                                    .foregroundColor(.secondary)
                             }
+                            Slider(value: $model.maximumObservations, in: model.maxObservationRange, step: 1)
                         }
-                        Spacer()
+                        HStack {
+                            Spacer()
+                            Button("Purge All Observations") {
+                                Task {
+                                    try? await model.streamService.purgeAll()
+                                }
+                            }
+                            Spacer()
+                        }
                     }
                 }
+                .navigationTitle("Dynamic Entity Settings")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .confirmationAction) {
+                        Button("Done") {
+                            dismiss()
+                        }
+                    }
+                }
+                .navigationViewStyle(.stack)
             }
         }
     }
