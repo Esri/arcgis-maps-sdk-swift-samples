@@ -54,7 +54,7 @@ struct AddDynamicEntityLayerView: View {
                         }
                     }
                     Spacer()
-                    settingsSheet
+                    settingsButton
                 }
             }
             .overlay(alignment: .top) {
@@ -77,23 +77,20 @@ struct AddDynamicEntityLayerView: View {
     }
     
     @ViewBuilder private var settingsButton: some View {
-        Button("Dynamic Entity Settings") {
+        let button = Button("Dynamic Entity Settings") {
             isShowingSettings = true
         }
-    }
-    
-    @ViewBuilder private var settingsSheet: some View {
         if #available(iOS 16, *),
            horizontalSizeClass == .compact,
            verticalSizeClass == .regular {
-            settingsButton
+            button
                 .sheet(isPresented: $isShowingSettings) {
                     SettingsView()
                         .environmentObject(model)
-                        .presentationDetents([.fraction(0.4)])
+                        .presentationDetents([.fraction(0.5)])
                 }
         } else {
-            settingsButton
+            button
                 .sheet(isPresented: $isShowingSettings, detents: [.medium]) {
                     SettingsView()
                         .environmentObject(model)
