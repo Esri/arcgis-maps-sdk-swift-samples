@@ -34,7 +34,7 @@ Tap "Source" to choose between a simulated location data source or any data sour
 
 ## About the data
 
-A list of NMEA sentences is used to initialize a `SimulatedNMEADataSource` object. This simulated data source provides NMEA data periodically and allows the sample to be used without a GNSS accessory.
+A list of NMEA sentences is used to initialize a `SimulatedNMEASentenceFeed` object. This simulated data source provides NMEA data periodically and allows the sample to be used without a GNSS accessory.
 
 The route taken in this sample features a [2-minute driving trip around Redlands, CA](https://arcgis.com/home/item.html?id=d5bad9f4fee9483791e405880fb466da).
 
