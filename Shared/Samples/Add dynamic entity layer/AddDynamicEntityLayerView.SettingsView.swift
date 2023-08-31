@@ -23,44 +23,55 @@ extension AddDynamicEntityLayerView {
         @Environment(\.dismiss) private var dismiss: DismissAction
         
         var body: some View {
-            NavigationView {
-                List {
-                    Section("Track display properties") {
-                        Toggle("Track Lines", isOn: $model.showsTrackLine)
-                        Toggle("Previous Observations", isOn: $model.showsPreviousObservations)
-                    }
-                    
-                    Section("Observations") {
-                        VStack {
-                            HStack {
-                                Text("Observations per track")
-                                Spacer()
-                                Text(model.maximumObservations.formatted())
-                                    .foregroundColor(.secondary)
-                            }
-                            Slider(value: $model.maximumObservations, in: model.maxObservationRange, step: 1)
-                        }
-                        HStack {
-                            Spacer()
-                            Button("Purge All Observations") {
-                                Task {
-                                    try? await model.streamService.purgeAll()
-                                }
-                            }
-                            Spacer()
-                        }
-                    }
+            if #available(iOS 16, *) {
+                NavigationStack {
+                    root
                 }
-                .navigationTitle("Dynamic Entity Settings")
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .confirmationAction) {
-                        Button("Done") {
-                            dismiss()
-                        }
-                    }
+            } else {
+                NavigationView {
+                    root
                 }
                 .navigationViewStyle(.stack)
+            }
+        }
+        
+        @ViewBuilder var root: some View {
+            Form {
+                Section("Track display properties") {
+                    Toggle("Track Lines", isOn: $model.showsTrackLine)
+                    Toggle("Previous Observations", isOn: $model.showsPreviousObservations)
+                }
+                
+                Section("Observations") {
+                    VStack {
+                        HStack {
+                            Text("Observations per track")
+                            Spacer()
+                            Text(model.maximumObservations.formatted())
+                                .foregroundColor(.secondary)
+                        }
+                        Slider(value: $model.maximumObservations, in: model.maxObservationRange, step: 1)
+                    }
+                    HStack {
+                        Spacer()
+                        Button("Purge All Observations") {
+                            Task {
+                                try? await model.streamService.purgeAll()
+                            }
+                        }
+                        Spacer()
+                    }
+                }
+            }
+            .toggleStyle(.switch)
+            .navigationTitle("Dynamic Entity Settings")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") {
+                        dismiss()
+                    }
+                }
             }
         }
     }

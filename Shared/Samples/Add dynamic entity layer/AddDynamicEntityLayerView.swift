@@ -20,10 +20,10 @@ struct AddDynamicEntityLayerView: View {
     @StateObject private var model = Model()
     
     /// A Boolean value indicating whether the settings view should be presented.
-    @State var isShowingSettings = false
+    @State private var isShowingSettings = false
     
     /// The initial viewpoint for the map.
-    @State var viewpoint = Viewpoint(
+    @State private var viewpoint = Viewpoint(
         center: Point(x: -12452361.486, y: 4949774.965),
         scale: 200_000
     )
@@ -32,12 +32,6 @@ struct AddDynamicEntityLayerView: View {
     var isConnected: Bool {
         model.streamService.connectionStatus == .connected
     }
-    
-    /// The horizontal size class of the environment.
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    
-    /// The vertical size class of the environment.
-    @Environment(\.verticalSizeClass) private var verticalSizeClass
     
     var body: some View {
         // Creates a map view to display the map.
@@ -80,20 +74,23 @@ struct AddDynamicEntityLayerView: View {
         let button = Button("Dynamic Entity Settings") {
             isShowingSettings = true
         }
-        if #available(iOS 16, *),
-           horizontalSizeClass == .compact,
-           verticalSizeClass == .regular {
+        let settingsView = SettingsView()
+            .environmentObject(model)
+        if #available(iOS 16, *) {
             button
-                .sheet(isPresented: $isShowingSettings) {
-                    SettingsView()
-                        .environmentObject(model)
+                .popover(isPresented: $isShowingSettings, arrowEdge: .bottom) {
+                    settingsView
                         .presentationDetents([.fraction(0.5)])
+#if targetEnvironment(macCatalyst)
+                        .frame(minWidth: 300, minHeight: 270)
+#else
+                        .frame(minWidth: 320, minHeight: 390)
+#endif
                 }
         } else {
             button
                 .sheet(isPresented: $isShowingSettings, detents: [.medium]) {
-                    SettingsView()
-                        .environmentObject(model)
+                    settingsView
                 }
         }
     }
