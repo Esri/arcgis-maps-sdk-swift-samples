@@ -10,7 +10,7 @@ You can directly control what users see within a specific scene view to give a m
 
 ## How to use the sample
 
-The sample initializes showing the 3D buildings OpenStreetMap layer. Tap the "Load" button to load an additional scene layer that contains more detailed buildings. Notice how the two scene layers overlap and clip into each other. Tap the "Filter" button to set a `SceneLayerPolygonFilter` and filter out the OpenStreetMap buildings within the extent of the detailed buildings scene. Notice how the OSM buildings within and intersecting the extent of the detailed buildings layer are hidden. Tap the "Reset" button to hide the detailed buildings scene layer and clear the OSM buildings filter.
+The sample initializes showing the 3D buildings OpenStreetMap layer. Tap the "Add Buildings" button to load an additional scene layer that contains more detailed buildings. Notice how the two scene layers overlap and clip into each other. Tap the "Filter" button to set a `SceneLayerPolygonFilter` and filter out the OpenStreetMap buildings within the extent of the detailed buildings scene. Notice how the OSM buildings within and intersecting the extent of the detailed buildings layer are hidden. Tap the "Reset" button to hide the detailed buildings scene layer and clear the OSM buildings filter.
 
 ## How it works
 

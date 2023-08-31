@@ -77,7 +77,7 @@ private extension FilterFeaturesInSceneView {
         private let sanFranciscoExtentGraphic: Graphic
         
         /// The filter state for the scene view.
-        @Published private(set) var filterState: FilterState = .load
+        @Published private(set) var filterState: FilterState = .addBuildings
         
         init() {
             // Create basemap.
@@ -138,9 +138,9 @@ private extension FilterFeaturesInSceneView {
         /// Handles the filter state of the sample by either loading, filtering, or reseting the scene.
         func handleFilterState() {
             switch filterState {
-            case .load:
+            case .addBuildings:
                 // Show the detailed buildings scene layer and extent graphic.
-                loadScene()
+                addBuildings()
             case .filter:
                 // Hide buildings within the detailed building extent so they don't clip.
                 filterScene()
@@ -154,7 +154,7 @@ private extension FilterFeaturesInSceneView {
         }
         
         /// Loads the detailed buildings scene layer and adds an extent graphic.
-        private func loadScene() {
+        private func addBuildings() {
             scene.addOperationalLayer(buildingsSceneLayer)
             graphicsOverlay.addGraphic(sanFranciscoExtentGraphic)
         }
@@ -188,12 +188,12 @@ private extension FilterFeaturesInSceneView {
     
     /// The different states for filtering features in a scene.
     enum FilterState: Equatable {
-        case load, filter, reset
+        case addBuildings, filter, reset
         
         /// A human-readable label for the filter state.
         var label: String {
             switch self {
-            case .load: return "Load"
+            case .addBuildings: return "Add Buildings"
             case .filter: return "Filter"
             case .reset: return "Reset"
             }
@@ -202,12 +202,12 @@ private extension FilterFeaturesInSceneView {
         /// The next filter state to apply to a scene.
         func next() -> Self {
             switch self {
-            case .load:
+            case .addBuildings:
                 return .filter
             case .filter:
                 return .reset
             case .reset:
-                return .load
+                return .addBuildings
             }
         }
     }
