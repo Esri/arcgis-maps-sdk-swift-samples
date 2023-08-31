@@ -19,9 +19,6 @@ struct FilterFeaturesInSceneView: View {
     /// The view model for this sample.
     @StateObject private var model = Model()
     
-    /// The filter state for the scene view.
-    @State private var filterState: FilterState = .load
-    
     /// A Boolean value indicating whether to show an error alert.
     @State private var isShowingAlert = false
     
@@ -41,39 +38,12 @@ struct FilterFeaturesInSceneView: View {
             }
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
-                    Button(filterState.label) {
-                        model.handleFilterState(filterState)
-                        filterState = filterState.next()
+                    Button(model.filterState.label) {
+                        model.handleFilterState()
                     }
                 }
             }
             .alert(isPresented: $isShowingAlert, presentingError: error)
-    }
-    
-    /// The different states for filtering features in a scene.
-    enum FilterState: Equatable {
-        case load, filter, reset
-        
-        /// A human-readable label for the filter state.
-        var label: String {
-            switch self {
-            case .load: return "Load"
-            case .filter: return "Filter"
-            case .reset: return "Reset"
-            }
-        }
-        
-        /// The next filter state to apply to a scene.
-        func next() -> Self {
-            switch self {
-            case .load:
-                return .filter
-            case .filter:
-                return .reset
-            case .reset:
-                return .load
-            }
-        }
     }
 }
 
@@ -105,6 +75,9 @@ private extension FilterFeaturesInSceneView {
         
         /// A red extent boundary graphic that represents the full extent of the detailed buildings scene layer.
         private let sanFranciscoExtentGraphic: Graphic
+        
+        /// The filter state for the scene view.
+        @Published private(set) var filterState: FilterState = .load
         
         init() {
             // Create basemap.
@@ -163,8 +136,7 @@ private extension FilterFeaturesInSceneView {
         }
         
         /// Handles the filter state of the sample by either loading, filtering, or reseting the scene.
-        /// - Parameter filterState: The filter state of the sample.
-        func handleFilterState(_ filterState: FilterState) {
+        func handleFilterState() {
             switch filterState {
             case .load:
                 // Show the detailed buildings scene layer and extent graphic.
@@ -176,6 +148,9 @@ private extension FilterFeaturesInSceneView {
                 // Reset the scene to its original state.
                 resetScene()
             }
+            
+            // Set the next filter state to be applied to the scene.
+            filterState = filterState.next()
         }
         
         /// Loads the detailed buildings scene layer and adds an extent graphic.
@@ -208,6 +183,32 @@ private extension FilterFeaturesInSceneView {
             osmBuildings.polygonFilter?.removeAllPolygons()
             // Remove red extent boundary graphic from graphics overlay.
             graphicsOverlay.removeAllGraphics()
+        }
+    }
+    
+    /// The different states for filtering features in a scene.
+    enum FilterState: Equatable {
+        case load, filter, reset
+        
+        /// A human-readable label for the filter state.
+        var label: String {
+            switch self {
+            case .load: return "Load"
+            case .filter: return "Filter"
+            case .reset: return "Reset"
+            }
+        }
+        
+        /// The next filter state to apply to a scene.
+        func next() -> Self {
+            switch self {
+            case .load:
+                return .filter
+            case .filter:
+                return .reset
+            case .reset:
+                return .load
+            }
         }
     }
 }
