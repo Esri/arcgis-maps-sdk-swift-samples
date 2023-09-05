@@ -24,6 +24,17 @@ struct SampleDetailView: View {
     /// An object to manage on-demand resources for a sample with dependencies.
     @StateObject private var onDemandResource: OnDemandResource
     
+    /// A Boolean value indicating whether a sample should use on-demand resources.
+    var usesOnDemandResources: Bool {
+#if targetEnvironment(macCatalyst)
+        // Mac Catalyst isn't supported by `NSBundleResourceRequest`. Instead, Xcode
+        // put the offline data into the app bundle on Mac Catalyst.
+        return false
+#else
+        return sample.hasDependencies
+#endif
+    }
+    
     init(sample: Sample) {
         self.sample = sample
         self._onDemandResource = StateObject(
@@ -33,7 +44,7 @@ struct SampleDetailView: View {
     
     var body: some View {
         Group {
-            if sample.hasDependencies {
+            if usesOnDemandResources {
                 // 'onDemandResource' is created in this branch.
                 Group {
                     switch onDemandResource.requestState {
