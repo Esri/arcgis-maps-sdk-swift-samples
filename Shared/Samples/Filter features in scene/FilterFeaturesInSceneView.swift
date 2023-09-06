@@ -50,6 +50,7 @@ struct FilterFeaturesInSceneView: View {
 private extension FilterFeaturesInSceneView {
     /// The model used to store the geo model and other expensive objects
     /// used in this view.
+    @MainActor
     class Model: ObservableObject {
         /// The scene for this sample.
         let scene: ArcGIS.Scene
