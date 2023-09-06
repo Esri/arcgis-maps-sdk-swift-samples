@@ -26,7 +26,7 @@ struct DownloadPreplannedMapAreaView: View {
     @StateObject private var model = Model()
     
     var body: some View {
-        MapView(map: model.currentMap, viewpoint: model.currentMap.initialViewpoint?.zoomedIn())
+        MapView(map: model.currentMap, viewpoint: model.currentMap.initialViewpoint?.expanded())
             .overlay(alignment: .top) {
                 mapNameOverlay
             }
@@ -75,7 +75,9 @@ struct DownloadPreplannedMapAreaView: View {
 }
 
 private extension Viewpoint {
-    func zoomedIn() -> Viewpoint {
+    /// Expands the viewpoint's geometry.
+    /// - Returns: A viewpoint with it's geometry expanded by 50%.
+    func expanded() -> Viewpoint {
         let builder = EnvelopeBuilder(envelope: self.targetGeometry.extent)
         builder.expand(by: 0.5)
         let zoomEnvelope = builder.toGeometry()
