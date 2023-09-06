@@ -26,7 +26,7 @@ struct DownloadPreplannedMapAreaView: View {
     @StateObject private var model = Model()
     
     var body: some View {
-        MapView(map: model.currentMap,viewpoint: model.currentMap.initialViewpoint?.zoomedIn())
+        MapView(map: model.currentMap, viewpoint: model.currentMap.initialViewpoint?.zoomedIn())
             .overlay(alignment: .top) {
                 mapNameOverlay
             }
