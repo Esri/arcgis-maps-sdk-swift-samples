@@ -62,7 +62,7 @@ extension ShowDeviceLocationWithNMEADataSourcesView {
         
         /// A mock data source to read NMEA sentences from a local file, and generate
         /// mock NMEA data every fixed amount of time.
-        private let mockNMEADataSource = FileNMEASentenceReader(
+        private let mockNMEAFeed = FileNMEASentenceReader(
             nmeaSourceFile: Bundle.main.url(forResource: "Redlands", withExtension: "nmea")!,
             speed: 1.5
         )
@@ -149,7 +149,7 @@ extension ShowDeviceLocationWithNMEADataSourcesView {
             clearTasks()
             
             // Pause the mock data generation.
-            mockNMEADataSource.stop()
+            mockNMEAFeed.stop()
         }
         
         /// Starts the location data source and awaits location and satellite updates.
@@ -158,7 +158,7 @@ extension ShowDeviceLocationWithNMEADataSourcesView {
             if usingMockedData {
                 nmeaLocationDataSource = NMEALocationDataSource(receiverSpatialReference: .wgs84)
                 // Start the mock data generation.
-                mockNMEADataSource.start()
+                mockNMEAFeed.start()
                 tasks.append(handleNMEAMessagesTask)
             }
             
@@ -191,7 +191,7 @@ extension ShowDeviceLocationWithNMEADataSourcesView {
         /// need to be manually pushed to the data source.
         private var handleNMEAMessagesTask: Task<Void, Never> {
             Task.detached { [unowned self] in
-                for await data in mockNMEADataSource.messages {
+                for await data in mockNMEAFeed.messages {
                     // Push the data to the data source.
                     nmeaLocationDataSource?.pushData(data)
                 }
