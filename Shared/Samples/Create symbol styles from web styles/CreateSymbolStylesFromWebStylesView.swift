@@ -12,23 +12,46 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import SwiftUI
 import ArcGIS
+import SwiftUI
 
 struct CreateSymbolStylesFromWebStylesView: View {
-    /// The display scale of this environment.
+    /// The display scale of the environment.
     @Environment(\.displayScale) private var displayScale
     
-    /// The view model for the sample.
-    @StateObject private var model = Model()
+    /// A map with a light gray basemap centered on LA County.
+    @State private var map: Map = {
+        let map = Map(basemapStyle: .arcGISLightGray)
+        map.referenceScale = 1e5
+        map.initialViewpoint = Viewpoint(
+            latitude: 34.28301,
+            longitude: -118.44186,
+            scale: 1e4
+        )
+        return map
+    }()
     
-    /// A Boolean value indicating whether the legends are shown.
+    /// A feature layer with LA County Points of Interest service.
+    @State private var featureLayer: FeatureLayer = {
+        let featureTable = ServiceFeatureTable(url: .laPointsOfInterest)
+        return FeatureLayer(featureTable: featureTable)
+    }()
+    
+    /// The legend items for the different symbols from the selected symbol style.
+    @State private var legendItems: [LegendItem] = []
+    
+    /// A Boolean value indicating whether the legend sheet is showing.
     @State private var isShowingLegend = false
     
     var body: some View {
-        MapView(map: model.map)
-            .task {
-                await model.getSymbols(scale: displayScale)
+        MapView(map: map)
+            .onScaleChanged { scale in
+                // Prevent the symbols from scaling when the map zooms out too far.
+                featureLayer.scalesSymbols = scale >= 8e4
+            }
+            .task(id: displayScale) {
+                // Update the symbols when the display scale changes.
+                await updateSymbols(scale: displayScale)
             }
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
@@ -42,14 +65,14 @@ struct CreateSymbolStylesFromWebStylesView: View {
             }
     }
     
-    ///
+    /// The legend list that describes what each symbol represents.
     private var symbolStylesList: some View {
         NavigationView {
-            List(model.legendItems, id: \.name) { legend in
+            List(legendItems, id: \.name) { legendItem in
                 Label {
-                    Text(legend.name)
+                    Text(legendItem.name)
                 } icon: {
-                    Image(uiImage: legend.image)
+                    Image(uiImage: legendItem.image)
                 }
             }
             .navigationTitle("Symbol Styles")
@@ -68,139 +91,188 @@ struct CreateSymbolStylesFromWebStylesView: View {
 }
 
 private extension CreateSymbolStylesFromWebStylesView {
-    /// The view model for the sample.
-    @MainActor
-    class Model: ObservableObject {
-        /// A map with a light gray basemap.
-        var map: Map = {
-            let map = Map(basemapStyle: .arcGISLightGray)
-            // map.referenceScale = 1e5
-            map.initialViewpoint = Viewpoint(
-                latitude: 34.28301,
-                longitude: -118.44186,
-                scale: 1e4
-            )
-            return map
-        }()
-        
-        /// The Esri 2D point symbol style created from a web style.
-        private let symbolStyle = SymbolStyle(styleName: "Esri2DPointSymbolsStyle",
-                                              portal: .arcGISOnline(connection: .anonymous)
+    /// Updates the symbols using the symbol style.
+    /// - Parameter scale: The display scale for the swatch images.
+    private func updateSymbols(scale: CGFloat) async {
+        // An Esri 2D point symbol style created from a web style.
+        let esri2DPointSymbolStyle = SymbolStyle(
+            styleName: "Esri2DPointSymbolsStyle",
+            portal: .arcGISOnline(connection: .anonymous)
         )
         
-        /// The legends for elements in the utility network.
-        @Published private(set) var legendItems: [LegendItem] = []
+        // Get the symbols and associated information using the symbol style and types.
+        let symbolDetails = await getSymbols(
+            symbolStyle: esri2DPointSymbolStyle,
+            symbolTypes: SymbolType.allCases
+        )
         
-        /// A Boolean value indicating whether to show an alert.
-        @Published var isShowingAlert = false
-        
-        /// The error shown in the alert.
-        @Published var error: Error? {
-            didSet { isShowingAlert = error != nil }
-        }
-        
-        func getSymbols(scale: CGFloat) async {
-            var symbolDetails = [Symbol: (String, [String])]()
-            
-            // Creates swatches from each symbol.
-            let legendItems: [LegendItem] = await withTaskGroup(of: LegendItem?.self) { group in
-                for category in SymbolType.allCases {
-                    let symbolName = category.symbolName
-                    group.addTask {
-                        async let symbol = self.symbolStyle.symbol(forKeys: [symbolName])
-                        if let swatch = try? await symbol.makeSwatch(scale: scale) {
-                            return LegendItem(name: symbolName, image: swatch)
-                        } else {
-                            return nil
-                        }
+        // Create the legend list with symbol swatches and related details.
+        let legendItems: [LegendItem] = await withTaskGroup(of: LegendItem?.self) { group in
+            for detail in symbolDetails {
+                group.addTask {
+                    // Get the image swatch for the symbol using the display scale.
+                    if let swatch = try? await detail.symbol.makeSwatch(scale: scale) {
+                        return LegendItem(name: detail.name, image: swatch)
+                    } else {
+                        return nil
                     }
                 }
-                var items: [LegendItem] = []
-                for await legendItem in group where legendItem != nil {
-                    items.append(legendItem!)
-                }
-                return items
             }
             
-            // Updates the legend items in the model.
-            self.legendItems = legendItems.sorted(using: KeyPathComparator(\.name))
+            var items: [LegendItem] = []
+            for await legendItem in group where legendItem != nil {
+                items.append(legendItem!)
+            }
+            return items
         }
+        
+        // Update the legend list items.
+        self.legendItems = legendItems.sorted(using: KeyPathComparator(\.name))
+        
+        // Create unique values and set them to the feature layer's renderer.
+        featureLayer.renderer = makeUniqueValueRenderer(fieldNames: ["cat2"], symbolDetails: symbolDetails)
+        
+        // Add the feature layer with updated symbols to the map.
+        map.removeAllOperationalLayers()
+        map.addOperationalLayer(featureLayer)
     }
-}
-
-/// A struct for displaying legend info in a list row.
-struct LegendItem {
-    /// The description label of the legend item.
-    let name: String
-    /// The image swatch of the legend item.
-    let image: UIImage
-}
-
-enum SymbolType: CaseIterable, Comparable {
-    case atm, beach, campground, cityHall, hospital, library, park, placeOfWorship, policeStation, postOffice, school, trail
     
-    /// The names of the symbols in the web style.
-    var symbolName: String {
+    /// Get certain types of symbols from a symbol style.
+    /// - Parameters:
+    ///   - symbolStyle: A `SymbolStyle` object from a web style.
+    ///   - symbolTypes: The types of symbols to search for in the symbol style.
+    /// - Returns: An `Array` of `SymbolDetail`s which contain a symbol and associated information.
+    private func getSymbols(symbolStyle: SymbolStyle, symbolTypes: [SymbolType]) async -> [SymbolDetail] {
+        // Get the symbol and details for each symbol type.
+        let symbolDetails: [SymbolDetail] = await withTaskGroup(of: [SymbolDetail]?.self) { group in
+            for type in symbolTypes {
+                group.addTask {
+                    // Get the symbol from the symbol style using the symbol's name from the type.
+                    async let symbol = symbolStyle.symbol(forKeys: [type.name])
+                    if let symbolDetail = try? await [SymbolDetail(
+                        name: type.name,
+                        categoryNames: type.categoryNames,
+                        symbol: symbol
+                    )] {
+                        return symbolDetail
+                    } else {
+                        return nil
+                    }
+                }
+            }
+            
+            var details: [SymbolDetail] = []
+            for await detail in group where detail != nil {
+                details.append(contentsOf: detail!)
+            }
+            return details
+        }
+        return symbolDetails
+    }
+
+    /// Creates a `UniqueValueRenderer` to render a feature layer with symbol styles.
+    /// - Parameters:
+    ///   - fieldNames: The attributes to match the unique values against.
+    ///   - symbolDetails: An `Array` of symbols and their associated information.
+    /// - Returns: An `UniqueValueRenderer` object.
+    private func makeUniqueValueRenderer(fieldNames: [String], symbolDetails: [SymbolDetail]) -> UniqueValueRenderer {
+        let uniqueValues = symbolDetails.flatMap { detail in
+            // Create a unique value for each category value of symbol so the
+            // field name matches to all category values.
+            detail.categoryNames.map { value in
+                UniqueValue(description: "", label: detail.name, symbol: detail.symbol, values: [value])
+            }
+        }
+        return UniqueValueRenderer(fieldNames: fieldNames, uniqueValues: uniqueValues)
+    }
+    
+    /// A struct containing a symbol and its associated information.
+    private struct SymbolDetail {
+        /// The name of the symbol in the web style.
         let name: String
-        switch self {
-        case .atm:
-            name = "atm"
-        case .beach:
-            name = "beach"
-        case .campground:
-            name = "campground"
-        case .cityHall:
-            name = "city-hall"
-        case .hospital:
-            name = "hospital"
-        case .library:
-            name = "library"
-        case .park:
-            name = "park"
-        case .placeOfWorship:
-            name = "place-of-worship"
-        case .policeStation:
-            name = "police-station"
-        case .postOffice:
-            name = "post-office"
-        case .school:
-            name = "school"
-        case .trail:
-            name = "trail"
-        }
-        return name
+        /// The category names of features represented by the symbol.
+        let categoryNames: [String]
+        /// The symbol.
+        let symbol: Symbol
     }
     
-    /// The category names of features represented by a type of symbol.
-    var symbolCategoryValues: [String] {
-        let values: [String]
-        switch self {
-        case .atm:
-            values = ["Banking and Finance"]
-        case .beach:
-            values = ["Beaches and Marinas"]
-        case .campground:
-            values = ["Campgrounds"]
-        case .cityHall:
-            values = ["City Halls", "Government Offices"]
-        case .hospital:
-            values = ["Hospitals and Medical Centers", "Health Screening and Testing", "Health Centers", "Mental Health Centers"]
-        case .library:
-            values = ["Libraries"]
-        case .park:
-            values = ["Parks and Gardens"]
-        case .placeOfWorship:
-            values = ["Churches"]
-        case .policeStation:
-            values = ["Sheriff and Police Stations"]
-        case .postOffice:
-            values = ["DHL Locations", "Federal Express Locations"]
-        case .school:
-            values = ["Public High Schools", "Public Elementary Schools", "Private and Charter Schools"]
-        case .trail:
-            values = ["Trails"]
+    /// A struct for displaying legend info in a list row.
+    private struct LegendItem {
+        /// The description label of the legend item.
+        let name: String
+        /// The image swatch of the legend item.
+        let image: UIImage
+    }
+    
+    /// The symbol types
+    private enum SymbolType: CaseIterable, Comparable {
+        case atm, beach, campground, cityHall, hospital, library, park, placeOfWorship, policeStation, postOffice, school, trail
+        
+        /// The names of the symbols in the web style.
+        var name: String {
+            switch self {
+            case .atm:
+                return "atm"
+            case .beach:
+                return "beach"
+            case .campground:
+                return "campground"
+            case .cityHall:
+                return "city-hall"
+            case .hospital:
+                return "hospital"
+            case .library:
+                return "library"
+            case .park:
+                return "park"
+            case .placeOfWorship:
+                return "place-of-worship"
+            case .policeStation:
+                return "police-station"
+            case .postOffice:
+                return "post-office"
+            case .school:
+                return "school"
+            case .trail:
+                return "trail"
+            }
         }
-        return values
+        
+        /// The category names of features represented by a type of symbol.
+        var categoryNames: [String] {
+            switch self {
+            case .atm:
+                return ["Banking and Finance"]
+            case .beach:
+                return ["Beaches and Marinas"]
+            case .campground:
+                return ["Campgrounds"]
+            case .cityHall:
+                return ["City Halls", "Government Offices"]
+            case .hospital:
+                return ["Hospitals and Medical Centers", "Health Screening and Testing", "Health Centers", "Mental Health Centers"]
+            case .library:
+                return ["Libraries"]
+            case .park:
+                return ["Parks and Gardens"]
+            case .placeOfWorship:
+                return ["Churches"]
+            case .policeStation:
+                return ["Sheriff and Police Stations"]
+            case .postOffice:
+                return ["DHL Locations", "Federal Express Locations"]
+            case .school:
+                return ["Public High Schools", "Public Elementary Schools", "Private and Charter Schools"]
+            case .trail:
+                return ["Trails"]
+            }
+        }
     }
 }
 
+private extension URL {
+    /// LA County Points of Interest service URL.
+    static var laPointsOfInterest: URL {
+        URL(string: "http://services.arcgis.com/V6ZHFr6zdgNZuVG0/arcgis/rest/services/LA_County_Points_of_Interest/FeatureServer/0")!
+    }
+}
