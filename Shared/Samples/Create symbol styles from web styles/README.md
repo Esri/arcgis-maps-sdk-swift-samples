@@ -2,7 +2,7 @@
 
 Create symbol styles from a style file hosted on a portal.
 
-![Image of create symbol styles from web styles](CreateSymbolStylesFromWebStyles.png)
+![Image of create symbol styles from web styles](create-symbol-styles-from-web-styles.png)
 
 ## Use case
 
@@ -17,8 +17,7 @@ The sample displays a map with a set of symbols that represent the categories of
 1. Create a `FeatureLayer` and add it to the map.
 2. Create a `UniqueValueRenderer` and set it to the feature layer.
 3. Create a `SymbolStyle` from a portal by passing in the web style name and portal URL.
-       * Note: passing `null` as the portal will default to ArcGIS.com.
-4. Search for symbols in the symbol style by name using `symbolStyle.getSymbolAsync(symbolName)`.
+4. Search for symbols in the symbol style by name using `SymbolStyle.symbol(forKeys:)`.
 5. Create a `Symbol` from the search result.
 6. Create `UniqueValue` objects for each symbol with defined values to map the symbol to features on the feature layer.
 7. Add each `UniqueValue` to the `UniqueValueRenderer`.
