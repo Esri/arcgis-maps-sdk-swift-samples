@@ -2,7 +2,9 @@
     "category": "Visualization",
     "description": "Create symbol styles from a style file hosted on a portal.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "create-symbol-styles-from-web-styles.png"
+    ],
     "keywords": [
         "renderer",
         "symbol",
