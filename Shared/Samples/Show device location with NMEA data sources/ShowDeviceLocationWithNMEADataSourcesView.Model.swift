@@ -129,7 +129,7 @@ extension ShowDeviceLocationWithNMEADataSourcesView {
         }
         
         /// Resets the sample, stops the data source, cancels tasks, and resets button states and status strings.
-        func reset() {
+        func reset() async {
             // Reset buttons states.
             isResetButtonDisabled = true
             isSourceMenuDisabled = false
@@ -142,10 +142,8 @@ extension ShowDeviceLocationWithNMEADataSourcesView {
             nmeaLocationDataSource = nil
             autoPanMode = .off
             
-            Task {
-                // Stop the location display, which in turn stop the data source.
-                await locationDisplay.dataSource.stop()
-            }
+            // Stop the location display, which in turn stop the data source.
+            await locationDisplay.dataSource.stop()
             
             // Cancel and remove the autopan, location, and satellite observation tasks.
             clearTasks()
