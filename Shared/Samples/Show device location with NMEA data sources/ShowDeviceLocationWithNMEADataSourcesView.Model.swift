@@ -18,37 +18,26 @@ import ExternalAccessory
 
 extension ShowDeviceLocationWithNMEADataSourcesView {
     /// The model used to store the geo model and other expensive objects used in this view.
-    @MainActor
     class Model: ObservableObject {
         // MARK: Properties
         
         /// A map with a navigation basemap.
         let map = Map(basemapStyle: .arcGISNavigation)
         
-        /// The current autopan mode.
-        var autoPanMode: LocationDisplay.AutoPanMode {
-            get {
-                locationDisplay.autoPanMode
-            }
-            set {
-                locationDisplay.autoPanMode = newValue
-            }
-        }
-        
         /// A Boolean value specifying if the "recenter" button should be disabled.
-        @Published private(set) var isRecenterButtonDisabled = true
+        @MainActor @Published private(set) var isRecenterButtonDisabled = true
         
         /// A Boolean value specifying if the "reset" button should be disabled.
-        @Published private(set) var isResetButtonDisabled = true
+        @MainActor @Published private(set) var isResetButtonDisabled = true
         
         /// A Boolean value specifying if the "source" button should be disabled.
-        @Published private(set) var isSourceMenuDisabled = false
+        @MainActor @Published private(set) var isSourceMenuDisabled = false
         
         /// A string containing GPS accuracy.
-        @Published private(set) var accuracyStatus = "Accuracy info will be shown here."
+        @MainActor @Published private(set) var accuracyStatus = "Accuracy info will be shown here."
         
         /// A string containing satellite information.
-        @Published private(set) var satelliteStatus = "Satellites info will be shown here."
+        @MainActor @Published private(set) var satelliteStatus = "Satellites info will be shown here."
         
         /// The location display used in the map view.
         let locationDisplay: LocationDisplay = {
@@ -64,7 +53,7 @@ extension ShowDeviceLocationWithNMEADataSourcesView {
         /// mock NMEA data every fixed amount of time.
         private let mockNMEAFeed = FileNMEASentenceReader(
             url: Bundle.main.url(forResource: "Redlands", withExtension: "nmea")!,
-            interval: 1.5
+            interval: 0.66
         )
         
         /// A format style for the accuracy distance string.
@@ -124,11 +113,11 @@ extension ShowDeviceLocationWithNMEADataSourcesView {
         func accessoryDidConnect(connectedAccessory: EAAccessory, protocolString: String) {
             if let dataSource = NMEALocationDataSource(accessory: connectedAccessory, protocol: protocolString) {
                 nmeaLocationDataSource = dataSource
-                start()
             }
         }
         
         /// Resets the sample, stops the data source, cancels tasks, and resets button states and status strings.
+        @MainActor
         func reset() async {
             // Reset buttons states.
             isResetButtonDisabled = true
@@ -140,7 +129,7 @@ extension ShowDeviceLocationWithNMEADataSourcesView {
             
             // Reset NMEA location data source.
             nmeaLocationDataSource = nil
-            autoPanMode = .off
+            locationDisplay.autoPanMode = .off
             
             // Stop the location display, which in turn stop the data source.
             await locationDisplay.dataSource.stop()
@@ -154,7 +143,8 @@ extension ShowDeviceLocationWithNMEADataSourcesView {
         
         /// Starts the location data source and awaits location and satellite updates.
         /// - Parameter usingMockedData: Indicates that the location datasource should use mocked data.
-        func start(usingMockedData: Bool = false) {
+        @MainActor
+        func start(usingMockedData: Bool = false) async throws {
             if usingMockedData {
                 nmeaLocationDataSource = NMEALocationDataSource(receiverSpatialReference: .wgs84)
                 // Start the mock data generation.
@@ -169,12 +159,10 @@ extension ShowDeviceLocationWithNMEADataSourcesView {
             isResetButtonDisabled = false
             
             // Set the autopan mode to `.recenter`
-            autoPanMode = .recenter
+            locationDisplay.autoPanMode = .recenter
             
-            Task {
-                // Start the data source
-                try await locationDisplay.dataSource.start()
-            }
+            // Start the data source
+            try await locationDisplay.dataSource.start()
             
             // Kick off tasks to monitor autoPan, locations, and satellites.
             tasks.append(

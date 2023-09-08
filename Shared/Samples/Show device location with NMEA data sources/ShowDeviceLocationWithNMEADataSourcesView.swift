@@ -23,9 +23,14 @@ struct ShowDeviceLocationWithNMEADataSourcesView: View {
     /// A Boolean value indicating whether to show an alert.
     @State private var isShowingAlert = false
     
-    /// An error returned from the `EAAccessoryManager`.
-    @State private var error: AccessoryError? {
-        didSet { isShowingAlert = error != nil }
+    /// An error from the `EAAccessoryManager`.
+    @State private var accessoryError: AccessoryError? {
+        didSet { isShowingAlert = accessoryError != nil }
+    }
+    
+    /// An error from starting the location data source.
+    @State private var locationDataSourceError: Error? {
+        didSet { isShowingAlert = locationDataSourceError != nil }
     }
     
     var body: some View {
@@ -44,42 +49,62 @@ struct ShowDeviceLocationWithNMEADataSourcesView: View {
                 ToolbarItemGroup(placement: .bottomBar) {
                     Menu("Source") {
                         Button("Mock Data") {
-                            model.start(usingMockedData: true)
+                            Task {
+                                do {
+                                    try await model.start(usingMockedData: true)
+                                } catch {
+                                    self.locationDataSourceError = error
+                                }
+                            }
                         }
                         Button("Device") {
-                            selectDevice()
+                            Task {
+                                do {
+                                    try selectDevice()
+                                    try await model.start()
+                                } catch let error as AccessoryError {
+                                    self.accessoryError = error
+                                } catch {
+                                    self.locationDataSourceError = error
+                                }
+                            }
                         }
                     }
                     .disabled(model.isSourceMenuDisabled)
                     Spacer()
                     Button("Recenter") {
-                        model.autoPanMode = .recenter
+                        model.locationDisplay.autoPanMode = .recenter
                     }
                     .disabled(model.isRecenterButtonDisabled)
                     Spacer()
                     Button("Reset") {
-                        model.reset()
+                        Task {
+                            await model.reset()
+                        }
                     }
                     .disabled(model.isResetButtonDisabled)
                 }
             }
-            .alert("Error", isPresented: $isShowingAlert, presenting: error) { _ in
+            .alert("Error", isPresented: $isShowingAlert, presenting: accessoryError) { _ in
                 EmptyView()
             } message: { error in
                 Text(error.detail)
             }
+            .alert(isPresented: $isShowingAlert, presentingError: locationDataSourceError)
             .onDisappear {
                 // Reset the model to stop the data source and observations.
-                model.reset()
+                Task {
+                    await model.reset()
+                }
             }
     }
     
-    func selectDevice() {
+    func selectDevice() throws {
         if let (accessory, protocolString) = model.firstSupportedAccessoryWithProtocol() {
             // Use the supported accessory directly if it's already connected.
             model.accessoryDidConnect(connectedAccessory: accessory, protocolString: protocolString)
         } else {
-            error = AccessoryError(
+            throw AccessoryError(
                 detail: "There are no supported Bluetooth devices connected. Open up \"Bluetooth Settings\", connect to your supported device, and try again."
             )
         
@@ -123,6 +148,6 @@ struct ShowDeviceLocationWithNMEADataSourcesView: View {
 }
 
 /// An error relating to NMEA accessories.
-struct AccessoryError: Error {
+private struct AccessoryError: Error {
     let detail: String
 }
