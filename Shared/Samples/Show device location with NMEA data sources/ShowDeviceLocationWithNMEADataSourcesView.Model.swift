@@ -62,7 +62,7 @@ extension ShowDeviceLocationWithNMEADataSourcesView {
         
         /// A mock data source to read NMEA sentences from a local file, and generate
         /// mock NMEA data every fixed amount of time.
-        private let mockNMEADataSource = SimulatedNMEASentenceFeed(
+        private let mockNMEADataSource = FileNMEASentenceReader(
             nmeaSourceFile: Bundle.main.url(forResource: "Redlands", withExtension: "nmea")!,
             speed: 1.5
         )

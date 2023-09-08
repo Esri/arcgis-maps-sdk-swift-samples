@@ -15,7 +15,7 @@
 import Foundation
 
 /// A data source simulating a hardware that emits NMEA data.
-class SimulatedNMEASentenceFeed {
+class FileNMEASentenceReader {
     /// The playback speed multiplier.
     private let playbackSpeed: Double
     
