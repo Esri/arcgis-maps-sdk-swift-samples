@@ -16,8 +16,8 @@ import Foundation
 
 /// A data source simulating a hardware that emits NMEA data.
 class FileNMEASentenceReader {
-    /// The playback speed multiplier.
-    private let playbackSpeed: Double
+    /// The playback time interval.
+    private let interval: TimeInterval
     
     /// An iterator to hold and loop through the mock NMEA data.
     private var nmeaDataIterator: CircularIterator<Data>
@@ -32,12 +32,12 @@ class FileNMEASentenceReader {
     /// Reads mock NMEA sentences line by line and group them by the timestamp.
     /// - Parameters:
     ///   - nmeaSourceFile: The URL of the NMEA source file.
-    ///   - speed: The playback speed multiplier.
-    init(nmeaSourceFile: URL, speed: Double = 1.0) {
+    ///   - speed: The playback time interval in second.
+    init(url: URL, interval: TimeInterval = 1.0) {
         // An empty container for NMEA data.
         var dataBySeconds = [Data]()
         
-        if let nmeaStrings = try? String(contentsOf: nmeaSourceFile, encoding: .utf8).components(separatedBy: .newlines).filter({ !$0.isEmpty }) {
+        if let nmeaStrings = try? String(contentsOf: url, encoding: .utf8).components(separatedBy: .newlines).filter({ !$0.isEmpty }) {
             // A temporary container for the NMEA sentences at current timestamp.
             var currentTimestamp = [String]()
             for nmeaLine in nmeaStrings {
@@ -59,7 +59,7 @@ class FileNMEASentenceReader {
         } else {
             // Create an iterator for the mock data generation.
             nmeaDataIterator = CircularIterator(elements: dataBySeconds)
-            playbackSpeed = speed
+            self.interval = interval
         }
     }
     
@@ -67,9 +67,6 @@ class FileNMEASentenceReader {
     func start() {
         // Invalidate timer to stop previous mock data generation.
         timer?.invalidate()
-        
-        // Time interval in second.
-        let interval = 1 / playbackSpeed
         
         messages = AsyncStream { continuation in
             // Create a new timer.
