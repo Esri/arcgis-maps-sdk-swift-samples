@@ -33,12 +33,42 @@ struct StyleFeaturesWithCustomDictionaryView: View {
         return FeatureLayer(featureTable: restaurantFeatureTable)
     }()
     
+    /// The current dictionary style.
+    @State private var dictionaryStyle: DictionaryStyle = .web
+    
     init() {
         map.addOperationalLayer(featureLayer)
     }
     
     var body: some View {
-        MapView(map: map)
+        VStack {
+            MapView(map: map)
+            
+            Picker("Dictionary Symbol Style", selection: $dictionaryStyle) {
+                ForEach(DictionaryStyle.allCases, id: \.self) { style in
+                    Text(style.label)
+                }
+            }
+            .pickerStyle(.segmented)
+            .padding()
+            .onChange(of: dictionaryStyle) { _ in
+            }
+        }
+    }
+}
+
+private extension StyleFeaturesWithCustomDictionaryView {
+    // The custom dictionary styles to choose from.
+    enum DictionaryStyle: CaseIterable {
+        case web, file
+        
+        /// A human-readable label for the dictionary style.
+        var label: String {
+            switch self {
+            case .web: return "Web Style"
+            case .file: return "Style File"
+            }
+        }
     }
 }
 
