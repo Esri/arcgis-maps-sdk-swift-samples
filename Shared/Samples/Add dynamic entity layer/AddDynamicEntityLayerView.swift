@@ -20,10 +20,10 @@ struct AddDynamicEntityLayerView: View {
     @StateObject private var model = Model()
     
     /// A Boolean value indicating whether the settings view should be presented.
-    @State var isShowingSettings = false
+    @State private var isShowingSettings = false
     
     /// The initial viewpoint for the map.
-    @State var viewpoint = Viewpoint(
+    @State private var viewpoint = Viewpoint(
         center: Point(x: -12452361.486, y: 4949774.965),
         scale: 200_000
     )
@@ -48,13 +48,7 @@ struct AddDynamicEntityLayerView: View {
                         }
                     }
                     Spacer()
-                    Button("Dynamic Entity Settings") {
-                        isShowingSettings = true
-                    }
-                    .sheet(isPresented: $isShowingSettings, detents: [.medium], dragIndicatorVisibility: .visible) {
-                        SettingsView()
-                            .environmentObject(model)
-                    }
+                    settingsButton
                 }
             }
             .overlay(alignment: .top) {
@@ -74,5 +68,30 @@ struct AddDynamicEntityLayerView: View {
                     model.connectionStatus = status.description
                 }
             }
+    }
+    
+    @ViewBuilder private var settingsButton: some View {
+        let button = Button("Dynamic Entity Settings") {
+            isShowingSettings = true
+        }
+        let settingsView = SettingsView()
+            .environmentObject(model)
+        if #available(iOS 16, *) {
+            button
+                .popover(isPresented: $isShowingSettings, arrowEdge: .bottom) {
+                    settingsView
+                        .presentationDetents([.fraction(0.5)])
+#if targetEnvironment(macCatalyst)
+                        .frame(minWidth: 300, minHeight: 270)
+#else
+                        .frame(minWidth: 320, minHeight: 390)
+#endif
+                }
+        } else {
+            button
+                .sheet(isPresented: $isShowingSettings, detents: [.medium]) {
+                    settingsView
+                }
+        }
     }
 }
