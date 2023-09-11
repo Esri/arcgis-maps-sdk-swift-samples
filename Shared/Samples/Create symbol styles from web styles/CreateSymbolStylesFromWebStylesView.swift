@@ -59,14 +59,14 @@ struct CreateSymbolStylesFromWebStylesView: View {
                         isShowingLegend = true
                     }
                     .sheet(isPresented: $isShowingLegend, detents: [.medium]) {
-                        symbolStylesList
+                        legendList
                     }
                 }
             }
     }
     
     /// The legend list that describes what each symbol represents.
-    private var symbolStylesList: some View {
+    private var legendList: some View {
         NavigationView {
             List(legendItems, id: \.name) { legendItem in
                 Label {
@@ -140,7 +140,7 @@ private extension CreateSymbolStylesFromWebStylesView {
     /// Get certain types of symbols from a symbol style.
     /// - Parameters:
     ///   - symbolStyle: A `SymbolStyle` object from a web style.
-    ///   - symbolTypes: The types of symbols to search for in the symbol style.
+    ///   - symbolTypes: The types of symbols to get from the symbol style.
     /// - Returns: An `Array` of `SymbolDetail`s which contain a symbol and associated information.
     private func getSymbols(symbolStyle: SymbolStyle, symbolTypes: [SymbolType]) async -> [SymbolDetail] {
         // Get the symbol and details for each symbol type.
@@ -169,12 +169,12 @@ private extension CreateSymbolStylesFromWebStylesView {
         }
         return symbolDetails
     }
-
-    /// Creates a `UniqueValueRenderer` to render a feature layer with symbol styles.
+    
+    /// Creates a `UniqueValueRenderer` used to render a feature layer with symbol styles.
     /// - Parameters:
     ///   - fieldNames: The attributes to match the unique values against.
     ///   - symbolDetails: An `Array` of symbols and their associated information.
-    /// - Returns: An `UniqueValueRenderer` object.
+    /// - Returns: An `UniqueValueRenderer` object with the symbol `UniqueValue`s.
     private func makeUniqueValueRenderer(fieldNames: [String], symbolDetails: [SymbolDetail]) -> UniqueValueRenderer {
         let uniqueValues = symbolDetails.flatMap { detail in
             // Create a unique value for each category value of symbol so the
@@ -192,7 +192,7 @@ private extension CreateSymbolStylesFromWebStylesView {
         let name: String
         /// The category names of features represented by the symbol.
         let categoryNames: [String]
-        /// The symbol.
+        /// The symbol from the symbol style.
         let symbol: Symbol
     }
     
@@ -204,7 +204,7 @@ private extension CreateSymbolStylesFromWebStylesView {
         let image: UIImage
     }
     
-    /// The symbol types
+    /// The types of symbols to get from the symbol style .
     private enum SymbolType: CaseIterable, Comparable {
         case atm, beach, campground, cityHall, hospital, library, park, placeOfWorship, policeStation, postOffice, school, trail
         
@@ -271,7 +271,7 @@ private extension CreateSymbolStylesFromWebStylesView {
 }
 
 private extension URL {
-    /// LA County Points of Interest service URL.
+    /// LA County Points of Interest service URL used to create a feature layer.
     static var laPointsOfInterest: URL {
         URL(string: "http://services.arcgis.com/V6ZHFr6zdgNZuVG0/arcgis/rest/services/LA_County_Points_of_Interest/FeatureServer/0")!
     }
