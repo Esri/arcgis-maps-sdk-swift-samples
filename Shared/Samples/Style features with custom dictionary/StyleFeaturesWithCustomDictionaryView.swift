@@ -16,28 +16,35 @@ import ArcGIS
 import SwiftUI
 
 struct StyleFeaturesWithCustomDictionaryView: View {
-    /// The view model for the sample.
-    @StateObject private var model = Model()
+    /// A map with a topographic basemap and centered on Esri in Redlands, CA.
+    @State private var map: Map = {
+        let map = Map(basemapStyle: .arcGISTopographic)
+        map.initialViewpoint = Viewpoint(
+            latitude: 34.0543,
+            longitude: -117.1963,
+            scale: 1e4
+        )
+        return map
+    }()
+    
+    /// A feature layer with
+    @State private var featureLayer: FeatureLayer = {
+        let restaurantFeatureTable = ServiceFeatureTable(url: .redlandsRestaurants)
+        return FeatureLayer(featureTable: restaurantFeatureTable)
+    }()
+    
+    init() {
+        map.addOperationalLayer(featureLayer)
+    }
     
     var body: some View {
-        MapView(map: model.map)
-            .alert(isPresented: $model.isShowingAlert, presentingError: model.error)
+        MapView(map: map)
     }
 }
 
-private extension StyleFeaturesWithCustomDictionaryView {
-    /// The view model for the sample.
-    class Model: ObservableObject {
-        /// A map of the Santa Barbara Botanic Garden.
-        let map = Map()
-        
-        /// A Boolean value indicating whether to show an alert.
-        @Published var isShowingAlert = false
-        
-        /// The error shown in the alert.
-        @Published var error: Error? {
-            didSet { isShowingAlert = error != nil }
-        }
-        
+private extension URL {
+    /// Feature service URL with points representing restaurants in Redlands, CA.
+    static var redlandsRestaurants: URL {
+        URL(string: "https://services2.arcgis.com/ZQgQTuoyBrtmoGdP/arcgis/rest/services/Redlands_Restaurants/FeatureServer/0")!
     }
 }
