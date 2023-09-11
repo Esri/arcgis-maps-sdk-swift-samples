@@ -27,16 +27,37 @@ struct StyleFeaturesWithCustomDictionaryView: View {
         return map
     }()
     
-    /// A feature layer with
+    /// A feature layer with restaurants in Redlands, CA.
     @State private var featureLayer: FeatureLayer = {
         let restaurantFeatureTable = ServiceFeatureTable(url: .redlandsRestaurants)
         return FeatureLayer(featureTable: restaurantFeatureTable)
+    }()
+    
+    /// A dictionary renderer created from a custom symbol style hosted on ArcGIS Online.
+    let dictionaryRendererFromWebStyle: DictionaryRenderer = {
+        // The restaurant web style.
+        let item = PortalItem(
+            portal: .arcGISOnline(connection: .anonymous),
+            id: .restaurantWebStyle
+        )
+        
+        // Create the dictionary renderer from the web style.
+        let restaurantStyle = DictionarySymbolStyle(portalItem: item)
+        
+        // Map the input fields in the feature layer to the dictionary symbol
+        // style's expected fields for symbols.
+        return DictionaryRenderer(
+            dictionarySymbolStyle: restaurantStyle,
+            symbologyFieldOverrides: ["healthgrade": "Inspection"],
+            textFieldOverrides: [:]
+        )
     }()
     
     /// The current dictionary style.
     @State private var dictionaryStyle: DictionaryStyle = .web
     
     init() {
+        featureLayer.renderer = dictionaryRendererFromWebStyle
         map.addOperationalLayer(featureLayer)
     }
     
@@ -70,6 +91,11 @@ private extension StyleFeaturesWithCustomDictionaryView {
             }
         }
     }
+}
+
+private extension PortalItem.ID {
+    /// The portal item ID of a restaurant web style.
+    static var restaurantWebStyle: Self { Self("adee951477014ec68d7cf0ea0579c800")! }
 }
 
 private extension URL {
