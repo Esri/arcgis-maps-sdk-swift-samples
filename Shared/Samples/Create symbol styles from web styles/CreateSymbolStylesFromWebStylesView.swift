@@ -31,7 +31,7 @@ struct CreateSymbolStylesFromWebStylesView: View {
         return map
     }()
     
-    /// A feature layer with LA County Points of Interest service.
+    /// A feature layer with the LA County Points of Interest service.
     @State private var featureLayer: FeatureLayer = {
         let featureTable = ServiceFeatureTable(url: .laPointsOfInterest)
         return FeatureLayer(featureTable: featureTable)
