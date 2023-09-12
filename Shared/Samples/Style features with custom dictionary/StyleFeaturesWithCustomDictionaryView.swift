@@ -33,6 +33,17 @@ struct StyleFeaturesWithCustomDictionaryView: View {
         return FeatureLayer(featureTable: restaurantFeatureTable)
     }()
     
+    /// A dictionary renderer created from a custom symbol style dictionary file (.stylx) on local disk.
+    let dictionaryRendererFromStyleFile: DictionaryRenderer = {
+        // The URL to the symbol style dictionary from shared resources.
+        let restaurantStyleURL = URL.restaurants
+
+        // Create the dictionary renderer from the style file.
+        let restaurantStyle = DictionarySymbolStyle(url: restaurantStyleURL)
+
+        return DictionaryRenderer(dictionarySymbolStyle: restaurantStyle)
+    }()
+    
     /// A dictionary renderer created from a custom symbol style hosted on ArcGIS Online.
     let dictionaryRendererFromWebStyle: DictionaryRenderer = {
         // The restaurant web style.
@@ -96,6 +107,13 @@ private extension StyleFeaturesWithCustomDictionaryView {
 private extension PortalItem.ID {
     /// The portal item ID of a restaurant web style.
     static var restaurantWebStyle: Self { Self("adee951477014ec68d7cf0ea0579c800")! }
+}
+
+private extension URL {
+    /// The URL to the restaurants data.
+    static var restaurants: URL {
+        Bundle.main.url(forResource: "Restaurant", withExtension: "stylx")!
+    }
 }
 
 private extension URL {
