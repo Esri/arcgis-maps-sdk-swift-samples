@@ -93,7 +93,7 @@ struct CreateSymbolStylesFromWebStylesView: View {
 private extension CreateSymbolStylesFromWebStylesView {
     /// Updates the symbols using the symbol style.
     /// - Parameter scale: The display scale for the swatch images.
-    private func updateSymbols(scale: CGFloat) async {
+    private func updateSymbols(displayScale: CGFloat) async {
         // An Esri 2D point symbol style created from a web style.
         let esri2DPointSymbolStyle = SymbolStyle(
             styleName: "Esri2DPointSymbolsStyle",
