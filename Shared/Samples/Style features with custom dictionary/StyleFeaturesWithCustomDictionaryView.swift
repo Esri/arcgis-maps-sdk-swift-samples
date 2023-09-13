@@ -19,7 +19,7 @@ struct StyleFeaturesWithCustomDictionaryView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
-    /// The current custom dictionary style selection of the picker.
+    /// The current custom dictionary style selection.
     @State private var dictionaryStyleSelection: CustomDictionaryStyle = .file
     
     var body: some View {

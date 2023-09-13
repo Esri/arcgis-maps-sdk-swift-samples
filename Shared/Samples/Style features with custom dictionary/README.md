@@ -10,17 +10,17 @@ When symbolizing geoelements in your map, you may need to convey several pieces 
 
 ## How to use the sample
 
-Use the radio buttons to toggle between the dictionary symbols from the web style and style file. Pan and zoom around the map to see the symbology from the chosen dictionary symbol style. The web style and style file are slightly different to each other to give a visual indication of the switch between the two.
+Toggle between the dictionary symbols from the web style and style file. Pan and zoom around the map to see the symbology from the chosen dictionary symbol style. The web style and style file are slightly different to each other to give a visual indication of the switch between the two.
 
 ## How it works
 
 1. Create a `PortalItem`, referring to a `Portal` and the item ID of the web style.
 2. Based on the style selected:
-*  If the web style toggle has been selected, create a new `DictionarySymbolStyle` from the portal item using `new DictionarySymbolStyle(portalItem)`, and load it
-*  If the file style toggle has been selected, create a new `DictionarySymbolStyle` using `DictionarySymbolStyle.createFromFile(stylxFile.getAbsolutePath())`
+*  If the web style toggle has been selected, create a new `DictionarySymbolStyle` from the portal item using `DictionarySymbolStyle(portalItem:)`, and load it.
+*  If the file style toggle has been selected, create a new `DictionarySymbolStyle` using `DictionarySymbolStyle.createFromFile(url:)`.
 3. Create a new `DictionaryRenderer`, providing the dictionary symbol style.
-4. Apply the dictionary renderer to a feature layer using `featureLayer.setRenderer(dictionaryRenderer)`.
-5. Add the feature layer to the map's operational layers using `getOperationalLayers().add(featureLayer)`.
+4. Apply the dictionary renderer to a feature layer.
+5. Add the feature layer to the map's operational layers.
 
 ## Relevant API
 
