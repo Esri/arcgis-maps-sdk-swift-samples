@@ -1,0 +1,19 @@
+{
+    "category": "Layers",
+    "description": "Group a collection of layers together and toggle their visibility as a group.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "group layer",
+        "layers",
+        "GroupLayer"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "GroupLayer"
+    ],
+    "snippets": [
+        "GroupLayersTogetherView.swift"
+    ],
+    "title": "Group layers together"
+}
