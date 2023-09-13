@@ -130,7 +130,7 @@ private extension URL {
 }
 
 private extension URL {
-    ///A URL to an ArcGIS feature service with points representing restaurants in Redlands, CA.
+    /// A URL to an ArcGIS feature service with points representing restaurants in Redlands, CA.
     static var redlandsRestaurants: URL {
         URL(string: "https://services2.arcgis.com/ZQgQTuoyBrtmoGdP/arcgis/rest/services/Redlands_Restaurants/FeatureServer/0")!
     }
