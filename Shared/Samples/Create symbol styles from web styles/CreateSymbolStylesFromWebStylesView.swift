@@ -51,7 +51,7 @@ struct CreateSymbolStylesFromWebStylesView: View {
             }
             .task(id: displayScale) {
                 // Update the symbols when the display scale changes.
-                await updateSymbols(scale: displayScale)
+                await updateSymbols(displayScale: displayScale)
             }
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
@@ -111,7 +111,7 @@ private extension CreateSymbolStylesFromWebStylesView {
             for detail in symbolDetails {
                 group.addTask {
                     // Get the image swatch for the symbol using the display scale.
-                    if let swatch = try? await detail.symbol.makeSwatch(scale: scale) {
+                    if let swatch = try? await detail.symbol.makeSwatch(scale: displayScale) {
                         return LegendItem(name: detail.name, image: swatch)
                     } else {
                         return nil
