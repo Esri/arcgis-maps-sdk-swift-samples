@@ -16,108 +16,121 @@ import ArcGIS
 import SwiftUI
 
 struct StyleFeaturesWithCustomDictionaryView: View {
-    /// A map with a topographic basemap and centered on Esri in Redlands, CA.
-    @State private var map: Map = {
-        let map = Map(basemapStyle: .arcGISTopographic)
-        map.initialViewpoint = Viewpoint(
-            latitude: 34.0543,
-            longitude: -117.1963,
-            scale: 1e4
-        )
-        return map
-    }()
+    /// The view model for the sample.
+    @StateObject private var model = Model()
     
-    /// A feature layer with restaurants in Redlands, CA.
-    @State private var featureLayer: FeatureLayer = {
-        let restaurantFeatureTable = ServiceFeatureTable(url: .redlandsRestaurants)
-        return FeatureLayer(featureTable: restaurantFeatureTable)
-    }()
-    
-    /// A dictionary renderer created from a custom symbol style dictionary file (.stylx) on local disk.
-    let dictionaryRendererFromStyleFile: DictionaryRenderer = {
-        // The URL to the symbol style dictionary from shared resources.
-        let restaurantStyleURL = URL.restaurants
-
-        // Create the dictionary renderer from the style file.
-        let restaurantStyle = DictionarySymbolStyle(url: restaurantStyleURL)
-
-        return DictionaryRenderer(dictionarySymbolStyle: restaurantStyle)
-    }()
-    
-    /// A dictionary renderer created from a custom symbol style hosted on ArcGIS Online.
-    let dictionaryRendererFromWebStyle: DictionaryRenderer = {
-        // The restaurant web style.
-        let item = PortalItem(
-            portal: .arcGISOnline(connection: .anonymous),
-            id: .restaurantWebStyle
-        )
-        
-        // Create the dictionary renderer from the web style.
-        let restaurantStyle = DictionarySymbolStyle(portalItem: item)
-        
-        // Map the input fields in the feature layer to the dictionary symbol
-        // style's expected fields for symbols.
-        return DictionaryRenderer(
-            dictionarySymbolStyle: restaurantStyle,
-            symbologyFieldOverrides: ["healthgrade": "Inspection"],
-            textFieldOverrides: [:]
-        )
-    }()
-    
-    /// The current dictionary style.
-    @State private var dictionaryStyle: DictionaryStyle = .web
-    
-    init() {
-        featureLayer.renderer = dictionaryRendererFromWebStyle
-        map.addOperationalLayer(featureLayer)
-    }
+    /// The current custom dictionary style selection of the picker.
+    @State private var dictionaryStyleSelection: CustomDictionaryStyle = .file
     
     var body: some View {
         VStack {
-            MapView(map: map)
+            MapView(map: model.map)
             
-            Picker("Dictionary Symbol Style", selection: $dictionaryStyle) {
-                ForEach(DictionaryStyle.allCases, id: \.self) { style in
+            // The picker to toggle between style file and web style.
+            Picker("Dictionary Symbol Style", selection: $dictionaryStyleSelection) {
+                ForEach(CustomDictionaryStyle.allCases, id: \.self) { style in
                     Text(style.label)
                 }
             }
             .pickerStyle(.segmented)
             .padding()
-            .onChange(of: dictionaryStyle) { _ in
+            .onChange(of: dictionaryStyleSelection) { _ in
+                // Update the feature layer with the correct dictionary renderer
+                // on selection change.
+                model.restaurantFeatureLayer.renderer = dictionaryStyleSelection == .web ? model.dictionaryRendererFromWebStyle : model.dictionaryRendererFromStyleFile
             }
         }
     }
 }
 
 private extension StyleFeaturesWithCustomDictionaryView {
-    // The custom dictionary styles to choose from.
-    enum DictionaryStyle: CaseIterable {
-        case web, file
+    /// The view model for the sample.
+    class Model: ObservableObject {
+        /// A map with a topographic basemap centered on Esri in Redlands, CA.
+        let map: Map = {
+            let map = Map(basemapStyle: .arcGISTopographic)
+            map.initialViewpoint = Viewpoint(
+                latitude: 34.0543,
+                longitude: -117.1963,
+                scale: 1e4
+            )
+            return map
+        }()
         
-        /// A human-readable label for the dictionary style.
+        /// A feature layer with restaurants in Redlands, CA.
+        let restaurantFeatureLayer: FeatureLayer = {
+            let restaurantFeatureTable = ServiceFeatureTable(url: .redlandsRestaurants)
+            return FeatureLayer(featureTable: restaurantFeatureTable)
+        }()
+        
+        /// A dictionary renderer created from a custom symbol style dictionary file (.stylx) on local disk.
+        let dictionaryRendererFromStyleFile: DictionaryRenderer = {
+            // The URL to the symbol style dictionary file.
+            let restaurantStyleURL = URL.restaurants
+            
+            // Create the dictionary symbol style from the style file URL.
+            let restaurantStyle = DictionarySymbolStyle(url: restaurantStyleURL)
+            
+            // Create the dictionary renderer from the dictionary symbol style.
+            return DictionaryRenderer(dictionarySymbolStyle: restaurantStyle)
+        }()
+        
+        /// A dictionary renderer created from a custom symbol style hosted on ArcGIS Online.
+        let dictionaryRendererFromWebStyle: DictionaryRenderer = {
+            // The create a portal item with the id of the online web style.
+            let restaurantPortalItem = PortalItem(
+                portal: .arcGISOnline(connection: .anonymous),
+                id: .restaurantWebStyle
+            )
+            
+            // Create a dictionary symbol style from the web style portal item.
+            let restaurantStyle = DictionarySymbolStyle(portalItem: restaurantPortalItem)
+            
+            // Create a dictionary renderer from the dictionary symbol style.
+            // Map the input fields in the feature layer to the dictionary symbol
+            // style's expected fields for symbols.
+            return DictionaryRenderer(
+                dictionarySymbolStyle: restaurantStyle,
+                symbologyFieldOverrides: ["healthgrade": "Inspection"],
+                textFieldOverrides: [:]
+            )
+        }()
+        
+        init() {
+            // Add the feature layer with the dictionary renderer to the map.
+            restaurantFeatureLayer.renderer = dictionaryRendererFromStyleFile
+            map.addOperationalLayer(restaurantFeatureLayer)
+        }
+    }
+    
+    /// The custom dictionary symbol styles to choose from.
+    enum CustomDictionaryStyle: CaseIterable {
+        case file, web
+        
+        /// A human-readable label for the custom dictionary style.
         var label: String {
             switch self {
-            case .web: return "Web Style"
             case .file: return "Style File"
+            case .web: return "Web Style"
             }
         }
     }
 }
 
 private extension PortalItem.ID {
-    /// The portal item ID of a restaurant web style.
+    /// A portal item ID of a restaurant web style hosted on ArcGIS Online.
     static var restaurantWebStyle: Self { Self("adee951477014ec68d7cf0ea0579c800")! }
 }
 
 private extension URL {
-    /// The URL to the restaurants data.
+    /// A URL to the local restaurant symbol style dictionary file.
     static var restaurants: URL {
         Bundle.main.url(forResource: "Restaurant", withExtension: "stylx")!
     }
 }
 
 private extension URL {
-    /// Feature service URL with points representing restaurants in Redlands, CA.
+    ///A URL to an ArcGIS feature service with points representing restaurants in Redlands, CA.
     static var redlandsRestaurants: URL {
         URL(string: "https://services2.arcgis.com/ZQgQTuoyBrtmoGdP/arcgis/rest/services/Redlands_Restaurants/FeatureServer/0")!
     }
