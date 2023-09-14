@@ -65,11 +65,8 @@ private extension StyleFeaturesWithCustomDictionaryView {
         
         /// A dictionary renderer created from a custom symbol style dictionary file (.stylx) on local disk.
         let dictionaryRendererFromStyleFile: DictionaryRenderer = {
-            // The URL to the symbol style dictionary file.
-            let restaurantStyleURL = URL.restaurants
-            
             // Create the dictionary symbol style from the style file URL.
-            let restaurantStyle = DictionarySymbolStyle(url: restaurantStyleURL)
+            let restaurantStyle = DictionarySymbolStyle(url: .restaurants)
             
             // Create the dictionary renderer from the dictionary symbol style.
             return DictionaryRenderer(dictionarySymbolStyle: restaurantStyle)
@@ -78,7 +75,7 @@ private extension StyleFeaturesWithCustomDictionaryView {
         /// A dictionary renderer created from a custom symbol style hosted on ArcGIS Online.
         let dictionaryRendererFromWebStyle: DictionaryRenderer = {
             // The create a portal item with the id of the online web style.
-            let restaurantPortalItem = PortalItem(
+            let restaurant = PortalItem(
                 portal: .arcGISOnline(connection: .anonymous),
                 id: .restaurantWebStyle
             )
@@ -91,8 +88,7 @@ private extension StyleFeaturesWithCustomDictionaryView {
             // style's expected fields for symbols.
             return DictionaryRenderer(
                 dictionarySymbolStyle: restaurantStyle,
-                symbologyFieldOverrides: ["healthgrade": "Inspection"],
-                textFieldOverrides: [:]
+                symbologyFieldOverrides: ["healthgrade": "Inspection"]
             )
         }()
         
@@ -104,7 +100,7 @@ private extension StyleFeaturesWithCustomDictionaryView {
     }
     
     /// The custom dictionary symbol styles to choose from.
-    enum CustomDictionaryStyle: CaseIterable {
+    private enum CustomDictionaryStyle: CaseIterable {
         case file, web
         
         /// A human-readable label for the custom dictionary style.
