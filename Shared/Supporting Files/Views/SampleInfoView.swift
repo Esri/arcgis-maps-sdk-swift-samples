@@ -43,6 +43,9 @@ struct SampleInfoView: View {
                     }
                 }
                 .pickerStyle(.segmented)
+                // Set the ideal width to a big value so the segmented control
+                // takes up the entire empty space of the toolbar on iOS 17.
+                .frame(idealWidth: UIScreen.main.bounds.width)
             }
             
             ToolbarItem(placement: .confirmationAction) {
@@ -51,13 +54,15 @@ struct SampleInfoView: View {
                 }
             }
             
-            ToolbarItem(placement: .bottomBar) {
+            ToolbarItemGroup(placement: .bottomBar) {
                 if informationMode == .code {
+                    Spacer()
                     Picker("Source Code File Picker", selection: $selectedSnippetIndex) {
                         ForEach(sample.snippetURLs.indices, id: \.self) { index in
                             Text(sample.snippets[index].dropLast(6))
                         }
                     }
+                    Spacer()
                 }
             }
         }

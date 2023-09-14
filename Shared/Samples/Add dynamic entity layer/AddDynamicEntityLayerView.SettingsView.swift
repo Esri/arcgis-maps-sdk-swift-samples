@@ -19,8 +19,24 @@ extension AddDynamicEntityLayerView {
         /// The view model for the sample.
         @EnvironmentObject private var model: Model
         
+        /// The action to dismiss the settings sheet.
+        @Environment(\.dismiss) private var dismiss: DismissAction
+        
         var body: some View {
-            List {
+            if #available(iOS 16, *) {
+                NavigationStack {
+                    root
+                }
+            } else {
+                NavigationView {
+                    root
+                }
+                .navigationViewStyle(.stack)
+            }
+        }
+        
+        @ViewBuilder var root: some View {
+            Form {
                 Section("Track display properties") {
                     Toggle("Track Lines", isOn: $model.showsTrackLine)
                     Toggle("Previous Observations", isOn: $model.showsPreviousObservations)
@@ -44,6 +60,16 @@ extension AddDynamicEntityLayerView {
                             }
                         }
                         Spacer()
+                    }
+                }
+            }
+            .toggleStyle(.switch)
+            .navigationTitle("Dynamic Entity Settings")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") {
+                        dismiss()
                     }
                 }
             }

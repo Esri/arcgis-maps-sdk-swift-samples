@@ -304,7 +304,7 @@ private extension FileManager {
         try! FileManager.default.url(
             for: .itemReplacementDirectory,
             in: .userDomainMask,
-            appropriateFor: Bundle.main.bundleURL,
+            appropriateFor: FileManager.default.temporaryDirectory,
             create: true
         )
     }

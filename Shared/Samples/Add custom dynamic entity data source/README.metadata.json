@@ -1,0 +1,46 @@
+{
+    "category": "Layers",
+    "description": "Create a custom dynamic entity data source and display it using a dynamic entity layer.",
+    "ignore": false,
+    "images": [
+        "add-custom-dynamic-entity-data-source.png"
+    ],
+    "keywords": [
+        "data",
+        "dynamic",
+        "entity",
+        "label",
+        "labeling",
+        "live",
+        "real-time",
+        "stream",
+        "track",
+        "CustomDynamicEntityDataSource",
+        "CustomDynamicEntityFeed",
+        "CustomDynamicEntityFeedEvent",
+        "DynamicEntity",
+        "DynamicEntityDataSource",
+        "DynamicEntityLayer",
+        "LabelDefinition",
+        "TrackDisplayProperties"
+    ],
+    "offline_data": [
+        "a8a942c228af4fac96baa78ad60f511f"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "CustomDynamicEntityDataSource",
+        "CustomDynamicEntityFeed",
+        "CustomDynamicEntityFeedEvent",
+        "DynamicEntity",
+        "DynamicEntityDataSource",
+        "DynamicEntityLayer",
+        "LabelDefinition",
+        "TrackDisplayProperties"
+    ],
+    "snippets": [
+        "AddCustomDynamicEntityDataSourceView.swift",
+        "AddCustomDynamicEntityDataSourceView.Vessel.swift"
+    ],
+    "title": "Add custom dynamic entity data source"
+}
