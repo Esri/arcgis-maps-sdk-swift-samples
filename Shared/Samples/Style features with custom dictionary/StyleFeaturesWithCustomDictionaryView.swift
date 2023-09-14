@@ -81,7 +81,7 @@ private extension StyleFeaturesWithCustomDictionaryView {
             )
             
             // Create a dictionary symbol style from the web style portal item.
-            let restaurantStyle = DictionarySymbolStyle(portalItem: restaurantPortalItem)
+            let restaurantStyle = DictionarySymbolStyle(portalItem: restaurant)
             
             // Create a dictionary renderer from the dictionary symbol style.
             // Map the input fields in the feature layer to the dictionary symbol
