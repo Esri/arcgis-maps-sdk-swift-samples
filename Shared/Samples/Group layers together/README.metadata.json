@@ -2,7 +2,9 @@
     "category": "Layers",
     "description": "Group a collection of layers together and toggle their visibility as a group.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "group-layers-together.png"
+    ],
     "keywords": [
         "group layer",
         "layers",
