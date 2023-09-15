@@ -169,6 +169,7 @@
 		D75362D32A1E8C8800D83028 /* ApplyUniqueValueRendererView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D75362D12A1E886700D83028 /* ApplyUniqueValueRendererView.swift */; };
 		D754E3232A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D754E3222A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift */; };
 		D754E3242A1D66C20006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D754E3222A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift */; };
+		D75C35672AB50338003CD55F /* GroupLayersTogetherView.GroupLayerListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75C35662AB50338003CD55F /* GroupLayersTogetherView.GroupLayerListView.swift */; };
 		D7634FAF2A43B7AC00F8AEFB /* CreateConvexHullAroundGeometriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7634FAE2A43B7AC00F8AEFB /* CreateConvexHullAroundGeometriesView.swift */; };
 		D7634FB02A43B8B000F8AEFB /* CreateConvexHullAroundGeometriesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7634FAE2A43B7AC00F8AEFB /* CreateConvexHullAroundGeometriesView.swift */; };
 		D769C2122A29019B00030F61 /* SetUpLocationDrivenGeotriggersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D769C2112A29019B00030F61 /* SetUpLocationDrivenGeotriggersView.swift */; };
@@ -477,6 +478,7 @@
 		D752D95E2A3BCE06003EB25E /* DisplayMapFromPortalItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayMapFromPortalItemView.swift; sourceTree = "<group>"; };
 		D75362D12A1E886700D83028 /* ApplyUniqueValueRendererView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplyUniqueValueRendererView.swift; sourceTree = "<group>"; };
 		D754E3222A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StylePointWithPictureMarkerSymbolsView.swift; sourceTree = "<group>"; };
+		D75C35662AB50338003CD55F /* GroupLayersTogetherView.GroupLayerListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupLayersTogetherView.GroupLayerListView.swift; sourceTree = "<group>"; };
 		D7634FAE2A43B7AC00F8AEFB /* CreateConvexHullAroundGeometriesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateConvexHullAroundGeometriesView.swift; sourceTree = "<group>"; };
 		D769C2112A29019B00030F61 /* SetUpLocationDrivenGeotriggersView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetUpLocationDrivenGeotriggersView.swift; sourceTree = "<group>"; };
 		D77570BF2A2942F800F490CD /* AnimateImagesWithImageOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimateImagesWithImageOverlayView.swift; sourceTree = "<group>"; };
@@ -1048,6 +1050,7 @@
 			isa = PBXGroup;
 			children = (
 				D704AA592AB22C1A00A3BB63 /* GroupLayersTogetherView.swift */,
+				D75C35662AB50338003CD55F /* GroupLayersTogetherView.GroupLayerListView.swift */,
 			);
 			path = "Group layers together";
 			sourceTree = "<group>";
@@ -1659,6 +1662,7 @@
 				0042E24328E4BF8F001F33D6 /* ShowViewshedFromPointInSceneView.Model.swift in Sources */,
 				D7E557682A1D768800B9FB09 /* AddWMSLayerView.swift in Sources */,
 				0005580A2817C51E00224BC6 /* SampleDetailView.swift in Sources */,
+				D75C35672AB50338003CD55F /* GroupLayersTogetherView.GroupLayerListView.swift in Sources */,
 				4D2ADC6229C5071C003B367F /* ChangeMapViewBackgroundView.Model.swift in Sources */,
 				0074ABCD2817BCC30037244A /* SamplesApp+Samples.swift.tache in Sources */,
 				D79EE76E2A4CEA5D005A52AE /* SetUpLocationDrivenGeotriggersView.Model.swift in Sources */,
