@@ -15,7 +15,8 @@
         "GroupLayer"
     ],
     "snippets": [
-        "GroupLayersTogetherView.swift"
+        "GroupLayersTogetherView.swift",
+        "GroupLayersTogetherView.GroupLayerListView.swift"
     ],
     "title": "Group layers together"
 }
