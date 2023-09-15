@@ -24,7 +24,7 @@ extension GroupLayersTogetherView {
         @State private var isDisabled = false
         
         /// The name of the current visible child layer of a group layer with an exclusive visibility mode.
-        @State private var exclusiveLayerSelection: String?
+        @State private var exclusiveLayerSelection = ""
         
         var body: some View {
             Section {
@@ -39,12 +39,6 @@ extension GroupLayersTogetherView {
                             }
                         }
                         
-                    case .inherited:
-                        // Layer names for sublayers that are treated as one merged layer.
-                        ForEach(groupLayer.layers, id: \.name) { layer in
-                            Text(formatLayerName(of: layer.name))
-                        }
-                        
                     case .exclusive:
                         // Picker for when only one sublayer can be visible at a time.
                         Picker("Exclusive Layer", selection: $exclusiveLayerSelection) {
@@ -57,6 +51,12 @@ extension GroupLayersTogetherView {
                         }
                         .pickerStyle(.inline)
                         .labelsHidden()
+                        
+                    case .inherited:
+                        // Layer names for sublayers that are treated as one merged layer.
+                        ForEach(groupLayer.layers, id: \.name) { layer in
+                            Text(formatLayerName(of: layer.name))
+                        }
                         
                     @unknown default:
                         fatalError("Unknown visibility mode: \(groupLayer.visibilityMode) for GroupLayer: \(groupLayer.name)")
