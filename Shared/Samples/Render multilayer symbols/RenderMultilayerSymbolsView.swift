@@ -30,6 +30,9 @@ struct RenderMultilayerSymbolsView: View {
         var graphics: [Graphic] = []
         graphics.append(contentsOf: makeMultilayerPointPictureMarkerGraphics())
         graphics.append(contentsOf: makeMultilayerPolylineGraphics())
+        graphics.append(contentsOf: makeMultilayerPolygonGraphics())
+        graphics.append(contentsOf: makeMoreMultilayerSymbolGraphics())
+        graphics.append(contentsOf: makeMultilayerPointSimpleMarkerGraphics())
         graphicsOverlay.addGraphics(graphics)
     }
     
@@ -49,6 +52,7 @@ private extension RenderMultilayerSymbolsView {
     }
     
     // MARK: - MultilayerPoint Picture Markers
+    // TODO: add plus sign
     
     /// Creates the multilayer point picture marker graphics.
     /// - Returns: An `Array` of `Graphic`s.
@@ -92,7 +96,7 @@ private extension RenderMultilayerSymbolsView {
         return Graphic(geometry: symbolPoint, symbol: symbol)
     }
     
-    // MARK: - Multilayer Polyline
+    // MARK: - Multilayer Polylines
     
     /// Creates the multilayer polyline graphics.
     /// - Returns: An `Array` of `Graphic`s.
@@ -100,7 +104,7 @@ private extension RenderMultilayerSymbolsView {
         // Create a text graphic.
         var graphics = [Graphic(
                 geometry: Point(x: 0, y: 50, spatialReference: .wgs84),
-                symbol: makeTextSymbol(text: "Multilayer\nPolyline")
+                symbol: makeTextSymbol(text: "Multilayer\nPolylines")
             )]
         
         // Create the line graphics.
@@ -136,6 +140,48 @@ private extension RenderMultilayerSymbolsView {
         
         // Create a polyline graphic with polyline and symbol created above.
         return Graphic(geometry: polylineBuilder.toGeometry(), symbol: lineSymbol)
+    }
+    
+    // MARK: - Multilayer Polygons
+    
+    /// Creates the multilayer polygon graphics.
+    /// - Returns: An `Array` of `Graphic`s.
+    private func makeMultilayerPolygonGraphics() -> [Graphic] {
+        // Create a text graphic.
+        var graphics = [Graphic(
+            geometry: Point(x: 65, y: 50, spatialReference: .wgs84),
+            symbol: makeTextSymbol(text: "Multilayer\nPolygons")
+        )]
+        
+        return graphics
+    }
+    
+    // MARK: - More Multilayer Symbols
+    
+    /// Creates the more multilayer symbol graphics.
+    /// - Returns: An `Array` of `Graphic`s.
+    private func makeMoreMultilayerSymbolGraphics() -> [Graphic] {
+        // Create a text graphic.
+        var graphics = [Graphic(
+            geometry: Point(x: 130, y: 50, spatialReference: .wgs84),
+            symbol: makeTextSymbol(text: "More Multilayer\nSymbols")
+        )]
+        
+        return graphics
+    }
+    
+    // MARK: - MultilayerPoint Simple Markers
+    
+    /// Creates the multilayer point simple marker graphics.
+    /// - Returns: An `Array` of `Graphic`s.
+    private func makeMultilayerPointSimpleMarkerGraphics() -> [Graphic] {
+        // Create a text graphic.
+        var graphics = [Graphic(
+            geometry: Point(x: -150, y: 50, spatialReference: .wgs84),
+            symbol: makeTextSymbol(text: "MultilayerPoint\nSimple Markers")
+        )]
+        
+        return graphics
     }
 }
 
