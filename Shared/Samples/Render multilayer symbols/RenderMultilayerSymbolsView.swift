@@ -46,7 +46,7 @@ private extension RenderMultilayerSymbolsView {
     /// - Parameter text: The `String` used to create the `TextSymbol`.
     /// - Returns: A new `TextSymbol` object.
     private func makeTextSymbol(text: String) -> TextSymbol {
-        let textSymbol = TextSymbol(text: text, color: .black, size: 20)
+        let textSymbol = TextSymbol(text: text, color: .black, size: 10)
         textSymbol.backgroundColor = .white
         return textSymbol
     }
@@ -79,7 +79,7 @@ private extension RenderMultilayerSymbolsView {
         return graphics
     }
     
-    /// Creates a graphic using a multilayer point symbol.
+    /// Creates a graphic from picture marker symbol layer using a multilayer point symbol.
     /// - Parameters:
     ///   - symbolLayer: The `PictureMarkerSymbolLayer` used to create the `MultilayerPointSymbol`.
     ///   - offset: The `Double` used to keep a consistent distance between symbols in the same column.
@@ -153,7 +153,62 @@ private extension RenderMultilayerSymbolsView {
             symbol: makeTextSymbol(text: "Multilayer\nPolygons")
         )]
         
+        // Create polygon marker symbols
+        graphics.append(contentsOf: [
+            // Cross-hatched diagonal lines.
+            makeMultilayerPolygonSymbolGraphic(angles: [-45, 45], offset: 0),
+            // Hatched diagonal lines.
+            makeMultilayerPolygonSymbolGraphic(angles: [-45], offset: offset),
+            // Hatched vertical lines.
+            makeMultilayerPolygonSymbolGraphic(angles: [90], offset: offset * 2)
+        ])
+        
         return graphics
+    }
+    
+    
+    /// Creates a graphic of a multilayer polygon symbol.
+    /// - Parameters:
+    ///   - angles: The angle at which to draw the fill lines within the polygon.
+    ///   - offset: The `Double` used to keep a consistent distance between symbols in the same column.
+    /// - Returns: A new `Graphic` object.
+    private func makeMultilayerPolygonSymbolGraphic(angles: [Double], offset: Double) -> Graphic {
+        let polygonBuilder = PolygonBuilder(spatialReference: .wgs84)
+        polygonBuilder.add(Point(x: 60, y: 25 - offset))
+        polygonBuilder.add(Point(x: 70, y: 25 - offset))
+        polygonBuilder.add(Point(x: 70, y: 20 - offset))
+        polygonBuilder.add(Point(x: 60, y: 20 - offset))
+        
+        // Create a stroke symbol layer to be used by patterns.
+        let strokeForHatches = SolidStrokeSymbolLayer(width: 2, color: .red)
+        
+        // Create a stroke symbol layer to be used as an outline for aforementioned patterns
+        let strokeForOutline = SolidStrokeSymbolLayer(width: 1, color: .black)
+        
+        // Create a list to hold all necessary symbol layers
+        // At least one for patterns and one for an outline at the end
+        var symbolLayerList: [SymbolLayer] = []
+        
+        // For each angle, create a symbol layer using the pattern stroke
+        // with hatched lines at the given angle
+        for angle in angles {
+            let hatchLayer = HatchFillSymbolLayer(
+                polylineSymbol: MultilayerPolylineSymbol(symbolLayers: [strokeForHatches]),
+                angle: angle
+            )
+            // Set separation distance for line and add to to the symbol layer list.
+            hatchLayer.separation = 9.0
+            symbolLayerList.append(hatchLayer)
+        }
+        
+        // assign the outline layer to the last element of the symbol layer list
+        symbolLayerList.append(strokeForOutline)
+        
+        // Create a multilayer polygon symbol from the symbol layer list.
+        let polygonSymbol = MultilayerPolygonSymbol(symbolLayers: symbolLayerList)
+        
+        // Create a graphic with using the polygon builder and polygon symbol.
+        return Graphic(geometry: polygonBuilder.toGeometry(), symbol: polygonSymbol)
     }
     
     // MARK: - More Multilayer Symbols
