@@ -195,7 +195,6 @@
 		D7E9EF292A1D2219000C4865 /* SetMinAndMaxScaleView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7EAF3592A1C023800D822C4 /* SetMinAndMaxScaleView.swift */; };
 		D7E9EF2A2A1D29F2000C4865 /* SetMaxExtentView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D734FA092A183A5B00246D7E /* SetMaxExtentView.swift */; };
 		D7EAF35A2A1C023800D822C4 /* SetMinAndMaxScaleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7EAF3592A1C023800D822C4 /* SetMinAndMaxScaleView.swift */; };
-		D7ECF5962AB8BDCA003FB2BE /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = D7ECF5952AB8BDCA003FB2BE /* README.md */; };
 		D7ECF5982AB8BE63003FB2BE /* RenderMultilayerSymbolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7ECF5972AB8BE63003FB2BE /* RenderMultilayerSymbolsView.swift */; };
 		D7EF5D752A26A03A00FEBDE5 /* ShowCoordinatesInMultipleFormatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7EF5D742A26A03A00FEBDE5 /* ShowCoordinatesInMultipleFormatsView.swift */; };
 		D7EF5D762A26A1EE00FEBDE5 /* ShowCoordinatesInMultipleFormatsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7EF5D742A26A03A00FEBDE5 /* ShowCoordinatesInMultipleFormatsView.swift */; };
@@ -497,7 +496,6 @@
 		D7E440D62A1ECE7D005D74DE /* CreateBuffersAroundPointsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateBuffersAroundPointsView.swift; sourceTree = "<group>"; };
 		D7E557672A1D768800B9FB09 /* AddWMSLayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddWMSLayerView.swift; sourceTree = "<group>"; };
 		D7EAF3592A1C023800D822C4 /* SetMinAndMaxScaleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetMinAndMaxScaleView.swift; sourceTree = "<group>"; };
-		D7ECF5952AB8BDCA003FB2BE /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D7ECF5972AB8BE63003FB2BE /* RenderMultilayerSymbolsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenderMultilayerSymbolsView.swift; sourceTree = "<group>"; };
 		D7EF5D742A26A03A00FEBDE5 /* ShowCoordinatesInMultipleFormatsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowCoordinatesInMultipleFormatsView.swift; sourceTree = "<group>"; };
 		E000E75F2869E33D005D87C5 /* ClipGeometryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipGeometryView.swift; sourceTree = "<group>"; };
@@ -1262,7 +1260,6 @@
 		D7ECF5942AB8BDCA003FB2BE /* Render multilayer symbols */ = {
 			isa = PBXGroup;
 			children = (
-				D7ECF5952AB8BDCA003FB2BE /* README.md */,
 				D7ECF5972AB8BE63003FB2BE /* RenderMultilayerSymbolsView.swift */,
 			);
 			path = "Render multilayer symbols";
@@ -1567,7 +1564,6 @@
 				D701D72C2A37C7F7006FF0C8 /* bradley_low_3ds in Resources */,
 				00D4EF9A28638BF100B9CC30 /* AuroraCO.gpkg in Resources */,
 				F111CCC4288B641900205358 /* Yellowstone.mmpk in Resources */,
-				D7ECF5962AB8BDCA003FB2BE /* README.md in Resources */,
 				D77572AE2A295DDE00F490CD /* PacificSouthWest2 in Resources */,
 				00D4EFB12863CE6300B9CC30 /* ScottishWildlifeTrust_reserves in Resources */,
 			);
