@@ -22,10 +22,14 @@ struct RenderMultilayerSymbolsView: View {
     /// The graphics overlay containing the multilayer graphics and associated text graphics.
     @State private var graphicsOverlay = GraphicsOverlay()
     
+    /// The offset used to keep a consistent distance between symbols in the same column.
+    private let offset = 20.0
+    
     init() {
         // Add graphics to graphics overlay.
         var graphics: [Graphic] = []
         graphics.append(contentsOf: makeMultilayerPointPictureMarkerGraphics())
+        graphics.append(contentsOf: makeMultilayerPolylineGraphics())
         graphicsOverlay.addGraphics(graphics)
     }
     
@@ -35,9 +39,7 @@ struct RenderMultilayerSymbolsView: View {
 }
 
 private extension RenderMultilayerSymbolsView {
-    // MARK: Methods
-    
-    /// Creates a text symbol used as a graphic label on the map.
+    /// Creates a text symbol with the text to be displayed on the map.
     /// - Parameter text: The `String` used to create the `TextSymbol`.
     /// - Returns: A new `TextSymbol` object.
     private func makeTextSymbol(text: String) -> TextSymbol {
@@ -46,18 +48,16 @@ private extension RenderMultilayerSymbolsView {
         return textSymbol
     }
     
-    // MARK: MultilayerPoint Picture Markers
+    // MARK: - MultilayerPoint Picture Markers
     
     /// Creates the multilayer point picture marker graphics.
     /// - Returns: An `Array` of `Graphic`s.
     private func makeMultilayerPointPictureMarkerGraphics() -> [Graphic] {
-        var graphics: [Graphic] = []
-        
-        // Create a text graphic for the label.
-        graphics.append(Graphic(
-            geometry: Point(x: -80, y: 50, spatialReference: .wgs84),
-            symbol: makeTextSymbol(text: "MultilayerPoint\nPicture Markers")
-        ))
+        // Create a text graphic.
+        var graphics = [Graphic(
+                geometry: Point(x: -80, y: 50, spatialReference: .wgs84),
+                symbol: makeTextSymbol(text: "MultilayerPoint\nPicture Markers")
+            )]
         
         // Create a campsite graphic using a URL.
         let campsiteLayer = PictureMarkerSymbolLayer(url: .campsiteImage)
@@ -75,10 +75,10 @@ private extension RenderMultilayerSymbolsView {
         return graphics
     }
     
-    /// Creates a graphic from a picture marker symbol layer.
+    /// Creates a graphic using a multilayer point symbol.
     /// - Parameters:
     ///   - symbolLayer: The `PictureMarkerSymbolLayer` used to create the `MultilayerPointSymbol`.
-    ///   - offset: The `Double` used to keep a consistent distance between symbols in the same column
+    ///   - offset: The `Double` used to keep a consistent distance between symbols in the same column.
     /// - Returns: A new `Graphic` object.
     private func makePictureMarkerSymbolLayerGraphic(symbolLayer: PictureMarkerSymbolLayer, offset: Double) -> Graphic {
         // Create a multilayer point symbol using the picture marker symbol layer.
@@ -90,6 +90,52 @@ private extension RenderMultilayerSymbolsView {
         
         // Create the graphic for symbol.
         return Graphic(geometry: symbolPoint, symbol: symbol)
+    }
+    
+    // MARK: - Multilayer Polyline
+    
+    /// Creates the multilayer polyline graphics.
+    /// - Returns: An `Array` of `Graphic`s.
+    private func makeMultilayerPolylineGraphics() -> [Graphic] {
+        // Create a text graphic.
+        var graphics = [Graphic(
+                geometry: Point(x: 0, y: 50, spatialReference: .wgs84),
+                symbol: makeTextSymbol(text: "Multilayer\nPolyline")
+            )]
+        
+        // Create the line graphics.
+        graphics.append(contentsOf: [
+            makeMultilayerPolylineSymbolGraphic(dashSpacing: [4.0, 6.0, 0.5, 6.0, 0.5, 6.0], offset: 0),
+            makeMultilayerPolylineSymbolGraphic(dashSpacing: [4.0, 6.0], offset: offset),
+            makeMultilayerPolylineSymbolGraphic(dashSpacing: [7.0, 9.0, 0.5, 9.0], offset: 2 * offset)
+        ])
+        
+        return graphics
+    }
+    
+    /// Creates a graphic using a multilayer polyline symbol.
+    /// - Parameters:
+    ///   - dashSpacing: The pattern of dots and dashes used to create a `DashGeometricEffect`.
+    ///   - offset: The `Double` used to keep a consistent distance between symbols in the same column.
+    /// - Returns: A new `Graphic` object.
+    private func makeMultilayerPolylineSymbolGraphic(dashSpacing: [Double], offset: Double) -> Graphic {
+        // Create a dash effect from the provided dash spacing.
+        let dashEffect = DashGeometricEffect(dashTemplate: dashSpacing)
+        
+        // Create a stroke layer for the line symbols.
+        let strokeLayer = SolidStrokeSymbolLayer(width: 3, color: .red, geometricEffects: [dashEffect])
+        strokeLayer.capStyle = .round
+        
+        // Create a polyline for the multilayer polyline symbol.
+        let polylineBuilder = PolylineBuilder(spatialReference: .wgs84)
+        polylineBuilder.add(Point(x: -30, y: 20 - offset))
+        polylineBuilder.add(Point(x: 30, y: 20 - offset))
+        
+        // Create a multilayer polyline symbol from the stroke layer.
+        let lineSymbol = MultilayerPolylineSymbol(symbolLayers: [strokeLayer])
+        
+        // Create a polyline graphic with polyline and symbol created above.
+        return Graphic(geometry: polylineBuilder.toGeometry(), symbol: lineSymbol)
     }
 }
 
