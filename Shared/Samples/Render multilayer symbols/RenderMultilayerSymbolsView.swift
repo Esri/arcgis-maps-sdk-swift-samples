@@ -111,7 +111,7 @@ private extension RenderMultilayerSymbolsView {
         graphics.append(contentsOf: [
             makeMultilayerPolylineSymbolGraphic(dashSpacing: [4.0, 6.0, 0.5, 6.0, 0.5, 6.0], offset: 0),
             makeMultilayerPolylineSymbolGraphic(dashSpacing: [4.0, 6.0], offset: offset),
-            makeMultilayerPolylineSymbolGraphic(dashSpacing: [7.0, 9.0, 0.5, 9.0], offset: 2 * offset)
+            makeMultilayerPolylineSymbolGraphic(dashSpacing: [7.0, 9.0, 0.5, 9.0], offset: offset * 2)
         ])
         
         return graphics
@@ -181,7 +181,62 @@ private extension RenderMultilayerSymbolsView {
             symbol: makeTextSymbol(text: "MultilayerPoint\nSimple Markers")
         )]
         
+        // Create a red diamond graphic from JSON and a multilayer polygon symbol.
+        let fillLayer = SolidFillSymbolLayer(color: .red)
+        let polygonSymbol = MultilayerPolygonSymbol(symbolLayers: [fillLayer])
+        if let diamondGeometry = try? Geometry.fromJSON(.diamondGeometryJSON) {
+            graphics.append(makeGraphicWithVectorMarkerSymbolElement(
+                symbol: polygonSymbol,
+                geometry: diamondGeometry,
+                offset: 0
+            ))
+        }
+        
+        // Create a triangle graphic from JSON and a multilayer polygon symbol.
+        if let triangleGeometry = try? Geometry.fromJSON(.triangleGeometryJSON) {
+            graphics.append(makeGraphicWithVectorMarkerSymbolElement(
+                symbol: polygonSymbol,
+                geometry: triangleGeometry,
+                offset: offset
+            ))
+        }
+        
+        // Create a cross graphic from JSON and a multilayer polyline symbol.
+        let strokeLayer = SolidStrokeSymbolLayer(width: 1, color: .red)
+        let polylineSymbol = MultilayerPolylineSymbol(symbolLayers: [strokeLayer])
+        if let crossGeometry = try? Geometry.fromJSON(.crossGeometryJSON) {
+            graphics.append(makeGraphicWithVectorMarkerSymbolElement(
+                symbol: polylineSymbol,
+                geometry: crossGeometry,
+                offset: offset * 2
+            ))
+        }
         return graphics
+    }
+    
+    /// Creates a graphic using a vector marker symbol element.
+    /// - Parameters:
+    ///   - symbol: The `MultilayerSymbol` used to make the `VectorMarkerSymbolElement`.
+    ///   - geometry: The `Geometry` used to make the `VectorMarkerSymbolElement`.
+    ///   - offset: The `Double` used to keep a consistent distance between symbols in the same column.
+    /// - Returns: A new `Graphic` object.
+    private func makeGraphicWithVectorMarkerSymbolElement(
+        symbol: MultilayerSymbol, geometry: Geometry, offset: Double
+    ) -> Graphic {
+        // Create a vector element using the passed symbol and geometry.
+        let vectorElement = VectorMarkerSymbolElement(geometry: geometry, multilayerSymbol: symbol)
+        
+        // Create a vector layer using the vector element.
+        let vectorLayer = VectorMarkerSymbolLayer(vectorMarkerSymbolElements: [vectorElement])
+        
+        // Create a point symbol using the vector layer.
+        let pointSymbol = MultilayerPointSymbol(symbolLayers: [vectorLayer])
+        
+        // Create a point graphic using the point symbol.
+        return Graphic(
+            geometry: Point(x: -150, y: 20 - offset, spatialReference: .wgs84),
+            symbol: pointSymbol
+        )
     }
 }
 
@@ -190,4 +245,15 @@ private extension URL {
     static let campsiteImage = URL(
         string: "https://static.arcgis.com/images/Symbols/OutdoorRecreation/Camping.png"
     )!
+}
+
+private extension String {
+    /// The JSON for a diamond geometry.
+    static let diamondGeometryJSON = "{\"rings\":[[[0.0,2.5],[2.5,0.0],[0.0,-2.5],[-2.5,0.0],[0.0,2.5]]]}"
+    
+    /// The JSON for a triangle geometry.
+    static let triangleGeometryJSON = "{\"rings\":[[[0.0,5.0],[5,-5.0],[-5,-5.0],[0.0,5.0]]]}"
+    
+    /// The JSON for a cross geometry.
+    static let crossGeometryJSON = "{\"paths\":[[[-1,1],[0,0],[1,-1]],[[1,1],[0,0],[-1,-1]]]}"
 }
