@@ -31,7 +31,7 @@ struct RenderMultilayerSymbolsView: View {
         graphics.append(contentsOf: makeMultilayerPointPictureMarkerGraphics())
         graphics.append(contentsOf: makeMultilayerPolylineGraphics())
         graphics.append(contentsOf: makeMultilayerPolygonGraphics())
-        graphics.append(contentsOf: makeMoreMultilayerSymbolGraphics())
+        graphics.append(contentsOf: makeComplexMultilayerSymbolGraphics())
         graphics.append(contentsOf: makeMultilayerPointSimpleMarkerGraphics())
         graphicsOverlay.addGraphics(graphics)
     }
@@ -59,9 +59,9 @@ private extension RenderMultilayerSymbolsView {
     private func makeMultilayerPointPictureMarkerGraphics() -> [Graphic] {
         // Create a text graphic.
         var graphics = [Graphic(
-                geometry: Point(x: -80, y: 50, spatialReference: .wgs84),
-                symbol: makeTextSymbol(text: "MultilayerPoint\nPicture Markers")
-            )]
+            geometry: Point(x: -80, y: 50, spatialReference: .wgs84),
+            symbol: makeTextSymbol(text: "MultilayerPoint\nPicture Markers")
+        )]
         
         // Create a campsite graphic using a URL.
         let campsiteLayer = PictureMarkerSymbolLayer(url: .campsiteImage)
@@ -103,9 +103,9 @@ private extension RenderMultilayerSymbolsView {
     private func makeMultilayerPolylineGraphics() -> [Graphic] {
         // Create a text graphic.
         var graphics = [Graphic(
-                geometry: Point(x: 0, y: 50, spatialReference: .wgs84),
-                symbol: makeTextSymbol(text: "Multilayer\nPolylines")
-            )]
+            geometry: Point(x: 0, y: 50, spatialReference: .wgs84),
+            symbol: makeTextSymbol(text: "Multilayer\nPolylines")
+        )]
         
         // Create the line graphics.
         graphics.append(contentsOf: [
@@ -166,7 +166,6 @@ private extension RenderMultilayerSymbolsView {
         return graphics
     }
     
-    
     /// Creates a graphic of a multilayer polygon symbol.
     /// - Parameters:
     ///   - angles: The angle at which to draw the fill lines within the polygon.
@@ -201,7 +200,7 @@ private extension RenderMultilayerSymbolsView {
             symbolLayerList.append(hatchLayer)
         }
         
-        // assign the outline layer to the last element of the symbol layer list
+        // Set the last element of the symbol layer list to the outline layer.
         symbolLayerList.append(strokeForOutline)
         
         // Create a multilayer polygon symbol from the symbol layer list.
@@ -211,18 +210,155 @@ private extension RenderMultilayerSymbolsView {
         return Graphic(geometry: polygonBuilder.toGeometry(), symbol: polygonSymbol)
     }
     
-    // MARK: - More Multilayer Symbols
+    // MARK: - Complex Multilayer Symbols
     
-    /// Creates the more multilayer symbol graphics.
+    /// Creates the more complex multilayer symbol graphics.
     /// - Returns: An `Array` of `Graphic`s.
-    private func makeMoreMultilayerSymbolGraphics() -> [Graphic] {
+    private func makeComplexMultilayerSymbolGraphics() -> [Graphic] {
         // Create a text graphic.
         var graphics = [Graphic(
             geometry: Point(x: 130, y: 50, spatialReference: .wgs84),
-            symbol: makeTextSymbol(text: "More Multilayer\nSymbols")
+            symbol: makeTextSymbol(text: "Complex Multilayer\nSymbols")
         )]
         
+        // Create more complex multilayer graphics: a point, polygon and polyline.
+        if let complexPointGeometry = try? Geometry.fromJSON(.complexPointGeometryJSON) {
+            graphics.append(makeComplexPointGraphic(geometry: complexPointGeometry))
+        }
+        
+        graphics.append(contentsOf: [
+            makeComplexPolygonGraphic(),
+            makeComplexPolylineGraphic()
+        ])
         return graphics
+    }
+    
+    /// Creates a graphic of a complex multilayer point from multiple symbol layers and a provide geometry.
+    /// - Parameter geometry: The `Geometry` to create the `MultilayerPolygonSymbol` from.
+    /// - Returns: A new `Graphic` object of the symbol. 
+    private func makeComplexPointGraphic(geometry: Geometry) -> Graphic {
+        // Create the marker layers for the complex point.
+        let orangeSquareLayer = makeLayerForComplexPoint(fillColor: .cyan, outlineColor: .blue, size: 11)
+        orangeSquareLayer.anchor = SymbolAnchor(x: -4, y: -6, placementMode: .absolute)
+        
+        let blackSquareLayer = makeLayerForComplexPoint(fillColor: .black, outlineColor: .cyan, size: 6)
+        blackSquareLayer.anchor = SymbolAnchor(x: 2, y: 1, placementMode: .absolute)
+        
+        let purpleSquareLayer = makeLayerForComplexPoint(fillColor: .clear, outlineColor: .magenta, size: 14)
+        purpleSquareLayer.anchor = SymbolAnchor(x: 4, y: 2, placementMode: .absolute)
+        
+        // Create a layer of a yellow hexagon with a black outline.
+        let yellowFillLayer = SolidFillSymbolLayer(color: .yellow)
+        let blackOutline = SolidStrokeSymbolLayer(width: 2, color: .black)
+        let hexagonVectorElement = VectorMarkerSymbolElement(
+            geometry: geometry,
+            multilayerSymbol: MultilayerPolygonSymbol(symbolLayers: [yellowFillLayer, blackOutline])
+        )
+        
+        let yellowHexagonLayer = VectorMarkerSymbolLayer(vectorMarkerSymbolElements: [hexagonVectorElement])
+        yellowHexagonLayer.size = 35
+        
+        // Create the multilayer point symbol from the layers
+        let pointSymbol = MultilayerPointSymbol(symbolLayers: [
+            yellowHexagonLayer,
+            orangeSquareLayer,
+            blackSquareLayer,
+            purpleSquareLayer
+        ])
+        
+        // Create a graphic of the multilayer point symbol.
+        return Graphic(geometry: Point(x: 130, y: 20, spatialReference: .wgs84), symbol: pointSymbol)
+    }
+    
+    /// Creates a symbol layer for use in the composition of a complex point.
+    /// - Parameters:
+    ///   - fillColor: The `UIColor` to create the `VectorMarkerSymbolLayer.`
+    ///   - outlineColor: The `UIColor` to create the `SolidStrokeSymbolLayer.`
+    ///   - size: The `Double` size of the symbol.
+    /// - Returns: A new `VectorMarkerSymbolLayer` object of the created symbol.
+    private func makeLayerForComplexPoint(
+        fillColor: UIColor, outlineColor: UIColor, size: Double
+    ) -> VectorMarkerSymbolLayer {
+        // Create a fill layer and outline.
+        let fillLayer = SolidFillSymbolLayer(color: fillColor)
+        let outline = SolidStrokeSymbolLayer(width: 2, color: outlineColor)
+        
+        // Create a geometry from an envelope.
+        let geometry = Envelope(
+            min: Point(x: -0.5, y: -0.5, spatialReference: .wgs84),
+            max: Point(x: 0.5, y: 0.5, spatialReference: .wgs84)
+        )
+        
+        // Create a symbol element using the geometry, fill layer, and outline.
+        let symbolElement = VectorMarkerSymbolElement(
+            geometry: geometry,
+            multilayerSymbol: MultilayerPolygonSymbol(symbolLayers: [fillLayer, outline])
+        )
+        
+        // Create a symbol layer containing just the above symbol element, set its size, and return it
+        let symbolLayer = VectorMarkerSymbolLayer(vectorMarkerSymbolElements: [symbolElement])
+        symbolLayer.size = size
+        return symbolLayer
+    }
+    
+    /// Creates a graphic of a complex polygon made with multiple symbol layers.
+    /// - Returns: A new `Graphic` object.
+    private func makeComplexPolygonGraphic() -> Graphic {
+        // Create a multilayer polygon symbol from the symbol layers.
+        let polygonSymbol = MultilayerPolygonSymbol(
+            symbolLayers: makeLayersForComplexMultilayerSymbols(includeRedFill: true)
+        )
+        
+        // Create a polygon
+        let polygonBuilder = PolygonBuilder(spatialReference: .wgs84)
+        polygonBuilder.add(Point(x: 120, y: 0))
+        polygonBuilder.add(Point(x: 140, y: 0))
+        polygonBuilder.add(Point(x: 140, y: -10))
+        polygonBuilder.add(Point(x: 120, y: -10))
+        
+        // Create a multilayer polygon graphic with the polygon builder and polygon symbol.
+        return Graphic(geometry: polygonBuilder.toGeometry(), symbol: polygonSymbol)
+    }
+    
+    private func makeComplexPolylineGraphic() -> Graphic {
+        // Create a multilayer polyline symbol from the symbol layers.
+        let polylineSymbol = MultilayerPolylineSymbol(
+            symbolLayers: makeLayersForComplexMultilayerSymbols(includeRedFill: true)
+        )
+        
+        // Create a polyline
+        let polylineBuilder = PolylineBuilder(spatialReference: .wgs84)
+        polylineBuilder.add(Point(x: 120, y: -25))
+        polylineBuilder.add(Point(x: 140, y: -25))
+        
+        // Create the multilayer polyline graphic with the geometry and symbol.
+        return Graphic(geometry: polylineBuilder.toGeometry(), symbol: polylineSymbol)
+    }
+    
+    /// Creates the symbol layers used to create the complex multilayer symbols.
+    /// - Parameter includeRedFill: A `Bool` that indicates whether to include a red fill layer.
+    /// - Returns: An `Array` of `SymbolLayers`s.
+    private func makeLayersForComplexMultilayerSymbols(includeRedFill: Bool) -> [SymbolLayer] {
+        // Create a black dash effect.
+        let dashEffect = DashGeometricEffect(dashTemplate: [5.0, 3.0])
+        let blackDashes = SolidStrokeSymbolLayer(width: 1, color: .black, geometricEffects: [dashEffect])
+        blackDashes.capStyle = .square
+        
+        // Create a black outline.
+        let blackOutline = SolidStrokeSymbolLayer(width: 7, color: .black)
+        blackOutline.capStyle = .round
+        
+        // Create a yellow stroke.
+        let yellowStroke = SolidStrokeSymbolLayer(width: 5, color: .yellow)
+        yellowStroke.capStyle = .round
+        
+        if includeRedFill {
+            // Create a red fill layer for the polygon.
+            let redFillLayer = SolidFillSymbolLayer(color: .red)
+            return [redFillLayer, blackOutline, yellowStroke, blackDashes]
+        }
+        
+        return [blackOutline, yellowStroke, blackDashes]
     }
     
     // MARK: - MultilayerPoint Simple Markers
@@ -303,6 +439,9 @@ private extension URL {
 }
 
 private extension String {
+    /// The JSON for a complex point geometry.
+    static let complexPointGeometryJSON = "{\"rings\":[[[-2.89,5.0],[2.89,5.0],[5.77,0.0],[2.89,-5.0],[-2.89,-5.0],[-5.77,0.0],[-2.89,5.0]]]}"
+    
     /// The JSON for a diamond geometry.
     static let diamondGeometryJSON = "{\"rings\":[[[0.0,2.5],[2.5,0.0],[0.0,-2.5],[-2.5,0.0],[0.0,2.5]]]}"
     
