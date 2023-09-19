@@ -1,0 +1,29 @@
+{
+    "category": "Visualization",
+    "description": "Combine multiple symbols from a mobile style file into a single symbol.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "advanced symbology",
+        "mobile style",
+        "multilayer",
+        "stylx",
+        "MultilayerPointSymbol",
+        "MultilayerSymbol",
+        "SymbolLayer",
+        "SymbolStyle",
+        "SymbolStyleSearchParameters"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "MultilayerPointSymbol",
+        "MultilayerSymbol",
+        "SymbolLayer",
+        "SymbolStyle",
+        "SymbolStyleSearchParameters"
+    ],
+    "snippets": [
+        "StyleSymbolsFromMobileStyleFileView.swift"
+    ],
+    "title": "Style symbols from mobile style file"
+}
