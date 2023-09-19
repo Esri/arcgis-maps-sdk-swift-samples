@@ -54,11 +54,26 @@ struct GroupLayersTogetherView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
-                    Button("Layers") {
+                    let layersButton = Button("Layers") {
                         isShowingLayersSheet = true
                     }
-                    .sheet(isPresented: $isShowingLayersSheet, detents: [.medium]) {
-                        layersList
+                    
+                    if #available(iOS 16, *) {
+                        layersButton
+                            .popover(isPresented: $isShowingLayersSheet, arrowEdge: .bottom) {
+                                layersList
+                                    .presentationDetents([.fraction(0.5)])
+#if targetEnvironment(macCatalyst)
+                                    .frame(minWidth: 300, minHeight: 270)
+#else
+                                    .frame(minWidth: 320, minHeight: 390)
+#endif
+                            }
+                    } else {
+                        layersButton
+                            .sheet(isPresented: $isShowingLayersSheet, detents: [.medium]) {
+                                layersList
+                            }
                     }
                 }
             }
