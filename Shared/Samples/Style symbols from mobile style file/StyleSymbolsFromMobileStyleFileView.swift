@@ -19,9 +19,44 @@ struct StyleSymbolsFromMobileStyleFileView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
+    /// A Boolean that indicates whether the symbol sheet is showing.
+    @State private var isShowingSymbolSheet = false
+    
     var body: some View {
-        MapView(map: model.map)
-            .alert(isPresented: $model.isShowingErrorAlert, presentingError: model.error)
+        MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
+            .onSingleTapGesture { _, mapPoint in
+                /// Add current symbol to map on tap.
+                let graphic = Graphic(geometry: mapPoint, symbol: model.currentSymbol)
+                model.graphicsOverlay.addGraphic(graphic)
+            }
+            .toolbar {
+                ToolbarItemGroup(placement: .bottomBar) {
+                    Button("Symbol") {
+                        isShowingSymbolSheet = true
+                    }
+                    .sheet(isPresented: $isShowingSymbolSheet, detents: [.large]) {
+                        NavigationView {
+                            Spacer()
+                                .navigationTitle("Layers")
+                                .navigationBarTitleDisplayMode(.inline)
+                                .toolbar {
+                                    ToolbarItem(placement: .confirmationAction) {
+                                        Button("Done") {
+                                            isShowingSymbolSheet = false
+                                        }
+                                    }
+                                }
+                        }
+                        .navigationViewStyle(.stack)
+                        .frame(idealWidth: 320, idealHeight: 428)
+                    }
+                    Spacer()
+                    Button("Clear") {
+                        // Clears all symbol graphics from the map.
+                        model.graphicsOverlay.removeAllGraphics()
+                    }
+                }
+            }
     }
 }
 
@@ -31,12 +66,18 @@ private extension StyleSymbolsFromMobileStyleFileView {
         /// A map with a topographic basemap.
         let map = Map(basemapStyle: .arcGISTopographic)
         
-        /// A Boolean that indicates whether to show an error alert.
-        @Published var isShowingErrorAlert = false
+        /// The graphics overlay for all the symbol graphics on the map.
+        let graphicsOverlay = GraphicsOverlay()
         
-        /// The error shown in the alert.
-        @Published var error: Error? {
-            didSet { isShowingErrorAlert = error != nil }
+        /// The symbols style.
+        let symbolStyle = SymbolStyle(name: "emoji-mobile", bundle: nil)
+        
+        /// The current symbol selection
+        var currentSymbol: Symbol
+        
+        
+        init() {
+            currentSymbol = SimpleMarkerSymbol(style: .circle, color: .red, size: 10)
         }
     }
 }
