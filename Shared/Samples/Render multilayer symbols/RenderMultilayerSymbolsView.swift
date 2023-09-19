@@ -22,7 +22,7 @@ struct RenderMultilayerSymbolsView: View {
         map.initialViewpoint = Viewpoint(boundingGeometry: Point(x: -713_800, y: 0, spatialReference: .webMercator))
         return map
     }()
-
+    
     /// The graphics overlay containing the multilayer graphics and associated text graphics.
     @State private var graphicsOverlay = GraphicsOverlay()
     
@@ -133,10 +133,10 @@ private extension RenderMultilayerSymbolsView {
             symbol: makeTextSymbol(text: "MultilayerPoint\nPicture Markers")
         )]
         
-        // Create a tent graphic using a URL.
-        let tentLayer = PictureMarkerSymbolLayer(url: .tentImage)
+        // Create a campsite graphic using a URL.
+        let campsiteLayer = PictureMarkerSymbolLayer(url: .campsiteImage)
         graphics.append(
-            makeGraphicFromPictureMarkerSymbol(layer: tentLayer, offset: 0)
+            makeGraphicFromPictureMarkerSymbol(layer: campsiteLayer, offset: 0)
         )
         
         // Create a pin graphic using an image in the project assets.
@@ -432,8 +432,8 @@ private extension RenderMultilayerSymbolsView {
 }
 
 private extension URL {
-    /// The URL to a tent image on ArcGIS online.
-    static let tentImage = URL(
+    /// The URL to a campsite image on ArcGIS online.
+    static let campsiteImage = URL(
         string: "https://static.arcgis.com/images/Symbols/OutdoorRecreation/Camping.png"
     )!
 }
