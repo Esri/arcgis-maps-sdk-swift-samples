@@ -54,29 +54,34 @@ struct GroupLayersTogetherView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
-                    let layersButton = Button("Layers") {
-                        isShowingLayersSheet = true
-                    }
-                    
-                    if #available(iOS 16, *) {
-                        layersButton
-                            .popover(isPresented: $isShowingLayersSheet, arrowEdge: .bottom) {
-                                layersList
-                                    .presentationDetents([.fraction(0.5)])
-#if targetEnvironment(macCatalyst)
-                                    .frame(minWidth: 300, minHeight: 270)
-#else
-                                    .frame(minWidth: 320, minHeight: 390)
-#endif
-                            }
-                    } else {
-                        layersButton
-                            .sheet(isPresented: $isShowingLayersSheet, detents: [.medium]) {
-                                layersList
-                            }
-                    }
+                    layersButton
                 }
             }
+    }
+    
+    /// The button that brings up the layers sheet.
+    @ViewBuilder private var layersButton: some View {
+        let button = Button("Layers") {
+            isShowingLayersSheet = true
+        }
+        
+        if #available(iOS 16, *) {
+            button
+                .popover(isPresented: $isShowingLayersSheet, arrowEdge: .bottom) {
+                    layersList
+                        .presentationDetents([.fraction(0.5)])
+#if targetEnvironment(macCatalyst)
+                        .frame(minWidth: 300, minHeight: 270)
+#else
+                        .frame(minWidth: 320, minHeight: 390)
+#endif
+                }
+        } else {
+            button
+                .sheet(isPresented: $isShowingLayersSheet, detents: [.medium]) {
+                    layersList
+                }
+        }
     }
     
     /// The list of group layers and their child layers that are currently added to the map.
