@@ -156,6 +156,7 @@
 		D73F8CF42AB1089900CD39DA /* Restaurant.stylx in Resources */ = {isa = PBXBuildFile; fileRef = D73F8CF32AB1089900CD39DA /* Restaurant.stylx */; settings = {ASSET_TAGS = (StyleFeaturesWithCustomDictionary, ); }; };
 		D744FD172A2112D90084A66C /* CreateConvexHullAroundPointsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D744FD162A2112D90084A66C /* CreateConvexHullAroundPointsView.swift */; };
 		D744FD182A2113C70084A66C /* CreateConvexHullAroundPointsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D744FD162A2112D90084A66C /* CreateConvexHullAroundPointsView.swift */; };
+		D74C8BFC2ABA5572007C76B8 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = D74C8BFB2ABA5572007C76B8 /* README.md */; };
 		D75101812A2E493600B8FA48 /* ShowLabelsOnLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75101802A2E493600B8FA48 /* ShowLabelsOnLayerView.swift */; };
 		D75101822A2E497F00B8FA48 /* ShowLabelsOnLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D75101802A2E493600B8FA48 /* ShowLabelsOnLayerView.swift */; };
 		D751018E2A2E962D00B8FA48 /* IdentifyLayerFeaturesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D751018D2A2E962D00B8FA48 /* IdentifyLayerFeaturesView.swift */; };
@@ -475,6 +476,7 @@
 		D734FA092A183A5B00246D7E /* SetMaxExtentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetMaxExtentView.swift; sourceTree = "<group>"; };
 		D73F8CF32AB1089900CD39DA /* Restaurant.stylx */ = {isa = PBXFileReference; lastKnownFileType = file; path = Restaurant.stylx; sourceTree = "<group>"; };
 		D744FD162A2112D90084A66C /* CreateConvexHullAroundPointsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateConvexHullAroundPointsView.swift; sourceTree = "<group>"; };
+		D74C8BFB2ABA5572007C76B8 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D75101802A2E493600B8FA48 /* ShowLabelsOnLayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowLabelsOnLayerView.swift; sourceTree = "<group>"; };
 		D751018D2A2E962D00B8FA48 /* IdentifyLayerFeaturesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentifyLayerFeaturesView.swift; sourceTree = "<group>"; };
 		D752D93F2A39154C003EB25E /* ManageOperationalLayersView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageOperationalLayersView.swift; sourceTree = "<group>"; };
@@ -689,6 +691,7 @@
 				E066DD362860AB0B004D3D5B /* Style graphics with renderer */,
 				E004A6E42846A609002A1FE6 /* Style graphics with symbols */,
 				D754E31D2A1D661D0006C5F1 /* Style point with picture marker symbols */,
+				D74C8BFA2ABA5572007C76B8 /* Style symbols from mobile style file */,
 				7573E81229D6134C00BEED9C /* Trace utility network */,
 			);
 			path = Samples;
@@ -1099,6 +1102,14 @@
 				D744FD162A2112D90084A66C /* CreateConvexHullAroundPointsView.swift */,
 			);
 			path = "Create convex hull around points";
+			sourceTree = "<group>";
+		};
+		D74C8BFA2ABA5572007C76B8 /* Style symbols from mobile style file */ = {
+			isa = PBXGroup;
+			children = (
+				D74C8BFB2ABA5572007C76B8 /* README.md */,
+			);
+			path = "Style symbols from mobile style file";
 			sourceTree = "<group>";
 		};
 		D751017D2A2E490800B8FA48 /* Show labels on layer */ = {
@@ -1553,6 +1564,7 @@
 				D701D72C2A37C7F7006FF0C8 /* bradley_low_3ds in Resources */,
 				00D4EF9A28638BF100B9CC30 /* AuroraCO.gpkg in Resources */,
 				F111CCC4288B641900205358 /* Yellowstone.mmpk in Resources */,
+				D74C8BFC2ABA5572007C76B8 /* README.md in Resources */,
 				D77572AE2A295DDE00F490CD /* PacificSouthWest2 in Resources */,
 				00D4EFB12863CE6300B9CC30 /* ScottishWildlifeTrust_reserves in Resources */,
 			);
