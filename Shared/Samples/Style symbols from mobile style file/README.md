@@ -10,15 +10,15 @@ You may choose to display individual elements of a dataset like a water infrastr
 
 ## How to use the sample
 
-Select a symbol and a color from each of the category lists to create an emoji. A preview of the symbol is updated as selections are made. The size of the symbol can be set using the slider. Click the map to create a point graphic using the customized emoji symbol, and click "Reset" to clear all graphics from the display.
+Tap "Symbol" and select a symbol from each section to create a face emoji. A preview of the symbol is updated as selections are made. The color of the symbol can be set using the color picker and size can be set using the slider. Tap the map to create a point graphic using the customized emoji symbol, and tap "Clear" to clear all graphics from the display.
 
 ## How it works
 
-1. Create a new `SymbolStyle` from a stylx file, and load it.
-2. Get a set of default search parameters using `symbolStyle.getDefaultSearchParametersAsync()`, and use these to retrieve a list of all symbols within the style file: `symbolStyle.searchSymbolsAsync(defaultSearchParameters)`.
-3. Get the `SymbolStyleSearchResult`, which contains the symbols, as well as their names, keys, and categories.
-4. Use a `List` of keys of the desired symbols to build a composite symbol using `symbolStyle.getSymbolAsync(symbolKeys)`.
-5. Create a `Graphic` using the `MultilayerPointSymbol`.
+1. Create a new symbol style from a stylx file using `SymbolStyle(url:)`.
+2. Get a set of default search parameters using `SymbolStyle.defaultSearchParameters` and use those to retrieve a list of all symbols within the style file using `SymbolStyle.searchSymbols(using:)`.
+3. Get the `SymbolStyleSearchResult`s, which contains the symbols, as well as their names, keys, and categories.
+4. Use a `Array` of keys of the desired symbols to build a composite symbol using `SymbolStyle.symbol(forKeys:)`.
+5. Create a `Graphic` using the `Symbol`.
 
 ## Relevant API
 
@@ -31,10 +31,6 @@ Select a symbol and a color from each of the category lists to create an emoji. 
 ## Offline data
 
 A mobile style file (created using ArcGIS Pro) provides the symbols used by the sample.
-
-Link | Local Location
----------|-------|
-|[Emoji mobile stylx file](https://www.arcgis.com/home/item.html?id=1bd036f221f54a99abc9e46ff3511cbf)| `<userhome>`/ArcGIS/Runtime/Data/style/emoji-mobile.stylx |
 
 ## About the data
 
