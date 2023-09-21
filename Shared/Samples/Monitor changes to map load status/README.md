@@ -2,7 +2,7 @@
 
 Determine the map's load status which can be: `notLoaded`, `failed`, `loading`, or `loaded`.
 
-![Image of monitor changes to map load status](monitor-changes-to-map-toad-status.png)
+![Image of monitor changes to map load status](monitor-changes-to-map-load-status.png)
 
 ## Use case
 
