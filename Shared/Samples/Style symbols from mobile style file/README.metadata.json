@@ -2,7 +2,10 @@
     "category": "Visualization",
     "description": "Combine multiple symbols from a mobile style file into a single symbol.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "style-symbols-from-mobile-style-file-1.png",
+        "style-symbols-from-mobile-style-file-2.png"
+    ],
     "keywords": [
         "advanced symbology",
         "mobile style",

@@ -2,7 +2,8 @@
 
 Combine multiple symbols from a mobile style file into a single symbol.
 
-![Image of style symbols from mobile style file](style-symbols-from-mobile-style-file.png)
+![Image of style symbols from mobile style file 1](style-symbols-from-mobile-style-file-1.png)
+![Image of style symbols from mobile style file 2](style-symbols-from-mobile-style-file-2.png)
 
 ## Use case
 
