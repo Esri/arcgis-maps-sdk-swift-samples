@@ -29,7 +29,8 @@
         "SymbolStyleSearchParameters"
     ],
     "snippets": [
-        "StyleSymbolsFromMobileStyleFileView.swift"
+        "StyleSymbolsFromMobileStyleFileView.swift",
+        "StyleSymbolsFromMobileStyleFileView.SymbolOptionsListView.swift"
     ],
     "title": "Style symbols from mobile style file"
 }
