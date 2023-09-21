@@ -143,6 +143,8 @@
 		88F93CC129C3D59D0006B28E /* CreateAndEditGeometriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F93CC029C3D59C0006B28E /* CreateAndEditGeometriesView.swift */; };
 		88F93CC229C4D3480006B28E /* CreateAndEditGeometriesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 88F93CC029C3D59C0006B28E /* CreateAndEditGeometriesView.swift */; };
 		D701D72C2A37C7F7006FF0C8 /* bradley_low_3ds in Resources */ = {isa = PBXBuildFile; fileRef = D701D72B2A37C7F7006FF0C8 /* bradley_low_3ds */; settings = {ASSET_TAGS = (ShowViewshedFromGeoelementInScene, ); }; };
+		D704AA5A2AB22C1A00A3BB63 /* GroupLayersTogetherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D704AA592AB22C1A00A3BB63 /* GroupLayersTogetherView.swift */; };
+		D704AA5B2AB22D8400A3BB63 /* GroupLayersTogetherView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D704AA592AB22C1A00A3BB63 /* GroupLayersTogetherView.swift */; };
 		D70BE5792A5624A80022CA02 /* CategoriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70BE5782A5624A80022CA02 /* CategoriesView.swift */; };
 		D710996D2A27D9210065A1C1 /* DensifyAndGeneralizeGeometryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D710996C2A27D9210065A1C1 /* DensifyAndGeneralizeGeometryView.swift */; };
 		D710996E2A27D9B30065A1C1 /* DensifyAndGeneralizeGeometryView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D710996C2A27D9210065A1C1 /* DensifyAndGeneralizeGeometryView.swift */; };
@@ -175,6 +177,7 @@
 		D75362D32A1E8C8800D83028 /* ApplyUniqueValueRendererView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D75362D12A1E886700D83028 /* ApplyUniqueValueRendererView.swift */; };
 		D754E3232A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D754E3222A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift */; };
 		D754E3242A1D66C20006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D754E3222A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift */; };
+		D75C35672AB50338003CD55F /* GroupLayersTogetherView.GroupLayerListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75C35662AB50338003CD55F /* GroupLayersTogetherView.GroupLayerListView.swift */; };
 		D75B58512AAFB3030038B3B4 /* StyleFeaturesWithCustomDictionaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75B58502AAFB3030038B3B4 /* StyleFeaturesWithCustomDictionaryView.swift */; };
 		D75B58522AAFB37C0038B3B4 /* StyleFeaturesWithCustomDictionaryView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D75B58502AAFB3030038B3B4 /* StyleFeaturesWithCustomDictionaryView.swift */; };
 		D7634FAF2A43B7AC00F8AEFB /* CreateConvexHullAroundGeometriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7634FAE2A43B7AC00F8AEFB /* CreateConvexHullAroundGeometriesView.swift */; };
@@ -295,6 +298,7 @@
 			files = (
 				D7337C5B2ABCFDE400A5D865 /* StyleSymbolsFromMobileStyleFileView.SymbolOptionsListView.swift in Copy Source Code Files */,
 				D74C8BFF2ABA56C0007C76B8 /* StyleSymbolsFromMobileStyleFileView.swift in Copy Source Code Files */,
+				D704AA5B2AB22D8400A3BB63 /* GroupLayersTogetherView.swift in Copy Source Code Files */,
 				D75B58522AAFB37C0038B3B4 /* StyleFeaturesWithCustomDictionaryView.swift in Copy Source Code Files */,
 				D71C5F652AAA83D2006599FD /* CreateSymbolStylesFromWebStylesView.swift in Copy Source Code Files */,
 				79D84D152A81718F00F45262 /* AddCustomDynamicEntityDataSourceView.swift in Copy Source Code Files */,
@@ -474,6 +478,7 @@
 		883C121429C9136600062FF9 /* DownloadPreplannedMapAreaView.MapPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadPreplannedMapAreaView.MapPicker.swift; sourceTree = "<group>"; };
 		88F93CC029C3D59C0006B28E /* CreateAndEditGeometriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAndEditGeometriesView.swift; sourceTree = "<group>"; };
 		D701D72B2A37C7F7006FF0C8 /* bradley_low_3ds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bradley_low_3ds; sourceTree = "<group>"; };
+		D704AA592AB22C1A00A3BB63 /* GroupLayersTogetherView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupLayersTogetherView.swift; sourceTree = "<group>"; };
 		D70BE5782A5624A80022CA02 /* CategoriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesView.swift; sourceTree = "<group>"; };
 		D710996C2A27D9210065A1C1 /* DensifyAndGeneralizeGeometryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DensifyAndGeneralizeGeometryView.swift; sourceTree = "<group>"; };
 		D710996F2A2802FA0065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DensifyAndGeneralizeGeometryView.SettingsView.swift; sourceTree = "<group>"; };
@@ -492,6 +497,7 @@
 		D752D95E2A3BCE06003EB25E /* DisplayMapFromPortalItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayMapFromPortalItemView.swift; sourceTree = "<group>"; };
 		D75362D12A1E886700D83028 /* ApplyUniqueValueRendererView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplyUniqueValueRendererView.swift; sourceTree = "<group>"; };
 		D754E3222A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StylePointWithPictureMarkerSymbolsView.swift; sourceTree = "<group>"; };
+		D75C35662AB50338003CD55F /* GroupLayersTogetherView.GroupLayerListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupLayersTogetherView.GroupLayerListView.swift; sourceTree = "<group>"; };
 		D75B58502AAFB3030038B3B4 /* StyleFeaturesWithCustomDictionaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleFeaturesWithCustomDictionaryView.swift; sourceTree = "<group>"; };
 		D7634FAE2A43B7AC00F8AEFB /* CreateConvexHullAroundGeometriesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateConvexHullAroundGeometriesView.swift; sourceTree = "<group>"; };
 		D769C2112A29019B00030F61 /* SetUpLocationDrivenGeotriggersView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetUpLocationDrivenGeotriggersView.swift; sourceTree = "<group>"; };
@@ -664,6 +670,7 @@
 				E066DD33285CF3A0004D3D5B /* Find route */,
 				E088E1722863B5E600413100 /* Generate offline map */,
 				0044288C29C90BD500160767 /* Get elevation at point on surface */,
+				D704AA562AB22B7A00A3BB63 /* Group layers together */,
 				D751018A2A2E960300B8FA48 /* Identify layer features */,
 				D752D93C2A3914E5003EB25E /* Manage operational layers */,
 				D7ABA2F52A3256610021822B /* Measure distance in scene */,
@@ -1062,6 +1069,15 @@
 				D701D72B2A37C7F7006FF0C8 /* bradley_low_3ds */,
 			);
 			path = 07d62a792ab6496d9b772a24efea45d0;
+			sourceTree = "<group>";
+		};
+		D704AA562AB22B7A00A3BB63 /* Group layers together */ = {
+			isa = PBXGroup;
+			children = (
+				D704AA592AB22C1A00A3BB63 /* GroupLayersTogetherView.swift */,
+				D75C35662AB50338003CD55F /* GroupLayersTogetherView.GroupLayerListView.swift */,
+			);
+			path = "Group layers together";
 			sourceTree = "<group>";
 		};
 		D71099692A27D8880065A1C1 /* Densify and generalize geometry */ = {
@@ -1719,6 +1735,7 @@
 				0042E24328E4BF8F001F33D6 /* ShowViewshedFromPointInSceneView.Model.swift in Sources */,
 				D7E557682A1D768800B9FB09 /* AddWMSLayerView.swift in Sources */,
 				0005580A2817C51E00224BC6 /* SampleDetailView.swift in Sources */,
+				D75C35672AB50338003CD55F /* GroupLayersTogetherView.GroupLayerListView.swift in Sources */,
 				4D2ADC6229C5071C003B367F /* ChangeMapViewBackgroundView.Model.swift in Sources */,
 				0074ABCD2817BCC30037244A /* SamplesApp+Samples.swift.tache in Sources */,
 				D79EE76E2A4CEA5D005A52AE /* SetUpLocationDrivenGeotriggersView.Model.swift in Sources */,
@@ -1766,6 +1783,7 @@
 				88F93CC129C3D59D0006B28E /* CreateAndEditGeometriesView.swift in Sources */,
 				1C0C1C3929D34DAE005C8B24 /* ChangeViewpointView.swift in Sources */,
 				D734FA0C2A183A5B00246D7E /* SetMaxExtentView.swift in Sources */,
+				D704AA5A2AB22C1A00A3BB63 /* GroupLayersTogetherView.swift in Sources */,
 				E004A6DC28465C70002A1FE6 /* DisplaySceneView.swift in Sources */,
 				E066DD35285CF3B3004D3D5B /* FindRouteView.swift in Sources */,
 				D722BD222A420DAD002C2087 /* ShowExtrudedFeaturesView.swift in Sources */,
@@ -1949,6 +1967,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
 				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
