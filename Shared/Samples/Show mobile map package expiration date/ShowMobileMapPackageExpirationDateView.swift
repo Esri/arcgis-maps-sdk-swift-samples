@@ -16,27 +16,30 @@ import ArcGIS
 import SwiftUI
 
 struct ShowMobileMapPackageExpirationDateView: View {
-    /// The view model for the sample.
-    @StateObject private var model = Model()
+    /// A map with no specified style.
+    @State private var map = Map()
+    
+    /// The mobile map package.
+    @State private var mobileMapPackage: MobileMapPackage!
     
     var body: some View {
-        MapView(map: model.map)
-            .alert(isPresented: $model.isShowingErrorAlert, presentingError: model.error)
+        MapView(map: map)
+            .task {
+                // Load the local mobile map package from a URL.
+                mobileMapPackage = MobileMapPackage(fileURL: .lothianRiversAnno)
+                try? await mobileMapPackage.load()
+                
+                // Gets the first map in the mobile map package.
+                if let map = mobileMapPackage.maps.first {
+                    self.map = map
+                }
+            }
     }
 }
 
-private extension ShowMobileMapPackageExpirationDateView {
-    /// The view model for the sample.
-    class Model: ObservableObject {
-        /// A map with a topographic basemap.
-        let map = Map(basemapStyle: .arcGISTopographic)
-        
-        /// A Boolean that indicates whether to show an error alert.
-        @Published var isShowingErrorAlert = false
-        
-        /// The error shown in the alert.
-        @Published var error: Error? {
-            didSet { isShowingErrorAlert = error != nil }
-        }
+private extension URL {
+    /// The URL to the local Lothian Rivers Anno mobile map package file.
+    static var lothianRiversAnno: URL {
+        Bundle.main.url(forResource: "LothianRiversAnno", withExtension: "mmpk")!
     }
 }
