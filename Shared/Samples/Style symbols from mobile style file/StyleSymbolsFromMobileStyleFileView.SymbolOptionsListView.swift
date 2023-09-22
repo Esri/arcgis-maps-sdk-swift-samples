@@ -69,7 +69,7 @@ extension StyleSymbolsFromMobileStyleFileView {
             }
             .task(id: displayScale) {
                 // Update the symbols when the display scale changes.
-                symbols = await getSymbols(displayScale: displayScale)
+                symbols = await symbols(forDisplayScale: displayScale)
                 await model.updateCurrentSymbol(displayScale: displayScale)
             }
         }
