@@ -1,0 +1,21 @@
+{
+    "category": "Maps",
+    "description": "Access the expiration information of an expired mobile map package.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "expiration",
+        "mmpk",
+        "Expiration",
+        "MobileMapPackage"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Expiration",
+        "MobileMapPackage"
+    ],
+    "snippets": [
+        "ShowMobileMapPackageExpirationDateView.swift"
+    ],
+    "title": "Show mobile map package expiration date"
+}
