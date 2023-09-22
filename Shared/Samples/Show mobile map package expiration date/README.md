@@ -16,11 +16,11 @@ Load the app. The author of the MMPK used in this sample chose to set the MMPK's
 
 ## How it works
 
-1. Create a `MobileMapPackage` passing in the path to the mobile map package's location on the device.
+1. Create a `MobileMapPackage` object by passing in the URL to the mobile map package's location.
 2. Load the mobile map package.
-3. Present `Expiration` information to the user with:
-  * Use `getMessage()` to get the expiration message set by the author of the MMPK.
-  * Use `getDate()` to get the expiration date set by the author of the MMPK.
+3. Present the mobile map package's expiration information to the user:
+  * Use `Expiration.message` to get the expiration message set by the author of the MMPK.
+  * Use `Expiration.date` to get the expiration date set by the author of the MMPK.
 
 ## Relevant API
 
@@ -29,15 +29,7 @@ Load the app. The author of the MMPK used in this sample chose to set the MMPK's
 
 ## Offline data
 
-1. Download the data from [ArcGIS Online](https://arcgisruntime.maps.arcgis.com/home/item.html?id=174150279af74a2ba6f8b87a567f480b).
-2. Extract the contents of the downloaded zip file to disk.
-3. Open your command prompt and navigate to the folder where you extracted the contents of the data from step 1.
-4. Execute the following command:
-`adb LothianRiversAnno.mmpk /sdcard/ArcGIS/Samples/MapPackage/LothianRiversAnno.mmpk`
-
-Link | Local Location
----------|-------|
-|[Lothian Rivers Anno MMPK](https://arcgisruntime.maps.arcgis.com/home/item.html?id=174150279af74a2ba6f8b87a567f480b)| `<sdcard>`/ArcGIS/Samples/MapPackage/LothianRiversAnno.mmpk|
+This sample uses the [LothianRiversAnno - Expired](https://arcgisruntime.maps.arcgis.com/home/item.html?id=174150279af74a2ba6f8b87a567f480b) mobile map package. It is downloaded from ArcGIS Online automatically.
 
 ## Tags
 
