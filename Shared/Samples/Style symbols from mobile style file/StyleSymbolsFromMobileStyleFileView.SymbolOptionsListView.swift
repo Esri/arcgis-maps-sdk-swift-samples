@@ -77,7 +77,7 @@ extension StyleSymbolsFromMobileStyleFileView {
         /// Gets the symbols from the symbol style.
         /// - Parameter displayScale: The display scale of the environment for creating symbol swatches.
         /// - Returns:  An `Array` of `SymbolDetails` which contain a symbol and its associated information.
-        private func getSymbols(displayScale: Double) async -> [SymbolDetails] {
+        private func symbols(forDisplayScale: Double) async -> [SymbolDetails] {
             // Get the default symbol search parameters from the symbol style.
             guard let searchParameters = try? await model.symbolStyle.defaultSearchParameters else { return [] }
             
