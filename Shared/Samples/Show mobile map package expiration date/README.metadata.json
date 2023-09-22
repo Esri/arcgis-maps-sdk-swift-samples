@@ -2,7 +2,9 @@
     "category": "Maps",
     "description": "Access the expiration information of an expired mobile map package.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "show-mobile-map-package-expiration-date.png"
+    ],
     "keywords": [
         "expiration",
         "mmpk",
