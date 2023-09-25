@@ -213,12 +213,16 @@ private extension RenderMultilayerSymbolsView {
         let lineSymbol = MultilayerPolylineSymbol(symbolLayers: [strokeLayer])
         
         // Create a polyline for the graphic.
-        let polylineBuilder = PolylineBuilder(spatialReference: .wgs84)
-        polylineBuilder.add(Point(x: -30, y: 20 - offset))
-        polylineBuilder.add(Point(x: 30, y: 20 - offset))
+        let polyline = Polyline(
+            points: [
+                Point(x: -30, y: 20 - offset),
+                Point(x: 30, y: 20 - offset)
+            ],
+            spatialReference: .wgs84
+        )
         
         // Create a graphic of the multilayer polyline symbol.
-        return Graphic(geometry: polylineBuilder.toGeometry(), symbol: lineSymbol)
+        return Graphic(geometry: polyline, symbol: lineSymbol)
     }
     
     // MARK: Multilayer Polygons
@@ -278,14 +282,18 @@ private extension RenderMultilayerSymbolsView {
         let polygonSymbol = MultilayerPolygonSymbol(symbolLayers: symbolLayers)
         
         // Create rectangle polygon for the graphic.
-        let polygonBuilder = PolygonBuilder(spatialReference: .wgs84)
-        polygonBuilder.add(Point(x: 60, y: 25 - offset))
-        polygonBuilder.add(Point(x: 70, y: 25 - offset))
-        polygonBuilder.add(Point(x: 70, y: 20 - offset))
-        polygonBuilder.add(Point(x: 60, y: 20 - offset))
+        let polygon = Polygon(
+            points: [
+                Point(x: 60, y: 25 - offset),
+                Point(x: 70, y: 25 - offset),
+                Point(x: 70, y: 20 - offset),
+                Point(x: 60, y: 20 - offset)
+            ],
+            spatialReference: .wgs84
+        )
         
         // Create a graphic of the multilayer polygon symbol.
-        return Graphic(geometry: polygonBuilder.toGeometry(), symbol: polygonSymbol)
+        return Graphic(geometry: polygon, symbol: polygonSymbol)
     }
     
     // MARK: Complex Multilayer Symbols
@@ -390,14 +398,18 @@ private extension RenderMultilayerSymbolsView {
         )
         
         // Create a polygon for the graphic.
-        let polygonBuilder = PolygonBuilder(spatialReference: .wgs84)
-        polygonBuilder.add(Point(x: 120, y: 0))
-        polygonBuilder.add(Point(x: 140, y: 0))
-        polygonBuilder.add(Point(x: 140, y: -10))
-        polygonBuilder.add(Point(x: 120, y: -10))
+        let polygon = Polygon(
+            points: [
+                Point(x: 120, y: 0),
+                Point(x: 140, y: 0),
+                Point(x: 140, y: -10),
+                Point(x: 120, y: -10)
+            ],
+            spatialReference: .wgs84
+        )
         
         // Create a graphic of the multilayer polygon symbol.
-        return Graphic(geometry: polygonBuilder.toGeometry(), symbol: polygonSymbol)
+        return Graphic(geometry: polygon, symbol: polygonSymbol)
     }
     
     /// Creates a graphic of the complex polyline made with multiple layers.
@@ -409,12 +421,16 @@ private extension RenderMultilayerSymbolsView {
         )
         
         // Create a polyline geometry of the graphic.
-        let polylineBuilder = PolylineBuilder(spatialReference: .wgs84)
-        polylineBuilder.add(Point(x: 120, y: -25))
-        polylineBuilder.add(Point(x: 140, y: -25))
+        let polyline = Polyline(
+            points: [
+                Point(x: 120, y: -25),
+                Point(x: 140, y: -25)
+            ],
+            spatialReference: .wgs84
+        )
         
         // Create a graphic of the multilayer polygon symbol.
-        return Graphic(geometry: polylineBuilder.toGeometry(), symbol: polylineSymbol)
+        return Graphic(geometry: polyline, symbol: polylineSymbol)
     }
     
     /// Creates the symbol layers used to create the complex multilayer symbols.
