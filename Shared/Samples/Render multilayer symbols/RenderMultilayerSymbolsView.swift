@@ -48,8 +48,8 @@ private extension RenderMultilayerSymbolsView {
     // MARK: Methods
     
     /// Creates a text symbol with the text to be displayed on the map.
-    /// - Parameter text: The `String` used to create the `TextSymbol`.
-    /// - Returns: A new `TextSymbol` object with the text to be displayed on the map.
+    /// - Parameter text: The text used to create the text symbol.
+    /// - Returns: A new `TextSymbol` object.
     private static func makeTextSymbol(text: String) -> TextSymbol {
         // Create text symbol with a white background.
         let textSymbol = TextSymbol(text: text, color: .black, size: 10)
@@ -60,7 +60,7 @@ private extension RenderMultilayerSymbolsView {
     // MARK: MultilayerPoint Simple Markers
     
     /// Creates the multilayer point simple marker graphics.
-    /// - Returns: An `Array` of new `Graphic` objects to display on the map.
+    /// - Returns: The new `Graphic` objects to display on the map.
     private static func makeMultilayerPointSimpleMarkerGraphics() -> [Graphic] {
         // Create a text graphic.
         var graphics = [
@@ -105,9 +105,9 @@ private extension RenderMultilayerSymbolsView {
     
     /// Creates a graphic of multilayer point symbol using a vector marker symbol element.
     /// - Parameters:
-    ///   - symbol: The `MultilayerSymbol` to create the graphic of.
-    ///   - geometry: The `Geometry` used to make the `VectorMarkerSymbolElement`.
-    ///   - offset: The `Double` used to keep a consistent distance between symbols in the same column.
+    ///   - symbol: The symbol to create the graphic of.
+    ///   - geometry: The geometry used to make the vector marker symbol element.
+    ///   - offset: The offset used to keep a consistent distance between symbols in the same column.
     /// - Returns: A new `Graphic` object of the multilayer point symbol.
     private static func makeGraphicWithVectorMarkerSymbolElement(
         symbol: MultilayerSymbol,
@@ -130,7 +130,7 @@ private extension RenderMultilayerSymbolsView {
     // MARK: MultilayerPoint Picture Markers
     
     /// Creates the multilayer point picture marker graphics .
-    /// - Returns: An `Array` of new `Graphic` objects to display on the map.
+    /// - Returns: The new `Graphic` objects to display on the map.
     private static func makeMultilayerPointPictureMarkerGraphics() -> [Graphic] {
         // Create a text graphic.
         var graphics = [Graphic(
@@ -156,8 +156,8 @@ private extension RenderMultilayerSymbolsView {
     
     /// Creates a graphic from a picture marker symbol layer using a multilayer point symbol.
     /// - Parameters:
-    ///   - layer: The `PictureMarkerSymbolLayer` used to create the `MultilayerPointSymbol`.
-    ///   - offset: The `Double` used to keep a consistent distance between symbols in the same column.
+    ///   - layer: The layer used to create the multilayer point symbol.
+    ///   - offset: The offset used to keep a consistent distance between symbols in the same column.
     /// - Returns: A new `Graphic` object of the multilayer point symbol.
     private static func makeGraphicFromPictureMarkerSymbol(layer: PictureMarkerSymbolLayer, offset: Double) -> Graphic {
         // Create a multilayer point symbol using the picture marker symbol layer.
@@ -174,7 +174,7 @@ private extension RenderMultilayerSymbolsView {
     // MARK: Multilayer Polylines
     
     /// Creates the multilayer polyline graphics.
-    /// - Returns: An `Array` of new `Graphic` objects to display on the map.
+    /// - Returns: The new `Graphic` objects to display on the map.
     private static func makeMultilayerPolylineGraphics() -> [Graphic] {
         // Create a text graphic.
         var graphics = [
@@ -198,8 +198,8 @@ private extension RenderMultilayerSymbolsView {
     
     /// Creates a graphic of a dashed multilayer polyline symbol.
     /// - Parameters:
-    ///   - dashSpacing: The pattern of `Double` spaces and dashes used to create a `DashGeometricEffect`.
-    ///   - offset: The `Double` used to keep a consistent distance between symbols in the same column.
+    ///   - dashSpacing: The pattern of spaces and dashes used to create a dash effect.
+    ///   - offset: The offset used to keep a consistent distance between symbols in the same column.
     /// - Returns: A new `Graphic` object of the multilayer polyline symbol.
     private static func makeMultilayerPolylineSymbolGraphic(dashSpacing: [Double], offset: Double) -> Graphic {
         // Create a dash effect with the passed dash spacing.
@@ -224,7 +224,7 @@ private extension RenderMultilayerSymbolsView {
     // MARK: Multilayer Polygons
     
     /// Creates the multilayer polygon graphics.
-    /// - Returns: An `Array` of new `Graphic` objects to display on the map.
+    /// - Returns: The new `Graphic` objects to display on the map.
     private static func makeMultilayerPolygonGraphics() -> [Graphic] {
         // Create a text graphic.
         var graphics = [
@@ -291,7 +291,7 @@ private extension RenderMultilayerSymbolsView {
     // MARK: Complex Multilayer Symbols
     
     /// Creates the complex multilayer symbol graphics.
-    /// - Returns: An `Array` of new `Graphic` objects to display on the map.
+    /// - Returns: The new `Graphic` objects to display on the map.
     private static func makeComplexMultilayerSymbolGraphics() -> [Graphic] {
         // Create a text graphic.
         var graphics = [
@@ -313,7 +313,7 @@ private extension RenderMultilayerSymbolsView {
     }
     
     /// Creates a graphic of a complex multilayer point from multiple symbol layers and a provided geometry.
-    /// - Parameter geometry: The `Geometry` used to create the `MultilayerPolygonSymbol`.
+    /// - Parameter geometry: The geometry used to create a multilayer polygon symbol.
     /// - Returns: A new `Graphic` object of the multilayer point symbol.
     private static func makeComplexPointGraphic(geometry: Geometry) -> Graphic {
         // Create the vector marker symbol layers for the complex point.
@@ -350,9 +350,9 @@ private extension RenderMultilayerSymbolsView {
     
     /// Creates a vector marker symbol layer for use in the composition of a complex point.
     /// - Parameters:
-    ///   - fillColor: The fill `UIColor`of the symbol.
-    ///   - outlineColor: The  outline`UIColor` of the symbol.
-    ///   - size: The `Double` size of the symbol.
+    ///   - fillColor: The fill color of the symbol.
+    ///   - outlineColor: The  outline color of the symbol.
+    ///   - size: The size of the symbol.
     /// - Returns: A new `VectorMarkerSymbolLayer` object of the created symbol.
     private static func makeLayerForComplexPoint(
         fillColor: UIColor,
@@ -418,8 +418,8 @@ private extension RenderMultilayerSymbolsView {
     }
     
     /// Creates the symbol layers used to create the complex multilayer symbols.
-    /// - Parameter includeRedFill: A `Bool` that indicates whether to include a red fill layer.
-    /// - Returns: An `Array` of new `SymbolLayer`s objects.
+    /// - Parameter includeRedFill: A Boolean that indicates whether to include a red fill layer.
+    /// - Returns: The new `SymbolLayer`s objects.
     private static func makeLayersForComplexMultilayerSymbols(includeRedFill: Bool) -> [SymbolLayer] {
         // Create a black dash effect.
         let dashEffect = DashGeometricEffect(dashTemplate: [5, 3])
