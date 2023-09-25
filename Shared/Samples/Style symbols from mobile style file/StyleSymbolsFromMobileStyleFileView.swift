@@ -40,7 +40,6 @@ struct StyleSymbolsFromMobileStyleFileView: View {
                     .sheet(isPresented: $isShowingSymbolOptionsSheet, detents: [.large]) {
                         symbolOptionsList
                     }
-                    
                     Spacer()
                     Button("Clear") {
                         // Clear all graphics from the map.
