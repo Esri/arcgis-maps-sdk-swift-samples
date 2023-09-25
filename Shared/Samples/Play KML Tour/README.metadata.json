@@ -15,24 +15,24 @@
         "story",
         "tour",
         "KMLTour",
-        "KMLTour.PropertyChanged",
-        "KMLTour.TourStatus",
+        "KMLTour.Status",
         "KMLTourController",
-        "KMLTourController.Pause()",
-        "KMLTourController.Play()",
-        "KMLTourController.Reset()",
-        "KmlTourController.Tour"
+        "KMLTourController.pause()",
+        "KMLTourController.play()",
+        "KMLTourController.reset()",
+        "KMLTourController.tour",
+        "pause()"
     ],
     "redirect_from": [],
     "relevant_apis": [
         "KMLTour",
-        "KMLTour.PropertyChanged",
-        "KMLTour.TourStatus",
+        "KMLTour.Status",
         "KMLTourController",
-        "KMLTourController.Pause()",
-        "KMLTourController.Play()",
-        "KMLTourController.Reset()",
-        "KmlTourController.Tour"
+        "KMLTourController.pause()",
+        "KMLTourController.play()",
+        "KMLTourController.reset()",
+        "KMLTourController.tour",
+        "pause()"
     ],
     "snippets": [
         "PlayKMLTourView.swift"
