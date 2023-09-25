@@ -19,7 +19,7 @@ The sample loads multilayer symbols for points, polylines, and polygons.
     * For multilayer polyline symbols, use `MultiLayerSymbol(symbolLayers:referenceProperties:)`.
     * For multilayer polygon symbols, use `MultiLayerPolygonSymbol(symbolLayers:referenceProperties:)`.
 2. Create graphics by passing in a geometry and the associated symbol.
-3. Add graphics to the graphics overlay with `graphicsOverlay.addGraphics(_ newGraphic:)`
+3. Add graphics to the graphics overlay with `graphicsOverlay.addGraphics(_:)`
 
 ## Relevant API
 
