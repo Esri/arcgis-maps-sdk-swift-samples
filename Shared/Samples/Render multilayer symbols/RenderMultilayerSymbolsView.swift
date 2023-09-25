@@ -133,10 +133,12 @@ private extension RenderMultilayerSymbolsView {
     /// - Returns: The new `Graphic` objects to display on the map.
     private static func makeMultilayerPointPictureMarkerGraphics() -> [Graphic] {
         // Create a text graphic.
-        var graphics = [Graphic(
-            geometry: Point(x: -80, y: 50, spatialReference: .wgs84),
-            symbol: makeTextSymbol(text: "MultilayerPoint\nPicture Markers")
-        )]
+        var graphics = [
+            Graphic(
+                geometry: Point(x: -80, y: 50, spatialReference: .wgs84),
+                symbol: makeTextSymbol(text: "MultilayerPoint\nPicture Markers")
+            )
+        ]
         
         // Create a campsite graphic using a URL.
         let campsiteLayer = PictureMarkerSymbolLayer(url: .campsiteImage)
