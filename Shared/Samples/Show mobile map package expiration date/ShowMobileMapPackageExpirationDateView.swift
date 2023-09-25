@@ -65,7 +65,7 @@ struct ShowMobileMapPackageExpirationDateView: View {
 }
 
 private extension URL {
-    /// The URL to the local LothianRiverssxAnno mobile map package file.
+    /// The URL to the local Lothian Rivers Anno mobile map package file.
     static var lothianRiversAnno: URL {
         Bundle.main.url(forResource: "LothianRiversAnno", withExtension: "mmpk")!
     }
