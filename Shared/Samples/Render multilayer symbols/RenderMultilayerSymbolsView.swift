@@ -27,7 +27,7 @@ struct RenderMultilayerSymbolsView: View {
     @State private var graphicsOverlay = GraphicsOverlay()
     
     /// The offset used to keep a consistent distance between symbols in the same column.
-    private let offset = 20.0
+    private let offsetBetweenSymbols = 20.0
     
     init() {
         // Create graphics and add them to the graphics overlay.
@@ -85,7 +85,7 @@ private extension RenderMultilayerSymbolsView {
             graphics.append(makeGraphicWithVectorMarkerSymbolElement(
                 symbol: polygonSymbol,
                 geometry: triangleGeometry,
-                offset: offset
+                offset: offsetBetweenSymbols
             ))
         }
         
@@ -96,7 +96,7 @@ private extension RenderMultilayerSymbolsView {
             graphics.append(makeGraphicWithVectorMarkerSymbolElement(
                 symbol: polylineSymbol,
                 geometry: crossGeometry,
-                offset: offset * 2
+                offset: offsetBetweenSymbols * 2
             ))
         }
         return graphics
@@ -188,9 +188,9 @@ private extension RenderMultilayerSymbolsView {
             // Dash, dot, dot.
             makeMultilayerPolylineSymbolGraphic(dashSpacing: [4, 6, 0.5, 6, 0.5, 6], offset: 0),
             // Dashes.
-            makeMultilayerPolylineSymbolGraphic(dashSpacing: [4, 6], offset: offset),
+            makeMultilayerPolylineSymbolGraphic(dashSpacing: [4, 6], offset: offsetBetweenSymbols),
             // Dash, dot.
-            makeMultilayerPolylineSymbolGraphic(dashSpacing: [7, 9, 0.5, 9], offset: offset * 2)
+            makeMultilayerPolylineSymbolGraphic(dashSpacing: [7, 9, 0.5, 9], offset: offsetBetweenSymbols * 2)
         ])
         return graphics
     }
@@ -238,9 +238,9 @@ private extension RenderMultilayerSymbolsView {
             // Cross-hatched diagonal lines.
             makeMultilayerPolygonSymbolGraphic(angles: [-45, 45], offset: 0),
             // Hatched diagonal lines.
-            makeMultilayerPolygonSymbolGraphic(angles: [-45], offset: offset),
+            makeMultilayerPolygonSymbolGraphic(angles: [-45], offset: offsetBetweenSymbols),
             // Hatched vertical lines.
-            makeMultilayerPolygonSymbolGraphic(angles: [90], offset: offset * 2)
+            makeMultilayerPolygonSymbolGraphic(angles: [90], offset: offsetBetweenSymbols * 2)
         ])
         return graphics
     }
@@ -353,8 +353,8 @@ private extension RenderMultilayerSymbolsView {
     ///   - outlineColor: The  outline`UIColor` of the symbol.
     ///   - size: The `Double` size of the symbol.
     /// - Returns: A new `VectorMarkerSymbolLayer` object of the created symbol.
-    private static func makeLayerForComplexPoint(
-        fillColor: UIColor, 
+    private func makeLayerForComplexPoint(
+        fillColor: UIColor,
         outlineColor: UIColor,
         size: Double
     ) -> VectorMarkerSymbolLayer {
