@@ -2,7 +2,7 @@
 
 Play tours in KML files.
 
-![Image of play KML tour](play-kml-tour.jpg)
+![Image of play KML tour](play-kml-tour.png)
 
 ## Use case
 

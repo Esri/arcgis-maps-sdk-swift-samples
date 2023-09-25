@@ -2,7 +2,9 @@
     "category": "Layers",
     "description": "Play tours in KML files.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "play-kml-tour.png"
+    ],
     "keywords": [
         "KML",
         "animation",

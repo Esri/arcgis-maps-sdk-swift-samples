@@ -105,8 +105,8 @@ struct PlayKMLTourView: View {
 
 private extension PlayKMLTourView {
     /// Finds the first KML tour in a KML dataset.
-    /// - Parameter dataset: The `KMLDataset` to search through.
-    /// - Returns: The first `KMLTour` in the dataset if any.
+    /// - Parameter dataset: The KML dataset to search through.
+    /// - Returns: The first KML tour in the dataset if any.
     private func firstKMLTour(in dataset: KMLDataset) -> KMLTour? {
         var nodes = dataset.rootNodes
         var i = 0
