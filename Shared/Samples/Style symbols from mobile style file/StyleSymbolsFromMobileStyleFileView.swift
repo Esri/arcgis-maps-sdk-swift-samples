@@ -48,12 +48,8 @@ struct StyleSymbolsFromMobileStyleFileView: View {
                 }
             }
             .task(id: displayScale) {
-                // Update the current symbol when the display scale change.
-                do {
-                    try await model.updateCurrentSymbol(displayScale: displayScale)
-                } catch {
-                    model.error = error
-                }
+                // Update all the symbols when the display scale changes.
+                await model.updateDisplayScale(using: displayScale)
             }
             .alert(isPresented: $model.isShowingErrorAlert, presentingError: model.error)
     }
@@ -87,10 +83,16 @@ extension StyleSymbolsFromMobileStyleFileView {
         let graphicsOverlay = GraphicsOverlay()
         
         /// The emoji mobile symbol style created from a local symbol style file.
-        let symbolStyle = SymbolStyle(url: .emojiMobile)
+        private let symbolStyle = SymbolStyle(url: .emojiMobile)
+        
+        /// The display scale of the environment used to create the symbol swatches.
+        private var displayScale = 0.0
         
         /// The current symbol created from the symbol style based on the option selections.
-        @Published var currentSymbol: SymbolDetails?
+        @Published private(set) var currentSymbol: SymbolDetails?
+        
+        /// The list of all the symbols and their associated data from the symbol style.
+        @Published private(set) var symbolsList: [SymbolDetails] = []
         
         /// The current symbol option selections used to create the current symbol.
         @Published var symbolOptionSelections = SymbolOptions(
@@ -105,19 +107,27 @@ extension StyleSymbolsFromMobileStyleFileView {
         @Published var isShowingErrorAlert = false
         
         /// The error shown in the error alert.
-        @Published var error: Error? {
+        @Published private(set) var error: Error? {
             didSet { isShowingErrorAlert = error != nil }
         }
         
+        /// Updates the display scale of the current symbol and symbols list.
+        func updateDisplayScale(using displayScale: Double) async {
+            if displayScale != self.displayScale {
+                self.displayScale = displayScale
+                await updateCurrentSymbol()
+                await updateSymbolsList()
+            }
+        }
+        
         /// Updates the current symbol with a symbol created from the symbol style using the current option selections.
-        /// - Parameter displayScale: The display scale of the environment for creating the symbol swatch.
-        func updateCurrentSymbol(displayScale: Double) async throws {
+        func updateCurrentSymbol() async {
             // Get the keys from the option selections.
             var symbolKeys = ["Face1"]
             symbolKeys.append(contentsOf: symbolOptionSelections.categoryKeys.map { $0.value })
             
             // Get the symbol from symbol style using the keys.
-            if let pointSymbol = try await symbolStyle.symbol(forKeys: symbolKeys) as? MultilayerPointSymbol {
+            if let pointSymbol = try? await symbolStyle.symbol(forKeys: symbolKeys) as? MultilayerPointSymbol {
                 // Color lock all layers but the first one.
                 let layers = pointSymbol.symbolLayers
                 for (i, layer) in layers.enumerated() {
@@ -128,10 +138,52 @@ extension StyleSymbolsFromMobileStyleFileView {
                 pointSymbol.size = symbolOptionSelections.size
                 
                 // Create an image swatch for the symbol using the display scale.
-                let swatch = try await pointSymbol.makeSwatch(scale: displayScale)
+                if let swatch = try? await pointSymbol.makeSwatch(scale: displayScale) {
+                    // Update the current symbol with the created symbol and swatch.
+                    currentSymbol = SymbolDetails(symbol: pointSymbol, image: swatch)
+                }
+            }
+        }
+        
+        /// Updates the symbols list with all the symbols in the symbol style.
+        private func updateSymbolsList() async {
+            do {
+                // Get the default symbol search parameters from the symbol style.
+                let searchParameters = try await symbolStyle.defaultSearchParameters
                 
-                // Update the current symbol with the created symbol and swatch.
-                currentSymbol = SymbolDetails(symbol: pointSymbol, image: swatch)
+                // Get the symbol style search results using the search parameters.
+                let searchResults = try await symbolStyle.searchSymbols(using: searchParameters)
+                
+                // Create a symbol for each search result.
+                let symbols = try await withThrowingTaskGroup(of: SymbolDetails.self) { group in
+                    for result in searchResults {
+                        group.addTask {
+                            // Get the symbol from the symbol style using the symbol's key from the result.
+                            let symbol = try await self.symbolStyle.symbol(forKeys: [result.key])
+                            
+                            // Create an image swatch from the symbol using the display scale.
+                            let swatch = try await symbol.makeSwatch(scale: self.displayScale)
+                            
+                            return SymbolDetails(
+                                symbol: symbol,
+                                image: swatch,
+                                name: result.name,
+                                key: result.key,
+                                category: result.category
+                            )
+                        }
+                    }
+                    
+                    var symbols: [SymbolDetails] = []
+                    for try await symbol in group {
+                        symbols.append(symbol)
+                    }
+                    return symbols
+                }
+                
+                symbolsList = symbols.sorted { $0.name < $1.name }
+            } catch {
+                self.error = error
             }
         }
     }

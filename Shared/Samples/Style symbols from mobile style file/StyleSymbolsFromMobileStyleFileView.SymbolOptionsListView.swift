@@ -23,9 +23,6 @@ extension StyleSymbolsFromMobileStyleFileView {
         /// The view model for the sample.
         @ObservedObject var model: Model
         
-        /// The list of all the symbols and their associated data from the symbol style.
-        @State private var symbols: [SymbolDetails] = []
-        
         var body: some View {
             VStack {
                 Image(uiImage: model.currentSymbol?.image ?? UIImage())
@@ -35,7 +32,7 @@ extension StyleSymbolsFromMobileStyleFileView {
                     ForEach(SymbolCategory.allCases, id: \.self) { category in
                         Section(category.label) {
                             Picker("Symbol Names", selection: $model.symbolOptionSelections.categoryKeys[category]) {
-                                ForEach(symbols.filter { $0.category == category.rawValue }, id: \.key) { symbol in
+                                ForEach(model.symbolsList.filter { $0.category == category.rawValue }, id: \.key) { symbol in
                                     Label {
                                         Text(symbol.label)
                                     } icon: {
@@ -65,62 +62,13 @@ extension StyleSymbolsFromMobileStyleFileView {
             }
             .task(id: model.symbolOptionSelections) {
                 // Update the current symbol when an option selection changes.
-                do {
-                    try await model.updateCurrentSymbol(displayScale: displayScale)
-                } catch {
-                    model.error = error
-                }
+                await model.updateCurrentSymbol()
             }
             .task(id: displayScale) {
-                // Update the symbols when the display scale changes.
-                do {
-                    symbols = try await symbols(forDisplayScale: displayScale)
-                    try await model.updateCurrentSymbol(displayScale: displayScale)
-                } catch {
-                    model.error = error
-                }
+                // Update all the symbols when the display scale changes.
+                await model.updateDisplayScale(using: displayScale)
             }
             .alert(isPresented: $model.isShowingErrorAlert, presentingError: model.error)
-        }
-        
-        /// Loads all the symbols from the symbol style.
-        /// - Parameter displayScale: The display scale of the environment for creating symbol swatches.
-        /// - Returns:  An `Array` of `SymbolDetails` which contain a symbol and its associated information.
-        private func symbols(forDisplayScale: Double) async throws -> [SymbolDetails] {
-            // Get the default symbol search parameters from the symbol style.
-            let searchParameters = try await model.symbolStyle.defaultSearchParameters
-            
-            // Get the symbol style search results using the search parameters.
-            let searchResults = try await model.symbolStyle.searchSymbols(using: searchParameters)
-            
-            // Create a symbol for each search result.
-            let symbols = try await withThrowingTaskGroup(of: SymbolDetails.self) { group in
-                for result in searchResults {
-                    group.addTask {
-                        // Get the symbol from the symbol style using the symbol's key from the result.
-                        let symbol = try await self.model.symbolStyle.symbol(forKeys: [result.key])
-                        
-                        // Create an image swatch from the symbol using the display scale.
-                        let swatch = try await symbol.makeSwatch(scale: displayScale)
-                        
-                        return SymbolDetails(
-                            symbol: symbol,
-                            image: swatch,
-                            name: result.name,
-                            key: result.key,
-                            category: result.category
-                        )
-                    }
-                }
-                
-                var symbols: [SymbolDetails] = []
-                for try await symbol in group {
-                    symbols.append(symbol)
-                }
-                return symbols.sorted { $0.name < $1.name }
-            }
-            
-            return symbols
         }
     }
 }
