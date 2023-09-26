@@ -130,24 +130,11 @@ extension StyleSymbolsFromMobileStyleFileView {
         /// The image swatch of the symbol.
         let image: UIImage
         /// The name of the symbol as found in the symbol style.
-        let name: String
+        var name: String = ""
         /// The key of the symbol as found in the symbol style.
-        let key: String
+        var key: String = ""
         /// The category of the symbol as found in the symbol style.
-        let category: String
-        /// The human-readable label of the symbol name.
-        var label: String {
-            let splitName = name.replacingOccurrences(of: "-", with: " ").split(separator: " ")
-            return splitName.last?.capitalized ?? name
-        }
-        
-        init(symbol: Symbol, image: UIImage, name: String = "", key: String = "", category: String = "") {
-            self.symbol = symbol
-            self.image = image
-            self.name = name
-            self.key = key
-            self.category = category
-        }
+        var category: String = ""
     }
     
     /// The different options used in creating a symbol from the symbol style.
@@ -178,6 +165,14 @@ extension StyleSymbolsFromMobileStyleFileView {
         var label: String {
             return self.rawValue.hasSuffix("s") ? self.rawValue : "\(self.rawValue)s"
         }
+    }
+}
+
+extension StyleSymbolsFromMobileStyleFileView.SymbolDetails {
+    /// The human-readable label of the symbol name.
+    var label: String {
+        let splitName = name.replacingOccurrences(of: "-", with: " ").split(separator: " ")
+        return splitName.last?.capitalized ?? name
     }
 }
 
