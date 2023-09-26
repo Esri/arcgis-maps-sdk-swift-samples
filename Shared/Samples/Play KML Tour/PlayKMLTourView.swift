@@ -21,7 +21,7 @@ struct PlayKMLTourView: View {
         let scene = Scene(basemapStyle: .arcGISImagery)
         scene.initialViewpoint = Viewpoint(latitude: .nan, longitude: .nan, scale: 114_145_911)
         
-        // Set base surface with an elevation source.
+        // Set the scene's base surface with an elevation source.
         let surface = Surface()
         let elevationSource = ArcGISTiledElevationSource(url: .worldElevationService)
         surface.addElevationSource(elevationSource)
@@ -106,7 +106,7 @@ struct PlayKMLTourView: View {
 private extension PlayKMLTourView {
     /// Finds the first KML tour in a KML dataset.
     /// - Parameter dataset: The KML dataset to search through.
-    /// - Returns: The first KML tour in the dataset if any.
+    /// - Returns: The first `KMLTour` object in the dataset if any.
     private func firstKMLTour(in dataset: KMLDataset) -> KMLTour? {
         var nodes = dataset.rootNodes
         var i = 0
@@ -117,7 +117,7 @@ private extension PlayKMLTourView {
                 return nodes[i] as? KMLTour
             }
             
-            // If node is a container, add all of its children to be looped through.
+            // If the current node is a container, add all of its children to be looped through.
             if nodes[i] is KMLContainer {
                 nodes.append(contentsOf: (nodes[i] as! KMLContainer).childNodes)
             }
