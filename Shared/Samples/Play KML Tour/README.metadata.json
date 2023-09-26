@@ -20,8 +20,7 @@
         "KMLTourController.pause()",
         "KMLTourController.play()",
         "KMLTourController.reset()",
-        "KMLTourController.tour",
-        "pause()"
+        "KMLTourController.tour"
     ],
     "redirect_from": [],
     "relevant_apis": [
@@ -31,8 +30,7 @@
         "KMLTourController.pause()",
         "KMLTourController.play()",
         "KMLTourController.reset()",
-        "KMLTourController.tour",
-        "pause()"
+        "KMLTourController.tour"
     ],
     "snippets": [
         "PlayKMLTourView.swift"

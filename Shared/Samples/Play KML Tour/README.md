@@ -19,7 +19,6 @@ The sample will load the KMZ file from ArcGIS Online. When a tour is found, the 
 3. Explore the tree of KML content and find a KML tour. Once a tour is found, provide it to the KML tour controller.
 4. Enable the buttons to allow the user to play, pause, and reset the tour.
 
-
 ## Relevant API
 
 * KMLTour
@@ -29,7 +28,6 @@ The sample will load the KMZ file from ArcGIS Online. When a tour is found, the 
 * KMLTourController.play()
 * KMLTourController.reset()
 * KMLTourController.tour
-pause()
 
 ## Offline data
 
