@@ -140,16 +140,18 @@ extension StyleSymbolsFromMobileStyleFileView {
     /// The different options used in creating a symbol from the symbol style.
     struct SymbolOptions: Equatable {
         /// A dictionary containing the key of a symbol for each symbol category.
-        var categoryKeys: [SymbolCategory: String] = [:]
+        var categoryKeys: [SymbolCategory: String]
         /// The color of the symbol.
         var color: Color
         /// The size of the symbol.
         var size: Double
         
         init(eyes: String, hat: String, mouth: String, color: Color, size: Double) {
-            categoryKeys[.eyes] = eyes
-            categoryKeys[.hat] = hat
-            categoryKeys[.mouth] = mouth
+            categoryKeys = [
+                .eyes: eyes,
+                .hat: hat,
+                .mouth: mouth
+            ]
             self.color = color
             self.size = size
         }
