@@ -65,56 +65,61 @@ extension StyleSymbolsFromMobileStyleFileView {
             }
             .task(id: model.symbolOptionSelections) {
                 // Update the current symbol when an option selection changes.
-                await model.updateCurrentSymbol(displayScale: displayScale)
+                do {
+                    try await model.updateCurrentSymbol(displayScale: displayScale)
+                } catch {
+                    model.error = error
+                }
             }
             .task(id: displayScale) {
                 // Update the symbols when the display scale changes.
-                symbols = await symbols(forDisplayScale: displayScale)
-                await model.updateCurrentSymbol(displayScale: displayScale)
+                do {
+                    symbols = try await symbols(forDisplayScale: displayScale)
+                    try await model.updateCurrentSymbol(displayScale: displayScale)
+                } catch {
+                    model.error = error
+                }
             }
+            .alert(isPresented: $model.isShowingErrorAlert, presentingError: model.error)
         }
         
-        /// Gets the symbols from the symbol style.
+        /// Loads all the symbols from the symbol style.
         /// - Parameter displayScale: The display scale of the environment for creating symbol swatches.
         /// - Returns:  An `Array` of `SymbolDetails` which contain a symbol and its associated information.
-        private func symbols(forDisplayScale: Double) async -> [SymbolDetails] {
+        private func symbols(forDisplayScale: Double) async throws -> [SymbolDetails] {
             // Get the default symbol search parameters from the symbol style.
-            guard let searchParameters = try? await model.symbolStyle.defaultSearchParameters else { return [] }
+            let searchParameters = try await model.symbolStyle.defaultSearchParameters
             
             // Get the symbol style search results using the search parameters.
-            guard let searchResults = try? await model.symbolStyle.searchSymbols(
-                using: searchParameters
-            ) else { return [] }
+            let searchResults = try await model.symbolStyle.searchSymbols(using: searchParameters)
             
             // Create a symbol for each search result.
-            let symbols = await withTaskGroup(of: SymbolDetails?.self) { group in
+            let symbols = try await withThrowingTaskGroup(of: SymbolDetails.self) { group in
                 for result in searchResults {
                     group.addTask {
                         // Get the symbol from the symbol style using the symbol's key from the result.
-                        if let symbol = try? await self.model.symbolStyle.symbol(forKeys: [result.key]) {
-                            // Create an image swatch from the symbol using the display scale.
-                            if let swatch = try? await symbol.makeSwatch(scale: displayScale) {
-                                return SymbolDetails(
-                                    symbol: symbol,
-                                    image: swatch,
-                                    name: result.name,
-                                    key: result.key,
-                                    category: result.category
-                                )
-                            }
-                        }
-                        return nil
+                        let symbol = try await self.model.symbolStyle.symbol(forKeys: [result.key])
+                        
+                        // Create an image swatch from the symbol using the display scale.
+                        let swatch = try await symbol.makeSwatch(scale: displayScale)
+                        
+                        return SymbolDetails(
+                            symbol: symbol,
+                            image: swatch,
+                            name: result.name,
+                            key: result.key,
+                            category: result.category
+                        )
                     }
                 }
                 
                 var symbols: [SymbolDetails] = []
-                for await symbol in group {
-                    if let symbol {
-                        symbols.append(symbol)
-                    }
+                for try await symbol in group {
+                    symbols.append(symbol)
                 }
                 return symbols.sorted { $0.name < $1.name }
             }
+            
             return symbols
         }
     }

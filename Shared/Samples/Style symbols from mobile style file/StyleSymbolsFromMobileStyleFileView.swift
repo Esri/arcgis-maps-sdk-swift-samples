@@ -49,8 +49,13 @@ struct StyleSymbolsFromMobileStyleFileView: View {
             }
             .task(id: displayScale) {
                 // Update the current symbol when the display scale change.
-                await model.updateCurrentSymbol(displayScale: displayScale)
+                do {
+                    try await model.updateCurrentSymbol(displayScale: displayScale)
+                } catch {
+                    model.error = error
+                }
             }
+            .alert(isPresented: $model.isShowingErrorAlert, presentingError: model.error)
     }
     
     /// The list containing the symbol options.
@@ -96,15 +101,23 @@ extension StyleSymbolsFromMobileStyleFileView {
             size: 40
         )
         
+        /// A Boolean value that indicates whether to show an error alert.
+        @Published var isShowingErrorAlert = false
+        
+        /// The error shown in the error alert.
+        @Published var error: Error? {
+            didSet { isShowingErrorAlert = error != nil }
+        }
+        
         /// Updates the current symbol with a symbol created from the symbol style using the current option selections.
         /// - Parameter displayScale: The display scale of the environment for creating the symbol swatch.
-        func updateCurrentSymbol(displayScale: Double) async {
+        func updateCurrentSymbol(displayScale: Double) async throws {
             // Get the keys from the option selections.
             var symbolKeys = ["Face1"]
             symbolKeys.append(contentsOf: symbolOptionSelections.categoryKeys.map { $0.value })
             
             // Get the symbol from symbol style using the keys.
-            if let pointSymbol = try? await symbolStyle.symbol(forKeys: symbolKeys) as? MultilayerPointSymbol {
+            if let pointSymbol = try await symbolStyle.symbol(forKeys: symbolKeys) as? MultilayerPointSymbol {
                 // Color lock all layers but the first one.
                 let layers = pointSymbol.symbolLayers
                 for (i, layer) in layers.enumerated() {
@@ -115,10 +128,10 @@ extension StyleSymbolsFromMobileStyleFileView {
                 pointSymbol.size = symbolOptionSelections.size
                 
                 // Create an image swatch for the symbol using the display scale.
-                if let swatch = try? await pointSymbol.makeSwatch(scale: displayScale) {
-                    // Update the current symbol with the created symbol and swatch.
-                    currentSymbol = SymbolDetails(symbol: pointSymbol, image: swatch)
-                }
+                let swatch = try await pointSymbol.makeSwatch(scale: displayScale)
+                
+                // Update the current symbol with the created symbol and swatch.
+                currentSymbol = SymbolDetails(symbol: pointSymbol, image: swatch)
             }
         }
     }
