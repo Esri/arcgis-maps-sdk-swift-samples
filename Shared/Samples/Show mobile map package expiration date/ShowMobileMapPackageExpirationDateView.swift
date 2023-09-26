@@ -19,8 +19,8 @@ struct ShowMobileMapPackageExpirationDateView: View {
     /// A map with no specified style.
     @State private var map = Map()
     
-    /// The mobile map package.
-    @State private var mapPackage: MobileMapPackage?
+    /// The mobile map package created from a URL to a local mobile map package file.
+    @State private var mapPackage = MobileMapPackage(fileURL: .lothianRiversAnno)
     
     /// A Boolean value that indicates whether to show an error alert.
     @State private var isShowingErrorAlert = false
@@ -35,12 +35,9 @@ struct ShowMobileMapPackageExpirationDateView: View {
             MapView(map: map)
                 .task {
                     do {
-                        // Load a local mobile map package from a URL.
-                        mapPackage = MobileMapPackage(fileURL: .lothianRiversAnno)
-                        try await mapPackage!.load()
-                        
-                        // Update the map using the first map in the map package.
-                        if let map = mapPackage?.maps.first {
+                        // Set the map to the first map in the mobile map package.
+                        try await mapPackage.load()
+                        if let map = mapPackage.maps.first {
                             self.map = map
                         }
                     } catch {
@@ -49,7 +46,7 @@ struct ShowMobileMapPackageExpirationDateView: View {
                 }
             
             // Display the expiration message and date if the map package is expired.
-            if let expiration = mapPackage?.expiration, expiration.isExpired {
+            if let expiration = mapPackage.expiration, expiration.isExpired {
                 VStack {
                     Text(expiration.message)
                     Text("Expiration date: \(expiration.date?.formatted() ?? "N/A")")
