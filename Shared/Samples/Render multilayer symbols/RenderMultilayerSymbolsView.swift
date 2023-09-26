@@ -253,6 +253,7 @@ private extension RenderMultilayerSymbolsView {
             // Hatched vertical lines.
             makeMultilayerPolygonSymbolGraphic(angles: [90], offset: offsetBetweenSymbols * 2)
         ])
+        
         return graphics
     }
     
@@ -393,6 +394,7 @@ private extension RenderMultilayerSymbolsView {
         // Create a symbol layer containing the symbol element.
         let symbolLayer = VectorMarkerSymbolLayer(vectorMarkerSymbolElements: [symbolElement])
         symbolLayer.size = size
+        
         return symbolLayer
     }
     
