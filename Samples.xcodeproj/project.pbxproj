@@ -680,7 +680,7 @@
 				D7ABA2F52A3256610021822B /* Measure distance in scene */,
 				D752D9422A3A6EB8003EB25E /* Monitor changes to map load status */,
 				75DD739029D38B1B0010229D /* Navigate route */,
-				D7232EDD2AC1E5410079ABFF /* Play KML Tour */,
+				D7232EDD2AC1E5410079ABFF /* Play KML tour */,
 				E0EA0B75286638FD00C9621D /* Project geometry */,
 				108EC03F29D25AE1000F35D0 /* Query feature table */,
 				D7ECF5942AB8BDCA003FB2BE /* Render multilayer symbols */,
@@ -1119,12 +1119,12 @@
 			path = "Show extruded features";
 			sourceTree = "<group>";
 		};
-		D7232EDD2AC1E5410079ABFF /* Play KML Tour */ = {
+		D7232EDD2AC1E5410079ABFF /* Play KML tour */ = {
 			isa = PBXGroup;
 			children = (
 				D7232EE02AC1E5AA0079ABFF /* PlayKMLTourView.swift */,
 			);
-			path = "Play KML Tour";
+			path = "Play KML tour";
 			sourceTree = "<group>";
 		};
 		D7337C5C2ABD137400A5D865 /* Show mobile map package expiration date */ = {
