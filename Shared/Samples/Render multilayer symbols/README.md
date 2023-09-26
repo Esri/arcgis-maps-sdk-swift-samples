@@ -16,7 +16,7 @@ The sample loads multilayer symbols for points, polylines, and polygons.
 
 1. Create multilayer symbols for each predefined 2D simple symbol style.
     * For multilayer point symbols, use `MultilayerPointSymbol(symbolLayers:referenceProperties:)`.
-    * For multilayer polyline symbols, use `MultiLayerSymbol(symbolLayers:referenceProperties:)`.
+    * For multilayer polyline symbols, use `MultilayerPolylineSymbol(symbolLayers:referenceProperties:)`.
     * For multilayer polygon symbols, use `MultiLayerPolygonSymbol(symbolLayers:referenceProperties:)`.
 2. Create graphics by passing in a geometry and the associated symbol.
 3. Add graphics to the graphics overlay with `graphicsOverlay.addGraphics(_:)`

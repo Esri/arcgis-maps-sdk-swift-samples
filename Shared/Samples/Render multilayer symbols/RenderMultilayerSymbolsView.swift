@@ -33,6 +33,7 @@ struct RenderMultilayerSymbolsView: View {
         graphicsOverlay.addGraphics(makeMultilayerPolylineGraphics())
         graphicsOverlay.addGraphics(makeMultilayerPolygonGraphics())
         graphicsOverlay.addGraphics(makeComplexMultilayerSymbolGraphics())
+        
         return graphicsOverlay
     }()
     
@@ -100,6 +101,7 @@ private extension RenderMultilayerSymbolsView {
                 offset: offsetBetweenSymbols * 2
             ))
         }
+        
         return graphics
     }
     
@@ -153,6 +155,7 @@ private extension RenderMultilayerSymbolsView {
                 makeGraphicFromPictureMarkerSymbol(layer: pinLayer, offset: 40)
             )
         }
+        
         return graphics
     }
     
@@ -195,6 +198,7 @@ private extension RenderMultilayerSymbolsView {
             // Dash, dot.
             makeMultilayerPolylineSymbolGraphic(dashSpacing: [7, 9, 0.5, 9], offset: offsetBetweenSymbols * 2)
         ])
+        
         return graphics
     }
     
@@ -319,10 +323,11 @@ private extension RenderMultilayerSymbolsView {
             makeComplexPolygonGraphic(),
             makeComplexPolylineGraphic()
         ])
+        
         return graphics
     }
     
-    /// Creates a graphic of a complex multilayer point from multiple symbol layers and a provided geometry.
+    /// Creates a graphic of a complex multilayer point from multiple symbol layers and given geometry.
     /// - Parameter geometry: The geometry used to create a multilayer polygon symbol.
     /// - Returns: A new `Graphic` object of the multilayer point symbol.
     private static func makeComplexPointGraphic(geometry: Geometry) -> Graphic {
@@ -437,7 +442,7 @@ private extension RenderMultilayerSymbolsView {
     
     /// Creates the symbol layers used to create the complex multilayer symbols.
     /// - Parameter includeRedFill: A Boolean that indicates whether to include a red fill layer.
-    /// - Returns: The new `SymbolLayer`s objects.
+    /// - Returns: The new `SymbolLayer` objects.
     private static func makeLayersForComplexMultilayerSymbols(includeRedFill: Bool) -> [SymbolLayer] {
         // Create a black dash effect.
         let dashEffect = DashGeometricEffect(dashTemplate: [5, 3])
@@ -456,9 +461,9 @@ private extension RenderMultilayerSymbolsView {
             // Create a red fill layer.
             let redFillLayer = SolidFillSymbolLayer(color: .red)
             return [redFillLayer, blackOutlineLayer, yellowStrokeLayer, blackDashesLayer]
+        } else {
+            return [blackOutlineLayer, yellowStrokeLayer, blackDashesLayer]
         }
-        
-        return [blackOutlineLayer, yellowStrokeLayer, blackDashesLayer]
     }
 }
 
