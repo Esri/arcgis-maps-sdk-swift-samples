@@ -459,13 +459,8 @@ private extension RenderMultilayerSymbolsView {
         let yellowStrokeLayer = SolidStrokeSymbolLayer(width: 5, color: .yellow)
         yellowStrokeLayer.capStyle = .round
         
-        if includeRedFill {
-            // Create a red fill layer.
-            let redFillLayer = SolidFillSymbolLayer(color: .red)
-            return [redFillLayer, blackOutlineLayer, yellowStrokeLayer, blackDashesLayer]
-        } else {
-            return [blackOutlineLayer, yellowStrokeLayer, blackDashesLayer]
-        }
+        let symbolLayers = [blackOutlineLayer, yellowStrokeLayer, blackDashesLayer]
+        return includeRedFill ? symbolLayers + [SolidFillSymbolLayer(color: .red)] : symbolLayers
     }
 }
 
