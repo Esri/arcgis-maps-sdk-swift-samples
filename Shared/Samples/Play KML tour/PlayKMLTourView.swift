@@ -46,8 +46,8 @@ struct PlayKMLTourView: View {
         didSet { isShowingErrorAlert = error != nil }
     }
     
-    /// A Boolean value that indicates whether the KML tour is not ready to be played.
-    private var tourIsNotReady: Bool {
+    /// A Boolean value that indicates whether to disable the tour buttons.
+    private var tourDisabled: Bool {
         tourStatus == .notInitialized || tourStatus == .initializing
     }
     
@@ -86,7 +86,7 @@ struct PlayKMLTourView: View {
                             } label: {
                                 Image(systemName: "gobackward")
                             }
-                            .disabled(tourIsNotReady || tourStatus == .initialized)
+                            .disabled(tourDisabled || tourStatus == .initialized)
                             Spacer()
                         }
                         
@@ -95,7 +95,7 @@ struct PlayKMLTourView: View {
                         } label: {
                             Image(systemName: tourStatus == .playing ? "pause.fill" : "play.fill")
                         }
-                        .disabled(tourIsNotReady)
+                        .disabled(tourDisabled)
                     }
                 }
             }
