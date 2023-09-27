@@ -19,8 +19,11 @@ struct DisplayDimensionsView: View {
     /// A map with no specified style.
     @State private var map = Map()
     
-    /// The mobile map package created from a URL to a local mobile map package file.
-    @State private var mapPackage: MobileMapPackage!
+    /// The dimensional layer added to the map.
+    @State private var dimensionLayer: DimensionLayer?
+    
+    /// A Boolean that indicates whether the settings view is showing.
+    @State var isShowingSettings = false
     
     /// A Boolean that indicates whether to show an error alert.
     @State private var isShowingErrorAlert = false
@@ -35,20 +38,78 @@ struct DisplayDimensionsView: View {
             .task {
                 do {
                     // Load the local mobile map package using a URL.
-                    mapPackage = MobileMapPackage(fileURL: .edinburghPylonDimensions)
+                    let mapPackage = MobileMapPackage(fileURL: .edinburghPylonDimensions)
                     try await mapPackage.load()
                     
                     // Set the map to the first map in the mobile map package.
                     if let map = mapPackage.maps.first {
+                        // Set the minScale to maintain dimension readability.
+                        map.minScale = 4e4
                         self.map = map
                     } else {
                         fatalError("MMPK doesn't contain a map.")
                     }
+                    
+                    // Set the dimension layer from the map.
+                    dimensionLayer = map.operationalLayers.first(where: { $0 is DimensionLayer }) as? DimensionLayer
                 } catch {
                     self.error = error
                 }
             }
+            .toolbar {
+                ToolbarItem(placement: .bottomBar) {
+                    settingsButton
+                }
+            }
             .alert(isPresented: $isShowingErrorAlert, presentingError: error)
+    }
+    
+    /// The button that brings up the settings popover or sheet.
+    @ViewBuilder private var settingsButton: some View {
+        let button = Button("Settings") {
+            isShowingSettings = true
+        }
+            .disabled(dimensionLayer == nil)
+        
+        if #available(iOS 16.4, *) {
+            button
+                .popover(isPresented: $isShowingSettings, arrowEdge: .bottom) {
+                    settingsView
+                        .presentationCompactAdaptation((.popover))
+                }
+        } else {
+            button
+                .sheet(isPresented: $isShowingSettings, detents: [.medium]) {
+                    settingsView
+                }
+        }
+    }
+    
+    // The view containing the settings toggles.
+    private var settingsView: some View {
+        NavigationView {
+            List {
+                Toggle("Dimension Layer", isOn: Binding(
+                    get: { dimensionLayer?.isVisible ?? false },
+                    set: { dimensionLayer?.isVisible = $0 }
+                ))
+                Toggle("Definition Expression:\nDimensions >= 450m", isOn: Binding(
+                    get: { dimensionLayer?.definitionExpression == "DIMLENGTH >= 450" },
+                    set: { dimensionLayer?.definitionExpression = $0 ? "DIMLENGTH >= 450" : "" }
+                ))
+            }
+            .navigationTitle("Settings")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") {
+                        isShowingSettings = false
+                    }
+                }
+            }
+        }
+        .navigationViewStyle(.stack)
+        .frame(idealWidth: 320, idealHeight: 170)
     }
 }
 
