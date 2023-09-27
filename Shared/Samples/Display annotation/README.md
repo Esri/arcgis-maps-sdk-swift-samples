@@ -35,7 +35,7 @@ The annotation layer contains two sublayers of rivers in East Lothian, Scotland,
 
 ## Additional information
 
-Annotation is only supported from feature services hosted on [ArcGIS Enterprise](https://enterprise.arcgis.com/en/) server.
+Annotation is only supported from feature services hosted on [ArcGIS Enterprise](https://enterprise.arcgis.com/en/).
 
 ## Tags
 

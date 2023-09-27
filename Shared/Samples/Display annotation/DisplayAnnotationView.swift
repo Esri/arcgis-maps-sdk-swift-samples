@@ -48,7 +48,7 @@ struct DisplayAnnotationView: View {
                     // Add both layers to the map as operational layers.
                     map.addOperationalLayers([featureLayer, annotationLayer])
                 } catch {
-                    // Present an alert for an error loading the layers.
+                    // Present an alert for an error loading a layer.
                     self.error = error
                 }
             }
