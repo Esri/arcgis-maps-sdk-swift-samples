@@ -16,27 +16,54 @@ import ArcGIS
 import SwiftUI
 
 struct DisplayAnnotationView: View {
-    /// The view model for the sample.
-    @StateObject private var model = Model()
+    /// A map with a light grey basemap centered on East Lothian in Scotland.
+    @State private var map: Map = {
+        let map = Map(basemapStyle: .arcGISLightGray)
+        map.initialViewpoint = Viewpoint(latitude: 55.882436, longitude: -2.725610, scale: 72_223.819286)
+        return map
+    }()
+    
+    /// A Boolean that indicates whether to show an error alert.
+    @State private var isShowingErrorAlert = false
+    
+    /// The error shown in the error alert.
+    @State private var error: Error? {
+        didSet { isShowingErrorAlert = error != nil }
+    }
     
     var body: some View {
-        MapView(map: model.map)
-            .alert(isPresented: $model.isShowingErrorAlert, presentingError: model.error)
+        // Create a map view with a map.
+        MapView(map: map)
+            .task {
+                do {
+                    // Create a feature layer.
+                    let featureTable = ServiceFeatureTable(url: .eastLothianRivers)
+                    try await featureTable.load()
+                    let featureLayer = FeatureLayer(featureTable: featureTable)
+                    
+                    // Create an annotation layer.
+                    let annotationLayer = AnnotationLayer(url: .riversAnnotation)
+                    try await annotationLayer.load()
+                    
+                    // Add both layers to the map as operational layers.
+                    map.addOperationalLayers([featureLayer, annotationLayer])
+                } catch {
+                    // Present an alert for an error loading the layers.
+                    self.error = error
+                }
+            }
+            .alert(isPresented: $isShowingErrorAlert, presentingError: error)
     }
 }
 
-private extension DisplayAnnotationView {
-    /// The view model for the sample.
-    class Model: ObservableObject {
-        /// A map with a topographic basemap.
-        let map = Map(basemapStyle: .arcGISTopographic)
-        
-        /// A Boolean that indicates whether to show an error alert.
-        @Published var isShowingErrorAlert = false
-        
-        /// The error shown in the alert.
-        @Published var error: Error? {
-            didSet { isShowingErrorAlert = error != nil }
-        }
+private extension URL {
+    /// A URL to a feature layer for the rivers in East Lothian.
+    static var eastLothianRivers: URL {
+        URL(string: "https://services1.arcgis.com/6677msI40mnLuuLr/arcgis/rest/services/East_Lothian_Rivers/FeatureServer/0")!
+    }
+    
+    /// A URL to an annotation layer for the rivers in East Lothian.
+    static var riversAnnotation: URL {
+        URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/RiversAnnotation/FeatureServer/0")!
     }
 }
