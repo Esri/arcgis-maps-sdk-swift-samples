@@ -26,6 +26,7 @@ struct PlayKMLTourView: View {
         let elevationSource = ArcGISTiledElevationSource(url: .worldElevationService)
         surface.addElevationSource(elevationSource)
         scene.baseSurface = surface
+        
         return scene
     }()
     
@@ -64,11 +65,11 @@ struct PlayKMLTourView: View {
                     scene.addOperationalLayer(layer)
                     
                     // Set the tour controller with first tour in the dataset.
-                    if let tour = firstKMLTour(in: dataset) {
-                        tourController.tour = tour
-                        
-                        // Listen for tour status updates.
-                        for await status in tourController.tour!.$status {
+                    tourController.tour = dataset.tours.first
+                    
+                    // Listen for tour status updates.
+                    if let tour = tourController.tour {
+                        for await status in tour.$status {
                             tourStatus = status
                         }
                     }
@@ -103,27 +104,29 @@ struct PlayKMLTourView: View {
     }
 }
 
-private extension PlayKMLTourView {
-    /// Finds the first KML tour in a KML dataset.
-    /// - Parameter dataset: The KML dataset to search through.
-    /// - Returns: The first `KMLTour` object in the dataset if any.
-    private func firstKMLTour(in dataset: KMLDataset) -> KMLTour? {
-        var nodes = dataset.rootNodes
-        var i = 0
-        
-        // Loop through the nodes until a tour is found.
-        while i < nodes.count {
-            if nodes[i] is KMLTour {
-                return nodes[i] as? KMLTour
+private extension KMLDataset {
+    /// All the tours in the dataset.
+    var tours: [KMLTour] { rootNodes.tours }
+}
+
+private extension KMLContainer {
+    /// All the tours in the container.
+    var tours: [KMLTour] { childNodes.tours }
+}
+
+private extension Sequence where Element == KMLNode {
+    /// All the tours in the node sequence.
+    var tours: [KMLTour] {
+        return reduce(into: []) { tours, node in
+            switch node {
+            case let tour as KMLTour:
+                tours.append(tour)
+            case let container as KMLContainer:
+                tours.append(contentsOf: container.tours)
+            default:
+                break
             }
-            
-            // If the current node is a container, add all of its children to be looped through.
-            if nodes[i] is KMLContainer {
-                nodes.append(contentsOf: (nodes[i] as! KMLContainer).childNodes)
-            }
-            i += 1
         }
-        return nil
     }
 }
 
