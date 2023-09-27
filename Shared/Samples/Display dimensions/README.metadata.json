@@ -15,6 +15,9 @@
         "DimensionLayer",
         "MobileMapPackage"
     ],
+    "offline_data": [
+        "f5ff6f5556a945bca87ca513b8729a1e"
+    ],
     "redirect_from": [],
     "relevant_apis": [
         "DimensionLayer",

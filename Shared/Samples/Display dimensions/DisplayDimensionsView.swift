@@ -16,27 +16,45 @@ import ArcGIS
 import SwiftUI
 
 struct DisplayDimensionsView: View {
-    /// The view model for the sample.
-    @StateObject private var model = Model()
+    /// A map with no specified style.
+    @State private var map = Map()
+    
+    /// The mobile map package created from a URL to a local mobile map package file.
+    @State private var mapPackage: MobileMapPackage!
+    
+    /// A Boolean that indicates whether to show an error alert.
+    @State private var isShowingErrorAlert = false
+    
+    /// The error shown in the error alert.
+    @State private var error: Error? {
+        didSet { isShowingErrorAlert = error != nil }
+    }
     
     var body: some View {
-        MapView(map: model.map)
-            .alert(isPresented: $model.isShowingErrorAlert, presentingError: model.error)
+        MapView(map: map)
+            .task {
+                do {
+                    // Load the local mobile map package using a URL.
+                    mapPackage = MobileMapPackage(fileURL: .edinburghPylonDimensions)
+                    try await mapPackage.load()
+                    
+                    // Set the map to the first map in the mobile map package.
+                    if let map = mapPackage.maps.first {
+                        self.map = map
+                    } else {
+                        fatalError("MMPK doesn't contain a map.")
+                    }
+                } catch {
+                    self.error = error
+                }
+            }
+            .alert(isPresented: $isShowingErrorAlert, presentingError: error)
     }
 }
 
-private extension DisplayDimensionsView {
-    /// The view model for the sample.
-    class Model: ObservableObject {
-        /// A map with a topographic basemap.
-        let map = Map(basemapStyle: .arcGISTopographic)
-        
-        /// A Boolean that indicates whether to show an error alert.
-        @Published var isShowingErrorAlert = false
-        
-        /// The error shown in the alert.
-        @Published var error: Error? {
-            didSet { isShowingErrorAlert = error != nil }
-        }
+private extension URL {
+    /// The URL to the local Edinburgh Pylon Dimensions mobile map package file.
+    static var edinburghPylonDimensions: URL {
+        Bundle.main.url(forResource: "Edinburgh_Pylon_Dimensions", withExtension: "mmpk")!
     }
 }
