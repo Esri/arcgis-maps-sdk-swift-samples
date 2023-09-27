@@ -47,7 +47,7 @@ struct PlayKMLTourView: View {
     }
     
     /// A Boolean value that indicates whether the KML tour is not ready to be played.
-    var tourIsNotReady: Bool {
+    private var tourIsNotReady: Bool {
         tourStatus == .notInitialized || tourStatus == .initializing
     }
     
