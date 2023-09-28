@@ -20,7 +20,7 @@ struct Animate3DGraphicView: View {
     @StateObject private var model = Model()
     
     var body: some View {
-        MapView(map: model.map)
+        SceneView(scene: model.scene)
             .alert(isPresented: $model.isShowingErrorAlert, presentingError: model.error)
     }
 }
@@ -28,8 +28,18 @@ struct Animate3DGraphicView: View {
 private extension Animate3DGraphicView {
     /// The view model for the sample.
     class Model: ObservableObject {
-        /// A map with a topographic basemap.
-        let map = Map(basemapStyle: .arcGISTopographic)
+        /// A scene with an imagery basemap.
+        let scene: ArcGIS.Scene = {
+            let scene = Scene(basemapStyle: .arcGISImagery)
+            
+            // Set the scene's base surface with an elevation source.
+            let surface = Surface()
+            let elevationSource = ArcGISTiledElevationSource(url: .worldElevationService)
+            surface.addElevationSource(elevationSource)
+            scene.baseSurface = surface
+            
+            return scene
+        }()
         
         /// A Boolean that indicates whether to show an error alert.
         @Published var isShowingErrorAlert = false
@@ -38,5 +48,37 @@ private extension Animate3DGraphicView {
         @Published var error: Error? {
             didSet { isShowingErrorAlert = error != nil }
         }
+    }
+}
+
+private extension URL {
+    /// A URL to world elevation service from Terrain3D ArcGIS REST service.
+    static var worldElevationService: URL {
+        URL(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!
+    }
+    
+    /// A URL to the local Bristol 3D model files.
+    static var bristol: URL {
+        Bundle.main.url(forResource: "Bristol", withExtension: "dae", subdirectory: "Bristol")!
+    }
+    
+    /// A URL to the local CSV file containing data for a route through the Grand Canyon.
+    static var grandCanyon: URL {
+        Bundle.main.url(forResource: "GrandCanyon", withExtension: "csv")!
+    }
+    
+    /// A URL to the local CSV file containing data for a route in Hawaii.
+    static var hawaii: URL {
+        Bundle.main.url(forResource: "Hawaii", withExtension: "csv")!
+    }
+    
+    /// A URL to the local CSV file containing data for a route through the Pyrenees.
+    static var pyrenees: URL {
+        Bundle.main.url(forResource: "Pyrenees", withExtension: "csv")!
+    }
+    
+    /// A URL to the local CSV file containing data for a route near Mount Snowdon.
+    static var snowdon: URL {
+        Bundle.main.url(forResource: "Snowdon", withExtension: "csv")!
     }
 }

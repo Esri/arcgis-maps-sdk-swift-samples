@@ -40,7 +40,7 @@
 		0044289329C9234300160767 /* GetElevationAtPointOnSurfaceView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 0044289129C90C0B00160767 /* GetElevationAtPointOnSurfaceView.swift */; };
 		0044CDDF2995C39E004618CE /* ShowDeviceLocationHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0044CDDE2995C39E004618CE /* ShowDeviceLocationHistoryView.swift */; };
 		0044CDE02995D4DD004618CE /* ShowDeviceLocationHistoryView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 0044CDDE2995C39E004618CE /* ShowDeviceLocationHistoryView.swift */; };
-		004FE87129DF5D8700075217 /* Bristol in Resources */ = {isa = PBXBuildFile; fileRef = 004FE87029DF5D8700075217 /* Bristol */; settings = {ASSET_TAGS = (ChangeCameraController, ); }; };
+		004FE87129DF5D8700075217 /* Bristol in Resources */ = {isa = PBXBuildFile; fileRef = 004FE87029DF5D8700075217 /* Bristol */; settings = {ASSET_TAGS = (Animate3DGraphic, ChangeCameraController, ); }; };
 		006C835528B40682004AEB7F /* BrowseBuildingFloorsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E0FE32E628747778002C6ACA /* BrowseBuildingFloorsView.swift */; };
 		006C835628B40682004AEB7F /* DisplayMapFromMobileMapPackageView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = F111CCC0288B5D5600205358 /* DisplayMapFromMobileMapPackageView.swift */; };
 		0074ABBF28174BCF0037244A /* DisplayMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0074ABBE28174BCF0037244A /* DisplayMapView.swift */; };
@@ -204,6 +204,10 @@
 		D7AE86212AC3A10A0049B626 /* GroupLayersTogetherView.GroupLayerListView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D75C35662AB50338003CD55F /* GroupLayersTogetherView.GroupLayerListView.swift */; };
 		D7C16D1B2AC5F95300689E89 /* Animate3DGraphicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C16D1A2AC5F95300689E89 /* Animate3DGraphicView.swift */; };
 		D7C16D1C2AC5F96900689E89 /* Animate3DGraphicView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7C16D1A2AC5F95300689E89 /* Animate3DGraphicView.swift */; };
+		D7C16D1F2AC5FE8200689E89 /* Pyrenees.csv in Resources */ = {isa = PBXBuildFile; fileRef = D7C16D1E2AC5FE8200689E89 /* Pyrenees.csv */; settings = {ASSET_TAGS = (Animate3DGraphic, ); }; };
+		D7C16D222AC5FE9800689E89 /* GrandCanyon.csv in Resources */ = {isa = PBXBuildFile; fileRef = D7C16D212AC5FE9800689E89 /* GrandCanyon.csv */; settings = {ASSET_TAGS = (Animate3DGraphic, ); }; };
+		D7C16D252AC5FEA600689E89 /* Snowdon.csv in Resources */ = {isa = PBXBuildFile; fileRef = D7C16D242AC5FEA600689E89 /* Snowdon.csv */; settings = {ASSET_TAGS = (Animate3DGraphic, ); }; };
+		D7C16D282AC5FEB700689E89 /* Hawaii.csv in Resources */ = {isa = PBXBuildFile; fileRef = D7C16D272AC5FEB600689E89 /* Hawaii.csv */; settings = {ASSET_TAGS = (Animate3DGraphic, ); }; };
 		D7CC33FF2A31475C00198EDF /* ShowLineOfSightBetweenPointsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CC33FD2A31475C00198EDF /* ShowLineOfSightBetweenPointsView.swift */; };
 		D7CC34002A3147FF00198EDF /* ShowLineOfSightBetweenPointsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7CC33FD2A31475C00198EDF /* ShowLineOfSightBetweenPointsView.swift */; };
 		D7E440D72A1ECE7D005D74DE /* CreateBuffersAroundPointsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E440D62A1ECE7D005D74DE /* CreateBuffersAroundPointsView.swift */; };
@@ -528,6 +532,10 @@
 		D7ABA2FE2A32881C0021822B /* ShowViewshedFromGeoelementInSceneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowViewshedFromGeoelementInSceneView.swift; sourceTree = "<group>"; };
 		D7AE861D2AC39DC50049B626 /* DisplayAnnotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayAnnotationView.swift; sourceTree = "<group>"; };
 		D7C16D1A2AC5F95300689E89 /* Animate3DGraphicView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animate3DGraphicView.swift; sourceTree = "<group>"; };
+		D7C16D1E2AC5FE8200689E89 /* Pyrenees.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Pyrenees.csv; sourceTree = "<group>"; };
+		D7C16D212AC5FE9800689E89 /* GrandCanyon.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = GrandCanyon.csv; sourceTree = "<group>"; };
+		D7C16D242AC5FEA600689E89 /* Snowdon.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Snowdon.csv; sourceTree = "<group>"; };
+		D7C16D272AC5FEB600689E89 /* Hawaii.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Hawaii.csv; sourceTree = "<group>"; };
 		D7CC33FD2A31475C00198EDF /* ShowLineOfSightBetweenPointsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowLineOfSightBetweenPointsView.swift; sourceTree = "<group>"; };
 		D7E440D62A1ECE7D005D74DE /* CreateBuffersAroundPointsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateBuffersAroundPointsView.swift; sourceTree = "<group>"; };
 		D7E557672A1D768800B9FB09 /* AddWMSLayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddWMSLayerView.swift; sourceTree = "<group>"; };
@@ -818,17 +826,21 @@
 			isa = PBXGroup;
 			children = (
 				D74C8C002ABA6202007C76B8 /* 1bd036f221f54a99abc9e46ff3511cbf */,
+				D7C16D1D2AC5FE8200689E89 /* 5a9b60cee9ba41e79640a06bcdf8084d */,
 				00C94A0228B53DCC004E42D9 /* 7c4c679ab06a4df19dc497f577f111bd */,
 				D701D7242A37C7E4006FF0C8 /* 07d62a792ab6496d9b772a24efea45d0 */,
 				00D4EF8328638BF100B9CC30 /* 15a7cbd3af1e47cfa5d2c6b93dc44fc2 */,
 				00D4EF8E28638BF100B9CC30 /* 68ec42517cdd439e81b036210483e8e7 */,
+				D7C16D202AC5FE9800689E89 /* 290f0c571c394461a8b58b6775d0bd63 */,
 				1C965C4629DBA879002F8536 /* 681d6f7694644709a7c830ec57a2d72b */,
+				D7C16D232AC5FEA600689E89 /* 12509ffdc684437f8f2656b0129d2c13 */,
 				D73F8CF22AB1089900CD39DA /* 751138a2e0844e06853522d54103222a */,
 				D721EEA62ABDFF550040BE46 /* 174150279af74a2ba6f8b87a567f480b */,
 				792222DB2A81AA5D00619FFE /* a8a942c228af4fac96baa78ad60f511f */,
 				00D4EF8128638BF100B9CC30 /* cb1b20748a9f4d128dad8a87244e3e37 */,
 				D77572AC2A295DC100F490CD /* d1453556d91e46dea191c20c398b82cd */,
 				F111CCC2288B63DB00205358 /* e1f3a7254cb845b09450f54937c16061 */,
+				D7C16D262AC5FEB600689E89 /* e87c154fb9c2487f999143df5b08e9b1 */,
 			);
 			path = "Portal Data";
 			sourceTree = SOURCE_ROOT;
@@ -1326,6 +1338,38 @@
 			path = "Animate 3D graphic";
 			sourceTree = "<group>";
 		};
+		D7C16D1D2AC5FE8200689E89 /* 5a9b60cee9ba41e79640a06bcdf8084d */ = {
+			isa = PBXGroup;
+			children = (
+				D7C16D1E2AC5FE8200689E89 /* Pyrenees.csv */,
+			);
+			path = 5a9b60cee9ba41e79640a06bcdf8084d;
+			sourceTree = "<group>";
+		};
+		D7C16D202AC5FE9800689E89 /* 290f0c571c394461a8b58b6775d0bd63 */ = {
+			isa = PBXGroup;
+			children = (
+				D7C16D212AC5FE9800689E89 /* GrandCanyon.csv */,
+			);
+			path = 290f0c571c394461a8b58b6775d0bd63;
+			sourceTree = "<group>";
+		};
+		D7C16D232AC5FEA600689E89 /* 12509ffdc684437f8f2656b0129d2c13 */ = {
+			isa = PBXGroup;
+			children = (
+				D7C16D242AC5FEA600689E89 /* Snowdon.csv */,
+			);
+			path = 12509ffdc684437f8f2656b0129d2c13;
+			sourceTree = "<group>";
+		};
+		D7C16D262AC5FEB600689E89 /* e87c154fb9c2487f999143df5b08e9b1 */ = {
+			isa = PBXGroup;
+			children = (
+				D7C16D272AC5FEB600689E89 /* Hawaii.csv */,
+			);
+			path = e87c154fb9c2487f999143df5b08e9b1;
+			sourceTree = "<group>";
+		};
 		D7CC33FB2A31475C00198EDF /* Show line of sight between points */ = {
 			isa = PBXGroup;
 			children = (
@@ -1612,6 +1656,7 @@
 					AddCustomDynamicEntityDataSource,
 					AddFeatureLayers,
 					AddRasterFromFile,
+					Animate3DGraphic,
 					AnimateImagesWithImageOverlay,
 					ChangeCameraController,
 					DisplayMapFromMobileMapPackage,
@@ -1657,10 +1702,12 @@
 			files = (
 				E041AC1E288076A60056009B /* info.css in Resources */,
 				D721EEA82ABDFF550040BE46 /* LothianRiversAnno.mmpk in Resources */,
+				D7C16D1F2AC5FE8200689E89 /* Pyrenees.csv in Resources */,
 				E041AC1A287F54580056009B /* highlight.min.js in Resources */,
 				00E5402027F3CCA200CF66D5 /* Assets.xcassets in Resources */,
 				00C94A0D28B53DE1004E42D9 /* raster-file in Resources */,
 				004FE87129DF5D8700075217 /* Bristol in Resources */,
+				D7C16D252AC5FEA600689E89 /* Snowdon.csv in Resources */,
 				D73F8CF42AB1089900CD39DA /* Restaurant.stylx in Resources */,
 				D74C8C022ABA6202007C76B8 /* emoji-mobile.stylx in Resources */,
 				792222DD2A81AA5D00619FFE /* AIS_MarineCadastre_SelectedVessels_CustomDataSource.jsonl in Resources */,
@@ -1668,9 +1715,11 @@
 				00D4EF9028638BF100B9CC30 /* LA_Trails.geodatabase in Resources */,
 				D701D72C2A37C7F7006FF0C8 /* bradley_low_3ds in Resources */,
 				00D4EF9A28638BF100B9CC30 /* AuroraCO.gpkg in Resources */,
+				D7C16D282AC5FEB700689E89 /* Hawaii.csv in Resources */,
 				F111CCC4288B641900205358 /* Yellowstone.mmpk in Resources */,
 				D77572AE2A295DDE00F490CD /* PacificSouthWest2 in Resources */,
 				00D4EFB12863CE6300B9CC30 /* ScottishWildlifeTrust_reserves in Resources */,
+				D7C16D222AC5FE9800689E89 /* GrandCanyon.csv in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
