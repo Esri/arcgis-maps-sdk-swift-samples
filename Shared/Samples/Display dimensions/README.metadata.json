@@ -2,7 +2,9 @@
     "category": "Layers",
     "description": "Display dimension features from a mobile map package.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "display-dimensions.png"
+    ],
     "keywords": [
         "definition expression",
         "dimension",

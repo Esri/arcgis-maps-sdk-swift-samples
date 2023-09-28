@@ -50,7 +50,7 @@ struct DisplayDimensionsView: View {
                         fatalError("MMPK doesn't contain a map.")
                     }
                     
-                    // Set the dimension layer from the map.
+                    // Set the dimension layer using the one on the map.
                     dimensionLayer = map.operationalLayers.first(where: { $0 is DimensionLayer }) as? DimensionLayer
                 } catch {
                     self.error = error
@@ -64,7 +64,7 @@ struct DisplayDimensionsView: View {
             .alert(isPresented: $isShowingErrorAlert, presentingError: error)
     }
     
-    /// The button that brings up the settings popover or sheet.
+    /// The button that brings up the settings view.
     @ViewBuilder private var settingsButton: some View {
         let button = Button("Settings") {
             isShowingSettings = true
