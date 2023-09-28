@@ -10,17 +10,17 @@ Dimensions show specific lengths or distances on a map. A dimension may indicate
 
 ## How to use the sample
 
-When the sample loads, it will automatically display the map containing dimension features from the mobile map package. The name of the dimension layer containing the dimension features is displayed in the controls box. Control the visibility of the dimension layer with the "Dimension Layer visibility" check box, and apply a definition expression to show dimensions greater than or equal to 450m in length using the "Definition Expression" check box.
+When the sample loads, it will automatically display the map containing dimension features from the mobile map package. Control the visibility of the dimension layer and apply a definition expression to show dimensions greater than or equal to 450m in length using the toggles.
 
-**Note**: the minimum scale range of the sample is set to 1:35000 to maintain readability of the dimension features.
+**Note**: The minimum scale range of the sample is set to 1:40,000 to maintain readability of the dimension features.
 
 ## How it works
 
 1. Create a `MobileMapPackage` specifying the path to the .mmpk file.
-2. Load the mobile map package (mmpk) with `mmpk.loadAsync()`.
-3. After the mmpk successfully loads, get the map from the mmpk and add it to the map view: `mapView.setMap(mmpk.getMaps().get(0))`.
-4. Loop through the map's layers to find the `DimensionLayer` and set the name of the layer to the UI with `dimensionLayer.getName()`.
-5. Control the dimension layer's visibility with `dimensionLayer.setVisible(boolean)` and set a definition expression with `dimensionLayer.setDefinitionExpression(String)`.
+2. Load the mobile map package (mmpk).
+3. After the mmpk successfully loads, get the map from the mmpk and add it to the map view.
+4. Loop through the map's layers to find the `DimensionLayer`.
+5. Control the dimension layer's visibility with the `isVisible` property and set a definition expression using the `definitionExpression` property.
 
 ## Relevant API
 
@@ -29,7 +29,7 @@ When the sample loads, it will automatically display the map containing dimensio
 
 ## About the data
 
-This sample shows a subset of the network of pylons, substations, and power lines around Edinburgh, Scotland within a [Edinburgh Pylon Dimensions mobile map package](https://arcgis.com/home/item.html?id=f5ff6f5556a945bca87ca513b8729a1e). The data was digitised from satellite imagery and is intended to be used for illustrative purposes only.
+This sample shows a subset of the network of pylons, substations, and power lines around Edinburgh, Scotland within a [Edinburgh Pylon Dimensions mobile map package](https://arcgis.com/home/item.html?id=f5ff6f5556a945bca87ca513b8729a1e). The data was digitized from satellite imagery and is intended to be used for illustrative purposes only.
 
 ## Additional information
 
