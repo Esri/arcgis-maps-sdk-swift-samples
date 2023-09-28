@@ -55,7 +55,6 @@ struct PlayKMLTourView: View {
     var body: some View {
         // Create a scene view with a scene and a viewpoint.
         SceneView(scene: scene, viewpoint: viewpoint)
-            .onViewpointChanged(kind: .centerAndScale) { viewpoint = $0 }
             .task {
                 do {
                     // Add KML layer to the scene.
@@ -100,6 +99,21 @@ struct PlayKMLTourView: View {
                     }
                 }
             }
+            .overlay(alignment: .top) {
+                Text("Tour status: \(String(describing: tourStatus).titleCased)")
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .padding(8)
+                    .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
+            }
+            .overlay(alignment: .center) {
+                if tourDisabled {
+                    ProgressView()
+                        .padding()
+                        .background(.ultraThickMaterial)
+                        .cornerRadius(10)
+                        .shadow(radius: 50)
+                }
+            }
             .alert(isPresented: $isShowingErrorAlert, presentingError: error)
     }
 }
@@ -117,7 +131,7 @@ private extension KMLContainer {
 private extension Sequence where Element == KMLNode {
     /// All the tours in the node sequence.
     var tours: [KMLTour] {
-        return reduce(into: []) { tours, node in
+        reduce(into: []) { tours, node in
             switch node {
             case let tour as KMLTour:
                 tours.append(tour)
@@ -127,6 +141,16 @@ private extension Sequence where Element == KMLNode {
                 break
             }
         }
+    }
+}
+
+private extension String {
+    // A copy of a camel cased string broken into words with capital letters.
+    var titleCased: String {
+        self
+            .replacingOccurrences(of: "([A-Z])", with: " $1", options: .regularExpression)
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .capitalized
     }
 }
 
