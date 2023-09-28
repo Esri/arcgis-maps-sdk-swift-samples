@@ -1,0 +1,46 @@
+{
+    "category": "Scenes",
+    "description": "An `OrbitGeoElementCameraController` follows a graphic while the graphic's position and rotation are animated.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "animation",
+        "camera",
+        "heading",
+        "pitch",
+        "roll",
+        "rotation",
+        "visualize",
+        "Camera",
+        "GlobeCameraController",
+        "Graphic",
+        "GraphicsOverlay",
+        "LayerSceneProperties",
+        "ModelSceneSymbol",
+        "OrbitGeoElementCameraController",
+        "Renderer",
+        "RendererSceneProperties",
+        "Scene",
+        "SceneView",
+        "SurfacePlacement"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Camera",
+        "GlobeCameraController",
+        "Graphic",
+        "GraphicsOverlay",
+        "LayerSceneProperties",
+        "ModelSceneSymbol",
+        "OrbitGeoElementCameraController",
+        "Renderer",
+        "RendererSceneProperties",
+        "Scene",
+        "SceneView",
+        "SurfacePlacement"
+    ],
+    "snippets": [
+        "Animate3DGraphicView.swift"
+    ],
+    "title": "Animate 3D graphic"
+}
