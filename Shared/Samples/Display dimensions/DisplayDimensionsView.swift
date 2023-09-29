@@ -47,11 +47,15 @@ struct DisplayDimensionsView: View {
                         map.minScale = 4e4
                         self.map = map
                     } else {
-                        fatalError("MMPK doesn't contain a map.")
+                        throw SetupError.noMap
                     }
                     
                     // Set the dimension layer using the one on the map.
-                    dimensionLayer = map.operationalLayers.first(where: { $0 is DimensionLayer }) as? DimensionLayer
+                    if let layer = map.operationalLayers.first(where: { $0 is DimensionLayer }) as? DimensionLayer {
+                        dimensionLayer = layer
+                    } else {
+                        throw SetupError.noDimensionLayer
+                    }
                 } catch {
                     self.error = error
                 }
@@ -85,7 +89,7 @@ struct DisplayDimensionsView: View {
         }
     }
     
-    // The view containing the settings toggles.
+    /// The view containing the settings toggles.
     private var settingsView: some View {
         NavigationView {
             List {
@@ -110,6 +114,20 @@ struct DisplayDimensionsView: View {
         }
         .navigationViewStyle(.stack)
         .frame(idealWidth: 320, idealHeight: 170)
+    }
+
+    /// The errors for the sample that can be thrown during setup.
+    private enum SetupError: String, LocalizedError {
+        case noMap = "The MMPK doesn't contain a map."
+        case noDimensionLayer = "The map doesn't contain a dimension layer."
+        
+        /// The text description of the error.
+        var errorDescription: String? {
+            NSLocalizedString(
+                self.rawValue,
+                comment: "Error thrown when the setup for the sample fails."
+            )
+        }
     }
 }
 
