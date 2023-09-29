@@ -76,6 +76,9 @@ struct PlayKMLTourView: View {
                     self.error = error
                 }
             }
+            .onDisappear {
+                tourController.pause()
+            }
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
                     ZStack {
