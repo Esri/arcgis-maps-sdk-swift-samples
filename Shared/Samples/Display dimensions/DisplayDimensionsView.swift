@@ -69,7 +69,7 @@ struct DisplayDimensionsView: View {
         let button = Button("Settings") {
             isShowingSettings = true
         }
-            .disabled(dimensionLayer == nil)
+        .disabled(dimensionLayer == nil)
         
         if #available(iOS 16.4, *) {
             button
