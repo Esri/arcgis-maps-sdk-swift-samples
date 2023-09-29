@@ -1,0 +1,39 @@
+{
+    "category": "Layers",
+    "description": "Play tours in KML files.",
+    "ignore": false,
+    "images": [
+        "play-kml-tour.png"
+    ],
+    "keywords": [
+        "KML",
+        "animation",
+        "interactive",
+        "narration",
+        "pause",
+        "play",
+        "story",
+        "tour",
+        "KMLTour",
+        "KMLTour.Status",
+        "KMLTourController",
+        "KMLTourController.pause()",
+        "KMLTourController.play()",
+        "KMLTourController.reset()",
+        "KMLTourController.tour"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "KMLTour",
+        "KMLTour.Status",
+        "KMLTourController",
+        "KMLTourController.pause()",
+        "KMLTourController.play()",
+        "KMLTourController.reset()",
+        "KMLTourController.tour"
+    ],
+    "snippets": [
+        "PlayKMLTourView.swift"
+    ],
+    "title": "Play KML tour"
+}
