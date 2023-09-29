@@ -20,44 +20,59 @@ struct Animate3DGraphicView: View {
     @StateObject private var model = Model()
     
     var body: some View {
-        SceneView(
-            scene: model.scene,
-            cameraController: model.cameraController,
-            graphicsOverlays: [model.sceneGraphicsOverlay]
-        )
-            .toolbar {
-                ToolbarItemGroup(placement: .bottomBar) {
-                    /// The mission selection menu.
-                    Menu("Mission") {
-                        Picker("Mission", selection: $model.animation.mission) {
-                            ForEach(Mission.allCases, id: \.self) { mission in
-                                Text(mission.label)
-                            }
-                            .pickerStyle(.inline)
+        ZStack {
+            SceneView(
+                scene: model.scene,
+                cameraController: model.cameraController,
+                graphicsOverlays: [model.sceneGraphicsOverlay]
+            )
+            
+            VStack {
+                Spacer()
+                HStack {
+                    MapView(map: model.map, viewpoint: model.viewpoint, graphicsOverlays: [model.mapGraphicsOverlay])
+                        .interactionModes([])
+                        .attributionBarHidden(true)
+                        .frame(width: 120, height: 120)
+                        .cornerRadius(10)
+                        .shadow(radius: 3)
+                    Spacer()
+                }
+                .padding()
+                .padding(.bottom)
+            }
+        }
+        .toolbar {
+            ToolbarItemGroup(placement: .bottomBar) {
+                /// The mission selection menu.
+                Menu("Mission") {
+                    Picker("Mission", selection: $model.mission) {
+                        ForEach(Mission.allCases, id: \.self) { mission in
+                            Text(mission.label)
                         }
-                        .onChange(of: model.animation.mission) { _ in
-                            // Set graphics to the starting position for the new mission.
-                            model.updatePositions()
-                        }
-                    }
-                    
-                    /// The play and pause button.
-                    Button {
-                        model.animation.isPlaying ? model.animation.stop() : model.startAnimation()
-                    } label: {
-                        Image(systemName: model.animation.isPlaying ? "pause.fill" : "play.fill")
+                        .pickerStyle(.inline)
                     }
                 }
+                
+                /// The play and pause button.
+                Button {
+                    model.animation.isPlaying ? model.animation.stop() : model.startAnimation()
+                } label: {
+                    Image(systemName: model.animation.isPlaying ? "pause.fill" : "play.fill")
+                }
             }
-            .onDisappear {
-                model.animation.stop()
-            }
+        }
+        .onDisappear {
+            model.animation.stop()
+        }
     }
 }
 
 private extension Animate3DGraphicView {
     /// The view model for the sample.
     class Model: ObservableObject {
+        // MARK: Scene Properties
+        
         /// A scene with an imagery basemap and a world elevation source.
         let scene: ArcGIS.Scene = {
             let scene = Scene(basemapStyle: .arcGISImagery)
@@ -71,9 +86,9 @@ private extension Animate3DGraphicView {
             return scene
         }()
         
-        /// The camera controller targeted on the plane graphics.
-        lazy private(set) var cameraController: OrbitGeoElementCameraController = {
-            // Create camera controller by with plane graphic and the distance to keep from it.
+        /// The camera controller set to follow the plane graphic.
+        private(set) lazy var cameraController: OrbitGeoElementCameraController = {
+            // Create camera controller with the plane graphic and the distance to keep from it.
             let cameraController = OrbitGeoElementCameraController(target: planeGraphic, distance: 1000)
             
             // Set camera to align its heading with the model.
@@ -91,40 +106,80 @@ private extension Animate3DGraphicView {
         }()
         
         /// The graphics overlay for the plane graphic in the scene.
-        lazy private(set) var sceneGraphicsOverlay: GraphicsOverlay = {
+        private(set) lazy var sceneGraphicsOverlay: GraphicsOverlay = {
             // Create a graphics overlay and add the plane graphic.
-            let graphicsOverlay = GraphicsOverlay()
+            let graphicsOverlay = GraphicsOverlay(graphics: [planeGraphic])
             graphicsOverlay.sceneProperties.surfacePlacement = .absolute
-            graphicsOverlay.addGraphic(planeGraphic)
-
             
-            // Create a renderer and set its expressions.
+            // Create a renderer to set its expressions.
             let renderer = SimpleRenderer()
             renderer.sceneProperties.headingExpression = "[HEADING]"
             renderer.sceneProperties.pitchExpression = "[PITCH]"
             renderer.sceneProperties.rollExpression = "[ROLL]"
             graphicsOverlay.renderer = renderer
-                        
+            
             return graphicsOverlay
         }()
         
-        /// The graphic of the plane model.
+        /// The plane model scene symbol graphic.
         private let planeGraphic: Graphic = {
             // Create the model symbol for the plane using a URL.
             let planeModelSymbol = ModelSceneSymbol(url: .bristol, scale: 20)
             planeModelSymbol.anchorPosition = .center
-
+            
             // Create graphic for the symbol.
             return Graphic(symbol: planeModelSymbol)
         }()
+        
+        // MARK: Map Properties
+        
+        /// A map with an streets basemap used to display the location of the plane.
+        let map = Map(basemapStyle: .arcGISStreets)
+        
+        /// The graphics overlay for the graphics on the map view.
+        private(set) lazy var mapGraphicsOverlay: GraphicsOverlay = {
+            let graphicsOverlay = GraphicsOverlay(graphics: [routeGraphic, triangleGraphic])
+            
+            // Create a render to set the rotation expression.
+            let renderer = SimpleRenderer()
+            renderer.rotationExpression = "[ANGLE]"
+            graphicsOverlay.renderer = renderer
+            
+            return graphicsOverlay
+        }()
+        
+        /// The route line graphic.
+        private let routeGraphic: Graphic = {
+            let lineSymbol = SimpleLineSymbol(style: .solid, color: .blue, width: 1)
+            return Graphic(symbol: lineSymbol)
+        }()
+        
+        /// The triangle graphic used to represent the plane on the map.
+        private let triangleGraphic: Graphic = {
+            let triangleSymbol = SimpleMarkerSymbol(style: .triangle, color: .red, size: 10)
+            return Graphic(symbol: triangleSymbol)
+        }()
+        
+        /// The current viewpoint of the map view.
+        private(set) var viewpoint: Viewpoint?
+        
+        /// The current mission selection.
+        @Published var mission: Mission = .grandCanyon {
+            didSet {
+                if oldValue != mission {
+                    updateMission()
+                }
+            }
+        }
         
         /// The animation for the sample.
         @Published var animation = Animation()
         
         init() {
-            // Set graphics to starting their starting position.
-            updatePositions()
+            updateMission()
         }
+        
+        // MARK: Methods
         
         /// Starts a new animation by creating a timer used to move the graphics.
         func startAnimation() {
@@ -140,22 +195,40 @@ private extension Animate3DGraphicView {
                 self?.animation.nextFrame()
             }
         }
-
-        /// Updates the position of the plane graphic and the map.
-        func updatePositions() {
+        
+        /// Updates everything needed to switch to a new mission.
+        private func updateMission() {
+            // Reset the animation to the beginning
+            animation.reset()
+            
+            // Load the frames of the new mission
+            animation.loadFrames(for: mission.label.replacingOccurrences(of: " ", with: ""))
+            
+            // Create a polyline for the route using the position in each frame.
+            let points = animation.frames.map { $0.position }
+            routeGraphic.geometry = Polyline(points: points)
+            
+            // Set positions to the starting frame of the mission.
+            updatePositions()
+        }
+        
+        /// Updates the positions of the graphics and the viewpoint using a frame.
+        private func updatePositions() {
             // Get the current frame of the animation.
             guard let frame = animation.currentFrame else {
                 print("Update failed")
                 return
             }
             
-            // Update the plane graphic position and attribute using the frame.
+            // Update the plane graphic's position and attributes using the frame.
             planeGraphic.geometry = frame.position
             planeGraphic.setAttributeValue(frame.heading.value, forKey: "HEADING")
             planeGraphic.setAttributeValue(frame.pitch.value, forKey: "PITCH")
             planeGraphic.setAttributeValue(frame.roll.value, forKey: "ROLL")
             
-            // Update the map.
+            // Update the map view viewpoint and the triangle graphic's position.
+            triangleGraphic.geometry = frame.position
+            viewpoint = Viewpoint(center: frame.position, scale: 100_000, rotation: 360 + frame.heading.value)
         }
     }
     
@@ -166,17 +239,6 @@ private extension Animate3DGraphicView {
         
         /// The speed of the animation used to set the timer's time interval.
         var speed: Int = 50
-        
-        /// The current mission selection of the animation.
-        var mission: Mission = .grandCanyon {
-            didSet {
-                // Reset the animation and load the new frames when the mission changes.
-                if oldValue != mission {
-                    reset()
-                    loadFrames()
-                }
-            }
-        }
         
         /// A Boolean that indicates whether the animation is current playing.
         var isPlaying = false
@@ -191,20 +253,21 @@ private extension Animate3DGraphicView {
         }
         
         /// The all frames of the animation.
-        private var frames: [Frame] = []
+        private(set) var frames: [Frame] = []
         
         /// The index of the current frame in the frames list.
         private var currentFrameIndex = 0
-        
-        init() {
-            // Load the frames for the default mission on init.
-            loadFrames()
-        }
         
         /// Stops the animation by invalidating the timer.
         mutating func stop() {
             timer?.invalidate()
             isPlaying = false
+        }
+        
+        /// Resets the animation to the beginning in an unplayed state.
+        mutating func reset() {
+            stop()
+            currentFrameIndex = 0
         }
         
         /// Increments the animation to the next frame.
@@ -218,19 +281,11 @@ private extension Animate3DGraphicView {
             }
         }
         
-        /// Resets the animation to the beginning in an unplayed state.
-        private mutating func reset() {
-            stop()
-            currentFrameIndex = 0
-        }
-        
-        /// Loads the frames of the current mission using data found in a CSV file.
-        private mutating func loadFrames() {
-            // Get the path of the file in the bundle using the mission name.
-            guard let path = Bundle.main.path(
-                forResource: mission.label.replacingOccurrences(of: " ", with: ""),
-                ofType: "csv"
-            ) else { return }
+        /// Loads the frames of a mission from a CSV file.
+        /// - Parameter filename: The name the file containing the CSV data.
+        mutating func loadFrames(for filename: String) {
+            // Get the path of the file in the bundle using the filename name.
+            guard let path = Bundle.main.path(forResource: filename, ofType: "csv") else { return }
             
             // Get the content of the file using the path.
             guard let content = try? String(contentsOfFile: path) else { return }
@@ -270,7 +325,7 @@ private extension Animate3DGraphicView {
         }
     }
     
-    /// An enumeration of the different missions selections available in this sample.
+    /// An enumeration of the different mission selections available in this sample.
     enum Mission: CaseIterable {
         case grandCanyon, hawaii, pyrenees, snowdon
         
