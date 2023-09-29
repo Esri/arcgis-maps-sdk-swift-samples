@@ -34,25 +34,7 @@ struct DisplayDimensionsView: View {
         MapView(map: map)
             .task {
                 do {
-                    // Load the local mobile map package using a URL.
-                    let mapPackage = MobileMapPackage(fileURL: .edinburghPylonDimensions)
-                    try await mapPackage.load()
-                    
-                    // Set the map to the first map in the mobile map package.
-                    if let map = mapPackage.maps.first {
-                        // Set the minScale to maintain dimension readability.
-                        map.minScale = 4e4
-                        self.map = map
-                    } else {
-                        throw SetupError.noMap
-                    }
-                    
-                    // Set the dimension layer using the one on the map.
-                    if let layer = map.operationalLayers.first(where: { $0 is DimensionLayer }) as? DimensionLayer {
-                        dimensionLayer = layer
-                    } else {
-                        throw SetupError.noDimensionLayer
-                    }
+                    try await loadDimensionLayer()
                 } catch {
                     self.error = error
                 }
@@ -82,6 +64,29 @@ struct DisplayDimensionsView: View {
 }
 
 private extension DisplayDimensionsView {
+    /// Loads a map with a dimension layer from a local mobile map package.
+    private func loadDimensionLayer() async throws {
+        // Load the local mobile map package using a URL.
+        let mapPackage = MobileMapPackage(fileURL: .edinburghPylonDimensions)
+        try await mapPackage.load()
+        
+        // Set the map to the first map in the mobile map package.
+        if let map = mapPackage.maps.first {
+            // Set the minScale to maintain dimension readability.
+            map.minScale = 4e4
+            self.map = map
+        } else {
+            throw SetupError.noMap
+        }
+        
+        // Set the dimension layer using the one on the map.
+        if let layer = map.operationalLayers.first(where: { $0 is DimensionLayer }) as? DimensionLayer {
+            dimensionLayer = layer
+        } else {
+            throw SetupError.noDimensionLayer
+        }
+    }
+    
     /// The errors for the sample that can be thrown during setup.
     private enum SetupError: String, LocalizedError {
         case noMap = "The MMPK does not contain a map."
