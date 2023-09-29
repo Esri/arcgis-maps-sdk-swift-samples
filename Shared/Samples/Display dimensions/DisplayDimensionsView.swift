@@ -22,7 +22,7 @@ struct DisplayDimensionsView: View {
     /// The dimensional layer added to the map.
     @State private var dimensionLayer: DimensionLayer?
     
-    /// A Boolean that indicates whether to show an error alert.
+    /// A Boolean value indicating whether to show an error alert.
     @State private var isShowingErrorAlert = false
     
     /// The error shown in the error alert.
