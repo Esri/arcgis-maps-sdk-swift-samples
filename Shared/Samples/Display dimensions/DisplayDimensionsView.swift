@@ -22,9 +22,6 @@ struct DisplayDimensionsView: View {
     /// The dimensional layer added to the map.
     @State private var dimensionLayer: DimensionLayer?
     
-    /// A Boolean that indicates whether the settings view is showing.
-    @State var isShowingSettings = false
-    
     /// A Boolean that indicates whether to show an error alert.
     @State private var isShowingErrorAlert = false
     
@@ -60,62 +57,31 @@ struct DisplayDimensionsView: View {
                     self.error = error
                 }
             }
-            .toolbar {
-                ToolbarItem(placement: .bottomBar) {
-                    settingsButton
+            .overlay {
+                VStack {
+                    Spacer()
+                    Group {
+                        Toggle("Dimension Layer", isOn: Binding(
+                            get: { dimensionLayer?.isVisible ?? false },
+                            set: { dimensionLayer?.isVisible = $0 }
+                        ))
+                        Toggle("Definition Expression:\nDimensions >= 450m", isOn: Binding(
+                            get: { dimensionLayer?.definitionExpression == "DIMLENGTH >= 450" },
+                            set: { dimensionLayer?.definitionExpression = $0 ? "DIMLENGTH >= 450" : "" }
+                        ))
+                    }
+                    .padding(8)
+                    .background(Color.white)
+                    .cornerRadius(10)
                 }
+                .padding()
+                .padding(.bottom)
             }
             .alert(isPresented: $isShowingErrorAlert, presentingError: error)
     }
-    
-    /// The button that brings up the settings view.
-    @ViewBuilder private var settingsButton: some View {
-        let button = Button("Settings") {
-            isShowingSettings = true
-        }
-        .disabled(dimensionLayer == nil)
-        
-        if #available(iOS 16.4, *) {
-            button
-                .popover(isPresented: $isShowingSettings, arrowEdge: .bottom) {
-                    settingsView
-                        .presentationCompactAdaptation((.popover))
-                }
-        } else {
-            button
-                .sheet(isPresented: $isShowingSettings, detents: [.medium]) {
-                    settingsView
-                }
-        }
-    }
-    
-    /// The view containing the settings toggles.
-    private var settingsView: some View {
-        NavigationView {
-            List {
-                Toggle("Dimension Layer", isOn: Binding(
-                    get: { dimensionLayer?.isVisible ?? false },
-                    set: { dimensionLayer?.isVisible = $0 }
-                ))
-                Toggle("Definition Expression:\nDimensions >= 450m", isOn: Binding(
-                    get: { dimensionLayer?.definitionExpression == "DIMLENGTH >= 450" },
-                    set: { dimensionLayer?.definitionExpression = $0 ? "DIMLENGTH >= 450" : "" }
-                ))
-            }
-            .navigationTitle("Settings")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") {
-                        isShowingSettings = false
-                    }
-                }
-            }
-        }
-        .navigationViewStyle(.stack)
-        .frame(idealWidth: 320, idealHeight: 170)
-    }
+}
 
+private extension DisplayDimensionsView {
     /// The errors for the sample that can be thrown during setup.
     private enum SetupError: String, LocalizedError {
         case noMap = "The MMPK doesn't contain a map."
