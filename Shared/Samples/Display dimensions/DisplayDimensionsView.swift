@@ -84,8 +84,8 @@ struct DisplayDimensionsView: View {
 private extension DisplayDimensionsView {
     /// The errors for the sample that can be thrown during setup.
     private enum SetupError: String, LocalizedError {
-        case noMap = "The MMPK doesn't contain a map."
-        case noDimensionLayer = "The map doesn't contain a dimension layer."
+        case noMap = "The MMPK does not contain a map."
+        case noDimensionLayer = "The map does not contain a dimension layer."
         
         /// The text description of the error.
         var errorDescription: String? {
