@@ -47,7 +47,8 @@
         "SurfacePlacement"
     ],
     "snippets": [
-        "Animate3DGraphicView.swift"
+        "Animate3DGraphicView.swift",
+        "Animate3DGraphicView.Model.swift"
     ],
     "title": "Animate 3D graphic"
 }
