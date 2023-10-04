@@ -167,6 +167,7 @@
 		D744FD182A2113C70084A66C /* CreateConvexHullAroundPointsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D744FD162A2112D90084A66C /* CreateConvexHullAroundPointsView.swift */; };
 		D7464F1E2ACE04B3007FEE88 /* IdentifyRasterCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7464F1D2ACE04B3007FEE88 /* IdentifyRasterCellView.swift */; };
 		D7464F1F2ACE04C2007FEE88 /* IdentifyRasterCellView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7464F1D2ACE04B3007FEE88 /* IdentifyRasterCellView.swift */; };
+		D7464F2B2ACE0965007FEE88 /* SA_EVI_8Day_03May20 in Resources */ = {isa = PBXBuildFile; fileRef = D7464F2A2ACE0964007FEE88 /* SA_EVI_8Day_03May20 */; settings = {ASSET_TAGS = (IdentifyRasterCell, ); }; };
 		D7497F3C2AC4B4C100167AD2 /* DisplayDimensionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7497F3B2AC4B4C100167AD2 /* DisplayDimensionsView.swift */; };
 		D7497F3D2AC4B4CF00167AD2 /* DisplayDimensionsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7497F3B2AC4B4C100167AD2 /* DisplayDimensionsView.swift */; };
 		D7497F402AC4BA4100167AD2 /* Edinburgh_Pylon_Dimensions.mmpk in Resources */ = {isa = PBXBuildFile; fileRef = D7497F3F2AC4BA4100167AD2 /* Edinburgh_Pylon_Dimensions.mmpk */; settings = {ASSET_TAGS = (DisplayDimensions, ); }; };
@@ -516,6 +517,7 @@
 		D73F8CF32AB1089900CD39DA /* Restaurant.stylx */ = {isa = PBXFileReference; lastKnownFileType = file; path = Restaurant.stylx; sourceTree = "<group>"; };
 		D744FD162A2112D90084A66C /* CreateConvexHullAroundPointsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateConvexHullAroundPointsView.swift; sourceTree = "<group>"; };
 		D7464F1D2ACE04B3007FEE88 /* IdentifyRasterCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentifyRasterCellView.swift; sourceTree = "<group>"; };
+		D7464F2A2ACE0964007FEE88 /* SA_EVI_8Day_03May20 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = SA_EVI_8Day_03May20; sourceTree = "<group>"; };
 		D7497F3B2AC4B4C100167AD2 /* DisplayDimensionsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayDimensionsView.swift; sourceTree = "<group>"; };
 		D7497F3F2AC4BA4100167AD2 /* Edinburgh_Pylon_Dimensions.mmpk */ = {isa = PBXFileReference; lastKnownFileType = file; path = Edinburgh_Pylon_Dimensions.mmpk; sourceTree = "<group>"; };
 		D74C8BFD2ABA5605007C76B8 /* StyleSymbolsFromMobileStyleFileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleSymbolsFromMobileStyleFileView.swift; sourceTree = "<group>"; };
@@ -838,6 +840,7 @@
 				D73F8CF22AB1089900CD39DA /* 751138a2e0844e06853522d54103222a */,
 				D721EEA62ABDFF550040BE46 /* 174150279af74a2ba6f8b87a567f480b */,
 				792222DB2A81AA5D00619FFE /* a8a942c228af4fac96baa78ad60f511f */,
+				D7464F202ACE0910007FEE88 /* b5f977c78ec74b3a8857ca86d1d9b318 */,
 				00D4EF8128638BF100B9CC30 /* cb1b20748a9f4d128dad8a87244e3e37 */,
 				D77572AC2A295DC100F490CD /* d1453556d91e46dea191c20c398b82cd */,
 				F111CCC2288B63DB00205358 /* e1f3a7254cb845b09450f54937c16061 */,
@@ -1199,6 +1202,14 @@
 				D7464F1D2ACE04B3007FEE88 /* IdentifyRasterCellView.swift */,
 			);
 			path = "Identify raster cell";
+			sourceTree = "<group>";
+		};
+		D7464F202ACE0910007FEE88 /* b5f977c78ec74b3a8857ca86d1d9b318 */ = {
+			isa = PBXGroup;
+			children = (
+				D7464F2A2ACE0964007FEE88 /* SA_EVI_8Day_03May20 */,
+			);
+			path = b5f977c78ec74b3a8857ca86d1d9b318;
 			sourceTree = "<group>";
 		};
 		D7497F382AC4B45300167AD2 /* Display dimensions */ = {
@@ -1653,6 +1664,7 @@
 					ChangeCameraController,
 					DisplayDimensions,
 					DisplayMapFromMobileMapPackage,
+					IdentifyRasterCell,
 					ShowMobileMapPackageExpirationDate,
 					ShowViewshedFromGeoelementInScene,
 					StyleFeaturesWithCustomDictionary,
@@ -1699,6 +1711,7 @@
 				D7497F402AC4BA4100167AD2 /* Edinburgh_Pylon_Dimensions.mmpk in Resources */,
 				00E5402027F3CCA200CF66D5 /* Assets.xcassets in Resources */,
 				00C94A0D28B53DE1004E42D9 /* raster-file in Resources */,
+				D7464F2B2ACE0965007FEE88 /* SA_EVI_8Day_03May20 in Resources */,
 				004FE87129DF5D8700075217 /* Bristol in Resources */,
 				D73F8CF42AB1089900CD39DA /* Restaurant.stylx in Resources */,
 				D74C8C022ABA6202007C76B8 /* emoji-mobile.stylx in Resources */,

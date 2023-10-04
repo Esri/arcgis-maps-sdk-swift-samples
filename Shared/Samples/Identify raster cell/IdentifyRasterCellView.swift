@@ -16,27 +16,47 @@ import ArcGIS
 import SwiftUI
 
 struct IdentifyRasterCellView: View {
-    /// The view model for the sample.
-    @StateObject private var model = Model()
+    /// A map with an oceans basemap centered on Cape Town, South Africa.
+    @State private var map: Map = {
+        let map = Map(basemapStyle: .arcGISOceans)
+        map.initialViewpoint = Viewpoint(latitude: -34.1, longitude: 18.6, scale: 1_155_500)
+        return map
+    }()
+    
+    /// A Boolean that indicates whether to show an error alert.
+    @State private var isShowingErrorAlert = false
+    
+    /// The error shown in the error alert.
+    @State private var error: Error? {
+        didSet { isShowingErrorAlert = error != nil }
+    }
     
     var body: some View {
-        MapView(map: model.map)
-            .alert(isPresented: $model.isShowingErrorAlert, presentingError: model.error)
+        MapViewReader { proxy in
+            MapView(map: map)
+                .task {
+                    do {
+                        // Create a raster with the local file URL.
+                        let raster = Raster(fileURL: .ndviRaster)
+                        
+                        // Create a raster layer using the raster.
+                        let rasterLayer = RasterLayer(raster: raster)
+                        try await rasterLayer.load()
+                        
+                        // Add the raster layer to the map as an operational layer.
+                        map.addOperationalLayer(rasterLayer)
+                    } catch {
+                        self.error = error
+                    }
+                }
+                .alert(isPresented: $isShowingErrorAlert, presentingError: error)
+        }
     }
 }
 
-private extension IdentifyRasterCellView {
-    /// The view model for the sample.
-    class Model: ObservableObject {
-        /// A map with a topographic basemap.
-        let map = Map(basemapStyle: .arcGISTopographic)
-        
-        /// A Boolean that indicates whether to show an error alert.
-        @Published var isShowingErrorAlert = false
-        
-        /// The error shown in the alert.
-        @Published var error: Error? {
-            didSet { isShowingErrorAlert = error != nil }
-        }
+private extension URL {
+    /// A URL to the local NDVI classification raster file.
+    static var ndviRaster: Self {
+        Bundle.main.url(forResource: "SA_EVI_8Day_03May20", withExtension: "tif", subdirectory: "SA_EVI_8Day_03May20")!
     }
 }
