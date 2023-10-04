@@ -12,33 +12,23 @@ Visualize movement through a 3D landscape.
 
 Animation Controls (Top Left Corner):
 
-* Select a mission -- select a flight path
-* Play/Pause -- toggles playing and stopping the animation
-* Fixed/Follow -- toggles the camera's free cam mode and follow
-* Mission progress -- shows how far along the route the plane is. Slide to change keyframe in animation
+Tap the buttons on the bottom toolbar to adjust the settings for the animation:
 
-Camera Controls (Top Right Corner):
-
-* Camera zoom -- distance between camera and plane (NOT implemented on java/android)
-* Camera angle -- viewing angle between camera and plane (NOT implemented on java/android)
-* Flight speed -- controls speed of animation
-
- 2D Map Controls (Bottom Left Corner):
-
-* Plus and Minus -- controls distance of 2D view from ground level
+* Mission: change the flight path, speed, and view progress
+* Play/Pause: toggle the animation
+* Camera: change the camera distance, heading, pitch, and other camera properties.
 
 ## How it works
 
 1. Create a `GraphicsOverlay` and add it to the `SceneView`.
 2. Create a `ModelSceneSymbol` object.
-3. Create a `Graphic` object and set its geometry to a `Point`.
-4. Set the `ModelSceneSymbol` object to the graphic.
-5. Add heading, pitch, and roll attributes to the graphic. Get the attributes from the graphic with `Graphic.attributes`.
-6. Create a `SimpleRenderer` object and set its expression properties.
-7. Add graphic and a renderer to the graphics overlay.
-8. Create a `OrbitGeoElementCameraController` which is set to target the graphic.
-9. Assign the camera controller to the `SceneView`.
-10. Update the graphic's location, heading, pitch, and roll.
+3. Create a `Graphic` object with the model scene symbol.
+4. Add heading, pitch, and roll attributes to the graphic.
+5. Create a `SimpleRenderer` object and set its expression properties.
+6. Add the graphic and the renderer to the graphics overlay.
+7. Create a `OrbitGeoElementCameraController` which is set to target the graphic.
+8. Assign the camera controller to the `SceneView`.
+9. Update the graphic's location, heading, pitch, and roll.
 
 ## Relevant API
 
@@ -57,15 +47,13 @@ Camera Controls (Top Right Corner):
 
 ## Offline data
 
-See the topic [ArcGIS Runtime SDK samples for Qt Creator](http://links.esri.com/ArcGISRuntimeQtSamples) to learn how to set up offline data.
+This sample uses the following data which are all included and downloaded on-demand:
 
-Link | Local Location
----------|-------|
-|[Model Marker Symbol Data](https://www.arcgis.com/home/item.html?id=681d6f7694644709a7c830ec57a2d72b)| `<userhome>`/ArcGIS/Runtime/Data/3D/Bristol/Collada/Bristol.dae |
-|[GrandCanyon.csv mission data](https://www.arcgis.com/home/item.html?id=290f0c571c394461a8b58b6775d0bd63)| `<userhome>`/ArcGIS/Runtime/Data/3D/Missions/GrandCanyon.csv |
-|[Hawaii.csv mission data](https://www.arcgis.com/home/item.html?id=e87c154fb9c2487f999143df5b08e9b1)| `<userhome>`/ArcGIS/Runtime/Data/3D/Missions/Hawaii.csv |
-|[Pyrenees.csv mission data](https://www.arcgis.com/home/item.html?id=5a9b60cee9ba41e79640a06bcdf8084d)| `<userhome>`/ArcGIS/Runtime/Data/3D/Missions/Pyrenees.csv |
-|[Snowdon.csv mission data](https://www.arcgis.com/home/item.html?id=12509ffdc684437f8f2656b0129d2c13)| `<userhome>`/ArcGIS/Runtime/Data/3D/Missions/Snowdon.csv |
+* [Model Marker Symbol Data](https://www.arcgis.com/home/item.html?id=681d6f7694644709a7c830ec57a2d72b)
+* [GrandCanyon.csv mission data](https://www.arcgis.com/home/item.html?id=290f0c571c394461a8b58b6775d0bd63)
+* [Hawaii.csv mission data](https://www.arcgis.com/home/item.html?id=e87c154fb9c2487f999143df5b08e9b1)
+* [Pyrenees.csv mission data](https://www.arcgis.com/home/item.html?id=5a9b60cee9ba41e79640a06bcdf8084d)
+* [Snowdon.csv mission data](https://www.arcgis.com/home/item.html?id=12509ffdc684437f8f2656b0129d2c13)
 
 ## Tags
 
