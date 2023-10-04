@@ -165,7 +165,8 @@
 		D73F8CF42AB1089900CD39DA /* Restaurant.stylx in Resources */ = {isa = PBXBuildFile; fileRef = D73F8CF32AB1089900CD39DA /* Restaurant.stylx */; settings = {ASSET_TAGS = (StyleFeaturesWithCustomDictionary, ); }; };
 		D744FD172A2112D90084A66C /* CreateConvexHullAroundPointsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D744FD162A2112D90084A66C /* CreateConvexHullAroundPointsView.swift */; };
 		D744FD182A2113C70084A66C /* CreateConvexHullAroundPointsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D744FD162A2112D90084A66C /* CreateConvexHullAroundPointsView.swift */; };
-		D7464F1A2ACE0445007FEE88 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = D7464F192ACE0445007FEE88 /* README.md */; };
+		D7464F1E2ACE04B3007FEE88 /* IdentifyRasterCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7464F1D2ACE04B3007FEE88 /* IdentifyRasterCellView.swift */; };
+		D7464F1F2ACE04C2007FEE88 /* IdentifyRasterCellView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7464F1D2ACE04B3007FEE88 /* IdentifyRasterCellView.swift */; };
 		D7497F3C2AC4B4C100167AD2 /* DisplayDimensionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7497F3B2AC4B4C100167AD2 /* DisplayDimensionsView.swift */; };
 		D7497F3D2AC4B4CF00167AD2 /* DisplayDimensionsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7497F3B2AC4B4C100167AD2 /* DisplayDimensionsView.swift */; };
 		D7497F402AC4BA4100167AD2 /* Edinburgh_Pylon_Dimensions.mmpk in Resources */ = {isa = PBXBuildFile; fileRef = D7497F3F2AC4BA4100167AD2 /* Edinburgh_Pylon_Dimensions.mmpk */; settings = {ASSET_TAGS = (DisplayDimensions, ); }; };
@@ -311,6 +312,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				D7464F1F2ACE04C2007FEE88 /* IdentifyRasterCellView.swift in Copy Source Code Files */,
 				D7497F3D2AC4B4CF00167AD2 /* DisplayDimensionsView.swift in Copy Source Code Files */,
 				D7232EE22AC1E6DC0079ABFF /* PlayKMLTourView.swift in Copy Source Code Files */,
 				D7AE861F2AC39E7F0049B626 /* DisplayAnnotationView.swift in Copy Source Code Files */,
@@ -513,7 +515,7 @@
 		D734FA092A183A5B00246D7E /* SetMaxExtentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetMaxExtentView.swift; sourceTree = "<group>"; };
 		D73F8CF32AB1089900CD39DA /* Restaurant.stylx */ = {isa = PBXFileReference; lastKnownFileType = file; path = Restaurant.stylx; sourceTree = "<group>"; };
 		D744FD162A2112D90084A66C /* CreateConvexHullAroundPointsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateConvexHullAroundPointsView.swift; sourceTree = "<group>"; };
-		D7464F192ACE0445007FEE88 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		D7464F1D2ACE04B3007FEE88 /* IdentifyRasterCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentifyRasterCellView.swift; sourceTree = "<group>"; };
 		D7497F3B2AC4B4C100167AD2 /* DisplayDimensionsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayDimensionsView.swift; sourceTree = "<group>"; };
 		D7497F3F2AC4BA4100167AD2 /* Edinburgh_Pylon_Dimensions.mmpk */ = {isa = PBXFileReference; lastKnownFileType = file; path = Edinburgh_Pylon_Dimensions.mmpk; sourceTree = "<group>"; };
 		D74C8BFD2ABA5605007C76B8 /* StyleSymbolsFromMobileStyleFileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleSymbolsFromMobileStyleFileView.swift; sourceTree = "<group>"; };
@@ -1194,7 +1196,7 @@
 		D7464F182ACE0445007FEE88 /* Identify raster cell */ = {
 			isa = PBXGroup;
 			children = (
-				D7464F192ACE0445007FEE88 /* README.md */,
+				D7464F1D2ACE04B3007FEE88 /* IdentifyRasterCellView.swift */,
 			);
 			path = "Identify raster cell";
 			sourceTree = "<group>";
@@ -1697,7 +1699,6 @@
 				D7497F402AC4BA4100167AD2 /* Edinburgh_Pylon_Dimensions.mmpk in Resources */,
 				00E5402027F3CCA200CF66D5 /* Assets.xcassets in Resources */,
 				00C94A0D28B53DE1004E42D9 /* raster-file in Resources */,
-				D7464F1A2ACE0445007FEE88 /* README.md in Resources */,
 				004FE87129DF5D8700075217 /* Bristol in Resources */,
 				D73F8CF42AB1089900CD39DA /* Restaurant.stylx in Resources */,
 				D74C8C022ABA6202007C76B8 /* emoji-mobile.stylx in Resources */,
@@ -1923,6 +1924,7 @@
 				D754E3232A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift in Sources */,
 				00E5401C27F3CCA200CF66D5 /* SamplesApp.swift in Sources */,
 				E066DD4028610F55004D3D5B /* AddSceneLayerFromServiceView.swift in Sources */,
+				D7464F1E2ACE04B3007FEE88 /* IdentifyRasterCellView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
