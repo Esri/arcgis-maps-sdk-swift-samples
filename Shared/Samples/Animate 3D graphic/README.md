@@ -10,8 +10,6 @@ Visualize movement through a 3D landscape.
 
 ## How to use the sample
 
-Animation Controls (Top Left Corner):
-
 Tap the buttons on the bottom toolbar to adjust the settings for the animation:
 
 * Mission: change the flight path, speed, and view progress
