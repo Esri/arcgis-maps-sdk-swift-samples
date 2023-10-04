@@ -17,8 +17,9 @@ import SwiftUI
 
 extension Animate3DGraphicView {
     /// The view model for the sample.
+    @MainActor
     class Model: ObservableObject {
-        // MARK: Scene Properties
+        // MARK: Scene
         
         /// A scene with an imagery basemap and a world elevation source.
         let scene: ArcGIS.Scene = {
@@ -33,32 +34,32 @@ extension Animate3DGraphicView {
             return scene
         }()
         
-        /// The camera controller set to follow the plane graphic.
-        private(set) lazy var cameraController: OrbitGeoElementCameraController = {
-            // Create camera controller with the plane graphic and the distance to keep from it.
+        /// The camera controller set to follow the plane model graphic.
+        lazy var cameraController: OrbitGeoElementCameraController = {
+            // Create a camera controller with the plane graphic and the default distance to keep from it.
             let cameraController = OrbitGeoElementCameraController(target: planeGraphic, distance: 1000)
             
-            // Set camera to align its heading with the model.
+            // Set camera to align its heading with the model graphic by default.
             cameraController.autoHeadingIsEnabled = true
             
-            // Keep the camera still while the model pitches or rolls.
+            // Keep the camera still while the model graphic pitches or rolls by default.
             cameraController.autoPitchIsEnabled = false
             cameraController.autoRollIsEnabled = false
             
-            // Set the min and max distance values between the model and the camera.
-            cameraController.minCameraDistance = 500
-            cameraController.maxCameraDistance = 8000
+            // Set the min and max distance values between the model graphic and the camera.
+            cameraController.minCameraDistance = CameraProperty.distance.range.lowerBound
+            cameraController.maxCameraDistance = CameraProperty.distance.range.upperBound
             
             return cameraController
         }()
         
-        /// The graphics overlay for the plane graphic in the scene.
+        /// The scene view graphics overlay containing the plane model graphic.
         private(set) lazy var sceneGraphicsOverlay: GraphicsOverlay = {
             // Create a graphics overlay and add the plane graphic.
             let graphicsOverlay = GraphicsOverlay(graphics: [planeGraphic])
             graphicsOverlay.sceneProperties.surfacePlacement = .absolute
             
-            // Create a renderer to set its expressions.
+            // Create a renderer and set its expressions.
             let renderer = SimpleRenderer()
             renderer.sceneProperties.headingExpression = "[HEADING]"
             renderer.sceneProperties.pitchExpression = "[PITCH]"
@@ -68,26 +69,27 @@ extension Animate3DGraphicView {
             return graphicsOverlay
         }()
         
-        /// The plane model scene symbol graphic.
+        /// The plane model scene symbol graphic for the scene.
         private let planeGraphic: Graphic = {
             // Create the model symbol for the plane using a URL.
             let planeModelSymbol = ModelSceneSymbol(url: .bristol, scale: 20)
             planeModelSymbol.anchorPosition = .center
             
-            // Create graphic for the symbol.
+            // Create graphic of the symbol.
             return Graphic(symbol: planeModelSymbol)
         }()
         
-        // MARK: Map Properties
+        // MARK: Map
         
-        /// A map with an streets basemap used to display the location of the plane.
+        /// A map with an streets basemap used to display the location of the plane in 2D.
         let map = Map(basemapStyle: .arcGISStreets)
         
-        /// The graphics overlay for the graphics on the map view.
+        /// The map view graphics overlay containing the map graphics.
         private(set) lazy var mapGraphicsOverlay: GraphicsOverlay = {
+            // Create a graphics overlay with the route and triangle graphics.
             let graphicsOverlay = GraphicsOverlay(graphics: [routeGraphic, triangleGraphic])
             
-            // Create a render to set the rotation expression.
+            // Create a render and set the rotation expression.
             let renderer = SimpleRenderer()
             renderer.rotationExpression = "[ANGLE]"
             graphicsOverlay.renderer = renderer
@@ -95,7 +97,7 @@ extension Animate3DGraphicView {
             return graphicsOverlay
         }()
         
-        /// The route line graphic.
+        /// The route line graphic used to represent the plane's route on the map.
         private let routeGraphic: Graphic = {
             let lineSymbol = SimpleLineSymbol(style: .solid, color: .blue, width: 1)
             return Graphic(symbol: lineSymbol)
@@ -107,51 +109,88 @@ extension Animate3DGraphicView {
             return Graphic(symbol: triangleSymbol)
         }()
         
-        /// The current viewpoint of the map view.
+        /// The current viewpoint of the map view used to update it as the plane moves.
         private(set) var viewpoint: Viewpoint?
         
+        /// The animation for the sample.
+        @Published var animation = Animation()
+        
         /// The current mission selection.
-        @Published var mission: Mission = .grandCanyon {
+        @Published var currentMission: Mission = .grandCanyon {
             didSet {
-                if oldValue != mission {
+                if oldValue != currentMission {
                     updateMission()
                 }
             }
         }
         
-        /// The animation for the sample.
-        @Published var animation = Animation()
+        /// The text of the camera controller property values used for the camera settings.
+        @Published private(set) var cameraPropertyTexts: [CameraProperty: String] = [:]
         
         init() {
+            // Set up the mission and the graphics.
             updateMission()
         }
         
         // MARK: Methods
         
-        /// Starts a new animation by creating a timer used to move the graphics.
-        func startAnimation() {
-            // Stop previous on going animation.
-            animation.stop()
-            animation.isPlaying = true
+        /// Monitors the camera controller's properties to update the associated text when they change.
+        func monitorCameraController() async {
+            // The camera controller properties to monitor.
+            let properties: [CameraProperty: AsyncStream<Double>] = [
+                .distance: cameraController.$cameraDistance,
+                .heading: cameraController.$cameraHeadingOffset,
+                .pitch: cameraController.$cameraPitchOffset
+            ]
             
-            // Create a new timer to loop through the animation frames.
-            let interval = 1 / Double(animation.speed)
-            animation.timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { [weak self] _ in
-                // Update the graphics' position for each frame.
-                self?.updatePositions()
-                self?.animation.nextFrame()
+            // Create a task for each property.
+            await withTaskGroup(of: Void.self) { group in
+                for (name, property) in properties {
+                    group.addTask {
+                        for await newValue in property {
+                            await self.updateCameraPropertyText(for: name, using: newValue)
+                        }
+                    }
+                }
             }
         }
         
-        /// Updates everything needed to switch to a new mission.
+        /// Starts a new animation by creating a timer used to move the graphics.
+        func startAnimation() {
+            // Stop any previous on going animation.
+            animation.stop()
+            animation.isPlaying = true
+            
+            // Create a new timer to update the graphics' position each iteration.
+            let interval = 1 / Double(animation.speed)
+            animation.timer = Timer.scheduledTimer(
+                timeInterval: interval,
+                target: self,
+                selector: #selector(updatePositions),
+                userInfo: nil,
+                repeats: true
+            )
+            RunLoop.current.add(animation.timer!, forMode: .common)
+        }
+        
+        /// Updates the text associated with a given camera controller property.
+        /// - Parameters:
+        ///   - property: The camera controller property associated with the text to update.
+        ///   - value: The property value used to create the text.
+        private func updateCameraPropertyText(for property: CameraProperty, using value: Double) {
+            let postfix = property == .distance ? " m" : "°"
+            cameraPropertyTexts[property] = "\(value.formatted(.rounded))\(postfix)"
+        }
+        
+        /// Switches to a new mission by updating the animation and graphics.
         private func updateMission() {
-            // Reset the animation to the beginning
+            // Reset the animation to the beginning.
             animation.reset()
             
-            // Load the frames of the new mission
-            animation.loadFrames(for: mission.label.replacingOccurrences(of: " ", with: ""))
+            // Load the frames of the new mission.
+            animation.loadFrames(for: currentMission.label.replacingOccurrences(of: " ", with: ""))
             
-            // Create a polyline for the route using the position in each frame.
+            // Create a polyline for the route using the position of each frame.
             let points = animation.frames.map { $0.position }
             routeGraphic.geometry = Polyline(points: points)
             
@@ -159,20 +198,26 @@ extension Animate3DGraphicView {
             updatePositions()
         }
         
-        /// Updates the positions of the graphics and the viewpoint using a frame.
+        /// Updates the positions of the graphics and the viewpoint using the current frame.
+        @objc
         private func updatePositions() {
             // Get the current frame of the animation.
             let frame = animation.currentFrame
             
-            // Update the plane graphic's position and attributes using the frame.
+            // Update the position and attributes of the plane model graphic.
             planeGraphic.geometry = frame.position
             planeGraphic.setAttributeValue(frame.heading.value, forKey: "HEADING")
             planeGraphic.setAttributeValue(frame.pitch.value, forKey: "PITCH")
             planeGraphic.setAttributeValue(frame.roll.value, forKey: "ROLL")
             
-            // Update the map view viewpoint and the triangle graphic's position.
+            // Update the viewpoint of the map view and the position of the triangle graphic.
             triangleGraphic.geometry = frame.position
             viewpoint = Viewpoint(center: frame.position, scale: 100_000, rotation: 360 + frame.heading.value)
+            
+            // Move to the next frame in the animation.
+            if animation.isPlaying {
+                animation.nextFrame()
+            }
         }
     }
     
@@ -182,9 +227,9 @@ extension Animate3DGraphicView {
         var timer: Timer?
         
         /// The speed of the animation used to set the timer's time interval.
-        var speed: Int = 50
+        var speed = 50.0
         
-        /// A Boolean that indicates whether the animation is current playing.
+        /// A Boolean that indicates whether the animation is currently playing.
         var isPlaying = false
         
         /// The current frame of the animation.
@@ -192,8 +237,20 @@ extension Animate3DGraphicView {
             frames[currentFrameIndex]
         }
         
-        /// The all frames of the animation.
-        private(set) var frames: [Frame] = []
+        /// The current progress of the mission.
+        var progress: Double {
+            Double(currentFrameIndex) / Double(framesCount)
+        }
+        
+        /// All the frames of the animation.
+        private(set) var frames: [Frame] = [] {
+            didSet {
+                framesCount = frames.count
+            }
+        }
+        
+        /// The count of the frames.
+        private var framesCount = 0
         
         /// The index of the current frame in the frames list.
         private var currentFrameIndex = 0
@@ -204,7 +261,7 @@ extension Animate3DGraphicView {
             isPlaying = false
         }
         
-        /// Resets the animation to the beginning in an unplayed state.
+        /// Resets the animation to the beginning.
         mutating func reset() {
             stop()
             currentFrameIndex = 0
@@ -212,7 +269,7 @@ extension Animate3DGraphicView {
         
         /// Increments the animation to the next frame.
         mutating func nextFrame() {
-            if currentFrameIndex >= frames.count {
+            if currentFrameIndex >= framesCount - 1 {
                 // Reset the animation when it has reached the end.
                 reset()
             } else {
@@ -224,18 +281,18 @@ extension Animate3DGraphicView {
         /// Loads the frames of a mission from a CSV file.
         /// - Parameter filename: The name the file containing the CSV data.
         mutating func loadFrames(for filename: String) {
-            // Get the path of the file in the bundle using the filename name.
+            // Get the path of the file from the bundle using the filename name.
             guard let path = Bundle.main.path(forResource: filename, ofType: "csv") else { return }
             
             // Get the content of the file using the path.
             guard let content = try? String(contentsOfFile: path) else { return }
             
-            // Split content by line into an array.
+            // Split the content by line into an array.
             let lines = content.split(whereSeparator: \.isNewline)
             
             // Create a frame for each line.
             frames = lines.map { line in
-                // Spilt the line of numbers into an array.
+                // Spilt the line data into an array.
                 let details = line.split(separator: ",")
                 let position = Point(
                     x: Double(details[0])!,
@@ -278,6 +335,36 @@ extension Animate3DGraphicView {
             case .snowdon: "Snowdon"
             }
         }
+    }
+    
+    /// An enumeration representing the different async properties of the camera controller.
+    enum CameraProperty: CaseIterable {
+        case distance, heading, pitch
+        
+        /// A human-readable label of the property.
+        var label: String {
+            switch self {
+            case .distance: return "Camera Distance"
+            case .heading: return "Heading Offset"
+            case .pitch: return "Pitch Offset"
+            }
+        }
+        
+        /// The range of values associated with the property.
+        var range: ClosedRange<Double> {
+            switch self {
+            case .distance: return 500...8000
+            case .heading: return -180...180
+            case .pitch: return 0...180
+            }
+        }
+    }
+}
+
+private extension FormatStyle where Self == FloatingPointFormatStyle<Double> {
+    /// The format style for rounding up decimals.
+    static var rounded: Self {
+        .number.rounded(rule: .up, increment: 1)
     }
 }
 

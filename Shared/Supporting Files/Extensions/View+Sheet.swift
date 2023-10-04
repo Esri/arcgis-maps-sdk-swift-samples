@@ -194,10 +194,11 @@ private extension SheetModifier {
                 }
             
             Sheet(
-                isPresented: Binding(
-                    get: { isPresented && !isPopoverVisible },
-                    set: { isPresented = $0 }
-                ),
+//                isPresented: Binding(
+//                    get: { isPresented && !isPopoverVisible },
+//                    set: { isPresented = $0 }
+//                ),
+                isPresented: $isPresented,
                 detents: detents.map { $0.sheetDetent },
                 selection: Binding(
                     get: {

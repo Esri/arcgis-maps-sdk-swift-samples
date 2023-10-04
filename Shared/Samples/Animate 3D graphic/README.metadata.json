@@ -48,7 +48,8 @@
     ],
     "snippets": [
         "Animate3DGraphicView.swift",
-        "Animate3DGraphicView.Model.swift"
+        "Animate3DGraphicView.Model.swift",
+        "Animate3DGraphicView.SettingsView.swift"
     ],
     "title": "Animate 3D graphic"
 }
