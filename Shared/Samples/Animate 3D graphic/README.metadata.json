@@ -2,7 +2,9 @@
     "category": "Scenes",
     "description": "An `OrbitGeoElementCameraController` follows a graphic while the graphic's position and rotation are animated.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "animate-3d-graphic.png"
+    ],
     "keywords": [
         "animation",
         "camera",
