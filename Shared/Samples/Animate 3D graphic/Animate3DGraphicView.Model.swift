@@ -81,7 +81,7 @@ extension Animate3DGraphicView {
         
         // MARK: Map
         
-        /// A map with an streets basemap used to display the location of the plane in 2D.
+        /// A map with a streets basemap used to display the location of the plane in 2D.
         let map = Map(basemapStyle: .arcGISStreets)
         
         /// The map view graphics overlay containing the map graphics.
