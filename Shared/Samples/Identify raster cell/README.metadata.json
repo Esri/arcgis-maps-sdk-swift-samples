@@ -2,7 +2,9 @@
     "category": "Layers",
     "description": "Get the cell value of a local raster at the tapped location and display the result in a callout.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "identify-raster-cell.png"
+    ],
     "keywords": [
         "NDVI",
         "band",
