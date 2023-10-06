@@ -142,7 +142,8 @@
 		883C121929C914E100062FF9 /* DownloadPreplannedMapAreaView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E070A0A2286F3B6000F2B606 /* DownloadPreplannedMapAreaView.swift */; };
 		88F93CC129C3D59D0006B28E /* CreateAndEditGeometriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F93CC029C3D59C0006B28E /* CreateAndEditGeometriesView.swift */; };
 		88F93CC229C4D3480006B28E /* CreateAndEditGeometriesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 88F93CC029C3D59C0006B28E /* CreateAndEditGeometriesView.swift */; };
-		D70082E92ACF8F6C00E0C3C2 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = D70082E82ACF8F6C00E0C3C2 /* README.md */; };
+		D70082EB2ACF900100E0C3C2 /* IdentifyKMLFeaturesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70082EA2ACF900100E0C3C2 /* IdentifyKMLFeaturesView.swift */; };
+		D70082EC2ACF901600E0C3C2 /* IdentifyKMLFeaturesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D70082EA2ACF900100E0C3C2 /* IdentifyKMLFeaturesView.swift */; };
 		D701D72C2A37C7F7006FF0C8 /* bradley_low_3ds in Resources */ = {isa = PBXBuildFile; fileRef = D701D72B2A37C7F7006FF0C8 /* bradley_low_3ds */; settings = {ASSET_TAGS = (ShowViewshedFromGeoelementInScene, ); }; };
 		D704AA5A2AB22C1A00A3BB63 /* GroupLayersTogetherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D704AA592AB22C1A00A3BB63 /* GroupLayersTogetherView.swift */; };
 		D704AA5B2AB22D8400A3BB63 /* GroupLayersTogetherView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D704AA592AB22C1A00A3BB63 /* GroupLayersTogetherView.swift */; };
@@ -321,6 +322,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				D70082EC2ACF901600E0C3C2 /* IdentifyKMLFeaturesView.swift in Copy Source Code Files */,
 				D7054AEA2ACCCC34007235BA /* Animate3DGraphicView.SettingsView.swift in Copy Source Code Files */,
 				D7058FB22ACB424E00A40F14 /* Animate3DGraphicView.Model.swift in Copy Source Code Files */,
 				D7C16D1C2AC5F96900689E89 /* Animate3DGraphicView.swift in Copy Source Code Files */,
@@ -512,7 +514,7 @@
 		79D84D0D2A815C5B00F45262 /* AddCustomDynamicEntityDataSourceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCustomDynamicEntityDataSourceView.swift; sourceTree = "<group>"; };
 		883C121429C9136600062FF9 /* DownloadPreplannedMapAreaView.MapPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadPreplannedMapAreaView.MapPicker.swift; sourceTree = "<group>"; };
 		88F93CC029C3D59C0006B28E /* CreateAndEditGeometriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAndEditGeometriesView.swift; sourceTree = "<group>"; };
-		D70082E82ACF8F6C00E0C3C2 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		D70082EA2ACF900100E0C3C2 /* IdentifyKMLFeaturesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentifyKMLFeaturesView.swift; sourceTree = "<group>"; };
 		D701D72B2A37C7F7006FF0C8 /* bradley_low_3ds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bradley_low_3ds; sourceTree = "<group>"; };
 		D704AA592AB22C1A00A3BB63 /* GroupLayersTogetherView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupLayersTogetherView.swift; sourceTree = "<group>"; };
 		D7054AE82ACCCB6C007235BA /* Animate3DGraphicView.SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animate3DGraphicView.SettingsView.swift; sourceTree = "<group>"; };
@@ -1129,7 +1131,7 @@
 		D70082E72ACF8F6C00E0C3C2 /* Identify KML features */ = {
 			isa = PBXGroup;
 			children = (
-				D70082E82ACF8F6C00E0C3C2 /* README.md */,
+				D70082EA2ACF900100E0C3C2 /* IdentifyKMLFeaturesView.swift */,
 			);
 			path = "Identify KML features";
 			sourceTree = "<group>";
@@ -1779,7 +1781,6 @@
 				F111CCC4288B641900205358 /* Yellowstone.mmpk in Resources */,
 				D77572AE2A295DDE00F490CD /* PacificSouthWest2 in Resources */,
 				00D4EFB12863CE6300B9CC30 /* ScottishWildlifeTrust_reserves in Resources */,
-				D70082E92ACF8F6C00E0C3C2 /* README.md in Resources */,
 				D7C16D222AC5FE9800689E89 /* GrandCanyon.csv in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1985,6 +1986,7 @@
 				E004A6F0284E4B9B002A1FE6 /* DownloadVectorTilesToLocalCacheView.swift in Sources */,
 				1CAB8D4E2A3CEAB0002AA649 /* RunValveIsolationTraceView.swift in Sources */,
 				4D2ADC4329C26D05003B367F /* AddDynamicEntityLayerView.swift in Sources */,
+				D70082EB2ACF900100E0C3C2 /* IdentifyKMLFeaturesView.swift in Sources */,
 				D7EAF35A2A1C023800D822C4 /* SetMinAndMaxScaleView.swift in Sources */,
 				1C19B4F52A578E46001D2506 /* CreateLoadReportView.Model.swift in Sources */,
 				0042E24528E4F82C001F33D6 /* ShowViewshedFromPointInSceneView.ViewshedSettingsView.swift in Sources */,
