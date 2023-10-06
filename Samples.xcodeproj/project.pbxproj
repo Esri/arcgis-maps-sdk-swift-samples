@@ -161,7 +161,8 @@
 		D722BD232A420DEC002C2087 /* ShowExtrudedFeaturesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D722BD212A420DAD002C2087 /* ShowExtrudedFeaturesView.swift */; };
 		D7232EE12AC1E5AA0079ABFF /* PlayKMLTourView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7232EE02AC1E5AA0079ABFF /* PlayKMLTourView.swift */; };
 		D7232EE22AC1E6DC0079ABFF /* PlayKMLTourView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7232EE02AC1E5AA0079ABFF /* PlayKMLTourView.swift */; };
-		D731F3BF2AD0D22500A8431E /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = D731F3BE2AD0D22500A8431E /* README.md */; };
+		D731F3C12AD0D2AC00A8431E /* IdentifyGraphicsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D731F3C02AD0D2AC00A8431E /* IdentifyGraphicsView.swift */; };
+		D731F3C22AD0D2BB00A8431E /* IdentifyGraphicsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D731F3C02AD0D2AC00A8431E /* IdentifyGraphicsView.swift */; };
 		D7337C5A2ABCFDB100A5D865 /* StyleSymbolsFromMobileStyleFileView.SymbolOptionsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7337C592ABCFDB100A5D865 /* StyleSymbolsFromMobileStyleFileView.SymbolOptionsListView.swift */; };
 		D7337C5B2ABCFDE400A5D865 /* StyleSymbolsFromMobileStyleFileView.SymbolOptionsListView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7337C592ABCFDB100A5D865 /* StyleSymbolsFromMobileStyleFileView.SymbolOptionsListView.swift */; };
 		D7337C602ABD142D00A5D865 /* ShowMobileMapPackageExpirationDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7337C5F2ABD142D00A5D865 /* ShowMobileMapPackageExpirationDateView.swift */; };
@@ -321,6 +322,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				D731F3C22AD0D2BB00A8431E /* IdentifyGraphicsView.swift in Copy Source Code Files */,
 				D7054AEA2ACCCC34007235BA /* Animate3DGraphicView.SettingsView.swift in Copy Source Code Files */,
 				D7058FB22ACB424E00A40F14 /* Animate3DGraphicView.Model.swift in Copy Source Code Files */,
 				D7C16D1C2AC5F96900689E89 /* Animate3DGraphicView.swift in Copy Source Code Files */,
@@ -523,7 +525,7 @@
 		D721EEA72ABDFF550040BE46 /* LothianRiversAnno.mmpk */ = {isa = PBXFileReference; lastKnownFileType = file; path = LothianRiversAnno.mmpk; sourceTree = "<group>"; };
 		D722BD212A420DAD002C2087 /* ShowExtrudedFeaturesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowExtrudedFeaturesView.swift; sourceTree = "<group>"; };
 		D7232EE02AC1E5AA0079ABFF /* PlayKMLTourView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayKMLTourView.swift; sourceTree = "<group>"; };
-		D731F3BE2AD0D22500A8431E /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		D731F3C02AD0D2AC00A8431E /* IdentifyGraphicsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentifyGraphicsView.swift; sourceTree = "<group>"; };
 		D7337C592ABCFDB100A5D865 /* StyleSymbolsFromMobileStyleFileView.SymbolOptionsListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleSymbolsFromMobileStyleFileView.SymbolOptionsListView.swift; sourceTree = "<group>"; };
 		D7337C5F2ABD142D00A5D865 /* ShowMobileMapPackageExpirationDateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowMobileMapPackageExpirationDateView.swift; sourceTree = "<group>"; };
 		D734FA092A183A5B00246D7E /* SetMaxExtentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetMaxExtentView.swift; sourceTree = "<group>"; };
@@ -1187,7 +1189,7 @@
 		D731F3BD2AD0D22500A8431E /* Identify graphics */ = {
 			isa = PBXGroup;
 			children = (
-				D731F3BE2AD0D22500A8431E /* README.md */,
+				D731F3C02AD0D2AC00A8431E /* IdentifyGraphicsView.swift */,
 			);
 			path = "Identify graphics";
 			sourceTree = "<group>";
@@ -1779,7 +1781,6 @@
 				F111CCC4288B641900205358 /* Yellowstone.mmpk in Resources */,
 				D77572AE2A295DDE00F490CD /* PacificSouthWest2 in Resources */,
 				00D4EFB12863CE6300B9CC30 /* ScottishWildlifeTrust_reserves in Resources */,
-				D731F3BF2AD0D22500A8431E /* README.md in Resources */,
 				D7C16D222AC5FE9800689E89 /* GrandCanyon.csv in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1996,6 +1997,7 @@
 				00CB9138284814A4005C2C5D /* SearchWithGeocodeView.swift in Sources */,
 				1C43BC7F2A43781200509BF8 /* SetVisibilityOfSubtypeSublayerView.Views.swift in Sources */,
 				D754E3232A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift in Sources */,
+				D731F3C12AD0D2AC00A8431E /* IdentifyGraphicsView.swift in Sources */,
 				00E5401C27F3CCA200CF66D5 /* SamplesApp.swift in Sources */,
 				E066DD4028610F55004D3D5B /* AddSceneLayerFromServiceView.swift in Sources */,
 			);
