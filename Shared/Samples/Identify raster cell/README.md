@@ -10,15 +10,15 @@ You may want to identify a raster layer to get its exact cell value in case the 
 
 ## How to use the sample
 
-Tap an area of the raster to identify it and see the raw raster cell information displayed in a callout. Tap and hold to see cell information updated dynamically as you drag.
+Tap an area of the raster to identify it and see the raw raster cell information displayed in a callout. Tap and hold to see a magnifier and the cell information updated dynamically as you drag.
 
 ## How it works
 
-1. Create a `GeoViewTapped` event on the `MapView`.
-2. On tap:
-  * Call `identifyLayerAsync(...)` passing in the screen point, tolerance, and maximum number of results per layer.
+1. Use the `MapView.onSingleTapGesture(perform:)` and `MapView.onLongPressGesture(perform:)` modifiers to get the screen point where a user tapped or long pressed on the map.
+2. On tap or long press drag:
+  * Call `MapViewProxy.identify(on:screenPoint:tolerance:returnPopupsOnly:maximumResults:)` passing in the screen point, tolerance, and maximum number of results per layer.
   * Await the result of the identify and then get the `GeoElement` from the layer result.
-  * Create a callout at the calculated map point and populate the callout content with text from the `RasterCell` attributes. 
+  * Create a callout at the calculated map point and populate the callout content with text from the `RasterCell.attributes`. 
 
 ## Relevant API
 
