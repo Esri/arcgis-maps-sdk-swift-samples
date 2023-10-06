@@ -16,7 +16,7 @@ Note: the KML layer used in this sample contains a screen overlay. The screen ov
 
 ## How it works
 
-Use the `onSingleTapGesture(perform:)` modifier on `MapView` to get the screen point where a user tapped.
+1. Use the `onSingleTapGesture(perform:)` modifier on `MapView` to get the screen point where a user tapped.
 2. On tap:
   * Call `MapViewProxy.identify(on:screenPoint:tolerance:returnPopupsOnly:maximumResults:)` passing in the `KMLLayer`, screen point, and tolerance.
   * Await the result of the identify and then get the `KMLPlacemark` from the result.
