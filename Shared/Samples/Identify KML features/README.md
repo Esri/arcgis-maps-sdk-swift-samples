@@ -12,7 +12,7 @@ A user may wish to select a KML feature to view relevant information about it.
 
 Tap a feature to identify it. Feature information will be displayed in a callout.
 
-Note: the KML layer used in this sample contains a screen overlay. The screen overlay contains a legend and the logos for NOAA and the NWS. You can't identify the screen overlay.
+Note: the KML layer used in this sample contains a screen overlay. The screen overlay contains a legend and the logos for NOAA and the NWS. You cannot identify the screen overlay.
 
 ## How it works
 
