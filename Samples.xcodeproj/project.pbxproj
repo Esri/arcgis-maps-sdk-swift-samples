@@ -167,6 +167,7 @@
 		D7337C612ABD166A00A5D865 /* ShowMobileMapPackageExpirationDateView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7337C5F2ABD142D00A5D865 /* ShowMobileMapPackageExpirationDateView.swift */; };
 		D734FA0C2A183A5B00246D7E /* SetMaxExtentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D734FA092A183A5B00246D7E /* SetMaxExtentView.swift */; };
 		D73F8CF42AB1089900CD39DA /* Restaurant.stylx in Resources */ = {isa = PBXBuildFile; fileRef = D73F8CF32AB1089900CD39DA /* Restaurant.stylx */; settings = {ASSET_TAGS = (StyleFeaturesWithCustomDictionary, ); }; };
+		D73FABEA2AD4A0370048EC70 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = D73FABE92AD4A0370048EC70 /* README.md */; };
 		D744FD172A2112D90084A66C /* CreateConvexHullAroundPointsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D744FD162A2112D90084A66C /* CreateConvexHullAroundPointsView.swift */; };
 		D744FD182A2113C70084A66C /* CreateConvexHullAroundPointsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D744FD162A2112D90084A66C /* CreateConvexHullAroundPointsView.swift */; };
 		D7497F3C2AC4B4C100167AD2 /* DisplayDimensionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7497F3B2AC4B4C100167AD2 /* DisplayDimensionsView.swift */; };
@@ -526,6 +527,7 @@
 		D7337C5F2ABD142D00A5D865 /* ShowMobileMapPackageExpirationDateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowMobileMapPackageExpirationDateView.swift; sourceTree = "<group>"; };
 		D734FA092A183A5B00246D7E /* SetMaxExtentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetMaxExtentView.swift; sourceTree = "<group>"; };
 		D73F8CF32AB1089900CD39DA /* Restaurant.stylx */ = {isa = PBXFileReference; lastKnownFileType = file; path = Restaurant.stylx; sourceTree = "<group>"; };
+		D73FABE92AD4A0370048EC70 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D744FD162A2112D90084A66C /* CreateConvexHullAroundPointsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateConvexHullAroundPointsView.swift; sourceTree = "<group>"; };
 		D7497F3B2AC4B4C100167AD2 /* DisplayDimensionsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayDimensionsView.swift; sourceTree = "<group>"; };
 		D7497F3F2AC4BA4100167AD2 /* Edinburgh_Pylon_Dimensions.mmpk */ = {isa = PBXFileReference; lastKnownFileType = file; path = Edinburgh_Pylon_Dimensions.mmpk; sourceTree = "<group>"; };
@@ -701,6 +703,7 @@
 				D7B3C5C02A43B71E001DA4D8 /* Create convex hull around geometries */,
 				D744FD132A2112360084A66C /* Create convex hull around points */,
 				1C19B4EA2A578E46001D2506 /* Create load report */,
+				D73FABE82AD4A0370048EC70 /* Create mobile geodatabase */,
 				E004A6EB28495538002A1FE6 /* Create planar and geodetic buffers */,
 				D71C5F602AAA7854006599FD /* Create symbol styles from web styles */,
 				E000E761286A0B07005D87C5 /* Cut geometry */,
@@ -1203,6 +1206,14 @@
 				D73F8CF32AB1089900CD39DA /* Restaurant.stylx */,
 			);
 			path = 751138a2e0844e06853522d54103222a;
+			sourceTree = "<group>";
+		};
+		D73FABE82AD4A0370048EC70 /* Create mobile geodatabase */ = {
+			isa = PBXGroup;
+			children = (
+				D73FABE92AD4A0370048EC70 /* README.md */,
+			);
+			path = "Create mobile geodatabase";
 			sourceTree = "<group>";
 		};
 		D744FD132A2112360084A66C /* Create convex hull around points */ = {
@@ -1768,6 +1779,7 @@
 				F111CCC4288B641900205358 /* Yellowstone.mmpk in Resources */,
 				D77572AE2A295DDE00F490CD /* PacificSouthWest2 in Resources */,
 				00D4EFB12863CE6300B9CC30 /* ScottishWildlifeTrust_reserves in Resources */,
+				D73FABEA2AD4A0370048EC70 /* README.md in Resources */,
 				D7C16D222AC5FE9800689E89 /* GrandCanyon.csv in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
