@@ -97,7 +97,7 @@ private extension IdentifyKMLFeaturesView {
     ///   - screenPoint: The screen point corresponding to a placemark.
     ///   - proxy: The map view proxy used identify the screen point.
     /// - Returns: The first KML placemark in the identify result.
-    private func kmlPlacemark(for screenPoint: CGPoint, using proxy: MapViewProxy) async throws -> KMLPlacemark? {
+    func kmlPlacemark(for screenPoint: CGPoint, using proxy: MapViewProxy) async throws -> KMLPlacemark? {
         guard let forecastLayer else {
             throw CustomError.message("KML layer is not initialized.")
         }
@@ -112,7 +112,7 @@ private extension IdentifyKMLFeaturesView {
     
     /// Updates the callout text using the balloon content of a given placemark.
     /// - Parameter placemark: The KML placemark to get the data from.
-    private func updateCalloutText(using placemark: KMLPlacemark) throws {
+    func updateCalloutText(using placemark: KMLPlacemark) throws {
         // Google Earth only displays the placemarks with description or extended data.
         // To match its behavior, add a description placeholder if it is empty.
         if placemark.description.isEmpty {
@@ -132,7 +132,7 @@ private extension IdentifyKMLFeaturesView {
     }
     
     /// An enumeration used to throw an error customized with a string.
-    private enum CustomError: LocalizedError {
+    enum CustomError: LocalizedError {
         case message(String)
         
         /// The text description of the error.
