@@ -96,6 +96,7 @@ private extension IdentifyKMLFeaturesView {
     /// - Parameters:
     ///   - screenPoint: The screen point corresponding to a placemark.
     ///   - proxy: The map view proxy used identify the screen point.
+    /// - Precondition: `forecastLayer != nil`
     /// - Returns: The first KML placemark in the identify result.
     func kmlPlacemark(for screenPoint: CGPoint, using proxy: MapViewProxy) async throws -> KMLPlacemark? {
         guard let forecastLayer else {
