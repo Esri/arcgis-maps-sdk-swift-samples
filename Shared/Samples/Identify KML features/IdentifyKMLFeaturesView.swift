@@ -99,7 +99,7 @@ private extension IdentifyKMLFeaturesView {
     /// - Returns: The first KML placemark in the identify result.
     func kmlPlacemark(for screenPoint: CGPoint, using proxy: MapViewProxy) async throws -> KMLPlacemark? {
         guard let forecastLayer else {
-            throw CustomError.message("KML layer is not initialized.")
+            preconditionFailure("KML layer is not initialized.")
         }
         
         // Identify the screen point on the KML layer using the map view proxy.
@@ -129,19 +129,6 @@ private extension IdentifyKMLFeaturesView {
         
         // Update the callout text.
         calloutText = AttributedString(text)
-    }
-    
-    /// An enumeration used to throw an error customized with a string.
-    enum CustomError: LocalizedError {
-        case message(String)
-        
-        /// The text description of the error.
-        var errorDescription: String? {
-            if case .message(let string) = self {
-                return NSLocalizedString(string, comment: "The description of the error thrown.")
-            }
-            return nil
-        }
     }
 }
 
