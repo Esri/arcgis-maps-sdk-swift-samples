@@ -2,7 +2,9 @@
     "category": "Visualization",
     "description": "Display an alert message when a graphic is tapped.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "identify-graphics.png"
+    ],
     "keywords": [
         "graphics",
         "identify",
