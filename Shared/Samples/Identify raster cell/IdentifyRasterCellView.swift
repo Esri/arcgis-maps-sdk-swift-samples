@@ -40,6 +40,10 @@ struct IdentifyRasterCellView: View {
                     // Update the callout to remove the offset when the gesture ends.
                     model.callout(at: screenPoint, using: mapViewProxy, withOffset: false)
                 }
+                .task {
+                    // Set up the raster layer.
+                    await model.addRasterLayer()
+                }
                 .alert(isPresented: $model.isShowingErrorAlert, presentingError: model.error)
         }
     }
@@ -76,24 +80,16 @@ private extension IdentifyRasterCellView {
             didSet { isShowingErrorAlert = error != nil }
         }
         
-        init() {
-            loadRasterLayer()
-        }
-        
-        /// Loads a raster layer from a URL.
-        func loadRasterLayer() {
-            Task { [weak self] in
-                guard let self else { return }
+        /// Adds the raster layer to the map.
+        func addRasterLayer() async {
+            do {
+                // Load the layer.
+                try await rasterLayer.load()
                 
-                do {
-                    // Load the layer before adding it to the map.
-                    try await rasterLayer.load()
-                    
-                    // Add the raster layer to the map as an operational layer.
-                    map.addOperationalLayer(rasterLayer)
-                } catch {
-                    self.error = error
-                }
+                // Add the layer to the map as an operational layer.
+                map.addOperationalLayer(rasterLayer)
+            } catch {
+                self.error = error
             }
         }
         
