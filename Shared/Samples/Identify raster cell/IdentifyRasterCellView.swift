@@ -166,8 +166,9 @@ private extension IdentifyRasterCellView {
                 calloutText = attributes
                 return
             }
-            let xCoordinate = "X: \(extent.xMin.formatted(.rounded))"
-            let yCoordinate = "Y: \(extent.yMin.formatted(.rounded))"
+            let roundedStyle = FloatingPointFormatStyle<Double>.number.rounded(rule: .awayFromZero, increment: 0.001)
+            let xCoordinate = "X: \(extent.xMin.formatted(roundedStyle))"
+            let yCoordinate = "Y: \(extent.yMin.formatted(roundedStyle))"
             
             // Update the callout text.
             calloutText = "\(attributes)\n\n\(xCoordinate)\n\(yCoordinate)"
@@ -206,13 +207,6 @@ private extension MapView {
                         }
                     }
             )
-    }
-}
-
-private extension FormatStyle where Self == FloatingPointFormatStyle<Double> {
-    /// The format style for rounding a decimal to three places.
-    static var rounded: Self {
-        .number.rounded(rule: .awayFromZero, increment: 0.001)
     }
 }
 
