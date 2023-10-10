@@ -19,30 +19,37 @@ struct IdentifyRasterCellView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
+    /// The screen point of where the user tapped.
+    @State private var tapScreenPoint: CGPoint?
+    
     var body: some View {
         MapViewReader { mapViewProxy in
             MapView(map: model.map)
                 .callout(placement: $model.calloutPlacement
-                    .animation(model.calloutShouldAnimate ? .default.speed(2) : nil)
+                    .animation(model.calloutShouldOffset ? nil : .default.speed(2))
                 ) { _ in
                     Text(model.calloutText)
                         .font(.callout)
                         .padding(8)
                 }
                 .onSingleTapGesture { screenPoint, _ in
-                    // Create a callout at the tap location.
-                    model.callout(at: screenPoint, using: mapViewProxy)
+                    tapScreenPoint = screenPoint
                 }
                 .onLongPressGesture { screenPoint, _ in
-                    // Create a callout with an offset when the map magnifier is showing.
-                    model.callout(at: screenPoint, using: mapViewProxy, withOffset: true)
-                } onEnded: { screenPoint, _ in
-                    // Update the callout to remove the offset when the gesture ends.
-                    model.callout(at: screenPoint, using: mapViewProxy, withOffset: false)
+                    model.calloutShouldOffset = true
+                    tapScreenPoint = screenPoint
+                } onEnded: { _, _ in
+                    model.calloutShouldOffset = false
                 }
                 .task {
                     // Set up the raster layer.
                     await model.addRasterLayer()
+                }
+                .task(id: EquatablePair(tapScreenPoint, model.calloutShouldOffset)) {
+                    // Create a callout at the tap location.
+                    if let tapScreenPoint {
+                        await model.callout(at: tapScreenPoint, using: mapViewProxy)
+                    }
                 }
                 .alert(isPresented: $model.isShowingErrorAlert, presentingError: model.error)
         }
@@ -69,8 +76,8 @@ private extension IdentifyRasterCellView {
         /// The text shown on the callout.
         @Published private(set) var calloutText: String = ""
         
-        /// A Boolean value that indicates whether the callout placement should be animated.
-        @Published private(set) var calloutShouldAnimate = false
+        /// A Boolean value that indicates whether the callout placement should be offsetted for the map magnifier.
+        @Published var calloutShouldOffset = false
         
         /// A Boolean value that indicates whether to show an error alert.
         @Published var isShowingErrorAlert = false
@@ -97,20 +104,15 @@ private extension IdentifyRasterCellView {
         /// - Parameters:
         ///   - screenPoint: The screen point of the raster cell at which to place the callout.
         ///   - mapViewProxy: The proxy used to handle the screen point.
-        ///   - withOffset: A Boolean value that indicates whether to offset the callout's placement.
-        func callout(at screenPoint: CGPoint, using proxy: MapViewProxy, withOffset: Bool = false) {
-            Task { [weak self] in
-                guard let self else { return }
-                
-                // Get the raster cell for the screen point using the map view proxy.
-                if let rasterCell = await rasterCell(for: screenPoint, using: proxy) {
-                    // Update the callout text and placement.
-                    updateCalloutText(using: rasterCell)
-                    updateCalloutPlacement(to: screenPoint, using: proxy, shouldUseOffset: withOffset)
-                } else {
-                    // Dismiss the callout if no raster cell was found, e.g. tap was not on layer.
-                    calloutPlacement = nil
-                }
+        func callout(at screenPoint: CGPoint, using proxy: MapViewProxy) async {
+            // Get the raster cell for the screen point using the map view proxy.
+            if let rasterCell = await rasterCell(for: screenPoint, using: proxy) {
+                // Update the callout text and placement.
+                updateCalloutText(using: rasterCell)
+                updateCalloutPlacement(to: screenPoint, using: proxy)
+            } else {
+                // Dismiss the callout if no raster cell was found, e.g. tap was not on layer.
+                calloutPlacement = nil
             }
         }
         
@@ -137,14 +139,9 @@ private extension IdentifyRasterCellView {
         /// - Parameters:
         ///   - screenPoint: The screen point at which to place the callout.
         ///   - proxy: The proxy used to convert the screen point to a map point.
-        ///   - shouldUseOffset: A Boolean value that indicates whether to shouldUseOffset.
-        private func updateCalloutPlacement(to screenPoint: CGPoint, using proxy: MapViewProxy, shouldUseOffset: Bool) {
+        private func updateCalloutPlacement(to screenPoint: CGPoint, using proxy: MapViewProxy) {
             // Create an offset to offset the callout if needed, e.g. the magnifier is showing.
-            let offset = shouldUseOffset ? CGPoint(x: 0, y: -70) : .zero
-            
-            // Disable the placement animation when there is an offset.
-            // This is done to prevent the callout from lagging when the magnifier is moved.
-            calloutShouldAnimate = !shouldUseOffset
+            let offset = calloutShouldOffset ? CGPoint(x: 0, y: -70) : .zero
             
             // Get the map location of the screen point from the map view proxy.
             if let location = proxy.location(fromScreenPoint: screenPoint) {
@@ -172,6 +169,17 @@ private extension IdentifyRasterCellView {
             
             // Update the callout text.
             calloutText = "\(attributes)\n\n\(xCoordinate)\n\(yCoordinate)"
+        }
+    }
+    
+    // A generic struct made up of two equatable types.
+    struct EquatablePair<T: Equatable, U: Equatable>: Equatable {
+        var t: T
+        var u: U
+        
+        init(_ t: T, _ u: U) {
+            self.t = t
+            self.u = u
         }
     }
 }
