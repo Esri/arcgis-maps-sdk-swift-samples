@@ -57,7 +57,7 @@ private extension IdentifyRasterCellView {
         }()
         
         /// The raster layer on the map.
-        private var rasterLayer: RasterLayer?
+        private let rasterLayer = RasterLayer(raster: Raster(fileURL: .ndviRaster))
         
         /// The placement of the callout on the map.
         @Published var calloutPlacement: CalloutPlacement?
@@ -156,7 +156,7 @@ private extension IdentifyRasterCellView {
         ///   - screenPoint: The screen point at which to place the callout.
         ///   - proxy: The proxy used to convert the screen point to a map point.
         ///   - offsetted: A Boolean value that indicates whether to offset the callout.
-        private func updateCalloutPlacement(to screenPoint: CGPoint, using proxy: MapViewProxy, offsetted: Bool) {
+        private func updateCalloutPlacement(to screenPoint: CGPoint, using proxy: MapViewProxy, shouldUseOffset: Bool) {
             // Create an offset to offset the callout if needed, e.g. the magnifier is showing.
             let offset = offsetted ? CGPoint(x: 0, y: -70) : .zero
             
@@ -174,7 +174,10 @@ private extension IdentifyRasterCellView {
         /// - Parameter cell: The raster cell to create the text from.
         private func updateCalloutText(using cell: RasterCell) {
             // Create the attributes text using the attributes of the raster cell.
-            let attributes = cell.attributes.map { "\($0.key): \($0.value)" }.sorted(by: >).joined(separator: "\n")
+            let attributes = cell.attributes
+                .map { "\($0.key): \($0.value)" }
+                .sorted(by: >)
+                .joined(separator: "\n")
             
             // Create the coordinate texts using the extent of the cell's geometry.
             guard let extent = cell.geometry?.extent else {
