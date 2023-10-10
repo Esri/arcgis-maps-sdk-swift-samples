@@ -56,7 +56,7 @@ private extension IdentifyRasterCellView {
             return map
         }()
         
-        /// The raster layer on the map.
+        /// The map's raster layer loaded from a local URL.
         private let rasterLayer = RasterLayer(raster: Raster(fileURL: .ndviRaster))
         
         /// The placement of the callout on the map.
@@ -86,21 +86,11 @@ private extension IdentifyRasterCellView {
                 guard let self else { return }
                 
                 do {
-                    // Create a raster with the local file URL.
-                    let raster = Raster(fileURL: .ndviRaster)
-                    
-                    // Create a raster layer using the raster.
-                    rasterLayer = RasterLayer(raster: raster)
-                    
                     // Load the layer before adding it to the map.
-                    try await rasterLayer?.load()
+                    try await rasterLayer.load()
                     
                     // Add the raster layer to the map as an operational layer.
-                    if let rasterLayer {
-                        map.addOperationalLayer(rasterLayer)
-                    } else {
-                        throw CustomError.message("No raster layer to add to the map.")
-                    }
+                    map.addOperationalLayer(rasterLayer)
                 } catch {
                     self.error = error
                 }
@@ -135,10 +125,6 @@ private extension IdentifyRasterCellView {
         /// - Returns: The first raster cell found in the identify result.
         private func rasterCell(for screenPoint: CGPoint, using proxy: MapViewProxy) async -> RasterCell? {
             do {
-                guard let rasterLayer else {
-                    throw CustomError.message("Raster layer is not initialized.")
-                }
-                
                 // Identify the screen point on the raster layer using the map view proxy.
                 let identifyResult = try await proxy.identify(on: rasterLayer, screenPoint: screenPoint, tolerance: 1)
                 
@@ -189,19 +175,6 @@ private extension IdentifyRasterCellView {
             
             // Update the callout text.
             calloutText = "\(attributes)\n\n\(xCoordinate)\n\(yCoordinate)"
-        }
-    }
-    
-    /// An enumeration used to throw an error customized with a string.
-    enum CustomError: LocalizedError {
-        case message(String)
-        
-        /// The text description of the error.
-        var errorDescription: String? {
-            if case .message(let string) = self {
-                return NSLocalizedString(string, comment: "The description of the error thrown.")
-            }
-            return nil
         }
     }
 }
