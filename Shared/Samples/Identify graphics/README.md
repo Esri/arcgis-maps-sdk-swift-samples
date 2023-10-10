@@ -23,7 +23,7 @@ Tap on a graphic to identify it. You will see an alert message displayed.
 
 * Graphic
 * GraphicsOverlay
-* IdentifyLayerResult
+* IdentifyGraphicsOverlayResult
 * MapView
 
 ## Tags

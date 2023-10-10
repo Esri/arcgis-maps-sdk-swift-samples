@@ -10,14 +10,14 @@
         "identify",
         "Graphic",
         "GraphicsOverlay",
-        "IdentifyLayerResult",
+        "IdentifyGraphicsOverlayResult",
         "MapView"
     ],
     "redirect_from": [],
     "relevant_apis": [
         "Graphic",
         "GraphicsOverlay",
-        "IdentifyLayerResult",
+        "IdentifyGraphicsOverlayResult",
         "MapView"
     ],
     "snippets": [
