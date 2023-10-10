@@ -42,12 +42,15 @@ struct IdentifyGraphicsView: View {
         return graphicsOverlay
     }()
     
-    /// A Boolean value indicating whether the graphic alert is showing.
-    @State private var isShowingGraphicAlert = false
+    /// The tap location's screen point used in the identify operation.
+    @State private var tapScreenPoint: CGPoint?
     
-    /// The text shown in the graphic alert that shows the alert when changed.
-    @State private var graphicAlertText = "" {
-        didSet { isShowingGraphicAlert = graphicAlertText.isNotEmpty }
+    /// A Boolean value indicating whether to show identify result alert.
+    @State private var isShowingIdentifyResultAlert = false
+    
+    /// The message shown in the identify result alert.
+    @State private var identifyResultMessage = "" {
+        didSet { isShowingIdentifyResultAlert = identifyResultMessage.isNotEmpty }
     }
     
     /// A Boolean value indicating whether to show an error alert.
@@ -62,31 +65,40 @@ struct IdentifyGraphicsView: View {
         MapViewReader { mapViewProxy in
             MapView(map: map, graphicsOverlays: [graphicsOverlay])
                 .onSingleTapGesture { screenPoint, _ in
-                    Task {
-                        do {
-                            // Identify the screen point on the graphics overlay using the proxy.
-                            // Use `identifyGraphicsOverlays` instead if you need to identify on
-                            // all the graphics overlay present in the map view.
-                            let identifyResult = try await mapViewProxy.identify(
-                                on: graphicsOverlay,
-                                screenPoint: screenPoint,
-                                tolerance: 12
-                            )
-                            
-                            // Display an alert if a graphic was found at the screen point.
-                            if identifyResult.graphics.isNotEmpty {
-                                let postfix = identifyResult.graphics.count > 1 ? "s" : ""
-                                graphicAlertText = "Tapped on \(identifyResult.graphics.count) graphic\(postfix)."
-                            }
-                        } catch {
-                            // Show an error alert for an error throw while identifying.
-                            self.error = error
+                    tapScreenPoint = screenPoint
+                }
+                .task(id: tapScreenPoint) {
+                    guard let tapScreenPoint else { return }
+                    
+                    do {
+                        // Identify the screen point on the graphics overlay using the proxy.
+                        // Use `identifyGraphicsOverlays` instead if you need to identify on
+                        // all the graphics overlay present in the map view.
+                        let identifyResult = try await mapViewProxy.identify(
+                            on: graphicsOverlay,
+                            screenPoint: tapScreenPoint,
+                            tolerance: 12
+                        )
+                        
+                        // Display an alert if any graphics were found at the screen point.
+                        let graphics = identifyResult.graphics
+                        if graphics.isNotEmpty {
+                            let postfix = graphics.count > 1 ? "s" : ""
+                            identifyResultMessage = "Tapped on \(graphics.count) graphic\(postfix)."
                         }
+                    } catch {
+                        // Show an error alert for an error thrown while identifying.
+                        self.error = error
                     }
+                    
+                    self.tapScreenPoint = nil
                 }
-                .alert(graphicAlertText, isPresented: $isShowingGraphicAlert) {
-                    Button("OK") { }
-                }
+                .alert(
+                    "Identify Result",
+                    isPresented: $isShowingIdentifyResultAlert,
+                    actions: {},
+                    message: { Text(identifyResultMessage) }
+                )
                 .alert(isPresented: $isShowingErrorAlert, presentingError: error)
         }
     }
