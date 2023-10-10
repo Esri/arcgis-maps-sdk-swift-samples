@@ -81,10 +81,8 @@ struct IdentifyGraphicsView: View {
                         )
                         
                         // Display an alert if any graphics were found at the screen point.
-                        let graphics = identifyResult.graphics
-                        if graphics.isNotEmpty {
-                            let postfix = graphics.count > 1 ? "s" : ""
-                            identifyResultMessage = "Tapped on \(graphics.count) graphic\(postfix)."
+                        if identifyResult.graphics.isNotEmpty {
+                            identifyResultMessage = "Tapped on \(identifyResult.graphics.count) graphic(s)."
                         }
                     } catch {
                         // Show an error alert for an error thrown while identifying.
