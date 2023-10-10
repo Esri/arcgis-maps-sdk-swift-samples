@@ -120,7 +120,7 @@ private extension IdentifyRasterCellView {
                 if let rasterCell = await rasterCell(for: screenPoint, using: proxy) {
                     // Update the callout text and placement.
                     updateCalloutText(using: rasterCell)
-                    updateCalloutPlacement(to: screenPoint, using: proxy, offsetted: withOffset)
+                    updateCalloutPlacement(to: screenPoint, using: proxy, shouldUseOffset: withOffset)
                 } else {
                     // Dismiss the callout if no raster cell was found, e.g. tap was not on layer.
                     calloutPlacement = nil
@@ -155,14 +155,14 @@ private extension IdentifyRasterCellView {
         /// - Parameters:
         ///   - screenPoint: The screen point at which to place the callout.
         ///   - proxy: The proxy used to convert the screen point to a map point.
-        ///   - offsetted: A Boolean value that indicates whether to offset the callout.
+        ///   - shouldUseOffset: A Boolean value that indicates whether to shouldUseOffset.
         private func updateCalloutPlacement(to screenPoint: CGPoint, using proxy: MapViewProxy, shouldUseOffset: Bool) {
             // Create an offset to offset the callout if needed, e.g. the magnifier is showing.
-            let offset = offsetted ? CGPoint(x: 0, y: -70) : .zero
+            let offset = shouldUseOffset ? CGPoint(x: 0, y: -70) : .zero
             
             // Disable the placement animation when there is an offset.
             // This is done to prevent the callout from lagging when the magnifier is moved.
-            calloutShouldAnimate = !offsetted
+            calloutShouldAnimate = !shouldUseOffset
             
             // Get the map location of the screen point from the map view proxy.
             if let location = proxy.location(fromScreenPoint: screenPoint) {
