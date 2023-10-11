@@ -2,7 +2,10 @@
     "category": "Edit and Manage Data",
     "description": "Create and share a mobile geodatabase.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "create-mobile-geodatabase-1.png",
+        "create-mobile-geodatabase-2.png"
+    ],
     "keywords": [
         "arcgis pro",
         "database",
