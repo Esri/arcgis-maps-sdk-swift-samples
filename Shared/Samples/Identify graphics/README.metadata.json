@@ -1,0 +1,27 @@
+{
+    "category": "Visualization",
+    "description": "Display an alert message when a graphic is tapped.",
+    "ignore": false,
+    "images": [
+        "identify-graphics.png"
+    ],
+    "keywords": [
+        "graphics",
+        "identify",
+        "Graphic",
+        "GraphicsOverlay",
+        "IdentifyGraphicsOverlayResult",
+        "MapView"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Graphic",
+        "GraphicsOverlay",
+        "IdentifyGraphicsOverlayResult",
+        "MapView"
+    ],
+    "snippets": [
+        "IdentifyGraphicsView.swift"
+    ],
+    "title": "Identify graphics"
+}
