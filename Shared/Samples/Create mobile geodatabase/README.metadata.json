@@ -33,7 +33,8 @@
         "TableDescription"
     ],
     "snippets": [
-        "CreateMobileGeodatabaseView.swift"
+        "CreateMobileGeodatabaseView.swift",
+        "CreateMobileGeodatabaseView.Model.swift"
     ],
     "title": "Create mobile geodatabase"
 }
