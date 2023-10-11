@@ -22,8 +22,8 @@ struct CreateMobileGeodatabaseView: View {
     /// The point on the map where the user tapped.
     @State private var tapMapPoint = Point(x: 0, y: 0)
     
-    ///
-    @State private var isShowingTable = false
+    /// A Boolean that indicates whether the feature table sheet is showing.
+    @State private var isShowingTableSheet = false
     
     var body: some View {
         MapView(map: model.map)
@@ -35,6 +35,7 @@ struct CreateMobileGeodatabaseView: View {
                 await model.createGeodatabase()
             }
             .task(id: tapMapPoint) {
+                // Add a feature at the tapped map point.
                 await model.addFeature(at: tapMapPoint)
             }
             .overlay(alignment: .top) {
@@ -45,34 +46,60 @@ struct CreateMobileGeodatabaseView: View {
             }
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
-                    Button("View Table") {
-                        Task {
-                            await model.updateFeatures()
-                            isShowingTable = true
-                        }
-                    }
-                    .sheet(isPresented: $isShowingTable, detents: [.medium]) {
-                        tableList
-                    }
-                    .disabled(model.featureCount == 0)
-                    
-                    Button("Create and Share") {
-                        print("yea")
+                    tableButton
+                        .disabled(model.featureCount == 0)
+
+                    Button {
+                        model.presentShareSheet()
+                    } label: {
+                        Image(systemName: "square.and.arrow.up")
                     }
                 }
             }
             .alert(isPresented: $model.isShowingErrorAlert, presentingError: model.error)
     }
+}
+
+private extension CreateMobileGeodatabaseView {
+    /// The button that brings up the feature table sheet.
+    @ViewBuilder var tableButton: some View {
+        /// The button to bring up the sheet.
+        let button = Button("View Table") {
+            Task {
+                await model.updateFeatures()
+                isShowingTableSheet = true
+            }
+        }
+        
+        if #available(iOS 16, *) {
+            button
+                .popover(isPresented: $isShowingTableSheet, arrowEdge: .bottom) {
+                    tableList
+                        .presentationDetents([.fraction(0.5)])
+#if targetEnvironment(macCatalyst)
+                        .frame(minWidth: 300, minHeight: 270)
+#else
+                        .frame(minWidth: 320, minHeight: 390)
+#endif
+                }
+        } else {
+            button
+                .sheet(isPresented: $isShowingTableSheet) {
+                    tableList
+                }
+        }
+    }
     
+    /// The list of features in the feature table.
     var tableList: some View {
         NavigationView {
             List {
                 Section("OID and Collection Timestamp") {
-                    ForEach(model.features, id: \.self) { row in
+                    ForEach(model.features, id: \.self) { feature in
                         HStack {
-                            Text(String(row.oid))
+                            Text(String(feature.oid))
                             Spacer()
-                            Text(row.timeStamp.formatted(.collectionTimestamp))
+                            Text(feature.timestamp.formatted(.collectionTimestamp))
                         }
                     }
                 }
@@ -82,7 +109,7 @@ struct CreateMobileGeodatabaseView: View {
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Done") {
-                        isShowingTable = false
+                        isShowingTableSheet = false
                     }
                 }
             }
@@ -92,7 +119,7 @@ struct CreateMobileGeodatabaseView: View {
 }
 
 private extension FormatStyle where Self == Date.VerbatimFormatStyle {
-    /// The format style for a collection timestamp.
+    /// The format style for a collection timestamp of a feature in a feature table.
     static var collectionTimestamp: Self {
         .init(
             format: """
@@ -109,11 +136,5 @@ private extension FormatStyle where Self == Date.VerbatimFormatStyle {
             timeZone: .current,
             calendar: .current
         )
-    }
-}
-
-struct CreateMobileGeodatabaseView_Previews: PreviewProvider {
-    static var previews: some View {
-        CreateMobileGeodatabaseView()
     }
 }

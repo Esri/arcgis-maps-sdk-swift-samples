@@ -28,7 +28,7 @@ extension CreateMobileGeodatabaseView {
             return map
         }()
         
-        /// A URL to the temporary geodatabase.
+        /// A URL to a temporary geodatabase.
         private let geodatabaseURL: URL
         
         /// A URL to a temporary directory to store the geodatabase.
@@ -37,7 +37,7 @@ extension CreateMobileGeodatabaseView {
         /// The mobile geodatabase.
         private var geodatabase: Geodatabase?
         
-        /// The geodatabase feature table created in the geodatabase.
+        /// The feature table in the geodatabase.
         private var featureTable: GeodatabaseFeatureTable?
         
         /// The table description used to create a new feature table in the geodatabase.
@@ -49,17 +49,15 @@ extension CreateMobileGeodatabaseView {
                 geometryType: Point.self
             )
             
-            // Create and add the description fields for the table.
-            // `FieldType.OID` is the primary key of the SQLite table.
-            // `FieldType.DATE` is a date column used to store a calendar date.
-            // `FieldDescription`s can be a SHORT, INTEGER, GUID, FLOAT, DOUBLE, DATE, TEXT, OID, GLOBALID, BLOB, GEOMETRY, RASTER, or XML.
-            let fieldDescriptions = [
+            // Create and add the field descriptions for the table.
+            description.addFieldDescriptions([
+                // `FieldType.OID` is the primary key of the SQLite table.
                 FieldDescription(name: "oid", fieldType: .oid),
+                // `FieldType.DATE` is the date column used to store a calendar date.
                 FieldDescription(name: "collection_timestamp", fieldType: .date)
-            ]
-            description.addFieldDescriptions(fieldDescriptions)
+            ])
             
-            // Set any unnecessary properties to false.
+            // Set unnecessary properties to false.
             description.hasAttachments = false
             description.hasM = false
             description.hasZ = false
@@ -70,7 +68,7 @@ extension CreateMobileGeodatabaseView {
         /// The list of features in the feature table.
         @Published private(set) var features: [FeatureItem] = []
         
-        /// The count of features on the feature table.
+        /// The count of features in the feature table.
         @Published private(set) var featureCount = 0
         
         /// A Boolean value indicating whether to show an error alert.
@@ -82,13 +80,14 @@ extension CreateMobileGeodatabaseView {
         }
         
         init() {
-            // Create the temporary directory.
-            directoryURL = FileManager.default
+            // Create the temporary directory using file manager.
+            directoryURL = FileManager
+                .default
                 .temporaryDirectory
                 .appendingPathComponent(ProcessInfo().globallyUniqueString)
             try? FileManager.default.createDirectory(at: directoryURL, withIntermediateDirectories: false)
             
-            // Create the geodatabase path.
+            // Create the geodatabase path with the directory URL.
             geodatabaseURL = directoryURL
                 .appendingPathComponent("LocationHistory", isDirectory: false)
                 .appendingPathExtension("geodatabase")
@@ -100,27 +99,25 @@ extension CreateMobileGeodatabaseView {
         
         // MARK: Methods
         
-        /// Creates the mobile geodatabase.
+        /// Creates a mobile geodatabase with a feature table.
         func createGeodatabase() async {
             do {
-                // Remove the file if it already exists.
+                // Remove the geodatabase file if it already exists.
                 if FileManager.default.fileExists(atPath: geodatabaseURL.path) {
                     try FileManager.default.removeItem(at: geodatabaseURL)
                 }
                 
-                // Create the mobile geodatabase at the given URL.
+                // Create an empty mobile geodatabase at the given URL.
                 geodatabase = try await Geodatabase.createEmpty(fileURL: geodatabaseURL)
                 
-                // Add a new table to the geodatabase by creating one from the table description.
+                // Create a new feature table in the geodatabase using a table description.
                 if let table = try await geodatabase?.makeTable(description: tableDescription) {
-                    // Load the table.
+                    // Load the feature table.
                     try await table.load()
                     featureTable = table
                     
-                    // Create a feature layer using the table.
+                    // Create a feature layer using the table and add it to the map.
                     let featureLayer = FeatureLayer(featureTable: table)
-                    
-                    // Add the feature layer to the map's operational layers.
                     map.addOperationalLayer(featureLayer)
                 }
             } catch {
@@ -128,29 +125,10 @@ extension CreateMobileGeodatabaseView {
             }
         }
         
-        /// Updates the features list by queiring the feature table.
-        func updateFeatures() async {
-            guard let featureTable else { return }
-            do {
-                // Query the geodatabase feature table.
-                let results = try await featureTable.queryFeatures(using: QueryParameters())
-                
-                // Create a feature item for each feature in the query results.
-                features = results.features().compactMap { feature in
-                    if let oid = feature.attributes["oid"] as? Int64,
-                       let timeStamp = feature.attributes["collection_timestamp"] as? Date {
-                        return FeatureItem(oid: oid, timeStamp: timeStamp)
-                    }
-                    return nil
-                }
-            } catch {
-                self.error = error
-            }
-        }
-        
         /// Adds a feature to the feature table at a given map point.
+        /// - Parameter mapPoint: The map point used to make the feature.
         func addFeature(at mapPoint: Point) async {
-            guard let featureTable = featureTable else { return }
+            guard let featureTable else { return }
             do {
                 // Create an attribute with the current date.
                 let attributes = ["collection_timestamp": Date()]
@@ -168,12 +146,58 @@ extension CreateMobileGeodatabaseView {
             }
         }
         
-        /// Removes existing operational layers and close the geodatabase.
-        func resetMap() async {
+        /// Updates the list of features by queiring the feature table.
+        func updateFeatures() async {
+            guard let featureTable else { return }
+            do {
+                // Query the geodatabase feature table.
+                let results = try await featureTable.queryFeatures(using: QueryParameters())
+                
+                // Create a feature item for each feature in the query results.
+                features = results.features().compactMap { feature in
+                    if let oid = feature.attributes["oid"] as? Int64,
+                       let timeStamp = feature.attributes["collection_timestamp"] as? Date {
+                        return FeatureItem(oid: oid, timestamp: timeStamp)
+                    }
+                    return nil
+                }
+            } catch {
+                self.error = error
+            }
+        }
+        
+        /// Presents the sheet containing options to share the geodatabase.
+        func presentShareSheet() {
+            // Create the activity view controller with the geodatabase URL.
+            let activityViewController = UIActivityViewController(
+                activityItems: [geodatabaseURL],
+                applicationActivities: nil
+            )
+
+            // Present the activity view controller.
+            let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+            windowScene?.keyWindow?.rootViewController?.present(activityViewController, animated: true)
+            
+            // Reset the geodatabase once it has been shared.
+            activityViewController.completionWithItemsHandler = { [weak self] _, completed, _, error in
+                if completed {
+                    Task { [weak self] in
+                        await self?.resetGeodatabase()
+                    }
+                } else if let error {
+                    self?.error = error
+                }
+            }
+        }
+        
+        /// Removes all the existing features and creates a new geodatabase.
+        private func resetGeodatabase() async {
             // Close the geodatabase to cease all adjustments.
             geodatabase?.close()
             
-            // Remove the current feature layers.
+            // Remove the current features and layers.
+            features.removeAll()
+            featureCount = 0
             map.removeAllOperationalLayers()
             
             // Create a new mobile geodatabase.
@@ -186,6 +210,6 @@ extension CreateMobileGeodatabaseView {
         /// The primary key of the feature in the SQLite table.
         let oid: Int64
         /// The collection timestamp of the the feature.
-        let timeStamp: Date
+        let timestamp: Date
     }
 }
