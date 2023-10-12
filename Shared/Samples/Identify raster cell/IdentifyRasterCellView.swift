@@ -106,7 +106,7 @@ private extension IdentifyRasterCellView {
         ///   - mapViewProxy: The proxy used to handle the screen point.
         func callout(at screenPoint: CGPoint, using proxy: MapViewProxy) async {
             // Get the raster cell for the screen point using the map view proxy.
-            if let rasterCell = await rasterCell(for: screenPoint, using: proxy) {
+            if let rasterCell = await rasterCell(at: screenPoint, using: proxy) {
                 // Update the callout text and placement.
                 updateCalloutText(using: rasterCell)
                 updateCalloutPlacement(to: screenPoint, using: proxy)
