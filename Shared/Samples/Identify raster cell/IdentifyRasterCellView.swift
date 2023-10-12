@@ -121,7 +121,7 @@ private extension IdentifyRasterCellView {
         ///   - screenPoint: The screen point corresponding to a raster cell.
         ///   - proxy: The proxy used to identify the screen point on the raster layer.
         /// - Returns: The first raster cell found in the identify result.
-        private func rasterCell(for screenPoint: CGPoint, using proxy: MapViewProxy) async -> RasterCell? {
+        private func rasterCell(at screenPoint: CGPoint, using proxy: MapViewProxy) async -> RasterCell? {
             do {
                 // Identify the screen point on the raster layer using the map view proxy.
                 let identifyResult = try await proxy.identify(on: rasterLayer, screenPoint: screenPoint, tolerance: 1)
