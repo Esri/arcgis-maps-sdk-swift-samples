@@ -48,7 +48,7 @@ struct CreateMobileGeodatabaseView: View {
                 ToolbarItemGroup(placement: .bottomBar) {
                     tableButton
                         .disabled(model.featureCount == 0)
-
+                    
                     Button {
                         model.presentShareSheet()
                     } label: {

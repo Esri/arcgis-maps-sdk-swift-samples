@@ -173,7 +173,7 @@ extension CreateMobileGeodatabaseView {
                 activityItems: [geodatabaseURL],
                 applicationActivities: nil
             )
-
+            
             // Present the activity view controller.
             let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
             windowScene?.keyWindow?.rootViewController?.present(activityViewController, animated: true)
