@@ -146,7 +146,7 @@ extension CreateMobileGeodatabaseView {
             }
         }
         
-        /// Updates the list of features by queiring the feature table.
+        /// Updates the list of features by querying the feature table.
         func updateFeatures() async {
             guard let featureTable else { return }
             do {
