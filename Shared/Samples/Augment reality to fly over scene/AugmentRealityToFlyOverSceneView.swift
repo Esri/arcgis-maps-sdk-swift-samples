@@ -16,27 +16,57 @@ import ArcGIS
 import SwiftUI
 
 struct AugmentRealityToFlyOverSceneView: View {
-    /// The view model for the sample.
-    @StateObject private var model = Model()
+    /// A scene with an imagery basemap with a world elevation service.
+    @State private var scene: ArcGIS.Scene = {
+        let scene = Scene(basemapStyle: .arcGISImagery)
+        scene.baseSurface.addElevationSource(
+            ArcGISTiledElevationSource(url: .worldElevationService)
+        )
+        return scene
+    }()
+    
+    /// The camera to set the initial camera of the flyover scene.
+    private let initialCamera: Camera = {
+        let location = Point(x: 2.8262, y: 41.9857, z: 200, spatialReference: .wgs84)
+        return Camera(location: location, heading: 190, pitch: 90, roll: 0)
+    }()
+    
+    /// A Boolean value indicating whether to show an error alert.
+    @State private var isShowingErrorAlert = false
+    
+    /// The error shown in the error alert.
+    @State private var error: Error? {
+        didSet { isShowingErrorAlert = error != nil }
+    }
     
     var body: some View {
-        MapView(map: model.map)
-            .alert(isPresented: $model.isShowingErrorAlert, presentingError: model.error)
+        SceneView(scene: scene)
+            .task {
+                do {
+                    // Create a mesh layer from a url.
+                    let meshLayer = IntegratedMeshLayer(url: .girona)
+                    
+                    // Load the layer.
+                    try await meshLayer.load()
+                    
+                    // Add mesh layer to the scene.
+                    scene.addOperationalLayer(meshLayer)
+                } catch {
+                    self.error = error
+                }
+            }
+            .alert(isPresented: $isShowingErrorAlert, presentingError: error)
     }
 }
 
-private extension AugmentRealityToFlyOverSceneView {
-    /// The view model for the sample.
-    class Model: ObservableObject {
-        /// A map with a topographic basemap.
-        let map = Map(basemapStyle: .arcGISTopographic)
-        
-        /// A Boolean value indicating whether to show an error alert.
-        @Published var isShowingErrorAlert = false
-        
-        /// The error shown in the error alert.
-        @Published var error: Error? {
-            didSet { isShowingErrorAlert = error != nil }
-        }
+private extension URL {
+    /// A URL to an integrated mesh layer of Girona, Spain.
+    static var girona: Self {
+        .init(string: "https://tiles.arcgis.com/tiles/z2tnIkrLQ2BRzr6P/arcgis/rest/services/Girona_Spain/SceneServer")!
+    }
+    
+    /// A URL to world elevation service from Terrain3D ArcGIS REST service.
+    static var worldElevationService: Self {
+        .init(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!
     }
 }
