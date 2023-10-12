@@ -35,10 +35,10 @@ struct IdentifyRasterCellView: View {
                 .onSingleTapGesture { screenPoint, _ in
                     tapScreenPoint = screenPoint
                 }
-                .onLongPressGesture { screenPoint, _ in
+                .onLongPressAndDragGesture { screenPoint in
                     model.calloutShouldOffset = true
                     tapScreenPoint = screenPoint
-                } onEnded: { _, _ in
+                } onEnded: {
                     model.calloutShouldOffset = false
                 }
                 .task(id: EquatablePair(tapScreenPoint, model.calloutShouldOffset)) {
@@ -168,35 +168,25 @@ private extension IdentifyRasterCellView {
     }
 }
 
-/// An extension to add an on ended closure to the on long press gesture of the map view.
 private extension MapView {
-    /// The current screen point of a gesture.
-    static var gestureScreenPoint = CGPoint()
-    /// The current map point of a gesture.
-    static var gestureMapPoint = Point(x: 0, y: 0)
-    
     /// Sets a closure to perform when the map view recognizes a long press gesture.
     /// - Parameters:
     ///   - action: The closure to perform when a long press is recognized.
     ///   - onEnded: The closure to perform when the long press ends.
     /// - Returns: A new `View` object.
-    func onLongPressGesture(perform action: @escaping (CGPoint, Point) -> Void, onEnded: ((CGPoint, Point?) -> Void)? = nil) -> some View {
+    func onLongPressAndDragGesture(
+        perform action: @escaping (CGPoint) -> Void,
+        onEnded: @escaping () -> Void
+    ) -> some View {
         self
-            .onLongPressGesture { screenPoint, mapPoint in
-                Self.gestureScreenPoint = screenPoint
-                Self.gestureMapPoint = mapPoint
-                
-                action(screenPoint, mapPoint)
+            .onLongPressGesture { screenPoint, _ in
+                action(screenPoint)
             }
             .gesture(
                 LongPressGesture()
-                    .simultaneously(with: DragGesture())
-                    .onEnded { value in
-                        guard let onEnded else { return }
-                        
-                        if value.first != nil {
-                            onEnded(Self.gestureScreenPoint, Self.gestureMapPoint)
-                        }
+                    .sequenced(before: DragGesture())
+                    .onEnded { _ in
+                        onEnded()
                     }
             )
     }
