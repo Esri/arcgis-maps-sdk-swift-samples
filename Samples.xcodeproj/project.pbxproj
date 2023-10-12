@@ -151,6 +151,8 @@
 		D7054AEA2ACCCC34007235BA /* Animate3DGraphicView.SettingsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7054AE82ACCCB6C007235BA /* Animate3DGraphicView.SettingsView.swift */; };
 		D7058FB12ACB423C00A40F14 /* Animate3DGraphicView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7058FB02ACB423C00A40F14 /* Animate3DGraphicView.Model.swift */; };
 		D7058FB22ACB424E00A40F14 /* Animate3DGraphicView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7058FB02ACB423C00A40F14 /* Animate3DGraphicView.Model.swift */; };
+		D7084FA92AD771AA00EC7F4F /* AugmentRealityToFlyOverSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7084FA62AD771AA00EC7F4F /* AugmentRealityToFlyOverSceneView.swift */; };
+		D7084FAB2AD771F600EC7F4F /* AugmentRealityToFlyOverSceneView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7084FA62AD771AA00EC7F4F /* AugmentRealityToFlyOverSceneView.swift */; };
 		D70BE5792A5624A80022CA02 /* CategoriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70BE5782A5624A80022CA02 /* CategoriesView.swift */; };
 		D710996D2A27D9210065A1C1 /* DensifyAndGeneralizeGeometryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D710996C2A27D9210065A1C1 /* DensifyAndGeneralizeGeometryView.swift */; };
 		D710996E2A27D9B30065A1C1 /* DensifyAndGeneralizeGeometryView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D710996C2A27D9210065A1C1 /* DensifyAndGeneralizeGeometryView.swift */; };
@@ -324,6 +326,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				D7084FAB2AD771F600EC7F4F /* AugmentRealityToFlyOverSceneView.swift in Copy Source Code Files */,
 				D731F3C22AD0D2BB00A8431E /* IdentifyGraphicsView.swift in Copy Source Code Files */,
 				D70082EC2ACF901600E0C3C2 /* IdentifyKMLFeaturesView.swift in Copy Source Code Files */,
 				D7054AEA2ACCCC34007235BA /* Animate3DGraphicView.SettingsView.swift in Copy Source Code Files */,
@@ -522,6 +525,7 @@
 		D704AA592AB22C1A00A3BB63 /* GroupLayersTogetherView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupLayersTogetherView.swift; sourceTree = "<group>"; };
 		D7054AE82ACCCB6C007235BA /* Animate3DGraphicView.SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animate3DGraphicView.SettingsView.swift; sourceTree = "<group>"; };
 		D7058FB02ACB423C00A40F14 /* Animate3DGraphicView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animate3DGraphicView.Model.swift; sourceTree = "<group>"; };
+		D7084FA62AD771AA00EC7F4F /* AugmentRealityToFlyOverSceneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AugmentRealityToFlyOverSceneView.swift; sourceTree = "<group>"; };
 		D70BE5782A5624A80022CA02 /* CategoriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesView.swift; sourceTree = "<group>"; };
 		D710996C2A27D9210065A1C1 /* DensifyAndGeneralizeGeometryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DensifyAndGeneralizeGeometryView.swift; sourceTree = "<group>"; };
 		D710996F2A2802FA0065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DensifyAndGeneralizeGeometryView.SettingsView.swift; sourceTree = "<group>"; };
@@ -697,6 +701,7 @@
 				D7C16D172AC5F6C100689E89 /* Animate 3D graphic */,
 				D77570BC2A29427200F490CD /* Animate images with image overlay */,
 				D75362CC2A1E862B00D83028 /* Apply unique value renderer */,
+				D7084FA42AD771AA00EC7F4F /* Augment reality to fly over scene */,
 				218F35B229C28F4A00502022 /* Authenticate with OAuth */,
 				E0FE32E528747762002C6ACA /* Browse building floors */,
 				1C9B74D229DB54560038B06F /* Change camera controller */,
@@ -1156,6 +1161,14 @@
 				D75C35662AB50338003CD55F /* GroupLayersTogetherView.GroupLayerListView.swift */,
 			);
 			path = "Group layers together";
+			sourceTree = "<group>";
+		};
+		D7084FA42AD771AA00EC7F4F /* Augment reality to fly over scene */ = {
+			isa = PBXGroup;
+			children = (
+				D7084FA62AD771AA00EC7F4F /* AugmentRealityToFlyOverSceneView.swift */,
+			);
+			path = "Augment reality to fly over scene";
 			sourceTree = "<group>";
 		};
 		D71099692A27D8880065A1C1 /* Densify and generalize geometry */ = {
@@ -1904,6 +1917,7 @@
 				E004A6E028466279002A1FE6 /* ShowCalloutView.swift in Sources */,
 				E000E763286A0B18005D87C5 /* CutGeometryView.swift in Sources */,
 				001C6DE127FE8A9400D472C2 /* AppSecrets.swift.masque in Sources */,
+				D7084FA92AD771AA00EC7F4F /* AugmentRealityToFlyOverSceneView.swift in Sources */,
 				D75B58512AAFB3030038B3B4 /* StyleFeaturesWithCustomDictionaryView.swift in Sources */,
 				E0D04FF228A5390000747989 /* DownloadPreplannedMapAreaView.Model.swift in Sources */,
 				00CCB8A5285BAF8700BBAB70 /* OnDemandResource.swift in Sources */,
