@@ -41,10 +41,6 @@ struct IdentifyRasterCellView: View {
                 } onEnded: { _, _ in
                     model.calloutShouldOffset = false
                 }
-                .task {
-                    // Set up the raster layer.
-                    await model.addRasterLayer()
-                }
                 .task(id: EquatablePair(tapScreenPoint, model.calloutShouldOffset)) {
                     // Create a callout at the tap location.
                     if let tapScreenPoint {
@@ -60,10 +56,11 @@ private extension IdentifyRasterCellView {
     /// The view model for the sample.
     @MainActor
     class Model: ObservableObject {
-        /// A map with an oceans basemap centered on Cape Town, South Africa.
-        let map: Map = {
+        /// A map with a raster layer and an oceans basemap centered on Cape Town, South Africa.
+        private(set) lazy var map: Map = {
             let map = Map(basemapStyle: .arcGISOceans)
             map.initialViewpoint = Viewpoint(latitude: -34.1, longitude: 18.6, scale: 1_155e3)
+            map.addOperationalLayer(rasterLayer)
             return map
         }()
         
@@ -85,19 +82,6 @@ private extension IdentifyRasterCellView {
         /// The error shown in the error alert.
         @Published private(set) var error: Error? {
             didSet { isShowingErrorAlert = error != nil }
-        }
-        
-        /// Adds the raster layer to the map.
-        func addRasterLayer() async {
-            do {
-                // Load the layer.
-                try await rasterLayer.load()
-                
-                // Add the layer to the map as an operational layer.
-                map.addOperationalLayer(rasterLayer)
-            } catch {
-                self.error = error
-            }
         }
         
         /// Creates a callout displaying the data of a raster cell at a given screen point.
