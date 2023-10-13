@@ -184,7 +184,7 @@ private extension MapView {
             }
             .gesture(
                 LongPressGesture()
-                    .sequenced(before: DragGesture())
+                    .simultaneously(with: DragGesture())
                     .onEnded { _ in
                         onEnded()
                     }
