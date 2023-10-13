@@ -185,8 +185,11 @@ private extension MapView {
             .gesture(
                 LongPressGesture()
                     .simultaneously(with: DragGesture())
-                    .onEnded { _ in
-                        onEnded()
+                    .onEnded { value in
+                        // Run the closure if there was a valid long press with the drag.
+                        if value.first != nil {
+                            onEnded()
+                        }
                     }
             )
     }
