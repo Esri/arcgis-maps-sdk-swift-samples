@@ -169,10 +169,10 @@ private extension IdentifyRasterCellView {
 }
 
 private extension MapView {
-    /// Sets a closure to perform when the map view recognizes a long press gesture.
+    /// Sets a closure to perform when the map view recognizes a long press and drag gesture.
     /// - Parameters:
-    ///   - action: The closure to perform when a long press is recognized.
-    ///   - onEnded: The closure to perform when the long press ends.
+    ///   - action: The closure to perform when the gesture is recognized.
+    ///   - onEnded: The closure to perform when the long press or drag ends.
     /// - Returns: A new `View` object.
     func onLongPressAndDragGesture(
         perform action: @escaping (CGPoint) -> Void,
