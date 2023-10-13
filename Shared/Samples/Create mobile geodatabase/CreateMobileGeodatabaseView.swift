@@ -22,7 +22,7 @@ struct CreateMobileGeodatabaseView: View {
     /// The point on the map where the user tapped.
     @State private var tapMapPoint = Point(x: 0, y: 0)
     
-    /// A Boolean that indicates whether the feature table sheet is showing.
+    /// A Boolean indicating whether the feature table sheet is showing.
     @State private var isShowingTableSheet = false
     
     var body: some View {
@@ -39,7 +39,7 @@ struct CreateMobileGeodatabaseView: View {
                 await model.addFeature(at: tapMapPoint)
             }
             .overlay(alignment: .top) {
-                Text("Number of features added: \(model.featureCount)")
+                Text("Number of features added: \(model.features.count)")
                     .frame(maxWidth: .infinity, alignment: .center)
                     .padding(8)
                     .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
@@ -47,7 +47,7 @@ struct CreateMobileGeodatabaseView: View {
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
                     tableButton
-                        .disabled(model.featureCount == 0)
+                        .disabled(model.features.isEmpty)
                     
                     Button {
                         model.presentShareSheet()
@@ -65,10 +65,7 @@ private extension CreateMobileGeodatabaseView {
     @ViewBuilder var tableButton: some View {
         /// The button to bring up the sheet.
         let button = Button("View Table") {
-            Task {
-                await model.updateFeatures()
-                isShowingTableSheet = true
-            }
+            isShowingTableSheet = true
         }
         
         if #available(iOS 16, *) {

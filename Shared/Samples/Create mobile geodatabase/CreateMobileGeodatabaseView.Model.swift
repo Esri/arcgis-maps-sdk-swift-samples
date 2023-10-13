@@ -68,9 +68,6 @@ extension CreateMobileGeodatabaseView {
         /// The list of features in the feature table.
         @Published private(set) var features: [FeatureItem] = []
         
-        /// The count of features in the feature table.
-        @Published private(set) var featureCount = 0
-        
         /// A Boolean value indicating whether to show an error alert.
         @Published var isShowingErrorAlert = false
         
@@ -139,27 +136,10 @@ extension CreateMobileGeodatabaseView {
                 // Add the feature to the feature table.
                 try await featureTable.add(feature)
                 
-                // Update the feature count.
-                featureCount = featureTable.numberOfFeatures
-            } catch {
-                self.error = error
-            }
-        }
-        
-        /// Updates the list of features by querying the feature table.
-        func updateFeatures() async {
-            guard let featureTable else { return }
-            do {
-                // Query the geodatabase feature table.
-                let results = try await featureTable.queryFeatures(using: QueryParameters())
-                
-                // Create a feature item for each feature in the query results.
-                features = results.features().compactMap { feature in
-                    if let oid = feature.attributes["oid"] as? Int64,
-                       let timeStamp = feature.attributes["collection_timestamp"] as? Date {
-                        return FeatureItem(oid: oid, timestamp: timeStamp)
-                    }
-                    return nil
+                // Add the feature to the list of features.
+                if let oid = feature.attributes["oid"] as? Int64,
+                   let timeStamp = feature.attributes["collection_timestamp"] as? Date {
+                    features.append(FeatureItem(oid: oid, timestamp: timeStamp))
                 }
             } catch {
                 self.error = error
@@ -197,7 +177,6 @@ extension CreateMobileGeodatabaseView {
             
             // Remove the current features and layers.
             features.removeAll()
-            featureCount = 0
             map.removeAllOperationalLayers()
             
             // Create a new mobile geodatabase.
