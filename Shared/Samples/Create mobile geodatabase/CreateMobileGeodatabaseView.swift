@@ -95,7 +95,7 @@ private extension CreateMobileGeodatabaseView {
                     ForEach(model.features, id: \.self) { feature in
                         HStack {
                             Text(String(feature.oid))
-                            Spacer()
+                                .padding(.trailing, 8)
                             Text(feature.timestamp.formatted(.collectionTimestamp))
                         }
                     }
