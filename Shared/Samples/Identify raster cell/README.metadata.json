@@ -1,0 +1,40 @@
+{
+    "category": "Layers",
+    "description": "Get the cell value of a local raster at the tapped location and display the result in a callout.",
+    "ignore": false,
+    "images": [
+        "identify-raster-cell.png"
+    ],
+    "keywords": [
+        "NDVI",
+        "band",
+        "cell",
+        "cell value",
+        "continuous",
+        "discrete",
+        "identify",
+        "pixel",
+        "pixel value",
+        "raster",
+        "GeoViewProxy",
+        "IdentifyLayerResult",
+        "RasterCell",
+        "RasterCell.attributes",
+        "RasterLayer"
+    ],
+    "offline_data": [
+        "b5f977c78ec74b3a8857ca86d1d9b318"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "GeoViewProxy",
+        "IdentifyLayerResult",
+        "RasterCell",
+        "RasterCell.attributes",
+        "RasterLayer"
+    ],
+    "snippets": [
+        "IdentifyRasterCellView.swift"
+    ],
+    "title": "Identify raster cell"
+}
