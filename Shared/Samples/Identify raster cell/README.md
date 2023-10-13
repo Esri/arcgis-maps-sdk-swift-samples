@@ -14,7 +14,7 @@ Tap an area of the raster to identify it and see the raw raster cell information
 
 ## How it works
 
-1. Use the `MapView.onSingleTapGesture(perform:)` and `MapView.onLongPressGesture(perform:)` modifiers to get the screen point where a user tapped or long pressed on the map.
+1. Get the screen point on the map where a user tapped or long pressed and dragged from the `MapView`.
 2. On tap or long press drag:
   * Call `MapViewProxy.identify(on:screenPoint:tolerance:returnPopupsOnly:maximumResults:)` passing in the screen point, tolerance, and maximum number of results per layer.
   * Await the result of the identify and then get the `GeoElement` from the layer result.
