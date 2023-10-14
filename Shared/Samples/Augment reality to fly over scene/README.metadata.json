@@ -2,7 +2,9 @@
     "category": "Augmented Reality",
     "description": "Use augmented reality (AR) to quickly explore a scene more naturally than you could with a touch or mouse interface.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "augment-reality-to-fly-over-scene.png"
+    ],
     "keywords": [
         "augmented reality",
         "bird's eye",
