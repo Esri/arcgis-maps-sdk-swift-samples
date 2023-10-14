@@ -163,6 +163,8 @@
 		D722BD232A420DEC002C2087 /* ShowExtrudedFeaturesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D722BD212A420DAD002C2087 /* ShowExtrudedFeaturesView.swift */; };
 		D7232EE12AC1E5AA0079ABFF /* PlayKMLTourView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7232EE02AC1E5AA0079ABFF /* PlayKMLTourView.swift */; };
 		D7232EE22AC1E6DC0079ABFF /* PlayKMLTourView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7232EE02AC1E5AA0079ABFF /* PlayKMLTourView.swift */; };
+		D72F272E2ADA1E4400F906DA /* AugmentRealityToShowTabletopSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72F272B2ADA1E4400F906DA /* AugmentRealityToShowTabletopSceneView.swift */; };
+		D72F27302ADA1E9900F906DA /* AugmentRealityToShowTabletopSceneView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D72F272B2ADA1E4400F906DA /* AugmentRealityToShowTabletopSceneView.swift */; };
 		D731F3C12AD0D2AC00A8431E /* IdentifyGraphicsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D731F3C02AD0D2AC00A8431E /* IdentifyGraphicsView.swift */; };
 		D731F3C22AD0D2BB00A8431E /* IdentifyGraphicsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D731F3C02AD0D2AC00A8431E /* IdentifyGraphicsView.swift */; };
 		D7337C5A2ABCFDB100A5D865 /* StyleSymbolsFromMobileStyleFileView.SymbolOptionsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7337C592ABCFDB100A5D865 /* StyleSymbolsFromMobileStyleFileView.SymbolOptionsListView.swift */; };
@@ -327,6 +329,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				D72F27302ADA1E9900F906DA /* AugmentRealityToShowTabletopSceneView.swift in Copy Source Code Files */,
 				D7464F1F2ACE04C2007FEE88 /* IdentifyRasterCellView.swift in Copy Source Code Files */,
 				D731F3C22AD0D2BB00A8431E /* IdentifyGraphicsView.swift in Copy Source Code Files */,
 				D70082EC2ACF901600E0C3C2 /* IdentifyKMLFeaturesView.swift in Copy Source Code Files */,
@@ -533,6 +536,7 @@
 		D721EEA72ABDFF550040BE46 /* LothianRiversAnno.mmpk */ = {isa = PBXFileReference; lastKnownFileType = file; path = LothianRiversAnno.mmpk; sourceTree = "<group>"; };
 		D722BD212A420DAD002C2087 /* ShowExtrudedFeaturesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowExtrudedFeaturesView.swift; sourceTree = "<group>"; };
 		D7232EE02AC1E5AA0079ABFF /* PlayKMLTourView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayKMLTourView.swift; sourceTree = "<group>"; };
+		D72F272B2ADA1E4400F906DA /* AugmentRealityToShowTabletopSceneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AugmentRealityToShowTabletopSceneView.swift; sourceTree = "<group>"; };
 		D731F3C02AD0D2AC00A8431E /* IdentifyGraphicsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentifyGraphicsView.swift; sourceTree = "<group>"; };
 		D7337C592ABCFDB100A5D865 /* StyleSymbolsFromMobileStyleFileView.SymbolOptionsListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleSymbolsFromMobileStyleFileView.SymbolOptionsListView.swift; sourceTree = "<group>"; };
 		D7337C5F2ABD142D00A5D865 /* ShowMobileMapPackageExpirationDateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowMobileMapPackageExpirationDateView.swift; sourceTree = "<group>"; };
@@ -703,6 +707,7 @@
 				D7C16D172AC5F6C100689E89 /* Animate 3D graphic */,
 				D77570BC2A29427200F490CD /* Animate images with image overlay */,
 				D75362CC2A1E862B00D83028 /* Apply unique value renderer */,
+				D72F27292ADA1E4400F906DA /* Augment reality to show tabletop scene */,
 				218F35B229C28F4A00502022 /* Authenticate with OAuth */,
 				E0FE32E528747762002C6ACA /* Browse building floors */,
 				1C9B74D229DB54560038B06F /* Change camera controller */,
@@ -1205,6 +1210,14 @@
 				D7232EE02AC1E5AA0079ABFF /* PlayKMLTourView.swift */,
 			);
 			path = "Play KML tour";
+			sourceTree = "<group>";
+		};
+		D72F27292ADA1E4400F906DA /* Augment reality to show tabletop scene */ = {
+			isa = PBXGroup;
+			children = (
+				D72F272B2ADA1E4400F906DA /* AugmentRealityToShowTabletopSceneView.swift */,
+			);
+			path = "Augment reality to show tabletop scene";
 			sourceTree = "<group>";
 		};
 		D731F3BD2AD0D22500A8431E /* Identify graphics */ = {
@@ -2000,6 +2013,7 @@
 				D75362D22A1E886700D83028 /* ApplyUniqueValueRendererView.swift in Sources */,
 				0074ABBF28174BCF0037244A /* DisplayMapView.swift in Sources */,
 				D7EF5D752A26A03A00FEBDE5 /* ShowCoordinatesInMultipleFormatsView.swift in Sources */,
+				D72F272E2ADA1E4400F906DA /* AugmentRealityToShowTabletopSceneView.swift in Sources */,
 				0086F40128E3770A00974721 /* ShowViewshedFromPointInSceneView.swift in Sources */,
 				0044289229C90C0B00160767 /* GetElevationAtPointOnSurfaceView.swift in Sources */,
 				D7E440D72A1ECE7D005D74DE /* CreateBuffersAroundPointsView.swift in Sources */,
