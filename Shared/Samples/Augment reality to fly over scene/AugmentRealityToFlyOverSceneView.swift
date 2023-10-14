@@ -13,55 +13,42 @@
 // limitations under the License.
 
 import ArcGIS
+import ArcGISToolkit
 import SwiftUI
 
 struct AugmentRealityToFlyOverSceneView: View {
-    /// A scene with an imagery basemap with a world elevation service.
+    /// A scene with an imagery basemap, a world elevation source, and a mesh layer of Girona, Spain.
     @State private var scene: ArcGIS.Scene = {
         let scene = Scene(basemapStyle: .arcGISImagery)
-        scene.baseSurface.addElevationSource(
-            ArcGISTiledElevationSource(url: .worldElevationService)
-        )
+        
+        // Create a mesh layer from a URL and add it to the scene.
+        let meshLayer = IntegratedMeshLayer(url: .gironaSpain)
+        scene.addOperationalLayer(meshLayer)
+        
+        // Create an elevation source from a URL and add to the scene's base surface.
+        let elevationSource = ArcGISTiledElevationSource(url: .worldElevationService)
+        scene.baseSurface.addElevationSource(elevationSource)
+        
         return scene
     }()
     
-    /// The camera to set the initial camera of the flyover scene.
-    private let initialCamera: Camera = {
-        let location = Point(x: 2.8262, y: 41.9857, z: 200, spatialReference: .wgs84)
-        return Camera(location: location, heading: 190, pitch: 90, roll: 0)
-    }()
-    
-    /// A Boolean value indicating whether to show an error alert.
-    @State private var isShowingErrorAlert = false
-    
-    /// The error shown in the error alert.
-    @State private var error: Error? {
-        didSet { isShowingErrorAlert = error != nil }
-    }
-    
     var body: some View {
-        SceneView(scene: scene)
-            .task {
-                do {
-                    // Create a mesh layer from a url.
-                    let meshLayer = IntegratedMeshLayer(url: .girona)
-                    
-                    // Load the layer.
-                    try await meshLayer.load()
-                    
-                    // Add mesh layer to the scene.
-                    scene.addOperationalLayer(meshLayer)
-                } catch {
-                    self.error = error
-                }
-            }
-            .alert(isPresented: $isShowingErrorAlert, presentingError: error)
+        // Create a flyover scene view an initial location, a heading, and a scene view.
+        FlyoverSceneView(
+            initialLocation: Point(x: 2.82407, y: 41.99101, z: 230, spatialReference: .wgs84),
+            initialHeading: 160,
+            translationFactor: 1_000
+        ) { _ in
+            SceneView(scene: scene)
+                .spaceEffect(.stars)
+                .atmosphereEffect(.realistic)
+        }
     }
 }
 
 private extension URL {
     /// A URL to an integrated mesh layer of Girona, Spain.
-    static var girona: Self {
+    static var gironaSpain: Self {
         .init(string: "https://tiles.arcgis.com/tiles/z2tnIkrLQ2BRzr6P/arcgis/rest/services/Girona_Spain/SceneServer")!
     }
     
