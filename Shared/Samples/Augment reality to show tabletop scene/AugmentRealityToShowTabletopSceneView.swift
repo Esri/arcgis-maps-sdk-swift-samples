@@ -17,7 +17,7 @@ import ArcGISToolkit
 import SwiftUI
 
 struct AugmentRealityToShowTabletopSceneView: View {
-    /// An empty scene.
+    /// The scene used to create the scene view.
     @State private var scene = ArcGIS.Scene()
     
     /// A Boolean value indicating whether to show an error alert.
@@ -28,31 +28,57 @@ struct AugmentRealityToShowTabletopSceneView: View {
         didSet { isShowingErrorAlert = error != nil }
     }
     
+    /// The location point of the scene that will be anchored on a physical surface.
+    private let anchorPoint = Point(
+        x: -75.16996728256345,
+        y: 39.95787000283599,
+        z: 8.813445091247559
+    )
+    
+    /// The translation factor that defines how much the scene view translates as the device moves.
+    private let translationFactor = {
+        // The width of the scene, which is about 800 m.
+        let geographicContentWidth = 800.0
+        
+        // The physical width of the surface the scene will be placed on in meters.
+        let tableContainerWidth = 1.0
+        
+        return geographicContentWidth / tableContainerWidth
+    }()
+    
     var body: some View {
-        SceneView(scene: scene)
-            .task {
-                do {
-                    // Load a mobile scene package from a URL.
-                    let package = MobileScenePackage(fileURL: .philadelphia)
-                    try await package.load()
+        // Create a table top scene view using a scene view.
+        TableTopSceneView(
+            anchorPoint: anchorPoint,
+            translationFactor: translationFactor,
+            clippingDistance: 400
+        ) { _ in
+            SceneView(scene: scene)
+        }
+        .task {
+            do {
+                // Load a mobile scene package from a URL.
+                let package = MobileScenePackage(fileURL: .philadelphia)
+                try await package.load()
+                
+                // Set up the scene using first scene in the package.
+                if let scene = package.scenes.first {
+                    // Create an elevation source from a URL and add to the scene's base surface.
+                    let elevationSource = ArcGISTiledElevationSource(url: .worldElevationService)
+                    scene.baseSurface.addElevationSource(elevationSource)
                     
-                    // Set up the scene with first scene in the package.
-                    if let scene = package.scenes.first {
-                        // Create an elevation source from a URL and add to the scene's base surface.
-                        let elevationSource = ArcGISTiledElevationSource(url: .worldElevationService)
-                        scene.baseSurface.addElevationSource(elevationSource)
-                        
-                        // Configure the scene's surface opacity and navigation constraint.
-                        scene.baseSurface.opacity = 0
-                        scene.baseSurface.navigationConstraint = .unconstrained
-                        
-                        self.scene = scene
-                    }
-                } catch {
-                    self.error = error
+                    // Set the navigation constraint to allow you to look at the scene from below.
+                    scene.baseSurface.navigationConstraint = .unconstrained
+                    
+                    // Update the scene for the scene view.
+                    self.scene = scene
                 }
+            } catch {
+                // Present the error loading the mobile scene package.
+                self.error = error
             }
-            .alert(isPresented: $isShowingErrorAlert, presentingError: error)
+        }
+        .alert(isPresented: $isShowingErrorAlert, presentingError: error)
     }
 }
 
