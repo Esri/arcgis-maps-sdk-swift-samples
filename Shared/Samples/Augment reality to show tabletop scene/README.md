@@ -19,7 +19,7 @@ You'll see a feed from the camera when you open the sample. Tap on any flat, hor
 3. Set the `translationFactor` on the scene view such that the user can view the entire scene by moving the device around it. The translation factor defines how far the virtual camera moves when the physical camera moves.
     * A good formula for determining translation factor to use in a tabletop map experience is **translationFactor = sceneWidth / tableTopWidth**. The scene width is the width/length of the scene content you wish to display in meters. The tabletop width is the length of the area on the physical surface that you want the scene content to fill. For simplicity, the sample assumes a scene width of 800 meters.
 4. Set the `clippingDistance` to clip the scene to the area you want to show.
-5. Create a `SceneView` with a scene. To allow you to look at the content from below, set the base surface navigation constraint to `none`.
+5. Create a `SceneView` with a scene. To allow you to look at the content from below, set the base surface navigation constraint to `unconstrained`.
 
 ## Relevant API
 

@@ -47,7 +47,7 @@
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>The camera used for augmented reality.</string>
+	<string>This app uses augmented reality to overlay imagery over your real-world environment. Camera access is required for this functionality.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Your location is used to show your position on the map.</string>
 	<key>UIApplicationSceneManifest</key>
