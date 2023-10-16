@@ -46,7 +46,7 @@ struct AugmentRealityToShowTabletopSceneView: View {
     }()
     
     var body: some View {
-        // Create a table top scene view using a scene view.
+        // Create a tabletop scene view using a scene view.
         TableTopSceneView(
             anchorPoint: anchorPoint,
             translationFactor: translationFactor,
