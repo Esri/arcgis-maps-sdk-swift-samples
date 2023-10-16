@@ -228,6 +228,7 @@
 		D7C16D282AC5FEB700689E89 /* Hawaii.csv in Resources */ = {isa = PBXBuildFile; fileRef = D7C16D272AC5FEB600689E89 /* Hawaii.csv */; settings = {ASSET_TAGS = (Animate3DGraphic, ); }; };
 		D7CC33FF2A31475C00198EDF /* ShowLineOfSightBetweenPointsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CC33FD2A31475C00198EDF /* ShowLineOfSightBetweenPointsView.swift */; };
 		D7CC34002A3147FF00198EDF /* ShowLineOfSightBetweenPointsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7CC33FD2A31475C00198EDF /* ShowLineOfSightBetweenPointsView.swift */; };
+		D7D1F3532ADDBE5D009CE2DA /* philadelphia.mspk in Resources */ = {isa = PBXBuildFile; fileRef = D7D1F3522ADDBE5D009CE2DA /* philadelphia.mspk */; settings = {ASSET_TAGS = (AugmentRealityToShowTabletopScene, ); }; };
 		D7E440D72A1ECE7D005D74DE /* CreateBuffersAroundPointsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E440D62A1ECE7D005D74DE /* CreateBuffersAroundPointsView.swift */; };
 		D7E440D82A1ECEB3005D74DE /* CreateBuffersAroundPointsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7E440D62A1ECE7D005D74DE /* CreateBuffersAroundPointsView.swift */; };
 		D7E557682A1D768800B9FB09 /* AddWMSLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E557672A1D768800B9FB09 /* AddWMSLayerView.swift */; };
@@ -573,6 +574,7 @@
 		D7C16D242AC5FEA600689E89 /* Snowdon.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Snowdon.csv; sourceTree = "<group>"; };
 		D7C16D272AC5FEB600689E89 /* Hawaii.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Hawaii.csv; sourceTree = "<group>"; };
 		D7CC33FD2A31475C00198EDF /* ShowLineOfSightBetweenPointsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowLineOfSightBetweenPointsView.swift; sourceTree = "<group>"; };
+		D7D1F3522ADDBE5D009CE2DA /* philadelphia.mspk */ = {isa = PBXFileReference; lastKnownFileType = file; path = philadelphia.mspk; sourceTree = "<group>"; };
 		D7E440D62A1ECE7D005D74DE /* CreateBuffersAroundPointsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateBuffersAroundPointsView.swift; sourceTree = "<group>"; };
 		D7E557672A1D768800B9FB09 /* AddWMSLayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddWMSLayerView.swift; sourceTree = "<group>"; };
 		D7EAF3592A1C023800D822C4 /* SetMinAndMaxScaleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetMinAndMaxScaleView.swift; sourceTree = "<group>"; };
@@ -871,6 +873,7 @@
 				D7C16D1D2AC5FE8200689E89 /* 5a9b60cee9ba41e79640a06bcdf8084d */,
 				00C94A0228B53DCC004E42D9 /* 7c4c679ab06a4df19dc497f577f111bd */,
 				D701D7242A37C7E4006FF0C8 /* 07d62a792ab6496d9b772a24efea45d0 */,
+				D7D1F3512ADDBE5D009CE2DA /* 7dd2f97bb007466ea939160d0de96a9d */,
 				00D4EF8328638BF100B9CC30 /* 15a7cbd3af1e47cfa5d2c6b93dc44fc2 */,
 				00D4EF8E28638BF100B9CC30 /* 68ec42517cdd439e81b036210483e8e7 */,
 				D7C16D202AC5FE9800689E89 /* 290f0c571c394461a8b58b6775d0bd63 */,
@@ -1488,6 +1491,14 @@
 			path = "Show line of sight between points";
 			sourceTree = "<group>";
 		};
+		D7D1F3512ADDBE5D009CE2DA /* 7dd2f97bb007466ea939160d0de96a9d */ = {
+			isa = PBXGroup;
+			children = (
+				D7D1F3522ADDBE5D009CE2DA /* philadelphia.mspk */,
+			);
+			path = 7dd2f97bb007466ea939160d0de96a9d;
+			sourceTree = "<group>";
+		};
 		D7E440D12A1ECBC2005D74DE /* Create buffers around points */ = {
 			isa = PBXGroup;
 			children = (
@@ -1768,6 +1779,7 @@
 					AddRasterFromFile,
 					Animate3DGraphic,
 					AnimateImagesWithImageOverlay,
+					AugmentRealityToShowTabletopScene,
 					ChangeCameraController,
 					DisplayDimensions,
 					DisplayMapFromMobileMapPackage,
@@ -1830,6 +1842,7 @@
 				D701D72C2A37C7F7006FF0C8 /* bradley_low_3ds in Resources */,
 				00D4EF9A28638BF100B9CC30 /* AuroraCO.gpkg in Resources */,
 				D7C16D282AC5FEB700689E89 /* Hawaii.csv in Resources */,
+				D7D1F3532ADDBE5D009CE2DA /* philadelphia.mspk in Resources */,
 				F111CCC4288B641900205358 /* Yellowstone.mmpk in Resources */,
 				D77572AE2A295DDE00F490CD /* PacificSouthWest2 in Resources */,
 				00D4EFB12863CE6300B9CC30 /* ScottishWildlifeTrust_reserves in Resources */,

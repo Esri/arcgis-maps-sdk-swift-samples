@@ -17,16 +17,10 @@ import ArcGISToolkit
 import SwiftUI
 
 struct AugmentRealityToShowTabletopSceneView: View {
-    /// A scene with a world elevation source.
-    @State private var scene: ArcGIS.Scene = {
-        let scene = Scene()
-        scene.baseSurface.addElevationSource(
-            ArcGISTiledElevationSource(url: .worldElevationService)
-        )
-        return scene
-    }()
+    /// An empty scene.
+    @State private var scene = ArcGIS.Scene()
     
-    /// A Boolean value that indicates whether to show an error alert.
+    /// A Boolean value indicating whether to show an error alert.
     @State private var isShowingErrorAlert = false
     
     /// The error shown in the error alert.
@@ -36,11 +30,38 @@ struct AugmentRealityToShowTabletopSceneView: View {
     
     var body: some View {
         SceneView(scene: scene)
+            .task {
+                do {
+                    // Load a mobile scene package from a URL.
+                    let package = MobileScenePackage(fileURL: .philadelphia)
+                    try await package.load()
+                    
+                    // Set up the scene with first scene in the package.
+                    if let scene = package.scenes.first {
+                        // Create an elevation source from a URL and add to the scene's base surface.
+                        let elevationSource = ArcGISTiledElevationSource(url: .worldElevationService)
+                        scene.baseSurface.addElevationSource(elevationSource)
+                        
+                        // Configure the scene's surface opacity and navigation constraint.
+                        scene.baseSurface.opacity = 0
+                        scene.baseSurface.navigationConstraint = .unconstrained
+                        
+                        self.scene = scene
+                    }
+                } catch {
+                    self.error = error
+                }
+            }
             .alert(isPresented: $isShowingErrorAlert, presentingError: error)
     }
 }
 
 private extension URL {
+    /// A URL to mobile scene package of Philadelphia, Pennsylvania on ArcGIS Online.
+    static var philadelphia: Self {
+        Bundle.main.url(forResource: "philadelphia", withExtension: "mspk")!
+    }
+    
     /// A URL to world elevation service from Terrain3D ArcGIS REST service.
     static var worldElevationService: Self {
         .init(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!
