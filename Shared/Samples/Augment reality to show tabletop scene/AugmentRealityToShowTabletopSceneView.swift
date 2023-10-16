@@ -30,9 +30,8 @@ struct AugmentRealityToShowTabletopSceneView: View {
     
     /// The location point of the scene that will be anchored on a physical surface.
     private let anchorPoint = Point(
-        x: -75.16996728256345,
-        y: 39.95787000283599,
-        z: 8.813445091247559
+        latitude: 39.95787000283599,
+        longitude: -75.16996728256345
     )
     
     /// The translation factor that defines how much the scene view translates as the device moves.

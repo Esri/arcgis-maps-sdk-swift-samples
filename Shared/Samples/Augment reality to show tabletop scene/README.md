@@ -14,15 +14,12 @@ You'll see a feed from the camera when you open the sample. Tap on any flat, hor
 
 ## How it works
 
-1. Create an `ArcGISARView` and add it to the view.
-    * Note: this sample uses content in the WGS 84 geographic tiling scheme, rather than the web mercator tiling scheme. Once a scene has been displayed, the scene view cannot display another scene with a non-matching tiling scheme. To avoid that, the sample starts by showing a blank scene with an invisible base surface. Touch events will not be raised for the scene view unless a scene is displayed.
-2. Listen for ARKit tracking state updates with `arView.arSCNViewDelegate` and provide feedback to the user as necessary.
-3. When tracking is ready, wait for the user to tap, then use `arView.setInitialTransformation(using: screenPoint)` to set the initial transformation, which allows you to place the scene. This method uses ARKit's built-in plane detection.
-4. Create and display the scene. To allow you to look at the content from below, set the base surface navigation constraint to `none`.
-5. Set the clipping distance property of the AR view. This will clip the scene to the area you want to show.
-6. For tabletop mapping, the arView's `originCamera` must be set such that the altitude of the camera matches the altitude of the lowest point in the scene. Otherwise, scene content will float above or below the targeted anchor position identified by the user. For this sample, the origin camera's latitude and longitude are set to the center of the scene for best results. This will give the impression that the scene is centered on the location the user tapped.
-7. Set the `translationFactor` on the scene view such that the user can view the entire scene by moving the device around it. The translation factor defines how far the virtual camera moves when the physical camera moves.
+1. Create an `TableTopSceneView` with an anchor point, translation factor, clipping distance, and `SceneView`.
+2. For this sample, the `anchorPoint` is set to the center of the scene for best results. This will give the impression that the scene is centered on the location the user tapped.
+3. Set the `translationFactor` on the scene view such that the user can view the entire scene by moving the device around it. The translation factor defines how far the virtual camera moves when the physical camera moves.
     * A good formula for determining translation factor to use in a tabletop map experience is **translationFactor = sceneWidth / tableTopWidth**. The scene width is the width/length of the scene content you wish to display in meters. The tabletop width is the length of the area on the physical surface that you want the scene content to fill. For simplicity, the sample assumes a scene width of 800 meters.
+4. Set the `clippingDistance` to clip the scene to the area you want to show.
+5. Create a `SceneView` with a scene. To allow you to look at the content from below, set the base surface navigation constraint to `none`.
 
 ## Relevant API
 
@@ -40,9 +37,7 @@ This sample uses the [Philadelphia Mobile Scene Package](https://www.arcgis.com/
 
 ## Additional information
 
-This sample requires a device that is compatible with ARKit 1 on iOS or ARCore 1.8 on Android.
-
-**Tabletop AR** is one of three main patterns for working with geographic information in augmented reality. Augmented reality is made possible with the ArcGIS Runtime Toolkit. See [Augmented reality](https://developers.arcgis.com/ios/scenes-3d/display-scenes-in-augmented-reality/) in the guide for more information about augmented reality and adding it to your app.
+**Tabletop AR** is one of three main patterns for working with geographic information in augmented reality. Augmented reality is made possible with the ArcGIS Maps SDK Toolkit.
 
 ## Tags
 
