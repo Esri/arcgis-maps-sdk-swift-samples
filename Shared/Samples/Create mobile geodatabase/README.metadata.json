@@ -1,0 +1,40 @@
+{
+    "category": "Edit and Manage Data",
+    "description": "Create and share a mobile geodatabase.",
+    "ignore": false,
+    "images": [
+        "create-mobile-geodatabase-1.png",
+        "create-mobile-geodatabase-2.png"
+    ],
+    "keywords": [
+        "arcgis pro",
+        "database",
+        "feature",
+        "feature table",
+        "geodatabase",
+        "mobile geodatabase",
+        "sqlite",
+        "ArcGISFeature",
+        "FeatureLayer",
+        "FeatureTable",
+        "FieldDescription",
+        "Geodatabase",
+        "GeodatabaseFeatureTable",
+        "TableDescription"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "ArcGISFeature",
+        "FeatureLayer",
+        "FeatureTable",
+        "FieldDescription",
+        "Geodatabase",
+        "GeodatabaseFeatureTable",
+        "TableDescription"
+    ],
+    "snippets": [
+        "CreateMobileGeodatabaseView.swift",
+        "CreateMobileGeodatabaseView.Model.swift"
+    ],
+    "title": "Create mobile geodatabase"
+}
