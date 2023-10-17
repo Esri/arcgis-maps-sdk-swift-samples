@@ -6,7 +6,7 @@ Use augmented reality (AR) to pin a scene to a table or desk for easy exploratio
 
 ## Use case
 
-Tabletop scenes allow you to use your device to interact with scenes as if they are 3D-printed model models sitting on your desk. You could use this to virtually explore a proposed development without needing to create a physical model.
+Tabletop scenes allow you to use your device to interact with scenes as if they are 3D-printed models sitting on your desk. You could use this to virtually explore a proposed development without needing to create a physical model.
 
 ## How to use the sample
 
@@ -14,7 +14,7 @@ You'll see a feed from the camera when you open the sample. Tap on any flat, hor
 
 ## How it works
 
-1. Create an `TableTopSceneView` with an anchor point, translation factor, clipping distance, and `SceneView`.
+1. Create a `TableTopSceneView` with an anchor point, translation factor, clipping distance, and `SceneView`.
 2. For this sample, the `anchorPoint` is set to the center of the scene for best results. This will give the impression that the scene is centered on the location the user tapped.
 3. Set the `translationFactor` on the scene view such that the user can view the entire scene by moving the device around it. The translation factor defines how far the virtual camera moves when the physical camera moves.
     * A good formula for determining translation factor to use in a tabletop map experience is **translationFactor = sceneWidth / tableTopWidth**. The scene width is the width/length of the scene content you wish to display in meters. The tabletop width is the length of the area on the physical surface that you want the scene content to fill. For simplicity, the sample assumes a scene width of 800 meters.
