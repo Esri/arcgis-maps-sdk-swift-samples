@@ -33,11 +33,11 @@ struct AugmentRealityToFlyOverSceneView: View {
     }()
     
     var body: some View {
-        // Create a flyover scene view an initial location, a heading, and a scene view.
+        // Create a flyover scene view with an initial location, heading, and scene view.
         FlyoverSceneView(
             initialLocation: Point(x: 2.82407, y: 41.99101, z: 230, spatialReference: .wgs84),
-            initialHeading: 160,
-            translationFactor: 1_000
+            translationFactor: 1_000,
+            initialHeading: 160
         ) { _ in
             SceneView(scene: scene)
                 .spaceEffect(.stars)
