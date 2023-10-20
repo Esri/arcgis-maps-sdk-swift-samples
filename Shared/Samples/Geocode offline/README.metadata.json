@@ -1,0 +1,30 @@
+{
+    "category": "Search and Query",
+    "description": "Geocode addresses to locations and reverse geocode locations to addresses offline.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "geocode",
+        "geocoder",
+        "locator",
+        "offline",
+        "package",
+        "query",
+        "search",
+        "GeocodeParameters",
+        "GeocodeResult",
+        "LocatorTask",
+        "ReverseGeocodeParameters"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "GeocodeParameters",
+        "GeocodeResult",
+        "LocatorTask",
+        "ReverseGeocodeParameters"
+    ],
+    "snippets": [
+        "GeocodeOfflineView.swift"
+    ],
+    "title": "Geocode offline"
+}
