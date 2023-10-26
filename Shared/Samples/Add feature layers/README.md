@@ -17,24 +17,24 @@ Tap the button on the toolbar to add feature layers, from different sources, to 
 ## How it works
 
 1. Create a `Map` instance with a topographic basemap style.
-2. Load a feature layer with a feature table.
-    i. Create a `ServiceFeatureTable` instance from a URL.
-    ii. Create a `FeatureLayer` instance with the feature table.
-3. Load a feature layer with a portal item.
-    i. Create a `FeatureLayer` instance with a portal item.
-4. Load a feature layer with a geodatabase.
-    i. Instantiate and load a `Geodatabase` using the file name.
-    ii. Get the feature table from the geodatabase with the feature table's name by using the `getGeodatabaseFeatureTable(tableName:)` geodatabase method.
-    iii. Create a `FeatureLayer` instance from the feature table.
-5. Load a feature layer with a GeoPackage.
-    i. Instantiate and load a GeoPackage using its file name.
-    ii. Get the first `GeoPackageFeatureTable` from the `geoPackageFeatureTables` array.
-    iii. Create a `FeatureLayer` instance from the feature table.
-6. Load a feature layer with a shapefile.
-    i. Create a `ShapefileFeatureTable` instance using the shapefile name.
-    ii. Create a `FeatureLayer` instance from the feature table.
-7. Add the feature layer to the map's operational layers.
-8. Create a `MapView` instance with the map.
+2. Load a feature layer with a feature table.  
+    i. Create a `ServiceFeatureTable` instance from a URL.  
+    ii. Create a `FeatureLayer` instance with the feature table.  
+3. Load a feature layer with a portal item.  
+    i. Create a `FeatureLayer` instance with a portal item.  
+4. Load a feature layer with a geodatabase.  
+    i. Instantiate and load a `Geodatabase` using the file name.  
+    ii. Get the feature table from the geodatabase with the feature table's name by using the `getGeodatabaseFeatureTable(tableName:)` geodatabase method.  
+    iii. Create a `FeatureLayer` instance from the feature table.  
+5. Load a feature layer with a GeoPackage.  
+    i. Instantiate and load a GeoPackage using its file name.  
+    ii. Get the first `GeoPackageFeatureTable` from the `geoPackageFeatureTables` array.  
+    iii. Create a `FeatureLayer` instance from the feature table.  
+6. Load a feature layer with a shapefile.  
+    i. Create a `ShapefileFeatureTable` instance using the shapefile name.  
+    ii. Create a `FeatureLayer` instance from the feature table.  
+7. Add the feature layer to the map's operational layers.  
+8. Create a `MapView` instance with the map.  
 
 ## Relevant API
 
