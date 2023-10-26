@@ -2,7 +2,9 @@
     "category": "Search and Query",
     "description": "Geocode addresses to locations and reverse geocode locations to addresses offline.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "geocode-offline.png"
+    ],
     "keywords": [
         "geocode",
         "geocoder",
