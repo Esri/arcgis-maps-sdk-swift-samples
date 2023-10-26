@@ -372,13 +372,13 @@ private struct Sheet<Content>: UIViewRepresentable where Content: View {
 }
 
 private extension Sheet {
-    class SheetModel<Content>: ObservableObject where Content: View {
+    class SheetModel<HostingContent>: ObservableObject where HostingContent: View {
         /// A Boolean value indicating whether the layout is transitioning from a popover layout.
         var isTransitioningFromPopover = false
         /// The hosting controller for the content of the sheet.
-        let hostingController: UIHostingController<Content>
+        let hostingController: UIHostingController<HostingContent>
         
-        init(content: Content) {
+        init(content: HostingContent) {
             hostingController = UIHostingController(rootView: content)
         }
     }
