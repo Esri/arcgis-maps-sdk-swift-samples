@@ -246,7 +246,7 @@ private struct Sheet<Content>: UIViewRepresentable where Content: View {
     private let content: Content
     
     /// A sheet model used to refer to the hosting controller.
-    @StateObject private var model: SheetModel<Content>
+    @StateObject private var model: SheetModel
     
     /// Initializes the sheet.
     /// - Parameters:
@@ -265,7 +265,7 @@ private struct Sheet<Content>: UIViewRepresentable where Content: View {
         _selection = selection
         self.content = content()
         _model = StateObject(
-            wrappedValue: SheetModel<Content>(
+            wrappedValue: SheetModel(
                 content: content()
             )
         )
@@ -372,7 +372,7 @@ private struct Sheet<Content>: UIViewRepresentable where Content: View {
 }
 
 private extension Sheet {
-    class SheetModel<Content>: ObservableObject where Content: View {
+    class SheetModel: ObservableObject {
         /// A Boolean value indicating whether the layout is transitioning from a popover layout.
         var isTransitioningFromPopover = false
         /// The hosting controller for the content of the sheet.
