@@ -30,7 +30,8 @@
         "ReverseGeocodeParameters"
     ],
     "snippets": [
-        "GeocodeOfflineView.swift"
+        "GeocodeOfflineView.swift",
+        "GeocodeOfflineView.Model.swift"
     ],
     "title": "Geocode offline"
 }
