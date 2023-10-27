@@ -60,14 +60,6 @@ extension GeocodeOfflineView {
         /// The text shown in the callout.
         @Published private(set) var calloutText: String = ""
         
-        /// A Boolean value indicating whether to show an error alert.
-        @Published var isShowingErrorAlert = false
-        
-        /// The error shown in the error alert.
-        @Published private(set) var error: Error? {
-            didSet { isShowingErrorAlert = error != nil }
-        }
-        
         init() {
             graphicsOverlay.addGraphic(markerGraphic)
         }
@@ -85,26 +77,19 @@ extension GeocodeOfflineView {
             geocodeParameters.addResultAttributeName("Match_addr")
             geocodeParameters.minScore = 75
             
-            do {
-                // Perform geocode using the locator task with the text address and parameters.
-                let geocodeResults = try await locatorTask.geocode(
-                    forSearchText: address,
-                    using: geocodeParameters
-                )
+            // Perform geocode using the locator task with the text address and parameters.
+            let geocodeResults = try? await locatorTask.geocode(
+                forSearchText: address,
+                using: geocodeParameters
+            )
+            
+            if let result = geocodeResults?.first,
+               let displayLocation = result.displayLocation {
+                // If a result is found, place a marker at the result's location.
+                let resultText = result.attributes["Match_addr"] as? String ?? ""
+                updateMarker(to: displayLocation, withText: resultText)
                 
-                if let result = geocodeResults.first,
-                   let displayLocation = result.displayLocation {
-                    // If a result is found, place a marker at the result's location.
-                    let resultText = result.attributes["Match_addr"] as? String ?? ""
-                    updateMarker(to: displayLocation, withText: resultText)
-                    
-                    return displayLocation.extent
-                } else {
-                    // If no result was found, inform the user with an alert.
-                    throw "No results found"
-                }
-            } catch {
-                self.error = error
+                return displayLocation.extent
             }
             
             return nil
@@ -175,11 +160,6 @@ extension GeocodeOfflineView {
             updateCalloutPlacement(to: mapPoint)
         }
     }
-}
-
-extension String: LocalizedError {
-    /// The description of the error.
-    public var errorDescription: String? { self }
 }
 
 private extension URL {

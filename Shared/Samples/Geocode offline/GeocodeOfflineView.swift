@@ -31,6 +31,9 @@ struct GeocodeOfflineView: View {
     /// The search text that has been submitted.
     @State private var submittedSearchText: String?
     
+    /// A Boolean value indicating whether the "No results found." alert is showing.
+    @State private var isShowingResultAlert = false
+    
     /// A pre-populated list of example addresses.
     private let exampleAddresses = [
         "910 N Harbor Dr, San Diego, CA 92101",
@@ -68,14 +71,17 @@ struct GeocodeOfflineView: View {
                 // Geocode the text when a search is submitted.
                 if let submittedSearchText {
                     if let resultExtent = await model.geocodeSearch(address: submittedSearchText) {
-                        // Zoom to the extent of the result's location.
+                        // If found, zoom to the extent of the result's location.
                         viewpoint = Viewpoint(boundingGeometry: resultExtent)
+                    } else {
+                        // If no result was found, inform the user with an alert.
+                        isShowingResultAlert = true
                     }
                 }
                 
                 submittedSearchText = nil
             }
-            .alert(isPresented: $model.isShowingErrorAlert, presentingError: model.error)
+            .alert("No results found.", isPresented: $isShowingResultAlert, actions: {})
     }
 }
 
