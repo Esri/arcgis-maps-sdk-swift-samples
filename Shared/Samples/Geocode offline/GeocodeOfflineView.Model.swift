@@ -51,12 +51,6 @@ extension GeocodeOfflineView {
         /// The locator task used to preform the geocode operations, loaded from a local file.
         private let locatorTask = LocatorTask(name: "SanDiego_StreetAddress", bundle: .main)
         
-        /// The viewpoint of the map view, initially centered on San Diego, CA, USA.
-        @Published var viewpoint = Viewpoint(
-            center: Point(x: -13_042_250, y: 3_857_970, spatialReference: .webMercator),
-            scale: 2e4
-        )
-        
         /// The placement of the callout on the map.
         @Published var calloutPlacement: CalloutPlacement?
         
@@ -82,8 +76,9 @@ extension GeocodeOfflineView {
         
         /// Geocodes a given address and adds a marker with the corresponding address at the result's location.
         /// - Parameter address: The given text address to geocode.
-        func geocodeSearch(address: String) async {
-            guard let locatorTask else { return }
+        /// - Returns: The extent of the result's display location.
+        func geocodeSearch(address: String) async -> Envelope? {
+            guard let locatorTask else { return nil }
             
             // Create geocode parameters.
             let geocodeParameters = GeocodeParameters()
@@ -103,8 +98,7 @@ extension GeocodeOfflineView {
                     let resultText = result.attributes["Match_addr"] as? String ?? ""
                     updateMarker(to: displayLocation, withText: resultText)
                     
-                    // Zoom to the extent of the result's location.
-                    viewpoint = Viewpoint(boundingGeometry: displayLocation.extent)
+                    return displayLocation.extent
                 } else {
                     // If no result was found, inform the user with an alert.
                     throw "No results found"
@@ -112,6 +106,8 @@ extension GeocodeOfflineView {
             } catch {
                 self.error = error
             }
+            
+            return nil
         }
         
         /// Reverse geocodes a given location and adds a marker with the corresponding address at the result's location.

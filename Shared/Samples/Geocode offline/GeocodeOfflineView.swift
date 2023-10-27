@@ -19,6 +19,12 @@ struct GeocodeOfflineView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
+    /// The viewpoint of the map view, initially centered on San Diego, CA, USA.
+    @State private var viewpoint = Viewpoint(
+        center: Point(x: -13_042_250, y: 3_857_970, spatialReference: .webMercator),
+        scale: 2e4
+    )
+    
     /// The text in the search bar.
     @State private var searchText = ""
     
@@ -35,7 +41,7 @@ struct GeocodeOfflineView: View {
     ]
     
     var body: some View {
-        GeocodeMapView(model: model)
+        GeocodeMapView(model: model, viewpoint: $viewpoint)
             .searchable(text: $searchText, prompt: "Type in an address")
             .onSubmit(of: .search) {
                 submittedSearchText = searchText
@@ -61,8 +67,12 @@ struct GeocodeOfflineView: View {
             .task(id: submittedSearchText) {
                 // Geocode the text when a search is submitted.
                 if let submittedSearchText {
-                    await model.geocodeSearch(address: submittedSearchText)
+                    if let resultExtent = await model.geocodeSearch(address: submittedSearchText) {
+                        // Zoom to the extent of the result's location.
+                        viewpoint = Viewpoint(boundingGeometry: resultExtent)
+                    }
                 }
+                
                 submittedSearchText = nil
             }
             .alert(isPresented: $model.isShowingErrorAlert, presentingError: model.error)
@@ -78,42 +88,41 @@ private extension GeocodeOfflineView {
         /// The view model for the sample.
         @ObservedObject var model: Model
         
+        /// The current viewpoint of the map view.
+        @Binding var viewpoint: Viewpoint
+        
         /// The point on the map where the user tapped.
         @State private var tapLocation: Point?
         
         var body: some View {
-            MapView(
-                map: model.map,
-                viewpoint: model.viewpoint,
-                graphicsOverlays: [model.graphicsOverlay]
-            )
-            .onViewpointChanged(kind: .centerAndScale) { model.viewpoint = $0 }
-            .callout(placement: $model.calloutPlacement) { _ in
-                Text(model.calloutText)
-                    .font(.callout)
-                    .padding(8)
-            }
-            .onSingleTapGesture { _, mapPoint in
-                tapLocation = mapPoint
-            }
-            .onLongPressAndDragGesture { mapPoint in
-                model.calloutShouldOffset = true
-                tapLocation = mapPoint
-            } onEnded: {
-                // Reset the callout's offset when the gesture ends.
-                if let tapLocation {
-                    model.calloutShouldOffset = false
-                    model.updateCalloutPlacement(to: tapLocation)
+            MapView(map: model.map, viewpoint: viewpoint, graphicsOverlays: [model.graphicsOverlay])
+                .onViewpointChanged(kind: .centerAndScale) { viewpoint = $0 }
+                .callout(placement: $model.calloutPlacement) { _ in
+                    Text(model.calloutText)
+                        .font(.callout)
+                        .padding(8)
                 }
-                tapLocation = nil
-            }
-            .task(id: tapLocation) {
-                // Reverse geocode the tap location when it changes.
-                if let tapLocation {
-                    dismissSearch()
-                    await model.reverseGeocode(mapPoint: tapLocation)
+                .onSingleTapGesture { _, mapPoint in
+                    tapLocation = mapPoint
                 }
-            }
+                .onLongPressAndDragGesture { mapPoint in
+                    model.calloutShouldOffset = true
+                    tapLocation = mapPoint
+                } onEnded: {
+                    // Reset the callout's offset when the gesture ends.
+                    if let tapLocation {
+                        model.calloutShouldOffset = false
+                        model.updateCalloutPlacement(to: tapLocation)
+                    }
+                    tapLocation = nil
+                }
+                .task(id: tapLocation) {
+                    // Reverse geocode the tap location when it changes.
+                    if let tapLocation {
+                        dismissSearch()
+                        await model.reverseGeocode(mapPoint: tapLocation)
+                    }
+                }
         }
     }
 }
