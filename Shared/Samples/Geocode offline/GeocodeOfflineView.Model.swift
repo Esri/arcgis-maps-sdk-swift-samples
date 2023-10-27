@@ -47,16 +47,6 @@ extension GeocodeOfflineView {
             // Create a graphic with the symbol.
             return Graphic(symbol: markerSymbol)
         }()
-    
-        /// The value used to offset the callout when the map magnifier is showing.
-        private let magnifierOffset = {
-            // Get the magnifier image from ArcGIS package bundle.
-            let bundle = Bundle(identifier: "com.esri.ArcGIS") ?? Bundle(identifier: "ArcGIS")
-            let image = UIImage(named: "Magnifier", in: bundle, with: nil) ?? UIImage()
-            
-            // Determine the amount by which we will need to offset the callout along y-axis.
-            return CGPoint(x: .zero, y: -image.size.height)
-        }()
         
         /// The locator task used to preform the geocode operations, loaded from a local file.
         private let locatorTask = LocatorTask(name: "SanDiego_StreetAddress", bundle: .main)
@@ -171,6 +161,8 @@ extension GeocodeOfflineView {
         /// - Parameter mapPoint: The point on the map to update the callout placement to.
         func updateCalloutPlacement(to mapPoint: Point) {
             if calloutShouldOffset {
+                // Offset the callout to the top of the magnifier when it is showing.
+                let magnifierOffset = CGPoint(x: .zero, y: -140)
                 calloutPlacement = .location(mapPoint, offset: magnifierOffset)
             } else {
                 calloutPlacement = .geoElement(markerGraphic, tapLocation: mapPoint)

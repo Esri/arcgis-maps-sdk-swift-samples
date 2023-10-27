@@ -74,7 +74,7 @@ private extension GeocodeOfflineView {
     struct GeocodeMapView: View {
         /// The action that ends the current search interaction.
         @Environment(\.dismissSearch) private var dismissSearch
-
+        
         /// The view model for the sample.
         @ObservedObject var model: Model
         
