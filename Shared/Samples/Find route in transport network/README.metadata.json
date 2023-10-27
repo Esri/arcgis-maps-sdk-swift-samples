@@ -20,6 +20,9 @@
         "Stop",
         "TravelMode"
     ],
+    "offline_data": [
+        "df193653ed39449195af0c9725701dca"
+    ],
     "redirect_from": [],
     "relevant_apis": [
         "RouteParameters",
