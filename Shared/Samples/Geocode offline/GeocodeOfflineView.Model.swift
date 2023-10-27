@@ -23,16 +23,12 @@ extension GeocodeOfflineView {
         
         /// A map with a tiled layer of the streets in San Diego, CA, USA.
         let map = {
-            let map = Map()
-            
             // Create a tiled layer using the local tile package.
             let tileCache = TileCache(fileURL: .streetMap)
             let tiledLayer = ArcGISTiledLayer(tileCache: tileCache)
             
-            // Add the layer to the map.
-            map.addOperationalLayer(tiledLayer)
-            
-            return map
+            // Create a map with the tiled layer as base layer.
+            return Map(basemap: Basemap(baseLayer: tiledLayer))
         }()
         
         /// The graphics overlay for the marker graphic.
