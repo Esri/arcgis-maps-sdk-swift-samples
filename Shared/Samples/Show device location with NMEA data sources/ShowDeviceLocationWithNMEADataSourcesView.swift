@@ -63,7 +63,7 @@ struct ShowDeviceLocationWithNMEADataSourcesView: View {
             .task(id: model.sentenceReader.isStarted) {
                 guard model.sentenceReader.isStarted else { return }
                 // Push the mock data to the NMEA location data source.
-                // This simulate the case where the NMEA messages coming from a hardware need to be
+                // This simulates the case where the NMEA messages coming from a hardware need to be
                 // manually pushed to the data source.
                 for await data in model.sentenceReader.messages {
                     // Push the data to the data source.
