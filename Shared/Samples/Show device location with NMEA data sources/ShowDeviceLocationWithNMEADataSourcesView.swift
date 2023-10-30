@@ -33,17 +33,104 @@ struct ShowDeviceLocationWithNMEADataSourcesView: View {
         didSet { isShowingAlert = locationDataSourceError != nil }
     }
     
+    /// A string for GPS accuracy.
+    @State private var accuracyStatus = "Accuracy info will be shown here."
+    
+    /// A string for satellite information.
+    @State private var satelliteStatus = "Satellites info will be shown here."
+    
+    /// A Boolean value specifying if the "recenter" button should be disabled.
+    @State private var isRecenterButtonDisabled = true
+    
+    /// A Boolean value specifying if the "reset" button should be disabled.
+    @State private var isResetButtonDisabled = true
+    
+    /// A Boolean value specifying if the "source" button should be disabled.
+    @State private var isSourceMenuDisabled = false
+    
     var body: some View {
         MapView(map: model.map)
             .locationDisplay(model.locationDisplay)
             .overlay(alignment: .top) {
                 VStack(alignment: .leading) {
-                    Text(model.accuracyStatus)
-                    Text(model.satelliteStatus)
+                    Text(accuracyStatus)
+                    Text(satelliteStatus)
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 6)
                 .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
+            }
+            .task(id: model.sentenceReader.isStarted) {
+                guard model.sentenceReader.isStarted else { return }
+                // Push the mock data to the NMEA location data source.
+                // This simulate the case where the NMEA messages coming from a hardware need to be
+                // manually pushed to the data source.
+                for await data in model.sentenceReader.messages {
+                    // Push the data to the data source.
+                    model.nmeaLocationDataSource?.pushData(data)
+                }
+            }
+            .task(id: model.nmeaLocationDataSource?.status) {
+                if let nmeaLocationDataSource = model.nmeaLocationDataSource, nmeaLocationDataSource.status == .started {
+                    // Observe location display `autoPanMode` changes.
+                    for await mode in model.locationDisplay.$autoPanMode {
+                        isRecenterButtonDisabled = mode == .recenter
+                    }
+                } else {
+                    isRecenterButtonDisabled = true
+                }
+            }
+            .task(id: model.nmeaLocationDataSource?.status) {
+                guard let nmeaLocationDataSource = model.nmeaLocationDataSource, nmeaLocationDataSource.status == .started else { return }
+                // Observe location data source location changes.
+                for await location in nmeaLocationDataSource.locations {
+                    guard let nmeaLocation = location as? NMEALocation else { return }
+                    let horizontalAccuracy = Measurement(
+                        value: nmeaLocation.horizontalAccuracy,
+                        unit: UnitLength.meters
+                    )
+                    
+                    let verticalAccuracy = Measurement(
+                        value: nmeaLocation.verticalAccuracy,
+                        unit: UnitLength.meters
+                    )
+                    
+                    let accuracyText = String(
+                        format: "Accuracy - Horizontal: %@; Vertical: %@",
+                        horizontalAccuracy.formatted(model.formatStyle),
+                        verticalAccuracy.formatted(model.formatStyle)
+                    )
+                    
+                    accuracyStatus = accuracyText
+                }
+            }
+            .task(id: model.nmeaLocationDataSource?.status) {
+                guard let nmeaLocationDataSource = model.nmeaLocationDataSource, nmeaLocationDataSource.status == .started else { return }
+                // Observe NMEA location data source's satellite changes.
+                for await satellites in nmeaLocationDataSource.satellites {
+                    // Update the satellites info status text.
+                    let satelliteSystems = satellites.compactMap(\.system)
+                    
+                    let satelliteLabels = Set(satelliteSystems)
+                        .map(\.label)
+                        .sorted()
+                        .formatted(model.listFormatStyle)
+                    
+                    let satelliteIDs = satellites
+                        .map { String($0.id) }
+                        .formatted(model.listFormatStyle)
+                    
+                    satelliteStatus = String(
+                        format: """
+                                %d satellites in view
+                                System(s): %@
+                                IDs: %@
+                                """,
+                        satellites.count,
+                        satelliteLabels,
+                        satelliteIDs
+                    )
+                }
             }
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
@@ -52,6 +139,9 @@ struct ShowDeviceLocationWithNMEADataSourcesView: View {
                             Task {
                                 do {
                                     try await model.start(usingMockedData: true)
+                                    // Set buttons states.
+                                    isSourceMenuDisabled = true
+                                    isResetButtonDisabled = false
                                 } catch {
                                     self.locationDataSourceError = error
                                 }
@@ -70,19 +160,17 @@ struct ShowDeviceLocationWithNMEADataSourcesView: View {
                             }
                         }
                     }
-                    .disabled(model.isSourceMenuDisabled)
+                    .disabled(isSourceMenuDisabled)
                     Spacer()
                     Button("Recenter") {
                         model.locationDisplay.autoPanMode = .recenter
                     }
-                    .disabled(model.isRecenterButtonDisabled)
+                    .disabled(isRecenterButtonDisabled)
                     Spacer()
                     Button("Reset") {
-                        Task {
-                            await model.reset()
-                        }
+                        reset()
                     }
-                    .disabled(model.isResetButtonDisabled)
+                    .disabled(isResetButtonDisabled)
                 }
             }
             .alert("Error", isPresented: $isShowingAlert, presenting: accessoryError) { _ in
@@ -92,11 +180,21 @@ struct ShowDeviceLocationWithNMEADataSourcesView: View {
             }
             .alert(isPresented: $isShowingAlert, presentingError: locationDataSourceError)
             .onDisappear {
-                // Reset the model to stop the data source and observations.
-                Task {
-                    await model.reset()
-                }
+                reset()
             }
+    }
+    
+    func reset() {
+        // Reset the status text.
+        accuracyStatus = "Accuracy info will be shown here."
+        satelliteStatus = "Satellites info will be shown here."
+        // Reset buttons states.
+        isResetButtonDisabled = true
+        isSourceMenuDisabled = false
+        Task {
+            // Reset the model to stop the data source and observations.
+            await model.reset()
+        }
     }
     
     func selectDevice() throws {
@@ -150,4 +248,25 @@ struct ShowDeviceLocationWithNMEADataSourcesView: View {
 /// An error relating to NMEA accessories.
 private struct AccessoryError: Error {
     let detail: String
+}
+
+private extension NMEAGNSSSystem {
+    var label: String {
+        switch self {
+        case .gps:
+            return "The Global Positioning System"
+        case .glonass:
+            return "The Russian Global Navigation Satellite System"
+        case .galileo:
+            return "The European Union Global Navigation Satellite System"
+        case .bds:
+            return "The BeiDou Navigation Satellite System"
+        case .qzss:
+            return "The Quasi-Zenith Satellite System"
+        case .navIC:
+            return "The Navigation Indian Constellation"
+        default:
+            return "Unknown GNSS type"
+        }
+    }
 }

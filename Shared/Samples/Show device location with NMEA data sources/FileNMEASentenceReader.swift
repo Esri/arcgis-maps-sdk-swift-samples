@@ -28,6 +28,9 @@ class FileNMEASentenceReader {
     /// An asynchronous stream of NMEA data.
     var messages: AsyncStream<Data>!
     
+    /// A Boolean value specifying if the reader is started.
+    var isStarted = false
+    
     /// Loads locations from NMEA sentences.
     /// Reads mock NMEA sentences line by line and group them by the timestamp.
     /// - Parameters:
@@ -67,6 +70,7 @@ class FileNMEASentenceReader {
     func start() {
         // Invalidate timer to stop previous mock data generation.
         timer?.invalidate()
+        isStarted = true
         
         messages = AsyncStream { continuation in
             // Create a new timer.
@@ -84,6 +88,7 @@ class FileNMEASentenceReader {
     /// Stops the mock NMEA data feed.
     func stop() {
         timer?.invalidate()
+        isStarted = false
         timer = nil
         messages = nil
     }
