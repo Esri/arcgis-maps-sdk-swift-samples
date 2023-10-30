@@ -33,7 +33,7 @@ extension ShowDeviceLocationWithNMEADataSourcesView {
         }()
         
         /// An NMEA location data source, to parse NMEA data.
-        var nmeaLocationDataSource: NMEALocationDataSource?
+        private(set) var nmeaLocationDataSource: NMEALocationDataSource?
         
         /// A mock data reader to read NMEA sentences from a local file, and generate
         /// mock NMEA data every fixed amount of time.
