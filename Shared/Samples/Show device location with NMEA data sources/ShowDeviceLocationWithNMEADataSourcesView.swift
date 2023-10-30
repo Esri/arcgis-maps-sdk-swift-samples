@@ -40,13 +40,13 @@ struct ShowDeviceLocationWithNMEADataSourcesView: View {
     @State private var satelliteStatus = "Satellites info will be shown here."
     
     /// A Boolean value specifying if the "recenter" button should be disabled.
-    @State private var isRecenterButtonDisabled = true
+    @State private var recenterButtonIsDisabled = true
     
     /// A Boolean value specifying if the "reset" button should be disabled.
-    @State private var isResetButtonDisabled = true
+    @State private var resetButtonIsDisabled = true
     
     /// A Boolean value specifying if the "source" button should be disabled.
-    @State private var isSourceMenuDisabled = false
+    @State private var sourceMenuIsDisabled = false
     
     var body: some View {
         MapView(map: model.map)
@@ -74,10 +74,10 @@ struct ShowDeviceLocationWithNMEADataSourcesView: View {
                 if let nmeaLocationDataSource = model.nmeaLocationDataSource, nmeaLocationDataSource.status == .started {
                     // Observe location display `autoPanMode` changes.
                     for await mode in model.locationDisplay.$autoPanMode {
-                        isRecenterButtonDisabled = mode == .recenter
+                        recenterButtonIsDisabled = mode == .recenter
                     }
                 } else {
-                    isRecenterButtonDisabled = true
+                    recenterButtonIsDisabled = true
                 }
             }
             .task(id: model.nmeaLocationDataSource?.status) {
@@ -140,8 +140,8 @@ struct ShowDeviceLocationWithNMEADataSourcesView: View {
                                 do {
                                     try await model.start(usingMockedData: true)
                                     // Set buttons states.
-                                    isSourceMenuDisabled = true
-                                    isResetButtonDisabled = false
+                                    sourceMenuIsDisabled = true
+                                    resetButtonIsDisabled = false
                                 } catch {
                                     self.locationDataSourceError = error
                                 }
@@ -160,17 +160,17 @@ struct ShowDeviceLocationWithNMEADataSourcesView: View {
                             }
                         }
                     }
-                    .disabled(isSourceMenuDisabled)
+                    .disabled(sourceMenuIsDisabled)
                     Spacer()
                     Button("Recenter") {
                         model.locationDisplay.autoPanMode = .recenter
                     }
-                    .disabled(isRecenterButtonDisabled)
+                    .disabled(recenterButtonIsDisabled)
                     Spacer()
                     Button("Reset") {
                         reset()
                     }
-                    .disabled(isResetButtonDisabled)
+                    .disabled(resetButtonIsDisabled)
                 }
             }
             .alert("Error", isPresented: $isShowingAlert, presenting: accessoryError) { _ in
@@ -189,8 +189,8 @@ struct ShowDeviceLocationWithNMEADataSourcesView: View {
         accuracyStatus = "Accuracy info will be shown here."
         satelliteStatus = "Satellites info will be shown here."
         // Reset buttons states.
-        isResetButtonDisabled = true
-        isSourceMenuDisabled = false
+        resetButtonIsDisabled = true
+        sourceMenuIsDisabled = false
         Task {
             // Reset the model to stop the data source and observations.
             await model.reset()
