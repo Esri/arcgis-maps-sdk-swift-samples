@@ -54,8 +54,8 @@ extension GeocodeOfflineView {
         /// The placement of the callout on the map.
         @Published var calloutPlacement: CalloutPlacement?
         
-        /// A Boolean value indicating whether the callout placement should be offsetted, e.g. when the map magnifier is showing.
-        @Published var calloutShouldOffset = false
+        /// A Boolean value indicating whether the callout placement is offset, e.g. when the map magnifier is showing.
+        @Published var calloutIsOffset = false
         
         /// The text shown in the callout.
         @Published private(set) var calloutText: String = ""
@@ -141,7 +141,7 @@ extension GeocodeOfflineView {
         /// Updates the callout placement to a given location.
         /// - Parameter mapPoint: The point on the map to update the callout placement to.
         func updateCalloutPlacement(to mapPoint: Point) {
-            if calloutShouldOffset {
+            if calloutIsOffset {
                 // Offset the callout to the top of the magnifier when it is showing.
                 let magnifierOffset = CGPoint(x: .zero, y: -140)
                 calloutPlacement = .location(mapPoint, offset: magnifierOffset)

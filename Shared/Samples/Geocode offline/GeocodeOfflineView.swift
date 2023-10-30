@@ -32,7 +32,7 @@ struct GeocodeOfflineView: View {
     @State private var submittedSearchText: String?
     
     /// A Boolean value indicating whether the "No results found." alert is showing.
-    @State private var isShowingResultAlert = false
+    @State private var resultAlertIsShowing = false
     
     /// A pre-populated list of example addresses.
     private let exampleAddresses = [
@@ -75,13 +75,13 @@ struct GeocodeOfflineView: View {
                         viewpoint = Viewpoint(boundingGeometry: resultExtent)
                     } else {
                         // If no result was found, inform the user with an alert.
-                        isShowingResultAlert = true
+                        resultAlertIsShowing = true
                     }
                 }
                 
                 submittedSearchText = nil
             }
-            .alert("No results found.", isPresented: $isShowingResultAlert, actions: {})
+            .alert("No results found.", isPresented: $resultAlertIsShowing, actions: {})
     }
 }
 
@@ -112,12 +112,12 @@ private extension GeocodeOfflineView {
                     tapLocation = mapPoint
                 }
                 .onLongPressAndDragGesture { mapPoint in
-                    model.calloutShouldOffset = true
+                    model.calloutIsOffset = true
                     tapLocation = mapPoint
                 } onEnded: {
                     // Reset the callout's offset when the gesture ends.
                     if let tapLocation {
-                        model.calloutShouldOffset = false
+                        model.calloutIsOffset = false
                         model.updateCalloutPlacement(to: tapLocation)
                     }
                     tapLocation = nil
