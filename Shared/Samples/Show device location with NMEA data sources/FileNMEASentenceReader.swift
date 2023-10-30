@@ -26,10 +26,10 @@ class FileNMEASentenceReader {
     private var timer: Timer?
     
     /// An asynchronous stream of NMEA data.
-    var messages: AsyncStream<Data>!
+    private(set) var messages: AsyncStream<Data>!
     
     /// A Boolean value specifying if the reader is started.
-    var isStarted = false
+    private(set) var isStarted = false
     
     /// Loads locations from NMEA sentences.
     /// Reads mock NMEA sentences line by line and group them by the timestamp.

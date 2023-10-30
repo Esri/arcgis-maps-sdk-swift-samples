@@ -116,7 +116,7 @@ extension ShowDeviceLocationWithNMEADataSourcesView {
             // Set the autopan mode to `.recenter`
             locationDisplay.autoPanMode = .recenter
             
-            // Start the data source
+            // Start the data source.
             try await locationDisplay.dataSource.start()
         }
     }
