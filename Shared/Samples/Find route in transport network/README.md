@@ -2,7 +2,7 @@
 
 Solve a route on-the-fly using offline data.
 
-![Image of find route in transport network](find-route-in-transport-network.jpg)
+![Image of find route in transport network](find-route-in-transport-network.png)
 
 ## Use case
 
