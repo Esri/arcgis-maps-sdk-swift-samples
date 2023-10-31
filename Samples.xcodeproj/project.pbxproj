@@ -104,6 +104,12 @@
 		1CAF831F2A20305F000E1E60 /* ShowUtilityAssociationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAF831B2A20305F000E1E60 /* ShowUtilityAssociationsView.swift */; };
 		218F35B829C28F4A00502022 /* AuthenticateWithOAuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218F35B329C28F4A00502022 /* AuthenticateWithOAuthView.swift */; };
 		218F35C229C290BF00502022 /* AuthenticateWithOAuthView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 218F35B329C28F4A00502022 /* AuthenticateWithOAuthView.swift */; };
+		4D126D6D29CA1B6000CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D126D6929CA1B6000CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift */; };
+		4D126D7229CA1E1800CFB7A7 /* FileNMEASentenceReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D126D7129CA1E1800CFB7A7 /* FileNMEASentenceReader.swift */; };
+		4D126D7329CA1EFD00CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4D126D6929CA1B6000CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift */; };
+		4D126D7429CA1EFD00CFB7A7 /* FileNMEASentenceReader.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4D126D7129CA1E1800CFB7A7 /* FileNMEASentenceReader.swift */; };
+		4D126D7C29CA3E6000CFB7A7 /* Redlands.nmea in Resources */ = {isa = PBXBuildFile; fileRef = 4D126D7B29CA3E6000CFB7A7 /* Redlands.nmea */; settings = {ASSET_TAGS = (ShowDeviceLocationWithNmeaDataSources, ); }; };
+		4D126D7E29CA43D200CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D126D7D29CA43D200CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.Model.swift */; };
 		4D2ADC4329C26D05003B367F /* AddDynamicEntityLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2ADC3F29C26D05003B367F /* AddDynamicEntityLayerView.swift */; };
 		4D2ADC4729C26D2C003B367F /* AddDynamicEntityLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4D2ADC3F29C26D05003B367F /* AddDynamicEntityLayerView.swift */; };
 		4D2ADC5A29C4F612003B367F /* ChangeMapViewBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2ADC5529C4F612003B367F /* ChangeMapViewBackgroundView.swift */; };
@@ -113,6 +119,7 @@
 		4D2ADC6929C50C4C003B367F /* AddDynamicEntityLayerView.SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D2ADC6829C50C4C003B367F /* AddDynamicEntityLayerView.SettingsView.swift */; };
 		4D2ADC6A29C50D91003B367F /* AddDynamicEntityLayerView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4D2ADC6629C50BD6003B367F /* AddDynamicEntityLayerView.Model.swift */; };
 		4D2ADC6B29C50D91003B367F /* AddDynamicEntityLayerView.SettingsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4D2ADC6829C50C4C003B367F /* AddDynamicEntityLayerView.SettingsView.swift */; };
+		4DD058102A0D3F6B00A59B34 /* ShowDeviceLocationWithNMEADataSourcesView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4D126D7D29CA43D200CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.Model.swift */; };
 		7573E81A29D6134C00BEED9C /* TraceUtilityNetworkView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7573E81329D6134C00BEED9C /* TraceUtilityNetworkView.Model.swift */; };
 		7573E81C29D6134C00BEED9C /* TraceUtilityNetworkView.Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7573E81529D6134C00BEED9C /* TraceUtilityNetworkView.Enums.swift */; };
 		7573E81E29D6134C00BEED9C /* TraceUtilityNetworkView.Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7573E81729D6134C00BEED9C /* TraceUtilityNetworkView.Views.swift */; };
@@ -342,6 +349,9 @@
 			dstSubfolderSpec = 7;
 			files = (
 				D7553CDD2AE2E00E00DC2A70 /* GeocodeOfflineView.swift in Copy Source Code Files */,
+				4DD058102A0D3F6B00A59B34 /* ShowDeviceLocationWithNMEADataSourcesView.Model.swift in Copy Source Code Files */,
+				4D126D7329CA1EFD00CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift in Copy Source Code Files */,
+				4D126D7429CA1EFD00CFB7A7 /* FileNMEASentenceReader.swift in Copy Source Code Files */,
 				D7084FAB2AD771F600EC7F4F /* AugmentRealityToFlyOverSceneView.swift in Copy Source Code Files */,
 				D72F27302ADA1E9900F906DA /* AugmentRealityToShowTabletopSceneView.swift in Copy Source Code Files */,
 				D71FCB8B2AD628B9000E517C /* CreateMobileGeodatabaseView.Model.swift in Copy Source Code Files */,
@@ -521,6 +531,10 @@
 		1CAB8D472A3CEAB0002AA649 /* RunValveIsolationTraceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunValveIsolationTraceView.swift; sourceTree = "<group>"; };
 		1CAF831B2A20305F000E1E60 /* ShowUtilityAssociationsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowUtilityAssociationsView.swift; sourceTree = "<group>"; };
 		218F35B329C28F4A00502022 /* AuthenticateWithOAuthView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticateWithOAuthView.swift; sourceTree = "<group>"; };
+		4D126D6929CA1B6000CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowDeviceLocationWithNMEADataSourcesView.swift; sourceTree = "<group>"; };
+		4D126D7129CA1E1800CFB7A7 /* FileNMEASentenceReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileNMEASentenceReader.swift; sourceTree = "<group>"; };
+		4D126D7B29CA3E6000CFB7A7 /* Redlands.nmea */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Redlands.nmea; sourceTree = "<group>"; };
+		4D126D7D29CA43D200CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowDeviceLocationWithNMEADataSourcesView.Model.swift; sourceTree = "<group>"; };
 		4D2ADC3F29C26D05003B367F /* AddDynamicEntityLayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDynamicEntityLayerView.swift; sourceTree = "<group>"; };
 		4D2ADC5529C4F612003B367F /* ChangeMapViewBackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeMapViewBackgroundView.swift; sourceTree = "<group>"; };
 		4D2ADC5829C4F612003B367F /* ChangeMapViewBackgroundView.SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeMapViewBackgroundView.SettingsView.swift; sourceTree = "<group>"; };
@@ -794,6 +808,7 @@
 				D7EF5D712A269E2D00FEBDE5 /* Show coordinates in multiple formats */,
 				E004A6E728493BBB002A1FE6 /* Show device location */,
 				0044CDD72995C352004618CE /* Show device location history */,
+				4D126D6829CA1B6000CFB7A7 /* Show device location with NMEA data sources */,
 				D722BD1E2A420D7E002C2087 /* Show extruded features */,
 				D751017D2A2E490800B8FA48 /* Show labels on layer */,
 				D7CC33FB2A31475C00198EDF /* Show line of sight between points */,
@@ -911,6 +926,7 @@
 				792222DB2A81AA5D00619FFE /* a8a942c228af4fac96baa78ad60f511f */,
 				D7464F202ACE0910007FEE88 /* b5f977c78ec74b3a8857ca86d1d9b318 */,
 				00D4EF8128638BF100B9CC30 /* cb1b20748a9f4d128dad8a87244e3e37 */,
+				4D126D7629CA3B3F00CFB7A7 /* d5bad9f4fee9483791e405880fb466da */,
 				D77572AC2A295DC100F490CD /* d1453556d91e46dea191c20c398b82cd */,
 				F111CCC2288B63DB00205358 /* e1f3a7254cb845b09450f54937c16061 */,
 				D7C16D262AC5FEB600689E89 /* e87c154fb9c2487f999143df5b08e9b1 */,
@@ -1100,6 +1116,24 @@
 				218F35B329C28F4A00502022 /* AuthenticateWithOAuthView.swift */,
 			);
 			path = "Authenticate with OAuth";
+			sourceTree = "<group>";
+		};
+		4D126D6829CA1B6000CFB7A7 /* Show device location with NMEA data sources */ = {
+			isa = PBXGroup;
+			children = (
+				4D126D6929CA1B6000CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift */,
+				4D126D7D29CA43D200CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.Model.swift */,
+				4D126D7129CA1E1800CFB7A7 /* FileNMEASentenceReader.swift */,
+			);
+			path = "Show device location with NMEA data sources";
+			sourceTree = "<group>";
+		};
+		4D126D7629CA3B3F00CFB7A7 /* d5bad9f4fee9483791e405880fb466da */ = {
+			isa = PBXGroup;
+			children = (
+				4D126D7B29CA3E6000CFB7A7 /* Redlands.nmea */,
+			);
+			path = d5bad9f4fee9483791e405880fb466da;
 			sourceTree = "<group>";
 		};
 		4D2ADC3E29C26D05003B367F /* Add dynamic entity layer */ = {
@@ -1854,13 +1888,14 @@
 					DisplayMapFromMobileMapPackage,
 					GeocodeOffline,
 					IdentifyRasterCell,
+					ShowDeviceLocationWithNmeaDataSources,
 					ShowMobileMapPackageExpirationDate,
 					ShowViewshedFromGeoelementInScene,
 					StyleFeaturesWithCustomDictionary,
 					StyleSymbolsFromMobileStyleFile,
 				);
 				LastSwiftUpdateCheck = 1330;
-				LastUpgradeCheck = 1330;
+				LastUpgradeCheck = 1500;
 				ORGANIZATIONNAME = Esri;
 				TargetAttributes = {
 					00E5401227F3CCA200CF66D5 = {
@@ -1901,6 +1936,7 @@
 				E041AC1A287F54580056009B /* highlight.min.js in Resources */,
 				D7497F402AC4BA4100167AD2 /* Edinburgh_Pylon_Dimensions.mmpk in Resources */,
 				00E5402027F3CCA200CF66D5 /* Assets.xcassets in Resources */,
+				4D126D7C29CA3E6000CFB7A7 /* Redlands.nmea in Resources */,
 				00C94A0D28B53DE1004E42D9 /* raster-file in Resources */,
 				D7464F2B2ACE0965007FEE88 /* SA_EVI_8Day_03May20 in Resources */,
 				004FE87129DF5D8700075217 /* Bristol in Resources */,
@@ -2028,6 +2064,7 @@
 				D7ABA2F92A32579C0021822B /* MeasureDistanceInSceneView.swift in Sources */,
 				E004A6E028466279002A1FE6 /* ShowCalloutView.swift in Sources */,
 				E000E763286A0B18005D87C5 /* CutGeometryView.swift in Sources */,
+				4D126D7229CA1E1800CFB7A7 /* FileNMEASentenceReader.swift in Sources */,
 				001C6DE127FE8A9400D472C2 /* AppSecrets.swift.masque in Sources */,
 				D7084FA92AD771AA00EC7F4F /* AugmentRealityToFlyOverSceneView.swift in Sources */,
 				D75B58512AAFB3030038B3B4 /* StyleFeaturesWithCustomDictionaryView.swift in Sources */,
@@ -2108,6 +2145,8 @@
 				0044289229C90C0B00160767 /* GetElevationAtPointOnSurfaceView.swift in Sources */,
 				D7E440D72A1ECE7D005D74DE /* CreateBuffersAroundPointsView.swift in Sources */,
 				00D4EF802863842100B9CC30 /* AddFeatureLayersView.swift in Sources */,
+				4D126D7E29CA43D200CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.Model.swift in Sources */,
+				4D126D6D29CA1B6000CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift in Sources */,
 				D710996D2A27D9210065A1C1 /* DensifyAndGeneralizeGeometryView.swift in Sources */,
 				88F93CC129C3D59D0006B28E /* CreateAndEditGeometriesView.swift in Sources */,
 				1C0C1C3929D34DAE005C8B24 /* ChangeViewpointView.swift in Sources */,
