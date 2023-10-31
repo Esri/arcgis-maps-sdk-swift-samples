@@ -1,0 +1,39 @@
+{
+    "category": "Maps",
+    "description": "Parse NMEA sentences and use the results to show device location on the map.",
+    "ignore": false,
+    "images": [
+        "show-device-location-with-NMEA-data-sources.png"
+    ],
+    "keywords": [
+        "Bluetooth",
+        "GNSS",
+        "GPS",
+        "NMEA",
+        "accessory",
+        "history",
+        "navigation",
+        "real-time",
+        "trace",
+        "Location",
+        "LocationDisplay",
+        "NMEALocationDataSource",
+        "NMEASatelliteInfo"
+    ],
+    "offline_data": [
+        "d5bad9f4fee9483791e405880fb466da"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Location",
+        "LocationDisplay",
+        "NMEALocationDataSource",
+        "NMEASatelliteInfo"
+    ],
+    "snippets": [
+        "ShowDeviceLocationWithNMEADataSourcesView.swift",
+        "ShowDeviceLocationWithNMEADataSourcesView.Model.swift",
+        "FileNMEASentenceReader.swift"
+    ],
+    "title": "Show device location with NMEA data sources"
+}
