@@ -19,24 +19,90 @@ struct FindRouteInTransportNetworkView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
+    /// The current travel mode selection of the picker.
+    @State private var travelModeSelection: TravelModeOption = .fastest
+    
+    /// A Boolean value indicating whether the user is currently long pressing on the map.
+    @State private var longPressing = false
+    
+    /// A Boolean value indicating whether the reset button is currently disabled.
+    @State private var resetDisabled = true
+    
     var body: some View {
-        MapView(map: model.map)
-            .alert(isPresented: $model.isShowingErrorAlert, presentingError: model.error)
+        MapView(
+            map: model.map,
+            graphicsOverlays: [model.routeGraphicsOverlay, model.stopGraphicsOverlay]
+        )
+        .onSingleTapGesture { _, mapPoint in
+            // Add a route stop when the on single tap.
+            model.addRouteStop(at: mapPoint)
+            resetDisabled = false
+        }
+        .onLongPressAndDragGesture { mapPoint in
+            // Add and update a route stop on long press.
+            model.addRouteStop(at: mapPoint, replacingLast: longPressing)
+            longPressing = true
+            resetDisabled = false
+        } onEnded: {
+            longPressing = false
+        }
+        .overlay(alignment: .top) {
+            Text(model.routeInfo.label ?? "Tap to add a point.")
+                .frame(maxWidth: .infinity, alignment: .center)
+                .padding(8)
+                .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
+        }
+        .toolbar {
+            ToolbarItemGroup(placement: .bottomBar) {
+                Spacer()
+                
+                Picker("Travel Mode", selection: $travelModeSelection) {
+                    Text("Fastest").tag(TravelModeOption.fastest)
+                    Text("Shortest").tag(TravelModeOption.shortest)
+                }
+                .pickerStyle(.segmented)
+                .onChange(of: travelModeSelection) { newMode in
+                    model.updateTravelMode(to: newMode)
+                }
+                
+                Spacer()
+                
+                Button {
+                    model.reset()
+                    resetDisabled = true
+                } label: {
+                    Image(systemName: "clear")
+                }
+                .disabled(resetDisabled)
+            }
+        }
+        .task {
+            // Load the default route parameters from the route task when the sample loads.
+            model.routeParameters = try? await model.routeTask.makeDefaultParameters()
+        }
     }
 }
 
-private extension FindRouteInTransportNetworkView {
-    /// The view model for the sample.
-    class Model: ObservableObject {
-        /// A map with a topographic basemap.
-        let map = Map(basemapStyle: .arcGISTopographic)
-        
-        /// A Boolean value indicating whether to show an error alert.
-        @Published var isShowingErrorAlert = false
-        
-        /// The error shown in the error alert.
-        @Published var error: Error? {
-            didSet { isShowingErrorAlert = error != nil }
-        }
+private extension MapView {
+    /// Sets a closure to perform when the map view recognizes a long press and drag gesture.
+    /// - Parameters:
+    ///   - action: The closure to perform when the gesture is recognized.
+    ///   - onEnded: The closure to perform when the gesture ends.
+    /// - Returns: A new `View` object.
+    func onLongPressAndDragGesture(
+        perform action: @escaping (Point) -> Void,
+        onEnded: @escaping () -> Void
+    ) -> some View {
+        self
+            .onLongPressGesture { _, mapPoint in
+                action(mapPoint)
+            }
+            .gesture(
+                LongPressGesture()
+                    .simultaneously(with: DragGesture())
+                    .onEnded { _ in
+                        onEnded()
+                    }
+            )
     }
 }

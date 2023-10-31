@@ -32,7 +32,8 @@
         "TravelMode"
     ],
     "snippets": [
-        "FindRouteInTransportNetworkView.swift"
+        "FindRouteInTransportNetworkView.swift",
+        "FindRouteInTransportNetworkView.Model.swift"
     ],
     "title": "Find route in transport network"
 }
