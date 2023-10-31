@@ -1,0 +1,40 @@
+{
+    "category": "Maps",
+    "description": "Display maps and use locators to enable search and routing offline using a Mobile Map Package.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "disconnected",
+        "field mobility",
+        "geocode",
+        "network",
+        "network analysis",
+        "offline",
+        "routing",
+        "search",
+        "transportation",
+        "GeocodeResult",
+        "MobileMapPackage",
+        "ReverseGeocodeParameters",
+        "Route",
+        "RouteParameters",
+        "RouteResult",
+        "RouteTask",
+        "TransportationNetworkDataset"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "GeocodeResult",
+        "MobileMapPackage",
+        "ReverseGeocodeParameters",
+        "Route",
+        "RouteParameters",
+        "RouteResult",
+        "RouteTask",
+        "TransportationNetworkDataset"
+    ],
+    "snippets": [
+        "FindRouteInMobileMapPackageView.swift"
+    ],
+    "title": "Find route in mobile map package"
+}

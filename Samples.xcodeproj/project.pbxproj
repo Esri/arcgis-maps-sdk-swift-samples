@@ -217,6 +217,8 @@
 		D75B58512AAFB3030038B3B4 /* StyleFeaturesWithCustomDictionaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75B58502AAFB3030038B3B4 /* StyleFeaturesWithCustomDictionaryView.swift */; };
 		D75B58522AAFB37C0038B3B4 /* StyleFeaturesWithCustomDictionaryView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D75B58502AAFB3030038B3B4 /* StyleFeaturesWithCustomDictionaryView.swift */; };
 		D75C35672AB50338003CD55F /* GroupLayersTogetherView.GroupLayerListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75C35662AB50338003CD55F /* GroupLayersTogetherView.GroupLayerListView.swift */; };
+		D76000AE2AF19C2300B3084D /* FindRouteInMobileMapPackageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76000AB2AF19C2300B3084D /* FindRouteInMobileMapPackageView.swift */; };
+		D76000B12AF19C4600B3084D /* FindRouteInMobileMapPackageView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D76000AB2AF19C2300B3084D /* FindRouteInMobileMapPackageView.swift */; };
 		D7634FAF2A43B7AC00F8AEFB /* CreateConvexHullAroundGeometriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7634FAE2A43B7AC00F8AEFB /* CreateConvexHullAroundGeometriesView.swift */; };
 		D7634FB02A43B8B000F8AEFB /* CreateConvexHullAroundGeometriesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7634FAE2A43B7AC00F8AEFB /* CreateConvexHullAroundGeometriesView.swift */; };
 		D769C2122A29019B00030F61 /* SetUpLocationDrivenGeotriggersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D769C2112A29019B00030F61 /* SetUpLocationDrivenGeotriggersView.swift */; };
@@ -348,6 +350,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				D76000B12AF19C4600B3084D /* FindRouteInMobileMapPackageView.swift in Copy Source Code Files */,
 				D7553CDD2AE2E00E00DC2A70 /* GeocodeOfflineView.swift in Copy Source Code Files */,
 				4DD058102A0D3F6B00A59B34 /* ShowDeviceLocationWithNMEADataSourcesView.Model.swift in Copy Source Code Files */,
 				4D126D7329CA1EFD00CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift in Copy Source Code Files */,
@@ -593,6 +596,7 @@
 		D7553CD82AE2DFEC00DC2A70 /* GeocodeOfflineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeocodeOfflineView.swift; sourceTree = "<group>"; };
 		D75B58502AAFB3030038B3B4 /* StyleFeaturesWithCustomDictionaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleFeaturesWithCustomDictionaryView.swift; sourceTree = "<group>"; };
 		D75C35662AB50338003CD55F /* GroupLayersTogetherView.GroupLayerListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupLayersTogetherView.GroupLayerListView.swift; sourceTree = "<group>"; };
+		D76000AB2AF19C2300B3084D /* FindRouteInMobileMapPackageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindRouteInMobileMapPackageView.swift; sourceTree = "<group>"; };
 		D7634FAE2A43B7AC00F8AEFB /* CreateConvexHullAroundGeometriesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateConvexHullAroundGeometriesView.swift; sourceTree = "<group>"; };
 		D769C2112A29019B00030F61 /* SetUpLocationDrivenGeotriggersView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetUpLocationDrivenGeotriggersView.swift; sourceTree = "<group>"; };
 		D77570BF2A2942F800F490CD /* AnimateImagesWithImageOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimateImagesWithImageOverlayView.swift; sourceTree = "<group>"; };
@@ -778,6 +782,7 @@
 				1C26ED122A859525009B7721 /* Filter features in scene */,
 				D78666A92A21616D00C60110 /* Find nearest vertex */,
 				E066DD33285CF3A0004D3D5B /* Find route */,
+				D76000AA2AF19C2300B3084D /* Find route in mobile map package */,
 				E088E1722863B5E600413100 /* Generate offline map */,
 				D7553CD62AE2DFEC00DC2A70 /* Geocode offline */,
 				0044288C29C90BD500160767 /* Get elevation at point on surface */,
@@ -1461,6 +1466,14 @@
 				D75B58502AAFB3030038B3B4 /* StyleFeaturesWithCustomDictionaryView.swift */,
 			);
 			path = "Style features with custom dictionary";
+			sourceTree = "<group>";
+		};
+		D76000AA2AF19C2300B3084D /* Find route in mobile map package */ = {
+			isa = PBXGroup;
+			children = (
+				D76000AB2AF19C2300B3084D /* FindRouteInMobileMapPackageView.swift */,
+			);
+			path = "Find route in mobile map package";
 			sourceTree = "<group>";
 		};
 		D769C20D2A28FF8600030F61 /* Set up location-driven geotriggers */ = {
@@ -2173,6 +2186,7 @@
 				1C19B4F52A578E46001D2506 /* CreateLoadReportView.Model.swift in Sources */,
 				0042E24528E4F82C001F33D6 /* ShowViewshedFromPointInSceneView.ViewshedSettingsView.swift in Sources */,
 				1C9B74D929DB54560038B06F /* ChangeCameraControllerView.swift in Sources */,
+				D76000AE2AF19C2300B3084D /* FindRouteInMobileMapPackageView.swift in Sources */,
 				00273CF42A82AB5900A7A77D /* SamplesSearchView.swift in Sources */,
 				D78666AD2A2161F100C60110 /* FindNearestVertexView.swift in Sources */,
 				D7C16D1B2AC5F95300689E89 /* Animate3DGraphicView.swift in Sources */,
