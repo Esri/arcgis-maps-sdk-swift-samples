@@ -67,11 +67,9 @@ struct FindRouteInTransportNetworkView: View {
                 
                 Spacer()
                 
-                Button {
+                Button("Reset") {
                     model.reset()
                     resetDisabled = true
-                } label: {
-                    Image(systemName: "clear")
                 }
                 .disabled(resetDisabled)
             }
