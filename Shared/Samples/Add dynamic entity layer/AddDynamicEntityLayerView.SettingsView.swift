@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import ArcGIS
 import SwiftUI
 
 extension AddDynamicEntityLayerView {
@@ -21,6 +22,9 @@ extension AddDynamicEntityLayerView {
         
         /// The action to dismiss the settings sheet.
         @Environment(\.dismiss) private var dismiss: DismissAction
+        
+        /// The callout placement.
+        @Binding var calloutPlacement: CalloutPlacement?
         
         var body: some View {
             if #available(iOS 16, *) {
@@ -57,6 +61,7 @@ extension AddDynamicEntityLayerView {
                         Button("Purge All Observations") {
                             Task {
                                 try? await model.streamService.purgeAll()
+                                calloutPlacement = nil
                             }
                         }
                         Spacer()
