@@ -28,7 +28,9 @@ struct ContentView: View {
                     sidebar
                 }
             } detail: {
-                detail
+                NavigationStack {
+                    detail
+                }
             }
         } else {
             NavigationView {
