@@ -211,16 +211,16 @@ extension FindRouteInTransportNetworkView {
             guard totalTime != 0 && totalDistance.value != 0  else { return nil }
             
             // Format the time.
-            let totalMinutes = Int(totalTime) / 60
-            let hours = Int(totalMinutes) / 60
-            let minutes = Int(totalMinutes) % 60
-            let hoursText = hours == 0 ? "" : "\(hours) hr "
-            let minutesText = minutes == 0 ? "0 min" : "\(minutes) min"
+            let dateInterval = DateInterval(start: .now, duration: totalTime)
+            let dateRange = dateInterval.start..<dateInterval.end
+            let timeText = dateRange.formatted(
+                .components(style: .abbreviated, fields: [.day, .hour, .minute])
+            )
             
             // Format the distance.
             let distanceText = totalDistance.formatted()
             
-            return "\(hoursText)\(minutesText) (\(distanceText))"
+            return "\(timeText) (\(distanceText))"
         }
         
         /// Resets the time and distance to zero.
