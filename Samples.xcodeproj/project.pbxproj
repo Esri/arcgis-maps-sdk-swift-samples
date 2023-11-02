@@ -1143,9 +1143,9 @@
 		4D2ADC3E29C26D05003B367F /* Add dynamic entity layer */ = {
 			isa = PBXGroup;
 			children = (
+				4D2ADC3F29C26D05003B367F /* AddDynamicEntityLayerView.swift */,
 				4D2ADC6629C50BD6003B367F /* AddDynamicEntityLayerView.Model.swift */,
 				4D2ADC6829C50C4C003B367F /* AddDynamicEntityLayerView.SettingsView.swift */,
-				4D2ADC3F29C26D05003B367F /* AddDynamicEntityLayerView.swift */,
 				00F279D52AF418DC00CECAF8 /* AddDynamicEntityLayerView.VehicleCallout.swift */,
 			);
 			path = "Add dynamic entity layer";
