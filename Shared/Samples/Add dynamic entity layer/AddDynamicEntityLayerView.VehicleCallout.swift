@@ -94,8 +94,8 @@ private extension Result<ArcadeEvaluationResult, Error> {
     /// or a type other than a string, then an empty string is returned.
     var stringValue: String {
         switch self {
-        case .success(let evalutationResult):
-            if let resultString = evalutationResult.result(as: .string) as? String {
+        case .success(let evaluationResult):
+            if let resultString = evaluationResult.result(as: .string) as? String {
                 return resultString
             }
             fallthrough
