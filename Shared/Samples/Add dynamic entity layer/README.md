@@ -23,6 +23,7 @@ Use the controls to connect to or disconnect from the stream service, modify dis
 4. Create a `DynamicEntityLayer` using the stream service.
 5. Update values in the layer's `trackDisplayProperties` to customize the layer's appearance.
 6. Add the `DynamicEntityLayer` to the map.
+7. Use the `onSingleTapGesture` modifier and call `MapViewProxy.identify(on:screenPoint:tolerance:returnPopupsOnly:maximumResults:)` to select a dynamic entity and display the entity's attributes in a callout.
 
 ## Relevant API
 
