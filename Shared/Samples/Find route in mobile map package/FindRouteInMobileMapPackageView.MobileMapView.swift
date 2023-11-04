@@ -27,8 +27,8 @@ extension FindRouteInMobileMapPackageView {
         /// The text address shown in the callout.
         @State private var calloutText: String = ""
         
-        /// The point on the map where the user tapped.
-        @State private var tapLocation: Point?
+        /// The point on the screen where the user tapped.
+        @State private var tapScreenPoint: CGPoint?
         
         /// A Boolean value indicating whether the reset button is disabled.
         @State private var resetDisabled = true
@@ -47,54 +47,88 @@ extension FindRouteInMobileMapPackageView {
         }
         
         var body: some View {
-            MapView(map: model.map, graphicsOverlays: model.graphicsOverlays)
-                .callout(placement: $calloutPlacement) { _ in
-                    Text(calloutText)
-                        .font(.callout)
-                        .padding(8)
-                }
-                .onSingleTapGesture { _, mapPoint in
-                    tapLocation = mapPoint
-                }
-                .toolbar {
-                    ToolbarItemGroup(placement: .bottomBar) {
-                        Spacer()
-                        Button("Reset") {
-                            resetGraphics()
+            MapViewReader { mapViewProxy in
+                MapView(map: model.map, graphicsOverlays: model.graphicsOverlays)
+                    .callout(placement: $calloutPlacement) { _ in
+                        Text(calloutText)
+                            .font(.callout)
+                            .padding(8)
+                    }
+                    .onSingleTapGesture { screenPoint, _ in
+                        tapScreenPoint = screenPoint
+                    }
+                    .task(id: tapScreenPoint) {
+                        guard let tapScreenPoint else { return }
+
+                        do {
+                            // Check to see if the tap was on a marker.
+                            let identifyResult = try await mapViewProxy.identify(
+                                on: model.markerGraphicsOverlay,
+                                screenPoint: tapScreenPoint,
+                                tolerance: 12
+                            )
+                            
+                            if let graphic = identifyResult.graphics.first,
+                               let graphicPoint = graphic.geometry as? Point {
+                                // Update the callout to the identified marker.
+                                await updateCallout(point: graphicPoint, graphic: graphic)
+                            } else {
+                                // Add a graphic at the tapped map point.
+                                guard let location = mapViewProxy.location(
+                                    fromScreenPoint: tapScreenPoint
+                                ) else { return }
+                                await addGraphic(at: location)
+                            }
+                        } catch {
+                            self.error = error
                         }
-                        .disabled(resetDisabled)
+                        
+                        self.tapScreenPoint = nil
                     }
-                }
-                .task {
-                    // Load the default route parameters from the route task when the sample loads.
-                    do {
-                        model.routeParameters = try await model.routeTask?.makeDefaultParameters()
-                    } catch {
-                        self.error = error
+            }
+            .toolbar {
+                ToolbarItemGroup(placement: .bottomBar) {
+                    Spacer()
+                    Button("Reset") {
+                        resetGraphics()
                     }
+                    .disabled(resetDisabled)
                 }
-                .task(id: tapLocation) {
-                    guard let tapLocation else { return }
-                    await handleTapLocation(tapLocation)
-                    self.tapLocation = nil
+            }
+            .task {
+                // Load the default route parameters from the route task when the sample loads.
+                do {
+                    model.routeParameters = try await model.routeTask?.makeDefaultParameters()
+                } catch {
+                    self.error = error
                 }
-                .alert(isPresented: $errorAlertIsShowing, presentingError: error)
+            }
+            .alert(isPresented: $errorAlertIsShowing, presentingError: error)
         }
         
-        /// Adds a marker or route stop with a callout at a given tap location.
-        /// - Parameter tapLocation: The point on the map where the user tapped.
-        private func handleTapLocation(_ tapLocation: Point) async {
-            // Normalize the tap location.
-            guard let point = GeometryEngine.normalizeCentralMeridian(of: tapLocation) as? Point
-            else { return }
-            
-            // Update the callout's text with address from a reverse geocode.
+        /// Updates the placement and text of the callout using a given point and graphic.
+        /// - Parameters:
+        ///   - point: The map point to reverse geocode and set the callout placement to.
+        ///   - graphic: The graphic at the map point.
+        private func updateCallout(point: Point, graphic: Graphic) async {
+            // Update the callout text with an address from a reverse geocode.
             do {
                 calloutText = try await model.reverseGeocode(point: point)
             } catch {
                 self.error = error
                 calloutText = "No address found"
             }
+            
+            // Update the callout placement with the graphic and point.
+            calloutPlacement = .geoElement(graphic, tapLocation: point)
+        }
+        
+        /// Adds a marker or route stop with a callout at a given point.
+        /// - Parameter point: The point on the map to add the graphic at.
+        private func addGraphic(at point: Point) async {
+            // Normalize the tap location.
+            guard let point = GeometryEngine.normalizeCentralMeridian(of: point) as? Point
+            else { return }
             
             // Add a route stop if the map has routing. Otherwise, update the marker.
             if model.routeTask != nil {
@@ -107,9 +141,9 @@ extension FindRouteInMobileMapPackageView {
                 model.updateMarker(to: point)
             }
             
-            // Update the callout placement with the graphic placed.
+            // Update the callout with the graphic updated or placed.
             guard let lastMarker = model.lastMarker else { return }
-            calloutPlacement = .geoElement(lastMarker, tapLocation: point)
+            await updateCallout(point: point, graphic: lastMarker)
             
             resetDisabled = false
         }
