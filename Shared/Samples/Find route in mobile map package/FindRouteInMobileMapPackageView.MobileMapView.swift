@@ -59,7 +59,7 @@ extension FindRouteInMobileMapPackageView {
                     }
                     .task(id: tapScreenPoint) {
                         guard let tapScreenPoint else { return }
-
+                        
                         do {
                             // Check to see if the tap was on a marker.
                             let identifyResult = try await mapViewProxy.identify(
