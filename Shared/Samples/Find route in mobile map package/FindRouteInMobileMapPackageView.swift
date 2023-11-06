@@ -137,7 +137,7 @@ private extension FindRouteInMobileMapPackageView {
                 } label: {
                     HStack {
                         // The image of the map for the row.
-                        Image(uiImage: map.item?.thumbnail?.image ?? UIImage())
+                        Image(uiImage: map.item?.thumbnail?.image ?? UIImage(systemName: "questionmark")!)
                             .resizable()
                             .scaledToFit()
                             .frame(height: 50)
