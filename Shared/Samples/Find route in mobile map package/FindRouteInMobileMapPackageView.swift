@@ -63,7 +63,7 @@ struct FindRouteInMobileMapPackageView: View {
                   let bundleMapPackageURLs = Bundle.main.urls(
                     forResourcesWithExtension: "mmpk",
                     subdirectory: nil
-                  )  
+                  )
             else { return }
             
             await model.addMapPackages(from: bundleMapPackageURLs)
