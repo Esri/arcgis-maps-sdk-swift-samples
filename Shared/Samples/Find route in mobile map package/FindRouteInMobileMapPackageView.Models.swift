@@ -15,8 +15,75 @@
 import ArcGIS
 import SwiftUI
 
+extension FindRouteInMobileMapPackageView {
+    /// The view model for the `FindRouteInMobileMapPackageView`.
+    @MainActor
+    class Model: ObservableObject {
+        /// The list of loaded mobile map packages.
+        @Published var mapPackages = [MobileMapPackage]()
+        
+        /// A Boolean value indicating whether the error alert is showing.
+        @Published var errorAlertIsShowing = false
+        
+        /// The error shown in the error alert.
+        @Published var error: Error? {
+            didSet { errorAlertIsShowing = error != nil }
+        }
+        
+        /// The list of file URLs that have been securely accessed.
+        private var accessedURLs = [URL]()
+        
+        deinit {
+            // Release access to all the accessed URLs.
+            for url in accessedURLs {
+                url.stopAccessingSecurityScopedResource()
+            }
+        }
+        
+        /// Imports mobile packages from a given list of URLs.
+        /// - Parameter URLs: The file URLs to the "mmpk" files to import.
+        func importMapPackages(from URLs: [URL]) async {
+            // Make each URL accessible.
+            for url in URLs {
+                if !accessedURLs.contains(url) && url.startAccessingSecurityScopedResource() {
+                    accessedURLs.append(url)
+                }
+            }
+            
+            // Load the map packages from the URLs.
+            await addMapPackages(from: URLs)
+        }
+        
+        /// Adds packages to the map package list using a given list of file URLs.
+        /// - Parameter URLs: The file URLs to the "mmpk" files to add.
+        func addMapPackages(from URLs: [URL]) async {
+            do {
+                // Create and load a mobile map package using each url.
+                let mapPackages = try await withThrowingTaskGroup(of: MobileMapPackage.self) { group in
+                    for url in URLs {
+                        group.addTask {
+                            let mapPackage = MobileMapPackage(fileURL: url)
+                            try await mapPackage.load()
+                            return mapPackage
+                        }
+                    }
+                    var loadedMapPackages: [MobileMapPackage] = []
+                    for try await loadedMapPackage in group {
+                        loadedMapPackages.append(loadedMapPackage)
+                    }
+                    return loadedMapPackages.sorted { $0.item?.name ?? "" < $1.item?.name ?? "" }
+                }
+                
+                self.mapPackages.append(contentsOf: mapPackages)
+            } catch {
+                self.error = error
+            }
+        }
+    }
+}
+
 extension FindRouteInMobileMapPackageView.MobileMapView {
-    /// The view model used to store the geo model and other expensive objects used in the mobile map view.
+    /// The view model for the `FindRouteInMobileMapPackageView.MobileMapView`.
     @MainActor
     class Model: ObservableObject {
         // MARK: Properties

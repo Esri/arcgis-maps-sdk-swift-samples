@@ -17,27 +17,19 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct FindRouteInMobileMapPackageView: View {
-    /// The mobile map packages to show in the list.
-    @State private var mapPackages: [MobileMapPackage] = []
+    /// The view model for the view.
+    @StateObject private var model = Model()
     
     /// A Boolean value indicating whether the file importer interface is showing.
     @State private var fileImporterIsShowing = false
     
-    /// The URLs to the "mmpk" files imported from the file importer.
+    /// The file URLs imported from the file importer pointing to local "mmpk" files.
     @State private var importedFileURLs: [URL]?
-    
-    /// A Boolean value indicating whether the error alert is showing.
-    @State private var errorAlertIsShowing = false
-    
-    /// The error shown in the error alert.
-    @State private var error: Error? {
-        didSet { errorAlertIsShowing = error != nil }
-    }
     
     var body: some View {
         List {
             // Create a list section for each map package.
-            ForEach(mapPackages.enumeratedArray(), id: \.offset) { (offset, mapPackage) in
+            ForEach(model.mapPackages.enumeratedArray(), id: \.offset) { (offset, mapPackage) in
                 Section {
                     MobileMapListView(mapPackage: mapPackage)
                 } header: {
@@ -60,56 +52,30 @@ struct FindRouteInMobileMapPackageView: View {
                     case .success(let fileURLs):
                         importedFileURLs = fileURLs
                     case .failure(let error):
-                        self.error = error
+                        model.error = error
                     }
                 }
             }
         }
         .task {
-            // Load all the mobile map packages in the bundle when the sample loads.
-            guard let bundleMapPackageURLs = Bundle.main.urls(
-                forResourcesWithExtension: "mmpk",
-                subdirectory: nil
-            )  else { return }
-            mapPackages = await loadMapPackages(from: bundleMapPackageURLs)
+            // When the sample first loads, load all the mobile map packages in the bundle.
+            guard model.mapPackages.isEmpty,
+                  let bundleMapPackageURLs = Bundle.main.urls(
+                    forResourcesWithExtension: "mmpk",
+                    subdirectory: nil
+                  )  
+            else { return }
+            
+            await model.addMapPackages(from: bundleMapPackageURLs)
         }
         .task(id: importedFileURLs) {
-            // Load the new mobile map packages when file URLs are imported.
+            // When new file URLs are imported, use them to import the mobile map package.
             guard let importedFileURLs else { return }
             
-            let newMapPackages = await loadMapPackages(from: importedFileURLs)
-            mapPackages.append(contentsOf: newMapPackages)
+            await model.importMapPackages(from: importedFileURLs)
             self.importedFileURLs = nil
         }
-        .alert(isPresented: $errorAlertIsShowing, presentingError: error)
-    }
-    
-    /// Loads a list of mobile map packages from a given list of URLs.
-    /// - Parameter URLs: The list of file URLs pointing to "mmpk" files.
-    /// - Returns: A list of loaded mobile map packages.
-    private func loadMapPackages(from URLs: [URL]) async -> [MobileMapPackage] {
-        do {
-            // Create and load a mobile map package using each url.
-            let mapPackages = try await withThrowingTaskGroup(of: MobileMapPackage.self) { group in
-                for url in URLs {
-                    group.addTask {
-                        let mapPackage = MobileMapPackage(fileURL: url)
-                        try await mapPackage.load()
-                        return mapPackage
-                    }
-                }
-                var loadedMapPackages: [MobileMapPackage] = []
-                for try await loadedMapPackage in group {
-                    loadedMapPackages.append(loadedMapPackage)
-                }
-                return loadedMapPackages.sorted { $0.item?.name ?? "" < $1.item?.name ?? "" }
-            }
-            
-            return mapPackages
-        } catch {
-            self.error = error
-            return []
-        }
+        .alert(isPresented: $model.errorAlertIsShowing, presentingError: model.error)
     }
 }
 

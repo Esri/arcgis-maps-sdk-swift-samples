@@ -42,7 +42,7 @@
     ],
     "snippets": [
         "FindRouteInMobileMapPackageView.swift",
-        "FindRouteInMobileMapPackageView.Model.swift",
+        "FindRouteInMobileMapPackageView.Models.swift",
         "FindRouteInMobileMapPackageView.MobileMapView.swift"
     ],
     "title": "Find route in mobile map package"
