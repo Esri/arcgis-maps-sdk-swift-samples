@@ -41,7 +41,9 @@
         "TransportationNetworkDataset"
     ],
     "snippets": [
-        "FindRouteInMobileMapPackageView.swift"
+        "FindRouteInMobileMapPackageView.swift",
+        "FindRouteInMobileMapPackageView.Model.swift",
+        "FindRouteInMobileMapPackageView.MobileMapView.swift"
     ],
     "title": "Find route in mobile map package"
 }
