@@ -98,7 +98,7 @@ extension FindRouteInMobileMapPackageView.MobileMapView {
         
         // MARK: Methods
         
-        /// Updates the marker to a given point or adds a new one if there isn't one.
+        /// Updates the marker to a given point or adds a new marker if there isn't one yet.
         /// - Parameter point: The point to set the marker to.
         func updateMarker(to point: Point) {
             if lastMarker != nil {
@@ -121,7 +121,7 @@ extension FindRouteInMobileMapPackageView.MobileMapView {
                 addStopGraphic(at: point)
             }
             
-            // Create a new route for the stop.
+            // Create a route using the stop.
             try await addRoute()
         }
         
@@ -147,10 +147,10 @@ extension FindRouteInMobileMapPackageView.MobileMapView {
             return "No address found"
         }
         
-        /// Adds a stop graphic to the map view.
+        /// Adds a stop graphic to the marker graphics overlay.
         /// - Parameter point: The point to add the stop graphic at.
         private func addStopGraphic(at point: Point) {
-            // Create a text symbol with next index.
+            // Create a text symbol with the next marker index.
             let textSymbol = TextSymbol(
                 text: "\(markersCount + 1)",
                 color: .white,
@@ -164,7 +164,7 @@ extension FindRouteInMobileMapPackageView.MobileMapView {
             let compositeSymbol = CompositeSymbol(symbols: [markerSymbol, textSymbol])
             let stopGraphic = Graphic(geometry: point, symbol: compositeSymbol)
             
-            // Add the new graphic to the graphics overlay.
+            // Add the new graphic to the marker graphics overlay.
             markerGraphicsOverlay.addGraphic(stopGraphic)
         }
         

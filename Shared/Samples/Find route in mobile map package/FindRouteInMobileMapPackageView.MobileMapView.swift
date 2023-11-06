@@ -108,10 +108,10 @@ extension FindRouteInMobileMapPackageView {
         
         /// Updates the placement and text of the callout using a given point and graphic.
         /// - Parameters:
-        ///   - point: The map point to reverse geocode and set the callout placement to.
-        ///   - graphic: The graphic at the map point.
+        ///   - point: The point to reverse geocode and set the callout placement to.
+        ///   - graphic: The graphic at the point.
         private func updateCallout(point: Point, graphic: Graphic) async {
-            // Update the callout text with an address from a reverse geocode.
+            // Update the callout text with the address from a reverse geocode.
             do {
                 calloutText = try await model.reverseGeocode(point: point)
             } catch {
@@ -124,7 +124,7 @@ extension FindRouteInMobileMapPackageView {
         }
         
         /// Adds a marker or route stop with a callout at a given point.
-        /// - Parameter point: The point on the map to add the graphic at.
+        /// - Parameter point: The point to add the graphic at.
         private func addGraphic(at point: Point) async {
             // Normalize the tap location.
             guard let point = GeometryEngine.normalizeCentralMeridian(of: point) as? Point
@@ -141,7 +141,7 @@ extension FindRouteInMobileMapPackageView {
                 model.updateMarker(to: point)
             }
             
-            // Update the callout with the graphic updated or placed.
+            // Update the callout with the last marker.
             guard let lastMarker = model.lastMarker else { return }
             await updateCallout(point: point, graphic: lastMarker)
             
