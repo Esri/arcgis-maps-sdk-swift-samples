@@ -28,53 +28,72 @@ struct AddDynamicEntityLayerView: View {
         scale: 200_000
     )
     
+    /// The callout placement.
+    @State private var placement: CalloutPlacement?
+    
     /// A Boolean value indicating if the stream service is connected.
     var isConnected: Bool {
         model.streamService.connectionStatus == .connected
     }
     
     var body: some View {
-        // Creates a map view to display the map.
-        MapView(map: model.map, viewpoint: viewpoint)
-            .toolbar {
-                ToolbarItemGroup(placement: .bottomBar) {
-                    Button(isConnected ? "Disconnect" : "Connect") {
-                        Task {
-                            if isConnected {
-                                await model.streamService.disconnect()
-                            } else {
-                                try? await model.streamService.connect()
+        MapViewReader { proxy in
+            MapView(map: model.map, viewpoint: viewpoint)
+                .callout(placement: $placement) { placement in
+                    VehicleCallout(dynamicEntity: placement.geoElement as! DynamicEntity)
+                }
+                .onSingleTapGesture { screenPoint, _ in
+                    placement = nil
+                    Task {
+                        guard let result = try? await proxy.identify(on: model.dynamicEntityLayer, screenPoint: screenPoint, tolerance: 12),
+                              let observation = result.geoElements.first as? DynamicEntityObservation,
+                              let entity = observation.dynamicEntity
+                        else {
+                            return
+                        }
+                        placement = .geoElement(entity)
+                    }
+                }
+                .toolbar {
+                    ToolbarItemGroup(placement: .bottomBar) {
+                        Button(isConnected ? "Disconnect" : "Connect") {
+                            Task {
+                                if isConnected {
+                                    await model.streamService.disconnect()
+                                } else {
+                                    try? await model.streamService.connect()
+                                }
                             }
                         }
+                        Spacer()
+                        settingsButton
                     }
-                    Spacer()
-                    settingsButton
                 }
-            }
-            .overlay(alignment: .top) {
-                HStack {
-                    Text("Status:")
-                    Text(model.connectionStatus)
-                        .italic()
+                .overlay(alignment: .top) {
+                    HStack {
+                        Text("Status:")
+                        Text(model.connectionStatus)
+                            .italic()
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 6)
+                    .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
                 }
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 6)
-                .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
-            }
-            .task {
-                // This will update `connectionStatus` when the stream service
-                // connection status changes.
-                for await status in model.streamService.$connectionStatus {
-                    model.connectionStatus = status.description
+                .task {
+                    // This will update `connectionStatus` when the stream service
+                    // connection status changes.
+                    for await status in model.streamService.$connectionStatus {
+                        model.connectionStatus = status.description
+                    }
                 }
-            }
+        }
     }
     
     @ViewBuilder private var settingsButton: some View {
         let button = Button("Dynamic Entity Settings") {
             isShowingSettings = true
         }
-        let settingsView = SettingsView()
+        let settingsView = SettingsView(calloutPlacement: $placement)
             .environmentObject(model)
         if #available(iOS 16, *) {
             button
