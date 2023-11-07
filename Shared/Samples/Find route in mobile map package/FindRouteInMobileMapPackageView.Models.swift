@@ -95,9 +95,9 @@ extension FindRouteInMobileMapPackageView.MobileMapView {
         var graphicsOverlays: [GraphicsOverlay] {
             if let routeGraphicsOverlay {
                 return [markerGraphicsOverlay, routeGraphicsOverlay]
+            } else {
+                return [markerGraphicsOverlay]
             }
-            
-            return [markerGraphicsOverlay]
         }
         
         /// The graphics overlay for the marker graphics.
@@ -209,9 +209,9 @@ extension FindRouteInMobileMapPackageView.MobileMapView {
                 let streetString = result.attributes["StAddr"] as? String ?? ""
                 let stateString = result.attributes["Region"] as? String ?? ""
                 return "\(streetString), \(cityString), \(stateString)"
+            } else {
+                return "No address found"
             }
-            
-            return "No address found"
         }
         
         /// Adds a stop graphic to the marker graphics overlay.
