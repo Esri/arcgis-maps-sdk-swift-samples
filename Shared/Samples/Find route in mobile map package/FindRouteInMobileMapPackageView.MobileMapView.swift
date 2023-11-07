@@ -127,8 +127,7 @@ extension FindRouteInMobileMapPackageView {
         /// - Parameter point: The point to add the graphic at.
         private func addGraphic(at point: Point) async {
             // Normalize the tap location.
-            guard let point = GeometryEngine.normalizeCentralMeridian(of: point) as? Point
-            else { return }
+            guard let point = GeometryEngine.normalizeCentralMeridian(of: point) as? Point else { return }
             
             // Add a route stop if the map has routing. Otherwise, update the marker.
             if model.routeTask != nil {

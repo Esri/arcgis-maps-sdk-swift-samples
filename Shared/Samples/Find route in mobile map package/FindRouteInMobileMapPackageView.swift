@@ -136,7 +136,7 @@ private extension FindRouteInMobileMapPackageView {
 
 private extension Collection {
     /// Enumerates a collection as an array of (n, x) pairs, where n represents a consecutive integer
-    /// starting at zero and x represents an element of the collection..
+    /// starting at zero and x represents an element of the collection.
     /// - Returns: An array of pairs enumerating the collection.
     func enumeratedArray() -> [(offset: Int, element: Self.Element)] {
         return Array(self.enumerated())
