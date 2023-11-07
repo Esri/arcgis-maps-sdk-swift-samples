@@ -58,15 +58,9 @@ struct FindRouteInMobileMapPackageView: View {
             }
         }
         .task {
-            // When the sample first loads, load all the mobile map packages in the bundle.
-            guard model.mapPackages.isEmpty,
-                  let bundleMapPackageURLs = Bundle.main.urls(
-                    forResourcesWithExtension: "mmpk",
-                    subdirectory: nil
-                  )
-            else { return }
-            
-            await model.addMapPackages(from: bundleMapPackageURLs)
+            // When the sample loads, load the San Francisco mobile map package from the bundle.
+            guard model.mapPackages.isEmpty else { return }
+            await model.addMapPackages(from: [.sanFranciscoPackage])
         }
         .task(id: importedFileURLs) {
             // When new file URLs are imported, use them to import the mobile map package.
@@ -92,14 +86,10 @@ private extension FindRouteInMobileMapPackageView {
                 
                 // The navigation link to the map.
                 NavigationLink {
-                    Group {
-                        if let locatorTask = mapPackage.locatorTask {
-                            MobileMapView(map: map, locatorTask: locatorTask)
-                        } else {
-                            MapView(map: map)
-                        }
+                    if let locatorTask = mapPackage.locatorTask {
+                        MobileMapView(map: map, locatorTask: locatorTask)
+                            .navigationTitle(mapName)
                     }
-                    .navigationTitle(mapName)
                 } label: {
                     HStack {
                         // The image of the map for the row.
@@ -167,4 +157,11 @@ private extension String {
 private extension UTType {
     /// A type that represents a mobile map package file.
     static let mmpk = UTType(filenameExtension: "mmpk")!
+}
+
+private extension URL {
+    /// The URL to the local San Francisco mobile map package file.
+    static var sanFranciscoPackage: URL {
+        Bundle.main.url(forResource: "SanFrancisco", withExtension: "mmpk")!
+    }
 }
