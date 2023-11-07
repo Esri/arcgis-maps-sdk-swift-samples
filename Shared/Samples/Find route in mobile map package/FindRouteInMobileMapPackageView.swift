@@ -33,7 +33,7 @@ struct FindRouteInMobileMapPackageView: View {
                 Section {
                     MobileMapListView(mapPackage: mapPackage)
                 } header: {
-                    Text(mapPackage.item?.title.titleCased ?? "Mobile Map Package \(offset + 1)")
+                    Text(mapPackage.item?.title ?? "Mobile Map Package \(offset + 1)")
                 }
             }
         }
@@ -82,7 +82,7 @@ private extension FindRouteInMobileMapPackageView {
         var body: some View {
             // Create a list row for each map in the map package.
             ForEach(mapPackage.maps.enumeratedArray(), id: \.offset) { (offset, map) in
-                let mapName = map.item?.name.titleCased ?? "Map \(offset + 1)"
+                let mapName = map.item?.name ?? "Map \(offset + 1)"
                 
                 // The navigation link to the map.
                 NavigationLink {
@@ -130,27 +130,6 @@ private extension Collection {
     /// - Returns: An array of pairs enumerating the collection.
     func enumeratedArray() -> [(offset: Int, element: Self.Element)] {
         return Array(self.enumerated())
-    }
-}
-
-private extension String {
-    /// A copy of a camel cased string broken into words with capital letters.
-    var titleCased: String {
-        // Break string into words if needed.
-        let words: String
-        if !self.trimmingCharacters(in: .whitespacesAndNewlines).contains(" ") {
-            words = self.replacingOccurrences(
-                of: "([A-Z])",
-                with: " $1",
-                options: .regularExpression
-            )
-        } else {
-            words = self
-        }
-        
-        return words
-            .trimmingCharacters(in: .whitespacesAndNewlines)
-            .capitalized
     }
 }
 
