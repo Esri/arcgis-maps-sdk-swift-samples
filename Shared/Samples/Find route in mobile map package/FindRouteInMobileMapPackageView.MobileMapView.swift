@@ -82,8 +82,6 @@ extension FindRouteInMobileMapPackageView {
                         } catch {
                             self.error = error
                         }
-                        
-                        self.tapScreenPoint = nil
                     }
             }
             .toolbar {
