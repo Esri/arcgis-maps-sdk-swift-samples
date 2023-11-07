@@ -23,8 +23,8 @@ struct FindRouteInMobileMapPackageView: View {
     /// A Boolean value indicating whether the file importer interface is showing.
     @State private var fileImporterIsShowing = false
     
-    /// The file URLs imported from the file importer pointing to local "mmpk" files.
-    @State private var importedFileURLs: [URL]?
+    /// The file URL to a local "mmpk" file imported from the file importer.
+    @State private var importedFileURL: URL?
     
     var body: some View {
         List {
@@ -45,12 +45,11 @@ struct FindRouteInMobileMapPackageView: View {
                 }
                 .fileImporter(
                     isPresented: $fileImporterIsShowing,
-                    allowedContentTypes: [.mmpk],
-                    allowsMultipleSelection: true
+                    allowedContentTypes: [.mmpk]
                 ) { result in
                     switch result {
-                    case .success(let fileURLs):
-                        importedFileURLs = fileURLs
+                    case .success(let fileURL):
+                        importedFileURL = fileURL
                     case .failure(let error):
                         model.error = error
                     }
@@ -58,16 +57,14 @@ struct FindRouteInMobileMapPackageView: View {
             }
         }
         .task {
-            // When the sample loads, load the San Francisco mobile map package from the bundle.
+            // Load the San Francisco mobile map package from the bundle when the sample loads.
             guard model.mapPackages.isEmpty else { return }
-            await model.addMapPackages(from: [.sanFranciscoPackage])
+            await model.addMapPackage(from: .sanFranciscoPackage)
         }
-        .task(id: importedFileURLs) {
-            // When new file URLs are imported, use them to import the mobile map package.
-            guard let importedFileURLs else { return }
-            
-            await model.importMapPackages(from: importedFileURLs)
-            self.importedFileURLs = nil
+        .task(id: importedFileURL) {
+            // Load the new mobile map package when a file URL is imported.
+            guard let importedFileURL else { return }
+            await model.importMapPackage(from: importedFileURL)
         }
         .alert(isPresented: $model.errorAlertIsShowing, presentingError: model.error)
     }
@@ -77,7 +74,7 @@ private extension FindRouteInMobileMapPackageView {
     /// A list of the maps in a given map package.
     struct MobileMapListView: View {
         /// The mobile map package containing the maps.
-        let mapPackage: MobileMapPackage
+        @State var mapPackage: MobileMapPackage
         
         var body: some View {
             // Create a list row for each map in the map package.

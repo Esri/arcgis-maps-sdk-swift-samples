@@ -20,7 +20,7 @@ extension FindRouteInMobileMapPackageView {
     @MainActor
     class Model: ObservableObject {
         /// The list of loaded mobile map packages.
-        @Published var mapPackages = [MobileMapPackage]()
+        @Published private(set) var mapPackages = [MobileMapPackage]()
         
         /// A Boolean value indicating whether the error alert is showing.
         @Published var errorAlertIsShowing = false
@@ -40,41 +40,25 @@ extension FindRouteInMobileMapPackageView {
             }
         }
         
-        /// Imports mobile packages from a given list of URLs.
-        /// - Parameter URLs: The file URLs to the "mmpk" files to import.
-        func importMapPackages(from URLs: [URL]) async {
-            // Make each URL accessible.
-            for url in URLs {
-                if !accessedURLs.contains(url) && url.startAccessingSecurityScopedResource() {
-                    accessedURLs.append(url)
-                }
+        /// Imports a mobile map package from a given file URL.
+        /// - Parameter URLs: The file URL to the "mmpk" file to import.
+        func importMapPackage(from fileURL: URL) async {
+            // Make the URL accessible.
+            if !accessedURLs.contains(fileURL) && fileURL.startAccessingSecurityScopedResource() {
+                accessedURLs.append(fileURL)
             }
             
-            // Load the map packages from the URLs.
-            await addMapPackages(from: URLs)
+            // Load the map package.
+            await addMapPackage(from: fileURL)
         }
         
-        /// Adds packages to the map package list using a given list of file URLs.
-        /// - Parameter URLs: The file URLs to the "mmpk" files to add.
-        func addMapPackages(from URLs: [URL]) async {
+        /// Adds a mobile map package to the map packages list using a given file URL.
+        /// - Parameter URLs: The file URL to the "mmpk" file to add.
+        func addMapPackage(from fileURL: URL) async {
             do {
-                // Create and load a mobile map package using each url.
-                let mapPackages = try await withThrowingTaskGroup(of: MobileMapPackage.self) { group in
-                    for url in URLs {
-                        group.addTask {
-                            let mapPackage = MobileMapPackage(fileURL: url)
-                            try await mapPackage.load()
-                            return mapPackage
-                        }
-                    }
-                    var loadedMapPackages: [MobileMapPackage] = []
-                    for try await loadedMapPackage in group {
-                        loadedMapPackages.append(loadedMapPackage)
-                    }
-                    return loadedMapPackages.sorted { $0.item?.name ?? "" < $1.item?.name ?? "" }
-                }
-                
-                self.mapPackages.append(contentsOf: mapPackages)
+                let mapPackage = MobileMapPackage(fileURL: fileURL)
+                try await mapPackage.load()
+                mapPackages.append(mapPackage)
             } catch {
                 self.error = error
             }
