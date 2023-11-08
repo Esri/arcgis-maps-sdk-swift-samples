@@ -19,24 +19,162 @@ struct FindClosestFacilityToMultiplePointsView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
+    /// The location on the map where the user tapped.
+    @State private var tapLocation: Point?
+    
+    /// A Boolean value indicating whether the error alert is showing.
+    @State private var errorAlertIsShowing = false
+    
+    /// The error shown in the error alert.
+    @State private var error: Error? {
+        didSet { errorAlertIsShowing = error != nil }
+    }
+    
     var body: some View {
-        MapView(map: model.map)
-            .alert(isPresented: $model.isShowingErrorAlert, presentingError: model.error)
+        MapView(
+            map: model.map,
+            graphicsOverlays: [model.facilityGraphicsOverlay, model.incidentGraphicsOverlay]
+        )
+        .onSingleTapGesture { _, mapPoint in
+            tapLocation = mapPoint
+        }
+        .task(id: tapLocation) {
+            // Add an incident at the tap location.
+            guard let tapLocation else { return }
+            
+            do {
+                try await model.updateIncident(to: tapLocation)
+            } catch {
+                self.error = error
+            }
+        }
+        .task {
+            // Create the default parameters from the task when the sample loads.
+            do {
+                try await model.closestFacilityParameters = model.closestFacilityTask.makeDefaultParameters()
+                model.closestFacilityParameters?.setFacilities(model.facilities)
+            } catch {
+                self.error = error
+            }
+        }
+        .alert(isPresented: $errorAlertIsShowing, presentingError: error)
     }
 }
 
 private extension FindClosestFacilityToMultiplePointsView {
     /// The view model for the sample.
     class Model: ObservableObject {
-        /// A map with a topographic basemap.
-        let map = Map(basemapStyle: .arcGISTopographic)
+        /// A map with a streets basemap centered on San Diego, CA, USA.
+        let map = {
+            let map = Map(basemapStyle: .arcGISStreets)
+            map.initialViewpoint = Viewpoint(latitude: 32.727, longitude: -117.175, scale: 144_400)
+            return map
+        }()
         
-        /// A Boolean value indicating whether to show an error alert.
-        @Published var isShowingErrorAlert = false
+        /// The graphics overlay for the incident graphics.
+        let incidentGraphicsOverlay = GraphicsOverlay()
         
-        /// The error shown in the error alert.
-        @Published var error: Error? {
-            didSet { isShowingErrorAlert = error != nil }
+        /// The graphics overlay for the facility graphics.
+        let facilityGraphicsOverlay = GraphicsOverlay()
+        
+        /// The task for finding the closest facility.
+        let closestFacilityTask = ClosestFacilityTask(url: .sanDiegoNetworkAnalysis)
+        
+        /// The parameters to be passed to the task to find the closest facility.
+        var closestFacilityParameters: ClosestFacilityParameters?
+        
+        /// A list of facilities around San Diego, CA, USA.
+        let facilities = {
+            let facilityPoints = [
+                Point(x: -13_042_130, y: 3_860_128, spatialReference: .webMercator),
+                Point(x: -13_042_193, y: 3_862_449, spatialReference: .webMercator),
+                Point(x: -13_046_883, y: 3_862_705, spatialReference: .webMercator),
+                Point(x: -13_040_540, y: 3_862_925, spatialReference: .webMercator),
+                Point(x: -13_042_571, y: 3_858_982, spatialReference: .webMercator),
+                Point(x: -13_039_785, y: 3_856_693, spatialReference: .webMercator),
+                Point(x: -13_049_024, y: 3_861_994, spatialReference: .webMercator)
+            ]
+            return facilityPoints.map { Facility(point: $0) }
+        }()
+        
+        /// The graphic for the route.
+        private let routeGraphic = Graphic(
+            symbol: SimpleLineSymbol(style: .solid, color: .blue, width: 2.0)
+        )
+        
+        /// The graphic for the incident.
+        private let incidentGraphic = Graphic(
+            symbol: SimpleMarkerSymbol(style: .cross, color: .black, size: 20)
+        )
+        
+        init() {
+            // Add the incident graphics to the graphics overlay.
+            incidentGraphicsOverlay.addGraphics([routeGraphic, incidentGraphic])
+            
+            // Create graphics for all the facilities and add them to the graphics overlay.
+            let facilitySymbol = PictureMarkerSymbol(url: .hospitalImage)
+            facilitySymbol.height = 30
+            facilitySymbol.width = 30
+            
+            let facilityGraphics = facilities.map {
+                Graphic(geometry: $0.geometry, symbol: facilitySymbol)
+            }
+            facilityGraphicsOverlay.addGraphics(facilityGraphics)
         }
+        
+        /// Updates the incident to a given point and routes to the closest facility accordingly.
+        /// - Parameter mapPoint: The point on the map at which to add the incident.
+        func updateIncident(to mapPoint: Point) async throws {
+            // Update the incident graphic to the new point.
+            incidentGraphic.geometry = mapPoint
+            
+            // Update the parameters with the new incident.
+            let incident = Incident(point: mapPoint)
+            closestFacilityParameters?.setIncidents([incident])
+            
+            // Route to the closest facility to the incident.
+            try await routeToClosestFacility()
+        }
+        
+        /// Routes to the closest facility to the incident using the closest facility task.
+        private func routeToClosestFacility() async throws {
+            guard let closestFacilityParameters else { return }
+            
+            // Get the closest facility result from the task using the parameters.
+            let closestFacilityResult = try await closestFacilityTask.solveClosestFacility(
+                using: closestFacilityParameters
+            )
+            
+            // Get the ranked list of the closest facility indexes from the result.
+            let rankedFacilityIndexes = closestFacilityResult.rankedIndexesOfFacilities(
+                forIncidentAtIndex: 0
+            )
+            
+            // Get the facility index closest to the incident.
+            guard let closestFacilityIndex = rankedFacilityIndexes.first else { return }
+            
+            // Get the route for the closest facility and incident from the result.
+            let routeResult = closestFacilityResult.route(
+                toFacilityAtIndex: closestFacilityIndex,
+                fromIncidentAtIndex: 0
+            )
+            
+            // Update the route graphic using the result's geometry to display it on the map.
+            routeGraphic.geometry = routeResult?.routeGeometry
+        }
+    }
+}
+
+private extension URL {
+    /// The URL to a network analysis server for San Diego, CA, USA on ArcGIS Online.
+    static var sanDiegoNetworkAnalysis: URL {
+        URL(
+            string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/NetworkAnalysis/SanDiego/NAServer/ClosestFacility"
+        )!
+    }
+    
+    /// The URL to an image of a hospital symbol on ArcGIS Online.
+    static var hospitalImage: URL {
+        URL(string: "https://static.arcgis.com/images/Symbols/SafetyHealth/Hospital.png")!
     }
 }
