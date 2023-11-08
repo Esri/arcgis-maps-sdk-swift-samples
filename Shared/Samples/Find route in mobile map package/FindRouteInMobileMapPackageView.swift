@@ -65,6 +65,7 @@ struct FindRouteInMobileMapPackageView: View {
             // Load the new mobile map package when a file URL is imported.
             guard let importedFileURL else { return }
             await model.importMapPackage(from: importedFileURL)
+            self.importedFileURL = nil
         }
         .alert(isPresented: $model.errorAlertIsShowing, presentingError: model.error)
     }
@@ -83,35 +84,41 @@ private extension FindRouteInMobileMapPackageView {
                 
                 // The navigation link to the map.
                 NavigationLink {
-                    if let locatorTask = mapPackage.locatorTask {
-                        MobileMapView(map: map, locatorTask: locatorTask)
-                            .navigationTitle(mapName)
+                    Group {
+                        if let locatorTask = mapPackage.locatorTask {
+                            MobileMapView(map: map, locatorTask: locatorTask)
+                        } else {
+                            MapView(map: map)
+                        }
                     }
+                    .navigationTitle(mapName)
                 } label: {
                     HStack {
                         // The image of the map for the row.
-                        Image(uiImage: map.item?.thumbnail?.image ?? UIImage(systemName: "questionmark")!)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 50)
-                            .overlay {
-                                // The symbols indicating the map's functionality.
-                                VStack {
-                                    HStack {
-                                        if !map.transportationNetworks.isEmpty {
-                                            // The symbol indicating whether the map can route.
-                                            Image(systemName: "arrow.triangle.turn.up.right.circle")
-                                        }
-                                        Spacer()
-                                        if mapPackage.locatorTask != nil {
-                                            // The symbol indicating whether the map can geocode.
-                                            Image(systemName: "mappin.circle")
-                                        }
+                        Image(uiImage: map.item?.thumbnail?.image ?? UIImage(
+                            systemName: "questionmark"
+                        )!)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 50)
+                        .overlay {
+                            // The symbols indicating the map's functionality.
+                            VStack {
+                                HStack {
+                                    if !map.transportationNetworks.isEmpty {
+                                        // The symbol indicating whether the map can route.
+                                        Image(systemName: "arrow.triangle.turn.up.right.circle")
                                     }
-                                    .padding(2)
                                     Spacer()
+                                    if mapPackage.locatorTask != nil {
+                                        // The symbol indicating whether the map can geocode.
+                                        Image(systemName: "mappin.circle")
+                                    }
                                 }
+                                .padding(2)
+                                Spacer()
                             }
+                        }
                         
                         Text(mapName)
                     }
