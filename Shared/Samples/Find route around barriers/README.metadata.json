@@ -50,7 +50,8 @@
         "Stop"
     ],
     "snippets": [
-        "FindRouteAroundBarriersView.swift"
+        "FindRouteAroundBarriersView.swift",
+        "FindRouteAroundBarriersView.Model.swift"
     ],
     "title": "Find route around barriers"
 }
