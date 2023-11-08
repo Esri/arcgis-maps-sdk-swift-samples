@@ -224,6 +224,8 @@
 		D7634FB02A43B8B000F8AEFB /* CreateConvexHullAroundGeometriesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7634FAE2A43B7AC00F8AEFB /* CreateConvexHullAroundGeometriesView.swift */; };
 		D769C2122A29019B00030F61 /* SetUpLocationDrivenGeotriggersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D769C2112A29019B00030F61 /* SetUpLocationDrivenGeotriggersView.swift */; };
 		D769C2132A29057200030F61 /* SetUpLocationDrivenGeotriggersView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D769C2112A29019B00030F61 /* SetUpLocationDrivenGeotriggersView.swift */; };
+		D7705D642AFC570700CC0335 /* FindClosestFacilityFromPointView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7705D612AFC570700CC0335 /* FindClosestFacilityFromPointView.swift */; };
+		D7705D662AFC575000CC0335 /* FindClosestFacilityFromPointView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7705D612AFC570700CC0335 /* FindClosestFacilityFromPointView.swift */; };
 		D7749AD62AF08BF50086632F /* FindRouteInTransportNetworkView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7749AD52AF08BF50086632F /* FindRouteInTransportNetworkView.Model.swift */; };
 		D77570C02A2942F800F490CD /* AnimateImagesWithImageOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77570BF2A2942F800F490CD /* AnimateImagesWithImageOverlayView.swift */; };
 		D77570C12A2943D900F490CD /* AnimateImagesWithImageOverlayView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D77570BF2A2942F800F490CD /* AnimateImagesWithImageOverlayView.swift */; };
@@ -355,6 +357,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				D7705D662AFC575000CC0335 /* FindClosestFacilityFromPointView.swift in Copy Source Code Files */,
 				00F279D72AF4364700CECAF8 /* AddDynamicEntityLayerView.VehicleCallout.swift in Copy Source Code Files */,
 				D76000A22AF18BAB00B3084D /* FindRouteInTransportNetworkView.Model.swift in Copy Source Code Files */,
 				D7E7D0822AEB3A1D003AAD02 /* FindRouteInTransportNetworkView.swift in Copy Source Code Files */,
@@ -606,6 +609,7 @@
 		D75C35662AB50338003CD55F /* GroupLayersTogetherView.GroupLayerListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupLayersTogetherView.GroupLayerListView.swift; sourceTree = "<group>"; };
 		D7634FAE2A43B7AC00F8AEFB /* CreateConvexHullAroundGeometriesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateConvexHullAroundGeometriesView.swift; sourceTree = "<group>"; };
 		D769C2112A29019B00030F61 /* SetUpLocationDrivenGeotriggersView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetUpLocationDrivenGeotriggersView.swift; sourceTree = "<group>"; };
+		D7705D612AFC570700CC0335 /* FindClosestFacilityFromPointView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindClosestFacilityFromPointView.swift; sourceTree = "<group>"; };
 		D7749AD52AF08BF50086632F /* FindRouteInTransportNetworkView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindRouteInTransportNetworkView.Model.swift; sourceTree = "<group>"; };
 		D77570BF2A2942F800F490CD /* AnimateImagesWithImageOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimateImagesWithImageOverlayView.swift; sourceTree = "<group>"; };
 		D77572AD2A295DDD00F490CD /* PacificSouthWest2 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = PacificSouthWest2; sourceTree = "<group>"; };
@@ -749,6 +753,7 @@
 		0074ABB228174B830037244A /* Samples */ = {
 			isa = PBXGroup;
 			children = (
+				D7705D5F2AFC570700CC0335 /* Find closest facility from point */,
 				79D84D0C2A815BED00F45262 /* Add custom dynamic entity data source */,
 				4D2ADC3E29C26D05003B367F /* Add dynamic entity layer */,
 				00D4EF7E2863840D00B9CC30 /* Add feature layers */,
@@ -1489,6 +1494,14 @@
 			path = "Set up location-driven geotriggers";
 			sourceTree = "<group>";
 		};
+		D7705D5F2AFC570700CC0335 /* Find closest facility from point */ = {
+			isa = PBXGroup;
+			children = (
+				D7705D612AFC570700CC0335 /* FindClosestFacilityFromPointView.swift */,
+			);
+			path = "Find closest facility from point";
+			sourceTree = "<group>";
+		};
 		D77570BC2A29427200F490CD /* Animate images with image overlay */ = {
 			isa = PBXGroup;
 			children = (
@@ -2154,6 +2167,7 @@
 				D7058FB12ACB423C00A40F14 /* Animate3DGraphicView.Model.swift in Sources */,
 				0044CDDF2995C39E004618CE /* ShowDeviceLocationHistoryView.swift in Sources */,
 				E041ABC0287CA9F00056009B /* WebView.swift in Sources */,
+				D7705D642AFC570700CC0335 /* FindClosestFacilityFromPointView.swift in Sources */,
 				E088E1572862579D00413100 /* SetSurfacePlacementModeView.swift in Sources */,
 				1CAF831F2A20305F000E1E60 /* ShowUtilityAssociationsView.swift in Sources */,
 				00C7993B2A845AAF00AFE342 /* Sidebar.swift in Sources */,

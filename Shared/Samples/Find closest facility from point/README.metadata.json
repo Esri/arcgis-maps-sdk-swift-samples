@@ -1,0 +1,35 @@
+{
+    "category": "Routing and Logistics",
+    "description": "Find routes from several locations to the respective closest facility.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "incident",
+        "network analysis",
+        "route",
+        "search",
+        "ClosestFacilityParameters",
+        "ClosestFacilityResult",
+        "ClosestFacilityRoute",
+        "ClosestFacilityTask",
+        "Facility",
+        "Graphic",
+        "GraphicsOverlay",
+        "Incident"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "ClosestFacilityParameters",
+        "ClosestFacilityResult",
+        "ClosestFacilityRoute",
+        "ClosestFacilityTask",
+        "Facility",
+        "Graphic",
+        "GraphicsOverlay",
+        "Incident"
+    ],
+    "snippets": [
+        "FindClosestFacilityFromPointView.swift"
+    ],
+    "title": "Find closest facility from point"
+}
