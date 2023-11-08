@@ -14,17 +14,15 @@ Tap near any of the hospitals and a route will be displayed from that tapped loc
 
 ## How it works
 
-1.  Create a `ClosestFacilityTask` using a Url from an online network analysis service.
-2.  Get `ClosestFacilityParameters` from task, `task.createDefaultParametersAsync().get()`
-3.  Add facilities to parameters, `closestFacilityParameters.setFacilities().addAll(facilities)`.
-4.  Add the incident to parameters, `closestFacilityParameters.setIncidents(Collections.singletonList(new Incident(incidentPoint)))`.
-5.  Get `ClosestFacilityResult` from solving task with parameters, `task.solveClosestFacilityAsync(facilityParameters).get()`
-6.  Get index list of closet facilities to incident, `facilityResult.getRankedFacilities(0)`
-7.  Get index of closest facility, `rankedFacilitiesList.get(0)`
-8.  Find closest facility route, `facilityResult.getRoute(closestFacilityIndex, IncidentIndex)`
-9.  Display route to `MapView`:
-    *   Create `Graphic` from route geometry, `new Graphic(route.getRouteGeometry())`
-    *   Add graphic to `GraphicsOverlay` which is attached to the mapview
+1.  Create a `ClosestFacilityTask` using a URL from an online network analysis service.
+2.  Get `ClosestFacilityParameters` from the task, `ClosestFacilityTask.makeDefaultParameters()`
+3.  Add facilities to the parameters, `ClosestFacilityParameters.setFacilities(_:)`.
+4.  Add an incident to the parameters, `ClosestFacilityParameters.setIncidents(_:)`.
+5.  Get a `ClosestFacilityResult` by solving task with parameters, `ClosestFacilityTask.solveClosestFacility(using:)`
+6.  Get the index list of closet facilities to the incident, `ClosestFacilityResult.rankedIndexesOfFacilities(forIncidentAtIndex:)`
+7.  Get the index of closest facility.
+8.  Find the closest facility route, `ClosestFacilityResult.route(toFacilityAtIndex:fromIncidentAtIndex:)`
+9.  Display the route on the `MapView` as a `Graphic` on a `GraphicsOverlay`.
 
 ## Relevant API
 

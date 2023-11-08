@@ -154,13 +154,13 @@ private extension FindClosestFacilityToMultiplePointsView {
             guard let closestFacilityIndex = rankedFacilityIndexes.first else { return }
             
             // Get the route for the closest facility and incident from the result.
-            let routeResult = closestFacilityResult.route(
+            let closestFacilityRoute = closestFacilityResult.route(
                 toFacilityAtIndex: closestFacilityIndex,
                 fromIncidentAtIndex: 0
             )
             
             // Update the route graphic using the result's geometry to display it on the map.
-            routeGraphic.geometry = routeResult?.routeGeometry
+            routeGraphic.geometry = closestFacilityRoute?.routeGeometry
         }
     }
 }
