@@ -13,36 +13,35 @@ In some situations, it is further beneficial to find the most efficient route th
 
 ## How to use the sample
 
-Click 'Add stop' to add stops to the route. Click 'Add barrier' to add areas that can't be crossed by the route. Click 'Route' to find the route and display it. Select 'Allow stops to be re-ordered' to find the best sequence. Select 'Preserve first stop' if there is a known start point, and 'Preserve last stop' if there is a known final destination.
+Select "Stops" and tap on the map to add stops to the route. Select "Barriers" and tap on the map to add areas that can't be crossed by the route. Tap "Route" to find the route and display it. Tap the settings button to toggle preferences like find the best sequence or preserve the first or last stop. Additionally, tap the directions button to view a list of the directions.
 
 ## How it works
 
-1. Create the route task by calling `RouteTask.CreateAsync(_serviceUrl)` with the URL to a Network Analysis route service.
-2. Get the default route parameters for the service by calling `_routeTask.CreateDefaultParametersAsync`.
+1. Create the route task by calling `RouteTask.init(url:)` with the URL to a Network Analysis route service.
+2. Get the default route parameters for the service by calling `RouteTask.makeDefaultParameters()`.
 3. When the user adds a stop, add it to the route parameters.
     1. Normalize the geometry; otherwise the route job would fail if the user included any stops over the 180th degree meridian.
-    2. Get the name of the stop by counting the existing stops - `_stepsOverlay.Graphics.Count + 1`.
-    3. Create a composite symbol for the stop. This sample uses a pushpin marker and a text symbol.
-    4. Create the graphic from the geometry and the symbol.
-    5. Add the graphic to the stops graphics overlay.
+    2. Create a composite symbol for the stop. This sample uses a blue marker and a text symbol.
+    3. Create the graphic from the geometry and the symbol.
+    4. Add the graphic to the stops graphics overlay.
 4. When the user adds a barrier, create a polygon barrier and add it to the route parameters.
     1. Normalize the geometry (see **3i** above).
-    2. Buffer the geometry to create a larger barrier from the tapped point by calling `GeometryEngine.BufferGeodetic(mapLocation, 500, LinearUnits.Meters)`.
+    2. Buffer the geometry to create a larger barrier from the tapped point by calling `GeometryEngine.buffer(around:distance:)`.
     3. Create the graphic from the geometry and the symbol.
     4. Add the graphic to the barriers overlay.
 5. When ready to find the route, configure the route parameters.
-    1. Set the `ReturnStops` and `ReturnDirections` to `true`.
-    2. Create a `Stop` for each graphic in the stops graphics overlay. Add that stop to a list, then call `_routeParameters.SetStops(routeStops)`.
-    3. Create a `PolygonBarrier` for each graphic in the barriers graphics overlay. Add that barrier to a list, then call `_routeParameters.SetPolygonBarriers(routeBarriers)`.
-    4. If the user will accept routes with the stops in any order, set `FindBestSequence` to `true` to find the most optimal route.
-    5. If the user has a definite start point, set `PreserveFirstStop` to `true`.
-    6. If the user has a definite final destination, set `PreserveLastStop` to `true`.
+    1. Set `RouteParameters.returnsDirections` to `true`.
+    2. Create a `Stop` for each graphic in the stops graphics overlay. Add that stop to a list, then call `RouteParameters.setStops(_:)`.
+    3. Create a `PolygonBarrier` for each graphic in the barriers graphics overlay. Add that barrier to a list, then call `RouteParameters.setPolygonBarriers(_:)`.
+    4. If the user will accept routes with the stops in any order, set `RouteParameters.findsBestSequence` to `true` to find the most optimal route.
+    5. If the user has a definite start point, set `RouteParameters.preservesFirstStop` to `true`.
+    6. If the user has a definite final destination, set `RouteParameters.preservesLastStop` to `true`.
 6. Calculate and display the route.
-    1. Call `_routeTask.SolveRouteAsync(_routeParameters)` to get a `RouteResult`.
-    2. Get the first returned route by calling `calculatedRoute.Routes.First()`.
-    3. Get the geometry from the route as a polyline by accessing the `firstResult.RouteGeometry` property.
+    1. Call `RouteTask.solveRoute(using:)` to get a `RouteResult`.
+    2. Get the first returned route by calling `RouteResult.routes.first`.
+    3. Get the geometry from the route as a polyline by accessing the `Route.geometry` property.
     4. Create a graphic from the polyline and a simple line symbol.
-    5. Display the steps on the route, available from `firstResult.DirectionManeuvers`.
+    5. Display the steps on the route, available from `Route.directionManeuvers`.
 
 ## Relevant API
 
@@ -56,7 +55,6 @@ Click 'Add stop' to add stops to the route. Click 'Add barrier' to add areas tha
 * RouteParameters.preservesFirstStop
 * RouteParameters.preservesLastStop
 * RouteParameters.returnsDirections
-* RouteParameters.returnsStops
 * RouteParameters.setPolygonBarriers
 * RouteResult
 * RouteResult.routes
