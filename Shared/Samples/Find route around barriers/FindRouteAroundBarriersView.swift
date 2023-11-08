@@ -40,11 +40,16 @@ struct FindRouteAroundBarriersView: View {
         MapViewReader { mapViewProxy in
             MapView(map: model.map, graphicsOverlays: model.graphicsOverlays)
                 .onSingleTapGesture { _, mapPoint in
+                    // Normalize the map point.
+                    guard let normalizedPoint = GeometryEngine.normalizeCentralMeridian(
+                        of: mapPoint
+                    ) as? Point else { return }
+                    
                     // Add a stop or barrier depending on the current feature selection.
                     if featureSelection == .stop {
-                        model.addStopGraphic(at: mapPoint)
+                        model.addStopGraphic(at: normalizedPoint)
                     } else {
-                        model.addBarrierGraphic(at: mapPoint)
+                        model.addBarrierGraphic(at: normalizedPoint)
                     }
                 }
                 .overlay(alignment: .top) {
@@ -159,7 +164,6 @@ struct FindRouteAroundBarriersView: View {
             do {
                 model.routeParameters = try await model.routeTask.makeDefaultParameters()
                 model.routeParameters?.returnsDirections = true
-                model.routeParameters?.returnsStops = true
             } catch {
                 self.error = error
             }

@@ -84,8 +84,8 @@ extension FindRouteAroundBarriersView {
         // MARK: Methods
         
         /// Adds a stop graphic to the map.
-        /// - Parameter mapPoint: The point on the map to add the stop graphic at.
-        func addStopGraphic(at mapPoint: Point) {
+        /// - Parameter point: The point to add the stop graphic at.
+        func addStopGraphic(at point: Point) {
             // Create a text symbol with the next index.
             let textSymbol = TextSymbol(
                 text: "\(stopsCount + 1)",
@@ -98,7 +98,7 @@ extension FindRouteAroundBarriersView {
             
             // Create a graphic with the marker symbol and text symbol.
             let compositeSymbol = CompositeSymbol(symbols: [stopSymbol, textSymbol])
-            let stopGraphic = Graphic(geometry: mapPoint, symbol: compositeSymbol)
+            let stopGraphic = Graphic(geometry: point, symbol: compositeSymbol)
             
             // Add the new graphic to the stop graphics overlay.
             stopGraphicsOverlay.addGraphic(stopGraphic)
@@ -106,10 +106,10 @@ extension FindRouteAroundBarriersView {
         }
         
         /// Adds a barrier graphic to the map.
-        /// - Parameter mapPoint: The point on the map to add the barrier graphic at.
-        func addBarrierGraphic(at mapPoint: Point) {
+        /// - Parameter point: The point to add the barrier graphic at.
+        func addBarrierGraphic(at point: Point) {
             // Buffer the point and create the barrier symbol.
-            let bufferedGeometry = GeometryEngine.buffer(around: mapPoint, distance: 500)
+            let bufferedGeometry = GeometryEngine.buffer(around: point, distance: 500)
             let barrierSymbol = SimpleFillSymbol(style: .diagonalCross, color: .red)
             
             // Create a graphic from the symbol and buffer and add it to the graphics overlay.
