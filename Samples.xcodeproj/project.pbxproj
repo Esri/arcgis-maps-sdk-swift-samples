@@ -66,6 +66,8 @@
 		00E5402027F3CCA200CF66D5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00E5400E27F3CCA200CF66D5 /* Assets.xcassets */; };
 		00EB803A2A31506F00AC2B07 /* DisplayContentOfUtilityNetworkContainerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 00A7A1432A2FC58300F035F7 /* DisplayContentOfUtilityNetworkContainerView.swift */; };
 		00EB803B2A31506F00AC2B07 /* DisplayContentOfUtilityNetworkContainerView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 00A7A1492A2FC5B700F035F7 /* DisplayContentOfUtilityNetworkContainerView.Model.swift */; };
+		00F279D62AF418DC00CECAF8 /* AddDynamicEntityLayerView.VehicleCallout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F279D52AF418DC00CECAF8 /* AddDynamicEntityLayerView.VehicleCallout.swift */; };
+		00F279D72AF4364700CECAF8 /* AddDynamicEntityLayerView.VehicleCallout.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 00F279D52AF418DC00CECAF8 /* AddDynamicEntityLayerView.VehicleCallout.swift */; };
 		108EC04129D25B2C000F35D0 /* QueryFeatureTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108EC04029D25B2C000F35D0 /* QueryFeatureTableView.swift */; };
 		108EC04229D25B55000F35D0 /* QueryFeatureTableView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 108EC04029D25B2C000F35D0 /* QueryFeatureTableView.swift */; };
 		1C0C1C3929D34DAE005C8B24 /* ChangeViewpointView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0C1C3429D34DAE005C8B24 /* ChangeViewpointView.swift */; };
@@ -359,6 +361,7 @@
 			files = (
 				D76EE6082AF9AFEC00DA0325 /* FindRouteAroundBarriersView.Model.swift in Copy Source Code Files */,
 				D7DDF8562AF47C86004352D9 /* FindRouteAroundBarriersView.swift in Copy Source Code Files */,
+				00F279D72AF4364700CECAF8 /* AddDynamicEntityLayerView.VehicleCallout.swift in Copy Source Code Files */,
 				D76000A22AF18BAB00B3084D /* FindRouteInTransportNetworkView.Model.swift in Copy Source Code Files */,
 				D7E7D0822AEB3A1D003AAD02 /* FindRouteInTransportNetworkView.swift in Copy Source Code Files */,
 				D7553CDD2AE2E00E00DC2A70 /* GeocodeOfflineView.swift in Copy Source Code Files */,
@@ -525,6 +528,7 @@
 		00E5400E27F3CCA200CF66D5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		00E5401327F3CCA200CF66D5 /* Samples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Samples.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E5402A27F775EA00CF66D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		00F279D52AF418DC00CECAF8 /* AddDynamicEntityLayerView.VehicleCallout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDynamicEntityLayerView.VehicleCallout.swift; sourceTree = "<group>"; };
 		108EC04029D25B2C000F35D0 /* QueryFeatureTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueryFeatureTableView.swift; sourceTree = "<group>"; };
 		1C0C1C3429D34DAE005C8B24 /* ChangeViewpointView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeViewpointView.swift; sourceTree = "<group>"; };
 		1C19B4EB2A578E46001D2506 /* CreateLoadReportView.Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateLoadReportView.Views.swift; sourceTree = "<group>"; };
@@ -1163,6 +1167,7 @@
 				4D2ADC3F29C26D05003B367F /* AddDynamicEntityLayerView.swift */,
 				4D2ADC6629C50BD6003B367F /* AddDynamicEntityLayerView.Model.swift */,
 				4D2ADC6829C50C4C003B367F /* AddDynamicEntityLayerView.SettingsView.swift */,
+				00F279D52AF418DC00CECAF8 /* AddDynamicEntityLayerView.VehicleCallout.swift */,
 			);
 			path = "Add dynamic entity layer";
 			sourceTree = "<group>";
@@ -2235,6 +2240,7 @@
 				D731F3C12AD0D2AC00A8431E /* IdentifyGraphicsView.swift in Sources */,
 				00E5401C27F3CCA200CF66D5 /* SamplesApp.swift in Sources */,
 				E066DD4028610F55004D3D5B /* AddSceneLayerFromServiceView.swift in Sources */,
+				00F279D62AF418DC00CECAF8 /* AddDynamicEntityLayerView.VehicleCallout.swift in Sources */,
 				D7749AD62AF08BF50086632F /* FindRouteInTransportNetworkView.Model.swift in Sources */,
 				D7464F1E2ACE04B3007FEE88 /* IdentifyRasterCellView.swift in Sources */,
 			);
