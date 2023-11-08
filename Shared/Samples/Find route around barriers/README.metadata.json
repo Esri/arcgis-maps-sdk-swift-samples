@@ -2,7 +2,10 @@
     "category": "Routing and Logistics",
     "description": "Find a route that reaches all stops without crossing any barriers.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "find-route-around-barriers-1.png",
+        "find-route-around-barriers-2.png"
+    ],
     "keywords": [
         "barriers",
         "best sequence",
