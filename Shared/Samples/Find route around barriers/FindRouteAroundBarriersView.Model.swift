@@ -144,7 +144,6 @@ extension FindRouteAroundBarriersView {
                 let stop = Stop(point: point)
                 stops.append(stop)
             }
-            routeParameters.clearStops()
             routeParameters.setStops(stops)
             
             // Update the route parameters' barriers using the barrier graphics.
@@ -154,7 +153,6 @@ extension FindRouteAroundBarriersView {
                 let barrier = PolygonBarrier(polygon: polygon)
                 barriers.append(barrier)
             }
-            routeParameters.clearPolygonBarriers()
             routeParameters.setPolygonBarriers(barriers)
             
             // Get the route from the route task using the updated route parameters.
