@@ -135,17 +135,26 @@ private extension FindClosestFacilityToMultiplePointsView {
             incidentGraphic.geometry = mapPoint
             
             // Update the parameters with the new incident.
-            let incident = Incident(point: mapPoint)
-            closestFacilityParameters?.setIncidents([incident])
-            
-            // Route to the closest facility to the incident.
-            try await routeToClosestFacility()
-        }
-        
-        /// Routes to the closest facility to the incident using the closest facility task.
-        private func routeToClosestFacility() async throws {
             guard let closestFacilityParameters else { return }
             
+            let incident = Incident(point: mapPoint)
+            closestFacilityParameters.setIncidents([incident])
+            
+            // Get the route to the closest facility.
+            let closestFacilityRoute = try await routeToClosestFacility(
+                using: closestFacilityParameters
+            )
+            
+            // Update the route graphic using the result's geometry to display it on the map.
+            routeGraphic.geometry = closestFacilityRoute?.routeGeometry
+        }
+        
+        /// Gets the route to the closest facility to the incident.
+        /// - Parameter closestFacilityParameters: The parameters to pass to the closest facility task.
+        /// - Returns: The route to the closest facility.
+        private func routeToClosestFacility(
+            using closestFacilityParameters: ClosestFacilityParameters
+        ) async throws -> ClosestFacilityRoute? {
             // Get the closest facility result from the task using the parameters.
             let closestFacilityResult = try await closestFacilityTask.solveClosestFacility(
                 using: closestFacilityParameters
@@ -157,16 +166,13 @@ private extension FindClosestFacilityToMultiplePointsView {
             )
             
             // Get the facility index closest to the incident.
-            guard let closestFacilityIndex = rankedFacilityIndexes.first else { return }
+            guard let closestFacilityIndex = rankedFacilityIndexes.first else { return nil }
             
-            // Get the route for the closest facility and incident from the result.
-            let closestFacilityRoute = closestFacilityResult.route(
+            // Get the route for the closest facility and the incident.
+            return closestFacilityResult.route(
                 toFacilityAtIndex: closestFacilityIndex,
                 fromIncidentAtIndex: 0
             )
-            
-            // Update the route graphic using the result's geometry to display it on the map.
-            routeGraphic.geometry = closestFacilityRoute?.routeGeometry
         }
     }
 }
