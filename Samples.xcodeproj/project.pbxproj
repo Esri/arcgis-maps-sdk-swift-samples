@@ -139,6 +139,7 @@
 		792222DD2A81AA5D00619FFE /* AIS_MarineCadastre_SelectedVessels_CustomDataSource.jsonl in Resources */ = {isa = PBXBuildFile; fileRef = 792222DC2A81AA5D00619FFE /* AIS_MarineCadastre_SelectedVessels_CustomDataSource.jsonl */; settings = {ASSET_TAGS = (AddCustomDynamicEntityDataSource, ); }; };
 		79302F852A1ED4E30002336A /* CreateAndSaveKMLView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79302F842A1ED4E30002336A /* CreateAndSaveKMLView.Model.swift */; };
 		79302F872A1ED71B0002336A /* CreateAndSaveKMLView.Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79302F862A1ED71B0002336A /* CreateAndSaveKMLView.Views.swift */; };
+		798C2DA72AFC505600EE7E97 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 798C2DA62AFC505600EE7E97 /* PrivacyInfo.xcprivacy */; };
 		79A47DFB2A20286800D7C5B9 /* CreateAndSaveKMLView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 79302F842A1ED4E30002336A /* CreateAndSaveKMLView.Model.swift */; };
 		79A47DFC2A20286800D7C5B9 /* CreateAndSaveKMLView.Views.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 79302F862A1ED71B0002336A /* CreateAndSaveKMLView.Views.swift */; };
 		79B7B80A2A1BF8EC00F57C27 /* CreateAndSaveKMLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B7B8092A1BF8EC00F57C27 /* CreateAndSaveKMLView.swift */; };
@@ -226,6 +227,8 @@
 		D769C2132A29057200030F61 /* SetUpLocationDrivenGeotriggersView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D769C2112A29019B00030F61 /* SetUpLocationDrivenGeotriggersView.swift */; };
 		D7705D642AFC570700CC0335 /* FindClosestFacilityFromPointView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7705D612AFC570700CC0335 /* FindClosestFacilityFromPointView.swift */; };
 		D7705D662AFC575000CC0335 /* FindClosestFacilityFromPointView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7705D612AFC570700CC0335 /* FindClosestFacilityFromPointView.swift */; };
+		D7705D582AFC244E00CC0335 /* FindClosestFacilityToMultiplePointsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7705D552AFC244E00CC0335 /* FindClosestFacilityToMultiplePointsView.swift */; };
+		D7705D5B2AFC246A00CC0335 /* FindClosestFacilityToMultiplePointsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7705D552AFC244E00CC0335 /* FindClosestFacilityToMultiplePointsView.swift */; };
 		D7749AD62AF08BF50086632F /* FindRouteInTransportNetworkView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7749AD52AF08BF50086632F /* FindRouteInTransportNetworkView.Model.swift */; };
 		D77570C02A2942F800F490CD /* AnimateImagesWithImageOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77570BF2A2942F800F490CD /* AnimateImagesWithImageOverlayView.swift */; };
 		D77570C12A2943D900F490CD /* AnimateImagesWithImageOverlayView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D77570BF2A2942F800F490CD /* AnimateImagesWithImageOverlayView.swift */; };
@@ -358,6 +361,7 @@
 			dstSubfolderSpec = 7;
 			files = (
 				D7705D662AFC575000CC0335 /* FindClosestFacilityFromPointView.swift in Copy Source Code Files */,
+				D7705D5B2AFC246A00CC0335 /* FindClosestFacilityToMultiplePointsView.swift in Copy Source Code Files */,
 				00F279D72AF4364700CECAF8 /* AddDynamicEntityLayerView.VehicleCallout.swift in Copy Source Code Files */,
 				D76000A22AF18BAB00B3084D /* FindRouteInTransportNetworkView.Model.swift in Copy Source Code Files */,
 				D7E7D0822AEB3A1D003AAD02 /* FindRouteInTransportNetworkView.swift in Copy Source Code Files */,
@@ -564,6 +568,7 @@
 		792222DC2A81AA5D00619FFE /* AIS_MarineCadastre_SelectedVessels_CustomDataSource.jsonl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AIS_MarineCadastre_SelectedVessels_CustomDataSource.jsonl; sourceTree = "<group>"; };
 		79302F842A1ED4E30002336A /* CreateAndSaveKMLView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAndSaveKMLView.Model.swift; sourceTree = "<group>"; };
 		79302F862A1ED71B0002336A /* CreateAndSaveKMLView.Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAndSaveKMLView.Views.swift; sourceTree = "<group>"; };
+		798C2DA62AFC505600EE7E97 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		79B7B8092A1BF8EC00F57C27 /* CreateAndSaveKMLView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAndSaveKMLView.swift; sourceTree = "<group>"; };
 		79D84D0D2A815C5B00F45262 /* AddCustomDynamicEntityDataSourceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCustomDynamicEntityDataSourceView.swift; sourceTree = "<group>"; };
 		883C121429C9136600062FF9 /* DownloadPreplannedMapAreaView.MapPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadPreplannedMapAreaView.MapPicker.swift; sourceTree = "<group>"; };
@@ -610,6 +615,7 @@
 		D7634FAE2A43B7AC00F8AEFB /* CreateConvexHullAroundGeometriesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateConvexHullAroundGeometriesView.swift; sourceTree = "<group>"; };
 		D769C2112A29019B00030F61 /* SetUpLocationDrivenGeotriggersView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetUpLocationDrivenGeotriggersView.swift; sourceTree = "<group>"; };
 		D7705D612AFC570700CC0335 /* FindClosestFacilityFromPointView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindClosestFacilityFromPointView.swift; sourceTree = "<group>"; };
+		D7705D552AFC244E00CC0335 /* FindClosestFacilityToMultiplePointsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindClosestFacilityToMultiplePointsView.swift; sourceTree = "<group>"; };
 		D7749AD52AF08BF50086632F /* FindRouteInTransportNetworkView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindRouteInTransportNetworkView.Model.swift; sourceTree = "<group>"; };
 		D77570BF2A2942F800F490CD /* AnimateImagesWithImageOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimateImagesWithImageOverlayView.swift; sourceTree = "<group>"; };
 		D77572AD2A295DDD00F490CD /* PacificSouthWest2 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = PacificSouthWest2; sourceTree = "<group>"; };
@@ -795,6 +801,7 @@
 				E004A6EE284E4B7A002A1FE6 /* Download vector tiles to local cache */,
 				1C26ED122A859525009B7721 /* Filter features in scene */,
 				D7705D5F2AFC570700CC0335 /* Find closest facility from point */,
+				D7705D542AFC244E00CC0335 /* Find closest facility to multiple points */,
 				D78666A92A21616D00C60110 /* Find nearest vertex */,
 				E066DD33285CF3A0004D3D5B /* Find route */,
 				D7E7D0792AEB39BF003AAD02 /* Find route in transport network */,
@@ -1007,6 +1014,7 @@
 				0074ABB228174B830037244A /* Samples */,
 				00E5400C27F3CCA100CF66D5 /* SamplesApp.swift */,
 				00E5400E27F3CCA200CF66D5 /* Assets.xcassets */,
+				798C2DA62AFC505600EE7E97 /* PrivacyInfo.xcprivacy */,
 				001C6DD827FE585A00D472C2 /* AppSecrets.swift.masque */,
 				0074ABCA2817B8DB0037244A /* SamplesApp+Samples.swift.tache */,
 			);
@@ -1500,6 +1508,14 @@
 				D7705D612AFC570700CC0335 /* FindClosestFacilityFromPointView.swift */,
 			);
 			path = "Find closest facility from point";
+			sourceTree = "<group>";
+		};
+		D7705D542AFC244E00CC0335 /* Find closest facility to multiple points */ = {
+			isa = PBXGroup;
+			children = (
+				D7705D552AFC244E00CC0335 /* FindClosestFacilityToMultiplePointsView.swift */,
+			);
+			path = "Find closest facility to multiple points";
 			sourceTree = "<group>";
 		};
 		D77570BC2A29427200F490CD /* Animate images with image overlay */ = {
@@ -1999,6 +2015,7 @@
 				00D4EF9A28638BF100B9CC30 /* AuroraCO.gpkg in Resources */,
 				D7C16D282AC5FEB700689E89 /* Hawaii.csv in Resources */,
 				D7D1F3532ADDBE5D009CE2DA /* philadelphia.mspk in Resources */,
+				798C2DA72AFC505600EE7E97 /* PrivacyInfo.xcprivacy in Resources */,
 				D7E7D09A2AEB3C47003AAD02 /* san_diego_offline_routing in Resources */,
 				F111CCC4288B641900205358 /* Yellowstone.mmpk in Resources */,
 				D77572AE2A295DDE00F490CD /* PacificSouthWest2 in Resources */,
@@ -2113,6 +2130,7 @@
 				D7ABA2F92A32579C0021822B /* MeasureDistanceInSceneView.swift in Sources */,
 				E004A6E028466279002A1FE6 /* ShowCalloutView.swift in Sources */,
 				E000E763286A0B18005D87C5 /* CutGeometryView.swift in Sources */,
+				D7705D582AFC244E00CC0335 /* FindClosestFacilityToMultiplePointsView.swift in Sources */,
 				4D126D7229CA1E1800CFB7A7 /* FileNMEASentenceReader.swift in Sources */,
 				001C6DE127FE8A9400D472C2 /* AppSecrets.swift.masque in Sources */,
 				D7084FA92AD771AA00EC7F4F /* AugmentRealityToFlyOverSceneView.swift in Sources */,
