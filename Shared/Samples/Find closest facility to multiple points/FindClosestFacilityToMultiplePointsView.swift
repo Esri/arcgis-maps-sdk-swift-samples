@@ -94,7 +94,7 @@ private extension FindClosestFacilityToMultiplePointsView {
                 Point(x: -13_039_785, y: 3_856_693, spatialReference: .webMercator),
                 Point(x: -13_049_024, y: 3_861_994, spatialReference: .webMercator)
             ]
-            return facilityPoints.map { Facility(point: $0) }
+            return facilityPoints.map(Facility.init(point:))
         }()
         
         /// The graphic for the route.
@@ -168,9 +168,7 @@ private extension FindClosestFacilityToMultiplePointsView {
 private extension URL {
     /// The URL to a network analysis server for San Diego, CA, USA on ArcGIS Online.
     static var sanDiegoNetworkAnalysis: URL {
-        URL(
-            string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/NetworkAnalysis/SanDiego/NAServer/ClosestFacility"
-        )!
+        URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/NetworkAnalysis/SanDiego/NAServer/ClosestFacility")!
     }
     
     /// The URL to an image of a hospital symbol on ArcGIS Online.
