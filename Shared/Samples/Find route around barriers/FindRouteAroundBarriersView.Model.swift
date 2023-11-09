@@ -73,7 +73,7 @@ extension FindRouteAroundBarriersView {
         @Published private(set) var routeInfoText = ""
         
         /// The count of stops currently on the map.
-        @Published private(set) var stopsCount: Int = 0
+        @Published private(set) var stopsCount = 0
         
         init() {
             routeGraphicsOverlay.addGraphics([routeGraphic, directionGraphic])
@@ -152,7 +152,7 @@ extension FindRouteAroundBarriersView {
             // Update the route parameters' barriers using the barrier graphics.
             var barriers = [PolygonBarrier]()
             for barrierGraphic in barrierGraphicsOverlay.graphics {
-                guard let polygon = barrierGraphic.geometry as? Polygon else { continue }
+                guard let polygon = barrierGraphic.geometry as? ArcGIS.Polygon else { continue }
                 let barrier = PolygonBarrier(polygon: polygon)
                 barriers.append(barrier)
             }
