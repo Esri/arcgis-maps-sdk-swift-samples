@@ -19,14 +19,14 @@ struct FindRouteAroundBarriersView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
-    /// The feature type to be added or removed from the map.
-    @State private var featureSelection: AddableFeature = .stop
+    /// The type of route features to be added or removed from the map.
+    @State private var featuresSelection: RouteFeatures = .stops
     
     /// A Boolean value indicating whether a routing operation is in progress.
-    @State private var routing = false
+    @State private var routingIsInProgress = false
     
     /// A Boolean value indicating whether routing will find the best sequence.
-    @State private var findsBestSequence = false
+    @State private var routingFindsBestSequence = false
     
     /// A Boolean value indicating whether the error alert is showing.
     @State private var errorAlertIsShowing = false
@@ -45,8 +45,8 @@ struct FindRouteAroundBarriersView: View {
                         of: mapPoint
                     ) as? Point else { return }
                     
-                    // Add a stop or barrier depending on the current feature selection.
-                    if featureSelection == .stop {
+                    // Add a stop or barrier depending on the current features selection.
+                    if featuresSelection == .stops {
                         model.addStopGraphic(at: normalizedPoint)
                     } else {
                         model.addBarrierGraphic(at: normalizedPoint)
@@ -59,7 +59,7 @@ struct FindRouteAroundBarriersView: View {
                         .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
                 }
                 .overlay(alignment: .center) {
-                    if routing {
+                    if routingIsInProgress {
                         ProgressView("Routing...")
                             .padding()
                             .background(.ultraThickMaterial)
@@ -72,8 +72,8 @@ struct FindRouteAroundBarriersView: View {
                         Button("Route") {
                             Task {
                                 do {
-                                    routing = true
-                                    defer { routing = false }
+                                    routingIsInProgress = true
+                                    defer { routingIsInProgress = false }
                                     try await model.route()
                                     
                                     // Update the viewpoint to the new route.
@@ -113,19 +113,20 @@ struct FindRouteAroundBarriersView: View {
                         .disabled(model.route == nil)
                         Spacer()
                         
-                        Picker("Feature Type", selection: $featureSelection) {
-                            Text("Stops").tag(AddableFeature.stop)
-                            Text("Barriers").tag(AddableFeature.barrier)
+                        Picker("Features", selection: $featuresSelection) {
+                            Text("Stops").tag(RouteFeatures.stops)
+                            Text("Barriers").tag(RouteFeatures.barriers)
                         }
                         .pickerStyle(.segmented)
+                        .labelsHidden()
                         Spacer()
                         
                         SheetButton(title: "Settings") {
                             List {
-                                Toggle(isOn: $findsBestSequence) {
+                                Toggle(isOn: $routingFindsBestSequence) {
                                     Text("Find Best Sequence")
                                 }
-                                .onChange(of: findsBestSequence) { newValue in
+                                .onChange(of: routingFindsBestSequence) { newValue in
                                     model.routeParameters.findsBestSequence = newValue
                                 }
                                 
@@ -144,7 +145,7 @@ struct FindRouteAroundBarriersView: View {
                                         Text("Preserve Last Stop")
                                     }
                                 }
-                                .disabled(!findsBestSequence)
+                                .disabled(!routingFindsBestSequence)
                             }
                         } label: {
                             Image(systemName: "gear")
@@ -152,7 +153,7 @@ struct FindRouteAroundBarriersView: View {
                         Spacer()
                         
                         Button {
-                            model.reset(featureType: featureSelection)
+                            model.reset(features: featuresSelection)
                         } label: {
                             Image(systemName: "trash")
                         }

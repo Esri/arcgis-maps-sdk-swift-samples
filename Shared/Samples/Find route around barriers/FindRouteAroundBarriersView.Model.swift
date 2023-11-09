@@ -64,7 +64,7 @@ extension FindRouteAroundBarriersView {
         let routeTask = RouteTask(url: .sanDiegoNetworkAnalysis)
         
         /// The route parameters for routing with the route task.
-        var routeParameters: RouteParameters?
+        var routeParameters = RouteParameters()
         
         /// The resulting route from a routing operation with the route task.
         private(set) var route: Route?
@@ -118,9 +118,9 @@ extension FindRouteAroundBarriersView {
         }
         
         /// Resets all the features on the map associated with a given feature type.
-        /// - Parameter featureType: The feature type to remove from the map.
-        func reset(featureType: AddableFeature) {
-            if featureType == .stop {
+        /// - Parameter features: The features to remove from the map.
+        func reset(features: RouteFeatures) {
+            if features == .stops {
                 // Reset the stops.
                 stopGraphicsOverlay.removeAllGraphics()
                 stopsCount = 0
@@ -137,8 +137,6 @@ extension FindRouteAroundBarriersView {
         
         /// Routes using the route parameters and the current stops and barriers on the map.
         func route() async throws {
-            guard let routeParameters, stopsCount >= 2 else { return }
-            
             // Update the route parameters' stops using the stop graphics.
             var stops = [Stop]()
             for stopGraphic in stopGraphicsOverlay.graphics {
@@ -191,9 +189,13 @@ extension FindRouteAroundBarriersView {
         }
     }
     
-    /// An enumeration representing different features that can be added to the map by the user in this sample.
-    enum AddableFeature {
-        case stop, barrier
+    /// An enumeration representing the different groups of route features in this sample.
+    enum RouteFeatures {
+        /// The stops along the route.
+        case stops
+        
+        /// The areas that can't be crossed by the route.
+        case barriers
     }
 }
 
