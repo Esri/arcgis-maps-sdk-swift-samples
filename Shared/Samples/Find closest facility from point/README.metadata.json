@@ -2,7 +2,9 @@
     "category": "Routing and Logistics",
     "description": "Find routes from several locations to the respective closest facility.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "find-closest-facility-from-point.png"
+    ],
     "keywords": [
         "incident",
         "network analysis",
