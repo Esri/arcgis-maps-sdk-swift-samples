@@ -126,20 +126,20 @@ struct FindRouteAroundBarriersView: View {
                                     Text("Find Best Sequence")
                                 }
                                 .onChange(of: findsBestSequence) { newValue in
-                                    model.routeParameters?.findsBestSequence = newValue
+                                    model.routeParameters.findsBestSequence = newValue
                                 }
                                 
                                 Section {
                                     Toggle(isOn: Binding(
-                                        get: { model.routeParameters?.preservesFirstStop ?? false },
-                                        set: { model.routeParameters?.preservesFirstStop = $0 }
+                                        get: { model.routeParameters.preservesFirstStop },
+                                        set: { model.routeParameters.preservesFirstStop = $0 }
                                     )) {
                                         Text("Preserve First Stop")
                                     }
                                     
                                     Toggle(isOn: Binding(
-                                        get: { model.routeParameters?.preservesLastStop ?? false },
-                                        set: { model.routeParameters?.preservesLastStop = $0 }
+                                        get: { model.routeParameters.preservesLastStop },
+                                        set: { model.routeParameters.preservesLastStop = $0 }
                                     )) {
                                         Text("Preserve Last Stop")
                                     }
@@ -163,7 +163,7 @@ struct FindRouteAroundBarriersView: View {
             // Load the default route parameters from the route task when the sample loads.
             do {
                 model.routeParameters = try await model.routeTask.makeDefaultParameters()
-                model.routeParameters?.returnsDirections = true
+                model.routeParameters.returnsDirections = true
             } catch {
                 self.error = error
             }
