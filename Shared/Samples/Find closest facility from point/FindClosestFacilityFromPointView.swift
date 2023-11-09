@@ -19,24 +19,217 @@ struct FindClosestFacilityFromPointView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
+    /// A Boolean value indicating whether a routing operation is in progress.
+    @State private var routing = false
+    
+    /// A Boolean value indicating whether routing is currently disabled.
+    @State private var routingIsDisabled = true
+    
+    /// A Boolean value indicating whether the error alert is showing.
+    @State private var errorAlertIsShowing = false
+    
+    /// The error shown in the error alert.
+    @State private var error: Error? {
+        didSet { errorAlertIsShowing = error != nil }
+    }
+    
     var body: some View {
-        MapView(map: model.map)
-            .alert(isPresented: $model.errorAlertIsShowing, presentingError: model.error)
+        MapViewReader { mapViewProxy in
+            MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
+                .overlay(alignment: .center) {
+                    if routing {
+                        ProgressView("Routing...")
+                            .padding()
+                            .background(.ultraThickMaterial)
+                            .cornerRadius(10)
+                            .shadow(radius: 50)
+                    }
+                }
+                .toolbar {
+                    ToolbarItemGroup(placement: .bottomBar) {
+                        Button("Solve Routes") {
+                            Task {
+                                do {
+                                    routing = true
+                                    defer { routing = false }
+                                    
+                                    try await model.solveRoutes()
+                                    routingIsDisabled = true
+                                } catch {
+                                    self.error = error
+                                }
+                            }
+                        }
+                        .disabled(routingIsDisabled)
+                        
+                        Spacer()
+                        
+                        Button("Reset") {
+                            model.graphicsOverlay.removeAllGraphics()
+                            routingIsDisabled = false
+                        }
+                        .disabled(model.graphicsOverlay.graphics.isEmpty)
+                    }
+                }
+                .task {
+                    // Get the extents of the layers on the map.
+                    await model.map.operationalLayers.load()
+                    let layerExtents = model.map.operationalLayers.compactMap(\.fullExtent)
+                    
+                    // Zoom to the extents to view the layers' features.
+                    guard let extent = GeometryEngine.combineExtents(of: layerExtents) else { return }
+                    await mapViewProxy.setViewpointGeometry(extent, padding: 30)
+                }
+        }
+        .task {
+            // Set up the closest facility parameters when the sample loads.
+            do {
+                try await model.configureClosestFacilityParameters()
+                routingIsDisabled = false
+            } catch {
+                self.error = error
+            }
+        }
+        .alert(isPresented: $errorAlertIsShowing, presentingError: error)
     }
 }
 
 private extension FindClosestFacilityFromPointView {
     /// The view model for the sample.
     class Model: ObservableObject {
-        /// A map with a topographic basemap.
-        let map = Map(basemapStyle: .arcGISTopographic)
+        /// A map with a streets relief basemap.
+        let map = Map(basemapStyle: .arcGISStreetsRelief)
         
-        /// A Boolean value indicating whether the error alert is showing.
-        @Published var errorAlertIsShowing = false
+        /// The graphics overlay for the route graphics.
+        let graphicsOverlay = GraphicsOverlay()
         
-        /// The error shown in the error alert.
-        @Published var error: Error? {
-            didSet { errorAlertIsShowing = error != nil }
+        /// The blue line symbol for the route graphics.
+        private let routeSymbol = SimpleLineSymbol(
+            style: .solid,
+            color: UIColor(red: 0, green: 0, blue: 1, alpha: 77 / 255),
+            width: 5
+        )
+        
+        /// The task for finding the closest facility.
+        private let closestFacilityTask = ClosestFacilityTask(url: .sanDiegoNetworkAnalysis)
+        
+        /// The parameters to be passed to the closest facility task.
+        private var closestFacilityParameters: ClosestFacilityParameters?
+        
+        init() {
+            // Create the feature layers and add them to the map.
+            addFeatureLayer(tableURL: .facilitiesLayer, imageURL: .fireStationImage)
+            addFeatureLayer(tableURL: .incidentsLayer, imageURL: .fireImage)
         }
+        
+        /// Creates the closest facility parameters and adds the facilities and incidents from the feature layers.
+        func configureClosestFacilityParameters() async throws {
+            // Create the default parameters from the closest facility task.
+            async let parameters = try closestFacilityTask.makeDefaultParameters()
+            
+            // Get the feature layers on the map.
+            await map.operationalLayers.load()
+            let facilitiesLayer = map.operationalLayers.first(
+                where: { $0.name == "sandiegofacilities" }
+            ) as? FeatureLayer
+            let incidentsLayer = map.operationalLayers.first(
+                where: { $0.name == "sandiegoincidents" }
+            ) as? FeatureLayer
+            
+            // Get the feature tables from the feature layers.
+            guard let facilitiesTable = facilitiesLayer?.featureTable as? ArcGISFeatureTable,
+                  let incidentsTable = incidentsLayer?.featureTable as? ArcGISFeatureTable
+            else { return }
+            
+            // Create query parameters that will return all the features.
+            let queryParameters = QueryParameters()
+            queryParameters.whereClause = "1=1"
+            
+            // Set the parameters' facilities and incidents using the tables.
+            try await parameters.setFacilities(
+                fromFeaturesIn: facilitiesTable,
+                queryParameters: queryParameters
+            )
+            try await parameters.setIncidents(
+                fromFeaturesIn: incidentsTable,
+                queryParameters: queryParameters
+            )
+            closestFacilityParameters = try await parameters
+        }
+        
+        /// Finds the closest facility routes for the incidents.
+        func solveRoutes() async throws {
+            guard let closestFacilityParameters else { return }
+            
+            // Get the closest facility result from the task using the parameters.
+            let closestFacilityResult = try await closestFacilityTask.solveClosestFacility(
+                using: closestFacilityParameters
+            )
+            
+            // Create a route graphic for each incident in the result.
+            let incidentsIndices = closestFacilityResult.incidents.indices
+            let routeGraphics = incidentsIndices.compactMap { incidentIndex -> Graphic? in
+                // Get the index for the facility closest to the given incident.
+                guard let closestFacilityIndex = closestFacilityResult.rankedIndexesOfFacilities(
+                    forIncidentAtIndex: incidentIndex
+                ).first else { return nil }
+                
+                // Get the route for the facility and incident.
+                let closestFacilityRoute = closestFacilityResult.route(
+                    toFacilityAtIndex: closestFacilityIndex,
+                    fromIncidentAtIndex: incidentIndex
+                )
+                
+                // Create a graphic using the route's geometry.
+                return Graphic(geometry: closestFacilityRoute?.routeGeometry, symbol: routeSymbol)
+            }
+            
+            graphicsOverlay.addGraphics(routeGraphics)
+        }
+        
+        /// Creates and adds a feature layer to the map.
+        /// - Parameters:
+        ///   - tableURL: The URL to the feature table to create the feature layer from.
+        ///   - imageURL: The URL to the image to use as the layer's renderer.
+        private func addFeatureLayer(tableURL: URL, imageURL: URL) {
+            // Create a layer from the feature table URL.
+            let featureTable = ServiceFeatureTable(url: tableURL)
+            let featureLayer = FeatureLayer(featureTable: featureTable)
+            
+            // Create a simple renderer from the image URL and add it to the layer.
+            let markerSymbol = PictureMarkerSymbol(url: imageURL)
+            markerSymbol.width = 30
+            markerSymbol.height = 30
+            featureLayer.renderer = SimpleRenderer(symbol: markerSymbol)
+            
+            map.addOperationalLayer(featureLayer)
+        }
+    }
+}
+
+private extension URL {
+    /// The URL to a network analysis server for San Diego, CA, USA on ArcGIS Online.
+    static var sanDiegoNetworkAnalysis: URL {
+        URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/NetworkAnalysis/SanDiego/NAServer/ClosestFacility")!
+    }
+    
+    /// The URL to a San Diego facilities feature layer on ArcGIS Online.
+    static var facilitiesLayer: URL {
+        URL(string: "https://services2.arcgis.com/ZQgQTuoyBrtmoGdP/ArcGIS/rest/services/San_Diego_Facilities/FeatureServer/0")!
+    }
+    
+    /// The URL to a San Diego facilities feature layer on ArcGIS Online.
+    static var incidentsLayer: URL {
+        URL(string: "https://services2.arcgis.com/ZQgQTuoyBrtmoGdP/ArcGIS/rest/services/San_Diego_Incidents/FeatureServer/0")!
+    }
+    
+    /// The URL to an image of a fire station symbol on ArcGIS Online.
+    static var fireStationImage: URL {
+        URL(string: "https://static.arcgis.com/images/Symbols/SafetyHealth/FireStation.png")!
+    }
+    
+    /// The URL to an image of a fire symbol on ArcGIS Online.
+    static var fireImage: URL {
+        URL(string: "https://static.arcgis.com/images/Symbols/SafetyHealth/esriCrimeMarker_56_Gradient.png")!
     }
 }
