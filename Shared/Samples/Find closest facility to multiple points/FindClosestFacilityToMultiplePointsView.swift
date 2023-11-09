@@ -49,10 +49,9 @@ struct FindClosestFacilityToMultiplePointsView: View {
             }
         }
         .task {
-            // Create the default parameters from the task when the sample loads.
+            // Set up the closest facility parameters when the sample loads.
             do {
-                try await model.closestFacilityParameters = model.closestFacilityTask.makeDefaultParameters()
-                model.closestFacilityParameters?.setFacilities(model.facilities)
+                try await model.configureClosestFacilityParameters()
             } catch {
                 self.error = error
             }
@@ -78,13 +77,13 @@ private extension FindClosestFacilityToMultiplePointsView {
         let facilityGraphicsOverlay = GraphicsOverlay()
         
         /// The task for finding the closest facility.
-        let closestFacilityTask = ClosestFacilityTask(url: .sanDiegoNetworkAnalysis)
+        private let closestFacilityTask = ClosestFacilityTask(url: .sanDiegoNetworkAnalysis)
         
         /// The parameters to be passed to the task to find the closest facility.
-        var closestFacilityParameters: ClosestFacilityParameters?
+        private var closestFacilityParameters: ClosestFacilityParameters?
         
         /// A list of facilities around San Diego, CA, USA.
-        let facilities = {
+        private let facilities = {
             let facilityPoints = [
                 Point(x: -13_042_130, y: 3_860_128, spatialReference: .webMercator),
                 Point(x: -13_042_193, y: 3_862_449, spatialReference: .webMercator),
@@ -120,6 +119,13 @@ private extension FindClosestFacilityToMultiplePointsView {
                 Graphic(geometry: $0.geometry, symbol: facilitySymbol)
             }
             facilityGraphicsOverlay.addGraphics(facilityGraphics)
+        }
+        
+        /// Creates the closest facility parameters from the closest facility task and the facilities list.
+        func configureClosestFacilityParameters() async throws {
+            let parameters = try await closestFacilityTask.makeDefaultParameters()
+            parameters.setFacilities(facilities)
+            closestFacilityParameters = parameters
         }
         
         /// Updates the incident to a given point and routes to the closest facility accordingly.
