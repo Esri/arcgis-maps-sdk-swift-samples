@@ -28,6 +28,9 @@ struct FindRouteAroundBarriersView: View {
     /// A Boolean value indicating whether routing will find the best sequence.
     @State private var routingFindsBestSequence = false
     
+    /// The geometry of a direction maneuver used to set the viewpoint to.
+    @State private var directionGeometry: Geometry?
+    
     /// A Boolean value indicating whether the error alert is showing.
     @State private var errorAlertIsShowing = false
     
@@ -70,21 +73,24 @@ struct FindRouteAroundBarriersView: View {
                 .toolbar {
                     ToolbarItemGroup(placement: .bottomBar) {
                         Button("Route") {
-                            Task {
-                                do {
-                                    routingIsInProgress = true
-                                    defer { routingIsInProgress = false }
-                                    try await model.route()
-                                    
-                                    // Update the viewpoint to the new route.
-                                    guard let geometry = model.route?.geometry else { return }
-                                    await mapViewProxy.setViewpointGeometry(geometry, padding: 50)
-                                } catch {
-                                    self.error = error
-                                }
-                            }
+                            routingIsInProgress = true
                         }
                         .disabled(model.stopsCount < 2)
+                        .task(id: routingIsInProgress) {
+                            guard routingIsInProgress else { return }
+                            
+                            do {
+                                try await model.route()
+                                
+                                // Update the viewpoint to the new route.
+                                guard let geometry = model.route?.geometry else { return }
+                                await mapViewProxy.setViewpointGeometry(geometry, padding: 50)
+                            } catch {
+                                self.error = error
+                            }
+                            
+                            routingIsInProgress = false
+                        }
                         Spacer()
                         
                         SheetButton(title: "Directions") {
@@ -94,14 +100,7 @@ struct FindRouteAroundBarriersView: View {
                                     id: \.offset
                                 ) { (_, direction) in
                                     Button {
-                                        Task {
-                                            guard let geometry = direction.geometry else { return }
-                                            model.directionGraphic.geometry = geometry
-                                            await mapViewProxy.setViewpointGeometry(
-                                                geometry,
-                                                padding: 100
-                                            )
-                                        }
+                                        directionGeometry = direction.geometry
                                     } label: {
                                         Text(direction.text)
                                     }
@@ -109,6 +108,11 @@ struct FindRouteAroundBarriersView: View {
                             }
                         } label: {
                             Image(systemName: "arrow.triangle.turn.up.right.diamond")
+                        }
+                        .task(id: directionGeometry) {
+                            guard let directionGeometry else { return }
+                            model.directionGraphic.geometry = directionGeometry
+                            await mapViewProxy.setViewpointGeometry(directionGeometry, padding: 100)
                         }
                         .disabled(model.route == nil)
                         Spacer()
