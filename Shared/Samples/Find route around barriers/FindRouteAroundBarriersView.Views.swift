@@ -114,7 +114,6 @@ extension FindRouteAroundBarriersView {
                     }
             }
             .navigationViewStyle(.stack)
-            .frame(idealWidth: 320, idealHeight: 428)
         }
     }
 }
