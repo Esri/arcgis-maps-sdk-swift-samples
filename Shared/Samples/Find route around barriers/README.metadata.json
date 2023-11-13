@@ -1,0 +1,59 @@
+{
+    "category": "Routing and Logistics",
+    "description": "Find a route that reaches all stops without crossing any barriers.",
+    "ignore": false,
+    "images": [
+        "find-route-around-barriers-1.png",
+        "find-route-around-barriers-2.png"
+    ],
+    "keywords": [
+        "barriers",
+        "best sequence",
+        "directions",
+        "maneuver",
+        "network analysis",
+        "routing",
+        "sequence",
+        "stop order",
+        "stops",
+        "DirectionManeuver",
+        "PolygonBarrier",
+        "Route",
+        "Route.directionManeuvers",
+        "Route.geometry",
+        "RouteParameters.clearPolygonBarriers",
+        "RouteParameters.findsBestSequence",
+        "RouteParameters.preservesFirstStop",
+        "RouteParameters.preservesLastStop",
+        "RouteParameters.returnsDirections",
+        "RouteParameters.setPolygonBarriers",
+        "RouteResult",
+        "RouteResult.routes",
+        "RouteTask",
+        "Stop"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "DirectionManeuver",
+        "PolygonBarrier",
+        "Route",
+        "Route.directionManeuvers",
+        "Route.geometry",
+        "RouteParameters.clearPolygonBarriers",
+        "RouteParameters.findsBestSequence",
+        "RouteParameters.preservesFirstStop",
+        "RouteParameters.preservesLastStop",
+        "RouteParameters.returnsDirections",
+        "RouteParameters.setPolygonBarriers",
+        "RouteResult",
+        "RouteResult.routes",
+        "RouteTask",
+        "Stop"
+    ],
+    "snippets": [
+        "FindRouteAroundBarriersView.swift",
+        "FindRouteAroundBarriersView.Model.swift",
+        "FindRouteAroundBarriersView.Views.swift"
+    ],
+    "title": "Find route around barriers"
+}
