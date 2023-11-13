@@ -151,13 +151,11 @@ extension FindRouteAroundBarriersView {
             )
             
             // Update the route parameters' barriers using the barrier graphics.
-            var barriers = [PolygonBarrier]()
-            for barrierGraphic in barrierGraphicsOverlay.graphics {
-                guard let polygon = barrierGraphic.geometry as? ArcGIS.Polygon else { continue }
-                let barrier = PolygonBarrier(polygon: polygon)
-                barriers.append(barrier)
-            }
-            routeParameters.setPolygonBarriers(barriers)
+            routeParameters.setPolygonBarriers(
+                barrierGraphicsOverlay.graphics
+                    .compactMap { $0.geometry as? ArcGIS.Polygon }
+                    .map(PolygonBarrier.init(polygon:))
+            )
             
             // Get the route from the route task using the updated route parameters.
             let routeResult = try await routeTask.solveRoute(using: routeParameters)
