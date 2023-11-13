@@ -19,7 +19,7 @@ struct FindRouteAroundBarriersView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
-    /// The type of route features to be added or removed from the map.
+    /// The route features to be added or removed from the map.
     @State private var featuresSelection: RouteFeatures = .stops
     
     /// A Boolean value indicating whether a routing operation is in progress.
@@ -28,7 +28,7 @@ struct FindRouteAroundBarriersView: View {
     /// A Boolean value indicating whether routing will find the best sequence.
     @State private var routingFindsBestSequence = false
     
-    /// The geometry of a direction maneuver used to set the viewpoint to.
+    /// The geometry of a direction maneuver to set the viewpoint to.
     @State private var directionGeometry: Geometry?
     
     /// A Boolean value indicating whether the error alert is showing.
@@ -82,7 +82,7 @@ struct FindRouteAroundBarriersView: View {
                             do {
                                 try await model.route()
                                 
-                                // Update the viewpoint to the new route.
+                                // Update the viewpoint to the geometry of the new route.
                                 guard let geometry = model.route?.geometry else { return }
                                 await mapViewProxy.setViewpointGeometry(geometry, padding: 50)
                             } catch {
@@ -161,6 +161,10 @@ struct FindRouteAroundBarriersView: View {
                         } label: {
                             Image(systemName: "trash")
                         }
+                        .disabled(
+                            featuresSelection == .stops ? model.stopsCount == 0 :
+                                model.barriersCount == 0
+                        )
                     }
                 }
         }

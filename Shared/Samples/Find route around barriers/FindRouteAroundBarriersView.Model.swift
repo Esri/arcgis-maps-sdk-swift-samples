@@ -50,12 +50,12 @@ extension FindRouteAroundBarriersView {
             return markerSymbol
         }()
         
-        /// The graphic for the route.
+        /// The yellow line graphic for the route.
         private let routeGraphic = Graphic(
             symbol: SimpleLineSymbol(style: .solid, color: .yellow, width: 5)
         )
         
-        /// The graphic for the direction route.
+        /// The dashed orange line graphic for the direction route.
         let directionGraphic = Graphic(
             symbol: SimpleLineSymbol(style: .dashDot, color: .orange, width: 5)
         )
@@ -74,6 +74,9 @@ extension FindRouteAroundBarriersView {
         
         /// The count of stops currently on the map.
         @Published private(set) var stopsCount = 0
+        
+        /// The count of barriers currently on the map.
+        @Published private(set) var barriersCount = 0
         
         init() {
             routeGraphicsOverlay.addGraphics([routeGraphic, directionGraphic])
@@ -115,6 +118,7 @@ extension FindRouteAroundBarriersView {
             // Create a graphic from the symbol and buffer and add it to the graphics overlay.
             let barrierGraphic = Graphic(geometry: bufferedGeometry, symbol: barrierSymbol)
             barrierGraphicsOverlay.addGraphic(barrierGraphic)
+            barriersCount += 1
         }
         
         /// Resets all the features on the map associated with a given feature type.
@@ -132,6 +136,7 @@ extension FindRouteAroundBarriersView {
                 updateRouteInfoText()
             } else {
                 barrierGraphicsOverlay.removeAllGraphics()
+                barriersCount = 0
             }
         }
         
