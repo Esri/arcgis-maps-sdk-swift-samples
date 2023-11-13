@@ -194,6 +194,8 @@
 		D73F8CF42AB1089900CD39DA /* Restaurant.stylx in Resources */ = {isa = PBXBuildFile; fileRef = D73F8CF32AB1089900CD39DA /* Restaurant.stylx */; settings = {ASSET_TAGS = (StyleFeaturesWithCustomDictionary, ); }; };
 		D73FC0FD2AD4A18D0067A19B /* CreateMobileGeodatabaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73FC0FC2AD4A18D0067A19B /* CreateMobileGeodatabaseView.swift */; };
 		D73FC0FE2AD4A19A0067A19B /* CreateMobileGeodatabaseView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D73FC0FC2AD4A18D0067A19B /* CreateMobileGeodatabaseView.swift */; };
+		D73FCFFF2B02C7630006360D /* FindRouteAroundBarriersView.Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73FCFFE2B02C7630006360D /* FindRouteAroundBarriersView.Views.swift */; };
+		D73FD0002B02C9610006360D /* FindRouteAroundBarriersView.Views.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D73FCFFE2B02C7630006360D /* FindRouteAroundBarriersView.Views.swift */; };
 		D744FD172A2112D90084A66C /* CreateConvexHullAroundPointsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D744FD162A2112D90084A66C /* CreateConvexHullAroundPointsView.swift */; };
 		D744FD182A2113C70084A66C /* CreateConvexHullAroundPointsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D744FD162A2112D90084A66C /* CreateConvexHullAroundPointsView.swift */; };
 		D7464F1E2ACE04B3007FEE88 /* IdentifyRasterCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7464F1D2ACE04B3007FEE88 /* IdentifyRasterCellView.swift */; };
@@ -232,6 +234,8 @@
 		D7634FB02A43B8B000F8AEFB /* CreateConvexHullAroundGeometriesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7634FAE2A43B7AC00F8AEFB /* CreateConvexHullAroundGeometriesView.swift */; };
 		D769C2122A29019B00030F61 /* SetUpLocationDrivenGeotriggersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D769C2112A29019B00030F61 /* SetUpLocationDrivenGeotriggersView.swift */; };
 		D769C2132A29057200030F61 /* SetUpLocationDrivenGeotriggersView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D769C2112A29019B00030F61 /* SetUpLocationDrivenGeotriggersView.swift */; };
+		D76EE6072AF9AFE100DA0325 /* FindRouteAroundBarriersView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76EE6062AF9AFE100DA0325 /* FindRouteAroundBarriersView.Model.swift */; };
+		D76EE6082AF9AFEC00DA0325 /* FindRouteAroundBarriersView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D76EE6062AF9AFE100DA0325 /* FindRouteAroundBarriersView.Model.swift */; };
 		D7705D582AFC244E00CC0335 /* FindClosestFacilityToMultiplePointsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7705D552AFC244E00CC0335 /* FindClosestFacilityToMultiplePointsView.swift */; };
 		D7705D5B2AFC246A00CC0335 /* FindClosestFacilityToMultiplePointsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7705D552AFC244E00CC0335 /* FindClosestFacilityToMultiplePointsView.swift */; };
 		D7749AD62AF08BF50086632F /* FindRouteInTransportNetworkView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7749AD52AF08BF50086632F /* FindRouteInTransportNetworkView.Model.swift */; };
@@ -262,6 +266,8 @@
 		D7CE9FA32AE2F595008F7A5F /* san-diego-eagle-locator in Resources */ = {isa = PBXBuildFile; fileRef = D7CE9FA22AE2F595008F7A5F /* san-diego-eagle-locator */; settings = {ASSET_TAGS = (GeocodeOffline, ); }; };
 		D7D1F3532ADDBE5D009CE2DA /* philadelphia.mspk in Resources */ = {isa = PBXBuildFile; fileRef = D7D1F3522ADDBE5D009CE2DA /* philadelphia.mspk */; settings = {ASSET_TAGS = (AugmentRealityToShowTabletopScene, ); }; };
 		D7DDF84E2AF43AA2004352D9 /* GeocodeOfflineView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D72C43F22AEB066D00B6157B /* GeocodeOfflineView.Model.swift */; };
+		D7DDF8532AF47C6C004352D9 /* FindRouteAroundBarriersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7DDF8502AF47C6C004352D9 /* FindRouteAroundBarriersView.swift */; };
+		D7DDF8562AF47C86004352D9 /* FindRouteAroundBarriersView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7DDF8502AF47C6C004352D9 /* FindRouteAroundBarriersView.swift */; };
 		D7E440D72A1ECE7D005D74DE /* CreateBuffersAroundPointsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E440D62A1ECE7D005D74DE /* CreateBuffersAroundPointsView.swift */; };
 		D7E440D82A1ECEB3005D74DE /* CreateBuffersAroundPointsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7E440D62A1ECE7D005D74DE /* CreateBuffersAroundPointsView.swift */; };
 		D7E557682A1D768800B9FB09 /* AddWMSLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E557672A1D768800B9FB09 /* AddWMSLayerView.swift */; };
@@ -369,6 +375,9 @@
 				D737237B2AF5AE1A00846884 /* FindRouteInMobileMapPackageView.Models.swift in Copy Source Code Files */,
 				D737237A2AF5AE1600846884 /* FindRouteInMobileMapPackageView.MobileMapView.swift in Copy Source Code Files */,
 				D76000B12AF19C4600B3084D /* FindRouteInMobileMapPackageView.swift in Copy Source Code Files */,
+				D73FD0002B02C9610006360D /* FindRouteAroundBarriersView.Views.swift in Copy Source Code Files */,
+				D76EE6082AF9AFEC00DA0325 /* FindRouteAroundBarriersView.Model.swift in Copy Source Code Files */,
+				D7DDF8562AF47C86004352D9 /* FindRouteAroundBarriersView.swift in Copy Source Code Files */,
 				D7DDF84E2AF43AA2004352D9 /* GeocodeOfflineView.Model.swift in Copy Source Code Files */,
 				D7705D5B2AFC246A00CC0335 /* FindClosestFacilityToMultiplePointsView.swift in Copy Source Code Files */,
 				00F279D72AF4364700CECAF8 /* AddDynamicEntityLayerView.VehicleCallout.swift in Copy Source Code Files */,
@@ -606,6 +615,7 @@
 		D73723782AF5ADD700846884 /* FindRouteInMobileMapPackageView.MobileMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindRouteInMobileMapPackageView.MobileMapView.swift; sourceTree = "<group>"; };
 		D73F8CF32AB1089900CD39DA /* Restaurant.stylx */ = {isa = PBXFileReference; lastKnownFileType = file; path = Restaurant.stylx; sourceTree = "<group>"; };
 		D73FC0FC2AD4A18D0067A19B /* CreateMobileGeodatabaseView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateMobileGeodatabaseView.swift; sourceTree = "<group>"; };
+		D73FCFFE2B02C7630006360D /* FindRouteAroundBarriersView.Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindRouteAroundBarriersView.Views.swift; sourceTree = "<group>"; };
 		D744FD162A2112D90084A66C /* CreateConvexHullAroundPointsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateConvexHullAroundPointsView.swift; sourceTree = "<group>"; };
 		D7464F1D2ACE04B3007FEE88 /* IdentifyRasterCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentifyRasterCellView.swift; sourceTree = "<group>"; };
 		D7464F2A2ACE0964007FEE88 /* SA_EVI_8Day_03May20 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = SA_EVI_8Day_03May20; sourceTree = "<group>"; };
@@ -627,6 +637,7 @@
 		D76000B62AF19FCA00B3084D /* SanFrancisco.mmpk */ = {isa = PBXFileReference; lastKnownFileType = file; path = SanFrancisco.mmpk; sourceTree = "<group>"; };
 		D7634FAE2A43B7AC00F8AEFB /* CreateConvexHullAroundGeometriesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateConvexHullAroundGeometriesView.swift; sourceTree = "<group>"; };
 		D769C2112A29019B00030F61 /* SetUpLocationDrivenGeotriggersView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetUpLocationDrivenGeotriggersView.swift; sourceTree = "<group>"; };
+		D76EE6062AF9AFE100DA0325 /* FindRouteAroundBarriersView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindRouteAroundBarriersView.Model.swift; sourceTree = "<group>"; };
 		D7705D552AFC244E00CC0335 /* FindClosestFacilityToMultiplePointsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindClosestFacilityToMultiplePointsView.swift; sourceTree = "<group>"; };
 		D7749AD52AF08BF50086632F /* FindRouteInTransportNetworkView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindRouteInTransportNetworkView.Model.swift; sourceTree = "<group>"; };
 		D77570BF2A2942F800F490CD /* AnimateImagesWithImageOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimateImagesWithImageOverlayView.swift; sourceTree = "<group>"; };
@@ -645,6 +656,7 @@
 		D7CE9F9A2AE2F575008F7A5F /* streetmap_SD.tpkx */ = {isa = PBXFileReference; lastKnownFileType = file; path = streetmap_SD.tpkx; sourceTree = "<group>"; };
 		D7CE9FA22AE2F595008F7A5F /* san-diego-eagle-locator */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "san-diego-eagle-locator"; sourceTree = "<group>"; };
 		D7D1F3522ADDBE5D009CE2DA /* philadelphia.mspk */ = {isa = PBXFileReference; lastKnownFileType = file; path = philadelphia.mspk; sourceTree = "<group>"; };
+		D7DDF8502AF47C6C004352D9 /* FindRouteAroundBarriersView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindRouteAroundBarriersView.swift; sourceTree = "<group>"; };
 		D7E440D62A1ECE7D005D74DE /* CreateBuffersAroundPointsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateBuffersAroundPointsView.swift; sourceTree = "<group>"; };
 		D7E557672A1D768800B9FB09 /* AddWMSLayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddWMSLayerView.swift; sourceTree = "<group>"; };
 		D7E7D0802AEB39D5003AAD02 /* FindRouteInTransportNetworkView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindRouteInTransportNetworkView.swift; sourceTree = "<group>"; };
@@ -816,6 +828,7 @@
 				D78666A92A21616D00C60110 /* Find nearest vertex */,
 				E066DD33285CF3A0004D3D5B /* Find route */,
 				D76000AA2AF19C2300B3084D /* Find route in mobile map package */,
+				D7DDF84F2AF47C6C004352D9 /* Find route around barriers */,
 				D7E7D0792AEB39BF003AAD02 /* Find route in transport network */,
 				E088E1722863B5E600413100 /* Generate offline map */,
 				D7553CD62AE2DFEC00DC2A70 /* Geocode offline */,
@@ -1671,6 +1684,16 @@
 			path = 7dd2f97bb007466ea939160d0de96a9d;
 			sourceTree = "<group>";
 		};
+		D7DDF84F2AF47C6C004352D9 /* Find route around barriers */ = {
+			isa = PBXGroup;
+			children = (
+				D76EE6062AF9AFE100DA0325 /* FindRouteAroundBarriersView.Model.swift */,
+				D7DDF8502AF47C6C004352D9 /* FindRouteAroundBarriersView.swift */,
+				D73FCFFE2B02C7630006360D /* FindRouteAroundBarriersView.Views.swift */,
+			);
+			path = "Find route around barriers";
+			sourceTree = "<group>";
+		};
 		D7E440D12A1ECBC2005D74DE /* Create buffers around points */ = {
 			isa = PBXGroup;
 			children = (
@@ -2157,6 +2180,7 @@
 				E004A6E028466279002A1FE6 /* ShowCalloutView.swift in Sources */,
 				E000E763286A0B18005D87C5 /* CutGeometryView.swift in Sources */,
 				D7705D582AFC244E00CC0335 /* FindClosestFacilityToMultiplePointsView.swift in Sources */,
+				D73FCFFF2B02C7630006360D /* FindRouteAroundBarriersView.Views.swift in Sources */,
 				4D126D7229CA1E1800CFB7A7 /* FileNMEASentenceReader.swift in Sources */,
 				001C6DE127FE8A9400D472C2 /* AppSecrets.swift.masque in Sources */,
 				D7084FA92AD771AA00EC7F4F /* AugmentRealityToFlyOverSceneView.swift in Sources */,
@@ -2235,6 +2259,7 @@
 				0074ABBF28174BCF0037244A /* DisplayMapView.swift in Sources */,
 				D7EF5D752A26A03A00FEBDE5 /* ShowCoordinatesInMultipleFormatsView.swift in Sources */,
 				D72F272E2ADA1E4400F906DA /* AugmentRealityToShowTabletopSceneView.swift in Sources */,
+				D76EE6072AF9AFE100DA0325 /* FindRouteAroundBarriersView.Model.swift in Sources */,
 				0086F40128E3770A00974721 /* ShowViewshedFromPointInSceneView.swift in Sources */,
 				0044289229C90C0B00160767 /* GetElevationAtPointOnSurfaceView.swift in Sources */,
 				D7E440D72A1ECE7D005D74DE /* CreateBuffersAroundPointsView.swift in Sources */,
@@ -2266,6 +2291,7 @@
 				D7EAF35A2A1C023800D822C4 /* SetMinAndMaxScaleView.swift in Sources */,
 				1C19B4F52A578E46001D2506 /* CreateLoadReportView.Model.swift in Sources */,
 				0042E24528E4F82C001F33D6 /* ShowViewshedFromPointInSceneView.ViewshedSettingsView.swift in Sources */,
+				D7DDF8532AF47C6C004352D9 /* FindRouteAroundBarriersView.swift in Sources */,
 				1C9B74D929DB54560038B06F /* ChangeCameraControllerView.swift in Sources */,
 				D76000AE2AF19C2300B3084D /* FindRouteInMobileMapPackageView.swift in Sources */,
 				00273CF42A82AB5900A7A77D /* SamplesSearchView.swift in Sources */,
