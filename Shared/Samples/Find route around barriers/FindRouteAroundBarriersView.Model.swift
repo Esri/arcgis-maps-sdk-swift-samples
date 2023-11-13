@@ -26,7 +26,8 @@ extension FindRouteAroundBarriersView {
             let map = Map(basemapStyle: .arcGISTopographic)
             map.initialViewpoint = Viewpoint(
                 center: Point(x: -13_042_200, y: 3_857_900, spatialReference: .webMercator),
-                scale: 1e5)
+                scale: 1e5
+            )
             return map
         }()
         
@@ -143,13 +144,11 @@ extension FindRouteAroundBarriersView {
         /// Routes using the route parameters and the current stops and barriers on the map.
         func route() async throws {
             // Update the route parameters' stops using the stop graphics.
-            var stops = [Stop]()
-            for stopGraphic in stopGraphicsOverlay.graphics {
-                guard let point = stopGraphic.geometry as? Point else { continue }
-                let stop = Stop(point: point)
-                stops.append(stop)
-            }
-            routeParameters.setStops(stops)
+            routeParameters.setStops(
+                stopGraphicsOverlay.graphics
+                    .compactMap { $0.geometry as? Point }
+                    .map(Stop.init(point:))
+            )
             
             // Update the route parameters' barriers using the barrier graphics.
             var barriers = [PolygonBarrier]()
