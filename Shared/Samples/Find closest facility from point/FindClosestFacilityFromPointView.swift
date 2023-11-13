@@ -20,7 +20,7 @@ struct FindClosestFacilityFromPointView: View {
     @StateObject private var model = Model()
     
     /// A Boolean value indicating whether a routing operation is in progress.
-    @State private var routing = false
+    @State private var isRouting = false
     
     /// A Boolean value indicating whether routing is currently disabled.
     @State private var routingIsDisabled = true
