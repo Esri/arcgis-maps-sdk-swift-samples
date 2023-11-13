@@ -37,7 +37,7 @@ struct FindClosestFacilityFromPointView: View {
         MapViewReader { mapViewProxy in
             MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
                 .overlay(alignment: .center) {
-                    if routing {
+                    if isRouting {
                         ProgressView("Routing...")
                             .padding()
                             .background(.ultraThickMaterial)
@@ -50,8 +50,8 @@ struct FindClosestFacilityFromPointView: View {
                         Button("Solve Routes") {
                             Task {
                                 do {
-                                    routing = true
-                                    defer { routing = false }
+                                    isRouting = true
+                                    defer { isRouting = false }
                                     
                                     try await model.solveRoutes()
                                     routingIsDisabled = true
