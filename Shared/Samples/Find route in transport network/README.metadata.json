@@ -1,0 +1,41 @@
+{
+    "category": "Routing and Logistics",
+    "description": "Solve a route on-the-fly using offline data.",
+    "ignore": false,
+    "images": [
+        "find-route-in-transport-network.png"
+    ],
+    "keywords": [
+        "connectivity",
+        "disconnected",
+        "fastest",
+        "locator",
+        "navigation",
+        "network analysis",
+        "offline",
+        "routing",
+        "shortest",
+        "turn-by-turn",
+        "RouteParameters",
+        "RouteResult",
+        "RouteTask",
+        "Stop",
+        "TravelMode"
+    ],
+    "offline_data": [
+        "df193653ed39449195af0c9725701dca"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "RouteParameters",
+        "RouteResult",
+        "RouteTask",
+        "Stop",
+        "TravelMode"
+    ],
+    "snippets": [
+        "FindRouteInTransportNetworkView.swift",
+        "FindRouteInTransportNetworkView.Model.swift"
+    ],
+    "title": "Find route in transport network"
+}

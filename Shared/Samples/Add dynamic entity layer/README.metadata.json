@@ -37,7 +37,8 @@
     "snippets": [
         "AddDynamicEntityLayerView.swift",
         "AddDynamicEntityLayerView.Model.swift",
-        "AddDynamicEntityLayerView.SettingsView.swift"
+        "AddDynamicEntityLayerView.SettingsView.swift",
+        "AddDynamicEntityLayerView.VehicleCallout.swift"
     ],
     "title": "Add dynamic entity layer"
 }
