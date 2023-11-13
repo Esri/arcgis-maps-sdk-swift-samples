@@ -52,7 +52,8 @@
     ],
     "snippets": [
         "FindRouteAroundBarriersView.swift",
-        "FindRouteAroundBarriersView.Model.swift"
+        "FindRouteAroundBarriersView.Model.swift",
+        "FindRouteAroundBarriersView.Views.swift"
     ],
     "title": "Find route around barriers"
 }
