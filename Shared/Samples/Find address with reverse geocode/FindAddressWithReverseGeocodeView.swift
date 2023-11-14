@@ -66,10 +66,10 @@ struct FindAddressWithReverseGeocodeView: View {
             .alert(isPresented: $errorAlertIsShowing, presentingError: error)
     }
     
-    /// Reverse geocodes a given point and updates the callout with the result.
+    /// Reverse geocodes a given point and updates the marker with the result.
     /// - Parameter mapPoint: The point on the map to reverse geocode.
     private func reverseGeocode(_ mapPoint: Point) async {
-        //  Normalized the tap location.
+        //  Normalized the map point.
         guard let normalizedPoint = GeometryEngine.normalizeCentralMeridian(
             of: mapPoint
         ) as? Point else { return }
@@ -108,7 +108,7 @@ struct FindAddressWithReverseGeocodeView: View {
 }
 
 private extension FindAddressWithReverseGeocodeView {
-    /// The view model for the sample.
+    /// The model used to store the geo model and other expensive objects used in this view.
     class Model: ObservableObject {
         /// A map with a topographic basemap initially centered on Redlands, CA, USA.
         let map = {
@@ -123,7 +123,7 @@ private extension FindAddressWithReverseGeocodeView {
         /// The graphics overlay for the marker graphic.
         let graphicsOverlay = GraphicsOverlay()
         
-        /// The red map marker graphic used to indicate a given location on the map.
+        /// The red map marker graphic used to indicate a tap location on the map.
         let markerGraphic = {
             // Create a symbol using the image from the project assets.
             guard let markerImage = UIImage(named: "RedMarker") else { return Graphic() }

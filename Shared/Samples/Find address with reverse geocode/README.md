@@ -15,13 +15,13 @@ Tap the map to see the nearest address displayed in a callout.
 ## How it works
 
 1. Create a `LocatorTask` object using a URL to a geocoder service.
-2. Set the `GeocodeParameters` for the `LocatorTask` and specify the geocoder's attributes.
-3. Get the matching results from the `GeocodeResult` using  `LocatorTask.reverseGeocodeAsync`.
+2. Create an instance of `ReverseGeocodeParameters` and set `ReverseGeocodeParameters.maxResults` to 1.
+3. Pass the `ReverseGeocodeParameters` into `LocatorTask.reverseGeocode(forLocation:parameters:)` and get the matching results from the `GeocodeResult`.
 4. Show the results using a `PictureMarkerSymbol` and add the symbol to a `Graphic` in the `GraphicsOverlay`.
 
 ## Relevant API
 
-* GeocodeParameters
+* GeocodeResult
 * LocatorTask
 * ReverseGeocodeParameters
 

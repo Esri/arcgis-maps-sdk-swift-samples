@@ -11,13 +11,13 @@
         "locate",
         "reverse geocode",
         "search",
-        "GeocodeParameters",
+        "GeocodeResult",
         "LocatorTask",
         "ReverseGeocodeParameters"
     ],
     "redirect_from": [],
     "relevant_apis": [
-        "GeocodeParameters",
+        "GeocodeResult",
         "LocatorTask",
         "ReverseGeocodeParameters"
     ],
