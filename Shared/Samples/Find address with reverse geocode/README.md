@@ -2,7 +2,7 @@
 
 Use an online service to find the address for a tapped point.
 
-![Image of find address with reverse geocode](FindAddressWithReverseGeocode.png)
+![Image of find address with reverse geocode](find-address-with-reverse-geocode.png)
 
 ## Use case
 
