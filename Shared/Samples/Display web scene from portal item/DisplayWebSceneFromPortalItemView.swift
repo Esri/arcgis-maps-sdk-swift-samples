@@ -16,27 +16,27 @@ import ArcGIS
 import SwiftUI
 
 struct DisplayWebSceneFromPortalItemView: View {
-    /// The view model for the sample.
-    @StateObject private var model = Model()
+    /// A scene of Geneva, Switzerland created from a portal item.
+    @State private var scene = {
+        // Create a portal item using a portal and an ID.
+        let portalItem = PortalItem(
+            portal: .arcGISOnline(connection: .anonymous),
+            id: .genevaSwitzerlandScene
+        )
+        
+        // Create a scene using the portal item.
+        return Scene(item: portalItem)
+    }()
     
     var body: some View {
-        MapView(map: model.map)
-            .alert(isPresented: $model.errorAlertIsShowing, presentingError: model.error)
+        // Create a scene view with the scene.
+        SceneView(scene: scene)
     }
 }
 
-private extension DisplayWebSceneFromPortalItemView {
-    /// The view model for the sample.
-    class Model: ObservableObject {
-        /// A map with a topographic basemap.
-        let map = Map(basemapStyle: .arcGISTopographic)
-        
-        /// A Boolean value indicating whether the error alert is showing.
-        @Published var errorAlertIsShowing = false
-        
-        /// The error shown in the error alert.
-        @Published var error: Error? {
-            didSet { errorAlertIsShowing = error != nil }
-        }
+private extension PortalItem.ID {
+    /// The ID for the "Geneva, Switzerland Scene" portal item on ArcGIS Online.
+    static var genevaSwitzerlandScene: PortalItem.ID {
+        .init("c6f90b19164c4283884361005faea852")!
     }
 }
