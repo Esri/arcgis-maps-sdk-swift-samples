@@ -69,7 +69,7 @@ struct FindAddressWithReverseGeocodeView: View {
     /// Reverse geocodes a given point and updates the marker with the result.
     /// - Parameter mapPoint: The point on the map to reverse geocode.
     private func reverseGeocode(_ mapPoint: Point) async {
-        //  Normalized the map point.
+        //  Normalize the map point.
         guard let normalizedPoint = GeometryEngine.normalizeCentralMeridian(
             of: mapPoint
         ) as? Point else { return }
