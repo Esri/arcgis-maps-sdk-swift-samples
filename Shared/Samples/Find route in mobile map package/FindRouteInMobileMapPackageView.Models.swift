@@ -110,7 +110,7 @@ extension FindRouteInMobileMapPackageView.MobileMapView {
         let routeTask: RouteTask?
         
         /// The route parameters for routing with the route task.
-        var routeParameters: RouteParameters?
+        private var routeParameters: RouteParameters?
         
         /// The locator task for reverse geocoding.
         private let locatorTask: LocatorTask
@@ -148,6 +148,11 @@ extension FindRouteInMobileMapPackageView.MobileMapView {
         }
         
         // MARK: Methods
+        
+        /// Loads the route parameters from the route task.
+        func loadRouteParameters() async throws {
+            routeParameters = try await routeTask?.makeDefaultParameters()
+        }
         
         /// Updates the marker to a given point or adds a new marker if there isn't one yet.
         /// - Parameter point: The point to set the marker to.

@@ -94,9 +94,9 @@ extension FindRouteInMobileMapPackageView {
                 }
             }
             .task {
-                // Load the default route parameters from the route task when the sample loads.
+                // Load the route parameters sample loads.
                 do {
-                    model.routeParameters = try await model.routeTask?.makeDefaultParameters()
+                    try await model.loadRouteParameters()
                 } catch {
                     self.error = error
                 }
