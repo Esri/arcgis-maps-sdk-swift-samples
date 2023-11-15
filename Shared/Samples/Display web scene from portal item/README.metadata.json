@@ -2,7 +2,9 @@
     "category": "Scenes",
     "description": "Open a web scene from a portal item.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "display-web-scene-from-portal-item.png"
+    ],
     "keywords": [
         "portal",
         "scene",
