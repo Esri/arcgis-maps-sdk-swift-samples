@@ -233,6 +233,8 @@
 		D76EE6082AF9AFEC00DA0325 /* FindRouteAroundBarriersView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D76EE6062AF9AFE100DA0325 /* FindRouteAroundBarriersView.Model.swift */; };
 		D7705D582AFC244E00CC0335 /* FindClosestFacilityToMultiplePointsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7705D552AFC244E00CC0335 /* FindClosestFacilityToMultiplePointsView.swift */; };
 		D7705D5B2AFC246A00CC0335 /* FindClosestFacilityToMultiplePointsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7705D552AFC244E00CC0335 /* FindClosestFacilityToMultiplePointsView.swift */; };
+		D7705D642AFC570700CC0335 /* FindClosestFacilityFromPointView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7705D612AFC570700CC0335 /* FindClosestFacilityFromPointView.swift */; };
+		D7705D662AFC575000CC0335 /* FindClosestFacilityFromPointView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7705D612AFC570700CC0335 /* FindClosestFacilityFromPointView.swift */; };
 		D7749AD62AF08BF50086632F /* FindRouteInTransportNetworkView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7749AD52AF08BF50086632F /* FindRouteInTransportNetworkView.Model.swift */; };
 		D77570C02A2942F800F490CD /* AnimateImagesWithImageOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77570BF2A2942F800F490CD /* AnimateImagesWithImageOverlayView.swift */; };
 		D77570C12A2943D900F490CD /* AnimateImagesWithImageOverlayView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D77570BF2A2942F800F490CD /* AnimateImagesWithImageOverlayView.swift */; };
@@ -368,6 +370,7 @@
 			dstSubfolderSpec = 7;
 			files = (
 				D73FCFFA2B02A3C50006360D /* FindAddressWithReverseGeocodeView.swift in Copy Source Code Files */,
+				D7705D662AFC575000CC0335 /* FindClosestFacilityFromPointView.swift in Copy Source Code Files */,
 				D73FD0002B02C9610006360D /* FindRouteAroundBarriersView.Views.swift in Copy Source Code Files */,
 				D76EE6082AF9AFEC00DA0325 /* FindRouteAroundBarriersView.Model.swift in Copy Source Code Files */,
 				D7DDF8562AF47C86004352D9 /* FindRouteAroundBarriersView.swift in Copy Source Code Files */,
@@ -629,6 +632,7 @@
 		D769C2112A29019B00030F61 /* SetUpLocationDrivenGeotriggersView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetUpLocationDrivenGeotriggersView.swift; sourceTree = "<group>"; };
 		D76EE6062AF9AFE100DA0325 /* FindRouteAroundBarriersView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindRouteAroundBarriersView.Model.swift; sourceTree = "<group>"; };
 		D7705D552AFC244E00CC0335 /* FindClosestFacilityToMultiplePointsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindClosestFacilityToMultiplePointsView.swift; sourceTree = "<group>"; };
+		D7705D612AFC570700CC0335 /* FindClosestFacilityFromPointView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindClosestFacilityFromPointView.swift; sourceTree = "<group>"; };
 		D7749AD52AF08BF50086632F /* FindRouteInTransportNetworkView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindRouteInTransportNetworkView.Model.swift; sourceTree = "<group>"; };
 		D77570BF2A2942F800F490CD /* AnimateImagesWithImageOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimateImagesWithImageOverlayView.swift; sourceTree = "<group>"; };
 		D77572AD2A295DDD00F490CD /* PacificSouthWest2 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = PacificSouthWest2; sourceTree = "<group>"; };
@@ -815,6 +819,7 @@
 				E004A6EE284E4B7A002A1FE6 /* Download vector tiles to local cache */,
 				1C26ED122A859525009B7721 /* Filter features in scene */,
 				D73FCFF32B02A3AA0006360D /* Find address with reverse geocode */,
+				D7705D5F2AFC570700CC0335 /* Find closest facility from point */,
 				D7705D542AFC244E00CC0335 /* Find closest facility to multiple points */,
 				D78666A92A21616D00C60110 /* Find nearest vertex */,
 				E066DD33285CF3A0004D3D5B /* Find route */,
@@ -1533,6 +1538,14 @@
 			path = "Find closest facility to multiple points";
 			sourceTree = "<group>";
 		};
+		D7705D5F2AFC570700CC0335 /* Find closest facility from point */ = {
+			isa = PBXGroup;
+			children = (
+				D7705D612AFC570700CC0335 /* FindClosestFacilityFromPointView.swift */,
+			);
+			path = "Find closest facility from point";
+			sourceTree = "<group>";
+		};
 		D77570BC2A29427200F490CD /* Animate images with image overlay */ = {
 			isa = PBXGroup;
 			children = (
@@ -2212,6 +2225,7 @@
 				D7058FB12ACB423C00A40F14 /* Animate3DGraphicView.Model.swift in Sources */,
 				0044CDDF2995C39E004618CE /* ShowDeviceLocationHistoryView.swift in Sources */,
 				E041ABC0287CA9F00056009B /* WebView.swift in Sources */,
+				D7705D642AFC570700CC0335 /* FindClosestFacilityFromPointView.swift in Sources */,
 				E088E1572862579D00413100 /* SetSurfacePlacementModeView.swift in Sources */,
 				1CAF831F2A20305F000E1E60 /* ShowUtilityAssociationsView.swift in Sources */,
 				00C7993B2A845AAF00AFE342 /* Sidebar.swift in Sources */,
