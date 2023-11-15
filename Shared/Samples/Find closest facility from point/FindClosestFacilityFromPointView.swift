@@ -169,19 +169,19 @@ private extension FindClosestFacilityFromPointView {
             // Create a route graphic for each incident in the result.
             let incidentsIndices = closestFacilityResult.incidents.indices
             let routeGraphics = incidentsIndices.compactMap { incidentIndex -> Graphic? in
-                // Get the index for the facility closest to the given incident.
+                // Get the index for the facility closest to the given incident and facility route.
                 guard let closestFacilityIndex = closestFacilityResult.rankedIndexesOfFacilities(
                     forIncidentAtIndex: incidentIndex
-                ).first else { return nil }
-                
-                // Get the route for the facility and incident.
-                let closestFacilityRoute = closestFacilityResult.route(
-                    toFacilityAtIndex: closestFacilityIndex,
-                    fromIncidentAtIndex: incidentIndex
-                )
+                ).first,
+                      let closestFacilityRoute = closestFacilityResult.route(
+                        toFacilityAtIndex: closestFacilityIndex,
+                        fromIncidentAtIndex: incidentIndex
+                      ) else {
+                    return nil
+                }
                 
                 // Create a graphic using the route's geometry.
-                return Graphic(geometry: closestFacilityRoute?.routeGeometry, symbol: routeSymbol)
+                return Graphic(geometry: closestFacilityRoute.routeGeometry, symbol: routeSymbol)
             }
             
             graphicsOverlay.addGraphics(routeGraphics)
