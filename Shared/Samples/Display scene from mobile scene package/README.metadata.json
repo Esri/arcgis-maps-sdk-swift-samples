@@ -2,7 +2,9 @@
     "category": "Scenes",
     "description": "Opens and displays a scene from a Mobile Scene Package (.mspk).",
     "ignore": false,
-    "images": [],
+    "images": [
+        "display-scene-from-mobile-scene-package.png"
+    ],
     "keywords": [
         "offline",
         "scene",
