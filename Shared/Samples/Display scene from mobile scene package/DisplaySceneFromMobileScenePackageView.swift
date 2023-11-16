@@ -16,27 +16,44 @@ import ArcGIS
 import SwiftUI
 
 struct DisplaySceneFromMobileScenePackageView: View {
-    /// The view model for the sample.
-    @StateObject private var model = Model()
+    /// The scene used to create the scene view.
+    @State private var scene = ArcGIS.Scene()
+    
+    /// A Boolean value indicating whether the error alert is showing.
+    @State private var errorAlertIsShowing = false
+    
+    /// The error shown in the error alert.
+    @State private var error: Error? {
+        didSet { errorAlertIsShowing = error != nil }
+    }
     
     var body: some View {
-        MapView(map: model.map)
-            .alert(isPresented: $model.errorAlertIsShowing, presentingError: model.error)
+        // Create a scene view with the scene.
+        SceneView(scene: scene)
+            .task {
+                do {
+                    // Create a mobile scene package using a URL to a .mspk file.
+                    let mobileScenePackage = MobileScenePackage(fileURL: .philadelphia)
+                    
+                    // Load the package.
+                    try await mobileScenePackage.load()
+                    
+                    // Get the first scene from the package.
+                    guard let scene = mobileScenePackage.scenes.first else { return }
+                    
+                    // Use the scene to update the scene view.
+                    self.scene = scene
+                } catch {
+                    self.error = error
+                }
+            }
+            .alert(isPresented: $errorAlertIsShowing, presentingError: error)
     }
 }
 
-private extension DisplaySceneFromMobileScenePackageView {
-    /// The view model for the sample.
-    class Model: ObservableObject {
-        /// A map with a topographic basemap.
-        let map = Map(basemapStyle: .arcGISTopographic)
-        
-        /// A Boolean value indicating whether the error alert is showing.
-        @Published var errorAlertIsShowing = false
-        
-        /// The error shown in the error alert.
-        @Published var error: Error? {
-            didSet { errorAlertIsShowing = error != nil }
-        }
+private extension URL {
+    /// A URL to the local mobile scene package of Philadelphia, PA, USA.
+    static var philadelphia: URL {
+        Bundle.main.url(forResource: "philadelphia", withExtension: "mspk")!
     }
 }
