@@ -268,7 +268,7 @@
 		D7CC34002A3147FF00198EDF /* ShowLineOfSightBetweenPointsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7CC33FD2A31475C00198EDF /* ShowLineOfSightBetweenPointsView.swift */; };
 		D7CE9F9B2AE2F575008F7A5F /* streetmap_SD.tpkx in Resources */ = {isa = PBXBuildFile; fileRef = D7CE9F9A2AE2F575008F7A5F /* streetmap_SD.tpkx */; settings = {ASSET_TAGS = (GeocodeOffline, ); }; };
 		D7CE9FA32AE2F595008F7A5F /* san-diego-eagle-locator in Resources */ = {isa = PBXBuildFile; fileRef = D7CE9FA22AE2F595008F7A5F /* san-diego-eagle-locator */; settings = {ASSET_TAGS = (GeocodeOffline, ); }; };
-		D7D1F3532ADDBE5D009CE2DA /* philadelphia.mspk in Resources */ = {isa = PBXBuildFile; fileRef = D7D1F3522ADDBE5D009CE2DA /* philadelphia.mspk */; settings = {ASSET_TAGS = (AugmentRealityToShowTabletopScene, ); }; };
+		D7D1F3532ADDBE5D009CE2DA /* philadelphia.mspk in Resources */ = {isa = PBXBuildFile; fileRef = D7D1F3522ADDBE5D009CE2DA /* philadelphia.mspk */; settings = {ASSET_TAGS = (AugmentRealityToShowTabletopScene, DisplaySceneFromMobileScenePackage, ); }; };
 		D7DDF84E2AF43AA2004352D9 /* GeocodeOfflineView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D72C43F22AEB066D00B6157B /* GeocodeOfflineView.Model.swift */; };
 		D7DDF8532AF47C6C004352D9 /* FindRouteAroundBarriersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7DDF8502AF47C6C004352D9 /* FindRouteAroundBarriersView.swift */; };
 		D7DDF8562AF47C86004352D9 /* FindRouteAroundBarriersView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7DDF8502AF47C6C004352D9 /* FindRouteAroundBarriersView.swift */; };
@@ -2021,6 +2021,7 @@
 					ChangeCameraController,
 					DisplayDimensions,
 					DisplayMapFromMobileMapPackage,
+					DisplaySceneFromMobileScenePackage,
 					FindRouteInMobileMapPackage,
 					FindRouteInTransportNetwork,
 					GeocodeOffline,
