@@ -17,13 +17,8 @@ import ArcGISToolkit
 import SwiftUI
 
 struct BrowseBuildingFloorsView: View {
-    /// A Boolean value indicating whether to show an alert.
-    @State private var isShowingAlert = false
-    
-    /// The error shown in the alert.
-    @State private var error: Error? {
-        didSet { isShowingAlert = error != nil }
-    }
+    /// The error shown in the error alert.
+    @State private var error: Error?
     
     /// The current viewpoint of the map.
     @State private var viewpoint: Viewpoint?
@@ -46,7 +41,7 @@ struct BrowseBuildingFloorsView: View {
         MapView(map: map)
             .onViewpointChanged(kind: .centerAndScale) { viewpoint = $0 }
             .onNavigatingChanged { isMapNavigating = $0 }
-            .alert(isPresented: $isShowingAlert, presentingError: error)
+            .errorAlert(presentingError: $error)
             .ignoresSafeArea(.keyboard, edges: .bottom)
             .overlay(alignment: .bottomTrailing) {
                 if isMapLoaded,

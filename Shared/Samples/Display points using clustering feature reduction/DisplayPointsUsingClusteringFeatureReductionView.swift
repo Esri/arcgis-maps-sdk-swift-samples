@@ -43,13 +43,8 @@ struct DisplayPointsUsingClusteringFeatureReductionView: View {
     /// A Boolean value specifying whether the layer's feature reduction is shown.
     @State private var showsFeatureReduction = true
     
-    /// A Boolean value indicating whether to show an error alert.
-    @State private var isShowingAlert = false
-    
     /// The error shown in the error alert.
-    @State var error: Error? {
-        didSet { isShowingAlert = error != nil }
-    }
+    @State private var error: Error?
     
     var body: some View {
         MapViewReader { proxy in
@@ -96,7 +91,7 @@ struct DisplayPointsUsingClusteringFeatureReductionView: View {
                         self.error = error
                     }
                 }
-                .alert(isPresented: $isShowingAlert, presentingError: error)
+                .errorAlert(presentingError: $error)
         }
     }
 }

@@ -20,13 +20,8 @@ struct AugmentRealityToShowTabletopSceneView: View {
     /// The scene used to create the scene view.
     @State private var scene = ArcGIS.Scene()
     
-    /// A Boolean value indicating whether to show an error alert.
-    @State private var isShowingErrorAlert = false
-    
     /// The error shown in the error alert.
-    @State private var error: Error? {
-        didSet { isShowingErrorAlert = error != nil }
-    }
+    @State private var error: Error?
     
     /// The location point of the scene that will be anchored on a physical surface.
     private let anchorPoint = Point(
@@ -77,7 +72,7 @@ struct AugmentRealityToShowTabletopSceneView: View {
                 self.error = error
             }
         }
-        .alert(isPresented: $isShowingErrorAlert, presentingError: error)
+        .errorAlert(presentingError: $error)
     }
 }
 

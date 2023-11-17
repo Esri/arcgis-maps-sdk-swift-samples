@@ -56,7 +56,7 @@ struct CreateMobileGeodatabaseView: View {
                     }
                 }
             }
-            .alert(isPresented: $model.isShowingErrorAlert, presentingError: model.error)
+            .errorAlert(presentingError: $model.error)
     }
 }
 
