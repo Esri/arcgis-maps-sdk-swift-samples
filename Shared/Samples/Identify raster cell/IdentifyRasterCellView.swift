@@ -108,6 +108,9 @@ private extension IdentifyRasterCellView {
                 // Get the first raster cell from the identify result.
                 let rasterCell = identifyResult.geoElements.first(where: { $0 is RasterCell })
                 return rasterCell as? RasterCell
+            } catch is CancellationError {
+                // Does nothing if the error is a cancellation error.
+                return nil
             } catch {
                 self.error = error
                 return nil

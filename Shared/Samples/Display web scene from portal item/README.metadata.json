@@ -1,0 +1,26 @@
+{
+    "category": "Scenes",
+    "description": "Open a web scene from a portal item.",
+    "ignore": false,
+    "images": [
+        "display-web-scene-from-portal-item.png"
+    ],
+    "keywords": [
+        "portal",
+        "scene",
+        "web scene",
+        "PortalItem",
+        "Scene",
+        "SceneView"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "PortalItem",
+        "Scene",
+        "SceneView"
+    ],
+    "snippets": [
+        "DisplayWebSceneFromPortalItemView.swift"
+    ],
+    "title": "Display web scene from portal item"
+}
