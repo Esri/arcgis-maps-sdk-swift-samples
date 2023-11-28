@@ -45,7 +45,7 @@ extension AddClusteringFeatureReductionToAPointFeatureLayerView {
         
         /// The maximum scale of feature clusters.
         /// - Note: The default value for max scale is 0.
-        var maxScale: CGFloat {
+        var maxScale: Double {
             didSet {
                 clusteringFeatureReduction.maxScale = maxScale
             }
@@ -54,7 +54,7 @@ extension AddClusteringFeatureReductionToAPointFeatureLayerView {
         /// The radius of feature clusters.
         /// - Note: The default value for cluster radius is 60.
         /// Larger radius allows more features to be grouped into a cluster.
-        var radius: CGFloat {
+        var radius: Double {
             didSet {
                 clusteringFeatureReduction.radius = radius
             }
@@ -63,8 +63,8 @@ extension AddClusteringFeatureReductionToAPointFeatureLayerView {
         init() {
             // Set initial values for controls.
             showsLabels = clusteringFeatureReduction.showsLabels
-            radius = CGFloat(clusteringFeatureReduction.radius)
-            maxScale = CGFloat(clusteringFeatureReduction.maxScale ?? .zero)
+            radius = clusteringFeatureReduction.radius
+            maxScale = clusteringFeatureReduction.maxScale ?? .zero
         }
         
         func setup() async throws {
