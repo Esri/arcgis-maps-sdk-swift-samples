@@ -17,7 +17,7 @@ import SwiftUI
 extension View {
     /// Presents an alert with a given error's `localizedDescription` as the message.
     /// - Parameter error: A binding to an optional `Error` that will present the alert when
-    /// it is not `nil`. When the user taps "OK", this value to is set to `nil` and the alert is dismissed.
+    /// it is not `nil`. When the user taps "OK", this value is set to `nil` and the alert is dismissed.
     func errorAlert(presentingError error: Binding<Error?>) -> some View {
         alert("Error", isPresented: .constant(error.wrappedValue != nil), presenting: error.wrappedValue) { _ in
             Button("OK") {
