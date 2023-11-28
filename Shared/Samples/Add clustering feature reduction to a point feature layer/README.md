@@ -2,7 +2,7 @@
 
 Add client side feature reduction on a point feature layer that is not pre-configured with clustering.
 
-![Image of Add clustering feature reduction to a point feature layer sample](add-clustering-feature-reduction-to-a-point-feature-layer.jpg)
+![Image of Add clustering feature reduction to a point feature layer sample](add-clustering-feature-reduction-to-a-point-feature-layer.png)
 
 ## Use case
 
