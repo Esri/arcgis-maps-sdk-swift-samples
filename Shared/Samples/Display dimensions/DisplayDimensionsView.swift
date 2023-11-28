@@ -53,7 +53,7 @@ struct DisplayDimensionsView: View {
                         ))
                     }
                     .padding(8)
-                    .background(Color.white)
+                    .background(.ultraThinMaterial)
                     .cornerRadius(10)
                     .disabled(dimensionLayer == nil)
                 }

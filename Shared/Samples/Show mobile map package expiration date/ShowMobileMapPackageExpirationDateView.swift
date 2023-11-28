@@ -54,7 +54,7 @@ struct ShowMobileMapPackageExpirationDateView: View {
                 }
                 .multilineTextAlignment(.center)
                 .padding()
-                .background(.white)
+                .background(.thinMaterial)
             }
         }
         .alert(isPresented: $isShowingErrorAlert, presentingError: error)

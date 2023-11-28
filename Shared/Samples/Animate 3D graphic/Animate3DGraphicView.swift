@@ -42,7 +42,7 @@ struct Animate3DGraphicView: View {
                         StatRow("Roll", value: model.animation.currentFrame.roll.formatted(.angle))
                     }
                     .frame(width: 170, height: 100)
-                    .background(Color.white.opacity(0.5))
+                    .background(.ultraThinMaterial)
                     .cornerRadius(10)
                     .shadow(radius: 3)
                 }

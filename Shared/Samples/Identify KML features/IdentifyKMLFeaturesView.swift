@@ -127,7 +127,9 @@ private extension IdentifyKMLFeaturesView {
         )
         
         // Update the callout text.
-        calloutText = AttributedString(text)
+        var attributedText = AttributedString(text)
+        attributedText.foregroundColor = .label
+        calloutText = attributedText
     }
 }
 
