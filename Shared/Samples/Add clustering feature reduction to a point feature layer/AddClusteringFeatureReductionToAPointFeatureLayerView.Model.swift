@@ -29,7 +29,7 @@ extension AddClusteringFeatureReductionToAPointFeatureLayerView {
         
         /// A custom feature reduction for dynamically aggregating and
         /// summarizing groups of features as the map scale changes.
-        let clusteringFeatureReduction = makeCustomFeatureReduction(renderer: makeClassBreaksRenderer())
+        private let clusteringFeatureReduction = makeCustomFeatureReduction(renderer: makeClassBreaksRenderer())
         
         /// The buildings feature layer in the web map.
         var featureLayer: FeatureLayer? {
