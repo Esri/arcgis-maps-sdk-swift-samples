@@ -216,8 +216,6 @@ private extension GenerateOfflineMapView {
                 offlineMap = output.offlineMap
                 // Sets the initial viewpoint of the offline map.
                 offlineMap.initialViewpoint = Viewpoint(boundingGeometry: extent.expanded(by: 0.8))
-            } catch is CancellationError {
-                // Does nothing if the error is a cancellation error.
             } catch {
                 // Shows an alert with the error if the job fails.
                 self.error = error

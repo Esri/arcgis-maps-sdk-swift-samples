@@ -112,8 +112,6 @@ struct DownloadVectorTilesToLocalCacheView: View {
                                     isShowingResults = true
                                     // Sets downloading to false when the download finishes.
                                     isDownloading = false
-                                } catch is CancellationError {
-                                    // Does nothing if the error is a cancellation error.
                                 } catch {
                                     // Shows an alert if any errors occur.
                                     self.error = error
