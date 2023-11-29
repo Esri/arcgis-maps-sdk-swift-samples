@@ -337,7 +337,7 @@ class GeometryEditorMenuModel: ObservableObject {
     
     /// Configures the scale mode for the geometry editor tool.
     /// - Parameters:
-    ///   - tool: The geometry editor tool
+    ///   - tool: The geometry editor tool.
     ///   - scaleMode: Preserve the original aspect ratio or scale freely.
     func configureGeometryEditorTool(_ tool: GeometryEditorTool, scaleMode: GeometryEditorScaleMode) {
         switch tool {
