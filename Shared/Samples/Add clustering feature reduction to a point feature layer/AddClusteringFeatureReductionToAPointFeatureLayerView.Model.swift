@@ -67,6 +67,7 @@ extension AddClusteringFeatureReductionToAPointFeatureLayerView {
             maxScale = clusteringFeatureReduction.maxScale ?? .zero
         }
         
+        // Load the web map and set up the feature layer.
         func setup() async throws {
             try await map.load()
             featureLayer?.featureReduction = clusteringFeatureReduction
