@@ -42,6 +42,7 @@ extension AddClusteringFeatureReductionToAPointFeatureLayerView {
             Form {
                 Section("Cluster Labels Visibility") {
                     Toggle("Show Labels", isOn: $model.showsLabels)
+                        .toggleStyle(.switch)
                 }
                 
                 Section("Clustering Properties") {
@@ -79,10 +80,14 @@ extension AddClusteringFeatureReductionToAPointFeatureLayerView {
                             }
                         )
                     }
-                    Text("Current Map Scale: \(mapViewScale.formatted(formatStyle))")
+                    HStack {
+                        Text("Current Map Scale")
+                        Spacer()
+                        Text(mapViewScale, format: formatStyle)
+                            .foregroundColor(.secondary)
+                    }
                 }
             }
-            .toggleStyle(.switch)
         }
     }
 }

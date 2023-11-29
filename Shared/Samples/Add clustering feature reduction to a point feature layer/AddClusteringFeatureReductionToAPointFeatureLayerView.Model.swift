@@ -120,6 +120,7 @@ extension AddClusteringFeatureReductionToAPointFeatureLayerView {
         }
         
         /// Creates a custom feature reduction for the sample.
+        /// - Parameter renderer: A renderer for drawing clustered features.
         /// - Returns: A `ClusteringFeatureReduction` object.
         private static func makeCustomFeatureReduction(renderer: ClassBreaksRenderer) -> ClusteringFeatureReduction {
             // Create a new clustering feature reduction using the
