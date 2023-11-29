@@ -28,13 +28,8 @@ struct FindAddressWithReverseGeocodeView: View {
     /// The text shown in the callout.
     @State private var calloutText: String?
     
-    /// A Boolean value indicating whether the error alert is showing.
-    @State private var errorAlertIsShowing = false
-    
     /// The error shown in the error alert.
-    @State private var error: Error? {
-        didSet { errorAlertIsShowing = error != nil }
-    }
+    @State private var error: Error?
     
     var body: some View {
         MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
@@ -63,7 +58,7 @@ struct FindAddressWithReverseGeocodeView: View {
                     .padding(8)
                     .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
             }
-            .alert(isPresented: $errorAlertIsShowing, presentingError: error)
+            .errorAlert(presentingError: $error)
     }
     
     /// Reverse geocodes a given point and updates the marker with the result.
