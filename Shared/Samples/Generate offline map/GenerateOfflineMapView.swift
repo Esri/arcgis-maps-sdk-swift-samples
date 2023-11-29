@@ -30,7 +30,7 @@ struct GenerateOfflineMapView: View {
             MapViewReader { mapView in
                 MapView(map: model.offlineMap ?? model.onlineMap)
                     .interactionModes(isGeneratingOfflineMap ? [] : [.pan, .zoom])
-                    .alert(isPresented: $model.isShowingAlert, presentingError: model.error)
+                    .errorAlert(presentingError: $model.error)
                     .task {
                         await model.initializeOfflineMapTask()
                     }
@@ -127,13 +127,8 @@ private extension GenerateOfflineMapView {
         /// A Boolean value indicating whether the generate button is disabled.
         @Published var isGenerateDisabled = true
         
-        /// A Boolean value indicating whether to show an alert.
-        @Published var isShowingAlert = false
-        
-        /// The error shown in the alert.
-        @Published var error: Error? {
-            didSet { isShowingAlert = error != nil }
-        }
+        /// The error shown in the error alert.
+        @Published var error: Error?
         
         /// The generate offline map job.
         @Published var generateOfflineMapJob: GenerateOfflineMapJob!
@@ -221,8 +216,6 @@ private extension GenerateOfflineMapView {
                 offlineMap = output.offlineMap
                 // Sets the initial viewpoint of the offline map.
                 offlineMap.initialViewpoint = Viewpoint(boundingGeometry: extent.expanded(by: 0.8))
-            } catch is CancellationError {
-                // Does nothing if the error is a cancellation error.
             } catch {
                 // Shows an alert with the error if the job fails.
                 self.error = error

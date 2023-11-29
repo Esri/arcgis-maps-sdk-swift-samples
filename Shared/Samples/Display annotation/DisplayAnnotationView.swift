@@ -23,13 +23,8 @@ struct DisplayAnnotationView: View {
         return map
     }()
     
-    /// A Boolean that indicates whether to show an error alert.
-    @State private var isShowingErrorAlert = false
-    
     /// The error shown in the error alert.
-    @State private var error: Error? {
-        didSet { isShowingErrorAlert = error != nil }
-    }
+    @State private var error: Error?
     
     var body: some View {
         // Create a map view with a map.
@@ -52,7 +47,7 @@ struct DisplayAnnotationView: View {
                     self.error = error
                 }
             }
-            .alert(isPresented: $isShowingErrorAlert, presentingError: error)
+            .errorAlert(presentingError: $error)
     }
 }
 

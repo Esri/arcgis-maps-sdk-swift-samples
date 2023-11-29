@@ -22,16 +22,11 @@ struct DownloadVectorTilesToLocalCacheView: View {
     /// A Boolean value indicating whether to cancel and the job.
     @State private var isCancellingJob = false
     
-    /// A Boolean value indicating whether to show an alert.
-    @State private var isShowingAlert = false
-    
     /// A Boolean value indicating whether to show the result map.
     @State private var isShowingResults = false
     
-    /// The error shown in the alert.
-    @State private var error: Error? {
-        didSet { isShowingAlert = error != nil }
-    }
+    /// The error shown in the error alert.
+    @State private var error: Error?
     
     /// The view model for this sample.
     @StateObject private var model = Model()
@@ -42,7 +37,7 @@ struct DownloadVectorTilesToLocalCacheView: View {
                 MapView(map: model.map)
                     .interactionModes(isDownloading ? [] : [.pan, .zoom])
                     .onScaleChanged { model.maxScale = $0 * 0.1 }
-                    .alert(isPresented: $isShowingAlert, presentingError: error)
+                    .errorAlert(presentingError: $error)
                     .task {
                         do {
                             try await model.initializeVectorTilesTask()
@@ -117,8 +112,6 @@ struct DownloadVectorTilesToLocalCacheView: View {
                                     isShowingResults = true
                                     // Sets downloading to false when the download finishes.
                                     isDownloading = false
-                                } catch is CancellationError {
-                                    // Does nothing if the error is a cancellation error.
                                 } catch {
                                     // Shows an alert if any errors occur.
                                     self.error = error

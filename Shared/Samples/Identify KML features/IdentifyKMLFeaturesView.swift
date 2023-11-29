@@ -33,13 +33,8 @@ struct IdentifyKMLFeaturesView: View {
     /// The text of a KML placemark's balloon content that is shown in the callout.
     @State private var calloutText = AttributedString()
     
-    /// A Boolean value that indicates whether to show an error alert.
-    @State private var isShowingErrorAlert = false
-    
     /// The error shown in the error alert.
-    @State private var error: Error? {
-        didSet { isShowingErrorAlert = error != nil }
-    }
+    @State private var error: Error?
     
     var body: some View {
         MapViewReader { mapViewProxy in
@@ -87,7 +82,7 @@ struct IdentifyKMLFeaturesView: View {
                     }
             }
         }
-        .alert(isPresented: $isShowingErrorAlert, presentingError: error)
+        .errorAlert(presentingError: $error)
     }
 }
 
@@ -127,7 +122,9 @@ private extension IdentifyKMLFeaturesView {
         )
         
         // Update the callout text.
-        calloutText = AttributedString(text)
+        var attributedText = AttributedString(text)
+        attributedText.foregroundColor = .label
+        calloutText = attributedText
     }
 }
 
