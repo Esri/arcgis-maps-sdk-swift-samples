@@ -61,7 +61,7 @@ struct AddClusteringFeatureReductionToAPointFeatureLayerView: View {
                         Button("Settings") {
                             showsSettings = true
                         }
-                        .sheet(isPresented: $showsSettings, detents: [.medium]) {
+                        .sheet(isPresented: $showsSettings, detents: [.medium], dragIndicatorVisibility: .visible) {
                             SettingsView(model: model, mapViewScale: mapViewScale)
                         }
                     }
