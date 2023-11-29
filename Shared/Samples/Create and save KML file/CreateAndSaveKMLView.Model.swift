@@ -60,13 +60,8 @@ extension CreateAndSaveKMLView {
         /// A Boolean value indicating if the file exporter button should be disabled.
         @Published var fileExporterButtonIsDisabled = true
         
-        /// A Boolean value indicating whether to show an alert.
-        @Published var isShowingAlert = false
-        
-        /// The error shown in the alert.
-        @Published var error: Error? {
-            didSet { isShowingAlert = error != nil }
-        }
+        /// The error shown in the error alert.
+        @Published var error: Error?
         
         /// Creates the model for this view.
         init() {

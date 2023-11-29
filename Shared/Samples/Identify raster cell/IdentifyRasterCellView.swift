@@ -47,7 +47,7 @@ struct IdentifyRasterCellView: View {
                         await model.callout(at: tapScreenPoint, using: mapViewProxy)
                     }
                 }
-                .alert(isPresented: $model.isShowingErrorAlert, presentingError: model.error)
+                .errorAlert(presentingError: $model.error)
         }
     }
 }
@@ -76,13 +76,8 @@ private extension IdentifyRasterCellView {
         /// A Boolean value that indicates whether the callout placement should be offsetted for the map magnifier.
         @Published var calloutShouldOffset = false
         
-        /// A Boolean value that indicates whether to show an error alert.
-        @Published var isShowingErrorAlert = false
-        
         /// The error shown in the error alert.
-        @Published private(set) var error: Error? {
-            didSet { isShowingErrorAlert = error != nil }
-        }
+        @Published var error: Error?
         
         /// Creates a callout displaying the data of a raster cell at a given screen point.
         /// - Parameters:
@@ -113,9 +108,6 @@ private extension IdentifyRasterCellView {
                 // Get the first raster cell from the identify result.
                 let rasterCell = identifyResult.geoElements.first(where: { $0 is RasterCell })
                 return rasterCell as? RasterCell
-            } catch is CancellationError {
-                // Does nothing if the error is a cancellation error.
-                return nil
             } catch {
                 self.error = error
                 return nil

@@ -19,13 +19,8 @@ struct DisplaySceneFromMobileScenePackageView: View {
     /// The scene used to create the scene view.
     @State private var scene = ArcGIS.Scene()
     
-    /// A Boolean value indicating whether the error alert is showing.
-    @State private var errorAlertIsShowing = false
-    
     /// The error shown in the error alert.
-    @State private var error: Error? {
-        didSet { errorAlertIsShowing = error != nil }
-    }
+    @State private var error: Error?
     
     var body: some View {
         // Create a scene view with the scene.
@@ -47,7 +42,7 @@ struct DisplaySceneFromMobileScenePackageView: View {
                     self.error = error
                 }
             }
-            .alert(isPresented: $errorAlertIsShowing, presentingError: error)
+            .errorAlert(presentingError: $error)
     }
 }
 

@@ -68,7 +68,7 @@ extension StyleSymbolsFromMobileStyleFileView {
                 // Update all the symbols when the display scale changes.
                 await model.updateDisplayScale(using: displayScale)
             }
-            .alert(isPresented: $model.isShowingErrorAlert, presentingError: model.error)
+            .errorAlert(presentingError: $model.error)
         }
     }
 }

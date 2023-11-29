@@ -28,13 +28,8 @@ struct FindRouteAroundBarriersView: View {
     /// The geometry of a direction maneuver to set the viewpoint to.
     @State private var directionGeometry: Geometry?
     
-    /// A Boolean value indicating whether the error alert is showing.
-    @State private var errorAlertIsShowing = false
-    
     /// The error shown in the error alert.
-    @State private var error: Error? {
-        didSet { errorAlertIsShowing = error != nil }
-    }
+    @State private var error: Error?
     
     var body: some View {
         MapViewReader { mapViewProxy in
@@ -152,6 +147,6 @@ struct FindRouteAroundBarriersView: View {
                 self.error = error
             }
         }
-        .alert(isPresented: $errorAlertIsShowing, presentingError: error)
+        .errorAlert(presentingError: $error)
     }
 }

@@ -68,13 +68,8 @@ extension CreateMobileGeodatabaseView {
         /// The list of features in the feature table.
         @Published private(set) var features: [FeatureItem] = []
         
-        /// A Boolean value indicating whether to show an error alert.
-        @Published var isShowingErrorAlert = false
-        
         /// The error shown in the error alert.
-        @Published private(set) var error: Error? {
-            didSet { isShowingErrorAlert = error != nil }
-        }
+        @Published var error: Error?
         
         init() {
             // Create the temporary directory using file manager.

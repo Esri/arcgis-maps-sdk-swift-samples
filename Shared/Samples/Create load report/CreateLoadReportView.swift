@@ -24,8 +24,7 @@ struct CreateLoadReportView: View {
             .task {
                 await model.setup()
             }
-            .alert(isPresented: $model.isShowingSetupError, presentingError: model.setupError)
-            .alert(isPresented: $model.isShowingLoadReportError, presentingError: model.loadReportError)
+            .errorAlert(presentingError: $model.error)
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
                     Button("Run") {

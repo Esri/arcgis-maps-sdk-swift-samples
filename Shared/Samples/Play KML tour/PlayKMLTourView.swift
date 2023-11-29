@@ -39,13 +39,8 @@ struct PlayKMLTourView: View {
     /// The current status of the KML tour.
     @State private var tourStatus: KMLTour.Status = .notInitialized
     
-    /// A Boolean that indicates whether to show an error alert.
-    @State private var isShowingErrorAlert = false
-    
     /// The error shown in the error alert.
-    @State private var error: Error? {
-        didSet { isShowingErrorAlert = error != nil }
-    }
+    @State private var error: Error?
     
     /// A Boolean value that indicates whether to disable the tour buttons.
     private var tourDisabled: Bool {
@@ -117,7 +112,7 @@ struct PlayKMLTourView: View {
                         .shadow(radius: 50)
                 }
             }
-            .alert(isPresented: $isShowingErrorAlert, presentingError: error)
+            .errorAlert(presentingError: $error)
     }
 }
 

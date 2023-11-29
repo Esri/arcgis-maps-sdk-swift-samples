@@ -22,13 +22,8 @@ extension FindRouteInMobileMapPackageView {
         /// The list of loaded mobile map packages.
         @Published private(set) var mapPackages = [MobileMapPackage]()
         
-        /// A Boolean value indicating whether the error alert is showing.
-        @Published var errorAlertIsShowing = false
-        
         /// The error shown in the error alert.
-        @Published var error: Error? {
-            didSet { errorAlertIsShowing = error != nil }
-        }
+        @Published var error: Error?
         
         /// The list of file URLs that have been securely accessed.
         private var accessedURLs = [URL]()

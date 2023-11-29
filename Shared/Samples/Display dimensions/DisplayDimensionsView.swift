@@ -22,13 +22,8 @@ struct DisplayDimensionsView: View {
     /// The dimensional layer added to the map.
     @State private var dimensionLayer: DimensionLayer?
     
-    /// A Boolean value indicating whether to show an error alert.
-    @State private var isShowingErrorAlert = false
-    
     /// The error shown in the error alert.
-    @State private var error: Error? {
-        didSet { isShowingErrorAlert = error != nil }
-    }
+    @State private var error: Error?
     
     var body: some View {
         MapView(map: map)
@@ -60,7 +55,7 @@ struct DisplayDimensionsView: View {
                 .padding()
                 .padding(.bottom)
             }
-            .alert(isPresented: $isShowingErrorAlert, presentingError: error)
+            .errorAlert(presentingError: $error)
     }
 }
 

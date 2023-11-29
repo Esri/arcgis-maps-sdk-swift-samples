@@ -46,13 +46,8 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
     /// A Boolean value indicating whether to include containment features in the trace results.
     @State private var includesContainers = true
     
-    /// A Boolean value indicating whether to show an alert.
-    @State private var isPresentingError = false
-    
-    /// The error shown in the alert.
-    @State private var error: Error? {
-        didSet { isPresentingError = error != nil }
-    }
+    /// The error shown in the error alert.
+    @State private var error: Error?
     
     var body: some View {
         if !model.isSetUp {
@@ -150,7 +145,7 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
                 .shadow(radius: 50)
             }
         }
-        .alert(isPresented: $isPresentingError, presentingError: error)
+        .errorAlert(presentingError: $error)
     }
     
     @ViewBuilder var conditionMenu: some View {
