@@ -50,7 +50,7 @@ extension AddClusteringFeatureReductionToAPointFeatureLayerView {
                         HStack {
                             Text("Cluster Radius")
                             Spacer()
-                            Text(radius.formatted(formatStyle))
+                            Text(radius, format: formatStyle)
                                 .foregroundColor(.secondary)
                         }
                         Slider(
@@ -67,7 +67,7 @@ extension AddClusteringFeatureReductionToAPointFeatureLayerView {
                         HStack {
                             Text("Cluster Max Scale")
                             Spacer()
-                            Text(maxScale.formatted(formatStyle))
+                            Text(maxScale, format: formatStyle)
                                 .foregroundColor(.secondary)
                         }
                         Slider(
