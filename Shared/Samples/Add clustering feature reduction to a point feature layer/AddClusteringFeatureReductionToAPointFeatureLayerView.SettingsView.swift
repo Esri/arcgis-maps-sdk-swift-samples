@@ -26,7 +26,7 @@ extension AddClusteringFeatureReductionToAPointFeatureLayerView {
         let mapViewScale: Double
         
         /// A format style to display a floating point number's integer part.
-        let formatStyle: FloatingPointFormatStyle<Double> = .number.precision(.fractionLength(0))
+        private let formatStyle: FloatingPointFormatStyle<Double> = .number.precision(.fractionLength(0))
         
         /// The maximum scale of feature clusters.
         @State private var maxScale = 0.0

@@ -92,7 +92,7 @@ extension AddClusteringFeatureReductionToAPointFeatureLayerView {
             
             // Create a class break and a symbol to display the features
             // in each value range.
-            // In this case, the average building height ranges from 0 to 7 storeys.
+            // In this case, the average building height ranges from 0 to 7 stories.
             let classBreaks = zip([Int](0...7), colors).map { value, color in
                 ClassBreak(
                     description: "\(value) floor",

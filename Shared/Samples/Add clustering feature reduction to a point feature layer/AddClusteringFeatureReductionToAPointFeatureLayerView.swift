@@ -23,7 +23,7 @@ struct AddClusteringFeatureReductionToAPointFeatureLayerView: View {
     /// The popup to be shown as the result of the layer identify operation.
     @State private var popup: Popup?
     
-    /// A Boolean value specifying whether the popup view is shown.
+    /// A Boolean value indicating whether the popup view is shown.
     @State private var showsPopup = false
     
     /// A Boolean value indicating whether the settings view is presented.
