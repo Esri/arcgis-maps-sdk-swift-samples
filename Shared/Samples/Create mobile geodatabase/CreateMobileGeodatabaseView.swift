@@ -20,23 +20,40 @@ struct CreateMobileGeodatabaseView: View {
     @StateObject private var model = Model()
     
     /// The point on the map where the user tapped.
-    @State private var tapMapPoint = Point(x: 0, y: 0)
+    @State private var tapLocation: Point?
     
-    /// A Boolean indicating whether the feature table sheet is showing.
-    @State private var isShowingTableSheet = false
+    /// A Boolean value indicating whether the feature table sheet is showing.
+    @State private var tableSheetIsShowing = false
+    
+    /// A Boolean value indicating whether the file explorer interface is showing
+    @State private var fileExporterIsShowing = false
+    
+    /// The error shown in the error alert.
+    @State private var error: Error?
     
     var body: some View {
         MapView(map: model.map)
             .onSingleTapGesture { _, mapPoint in
-                tapMapPoint = mapPoint
+                tapLocation = mapPoint
             }
-            .task {
-                // Create the initial geodatabase.
-                await model.createGeodatabase()
+            .task(id: tapLocation) {
+                guard let tapLocation else { return }
+                do {
+                    // Add a feature at the tap location.
+                    try await model.addFeature(at: tapLocation)
+                } catch {
+                    self.error = error
+                }
             }
-            .task(id: tapMapPoint) {
-                // Add a feature at the tapped map point.
-                await model.addFeature(at: tapMapPoint)
+            .task(id: model.features.isEmpty) {
+                do {
+                    // Create a new feature table when the features are reset.
+                    if model.features.isEmpty {
+                        try await model.createFeatureTable()
+                    }
+                } catch {
+                    self.error = error
+                }
             }
             .overlay(alignment: .top) {
                 Text("Number of features added: \(model.features.count)")
@@ -49,14 +66,33 @@ struct CreateMobileGeodatabaseView: View {
                     tableButton
                         .disabled(model.features.isEmpty)
                     
+                    Spacer()
+                    
                     Button {
-                        model.presentShareSheet()
+                        fileExporterIsShowing = true
                     } label: {
-                        Image(systemName: "square.and.arrow.up")
+                        Label("Export File", systemImage: "square.and.arrow.up")
+                    }
+                    .disabled(model.features.isEmpty)
+                    .fileExporter(
+                        isPresented: $fileExporterIsShowing,
+                        document: model.geodatabaseFile,
+                        contentType: .geodatabase
+                    ) { result in
+                        switch result {
+                        case .success:
+                            do {
+                                try model.resetFeatures()
+                            } catch {
+                                self.error = error
+                            }
+                        case .failure(let error):
+                            self.error = error
+                        }
                     }
                 }
             }
-            .errorAlert(presentingError: $model.error)
+            .errorAlert(presentingError: $error)
     }
 }
 
@@ -65,12 +101,12 @@ private extension CreateMobileGeodatabaseView {
     @ViewBuilder var tableButton: some View {
         /// The button to bring up the sheet.
         let button = Button("View Table") {
-            isShowingTableSheet = true
+            tableSheetIsShowing = true
         }
         
         if #available(iOS 16, *) {
             button
-                .popover(isPresented: $isShowingTableSheet, arrowEdge: .bottom) {
+                .popover(isPresented: $tableSheetIsShowing, arrowEdge: .bottom) {
                     tableList
                         .presentationDetents([.fraction(0.5)])
 #if targetEnvironment(macCatalyst)
@@ -81,7 +117,7 @@ private extension CreateMobileGeodatabaseView {
                 }
         } else {
             button
-                .sheet(isPresented: $isShowingTableSheet) {
+                .sheet(isPresented: $tableSheetIsShowing) {
                     tableList
                 }
         }
@@ -106,7 +142,7 @@ private extension CreateMobileGeodatabaseView {
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Done") {
-                        isShowingTableSheet = false
+                        tableSheetIsShowing = false
                     }
                 }
             }
