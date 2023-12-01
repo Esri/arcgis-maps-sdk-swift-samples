@@ -196,6 +196,8 @@
 		D73F8CF42AB1089900CD39DA /* Restaurant.stylx in Resources */ = {isa = PBXBuildFile; fileRef = D73F8CF32AB1089900CD39DA /* Restaurant.stylx */; settings = {ASSET_TAGS = (StyleFeaturesWithCustomDictionary, ); }; };
 		D73FC0FD2AD4A18D0067A19B /* CreateMobileGeodatabaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73FC0FC2AD4A18D0067A19B /* CreateMobileGeodatabaseView.swift */; };
 		D73FC0FE2AD4A19A0067A19B /* CreateMobileGeodatabaseView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D73FC0FC2AD4A18D0067A19B /* CreateMobileGeodatabaseView.swift */; };
+		D73FCFF72B02A3AA0006360D /* FindAddressWithReverseGeocodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73FCFF42B02A3AA0006360D /* FindAddressWithReverseGeocodeView.swift */; };
+		D73FCFFA2B02A3C50006360D /* FindAddressWithReverseGeocodeView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D73FCFF42B02A3AA0006360D /* FindAddressWithReverseGeocodeView.swift */; };
 		D73FCFFF2B02C7630006360D /* FindRouteAroundBarriersView.Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73FCFFE2B02C7630006360D /* FindRouteAroundBarriersView.Views.swift */; };
 		D73FD0002B02C9610006360D /* FindRouteAroundBarriersView.Views.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D73FCFFE2B02C7630006360D /* FindRouteAroundBarriersView.Views.swift */; };
 		D742E4922B04132B00690098 /* DisplayWebSceneFromPortalItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D742E48F2B04132B00690098 /* DisplayWebSceneFromPortalItemView.swift */; };
@@ -378,6 +380,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				D73FCFFA2B02A3C50006360D /* FindAddressWithReverseGeocodeView.swift in Copy Source Code Files */,
 				D742E4952B04134C00690098 /* DisplayWebSceneFromPortalItemView.swift in Copy Source Code Files */,
 				D7010EC12B05618400D43F55 /* DisplaySceneFromMobileScenePackageView.swift in Copy Source Code Files */,
 				D737237B2AF5AE1A00846884 /* FindRouteInMobileMapPackageView.Models.swift in Copy Source Code Files */,
@@ -625,6 +628,7 @@
 		D73723782AF5ADD700846884 /* FindRouteInMobileMapPackageView.MobileMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindRouteInMobileMapPackageView.MobileMapView.swift; sourceTree = "<group>"; };
 		D73F8CF32AB1089900CD39DA /* Restaurant.stylx */ = {isa = PBXFileReference; lastKnownFileType = file; path = Restaurant.stylx; sourceTree = "<group>"; };
 		D73FC0FC2AD4A18D0067A19B /* CreateMobileGeodatabaseView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateMobileGeodatabaseView.swift; sourceTree = "<group>"; };
+		D73FCFF42B02A3AA0006360D /* FindAddressWithReverseGeocodeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindAddressWithReverseGeocodeView.swift; sourceTree = "<group>"; };
 		D73FCFFE2B02C7630006360D /* FindRouteAroundBarriersView.Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindRouteAroundBarriersView.Views.swift; sourceTree = "<group>"; };
 		D742E48F2B04132B00690098 /* DisplayWebSceneFromPortalItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayWebSceneFromPortalItemView.swift; sourceTree = "<group>"; };
 		D744FD162A2112D90084A66C /* CreateConvexHullAroundPointsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateConvexHullAroundPointsView.swift; sourceTree = "<group>"; };
@@ -838,6 +842,7 @@
 				E070A0A1286F3B3400F2B606 /* Download preplanned map area */,
 				E004A6EE284E4B7A002A1FE6 /* Download vector tiles to local cache */,
 				1C26ED122A859525009B7721 /* Filter features in scene */,
+				D73FCFF32B02A3AA0006360D /* Find address with reverse geocode */,
 				D7705D5F2AFC570700CC0335 /* Find closest facility from point */,
 				D7705D542AFC244E00CC0335 /* Find closest facility to multiple points */,
 				D78666A92A21616D00C60110 /* Find nearest vertex */,
@@ -1410,6 +1415,14 @@
 				D73FC0FC2AD4A18D0067A19B /* CreateMobileGeodatabaseView.swift */,
 			);
 			path = "Create mobile geodatabase";
+			sourceTree = "<group>";
+		};
+		D73FCFF32B02A3AA0006360D /* Find address with reverse geocode */ = {
+			isa = PBXGroup;
+			children = (
+				D73FCFF42B02A3AA0006360D /* FindAddressWithReverseGeocodeView.swift */,
+			);
+			path = "Find address with reverse geocode";
 			sourceTree = "<group>";
 		};
 		D742E48E2B04132B00690098 /* Display web scene from portal item */ = {
@@ -2252,6 +2265,7 @@
 				0042E24328E4BF8F001F33D6 /* ShowViewshedFromPointInSceneView.Model.swift in Sources */,
 				D7E557682A1D768800B9FB09 /* AddWMSLayerView.swift in Sources */,
 				D7497F3C2AC4B4C100167AD2 /* DisplayDimensionsView.swift in Sources */,
+				D73FCFF72B02A3AA0006360D /* FindAddressWithReverseGeocodeView.swift in Sources */,
 				0005580A2817C51E00224BC6 /* SampleDetailView.swift in Sources */,
 				D75C35672AB50338003CD55F /* GroupLayersTogetherView.GroupLayerListView.swift in Sources */,
 				4D2ADC6229C5071C003B367F /* ChangeMapViewBackgroundView.Model.swift in Sources */,
