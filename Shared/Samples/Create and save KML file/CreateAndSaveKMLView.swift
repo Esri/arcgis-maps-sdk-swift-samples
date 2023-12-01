@@ -23,7 +23,7 @@ struct CreateAndSaveKMLView: View {
     var body: some View {
         MapView(map: model.map)
             .geometryEditor(model.geometryEditor)
-            .alert(isPresented: $model.isShowingAlert, presentingError: model.error)
+            .errorAlert(presentingError: $model.error)
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                     HStack {

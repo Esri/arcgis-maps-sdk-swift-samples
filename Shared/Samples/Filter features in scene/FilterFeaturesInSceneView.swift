@@ -19,13 +19,8 @@ struct FilterFeaturesInSceneView: View {
     /// The view model for this sample.
     @StateObject private var model = Model()
     
-    /// A Boolean value indicating whether to show an error alert.
-    @State private var isShowingAlert = false
-    
     /// The error shown in the error alert.
-    @State private var error: Error? {
-        didSet { isShowingAlert = error != nil }
-    }
+    @State private var error: Error?
     
     var body: some View {
         SceneView(scene: model.scene, graphicsOverlays: [model.graphicsOverlay])
@@ -43,7 +38,7 @@ struct FilterFeaturesInSceneView: View {
                     }
                 }
             }
-            .alert(isPresented: $isShowingAlert, presentingError: error)
+            .errorAlert(presentingError: $error)
     }
 }
 

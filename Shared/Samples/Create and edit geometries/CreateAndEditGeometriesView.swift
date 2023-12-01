@@ -265,12 +265,13 @@ class GeometryEditorMenuModel: ObservableObject {
     /// A Boolean value indicating if the scale mode is uniform.
     @Published var shouldUniformScale = false {
         didSet {
-            let scaleMode: GeometryEditorScaleMode = shouldUniformScale ? .uniform : .stretch
-            let tool = geometryEditor.tool
-            (tool as? FreehandTool)?.configuration.scaleMode = scaleMode
-            (tool as? ShapeTool)?.configuration.scaleMode = scaleMode
-            (tool as? VertexTool)?.configuration.scaleMode = scaleMode
+            configureGeometryEditorTool(geometryEditor.tool, scaleMode: scaleMode)
         }
+    }
+    
+    /// The scale mode to be set on the geometry editor.
+    private var scaleMode: GeometryEditorScaleMode {
+        shouldUniformScale ? .uniform : .stretch
     }
     
     /// Creates the geometry menu with a geometry editor.
@@ -334,11 +335,29 @@ class GeometryEditorMenuModel: ObservableObject {
         }
     }
     
+    /// Configures the scale mode for the geometry editor tool.
+    /// - Parameters:
+    ///   - tool: The geometry editor tool.
+    ///   - scaleMode: Preserve the original aspect ratio or scale freely.
+    func configureGeometryEditorTool(_ tool: GeometryEditorTool, scaleMode: GeometryEditorScaleMode) {
+        switch tool {
+        case let tool as FreehandTool:
+            tool.configuration.scaleMode = scaleMode
+        case let tool as ShapeTool:
+            tool.configuration.scaleMode = scaleMode
+        case let tool as VertexTool:
+            tool.configuration.scaleMode = scaleMode
+        default:
+            fatalError("Unexpected tool type")
+        }
+    }
+    
     /// Starts editing with the specified tool and geometry type.
     /// - Parameters:
     ///   - tool: The tool to draw with.
     ///   - geometryType: The type of geometry to draw.
     func startEditing(with tool: GeometryEditorTool, geometryType: Geometry.Type) {
+        configureGeometryEditorTool(tool, scaleMode: scaleMode)
         geometryEditor.tool = tool
         geometryEditor.start(withType: geometryType)
         isStarted = true

@@ -28,10 +28,7 @@ struct NavigateRouteView: View {
         )
         .onViewpointChanged(kind: .centerAndScale) { model.viewpoint = $0 }
         .locationDisplay(model.locationDisplay)
-        .alert(
-            isPresented: Binding(get: { model.error != nil }, set: { _ in model.error = nil }),
-            presentingError: model.error
-        )
+        .errorAlert(presentingError: $model.error)
         .overlay(alignment: .top) {
             Text(model.statusText)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -88,7 +85,7 @@ private extension NavigateRouteView {
         /// A Boolean value indicating whether navigation is being reset.
         @Published var isResettingRoute = false
         
-        /// The error shown in the alert.
+        /// The error shown in the error alert.
         @Published var error: Error?
         
         /// The viewpoint of the map.

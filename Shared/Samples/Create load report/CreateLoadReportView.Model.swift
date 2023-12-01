@@ -59,22 +59,12 @@ extension CreateLoadReportView {
         private(set) var setupError: Error? {
             didSet {
                 updateAllowsCreateLoadReport()
-                isShowingSetupError = setupError != nil
+                error = setupError
             }
         }
         
-        /// A Boolean value indicating whether a setup error is showing.
-        @Published var isShowingSetupError = false
-        
-        /// An error that occurred creating the load report.
-        private(set) var loadReportError: Error? {
-            didSet {
-                isShowingLoadReportError = loadReportError != nil
-            }
-        }
-        
-        /// A Boolean value indicating whether a load report error is showing.
-        @Published var isShowingLoadReportError = false
+        /// The error shown in the error alert.
+        @Published var error: Error?
         
         // MARK: Methods
         
@@ -249,7 +239,7 @@ extension CreateLoadReportView {
             } catch {
                 // On error, remove any summaries already generated.
                 summaries.removeAll()
-                loadReportError = error
+                self.error = error
             }
         }
         

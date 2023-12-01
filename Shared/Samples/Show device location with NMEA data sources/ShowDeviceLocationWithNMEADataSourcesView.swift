@@ -20,18 +20,8 @@ struct ShowDeviceLocationWithNMEADataSourcesView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
-    /// A Boolean value indicating whether to show an alert.
-    @State private var isShowingAlert = false
-    
-    /// An error from the `EAAccessoryManager`.
-    @State private var accessoryError: AccessoryError? {
-        didSet { isShowingAlert = accessoryError != nil }
-    }
-    
-    /// An error from starting the location data source.
-    @State private var locationDataSourceError: Error? {
-        didSet { isShowingAlert = locationDataSourceError != nil }
-    }
+    /// The error shown in the error alert.
+    @State private var error: Error?
     
     /// A string for GPS accuracy.
     @State private var accuracyStatus = "Accuracy info will be shown here."
@@ -143,7 +133,7 @@ struct ShowDeviceLocationWithNMEADataSourcesView: View {
                                     sourceMenuIsDisabled = true
                                     resetButtonIsDisabled = false
                                 } catch {
-                                    self.locationDataSourceError = error
+                                    self.error = error
                                 }
                             }
                         }
@@ -152,10 +142,8 @@ struct ShowDeviceLocationWithNMEADataSourcesView: View {
                                 do {
                                     try selectDevice()
                                     try await model.start()
-                                } catch let error as AccessoryError {
-                                    self.accessoryError = error
                                 } catch {
-                                    self.locationDataSourceError = error
+                                    self.error = error
                                 }
                             }
                         }
@@ -173,12 +161,7 @@ struct ShowDeviceLocationWithNMEADataSourcesView: View {
                     .disabled(resetButtonIsDisabled)
                 }
             }
-            .alert("Error", isPresented: $isShowingAlert, presenting: accessoryError) { _ in
-                EmptyView()
-            } message: { error in
-                Text(error.detail)
-            }
-            .alert(isPresented: $isShowingAlert, presentingError: locationDataSourceError)
+            .errorAlert(presentingError: $error)
             .onDisappear {
                 reset()
             }
@@ -202,9 +185,7 @@ struct ShowDeviceLocationWithNMEADataSourcesView: View {
             // Use the supported accessory directly if it's already connected.
             model.accessoryDidConnect(connectedAccessory: accessory, protocolString: protocolString)
         } else {
-            throw AccessoryError(
-                detail: "There are no supported Bluetooth devices connected. Open up \"Bluetooth Settings\", connect to your supported device, and try again."
-            )
+            throw AccessoryError.noBluetoothDevices
         
             // NOTE: The code below shows how to use the built-in Bluetooth picker
             // to pair a device. However there are a couple of issues that
@@ -227,13 +208,12 @@ struct ShowDeviceLocationWithNMEADataSourcesView: View {
 //                   error.code != .alreadyConnected {
 //                    switch error.code {
 //                    case .resultNotFound:
-//                        self.error = AccessoryError(detail: "The specified accessory could not be found, perhaps because it was turned off prior to connection.")
+//                        self.error = AccessoryError.notFound
 //                    case .resultCancelled:
 //                        // Don't show error message when the picker is cancelled.
-//                        self.error = nil
 //                        return
 //                    default:
-//                        self.error = AccessoryError(detail: "Selecting an accessory failed for an unknown reason.")
+//                        self.error = AccessoryError.unknown
 //                    }
 //                } else if let (accessory, protocolString) = model.firstSupportedAccessoryWithProtocol() {
 //                    // Proceed with supported and connected accessory, and
@@ -246,8 +226,31 @@ struct ShowDeviceLocationWithNMEADataSourcesView: View {
 }
 
 /// An error relating to NMEA accessories.
-private struct AccessoryError: Error {
-    let detail: String
+private enum AccessoryError: LocalizedError {
+    /// No supported Bluetooth devices connected.
+    case noBluetoothDevices
+    /// Accessory could not be found.
+    case notFound
+    /// Unknown selection failure.
+    case unknown
+    
+    /// The message describing what error occurred.
+    var errorDescription: String? {
+        let message: String
+        switch self {
+        case .noBluetoothDevices:
+            message = "There are no supported Bluetooth devices connected. Open up \"Bluetooth Settings\", connect to your supported device, and try again."
+        case .notFound:
+            message = "The specified accessory could not be found, perhaps because it was turned off prior to connection."
+        case .unknown:
+            message = "Selecting an accessory failed for an unknown reason."
+        }
+        
+        return NSLocalizedString(
+            message,
+            comment: "Error thrown when connecting an NMEA accessory fails."
+        )
+    }
 }
 
 private extension NMEAGNSSSystem {

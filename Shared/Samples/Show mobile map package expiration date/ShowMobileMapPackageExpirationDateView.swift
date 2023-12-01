@@ -22,13 +22,8 @@ struct ShowMobileMapPackageExpirationDateView: View {
     /// The mobile map package created from a URL to a local mobile map package file.
     @State private var mapPackage = MobileMapPackage(fileURL: .lothianRiversAnno)
     
-    /// A Boolean value that indicates whether to show an error alert.
-    @State private var isShowingErrorAlert = false
-    
     /// The error shown in the error alert.
-    @State private var error: Error? {
-        didSet { isShowingErrorAlert = error != nil }
-    }
+    @State private var error: Error?
     
     var body: some View {
         ZStack {
@@ -54,10 +49,10 @@ struct ShowMobileMapPackageExpirationDateView: View {
                 }
                 .multilineTextAlignment(.center)
                 .padding()
-                .background(.white)
+                .background(.thinMaterial)
             }
         }
-        .alert(isPresented: $isShowingErrorAlert, presentingError: error)
+        .errorAlert(presentingError: $error)
     }
 }
 

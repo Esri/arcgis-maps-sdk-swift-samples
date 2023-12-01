@@ -51,7 +51,7 @@ struct StyleSymbolsFromMobileStyleFileView: View {
                 // Update all the symbols when the display scale changes.
                 await model.updateDisplayScale(using: displayScale)
             }
-            .alert(isPresented: $model.isShowingErrorAlert, presentingError: model.error)
+            .errorAlert(presentingError: $model.error)
     }
     
     /// The list containing the symbol options.
@@ -103,13 +103,8 @@ extension StyleSymbolsFromMobileStyleFileView {
             size: 40
         )
         
-        /// A Boolean value that indicates whether to show an error alert.
-        @Published var isShowingErrorAlert = false
-        
         /// The error shown in the error alert.
-        @Published private(set) var error: Error? {
-            didSet { isShowingErrorAlert = error != nil }
-        }
+        @Published var error: Error?
         
         /// Updates the display scale of the current symbol and symbols list.
         func updateDisplayScale(using displayScale: Double) async {

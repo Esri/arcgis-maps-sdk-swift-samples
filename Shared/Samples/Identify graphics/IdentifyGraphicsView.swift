@@ -53,13 +53,8 @@ struct IdentifyGraphicsView: View {
         didSet { isShowingIdentifyResultAlert = identifyResultMessage.isNotEmpty }
     }
     
-    /// A Boolean value indicating whether to show an error alert.
-    @State private var isShowingErrorAlert = false
-    
     /// The error shown in the error alert.
-    @State private var error: Error? {
-        didSet { isShowingErrorAlert = error != nil }
-    }
+    @State private var error: Error?
     
     var body: some View {
         MapViewReader { mapViewProxy in
@@ -97,7 +92,7 @@ struct IdentifyGraphicsView: View {
                     actions: {},
                     message: { Text(identifyResultMessage) }
                 )
-                .alert(isPresented: $isShowingErrorAlert, presentingError: error)
+                .errorAlert(presentingError: $error)
         }
     }
 }

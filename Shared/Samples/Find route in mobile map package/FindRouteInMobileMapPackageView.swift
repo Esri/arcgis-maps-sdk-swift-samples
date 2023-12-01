@@ -67,7 +67,7 @@ struct FindRouteInMobileMapPackageView: View {
             await model.importMapPackage(from: importedFileURL)
             self.importedFileURL = nil
         }
-        .alert(isPresented: $model.errorAlertIsShowing, presentingError: model.error)
+        .errorAlert(presentingError: $model.error)
     }
 }
 

@@ -25,13 +25,8 @@ struct FindClosestFacilityFromPointView: View {
     /// A Boolean value indicating whether routing is currently disabled.
     @State private var routingIsDisabled = true
     
-    /// A Boolean value indicating whether the error alert is showing.
-    @State private var errorAlertIsShowing = false
-    
     /// The error shown in the error alert.
-    @State private var error: Error? {
-        didSet { errorAlertIsShowing = error != nil }
-    }
+    @State private var error: Error?
     
     var body: some View {
         MapViewReader { mapViewProxy in
@@ -90,7 +85,7 @@ struct FindClosestFacilityFromPointView: View {
                 self.error = error
             }
         }
-        .alert(isPresented: $errorAlertIsShowing, presentingError: error)
+        .errorAlert(presentingError: $error)
     }
 }
 
