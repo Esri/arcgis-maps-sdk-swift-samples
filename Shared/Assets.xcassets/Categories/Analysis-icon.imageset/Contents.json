@@ -1,23 +1,15 @@
 {
   "images" : [
     {
-      "filename" : "Analysis-icon@1x.png",
-      "idiom" : "universal",
-      "scale" : "1x"
-    },
-    {
-      "filename" : "Analysis-icon@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "Analysis-icon@3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
+      "filename" : "Analysis-icon.svg",
+      "idiom" : "universal"
     }
   ],
   "info" : {
     "author" : "xcode",
     "version" : 1
+  },
+  "properties" : {
+    "preserves-vector-representation" : true
   }
 }
