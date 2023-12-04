@@ -35,10 +35,6 @@ extension AddClusteringFeatureReductionToAPointFeatureLayerView {
         @State private var radius = 60.0
         
         var body: some View {
-            settings
-        }
-        
-        @ViewBuilder var settings: some View {
             Form {
                 Section("Cluster Labels Visibility") {
                     Toggle("Show Labels", isOn: $model.showsLabels)
