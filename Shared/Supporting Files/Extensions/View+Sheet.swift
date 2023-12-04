@@ -176,28 +176,33 @@ private extension SheetModifier {
     func makeContentWithSheetWrapper(_ content: Content) -> some View {
         ZStack {
             content
-                .popover(
-                    isPresented: Binding(
-                        get: { isPresented && !isSheetLayout },
-                        set: { isPresented = $0 }
-                    )
-                ) {
+                .task(id: isPresented) {
+                    if isPresented {
+                        // Sleep to prevent appearing when other content is disappearing.
+                        try? await Task.sleep(nanoseconds: 100)
+                        
+                        if isSheetLayout {
+                            isSheetVisible = true
+                        } else {
+                            isPopoverVisible = true
+                        }
+                    } else {
+                        isSheetVisible = false
+                        isPopoverVisible = false
+                    }
+                }
+                .popover(isPresented: $isPopoverVisible) {
                     sheetContent
                         .frame(idealWidth: idealWidth, idealHeight: idealHeight)
-                        .onAppear { isPopoverVisible = true }
                         .onDisappear {
                             isPopoverVisible = false
-                            if !isPresented {
-                                onDismiss?()
-                            }
+                            isPresented = false
+                            onDismiss?()
                         }
                 }
             
             Sheet(
-                isPresented: Binding(
-                    get: { isPresented && !isPopoverVisible },
-                    set: { isPresented = $0 }
-                ),
+                isPresented: $isSheetVisible,
                 detents: detents.map { $0.sheetDetent },
                 selection: Binding(
                     get: {
@@ -212,9 +217,9 @@ private extension SheetModifier {
             ) {
                 sheetContent
                     .onDisappear {
-                        if !isPresented {
-                            onDismiss?()
-                        }
+                        isSheetVisible = false
+                        isPresented = false
+                        onDismiss?()
                     }
             }
             .fixedSize()
@@ -320,11 +325,6 @@ private struct Sheet<Content>: UIViewRepresentable where Content: View {
             // not currently being dismissed, and is not an alert.
             rootViewController.dismiss(animated: presentedControllerIsHosting)
             model.isTransitioningFromPopover = !presentedControllerIsHosting
-        } else if hostingControllerIsBeingDismissed {
-            // Sets 'isPresented' to false when the hosting controller is being dismissed.
-            Task {
-                isPresented = false
-            }
         } else if wasPresenting {
             // Updates the sheet presentation controller and the root view of the hosting
             // controller if the sheet was already presenting.
