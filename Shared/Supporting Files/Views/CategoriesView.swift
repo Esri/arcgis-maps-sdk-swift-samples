@@ -83,11 +83,13 @@ private extension CategoriesView {
                 .overlay {
                     ZStack {
                         Color(red: 0.24, green: 0.24, blue: 0.26, opacity: 0.6)
-                        Circle()
-                            .foregroundColor(.black.opacity(0.75))
-                            .frame(width: 50, height: 50)
                         Image("\(category.replacingOccurrences(of: " ", with: "-"))-icon")
+                            .resizable()
                             .colorInvert()
+                            .padding(10)
+                            .frame(width: 50, height: 50)
+                            .background(.black.opacity(0.75))
+                            .clipShape(Circle())
                         Text(category)
                             .multilineTextAlignment(.center)
                             .foregroundColor(.white)
