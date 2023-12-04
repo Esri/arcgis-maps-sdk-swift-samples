@@ -52,6 +52,12 @@
 		00B04273282EC59E0072E1B4 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B04272282EC59E0072E1B4 /* AboutView.swift */; };
 		00B042E8282EDC690072E1B4 /* SetBasemapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B042E5282EDC690072E1B4 /* SetBasemapView.swift */; };
 		00B04FB5283EEBA80026C882 /* DisplayOverviewMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B04FB4283EEBA80026C882 /* DisplayOverviewMapView.swift */; };
+		00B56F792B0E967500B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B56F782B0E967500B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.swift */; };
+		00B56F7B2B0EA71600B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B56F7A2B0EA71600B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.Model.swift */; };
+		00B56F7D2B0EA73500B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B56F7C2B0EA73500B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.SettingsView.swift */; };
+		00B56F7E2B0EBE9C00B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 00B56F782B0E967500B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.swift */; };
+		00B56F7F2B0EBE9C00B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 00B56F7A2B0EA71600B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.Model.swift */; };
+		00B56F802B0EBE9C00B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.SettingsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 00B56F7C2B0EA73500B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.SettingsView.swift */; };
 		00C43AED2947DC350099AE34 /* ArcGISToolkit in Frameworks */ = {isa = PBXBuildFile; productRef = 00C43AEC2947DC350099AE34 /* ArcGISToolkit */; };
 		00C7993B2A845AAF00AFE342 /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00C7993A2A845AAF00AFE342 /* Sidebar.swift */; };
 		00C94A0D28B53DE1004E42D9 /* raster-file in Resources */ = {isa = PBXBuildFile; fileRef = 00C94A0C28B53DE1004E42D9 /* raster-file */; settings = {ASSET_TAGS = (AddRasterFromFile, ); }; };
@@ -380,6 +386,9 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				00B56F7E2B0EBE9C00B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.swift in Copy Source Code Files */,
+				00B56F7F2B0EBE9C00B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.Model.swift in Copy Source Code Files */,
+				00B56F802B0EBE9C00B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.SettingsView.swift in Copy Source Code Files */,
 				D73FCFFA2B02A3C50006360D /* FindAddressWithReverseGeocodeView.swift in Copy Source Code Files */,
 				D742E4952B04134C00690098 /* DisplayWebSceneFromPortalItemView.swift in Copy Source Code Files */,
 				D7010EC12B05618400D43F55 /* DisplaySceneFromMobileScenePackageView.swift in Copy Source Code Files */,
@@ -545,6 +554,9 @@
 		00B04272282EC59E0072E1B4 /* AboutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		00B042E5282EDC690072E1B4 /* SetBasemapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetBasemapView.swift; sourceTree = "<group>"; };
 		00B04FB4283EEBA80026C882 /* DisplayOverviewMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayOverviewMapView.swift; sourceTree = "<group>"; };
+		00B56F782B0E967500B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddClusteringFeatureReductionToAPointFeatureLayerView.swift; sourceTree = "<group>"; };
+		00B56F7A2B0EA71600B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddClusteringFeatureReductionToAPointFeatureLayerView.Model.swift; sourceTree = "<group>"; };
+		00B56F7C2B0EA73500B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddClusteringFeatureReductionToAPointFeatureLayerView.SettingsView.swift; sourceTree = "<group>"; };
 		00C7993A2A845AAF00AFE342 /* Sidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sidebar.swift; sourceTree = "<group>"; };
 		00C94A0C28B53DE1004E42D9 /* raster-file */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "raster-file"; sourceTree = "<group>"; };
 		00CB9137284814A4005C2C5D /* SearchWithGeocodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchWithGeocodeView.swift; sourceTree = "<group>"; };
@@ -799,6 +811,7 @@
 		0074ABB228174B830037244A /* Samples */ = {
 			isa = PBXGroup;
 			children = (
+				00B56F752B0E966600B68A0D /* Add clustering feature reduction to a point feature layer */,
 				79D84D0C2A815BED00F45262 /* Add custom dynamic entity data source */,
 				4D2ADC3E29C26D05003B367F /* Add dynamic entity layer */,
 				00D4EF7E2863840D00B9CC30 /* Add feature layers */,
@@ -960,6 +973,16 @@
 				00B04FB4283EEBA80026C882 /* DisplayOverviewMapView.swift */,
 			);
 			path = "Display overview map";
+			sourceTree = "<group>";
+		};
+		00B56F752B0E966600B68A0D /* Add clustering feature reduction to a point feature layer */ = {
+			isa = PBXGroup;
+			children = (
+				00B56F782B0E967500B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.swift */,
+				00B56F7A2B0EA71600B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.Model.swift */,
+				00B56F7C2B0EA73500B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.SettingsView.swift */,
+			);
+			path = "Add clustering feature reduction to a point feature layer";
 			sourceTree = "<group>";
 		};
 		00C94A0228B53DCC004E42D9 /* 7c4c679ab06a4df19dc497f577f111bd */ = {
@@ -2230,6 +2253,7 @@
 				D752D9402A39154C003EB25E /* ManageOperationalLayersView.swift in Sources */,
 				D7ABA2F92A32579C0021822B /* MeasureDistanceInSceneView.swift in Sources */,
 				D73723792AF5ADD800846884 /* FindRouteInMobileMapPackageView.MobileMapView.swift in Sources */,
+				00B56F792B0E967500B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.swift in Sources */,
 				E004A6E028466279002A1FE6 /* ShowCalloutView.swift in Sources */,
 				E000E763286A0B18005D87C5 /* CutGeometryView.swift in Sources */,
 				D7705D582AFC244E00CC0335 /* FindClosestFacilityToMultiplePointsView.swift in Sources */,
@@ -2295,10 +2319,12 @@
 				1CAF831F2A20305F000E1E60 /* ShowUtilityAssociationsView.swift in Sources */,
 				00C7993B2A845AAF00AFE342 /* Sidebar.swift in Sources */,
 				E004A6C128414332002A1FE6 /* SetViewpointRotationView.swift in Sources */,
+				00B56F7B2B0EA71600B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.Model.swift in Sources */,
 				883C121529C9136600062FF9 /* DownloadPreplannedMapAreaView.MapPicker.swift in Sources */,
 				D72C43F32AEB066D00B6157B /* GeocodeOfflineView.Model.swift in Sources */,
 				1C9B74C929DB43580038B06F /* ShowRealisticLightAndShadowsView.swift in Sources */,
 				D7232EE12AC1E5AA0079ABFF /* PlayKMLTourView.swift in Sources */,
+				00B56F7D2B0EA73500B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.SettingsView.swift in Sources */,
 				D7010EBF2B05616900D43F55 /* DisplaySceneFromMobileScenePackageView.swift in Sources */,
 				1C56B5E62A82C02D000381DA /* DisplayPointsUsingClusteringFeatureReductionView.swift in Sources */,
 				D7337C602ABD142D00A5D865 /* ShowMobileMapPackageExpirationDateView.swift in Sources */,
