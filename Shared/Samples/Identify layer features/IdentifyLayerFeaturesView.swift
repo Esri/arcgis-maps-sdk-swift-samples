@@ -32,13 +32,8 @@ struct IdentifyLayerFeaturesView: View {
     /// The string text for the identify layer results overlay.
     @State var overlayText = "Tap on the map to identify feature layers."
     
-    /// A Boolean value indicating whether to show an error alert.
-    @State var isShowingAlert = false
-    
     /// The error shown in the error alert.
-    @State var error: Error? {
-        didSet { isShowingAlert = error != nil }
-    }
+    @State private var error: Error?
     
     var body: some View {
         ZStack {
@@ -86,7 +81,7 @@ struct IdentifyLayerFeaturesView: View {
                             .padding(8)
                             .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
                     }
-                    .alert(isPresented: $isShowingAlert, presentingError: error)
+                    .errorAlert(presentingError: $error)
             }
         }
     }

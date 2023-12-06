@@ -1,0 +1,28 @@
+{
+    "category": "Augmented Reality",
+    "description": "Use augmented reality (AR) to quickly explore a scene more naturally than you could with a touch or mouse interface.",
+    "ignore": false,
+    "images": [
+        "augment-reality-to-fly-over-scene.png"
+    ],
+    "keywords": [
+        "augmented reality",
+        "bird's eye",
+        "birds-eye-view",
+        "fly over",
+        "flyover",
+        "mixed reality",
+        "translation factor",
+        "FlyoverSceneView",
+        "SceneView"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "FlyoverSceneView",
+        "SceneView"
+    ],
+    "snippets": [
+        "AugmentRealityToFlyOverSceneView.swift"
+    ],
+    "title": "Augment reality to fly over scene"
+}

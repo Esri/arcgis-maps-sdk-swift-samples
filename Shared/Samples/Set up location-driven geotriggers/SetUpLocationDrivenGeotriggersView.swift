@@ -20,13 +20,8 @@ struct SetUpLocationDrivenGeotriggersView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
-    /// A Boolean value indicating whether to show an alert.
-    @State private var isShowingAlert = false
-    
-    /// The error shown in the alert.
-    @State private var error: Error? {
-        didSet { isShowingAlert = error != nil }
-    }
+    /// The error shown in the error alert.
+    @State private var error: Error?
     
     /// A Boolean value indicating whether to show the popup.
     @State private var isShowingPopup = false
@@ -131,7 +126,7 @@ struct SetUpLocationDrivenGeotriggersView: View {
                     try? await model.locationDisplay.dataSource.start()
                 }
             }
-            .alert(isPresented: $isShowingAlert, presentingError: error)
+            .errorAlert(presentingError: $error)
     }
 }
 

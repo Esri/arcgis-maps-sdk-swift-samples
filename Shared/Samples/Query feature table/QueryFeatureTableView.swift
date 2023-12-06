@@ -18,13 +18,8 @@ import ArcGIS
 struct QueryFeatureTableView: View {
     @StateObject private var model = Model()
     
-    /// A Boolean value indicating whether to show an alert.
-    @State private var isShowingAlert = false
-    
-    /// The error shown in the alert.
-    @State private var error: Error? {
-        didSet { isShowingAlert = error != nil }
-    }
+    /// The error shown in the error alert.
+    @State private var error: Error?
     
     /// The text in the search bar.
     @State private var searchBarText = ""
@@ -32,7 +27,7 @@ struct QueryFeatureTableView: View {
     var body: some View {
         MapViewReader { mapViewProxy in
             MapView(map: model.map)
-                .alert(isPresented: $isShowingAlert, presentingError: error)
+                .errorAlert(presentingError: $error)
                 // Makes the search bar.
                 .searchable(text: $searchBarText, prompt: Text("Search state names"))
                 .onSubmit(of: .search) {

@@ -1,0 +1,28 @@
+{
+    "category": "Search and Query",
+    "description": "Use an online service to find the address for a tapped point.",
+    "ignore": false,
+    "images": [
+        "find-address-with-reverse-geocode.png"
+    ],
+    "keywords": [
+        "address",
+        "geocode",
+        "locate",
+        "reverse geocode",
+        "search",
+        "GeocodeResult",
+        "LocatorTask",
+        "ReverseGeocodeParameters"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "GeocodeResult",
+        "LocatorTask",
+        "ReverseGeocodeParameters"
+    ],
+    "snippets": [
+        "FindAddressWithReverseGeocodeView.swift"
+    ],
+    "title": "Find address with reverse geocode"
+}

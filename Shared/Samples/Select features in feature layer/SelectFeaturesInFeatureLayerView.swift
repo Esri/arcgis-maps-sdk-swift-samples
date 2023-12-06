@@ -22,13 +22,8 @@ struct SelectFeaturesInFeatureLayerView: View {
     /// The point indicating where to identify features.
     @State private var identifyPoint: CGPoint?
     
-    /// A Boolean value indicating whether to show an alert.
-    @State private var isShowingAlert = false
-    
-    /// The error shown in the alert.
-    @State private var error: Error? {
-        didSet { isShowingAlert = error != nil }
-    }
+    /// The error shown in the error alert.
+    @State private var error: Error?
     
     /// The view model for the sample.
     @StateObject private var model = Model()
@@ -70,7 +65,7 @@ struct SelectFeaturesInFeatureLayerView: View {
                         .padding(.vertical, 6)
                         .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
                 }
-                .alert(isPresented: $isShowingAlert, presentingError: error)
+                .errorAlert(presentingError: $error)
         }
     }
 }

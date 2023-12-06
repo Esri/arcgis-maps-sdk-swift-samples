@@ -16,13 +16,8 @@ import ArcGIS
 import SwiftUI
 
 struct FindRouteView: View {
-    /// A Boolean value indicating whether to show an alert.
-    @State private var isShowingAlert = false
-    
-    /// The error shown in the alert.
-    @State private var error: Error? {
-        didSet { isShowingAlert = error != nil }
-    }
+    /// The error shown in the error alert.
+    @State private var error: Error?
     
     /// A Boolean value indicating whether to show the directions.
     @State private var isShowingDirections = false
@@ -35,7 +30,7 @@ struct FindRouteView: View {
     
     var body: some View {
         MapView(map: model.map, graphicsOverlays: model.graphicsOverlays)
-            .alert(isPresented: $isShowingAlert, presentingError: error)
+            .errorAlert(presentingError: $error)
             .task {
                 do {
                     try await model.initializeRouteParameters()

@@ -29,13 +29,8 @@ struct ManageOperationalLayersView: View {
     /// A Boolean value indicating whether to show the manage layers sheet.
     @State private var isShowingSheet = false
     
-    /// A Boolean value indicating whether to show an alert.
-    @State private var isShowingAlert = false
-    
-    /// The error shown in the alert.
-    @State private var error: Error? {
-        didSet { isShowingAlert = error != nil }
-    }
+    /// The error shown in the error alert.
+    @State private var error: Error?
     
     var body: some View {
         MapView(map: map)
@@ -63,7 +58,7 @@ struct ManageOperationalLayersView: View {
                     }
                 }
             }
-            .alert(isPresented: $isShowingAlert, presentingError: error)
+            .errorAlert(presentingError: $error)
     }
 }
 

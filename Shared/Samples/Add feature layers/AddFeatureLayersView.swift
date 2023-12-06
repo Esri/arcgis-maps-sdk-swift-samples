@@ -16,13 +16,8 @@ import ArcGIS
 import SwiftUI
 
 struct AddFeatureLayersView: View {
-    /// A Boolean value indicating whether to show an alert.
-    @State private var isShowingAlert = false
-    
-    /// The error shown in the alert.
-    @State private var error: Error? {
-        didSet { isShowingAlert = error != nil }
-    }
+    /// The error shown in the error alert.
+    @State private var error: Error?
     
     /// The current viewpoint of the map view.
     @State private var viewpoint: Viewpoint?
@@ -52,7 +47,7 @@ struct AddFeatureLayersView: View {
                     }
                 }
             }
-            .alert(isPresented: $isShowingAlert, presentingError: error)
+            .errorAlert(presentingError: $error)
             .onAppear {
                 // Updates the URL session challenge handler to use the
                 // specified credentials and tokens for any challenges.

@@ -1,0 +1,26 @@
+{
+    "category": "Scenes",
+    "description": "Opens and displays a scene from a Mobile Scene Package (.mspk).",
+    "ignore": false,
+    "images": [
+        "display-scene-from-mobile-scene-package.png"
+    ],
+    "keywords": [
+        "offline",
+        "scene",
+        "MobileScenePackage",
+        "SceneView"
+    ],
+    "offline_data": [
+        "7dd2f97bb007466ea939160d0de96a9d"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "MobileScenePackage",
+        "SceneView"
+    ],
+    "snippets": [
+        "DisplaySceneFromMobileScenePackageView.swift"
+    ],
+    "title": "Display scene from mobile scene package"
+}
