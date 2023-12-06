@@ -179,7 +179,7 @@ private extension SheetModifier {
                 .task(id: isPresented) {
                     if isPresented {
                         // Sleep to prevent appearing when other content is disappearing.
-                        try? await Task.sleep(nanoseconds: 100)
+                        try? await Task.sleep(nanoseconds: 1000)
                         
                         if isSheetLayout {
                             isSheetVisible = true
