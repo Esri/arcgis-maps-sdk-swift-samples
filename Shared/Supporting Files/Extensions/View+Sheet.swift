@@ -26,6 +26,9 @@ extension View {
     ///   - idealHeight: The ideal height of the popover.
     ///   - onDismiss: A closure to execute when dismissing the sheet.
     ///   - content: A closure returning the content of the sheet.
+    ///
+    /// > Note: This modifier may not work with other UIKit derived views, such as an `Alert`.
+    ///  Using them both in the same view may cause undefined behavior.
     func sheet<Content>(
         isPresented: Binding<Bool>,
         detents: [Detent],
