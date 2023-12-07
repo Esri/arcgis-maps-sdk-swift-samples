@@ -38,8 +38,7 @@ struct DownloadPreplannedMapAreaView: View {
                         isShowingSelectMapView.toggle()
                     }
                     .sheet(isPresented: $isShowingSelectMapView, detents: [.medium]) {
-                        MapPicker()
-                            .environmentObject(model)
+                        MapPicker(model: model)
                     }
                     
                     Spacer()

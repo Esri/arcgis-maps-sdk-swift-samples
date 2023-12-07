@@ -19,7 +19,7 @@ extension FindRouteAroundBarriersView {
     /// The list of settings for the sample.
     struct SettingsList: View {
         /// The view model for the sample.
-        @EnvironmentObject private var model: Model
+        @ObservedObject var model: Model
         
         /// A Boolean value indicating whether routing will find the best sequence.
         @State private var routingFindsBestSequence = false
