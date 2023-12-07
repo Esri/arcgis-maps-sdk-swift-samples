@@ -40,6 +40,7 @@ struct CategoriesView: View {
                                 SampleLink(sample)
                             }
                         }
+                        .listStyle(.sidebar)
                     }
                 }
             }
