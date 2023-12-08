@@ -15,18 +15,19 @@
 import SwiftUI
 
 struct SampleLink: View {
-    /// The sample to display.
+    /// The sample to present.
     private let sample: Sample
     
-    /// The sample row to show as the link's label.
-    @ViewBuilder private var label: SampleRow
+    /// The text to bold in the sample's name and description.
+    private let textToBold: String
     
-    init(_ sample: Sample) {
+    /// Creates a link that presents a given sample.
+    /// - Parameters:
+    ///   - sample: The sample to present.
+    ///   - textToBold: The text to bold in the sample's name and description.
+    init(_ sample: Sample, textToBold: String = "") {
         self.sample = sample
-        label = SampleRow(
-            name: AttributedString(sample.name),
-            description: AttributedString(sample.description)
-        )
+        self.textToBold = textToBold
     }
     
     var body: some View {
@@ -34,7 +35,10 @@ struct SampleLink: View {
             SampleDetailView(sample: sample)
                 .id(sample.name)
         } label: {
-            label
+            SampleRow(
+                name: sample.name.boldingFirstOccurrence(of: textToBold),
+                description: sample.description.boldingFirstOccurrence(of: textToBold)
+            )
         }
     }
 }
@@ -112,20 +116,6 @@ private extension SampleLink {
             }
             .animation(.easeOut(duration: 0.2), value: isShowingDescription)
         }
-    }
-}
-
-extension SampleLink {
-    /// Bolds given text found in the sample link's label.
-    /// - Parameter text: The text to bold.
-    /// - Returns: A new `SampleLink` with the bolded text.
-    func bolding(_ text: String) -> SampleLink {
-        var sampleLink = self
-        sampleLink.label = SampleRow(
-            name: sample.name.boldingFirstOccurrence(of: text),
-            description: sample.description.boldingFirstOccurrence(of: text)
-        )
-        return sampleLink
     }
 }
 
