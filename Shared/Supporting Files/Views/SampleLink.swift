@@ -51,7 +51,7 @@ private extension SampleLink {
         @State private var isShowingDescription = false
         
         /// The names of the favorited samples loaded from user defaults.
-        @AppStorage(UserDefaults.favoritedSamplesKey) private var favoritedNames = [String]()
+        @AppStorage(UserDefaults.favoritedSamplesKey) private var favoritedNames: [String] = []
         
         /// A Boolean value indicating whether the sample is favorited.
         private var isFavorited: Bool {
