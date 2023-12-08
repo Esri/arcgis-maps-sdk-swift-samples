@@ -103,3 +103,7 @@ private extension Collection {
         !self.isEmpty
     }
 }
+
+#Preview {
+    IdentifyGraphicsView()
+}

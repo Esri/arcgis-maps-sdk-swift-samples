@@ -215,3 +215,9 @@ private extension URL {
         URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/NetworkAnalysis/SanDiego/NAServer/Route")!
     }
 }
+
+#Preview {
+    NavigationView {
+        FindRouteView()
+    }
+}

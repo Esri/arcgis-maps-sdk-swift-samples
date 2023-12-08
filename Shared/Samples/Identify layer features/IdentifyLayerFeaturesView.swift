@@ -134,3 +134,7 @@ private extension URL {
         URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/DamageAssessment/FeatureServer/0")!
     }
 }
+
+#Preview {
+    IdentifyLayerFeaturesView()
+}

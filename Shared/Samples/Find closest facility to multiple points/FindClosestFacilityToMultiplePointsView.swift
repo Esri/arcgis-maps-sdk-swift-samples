@@ -183,3 +183,7 @@ private extension URL {
         URL(string: "https://static.arcgis.com/images/Symbols/SafetyHealth/Hospital.png")!
     }
 }
+
+#Preview {
+    FindClosestFacilityToMultiplePointsView()
+}

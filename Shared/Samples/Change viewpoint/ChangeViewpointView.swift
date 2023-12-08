@@ -128,3 +128,7 @@ extension ChangeViewpointView {
         }
     }
 }
+
+#Preview {
+    ChangeViewpointView()
+}

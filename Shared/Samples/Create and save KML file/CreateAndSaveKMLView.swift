@@ -135,3 +135,9 @@ private extension UTType {
     /// A type that represents a KMZ file.
     static let kmz = UTType(filenameExtension: "kmz")!
 }
+
+#Preview {
+    NavigationView {
+        CreateAndSaveKMLView()
+    }
+}

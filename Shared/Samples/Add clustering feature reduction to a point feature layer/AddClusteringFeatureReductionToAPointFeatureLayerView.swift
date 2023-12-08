@@ -73,3 +73,9 @@ struct AddClusteringFeatureReductionToAPointFeatureLayerView: View {
         }
     }
 }
+
+#Preview {
+    NavigationView {
+        AddClusteringFeatureReductionToAPointFeatureLayerView()
+    }
+}
