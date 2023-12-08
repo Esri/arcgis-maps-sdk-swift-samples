@@ -63,38 +63,33 @@ private extension SampleLink {
         }
         
         var body: some View {
-            ZStack {
-                if isFavorited {
-                    HStack {
-                        Image(systemName: "star.fill")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 8)
-                            .padding(.leading, -13)
-                        Spacer()
+            HStack {
+                VStack(alignment: .leading) {
+                    Text(name)
+                    
+                    if isShowingDescription {
+                        Text(description)
+                            .font(.caption)
+                            .opacity(0.75)
+                            .transition(.move(edge: .top).combined(with: .opacity))
                     }
                 }
+                Spacer()
                 
-                HStack {
-                    VStack(alignment: .leading) {
-                        Text(name)
-                        
-                        if isShowingDescription {
-                            Text(description)
-                                .font(.caption)
-                                .opacity(0.75)
-                                .transition(.move(edge: .top).combined(with: .opacity))
-                        }
-                    }
-                    Spacer()
-                    Label {} icon: {
-                        Image(systemName: "info.circle")
-                            .symbolVariant(isShowingDescription ? .fill : .none)
-                            .imageScale(.medium)
-                    }
-                    .onTapGesture {
-                        isShowingDescription.toggle()
-                    }
+                if isFavorited {
+                    Image(systemName: "star.fill")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 12)
+                }
+                
+                Label {} icon: {
+                    Image(systemName: "info.circle")
+                        .symbolVariant(isShowingDescription ? .fill : .none)
+                        .imageScale(.medium)
+                }
+                .onTapGesture {
+                    isShowingDescription.toggle()
                 }
             }
             .contextMenu {
