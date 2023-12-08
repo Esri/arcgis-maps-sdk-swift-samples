@@ -154,7 +154,7 @@ private extension NavigateRouteView {
             autoPanMode = .off
             
             // Creates the graphics for each stop.
-            let stopGraphics = stops.map {
+            let stopGraphics = Self.stops.map {
                 Graphic(
                     geometry: $0.geometry,
                     symbol: SimpleMarkerSymbol(style: .diamond, color: .orange, size: 20)
@@ -183,7 +183,7 @@ private extension NavigateRouteView {
                 parameters.outputSpatialReference = .wgs84
                 
                 // Sets the stops on the parameters.
-                parameters.setStops(stops)
+                parameters.setStops(Self.stops)
                 
                 // Solves the route based on the parameters.
                 routeResult = try await routeTask.solveRoute(using: parameters)
@@ -323,7 +323,9 @@ private extension NavigateRouteView {
             isResettingRoute = false
         }
     }
-    
+}
+
+private extension NavigateRouteView.Model {
     /// The stops for this sample.
     static var stops: [Stop] {
         let one = Stop(point: Point(x: -117.160386727, y: 32.706608, spatialReference: .wgs84))
@@ -346,5 +348,11 @@ private extension URL {
     /// The URL for the route task.
     static var routeTask: URL {
         URL(string: "http://sampleserver7.arcgisonline.com/server/rest/services/NetworkAnalysis/SanDiego/NAServer/Route")!
+    }
+}
+
+#Preview {
+    NavigationView {
+        NavigateRouteView()
     }
 }
