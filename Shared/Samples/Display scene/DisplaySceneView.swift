@@ -56,3 +56,7 @@ struct DisplaySceneView: View {
         SceneView(scene: scene)
     }
 }
+
+#Preview {
+    DisplaySceneView()
+}

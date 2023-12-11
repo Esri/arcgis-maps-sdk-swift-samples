@@ -134,3 +134,7 @@ private extension URL {
         URL(string: "https://www.wpc.ncep.noaa.gov/kml/noaa_chart/WPC_Day1_SigWx_latest.kml")!
     }
 }
+
+#Preview {
+    IdentifyKMLFeaturesView()
+}

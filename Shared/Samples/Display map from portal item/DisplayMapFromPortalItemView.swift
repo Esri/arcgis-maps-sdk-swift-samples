@@ -107,3 +107,9 @@ private extension PortalItem.ID {
     /// The portal item ID of the Geology of United States map.
     static var usGeology: Self { Self("92ad152b9da94dee89b9e387dfe21acd")! }
 }
+
+#Preview {
+    NavigationView {
+        DisplayMapFromPortalItemView()
+    }
+}

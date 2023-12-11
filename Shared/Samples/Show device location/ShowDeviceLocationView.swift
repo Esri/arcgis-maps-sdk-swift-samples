@@ -123,8 +123,6 @@ private extension ShowDeviceLocationView {
 }
 
 private extension LocationDisplay.AutoPanMode {
-    static var allCases: [LocationDisplay.AutoPanMode] { [.off, .recenter, .navigation, .compassNavigation] }
-    
     /// A human-readable label for each auto-pan mode.
     var label: String {
         switch self {
@@ -145,5 +143,11 @@ private extension LocationDisplay.AutoPanMode {
         case .compassNavigation: return "LocationDisplayHeadingIcon"
         @unknown default: return "LocationDisplayOffIcon"
         }
+    }
+}
+
+#Preview {
+    NavigationView {
+        ShowDeviceLocationView()
     }
 }

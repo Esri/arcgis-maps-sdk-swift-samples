@@ -52,3 +52,7 @@ private extension URL {
         URL(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!
     }
 }
+
+#Preview {
+    AddSceneLayerFromServiceView()
+}

@@ -53,3 +53,9 @@ struct SetBasemapView: View {
         }
     }
 }
+
+#Preview {
+    NavigationView {
+        SetBasemapView()
+    }
+}

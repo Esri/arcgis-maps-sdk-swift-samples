@@ -191,3 +191,9 @@ extension RunValveIsolationTraceView.Model.TracingActivity {
         }
     }
 }
+
+#Preview {
+    NavigationView {
+        RunValveIsolationTraceView()
+    }
+}

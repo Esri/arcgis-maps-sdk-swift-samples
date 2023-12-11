@@ -62,3 +62,7 @@ private extension URL {
         URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/RiversAnnotation/FeatureServer/0")!
     }
 }
+
+#Preview {
+    DisplayAnnotationView()
+}

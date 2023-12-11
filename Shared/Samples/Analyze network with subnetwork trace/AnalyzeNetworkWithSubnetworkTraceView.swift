@@ -311,3 +311,9 @@ private extension UtilityNetworkAttributeComparison.Operator {
     static var allCases: [UtilityNetworkAttributeComparison.Operator] { [.equal, .notEqual, .greaterThan, .greaterThanEqual, .lessThan, .lessThanEqual, .includesTheValues, .doesNotIncludeTheValues, .includesAny, .doesNotIncludeAny]
     }
 }
+
+#Preview {
+    NavigationView {
+        AnalyzeNetworkWithSubnetworkTraceView()
+    }
+}

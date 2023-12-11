@@ -135,3 +135,7 @@ private extension SearchWithGeocodeView {
         let searchResultsOverlay = GraphicsOverlay()
     }
 }
+
+#Preview {
+    SearchWithGeocodeView()
+}

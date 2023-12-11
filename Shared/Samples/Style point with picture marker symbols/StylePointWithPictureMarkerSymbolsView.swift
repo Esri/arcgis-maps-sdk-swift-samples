@@ -91,3 +91,7 @@ struct StylePointWithPictureMarkerSymbolsView: View {
         MapView(map: map, graphicsOverlays: [graphicsOverlay])
     }
 }
+
+#Preview {
+    StylePointWithPictureMarkerSymbolsView()
+}

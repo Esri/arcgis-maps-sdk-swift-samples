@@ -209,3 +209,9 @@ private extension ShowDeviceLocationHistoryView {
         }
     }
 }
+
+#Preview {
+    NavigationView {
+        ShowDeviceLocationHistoryView()
+    }
+}
