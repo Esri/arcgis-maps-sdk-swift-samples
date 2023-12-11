@@ -136,11 +136,13 @@ extension UserDefaults {
 extension Array: RawRepresentable where Element == String {
     /// Creates a new array from a given raw value.
     /// - Parameter rawValue: The raw value of the array to create.
-    public init?(rawValue: String) {
-        guard let data = rawValue.data(using: .utf8),
-              let result = try? JSONDecoder().decode([Element].self, from: data)
-        else { return nil }
-        self = result
+    public init(rawValue: String) {
+        if let data = rawValue.data(using: .utf8),
+           let result = try? JSONDecoder().decode([Element].self, from: data) {
+            self = result
+        } else {
+            self = []
+        }
     }
     
     /// The raw value of the array.
