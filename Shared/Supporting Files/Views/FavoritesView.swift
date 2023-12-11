@@ -81,7 +81,7 @@ private extension FavoritesView {
             if query.isEmpty {
                 return samples
             } else {
-                return samples.filter { $0.name.contains(query) }
+                return samples.filter { $0.name.localizedStandardContains(query) }
             }
         }
         
