@@ -29,19 +29,29 @@ struct CategoriesView: View {
     var body: some View {
         ScrollView {
             LazyVGrid(columns: [GridItem(), GridItem()]) {
-                CategoryTile(name: "Favorites") {
+                NavigationLink {
                     FavoritesView(samples: samples)
+                        .navigationTitle("Favorites")
+                } label: {
+                    CategoryTile(name: "Favorites")
                 }
+                .isDetailLink(false)
+                .buttonStyle(.plain)
+                .contentShape(RoundedRectangle(cornerRadius: 30))
                 
                 ForEach(categories, id: \.self) { category in
-                    CategoryTile(name: category) {
-                        List {
-                            ForEach(samples.filter { $0.category == category }, id: \.name) { sample in
-                                SampleLink(sample)
-                            }
+                    NavigationLink {
+                        List(samples.filter { $0.category == category }, id: \.name) { sample in
+                            SampleLink(sample)
                         }
                         .listStyle(.sidebar)
+                        .navigationTitle(category)
+                    } label: {
+                        CategoryTile(name: category)
                     }
+                    .isDetailLink(false)
+                    .buttonStyle(.plain)
+                    .contentShape(RoundedRectangle(cornerRadius: 30))
                 }
             }
             .padding()
@@ -50,42 +60,29 @@ struct CategoriesView: View {
 }
 
 private extension CategoriesView {
-    struct CategoryTile<Content: View>: View {
+    struct CategoryTile: View {
         /// The name of the category.
         let name: String
         
-        /// The destination view for the category tile to present.
-        @ViewBuilder let destination: Content
-        
         var body: some View {
-            NavigationLink {
-                destination
-                    .navigationTitle(name)
-            } label: {
-                Image("\(name.replacingOccurrences(of: " ", with: "-"))-bg")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .overlay {
-                        ZStack {
-                            Color(red: 0.24, green: 0.24, blue: 0.26, opacity: 0.6)
-                            Image("\(name.replacingOccurrences(of: " ", with: "-"))-icon")
-                                .resizable()
-                                .colorInvert()
-                                .padding(10)
-                                .frame(width: 50, height: 50)
-                                .background(.black.opacity(0.75))
-                                .clipShape(Circle())
-                            Text(name)
-                                .multilineTextAlignment(.center)
-                                .foregroundColor(.white)
-                                .offset(y: 45)
-                        }
-                    }
-            }
-            .isDetailLink(false)
-            .clipShape(RoundedRectangle(cornerRadius: 15))
-            .contentShape(RoundedRectangle(cornerRadius: 30))
-            .buttonStyle(.plain)
+            Image("\(name.replacingOccurrences(of: " ", with: "-"))-bg")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .overlay {
+                    Color(red: 0.24, green: 0.24, blue: 0.26, opacity: 0.6)
+                    Image("\(name.replacingOccurrences(of: " ", with: "-"))-icon")
+                        .resizable()
+                        .colorInvert()
+                        .padding(10)
+                        .frame(width: 50, height: 50)
+                        .background(.black.opacity(0.75))
+                        .clipShape(Circle())
+                    Text(name)
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(.white)
+                        .offset(y: 45)
+                }
+                .clipShape(RoundedRectangle(cornerRadius: 15))
         }
     }
 }

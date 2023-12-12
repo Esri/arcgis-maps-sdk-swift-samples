@@ -76,8 +76,8 @@ private extension FavoritesView {
         /// The search query in the search bar.
         @State private var query = ""
         
-        /// The samples displayed in the search list.
-        var displayedSamples: [Sample] {
+        /// The list of samples filtered by the search query.
+        private var filteredSamples: [Sample] {
             if query.isEmpty {
                 return samples
             } else {
@@ -88,7 +88,7 @@ private extension FavoritesView {
         var body: some View {
             NavigationView {
                 List {
-                    ForEach(displayedSamples, id: \.name) { sample in
+                    ForEach(filteredSamples, id: \.name) { sample in
                         Button {
                             if !favoritedNames.contains(sample.name) {
                                 favoritedNames.append(sample.name)
