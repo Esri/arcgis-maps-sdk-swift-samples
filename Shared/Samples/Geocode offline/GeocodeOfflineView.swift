@@ -44,8 +44,7 @@ struct GeocodeOfflineView: View {
     ]
     
     var body: some View {
-        GeocodeMapView(viewpoint: $viewpoint)
-            .environmentObject(model)
+        GeocodeMapView(model: model, viewpoint: $viewpoint)
             .searchable(text: $searchText, prompt: "Type in an address")
             .onSubmit(of: .search) {
                 submittedSearchText = searchText
@@ -90,7 +89,7 @@ private extension GeocodeOfflineView {
     /// The map view for the sample.
     struct GeocodeMapView: View {
         /// The view model for the sample.
-        @EnvironmentObject private var model: Model
+        @ObservedObject var model: Model
         
         /// The action that ends the current search interaction.
         @Environment(\.dismissSearch) private var dismissSearch

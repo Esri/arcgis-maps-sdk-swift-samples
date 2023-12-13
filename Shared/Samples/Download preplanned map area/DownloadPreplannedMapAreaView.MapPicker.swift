@@ -21,7 +21,7 @@ extension DownloadPreplannedMapAreaView {
         @Environment(\.dismiss) private var dismiss
         
         /// The view model for the download preplanned map area view.
-        @EnvironmentObject private var model: Model
+        @ObservedObject var model: Model
         
         var body: some View {
             NavigationView {

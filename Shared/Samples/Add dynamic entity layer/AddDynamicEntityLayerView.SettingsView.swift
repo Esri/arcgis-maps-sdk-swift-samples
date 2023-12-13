@@ -18,7 +18,7 @@ import SwiftUI
 extension AddDynamicEntityLayerView {
     struct SettingsView: View {
         /// The view model for the sample.
-        @EnvironmentObject private var model: Model
+        @ObservedObject var model: Model
         
         /// The action to dismiss the settings sheet.
         @Environment(\.dismiss) private var dismiss: DismissAction
