@@ -188,7 +188,3 @@ private extension PortalItem.ID {
     /// The ID used in the "US States Generalized" portal item.
     static var usStatesGeneralized: Self { Self("8c2d6d7df8fa4142b0a1211c8dd66903")! }
 }
-
-#Preview {
-    FindNearestVertexView()
-}

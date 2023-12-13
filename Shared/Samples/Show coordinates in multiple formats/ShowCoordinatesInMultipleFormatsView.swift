@@ -179,7 +179,3 @@ private extension ShowCoordinatesInMultipleFormatsView {
         }
     }
 }
-
-#Preview {
-    ShowCoordinatesInMultipleFormatsView()
-}

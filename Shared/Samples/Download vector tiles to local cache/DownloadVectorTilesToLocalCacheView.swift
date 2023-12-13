@@ -290,17 +290,24 @@ private extension DownloadVectorTilesToLocalCacheView {
     }
 }
 
+private extension MapViewProxy {
+    /// Creates an envelope from the given rectangle.
+    /// - Parameter viewRect: The rectangle to create an envelope of.
+    /// - Returns: An envelope of the given rectangle.
+    func envelope(fromViewRect viewRect: CGRect) -> Envelope? {
+        guard let min = location(fromScreenPoint: CGPoint(x: viewRect.minX, y: viewRect.minY)),
+              let max = location(fromScreenPoint: CGPoint(x: viewRect.maxX, y: viewRect.maxY)) else {
+            return nil
+        }
+        return Envelope(min: min, max: max)
+    }
+}
+
 private extension Envelope {
     /// Expands the envelope by a given factor.
     func expanded(by factor: Double) -> Envelope {
         let builder = EnvelopeBuilder(envelope: self)
         builder.expand(by: factor)
         return builder.toGeometry()
-    }
-}
-
-#Preview {
-    NavigationView {
-        DownloadVectorTilesToLocalCacheView()
     }
 }

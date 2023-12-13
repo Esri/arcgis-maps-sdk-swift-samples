@@ -158,9 +158,3 @@ private extension URL {
         URL(string: "https://sampleserver5.arcgisonline.com/arcgis/rest/services/Census/MapServer")!
     }
 }
-
-#Preview {
-    NavigationView {
-        ManageOperationalLayersView()
-    }
-}

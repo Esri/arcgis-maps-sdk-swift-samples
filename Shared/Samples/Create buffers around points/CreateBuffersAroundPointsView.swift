@@ -287,9 +287,3 @@ private extension CreateBuffersAroundPointsView {
         }
     }
 }
-
-#Preview {
-    NavigationView {
-        CreateBuffersAroundPointsView()
-    }
-}

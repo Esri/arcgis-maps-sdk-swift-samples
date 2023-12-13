@@ -163,9 +163,3 @@ struct DisplayContentOfUtilityNetworkContainerView: View {
         .frame(idealWidth: 320, idealHeight: 428)
     }
 }
-
-#Preview {
-    NavigationView {
-        DisplayContentOfUtilityNetworkContainerView()
-    }
-}

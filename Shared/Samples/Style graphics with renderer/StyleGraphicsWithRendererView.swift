@@ -210,7 +210,3 @@ private extension StyleGraphicsWithRendererView {
         }
     }
 }
-
-#Preview {
-    StyleGraphicsWithRendererView()
-}

@@ -75,7 +75,3 @@ private extension PortalItem.ID {
     /// A portal item of Building L's floors on the Esri Redlands campus.
     static var esriBuildingL: Self { Self("f133a698536f44c8884ad81f80b6cfc7")! }
 }
-
-#Preview {
-    BrowseBuildingFloorsView()
-}

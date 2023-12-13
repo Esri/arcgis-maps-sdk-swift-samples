@@ -24,7 +24,3 @@ struct DisplayMapView: View {
         MapView(map: map)
     }
 }
-
-#Preview {
-    DisplayMapView()
-}

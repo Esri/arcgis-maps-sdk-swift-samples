@@ -107,7 +107,3 @@ private extension Point {
         Text("\(self.x, format: .decimal), \(self.y, format: .decimal)")
     }
 }
-
-#Preview {
-    ProjectGeometryView()
-}

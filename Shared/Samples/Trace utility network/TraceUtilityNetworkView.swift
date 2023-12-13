@@ -107,9 +107,3 @@ private extension Viewpoint {
         )
     }
 }
-
-#Preview {
-    NavigationView {
-        TraceUtilityNetworkView()
-    }
-}

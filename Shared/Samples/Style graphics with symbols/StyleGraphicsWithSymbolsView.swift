@@ -209,7 +209,3 @@ private extension Geometry {
         )
     }
 }
-
-#Preview {
-    StyleGraphicsWithSymbolsView()
-}

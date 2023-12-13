@@ -55,7 +55,3 @@ private extension LoadStatus {
         }
     }
 }
-
-#Preview {
-    MonitorChangesToMapLoadStatusView()
-}

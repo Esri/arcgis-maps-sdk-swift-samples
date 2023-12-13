@@ -115,9 +115,3 @@ private extension PortalItem.ID {
     /// The portal item ID of a USA 2016 Daytime Population feature layer.
     static var daytimePopulation: Self { Self("f01f0eda766344e29f42031e7bfb7d04")! }
 }
-
-#Preview {
-    NavigationView {
-        QueryFeatureTableView()
-    }
-}

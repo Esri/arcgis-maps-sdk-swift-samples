@@ -185,9 +185,3 @@ private extension URL {
         URL(string: "https://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/DevB_BuildingShells/SceneServer")!
     }
 }
-
-#Preview {
-    NavigationView {
-        GroupLayersTogetherView()
-    }
-}

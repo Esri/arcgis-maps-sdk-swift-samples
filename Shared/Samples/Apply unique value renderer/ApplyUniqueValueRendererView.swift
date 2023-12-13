@@ -78,7 +78,3 @@ struct ApplyUniqueValueRendererView: View {
         MapView(map: map)
     }
 }
-
-#Preview {
-    ApplyUniqueValueRendererView()
-}

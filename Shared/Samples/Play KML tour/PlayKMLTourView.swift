@@ -163,9 +163,3 @@ private extension URL {
         URL(string: "https://www.arcgis.com/sharing/rest/content/items/f10b1d37fdd645c9bc9b189fb546307c/data")!
     }
 }
-
-#Preview {
-    NavigationView {
-        PlayKMLTourView()
-    }
-}

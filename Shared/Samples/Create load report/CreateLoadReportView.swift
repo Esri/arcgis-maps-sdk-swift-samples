@@ -53,9 +53,3 @@ struct CreateLoadReportView: View {
             }
     }
 }
-
-#Preview {
-    NavigationView {
-        CreateLoadReportView()
-    }
-}

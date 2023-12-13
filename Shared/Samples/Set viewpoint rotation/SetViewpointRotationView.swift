@@ -67,7 +67,3 @@ struct SetViewpointRotationView: View {
         .padding(.bottom)
     }
 }
-
-#Preview {
-    SetViewpointRotationView()
-}

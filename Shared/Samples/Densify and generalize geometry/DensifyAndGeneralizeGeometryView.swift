@@ -180,9 +180,3 @@ extension DensifyAndGeneralizeGeometryView {
         }
     }
 }
-
-#Preview {
-    NavigationView {
-        DensifyAndGeneralizeGeometryView()
-    }
-}
