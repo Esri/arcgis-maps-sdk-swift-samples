@@ -174,9 +174,3 @@ private extension Envelope {
         return builder.toGeometry()
     }
 }
-
-#Preview {
-    NavigationView {
-        ClipGeometryView()
-    }
-}

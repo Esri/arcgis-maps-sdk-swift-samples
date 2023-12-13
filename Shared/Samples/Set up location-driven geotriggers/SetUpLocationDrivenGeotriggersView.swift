@@ -150,9 +150,3 @@ extension SetUpLocationDrivenGeotriggersView {
         }
     }
 }
-
-#Preview {
-    NavigationView {
-        SetUpLocationDrivenGeotriggersView()
-    }
-}

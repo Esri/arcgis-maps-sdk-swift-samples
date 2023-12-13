@@ -95,7 +95,3 @@ private extension SelectFeaturesInFeatureLayerView {
 private extension PortalItem.ID {
     static var gdpPerCapita: Self { Self("10d76a5b015647279b165f3a64c2524f")! }
 }
-
-#Preview {
-    SelectFeaturesInFeatureLayerView()
-}

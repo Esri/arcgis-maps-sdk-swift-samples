@@ -57,7 +57,3 @@ struct DisplayOverviewMapView: View {
 private extension PortalItem.ID {
     static var northAmericaTouristAttractions: Self { Self("97ceed5cfc984b4399e23888f6252856")! }
 }
-
-#Preview {
-    DisplayOverviewMapView()
-}

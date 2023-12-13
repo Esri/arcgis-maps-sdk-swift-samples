@@ -179,7 +179,3 @@ private extension Measurement where UnitType == UnitLength {
     /// The maximum radius.
     static var rMax: Self { Measurement(value: 2_000, unit: UnitLength.miles) }
 }
-
-#Preview {
-    CreatePlanarAndGeodeticBuffersView()
-}

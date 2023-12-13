@@ -95,9 +95,3 @@ struct DisplayPointsUsingClusteringFeatureReductionView: View {
         }
     }
 }
-
-#Preview {
-    NavigationView {
-        DisplayPointsUsingClusteringFeatureReductionView()
-    }
-}

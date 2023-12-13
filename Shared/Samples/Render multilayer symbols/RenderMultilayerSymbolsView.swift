@@ -484,7 +484,3 @@ private extension String {
     /// The JSON for a cross geometry.
     static let crossGeometryJSON = "{\"paths\":[[[-1,1],[0,0],[1,-1]],[[1,1],[0,0],[-1,-1]]]}"
 }
-
-#Preview {
-    RenderMultilayerSymbolsView()
-}

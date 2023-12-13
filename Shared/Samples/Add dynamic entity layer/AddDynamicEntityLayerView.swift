@@ -114,9 +114,3 @@ struct AddDynamicEntityLayerView: View {
         }
     }
 }
-
-#Preview {
-    NavigationView {
-        AddDynamicEntityLayerView()
-    }
-}

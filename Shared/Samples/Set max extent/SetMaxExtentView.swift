@@ -74,9 +74,3 @@ private extension Envelope {
         )
     }
 }
-
-#Preview {
-    NavigationView {
-        SetMaxExtentView()
-    }
-}

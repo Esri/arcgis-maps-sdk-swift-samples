@@ -56,7 +56,3 @@ struct ShowCalloutView: View {
             }
     }
 }
-
-#Preview {
-    ShowCalloutView()
-}

@@ -68,7 +68,3 @@ private extension PortalItem.ID {
     /// The ID used in the "Incidents in San Francisco" portal item.
     static var incidentsInSanFrancisco: Self { Self("fb788308ea2e4d8682b9c05ef641f273")! }
 }
-
-#Preview {
-    ShowPopupView()
-}

@@ -40,7 +40,3 @@ private extension PortalItem.ID {
         .init("c6f90b19164c4283884361005faea852")!
     }
 }
-
-#Preview {
-    DisplayWebSceneFromPortalItemView()
-}

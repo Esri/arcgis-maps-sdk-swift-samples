@@ -276,9 +276,3 @@ private extension URL {
         URL(string: "http://services.arcgis.com/V6ZHFr6zdgNZuVG0/arcgis/rest/services/LA_County_Points_of_Interest/FeatureServer/0")!
     }
 }
-
-#Preview {
-    NavigationView {
-        CreateSymbolStylesFromWebStylesView()
-    }
-}

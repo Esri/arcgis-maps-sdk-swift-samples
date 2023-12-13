@@ -268,9 +268,3 @@ private extension Viewpoint {
         )
     }
 }
-
-#Preview {
-    NavigationView {
-        ShowUtilityAssociationsView()
-    }
-}

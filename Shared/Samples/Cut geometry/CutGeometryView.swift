@@ -152,9 +152,3 @@ private extension Geometry {
         )
     }
 }
-
-#Preview {
-    NavigationView {
-        CutGeometryView()
-    }
-}

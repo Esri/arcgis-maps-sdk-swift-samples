@@ -363,9 +363,3 @@ class GeometryEditorMenuModel: ObservableObject {
         isStarted = true
     }
 }
-
-#Preview {
-    NavigationView {
-        CreateAndEditGeometriesView()
-    }
-}
