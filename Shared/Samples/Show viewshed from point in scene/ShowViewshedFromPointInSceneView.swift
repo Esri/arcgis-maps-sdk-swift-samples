@@ -42,8 +42,7 @@ struct ShowViewshedFromPointInSceneView: View {
                         isShowingSettings = true
                     }
                     .sheet(isPresented: $isShowingSettings, detents: [.medium], dragIndicatorVisibility: .visible) {
-                        ViewshedSettingsView()
-                            .environmentObject(model)
+                        ViewshedSettingsView(model: model)
                     }
                 }
             }

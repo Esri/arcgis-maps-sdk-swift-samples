@@ -119,8 +119,7 @@ struct FindRouteAroundBarriersView: View {
                         Spacer()
                         
                         SheetButton(title: "Route Settings") {
-                            SettingsList()
-                                .environmentObject(model)
+                            SettingsList(model: model)
                         } label: {
                             Image(systemName: "gear")
                         }

@@ -17,7 +17,7 @@ import SwiftUI
 
 struct TraceUtilityNetworkView: View {
     /// The view model for the sample.
-    @StateObject var model = TraceUtilityNetworkView.Model()
+    @StateObject var model = Model()
     
     var body: some View {
         MapViewReader { mapViewProxy in
