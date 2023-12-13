@@ -122,34 +122,3 @@ private extension FavoritesView {
         }
     }
 }
-
-// MARK: User Defaults
-
-extension UserDefaults {
-    /// The key to read and write favorited sample names to the user defaults.
-    static var favoritedSamplesKey: String {
-        "favoritedSamples"
-    }
-}
-
-/// An extension allowing an array to be used with the app storage property wrapper.
-extension Array: RawRepresentable where Element == String {
-    /// Creates a new array from a given raw value.
-    /// - Parameter rawValue: The raw value of the array to create.
-    public init(rawValue: String) {
-        if let data = rawValue.data(using: .utf8),
-           let result = try? JSONDecoder().decode([Element].self, from: data) {
-            self = result
-        } else {
-            self = []
-        }
-    }
-    
-    /// The raw value of the array.
-    public var rawValue: String {
-        guard let data = try? JSONEncoder().encode(self),
-              let result = String(data: data, encoding: .utf8)
-        else { return "[]" }
-        return result
-    }
-}
