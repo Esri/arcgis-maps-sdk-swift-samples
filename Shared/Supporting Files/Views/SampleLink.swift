@@ -45,11 +45,14 @@ struct SampleLink: View {
 
 private extension SampleLink {
     struct SampleRow: View {
-        /// The name string of the sample with attributes.
-        let name: AttributedString
+        /// The name of the sample.
+        private let name: String
         
-        /// The description string of the sample with attributes.
-        let description: AttributedString
+        /// The name of the sample with attributes.
+        private let attributedName: AttributedString
+        
+        /// The description of the sample with attributes.
+        private let attributedDescription: AttributedString
         
         /// A Boolean value indicating whether the sample's description is showing.
         @State private var isShowingDescription = false
@@ -59,16 +62,22 @@ private extension SampleLink {
         
         /// A Boolean value indicating whether the sample is favorited.
         private var isFavorited: Bool {
-            favoritedNames.contains(String(name.characters))
+            favoritedNames.contains(name)
+        }
+        
+        init(name: AttributedString, description: AttributedString) {
+            self.name = String(name.characters)
+            self.attributedName = name
+            self.attributedDescription = description
         }
         
         var body: some View {
             HStack {
                 VStack(alignment: .leading) {
-                    Text(name)
+                    Text(attributedName)
                     
                     if isShowingDescription {
-                        Text(description)
+                        Text(attributedDescription)
                             .font(.caption)
                             .opacity(0.75)
                             .transition(.move(edge: .top).combined(with: .opacity))
@@ -96,11 +105,9 @@ private extension SampleLink {
             .contextMenu {
                 Button {
                     if isFavorited {
-                        if let index = favoritedNames.firstIndex(of: String(name.characters)) {
-                            favoritedNames.remove(at: index)
-                        }
+                        favoritedNames.removeAll { $0 == name }
                     } else {
-                        favoritedNames.append(String(name.characters))
+                        favoritedNames.append(name)
                     }
                 } label: {
                     isFavorited
