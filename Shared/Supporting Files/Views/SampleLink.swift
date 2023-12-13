@@ -57,12 +57,12 @@ private extension SampleLink {
         /// A Boolean value indicating whether the sample's description is showing.
         @State private var isShowingDescription = false
         
-        /// The names of the favorited samples loaded from user defaults.
-        @AppStorage(UserDefaults.favoritedSamplesKey) private var favoritedNames: [String] = []
+        /// The names of the favorite samples loaded from user defaults.
+        @AppStorage(.favoriteSamplesKey) private var favoriteNames: [String] = []
         
-        /// A Boolean value indicating whether the sample is favorited.
-        private var isFavorited: Bool {
-            favoritedNames.contains(name)
+        /// A Boolean value indicating whether the sample is a favorite.
+        private var sampleIsFavorite: Bool {
+            favoriteNames.contains(name)
         }
         
         init(name: AttributedString, description: AttributedString) {
@@ -85,7 +85,7 @@ private extension SampleLink {
                 }
                 Spacer()
                 
-                if isFavorited {
+                if sampleIsFavorite {
                     Image(systemName: "star.fill")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
@@ -104,13 +104,13 @@ private extension SampleLink {
             }
             .contextMenu {
                 Button {
-                    if isFavorited {
-                        favoritedNames.removeAll { $0 == name }
+                    if sampleIsFavorite {
+                        favoriteNames.removeAll { $0 == name }
                     } else {
-                        favoritedNames.append(name)
+                        favoriteNames.append(name)
                     }
                 } label: {
-                    isFavorited
+                    sampleIsFavorite
                     ? Label("Unfavorite", systemImage: "star.slash")
                     : Label("Favorite", systemImage: "star")
                 }

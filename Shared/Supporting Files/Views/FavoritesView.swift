@@ -19,28 +19,28 @@ struct FavoritesView: View {
     let samples: [Sample]
     
     /// A Boolean value indicating whether the add favorite sheet is showing.
-    @State private var isShowingSheet = false
+    @State private var addFavoriteSheetIsShowing = false
     
-    /// The names of the favorited samples loaded from user defaults.
-    @AppStorage(UserDefaults.favoritedSamplesKey) private var favoritedNames: [String] = []
+    /// The names of the favorite samples loaded from user defaults.
+    @AppStorage(.favoriteSamplesKey) private var favoriteNames: [String] = []
     
-    /// A list of the favorited samples.
-    private var favoritedSamples: [Sample] {
-        favoritedNames.compactMap { name in
+    /// A list of the favorite samples.
+    private var favoriteSamples: [Sample] {
+        favoriteNames.compactMap { name in
             samples.first(where: { $0.name == name })
         }
     }
     
     var body: some View {
         List {
-            ForEach(favoritedSamples, id: \.name) { sample in
+            ForEach(favoriteSamples, id: \.name) { sample in
                 SampleLink(sample)
             }
             .onMove { fromOffsets, toOffset in
-                favoritedNames.move(fromOffsets: fromOffsets, toOffset: toOffset)
+                favoriteNames.move(fromOffsets: fromOffsets, toOffset: toOffset)
             }
             .onDelete { atOffsets in
-                favoritedNames.remove(atOffsets: atOffsets)
+                favoriteNames.remove(atOffsets: atOffsets)
             }
         }
         .listStyle(.sidebar)
@@ -49,11 +49,11 @@ struct FavoritesView: View {
                 EditButton()
                 
                 Button {
-                    isShowingSheet = true
+                    addFavoriteSheetIsShowing = true
                 } label: {
                     Image(systemName: "plus")
                 }
-                .sheet(isPresented: $isShowingSheet) {
+                .sheet(isPresented: $addFavoriteSheetIsShowing) {
                     AddFavoriteView(samples: samples)
                 }
             }
@@ -70,8 +70,8 @@ private extension FavoritesView {
         /// The action to dismiss the sheet.
         @Environment(\.dismiss) private var dismiss: DismissAction
         
-        /// The names of the favorited samples loaded from user defaults.
-        @AppStorage(UserDefaults.favoritedSamplesKey) private var favoritedNames: [String] = []
+        /// The names of the favorite samples loaded from user defaults.
+        @AppStorage(.favoriteSamplesKey) private var favoriteNames: [String] = []
         
         /// The search query in the search bar.
         @State private var query = ""
@@ -90,8 +90,8 @@ private extension FavoritesView {
                 List {
                     ForEach(filteredSamples, id: \.name) { sample in
                         Button {
-                            if !favoritedNames.contains(sample.name) {
-                                favoritedNames.append(sample.name)
+                            if !favoriteNames.contains(sample.name) {
+                                favoriteNames.append(sample.name)
                             }
                             dismiss()
                         } label: {

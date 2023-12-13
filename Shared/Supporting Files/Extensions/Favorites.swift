@@ -14,10 +14,10 @@
 
 import SwiftUI
 
-extension UserDefaults {
-    /// The key to read and write favorited sample names to the user defaults.
-    static var favoritedSamplesKey: String {
-        "favoritedSamples"
+extension String {
+    /// The key to read and write the names of the favorite samples to the user defaults.
+    static var favoriteSamplesKey: String {
+        "favoriteSamples"
     }
 }
 
