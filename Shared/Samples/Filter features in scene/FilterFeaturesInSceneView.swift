@@ -32,7 +32,7 @@ struct FilterFeaturesInSceneView: View {
                 }
             }
             .toolbar {
-                ToolbarItemGroup(placement: .bottomBar) {
+                ToolbarItem(placement: .bottomBar) {
                     Button(model.filterState.label) {
                         model.handleFilterState()
                     }

@@ -39,7 +39,7 @@ struct FindRouteInMobileMapPackageView: View {
         }
         .toolbar {
             // The button used to import mobile map packages.
-            ToolbarItemGroup(placement: .bottomBar) {
+            ToolbarItem(placement: .bottomBar) {
                 Button("Add Package") {
                     fileImporterIsShowing = true
                 }

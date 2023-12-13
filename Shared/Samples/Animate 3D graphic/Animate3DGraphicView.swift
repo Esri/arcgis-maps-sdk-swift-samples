@@ -83,8 +83,8 @@ struct Animate3DGraphicView: View {
                 } label: {
                     Image(systemName: model.animation.isPlaying ? "pause.fill" : "play.fill")
                 }
-                
                 Spacer()
+                
                 SettingsView(label: "Camera") {
                     cameraSettings
                 }
@@ -120,6 +120,7 @@ struct Animate3DGraphicView: View {
                                 model.startAnimation()
                             }
                         }
+                        .padding(.horizontal)
                 }
                 VStack {
                     StatRow("Mission Progress", value: model.animation.progress.formatted(.rounded))
@@ -138,6 +139,7 @@ struct Animate3DGraphicView: View {
                     VStack {
                         StatRow(property.label, value: model.cameraPropertyTexts[property] ?? "")
                         Slider(value: cameraPropertyBinding(for: property), in: property.range, step: 1)
+                            .padding(.horizontal)
                     }
                 }
             }

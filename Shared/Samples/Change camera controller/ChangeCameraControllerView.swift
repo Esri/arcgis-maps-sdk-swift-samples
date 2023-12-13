@@ -80,9 +80,9 @@ struct ChangeCameraControllerView: View {
         /// A human-readable label for the camera controller kind.
         var label: String {
             switch self {
-            case .globe: return "Free pan round the globe"
-            case .plane: return "Orbit camera around plane"
-            case .crater: return "Orbit camera around crater"
+            case .globe: return "Pan Around Globe"
+            case .plane: return "Orbit Around Plane"
+            case .crater: return "Orbit Around Crater"
             }
         }
     }
@@ -98,15 +98,13 @@ struct ChangeCameraControllerView: View {
         )
         .toolbar {
             ToolbarItem(placement: .bottomBar) {
-                Menu("Camera Controllers") {
-                    Picker("Choose a camera controller for the scene view.", selection: $cameraControllerKind) {
-                        ForEach(CameraControllerKind.allCases, id: \.self) { kind in
-                            Text(kind.label)
-                        }
+                Picker("Camera Controller", selection: $cameraControllerKind) {
+                    ForEach(CameraControllerKind.allCases, id: \.self) { kind in
+                        Text(kind.label)
                     }
-                    .task(id: cameraControllerKind) {
-                        cameraController = makeCameraController(kind: cameraControllerKind)
-                    }
+                }
+                .task(id: cameraControllerKind) {
+                    cameraController = makeCameraController(kind: cameraControllerKind)
                 }
             }
         }

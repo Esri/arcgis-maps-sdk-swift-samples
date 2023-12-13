@@ -75,26 +75,22 @@ struct PlayKMLTourView: View {
                 tourController.pause()
             }
             .toolbar {
-                ToolbarItem(placement: .bottomBar) {
-                    ZStack {
-                        HStack {
-                            Button {
-                                tourController.reset()
-                                viewpoint = scene.initialViewpoint
-                            } label: {
-                                Image(systemName: "gobackward")
-                            }
-                            .disabled(tourDisabled || tourStatus == .initialized)
-                            Spacer()
-                        }
-                        
-                        Button {
-                            tourStatus == .playing ? tourController.pause() : tourController.play()
-                        } label: {
-                            Image(systemName: tourStatus == .playing ? "pause.fill" : "play.fill")
-                        }
-                        .disabled(tourDisabled)
+                ToolbarItemGroup(placement: .bottomBar) {
+                    Button {
+                        tourController.reset()
+                        viewpoint = scene.initialViewpoint
+                    } label: {
+                        Image(systemName: "gobackward")
                     }
+                    .disabled(tourDisabled || tourStatus == .initialized)
+                    Spacer()
+                    Button {
+                        tourStatus == .playing ? tourController.pause() : tourController.play()
+                    } label: {
+                        Image(systemName: tourStatus == .playing ? "pause.fill" : "play.fill")
+                    }
+                    .disabled(tourDisabled)
+                    Spacer()
                 }
             }
             .overlay(alignment: .top) {

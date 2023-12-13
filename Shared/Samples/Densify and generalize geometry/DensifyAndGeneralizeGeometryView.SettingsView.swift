@@ -16,7 +16,7 @@ import ArcGIS
 import SwiftUI
 
 extension DensifyAndGeneralizeGeometryView {
-    struct OptionsView: View {
+    struct SettingsView: View {
         /// The view model for the sample.
         @ObservedObject var model: Model
         

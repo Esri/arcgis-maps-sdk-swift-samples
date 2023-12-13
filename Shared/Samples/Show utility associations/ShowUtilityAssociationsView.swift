@@ -51,18 +51,21 @@ struct ShowUtilityAssociationsView: View {
             try? await model.setup()
             try? await model.addAssociationGraphics(viewpoint: viewpoint, scale: scale)
         }
-        .toolbar {
-            ToolbarItemGroup(placement: .bottomBar) {
-                legend
-            }
+        .overlay(alignment: .topLeading) {
+            legend
+                .padding()
+                .background(.thinMaterial)
+                .cornerRadius(10)
+                .shadow(radius: 3)
+                .padding()
         }
     }
 }
 
 private extension ShowUtilityAssociationsView {
-    /// The legend at the bottom of the screen.
+    /// The legend for the utility associations.
     var legend: some View {
-        HStack {
+        VStack {
             Label {
                 Text("Attachment")
             } icon: {
@@ -76,7 +79,6 @@ private extension ShowUtilityAssociationsView {
                 attachmentImage = try? await Symbol.attachment
                     .makeSwatch(scale: displayScale)
             }
-            Spacer()
             Label {
                 Text("Connectivity")
             } icon: {

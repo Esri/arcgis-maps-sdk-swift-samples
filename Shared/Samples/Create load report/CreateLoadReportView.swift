@@ -26,7 +26,7 @@ struct CreateLoadReportView: View {
             }
             .errorAlert(presentingError: $model.error)
             .toolbar {
-                ToolbarItemGroup(placement: .bottomBar) {
+                ToolbarItem(placement: .bottomBar) {
                     Button("Run") {
                         Task {
                             await model.createLoadReport()

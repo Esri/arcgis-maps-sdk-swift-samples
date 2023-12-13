@@ -19,18 +19,18 @@ struct DensifyAndGeneralizeGeometryView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
-    /// A Boolean value indicate whether the option sheet is showing.
-    @State private var isShowingOptions = false
+    /// A Boolean value indicating whether the geometry settings sheet is showing.
+    @State private var isShowingSettings = false
     
     var body: some View {
         MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
-                    Button("Options") {
-                        isShowingOptions = true
+                    Button("Geometry Settings") {
+                        isShowingSettings = true
                     }
-                    .sheet(isPresented: $isShowingOptions, detents: [.medium], dragIndicatorVisibility: .visible) {
-                        OptionsView(model: model)
+                    .sheet(isPresented: $isShowingSettings, detents: [.medium], dragIndicatorVisibility: .visible) {
+                        SettingsView(model: model)
                     }
                 }
             }

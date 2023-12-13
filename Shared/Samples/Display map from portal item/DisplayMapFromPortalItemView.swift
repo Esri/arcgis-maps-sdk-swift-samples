@@ -43,7 +43,7 @@ struct DisplayMapFromPortalItemView: View {
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
                     Menu("Maps") {
-                        Picker("", selection: $currentMap) {
+                        Picker("Portal Item Map", selection: $currentMap) {
                             ForEach(DisplayMapFromPortalItemView.mapOptions) { mapOption in
                                 Text(mapOption.title).tag(mapOption)
                             }

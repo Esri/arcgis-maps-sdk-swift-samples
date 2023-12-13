@@ -27,8 +27,7 @@ struct ChangeMapViewBackgroundView: View {
         MapView(map: model.map)
             .backgroundGrid(model.backgroundGrid)
             .toolbar {
-                ToolbarItemGroup(placement: .bottomBar) {
-                    Spacer()
+                ToolbarItem(placement: .bottomBar) {
                     Button("Background Grid Settings") {
                         isShowingSettings = true
                     }
