@@ -23,7 +23,7 @@ struct CategoriesView: View {
     
     init(samples: [Sample]) {
         self.samples = samples
-        categories = Set(samples.map(\.category)).sorted()
+        self.categories = Set(samples.map(\.category)).sorted()
     }
     
     var body: some View {

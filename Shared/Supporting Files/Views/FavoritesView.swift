@@ -78,10 +78,10 @@ private extension FavoritesView {
         
         /// The list of samples filtered by the search query.
         private var filteredSamples: [Sample] {
-            if query.isEmpty {
-                return samples
-            } else {
-                return samples.filter { $0.name.localizedStandardContains(query) }
+            query.isEmpty
+            ? samples
+            : samples.filter {
+                $0.name.localizedStandardContains(query)
             }
         }
         

@@ -81,6 +81,7 @@ private extension SampleLink {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 12)
+                        .foregroundColor(.yellow)
                 }
                 
                 Label {} icon: {
@@ -102,11 +103,9 @@ private extension SampleLink {
                         favoritedNames.append(String(name.characters))
                     }
                 } label: {
-                    if isFavorited {
-                        Label("Unfavorite", systemImage: "star.slash")
-                    } else {
-                        Label("Favorite", systemImage: "star")
-                    }
+                    isFavorited
+                    ? Label("Unfavorite", systemImage: "star.slash")
+                    : Label("Favorite", systemImage: "star")
                 }
             }
             .animation(.easeOut(duration: 0.2), value: isShowingDescription)
