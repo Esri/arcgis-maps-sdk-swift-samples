@@ -12,14 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import SwiftUI
-
-extension String {
-    /// The key to read and write the names of the favorite samples to the user defaults.
-    static var favoriteSamplesKey: String {
-        "favoriteSamples"
-    }
-}
+import Foundation
 
 /// An extension allowing an array to be used with the app storage property wrapper.
 extension Array: RawRepresentable where Element == String {
