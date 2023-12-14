@@ -107,9 +107,8 @@ private extension SampleLink {
                         favoriteNames.append(name)
                     }
                 } label: {
-                    sampleIsFavorite
-                    ? Label("Unfavorite", systemImage: "star.slash")
-                    : Label("Favorite", systemImage: "star")
+                    Label(sampleIsFavorite ? "Unfavorite" : "Favorite", systemImage: "star")
+                        .symbolVariant(sampleIsFavorite ? .slash : .none)
                 }
             }
             .animation(.easeOut(duration: 0.2), value: isShowingDescription)
