@@ -141,3 +141,9 @@ private extension Geometry {
         spatialReference: .webMercator
     )
 }
+
+#Preview {
+    NavigationView {
+        CreateConvexHullAroundGeometriesView()
+    }
+}

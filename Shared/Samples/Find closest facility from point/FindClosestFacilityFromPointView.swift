@@ -228,3 +228,9 @@ private extension URL {
         URL(string: "https://static.arcgis.com/images/Symbols/SafetyHealth/esriCrimeMarker_56_Gradient.png")!
     }
 }
+
+#Preview {
+    NavigationView {
+        FindClosestFacilityFromPointView()
+    }
+}

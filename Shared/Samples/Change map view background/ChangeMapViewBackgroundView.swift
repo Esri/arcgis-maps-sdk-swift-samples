@@ -39,3 +39,9 @@ struct ChangeMapViewBackgroundView: View {
             }
     }
 }
+
+#Preview {
+    NavigationView {
+        ChangeMapViewBackgroundView()
+    }
+}

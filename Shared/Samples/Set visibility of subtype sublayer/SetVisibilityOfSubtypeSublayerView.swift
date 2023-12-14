@@ -59,3 +59,9 @@ struct SetVisibilityOfSubtypeSublayerView: View {
             .errorAlert(presentingError: $error)
     }
 }
+
+#Preview {
+    NavigationView {
+        SetVisibilityOfSubtypeSublayerView()
+    }
+}

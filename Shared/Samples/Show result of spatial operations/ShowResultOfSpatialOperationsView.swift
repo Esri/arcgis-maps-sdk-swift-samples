@@ -167,3 +167,15 @@ private extension Geometry {
         )
     }
 }
+
+#if DEBUG
+private extension ShowResultOfSpatialOperationsView.Model {
+    typealias SpatialOperation = ShowResultOfSpatialOperationsView.SpatialOperation
+}
+
+#Preview {
+    NavigationView {
+        ShowResultOfSpatialOperationsView()
+    }
+}
+#endif

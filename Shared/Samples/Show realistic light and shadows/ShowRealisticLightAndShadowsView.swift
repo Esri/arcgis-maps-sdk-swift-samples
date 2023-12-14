@@ -140,3 +140,9 @@ private extension SceneView.SunLighting {
 private extension Date {
     static let startOfDay = Calendar.current.startOfDay(for: .now)
 }
+
+#Preview {
+    NavigationView {
+        ShowRealisticLightAndShadowsView()
+    }
+}

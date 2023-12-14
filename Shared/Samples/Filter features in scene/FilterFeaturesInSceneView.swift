@@ -234,3 +234,9 @@ private extension Viewpoint {
         )
     )
 }
+
+#Preview {
+    NavigationView {
+        FilterFeaturesInSceneView()
+    }
+}

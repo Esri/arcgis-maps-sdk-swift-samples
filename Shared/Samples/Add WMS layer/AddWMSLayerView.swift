@@ -45,3 +45,7 @@ struct AddWMSLayerView: View {
         MapView(map: map)
     }
 }
+
+#Preview {
+    AddWMSLayerView()
+}

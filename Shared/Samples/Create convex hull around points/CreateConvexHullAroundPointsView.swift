@@ -128,3 +128,9 @@ private extension CreateConvexHullAroundPointsView {
         }
     }
 }
+
+#Preview {
+    NavigationView {
+        CreateConvexHullAroundPointsView()
+    }
+}

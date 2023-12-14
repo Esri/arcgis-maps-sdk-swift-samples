@@ -149,3 +149,9 @@ struct FindRouteAroundBarriersView: View {
         .errorAlert(presentingError: $error)
     }
 }
+
+#Preview {
+    NavigationView {
+        FindRouteAroundBarriersView()
+    }
+}

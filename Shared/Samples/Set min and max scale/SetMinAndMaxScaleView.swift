@@ -34,3 +34,7 @@ struct SetMinAndMaxScaleView: View {
         MapView(map: map)
     }
 }
+
+#Preview {
+    SetMinAndMaxScaleView()
+}

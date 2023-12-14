@@ -171,3 +171,9 @@ private extension FormatStyle where Self == Date.VerbatimFormatStyle {
         )
     }
 }
+
+#Preview {
+    NavigationView {
+        CreateMobileGeodatabaseView()
+    }
+}

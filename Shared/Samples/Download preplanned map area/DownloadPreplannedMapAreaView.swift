@@ -83,3 +83,9 @@ private extension Viewpoint {
         return Viewpoint(boundingGeometry: zoomEnvelope)
     }
 }
+
+#Preview {
+    NavigationView {
+        DownloadPreplannedMapAreaView()
+    }
+}
