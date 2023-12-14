@@ -87,9 +87,6 @@ private extension SampleLink {
                 
                 if sampleIsFavorite {
                     Image(systemName: "star.fill")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 12)
                         .foregroundColor(.yellow)
                 }
                 
