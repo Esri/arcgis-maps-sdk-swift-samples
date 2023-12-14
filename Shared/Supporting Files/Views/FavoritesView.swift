@@ -22,7 +22,7 @@ struct FavoritesView: View {
     @State private var addFavoriteSheetIsShowing = false
     
     /// The names of the favorite samples loaded from user defaults.
-    @AppStorage(.favoriteSamplesKey) private var favoriteNames: [String] = []
+    @AppStorage(.favoriteSampleNames) private var favoriteNames: [String] = []
     
     /// A list of the favorite samples.
     private var favoriteSamples: [Sample] {
@@ -71,7 +71,7 @@ private extension FavoritesView {
         @Environment(\.dismiss) private var dismiss: DismissAction
         
         /// The names of the favorite samples loaded from user defaults.
-        @AppStorage(.favoriteSamplesKey) private var favoriteNames: [String] = []
+        @AppStorage(.favoriteSampleNames) private var favoriteNames: [String] = []
         
         /// The search query in the search bar.
         @State private var query = ""

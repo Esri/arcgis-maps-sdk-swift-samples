@@ -16,7 +16,5 @@ import Foundation
 
 extension String {
     /// The key to read and write the names of the favorite samples to the user defaults.
-    static var favoriteSamplesKey: String {
-        "favoriteSamples"
-    }
+    static var favoriteSampleNames = "favoriteSampleNames"
 }
