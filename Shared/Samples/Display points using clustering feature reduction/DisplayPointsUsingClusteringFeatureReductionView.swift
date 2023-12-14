@@ -75,11 +75,13 @@ struct DisplayPointsUsingClusteringFeatureReductionView: View {
                 }
                 .toolbar {
                     ToolbarItem(placement: .bottomBar) {
-                        Toggle("Feature clustering", isOn: $showsFeatureReduction)
-                            .toggleStyle(.switch)
-                            .onChange(of: showsFeatureReduction) { isEnabled in
-                                layer?.featureReduction?.isEnabled = isEnabled
-                            }
+                        Toggle(
+                            showsFeatureReduction ? "Feature Clustering Enabled" : "Feature Clustering Disabled",
+                            isOn: $showsFeatureReduction
+                        )
+                        .onChange(of: showsFeatureReduction) { isEnabled in
+                            layer?.featureReduction?.isEnabled = isEnabled
+                        }
                     }
                 }
                 .task {

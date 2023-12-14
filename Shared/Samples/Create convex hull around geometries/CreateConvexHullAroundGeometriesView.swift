@@ -46,8 +46,7 @@ struct CreateConvexHullAroundGeometriesView: View {
         MapView(map: map, graphicsOverlays: [convexHullGraphicsOverlay, geometriesGraphicsOverlay])
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
-                    Toggle("Union", isOn: $shouldUnion)
-                        .toggleStyle(.switch)
+                    Toggle(shouldUnion ? "Union Enabled" : "Union Disabled", isOn: $shouldUnion)
                         .onChange(of: shouldUnion) { _ in
                             if !createIsOn {
                                 convexHullGraphicsOverlay.removeAllGraphics()

@@ -55,8 +55,7 @@ struct CreateBuffersAroundPointsView: View {
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
                     // Union toggle switch.
-                    Toggle("Union", isOn: $shouldUnion)
-                        .toggleStyle(.switch)
+                    Toggle(shouldUnion ? "Union Enabled" : "Union Disabled", isOn: $shouldUnion)
                         .onChange(of: shouldUnion) { _ in
                             if !model.bufferPoints.isEmpty {
                                 model.drawBuffers(unioned: shouldUnion)

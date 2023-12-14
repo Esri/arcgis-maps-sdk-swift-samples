@@ -58,7 +58,7 @@ struct AddClusteringFeatureReductionToAPointFeatureLayerView: View {
                 }
                 .toolbar {
                     ToolbarItem(placement: .bottomBar) {
-                        Button("Settings") {
+                        Button("Clustering Settings") {
                             showsSettings = true
                         }
                         .sheet(isPresented: $showsSettings, detents: [.medium], dragIndicatorVisibility: .visible) {
