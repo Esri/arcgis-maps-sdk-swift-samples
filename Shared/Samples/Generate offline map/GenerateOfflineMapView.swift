@@ -151,6 +151,8 @@ private extension GenerateOfflineMapView {
         init() {
             // Initializes the online map.
             onlineMap = Map(item: napervillePortalItem)
+            // Sets the min scale to avoid requesting a huge download.
+            onlineMap.minScale = 1e4
         }
         
         deinit {

@@ -186,6 +186,8 @@ private extension DownloadVectorTilesToLocalCacheView {
             // Initializes the map.
             map = Map(basemapStyle: .arcGISStreetsNight)
             map.initialViewpoint = Viewpoint(latitude: 34.049, longitude: -117.181, scale: 1e4)
+            // Sets the min scale to avoid requesting a huge download.
+            map.minScale = 1e4
             
             // Initializes the URL for the directory containing vector tile packages.
             vtpkTemporaryURL = temporaryDirectory
