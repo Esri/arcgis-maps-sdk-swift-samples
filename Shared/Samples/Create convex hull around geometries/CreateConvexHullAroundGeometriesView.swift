@@ -47,6 +47,7 @@ struct CreateConvexHullAroundGeometriesView: View {
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
                     Toggle(shouldUnion ? "Union Enabled" : "Union Disabled", isOn: $shouldUnion)
+                        .disabled(convexHullGraphicsOverlay.graphics.isEmpty)
                         .onChange(of: shouldUnion) { _ in
                             if !createIsOn {
                                 convexHullGraphicsOverlay.removeAllGraphics()
