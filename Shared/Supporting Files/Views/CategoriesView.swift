@@ -15,22 +15,14 @@
 import SwiftUI
 
 struct CategoriesView: View {
-    /// All samples retrieved from the Samples directory.
-    private let samples: [Sample]
-    
     /// The sample categories generated from the samples list.
-    private let categories: [String]
-    
-    init(samples: [Sample]) {
-        self.samples = samples
-        self.categories = Set(samples.map(\.category)).sorted()
-    }
+    private let categories = Set(SamplesApp.samples.map(\.category)).sorted()
     
     var body: some View {
         ScrollView {
             LazyVGrid(columns: [GridItem(), GridItem()]) {
                 NavigationLink {
-                    FavoritesView(samples: samples)
+                    FavoritesView()
                         .navigationTitle("Favorites")
                 } label: {
                     CategoryTile(name: "Favorites")
@@ -41,7 +33,7 @@ struct CategoriesView: View {
                 
                 ForEach(categories, id: \.self) { category in
                     NavigationLink {
-                        List(samples.filter { $0.category == category }, id: \.name) { sample in
+                        List(SamplesApp.samples.filter { $0.category == category }, id: \.name) { sample in
                             SampleLink(sample)
                         }
                         .listStyle(.sidebar)

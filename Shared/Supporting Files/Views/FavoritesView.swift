@@ -15,9 +15,6 @@
 import SwiftUI
 
 struct FavoritesView: View {
-    /// All samples retrieved from the Samples directory.
-    let samples: [Sample]
-    
     /// A Boolean value indicating whether the add favorite sheet is showing.
     @State private var addFavoriteSheetIsShowing = false
     
@@ -27,7 +24,7 @@ struct FavoritesView: View {
     /// A list of the favorite samples.
     private var favoriteSamples: [Sample] {
         favoriteNames.compactMap { name in
-            samples.first(where: { $0.name == name })
+            SamplesApp.samples.first(where: { $0.name == name })
         }
     }
     
@@ -54,7 +51,7 @@ struct FavoritesView: View {
                     Image(systemName: "plus")
                 }
                 .sheet(isPresented: $addFavoriteSheetIsShowing) {
-                    AddFavoriteView(samples: samples)
+                    AddFavoriteView()
                 }
             }
         }
@@ -64,9 +61,6 @@ struct FavoritesView: View {
 private extension FavoritesView {
     /// A view to add a favorite sample from a searchable list.
     struct AddFavoriteView: View {
-        /// All samples retrieved from the Samples directory.
-        let samples: [Sample]
-        
         /// The action to dismiss the sheet.
         @Environment(\.dismiss) private var dismiss: DismissAction
         
@@ -79,8 +73,8 @@ private extension FavoritesView {
         /// The list of samples filtered by the search query.
         private var filteredSamples: [Sample] {
             query.isEmpty
-            ? samples
-            : samples.filter {
+            ? SamplesApp.samples
+            : SamplesApp.samples.filter {
                 $0.name.localizedStandardContains(query)
             }
         }
