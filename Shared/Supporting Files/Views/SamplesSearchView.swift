@@ -26,36 +26,21 @@ struct SamplesSearchView: View {
             if !searchResult.nameMatches.isEmpty {
                 Section("Name Results") {
                     ForEach(searchResult.nameMatches, id: \.name) { sample in
-                        NavigationLink {
-                            SampleDetailView(sample: sample)
-                                .id(sample.name)
-                        } label: {
-                            SampleRow(sample: sample, query: query)
-                        }
+                        SampleLink(sample, textToBold: query)
                     }
                 }
             }
             if !searchResult.descriptionMatches.isEmpty {
                 Section("Description Results") {
                     ForEach(searchResult.descriptionMatches, id: \.name) { sample in
-                        NavigationLink {
-                            SampleDetailView(sample: sample)
-                                .id(sample.name)
-                        } label: {
-                            SampleRow(sample: sample, query: query)
-                        }
+                        SampleLink(sample, textToBold: query)
                     }
                 }
             }
             if !searchResult.tagMatches.isEmpty {
                 Section("Tags Results") {
                     ForEach(searchResult.tagMatches, id: \.name) { sample in
-                        NavigationLink {
-                            SampleDetailView(sample: sample)
-                                .id(sample.name)
-                        } label: {
-                            SampleRow(sample: sample, query: query)
-                        }
+                        SampleLink(sample, textToBold: query)
                     }
                 }
             }
