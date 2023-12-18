@@ -20,7 +20,7 @@ struct Sidebar: View {
     
     /// A Boolean value that indicates whether to present the about view.
     @State private var isAboutViewPresented = false
-
+    
     /// The search query.
     let query: String
     
