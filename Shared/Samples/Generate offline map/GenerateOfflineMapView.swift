@@ -175,7 +175,7 @@ private extension GenerateOfflineMapView {
         /// Creates the generate offline map parameters.
         /// - Parameter areaOfInterest: The area of interest to create the parameters for.
         /// - Returns: A `GenerateOfflineMapParameters` if there are no errors. Otherwise, it returns `nil`,
-        private func makeGenerateOfflineMapParameters(areaOfInterest: Envelope) async  throws -> GenerateOfflineMapParameters {
+        private func makeGenerateOfflineMapParameters(areaOfInterest: Envelope) async throws -> GenerateOfflineMapParameters {
             // Returns the default parameters for the offline map task.
             return try await offlineMapTask.makeDefaultGenerateOfflineMapParameters(areaOfInterest: areaOfInterest)
         }
