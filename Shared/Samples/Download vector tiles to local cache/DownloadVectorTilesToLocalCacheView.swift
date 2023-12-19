@@ -19,7 +19,7 @@ struct DownloadVectorTilesToLocalCacheView: View {
     /// A Boolean value indicating whether to download vector tiles.
     @State private var isDownloading = false
     
-    /// A Boolean value indicating whether to cancel and the job.
+    /// A Boolean value indicating whether to cancel the job.
     @State private var isCancellingJob = false
     
     /// A Boolean value indicating whether to show the result map.
@@ -33,10 +33,10 @@ struct DownloadVectorTilesToLocalCacheView: View {
     
     var body: some View {
         GeometryReader { geometry in
-            MapViewReader { mapView in
+            MapViewReader { mapViewProxy in
                 MapView(map: model.map)
                     .interactionModes(isDownloading ? [] : [.pan, .zoom])
-                    .onScaleChanged { model.maxScale = $0 * 0.1 }
+                    .onScaleChanged { model.updateMaxScale($0) }
                     .errorAlert(presentingError: $error)
                     .task {
                         do {
@@ -87,7 +87,7 @@ struct DownloadVectorTilesToLocalCacheView: View {
                             Button("Download Vector Tiles") {
                                 isDownloading = true
                             }
-                            .disabled(model.exportVectorTilesTask == nil || isDownloading)
+                            .disabled(!model.allowsDownloadingVectorTiles || isDownloading)
                             .task(id: isDownloading) {
                                 // Ensures downloading is true.
                                 guard isDownloading else { return }
@@ -103,19 +103,19 @@ struct DownloadVectorTilesToLocalCacheView: View {
                                 )
                                 
                                 // Creates an envelope from the rectangle.
-                                guard let extent = mapView.envelope(fromViewRect: viewRect) else { return }
+                                guard let extent = mapViewProxy.envelope(fromViewRect: viewRect) else { return }
                                 
                                 // Downloads the vector tiles.
                                 do {
                                     try await model.downloadVectorTiles(extent: extent)
-                                    // Sets show results to true.
+                                    // Show results when the download finishes.
                                     isShowingResults = true
                                     // Sets downloading to false when the download finishes.
                                     isDownloading = false
                                 } catch {
                                     // Shows an alert if any errors occur.
                                     self.error = error
-                                    // Sets downloading to false when the download finishes.
+                                    // Sets downloading to false if any errors occur.
                                     isDownloading = false
                                 }
                             }
@@ -156,13 +156,13 @@ private extension DownloadVectorTilesToLocalCacheView {
     @MainActor
     class Model: ObservableObject {
         /// A map with a basemap from the vector tiled layer results.
-        var downloadedVectorTilesMap: Map!
+        private(set) var downloadedVectorTilesMap: Map!
         
         /// The export vector tiles job.
-        @Published var exportVectorTilesJob: ExportVectorTilesJob!
+        @Published private(set) var exportVectorTilesJob: ExportVectorTilesJob!
         
         /// The export vector tiles task.
-        @Published var exportVectorTilesTask: ExportVectorTilesTask!
+        @Published private(set) var exportVectorTilesTask: ExportVectorTilesTask!
         
         /// The vector tiled layer from the downloaded result.
         private var vectorTiledLayerResults: ArcGISVectorTiledLayer!
@@ -176,19 +176,33 @@ private extension DownloadVectorTilesToLocalCacheView {
         /// A URL to the temporary directory to store the style item resources.
         private let styleTemporaryURL: URL
         
-        /// The max scale for the export vector tiles job.
-        var maxScale: Double?
+        /// The max scale for the export vector tiles job, which determines
+        /// how far in to export the vector tiles.
+        private var maxScale = 1e3
+        
+        /// A Boolean value indicating whether the export task can be started.
+        var allowsDownloadingVectorTiles: Bool {
+            if let exportVectorTilesTask,
+               // Only allows downloading when the task is loaded.
+               exportVectorTilesTask.loadStatus == .loaded,
+               // Ensures that the service allows exporting vector tiles.
+               let vectorTileSourceInfo = exportVectorTilesTask.vectorTileSourceInfo {
+                return vectorTileSourceInfo.allowsExportingTiles
+            } else {
+                return false
+            }
+        }
         
         /// A map with a night streets basemap style and an initial viewpoint.
-        let map: Map
-        
-        init() {
-            // Initializes the map.
-            map = Map(basemapStyle: .arcGISStreetsNight)
+        let map: Map = {
+            let map = Map(basemapStyle: .arcGISStreetsNight)
             map.initialViewpoint = Viewpoint(latitude: 34.049, longitude: -117.181, scale: 1e4)
             // Sets the min scale to avoid requesting a huge download.
             map.minScale = 1e4
-            
+            return map
+        }()
+        
+        init() {
             // Initializes the URL for the directory containing vector tile packages.
             vtpkTemporaryURL = temporaryDirectory
                 .appendingPathComponent("myTileCache")
@@ -222,47 +236,42 @@ private extension DownloadVectorTilesToLocalCacheView {
         /// Downloads the vector tiles within the area of interest.
         /// - Parameter extent: The area of interest's envelope to download vector tiles.
         func downloadVectorTiles(extent: Envelope) async throws {
-            // Ensures that exporting vector tiles is allowed.
-            if let vectorTileSourceInfo = exportVectorTilesTask.vectorTileSourceInfo,
-               vectorTileSourceInfo.allowsExportingTiles,
-               let maxScale = maxScale {
-                // Creates the parameters for the export vector tiles job.
-                let parameters = try await exportVectorTilesTask.makeDefaultExportVectorTilesParameters(
-                    areaOfInterest: extent,
-                    maxScale: maxScale
+            // Creates the parameters for the export vector tiles job.
+            let parameters = try await exportVectorTilesTask.makeDefaultExportVectorTilesParameters(
+                areaOfInterest: extent,
+                maxScale: maxScale
+            )
+            
+            // Creates the export vector tiles job based on the parameters
+            // and temporary URLs.
+            exportVectorTilesJob = exportVectorTilesTask.makeExportVectorTilesJob(
+                parameters: parameters,
+                vectorTileCacheURL: vtpkTemporaryURL,
+                itemResourceCacheURL: styleTemporaryURL
+            )
+            
+            // Starts the job.
+            exportVectorTilesJob.start()
+            
+            defer { exportVectorTilesJob = nil }
+            
+            // Awaits the output of the job.
+            let output = try await exportVectorTilesJob.output
+            
+            // Gets the vector tile and item resource cache from the output.
+            if let vectorTileCache = output.vectorTileCache,
+               let itemResourceCache = output.itemResourceCache {
+                // Creates a vector tiled layer from the caches.
+                vectorTiledLayerResults = ArcGISVectorTiledLayer(
+                    vectorTileCache: vectorTileCache,
+                    itemResourceCache: itemResourceCache
                 )
                 
-                // Creates the export vector tiles job based on the parameters
-                // and temporary URLs.
-                exportVectorTilesJob = exportVectorTilesTask.makeExportVectorTilesJob(
-                    parameters: parameters,
-                    vectorTileCacheURL: vtpkTemporaryURL,
-                    itemResourceCacheURL: styleTemporaryURL
-                )
+                // Creates a map with a basemap from the vector tiled layer results.
+                downloadedVectorTilesMap = Map(basemap: Basemap(baseLayer: vectorTiledLayerResults))
                 
-                // Starts the job.
-                exportVectorTilesJob.start()
-                
-                defer { exportVectorTilesJob = nil }
-                
-                // Awaits the output of the job.
-                let output = try await exportVectorTilesJob.output
-                
-                // Gets the vector tile and item resource cache from the output.
-                if let vectorTileCache = output.vectorTileCache,
-                   let itemResourceCache = output.itemResourceCache {
-                    // Creates a vector tiled layer from the caches.
-                    vectorTiledLayerResults = ArcGISVectorTiledLayer(
-                        vectorTileCache: vectorTileCache,
-                        itemResourceCache: itemResourceCache
-                    )
-                    
-                    // Creates a map with a basemap from the vector tiled layer results.
-                    downloadedVectorTilesMap = Map(basemap: Basemap(baseLayer: vectorTiledLayerResults))
-                    
-                    // Sets the initial viewpoint of the result map.
-                    downloadedVectorTilesMap.initialViewpoint = Viewpoint(boundingGeometry: extent.expanded(by: 0.9))
-                }
+                // Sets the initial viewpoint of the result map.
+                downloadedVectorTilesMap.initialViewpoint = Viewpoint(boundingGeometry: extent.expanded(by: 0.9))
             }
         }
         
@@ -276,6 +285,14 @@ private extension DownloadVectorTilesToLocalCacheView {
         func removeTemporaryFiles() {
             try? FileManager.default.removeItem(at: vtpkTemporaryURL)
             try? FileManager.default.removeItem(at: styleTemporaryURL)
+        }
+        
+        /// Updates the export's max scale.
+        func updateMaxScale(_ maxScale: Double) {
+            // Sets the max scale to 10% of the map's scale to limit
+            // the number of tiles exported to within the vector tiled layer's
+            // max tile export limit.
+            self.maxScale = maxScale * 0.1
         }
         
         /// Creates a temporary directory.
