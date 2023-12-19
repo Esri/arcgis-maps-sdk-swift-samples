@@ -108,7 +108,7 @@ struct DownloadVectorTilesToLocalCacheView: View {
                                 // Downloads the vector tiles.
                                 do {
                                     try await model.downloadVectorTiles(extent: extent)
-                                    // Show results when the download finishes.
+                                    // Shows results when the download finishes.
                                     isShowingResults = true
                                     // Sets downloading to false when the download finishes.
                                     isDownloading = false
