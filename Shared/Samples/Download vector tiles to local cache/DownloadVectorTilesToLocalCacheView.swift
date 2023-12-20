@@ -233,8 +233,11 @@ private extension DownloadVectorTilesToLocalCacheView {
             self.exportVectorTilesTask = exportVectorTilesTask
         }
         
-        /// Downloads the vector tiles within the area of interest.
-        /// - Parameter extent: The area of interest's envelope to download vector tiles.
+        /// Downloads the vector tiles within the area of interest at given scale.
+        /// - Parameters:
+        ///   - extent: The area of interest's envelope to export vector tiles.
+        ///   - maxScale: The map scale which determines how far in to export
+        ///   the vector tiles. Set to `0` to include all levels of detail.
         func downloadVectorTiles(extent: Envelope, maxScale: Double) async throws {
             // Creates the parameters for the export vector tiles job.
             let parameters = try await exportVectorTilesTask.makeDefaultExportVectorTilesParameters(
