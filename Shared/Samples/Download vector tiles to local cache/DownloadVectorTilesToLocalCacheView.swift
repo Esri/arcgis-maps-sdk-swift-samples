@@ -25,6 +25,9 @@ struct DownloadVectorTilesToLocalCacheView: View {
     /// A Boolean value indicating whether to show the result map.
     @State private var isShowingResults = false
     
+    /// The map view's scale.
+    @State private var mapViewScale = Double.zero
+    
     /// The error shown in the error alert.
     @State private var error: Error?
     
@@ -36,7 +39,7 @@ struct DownloadVectorTilesToLocalCacheView: View {
             MapViewReader { mapViewProxy in
                 MapView(map: model.map)
                     .interactionModes(isDownloading ? [] : [.pan, .zoom])
-                    .onScaleChanged { model.updateMaxScale($0) }
+                    .onScaleChanged { mapViewScale = $0 }
                     .errorAlert(presentingError: $error)
                     .task {
                         do {
@@ -107,16 +110,17 @@ struct DownloadVectorTilesToLocalCacheView: View {
                                 
                                 // Downloads the vector tiles.
                                 do {
-                                    try await model.downloadVectorTiles(extent: extent)
+                                    // Sets downloading to false when the download
+                                    // finishes or errors occur.
+                                    defer { isDownloading = false }
+                                    // Sets the max scale to 10% of the map's scale to limit
+                                    // the number of tiles exported.
+                                    try await model.downloadVectorTiles(extent: extent, maxScale: mapViewScale * 0.1)
                                     // Shows results when the download finishes.
                                     isShowingResults = true
-                                    // Sets downloading to false when the download finishes.
-                                    isDownloading = false
                                 } catch {
                                     // Shows an alert if any errors occur.
                                     self.error = error
-                                    // Sets downloading to false if any errors occur.
-                                    isDownloading = false
                                 }
                             }
                             .sheet(isPresented: $isShowingResults) {
@@ -176,10 +180,6 @@ private extension DownloadVectorTilesToLocalCacheView {
         /// A URL to the temporary directory to store the style item resources.
         private let styleTemporaryURL: URL
         
-        /// The max scale for the export vector tiles job, which determines
-        /// how far in to export the vector tiles.
-        private var maxScale = 1e3
-        
         /// A Boolean value indicating whether the export task can be started.
         var allowsDownloadingVectorTiles: Bool {
             if let exportVectorTilesTask,
@@ -235,7 +235,7 @@ private extension DownloadVectorTilesToLocalCacheView {
         
         /// Downloads the vector tiles within the area of interest.
         /// - Parameter extent: The area of interest's envelope to download vector tiles.
-        func downloadVectorTiles(extent: Envelope) async throws {
+        func downloadVectorTiles(extent: Envelope, maxScale: Double) async throws {
             // Creates the parameters for the export vector tiles job.
             let parameters = try await exportVectorTilesTask.makeDefaultExportVectorTilesParameters(
                 areaOfInterest: extent,
@@ -285,14 +285,6 @@ private extension DownloadVectorTilesToLocalCacheView {
         func removeTemporaryFiles() {
             try? FileManager.default.removeItem(at: vtpkTemporaryURL)
             try? FileManager.default.removeItem(at: styleTemporaryURL)
-        }
-        
-        /// Updates the export's max scale.
-        func updateMaxScale(_ maxScale: Double) {
-            // Sets the max scale to 10% of the map's scale to limit
-            // the number of tiles exported to within the vector tiled layer's
-            // max tile export limit.
-            self.maxScale = maxScale * 0.1
         }
         
         /// Creates a temporary directory.
