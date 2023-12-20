@@ -35,7 +35,11 @@ struct GenerateOfflineMapView: View {
                     .interactionModes(isGeneratingOfflineMap ? [] : [.pan, .zoom])
                     .errorAlert(presentingError: $error)
                     .task {
-                        try? await model.initializeOfflineMapTask()
+                        do {
+                            try await model.initializeOfflineMapTask()
+                        } catch {
+                            self.error = error
+                        }
                     }
                     .onDisappear {
                         Task { await model.cancelJob() }
