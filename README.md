@@ -13,7 +13,7 @@ This repository contains Swift sample code demonstrating the capabilities of the
 * Search and Query - Find addresses, places, and points of interest
 * Routing and Logistics - Calculate routes between locations and around barriers
 * Analysis - Perform spatial analysis via geoprocessing tasks and services
-* Cloud and Portal - Search for webmaps and securely connect to your portal
+* Cloud and Portal - Search for web maps and securely connect to your portal
 * Utility Networks - Work with utility networks, performing traces and exploring network elements
 
 ## Requirements
