@@ -46,7 +46,7 @@ To run this app and access specific, ready-to-use services such as basemap layer
   touch .secrets
   ```
 
-2. Add your **API Key** to the secrets file aforementioned. Adding an API key allows you to access a set of ready-to-use services, including basemaps.
+2. Add your **API Key** to the aforementioned secrets file. Adding an API key allows you to access a set of ready-to-use services, including basemaps.
 
   ```sh
   echo ARCGIS_API_KEY_IOS=your-api-key >> .secrets
