@@ -21,19 +21,16 @@ struct Sidebar: View {
     /// A Boolean value that indicates whether to present the about view.
     @State private var isAboutViewPresented = false
     
-    /// All samples retrieved from the Samples directory.
-    let samples: [Sample]
-    
     /// The search query.
     let query: String
     
     var body: some View {
         Group {
             if !isSearching {
-                CategoriesView(samples: samples)
+                CategoriesView()
                     .navigationTitle("Categories")
             } else {
-                SamplesSearchView(samples: samples, query: query)
+                SamplesSearchView(query: query)
             }
         }
         .toolbar {
