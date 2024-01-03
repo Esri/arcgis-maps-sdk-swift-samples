@@ -80,7 +80,7 @@ private struct AboutList: View {
     @Environment(\.dismiss) private var dismiss: DismissAction
     
     var copyrightText: Text {
-        Text("Copyright © 2022 - 2023 Esri. All Rights Reserved.")
+        Text("Copyright © 2022 - 2024 Esri. All Rights Reserved.")
     }
     
     var body: some View {
