@@ -1,0 +1,27 @@
+{
+    "category": "Cloud and Portal",
+    "description": "Find web map portal items by using a search term.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "keyword",
+        "query",
+        "search",
+        "web map",
+        "Portal",
+        "PortalItem",
+        "PortalQueryParameters",
+        "PortalQueryResultSet"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Portal",
+        "PortalItem",
+        "PortalQueryParameters",
+        "PortalQueryResultSet"
+    ],
+    "snippets": [
+        "SearchForWebMapView.swift"
+    ],
+    "title": "Search for web map"
+}
