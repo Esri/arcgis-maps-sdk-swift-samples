@@ -2,7 +2,9 @@
     "category": "Cloud and Portal",
     "description": "Find web map portal items by using a search term.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "search-for-web-map.png"
+    ],
     "keywords": [
         "keyword",
         "query",
