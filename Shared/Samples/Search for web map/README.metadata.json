@@ -24,6 +24,7 @@
     ],
     "snippets": [
         "SearchForWebMapView.swift"
+        "SearchForWebMapView.Model.swift"
     ],
     "title": "Search for web map"
 }
