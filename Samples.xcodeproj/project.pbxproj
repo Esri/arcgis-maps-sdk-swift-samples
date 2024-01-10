@@ -279,6 +279,8 @@
 		D7C16D222AC5FE9800689E89 /* GrandCanyon.csv in Resources */ = {isa = PBXBuildFile; fileRef = D7C16D212AC5FE9800689E89 /* GrandCanyon.csv */; settings = {ASSET_TAGS = (Animate3DGraphic, ); }; };
 		D7C16D252AC5FEA600689E89 /* Snowdon.csv in Resources */ = {isa = PBXBuildFile; fileRef = D7C16D242AC5FEA600689E89 /* Snowdon.csv */; settings = {ASSET_TAGS = (Animate3DGraphic, ); }; };
 		D7C16D282AC5FEB700689E89 /* Hawaii.csv in Resources */ = {isa = PBXBuildFile; fileRef = D7C16D272AC5FEB600689E89 /* Hawaii.csv */; settings = {ASSET_TAGS = (Animate3DGraphic, ); }; };
+		D7C6420C2B4F47E10042B8F7 /* SearchForWebMapView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C6420B2B4F47E10042B8F7 /* SearchForWebMapView.Model.swift */; };
+		D7C6420D2B4F5DDB0042B8F7 /* SearchForWebMapView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7C6420B2B4F47E10042B8F7 /* SearchForWebMapView.Model.swift */; };
 		D7CC33FF2A31475C00198EDF /* ShowLineOfSightBetweenPointsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CC33FD2A31475C00198EDF /* ShowLineOfSightBetweenPointsView.swift */; };
 		D7CC34002A3147FF00198EDF /* ShowLineOfSightBetweenPointsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7CC33FD2A31475C00198EDF /* ShowLineOfSightBetweenPointsView.swift */; };
 		D7CE9F9B2AE2F575008F7A5F /* streetmap_SD.tpkx in Resources */ = {isa = PBXBuildFile; fileRef = D7CE9F9A2AE2F575008F7A5F /* streetmap_SD.tpkx */; settings = {ASSET_TAGS = (GeocodeOffline, ); }; };
@@ -390,6 +392,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				D7C6420D2B4F5DDB0042B8F7 /* SearchForWebMapView.Model.swift in Copy Source Code Files */,
 				D75F66392B48EB1800434974 /* SearchForWebMapView.swift in Copy Source Code Files */,
 				00B56F7E2B0EBE9C00B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.swift in Copy Source Code Files */,
 				00B56F7F2B0EBE9C00B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.Model.swift in Copy Source Code Files */,
@@ -689,6 +692,7 @@
 		D7C16D212AC5FE9800689E89 /* GrandCanyon.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = GrandCanyon.csv; sourceTree = "<group>"; };
 		D7C16D242AC5FEA600689E89 /* Snowdon.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Snowdon.csv; sourceTree = "<group>"; };
 		D7C16D272AC5FEB600689E89 /* Hawaii.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Hawaii.csv; sourceTree = "<group>"; };
+		D7C6420B2B4F47E10042B8F7 /* SearchForWebMapView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchForWebMapView.Model.swift; sourceTree = "<group>"; };
 		D7CC33FD2A31475C00198EDF /* ShowLineOfSightBetweenPointsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowLineOfSightBetweenPointsView.swift; sourceTree = "<group>"; };
 		D7CE9F9A2AE2F575008F7A5F /* streetmap_SD.tpkx */ = {isa = PBXFileReference; lastKnownFileType = file; path = streetmap_SD.tpkx; sourceTree = "<group>"; };
 		D7CE9FA22AE2F595008F7A5F /* san-diego-eagle-locator */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "san-diego-eagle-locator"; sourceTree = "<group>"; };
@@ -1601,6 +1605,7 @@
 			isa = PBXGroup;
 			children = (
 				D75F66332B48EABC00434974 /* SearchForWebMapView.swift */,
+				D7C6420B2B4F47E10042B8F7 /* SearchForWebMapView.Model.swift */,
 			);
 			path = "Search for web map";
 			sourceTree = "<group>";
@@ -2267,6 +2272,7 @@
 				D7553CDB2AE2DFEC00DC2A70 /* GeocodeOfflineView.swift in Sources */,
 				218F35B829C28F4A00502022 /* AuthenticateWithOAuthView.swift in Sources */,
 				79B7B80A2A1BF8EC00F57C27 /* CreateAndSaveKMLView.swift in Sources */,
+				D7C6420C2B4F47E10042B8F7 /* SearchForWebMapView.Model.swift in Sources */,
 				7573E81C29D6134C00BEED9C /* TraceUtilityNetworkView.Enums.swift in Sources */,
 				7573E81A29D6134C00BEED9C /* TraceUtilityNetworkView.Model.swift in Sources */,
 				1C3B7DC82A5F64FC00907443 /* AnalyzeNetworkWithSubnetworkTraceView.Model.swift in Sources */,

@@ -19,19 +19,162 @@ struct SearchForWebMapView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
+    /// The text query in the search bar.
+    @State private var query = ""
+    
+    /// The error shown in the error alert.
+    @State private var error: Error?
+    
     var body: some View {
-        MapView(map: model.map)
-            .errorAlert(presentingError: $model.error)
+        ZStack {
+            ScrollView {
+                LazyVStack {
+                    ForEach(model.portalItems, id: \.id) { item in
+                        NavigationLink {
+                            SafeMapView(map: Map(item: item))
+                                .navigationTitle(item.title)
+                        } label: {
+                            PortalItemRowView(item: item)
+                        }
+                        .buttonStyle(.plain)
+                        .onAppear {
+                            // Load the next results when the last item is reached.
+                            if item.id == model.portalItems.last?.id {
+                                do {
+                                    try model.findNextItems()
+                                } catch {
+                                    self.error = error
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                ProgressView()
+                    .padding()
+                    .opacity(model.isLoadingResults ? 1 : 0)
+            }
+            
+            VStack {
+                Text("No Results")
+                    .font(.headline)
+                Text("Check sspelling or try a new search.")
+                    .font(.footnote)
+            }
+            .opacity(!model.isLoadingResults && !query.isEmpty && model.portalItems.isEmpty ? 1 : 0)
+        }
+        .background(Color(.secondarySystemBackground))
+        .searchable(
+            text: $query,
+            placement: .navigationBarDrawer(displayMode: .always),
+            prompt: "Search for a web map"
+        )
+        .onChange(of: query) { _ in
+            // Load new results when the query changes.
+            do {
+                try model.findItems(for: query)
+            } catch {
+                self.error = error
+            }
+        }
+        .errorAlert(presentingError: $error)
     }
 }
 
 private extension SearchForWebMapView {
-    /// The view model for the sample.
-    class Model: ObservableObject {
-        /// A map with a topographic basemap.
-        let map = Map(basemapStyle: .arcGISTopographic)
+    /// A map view that shows an alert and dismisses itself when there is an error loading the map.
+    struct SafeMapView: View {
+        /// The map to show in the map view.
+        let map: Map
+        
+        /// The action to dismiss the view.
+        @Environment(\.dismiss) private var dismiss: DismissAction
+        
+        /// A Boolean value indicating whether the map is being loaded.
+        @State private var mapIsLoading = false
         
         /// The error shown in the error alert.
-        @Published var error: Error?
+        @State private var error: Error?
+        
+        var body: some View {
+            ZStack {
+                MapView(map: map)
+                    .task {
+                        mapIsLoading = true
+                        defer { mapIsLoading = false }
+                        
+                        // Show an alert for an error loading the map.
+                        do {
+                            try await map.load()
+                        } catch {
+                            self.error = error
+                        }
+                    }
+                    .errorAlert(presentingError: $error)
+                    .onChange(of: error == nil) { _ in
+                        // Dismiss the view once the error alert is dismissed.
+                        guard error == nil else { return }
+                        dismiss()
+                    }
+                
+                ProgressView()
+                    .opacity(mapIsLoading ? 1 : 0)
+            }
+        }
+    }
+    
+    /// A view that shows a given portal item's info in a row.
+    struct PortalItemRowView: View {
+        /// The portal item to display in the row.
+        let item: PortalItem
+        
+        var body: some View {
+            VStack {
+                HStack {
+                    AsyncImage(url: item.thumbnail?.url) { image in
+                        image
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 75)
+                    } placeholder: {
+                        Color(.lightGray)
+                            .frame(width: 110, height: 75)
+                    }
+                    .border(.primary)
+                    .padding([.leading, .top], 10)
+                    
+                    Text(item.title)
+                    
+                    Spacer()
+                }
+                
+                HStack {
+                    Text(item.modificationDate?.formatted(Date.FormatStyle(date: .abbreviated, time: .omitted)) ?? "")
+                        .foregroundColor(Color(.systemGray5))
+                    
+                    Divider()
+                        .overlay(.black)
+                    
+                    Text(item.owner)
+                        .foregroundColor(.teal)
+                    
+                    Spacer()
+                }
+                .font(.footnote)
+                .padding(10)
+                .background(Color(.darkGray))
+            }
+            .background(Color(.systemGray5))
+            .border(Color(.darkGray))
+            .padding(.top, 8)
+            .padding(.horizontal)
+            .padding(.horizontal)
+        }
+    }
+}
+
+#Preview {
+    NavigationView {
+        SearchForWebMapView()
     }
 }
