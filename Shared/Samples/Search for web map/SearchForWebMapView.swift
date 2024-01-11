@@ -58,7 +58,7 @@ struct SearchForWebMapView: View {
             VStack {
                 Text("No Results")
                     .font(.headline)
-                Text("Check sspelling or try a new search.")
+                Text("Check spelling or try a new search.")
                     .font(.footnote)
             }
             .opacity(!model.isLoadingResults && !query.isEmpty && model.portalItems.isEmpty ? 1 : 0)

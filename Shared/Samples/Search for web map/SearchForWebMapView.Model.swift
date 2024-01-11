@@ -105,10 +105,11 @@ extension SearchForWebMapView {
             let dateString = "uploaded:[\(dateRange.lowerBound) TO \(dateRange.upperBound)]"
             
             // Create a string to filter for web maps.
-            let typeString = "type:\"Web Map\""
+            let typeString = #"type:"Web Map""#
             
             // Create the portal query parameters with the strings.
-            return PortalQueryParameters(query: "\(query) AND \(typeString) AND \(dateString)")
+            let fullQuery = [query, typeString, dateString].joined(separator: " AND ")
+            return PortalQueryParameters(query: fullQuery)
         }
     }
 }
