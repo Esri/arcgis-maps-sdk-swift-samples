@@ -27,7 +27,7 @@ extension SearchForWebMapView {
         /// The portal items resulting from a search.
         @Published private(set) var portalItems: [PortalItem] = []
         
-        /// The task used to find portalitems throug the portal.
+        /// The task used to find portal items through the portal.
         @Published private(set) var task: Task<Void, Error>?
         
         deinit {
