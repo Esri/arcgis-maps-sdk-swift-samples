@@ -52,7 +52,7 @@ extension SearchForWebMapView {
             // Find the new results.
             isLoadingResults = true
             task = Task {
-                let parameters = try queryParameters(for: query)
+                let parameters = queryParameters(for: query)
                 let results = try await findItems(using: parameters)
                 
                 await MainActor.run {
@@ -61,14 +61,14 @@ extension SearchForWebMapView {
                 }
             }
         }
-
+        
         /// Finds the portal items that match the next query parameters from the previous search.
         func findNextItems() throws {
             guard let nextQueryParameters else { return }
             // Cancel the current search operation if there is one.
             task?.cancel()
             isLoadingResults = false
-
+            
             // Find the next results.
             isLoadingResults = true
             task = Task {
@@ -94,14 +94,13 @@ extension SearchForWebMapView {
         /// The portal query parameters for a given query.
         /// - Parameter query: The text query used to create the parameters.
         /// - Returns: A new `PortalQueryParameters` object.
-        private func queryParameters(for query: String) throws -> PortalQueryParameters {
+        private func queryParameters(for query: String) -> PortalQueryParameters {
             // Create a date string for a date range to search within.
             // Note: Web maps authored prior to July 2nd, 2014 are not supported.
-            let startDate = try Date(
-                "July 2, 2014",
-                strategy: Date.FormatStyle().day().month().year().parseStrategy
-            )
-            let dateRange = startDate.millisecondsSince1970...Date.now.millisecondsSince1970
+            let startDate = Date.webMapSupportedDate!
+            
+            // Convert the dates to UNIX time to be able to use with the ArcGIS REST API.
+            let dateRange = startDate.unixTime...Date.now.unixTime
             let dateString = "uploaded:[\(dateRange.lowerBound) TO \(dateRange.upperBound)]"
             
             // Create a string to filter for web maps.
@@ -115,8 +114,14 @@ extension SearchForWebMapView {
 }
 
 private extension Date {
+    /// The date after which web maps are supported, July 2, 2014.
+    static let webMapSupportedDate = try? Date(
+        "July 2, 2014",
+        strategy: Date.FormatStyle().day().month().year().parseStrategy
+    )
+    
     /// The milliseconds between the date value and 00:00:00 UTC on 1 January 1970.
-    var millisecondsSince1970: Int64 {
+    var unixTime: Int64 {
         Int64(timeIntervalSince1970 * 1_000)
     }
 }
