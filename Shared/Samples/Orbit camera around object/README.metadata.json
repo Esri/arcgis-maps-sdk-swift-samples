@@ -1,0 +1,23 @@
+{
+    "category": "Scenes",
+    "description": "Fix the camera to point at and rotate around a target object.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "3D",
+        "camera",
+        "object",
+        "orbit",
+        "rotate",
+        "scene",
+        "OrbitGeoElementCameraController"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "OrbitGeoElementCameraController"
+    ],
+    "snippets": [
+        "OrbitCameraAroundObjectView.swift"
+    ],
+    "title": "Orbit camera around object"
+}
