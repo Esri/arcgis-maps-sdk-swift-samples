@@ -22,6 +22,9 @@ struct SearchForWebMapView: View {
     /// The text query in the search bar.
     @State private var query = ""
     
+    /// A Boolean value indicating whether new results are being loaded.
+    @State private var resultsAreLoading = false
+    
     /// The error shown in the error alert.
     @State private var error: Error?
     
@@ -40,11 +43,7 @@ struct SearchForWebMapView: View {
                         .onAppear {
                             // Load the next results when the last item is reached.
                             if item.id == model.portalItems.last?.id {
-                                do {
-                                    try model.findNextItems()
-                                } catch {
-                                    self.error = error
-                                }
+                                model.findNextItems()
                             }
                         }
                     }
@@ -52,7 +51,7 @@ struct SearchForWebMapView: View {
                 
                 ProgressView()
                     .padding()
-                    .opacity(model.isLoadingResults ? 1 : 0)
+                    .opacity(resultsAreLoading ? 1 : 0)
             }
             
             VStack {
@@ -61,7 +60,7 @@ struct SearchForWebMapView: View {
                 Text("Check spelling or try a new search.")
                     .font(.footnote)
             }
-            .opacity(!model.isLoadingResults && !query.isEmpty && model.portalItems.isEmpty ? 1 : 0)
+            .opacity(!resultsAreLoading && !query.isEmpty && model.portalItems.isEmpty ? 1 : 0)
         }
         .background(Color(.secondarySystemBackground))
         .searchable(
@@ -71,8 +70,16 @@ struct SearchForWebMapView: View {
         )
         .onChange(of: query) { _ in
             // Load new results when the query changes.
+            model.findItems(for: query)
+        }
+        .task(id: model.task) {
+            guard model.task != nil else { return }
+            
+            resultsAreLoading = true
+            defer { resultsAreLoading = false }
+            
             do {
-                try model.findItems(for: query)
+                try await model.task?.value
             } catch {
                 self.error = error
             }
@@ -149,8 +156,10 @@ private extension SearchForWebMapView {
                 }
                 
                 HStack {
-                    Text(item.modificationDate?.formatted(Date.FormatStyle(date: .abbreviated, time: .omitted)) ?? "")
-                        .foregroundColor(Color(.systemGray5))
+                    Text(item.modificationDate?.formatted(
+                        Date.FormatStyle(date: .abbreviated, time: .omitted)
+                    ) ?? "")
+                    .foregroundColor(Color(.systemGray5))
                     
                     Divider()
                         .overlay(.black)

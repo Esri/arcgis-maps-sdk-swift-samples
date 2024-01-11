@@ -24,14 +24,11 @@ extension SearchForWebMapView {
         /// The query parameters for the next set of results based on the last results.
         private var nextQueryParameters: PortalQueryParameters?
         
-        /// The task used to find portal times thorough the portal.
-        private var task: Task<Void, Error>?
-        
         /// The portal items resulting from a search.
         @Published private(set) var portalItems: [PortalItem] = []
         
-        /// A Boolean value indicating whether new results are being loaded.
-        @Published private(set) var isLoadingResults = false
+        /// The task used to find portal times thorough the portal.
+        @Published private(set) var task: Task<Void, Error>?
         
         deinit {
             task?.cancel()
@@ -39,10 +36,9 @@ extension SearchForWebMapView {
         
         /// Finds the portal items that match the given query.
         /// - Parameter query: The text query used to find the portal items.
-        func findItems(for query: String) throws {
+        func findItems(for query: String) {
             // Cancel the current search operation if there is one.
             task?.cancel()
-            isLoadingResults = false
             
             if query.isEmpty {
                 portalItems.removeAll()
@@ -50,33 +46,26 @@ extension SearchForWebMapView {
             }
             
             // Find the new results.
-            isLoadingResults = true
             task = Task {
                 let parameters = queryParameters(for: query)
                 let results = try await findItems(using: parameters)
-                
                 await MainActor.run {
                     portalItems = results
-                    isLoadingResults = false
                 }
             }
         }
         
         /// Finds the portal items that match the next query parameters from the previous search.
-        func findNextItems() throws {
+        func findNextItems() {
             guard let nextQueryParameters else { return }
             // Cancel the current search operation if there is one.
             task?.cancel()
-            isLoadingResults = false
             
             // Find the next results.
-            isLoadingResults = true
             task = Task {
                 let nextResults = try await findItems(using: nextQueryParameters)
-                
                 await MainActor.run {
                     portalItems.append(contentsOf: nextResults)
-                    isLoadingResults = false
                 }
             }
         }
