@@ -147,10 +147,13 @@ private extension SearchForWebMapView {
                 }
                 
                 HStack {
-                    Text(item.modificationDate?.formatted(
-                        Date.FormatStyle(date: .abbreviated, time: .omitted)
-                    ) ?? "")
-                    .foregroundColor(Color(.systemGray5))
+                    if let modificationDate = item.modificationDate {
+                        Text(modificationDate, format: Date.FormatStyle(date: .abbreviated, time: .omitted))
+                            .foregroundColor(Color(.systemGray5))
+                    } else {
+                        Text("Date: Unknown")
+                            .foregroundColor(Color(.systemGray5))
+                    }
                     
                     Divider()
                         .overlay(.black)
