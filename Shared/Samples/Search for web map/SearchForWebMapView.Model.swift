@@ -24,56 +24,49 @@ extension SearchForWebMapView {
         /// The query parameters for the next set of results based on the last results.
         private var nextQueryParameters: PortalQueryParameters?
         
+        /// The text query from the last search.
+        private var lastQuery = ""
+        
         /// The portal items resulting from a search.
         @Published private(set) var portalItems: [PortalItem] = []
         
-        /// The task used to find portal items through the portal.
-        @Published private(set) var task: Task<Void, Error>?
-        
-        deinit {
-            task?.cancel()
-        }
-        
         /// Finds the portal items that match the given query.
         /// - Parameter query: The text query used to find the portal items.
-        func findItems(for query: String) {
-            // Cancel the current search operation if there is one.
-            task?.cancel()
+        func findItems(for query: String) async throws {
+            // Ensure that a new search is necessary.
+            guard query != lastQuery else { return }
             
             if query.isEmpty {
-                portalItems.removeAll()
+                await MainActor.run {
+                    portalItems.removeAll()
+                }
                 return
             }
             
-            // Find the new results.
-            task = Task {
-                let parameters = queryParameters(for: query)
-                let results = try await findItems(using: parameters)
-                await MainActor.run {
-                    portalItems = results
-                }
+            // Find the new results using parameters made with the query.
+            let parameters = queryParameters(for: query)
+            let results = try await portalItems(using: parameters)
+            await MainActor.run {
+                portalItems = results
             }
+            lastQuery = query
         }
         
-        /// Finds the portal items that match the next query parameters from the previous search.
-        func findNextItems() {
+        /// Finds the next portal item based on the last results.
+        func findNextItems() async throws {
             guard let nextQueryParameters else { return }
-            // Cancel the current search operation if there is one.
-            task?.cancel()
             
-            // Find the next results.
-            task = Task {
-                let nextResults = try await findItems(using: nextQueryParameters)
-                await MainActor.run {
-                    portalItems.append(contentsOf: nextResults)
-                }
+            // Find the next results using the next query parameters from the last search.
+            let nextResults = try await portalItems(using: nextQueryParameters)
+            await MainActor.run {
+                portalItems.append(contentsOf: nextResults)
             }
         }
         
-        /// Finds the portal items that match the given query parameters.
+        /// The portal items from the portal that match the given query parameters.
         /// - Parameter queryParameters: The portal query parameters to find the portal items.
         /// - Returns: The portal items that were found.
-        private func findItems(using queryParameters: PortalQueryParameters) async throws -> [PortalItem] {
+        private func portalItems(using queryParameters: PortalQueryParameters) async throws -> [PortalItem] {
             // Get the results from the portal using the parameters.
             let resultsSet = try await portal.findItems(queryParameters: queryParameters)
             nextQueryParameters = resultsSet.nextQueryParameters
@@ -98,6 +91,17 @@ extension SearchForWebMapView {
             // Create the portal query parameters with the strings.
             let fullQuery = [query, typeString, dateString].joined(separator: " AND ")
             return PortalQueryParameters(query: fullQuery)
+        }
+    }
+    
+    /// A pair of two equatable types.
+    struct Pair<T: Equatable, U: Equatable>: Equatable {
+        var t: T
+        var u: U
+        
+        init(_ t: T, _ u: U) {
+            self.t = t
+            self.u = u
         }
     }
 }

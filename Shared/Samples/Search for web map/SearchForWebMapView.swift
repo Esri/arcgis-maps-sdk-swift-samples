@@ -29,38 +29,44 @@ struct SearchForWebMapView: View {
     @State private var error: Error?
     
     var body: some View {
-        ZStack {
-            ScrollView {
-                LazyVStack {
-                    ForEach(model.portalItems, id: \.id) { item in
-                        NavigationLink {
-                            SafeMapView(map: Map(item: item))
-                                .navigationTitle(item.title)
-                        } label: {
-                            PortalItemRowView(item: item)
-                        }
-                        .buttonStyle(.plain)
-                        .onAppear {
-                            // Load the next results when the last item is reached.
-                            if item.id == model.portalItems.last?.id {
-                                model.findNextItems()
-                            }
+        ScrollView {
+            LazyVStack {
+                ForEach(model.portalItems, id: \.id) { item in
+                    NavigationLink {
+                        SafeMapView(map: Map(item: item))
+                            .navigationTitle(item.title)
+                    } label: {
+                        PortalItemRowView(item: item)
+                    }
+                    .buttonStyle(.plain)
+                    .task {
+                        // Load the next results when the last item is reached.
+                        guard item.id == model.portalItems.last?.id  else { return }
+                        
+                        resultsAreLoading = true
+                        defer { resultsAreLoading = false }
+                        
+                        do {
+                            try await model.findNextItems()
+                        } catch {
+                            self.error = error
                         }
                     }
                 }
                 
-                ProgressView()
+                if resultsAreLoading {
+                    ProgressView()
+                        .padding()
+                } else if !query.isEmpty && model.portalItems.isEmpty {
+                    VStack {
+                        Text("No Results")
+                            .font(.headline)
+                        Text("Check spelling or try a new search.")
+                            .font(.footnote)
+                    }
                     .padding()
-                    .opacity(resultsAreLoading ? 1 : 0)
+                }
             }
-            
-            VStack {
-                Text("No Results")
-                    .font(.headline)
-                Text("Check spelling or try a new search.")
-                    .font(.footnote)
-            }
-            .opacity(!resultsAreLoading && !query.isEmpty && model.portalItems.isEmpty ? 1 : 0)
         }
         .background(Color(.secondarySystemBackground))
         .searchable(
@@ -68,18 +74,13 @@ struct SearchForWebMapView: View {
             placement: .navigationBarDrawer(displayMode: .always),
             prompt: "Search for a web map"
         )
-        .onChange(of: query) { _ in
+        .task(id: query) {
             // Load new results when the query changes.
-            model.findItems(for: query)
-        }
-        .task(id: model.task) {
-            guard model.task != nil else { return }
-            
             resultsAreLoading = true
             defer { resultsAreLoading = false }
             
             do {
-                try await model.task?.value
+                try await model.findItems(for: query)
             } catch {
                 self.error = error
             }
