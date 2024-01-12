@@ -141,12 +141,10 @@ private extension SearchForWebMapView {
                     AsyncImage(url: item.thumbnail?.url) { image in
                         image
                             .resizable()
-                            .scaledToFit()
-                            .frame(height: 75)
                     } placeholder: {
                         Color(.lightGray)
-                            .frame(width: 110, height: 75)
                     }
+                    .frame(width: 110, height: 75)
                     .border(.primary)
                     .padding([.leading, .top], 10)
                     
@@ -176,7 +174,6 @@ private extension SearchForWebMapView {
             .background(Color(.systemGray5))
             .border(Color(.darkGray))
             .padding(.top, 8)
-            .padding(.horizontal)
             .padding(.horizontal)
         }
     }
