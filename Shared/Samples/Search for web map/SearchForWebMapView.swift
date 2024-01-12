@@ -90,13 +90,10 @@ struct SearchForWebMapView: View {
 }
 
 private extension SearchForWebMapView {
-    /// A map view that shows an alert and dismisses itself when there is an error loading the map.
+    /// A map view that shows an alert when there is an error loading the map.
     struct SafeMapView: View {
         /// The map to show in the map view.
         let map: Map
-        
-        /// The action to dismiss the view.
-        @Environment(\.dismiss) private var dismiss: DismissAction
         
         /// A Boolean value indicating whether the map is being loaded.
         @State private var mapIsLoading = false
@@ -119,11 +116,6 @@ private extension SearchForWebMapView {
                         }
                     }
                     .errorAlert(presentingError: $error)
-                    .onChange(of: error == nil) { _ in
-                        // Dismiss the view once the error alert is dismissed.
-                        guard error == nil else { return }
-                        dismiss()
-                    }
                 
                 ProgressView()
                     .opacity(mapIsLoading ? 1 : 0)
