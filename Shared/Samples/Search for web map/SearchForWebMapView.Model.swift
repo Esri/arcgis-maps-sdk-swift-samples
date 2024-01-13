@@ -94,16 +94,6 @@ extension SearchForWebMapView {
         }
     }
     
-    /// A pair of two equatable types.
-    struct Pair<T: Equatable, U: Equatable>: Equatable {
-        var t: T
-        var u: U
-        
-        init(_ t: T, _ u: U) {
-            self.t = t
-            self.u = u
-        }
-    }
 }
 
 private extension Date {
