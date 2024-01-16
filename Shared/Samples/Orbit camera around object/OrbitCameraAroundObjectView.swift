@@ -19,23 +19,158 @@ struct OrbitCameraAroundObjectView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
+    /// The camera view selection.
+    @State private var selectedCameraView = CameraView.center
+    
+    /// A Boolean value indicating whether the settings sheet is presented.
+    @State private var settingsSheetIsPresented = false
+    
+    /// A Boolean value indicating whether scene interaction is disabled.
+    @State private var sceneIsDisabled = false
+    
     /// The error shown in the error alert.
     @State private var error: Error?
     
     var body: some View {
-        MapView(map: model.map)
-            .errorAlert(presentingError: $error)
+        SceneView(
+            scene: model.scene,
+            cameraController: model.cameraController,
+            graphicsOverlays: [model.graphicsOverlay]
+        )
+        .disabled(sceneIsDisabled)
+        .toolbar {
+            ToolbarItemGroup(placement: .bottomBar) {
+                cameraViewPicker
+                settingsButton
+            }
+        }
+        .errorAlert(presentingError: $error)
+    }
+    
+    /// The picker for selecting the camera view.
+    @ViewBuilder private var cameraViewPicker: some View {
+        Picker("Camera View", selection: $selectedCameraView) {
+            Text("Center").tag(CameraView.center)
+            Text("Cockpit").tag(CameraView.cockpit)
+        }
+        .pickerStyle(.segmented)
+        .task(id: selectedCameraView) {
+            // Move the camera to the new view selection.
+            do {
+                // Disable scene interaction while the camera is moving.
+                sceneIsDisabled = true
+                defer { sceneIsDisabled = false }
+                
+                switch selectedCameraView {
+                case .center:
+                    try await model.moveToPlaneView()
+                case .cockpit:
+                    try await model.moveToCockpit()
+                }
+            } catch {
+                self.error = error
+            }
+        }
+    }
+    
+    /// The button that brings up the settings sheet.
+    @ViewBuilder private var settingsButton: some View {
+        let button = Button("Settings") {
+            settingsSheetIsPresented = true
+        }
+        let settingsContent = SettingsView(model: model)
+        
+        if #available(iOS 16, *) {
+            button
+                .popover(isPresented: $settingsSheetIsPresented, arrowEdge: .bottom) {
+                    settingsContent
+                        .presentationDetents([.fraction(0.5)])
+#if targetEnvironment(macCatalyst)
+                        .frame(minWidth: 300, minHeight: 270)
+#else
+                        .frame(minWidth: 320, minHeight: 390)
+#endif
+                }
+        } else {
+            button
+                .sheet(isPresented: $settingsSheetIsPresented, detents: [.medium]) {
+                    settingsContent
+                }
+        }
     }
 }
 
 private extension OrbitCameraAroundObjectView {
-    /// The view model for the sample.
-    class Model: ObservableObject {
-        /// A map with a topographic basemap.
-        let map = Map(basemapStyle: .arcGISTopographic)
+    /// The camera and plane settings for the sample.
+    struct SettingsView: View {
+        /// The view model for the sample.
+        @ObservedObject var model: Model
+        
+        /// The action to dismiss the view.
+        @Environment(\.dismiss) private var dismiss: DismissAction
+        
+        /// The pitch of the plane in the scene.
+        @State private var planePitch = Measurement(value: 0, unit: UnitAngle.degrees)
+        
+        /// The heading offset of the camera controller.
+        @State private var cameraHeading = Measurement(value: 0, unit: UnitAngle.degrees)
+        
+        var body: some View {
+            NavigationView {
+                List {
+                    VStack {
+                        Text("Camera Heading")
+                            .badge(
+                                Text(cameraHeading, format: .measurement(width: .narrow))
+                            )
+                        
+                        Slider(value: $cameraHeading.value, in: -45...45, step: 1)
+                            .onChange(of: cameraHeading.value) { newValue in
+                                model.cameraController.cameraHeadingOffset = newValue
+                            }
+                    }
+                    
+                    VStack {
+                        Text("Plane Pitch")
+                            .badge(
+                                Text(planePitch, format: .measurement(width: .narrow))
+                            )
+                        
+                        Slider(value: $planePitch.value, in: -90...90, step: 1)
+                            .onChange(of: planePitch.value) { newValue in
+                                model.planeGraphic.setAttributeValue(newValue, forKey: "PITCH")
+                            }
+                    }
+                    
+                    Toggle(
+                        "Allow Camera Distance Interaction",
+                        isOn: $model.cameraController.cameraDistanceIsInteractive
+                    )
+                    .toggleStyle(.switch)
+                }
+                .navigationTitle("Settings")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .confirmationAction) {
+                        Button("Done") {
+                            dismiss()
+                        }
+                    }
+                }
+            }
+            .navigationViewStyle(.stack)
+            .onAppear {
+                planePitch.value = model.planeGraphic.attributes["PITCH"] as? Double ?? 0
+                cameraHeading.value = model.cameraController.cameraHeadingOffset
+            }
+        }
     }
-}
-
-#Preview {
-    OrbitCameraAroundObjectView()
+    
+    /// An enumeration representing a camera controller view.
+    enum CameraView: CaseIterable {
+        /// The view with the plane centered.
+        case center
+        /// The view from the plane's cockpit.
+        case cockpit
+    }
 }

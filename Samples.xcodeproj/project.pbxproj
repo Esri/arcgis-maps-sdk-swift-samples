@@ -40,7 +40,7 @@
 		0044289329C9234300160767 /* GetElevationAtPointOnSurfaceView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 0044289129C90C0B00160767 /* GetElevationAtPointOnSurfaceView.swift */; };
 		0044CDDF2995C39E004618CE /* ShowDeviceLocationHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0044CDDE2995C39E004618CE /* ShowDeviceLocationHistoryView.swift */; };
 		0044CDE02995D4DD004618CE /* ShowDeviceLocationHistoryView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 0044CDDE2995C39E004618CE /* ShowDeviceLocationHistoryView.swift */; };
-		004FE87129DF5D8700075217 /* Bristol in Resources */ = {isa = PBXBuildFile; fileRef = 004FE87029DF5D8700075217 /* Bristol */; settings = {ASSET_TAGS = (Animate3DGraphic, ChangeCameraController, ); }; };
+		004FE87129DF5D8700075217 /* Bristol in Resources */ = {isa = PBXBuildFile; fileRef = 004FE87029DF5D8700075217 /* Bristol */; settings = {ASSET_TAGS = (Animate3DGraphic, ChangeCameraController, OrbitCameraAroundObject, ); }; };
 		006C835528B40682004AEB7F /* BrowseBuildingFloorsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E0FE32E628747778002C6ACA /* BrowseBuildingFloorsView.swift */; };
 		006C835628B40682004AEB7F /* DisplayMapFromMobileMapPackageView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = F111CCC0288B5D5600205358 /* DisplayMapFromMobileMapPackageView.swift */; };
 		0074ABBF28174BCF0037244A /* DisplayMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0074ABBE28174BCF0037244A /* DisplayMapView.swift */; };
@@ -176,6 +176,8 @@
 		D710996E2A27D9B30065A1C1 /* DensifyAndGeneralizeGeometryView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D710996C2A27D9210065A1C1 /* DensifyAndGeneralizeGeometryView.swift */; };
 		D71099702A2802FA0065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D710996F2A2802FA0065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift */; };
 		D71099712A280D830065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D710996F2A2802FA0065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift */; };
+		D718A1E72B570F7500447087 /* OrbitCameraAroundObjectView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D718A1E62B570F7500447087 /* OrbitCameraAroundObjectView.Model.swift */; };
+		D718A1E82B571C9100447087 /* OrbitCameraAroundObjectView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D718A1E62B570F7500447087 /* OrbitCameraAroundObjectView.Model.swift */; };
 		D71C5F642AAA7A88006599FD /* CreateSymbolStylesFromWebStylesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71C5F632AAA7A88006599FD /* CreateSymbolStylesFromWebStylesView.swift */; };
 		D71C5F652AAA83D2006599FD /* CreateSymbolStylesFromWebStylesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D71C5F632AAA7A88006599FD /* CreateSymbolStylesFromWebStylesView.swift */; };
 		D71FCB8A2AD6277F000E517C /* CreateMobileGeodatabaseView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71FCB892AD6277E000E517C /* CreateMobileGeodatabaseView.Model.swift */; };
@@ -390,6 +392,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				D718A1E82B571C9100447087 /* OrbitCameraAroundObjectView.Model.swift in Copy Source Code Files */,
 				D76929FB2B4F795C0047205E /* OrbitCameraAroundObjectView.swift in Copy Source Code Files */,
 				00B56F7E2B0EBE9C00B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.swift in Copy Source Code Files */,
 				00B56F7F2B0EBE9C00B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.Model.swift in Copy Source Code Files */,
@@ -630,6 +633,7 @@
 		D70BE5782A5624A80022CA02 /* CategoriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesView.swift; sourceTree = "<group>"; };
 		D710996C2A27D9210065A1C1 /* DensifyAndGeneralizeGeometryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DensifyAndGeneralizeGeometryView.swift; sourceTree = "<group>"; };
 		D710996F2A2802FA0065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DensifyAndGeneralizeGeometryView.SettingsView.swift; sourceTree = "<group>"; };
+		D718A1E62B570F7500447087 /* OrbitCameraAroundObjectView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrbitCameraAroundObjectView.Model.swift; sourceTree = "<group>"; };
 		D71C5F632AAA7A88006599FD /* CreateSymbolStylesFromWebStylesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateSymbolStylesFromWebStylesView.swift; sourceTree = "<group>"; };
 		D71FCB892AD6277E000E517C /* CreateMobileGeodatabaseView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateMobileGeodatabaseView.Model.swift; sourceTree = "<group>"; };
 		D721EEA72ABDFF550040BE46 /* LothianRiversAnno.mmpk */ = {isa = PBXFileReference; lastKnownFileType = file; path = LothianRiversAnno.mmpk; sourceTree = "<group>"; };
@@ -1619,6 +1623,7 @@
 			isa = PBXGroup;
 			children = (
 				D76929F52B4F78340047205E /* OrbitCameraAroundObjectView.swift */,
+				D718A1E62B570F7500447087 /* OrbitCameraAroundObjectView.Model.swift */,
 			);
 			path = "Orbit camera around object";
 			sourceTree = "<group>";
@@ -2094,6 +2099,7 @@
 					FindRouteInTransportNetwork,
 					GeocodeOffline,
 					IdentifyRasterCell,
+					OrbitCameraAroundObject,
 					ShowDeviceLocationWithNmeaDataSources,
 					ShowMobileMapPackageExpirationDate,
 					ShowViewshedFromGeoelementInScene,
@@ -2355,6 +2361,7 @@
 				E066DD382860AB28004D3D5B /* StyleGraphicsWithRendererView.swift in Sources */,
 				108EC04129D25B2C000F35D0 /* QueryFeatureTableView.swift in Sources */,
 				00B04FB5283EEBA80026C882 /* DisplayOverviewMapView.swift in Sources */,
+				D718A1E72B570F7500447087 /* OrbitCameraAroundObjectView.Model.swift in Sources */,
 				D71C5F642AAA7A88006599FD /* CreateSymbolStylesFromWebStylesView.swift in Sources */,
 				D7CC33FF2A31475C00198EDF /* ShowLineOfSightBetweenPointsView.swift in Sources */,
 				D70BE5792A5624A80022CA02 /* CategoriesView.swift in Sources */,
