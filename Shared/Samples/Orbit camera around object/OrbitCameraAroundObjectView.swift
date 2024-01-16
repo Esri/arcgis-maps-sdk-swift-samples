@@ -146,6 +146,7 @@ private extension OrbitCameraAroundObjectView {
                         "Allow Camera Distance Interaction",
                         isOn: $model.cameraController.cameraDistanceIsInteractive
                     )
+                    .disabled(model.cameraController.autoPitchIsEnabled)
                     .toggleStyle(.switch)
                 }
                 .navigationTitle("Settings")
