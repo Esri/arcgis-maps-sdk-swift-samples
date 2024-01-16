@@ -2,7 +2,7 @@
 
 Fix the camera to point at and rotate around a target object.
 
-![Image of orbit camera around object](OrbitCameraAroundObject.png)
+![Image of orbit camera around object](orbit-camera-around-object.png)
 
 ## Use case
 

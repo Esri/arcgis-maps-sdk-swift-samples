@@ -2,7 +2,9 @@
     "category": "Scenes",
     "description": "Fix the camera to point at and rotate around a target object.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "orbit-camera-around-object.png"
+    ],
     "keywords": [
         "3D",
         "camera",
