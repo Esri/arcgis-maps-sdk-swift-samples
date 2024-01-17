@@ -176,6 +176,8 @@
 		D710996E2A27D9B30065A1C1 /* DensifyAndGeneralizeGeometryView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D710996C2A27D9210065A1C1 /* DensifyAndGeneralizeGeometryView.swift */; };
 		D71099702A2802FA0065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D710996F2A2802FA0065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift */; };
 		D71099712A280D830065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D710996F2A2802FA0065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift */; };
+		D718A1ED2B575FD900447087 /* ManageBookmarksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D718A1EA2B575FD900447087 /* ManageBookmarksView.swift */; };
+		D718A1F02B57602000447087 /* ManageBookmarksView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D718A1EA2B575FD900447087 /* ManageBookmarksView.swift */; };
 		D71C5F642AAA7A88006599FD /* CreateSymbolStylesFromWebStylesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71C5F632AAA7A88006599FD /* CreateSymbolStylesFromWebStylesView.swift */; };
 		D71C5F652AAA83D2006599FD /* CreateSymbolStylesFromWebStylesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D71C5F632AAA7A88006599FD /* CreateSymbolStylesFromWebStylesView.swift */; };
 		D71FCB8A2AD6277F000E517C /* CreateMobileGeodatabaseView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71FCB892AD6277E000E517C /* CreateMobileGeodatabaseView.Model.swift */; };
@@ -388,6 +390,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				D718A1F02B57602000447087 /* ManageBookmarksView.swift in Copy Source Code Files */,
 				00B56F7E2B0EBE9C00B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.swift in Copy Source Code Files */,
 				00B56F7F2B0EBE9C00B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.Model.swift in Copy Source Code Files */,
 				00B56F802B0EBE9C00B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.SettingsView.swift in Copy Source Code Files */,
@@ -627,6 +630,7 @@
 		D70BE5782A5624A80022CA02 /* CategoriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesView.swift; sourceTree = "<group>"; };
 		D710996C2A27D9210065A1C1 /* DensifyAndGeneralizeGeometryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DensifyAndGeneralizeGeometryView.swift; sourceTree = "<group>"; };
 		D710996F2A2802FA0065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DensifyAndGeneralizeGeometryView.SettingsView.swift; sourceTree = "<group>"; };
+		D718A1EA2B575FD900447087 /* ManageBookmarksView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageBookmarksView.swift; sourceTree = "<group>"; };
 		D71C5F632AAA7A88006599FD /* CreateSymbolStylesFromWebStylesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateSymbolStylesFromWebStylesView.swift; sourceTree = "<group>"; };
 		D71FCB892AD6277E000E517C /* CreateMobileGeodatabaseView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateMobileGeodatabaseView.Model.swift; sourceTree = "<group>"; };
 		D721EEA72ABDFF550040BE46 /* LothianRiversAnno.mmpk */ = {isa = PBXFileReference; lastKnownFileType = file; path = LothianRiversAnno.mmpk; sourceTree = "<group>"; };
@@ -877,6 +881,7 @@
 				D70082E72ACF8F6C00E0C3C2 /* Identify KML features */,
 				D751018A2A2E960300B8FA48 /* Identify layer features */,
 				D7464F182ACE0445007FEE88 /* Identify raster cell */,
+				D718A1E92B575FD900447087 /* Manage bookmarks */,
 				D752D93C2A3914E5003EB25E /* Manage operational layers */,
 				D7ABA2F52A3256610021822B /* Measure distance in scene */,
 				D752D9422A3A6EB8003EB25E /* Monitor changes to map load status */,
@@ -1363,6 +1368,14 @@
 				D710996F2A2802FA0065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift */,
 			);
 			path = "Densify and generalize geometry";
+			sourceTree = "<group>";
+		};
+		D718A1E92B575FD900447087 /* Manage bookmarks */ = {
+			isa = PBXGroup;
+			children = (
+				D718A1EA2B575FD900447087 /* ManageBookmarksView.swift */,
+			);
+			path = "Manage bookmarks";
 			sourceTree = "<group>";
 		};
 		D71C5F602AAA7854006599FD /* Create symbol styles from web styles */ = {
@@ -2389,6 +2402,7 @@
 				D78666AD2A2161F100C60110 /* FindNearestVertexView.swift in Sources */,
 				D7C16D1B2AC5F95300689E89 /* Animate3DGraphicView.swift in Sources */,
 				D744FD172A2112D90084A66C /* CreateConvexHullAroundPointsView.swift in Sources */,
+				D718A1ED2B575FD900447087 /* ManageBookmarksView.swift in Sources */,
 				D73723762AF5877500846884 /* FindRouteInMobileMapPackageView.Models.swift in Sources */,
 				00CB9138284814A4005C2C5D /* SearchWithGeocodeView.swift in Sources */,
 				1C43BC7F2A43781200509BF8 /* SetVisibilityOfSubtypeSublayerView.Views.swift in Sources */,
