@@ -22,15 +22,20 @@ extension SearchForWebMapView {
         /// The map shown in the map view.
         let map: Map
         
-        /// The view model that handles the errors.
-        @StateObject private var errorHandler = ErrorHandler()
-        
         /// A Boolean value indicating whether the map is being loaded.
         @State private var mapIsLoading = false
+        
+        /// The error shown in the error alert.
+        @State private var error: Error?
         
         var body: some View {
             ZStack {
                 MapView(map: map)
+                    .onLayerViewStateChanged { _, state in
+                        // Show an alert for an error loading any of the layers.
+                        guard let error = state.error else { return }
+                        self.error = error
+                    }
                     .task {
                         mapIsLoading = true
                         defer { mapIsLoading = false }
@@ -39,7 +44,7 @@ extension SearchForWebMapView {
                         do {
                             try await map.load()
                         } catch {
-                            errorHandler.error = error
+                            self.error = error
                         }
                     }
                 
@@ -47,15 +52,7 @@ extension SearchForWebMapView {
                     ProgressView()
                 }
             }
-            .onAppear {
-                // Update the challenger handler to get any errors thrown.
-                ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = errorHandler
-            }
-            .onDisappear {
-                // Reset the authentication challenge handler to use default handling.
-                ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = nil
-            }
-            .errorAlert(presentingError: $errorHandler.error)
+            .errorAlert(presentingError: $error)
         }
     }
     
@@ -107,26 +104,6 @@ extension SearchForWebMapView {
             .border(Color(.darkGray))
             .padding(.top, 8)
             .padding(.horizontal)
-        }
-    }
-}
-
-private extension SearchForWebMapView.SafeMapView {
-    /// A view model for handling errors.
-    @MainActor
-    class ErrorHandler: ArcGISAuthenticationChallengeHandler, ObservableObject {
-        /// The error thrown.
-        @Published var error: Error?
-        
-        /// Gets the error from a given authentication challenge.
-        /// - Parameter challenge: The challenge that was received.
-        /// - Returns: An ArcGIS authentication challenge disposition.
-        func handleArcGISAuthenticationChallenge(
-            _ challenge: ArcGISAuthenticationChallenge
-        ) async throws -> ArcGISAuthenticationChallenge.Disposition {
-            // Get the error from the challenge.
-            error = challenge.error
-            return .continueWithoutCredential
         }
     }
 }
