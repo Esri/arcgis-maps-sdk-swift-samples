@@ -41,7 +41,7 @@ struct SearchForWebMapView: View {
                     .buttonStyle(.plain)
                     .task {
                         // Load the next results when the last item is reached.
-                        guard item.id == model.portalItems.last?.id  else { return }
+                        guard item.id == model.portalItems.last?.id else { return }
                         
                         resultsAreLoading = true
                         defer { resultsAreLoading = false }

@@ -93,7 +93,6 @@ extension SearchForWebMapView {
             return PortalQueryParameters(query: fullQuery)
         }
     }
-    
 }
 
 private extension Date {
