@@ -2,7 +2,8 @@
 
 Access and create bookmarks on a map.
 
-![Image of manage bookmarks](ManageBookmarks.png)
+![Image of manage bookmarks 1](manage-bookmarks-1.png)
+![Image of manage bookmarks 2](manage-bookmarks-2.png)
 
 ## Use case
 
