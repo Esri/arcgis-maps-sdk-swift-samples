@@ -21,7 +21,7 @@ extension OrbitCameraAroundObjectView {
         // MARK: Properties
         
         /// A scene with an imagery basemap and world elevation surface.
-        let scene = {
+        let scene: ArcGIS.Scene = {
             let scene = Scene(basemapStyle: .arcGISImagery)
             let elevationSource = ArcGISTiledElevationSource(url: .worldElevationService)
             scene.baseSurface.addElevationSource(elevationSource)
@@ -29,7 +29,7 @@ extension OrbitCameraAroundObjectView {
         }()
         
         /// The graphics overlay for the plane graphic.
-        let graphicsOverlay = {
+        let graphicsOverlay: GraphicsOverlay = {
             let graphicsOverlay = GraphicsOverlay()
             graphicsOverlay.sceneProperties.surfacePlacement = .relative
             
@@ -42,7 +42,7 @@ extension OrbitCameraAroundObjectView {
         }()
         
         /// The plane graphic created from a local URL.
-        let planeGraphic = {
+        let planeGraphic: Graphic = {
             let planeSymbol = ModelSceneSymbol(url: .bristol, scale: 1)
             let planePosition = Point(x: 6.637, y: 45.399, z: 100, spatialReference: .wgs84)
             let planeGraphic = Graphic(
