@@ -79,7 +79,7 @@ extension SearchForWebMapView {
         private func queryParameters(for query: String) -> PortalQueryParameters {
             // Create a date string for a date range to search within.
             // Note: Web maps authored prior to July 2nd, 2014 are not supported.
-            let startDate = Date.webMapSupportedDate!
+            let startDate = Date.webMapSupportedDate
             
             // Convert the dates to UNIX time to be able to use with the ArcGIS REST API.
             let dateRange = startDate.unixTime...Date.now.unixTime
@@ -97,8 +97,8 @@ extension SearchForWebMapView {
 
 private extension Date {
     /// The date after which web maps are supported, July 2, 2014.
-    /// The date after which web maps are supported, July 2, 2014.
-    static var webMapSupportedDate: Date {  // swiftlint:disable:next force_try
+    static var webMapSupportedDate: Date {
+        // swiftlint:disable:next force_try
         try! Date(
             "July 2, 2014",
             strategy: Date.FormatStyle().day().month().year().parseStrategy
