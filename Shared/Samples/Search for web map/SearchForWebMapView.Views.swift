@@ -79,26 +79,27 @@ extension SearchForWebMapView {
                     Spacer()
                 }
                 
+                Divider()
+                    .overlay(.black)
+                
                 HStack {
                     if let modificationDate = item.modificationDate {
                         Text(modificationDate, format: Date.FormatStyle(date: .abbreviated, time: .omitted))
-                            .foregroundColor(Color(.systemGray5))
                     } else {
                         Text("Date: Unknown")
-                            .foregroundColor(Color(.systemGray5))
                     }
                     
                     Divider()
                         .overlay(.black)
                     
                     Text(item.owner)
-                        .foregroundColor(.teal)
+                        .foregroundColor(.accentColor)
                     
                     Spacer()
                 }
                 .font(.footnote)
-                .padding(10)
-                .background(Color(.darkGray))
+                .padding(.top, 2)
+                .padding([.horizontal, .bottom], 10)
             }
             .background(Color(.systemGray5))
             .border(Color(.darkGray))
