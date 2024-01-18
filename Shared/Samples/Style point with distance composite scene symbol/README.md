@@ -2,7 +2,7 @@
 
 Change a graphic's symbol based on the camera's proximity to it.
 
-![Image of style point with distance composite scene symbol](StylePointWithDistanceCompositeSceneSymbol.jpg)
+![Image of style point with distance composite scene symbol](style-point-with-distance-composite-scene-symbol.png)
 
 ## Use case
 

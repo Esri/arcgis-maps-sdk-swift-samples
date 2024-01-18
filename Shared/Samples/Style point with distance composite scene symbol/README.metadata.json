@@ -2,7 +2,9 @@
     "category": "Scenes",
     "description": "Change a graphic's symbol based on the camera's proximity to it.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "style-point-with-distance-composite-scene-symbol.png"
+    ],
     "keywords": [
         "3D",
         "data",
