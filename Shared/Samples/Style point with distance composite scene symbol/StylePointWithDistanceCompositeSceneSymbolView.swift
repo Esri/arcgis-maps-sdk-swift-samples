@@ -36,6 +36,13 @@ private extension StylePointWithDistanceCompositeSceneSymbolView {
     }
 }
 
+private extension URL {
+    // A URL to the local Bristol 3D model files.
+    static var bristol: URL {
+        Bundle.main.url(forResource: "Bristol", withExtension: "dae", subdirectory: "Bristol")!
+    }
+}
+
 #Preview {
     StylePointWithDistanceCompositeSceneSymbolView()
 }
