@@ -17,6 +17,7 @@ import SwiftUI
 
 extension SearchForWebMapView {
     /// The view model for the sample.
+    @MainActor
     class Model: ObservableObject {
         /// A portal to ArcGIS Online to get the portal items from.
         private let portal = Portal.arcGISOnline(connection: .anonymous)
@@ -37,18 +38,14 @@ extension SearchForWebMapView {
             guard query != lastQuery else { return }
             
             if query.isEmpty {
-                await MainActor.run {
-                    portalItems.removeAll()
-                }
+                portalItems.removeAll()
                 return
             }
             
             // Find the new results using parameters made with the query.
             let parameters = queryParameters(for: query)
             let results = try await portalItems(using: parameters)
-            await MainActor.run {
-                portalItems = results
-            }
+            portalItems = results
             lastQuery = query
         }
         
@@ -58,9 +55,7 @@ extension SearchForWebMapView {
             
             // Find the next results using the next query parameters from the last search.
             let nextResults = try await portalItems(using: nextQueryParameters)
-            await MainActor.run {
-                portalItems.append(contentsOf: nextResults)
-            }
+            portalItems.append(contentsOf: nextResults)
         }
         
         /// The portal items from the portal that match the given query parameters.
