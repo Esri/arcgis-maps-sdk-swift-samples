@@ -97,10 +97,13 @@ extension SearchForWebMapView {
 
 private extension Date {
     /// The date after which web maps are supported, July 2, 2014.
-    static let webMapSupportedDate = try? Date(
-        "July 2, 2014",
-        strategy: Date.FormatStyle().day().month().year().parseStrategy
-    )
+    /// The date after which web maps are supported, July 2, 2014.
+    static var webMapSupportedDate: Date {  // swiftlint:disable:next force_try
+        try! Date(
+            "July 2, 2014",
+            strategy: Date.FormatStyle().day().month().year().parseStrategy
+        )
+    }
     
     /// The milliseconds between the date value and 00:00:00 UTC on 1 January 1970.
     var unixTime: Int64 {
