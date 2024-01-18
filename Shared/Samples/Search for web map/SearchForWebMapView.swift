@@ -72,7 +72,7 @@ struct SearchForWebMapView: View {
         .searchable(
             text: $query,
             placement: .navigationBarDrawer(displayMode: .always),
-            prompt: "Search for a web map"
+            prompt: "Web Maps"
         )
         .task(id: query) {
             // Load new results when the query changes.
