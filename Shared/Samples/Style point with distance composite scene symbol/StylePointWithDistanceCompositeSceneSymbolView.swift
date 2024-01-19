@@ -86,7 +86,12 @@ private extension StylePointWithDistanceCompositeSceneSymbolView {
         private let planeGraphic: Graphic = {
             // Create the different symbols.
             let planeSymbol = ModelSceneSymbol(url: .bristol, scale: 100)
-            let coneSymbol = SimpleMarkerSceneSymbol.cone(color: .red, diameter: 200, height: 600, anchorPosition: .center)
+            let coneSymbol = SimpleMarkerSceneSymbol.cone(
+                color: .red,
+                diameter: 200,
+                height: 600,
+                anchorPosition: .center
+            )
             coneSymbol.pitch = -90.0
             let circleSymbol = SimpleMarkerSymbol(style: .circle, color: .red, size: 10)
             
