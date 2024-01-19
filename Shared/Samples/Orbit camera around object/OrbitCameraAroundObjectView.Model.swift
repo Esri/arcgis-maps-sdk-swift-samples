@@ -47,41 +47,36 @@ extension OrbitCameraAroundObjectView {
             let planePosition = Point(x: 6.637, y: 45.399, z: 100, spatialReference: .wgs84)
             let planeGraphic = Graphic(
                 geometry: planePosition,
-                attributes: ["HEADING": 45, "PITCH": 0],
+                attributes: ["HEADING": 45.0, "PITCH": 0.0],
                 symbol: planeSymbol
             )
             return planeGraphic
         }()
         
         /// The camera controller for the scene.
-        var cameraController: OrbitGeoElementCameraController!
+        let cameraController: OrbitGeoElementCameraController
         
         init() {
             graphicsOverlay.addGraphic(planeGraphic)
             
             // Create an orbit geo element camera controller targeted on the plane graphic.
-            cameraController = {
-                let cameraController = OrbitGeoElementCameraController(
-                    target: planeGraphic,
-                    distance: 50
-                )
-                
-                // Restrict the camera's heading to stay behind the plane.
-                cameraController.minCameraHeadingOffset = -45
-                cameraController.maxCameraHeadingOffset = 45
-                
-                // Restrict the camera to stay within 100 meters of the plane.
-                cameraController.maxCameraDistance = 100
-                
-                // Position the plane a third from the top of the screen,
-                // so it isn't covered by the settings sheet.
-                cameraController.targetVerticalScreenFactor = 0.66
-                
-                // Don't pitch the camera when the plane pitches.
-                cameraController.autoPitchIsEnabled = false
-                
-                return cameraController
-            }()
+            cameraController = OrbitGeoElementCameraController(
+                target: planeGraphic,
+                distance: 50
+            )
+            // Restrict the camera's heading to stay behind the plane.
+            cameraController.minCameraHeadingOffset = -45
+            cameraController.maxCameraHeadingOffset = 45
+            
+            // Restrict the camera to stay within 100 meters of the plane.
+            cameraController.maxCameraDistance = 100
+            
+            // Position the plane a third from the top of the screen,
+            // so it isn't covered by the settings sheet.
+            cameraController.targetVerticalScreenFactor = 0.66
+            
+            // Don't pitch the camera when the plane pitches.
+            cameraController.autoPitchIsEnabled = false
         }
         
         // MARK: Methods

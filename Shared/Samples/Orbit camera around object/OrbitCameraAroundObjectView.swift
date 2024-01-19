@@ -48,7 +48,7 @@ struct OrbitCameraAroundObjectView: View {
     }
     
     /// The picker for selecting the camera view.
-    @ViewBuilder private var cameraViewPicker: some View {
+    private var cameraViewPicker: some View {
         Picker("Camera View", selection: $selectedCameraView) {
             Text("Center").tag(CameraView.center)
             Text("Cockpit").tag(CameraView.cockpit)
@@ -110,10 +110,10 @@ private extension OrbitCameraAroundObjectView {
         @Environment(\.dismiss) private var dismiss: DismissAction
         
         /// The pitch of the plane in the scene.
-        @State private var planePitch = Measurement(value: 0, unit: UnitAngle.degrees)
+        @State private var planePitch = Measurement<UnitAngle>(value: 0, unit: .degrees)
         
         /// The heading offset of the camera controller.
-        @State private var cameraHeading = Measurement(value: 0, unit: UnitAngle.degrees)
+        @State private var cameraHeading = Measurement<UnitAngle>(value: 0, unit: .degrees)
         
         var body: some View {
             NavigationView {
@@ -161,7 +161,7 @@ private extension OrbitCameraAroundObjectView {
             }
             .navigationViewStyle(.stack)
             .onAppear {
-                planePitch.value = model.planeGraphic.attributes["PITCH"] as? Double ?? 0
+                planePitch.value = model.planeGraphic.attributes["PITCH"] as! Double
                 cameraHeading.value = model.cameraController.cameraHeadingOffset
             }
         }

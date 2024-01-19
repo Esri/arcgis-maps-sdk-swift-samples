@@ -25,7 +25,7 @@ Tap "Cockpit" to offset and fix the camera into the cockpit of the airplane. The
 
 Use the "Camera Heading" slider to adjust the camera heading. Use the "Plane Pitch" slider to adjust the plane's pitch. When not in Cockpit view, the plane's pitch will change independently to that of the camera pitch.
 
-Toggle on the "Allow Camera Distance Interaction" switch to allow zooming in and out by pinching. When the checkbox is deselected, the user will be unable to adjust the camera distance.
+Toggle on the "Allow Camera Distance Interaction" switch to allow zooming in and out by pinching. When the toggle is off, the user will be unable to adjust the camera distance.
 
 ## How it works
 
