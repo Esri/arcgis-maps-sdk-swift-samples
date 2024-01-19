@@ -10,15 +10,15 @@ You can programmatically create different types of 3D symbols and add them to a 
 
 ## How to use the sample
 
-When the scene loads, note the different types of 3D symbols that you can create.
+When the scene loads, note the different types of 3D symbols that you can create. Pan and zoom to observe the symbols.
 
 ## How it works
 
-1. Create a graphics overlay.
-2. Create various simple marker scene symbols by specifying different styles and colors, and a height, width, depth, and anchor position of each.
-3. Create a graphic for each symbol.
+1. Create a `GraphicsOverlay`.
+2. Create various `SimpleMarkerSceneSymbol`s by specifying different styles and colors, and a height, width, depth, and anchor position of each.
+3. Create a `Graphic` for each symbol.
 4. Add the graphics to the graphics overlay.
-5. Add the graphics overlay to the scene view.
+5. Add the graphics overlay to a `SceneView`.
 
 ## Relevant API
 
