@@ -2,7 +2,9 @@
     "category": "Scenes",
     "description": "Show various kinds of 3D symbols in a scene.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "style-point-with-scene-symbol.png"
+    ],
     "keywords": [
         "3D",
         "cone",

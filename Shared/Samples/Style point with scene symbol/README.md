@@ -2,7 +2,7 @@
 
 Show various kinds of 3D symbols in a scene.
 
-![Image of style point with scene symbol](StylePointWithSceneSymbol.jpg)
+![Image of style point with scene symbol](style-point-with-scene-symbol.png)
 
 ## Use case
 
