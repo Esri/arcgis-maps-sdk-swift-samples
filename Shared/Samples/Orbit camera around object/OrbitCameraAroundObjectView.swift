@@ -124,10 +124,10 @@ private extension OrbitCameraAroundObjectView {
                     VStack {
                         Text("Camera Heading")
                             .badge(
-                                Text(cameraHeading, format: .measurement(width: .narrow))
+                                Text(cameraHeading, format: .degrees)
                             )
                         
-                        Slider(value: $cameraHeading.value, in: -45...45, step: 1)
+                        Slider(value: $cameraHeading.value, in: -45...45)
                             .onChange(of: cameraHeading.value) { newValue in
                                 model.cameraController.cameraHeadingOffset = newValue
                             }
@@ -136,10 +136,10 @@ private extension OrbitCameraAroundObjectView {
                     VStack {
                         Text("Plane Pitch")
                             .badge(
-                                Text(planePitch, format: .measurement(width: .narrow))
+                                Text(planePitch, format: .degrees)
                             )
                         
-                        Slider(value: $planePitch.value, in: -90...90, step: 1)
+                        Slider(value: $planePitch.value, in: -90...90)
                             .onChange(of: planePitch.value) { newValue in
                                 model.planeGraphic.setAttributeValue(newValue, forKey: "PITCH")
                             }
@@ -177,5 +177,16 @@ private extension OrbitCameraAroundObjectView {
         case center
         /// The view from the plane's cockpit.
         case cockpit
+    }
+}
+
+private extension FormatStyle where Self == Measurement<UnitAngle>.FormatStyle {
+    /// The format style for degrees.
+    static var degrees: Self {
+        .measurement(
+            width: .narrow,
+            usage: .asProvided,
+            numberFormatStyle: .number.precision(.fractionLength(0))
+        )
     }
 }
