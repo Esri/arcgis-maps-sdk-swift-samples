@@ -86,20 +86,20 @@ private extension StylePointWithDistanceCompositeSceneSymbolView {
         private let planeGraphic: Graphic = {
             // Create the different symbols.
             let planeSymbol = ModelSceneSymbol(url: .bristol, scale: 100)
-            let coneSymbol = SimpleMarkerSceneSymbol.cone(color: .red, diameter: 200, height: 600)
+            let coneSymbol = SimpleMarkerSceneSymbol.cone(color: .red, diameter: 200, height: 600, anchorPosition: .center)
             coneSymbol.pitch = -90.0
             let circleSymbol = SimpleMarkerSymbol(style: .circle, color: .red, size: 10)
             
             // Create a distance composite symbol using the symbols.
             let distanceCompositeSymbol = DistanceCompositeSceneSymbol()
             distanceCompositeSymbol.addRange(
-                DistanceSymbolRange(symbol: planeSymbol, minDistance: 0, maxDistance: 10000)
+                DistanceSymbolRange(symbol: planeSymbol, maxDistance: 10000)
             )
             distanceCompositeSymbol.addRange(
                 DistanceSymbolRange(symbol: coneSymbol, minDistance: 10001, maxDistance: 30000)
             )
             distanceCompositeSymbol.addRange(
-                DistanceSymbolRange(symbol: circleSymbol, minDistance: 30001, maxDistance: 0)
+                DistanceSymbolRange(symbol: circleSymbol, minDistance: 30001)
             )
             
             // Create a graphic using the distance composite symbol.
@@ -127,12 +127,12 @@ private extension StylePointWithDistanceCompositeSceneSymbolView {
 }
 
 private extension URL {
-    /// A URL to the local Bristol 3D model files.
+    /// A URL to the local Bristol 3D model file.
     static var bristol: URL {
         Bundle.main.url(forResource: "Bristol", withExtension: "dae", subdirectory: "Bristol")!
     }
     
-    /// A world elevation service from Terrain3D ArcGIS REST service.
+    /// A world elevation service from the Terrain3D ArcGIS REST service.
     static var worldElevationService: URL {
         URL(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!
     }
