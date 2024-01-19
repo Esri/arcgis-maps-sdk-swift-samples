@@ -87,7 +87,7 @@ extension OrbitCameraAroundObjectView {
             
             // Animate the camera to center the plane graphic with a
             // 45° pitch and facing forward (0° heading).
-            if cameraController.targetOffsetPoint != Point(x: 0, y: 0, z: 0) {
+            if !cameraController.targetOffsetIsZero {
                 // Unlock the camera pitch for the rotation animation.
                 cameraController.minCameraPitchOffset = -180
                 cameraController.maxCameraPitchOffset = 180
@@ -153,9 +153,9 @@ extension OrbitCameraAroundObjectView {
 }
 
 private extension OrbitGeoElementCameraController {
-    /// The target focus point relative to the target object.
-    var targetOffsetPoint: Point {
-        Point(x: self.targetOffsetX, y: self.targetOffsetY, z: self.targetOffsetZ)
+    /// A Boolean value indicating whether all the target offset values are zero.
+    var targetOffsetIsZero: Bool {
+        return [targetOffsetX, targetOffsetY, targetOffsetZ].allSatisfy(\.isZero)
     }
 }
 
