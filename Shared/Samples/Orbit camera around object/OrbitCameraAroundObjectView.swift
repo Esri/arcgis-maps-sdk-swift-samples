@@ -109,11 +109,14 @@ private extension OrbitCameraAroundObjectView {
         /// The action to dismiss the view.
         @Environment(\.dismiss) private var dismiss: DismissAction
         
+        /// The heading offset of the camera controller.
+        @State private var cameraHeading = Measurement<UnitAngle>(value: 0, unit: .degrees)
+        
         /// The pitch of the plane in the scene.
         @State private var planePitch = Measurement<UnitAngle>(value: 0, unit: .degrees)
         
-        /// The heading offset of the camera controller.
-        @State private var cameraHeading = Measurement<UnitAngle>(value: 0, unit: .degrees)
+        /// A Boolean value indicating whether the camera distance is interactive.
+        @State private var cameraDistanceIsInteractive = false
         
         var body: some View {
             NavigationView {
@@ -142,12 +145,12 @@ private extension OrbitCameraAroundObjectView {
                             }
                     }
                     
-                    Toggle(
-                        "Allow Camera Distance Interaction",
-                        isOn: $model.cameraController.cameraDistanceIsInteractive
-                    )
-                    .disabled(model.cameraController.autoPitchIsEnabled)
-                    .toggleStyle(.switch)
+                    Toggle("Allow Camera Distance Interaction", isOn: $cameraDistanceIsInteractive)
+                        .toggleStyle(.switch)
+                        .disabled(model.cameraController.autoPitchIsEnabled)
+                        .onChange(of: cameraDistanceIsInteractive) { newValue in
+                            model.cameraController.cameraDistanceIsInteractive = newValue
+                        }
                 }
                 .navigationTitle("Settings")
                 .navigationBarTitleDisplayMode(.inline)
@@ -163,6 +166,7 @@ private extension OrbitCameraAroundObjectView {
             .onAppear {
                 planePitch.value = model.planeGraphic.attributes["PITCH"] as! Double
                 cameraHeading.value = model.cameraController.cameraHeadingOffset
+                cameraDistanceIsInteractive = model.cameraController.cameraDistanceIsInteractive
             }
         }
     }

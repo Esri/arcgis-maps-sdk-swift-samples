@@ -83,6 +83,8 @@ extension OrbitCameraAroundObjectView {
         
         /// Moves the camera controller to center the plane in it's view.
         func moveToPlaneView() async throws {
+            cameraController.cameraDistanceIsInteractive = true
+            
             // Animate the camera to center the plane graphic with a
             // 45° pitch and facing forward (0° heading).
             if cameraController.targetOffsetPoint != Point(x: 0, y: 0, z: 0) {
@@ -107,7 +109,6 @@ extension OrbitCameraAroundObjectView {
             cameraController.maxCameraPitchOffset = 100
             
             cameraController.minCameraDistance = 10
-            cameraController.cameraDistanceIsInteractive = true
         }
         
         /// Moves the view of the camera controller to the cockpit of the plane.
