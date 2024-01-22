@@ -167,6 +167,8 @@
 		D704AA5B2AB22D8400A3BB63 /* GroupLayersTogetherView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D704AA592AB22C1A00A3BB63 /* GroupLayersTogetherView.swift */; };
 		D7054AE92ACCCB6C007235BA /* Animate3DGraphicView.SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7054AE82ACCCB6C007235BA /* Animate3DGraphicView.SettingsView.swift */; };
 		D7054AEA2ACCCC34007235BA /* Animate3DGraphicView.SettingsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7054AE82ACCCB6C007235BA /* Animate3DGraphicView.SettingsView.swift */; };
+		D7058B102B59E44B000A888A /* StylePointWithSceneSymbolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7058B0D2B59E44B000A888A /* StylePointWithSceneSymbolView.swift */; };
+		D7058B122B59E468000A888A /* StylePointWithSceneSymbolView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7058B0D2B59E44B000A888A /* StylePointWithSceneSymbolView.swift */; };
 		D7058FB12ACB423C00A40F14 /* Animate3DGraphicView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7058FB02ACB423C00A40F14 /* Animate3DGraphicView.Model.swift */; };
 		D7058FB22ACB424E00A40F14 /* Animate3DGraphicView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7058FB02ACB423C00A40F14 /* Animate3DGraphicView.Model.swift */; };
 		D7084FA92AD771AA00EC7F4F /* AugmentRealityToFlyOverSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7084FA62AD771AA00EC7F4F /* AugmentRealityToFlyOverSceneView.swift */; };
@@ -397,6 +399,7 @@
 			dstSubfolderSpec = 7;
 			files = (
 				D718A1F02B57602000447087 /* ManageBookmarksView.swift in Copy Source Code Files */,
+				D7058B122B59E468000A888A /* StylePointWithSceneSymbolView.swift in Copy Source Code Files */,
 				D71D516F2B51D87700B2A2BE /* SearchForWebMapView.Views.swift in Copy Source Code Files */,
 				D7C6420D2B4F5DDB0042B8F7 /* SearchForWebMapView.Model.swift in Copy Source Code Files */,
 				D75F66392B48EB1800434974 /* SearchForWebMapView.swift in Copy Source Code Files */,
@@ -634,6 +637,7 @@
 		D701D72B2A37C7F7006FF0C8 /* bradley_low_3ds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bradley_low_3ds; sourceTree = "<group>"; };
 		D704AA592AB22C1A00A3BB63 /* GroupLayersTogetherView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupLayersTogetherView.swift; sourceTree = "<group>"; };
 		D7054AE82ACCCB6C007235BA /* Animate3DGraphicView.SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animate3DGraphicView.SettingsView.swift; sourceTree = "<group>"; };
+		D7058B0D2B59E44B000A888A /* StylePointWithSceneSymbolView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StylePointWithSceneSymbolView.swift; sourceTree = "<group>"; };
 		D7058FB02ACB423C00A40F14 /* Animate3DGraphicView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animate3DGraphicView.Model.swift; sourceTree = "<group>"; };
 		D7084FA62AD771AA00EC7F4F /* AugmentRealityToFlyOverSceneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AugmentRealityToFlyOverSceneView.swift; sourceTree = "<group>"; };
 		D70BE5782A5624A80022CA02 /* CategoriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesView.swift; sourceTree = "<group>"; };
@@ -933,6 +937,7 @@
 				E066DD362860AB0B004D3D5B /* Style graphics with renderer */,
 				E004A6E42846A609002A1FE6 /* Style graphics with symbols */,
 				D754E31D2A1D661D0006C5F1 /* Style point with picture marker symbols */,
+				D7058B0B2B59E44B000A888A /* Style point with scene symbol */,
 				D74C8BFA2ABA5572007C76B8 /* Style symbols from mobile style file */,
 				7573E81229D6134C00BEED9C /* Trace utility network */,
 			);
@@ -1364,6 +1369,14 @@
 				D75C35662AB50338003CD55F /* GroupLayersTogetherView.GroupLayerListView.swift */,
 			);
 			path = "Group layers together";
+			sourceTree = "<group>";
+		};
+		D7058B0B2B59E44B000A888A /* Style point with scene symbol */ = {
+			isa = PBXGroup;
+			children = (
+				D7058B0D2B59E44B000A888A /* StylePointWithSceneSymbolView.swift */,
+			);
+			path = "Style point with scene symbol";
 			sourceTree = "<group>";
 		};
 		D7084FA42AD771AA00EC7F4F /* Augment reality to fly over scene */ = {
@@ -2337,6 +2350,7 @@
 				D73FCFF72B02A3AA0006360D /* FindAddressWithReverseGeocodeView.swift in Sources */,
 				0005580A2817C51E00224BC6 /* SampleDetailView.swift in Sources */,
 				D75F66362B48EABC00434974 /* SearchForWebMapView.swift in Sources */,
+				D7058B102B59E44B000A888A /* StylePointWithSceneSymbolView.swift in Sources */,
 				D75C35672AB50338003CD55F /* GroupLayersTogetherView.GroupLayerListView.swift in Sources */,
 				4D2ADC6229C5071C003B367F /* ChangeMapViewBackgroundView.Model.swift in Sources */,
 				0074ABCD2817BCC30037244A /* SamplesApp+Samples.swift.tache in Sources */,
