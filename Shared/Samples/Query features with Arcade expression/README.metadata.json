@@ -2,7 +2,9 @@
     "category": "Search and Query",
     "description": "Query features on a map using an Arcade expression.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "query-features-with-arcade-expression.png"
+    ],
     "keywords": [
         "Arcade evaluator",
         "Arcade expression",
