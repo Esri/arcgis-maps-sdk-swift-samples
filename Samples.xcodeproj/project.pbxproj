@@ -313,6 +313,8 @@
 		D7F2784C2A1D76F5002E4567 /* AddWMSLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7E557672A1D768800B9FB09 /* AddWMSLayerView.swift */; };
 		D7F8C0392B60564D0072BFA7 /* AddFeaturesWithContingentValuesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F8C0362B60564D0072BFA7 /* AddFeaturesWithContingentValuesView.swift */; };
 		D7F8C03B2B6056790072BFA7 /* AddFeaturesWithContingentValuesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7F8C0362B60564D0072BFA7 /* AddFeaturesWithContingentValuesView.swift */; };
+		D7F8C03E2B605AF60072BFA7 /* ContingentValuesBirdNests.geodatabase in Resources */ = {isa = PBXBuildFile; fileRef = D7F8C03D2B605AF60072BFA7 /* ContingentValuesBirdNests.geodatabase */; settings = {ASSET_TAGS = (AddFeaturesWithContingentValues, ); }; };
+		D7F8C0412B605E720072BFA7 /* FillmoreTopographicMap.vtpk in Resources */ = {isa = PBXBuildFile; fileRef = D7F8C0402B605E720072BFA7 /* FillmoreTopographicMap.vtpk */; settings = {ASSET_TAGS = (AddFeaturesWithContingentValues, ); }; };
 		E000E7602869E33D005D87C5 /* ClipGeometryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E000E75F2869E33D005D87C5 /* ClipGeometryView.swift */; };
 		E000E763286A0B18005D87C5 /* CutGeometryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E000E762286A0B18005D87C5 /* CutGeometryView.swift */; };
 		E004A6C128414332002A1FE6 /* SetViewpointRotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6BD28414332002A1FE6 /* SetViewpointRotationView.swift */; };
@@ -725,6 +727,8 @@
 		D7ECF5972AB8BE63003FB2BE /* RenderMultilayerSymbolsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenderMultilayerSymbolsView.swift; sourceTree = "<group>"; };
 		D7EF5D742A26A03A00FEBDE5 /* ShowCoordinatesInMultipleFormatsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowCoordinatesInMultipleFormatsView.swift; sourceTree = "<group>"; };
 		D7F8C0362B60564D0072BFA7 /* AddFeaturesWithContingentValuesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddFeaturesWithContingentValuesView.swift; sourceTree = "<group>"; };
+		D7F8C03D2B605AF60072BFA7 /* ContingentValuesBirdNests.geodatabase */ = {isa = PBXFileReference; lastKnownFileType = file; path = ContingentValuesBirdNests.geodatabase; sourceTree = "<group>"; };
+		D7F8C0402B605E720072BFA7 /* FillmoreTopographicMap.vtpk */ = {isa = PBXFileReference; lastKnownFileType = file; path = FillmoreTopographicMap.vtpk; sourceTree = "<group>"; };
 		E000E75F2869E33D005D87C5 /* ClipGeometryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipGeometryView.swift; sourceTree = "<group>"; };
 		E000E762286A0B18005D87C5 /* CutGeometryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutGeometryView.swift; sourceTree = "<group>"; };
 		E004A6BD28414332002A1FE6 /* SetViewpointRotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetViewpointRotationView.swift; sourceTree = "<group>"; };
@@ -1059,11 +1063,13 @@
 				D721EEA62ABDFF550040BE46 /* 174150279af74a2ba6f8b87a567f480b */,
 				792222DB2A81AA5D00619FFE /* a8a942c228af4fac96baa78ad60f511f */,
 				D7464F202ACE0910007FEE88 /* b5f977c78ec74b3a8857ca86d1d9b318 */,
+				D7F8C03F2B605E720072BFA7 /* b5106355f1634b8996e634c04b6a930a */,
 				00D4EF8128638BF100B9CC30 /* cb1b20748a9f4d128dad8a87244e3e37 */,
 				4D126D7629CA3B3F00CFB7A7 /* d5bad9f4fee9483791e405880fb466da */,
 				D77572AC2A295DC100F490CD /* d1453556d91e46dea191c20c398b82cd */,
 				D7E7D0862AEB3C36003AAD02 /* df193653ed39449195af0c9725701dca */,
 				F111CCC2288B63DB00205358 /* e1f3a7254cb845b09450f54937c16061 */,
+				D7F8C03C2B605AF60072BFA7 /* e12b54ea799f4606a2712157cf9f6e41 */,
 				D7C16D262AC5FEB600689E89 /* e87c154fb9c2487f999143df5b08e9b1 */,
 				D7497F3E2AC4BA4100167AD2 /* f5ff6f5556a945bca87ca513b8729a1e */,
 			);
@@ -1899,6 +1905,22 @@
 			path = "Add features with contingent values";
 			sourceTree = "<group>";
 		};
+		D7F8C03C2B605AF60072BFA7 /* e12b54ea799f4606a2712157cf9f6e41 */ = {
+			isa = PBXGroup;
+			children = (
+				D7F8C03D2B605AF60072BFA7 /* ContingentValuesBirdNests.geodatabase */,
+			);
+			path = e12b54ea799f4606a2712157cf9f6e41;
+			sourceTree = "<group>";
+		};
+		D7F8C03F2B605E720072BFA7 /* b5106355f1634b8996e634c04b6a930a */ = {
+			isa = PBXGroup;
+			children = (
+				D7F8C0402B605E720072BFA7 /* FillmoreTopographicMap.vtpk */,
+			);
+			path = b5106355f1634b8996e634c04b6a930a;
+			sourceTree = "<group>";
+		};
 		E000E75E2869E325005D87C5 /* Clip geometry */ = {
 			isa = PBXGroup;
 			children = (
@@ -2136,6 +2158,7 @@
 				KnownAssetTags = (
 					AddCustomDynamicEntityDataSource,
 					AddFeatureLayers,
+					AddFeaturesWithContingentValues,
 					AddRasterFromFile,
 					Animate3DGraphic,
 					AnimateImagesWithImageOverlay,
@@ -2190,6 +2213,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D7F8C0412B605E720072BFA7 /* FillmoreTopographicMap.vtpk in Resources */,
+				D7F8C03E2B605AF60072BFA7 /* ContingentValuesBirdNests.geodatabase in Resources */,
 				E041AC1E288076A60056009B /* info.css in Resources */,
 				D7CE9F9B2AE2F575008F7A5F /* streetmap_SD.tpkx in Resources */,
 				D721EEA82ABDFF550040BE46 /* LothianRiversAnno.mmpk in Resources */,

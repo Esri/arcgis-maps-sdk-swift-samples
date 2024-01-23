@@ -36,6 +36,18 @@ private extension AddFeaturesWithContingentValuesView {
     }
 }
 
+private extension URL {
+    /// A URL to the local "Contingent Values Bird Nests" geodatabase.
+    static var contingentValuesBirdNests: URL {
+        Bundle.main.url(forResource: "ContingentValuesBirdNests", withExtension: "geodatabase")!
+    }
+    
+    /// A URL to the local "Fillmore Topographic Map" vector tile package.
+    static var fillmoreTopographicMap: URL {
+        Bundle.main.url(forResource: "FillmoreTopographicMap", withExtension: "vtpk")!
+    }
+}
+
 #Preview {
     AddFeaturesWithContingentValuesView()
 }
