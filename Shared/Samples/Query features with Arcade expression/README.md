@@ -20,17 +20,17 @@ Tap on any neighborhood to see the number of crimes in the last 60 days in a cal
 4. Identify the visible layer where it is tapped on and get the feature.
 5. Create the following `ArcadeExpression`:
 
-	 ```swift		
-	 expressionValue = "var crimes = FeatureSetByName($map, 'Crime in the last 60 days');\n"
-     				   "return Count(Intersects($feature, crimes));"
-     ```
+    ```swift		
+    expressionValue = "var crimes = FeatureSetByName($map, 'Crime in the last 60 days');\n"
+                      "return Count(Intersects($feature, crimes));"
+    ```
 
 6. Create an `ArcadeEvaluator` using the Arcade expression and `ArcadeProfile.formCalculation`.
 7. Create a dictionary of profile variables with the following pairs:
 
-	 `["$feature": identifiedFeature]`
+    `["$feature": identifiedFeature]`
 
-	 `["$map": map]`
+    `["$map": map]`
 
 8. Call `evaluate(withProfileVariables:)` on the Arcade evaluator object and pass the profile variables to evaluate the Arcade expression.
 9. Convert the result to a `Double` with `result(as:)` and populate the callout with the crime count.
