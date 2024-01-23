@@ -23,6 +23,7 @@ from typing import List, Set
 # A set of words that get omitted during letter-case checks.
 # This set will be updated when a special word appears in a new sample.
 exception_proper_nouns = {
+    'Arcade',
     'ArcGIS Online',
     'ArcGIS Pro',
     'GeoPackage',
