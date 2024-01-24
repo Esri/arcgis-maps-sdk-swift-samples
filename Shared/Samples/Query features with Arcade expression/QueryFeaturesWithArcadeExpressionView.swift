@@ -35,7 +35,7 @@ struct QueryFeaturesWithArcadeExpressionView: View {
         MapViewReader { mapViewProxy in
             MapView(map: model.map)
                 .callout(placement: $calloutPlacement.animation(.default.speed(2))) { placement in
-                    let crimeCount = placement.geoElement?.attributes["Crime_Count"] as? Double ?? 0
+                    let crimeCount = placement.geoElement?.attributes["Crime_Count"] as! Int
                     Text("Crimes in the last 60 days: \(Int(crimeCount))")
                         .font(.callout)
                         .padding(8)
@@ -131,7 +131,7 @@ private extension QueryFeaturesWithArcadeExpressionView {
         /// Evaluates the crime count for a given feature.
         /// - Parameter feature: The ArcGIS feature evaluate.
         /// - Returns: The evaluated crime count in the last 60 days.
-        func crimeCount(for feature: ArcGISFeature) async throws -> Double? {
+        func crimeCount(for feature: ArcGISFeature) async throws -> Int {
             // Create the profile variables for the script with the feature and map.
             let profileVariables: [String: Any] = ["$feature": feature, "$map": map]
             
@@ -139,8 +139,8 @@ private extension QueryFeaturesWithArcadeExpressionView {
             let result = try await crimeCountEvaluator.evaluate(withProfileVariables: profileVariables)
             
             // Cast the result to get it's value.
-            let crimeCount = result.result(as: .double) as? Double
-            return crimeCount
+            let crimeCount = result.result(as: .double) as? Double ?? 0
+            return Int(crimeCount)
         }
     }
 }
