@@ -33,7 +33,7 @@ struct QueryFeaturesWithArcadeExpressionView: View {
             MapView(map: model.map)
                 .callout(placement: $calloutPlacement.animation(.default.speed(2))) { placement in
                     let crimeCount = placement.geoElement?.attributes["Crime_Count"] as! Int
-                    Text("Crimes in the last 60 days: \(Int(crimeCount))")
+                    Text("Crimes in the last 60 days: \(crimeCount)")
                         .font(.callout)
                         .padding(8)
                 }
