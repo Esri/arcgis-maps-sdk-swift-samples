@@ -20,7 +20,7 @@ Tap on any neighborhood to see the number of crimes in the last 60 days in a cal
 4. Identify the visible layer where it is tapped on and get the feature.
 5. Create the following `ArcadeExpression`:
 
-    ```swift
+    ```
     expressionValue = "var crimes = FeatureSetByName($map, 'Crime in the last 60 days');\n"
                       "return Count(Intersects($feature, crimes));"
     ```
