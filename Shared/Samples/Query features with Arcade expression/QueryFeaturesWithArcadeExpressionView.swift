@@ -25,9 +25,6 @@ struct QueryFeaturesWithArcadeExpressionView: View {
     /// The placement of the callout on the map.
     @State private var calloutPlacement: CalloutPlacement?
     
-    /// A Boolean value indicating whether there is a current evaluation operation.
-    @State private var isEvaluating = false
-    
     /// The error shown in the error alert.
     @State private var error: Error?
     
@@ -45,10 +42,7 @@ struct QueryFeaturesWithArcadeExpressionView: View {
                 }
                 .task(id: tapScreenPoint) {
                     guard let tapScreenPoint else { return }
-                    
                     calloutPlacement = nil
-                    isEvaluating = true
-                    defer { isEvaluating = false }
                     
                     do {
                         // Identify the tapped feature using the map view proxy.
@@ -64,7 +58,6 @@ struct QueryFeaturesWithArcadeExpressionView: View {
                         
                         // Evaluate the crime count for the feature.
                         let crimeCount = try await model.crimeCount(for: identifiedFeature)
-                        isEvaluating = false
                         
                         // Update the callout with the evaluation results.
                         identifiedFeature.setAttributeValue(crimeCount, forKey: "Crime_Count")
@@ -76,7 +69,7 @@ struct QueryFeaturesWithArcadeExpressionView: View {
                     }
                 }
                 .overlay(alignment: .center) {
-                    if isEvaluating {
+                    if model.isEvaluating {
                         VStack {
                             Text("Evaluating")
                             ProgressView()
@@ -98,6 +91,7 @@ struct QueryFeaturesWithArcadeExpressionView: View {
 
 private extension QueryFeaturesWithArcadeExpressionView {
     /// The view model for the sample.
+    @MainActor
     class Model: ObservableObject {
         /// A map of the "Crime in Police Beats" portal item.
         let map: Map = {
@@ -128,10 +122,16 @@ private extension QueryFeaturesWithArcadeExpressionView {
             return evaluator
         }()
         
+        /// A Boolean value indicating whether there is a current evaluation operation.
+        @Published private(set) var isEvaluating = false
+        
         /// Evaluates the crime count for a given feature.
         /// - Parameter feature: The ArcGIS feature evaluate.
         /// - Returns: The evaluated crime count in the last 60 days.
         func crimeCount(for feature: ArcGISFeature) async throws -> Int {
+            isEvaluating = true
+            defer { isEvaluating = false }
+            
             // Create the profile variables for the script with the feature and map.
             let profileVariables: [String: Any] = ["$feature": feature, "$map": map]
             
