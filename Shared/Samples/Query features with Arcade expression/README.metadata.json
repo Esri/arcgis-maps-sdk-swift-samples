@@ -1,0 +1,35 @@
+{
+    "category": "Search and Query",
+    "description": "Query features on a map using an Arcade expression.",
+    "ignore": false,
+    "images": [
+        "query-features-with-arcade-expression.png"
+    ],
+    "keywords": [
+        "Arcade evaluator",
+        "Arcade expression",
+        "identify layers",
+        "portal",
+        "portal item",
+        "query",
+        "ArcadeEvaluationResult",
+        "ArcadeEvaluator",
+        "ArcadeExpression",
+        "ArcadeProfile",
+        "Portal",
+        "PortalItem"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "ArcadeEvaluationResult",
+        "ArcadeEvaluator",
+        "ArcadeExpression",
+        "ArcadeProfile",
+        "Portal",
+        "PortalItem"
+    ],
+    "snippets": [
+        "QueryFeaturesWithArcadeExpressionView.swift"
+    ],
+    "title": "Query features with Arcade expression"
+}
