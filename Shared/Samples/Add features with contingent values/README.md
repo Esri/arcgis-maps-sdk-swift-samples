@@ -2,8 +2,7 @@
 
 Create and add features whose attribute values satisfy a predefined set of contingencies.
 
-![Add features with contingent values](AddFeaturesWithContingentValues.png)
-![Qt implementation gif](QtContingentValues.gif)
+![Image of add features with contingent values](add-features-with-contingent-values.png)
 
 ## Use case
 
