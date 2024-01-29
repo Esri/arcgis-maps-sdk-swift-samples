@@ -52,8 +52,8 @@ extension AddFeaturesWithContingentValuesView {
         /// A temporary file containing a geodatabase copied from a local URL.
         private let geodatabaseFile = GeodatabaseFile(fileURL: .contingentValuesBirdNests)
         
-        /// The feature table in the geodatabase.
-        private var featureTable: GeodatabaseFeatureTable?
+        /// The feature table containing the features.
+        private var featureTable: ArcGISFeatureTable?
         
         /// The feature in the feature table.
         private(set) var feature: ArcGISFeature?
