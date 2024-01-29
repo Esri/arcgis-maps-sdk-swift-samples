@@ -25,9 +25,7 @@ extension AddFeaturesWithContingentValuesView {
         @State private var selectedStatusName: String?
         
         /// The coded value options for the feature's status attribute.
-        @State private var statusOptions: [CodedValue?] = [] {
-            didSet { selectedStatusName = nil }
-        }
+        @State private var statusOptions: [CodedValue?] = []
         
         /// The name of the selected protection.
         @State private var selectedProtectionName: String?
@@ -65,11 +63,6 @@ extension AddFeaturesWithContingentValuesView {
                         protectionOptions = model.protectionContingentCodedValues()
                         protectionOptions.insert(nil, at: 0)
                     }
-                    .onAppear {
-                        // Get the status coded values when the view appears.
-                        statusOptions = model.statusCodedValues()
-                        statusOptions.insert(nil, at: 0)
-                    }
                     
                     Picker("Protection", selection: $selectedProtectionName) {
                         ForEach(protectionOptions, id: \.?.codedValue.name) { option in
@@ -104,7 +97,9 @@ extension AddFeaturesWithContingentValuesView {
                                 set: { selectedBufferSize = $0 }
                             ),
                             in: bufferSizeRange ?? 0...0)
-                        .onChange(of: selectedBufferSize ?? 0) { newBufferSize in
+                        .onChange(of: selectedBufferSize ?? .nan) { newBufferSize in
+                            guard newBufferSize.isFinite else { return }
+                            
                             // Update the feature's buffer size attribute.
                             model.setFeatureAttributeValue(
                                 Int32(newBufferSize),
@@ -118,6 +113,11 @@ extension AddFeaturesWithContingentValuesView {
                 } footer: {
                     Text("The options will vary depending on which values are selected.")
                 }
+            }
+            .onAppear {
+                // Get the status coded values when the view appears.
+                statusOptions = model.statusCodedValues()
+                statusOptions.insert(nil, at: 0)
             }
         }
     }
