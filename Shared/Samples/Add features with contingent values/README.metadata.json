@@ -33,7 +33,9 @@
         "ContingentValuesResult"
     ],
     "snippets": [
-        "AddFeaturesWithContingentValuesView.swift"
+        "AddFeaturesWithContingentValuesView.swift",
+        "AddFeaturesWithContingentValuesView.Model.swift",
+        "AddFeaturesWithContingentValuesView.AddFeatureView.swift"
     ],
     "title": "Add features with contingent values"
 }
