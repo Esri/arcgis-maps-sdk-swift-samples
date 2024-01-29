@@ -40,7 +40,6 @@
 		0044289329C9234300160767 /* GetElevationAtPointOnSurfaceView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 0044289129C90C0B00160767 /* GetElevationAtPointOnSurfaceView.swift */; };
 		0044CDDF2995C39E004618CE /* ShowDeviceLocationHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0044CDDE2995C39E004618CE /* ShowDeviceLocationHistoryView.swift */; };
 		0044CDE02995D4DD004618CE /* ShowDeviceLocationHistoryView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 0044CDDE2995C39E004618CE /* ShowDeviceLocationHistoryView.swift */; };
-		004FE87129DF5D8700075217 /* Bristol in Resources */ = {isa = PBXBuildFile; fileRef = 004FE87029DF5D8700075217 /* Bristol */; settings = {ASSET_TAGS = (Animate3DGraphic, ChangeCameraController, StylePointWithDistanceCompositeSceneSymbol, ); }; };
 		004FE87129DF5D8700075217 /* Bristol in Resources */ = {isa = PBXBuildFile; fileRef = 004FE87029DF5D8700075217 /* Bristol */; settings = {ASSET_TAGS = (Animate3DGraphic, ChangeCameraController, OrbitCameraAroundObject, ); }; };
 		006C835528B40682004AEB7F /* BrowseBuildingFloorsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E0FE32E628747778002C6ACA /* BrowseBuildingFloorsView.swift */; };
 		006C835628B40682004AEB7F /* DisplayMapFromMobileMapPackageView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = F111CCC0288B5D5600205358 /* DisplayMapFromMobileMapPackageView.swift */; };
@@ -179,10 +178,10 @@
 		D710996E2A27D9B30065A1C1 /* DensifyAndGeneralizeGeometryView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D710996C2A27D9210065A1C1 /* DensifyAndGeneralizeGeometryView.swift */; };
 		D71099702A2802FA0065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D710996F2A2802FA0065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift */; };
 		D71099712A280D830065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D710996F2A2802FA0065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift */; };
-		D718A1ED2B575FD900447087 /* ManageBookmarksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D718A1EA2B575FD900447087 /* ManageBookmarksView.swift */; };
-		D718A1F02B57602000447087 /* ManageBookmarksView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D718A1EA2B575FD900447087 /* ManageBookmarksView.swift */; };
 		D718A1E72B570F7500447087 /* OrbitCameraAroundObjectView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D718A1E62B570F7500447087 /* OrbitCameraAroundObjectView.Model.swift */; };
 		D718A1E82B571C9100447087 /* OrbitCameraAroundObjectView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D718A1E62B570F7500447087 /* OrbitCameraAroundObjectView.Model.swift */; };
+		D718A1ED2B575FD900447087 /* ManageBookmarksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D718A1EA2B575FD900447087 /* ManageBookmarksView.swift */; };
+		D718A1F02B57602000447087 /* ManageBookmarksView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D718A1EA2B575FD900447087 /* ManageBookmarksView.swift */; };
 		D71C5F642AAA7A88006599FD /* CreateSymbolStylesFromWebStylesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71C5F632AAA7A88006599FD /* CreateSymbolStylesFromWebStylesView.swift */; };
 		D71C5F652AAA83D2006599FD /* CreateSymbolStylesFromWebStylesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D71C5F632AAA7A88006599FD /* CreateSymbolStylesFromWebStylesView.swift */; };
 		D71D516E2B51D7B600B2A2BE /* SearchForWebMapView.Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71D516D2B51D7B600B2A2BE /* SearchForWebMapView.Views.swift */; };
@@ -667,8 +666,8 @@
 		D70BE5782A5624A80022CA02 /* CategoriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesView.swift; sourceTree = "<group>"; };
 		D710996C2A27D9210065A1C1 /* DensifyAndGeneralizeGeometryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DensifyAndGeneralizeGeometryView.swift; sourceTree = "<group>"; };
 		D710996F2A2802FA0065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DensifyAndGeneralizeGeometryView.SettingsView.swift; sourceTree = "<group>"; };
-		D718A1EA2B575FD900447087 /* ManageBookmarksView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageBookmarksView.swift; sourceTree = "<group>"; };
 		D718A1E62B570F7500447087 /* OrbitCameraAroundObjectView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrbitCameraAroundObjectView.Model.swift; sourceTree = "<group>"; };
+		D718A1EA2B575FD900447087 /* ManageBookmarksView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageBookmarksView.swift; sourceTree = "<group>"; };
 		D71C5F632AAA7A88006599FD /* CreateSymbolStylesFromWebStylesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateSymbolStylesFromWebStylesView.swift; sourceTree = "<group>"; };
 		D71D516D2B51D7B600B2A2BE /* SearchForWebMapView.Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchForWebMapView.Views.swift; sourceTree = "<group>"; };
 		D71FCB892AD6277E000E517C /* CreateMobileGeodatabaseView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateMobileGeodatabaseView.Model.swift; sourceTree = "<group>"; };
