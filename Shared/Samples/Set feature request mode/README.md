@@ -15,16 +15,16 @@ Feature tables can be initialized with a feature request mode which controls how
 
 ## How to use the sample
 
-Choose a request mode by tapping the "Mode" button. Pan and zoom to see how the features update at different scales. If you choose `MANUAL_CACHE`, tap the "Populate" button to manually get a cache with a subset of features (where `Condition < 4`).
+Choose a request mode. Pan and zoom to see how the features update at different scales. If you choose "Manual Cache", tap the "Populate" button to manually get a cache with a subset of features (where "Condition < 4") within the extent.
 
 Note: The service limits requests to 2000 features.
 
 ## How it works
 
-1. Create an `AGSServiceFeatureTable` with a feature service URL.
-2. Set the `featureRequestMode` property of the `AGSServiceFeatureTable` to the desired mode (Cache, No cache, or Manual cache) before the table is loaded.
-    * If using `MANUAL_CACHE`, populate the features with `AGSServiceFeatureTable.populateFromService(with:clearCache:outFields:completion:)`.
-3. Create an `AGSFeatureLayer` with the feature table and add it to a map's operational layers to display it.
+1. Create an `ServiceFeatureTable` with a feature service URL.
+2. Set the `featureRequestMode` property of the `ServiceFeatureTable` to the desired mode (Cache, No cache, or Manual cache) before the table is loaded.
+    * If using `manualCache`, populate the features with `ServiceFeatureTable.populateFromService(using:clearCache:outFields:)`.
+3. Create an `FeatureLayer` with the feature table and add it to a map's operational layers to display it.
 
 ## Relevant API
 
@@ -36,7 +36,7 @@ Note: The service limits requests to 2000 features.
 
 ## About the data
 
-This sample uses the [Trees of Portland](https://www.arcgis.com/home/item.html?id=1759fd3e8a324358a0c58d9a687a8578) service showcasing over 200,000 street trees in Portland, OR. Each tree point models the health of the tree (green - better, red - worse) as well as the diameter of its trunk.
+This sample uses the [Trees of Portland](https://services2.arcgis.com/ZQgQTuoyBrtmoGdP/arcgis/rest/services/Trees_of_Portland/FeatureServer/0) service showcasing over 200,000 street trees in Portland, OR. Each tree point models the health of the tree (green - better, red - worse) as well as the diameter of its trunk.
 
 ## Tags
 

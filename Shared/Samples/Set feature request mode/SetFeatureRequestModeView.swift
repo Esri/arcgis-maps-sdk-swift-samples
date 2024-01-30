@@ -20,10 +20,7 @@ struct SetFeatureRequestModeView: View {
     @StateObject private var model = Model()
 
     /// The feature table's current feature request mode.
-    @State private var selectedFeatureRequestMode: FeatureRequestMode = .undefined
-
-    /// The currently available feature request mode options for the feature table.
-    @State private var featureRequestModeOptions: [FeatureRequestMode] = [.undefined]
+    @State private var selectedFeatureRequestMode: FeatureRequestMode = .onInteractionCache
 
     /// The text shown in the overlay at the top of the screen.
     @State private var message = ""
@@ -69,7 +66,7 @@ struct SetFeatureRequestModeView: View {
                             }
 
                             Picker("Feature Request Mode", selection: $selectedFeatureRequestMode) {
-                                ForEach(featureRequestModeOptions, id: \.self) { mode in
+                                ForEach(FeatureRequestMode.modeCases, id: \.self) { mode in
                                     Text(mode.label)
                                 }
                             }
@@ -95,16 +92,6 @@ struct SetFeatureRequestModeView: View {
                 .shadow(radius: 50)
             }
         }
-        .task {
-            // Load the feature table to get it's default feature request mode.
-            do {
-                try await model.featureTable.load()
-                selectedFeatureRequestMode = model.featureTable.featureRequestMode
-                featureRequestModeOptions = [.onInteractionCache, .onInteractionNoCache, .manualCache]
-            } catch {
-                self.error = error
-            }
-        }
         .errorAlert(presentingError: $error)
     }
 }
@@ -119,8 +106,16 @@ private extension SetFeatureRequestModeView {
             return map
         }()
 
-        /// The service feature table created from a URL.
-        let featureTable = ServiceFeatureTable(url: .treesOfPortland)
+        /// The service feature table.
+        let featureTable: ServiceFeatureTable = {
+            // Create the table from a URL.
+            let featureTable = ServiceFeatureTable(url: .treesOfPortland)
+
+            // Set the initial table's feature request mode.
+            featureTable.featureRequestMode = .onInteractionCache
+
+            return featureTable
+        }()
 
         init() {
             // Create a feature layer from the feature table and add it to the map.
@@ -155,6 +150,11 @@ private extension SetFeatureRequestModeView {
 }
 
 private extension FeatureRequestMode {
+    /// The feature request mode cases that represent a valid mode, e.i., not `undefined`.
+    static var modeCases: [Self] {
+        return [.onInteractionCache, .onInteractionNoCache, .manualCache]
+    }
+
     /// A human-readable label for the feature request mode.
     var label: String {
         switch self {
