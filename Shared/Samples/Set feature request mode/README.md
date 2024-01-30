@@ -2,7 +2,7 @@
 
 Use different feature request modes to populate the map from a service feature table.
 
-![Image of set feature request mode](SetFeatureRequestMode.png)   ![Animation of set feature request mode](SetFeatureRequestMode.gif)
+![Image of set feature request mode](set-feature-request-mode.png)
 
 ## Use case
 

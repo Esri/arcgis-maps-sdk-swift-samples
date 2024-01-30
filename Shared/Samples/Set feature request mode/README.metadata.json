@@ -2,7 +2,9 @@
     "category": "Search and Query",
     "description": "Use different feature request modes to populate the map from a service feature table.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "set-feature-request-mode.png"
+    ],
     "keywords": [
         "cache",
         "data",
