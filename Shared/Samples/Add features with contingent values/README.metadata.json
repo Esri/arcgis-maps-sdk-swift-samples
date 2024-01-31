@@ -1,0 +1,43 @@
+{
+    "category": "Edit and Manage Data",
+    "description": "Create and add features whose attribute values satisfy a predefined set of contingencies.",
+    "ignore": false,
+    "images": [
+        "add-features-with-contingent-values.png"
+    ],
+    "keywords": [
+        "coded values",
+        "contingent values",
+        "feature table",
+        "geodatabase",
+        "ArcGISFeatureTable",
+        "CodedValue",
+        "CodedValueDomain",
+        "ContingencyConstraintViolation",
+        "ContingentCodedValue",
+        "ContingentRangeValue",
+        "ContingentValuesDefinition",
+        "ContingentValuesResult"
+    ],
+    "offline_data": [
+        "b5106355f1634b8996e634c04b6a930a",
+        "e12b54ea799f4606a2712157cf9f6e41"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "ArcGISFeatureTable",
+        "CodedValue",
+        "CodedValueDomain",
+        "ContingencyConstraintViolation",
+        "ContingentCodedValue",
+        "ContingentRangeValue",
+        "ContingentValuesDefinition",
+        "ContingentValuesResult"
+    ],
+    "snippets": [
+        "AddFeaturesWithContingentValuesView.swift",
+        "AddFeaturesWithContingentValuesView.Model.swift",
+        "AddFeaturesWithContingentValuesView.AddFeatureView.swift"
+    ],
+    "title": "Add features with contingent values"
+}
