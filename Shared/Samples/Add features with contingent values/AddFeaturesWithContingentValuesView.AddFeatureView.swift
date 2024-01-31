@@ -61,6 +61,8 @@ extension AddFeaturesWithContingentValuesView {
                         
                         // Update the protection options.
                         protectionOptions = model.protectionContingentCodedValues()
+                        
+                        // Add nil to allow for an empty option in the picker.
                         protectionOptions.insert(nil, at: 0)
                     }
                     
@@ -117,6 +119,8 @@ extension AddFeaturesWithContingentValuesView {
             .onAppear {
                 // Get the status coded values when the view appears.
                 statusOptions = model.statusCodedValues()
+                
+                // Add nil to allow for an empty option in the picker.
                 statusOptions.insert(nil, at: 0)
             }
         }
