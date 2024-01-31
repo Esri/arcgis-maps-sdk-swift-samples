@@ -18,19 +18,19 @@ import SwiftUI
 struct SetFeatureRequestModeView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
-
+    
     /// The feature table's current feature request mode.
     @State private var selectedFeatureRequestMode: FeatureRequestMode = .onInteractionCache
-
+    
     /// The text shown in the overlay at the top of the screen.
     @State private var message = ""
-
+    
     /// A Boolean value indicating whether the feature table is being populated.
     @State private var isPopulating = false
-
+    
     /// The error shown in the error alert.
     @State private var error: Error?
-
+    
     var body: some View {
         GeometryReader { geometryProxy in
             MapViewReader { mapViewProxy in
@@ -51,12 +51,12 @@ struct SetFeatureRequestModeView: View {
                                 // Populate the feature table when the "Populate" button is tapped.
                                 guard isPopulating else { return }
                                 defer { isPopulating = false }
-
+                                
                                 do {
                                     // Get the current extent of the screen.
                                     let viewRect = geometryProxy.frame(in: .local)
                                     let viewExtent = mapViewProxy.envelope(fromViewRect: viewRect)
-
+                                    
                                     // Populate the feature table with features contained in extent.
                                     let count = try await model.populateFeatures(within: viewExtent)
                                     message = "Populated \(count) features."
@@ -64,7 +64,7 @@ struct SetFeatureRequestModeView: View {
                                     self.error = error
                                 }
                             }
-
+                            
                             Picker("Feature Request Mode", selection: $selectedFeatureRequestMode) {
                                 ForEach(FeatureRequestMode.modeCases, id: \.self) { mode in
                                     Text(mode.label)
@@ -105,24 +105,24 @@ private extension SetFeatureRequestModeView {
             map.initialViewpoint = Viewpoint(latitude: 45.5266, longitude: -122.6219, scale: 6e3)
             return map
         }()
-
+        
         /// The service feature table.
         let featureTable: ServiceFeatureTable = {
             // Create the table from a URL.
             let featureTable = ServiceFeatureTable(url: .treesOfPortland)
-
+            
             // Set the initial table's feature request mode.
             featureTable.featureRequestMode = .onInteractionCache
-
+            
             return featureTable
         }()
-
+        
         init() {
             // Create a feature layer from the feature table and add it to the map.
             let featureLayer = FeatureLayer(featureTable: featureTable)
             map.addOperationalLayer(featureLayer)
         }
-
+        
         /// Populates the feature table using queried features contained within a given geometry.
         /// - Parameter geometry: The geometry used to filter the results.
         /// - Returns: The number of features populated.
@@ -132,14 +132,14 @@ private extension SetFeatureRequestModeView {
             let queryParameters = QueryParameters()
             queryParameters.whereClause = "Condition < '4'"
             queryParameters.geometry = geometry
-
+            
             // Use the query parameters to populate the feature table.
             let featureQueryResult = try await featureTable.populateFromService(
                 using: queryParameters,
                 clearCache: true,
                 outFields: ["*"]
             )
-
+            
             // Get the amount of features found from the feature query result.
             let featureCount = featureQueryResult.features().reduce(into: Int()) { result, _ in
                 result += 1
@@ -154,7 +154,7 @@ private extension FeatureRequestMode {
     static var modeCases: [Self] {
         return [.onInteractionCache, .onInteractionNoCache, .manualCache]
     }
-
+    
     /// A human-readable label for the feature request mode.
     var label: String {
         switch self {
