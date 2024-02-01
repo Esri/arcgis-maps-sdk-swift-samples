@@ -26,7 +26,8 @@
         "TransformationCatalog"
     ],
     "snippets": [
-        "ListSpatialReferenceTransformationsView.swift"
+        "ListSpatialReferenceTransformationsView.swift",
+        "ListSpatialReferenceTransformationsView.Model.swift"
     ],
     "title": "List spatial reference transformations"
 }

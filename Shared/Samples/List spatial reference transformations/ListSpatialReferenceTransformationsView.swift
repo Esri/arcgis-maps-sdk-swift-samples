@@ -19,20 +19,142 @@ struct ListSpatialReferenceTransformationsView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
+    /// The visible area of the map view.
+    @State private var visibleArea: ArcGIS.Polygon?
+    
+    /// A Boolean value indicating whether the transformations list should be filtered using the current map extent.
+    @State private var filterByMapExtent = false
+    
+    /// A Boolean value indicating whether the file importer interface is presented.
+    @State private var fileImporterIsPresented = false
+    
     /// The error shown in the error alert.
     @State private var error: Error?
     
     var body: some View {
-        MapView(map: model.map)
-            .errorAlert(presentingError: $error)
+        VStack(spacing: 0) {
+            MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
+                .onVisibleAreaChanged { visibleArea = $0 }
+                .attributionBarHidden(true)
+            
+            NavigationView {
+                TransformationsList(model: model)
+                    .navigationTitle("Transformations")
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbar {
+                        ToolbarItem(placement: .topBarTrailing) {
+                            transformationsMenu
+                        }
+                    }
+            }
+            .navigationViewStyle(.stack)
+        }
+        .task {
+            // Set the transformations list once the map's spatial reference has loaded.
+            do {
+                try await model.map.load()
+                model.updateTransformationsList()
+            } catch {
+                self.error = error
+            }
+        }
+        .errorAlert(presentingError: $error)
+    }
+    
+    /// A menu containing actions relating to the list of transformations.
+    private var transformationsMenu: some View {
+        Menu("Transformations", systemImage: "ellipsis") {
+            Picker("Filter Transformations", selection: $filterByMapExtent) {
+                Text("All Transformations").tag(false)
+                Text("Suitable for Map Extent").tag(true)
+            }
+            .pickerStyle(.inline)
+            .onChange(of: filterByMapExtent) { newValue in
+                model.updateTransformationsList(withExtent: newValue ? visibleArea?.extent : nil)
+            }
+            
+            Link(destination: .projectionEngineDataDownloads) {
+                Label("Download Data", systemImage: "arrow.down.circle")
+            }
+            
+            Button("Set Data Directory", systemImage: "folder") {
+                fileImporterIsPresented = true
+            }
+        }
+        .fileImporter(
+            isPresented: $fileImporterIsPresented,
+            allowedContentTypes: [.folder]
+        ) { result in
+            do {
+                switch result {
+                case .success(let fileURL):
+                    try model.setProjectionEngineDataURL(fileURL)
+                case .failure(let error):
+                    throw error
+                }
+            } catch {
+                self.error = error
+            }
+        }
     }
 }
 
 private extension ListSpatialReferenceTransformationsView {
-    /// The view model for the sample.
-    class Model: ObservableObject {
-        /// A map with a topographic basemap.
-        let map = Map(basemapStyle: .arcGISTopographic)
+    struct TransformationsList: View {
+        /// The view model for the sample.
+        @ObservedObject var model: Model
+        
+        var body: some View {
+            List(model.transformations, id: \.self) { transformation in
+                Button {
+                    model.selectTransformation(transformation)
+                } label: {
+                    VStack(alignment: .leading) {
+                        HStack {
+                            Text(transformation.name.replacingOccurrences(of: "_", with: " "))
+                            Spacer()
+                            if transformation == model.selectedTransformation {
+                                Image(systemName: "checkmark")
+                                    .foregroundColor(.accentColor)
+                            }
+                        }
+                        
+                        if transformation.isMissingProjectionEngineFiles {
+                            Text("Missing Grid Files")
+                                .font(.caption)
+                                .opacity(0.75)
+                        }
+                    }
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+            }
+            .alert(
+                "Missing Grid Files:",
+                isPresented: Binding(
+                    get: { model.missingFilenames != nil },
+                    set: { _ in model.missingFilenames = nil }
+                ),
+                presenting: model.missingFilenames,
+                actions: { _ in },
+                message: { filenames in
+                    let message = """
+                    \(filenames.joined(separator: ",\n"))
+                    
+                    See the README file for instructions on adding Projection Engine data to the app.
+                    """
+                    
+                    Text(message)
+                }
+            )
+        }
+    }
+}
+
+private extension URL {
+    /// A URL to the Projection Engine Data Downloads on ArcGIS for Developers.
+    static var projectionEngineDataDownloads: URL {
+        URL(string: "https://developers.arcgis.com/downloads/#pedata")!
     }
 }
 
