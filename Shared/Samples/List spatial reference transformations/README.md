@@ -2,7 +2,7 @@
 
 Get a list of suitable transformations for projecting a geometry between two spatial references with different horizontal datums.
 
-![Image of list spatial reference transformations](ListSpatialReferenceTransformations.jpg)
+![Image of list spatial reference transformations](list-spatial-reference-transformations.png)
 
 ## Use case
 
