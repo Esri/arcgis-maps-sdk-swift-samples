@@ -20,7 +20,7 @@ extension ListSpatialReferenceTransformationsView {
     class Model: ObservableObject {
         // MARK: Properties
         
-        /// A map with a light grey basemap centered on Greenwich Park, London, UK.
+        /// A map with a light grey basemap centered on Royal Observatory, Greenwich, UK.
         let map: Map = {
             let map = Map(basemapStyle: .arcGISLightGray)
             map.initialViewpoint = Viewpoint(center: .originalGeometry, scale: 5e3)

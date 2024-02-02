@@ -6,19 +6,21 @@ Get a list of suitable transformations for projecting a geometry between two spa
 
 ## Use case
 
-Transformations (sometimes known as datum or geographic transformations) are used when projecting data from one spatial reference to another when there is a difference in the underlying datum of the spatial references. Transformations can be mathematically defined by specific equations (equation-based transformations), or may rely on external supporting files (grid-based transformations). Choosing the most appropriate transformation for a situation can ensure the best possible accuracy for this operation. Some users familiar with transformations may wish to control which transformation is used in an operation.
+Transformations (sometimes known as datum or geographic transformations) are used when projecting data from one spatial reference to another when there is a difference in the underlying datum of the spatial references. Transformations can be mathematically defined by specific equations (equation-based transformations) or may rely on external supporting files (grid-based transformations). Choosing the most appropriate transformation for a situation can ensure the best possible accuracy for this operation. Some users familiar with transformations may wish to control which transformation is used in an operation.
 
 ## How to use the sample
 
 Select a transformation from the list to see the result of projecting the point from EPSG:27700 to EPSG:3857 using that transformation. The result is shown as a red cross; you can visually compare the original blue point with the projected red cross.
 
-Select 'Consider current extent' to limit the transformations that are appropriate for the current extent.
+Select "Suitable for Map Extent" to limit the transformations to those that are appropriate for the current extent.
 
-If the selected transformation is not usable (has missing grid files) then an error is displayed.
+If the selected transformation is not usable (has missing grid files), then an error is displayed.
+
+To download projection engine data, tap "Download Data" and then the download button next to the latest release of the `Projection Engine Data`. Unzip the download data in Files, and then tap "Set Data Directory" in the sample. Navigate into the unzipped `Projection Engine Data` directory and tap "Open".
 
 ## How it works
 
-1. Pass the input and output spatial references to `TransformationCatalog.getTransformationsBySuitability` for transformations based on the map's spatial reference OR additionally provide an extent argument to only return transformations suitable to the extent. This returns a list of ranked transformations.
+1. Pass the input and output spatial references to `TransformationCatalog.transformations(from:to:areaOfInterest:ignoreVertical:)` for transformations based on the map's spatial reference OR additionally provide an extent argument to only return transformations suitable to the extent. This returns a list of ranked transformations.
 2. Use one of the `DatumTransformation` objects returned to project the input geometry to the output spatial reference.
 
 ## Relevant API
@@ -38,16 +40,9 @@ The map starts out zoomed into the grounds of the Royal Observatory, Greenwich. 
 
 Some transformations aren't available until transformation data is provided.
 
-This sample uses a `GeographicTransformation`, which extends the `DatumTransformation` class. As of 100.9, ArcGIS Runtime also includes a `HorizontalVerticalTransformation`, which also extends `DatumTransformation`. The `HorizontalVerticalTransformation` class is used to transform coordinates of z-aware geometries between spatial references that have different geographic and/or vertical coordinate systems.
+This sample uses `GeographicTransformation`, a subclass of `DatumTransformation`. The ArcGIS Maps SDKs also include `HorizontalVerticalTransformation`, another subclass of `DatumTransformation`. The `HorizontalVerticalTransformation` class is used to transform coordinates of z-aware geometries between spatial references that have different geographic and/or vertical coordinate systems.
 
 This sample can be used with or without provisioning projection engine data to your device. If you do not provision data, a limited number of transformations will be available.
-
-To download projection engine data to your device:
-1. Log in to the [ArcGIS for Developers site](https://developers.arcgis.com/sign-in/) using your Developer account.
-2. In the Dashboard page, click '[Download APIs and SDKs](https://developers.arcgis.com/downloads/data)' and go to the `Supplemental ArcGIS Runtime Data` tab.
-3. Click the download button next to `Projection Engine Data` to download projection engine data to your computer.
-4. Unzip the downloaded data on your computer.
-5. Create an `~/ArcGIS/Runtime/Data/PEDataRuntime` directory on your device and copy the files to this directory.
 
 ## Tags
 
