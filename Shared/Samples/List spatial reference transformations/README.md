@@ -2,7 +2,7 @@
 
 Get a list of suitable transformations for projecting a geometry between two spatial references with different horizontal datums.
 
-![Image of list spatial reference transformations](list-spatial-reference-transformations.png)
+![Image of List spatial reference transformations](list-spatial-reference-transformations.png)
 
 ## Use case
 
@@ -10,7 +10,7 @@ Transformations (sometimes known as datum or geographic transformations) are use
 
 ## How to use the sample
 
-Select a transformation from the list to see the result of projecting the point from EPSG:27700 to EPSG:3857 using that transformation. The result is shown as a red cross; you can visually compare the original blue point with the projected red cross.
+Select a transformation from the list to see the result of projecting the point from EPSG:27700 to EPSG:3857 using that transformation. The result is shown as a blue cross; you can visually compare the original red point with the projected blue cross.
 
 Select "Suitable for Map Extent" to limit the transformations to those that are appropriate for the current extent.
 

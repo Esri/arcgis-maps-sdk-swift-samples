@@ -40,10 +40,10 @@ extension ListSpatialReferenceTransformationsView {
             return GraphicsOverlay(graphics: [originalGraphic, projectedGraphic])
         }()
         
-        /// The geometry of the projected graphic, e.i, the last graphic in the graphics overlay.
+        /// The geometry of the projected graphic, i.e., the last graphic in the graphics overlay.
         private var projectedGeometry: Geometry? {
-            get { graphicsOverlay.graphics.last?.geometry }
-            set { graphicsOverlay.graphics.last?.geometry = newValue }
+            get { graphicsOverlay.graphics.last!.geometry }
+            set { graphicsOverlay.graphics.last!.geometry = newValue }
         }
         
         /// The list of transformations suitable for projecting between the original geometry's and the map's spatial references.
@@ -61,9 +61,8 @@ extension ListSpatialReferenceTransformationsView {
         /// - Parameter extent: The bounding box of coordinates to be transformed.
         func updateTransformationsList(withExtent extent: Envelope? = nil) {
             // Get the input and output spatial references.
-            guard let inputSpatialReference = Geometry.originalGeometry.spatialReference,
-                  let outputSpatialReference = map.spatialReference
-            else { return }
+            let inputSpatialReference = Geometry.originalGeometry.spatialReference!
+            let outputSpatialReference = map.spatialReference!
             
             // Get the transformations from the transformation catalog.
             transformations = TransformationCatalog.transformations(
@@ -140,6 +139,6 @@ private extension DatumTransformation {
 private extension Geometry {
     /// The starting point for the spatial reference projections.
     static var originalGeometry: Point {
-        Point(x: 538_985, y: 177_329, spatialReference: .init(wkid: WKID(rawValue: 27700)!))
+        Point(x: 538_985, y: 177_329, spatialReference: .init(wkid: WKID(27700)!))
     }
 }
