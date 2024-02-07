@@ -71,12 +71,10 @@ extension ListSpatialReferenceTransformationsView {
                 areaOfInterest: extent
             )
             
-            // Remove the current transformation selection if it is not in the new list.
+            // Remove the selection if it is not in the new list.
             guard let selectedTransformation, !transformations.contains(selectedTransformation)
             else { return }
-            
-            self.selectedTransformation = nil
-            projectedGeometry = nil
+            removeSelection()
         }
         
         /// Selects a given transformation and projects the geometry accordingly.
@@ -85,8 +83,7 @@ extension ListSpatialReferenceTransformationsView {
             // Remove the selection and show an alert if the transformation is missing files.
             if transformation.isMissingProjectionEngineFiles {
                 missingFilenames = transformation.missingProjectionEngineFilenames
-                projectedGeometry = nil
-                selectedTransformation = nil
+                removeSelection()
                 return
             }
             
@@ -116,7 +113,14 @@ extension ListSpatialReferenceTransformationsView {
             try TransformationCatalog.setProjectionEngineDirectoryURL(url)
             
             // Update the transformations list.
+            removeSelection()
             updateTransformationsList()
+        }
+        
+        /// Removes the current transformation selection and projection graphic.
+        private func removeSelection() {
+            selectedTransformation = nil
+            projectedGeometry = nil
         }
     }
 }
