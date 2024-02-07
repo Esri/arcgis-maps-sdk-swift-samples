@@ -34,7 +34,7 @@ To download projection engine data, tap "Download Data" and then the download bu
 
 ## About the data
 
-The map starts out zoomed into the grounds of the Royal Observatory, Greenwich. The initial point is in the [British National Grid](https://epsg.io/27700) spatial reference, which was created by the United Kingdom Ordnance Survey. The spatial reference after projection is in [Web Mercator](https://epsg.io/3857).
+The map starts out zoomed into the grounds of the Royal Observatory, Greenwich. The initial point is in the British National Grid spatial reference, which was created by the United Kingdom Ordnance Survey. The spatial reference after projection is in Web Mercator.
 
 ## Additional information
 
