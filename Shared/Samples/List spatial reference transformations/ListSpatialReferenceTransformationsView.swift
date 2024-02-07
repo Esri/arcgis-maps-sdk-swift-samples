@@ -65,8 +65,10 @@ struct ListSpatialReferenceTransformationsView: View {
     private var transformationsMenu: some View {
         Menu("Transformations", systemImage: "ellipsis") {
             Picker("Filter Transformations", selection: $filterByMapExtent) {
-                Text("All Transformations").tag(false)
-                Text("Suitable for Map Extent").tag(true)
+                Label("All Transformations", systemImage: "square.grid.2x2")
+                    .tag(false)
+                Label("Suitable for Extent", systemImage: "line.3.horizontal.decrease.circle")
+                    .tag(true)
             }
             .pickerStyle(.inline)
             .onChange(of: filterByMapExtent) { newValue in
