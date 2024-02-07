@@ -36,6 +36,16 @@ struct ListSpatialReferenceTransformationsView: View {
             MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
                 .onVisibleAreaChanged { visibleArea = $0 }
                 .attributionBarHidden(true)
+                .task {
+                    // Set the transformations list once the map's spatial reference has loaded.
+                    do {
+                        try await model.map.load()
+                        model.updateTransformationsList()
+                    } catch {
+                        self.error = error
+                    }
+                }
+                .errorAlert(presentingError: $error)
             
             NavigationView {
                 TransformationsList(model: model)
@@ -49,16 +59,6 @@ struct ListSpatialReferenceTransformationsView: View {
             }
             .navigationViewStyle(.stack)
         }
-        .task {
-            // Set the transformations list once the map's spatial reference has loaded.
-            do {
-                try await model.map.load()
-                model.updateTransformationsList()
-            } catch {
-                self.error = error
-            }
-        }
-        .errorAlert(presentingError: $error)
     }
     
     /// A menu containing actions relating to the list of transformations.
