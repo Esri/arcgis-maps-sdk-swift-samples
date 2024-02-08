@@ -47,15 +47,48 @@ extension ListSpatialReferenceTransformationsView {
         }
         
         /// The list of transformations suitable for projecting between the original geometry's and the map's spatial references.
-        @Published private(set) var transformations: [DatumTransformation] = []
+        @Published private(set) var transformations: [GeographicTransformation] = []
         
         /// The transformation selected by the user.
-        @Published private(set) var selectedTransformation: DatumTransformation?
-        
-        /// The missing Projection Engine filenames for the selected transformation.
-        @Published var missingFilenames: [String]?
+        @Published private(set) var selectedTransformation: GeographicTransformation?
         
         // MARK: Methods
+        
+        /// Selects a given transformation and projects the geometry accordingly.
+        /// - Parameter transformation: The transformation.
+        func selectTransformation(_ transformation: GeographicTransformation) {
+            // Project the original geometry using the transformation.
+            guard let outputSpatialReference = map.spatialReference else { return }
+            
+            projectedGeometry = GeometryEngine.project(
+                .originalGeometry,
+                into: outputSpatialReference,
+                datumTransformation: transformation
+            )
+            selectedTransformation = transformation
+        }
+        
+        /// Removes the current transformation selection and projection graphic.
+        func removeSelection() {
+            selectedTransformation = nil
+            projectedGeometry = nil
+        }
+        
+        /// The list of Projection Engine files that are missing from the local file system for a given transformation.
+        /// - Parameter transformation: The transformation.
+        /// - Returns: The filenames.
+        func missingProjectionEngineFilenames(
+            for transformation: GeographicTransformation
+        ) -> [String] {
+            // Get the missing projection engine filenames for each step.
+            let missingFilenames = transformation.steps.compactMap { step in
+                step.isMissingProjectionEngineFiles
+                ? step.projectionEngineFilenames.joined(separator: ", ")
+                : nil
+            }
+            
+            return missingFilenames
+        }
         
         /// Updates the transformations list using the transformation catalog.
         /// - Parameter extent: The bounding box of coordinates to be transformed.
@@ -68,34 +101,15 @@ extension ListSpatialReferenceTransformationsView {
             transformations = TransformationCatalog.transformations(
                 from: inputSpatialReference,
                 to: outputSpatialReference,
-                areaOfInterest: extent
-            )
+                areaOfInterest: extent,
+                ignoreVertical: true
+            ) as! [GeographicTransformation]
             
             // Remove the selection if it is not in the new list.
             guard let selectedTransformation, !transformations.contains(selectedTransformation)
             else { return }
+            
             removeSelection()
-        }
-        
-        /// Selects a given transformation and projects the geometry accordingly.
-        /// - Parameter transformation: The transformation.
-        func selectTransformation(_ transformation: DatumTransformation) {
-            // Remove the selection and show an alert if the transformation is missing files.
-            if transformation.isMissingProjectionEngineFiles {
-                missingFilenames = transformation.missingProjectionEngineFilenames
-                removeSelection()
-                return
-            }
-            
-            // Project the original geometry using the transformation.
-            guard let outputSpatialReference = map.spatialReference else { return }
-            
-            projectedGeometry = GeometryEngine.project(
-                .originalGeometry,
-                into: outputSpatialReference,
-                datumTransformation: transformation
-            )
-            selectedTransformation = transformation
         }
         
         /// Sets the URL to the directory of the Projection Engine files to be used by the transformation catalog.
@@ -115,27 +129,6 @@ extension ListSpatialReferenceTransformationsView {
             // Update the transformations list.
             removeSelection()
             updateTransformationsList()
-        }
-        
-        /// Removes the current transformation selection and projection graphic.
-        private func removeSelection() {
-            selectedTransformation = nil
-            projectedGeometry = nil
-        }
-    }
-}
-
-private extension DatumTransformation {
-    /// The list of files needed by the Projection Engine that are missing from the local file system.
-    var missingProjectionEngineFilenames: [String]? {
-        // Convert the datum transformation to a geographic transformation.
-        let geographicTransformation = self as? GeographicTransformation
-        
-        // Get the missing projection engine filenames for each step.
-        return geographicTransformation?.steps.compactMap { step in
-            step.isMissingProjectionEngineFiles
-            ? step.projectionEngineFilenames.joined(separator: ", ")
-            : nil
         }
     }
 }

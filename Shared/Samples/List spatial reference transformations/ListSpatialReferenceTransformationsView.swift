@@ -106,9 +106,20 @@ private extension ListSpatialReferenceTransformationsView {
         /// The view model for the sample.
         @ObservedObject var model: Model
         
+        /// The missing Projection Engine filenames for the tapped transformation.
+        @State private var missingFilenames: [String] = []
+        
         var body: some View {
             List(model.transformations, id: \.self) { transformation in
                 Button {
+                    if transformation.isMissingProjectionEngineFiles {
+                        missingFilenames = model.missingProjectionEngineFilenames(
+                            for: transformation
+                        )
+                        model.removeSelection()
+                    } else {
+                        model.selectTransformation(transformation)
+                    }
                     model.selectTransformation(transformation)
                 } label: {
                     VStack(alignment: .leading) {
@@ -134,10 +145,9 @@ private extension ListSpatialReferenceTransformationsView {
             .alert(
                 "Missing Grid Files:",
                 isPresented: Binding(
-                    get: { model.missingFilenames != nil },
-                    set: { _ in model.missingFilenames = nil }
-                ),
-                presenting: model.missingFilenames,
+                    get: { !missingFilenames.isEmpty },
+                    set: { _ in missingFilenames = [] }),
+                presenting: missingFilenames,
                 actions: { _ in },
                 message: { filenames in
                     let message = """
