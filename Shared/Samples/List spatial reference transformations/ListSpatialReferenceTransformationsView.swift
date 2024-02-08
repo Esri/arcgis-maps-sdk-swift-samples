@@ -35,7 +35,6 @@ struct ListSpatialReferenceTransformationsView: View {
         VStack(spacing: 0) {
             MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
                 .onVisibleAreaChanged { visibleArea = $0 }
-                .attributionBarHidden(true)
                 .task {
                     // Set the transformations list once the map's spatial reference has loaded.
                     do {
