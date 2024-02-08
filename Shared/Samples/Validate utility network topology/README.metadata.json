@@ -35,7 +35,8 @@
         "UtilityTraceResult"
     ],
     "snippets": [
-        "ValidateUtilityNetworkTopologyView.swift"
+        "ValidateUtilityNetworkTopologyView.swift",
+        "ValidateUtilityNetworkTopologyView.Model.swift"
     ],
     "title": "Validate utility network topology"
 }

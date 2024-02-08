@@ -15,19 +15,10 @@
 import ArcGIS
 import SwiftUI
 
-struct ValidateUtilityNetworkTopologyView: View {
+extension ValidateUtilityNetworkTopologyView {
     /// The view model for the sample.
-    @StateObject private var model = Model()
-    
-    /// The error shown in the error alert.
-    @State private var error: Error?
-    
-    var body: some View {
-        MapView(map: model.map)
-            .errorAlert(presentingError: $error)
+    class Model: ObservableObject {
+        /// A map with a topographic basemap.
+        let map = Map(basemapStyle: .arcGISTopographic)
     }
-}
-
-#Preview {
-    ValidateUtilityNetworkTopologyView()
 }
