@@ -106,7 +106,7 @@ extension ListSpatialReferenceTransformationsView {
             ) as! [GeographicTransformation]
             
             // Remove the selection if it is not in the new list.
-            guard let selectedTransformation, 
+            guard let selectedTransformation,
                     !transformations.contains(selectedTransformation) else { return }
             
             removeSelection()
