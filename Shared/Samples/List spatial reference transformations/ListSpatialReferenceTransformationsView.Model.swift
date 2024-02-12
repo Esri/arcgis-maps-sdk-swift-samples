@@ -107,7 +107,7 @@ extension ListSpatialReferenceTransformationsView {
             
             // Remove the selection if it is not in the new list.
             guard let selectedTransformation,
-                   !transformations.contains(selectedTransformation) else { return }
+                  !transformations.contains(selectedTransformation) else { return }
             
             removeSelection()
         }
