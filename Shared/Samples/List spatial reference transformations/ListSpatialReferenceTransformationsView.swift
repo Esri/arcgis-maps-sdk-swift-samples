@@ -115,11 +115,9 @@ private extension ListSpatialReferenceTransformationsView {
                         missingFilenames = model.missingProjectionEngineFilenames(
                             for: transformation
                         )
-                        model.removeSelection()
                     } else {
                         model.selectTransformation(transformation)
                     }
-                    model.selectTransformation(transformation)
                 } label: {
                     VStack(alignment: .leading) {
                         HStack {

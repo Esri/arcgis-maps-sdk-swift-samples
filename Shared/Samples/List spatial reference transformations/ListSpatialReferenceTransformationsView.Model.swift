@@ -58,7 +58,7 @@ extension ListSpatialReferenceTransformationsView {
         /// - Parameter transformation: The transformation.
         func selectTransformation(_ transformation: GeographicTransformation) {
             // Project the original geometry using the transformation.
-            guard let outputSpatialReference = map.spatialReference else { return }
+            let outputSpatialReference = map.spatialReference!
             
             projectedGeometry = GeometryEngine.project(
                 .originalGeometry,
@@ -107,7 +107,7 @@ extension ListSpatialReferenceTransformationsView {
             
             // Remove the selection if it is not in the new list.
             guard let selectedTransformation,
-                    !transformations.contains(selectedTransformation) else { return }
+                   !transformations.contains(selectedTransformation) else { return }
             
             removeSelection()
         }
