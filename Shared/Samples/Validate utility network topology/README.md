@@ -2,7 +2,7 @@
 
 Demonstrates the workflow of getting the network state and validating the topology of a utility network.
 
-![Image of Validate network](ValidateNetwork.jpg)
+![Image of Validate utility network topology](validate-utility-network-topology.png)
 
 ## Use case
 

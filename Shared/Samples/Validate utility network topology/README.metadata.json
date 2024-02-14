@@ -2,7 +2,9 @@
     "category": "Utility Networks",
     "description": "Demonstrates the workflow of getting the network state and validating the topology of a utility network.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "validate-utility-network-topology.png"
+    ],
     "keywords": [
         "dirty areas",
         "edit",
