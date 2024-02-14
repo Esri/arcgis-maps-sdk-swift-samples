@@ -1,0 +1,32 @@
+{
+    "category": "Search and Query",
+    "description": "Use different feature request modes to populate the map from a service feature table.",
+    "ignore": false,
+    "images": [
+        "set-feature-request-mode.png"
+    ],
+    "keywords": [
+        "cache",
+        "data",
+        "feature",
+        "feature request mode",
+        "performance",
+        "FeatureLayer",
+        "FeatureRequestMode",
+        "ServiceFeatureTable",
+        "ServiceFeatureTable.featureRequestMode",
+        "ServiceFeatureTable.populateFromService(using:clearCache:outFields:)"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "FeatureLayer",
+        "FeatureRequestMode",
+        "ServiceFeatureTable",
+        "ServiceFeatureTable.featureRequestMode",
+        "ServiceFeatureTable.populateFromService(using:clearCache:outFields:)"
+    ],
+    "snippets": [
+        "SetFeatureRequestModeView.swift"
+    ],
+    "title": "Set feature request mode"
+}

@@ -25,65 +25,58 @@ extension AddClusteringFeatureReductionToAPointFeatureLayerView {
         /// The map view's scale.
         let mapViewScale: Double
         
-        /// A format style to display a floating point number's integer part.
-        private let formatStyle: FloatingPointFormatStyle<Double> = .number.precision(.fractionLength(0))
+        /// The radius of feature clusters selected by the user.
+        @State private var selectedRadius = 60
         
-        /// The maximum scale of feature clusters.
-        @State private var maxScale = 0.0
-        
-        /// The radius of feature clusters.
-        @State private var radius = 60.0
+        /// The maximum scale of feature clusters selected by the user.
+        @State private var selectedMaxScale = 0
         
         var body: some View {
-            Form {
-                Section("Cluster Labels Visibility") {
-                    Toggle("Show Labels", isOn: $model.showsLabels)
-                        .toggleStyle(.switch)
+            NavigationView {
+                Form {
+                    Section("Cluster Labels Visibility") {
+                        Toggle("Show Labels", isOn: $model.showsLabels)
+                            .toggleStyle(.switch)
+                    }
+                    
+                    Section("Clustering Properties") {
+                        Picker("Cluster Radius", selection: $selectedRadius) {
+                            ForEach([30, 45, 60, 75, 90], id: \.self) { radius in
+                                Text("\(radius)")
+                            }
+                        }
+                        .onChange(of: selectedRadius) { newRadius in
+                            model.radius = Double(newRadius)
+                        }
+                        
+                        Picker("Cluster Max Scale", selection: $selectedMaxScale) {
+                            ForEach([0, 1000, 5000, 10000, 50000, 100000, 500000], id: \.self) { scale in
+                                Text(("\(scale)"))
+                            }
+                        }
+                        .onChange(of: selectedMaxScale) { newMaxScale in
+                            model.maxScale = Double(newMaxScale)
+                        }
+                        
+                        HStack {
+                            Text("Current Map Scale")
+                            Spacer()
+                            Text(mapViewScale, format: .number.precision(.fractionLength(0)))
+                                .foregroundColor(.secondary)
+                        }
+                    }
                 }
-                
-                Section("Clustering Properties") {
-                    VStack {
-                        HStack {
-                            Text("Cluster Radius")
-                            Spacer()
-                            Text(radius, format: formatStyle)
-                                .foregroundColor(.secondary)
+                .navigationTitle("Clustering Settings")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .confirmationAction) {
+                        Button("Done") {
+                            dismiss()
                         }
-                        Slider(
-                            value: $radius,
-                            in: 30...85,
-                            onEditingChanged: { isEditing in
-                                if !isEditing {
-                                    model.radius = radius
-                                }
-                            }
-                        )
-                    }
-                    VStack {
-                        HStack {
-                            Text("Cluster Max Scale")
-                            Spacer()
-                            Text(maxScale, format: formatStyle)
-                                .foregroundColor(.secondary)
-                        }
-                        Slider(
-                            value: $maxScale,
-                            in: 0...150000,
-                            onEditingChanged: { isEditing in
-                                if !isEditing {
-                                    model.maxScale = maxScale
-                                }
-                            }
-                        )
-                    }
-                    HStack {
-                        Text("Current Map Scale")
-                        Spacer()
-                        Text(mapViewScale, format: formatStyle)
-                            .foregroundColor(.secondary)
                     }
                 }
             }
+            .navigationViewStyle(.stack)
         }
     }
 }
