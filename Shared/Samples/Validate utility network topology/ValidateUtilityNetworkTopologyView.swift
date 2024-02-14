@@ -19,15 +19,180 @@ struct ValidateUtilityNetworkTopologyView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
+    /// The visible area on the map.
+    @State private var visibleArea: ArcGIS.Polygon?
+    
+    /// The current view model operation being executed.
+    @State private var selectedOperation: ModelOperation = .setup
+    
+    /// A Boolean value indicating whether an operation is in progress.
+    @State private var operationIsRunning = false
+    
+    /// A Boolean value indicating whether the edit feature sheet is presented.
+    @State private var editSheetIsPresented = false
+    
+    /// A Boolean value indicating whether the details of the status message are presented.
+    @State private var statusDetailsArePresented = false
+    
     /// The error shown in the error alert.
     @State private var error: Error?
     
     var body: some View {
-        MapView(map: model.map)
+        GeometryReader { geometryProxy in
+            MapViewReader { mapViewProxy in
+                MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
+                    .onVisibleAreaChanged { visibleArea = $0 }
+                    .onSingleTapGesture { screenPoint, _ in
+                        selectedOperation = .selectFeature(screenPoint: screenPoint)
+                    }
+                    .task(id: selectedOperation) {
+                        operationIsRunning = true
+                        defer { operationIsRunning = false }
+                        
+                        do {
+                            switch selectedOperation {
+                            case .setup:
+                                try await model.setup()
+                                
+                            case .getState:
+                                try await model.getState()
+                                
+                            case .trace:
+                                try await model.trace()
+                                
+                            case .validateNetworkTopology:
+                                guard let extent = visibleArea?.extent else { return }
+                                try await model.validate(forExtent: extent)
+                                
+                            case .selectFeature(let screenPoint):
+                                // Identify the tapped layers using the map view proxy.
+                                let identifyResults = try await mapViewProxy.identifyLayers(
+                                    screenPoint: screenPoint!,
+                                    tolerance: 5
+                                )
+                                model.selectFeature(from: identifyResults)
+                                
+                                if model.feature != nil {
+                                    // Present the sheet to edit the feature if one was selected.
+                                    editSheetIsPresented = true
+                                } else {
+                                    model.statusMessage = "No feature identified. Tap on a feature."
+                                }
+                                
+                            case .applyEdits:
+                                try await model.applyEdits()
+                                
+                            case .clearSelection:
+                                model.clearSelection()
+                                model.statusMessage = "Selection cleared."
+                            }
+                        } catch {
+                            model.statusMessage = selectedOperation.errorMessage
+                            self.error = error
+                        }
+                    }
+                    .task(id: editSheetIsPresented) {
+                        guard editSheetIsPresented,
+                              let featureCenter = model.feature?.geometry?.extent.center else { return }
+                        
+                        // Create an envelope from the screen's frame.
+                        let viewRect = geometryProxy.frame(in: .local)
+                        guard let viewExtent = mapViewProxy.envelope(
+                            fromViewRect: viewRect
+                        ) else { return }
+                        
+                        // Update the map's viewpoint with an offsetted tap location
+                        // to center the feature in the top half of the screen.
+                        let yOffset = (viewExtent.height / 2) / 2
+                        let offsettedCenter = Point(x: featureCenter.x, y: featureCenter.y - yOffset)
+                        await mapViewProxy.setViewpointCenter(offsettedCenter)
+                    }
+            }
+            .overlay(alignment: .top) {
+                CollapsibleText(text: $model.statusMessage)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .padding(8)
+                    .background(.ultraThinMaterial, ignoresSafeAreaEdges: .horizontal)
+            }
+            .overlay(alignment: .center) {
+                if operationIsRunning {
+                    ProgressView()
+                        .padding()
+                        .background(.ultraThickMaterial)
+                        .cornerRadius(10)
+                        .shadow(radius: 50)
+                }
+            }
+            .toolbar {
+                ToolbarItemGroup(placement: .bottomBar) {
+                    Button("Get State") { selectedOperation = .getState }
+                        .disabled(!model.canGetState)
+                    Spacer()
+                    Button("Trace") { selectedOperation = .trace }
+                        .disabled(!model.canTrace)
+                    Spacer()
+                    Button("Validate") { selectedOperation = .validateNetworkTopology }
+                        .disabled(!model.canValidateNetworkTopology)
+                    Spacer()
+                    Button("Clear") { selectedOperation = .clearSelection }
+                        .disabled(!model.canClearSelection)
+                        .sheet(isPresented: $editSheetIsPresented, detents: [.medium]) {
+                            if selectedOperation != .applyEdits {
+                                // Clear the selection if the sheet was dismissed without applying.
+                                selectedOperation = .clearSelection
+                            }
+                        } content: {
+                            EditFeatureView(model: model, operationSelection: $selectedOperation)
+                        }
+                }
+            }
             .errorAlert(presentingError: $error)
+        }
+    }
+}
+
+extension ValidateUtilityNetworkTopologyView {
+    /// An enumeration representing an operation run on the view model..
+    enum ModelOperation: Equatable {
+        /// Setup the model.
+        case setup
+        /// Get the state of utility network.
+        case getState
+        /// Run a utility network trace.
+        case trace
+        /// Validate the utility network topology.
+        case validateNetworkTopology
+        /// Select a feature on the map at a given screen point.
+        case selectFeature(screenPoint: CGPoint? = nil)
+        /// Apply the edits to the feature to the service.
+        case applyEdits
+        /// Clear the selected feature(s).
+        case clearSelection
+        
+        /// The message to display if the operations fails.
+        var errorMessage: String {
+            switch self {
+            case .setup:
+                "Initialization failed."
+            case .getState:
+                "Get state failed."
+            case .trace:
+                "Trace failed. \nTap 'Get State' to check the updated network state."
+            case .selectFeature:
+                "Select feature failed."
+            case .validateNetworkTopology:
+                "Validate network topology failed."
+            case .applyEdits:
+                "Apply edits failed."
+            case .clearSelection:
+                ""
+            }
+        }
     }
 }
 
 #Preview {
-    ValidateUtilityNetworkTopologyView()
+    NavigationView {
+        ValidateUtilityNetworkTopologyView()
+    }
 }

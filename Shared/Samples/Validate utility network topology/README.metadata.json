@@ -36,7 +36,8 @@
     ],
     "snippets": [
         "ValidateUtilityNetworkTopologyView.swift",
-        "ValidateUtilityNetworkTopologyView.Model.swift"
+        "ValidateUtilityNetworkTopologyView.Model.swift",
+        "ValidateUtilityNetworkTopologyView.Views.swift"
     ],
     "title": "Validate utility network topology"
 }
