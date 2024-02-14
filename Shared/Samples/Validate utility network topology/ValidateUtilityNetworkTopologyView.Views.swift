@@ -16,7 +16,7 @@ import ArcGIS
 import SwiftUI
 
 extension ValidateUtilityNetworkTopologyView {
-    /// A view allowing a user to edit the field value of the feature.
+    /// A view allowing a user to edit the attribute field value of the feature.
     struct EditFeatureView: View {
         /// The view model for the sample.
         @ObservedObject var model: Model
@@ -119,6 +119,7 @@ extension ValidateUtilityNetworkTopologyView {
             }
             .multilineTextAlignment(.center)
             .onChange(of: text) { _ in
+                // Start with the full text showing to notify the user of the change.
                 messageIsPresented = !message.isEmpty
             }
         }

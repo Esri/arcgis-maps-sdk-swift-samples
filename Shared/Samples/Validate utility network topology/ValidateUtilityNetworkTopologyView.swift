@@ -22,10 +22,10 @@ struct ValidateUtilityNetworkTopologyView: View {
     /// The visible area on the map.
     @State private var visibleArea: ArcGIS.Polygon?
     
-    /// The current view model operation being executed.
+    /// The operation on the model currently being executed.
     @State private var selectedOperation: ModelOperation = .setup
     
-    /// A Boolean value indicating whether an operation is in progress.
+    /// A Boolean value indicating whether a model operation is in progress.
     @State private var operationIsRunning = false
     
     /// A Boolean value indicating whether the edit feature sheet is presented.
@@ -152,11 +152,11 @@ struct ValidateUtilityNetworkTopologyView: View {
 }
 
 extension ValidateUtilityNetworkTopologyView {
-    /// An enumeration representing an operation run on the view model..
+    /// An enumeration representing an operation run on the view model.
     enum ModelOperation: Equatable {
         /// Setup the model.
         case setup
-        /// Get the state of utility network.
+        /// Get the state of the utility network.
         case getState
         /// Run a utility network trace.
         case trace

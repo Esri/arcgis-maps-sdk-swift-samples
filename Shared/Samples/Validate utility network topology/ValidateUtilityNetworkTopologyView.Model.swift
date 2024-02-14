@@ -52,7 +52,7 @@ extension ValidateUtilityNetworkTopologyView {
         /// The text representing the current status.
         @Published var statusMessage = ""
         
-        /// A Boolean value indicating whether current state of the utility network can be obtained.
+        /// A Boolean value indicating whether the current state of the utility network can be obtained.
         @Published private(set) var canGetState = false
         
         /// A Boolean value indicating whether a trace can be run.
@@ -97,7 +97,7 @@ extension ValidateUtilityNetworkTopologyView {
             """
         }
         
-        /// Runs a trace and selects features in the map that correspond to the element results.
+        /// Runs a trace and selects features in the map that correspond to the resulting elements.
         func trace() async throws {
             statusMessage = "Running a downstream trace..."
             clearLayerSelections()
@@ -169,7 +169,7 @@ extension ValidateUtilityNetworkTopologyView {
             guard let codedValues = (field.domain as? CodedValueDomain)?.codedValues else { return }
             fieldValueOptions = codedValues
             
-            // Get the current coded value from the feature.
+            // Get the current attribute value from the feature.
             let fieldValue = feature.attributes[field.name]
             selectedFieldValue = codedValues.first { valuesAreEqual($0.code, fieldValue) }
             
@@ -239,6 +239,7 @@ extension ValidateUtilityNetworkTopologyView {
             canTrace = utilityNetworkCapabilities.supportsTrace
             canValidateNetworkTopology = utilityNetworkCapabilities.supportsValidateNetworkTopology
             canClearSelection = false
+            
             statusMessage = """
             Utility Network Loaded
             Tap on a feature to edit.
@@ -300,7 +301,7 @@ extension ValidateUtilityNetworkTopologyView {
         private func setupTraceParameters() async throws {
             statusMessage = "Loading starting location..."
             
-            // Constants for creating the starting location.
+            // Constants for creating the starting location and trace parameters.
             let assetGroupName = "Circuit Breaker"
             let assetTypeName = "Three Phase"
             let domainNetworkName = "ElectricDistribution"
@@ -309,12 +310,11 @@ extension ValidateUtilityNetworkTopologyView {
             // Create the default starting location using the utility network.
             guard let networkSource = utilityNetwork.definition?.networkSource(named: .deviceTableName),
                   let assetGroup = networkSource.assetGroup(named: assetGroupName),
-                  let assetType = assetGroup.assetType(named: assetTypeName) else { return }
-            
-            let startingLocation = utilityNetwork.makeElement(
-                assetType: assetType,
-                globalID: .globalID
-            )!
+                  let assetType = assetGroup.assetType(named: assetTypeName),
+                  let startingLocation = utilityNetwork.makeElement(
+                    assetType: assetType,
+                    globalID: .globalID
+                  ) else { return }
             
             // Set the terminal for the location, in our case, the "Load" terminal.
             let terminal = startingLocation.assetType.terminalConfiguration?.terminals.first {
@@ -353,7 +353,7 @@ extension ValidateUtilityNetworkTopologyView {
         /// - Parameters:
         ///   - layerName: The name of the layer on the map to display the labels on.
         ///   - fieldName: The name of the field to display in the labels.
-        ///   - color: The color of the label text.
+        ///   - color: The color of the label's text.
         private func addLabels(to layerName: String, for fieldName: String, color: UIColor) {
             // Create a expression for the label using the given field name.
             let expression = SimpleLabelExpression(simpleExpression: "[\(fieldName)]")
