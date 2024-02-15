@@ -1,0 +1,35 @@
+{
+    "category": "Edit and Manage Data",
+    "description": "Get a list of suitable transformations for projecting a geometry between two spatial references with different horizontal datums.",
+    "ignore": false,
+    "images": [
+        "list-spatial-reference-transformations.png"
+    ],
+    "keywords": [
+        "datum",
+        "geodesy",
+        "projection",
+        "spatial reference",
+        "transformation",
+        "DatumTransformation",
+        "GeographicTransformation",
+        "GeographicTransformationStep",
+        "GeometryEngine",
+        "GeometryEngine.project(_:into:datumTransformation:)",
+        "TransformationCatalog"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "DatumTransformation",
+        "GeographicTransformation",
+        "GeographicTransformationStep",
+        "GeometryEngine",
+        "GeometryEngine.project(_:into:datumTransformation:)",
+        "TransformationCatalog"
+    ],
+    "snippets": [
+        "ListSpatialReferenceTransformationsView.swift",
+        "ListSpatialReferenceTransformationsView.Model.swift"
+    ],
+    "title": "List spatial reference transformations"
+}
