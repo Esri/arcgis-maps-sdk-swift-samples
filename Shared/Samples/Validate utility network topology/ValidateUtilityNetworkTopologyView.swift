@@ -38,116 +38,108 @@ struct ValidateUtilityNetworkTopologyView: View {
     @State private var error: Error?
     
     var body: some View {
-        GeometryReader { geometryProxy in
-            MapViewReader { mapViewProxy in
-                MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
-                    .onVisibleAreaChanged { visibleArea = $0 }
-                    .onSingleTapGesture { screenPoint, _ in
-                        selectedOperation = .selectFeature(screenPoint: screenPoint)
-                    }
-                    .task(id: selectedOperation) {
-                        operationIsRunning = true
-                        defer { operationIsRunning = false }
-                        
-                        do {
-                            switch selectedOperation {
-                            case .setup:
-                                try await model.setup()
-                                
-                            case .getState:
-                                try await model.getState()
-                                
-                            case .trace:
-                                try await model.trace()
-                                
-                            case .validateNetworkTopology:
-                                guard let extent = visibleArea?.extent else { return }
-                                try await model.validate(forExtent: extent)
-                                
-                            case .selectFeature(let screenPoint):
-                                // Identify the tapped layers using the map view proxy.
-                                let identifyResults = try await mapViewProxy.identifyLayers(
-                                    screenPoint: screenPoint!,
-                                    tolerance: 5
-                                )
-                                model.selectFeature(from: identifyResults)
-                                
-                                if model.feature != nil {
-                                    // Present the sheet to edit the feature if one was selected.
-                                    editSheetIsPresented = true
-                                } else {
-                                    model.statusMessage = "No feature identified. Tap on a feature."
-                                }
-                                
-                            case .applyEdits:
-                                try await model.applyEdits()
-                                
-                            case .clearSelection:
-                                model.clearSelection()
-                                model.statusMessage = "Selection cleared."
-                            }
-                        } catch {
-                            model.statusMessage = selectedOperation.errorMessage
-                            self.error = error
-                        }
-                    }
-                    .task(id: editSheetIsPresented) {
-                        guard editSheetIsPresented,
-                              let featureCenter = model.feature?.geometry?.extent.center else { return }
-                        
-                        // Create an envelope from the screen's frame.
-                        let viewRect = geometryProxy.frame(in: .local)
-                        guard let viewExtent = mapViewProxy.envelope(
-                            fromViewRect: viewRect
-                        ) else { return }
-                        
-                        // Update the map's viewpoint with an offsetted tap location
-                        // to center the feature in the top half of the screen.
-                        let yOffset = (viewExtent.height / 2) / 2
-                        let offsettedCenter = Point(x: featureCenter.x, y: featureCenter.y - yOffset)
-                        await mapViewProxy.setViewpointCenter(offsettedCenter)
-                    }
-            }
-            .overlay(alignment: .top) {
-                CollapsibleText(text: $model.statusMessage)
-                    .frame(maxWidth: .infinity, alignment: .center)
-                    .padding(8)
-                    .background(.ultraThinMaterial, ignoresSafeAreaEdges: .horizontal)
-            }
-            .overlay(alignment: .center) {
-                if operationIsRunning {
-                    ProgressView()
-                        .padding()
-                        .background(.ultraThickMaterial)
-                        .cornerRadius(10)
-                        .shadow(radius: 50)
+        MapViewReader { mapViewProxy in
+            MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
+                .onVisibleAreaChanged { visibleArea = $0 }
+                .onSingleTapGesture { screenPoint, _ in
+                    selectedOperation = .selectFeature(screenPoint: screenPoint)
                 }
-            }
-            .toolbar {
-                ToolbarItemGroup(placement: .bottomBar) {
-                    Button("Get State") { selectedOperation = .getState }
-                        .disabled(!model.canGetState)
-                    Spacer()
-                    Button("Trace") { selectedOperation = .trace }
-                        .disabled(!model.canTrace)
-                    Spacer()
-                    Button("Validate") { selectedOperation = .validateNetworkTopology }
-                        .disabled(!model.canValidateNetworkTopology)
-                    Spacer()
-                    Button("Clear") { selectedOperation = .clearSelection }
-                        .disabled(!model.canClearSelection)
-                        .sheet(isPresented: $editSheetIsPresented, detents: [.medium]) {
-                            if selectedOperation != .applyEdits {
-                                // Clear the selection if the sheet was dismissed without applying.
-                                selectedOperation = .clearSelection
+                .task(id: selectedOperation) {
+                    operationIsRunning = true
+                    defer { operationIsRunning = false }
+                    
+                    do {
+                        switch selectedOperation {
+                        case .setup:
+                            try await model.setup()
+                            
+                        case .getState:
+                            try await model.getState()
+                            
+                        case .trace:
+                            try await model.trace()
+                            
+                        case .validateNetworkTopology:
+                            guard let extent = visibleArea?.extent else { return }
+                            try await model.validate(forExtent: extent)
+                            
+                        case .selectFeature(let screenPoint):
+                            // Identify the tapped layers using the map view proxy.
+                            let identifyResults = try await mapViewProxy.identifyLayers(
+                                screenPoint: screenPoint!,
+                                tolerance: 5
+                            )
+                            model.selectFeature(from: identifyResults)
+                            
+                            if model.feature != nil {
+                                // Present the sheet to edit the feature if one was selected.
+                                editSheetIsPresented = true
+                            } else {
+                                model.statusMessage = "No feature identified. Tap on a feature."
                             }
-                        } content: {
-                            EditFeatureView(model: model, operationSelection: $selectedOperation)
+                            
+                        case .applyEdits:
+                            try await model.applyEdits()
+                            
+                        case .clearSelection:
+                            model.clearSelection()
+                            model.statusMessage = "Selection cleared."
                         }
+                    } catch {
+                        model.statusMessage = selectedOperation.errorMessage
+                        self.error = error
+                    }
                 }
-            }
-            .errorAlert(presentingError: $error)
+                .task(id: editSheetIsPresented) {
+                    guard editSheetIsPresented,
+                          let featureCenter = model.feature?.geometry?.extent.center,
+                          let visibleArea else { return }
+                    
+                    // Set the map's viewpoint to center the feature in the top half of the screen.
+                    let yOffset = (visibleArea.extent.height / 2) / 2
+                    let offsettedCenter = Point(x: featureCenter.x, y: featureCenter.y - yOffset)
+                    await mapViewProxy.setViewpointCenter(offsettedCenter)
+                }
         }
+        .overlay(alignment: .top) {
+            CollapsibleText(text: $model.statusMessage)
+                .frame(maxWidth: .infinity, alignment: .center)
+                .padding(8)
+                .background(.ultraThinMaterial, ignoresSafeAreaEdges: .horizontal)
+        }
+        .overlay(alignment: .center) {
+            if operationIsRunning {
+                ProgressView()
+                    .padding()
+                    .background(.ultraThickMaterial)
+                    .cornerRadius(10)
+                    .shadow(radius: 50)
+            }
+        }
+        .toolbar {
+            ToolbarItemGroup(placement: .bottomBar) {
+                Button("Get State") { selectedOperation = .getState }
+                    .disabled(!model.canGetState)
+                Spacer()
+                Button("Trace") { selectedOperation = .trace }
+                    .disabled(!model.canTrace)
+                Spacer()
+                Button("Validate") { selectedOperation = .validateNetworkTopology }
+                    .disabled(!model.canValidateNetworkTopology)
+                Spacer()
+                Button("Clear") { selectedOperation = .clearSelection }
+                    .disabled(!model.canClearSelection)
+                    .sheet(isPresented: $editSheetIsPresented, detents: [.medium]) {
+                        if selectedOperation != .applyEdits {
+                            // Clear the selection if the sheet was dismissed without applying.
+                            selectedOperation = .clearSelection
+                        }
+                    } content: {
+                        EditFeatureView(model: model, operationSelection: $selectedOperation)
+                    }
+            }
+        }
+        .errorAlert(presentingError: $error)
     }
 }
 
