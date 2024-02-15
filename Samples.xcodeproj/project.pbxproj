@@ -275,6 +275,7 @@
 		D77570C02A2942F800F490CD /* AnimateImagesWithImageOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77570BF2A2942F800F490CD /* AnimateImagesWithImageOverlayView.swift */; };
 		D77570C12A2943D900F490CD /* AnimateImagesWithImageOverlayView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D77570BF2A2942F800F490CD /* AnimateImagesWithImageOverlayView.swift */; };
 		D77572AE2A295DDE00F490CD /* PacificSouthWest2 in Resources */ = {isa = PBXBuildFile; fileRef = D77572AD2A295DDD00F490CD /* PacificSouthWest2 */; settings = {ASSET_TAGS = (AnimateImagesWithImageOverlay, ); }; };
+		D7781D492B7EB03400E53C51 /* SanDiegoTourPath.json in Resources */ = {isa = PBXBuildFile; fileRef = D7781D482B7EB03400E53C51 /* SanDiegoTourPath.json */; settings = {ASSET_TAGS = (NavigateRouteWithRerouting, ); }; };
 		D77BC5392B59A2D3007B49B6 /* StylePointWithDistanceCompositeSceneSymbolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77BC5362B59A2D3007B49B6 /* StylePointWithDistanceCompositeSceneSymbolView.swift */; };
 		D77BC53C2B59A309007B49B6 /* StylePointWithDistanceCompositeSceneSymbolView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D77BC5362B59A2D3007B49B6 /* StylePointWithDistanceCompositeSceneSymbolView.swift */; };
 		D78666AD2A2161F100C60110 /* FindNearestVertexView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78666AC2A2161F100C60110 /* FindNearestVertexView.swift */; };
@@ -315,7 +316,7 @@
 		D7E557682A1D768800B9FB09 /* AddWMSLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E557672A1D768800B9FB09 /* AddWMSLayerView.swift */; };
 		D7E7D0812AEB39D5003AAD02 /* FindRouteInTransportNetworkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E7D0802AEB39D5003AAD02 /* FindRouteInTransportNetworkView.swift */; };
 		D7E7D0822AEB3A1D003AAD02 /* FindRouteInTransportNetworkView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7E7D0802AEB39D5003AAD02 /* FindRouteInTransportNetworkView.swift */; };
-		D7E7D09A2AEB3C47003AAD02 /* san_diego_offline_routing in Resources */ = {isa = PBXBuildFile; fileRef = D7E7D0992AEB3C47003AAD02 /* san_diego_offline_routing */; settings = {ASSET_TAGS = (FindRouteInTransportNetwork, ); }; };
+		D7E7D09A2AEB3C47003AAD02 /* san_diego_offline_routing in Resources */ = {isa = PBXBuildFile; fileRef = D7E7D0992AEB3C47003AAD02 /* san_diego_offline_routing */; settings = {ASSET_TAGS = (FindRouteInTransportNetwork, NavigateRouteWithRerouting, ); }; };
 		D7E9EF292A1D2219000C4865 /* SetMinAndMaxScaleView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7EAF3592A1C023800D822C4 /* SetMinAndMaxScaleView.swift */; };
 		D7E9EF2A2A1D29F2000C4865 /* SetMaxExtentView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D734FA092A183A5B00246D7E /* SetMaxExtentView.swift */; };
 		D7EAF35A2A1C023800D822C4 /* SetMinAndMaxScaleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7EAF3592A1C023800D822C4 /* SetMinAndMaxScaleView.swift */; };
@@ -725,6 +726,7 @@
 		D7749AD52AF08BF50086632F /* FindRouteInTransportNetworkView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindRouteInTransportNetworkView.Model.swift; sourceTree = "<group>"; };
 		D77570BF2A2942F800F490CD /* AnimateImagesWithImageOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimateImagesWithImageOverlayView.swift; sourceTree = "<group>"; };
 		D77572AD2A295DDD00F490CD /* PacificSouthWest2 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = PacificSouthWest2; sourceTree = "<group>"; };
+		D7781D482B7EB03400E53C51 /* SanDiegoTourPath.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SanDiegoTourPath.json; sourceTree = "<group>"; };
 		D77BC5362B59A2D3007B49B6 /* StylePointWithDistanceCompositeSceneSymbolView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StylePointWithDistanceCompositeSceneSymbolView.swift; sourceTree = "<group>"; };
 		D78666AC2A2161F100C60110 /* FindNearestVertexView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindNearestVertexView.swift; sourceTree = "<group>"; };
 		D79EE76D2A4CEA5D005A52AE /* SetUpLocationDrivenGeotriggersView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetUpLocationDrivenGeotriggersView.Model.swift; sourceTree = "<group>"; };
@@ -1080,6 +1082,7 @@
 			isa = PBXGroup;
 			children = (
 				D74C8C002ABA6202007C76B8 /* 1bd036f221f54a99abc9e46ff3511cbf */,
+				D7781D472B7EB03400E53C51 /* 4caec8c55ea2463982f1af7d9611b8d5 */,
 				D7C16D1D2AC5FE8200689E89 /* 5a9b60cee9ba41e79640a06bcdf8084d */,
 				00C94A0228B53DCC004E42D9 /* 7c4c679ab06a4df19dc497f577f111bd */,
 				D701D7242A37C7E4006FF0C8 /* 07d62a792ab6496d9b772a24efea45d0 */,
@@ -1773,6 +1776,14 @@
 			path = d1453556d91e46dea191c20c398b82cd;
 			sourceTree = "<group>";
 		};
+		D7781D472B7EB03400E53C51 /* 4caec8c55ea2463982f1af7d9611b8d5 */ = {
+			isa = PBXGroup;
+			children = (
+				D7781D482B7EB03400E53C51 /* SanDiegoTourPath.json */,
+			);
+			path = 4caec8c55ea2463982f1af7d9611b8d5;
+			sourceTree = "<group>";
+		};
 		D77BC5352B59A2D3007B49B6 /* Style point with distance composite scene symbol */ = {
 			isa = PBXGroup;
 			children = (
@@ -2246,6 +2257,7 @@
 					FindRouteInTransportNetwork,
 					GeocodeOffline,
 					IdentifyRasterCell,
+					NavigateRouteWithRerouting,
 					OrbitCameraAroundObject,
 					ShowDeviceLocationWithNmeaDataSources,
 					ShowMobileMapPackageExpirationDate,
@@ -2319,6 +2331,7 @@
 				F111CCC4288B641900205358 /* Yellowstone.mmpk in Resources */,
 				D77572AE2A295DDE00F490CD /* PacificSouthWest2 in Resources */,
 				00D4EFB12863CE6300B9CC30 /* ScottishWildlifeTrust_reserves in Resources */,
+				D7781D492B7EB03400E53C51 /* SanDiegoTourPath.json in Resources */,
 				D7C16D222AC5FE9800689E89 /* GrandCanyon.csv in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

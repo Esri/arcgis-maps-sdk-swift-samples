@@ -33,6 +33,25 @@ private extension NavigateRouteWithReroutingView {
     class Model: ObservableObject {
         /// A map with a topographic basemap.
         let map = Map(basemapStyle: .arcGISTopographic)
+        
+        /// The route task to solve the route between stops.
+        let routeTask = RouteTask(pathToDatabaseURL: .sanDiegoGeodatabase, networkName: "Streets_ND")
+    }
+}
+
+private extension URL {
+    /// A URL to the local geodatabase file of San Diego, CA, USA.
+    static var sanDiegoGeodatabase: URL {
+        Bundle.main.url(
+            forResource: "sandiego",
+            withExtension: "geodatabase",
+            subdirectory: "san_diego_offline_routing"
+        )!
+    }
+    
+    /// A URL to the local "SanDiegoTourPath" JSON file containing the simulated path.
+    static var sanDiegoTourPath: URL {
+        Bundle.main.url(forResource: "SanDiegoTourPath", withExtension: "json")!
     }
 }
 

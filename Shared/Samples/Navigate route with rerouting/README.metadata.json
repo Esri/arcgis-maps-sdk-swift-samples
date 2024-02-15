@@ -22,6 +22,10 @@
         "Stop",
         "VoiceGuidance"
     ],
+    "offline_data": [
+        "4caec8c55ea2463982f1af7d9611b8d5",
+        "df193653ed39449195af0c9725701dca"
+    ],
     "redirect_from": [],
     "relevant_apis": [
         "DestinationStatus",
