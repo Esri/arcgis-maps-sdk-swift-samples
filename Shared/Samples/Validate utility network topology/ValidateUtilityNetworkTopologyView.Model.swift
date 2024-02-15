@@ -104,9 +104,8 @@ extension ValidateUtilityNetworkTopologyView {
             
             // Get the element trace result from the utility network using the trace parameters.
             let traceResults = try await utilityNetwork.trace(using: traceParameters)
-            let elementTraceResult = traceResults.first {
-                $0 is UtilityElementTraceResult
-            } as! UtilityElementTraceResult
+            guard let elementTraceResult = traceResults.first(where: { $0 is UtilityElementTraceResult })
+                    as? UtilityElementTraceResult else { return }
             
             // Select all of elements found.
             statusMessage = "Selecting found elements..."
@@ -162,10 +161,9 @@ extension ValidateUtilityNetworkTopologyView {
             ? .deviceStatusField
             : .nominalVoltageField
             
-            guard let field = feature.table?.field(named: fieldName) else { return }
+            guard let field = feature.table?.field(named: fieldName),
+                  let codedValues = (field.domain as? CodedValueDomain)?.codedValues else { return }
             self.field = field
-            
-            guard let codedValues = (field.domain as? CodedValueDomain)?.codedValues else { return }
             fieldValueOptions = codedValues
             
             // Get the current attribute value from the feature.
@@ -186,8 +184,7 @@ extension ValidateUtilityNetworkTopologyView {
             guard let feature,
                   let serviceFeatureTable = feature.table as? ServiceFeatureTable,
                   let serviceGeodatabase = serviceFeatureTable.serviceGeodatabase,
-                  let fieldName = field?.name.trimmingCharacters(in: .whitespacesAndNewlines)
-            else { return }
+                  let fieldName = field?.name else { return }
             
             // Update the feature with the new value in the it's feature table.
             statusMessage = "Updating feature..."
