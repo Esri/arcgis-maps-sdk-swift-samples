@@ -111,8 +111,7 @@ extension ValidateUtilityNetworkTopologyView {
             // Select all of elements found.
             statusMessage = "Selecting found elements..."
             
-            guard let layers = map.operationalLayers as? [FeatureLayer] else { return }
-            for layer in layers {
+            for layer in map.operationalLayers.compactMap({ $0 as? FeatureLayer }) {
                 let layerElements = elementTraceResult.elements.filter { element in
                     element.networkSource.featureTable.tableName == layer.featureTable?.tableName
                 }
@@ -279,7 +278,7 @@ extension ValidateUtilityNetworkTopologyView {
             try await utilityNetwork.load()
             
             // Create service version parameters to restrict editing and tracing on a random branch.
-            let randomString = UUID().uuidString
+            let uniqueString = UUID().uuidString
             let parameters = ServiceVersionParameters()
             parameters.name = "ValidateNetworkTopology_\(randomString)"
             parameters.description = "Validate network topology with ArcGIS Maps SDK."
@@ -342,9 +341,7 @@ extension ValidateUtilityNetworkTopologyView {
         
         /// Clears the selections for all of the map's operational layers..
         private func clearLayerSelections() {
-            guard let layers = map.operationalLayers as? [FeatureLayer] else { return }
-            
-            for layer in layers {
+            for layer in map.operationalLayers.compactMap({ $0 as? FeatureLayer }) {
                 layer.clearSelection()
             }
         }
