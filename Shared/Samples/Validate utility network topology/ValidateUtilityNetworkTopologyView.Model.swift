@@ -199,7 +199,7 @@ extension ValidateUtilityNetworkTopologyView {
             let featureTableEditResults = try await serviceGeodatabase.applyEdits()
             
             // Determine if the attempt to edit resulted in any errors.
-            let didNotCompleteWithErrors = featureTableEditResults.allSatisfy { tableEditResult in
+            let didCompleteSuccessfully = featureTableEditResults.allSatisfy { tableEditResult in
                 tableEditResult.editResults.allSatisfy { featureEditResult in
                     !featureEditResult.didCompleteWithErrors
                 }
@@ -207,7 +207,7 @@ extension ValidateUtilityNetworkTopologyView {
             
             // Update the status with the results.
             canValidateNetworkTopology = true
-            statusMessage = didNotCompleteWithErrors ? """
+            statusMessage = didCompleteSuccessfully ? """
             Edits applied successfully.
             Tap 'Get State' to check the updated network state.
             """
@@ -280,7 +280,7 @@ extension ValidateUtilityNetworkTopologyView {
             // Create service version parameters to restrict editing and tracing on a random branch.
             let uniqueString = UUID().uuidString
             let parameters = ServiceVersionParameters()
-            parameters.name = "ValidateNetworkTopology_\(randomString)"
+            parameters.name = "ValidateNetworkTopology_\(uniqueString)"
             parameters.description = "Validate network topology with ArcGIS Maps SDK."
             parameters.access = .private
             
