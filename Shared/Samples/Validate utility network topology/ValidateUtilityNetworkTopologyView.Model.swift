@@ -72,7 +72,7 @@ extension ValidateUtilityNetworkTopologyView {
         
         /// Gets the current state of the utility network and updates the status with the results.
         func getState() async throws {
-            statusMessage = "Getting utility network state..."
+            statusMessage = "Getting utility network state…"
             
             // Get the current state of the utility network.
             let state = try await utilityNetwork.state

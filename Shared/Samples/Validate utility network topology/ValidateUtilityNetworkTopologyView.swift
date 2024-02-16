@@ -97,7 +97,7 @@ struct ValidateUtilityNetworkTopologyView: View {
                     
                     // Set the map's viewpoint to center the feature in the top half of the screen.
                     let yOffset = (visibleArea.extent.height / 2) / 2
-                    let offsettedCenter = Point(x: featureCenter.x, y: featureCenter.y - yOffset)
+                    let offsetCenter = Point(x: featureCenter.x, y: featureCenter.y - yOffset)
                     await mapViewProxy.setViewpointCenter(offsettedCenter)
                 }
         }
