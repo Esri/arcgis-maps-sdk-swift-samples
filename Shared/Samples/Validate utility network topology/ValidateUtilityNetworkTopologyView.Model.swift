@@ -254,7 +254,7 @@ extension ValidateUtilityNetworkTopologyView {
             
             // Set the portal item to the map and load the map.
             map.item = portalItem
-            map.initialViewpoint = Viewpoint(center: Point(x: -9815160, y: 5128710), scale: 3640)
+            map.initialViewpoint = Viewpoint(center: Point(x: -9815160, y: 5128880), scale: 3640)
             try await map.load()
             
             // Set the map to load in persistent session mode (workaround for server caching issue).

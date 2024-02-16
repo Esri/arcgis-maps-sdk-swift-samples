@@ -44,6 +44,7 @@ struct ValidateUtilityNetworkTopologyView: View {
                 .onSingleTapGesture { screenPoint, _ in
                     selectedOperation = .selectFeature(screenPoint: screenPoint)
                 }
+                .contentInsets(.init(top: 0, leading: 0, bottom: 350, trailing: 0))
                 .task(id: selectedOperation) {
                     operationIsRunning = true
                     defer { operationIsRunning = false }
@@ -71,9 +72,12 @@ struct ValidateUtilityNetworkTopologyView: View {
                             )
                             model.selectFeature(from: identifyResults)
                             
-                            if model.feature != nil {
-                                // Present the sheet to edit the feature if one was selected.
+                            // Present the sheet to edit the feature if one was selected.
+                            if let feature = model.feature {
                                 editSheetIsPresented = true
+                                
+                                guard let featureCenter = feature.geometry?.extent.center else { return }
+                                await mapViewProxy.setViewpointCenter(featureCenter)
                             } else {
                                 model.statusMessage = "No feature identified. Tap on a feature."
                             }
@@ -89,16 +93,6 @@ struct ValidateUtilityNetworkTopologyView: View {
                         model.statusMessage = selectedOperation.errorMessage
                         self.error = error
                     }
-                }
-                .task(id: editSheetIsPresented) {
-                    guard editSheetIsPresented,
-                          let featureCenter = model.feature?.geometry?.extent.center,
-                          let visibleArea else { return }
-                    
-                    // Set the map's viewpoint to center the feature in the top half of the screen.
-                    let yOffset = (visibleArea.extent.height / 2) / 2
-                    let offsetCenter = Point(x: featureCenter.x, y: featureCenter.y - yOffset)
-                    await mapViewProxy.setViewpointCenter(offsettedCenter)
                 }
         }
         .overlay(alignment: .top) {
