@@ -99,7 +99,7 @@ extension ValidateUtilityNetworkTopologyView {
         
         /// Runs a trace and selects features in the map that correspond to the resulting elements.
         func trace() async throws {
-            statusMessage = "Running a downstream trace..."
+            statusMessage = "Running a downstream trace…"
             clearLayerSelections()
             
             // Get the element trace result from the utility network using the trace parameters.
@@ -108,7 +108,7 @@ extension ValidateUtilityNetworkTopologyView {
                     as? UtilityElementTraceResult else { return }
             
             // Select all of elements found.
-            statusMessage = "Selecting found elements..."
+            statusMessage = "Selecting found elements…"
             
             for layer in map.operationalLayers.compactMap({ $0 as? FeatureLayer }) {
                 let layerElements = elementTraceResult.elements.filter { element in
@@ -127,7 +127,7 @@ extension ValidateUtilityNetworkTopologyView {
         
         /// Validates the utility network topology within a given extent and updates the status with the results.
         func validate(forExtent extent: Envelope) async throws {
-            statusMessage = "Validating utility network topology..."
+            statusMessage = "Validating utility network topology…"
             
             // Validate the utility network topology with the extent.
             let job = utilityNetwork.validateNetworkTopology(forExtent: extent)
@@ -187,12 +187,12 @@ extension ValidateUtilityNetworkTopologyView {
                   let fieldName = field?.name else { return }
             
             // Update the feature with the new value in the it's feature table.
-            statusMessage = "Updating feature..."
+            statusMessage = "Updating feature…"
             feature.setAttributeValue(selectedFieldValue?.code, forKey: fieldName)
             try await serviceFeatureTable.update(feature)
             
             // Apply the edits in the feature table to the service.
-            statusMessage = "Applying edits..."
+            statusMessage = "Applying edits…"
             let featureTableEditResults = try await serviceGeodatabase.applyEdits()
             
             // Determine if the attempt to edit resulted in any errors.
@@ -246,7 +246,7 @@ extension ValidateUtilityNetworkTopologyView {
         
         /// Sets up and loads the web map.
         private func setupMap() async throws {
-            statusMessage = "Loading web map..."
+            statusMessage = "Loading web map…"
             
             // Create a portal item using the portal and id for the Naperville Electric web map.
             let portal = Portal(url: .sampleServerPortal, connection: .authenticated)
@@ -268,7 +268,7 @@ extension ValidateUtilityNetworkTopologyView {
         
         /// Loads the utility network and switches to a new version on the service.
         private func setupUtilityNetwork() async throws {
-            statusMessage = "Loading utility network..."
+            statusMessage = "Loading utility network…"
             
             // Get the utility network from the map.
             utilityNetwork = map.utilityNetworks.first
@@ -295,7 +295,7 @@ extension ValidateUtilityNetworkTopologyView {
         
         /// Sets up the starting location and trace parameters for tracing.
         private func setupTraceParameters() async throws {
-            statusMessage = "Loading starting location..."
+            statusMessage = "Loading starting location…"
             
             // Constants for creating the starting location and trace parameters.
             let assetGroupName = "Circuit Breaker"
