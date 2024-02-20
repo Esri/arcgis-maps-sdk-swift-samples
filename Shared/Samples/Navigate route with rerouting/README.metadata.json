@@ -41,7 +41,8 @@
         "VoiceGuidance"
     ],
     "snippets": [
-        "NavigateRouteWithReroutingView.swift"
+        "NavigateRouteWithReroutingView.swift",
+        "NavigateRouteWithReroutingView.Model.swift"
     ],
     "title": "Navigate route with rerouting"
 }

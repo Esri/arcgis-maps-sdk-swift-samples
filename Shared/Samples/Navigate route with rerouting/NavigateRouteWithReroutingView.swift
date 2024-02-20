@@ -19,42 +19,120 @@ struct NavigateRouteWithReroutingView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
+    /// The navigation action currently being run.
+    @State private var selectedNavigationAction: NavigationAction? = .setUp
+    
+    /// A Boolean value indicating whether the route is being navigated.
+    @State private var isNavigating = false
+    
+    /// A Boolean value indicating whether the navigation can be reset.
+    @State private var canReset = false
+    
     /// The error shown in the error alert.
     @State private var error: Error?
     
     var body: some View {
-        MapView(map: model.map)
-            .errorAlert(presentingError: $error)
+        MapView(
+            map: model.map,
+            viewpoint: model.viewpoint,
+            graphicsOverlays: [model.graphicsOverlay]
+        )
+        .onViewpointChanged(kind: .centerAndScale) { model.viewpoint = $0 }
+        .locationDisplay(model.locationDisplay)
+        .overlay(alignment: .top) {
+            Text(model.statusMessage)
+                .frame(maxWidth: .infinity, alignment: .center)
+                .padding(8)
+                .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
+        }
+        .toolbar {
+            ToolbarItemGroup(placement: .bottomBar) {
+                Button {
+                    selectedNavigationAction = .reset
+                } label: {
+                    Image(systemName: "gobackward")
+                }
+                .disabled(!canReset)
+                
+                Spacer()
+                Button {
+                    selectedNavigationAction = isNavigating ? .stop : .start
+                } label: {
+                    Image(systemName: isNavigating ? "pause.fill" : "play.fill")
+                }
+                .disabled(selectedNavigationAction == .setUp)
+                
+                Spacer()
+                Button {
+                    model.locationDisplay.autoPanMode = .navigation
+                } label: {
+                    Image(systemName: "location.fill")
+                }
+                .disabled(!isNavigating || model.locationDisplay.autoPanMode == .navigation)
+            }
+        }
+        .task(id: selectedNavigationAction) {
+            guard let selectedNavigationAction else { return }
+            defer { self.selectedNavigationAction = nil }
+            
+            do {
+                // Run the new action.
+                switch selectedNavigationAction {
+                case .setUp:
+                    try await model.setUp()
+                    
+                case .start:
+                    try await model.start()
+                    isNavigating = true
+                    canReset = true
+                    
+                case .stop:
+                    await model.stop()
+                    isNavigating = false
+                    
+                case .reset:
+                    try await model.reset()
+                    isNavigating = false
+                    canReset = false
+                }
+            } catch {
+                self.error = error
+            }
+        }
+        .task(id: model.routeTracker == nil) {
+            guard let routeTracker = model.routeTracker else { return }
+            
+            await withTaskGroup(of: Void.self) { group in
+                group.addTask {
+                    // Update the route graphics using new tracking statuses from the route tracker.
+                    for await trackingStatus in routeTracker.$trackingStatus {
+                        guard let trackingStatus else { continue }
+                        await model.updateGraphics(using: trackingStatus)
+                    }
+                }
+                
+                group.addTask {
+                    // Speak new voice guidances from the route tracker.
+                    for await voiceGuidance in routeTracker.voiceGuidances {
+                        await model.speakVoiceGuidance(voiceGuidance)
+                    }
+                }
+            }
+        }
+        .errorAlert(presentingError: $error)
     }
 }
 
 private extension NavigateRouteWithReroutingView {
-    /// The view model for the sample.
-    class Model: ObservableObject {
-        /// A map with a topographic basemap.
-        let map = Map(basemapStyle: .arcGISTopographic)
-        
-        /// The route task to solve the route between stops.
-        let routeTask = RouteTask(pathToDatabaseURL: .sanDiegoGeodatabase, networkName: "Streets_ND")
+    /// An enumeration representing a route navigation action.
+    enum NavigationAction {
+        /// Set up the route.
+        case setUp
+        /// Start navigating.
+        case start
+        /// Stop navigating.
+        case stop
+        /// Reset the route.
+        case reset
     }
-}
-
-private extension URL {
-    /// A URL to the local geodatabase file of San Diego, CA, USA.
-    static var sanDiegoGeodatabase: URL {
-        Bundle.main.url(
-            forResource: "sandiego",
-            withExtension: "geodatabase",
-            subdirectory: "san_diego_offline_routing"
-        )!
-    }
-    
-    /// A URL to the local "SanDiegoTourPath" JSON file containing the simulated path.
-    static var sanDiegoTourPath: URL {
-        Bundle.main.url(forResource: "SanDiegoTourPath", withExtension: "json")!
-    }
-}
-
-#Preview {
-    NavigateRouteWithReroutingView()
 }
