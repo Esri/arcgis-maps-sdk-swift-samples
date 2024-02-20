@@ -10,14 +10,14 @@ While traveling between destinations, field workers use navigation to get live d
 
 ## How to use the sample
 
-Tap the play button to simulate traveling and to receive directions from a preset starting point to a preset destination. Observe how the route is recalculated when the simulation does not follow the suggested route. Check 'Voice Directions' to activate announcing maneuvers. Tap the reset button to start the simulation from the beginning.
+Tap the play button to simulate traveling and to receive directions from a preset starting point to a preset destination. Observe how the route is recalculated when the simulation does not follow the suggested route. Tap the recenter button to reposition the viewpoint. Tap the reset button to start the simulation from the beginning.
 
 ## How it works
 
 1. Create a `RouteTask` using local network data.
 2. Generate default `RouteParameters` using `RouteTask.makeDefaultParameters()`.
 3. Set `returnsStops` and `returnsDirections` on the parameters to true.
-4. Add `Stop`s to the parameters' `stops` array using `RouteParameters.setStops(_:)`. 
+4. Add `Stop`s to the parameters' `stops` array using `RouteParameters.setStops(_:)`.
 5. Solve the route using `RouteTask.solveRoute(using:)` to get a `RouteResult`.
 6. Create a `RouteTracker` using the route result and the index of the desired route to take.
 7. Enable rerouting on the route tracker with `RouteTracker.enableRerouting(using:)`.
@@ -42,7 +42,7 @@ Tap the play button to simulate traveling and to receive directions from a prese
 
 ## Offline data
 
-The [SanDiegoTourPath](https://arcgisruntime.maps.arcgis.com/home/item.html?id=91e7e6be79cc4d2f8416eff867674c1e) JSON file provides a simulated path for the device to demonstrate routing while traveling.
+The [SanDiegoTourPath](https://www.arcgis.com/home/item.html?id=4caec8c55ea2463982f1af7d9611b8d5) JSON file provides a simulated path for the device to demonstrate routing while traveling.
 
 ## About the data
 
