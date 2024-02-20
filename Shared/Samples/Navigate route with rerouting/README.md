@@ -10,22 +10,21 @@ While traveling between destinations, field workers use navigation to get live d
 
 ## How to use the sample
 
-Click 'Navigate' to simulate traveling and to receive directions from a preset starting point to a preset destination. Observe how the route is recalculated when the simulation does not follow the suggested route. Check 'Voice Directions' to activate announcing maneuvers. Click 'Reset' to start the simulation from the beginning.
+Tap the play button to simulate traveling and to receive directions from a preset starting point to a preset destination. Observe how the route is recalculated when the simulation does not follow the suggested route. Check 'Voice Directions' to activate announcing maneuvers. Tap the reset button to start the simulation from the beginning.
 
 ## How it works
 
-1. Create a `RouteTask` using a URL to an online route service.
-2. Generate default `RouteParameters` using `routeTask.createDefaultParametersAsync()`.
-3. Set `returnStops` and `returnDirections` on the parameters to true.
-4. Add `Stop`s to the parameters `stops` collection for each destination.
-5. Solve the route using `routeTask.solveAsync(routeParameters)` to get a `RouteResult`.
-6. Create a `RouteTracker` using the route result, and the index of the desired route to take.
-7. Enable rerouting in the route tracker with `.enableReroutingAsync(RouteTask, RouteParameters, ReroutingStrategy, false)`. The Boolean specifies `visitFirstStopOnStart` and is false by default. Use `ReroutingStrategy.toNextWaypoint` to specify that in the case of a reroute the new route goes from present location to next waypoint or stop.
-8. Use `.trackLocationAsync(LocationDataSource.Location)` to track the location of the device and update the route tracking status.
-9. Add a listener to capture `TrackingStatusChangedEvent`, and then get the `TrackingStatus` and use it to display updated route information. Tracking status includes a variety of information on the route progress, such as the remaining distance, remaining geometry or traversed geometry (represented by a `Polyline`), or the remaining time (`Double`), amongst others.
-10. Add a `NewVoiceGuidanceListener` to get the `VoiceGuidance` whenever new instructions are available. From the voice guidance, get the `String` representing the directions and use a text-to-speech engine to output the maneuver directions.
-11. You can also query the tracking status for the current `DirectionManeuver` index, retrieve that maneuver from the `Route` and get its direction text to display in the GUI.
-12. To establish whether the destination has been reached, get the `DestinationStatus` from the tracking status. If the destination status is `REACHED`, and the `remainingDestinationCount` is 1, you have arrived at the destination and can stop routing. If there are several destinations in your route, and the remaining destination count is greater than 1, switch the route tracker to the next destination.
+1. Create a `RouteTask` using local network data.
+2. Generate default `RouteParameters` using `RouteTask.makeDefaultParameters()`.
+3. Set `returnsStops` and `returnsDirections` on the parameters to true.
+4. Add `Stop`s to the parameters' `stops` array using `RouteParameters.setStops(_:)`. 
+5. Solve the route using `RouteTask.solveRoute(using:)` to get a `RouteResult`.
+6. Create a `RouteTracker` using the route result and the index of the desired route to take.
+7. Enable rerouting on the route tracker with `RouteTracker.enableRerouting(using:)`.
+8. Use `RouteTracker.$trackingStatus` to display updated route information and update the route graphics. Tracking status includes a variety of information on the route progress, such as the remaining distance, remaining geometry or traversed geometry (represented by a `Polyline`), or the remaining time (`TimeInterval`), amongst others.
+9. You can also query the tracking status for the current `DirectionManeuver` index, retrieve that maneuver from the `Route`, and get its direction text to display.
+10. Use `RouteTracker.voiceGuidances` to get the `VoiceGuidance` whenever new instructions are available. From the voice guidance, get the `text` representing the directions and use a text-to-speech engine to output the maneuver directions.
+11. To establish whether the destination has been reached, get the `destinationStatus` from the tracking status. If the destination status is `reached`, and the `remainingDestinationCount` is 1, you have arrived at the destination and can stop routing. If there are several destinations in your route, and the remaining destination count is greater than 1, switch the route tracker to the next destination.
 
 ## Relevant API
 
@@ -43,11 +42,7 @@ Click 'Navigate' to simulate traveling and to receive directions from a preset s
 
 ## Offline data
 
-A JSON file provides a simulated path for the device to demonstrate routing while travelling.
-
-Link     |
----------|
-|[Navigate a Route JSON Track](https://www.arcgis.com/home/item.html?id=4caec8c55ea2463982f1af7d9611b8d5)|
+The [SanDiegoTourPath](https://arcgisruntime.maps.arcgis.com/home/item.html?id=91e7e6be79cc4d2f8416eff867674c1e) JSON file provides a simulated path for the device to demonstrate routing while traveling.
 
 ## About the data
 
@@ -55,7 +50,7 @@ The route taken in this sample goes from the San Diego Convention Center, site o
 
 ## Additional information
 
-The route tracker will start a rerouting calculation automatically as necessary when the device's location indicates that it is off-route. The route tracker also validates that the device is "on" the transportation network, if it is not (e.g. in a parking lot) rerouting will not occur until the device location indicates that it is back "on" the transportation network.
+The route tracker will start a rerouting calculation automatically as necessary when the device's location indicates that it is off-route. The route tracker also validates that the device is "on" the transportation network. If it is not (e.g., in a parking lot), rerouting will not occur until the device location indicates that it is back "on" the transportation network.
 
 ## Tags
 

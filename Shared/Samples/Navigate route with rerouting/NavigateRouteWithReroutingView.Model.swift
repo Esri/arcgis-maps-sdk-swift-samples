@@ -192,8 +192,13 @@ extension NavigateRouteWithReroutingView {
                 }
                 
             case .reached:
-                await locationDisplay.dataSource.stop()
-                statusMessage = "Destination reached."
+                if status.remainingDestinationCount > 1 {
+                    statusMessage = "Intermediate stop reached, continue to next stop."
+                    try? await routeTracker.switchToNextDestination()
+                } else {
+                    await locationDisplay.dataSource.stop()
+                    statusMessage = "Destination reached."
+                }
                 
             @unknown default:
                 break
