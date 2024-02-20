@@ -2,7 +2,9 @@
     "category": "Routing and Logistics",
     "description": "Navigate between two points and dynamically recalculate an alternate route when the original route is unavailable.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "navigate-route-with-rerouting.png"
+    ],
     "keywords": [
         "directions",
         "maneuver",
