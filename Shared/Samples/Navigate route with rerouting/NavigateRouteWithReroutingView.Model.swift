@@ -242,13 +242,13 @@ extension NavigateRouteWithReroutingView {
             routeResult: RouteResult,
             routeTask: RouteTask,
             routeParameters: RouteParameters
-        ) async throws -> RouteTracker? {
+        ) async throws -> RouteTracker {
             // Make the route tracker from the route result.
             let routeTracker = RouteTracker(
                 routeResult: routeResult,
                 routeIndex: 0,
                 skipsCoincidentStops: true
-            )
+            )!
             
             // Create rerouting parameters to enable automatic rerouting on the route tracker.
             if routeTask.info.supportsRerouting {
@@ -257,11 +257,11 @@ extension NavigateRouteWithReroutingView {
                     routeParameters: routeParameters
                 )!
                 
-                try await routeTracker?.enableRerouting(using: reroutingParameters)
+                try await routeTracker.enableRerouting(using: reroutingParameters)
             }
             
             // Update the tracker's voice guidance unit system to the current locale's.
-            routeTracker?.voiceGuidanceUnitSystem = Locale.current.usesMetricSystem ? .metric : .imperial
+            routeTracker.voiceGuidanceUnitSystem = Locale.current.usesMetricSystem ? .metric : .imperial
             
             return routeTracker
         }
