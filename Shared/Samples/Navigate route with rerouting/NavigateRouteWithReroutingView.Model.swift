@@ -278,12 +278,12 @@ private extension String {
 private extension Geometry {
     /// The starting location of the route, the San Diego Convention Center.
     static var startLocation: Point {
-        Point(x: -117.160386727, y: 32.706608, spatialReference: .wgs84)
+        Point(latitude: 32.706608, longitude: -117.160386727)
     }
     
     /// The destination location of the route, the Fleet Science Center.
     static var destinationLocation: Point {
-        Point(x: -117.146679, y: 32.730351, spatialReference: .wgs84)
+        Point(latitude: 32.730351, longitude: -117.146679)
     }
 }
 
