@@ -14,7 +14,7 @@
 
 import ArcGIS
 import AVFoundation
-import SwiftUI
+import Combine
 
 extension NavigateRouteWithReroutingView {
     /// The view model for the sample.
