@@ -122,7 +122,7 @@ extension NavigateRouteWithReroutingView {
             let routePolyline = try Polyline.fromJSON(jsonString)
             simulatedDataSource.setSimulatedLocations(with: routePolyline)
             
-            initializeGraphics()
+            initializeProgressTracking()
         }
         
         /// Starts the location display.
@@ -153,12 +153,12 @@ extension NavigateRouteWithReroutingView {
             // Reset the route.
             routeTracker.cancelRerouting()
             simulatedDataSource.currentLocationIndex = 0
-            initializeGraphics()
+            initializeProgressTracking()
         }
         
         /// Updates the status message and route graphics using the progress from a given tracking status.
         /// - Parameter status: The `TrackingStatus`.
-        func updateGraphics(using status: TrackingStatus) async {
+        func updateProgress(using status: TrackingStatus) async {
             // Update the route graphics.
             remainingRouteGraphic.geometry = status.routeProgress.remainingGeometry
             
@@ -215,8 +215,8 @@ extension NavigateRouteWithReroutingView {
             speechSynthesizer.speak(utterance)
         }
         
-        /// Initializes the location display and route graphic.
-        private func initializeGraphics() {
+        /// Initializes the location display, route graphic, and viewpoint.
+        private func initializeProgressTracking() {
             // Create a route tracker location data source to snap the location display to the route.
             let routeTrackerLocationDataSource = RouteTrackerLocationDataSource(
                 routeTracker: routeTracker,

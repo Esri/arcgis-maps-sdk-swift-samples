@@ -107,7 +107,7 @@ struct NavigateRouteWithReroutingView: View {
                     // Update the route graphics using new tracking statuses from the route tracker.
                     for await trackingStatus in routeTracker.$trackingStatus {
                         guard let trackingStatus else { continue }
-                        await model.updateGraphics(using: trackingStatus)
+                        await model.updateProgress(using: trackingStatus)
                     }
                 }
                 
