@@ -82,7 +82,7 @@ extension NavigateRouteWithReroutingView {
         
         // MARK: Methods
         
-        /// Sets up of the route related properties.
+        /// Sets up the route related properties.
         func setUp() async throws {
             // Create a route task from a local geodatabase to solve a route.
             let routeTask = RouteTask(
