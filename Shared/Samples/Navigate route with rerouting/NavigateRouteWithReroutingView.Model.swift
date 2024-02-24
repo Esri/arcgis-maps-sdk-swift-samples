@@ -25,6 +25,9 @@ extension NavigateRouteWithReroutingView {
         /// The text representing the current status of the route.
         @Published private(set) var statusMessage: String = .initialInstructions
         
+        /// A Boolean value indicating whether the route is being navigated.
+        @Published private(set) var isNavigating = false
+        
         /// The viewpoint of the map.
         @Published var viewpoint: Viewpoint?
         
@@ -51,8 +54,11 @@ extension NavigateRouteWithReroutingView {
         /// The route tracker for tracking the status and progress of the route navigation.
         private(set) var routeTracker: RouteTracker!
         
-        /// The route solved by the route task.
-        private var route: Route!
+        /// The parameters for enabling automatic rerouting on the route tracker.
+        private var reroutingParameters: ReroutingParameters!
+        
+        /// The route result solved by the route task.
+        private var routeResult: RouteResult!
         
         /// The data source containing the simulated locations.
         private let simulatedDataSource = SimulatedLocationDataSource()
@@ -91,10 +97,10 @@ extension NavigateRouteWithReroutingView {
             )
             
             // Create the route parameters.
-            let parameters = try await routeTask.makeDefaultParameters()
-            parameters.returnsDirections = true
-            parameters.returnsStops = true
-            parameters.outputSpatialReference = .wgs84
+            let routeParameters = try await routeTask.makeDefaultParameters()
+            routeParameters.returnsDirections = true
+            routeParameters.returnsStops = true
+            routeParameters.outputSpatialReference = .wgs84
             
             // Sets the start and destination stops for the route.
             let startStop = Stop(point: .startLocation)
@@ -103,17 +109,15 @@ extension NavigateRouteWithReroutingView {
             let destinationStop = Stop(point: .destinationLocation)
             destinationStop.name = "RH Fleet Aerospace Museum"
             
-            parameters.setStops([startStop, destinationStop])
+            routeParameters.setStops([startStop, destinationStop])
             
             // Solve the route using the parameters and task.
-            let routeResult = try await routeTask.solveRoute(using: parameters)
-            route = routeResult.routes.first
+            routeResult = try await routeTask.solveRoute(using: routeParameters)
             
-            // Make the route tracker.
-            routeTracker = try await makeRouteTracker(
-                routeResult: routeResult,
+            // Create the rerouting parameters using the route task and parameters.
+            reroutingParameters = ReroutingParameters(
                 routeTask: routeTask,
-                routeParameters: parameters
+                routeParameters: routeParameters
             )
             
             // Set up the data source's locations using a local JSON file.
@@ -122,23 +126,27 @@ extension NavigateRouteWithReroutingView {
             let routePolyline = try Polyline.fromJSON(jsonString)
             simulatedDataSource.setSimulatedLocations(with: routePolyline)
             
-            initializeProgressTracking()
+            try await initializeNavigation()
         }
         
-        /// Starts the location display.
+        /// Starts the navigation.
         func start() async throws {
             try await locationDisplay.dataSource.start()
             locationDisplay.autoPanMode = .navigation
+            
+            isNavigating = true
         }
         
-        /// Stops the location display.
+        /// Stops the navigation.
         func stop() async {
             // Stop any current speech.
             speechSynthesizer.stopSpeaking(at: .immediate)
             
-            // Reset the location display.
-            await locationDisplay.dataSource.stop()
+            // Stop the location display.
             locationDisplay.autoPanMode = .off
+            await locationDisplay.dataSource.stop()
+            
+            isNavigating = false
         }
         
         /// Resets the navigation.
@@ -150,10 +158,9 @@ extension NavigateRouteWithReroutingView {
             traversedRouteGraphic.geometry = nil
             traversedRouteBuilder.replaceGeometry(with: nil)
             
-            // Reset the route.
-            routeTracker.cancelRerouting()
+            // Reset the navigation.
             simulatedDataSource.currentLocationIndex = 0
-            initializeProgressTracking()
+            try await initializeNavigation()
         }
         
         /// Updates the status message and route graphics using the progress from a given tracking status.
@@ -186,7 +193,8 @@ extension NavigateRouteWithReroutingView {
                 
                 // Get the next direction from the route's direction maneuvers.
                 let nextManeuverIndex = status.currentManeuverIndex + 1
-                if route.directionManeuvers.indices.contains(nextManeuverIndex) {
+                if let route = routeResult.routes.first,
+                   route.directionManeuvers.indices.contains(nextManeuverIndex) {
                     let nextDirection = route.directionManeuvers[nextManeuverIndex].text
                     statusMessage.append("\nNext direction: \(nextDirection)")
                 }
@@ -196,7 +204,7 @@ extension NavigateRouteWithReroutingView {
                     statusMessage = "Intermediate stop reached, continue to next stop."
                     try? await routeTracker.switchToNextDestination()
                 } else {
-                    await locationDisplay.dataSource.stop()
+                    await stop()
                     statusMessage = "Destination reached."
                 }
                 
@@ -215,8 +223,14 @@ extension NavigateRouteWithReroutingView {
             speechSynthesizer.speak(utterance)
         }
         
-        /// Initializes the location display, route graphic, and viewpoint.
-        private func initializeProgressTracking() {
+        /// Initializes the route tracker, location display, and route graphic.
+        private func initializeNavigation() async throws {
+            // Make the route tracker.
+            routeTracker = try await makeRouteTracker(
+                routeResult: routeResult,
+                reroutingParameters: reroutingParameters
+            )
+            
             // Create a route tracker location data source to snap the location display to the route.
             let routeTrackerLocationDataSource = RouteTrackerLocationDataSource(
                 routeTracker: routeTracker,
@@ -227,7 +241,7 @@ extension NavigateRouteWithReroutingView {
             locationDisplay.dataSource = routeTrackerLocationDataSource
             
             // Update the remaining route graphic and center the map's viewpoint on it.
-            guard let routeGeometry = route.geometry else { return }
+            guard let routeGeometry = routeResult.routes.first?.geometry else { return }
             remainingRouteGraphic.geometry = routeGeometry
             viewpoint = Viewpoint(center: routeGeometry.extent.center, scale: 23e3, rotation: 0)
         }
@@ -235,30 +249,21 @@ extension NavigateRouteWithReroutingView {
         /// Makes a route tracker that supports rerouting.
         /// - Parameters:
         ///   - routeResult: A `RouteResult` generated from a route task solve.
-        ///   - routeTask: The `RouteTask` used to generate the route result.
-        ///   - routeParameters: The `RouteParameters` used to solve for the route result.
+        ///   - reroutingParameters: The `ReroutingParameters` used to enable automatic rerouting.
         /// - Returns: A new `RouteTracker`.
         private func makeRouteTracker(
             routeResult: RouteResult,
-            routeTask: RouteTask,
-            routeParameters: RouteParameters
+            reroutingParameters: ReroutingParameters
         ) async throws -> RouteTracker {
-            // Make the route tracker from the route result.
+            // Make the route tracker using the route result.
             let routeTracker = RouteTracker(
                 routeResult: routeResult,
                 routeIndex: 0,
                 skipsCoincidentStops: true
             )!
             
-            // Create rerouting parameters to enable automatic rerouting on the route tracker.
-            if routeTask.info.supportsRerouting {
-                let reroutingParameters = ReroutingParameters(
-                    routeTask: routeTask,
-                    routeParameters: routeParameters
-                )!
-                
-                try await routeTracker.enableRerouting(using: reroutingParameters)
-            }
+            // Enable automatic rerouting on the tracker.
+            try await routeTracker.enableRerouting(using: reroutingParameters)
             
             // Update the tracker's voice guidance unit system to the current locale's.
             routeTracker.voiceGuidanceUnitSystem = Locale.current.usesMetricSystem ? .metric : .imperial

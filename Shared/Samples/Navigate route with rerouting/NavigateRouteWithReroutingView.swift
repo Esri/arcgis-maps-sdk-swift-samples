@@ -22,9 +22,6 @@ struct NavigateRouteWithReroutingView: View {
     /// The navigation action currently being run.
     @State private var selectedNavigationAction: NavigationAction? = .setUp
     
-    /// A Boolean value indicating whether the route is being navigated.
-    @State private var isNavigating = false
-    
     /// A Boolean value indicating whether the navigation can be reset.
     @State private var canReset = false
     
@@ -56,11 +53,14 @@ struct NavigateRouteWithReroutingView: View {
                 
                 Spacer()
                 Button {
-                    selectedNavigationAction = isNavigating ? .stop : .start
+                    selectedNavigationAction = model.isNavigating ? .stop : .start
                 } label: {
-                    Image(systemName: isNavigating ? "pause.fill" : "play.fill")
+                    Image(systemName: model.isNavigating ? "pause.fill" : "play.fill")
                 }
-                .disabled(selectedNavigationAction == .setUp)
+                .disabled(
+                    selectedNavigationAction == .setUp
+                    || model.routeTracker.trackingStatus?.destinationStatus == .reached
+                )
                 
                 Spacer()
                 Button {
@@ -68,7 +68,7 @@ struct NavigateRouteWithReroutingView: View {
                 } label: {
                     Image(systemName: "location.fill")
                 }
-                .disabled(!isNavigating || model.locationDisplay.autoPanMode == .navigation)
+                .disabled(!model.isNavigating || model.locationDisplay.autoPanMode == .navigation)
             }
         }
         .task(id: selectedNavigationAction) {
@@ -83,28 +83,25 @@ struct NavigateRouteWithReroutingView: View {
                     
                 case .start:
                     try await model.start()
-                    isNavigating = true
                     canReset = true
                     
                 case .stop:
                     await model.stop()
-                    isNavigating = false
                     
                 case .reset:
                     try await model.reset()
-                    isNavigating = false
                     canReset = false
                 }
             } catch {
                 self.error = error
             }
         }
-        .task(id: model.routeTracker == nil) {
-            guard let routeTracker = model.routeTracker else { return }
+        .task(id: model.isNavigating) {
+            guard model.isNavigating, let routeTracker = model.routeTracker else { return }
             
             await withTaskGroup(of: Void.self) { group in
                 group.addTask {
-                    // Update the route graphics using new tracking statuses from the route tracker.
+                    // Handle new tracking statuses from the route tracker.
                     for await trackingStatus in routeTracker.$trackingStatus {
                         guard let trackingStatus else { continue }
                         await model.updateProgress(using: trackingStatus)
@@ -124,7 +121,7 @@ struct NavigateRouteWithReroutingView: View {
 }
 
 private extension NavigateRouteWithReroutingView {
-    /// An enumeration representing a route navigation action.
+    /// An enumeration representing an action relating to the navigation.
     enum NavigationAction {
         /// Set up the route.
         case setUp
