@@ -71,8 +71,8 @@ private extension Bundle {
 private extension URL {
     static let developers = URL(string: "https://developers.arcgis.com/swift/")!
     static let esriCommunity = URL(string: "https://community.esri.com/t5/swift-maps-sdk-questions/bd-p/swift-maps-sdk-questions")!
-    static let githubRepository = URL(string: "https://github.com/ArcGIS/arcgis-maps-sdk-swift-samples")!
-    static let toolkit = URL(string: "https://github.com/ArcGIS/arcgis-maps-sdk-swift-toolkit")!
+    static let githubRepository = URL(string: "https://github.com/Esri/arcgis-maps-sdk-swift-samples")!
+    static let toolkit = URL(string: "https://github.com/Esri/arcgis-maps-sdk-swift-toolkit")!
     static let apiReference = URL(string: "https://developers.arcgis.com/swift/api-reference/documentation/arcgis/")!
 }
 
