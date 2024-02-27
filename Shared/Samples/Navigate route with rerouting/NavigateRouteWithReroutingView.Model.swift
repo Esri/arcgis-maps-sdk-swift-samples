@@ -63,7 +63,7 @@ extension NavigateRouteWithReroutingView {
         /// The data source containing the simulated locations.
         private let simulatedDataSource = SimulatedLocationDataSource()
         
-        /// An speech synthesizer for text to speech.
+        /// A speech synthesizer for text to speech.
         private let speechSynthesizer = AVSpeechSynthesizer()
         
         /// The graphic representing the route ahead.
