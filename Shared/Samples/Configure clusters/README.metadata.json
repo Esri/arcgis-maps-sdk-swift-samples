@@ -3,7 +3,7 @@
     "description": "Add client side feature reduction on a point feature layer that is not pre-configured with clustering.",
     "ignore": false,
     "images": [
-        "add-clustering-feature-reduction-to-a-point-feature-layer.png"
+        "configure-clusters.png"
     ],
     "keywords": [
         "aggregate",
@@ -35,9 +35,9 @@
         "Popup"
     ],
     "snippets": [
-        "AddClusteringFeatureReductionToAPointFeatureLayerView.swift",
-        "AddClusteringFeatureReductionToAPointFeatureLayerView.Model.swift",
-        "AddClusteringFeatureReductionToAPointFeatureLayerView.SettingsView.swift"
+        "ConfigureClustersView.swift",
+        "ConfigureClustersView.Model.swift",
+        "ConfigureClustersView.SettingsView.swift"
     ],
-    "title": "Add clustering feature reduction to a point feature layer"
+    "title": "Configure clusters"
 }

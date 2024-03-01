@@ -3,7 +3,7 @@
     "description": "Display a web map with a point feature layer that has feature reduction enabled to aggregate points into clusters.",
     "ignore": false,
     "images": [
-        "display-points-using-clustering-feature-reduction.png"
+        "display-clusters.png"
     ],
     "keywords": [
         "aggregate",
@@ -29,7 +29,7 @@
         "IdentifyLayerResult"
     ],
     "snippets": [
-        "DisplayPointsUsingClusteringFeatureReductionView.swift"
+        "DisplayClustersView.swift"
     ],
-    "title": "Display points using clustering feature reduction"
+    "title": "Display clusters"
 }
