@@ -52,12 +52,6 @@
 		00B04273282EC59E0072E1B4 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B04272282EC59E0072E1B4 /* AboutView.swift */; };
 		00B042E8282EDC690072E1B4 /* SetBasemapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B042E5282EDC690072E1B4 /* SetBasemapView.swift */; };
 		00B04FB5283EEBA80026C882 /* DisplayOverviewMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B04FB4283EEBA80026C882 /* DisplayOverviewMapView.swift */; };
-		00B56F792B0E967500B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B56F782B0E967500B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.swift */; };
-		00B56F7B2B0EA71600B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B56F7A2B0EA71600B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.Model.swift */; };
-		00B56F7D2B0EA73500B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B56F7C2B0EA73500B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.SettingsView.swift */; };
-		00B56F7E2B0EBE9C00B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 00B56F782B0E967500B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.swift */; };
-		00B56F7F2B0EBE9C00B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 00B56F7A2B0EA71600B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.Model.swift */; };
-		00B56F802B0EBE9C00B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.SettingsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 00B56F7C2B0EA73500B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.SettingsView.swift */; };
 		00C43AED2947DC350099AE34 /* ArcGISToolkit in Frameworks */ = {isa = PBXBuildFile; productRef = 00C43AEC2947DC350099AE34 /* ArcGISToolkit */; };
 		00C7993B2A845AAF00AFE342 /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00C7993A2A845AAF00AFE342 /* Sidebar.swift */; };
 		00C94A0D28B53DE1004E42D9 /* raster-file in Resources */ = {isa = PBXBuildFile; fileRef = 00C94A0C28B53DE1004E42D9 /* raster-file */; settings = {ASSET_TAGS = (AddRasterFromFile, ); }; };
@@ -264,6 +258,9 @@
 		D7634FAF2A43B7AC00F8AEFB /* CreateConvexHullAroundGeometriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7634FAE2A43B7AC00F8AEFB /* CreateConvexHullAroundGeometriesView.swift */; };
 		D7634FB02A43B8B000F8AEFB /* CreateConvexHullAroundGeometriesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7634FAE2A43B7AC00F8AEFB /* CreateConvexHullAroundGeometriesView.swift */; };
 		D7635FF12B9272CB0044AB97 /* DisplayClustersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7635FED2B9272CB0044AB97 /* DisplayClustersView.swift */; };
+		D7635FFB2B9277DC0044AB97 /* ConfigureClustersView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7635FF52B9277DC0044AB97 /* ConfigureClustersView.Model.swift */; };
+		D7635FFD2B9277DC0044AB97 /* ConfigureClustersView.SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7635FF72B9277DC0044AB97 /* ConfigureClustersView.SettingsView.swift */; };
+		D7635FFE2B9277DC0044AB97 /* ConfigureClustersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7635FF82B9277DC0044AB97 /* ConfigureClustersView.swift */; };
 		D76495212B74687E0042699E /* ValidateUtilityNetworkTopologyView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76495202B74687E0042699E /* ValidateUtilityNetworkTopologyView.Model.swift */; };
 		D76495222B7468940042699E /* ValidateUtilityNetworkTopologyView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D76495202B74687E0042699E /* ValidateUtilityNetworkTopologyView.Model.swift */; };
 		D76929FA2B4F79540047205E /* OrbitCameraAroundObjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76929F52B4F78340047205E /* OrbitCameraAroundObjectView.swift */; };
@@ -450,9 +447,6 @@
 				D71D516F2B51D87700B2A2BE /* SearchForWebMapView.Views.swift in Copy Source Code Files */,
 				D7C6420D2B4F5DDB0042B8F7 /* SearchForWebMapView.Model.swift in Copy Source Code Files */,
 				D75F66392B48EB1800434974 /* SearchForWebMapView.swift in Copy Source Code Files */,
-				00B56F7E2B0EBE9C00B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.swift in Copy Source Code Files */,
-				00B56F7F2B0EBE9C00B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.Model.swift in Copy Source Code Files */,
-				00B56F802B0EBE9C00B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.SettingsView.swift in Copy Source Code Files */,
 				D73FCFFA2B02A3C50006360D /* FindAddressWithReverseGeocodeView.swift in Copy Source Code Files */,
 				D742E4952B04134C00690098 /* DisplayWebSceneFromPortalItemView.swift in Copy Source Code Files */,
 				D7010EC12B05618400D43F55 /* DisplaySceneFromMobileScenePackageView.swift in Copy Source Code Files */,
@@ -617,9 +611,6 @@
 		00B04272282EC59E0072E1B4 /* AboutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		00B042E5282EDC690072E1B4 /* SetBasemapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetBasemapView.swift; sourceTree = "<group>"; };
 		00B04FB4283EEBA80026C882 /* DisplayOverviewMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayOverviewMapView.swift; sourceTree = "<group>"; };
-		00B56F782B0E967500B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddClusteringFeatureReductionToAPointFeatureLayerView.swift; sourceTree = "<group>"; };
-		00B56F7A2B0EA71600B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddClusteringFeatureReductionToAPointFeatureLayerView.Model.swift; sourceTree = "<group>"; };
-		00B56F7C2B0EA73500B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddClusteringFeatureReductionToAPointFeatureLayerView.SettingsView.swift; sourceTree = "<group>"; };
 		00C7993A2A845AAF00AFE342 /* Sidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sidebar.swift; sourceTree = "<group>"; };
 		00C94A0C28B53DE1004E42D9 /* raster-file */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "raster-file"; sourceTree = "<group>"; };
 		00CB9137284814A4005C2C5D /* SearchWithGeocodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchWithGeocodeView.swift; sourceTree = "<group>"; };
@@ -736,6 +727,9 @@
 		D76000B62AF19FCA00B3084D /* SanFrancisco.mmpk */ = {isa = PBXFileReference; lastKnownFileType = file; path = SanFrancisco.mmpk; sourceTree = "<group>"; };
 		D7634FAE2A43B7AC00F8AEFB /* CreateConvexHullAroundGeometriesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateConvexHullAroundGeometriesView.swift; sourceTree = "<group>"; };
 		D7635FED2B9272CB0044AB97 /* DisplayClustersView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayClustersView.swift; sourceTree = "<group>"; };
+		D7635FF52B9277DC0044AB97 /* ConfigureClustersView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigureClustersView.Model.swift; sourceTree = "<group>"; };
+		D7635FF72B9277DC0044AB97 /* ConfigureClustersView.SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigureClustersView.SettingsView.swift; sourceTree = "<group>"; };
+		D7635FF82B9277DC0044AB97 /* ConfigureClustersView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigureClustersView.swift; sourceTree = "<group>"; };
 		D76495202B74687E0042699E /* ValidateUtilityNetworkTopologyView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValidateUtilityNetworkTopologyView.Model.swift; sourceTree = "<group>"; };
 		D76929F52B4F78340047205E /* OrbitCameraAroundObjectView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrbitCameraAroundObjectView.swift; sourceTree = "<group>"; };
 		D769C2112A29019B00030F61 /* SetUpLocationDrivenGeotriggersView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetUpLocationDrivenGeotriggersView.swift; sourceTree = "<group>"; };
@@ -901,7 +895,6 @@
 		0074ABB228174B830037244A /* Samples */ = {
 			isa = PBXGroup;
 			children = (
-				00B56F752B0E966600B68A0D /* Add clustering feature reduction to a point feature layer */,
 				79D84D0C2A815BED00F45262 /* Add custom dynamic entity data source */,
 				4D2ADC3E29C26D05003B367F /* Add dynamic entity layer */,
 				00D4EF7E2863840D00B9CC30 /* Add feature layers */,
@@ -921,6 +914,7 @@
 				4D2ADC5329C4F612003B367F /* Change map view background */,
 				1C0C1C3229D34DAE005C8B24 /* Change viewpoint */,
 				E000E75E2869E325005D87C5 /* Clip geometry */,
+				D7635FF32B9277DC0044AB97 /* Configure clusters */,
 				88F93CBE29C3D4E30006B28E /* Create and edit geometries */,
 				79B7B8082A1BF8B300F57C27 /* Create and save KML file */,
 				D7E440D12A1ECBC2005D74DE /* Create buffers around points */,
@@ -1074,16 +1068,6 @@
 				00B04FB4283EEBA80026C882 /* DisplayOverviewMapView.swift */,
 			);
 			path = "Display overview map";
-			sourceTree = "<group>";
-		};
-		00B56F752B0E966600B68A0D /* Add clustering feature reduction to a point feature layer */ = {
-			isa = PBXGroup;
-			children = (
-				00B56F782B0E967500B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.swift */,
-				00B56F7A2B0EA71600B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.Model.swift */,
-				00B56F7C2B0EA73500B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.SettingsView.swift */,
-			);
-			path = "Add clustering feature reduction to a point feature layer";
 			sourceTree = "<group>";
 		};
 		00C94A0228B53DCC004E42D9 /* 7c4c679ab06a4df19dc497f577f111bd */ = {
@@ -1759,6 +1743,16 @@
 				D7635FED2B9272CB0044AB97 /* DisplayClustersView.swift */,
 			);
 			path = "Display clusters";
+			sourceTree = "<group>";
+		};
+		D7635FF32B9277DC0044AB97 /* Configure clusters */ = {
+			isa = PBXGroup;
+			children = (
+				D7635FF82B9277DC0044AB97 /* ConfigureClustersView.swift */,
+				D7635FF52B9277DC0044AB97 /* ConfigureClustersView.Model.swift */,
+				D7635FF72B9277DC0044AB97 /* ConfigureClustersView.SettingsView.swift */,
+			);
+			path = "Configure clusters";
 			sourceTree = "<group>";
 		};
 		D76929F32B4F78340047205E /* Orbit camera around object */ = {
@@ -2490,7 +2484,6 @@
 				D752D9402A39154C003EB25E /* ManageOperationalLayersView.swift in Sources */,
 				D7ABA2F92A32579C0021822B /* MeasureDistanceInSceneView.swift in Sources */,
 				D73723792AF5ADD800846884 /* FindRouteInMobileMapPackageView.MobileMapView.swift in Sources */,
-				00B56F792B0E967500B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.swift in Sources */,
 				E004A6E028466279002A1FE6 /* ShowCalloutView.swift in Sources */,
 				E000E763286A0B18005D87C5 /* CutGeometryView.swift in Sources */,
 				D7705D582AFC244E00CC0335 /* FindClosestFacilityToMultiplePointsView.swift in Sources */,
@@ -2502,11 +2495,13 @@
 				D75B58512AAFB3030038B3B4 /* StyleFeaturesWithCustomDictionaryView.swift in Sources */,
 				E0D04FF228A5390000747989 /* DownloadPreplannedMapAreaView.Model.swift in Sources */,
 				00CCB8A5285BAF8700BBAB70 /* OnDemandResource.swift in Sources */,
+				D7635FFE2B9277DC0044AB97 /* ConfigureClustersView.swift in Sources */,
 				1C19B4F32A578E46001D2506 /* CreateLoadReportView.swift in Sources */,
 				7900C5F62A83FC3F002D430F /* AddCustomDynamicEntityDataSourceView.Vessel.swift in Sources */,
 				D71099702A2802FA0065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift in Sources */,
 				E004A6ED2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift in Sources */,
 				E041ABD7287DB04D0056009B /* SampleInfoView.swift in Sources */,
+				D7635FFD2B9277DC0044AB97 /* ConfigureClustersView.SettingsView.swift in Sources */,
 				1C43BC822A43781200509BF8 /* SetVisibilityOfSubtypeSublayerView.Model.swift in Sources */,
 				D71FCB8A2AD6277F000E517C /* CreateMobileGeodatabaseView.Model.swift in Sources */,
 				D752D9462A3A6F80003EB25E /* MonitorChangesToMapLoadStatusView.swift in Sources */,
@@ -2565,13 +2560,11 @@
 				1CAF831F2A20305F000E1E60 /* ShowUtilityAssociationsView.swift in Sources */,
 				00C7993B2A845AAF00AFE342 /* Sidebar.swift in Sources */,
 				E004A6C128414332002A1FE6 /* SetViewpointRotationView.swift in Sources */,
-				00B56F7B2B0EA71600B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.Model.swift in Sources */,
 				883C121529C9136600062FF9 /* DownloadPreplannedMapAreaView.MapPicker.swift in Sources */,
 				D72C43F32AEB066D00B6157B /* GeocodeOfflineView.Model.swift in Sources */,
 				1C9B74C929DB43580038B06F /* ShowRealisticLightAndShadowsView.swift in Sources */,
 				D7635FF12B9272CB0044AB97 /* DisplayClustersView.swift in Sources */,
 				D7232EE12AC1E5AA0079ABFF /* PlayKMLTourView.swift in Sources */,
-				00B56F7D2B0EA73500B68A0D /* AddClusteringFeatureReductionToAPointFeatureLayerView.SettingsView.swift in Sources */,
 				D7010EBF2B05616900D43F55 /* DisplaySceneFromMobileScenePackageView.swift in Sources */,
 				D7337C602ABD142D00A5D865 /* ShowMobileMapPackageExpirationDateView.swift in Sources */,
 				00E5401E27F3CCA200CF66D5 /* ContentView.swift in Sources */,
@@ -2621,6 +2614,7 @@
 				1CAB8D4E2A3CEAB0002AA649 /* RunValveIsolationTraceView.swift in Sources */,
 				4D2ADC4329C26D05003B367F /* AddDynamicEntityLayerView.swift in Sources */,
 				D70082EB2ACF900100E0C3C2 /* IdentifyKMLFeaturesView.swift in Sources */,
+				D7635FFB2B9277DC0044AB97 /* ConfigureClustersView.Model.swift in Sources */,
 				D7EAF35A2A1C023800D822C4 /* SetMinAndMaxScaleView.swift in Sources */,
 				1C19B4F52A578E46001D2506 /* CreateLoadReportView.Model.swift in Sources */,
 				0042E24528E4F82C001F33D6 /* ShowViewshedFromPointInSceneView.ViewshedSettingsView.swift in Sources */,
