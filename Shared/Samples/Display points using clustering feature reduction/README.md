@@ -1,8 +1,8 @@
-# Display points using clustering feature reduction
+# Display clusters
 
 Display a web map with a point feature layer that has feature reduction enabled to aggregate points into clusters.
 
-![Image of display points using clustering feature reduction sample](display-points-using-clustering-feature-reduction.png)
+![Image of display clusters](display-clusters.png)
 
 ## Use case
 

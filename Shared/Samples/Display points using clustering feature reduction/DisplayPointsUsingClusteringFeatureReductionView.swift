@@ -16,7 +16,7 @@ import ArcGIS
 import SwiftUI
 import ArcGISToolkit
 
-struct DisplayPointsUsingClusteringFeatureReductionView: View {
+struct DisplayClustersView: View {
     /// A map of global power plants.
     @State private var map = {
         let portalItem = PortalItem(
@@ -100,6 +100,6 @@ struct DisplayPointsUsingClusteringFeatureReductionView: View {
 
 #Preview {
     NavigationView {
-        DisplayPointsUsingClusteringFeatureReductionView()
+        DisplayClustersView()
     }
 }
