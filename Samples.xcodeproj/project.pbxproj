@@ -261,6 +261,10 @@
 		D7635FFB2B9277DC0044AB97 /* ConfigureClustersView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7635FF52B9277DC0044AB97 /* ConfigureClustersView.Model.swift */; };
 		D7635FFD2B9277DC0044AB97 /* ConfigureClustersView.SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7635FF72B9277DC0044AB97 /* ConfigureClustersView.SettingsView.swift */; };
 		D7635FFE2B9277DC0044AB97 /* ConfigureClustersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7635FF82B9277DC0044AB97 /* ConfigureClustersView.swift */; };
+		D76360002B9296420044AB97 /* ConfigureClustersView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7635FF82B9277DC0044AB97 /* ConfigureClustersView.swift */; };
+		D76360012B92964A0044AB97 /* ConfigureClustersView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7635FF52B9277DC0044AB97 /* ConfigureClustersView.Model.swift */; };
+		D76360022B9296520044AB97 /* ConfigureClustersView.SettingsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7635FF72B9277DC0044AB97 /* ConfigureClustersView.SettingsView.swift */; };
+		D76360032B9296580044AB97 /* DisplayClustersView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7635FED2B9272CB0044AB97 /* DisplayClustersView.swift */; };
 		D76495212B74687E0042699E /* ValidateUtilityNetworkTopologyView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76495202B74687E0042699E /* ValidateUtilityNetworkTopologyView.Model.swift */; };
 		D76495222B7468940042699E /* ValidateUtilityNetworkTopologyView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D76495202B74687E0042699E /* ValidateUtilityNetworkTopologyView.Model.swift */; };
 		D76929FA2B4F79540047205E /* OrbitCameraAroundObjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76929F52B4F78340047205E /* OrbitCameraAroundObjectView.swift */; };
@@ -427,6 +431,10 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				D76360032B9296580044AB97 /* DisplayClustersView.swift in Copy Source Code Files */,
+				D76360022B9296520044AB97 /* ConfigureClustersView.SettingsView.swift in Copy Source Code Files */,
+				D76360012B92964A0044AB97 /* ConfigureClustersView.Model.swift in Copy Source Code Files */,
+				D76360002B9296420044AB97 /* ConfigureClustersView.swift in Copy Source Code Files */,
 				D7781D4C2B7ECCC800E53C51 /* NavigateRouteWithReroutingView.Model.swift in Copy Source Code Files */,
 				D7588F622B7D8DED008B75E2 /* NavigateRouteWithReroutingView.swift in Copy Source Code Files */,
 				D7F850042B7C427A00680D7C /* ValidateUtilityNetworkTopologyView.Views.swift in Copy Source Code Files */,
