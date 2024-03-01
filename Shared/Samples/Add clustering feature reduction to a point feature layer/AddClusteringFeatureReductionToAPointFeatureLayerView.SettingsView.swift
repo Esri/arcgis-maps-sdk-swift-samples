@@ -14,7 +14,7 @@
 
 import SwiftUI
 
-extension AddClusteringFeatureReductionToAPointFeatureLayerView {
+extension ConfigureClustersView {
     struct SettingsView: View {
         /// The model for the sample.
         @ObservedObject var model: Model

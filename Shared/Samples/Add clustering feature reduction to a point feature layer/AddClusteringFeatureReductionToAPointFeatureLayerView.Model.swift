@@ -15,7 +15,7 @@
 import ArcGIS
 import UIKit.UIColor
 
-extension AddClusteringFeatureReductionToAPointFeatureLayerView {
+extension ConfigureClustersView {
     /// The model used to store the geo model and other expensive objects
     /// used in this view.
     class Model: ObservableObject {

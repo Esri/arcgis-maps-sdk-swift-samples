@@ -16,7 +16,7 @@ import ArcGIS
 import ArcGISToolkit
 import SwiftUI
 
-struct AddClusteringFeatureReductionToAPointFeatureLayerView: View {
+struct ConfigureClustersView: View {
     /// The model for the sample.
     @StateObject private var model = Model()
     
@@ -76,6 +76,6 @@ struct AddClusteringFeatureReductionToAPointFeatureLayerView: View {
 
 #Preview {
     NavigationView {
-        AddClusteringFeatureReductionToAPointFeatureLayerView()
+        ConfigureClustersView()
     }
 }
