@@ -13,7 +13,7 @@
         "point",
         "viewpoint",
         "Basemap",
-        "BasemapStyleLanguageStrategy",
+        "BasemapStyleLanguage",
         "BasemapStyleParameters",
         "Map",
         "MapView"
@@ -21,7 +21,7 @@
     "redirect_from": [],
     "relevant_apis": [
         "Basemap",
-        "BasemapStyleLanguageStrategy",
+        "BasemapStyleLanguage",
         "BasemapStyleParameters",
         "Map",
         "MapView"
