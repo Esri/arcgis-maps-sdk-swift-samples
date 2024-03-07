@@ -31,8 +31,8 @@ struct ConfigureBasemapStyleParametersView: View {
                 ToolbarItemGroup(placement: .bottomBar) {
                     Spacer()
                     languageMenu
-                        .onChange(of: selectedLanguage) { newValue in
-                            model.setBasemapStyleParameters(language: newValue)
+                        .onChange(of: selectedLanguage) { newLanguage in
+                            model.setBasemapLanguage(newLanguage)
                         }
                     Spacer()
                 }
