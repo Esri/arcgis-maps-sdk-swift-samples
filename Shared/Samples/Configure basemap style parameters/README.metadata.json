@@ -1,0 +1,33 @@
+{
+    "category": "Maps",
+    "description": "Apply basemap style parameters customization for a basemap, such as displaying all labels in a specific language or displaying every label in their corresponding local language.",
+    "ignore": false,
+    "images": [
+        "configure-basemap-style-parameters.png"
+    ],
+    "keywords": [
+        "basemap style",
+        "language",
+        "language strategy",
+        "map",
+        "point",
+        "viewpoint",
+        "Basemap",
+        "BasemapStyleLanguage",
+        "BasemapStyleParameters",
+        "Map",
+        "MapView"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Basemap",
+        "BasemapStyleLanguage",
+        "BasemapStyleParameters",
+        "Map",
+        "MapView"
+    ],
+    "snippets": [
+        "ConfigureBasemapStyleParametersView.swift"
+    ],
+    "title": "Configure basemap style parameters"
+}
