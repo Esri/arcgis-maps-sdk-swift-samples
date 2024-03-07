@@ -34,7 +34,7 @@ Pan and zoom to navigate the map and see how different labels are displayed in t
 
 ## About the data
 
-The main data for this sample is the `BasemapStyle` which include basemaps that support both language localization and global language setting. The supported languages, along with their language code, can be found in the [API's documentation](https://developers.arcgis.com/rest/basemap-styles/#languages).
+The main data for this sample is the basemap style which include basemaps that support both language localization and global language setting. The supported languages, along with their language code, can be found in the [API's documentation](https://developers.arcgis.com/rest/basemap-styles/#languages).
 
 ## Tags
 
