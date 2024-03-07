@@ -28,11 +28,13 @@ struct ConfigureBasemapStyleParametersView: View {
     var body: some View {
         MapView(map: model.map)
             .toolbar {
-                ToolbarItem(placement: .bottomBar) {
+                ToolbarItemGroup(placement: .bottomBar) {
+                    Spacer()
                     languageMenu
                         .onChange(of: selectedLanguage) { newValue in
                             model.setBasemapStyleParameters(language: newValue)
                         }
+                    Spacer()
                 }
             }
     }
@@ -115,7 +117,7 @@ private extension ConfigureBasemapStyleParametersView {
         
         /// Sets the basemap style parameter with a language strategy.
         /// - Parameter language: The language setting for the basemap.
-        func setBasemapStyleParameters(language: BasemapStyleLanguage) {
+        func setBasemapLanguage(_ language: BasemapStyleLanguage) {
             let parameters = BasemapStyleParameters(language: language)
             map.basemap = Basemap(style: .osmLightGray, parameters: parameters)
         }
