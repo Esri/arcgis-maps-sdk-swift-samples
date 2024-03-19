@@ -33,7 +33,7 @@ struct SampleInfoView: View {
             WebView(htmlString: codeHTML)
                 .opacity(informationMode == .code ? 1 : 0)
         }
-        .edgesIgnoringSafeArea([.horizontal, .bottom])
+        .ignoresSafeArea(edges: [.horizontal, .bottom])
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
