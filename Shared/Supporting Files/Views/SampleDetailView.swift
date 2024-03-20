@@ -69,7 +69,7 @@ struct SampleDetailView: View {
                         }
                         .padding()
                     case .downloaded:
-                        sample.makeBody()
+                        view(for: sample)
                     }
                 }
                 .task {
@@ -78,7 +78,7 @@ struct SampleDetailView: View {
                 }
             } else {
                 // 'onDemandResource' is not created in this branch.
-                sample.makeBody()
+                view(for: sample)
             }
         }
         .navigationTitle(sample.name)

@@ -16,7 +16,21 @@ import SwiftUI
 
 extension SamplesApp {
     /// The samples for this app.
-    static let samples: [Sample] = [/* samples */]
+    static let samples: [Sample] = [
+/* samples */
+    ]
+}
+
+extension SampleDetailView {
+    /// The sample views for this app.
+    @ViewBuilder
+    func view(for sample: Sample) -> some View {
+        switch sample {
+/* sample view cases */
+        default:
+            fatalError("Unknown \(sample.name) sample view generated.")
+        }
+    }
 }
 
 // MARK: Sample Structs
