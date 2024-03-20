@@ -36,7 +36,8 @@
         "WorldScaleSceneView"
     ],
     "snippets": [
-        "AugmentRealityToNavigateRouteView.swift"
+        "AugmentRealityToNavigateRouteView.swift",
+        "AugmentRealityToNavigateRouteView.RoutePlannerView.swift"
     ],
     "title": "Augment reality to navigate route"
 }

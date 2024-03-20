@@ -83,7 +83,7 @@
 		1C2538262BAB76DC00337307 /* AugmentRealityToNavigateRouteView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C2538252BAB76DC00337307 /* AugmentRealityToNavigateRouteView.swift */; };
 		1C2538272BAB78AA00337307 /* AugmentRealityToNavigateRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C2538252BAB76DC00337307 /* AugmentRealityToNavigateRouteView.swift */; };
 		1C25382E2BAB864300337307 /* AugmentRealityToNavigateRouteView.RoutePlannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C25382D2BAB864300337307 /* AugmentRealityToNavigateRouteView.RoutePlannerView.swift */; };
-		1C2538302BAB866B00337307 /* AugmentRealityToNavigateRouteView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C25382F2BAB866B00337307 /* AugmentRealityToNavigateRouteView.Model.swift */; };
+		1C2538382BABA1A700337307 /* AugmentRealityToNavigateRouteView.RoutePlannerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C25382D2BAB864300337307 /* AugmentRealityToNavigateRouteView.RoutePlannerView.swift */; };
 		1C26ED192A859525009B7721 /* FilterFeaturesInSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C26ED152A859525009B7721 /* FilterFeaturesInSceneView.swift */; };
 		1C26ED202A8BEC63009B7721 /* FilterFeaturesInSceneView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C26ED152A859525009B7721 /* FilterFeaturesInSceneView.swift */; };
 		1C3B7DC82A5F64FC00907443 /* AnalyzeNetworkWithSubnetworkTraceView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3B7DC32A5F64FC00907443 /* AnalyzeNetworkWithSubnetworkTraceView.Model.swift */; };
@@ -437,6 +437,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				1C2538382BABA1A700337307 /* AugmentRealityToNavigateRouteView.RoutePlannerView.swift in Copy Source Code Files */,
 				1C2538262BAB76DC00337307 /* AugmentRealityToNavigateRouteView.swift in Copy Source Code Files */,
 				000D43182B993A030003D3C2 /* ConfigureBasemapStyleParametersView.swift in Copy Source Code Files */,
 				D76360032B9296580044AB97 /* DisplayClustersView.swift in Copy Source Code Files */,
@@ -650,7 +651,6 @@
 		1C19B4EF2A578E46001D2506 /* CreateLoadReportView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateLoadReportView.Model.swift; sourceTree = "<group>"; };
 		1C2538252BAB76DC00337307 /* AugmentRealityToNavigateRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AugmentRealityToNavigateRouteView.swift; sourceTree = "<group>"; };
 		1C25382D2BAB864300337307 /* AugmentRealityToNavigateRouteView.RoutePlannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AugmentRealityToNavigateRouteView.RoutePlannerView.swift; sourceTree = "<group>"; };
-		1C25382F2BAB866B00337307 /* AugmentRealityToNavigateRouteView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AugmentRealityToNavigateRouteView.Model.swift; sourceTree = "<group>"; };
 		1C26ED152A859525009B7721 /* FilterFeaturesInSceneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterFeaturesInSceneView.swift; sourceTree = "<group>"; };
 		1C3B7DC32A5F64FC00907443 /* AnalyzeNetworkWithSubnetworkTraceView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyzeNetworkWithSubnetworkTraceView.Model.swift; sourceTree = "<group>"; };
 		1C3B7DC62A5F64FC00907443 /* AnalyzeNetworkWithSubnetworkTraceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyzeNetworkWithSubnetworkTraceView.swift; sourceTree = "<group>"; };
@@ -1246,7 +1246,6 @@
 			isa = PBXGroup;
 			children = (
 				1C2538252BAB76DC00337307 /* AugmentRealityToNavigateRouteView.swift */,
-				1C25382F2BAB866B00337307 /* AugmentRealityToNavigateRouteView.Model.swift */,
 				1C25382D2BAB864300337307 /* AugmentRealityToNavigateRouteView.RoutePlannerView.swift */,
 			);
 			path = "Augemnt reality to navigate route";
@@ -2643,7 +2642,6 @@
 				E066DD35285CF3B3004D3D5B /* FindRouteView.swift in Sources */,
 				D7B759B32B1FFBE300017FDD /* FavoritesView.swift in Sources */,
 				D722BD222A420DAD002C2087 /* ShowExtrudedFeaturesView.swift in Sources */,
-				1C2538302BAB866B00337307 /* AugmentRealityToNavigateRouteView.Model.swift in Sources */,
 				E004A6F6284FA42A002A1FE6 /* SelectFeaturesInFeatureLayerView.swift in Sources */,
 				D77688132B69826B007C3860 /* ListSpatialReferenceTransformationsView.swift in Sources */,
 				D75101812A2E493600B8FA48 /* ShowLabelsOnLayerView.swift in Sources */,
