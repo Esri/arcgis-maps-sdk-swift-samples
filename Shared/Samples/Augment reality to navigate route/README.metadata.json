@@ -17,7 +17,6 @@
         "route",
         "routing",
         "world-scale",
-        "CLLocationDataSource",
         "GeometryEngine",
         "LocationDataSource",
         "RouteResult",
@@ -28,7 +27,6 @@
     ],
     "redirect_from": [],
     "relevant_apis": [
-        "CLLocationDataSource",
         "GeometryEngine",
         "LocationDataSource",
         "RouteResult",
