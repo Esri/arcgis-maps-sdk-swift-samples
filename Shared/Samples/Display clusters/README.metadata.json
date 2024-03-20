@@ -20,7 +20,9 @@
         "GeoElement",
         "IdentifyLayerResult"
     ],
-    "redirect_from": [],
+    "redirect_from": [
+        "/swift/sample-code/display-points-using-clustering-feature-reduction/"
+    ],
     "relevant_apis": [
         "AggregateGeoElement",
         "FeatureLayer",
