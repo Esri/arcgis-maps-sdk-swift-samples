@@ -19,6 +19,7 @@
         "world-scale",
         "CLLocationDataSource",
         "GeometryEngine",
+        "LocationDataSource",
         "RouteResult",
         "RouteTask",
         "RouteTracker",
@@ -29,6 +30,7 @@
     "relevant_apis": [
         "CLLocationDataSource",
         "GeometryEngine",
+        "LocationDataSource",
         "RouteResult",
         "RouteTask",
         "RouteTracker",
