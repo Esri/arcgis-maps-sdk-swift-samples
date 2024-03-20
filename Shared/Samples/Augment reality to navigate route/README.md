@@ -51,7 +51,6 @@ This sample uses Esri's [world elevation service](https://elevation3d.arcgis.com
 
 ## Additional information
 
-
 This sample requires a device that is compatible with ARKit 1 on iOS.
 
 Unlike other scene samples, there's no need for a basemap while navigating, because context is provided by the camera feed showing the real environment. The base surface's opacity is set to zero to prevent it from interfering with the AR experience.
