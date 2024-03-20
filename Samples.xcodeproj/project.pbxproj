@@ -80,10 +80,10 @@
 		1C19B4F72A578E69001D2506 /* CreateLoadReportView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C19B4EF2A578E46001D2506 /* CreateLoadReportView.Model.swift */; };
 		1C19B4F82A578E69001D2506 /* CreateLoadReportView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C19B4ED2A578E46001D2506 /* CreateLoadReportView.swift */; };
 		1C19B4F92A578E69001D2506 /* CreateLoadReportView.Views.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C19B4EB2A578E46001D2506 /* CreateLoadReportView.Views.swift */; };
-		1C25383E2BABAA5E00337307 /* AugmentRealityToNavigateRouteView.RoutePlannerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C25383C2BABAA5E00337307 /* AugmentRealityToNavigateRouteView.RoutePlannerView.swift */; };
-		1C25383F2BABAA5E00337307 /* AugmentRealityToNavigateRouteView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C25383D2BABAA5E00337307 /* AugmentRealityToNavigateRouteView.swift */; };
-		1C2538402BABAA8100337307 /* AugmentRealityToNavigateRouteView.RoutePlannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C25383C2BABAA5E00337307 /* AugmentRealityToNavigateRouteView.RoutePlannerView.swift */; };
-		1C2538412BABAA8100337307 /* AugmentRealityToNavigateRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C25383D2BABAA5E00337307 /* AugmentRealityToNavigateRouteView.swift */; };
+		1C2538542BABACB100337307 /* AugmentRealityToNavigateRouteView.RoutePlannerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C2538522BABACB100337307 /* AugmentRealityToNavigateRouteView.RoutePlannerView.swift */; };
+		1C2538552BABACB100337307 /* AugmentRealityToNavigateRouteView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C2538532BABACB100337307 /* AugmentRealityToNavigateRouteView.swift */; };
+		1C2538562BABACFD00337307 /* AugmentRealityToNavigateRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C2538532BABACB100337307 /* AugmentRealityToNavigateRouteView.swift */; };
+		1C2538572BABACFD00337307 /* AugmentRealityToNavigateRouteView.RoutePlannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C2538522BABACB100337307 /* AugmentRealityToNavigateRouteView.RoutePlannerView.swift */; };
 		1C26ED192A859525009B7721 /* FilterFeaturesInSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C26ED152A859525009B7721 /* FilterFeaturesInSceneView.swift */; };
 		1C26ED202A8BEC63009B7721 /* FilterFeaturesInSceneView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C26ED152A859525009B7721 /* FilterFeaturesInSceneView.swift */; };
 		1C3B7DC82A5F64FC00907443 /* AnalyzeNetworkWithSubnetworkTraceView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3B7DC32A5F64FC00907443 /* AnalyzeNetworkWithSubnetworkTraceView.Model.swift */; };
@@ -437,8 +437,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
-				1C25383E2BABAA5E00337307 /* AugmentRealityToNavigateRouteView.RoutePlannerView.swift in Copy Source Code Files */,
-				1C25383F2BABAA5E00337307 /* AugmentRealityToNavigateRouteView.swift in Copy Source Code Files */,
+				1C2538542BABACB100337307 /* AugmentRealityToNavigateRouteView.RoutePlannerView.swift in Copy Source Code Files */,
+				1C2538552BABACB100337307 /* AugmentRealityToNavigateRouteView.swift in Copy Source Code Files */,
 				000D43182B993A030003D3C2 /* ConfigureBasemapStyleParametersView.swift in Copy Source Code Files */,
 				D76360032B9296580044AB97 /* DisplayClustersView.swift in Copy Source Code Files */,
 				D76360022B9296520044AB97 /* ConfigureClustersView.SettingsView.swift in Copy Source Code Files */,
@@ -649,8 +649,8 @@
 		1C19B4EB2A578E46001D2506 /* CreateLoadReportView.Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateLoadReportView.Views.swift; sourceTree = "<group>"; };
 		1C19B4ED2A578E46001D2506 /* CreateLoadReportView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateLoadReportView.swift; sourceTree = "<group>"; };
 		1C19B4EF2A578E46001D2506 /* CreateLoadReportView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateLoadReportView.Model.swift; sourceTree = "<group>"; };
-		1C25383C2BABAA5E00337307 /* AugmentRealityToNavigateRouteView.RoutePlannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AugmentRealityToNavigateRouteView.RoutePlannerView.swift; sourceTree = "<group>"; };
-		1C25383D2BABAA5E00337307 /* AugmentRealityToNavigateRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AugmentRealityToNavigateRouteView.swift; sourceTree = "<group>"; };
+		1C2538522BABACB100337307 /* AugmentRealityToNavigateRouteView.RoutePlannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AugmentRealityToNavigateRouteView.RoutePlannerView.swift; sourceTree = "<group>"; };
+		1C2538532BABACB100337307 /* AugmentRealityToNavigateRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AugmentRealityToNavigateRouteView.swift; sourceTree = "<group>"; };
 		1C26ED152A859525009B7721 /* FilterFeaturesInSceneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterFeaturesInSceneView.swift; sourceTree = "<group>"; };
 		1C3B7DC32A5F64FC00907443 /* AnalyzeNetworkWithSubnetworkTraceView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyzeNetworkWithSubnetworkTraceView.Model.swift; sourceTree = "<group>"; };
 		1C3B7DC62A5F64FC00907443 /* AnalyzeNetworkWithSubnetworkTraceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyzeNetworkWithSubnetworkTraceView.swift; sourceTree = "<group>"; };
@@ -934,8 +934,8 @@
 				D7C16D172AC5F6C100689E89 /* Animate 3D graphic */,
 				D77570BC2A29427200F490CD /* Animate images with image overlay */,
 				D75362CC2A1E862B00D83028 /* Apply unique value renderer */,
-				1C25381A2BAB74F400337307 /* Augemnt reality to navigate route */,
 				D7084FA42AD771AA00EC7F4F /* Augment reality to fly over scene */,
+				1C2538472BABAC7B00337307 /* Augment reality to navigate route */,
 				D72F27292ADA1E4400F906DA /* Augment reality to show tabletop scene */,
 				218F35B229C28F4A00502022 /* Authenticate with OAuth */,
 				E0FE32E528747762002C6ACA /* Browse building floors */,
@@ -1242,13 +1242,13 @@
 			path = "Create load report";
 			sourceTree = "<group>";
 		};
-		1C25381A2BAB74F400337307 /* Augemnt reality to navigate route */ = {
+		1C2538472BABAC7B00337307 /* Augment reality to navigate route */ = {
 			isa = PBXGroup;
 			children = (
-				1C25383D2BABAA5E00337307 /* AugmentRealityToNavigateRouteView.swift */,
-				1C25383C2BABAA5E00337307 /* AugmentRealityToNavigateRouteView.RoutePlannerView.swift */,
+				1C2538532BABACB100337307 /* AugmentRealityToNavigateRouteView.swift */,
+				1C2538522BABACB100337307 /* AugmentRealityToNavigateRouteView.RoutePlannerView.swift */,
 			);
-			path = "Augemnt reality to navigate route";
+			path = "Augment reality to navigate route";
 			sourceTree = "<group>";
 		};
 		1C26ED122A859525009B7721 /* Filter features in scene */ = {
@@ -2500,8 +2500,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1C2538402BABAA8100337307 /* AugmentRealityToNavigateRouteView.RoutePlannerView.swift in Sources */,
-				1C2538412BABAA8100337307 /* AugmentRealityToNavigateRouteView.swift in Sources */,
+				1C2538562BABACFD00337307 /* AugmentRealityToNavigateRouteView.swift in Sources */,
+				1C2538572BABACFD00337307 /* AugmentRealityToNavigateRouteView.RoutePlannerView.swift in Sources */,
 				D76929FA2B4F79540047205E /* OrbitCameraAroundObjectView.swift in Sources */,
 				79D84D132A81711A00F45262 /* AddCustomDynamicEntityDataSourceView.swift in Sources */,
 				E000E7602869E33D005D87C5 /* ClipGeometryView.swift in Sources */,
