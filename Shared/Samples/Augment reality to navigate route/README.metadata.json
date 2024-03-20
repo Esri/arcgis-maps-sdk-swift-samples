@@ -1,0 +1,42 @@
+{
+    "category": "Augmented Reality",
+    "description": "Use a route displayed in the real world to navigate.",
+    "ignore": false,
+    "images": [
+        "augment-reality-to-navigate-route.png"
+    ],
+    "keywords": [
+        "augmented reality",
+        "directions",
+        "full-scale",
+        "guidance",
+        "mixed reality",
+        "navigate",
+        "navigation",
+        "real-scale",
+        "route",
+        "routing",
+        "world-scale",
+        "CLLocationDataSource",
+        "GeometryEngine",
+        "RouteResult",
+        "RouteTask",
+        "RouteTracker",
+        "Surface",
+        "WorldScaleSceneView"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "CLLocationDataSource",
+        "GeometryEngine",
+        "RouteResult",
+        "RouteTask",
+        "RouteTracker",
+        "Surface",
+        "WorldScaleSceneView"
+    ],
+    "snippets": [
+        "AugmentRealityToNavigateRouteView.swift"
+    ],
+    "title": "Augment reality to navigate route"
+}
