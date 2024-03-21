@@ -32,8 +32,25 @@ struct SampleLink: View {
     
     var body: some View {
         NavigationLink {
+#if targetEnvironment(macCatalyst) || targetEnvironment(simulator)
+            // Exclude AR samples from Mac Catalyst and Simulator targets
+            // as they don't have camera and sensors available.
+            if sample.category == "Augmented Reality" {
+                Text(
+                    """
+                    Augmented Reality samples cannot run on Simulator or Mac Catalyst.
+                    Please use a real device with camera to run the sample.
+                    """
+                )
+                .multilineTextAlignment(.center)
+            } else {
+                SampleDetailView(sample: sample)
+                    .id(sample.name)
+            }
+#else
             SampleDetailView(sample: sample)
                 .id(sample.name)
+#endif
         } label: {
             SampleRow(
                 name: sample.name.boldingFirstOccurrence(of: textToBold),
