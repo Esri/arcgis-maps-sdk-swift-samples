@@ -78,7 +78,6 @@ struct AugmentRealityToNavigateRouteView: View {
                 SceneView(scene: scene, graphicsOverlays: [graphicsOverlay])
             }
             .calibrationButtonAlignment(.bottomLeading)
-            .ignoresSafeArea(edges: [.horizontal, .bottom])
             .task {
                 statusText = "Adjust calibration before starting."
                 Task {
@@ -97,25 +96,21 @@ struct AugmentRealityToNavigateRouteView: View {
                     .padding(8)
                     .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
             }
-            .overlay(alignment: .bottomTrailing) {
-                Button("Start") {
-                    isNavigating = true
-                    Task {
-                        do {
-                            try await startNavigation()
-                        } catch {
-                            print("Failed to start navigation.")
+            .toolbar {
+                ToolbarItemGroup(placement: .bottomBar) {
+                    Button("Start") {
+                        isNavigating = true
+                        Task {
+                            do {
+                                try await startNavigation()
+                            } catch {
+                                print("Failed to start navigation.")
+                            }
                         }
                     }
+                    .disabled(isNavigating)
                 }
-                .padding()
-                .background(.regularMaterial)
-                .clipShape(RoundedRectangle(cornerRadius: 10))
-                .disabled(isNavigating)
-                .padding()
-                .padding(.vertical)
             }
-            .ignoresSafeArea(edges: [.horizontal, .bottom])
             .onDisappear {
                 Task { await locationDataSource.stop() }
             }
