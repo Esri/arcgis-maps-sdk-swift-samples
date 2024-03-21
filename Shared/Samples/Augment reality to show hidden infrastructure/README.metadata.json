@@ -1,0 +1,34 @@
+{
+    "category": "Augmented Reality",
+    "description": "Visualize hidden infrastructure in its real-world location using augmented reality.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "augmented reality",
+        "full-scale",
+        "infrastructure",
+        "lines",
+        "mixed reality",
+        "pipes",
+        "real-scale",
+        "underground",
+        "visualization",
+        "visualize",
+        "world-scale",
+        "GraphicsOverlay",
+        "MultilayerPolylineSymbol",
+        "SolidStrokeSymbolLayer",
+        "Surface"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "GraphicsOverlay",
+        "MultilayerPolylineSymbol",
+        "SolidStrokeSymbolLayer",
+        "Surface"
+    ],
+    "snippets": [
+        "AugmentRealityToShowHiddenInfrastructureView.swift"
+    ],
+    "title": "Augment reality to show hidden infrastructure"
+}
