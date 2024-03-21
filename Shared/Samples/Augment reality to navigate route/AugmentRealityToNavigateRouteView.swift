@@ -27,15 +27,7 @@ struct AugmentRealityToNavigateRouteView: View {
     /// The location datasource that is used to access the device location.
     @State private var locationDataSource = SystemLocationDataSource()
     /// A scene with an imagery basemap.
-    @State private var scene: ArcGIS.Scene = {
-        let surface = Surface()
-        surface.backgroundGrid.isVisible = false
-        surface.navigationConstraint = .unconstrained
-        let scene = Scene(basemapStyle: .arcGISImagery)
-        scene.baseSurface = surface
-        scene.baseSurface.opacity = 0.5
-        return scene
-    }()
+    @State private var scene = Scene(basemapStyle: .arcGISImagery)
     /// The elevation surface set to the base surface of the scene.
     @State private var elevationSurface: Surface = {
         let elevationSurface = Surface()
@@ -45,7 +37,7 @@ struct AugmentRealityToNavigateRouteView: View {
         return elevationSurface
     }()
     /// The elevation source with elevation service URL.
-    @State private var elevationSource: ElevationSource?
+    @State private var elevationSource = ArcGISTiledElevationSource(url: URL(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!)
     /// The graphics overlay containing a graphic.
     @State private var graphicsOverlay = GraphicsOverlay()
     /// The status text displayed to the user.
@@ -54,13 +46,10 @@ struct AugmentRealityToNavigateRouteView: View {
     @State private var isNavigating = false
     /// The result of the route selected in the route planner view.
     @State private var routeResult: RouteResult?
-    /// The current location elevation in meters.
-    @State private var elevation: Double?
     
     init() {
-        let elevationSource = ArcGISTiledElevationSource(url: URL(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!)
         elevationSurface.addElevationSource(elevationSource)
-        Task { try await elevationSource.load() }
+        scene.baseSurface = elevationSurface
     }
     
     var body: some View {
@@ -72,6 +61,9 @@ struct AugmentRealityToNavigateRouteView: View {
                         for: routeResult,
                         using: routeGraphic
                     )
+                }
+                .task {
+                    Task { try await elevationSource.load() }
                 }
         } else {
             WorldScaleSceneView { _ in
@@ -85,7 +77,6 @@ struct AugmentRealityToNavigateRouteView: View {
                     
                     for await location in locationDataSource.locations {
                         try await routeDataModel.routeTracker?.track(location)
-                        self.elevation = location.position.z
                     }
                 }
             }
@@ -134,9 +125,10 @@ struct AugmentRealityToNavigateRouteView: View {
         graphicsOverlay.renderer = polylineRenderer
         
         if let originalPolyline = routeResult.routes.first?.geometry {
-            let polyline = addElevationToPolyline(polyline: originalPolyline)
-            routeGraphic.geometry = polyline
-            graphicsOverlay.addGraphic(routeGraphic)
+            addElevationToPolyline(polyline: originalPolyline) { polyline in
+                routeGraphic.geometry = polyline
+                graphicsOverlay.addGraphic(routeGraphic)
+            }
         }
         
         return graphicsOverlay
@@ -148,21 +140,27 @@ struct AugmentRealityToNavigateRouteView: View {
     /// - Parameters:
     ///   - polyline: The polyline geometry of the route.
     ///   - z: A `Double` value representing z elevation.
-    private func addElevationToPolyline(polyline: Polyline, elevation z: Double = 3) -> Polyline {
+    ///   - completion: A completion closure to execute after the polyline is generated with success or not.
+    private func addElevationToPolyline(
+        polyline: Polyline,
+        elevation z: Double = 3,
+        completion: @escaping (Polyline) -> Void
+    ) {
         if let densifiedPolyline = GeometryEngine.densify(polyline, maxSegmentLength: 0.3) as? Polyline {
-            let polylinebuilder = PolylineBuilder(spatialReference: polyline.spatialReference)
+            let polylinebuilder = PolylineBuilder(spatialReference: densifiedPolyline.spatialReference)
             
             let allPoints = densifiedPolyline.parts.flatMap { $0.points }
             
-            allPoints.forEach { point in
-                let newPoint = GeometryEngine.makeGeometry(from: point, z: elevation ?? 0 + z)
-                
-                // Put the new point 3 meters above the ground elevation.
-                polylinebuilder.add(newPoint)
+            Task {
+                for point in allPoints {
+                    async let elevation = try await elevationSurface.elevation(at: point)
+                    let newPoint = await GeometryEngine.makeGeometry(from: point, z: try elevation + z)
+                    polylinebuilder.add(newPoint)
+                }
+                completion(polylinebuilder.toGeometry())
             }
-            return polylinebuilder.toGeometry()
         } else {
-            return polyline
+            completion(polyline)
         }
     }
     
