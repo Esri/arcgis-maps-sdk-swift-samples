@@ -16,9 +16,7 @@ import SwiftUI
 
 struct CategoriesView: View {
     /// The sample categories generated from the samples list.
-    private let categories = Set(
-        SamplesApp.samples.map(\.category)
-    ).sorted()
+    private let categories = Set(SamplesApp.samples.map(\.category)).sorted()
     
     var body: some View {
         ScrollView {
