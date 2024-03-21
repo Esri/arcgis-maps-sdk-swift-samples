@@ -18,10 +18,6 @@ struct CategoriesView: View {
     /// The sample categories generated from the samples list.
     private let categories = Set(
         SamplesApp.samples.map(\.category)
-        #if targetEnvironment(macCatalyst)
-        // Exclude AR samples from Mac Catalyst app as they aren't suitable.
-            .filter { $0 != "Augmented Reality" }
-        #endif
     ).sorted()
     
     var body: some View {
