@@ -143,6 +143,11 @@ private let arrayRepresentation = """
     [
             \(entries)
         ]
+    #if targetEnvironment(macCatalyst) || targetEnvironment(simulator)
+        // Exclude AR samples from Mac Catalyst and Simulator targets
+        // as they don't have camera and sensors available.
+        .filter { $0.category != "Augmented Reality" }
+    #endif
     """
 
 do {
