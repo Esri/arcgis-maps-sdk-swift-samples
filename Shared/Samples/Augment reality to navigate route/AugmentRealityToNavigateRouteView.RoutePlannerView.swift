@@ -14,8 +14,8 @@
 
 import ArcGIS
 import ArcGISToolkit
-import SwiftUI
 import CoreLocation
+import SwiftUI
 
 extension AugmentRealityToNavigateRouteView {
     @MainActor
@@ -32,8 +32,10 @@ extension AugmentRealityToNavigateRouteView {
         var didSelectRouteStop: Bool {
             model.startPoint != nil || model.endPoint != nil
         }
+        /// A Boolean value indicating whether a route is selected.
+        @State private var didSelectRoute = false
         /// The error shown in the error alert.
-        @State var error: Error?
+        @State private var error: Error?
         
         var body: some View {
             MapView(
@@ -55,7 +57,7 @@ extension AugmentRealityToNavigateRouteView {
                             let routeGraphic = Graphic(geometry: firstRoute.geometry)
                             model.routeGraphicsOverlay.addGraphic(routeGraphic)
                             model.routeDataModel.routeResult = routeResult
-                            model.didSelectRoute = true
+                            didSelectRoute = true
                             statusText = "Tap camera to start navigation."
                         } else {
                             self.error = error
@@ -71,10 +73,7 @@ extension AugmentRealityToNavigateRouteView {
                     .padding(8)
                     .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
             }
-            .task {
-                statusText = "Tap to place a start point."
-            }
-            .onChange(of: model.didSelectRoute) { didSelectRoute in
+            .onChange(of: didSelectRoute) { didSelectRoute in
                 guard didSelectRoute else { return }
                 if let onDidSelectRoute = selectRouteAction,
                    let routeResult = model.routeDataModel.routeResult {
@@ -90,18 +89,20 @@ extension AugmentRealityToNavigateRouteView {
                         Image(systemName: "camera")
                             .imageScale(.large)
                     }
-                    .disabled(!model.didSelectRoute)
+                    .disabled(!didSelectRoute)
                     Spacer()
                     Button {
                         model.reset()
                         statusText = "Tap to place a start point."
-                        model.didSelectRoute = false
                     } label: {
                         Image(systemName: "trash")
                             .imageScale(.large)
                     }
-                    .disabled(!didSelectRouteStop)
+                    .disabled(!didSelectRouteStop && !didSelectRoute)
                 }
+            }
+            .onAppear {
+                statusText = "Tap to place a start point."
             }
             .onDisappear {
                 Task { await model.locationDataSource.stop() }
@@ -127,33 +128,13 @@ private extension AugmentRealityToNavigateRouteView.RoutePlannerView {
         /// The data model for the selected route.
         @ObservedObject var routeDataModel = AugmentRealityToNavigateRouteView.RouteDataModel()
         /// A map with an imagery basemap style.
-        @Published var map: Map = {
-            let map = Map(basemapStyle: .arcGISImagery)
-            return map
-        }()
-        /// A binding to a Boolean value indicating whether a route is selected.
-        @Published var didSelectRoute = false
-        /// The graphics overlay for the route.
-        @Published var routeOverlay: GraphicsOverlay = {
-            let graphicsOverlay = GraphicsOverlay()
-            graphicsOverlay.sceneProperties.surfacePlacement = .absolute
-            let strokeSymbolLayer = SolidStrokeSymbolLayer(
-                width: 1,
-                color: .yellow,
-                lineStyle3D: .tube
-            )
-            let polylineSymbol = MultilayerPolylineSymbol(symbolLayers: [strokeSymbolLayer])
-            let polylineRenderer = SimpleRenderer(symbol: polylineSymbol)
-            graphicsOverlay.renderer = polylineRenderer
-            
-            return graphicsOverlay
-        }()
+        let map = Map(basemapStyle: .arcGISImagery)
         /// The data source to track device location and provide updates to route tracker.
         let locationDataSource = SystemLocationDataSource()
         /// The graphic (with solid yellow 3D tube symbol) to represent the route.
-        @Published var routeGraphic = Graphic()
+        let routeGraphic = Graphic()
         /// The map's location display.
-        @Published var locationDisplay: LocationDisplay = {
+        let locationDisplay: LocationDisplay = {
             let locationDisplay = LocationDisplay()
             locationDisplay.autoPanMode = .recenter
             return locationDisplay
@@ -176,7 +157,7 @@ private extension AugmentRealityToNavigateRouteView.RoutePlannerView {
         var startPoint: Point? {
             didSet {
                 let stopSymbol = PictureMarkerSymbol(image: UIImage(named: "StopA")!)
-                let startStopGraphic = Graphic(geometry: self.startPoint, symbol: stopSymbol)
+                let startStopGraphic = Graphic(geometry: startPoint, symbol: stopSymbol)
                 stopGraphicsOverlay.addGraphic(startStopGraphic)
             }
         }
@@ -184,7 +165,7 @@ private extension AugmentRealityToNavigateRouteView.RoutePlannerView {
         var endPoint: Point? {
             didSet {
                 let stopSymbol = PictureMarkerSymbol(image: UIImage(named: "StopB")!)
-                let endStopGraphic = Graphic(geometry: self.endPoint, symbol: stopSymbol)
+                let endStopGraphic = Graphic(geometry: endPoint, symbol: stopSymbol)
                 stopGraphicsOverlay.addGraphic(endStopGraphic)
             }
         }
@@ -215,9 +196,10 @@ private extension AugmentRealityToNavigateRouteView.RoutePlannerView {
         
         /// Creates the start and destination stops for the navigation.
         func makeStops() -> [Stop] {
-            let stop1 = Stop(point: self.startPoint!)
+            guard let startPoint, let endPoint else { return [] }
+            let stop1 = Stop(point: startPoint)
             stop1.name = "Start"
-            let stop2 = Stop(point: self.endPoint!)
+            let stop2 = Stop(point: endPoint)
             stop2.name = "Destination"
             return [stop1, stop2]
         }
