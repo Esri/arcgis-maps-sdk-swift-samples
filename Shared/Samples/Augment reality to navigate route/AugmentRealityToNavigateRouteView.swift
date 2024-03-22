@@ -20,8 +20,6 @@ import SwiftUI
 struct AugmentRealityToNavigateRouteView: View {
     /// The data model for the selected route.
     @StateObject private var routeDataModel = RouteDataModel()
-    /// An AVSpeechSynthesizer for text to speech.
-    private let speechSynthesizer = AVSpeechSynthesizer()
     /// A Boolean value indicating whether the route planner is showing.
     @State private var isShowingRoutePlanner = true
     /// The location datasource that is used to access the device location.
@@ -232,8 +230,8 @@ struct AugmentRealityToNavigateRouteView: View {
     private func trackVoiceGuidance() async {
         guard let routeTracker = routeDataModel.routeTracker else { return }
         for try await voiceGuidance in routeTracker.voiceGuidances {
-            speechSynthesizer.stopSpeaking(at: .word)
-            speechSynthesizer.speak(AVSpeechUtterance(string: voiceGuidance.text))
+            routeDataModel.speechSynthesizer.stopSpeaking(at: .word)
+            routeDataModel.speechSynthesizer.speak(AVSpeechUtterance(string: voiceGuidance.text))
         }
     }
 }
@@ -241,6 +239,8 @@ struct AugmentRealityToNavigateRouteView: View {
 extension AugmentRealityToNavigateRouteView {
     @MainActor
     class RouteDataModel: ObservableObject {
+        /// An AVSpeechSynthesizer for text to speech.
+        let speechSynthesizer = AVSpeechSynthesizer()
         /// The route task that solves the route using the online routing service, using API key authentication.
         let routeTask = RouteTask(url: URL(string: "https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World")!)
         /// The parameters for route task to solve a route.
