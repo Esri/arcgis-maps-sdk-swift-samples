@@ -2,7 +2,7 @@
 
 Use a route displayed in the real world to navigate.
 
-![Image of augment reality to navigate route](augment-reality-to-navigate-route.png)
+![Image of augment reality to navigate route sample](augment-reality-to-navigate-route.png)
 
 ## Use case
 
@@ -23,16 +23,16 @@ When you start, route instructions will be displayed and spoken. As you proceed 
     * The route task and parameters are used to support a rerouting capability where routes are recalculated on-the-fly if you deviate. Due to service limitations, this sample doesn't support on-the-fly rerouting. You can incorporate offline routing to support rerouting in your app.
 3. Start ARKit/ARCore tracking with continuous location updates when the AR view is shown.
 4. Get the route geometry from the first route in the `RouteResult`. Use the scene's base surface to apply elevation to the line so that it will follow the terrain.
-    * First, densify the polyline to ensure that the elevation adjustment can be applied smoothly along the line with `GeometryEngine.densify(polyline, maxSegmentLength)`
+    * First, densify the polyline to ensure that the elevation adjustment can be applied smoothly along the line with `GeometryEngine.densify(_:maxSegmentLength:)`
     * Next, create a polyline builder with a spatial reference matching the input route geometry
     * Get a list of all points in the polyline by iterating through parts and points along each part
     * For each point in the polyline, use `surface.elevation(for: point)` to get the elevation for that point. Then create a new point with the *x* and *y* of the input and *z* as the returned elevation value. This sample adds 3 meters to that value so that the route line is visible above the road. Add the new point to the polyline builder with `builder.add(newPoint)`
-    * Once all points have been given an elevation and added to the polyline builder, call `toGeometry` to get the elevation-adjusted route line.
+    * Once all points have been given an elevation and added to the polyline builder, call `toGeometry()` on the polyline builder to get the elevation-adjusted route line.
 5. Add the route geometry to a graphics overlay and add a renderer to the graphics overlay. This sample uses a `MultilayerPolylineSymbol` with a `SolidStrokeSymbolLayer` to visualize a tube along the route line.
 6. The `WorldScaleSceneView` has a calibration view that uses sliders to manipulate the heading (direction you are facing) and elevation. Because of limitations in on-device compasses, calibration is often necessary; small errors in heading cause big problems with the placement of scene content in the world.
     * The calibration view slider in the sample implements a 'joystick' interaction; the heading is adjusted faster the further you move from the center of the slider.
 7. When the user starts navigating, create a `RouteTracker`, providing a `RouteResult` and the index of the route you want to use; this sample always picks the first returned result.
-8. Create a location data source and listen for location change events. When the location changes, call `routeTracker.trackLocation` with the updated location.
+8. Create a location data source and listen for location change events. When the location changes, call `track(_:)` on the route tracker with the updated location.
 9. Keep the calibration view accessible throughout the navigation experience. As the user walks, small heading errors may become more noticeable and require recalibration.
 
 ## Relevant API
