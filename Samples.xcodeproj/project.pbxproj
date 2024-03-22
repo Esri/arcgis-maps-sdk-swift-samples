@@ -98,6 +98,8 @@
 		1C43BC852A43783900509BF8 /* SetVisibilityOfSubtypeSublayerView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C43BC7C2A43781100509BF8 /* SetVisibilityOfSubtypeSublayerView.Model.swift */; };
 		1C43BC862A43783900509BF8 /* SetVisibilityOfSubtypeSublayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C43BC7E2A43781100509BF8 /* SetVisibilityOfSubtypeSublayerView.swift */; };
 		1C43BC872A43783900509BF8 /* SetVisibilityOfSubtypeSublayerView.Views.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C43BC792A43781100509BF8 /* SetVisibilityOfSubtypeSublayerView.Views.swift */; };
+		1C8EC7472BAE2891001A6929 /* AugmentRealityToCollectDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C8EC7432BAE2891001A6929 /* AugmentRealityToCollectDataView.swift */; };
+		1C8EC74B2BAE28A9001A6929 /* AugmentRealityToCollectDataView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C8EC7432BAE2891001A6929 /* AugmentRealityToCollectDataView.swift */; };
 		1C929F092A27B86800134252 /* ShowUtilityAssociationsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1CAF831B2A20305F000E1E60 /* ShowUtilityAssociationsView.swift */; };
 		1C965C3929DB9176002F8536 /* ShowRealisticLightAndShadowsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C9B74C529DB43580038B06F /* ShowRealisticLightAndShadowsView.swift */; };
 		1C9B74C929DB43580038B06F /* ShowRealisticLightAndShadowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9B74C529DB43580038B06F /* ShowRealisticLightAndShadowsView.swift */; };
@@ -439,6 +441,7 @@
 			files = (
 				1C2538542BABACB100337307 /* AugmentRealityToNavigateRouteView.RoutePlannerView.swift in Copy Source Code Files */,
 				1C2538552BABACB100337307 /* AugmentRealityToNavigateRouteView.swift in Copy Source Code Files */,
+				1C8EC74B2BAE28A9001A6929 /* AugmentRealityToCollectDataView.swift in Copy Source Code Files */,
 				000D43182B993A030003D3C2 /* ConfigureBasemapStyleParametersView.swift in Copy Source Code Files */,
 				D76360032B9296580044AB97 /* DisplayClustersView.swift in Copy Source Code Files */,
 				D76360022B9296520044AB97 /* ConfigureClustersView.SettingsView.swift in Copy Source Code Files */,
@@ -658,6 +661,7 @@
 		1C43BC792A43781100509BF8 /* SetVisibilityOfSubtypeSublayerView.Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetVisibilityOfSubtypeSublayerView.Views.swift; sourceTree = "<group>"; };
 		1C43BC7C2A43781100509BF8 /* SetVisibilityOfSubtypeSublayerView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetVisibilityOfSubtypeSublayerView.Model.swift; sourceTree = "<group>"; };
 		1C43BC7E2A43781100509BF8 /* SetVisibilityOfSubtypeSublayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetVisibilityOfSubtypeSublayerView.swift; sourceTree = "<group>"; };
+		1C8EC7432BAE2891001A6929 /* AugmentRealityToCollectDataView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AugmentRealityToCollectDataView.swift; sourceTree = "<group>"; };
 		1C9B74C529DB43580038B06F /* ShowRealisticLightAndShadowsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowRealisticLightAndShadowsView.swift; sourceTree = "<group>"; };
 		1C9B74D529DB54560038B06F /* ChangeCameraControllerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeCameraControllerView.swift; sourceTree = "<group>"; };
 		1CAB8D442A3CEAB0002AA649 /* RunValveIsolationTraceView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunValveIsolationTraceView.Model.swift; sourceTree = "<group>"; };
@@ -934,6 +938,7 @@
 				D7C16D172AC5F6C100689E89 /* Animate 3D graphic */,
 				D77570BC2A29427200F490CD /* Animate images with image overlay */,
 				D75362CC2A1E862B00D83028 /* Apply unique value renderer */,
+				1C8EC7422BAE2891001A6929 /* Augment reality to collect data */,
 				D7084FA42AD771AA00EC7F4F /* Augment reality to fly over scene */,
 				1C2538472BABAC7B00337307 /* Augment reality to navigate route */,
 				D72F27292ADA1E4400F906DA /* Augment reality to show tabletop scene */,
@@ -1284,6 +1289,14 @@
 				1C43BC792A43781100509BF8 /* SetVisibilityOfSubtypeSublayerView.Views.swift */,
 			);
 			path = "Set visibility of subtype sublayer";
+			sourceTree = "<group>";
+		};
+		1C8EC7422BAE2891001A6929 /* Augment reality to collect data */ = {
+			isa = PBXGroup;
+			children = (
+				1C8EC7432BAE2891001A6929 /* AugmentRealityToCollectDataView.swift */,
+			);
+			path = "Augment reality to collect data";
 			sourceTree = "<group>";
 		};
 		1C965C4629DBA879002F8536 /* 681d6f7694644709a7c830ec57a2d72b */ = {
@@ -2571,6 +2584,7 @@
 				0005580A2817C51E00224BC6 /* SampleDetailView.swift in Sources */,
 				D75F66362B48EABC00434974 /* SearchForWebMapView.swift in Sources */,
 				D7058B102B59E44B000A888A /* StylePointWithSceneSymbolView.swift in Sources */,
+				1C8EC7472BAE2891001A6929 /* AugmentRealityToCollectDataView.swift in Sources */,
 				D75C35672AB50338003CD55F /* GroupLayersTogetherView.GroupLayerListView.swift in Sources */,
 				4D2ADC6229C5071C003B367F /* ChangeMapViewBackgroundView.Model.swift in Sources */,
 				0074ABCD2817BCC30037244A /* SamplesApp+Samples.swift.tache in Sources */,
