@@ -14,8 +14,8 @@
 
 import ArcGIS
 import ArcGISToolkit
-import SwiftUI
 import AVFoundation
+import SwiftUI
 
 struct AugmentRealityToNavigateRouteView: View {
     /// The data model for the selected route.
@@ -41,7 +41,7 @@ struct AugmentRealityToNavigateRouteView: View {
     /// The graphics overlay containing a graphic.
     @State private var graphicsOverlay = GraphicsOverlay()
     /// The status text displayed to the user.
-    @State private var statusText = ""
+    @State private var statusText = "Adjust calibration before starting."
     /// A Boolean value indicating whether the use is navigatig the route.
     @State private var isNavigating = false
     /// The result of the route selected in the route planner view.
@@ -58,8 +58,8 @@ struct AugmentRealityToNavigateRouteView: View {
                 .onDidSelectRoute { routeGraphic, routeResult  in
                     self.routeResult = routeResult
                     graphicsOverlay = makeRouteOverlay(
-                        for: routeResult,
-                        using: routeGraphic
+                        routeResult: routeResult,
+                        routeGraphic: routeGraphic
                     )
                 }
                 .task {
@@ -71,7 +71,6 @@ struct AugmentRealityToNavigateRouteView: View {
             }
             .calibrationButtonAlignment(.bottomLeading)
             .task {
-                statusText = "Adjust calibration before starting."
                 Task {
                     try await locationDataSource.start()
                     
@@ -111,13 +110,12 @@ struct AugmentRealityToNavigateRouteView: View {
     /// Create a graphic overlay and adds a graphic (with solid yellow 3D tube symbol)
     /// to represent the route.
     @MainActor
-    private func makeRouteOverlay(for routeResult: RouteResult, using routeGraphic: Graphic) -> GraphicsOverlay {
+    private func makeRouteOverlay(routeResult: RouteResult, routeGraphic: Graphic) -> GraphicsOverlay {
         let graphicsOverlay = GraphicsOverlay()
         graphicsOverlay.sceneProperties.surfacePlacement = .absolute
         let strokeSymbolLayer = SolidStrokeSymbolLayer(
             width: 1.0,
             color: .yellow,
-            geometricEffects: [],
             lineStyle3D: .tube
         )
         let polylineSymbol = MultilayerPolylineSymbol(symbolLayers: [strokeSymbolLayer])
@@ -125,7 +123,7 @@ struct AugmentRealityToNavigateRouteView: View {
         graphicsOverlay.renderer = polylineRenderer
         
         if let originalPolyline = routeResult.routes.first?.geometry {
-            addElevationToPolyline(polyline: originalPolyline) { polyline in
+            addingElevation(to: originalPolyline) { polyline in
                 routeGraphic.geometry = polyline
                 graphicsOverlay.addGraphic(routeGraphic)
             }
@@ -141,23 +139,23 @@ struct AugmentRealityToNavigateRouteView: View {
     ///   - polyline: The polyline geometry of the route.
     ///   - z: A `Double` value representing z elevation.
     ///   - completion: A completion closure to execute after the polyline is generated with success or not.
-    private func addElevationToPolyline(
-        polyline: Polyline,
+    private func addingElevation(
+        to polyline: Polyline,
         elevation z: Double = 3,
         completion: @escaping (Polyline) -> Void
     ) {
         if let densifiedPolyline = GeometryEngine.densify(polyline, maxSegmentLength: 0.3) as? Polyline {
-            let polylinebuilder = PolylineBuilder(spatialReference: densifiedPolyline.spatialReference)
-            
-            let allPoints = densifiedPolyline.parts.flatMap { $0.points }
-            
+            let polylineBuilder = PolylineBuilder(spatialReference: densifiedPolyline.spatialReference)
             Task {
-                for point in allPoints {
-                    async let elevation = try await elevationSurface.elevation(at: point)
-                    let newPoint = await GeometryEngine.makeGeometry(from: point, z: try elevation + z)
-                    polylinebuilder.add(newPoint)
+                for part in densifiedPolyline.parts {
+                    for point in part.points {
+                        async let elevation = try await elevationSurface.elevation(at: point)
+                        let newPoint = await GeometryEngine.makeGeometry(from: point, z: try elevation + z)
+                        // Put the new point 3 meters above the ground elevation.
+                        polylineBuilder.add(newPoint)
+                    }
                 }
-                completion(polylinebuilder.toGeometry())
+                completion(polylineBuilder.toGeometry())
             }
         } else {
             completion(polyline)
@@ -204,8 +202,8 @@ struct AugmentRealityToNavigateRouteView: View {
     /// Starts monitoring multiple asynchronous streams of information.
     private func startTracking() async {
         await withTaskGroup(of: Void.self) { group in
-            group.addTask { await self.trackStatus() }
-            group.addTask { await self.trackVoiceGuidance() }
+            group.addTask { await trackStatus() }
+            group.addTask { await trackVoiceGuidance() }
         }
     }
     
@@ -215,17 +213,17 @@ struct AugmentRealityToNavigateRouteView: View {
     private func trackStatus() async {
         guard let routeTracker = routeDataModel.routeTracker else { return }
         for await status in routeTracker.$trackingStatus {
-            if let status {
+            guard let status else { continue }
                 switch status.destinationStatus {
                 case .notReached, .approaching:
-                    guard let route = routeResult?.routes.first else { return }
-                    let currentManeuver = route.directionManeuvers[status.currentManeuverIndex]
-                    statusText = currentManeuver.text
+                    if let route = routeResult?.routes.first {
+                        let currentManeuver = route.directionManeuvers[status.currentManeuverIndex]
+                        statusText = currentManeuver.text
+                    }
                 case .reached:
                     statusText = "You have arrived!"
                 @unknown default:
                     break
-                }
             }
         }
     }
@@ -244,9 +242,9 @@ extension AugmentRealityToNavigateRouteView {
     @MainActor
     class RouteDataModel: ObservableObject {
         /// The route task that solves the route using the online routing service, using API key authentication.
-        @Published var routeTask = RouteTask(url: URL(string: "https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World")!)
+        let routeTask = RouteTask(url: URL(string: "https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World")!)
         /// The parameters for route task to solve a route.
-        @Published var routeParameters = RouteParameters()
+        var routeParameters = RouteParameters()
         /// The route tracker.
         @Published var routeTracker: RouteTracker?
         /// The route result.
