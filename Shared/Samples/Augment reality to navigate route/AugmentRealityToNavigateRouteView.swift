@@ -30,7 +30,7 @@ struct AugmentRealityToNavigateRouteView: View {
     @State private var elevationSurface: Surface = {
         let elevationSurface = Surface()
         elevationSurface.navigationConstraint = .unconstrained
-        elevationSurface.opacity = 0.5
+        elevationSurface.opacity = 0
         elevationSurface.backgroundGrid.isVisible = false
         return elevationSurface
     }()
@@ -68,6 +68,9 @@ struct AugmentRealityToNavigateRouteView: View {
                 SceneView(scene: scene, graphicsOverlays: [graphicsOverlay])
             }
             .calibrationButtonAlignment(.bottomLeading)
+            .onCalibrationViewVisibilityChanged { isPresented in
+                scene.baseSurface.opacity = isPresented ? 0.6 : 0
+            }
             .task {
                 Task {
                     try await locationDataSource.start()
