@@ -122,7 +122,7 @@ struct AugmentRealityToNavigateRouteView: View {
         graphicsOverlay.renderer = polylineRenderer
         
         if let originalPolyline = routeResult.routes.first?.geometry {
-            addingElevation(to: originalPolyline) { polyline in
+            addingElevation(3, to: originalPolyline) { polyline in
                 routeGraphic.geometry = polyline
                 graphicsOverlay.addGraphic(routeGraphic)
             }
@@ -135,12 +135,12 @@ struct AugmentRealityToNavigateRouteView: View {
     /// and add an elevation to the geometry.
     ///
     /// - Parameters:
-    ///   - polyline: The polyline geometry of the route.
     ///   - z: A `Double` value representing z elevation.
+    ///   - polyline: The polyline geometry of the route.
     ///   - completion: A completion closure to execute after the polyline is generated with success or not.
     private func addingElevation(
+        _ z: Double,
         to polyline: Polyline,
-        elevation z: Double = 3,
         completion: @escaping (Polyline) -> Void
     ) {
         if let densifiedPolyline = GeometryEngine.densify(polyline, maxSegmentLength: 0.3) as? Polyline {
