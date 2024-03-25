@@ -61,7 +61,7 @@ struct AugmentRealityToNavigateRouteView: View {
                     )
                 }
                 .task {
-                    Task { try await elevationSource.load() }
+                    try? await elevationSource.load()
                 }
         } else {
             WorldScaleSceneView { _ in
@@ -72,12 +72,10 @@ struct AugmentRealityToNavigateRouteView: View {
                 scene.baseSurface.opacity = isPresented ? 0.6 : 0
             }
             .task {
-                Task {
-                    try await locationDataSource.start()
-                    
-                    for await location in locationDataSource.locations {
-                        try await routeDataModel.routeTracker?.track(location)
-                    }
+                try? await locationDataSource.start()
+                
+                for await location in locationDataSource.locations {
+                    try? await routeDataModel.routeTracker?.track(location)
                 }
             }
             .overlay(alignment: .top) {
@@ -204,7 +202,7 @@ struct AugmentRealityToNavigateRouteView: View {
     private func startTracking() async {
         await withTaskGroup(of: Void.self) { group in
             group.addTask { await trackStatus() }
-            group.addTask { await trackVoiceGuidance() }
+            group.addTask { await routeDataModel.trackVoiceGuidance() }
         }
     }
     
@@ -215,26 +213,17 @@ struct AugmentRealityToNavigateRouteView: View {
         guard let routeTracker = routeDataModel.routeTracker else { return }
         for await status in routeTracker.$trackingStatus {
             guard let status else { continue }
-                switch status.destinationStatus {
-                case .notReached, .approaching:
-                    if let route = routeResult?.routes.first {
-                        let currentManeuver = route.directionManeuvers[status.currentManeuverIndex]
-                        statusText = currentManeuver.text
-                    }
-                case .reached:
-                    statusText = "You have arrived!"
-                @unknown default:
-                    break
+            switch status.destinationStatus {
+            case .notReached, .approaching:
+                if let route = routeResult?.routes.first {
+                    let currentManeuver = route.directionManeuvers[status.currentManeuverIndex]
+                    statusText = currentManeuver.text
+                }
+            case .reached:
+                statusText = "You have arrived!"
+            @unknown default:
+                break
             }
-        }
-    }
-    
-    /// Monitors the asynchronous stream of voice guidances.
-    private func trackVoiceGuidance() async {
-        guard let routeTracker = routeDataModel.routeTracker else { return }
-        for try await voiceGuidance in routeTracker.voiceGuidances {
-            routeDataModel.speechSynthesizer.stopSpeaking(at: .word)
-            routeDataModel.speechSynthesizer.speak(AVSpeechUtterance(string: voiceGuidance.text))
         }
     }
 }
@@ -252,5 +241,14 @@ extension AugmentRealityToNavigateRouteView {
         @Published var routeTracker: RouteTracker?
         /// The route result.
         @Published var routeResult: RouteResult?
+        
+        /// Monitors the asynchronous stream of voice guidances.
+        func trackVoiceGuidance() async {
+            guard let routeTracker = routeTracker else { return }
+            for try await voiceGuidance in routeTracker.voiceGuidances {
+                speechSynthesizer.stopSpeaking(at: .word)
+                speechSynthesizer.speak(AVSpeechUtterance(string: voiceGuidance.text))
+            }
+        }
     }
 }
