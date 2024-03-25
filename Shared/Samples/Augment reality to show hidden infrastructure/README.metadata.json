@@ -28,7 +28,8 @@
         "Surface"
     ],
     "snippets": [
-        "AugmentRealityToShowHiddenInfrastructureView.swift"
+        "AugmentRealityToShowHiddenInfrastructureView.swift",
+        "AugmentRealityToShowHiddenInfrastructureView.ARSceneView"
     ],
     "title": "Augment reality to show hidden infrastructure"
 }
