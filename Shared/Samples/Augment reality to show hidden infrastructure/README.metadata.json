@@ -15,17 +15,21 @@
         "visualization",
         "visualize",
         "world-scale",
+        "GeometryEditor",
         "GraphicsOverlay",
         "MultilayerPolylineSymbol",
         "SolidStrokeSymbolLayer",
-        "Surface"
+        "Surface",
+        "WorldScaleSceneView"
     ],
     "redirect_from": [],
     "relevant_apis": [
+        "GeometryEditor",
         "GraphicsOverlay",
         "MultilayerPolylineSymbol",
         "SolidStrokeSymbolLayer",
-        "Surface"
+        "Surface",
+        "WorldScaleSceneView"
     ],
     "snippets": [
         "AugmentRealityToShowHiddenInfrastructureView.swift",

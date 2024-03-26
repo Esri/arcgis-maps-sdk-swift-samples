@@ -35,6 +35,8 @@ extension AugmentRealityToShowHiddenInfrastructureView {
                     model.shadowGraphicsOverlay,
                     model.leaderGraphicsOverlay
                 ])
+                .spaceEffect(.transparent)
+                .atmosphereEffect(.off)
             }
             .calibrationButtonAlignment(.bottomTrailing)
             .onCalibrationViewVisibilityChanged { isPresented in

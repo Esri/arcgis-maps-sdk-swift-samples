@@ -57,11 +57,11 @@ struct AugmentRealityToShowHiddenInfrastructureView: View {
             canDelete = true
             
             if elevationOffset < 0 {
-                statusMessage = "Pipe added \(elevationOffset) meter(s) below surface."
+                statusMessage = "Pipe added \(elevationOffset.formatted()) meter(s) below surface."
             } else if elevationOffset == 0 {
                 statusMessage = "Pipe added at ground level."
             } else {
-                statusMessage = "Pipe added \(elevationOffset) meter(s) above surface."
+                statusMessage = "Pipe added \(elevationOffset.formatted()) meter(s) above surface."
             }
             statusMessage.append("\nTap the camera to view the pipes in AR.")
             
@@ -219,7 +219,8 @@ private extension AugmentRealityToShowHiddenInfrastructureView {
                     Button("Cancel", role: .cancel, action: {})
                     
                     Button("Done") {
-                        if let elevationOffset = Double(text) {
+                        if let elevationOffset = Double(text),
+                           -10...10 ~= elevationOffset {
                             action(elevationOffset)
                             text.removeAll()
                         } else {
