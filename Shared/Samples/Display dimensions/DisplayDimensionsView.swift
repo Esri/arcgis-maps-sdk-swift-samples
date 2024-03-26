@@ -22,6 +22,12 @@ struct DisplayDimensionsView: View {
     /// The dimensional layer added to the map.
     @State private var dimensionLayer: DimensionLayer?
     
+    /// A Boolean value indicating whether the dimension layer's content is visible.
+    @State private var dimensionLayerIsVisible = true
+    
+    /// A Boolean value indicating whether the dimension layer's definition expression is set.
+    @State private var definitionExpressionIsSet = false
+    
     /// The error shown in the error alert.
     @State private var error: Error?
     
@@ -38,14 +44,18 @@ struct DisplayDimensionsView: View {
                 VStack {
                     Spacer()
                     Group {
-                        Toggle("Dimension Layer", isOn: Binding(
-                            get: { dimensionLayer?.isVisible ?? false },
-                            set: { dimensionLayer?.isVisible = $0 }
-                        ))
-                        Toggle("Definition Expression:\nDimensions >= 450m", isOn: Binding(
-                            get: { dimensionLayer?.definitionExpression == "DIMLENGTH >= 450" },
-                            set: { dimensionLayer?.definitionExpression = $0 ? "DIMLENGTH >= 450" : "" }
-                        ))
+                        Toggle("Dimension Layer", isOn: $dimensionLayerIsVisible)
+                            .onChange(of: dimensionLayerIsVisible) { newValue in
+                                dimensionLayer?.isVisible = newValue
+                            }
+                        
+                        Toggle(
+                            "Definition Expression:\nDimensions >= 450m",
+                            isOn: $definitionExpressionIsSet
+                        )
+                        .onChange(of: definitionExpressionIsSet) { newValue in
+                            dimensionLayer?.definitionExpression = newValue ? "DIMLENGTH >= 450" : ""
+                        }
                     }
                     .padding(8)
                     .background(.ultraThinMaterial)
