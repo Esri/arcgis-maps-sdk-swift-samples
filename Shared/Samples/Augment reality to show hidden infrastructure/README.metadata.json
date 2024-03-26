@@ -2,7 +2,10 @@
     "category": "Augmented Reality",
     "description": "Visualize hidden infrastructure in its real-world location using augmented reality.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "augment-reality-to-show-hidden-infrastructure-1.png",
+        "augment-reality-to-show-hidden-infrastructure-2.png"
+    ],
     "keywords": [
         "augmented reality",
         "full-scale",

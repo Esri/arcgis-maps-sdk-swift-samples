@@ -38,24 +38,32 @@ extension AugmentRealityToShowHiddenInfrastructureView {
                 .spaceEffect(.transparent)
                 .atmosphereEffect(.off)
             }
-            .calibrationButtonAlignment(.bottomTrailing)
+            .calibrationButtonAlignment(.bottomLeading)
             .onCalibrationViewVisibilityChanged { isPresented in
                 model.scene.baseSurface.opacity = isPresented ? 0.6 : 0
             }
-            .toolbar {
-                ToolbarItem(placement: .bottomBar) {
-                    Menu("Settings") {
-                        Toggle("Shadows", isOn: $shadowsAreVisible)
-                            .onChange(of: shadowsAreVisible) { newValue in
-                                model.shadowGraphicsOverlay.isVisible = newValue
-                            }
-                        Toggle("Leaders", isOn: $leadersAreVisible)
-                            .onChange(of: leadersAreVisible) { newValue in
-                                model.leaderGraphicsOverlay.isVisible = newValue
-                            }
-                    }
-                }
+            .ignoresSafeArea(edges: [.bottom])
+            .overlay(alignment: .bottomTrailing) {
+                settingsMenu
             }
+        }
+        
+        /// The menu with the settings.
+        private var settingsMenu: some View {
+            Menu("Settings") {
+                Toggle("Shadows", isOn: $shadowsAreVisible)
+                    .onChange(of: shadowsAreVisible) { newValue in
+                        model.shadowGraphicsOverlay.isVisible = newValue
+                    }
+                Toggle("Leaders", isOn: $leadersAreVisible)
+                    .onChange(of: leadersAreVisible) { newValue in
+                        model.leaderGraphicsOverlay.isVisible = newValue
+                    }
+            }
+            .padding()
+            .background(.regularMaterial)
+            .cornerRadius(10)
+            .padding(.horizontal)
         }
     }
 }

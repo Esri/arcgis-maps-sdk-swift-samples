@@ -2,7 +2,8 @@
 
 Visualize hidden infrastructure in its real-world location using augmented reality.
 
-![Image of augment reality to show hidden infrastructure](AugmentRealityToShowHiddenInfrastructure.png)
+![Image of Augment reality to show hidden infrastructure 1](augment-reality-to-show-hidden-infrastructure-1.png)
+![Image of Augment reality to show hidden infrastructure 2](augment-reality-to-show-hidden-infrastructure-2.png)
 
 ## Use case
 
