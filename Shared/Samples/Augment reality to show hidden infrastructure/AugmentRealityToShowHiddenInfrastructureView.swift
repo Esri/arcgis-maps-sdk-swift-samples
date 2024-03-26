@@ -63,7 +63,7 @@ struct AugmentRealityToShowHiddenInfrastructureView: View {
             } else {
                 statusMessage = "Pipe added \(elevationOffset.formatted()) meter(s) above surface."
             }
-            statusMessage.append("\nTap the camera to view the pipes in AR.")
+            statusMessage.append("\nTap the camera to view the pipe(s) in AR.")
             
             model.geometryEditor.start(withType: Polyline.self)
         }
