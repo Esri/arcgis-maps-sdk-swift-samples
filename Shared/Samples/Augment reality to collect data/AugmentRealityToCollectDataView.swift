@@ -111,7 +111,7 @@ struct AugmentRealityToCollectDataView: View {
                 .disabled(!canAddFeature)
                 .actionSheet(isPresented: $treeHealthSheetIsPresented) {
                     ActionSheet(
-                        title: Text("Take picture and add tree"),
+                        title: Text("Add tree"),
                         message: Text("How healthy is this tree?"),
                         buttons: [
                             .default(Text("Healthy")) {
