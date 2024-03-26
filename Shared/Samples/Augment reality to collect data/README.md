@@ -10,7 +10,7 @@ You can use AR to quickly photograph an object and automatically determine the o
 
 ## How to use the sample
 
-Before you start, go through the on-screen calibration process to ensure accurate positioning of recorded features. Feature points detected by ARKit are shown to help you understand what the application sees and where you can tap to collect accurate features.
+Before you start, go through the on-screen calibration process to ensure accurate positioning of recorded features.
 
 When you tap, an orange diamond will appear at the tapped location. You can move around to visually verify that the tapped point is in the correct physical location. When you're satisfied, tap the '+' button to record the feature.
 
