@@ -34,9 +34,7 @@ extension GroupLayersTogetherView {
                     case .independent:
                         // Toggles for sublayers that can change their visibility independently.
                         ForEach(groupLayer.layers, id: \.name) { layer in
-                            Toggle(isOn: isVisibleBinding(for: layer)) {
-                                Text(formatLayerName(of: layer.name))
-                            }
+                            LayerVisibilityToggle(formatLayerName(of: layer.name), layer: layer)
                         }
                         
                     case .exclusive:
@@ -64,10 +62,7 @@ extension GroupLayersTogetherView {
                 }
                 .disabled(isDisabled)
             } header: {
-                // The group layer visibility toggle.
-                Toggle(isOn: isVisibleBinding(for: groupLayer)) {
-                    Text(groupLayer.name)
-                }
+                LayerVisibilityToggle(groupLayer.name, layer: groupLayer)
             }
             .task {
                 // Listen for changes to is visible to disable the section
@@ -84,16 +79,6 @@ extension GroupLayersTogetherView {
                     )?.name ?? ""
                 }
             }
-        }
-        
-        /// Creates a custom binding for toggling a layers's visibility.
-        /// - Parameter layer: The `Layer` to create the `Binding` from.
-        /// - Returns: The new custom `Binding` object.
-        private func isVisibleBinding(for layer: Layer) -> Binding<Bool> {
-            return Binding(
-                get: { layer.isVisible },
-                set: { layer.isVisible = $0 }
-            )
         }
         
         /// Formats a layer's name to be more human readable.
@@ -114,6 +99,31 @@ extension GroupLayersTogetherView {
             default:
                 return name
             }
+        }
+    }
+    
+    /// A toggle for changing a given layer's visibility.
+    private struct LayerVisibilityToggle: View {
+        /// The title of the toggle.
+        private let title: String
+        
+        /// The layer.
+        private let layer: Layer
+        
+        /// A Boolean value indicating whether the layer's content is visible.
+        @State private var layerIsVisible: Bool
+        
+        init(_ title: String, layer: Layer) {
+            self.title = title
+            self.layer = layer
+            _layerIsVisible = State(initialValue: layer.isVisible)
+        }
+        
+        var body: some View {
+            Toggle(title, isOn: $layerIsVisible)
+                .onChange(of: layerIsVisible) { newValue in
+                    layer.isVisible = newValue
+                }
         }
     }
 }
