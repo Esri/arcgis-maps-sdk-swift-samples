@@ -106,7 +106,7 @@ struct AugmentRealityToNavigateRouteView: View {
         }
     }
     
-    /// Create a graphic overlay and adds a graphic (with solid yellow 3D tube symbol)
+    /// Creates a graphics overlay and adds a graphic (with solid yellow 3D tube symbol)
     /// to represent the route.
     @MainActor
     private func makeRouteOverlay(routeResult: RouteResult, routeGraphic: Graphic) -> GraphicsOverlay {
