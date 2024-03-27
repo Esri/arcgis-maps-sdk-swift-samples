@@ -37,8 +37,8 @@ extension AugmentRealityToShowHiddenInfrastructureView {
                 ])
             }
             .calibrationButtonAlignment(.bottomLeading)
-            .onCalibrationViewVisibilityChanged { isPresented in
-                model.scene.baseSurface.opacity = isPresented ? 0.6 : 0
+            .onCalibratingChanged { newCalibrating in
+                model.scene.baseSurface.opacity = newCalibrating ? 0.6 : 0
             }
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
