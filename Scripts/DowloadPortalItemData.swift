@@ -161,10 +161,10 @@ func downloadFile(at sourceURL: URL, to downloadDirectory: URL, completion: @esc
                 
                 if isArchive {
                     let extractURL = downloadURL.pathExtension == "zip"
-                        // Uncompresses to directory named after archive.
-                        ? downloadURL.deletingPathExtension()
-                        // Uncompresses to appropriate subdirectory.
-                        : downloadURL.deletingLastPathComponent()
+                    // Uncompresses to directory named after archive.
+                    ? downloadURL.deletingPathExtension()
+                    // Uncompresses to appropriate subdirectory.
+                    : downloadURL.deletingLastPathComponent()
                     try uncompressArchive(at: temporaryURL, to: extractURL)
                 } else {
                     try FileManager.default.moveItem(at: temporaryURL, to: downloadURL)
