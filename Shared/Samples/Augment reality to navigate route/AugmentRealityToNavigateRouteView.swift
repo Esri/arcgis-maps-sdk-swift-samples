@@ -51,18 +51,6 @@ struct AugmentRealityToNavigateRouteView: View {
     }
     
     var body: some View {
-        if #available(iOS 16, *) {
-            NavigationStack {
-                augmentRealityToNavigateRouteView
-            }
-        } else {
-            NavigationView {
-                augmentRealityToNavigateRouteView
-            }
-        }
-    }
-    
-    @MainActor @ViewBuilder var augmentRealityToNavigateRouteView: some View {
         VStack(spacing: 0) {
             if isShowingRoutePlanner {
                 RoutePlannerView(isShowing: $isShowingRoutePlanner)
