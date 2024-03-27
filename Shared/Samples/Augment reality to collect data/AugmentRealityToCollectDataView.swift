@@ -71,34 +71,49 @@ struct AugmentRealityToCollectDataView: View {
     }
     
     var body: some View {
-        WorldScaleSceneView { _ in
-            SceneView(scene: scene, graphicsOverlays: [graphicsOverlay])
-        }
-        .calibrationButtonAlignment(.bottomLeading)
-        .onCalibrationViewVisibilityChanged { isPresented in
-            scene.baseSurface.opacity = isPresented ? 0.5 : 0
-        }
-        .onSingleTapGesture { _, scenePoint in
-            graphicsOverlay.removeAllGraphics()
-            canAddFeature = true
-            
-            // Add feature graphic.
-            graphicsOverlay.addGraphic(Graphic(geometry: scenePoint))
-            statusText = "Placed relative to ARKit plane"
-        }
-        .task {
-            do {
-                try await featureTable.load()
-            } catch {
-                self.error = error
+        if #available(iOS 16, *) {
+            NavigationStack {
+                augmentRealityToCollectDataView
+            }
+        } else {
+            NavigationView {
+                augmentRealityToCollectDataView
             }
         }
-        .overlay(alignment: .top) {
-            Text(statusText)
-                .multilineTextAlignment(.center)
-                .frame(maxWidth: .infinity, alignment: .center)
-                .padding(8)
-                .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
+    }
+    
+    @MainActor @ViewBuilder var augmentRealityToCollectDataView: some View {
+        VStack(spacing: 0) {
+            WorldScaleSceneView { _ in
+                SceneView(scene: scene, graphicsOverlays: [graphicsOverlay])
+            }
+            .calibrationButtonAlignment(.bottomLeading)
+            .onCalibratingChanged { isPresented in
+                scene.baseSurface.opacity = isPresented ? 0.5 : 0
+            }
+            .onSingleTapGesture { _, scenePoint in
+                graphicsOverlay.removeAllGraphics()
+                canAddFeature = true
+                
+                // Add feature graphic.
+                graphicsOverlay.addGraphic(Graphic(geometry: scenePoint))
+                statusText = "Placed relative to ARKit plane"
+            }
+            .task {
+                do {
+                    try await featureTable.load()
+                } catch {
+                    self.error = error
+                }
+            }
+            .overlay(alignment: .top) {
+                Text(statusText)
+                    .multilineTextAlignment(.center)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .padding(8)
+                    .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
+            }
+            Divider()
         }
         .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
