@@ -68,7 +68,7 @@ struct AugmentRealityToNavigateRouteView: View {
                 SceneView(scene: scene, graphicsOverlays: [graphicsOverlay])
             }
             .calibrationButtonAlignment(.bottomLeading)
-            .onCalibrationViewVisibilityChanged { isPresented in
+            .onCalibratingChanged { isPresented in
                 scene.baseSurface.opacity = isPresented ? 0.6 : 0
             }
             .task {
