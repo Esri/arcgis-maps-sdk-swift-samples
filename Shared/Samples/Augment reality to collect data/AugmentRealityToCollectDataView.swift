@@ -54,7 +54,7 @@ struct AugmentRealityToCollectDataView: View {
         return graphicsOverlay
     }()
     /// The status text displayed to the user.
-    @State private var statusText = "Tap to record a feature"
+    @State private var statusText = "Tap to create a feature"
     /// The selected tree health for the new feature.
     @State private var treeHealth: TreeHealth?
     /// A Boolean value indicating whether a feature can be added .
