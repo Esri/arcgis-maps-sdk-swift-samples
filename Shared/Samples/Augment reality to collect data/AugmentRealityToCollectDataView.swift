@@ -83,8 +83,9 @@ struct AugmentRealityToCollectDataView: View {
                 }
                 .disabled(!canAddFeature)
                 .confirmationDialog(
-                    Text("Add Tree"),
+                    "Add Tree",
                     isPresented: $treeHealthSheetIsPresented,
+                    titleVisibility: .visible,
                     actions: {
                         ForEach(TreeHealth.allCases, id: \.self) { treeHealth in
                             Button(treeHealth.label) {
