@@ -45,6 +45,9 @@ extension AugmentRealityToShowHiddenInfrastructureView {
                     settingsMenu
                 }
             }
+            
+            // A temporary fix for an issue where the graphics overlay the toolbar (swift/5112).
+            Divider()
         }
         
         /// The menu with the settings.
