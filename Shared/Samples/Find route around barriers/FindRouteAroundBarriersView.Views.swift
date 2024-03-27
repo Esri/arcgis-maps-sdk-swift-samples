@@ -35,7 +35,6 @@ extension FindRouteAroundBarriersView {
             self.routingFindsBestSequence = routeParameters.findsBestSequence
             self.routePreservesFirstStop = routeParameters.preservesFirstStop
             self.routePreservesLastStop = routeParameters.preservesLastStop
-
         }
         
         var body: some View {
