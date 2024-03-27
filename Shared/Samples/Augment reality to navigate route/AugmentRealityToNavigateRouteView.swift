@@ -51,20 +51,20 @@ struct AugmentRealityToNavigateRouteView: View {
     }
     
     var body: some View {
-        VStack(spacing: 0) {
-            if isShowingRoutePlanner {
-                RoutePlannerView(isShowing: $isShowingRoutePlanner)
-                    .onDidSelectRoute { routeGraphic, routeResult  in
-                        self.routeResult = routeResult
-                        graphicsOverlay = makeRouteOverlay(
-                            routeResult: routeResult,
-                            routeGraphic: routeGraphic
-                        )
-                    }
-                    .task {
-                        try? await elevationSource.load()
-                    }
-            } else {
+        if isShowingRoutePlanner {
+            RoutePlannerView(isShowing: $isShowingRoutePlanner)
+                .onDidSelectRoute { routeGraphic, routeResult  in
+                    self.routeResult = routeResult
+                    graphicsOverlay = makeRouteOverlay(
+                        routeResult: routeResult,
+                        routeGraphic: routeGraphic
+                    )
+                }
+                .task {
+                    try? await elevationSource.load()
+                }
+        } else {
+            VStack(spacing: 0) {
                 WorldScaleSceneView { _ in
                     SceneView(scene: scene, graphicsOverlays: [graphicsOverlay])
                 }
@@ -89,22 +89,22 @@ struct AugmentRealityToNavigateRouteView: View {
                 .onDisappear {
                     Task { await locationDataSource.stop() }
                 }
+                Divider()
             }
-            Divider()
-        }
-        .toolbar {
-            ToolbarItemGroup(placement: .bottomBar) {
-                Button("Start") {
-                    isNavigating = true
-                    Task {
-                        do {
-                            try await startNavigation()
-                        } catch {
-                            print("Failed to start navigation.")
+            .toolbar {
+                ToolbarItemGroup(placement: .bottomBar) {
+                    Button("Start") {
+                        isNavigating = true
+                        Task {
+                            do {
+                                try await startNavigation()
+                            } catch {
+                                print("Failed to start navigation.")
+                            }
                         }
                     }
+                    .disabled(isNavigating)
                 }
-                .disabled(isNavigating)
             }
         }
     }
