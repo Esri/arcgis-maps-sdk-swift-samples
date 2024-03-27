@@ -107,12 +107,16 @@ extension GroupLayersTogetherView {
         /// The title of the toggle.
         private let title: String
         
-        /// The layer.
+        /// The layer with the visibility to change.
         private let layer: Layer
         
         /// A Boolean value indicating whether the layer's content is visible.
         @State private var layerIsVisible: Bool
         
+        /// Creates the toggle for changing a given layer's visibility.
+        /// - Parameters:
+        ///   - title: A string for the title of the toggle.
+        ///   - layer: The layer with the visibility to change.
         init(_ title: String, layer: Layer) {
             self.title = title
             self.layer = layer
