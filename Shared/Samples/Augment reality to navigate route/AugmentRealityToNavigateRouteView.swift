@@ -51,57 +51,72 @@ struct AugmentRealityToNavigateRouteView: View {
     }
     
     var body: some View {
-        if isShowingRoutePlanner {
-            RoutePlannerView(isShowing: $isShowingRoutePlanner)
-                .onDidSelectRoute { routeGraphic, routeResult  in
-                    self.routeResult = routeResult
-                    graphicsOverlay = makeRouteOverlay(
-                        routeResult: routeResult,
-                        routeGraphic: routeGraphic
-                    )
+        if #available(iOS 16, *) {
+            NavigationStack {
+                augmentRealityToNavigateRouteView
+            }
+        } else {
+            NavigationView {
+                augmentRealityToNavigateRouteView
+            }
+        }
+    }
+    
+    @MainActor @ViewBuilder var augmentRealityToNavigateRouteView: some View {
+        VStack(spacing: 0) {
+            if isShowingRoutePlanner {
+                RoutePlannerView(isShowing: $isShowingRoutePlanner)
+                    .onDidSelectRoute { routeGraphic, routeResult  in
+                        self.routeResult = routeResult
+                        graphicsOverlay = makeRouteOverlay(
+                            routeResult: routeResult,
+                            routeGraphic: routeGraphic
+                        )
+                    }
+                    .task {
+                        try? await elevationSource.load()
+                    }
+            } else {
+                WorldScaleSceneView { _ in
+                    SceneView(scene: scene, graphicsOverlays: [graphicsOverlay])
+                }
+                .calibrationButtonAlignment(.bottomLeading)
+                .onCalibratingChanged { isPresented in
+                    scene.baseSurface.opacity = isPresented ? 0.6 : 0
                 }
                 .task {
-                    try? await elevationSource.load()
+                    try? await locationDataSource.start()
+                    
+                    for await location in locationDataSource.locations {
+                        try? await routeDataModel.routeTracker?.track(location)
+                    }
                 }
-        } else {
-            WorldScaleSceneView { _ in
-                SceneView(scene: scene, graphicsOverlays: [graphicsOverlay])
-            }
-            .calibrationButtonAlignment(.bottomLeading)
-            .onCalibratingChanged { isPresented in
-                scene.baseSurface.opacity = isPresented ? 0.6 : 0
-            }
-            .task {
-                try? await locationDataSource.start()
-                
-                for await location in locationDataSource.locations {
-                    try? await routeDataModel.routeTracker?.track(location)
+                .overlay(alignment: .top) {
+                    Text(statusText)
+                        .multilineTextAlignment(.center)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .padding(8)
+                        .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
+                }
+                .onDisappear {
+                    Task { await locationDataSource.stop() }
                 }
             }
-            .overlay(alignment: .top) {
-                Text(statusText)
-                    .multilineTextAlignment(.center)
-                    .frame(maxWidth: .infinity, alignment: .center)
-                    .padding(8)
-                    .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
-            }
-            .toolbar {
-                ToolbarItemGroup(placement: .bottomBar) {
-                    Button("Start") {
-                        isNavigating = true
-                        Task {
-                            do {
-                                try await startNavigation()
-                            } catch {
-                                print("Failed to start navigation.")
-                            }
+            Divider()
+        }
+        .toolbar {
+            ToolbarItemGroup(placement: .bottomBar) {
+                Button("Start") {
+                    isNavigating = true
+                    Task {
+                        do {
+                            try await startNavigation()
+                        } catch {
+                            print("Failed to start navigation.")
                         }
                     }
-                    .disabled(isNavigating)
                 }
-            }
-            .onDisappear {
-                Task { await locationDataSource.stop() }
+                .disabled(isNavigating)
             }
         }
     }
