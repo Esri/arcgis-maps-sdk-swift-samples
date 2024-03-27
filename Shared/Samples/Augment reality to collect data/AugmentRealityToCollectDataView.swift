@@ -29,18 +29,6 @@ struct AugmentRealityToCollectDataView: View {
     @State private var error: Error?
     
     var body: some View {
-        if #available(iOS 16, *) {
-            NavigationStack {
-                augmentRealityToCollectDataView
-            }
-        } else {
-            NavigationView {
-                augmentRealityToCollectDataView
-            }
-        }
-    }
-    
-    @MainActor @ViewBuilder var augmentRealityToCollectDataView: some View {
         VStack(spacing: 0) {
             WorldScaleSceneView { _ in
                 SceneView(scene: model.scene, graphicsOverlays: [model.graphicsOverlay])
