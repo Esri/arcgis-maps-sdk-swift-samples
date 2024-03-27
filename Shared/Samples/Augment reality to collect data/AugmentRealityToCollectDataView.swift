@@ -88,8 +88,8 @@ struct AugmentRealityToCollectDataView: View {
                 SceneView(scene: scene, graphicsOverlays: [graphicsOverlay])
             }
             .calibrationButtonAlignment(.bottomLeading)
-            .onCalibratingChanged { isPresented in
-                scene.baseSurface.opacity = isPresented ? 0.5 : 0
+            .onCalibratingChanged { newCalibrating in
+                scene.baseSurface.opacity = newCalibrating ? 0.5 : 0
             }
             .onSingleTapGesture { _, scenePoint in
                 graphicsOverlay.removeAllGraphics()
