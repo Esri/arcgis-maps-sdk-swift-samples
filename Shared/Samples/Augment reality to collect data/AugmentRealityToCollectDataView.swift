@@ -124,23 +124,18 @@ struct AugmentRealityToCollectDataView: View {
                         .imageScale(.large)
                 }
                 .disabled(!canAddFeature)
-                .actionSheet(isPresented: $treeHealthSheetIsPresented) {
-                    ActionSheet(
-                        title: Text("Add tree"),
-                        message: Text("How healthy is this tree?"),
-                        buttons: [
-                            .default(Text("Healthy")) {
-                                addFeature(treeHealth: .healthy)
-                            },
-                            .default(Text("Distressed")) {
-                                addFeature(treeHealth: .distressed)
-                            },
-                            .default(Text("Dead")) {
-                                addFeature(treeHealth: .dead)
-                            },
-                            .cancel()
-                        ])
-                }
+                .confirmationDialog(
+                    Text("Add Tree"),
+                    isPresented: $treeHealthSheetIsPresented,
+                    actions: {
+                        ForEach(TreeHealth.allCases, id: \.self) { treeHealth in
+                            Button(treeHealth.label) {
+                                addTree(health: treeHealth)
+                            }
+                        }
+                    }, message: {
+                        Text("How healthy is this tree?")
+                    })
             }
         }
         .errorAlert(presentingError: $error)
@@ -148,24 +143,24 @@ struct AugmentRealityToCollectDataView: View {
     
     /// Adds a feature to represent a tree to the tree survey service feature table.
     /// - Parameter treeHealth: The health of the tree.
-    private func addFeature(treeHealth: TreeHealth) {
+    private func addTree(health: TreeHealth) {
         guard let featureGraphic = graphicsOverlay.graphics.first,
               let featurePoint = featureGraphic.geometry as? Point else { return }
         
         statusText = "Adding feature"
         
         // Create attributes for the new feature.
-        let featureAttributes = [
-            "Health": treeHealth.rawValue,
+        let featureAttributes: [String: Any] = [
+            "Health": health.rawValue,
             "Height": 3.2,
             "Diameter": 1.2
-        ] as [String: Any]
+        ]
         
-        Task {
-            if let newFeature = featureTable.makeFeature(
-                attributes: featureAttributes,
-                geometry: featurePoint
-            ) as? ArcGISFeature {
+        if let newFeature = featureTable.makeFeature(
+            attributes: featureAttributes,
+            geometry: featurePoint
+        ) as? ArcGISFeature {
+            Task {
                 do {
                     // Add the feature to the feature table.
                     try await featureTable.add(newFeature)
@@ -173,9 +168,8 @@ struct AugmentRealityToCollectDataView: View {
                 } catch {
                     self.error = error
                 }
-                
-                newFeature.refresh()
             }
+            newFeature.refresh()
         }
         
         statusText = "Tap to create a feature"
