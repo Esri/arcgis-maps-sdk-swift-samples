@@ -123,7 +123,7 @@ struct AugmentRealityToShowHiddenInfrastructureView: View {
     /// The instruction text in the overlay.
     private var instructionText: some View {
         Text(statusMessage)
-             .multilineTextAlignment(.center)
+            .multilineTextAlignment(.center)
             .frame(maxWidth: .infinity, alignment: .center)
             .padding(8)
             .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
