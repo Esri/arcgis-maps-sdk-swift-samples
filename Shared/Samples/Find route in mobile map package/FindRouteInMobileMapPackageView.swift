@@ -101,23 +101,19 @@ private extension FindRouteInMobileMapPackageView {
                         .resizable()
                         .scaledToFit()
                         .frame(height: 50)
-                        .overlay {
+                        .overlay(alignment: .top) {
                             // The symbols indicating the map's functionality.
-                            VStack {
-                                HStack {
-                                    if !map.transportationNetworks.isEmpty {
-                                        // The symbol indicating whether the map can route.
-                                        Image(systemName: "arrow.triangle.turn.up.right.circle")
-                                    }
-                                    Spacer()
-                                    if mapPackage.locatorTask != nil {
-                                        // The symbol indicating whether the map can geocode.
-                                        Image(systemName: "mappin.circle")
-                                    }
-                                }
-                                .padding(2)
+                            HStack {
+                                // The symbol indicating whether the map can route.
+                                Image(systemName: "arrow.triangle.turn.up.right.circle")
+                                    .opacity(!map.transportationNetworks.isEmpty ? 1 : 0)
                                 Spacer()
+                                // The symbol indicating whether the map can geocode.
+                                Image(systemName: "mappin.circle")
+                                    .opacity(mapPackage.locatorTask != nil ? 1 : 0)
                             }
+                            .foregroundColor(.black)
+                            .padding(2)
                         }
                         
                         Text(mapName)
