@@ -40,9 +40,10 @@ extension AugmentRealityToShowHiddenInfrastructureView {
             .onCalibrationViewVisibilityChanged { isPresented in
                 model.scene.baseSurface.opacity = isPresented ? 0.6 : 0
             }
-            .ignoresSafeArea(edges: [.bottom])
-            .overlay(alignment: .bottomTrailing) {
-                settingsMenu
+            .toolbar {
+                ToolbarItem(placement: .bottomBar) {
+                    settingsMenu
+                }
             }
         }
         
@@ -58,10 +59,6 @@ extension AugmentRealityToShowHiddenInfrastructureView {
                         model.leaderGraphicsOverlay.isVisible = newValue
                     }
             }
-            .padding()
-            .background(.regularMaterial)
-            .cornerRadius(10)
-            .padding(.horizontal)
         }
     }
 }
