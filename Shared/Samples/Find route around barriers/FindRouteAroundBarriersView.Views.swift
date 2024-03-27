@@ -17,7 +17,7 @@ import SwiftUI
 
 extension FindRouteAroundBarriersView {
     /// A list of settings for modifying route parameters.
-    struct RouteParametersSettingsList: View {
+    struct RouteParametersSettings: View {
         /// The route parameters to modify.
         private let routeParameters: RouteParameters
         
@@ -32,9 +32,10 @@ extension FindRouteAroundBarriersView {
         
         init(for routeParameters: RouteParameters) {
             self.routeParameters = routeParameters
-            _routingFindsBestSequence = State(initialValue: routeParameters.findsBestSequence)
-            _routePreservesFirstStop = State(initialValue: routeParameters.preservesFirstStop)
-            _routePreservesLastStop = State(initialValue: routeParameters.preservesLastStop)
+            self.routingFindsBestSequence = routeParameters.findsBestSequence
+            self.routePreservesFirstStop = routeParameters.preservesFirstStop
+            self.routePreservesLastStop = routeParameters.preservesLastStop
+
         }
         
         var body: some View {

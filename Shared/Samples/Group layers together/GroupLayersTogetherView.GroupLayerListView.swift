@@ -116,7 +116,7 @@ extension GroupLayersTogetherView {
         init(_ title: String, layer: Layer) {
             self.title = title
             self.layer = layer
-            _layerIsVisible = State(initialValue: layer.isVisible)
+            self.layerIsVisible = layer.isVisible
         }
         
         var body: some View {
