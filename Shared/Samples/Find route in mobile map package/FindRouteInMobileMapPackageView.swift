@@ -101,22 +101,30 @@ private extension FindRouteInMobileMapPackageView {
                         .resizable()
                         .scaledToFit()
                         .frame(height: 50)
-                        .overlay(alignment: .top) {
-                            // The symbols indicating the map's functionality.
-                            HStack {
-                                // The symbol indicating whether the map can route.
-                                Image(systemName: "arrow.triangle.turn.up.right.circle")
-                                    .opacity(!map.transportationNetworks.isEmpty ? 1 : 0)
-                                Spacer()
-                                // The symbol indicating whether the map can geocode.
-                                Image(systemName: "mappin.circle")
-                                    .opacity(mapPackage.locatorTask != nil ? 1 : 0)
-                            }
-                            .foregroundColor(.black)
-                            .padding(2)
-                        }
                         
-                        Text(mapName)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(mapName)
+                            
+                            HStack {
+                                // The symbol indicating whether the map can geocode.
+                                if mapPackage.locatorTask != nil {
+                                    HStack(spacing: 2) {
+                                        Image(systemName: "mappin.circle")
+                                        Text("Geocoding")
+                                    }
+                                }
+                                
+                                // The symbol indicating whether the map can route.
+                                if !map.transportationNetworks.isEmpty {
+                                    HStack(spacing: 2) {
+                                        Image(systemName: "arrow.triangle.turn.up.right.circle")
+                                        Text("Routing")
+                                    }
+                                }
+                            }
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                        }
                     }
                 }
             }
