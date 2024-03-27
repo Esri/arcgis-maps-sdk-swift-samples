@@ -29,25 +29,27 @@ extension AugmentRealityToShowHiddenInfrastructureView {
         @State private var leadersAreVisible = true
         
         var body: some View {
-            WorldScaleSceneView { _ in
-                SceneView(scene: model.scene, graphicsOverlays: [
-                    model.pipeGraphicsOverlay,
-                    model.shadowGraphicsOverlay,
-                    model.leaderGraphicsOverlay
-                ])
-            }
-            .calibrationButtonAlignment(.bottomLeading)
-            .onCalibratingChanged { newCalibrating in
-                model.scene.baseSurface.opacity = newCalibrating ? 0.6 : 0
+            VStack(spacing: 0) {
+                WorldScaleSceneView { _ in
+                    SceneView(scene: model.scene, graphicsOverlays: [
+                        model.pipeGraphicsOverlay,
+                        model.shadowGraphicsOverlay,
+                        model.leaderGraphicsOverlay
+                    ])
+                }
+                .calibrationButtonAlignment(.bottomLeading)
+                .onCalibratingChanged { newCalibrating in
+                    model.scene.baseSurface.opacity = newCalibrating ? 0.6 : 0
+                }
+                
+                // A temporary fix for an issue where the graphics overlay the toolbar (swift/5112).
+                Divider()
             }
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
                     settingsMenu
                 }
             }
-            
-            // A temporary fix for an issue where the graphics overlay the toolbar (swift/5112).
-            Divider()
         }
         
         /// The menu with the settings.
