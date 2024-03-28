@@ -34,7 +34,7 @@ struct Sidebar: View {
             }
         }
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
+            ToolbarItem(placement: .topBarTrailing) {
                 Button {
                     isAboutViewPresented = true
                 } label: {
