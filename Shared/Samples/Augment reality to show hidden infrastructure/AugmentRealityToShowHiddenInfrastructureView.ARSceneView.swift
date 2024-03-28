@@ -42,7 +42,6 @@ extension AugmentRealityToShowHiddenInfrastructureView {
                     model.scene.baseSurface.opacity = newCalibrating ? 0.6 : 0
                 }
                 
-                // A temporary fix for an issue where the graphics overlay the toolbar (swift/5112).
                 Divider()
             }
             .toolbar {
@@ -166,7 +165,7 @@ extension AugmentRealityToShowHiddenInfrastructureView {
             leaderGraphicsOverlay.addGraphics(Array(leaderLineGraphics.joined()))
             
             // Add a shadow graphic for the pipe if it is below ground.
-            if  elevationOffset < 0 {
+            if elevationOffset < 0 {
                 let shadowGraphic = Graphic(geometry: polyline)
                 shadowGraphicsOverlay.addGraphic(shadowGraphic)
             }
