@@ -19,7 +19,7 @@
 // A mapping of item IDs to filenames is maintained in the download directory.
 // This mapping efficiently checks whether an item has already been downloaded.
 // If an item already exists, it will skip that item.
-// To delete and re-downloaded an item, remove it's entry in the plist.
+// To delete and re-downloaded an item, remove its entry from the plist.
 
 import Foundation
 
@@ -234,7 +234,7 @@ var downloadedItems = previousDownloadedItems
 await withTaskGroup(of: Void.self) { group in
     for portalItem in portalItems {
         // Checks to see if an item is already downloaded.
-        guard downloadedItems[portalItem.identifier] == nil else {
+        guard !downloadedItems.keys.contains(portalItem.identifier) else {
             print("note: Item already downloaded: \(portalItem.identifier)")
             continue
         }
