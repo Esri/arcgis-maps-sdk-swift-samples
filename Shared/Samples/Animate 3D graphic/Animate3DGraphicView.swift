@@ -59,7 +59,9 @@ struct Animate3DGraphicView: View {
                         .attributionBarHidden(true)
                         .onSingleTapGesture { _, _ in
                             // Show/hide full map on tap.
-                            isShowingFullMap.toggle()
+                            withAnimation(.default.speed(2)) {
+                                isShowingFullMap.toggle()
+                            }
                         }
                         .frame(width: isShowingFullMap ? nil : 100, height: isShowingFullMap ? nil : 100)
                         .cornerRadius(10)
