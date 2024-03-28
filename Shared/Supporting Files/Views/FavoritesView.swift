@@ -42,7 +42,7 @@ struct FavoritesView: View {
         }
         .listStyle(.sidebar)
         .toolbar {
-            ToolbarItemGroup(placement: .navigationBarTrailing) {
+            ToolbarItemGroup(placement: .topBarTrailing) {
                 EditButton()
                 
                 Button {
@@ -105,7 +105,7 @@ private extension FavoritesView {
                         Text("Choose a sample to add to Favorites")
                             .font(.subheadline)
                     }
-                    ToolbarItem(placement: .navigationBarTrailing) {
+                    ToolbarItem(placement: .topBarTrailing) {
                         Button("Done") {
                             dismiss()
                         }
