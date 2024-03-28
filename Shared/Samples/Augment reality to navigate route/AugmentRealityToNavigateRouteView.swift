@@ -111,7 +111,6 @@ struct AugmentRealityToNavigateRouteView: View {
     
     /// Creates a graphics overlay and adds a graphic (with solid yellow 3D tube symbol)
     /// to represent the route.
-    @MainActor
     private func makeRouteOverlay(routeResult: RouteResult, routeGraphic: Graphic) -> GraphicsOverlay {
         let graphicsOverlay = GraphicsOverlay()
         graphicsOverlay.sceneProperties.surfacePlacement = .absolute
@@ -165,7 +164,6 @@ struct AugmentRealityToNavigateRouteView: View {
     }
     
     /// Starts navigating the route.
-    @MainActor
     private func startNavigation() async throws {
         guard let routeResult else { return }
         let routeTracker = RouteTracker(
