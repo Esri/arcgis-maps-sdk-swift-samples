@@ -19,6 +19,7 @@
 // A mapping of item IDs to filenames is maintained in the download directory.
 // This mapping efficiently checks whether an item has already been downloaded.
 // If an item already exists, it will skip that item.
+// To delete and re-downloaded an item, remove it's entry in the plist.
 
 import Foundation
 
