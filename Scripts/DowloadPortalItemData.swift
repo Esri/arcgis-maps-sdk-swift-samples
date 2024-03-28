@@ -126,50 +126,61 @@ func uncompressArchive(at sourceURL: URL, to destinationURL: URL) throws {
     process.waitUntilExit()
 }
 
-/// Downloads a file from a given portal and writes it to a given path.
+/// Downloads file from portal and write the file(s) to appropriate path(s).
 /// - Parameters:
 ///   - sourceURL: The portal URL to the resource.
-///   - downloadDirectory: The directory to store the downloaded data in.
-/// - Throws: Exceptions when downloading and moving the file.
-/// - Returns: The name of the downloaded file.
-func downloadFile(from sourceURL: URL, to downloadDirectory: URL) async throws -> String {
-    let portalURLRequest = URLRequest(url: sourceURL)
-    let (temporaryURL, response) = try await URLSession.shared.download(for: portalURLRequest)
-    
-    guard let suggestedFilename = response.suggestedFilename else { return "" }
-    let isArchive = NSString(string: suggestedFilename).pathExtension == "zip"
-    
-    let downloadName: String = try {
-        // If the downloaded file is an archive and contains
-        //   - 1 file, use the name of that file.
-        //   - multiple files, use the suggested filename (*.zip).
-        // If it is not an archive, use the server suggested filename.
-        if isArchive,
-           try count(ofFilesInArchiveAt: temporaryURL) == 1 {
-            return try name(ofFileInArchiveAt: temporaryURL)
-        } else {
-            return suggestedFilename
+///   - downloadDirectory: The directory that stores downloaded data.
+///   - completion: A closure to handle the results.
+func downloadFile(at sourceURL: URL, to downloadDirectory: URL, completion: @escaping (Result<URL, Error>) -> Void) {
+    let downloadTaskCompleted = { (temporaryURL: URL?, response: URLResponse?, error: Error?) in
+        if let temporaryURL = temporaryURL,
+           let response = response,
+           let suggestedFilename = response.suggestedFilename {
+            do {
+                let downloadName: String
+                let isArchive = (suggestedFilename as NSString).pathExtension == "zip"
+                // If the downloaded file is an archive and contains
+                //   - 1 file, use the name of that file.
+                //   - multiple files, use the suggested filename (*.zip).
+                // If it is not an archive, use the server suggested filename.
+                if isArchive {
+                    let count = try count(ofFilesInArchiveAt: temporaryURL)
+                    if count == 1 {
+                        downloadName = try name(ofFileInArchiveAt: temporaryURL)
+                    } else {
+                        downloadName = suggestedFilename
+                    }
+                } else {
+                    downloadName = suggestedFilename
+                }
+                
+                let downloadURL = downloadDirectory.appendingPathComponent(downloadName, isDirectory: false)
+                
+                if FileManager.default.fileExists(atPath: downloadURL.path) {
+                    try FileManager.default.removeItem(at: downloadURL)
+                }
+                
+                if isArchive {
+                    let extractURL = downloadURL.pathExtension == "zip"
+                    // Uncompresses to directory named after archive.
+                    ? downloadURL.deletingPathExtension()
+                    // Uncompresses to appropriate subdirectory.
+                    : downloadURL.deletingLastPathComponent()
+                    try uncompressArchive(at: temporaryURL, to: extractURL)
+                } else {
+                    try FileManager.default.moveItem(at: temporaryURL, to: downloadURL)
+                }
+                
+                completion(.success(downloadURL))
+            } catch {
+                completion(.failure(error))
+            }
+        } else if let error = error {
+            completion(.failure(error))
         }
-    }()
-    let downloadURL = downloadDirectory.appendingPathComponent(downloadName, isDirectory: false)
-    
-    if FileManager.default.fileExists(atPath: downloadURL.path) {
-        try FileManager.default.removeItem(at: downloadURL)
     }
-    
-    if isArchive {
-        let extractURL = downloadURL.pathExtension == "zip"
-        // Uncompresses to directory named after archive.
-        ? downloadURL.deletingPathExtension()
-        // Uncompresses to appropriate subdirectory.
-        : downloadURL.deletingLastPathComponent()
-        
-        try uncompressArchive(at: temporaryURL, to: extractURL)
-    } else {
-        try FileManager.default.moveItem(at: temporaryURL, to: downloadURL)
-    }
-    
-    return downloadName
+    let downloadTask = URLSession.shared.downloadTask(with: sourceURL, completionHandler: downloadTaskCompleted)
+    downloadTask.resume()
 }
 
 // MARK: Script Entry
@@ -231,56 +242,54 @@ let previousDownloadedItems: DownloadedItems = {
 }()
 var downloadedItems = previousDownloadedItems
 
-await withTaskGroup(of: Void.self) { group in
-    for portalItem in portalItems {
-        // Checks to see if an item is already downloaded.
-        guard !downloadedItems.keys.contains(portalItem.identifier) else {
-            print("note: Item already downloaded: \(portalItem.identifier)")
-            continue
-        }
-        
-        let destinationURL = downloadDirectoryURL.appendingPathComponent(portalItem.identifier, isDirectory: true)
-        
-        // Deletes the directory if it already exists.
-        // This happens when the item is not in the plist and needs to be redownloaded.
-        if FileManager.default.fileExists(atPath: destinationURL.path) {
-            do {
-                print("note: Deleting directory: \(portalItem.identifier)")
-                try FileManager.default.removeItem(at: destinationURL)
-            } catch {
-                print("error: Error deleting downloaded directory: \(error.localizedDescription)")
-                exit(1)
-            }
-        }
-        
+// Asynchronously downloads portal items.
+let dispatchGroup = DispatchGroup()
+
+portalItems.forEach { portalItem in
+    // Checks to see if an item is already downloaded.
+    guard !downloadedItems.keys.contains(portalItem.identifier) else {
+        print("note: Item already downloaded: \(portalItem.identifier)")
+        return
+    }
+    
+    let destinationURL = downloadDirectoryURL.appendingPathComponent(portalItem.identifier, isDirectory: true)
+    
+    // Deletes the directory if it already exists.
+    // This happens when the item is not in the plist and needs to be redownloaded.
+    if FileManager.default.fileExists(atPath: destinationURL.path) {
         do {
-            // Creates an enclosing directory with portal item ID as its name.
-            try FileManager.default.createDirectory(at: destinationURL, withIntermediateDirectories: false)
+            print("note: Deleting directory: \(portalItem.identifier)")
+            try FileManager.default.removeItem(at: destinationURL)
         } catch {
-            print("error: Error creating download directory: \(error.localizedDescription)")
+            print("error: Error deleting downloaded directory: \(error.localizedDescription)")
             exit(1)
         }
-        
-        print("note: Downloading item: \(portalItem.identifier)")
-        fflush(stdout)
-        
-        group.addTask {
-            do {
-                let downloadName = try await downloadFile(from: portalItem.dataURL, to: destinationURL)
-                print("note: Downloaded item: \(portalItem.identifier)")
-                fflush(stdout)
-                
-                await MainActor.run {
-                    downloadedItems[portalItem.identifier] = downloadName
-                }
-            } catch {
-                print("error: Error downloading item \(portalItem.identifier): \(error.localizedDescription)")
-                URLSession.shared.invalidateAndCancel()
-                exit(1)
-            }
+    }
+    
+    do {
+        // Creates an enclosing directory with portal item ID as its name.
+        try FileManager.default.createDirectory(at: destinationURL, withIntermediateDirectories: false)
+    } catch {
+        print("error: Error creating download directory: \(error.localizedDescription)")
+        exit(1)
+    }
+    
+    print("note: Downloading item \(portalItem.identifier)")
+    fflush(stdout)
+    dispatchGroup.enter()
+    downloadFile(at: portalItem.dataURL, to: destinationURL) { result in
+        switch result {
+        case .success(let url):
+            downloadedItems[portalItem.identifier] = url.lastPathComponent
+            dispatchGroup.leave()
+        case .failure(let error):
+            print("error: Error downloading item \(portalItem.identifier): \(error.localizedDescription)")
+            URLSession.shared.invalidateAndCancel()
+            exit(1)
         }
     }
 }
+dispatchGroup.wait()
 
 // Updates the downloaded items property list record if needed.
 if downloadedItems != previousDownloadedItems {
