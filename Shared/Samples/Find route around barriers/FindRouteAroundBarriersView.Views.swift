@@ -16,42 +16,46 @@ import ArcGIS
 import SwiftUI
 
 extension FindRouteAroundBarriersView {
-    /// The list of settings for the sample.
-    struct SettingsList: View {
-        /// The view model for the sample.
-        @ObservedObject var model: Model
+    /// A list of settings for modifying route parameters.
+    struct RouteParametersSettings: View {
+        /// The route parameters to modify.
+        private let routeParameters: RouteParameters
         
         /// A Boolean value indicating whether routing will find the best sequence.
-        @State private var routingFindsBestSequence = false
+        @State private var routingFindsBestSequence: Bool
+        
+        /// A Boolean value indicating whether routing will preserve the first stop.
+        @State private var routePreservesFirstStop: Bool
+        
+        /// A Boolean value indicating whether routing will preserve the last stop.
+        @State private var routePreservesLastStop: Bool
+        
+        init(for routeParameters: RouteParameters) {
+            self.routeParameters = routeParameters
+            self.routingFindsBestSequence = routeParameters.findsBestSequence
+            self.routePreservesFirstStop = routeParameters.preservesFirstStop
+            self.routePreservesLastStop = routeParameters.preservesLastStop
+        }
         
         var body: some View {
             List {
-                Toggle(isOn: $routingFindsBestSequence) {
-                    Text("Find Best Sequence")
-                }
-                .onChange(of: routingFindsBestSequence) { newValue in
-                    model.routeParameters.findsBestSequence = newValue
-                }
+                Toggle("Find Best Sequence", isOn: $routingFindsBestSequence)
+                    .onChange(of: routingFindsBestSequence) { newValue in
+                        routeParameters.findsBestSequence = newValue
+                    }
                 
                 Section {
-                    Toggle(isOn: Binding(
-                        get: { model.routeParameters.preservesFirstStop },
-                        set: { model.routeParameters.preservesFirstStop = $0 }
-                    )) {
-                        Text("Preserve First Stop")
-                    }
+                    Toggle("Preserve First Stop", isOn: $routePreservesFirstStop)
+                        .onChange(of: routePreservesFirstStop) { newValue in
+                            routeParameters.preservesFirstStop = newValue
+                        }
                     
-                    Toggle(isOn: Binding(
-                        get: { model.routeParameters.preservesLastStop },
-                        set: { model.routeParameters.preservesLastStop = $0 }
-                    )) {
-                        Text("Preserve Last Stop")
-                    }
+                    Toggle("Preserve Last Stop", isOn: $routePreservesLastStop)
+                        .onChange(of: routePreservesLastStop) { newValue in
+                            routeParameters.preservesLastStop = newValue
+                        }
                 }
                 .disabled(!routingFindsBestSequence)
-            }
-            .onAppear {
-                routingFindsBestSequence = model.routeParameters.findsBestSequence
             }
         }
     }
