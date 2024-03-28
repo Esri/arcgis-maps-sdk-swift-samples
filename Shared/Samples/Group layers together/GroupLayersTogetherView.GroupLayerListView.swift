@@ -111,7 +111,7 @@ extension GroupLayersTogetherView {
         private let layer: Layer
         
         /// A Boolean value indicating whether the layer's content is visible.
-        @State private var layerIsVisible: Bool
+        @State private var isVisible: Bool
         
         /// Creates the toggle for changing a given layer's visibility.
         /// - Parameters:
@@ -120,12 +120,12 @@ extension GroupLayersTogetherView {
         init(_ title: String, layer: Layer) {
             self.title = title
             self.layer = layer
-            self.layerIsVisible = layer.isVisible
+            self.isVisible = layer.isVisible
         }
         
         var body: some View {
-            Toggle(title, isOn: $layerIsVisible)
-                .onChange(of: layerIsVisible) { newValue in
+            Toggle(title, isOn: $isVisible)
+                .onChange(of: isVisible) { newValue in
                     layer.isVisible = newValue
                 }
         }
