@@ -33,21 +33,19 @@ exception_proper_nouns = {
     'Web Mercator'
 }
 
-# A set of category folder names for legacy support.
+# A set of category folder names.
 categories = {
-    'Maps',
-    'Layers',
-    'Features',
-    'Display information',
-    'Search',
-    'Edit data',
-    'Geometry',
-    'Route and directions',
     'Analysis',
-    'Cloud and portal',
+    'Augmented Reality',
+    'Cloud and Portal',
+    'Edit and Manage Data',
+    'Layers',
+    'Maps',
     'Scenes',
-    'Utility network',
-    'Augmented reality'
+    'Routing and Logistics',
+    'Search and Query',
+    'Utility Networks',
+    'Visualization'
 }
 # endregion
 
