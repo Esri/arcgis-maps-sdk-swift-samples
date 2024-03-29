@@ -377,6 +377,19 @@ class Metadata:
 
         return json.dumps(data, indent=4, sort_keys=True)
 
+    def check_category(self) -> None:
+        """
+        Check if
+        1. metadata contains a category.
+        2. category is valid.
+        
+        :return: None. Throws if exception occurs.
+        """
+        if not self.category:
+            raise Exception(f'Error category - Missing category.')
+        elif self.category not in categories:
+            raise Exception(f'Error category - Invalid category - "{self.category}".')
+
 
 class Readme:
     essential_headers = {
