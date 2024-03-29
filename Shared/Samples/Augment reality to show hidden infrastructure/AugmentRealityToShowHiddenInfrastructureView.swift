@@ -58,7 +58,7 @@ struct AugmentRealityToShowHiddenInfrastructureView: View {
             
             if elevationOffset < 0 {
                 statusMessage = "Pipe added \(elevationOffset.formatted()) meter(s) below surface."
-            } else if elevationOffset == 0 {
+            } else if elevationOffset.isZero {
                 statusMessage = "Pipe added at ground level."
             } else {
                 statusMessage = "Pipe added \(elevationOffset.formatted()) meter(s) above surface."
@@ -214,7 +214,7 @@ private extension AugmentRealityToShowHiddenInfrastructureView {
         func body(content: Content) -> some View {
             content
                 .alert("Enter an Elevation", isPresented: $isPresented) {
-                    TextField("3", text: $text)
+                    TextField("Enter elevation", text: $text)
                         .keyboardType(.numbersAndPunctuation)
                     
                     Button("Cancel", role: .cancel, action: {})

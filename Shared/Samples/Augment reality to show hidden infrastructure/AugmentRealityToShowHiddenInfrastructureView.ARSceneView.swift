@@ -51,7 +51,7 @@ extension AugmentRealityToShowHiddenInfrastructureView {
             }
         }
         
-        /// The menu with the settings.
+        /// The settings menu.
         private var settingsMenu: some View {
             Menu("Settings") {
                 Toggle("Shadows", isOn: $shadowsAreVisible)
