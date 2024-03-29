@@ -256,14 +256,9 @@ for portalItem in portalItems {
     
     // Deletes the directory if it already exists.
     // This happens when the item is not in the plist and needs to be redownloaded.
-    if FileManager.default.fileExists(atPath: destinationURL.path) {
-        do {
-            print("note: Deleting directory: \(portalItem.identifier)")
-            try FileManager.default.removeItem(at: destinationURL)
-        } catch {
-            print("error: Error deleting downloaded directory: \(error.localizedDescription)")
-            exit(1)
-        }
+    do {
+        try FileManager.default.removeItem(at: destinationURL)
+        print("note: Deleted directory: \(portalItem.identifier)")
     }
     
     do {
