@@ -105,8 +105,8 @@ struct Animate3DGraphicView: View {
                 VStack {
                     StatRow("Progress", value: model.animation.progress.formatted(.rounded))
                     ProgressView(value: model.animation.progress)
-                        .padding(.bottom)
                 }
+                .padding(.vertical)
                 
                 Picker("Mission Selection", selection: $model.currentMission) {
                     ForEach(Mission.allCases, id: \.self) { mission in
