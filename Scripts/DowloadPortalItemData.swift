@@ -219,7 +219,7 @@ let portalItems: Set<PortalItem> = {
         // Omit the decoding errors from samples that don't have dependencies.
         let sampleDependencies = sampleJSONs
             .compactMap { try? parseJSON(at: $0) }
-        return Set(sampleDependencies.flatMap(\.offlineData))
+        return Set(sampleDependencies.lazy.flatMap(\.offlineData))
     } catch {
         print("error: Error decoding Samples dependencies: \(error.localizedDescription)")
         exit(1)
@@ -245,11 +245,11 @@ var downloadedItems = previousDownloadedItems
 // Asynchronously downloads portal items.
 let dispatchGroup = DispatchGroup()
 
-portalItems.forEach { portalItem in
+for portalItem in portalItems {
     // Checks to see if an item is already downloaded.
-    guard !downloadedItems.keys.contains(portalItem.identifier) else {
+    guard downloadedItems[portalItem.identifier] == nil else {
         print("note: Item already downloaded: \(portalItem.identifier)")
-        return
+        continue
     }
     
     let destinationURL = downloadDirectoryURL.appendingPathComponent(portalItem.identifier, isDirectory: true)
