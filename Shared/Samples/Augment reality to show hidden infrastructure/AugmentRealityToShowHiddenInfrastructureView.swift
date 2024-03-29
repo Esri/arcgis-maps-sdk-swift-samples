@@ -81,7 +81,7 @@ struct AugmentRealityToShowHiddenInfrastructureView: View {
                 let polyline = geometry as? Polyline
                 canApplyEdits = polyline?.parts.contains { $0.points.count >= 2 } ?? false
                 if canApplyEdits {
-                    statusMessage = "Tap done to add the pipe."
+                    statusMessage = "Tap the check mark to add the pipe."
                 }
                 
                 geometryEditorCanUndo = model.geometryEditor.canUndo
