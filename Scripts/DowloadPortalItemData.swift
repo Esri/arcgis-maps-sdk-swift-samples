@@ -254,12 +254,8 @@ for portalItem in portalItems {
     
     let destinationURL = downloadDirectoryURL.appendingPathComponent(portalItem.identifier, isDirectory: true)
     
-    // Deletes the directory if it already exists.
-    // This happens when the item is not in the plist and needs to be redownloaded.
-    do {
-        try FileManager.default.removeItem(at: destinationURL)
-        print("note: Deleted directory: \(portalItem.identifier)")
-    }
+    // Deletes the directory when the item is not in the plist.
+    try? FileManager.default.removeItem(at: destinationURL)
     
     do {
         // Creates an enclosing directory with portal item ID as its name.
