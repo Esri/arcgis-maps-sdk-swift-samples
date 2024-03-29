@@ -143,9 +143,9 @@ private extension ManageBookmarksView {
                     }
                     .onDelete { offsets in
                         // Delete the bookmarks at the given offsets on row deletion.
+                        let bookmarksToRemove = offsets.map { bookmarks[$0] }
+                        map.removeBookmarks(bookmarksToRemove)
                         bookmarks.remove(atOffsets: offsets)
-                        map.removeAllBookmarks()
-                        map.addBookmarks(bookmarks)
                     }
                     .buttonStyle(.plain)
                 }
@@ -153,6 +153,8 @@ private extension ManageBookmarksView {
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
+                        // Note: There is a bug in iOS 17 that prevents the `EditButton` from working
+                        // on the first tap when it is embedded in a `NavigationView` in a `popover`.
                         EditButton()
                     }
                 }

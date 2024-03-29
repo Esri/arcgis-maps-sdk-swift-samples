@@ -101,26 +101,30 @@ private extension FindRouteInMobileMapPackageView {
                         .resizable()
                         .scaledToFit()
                         .frame(height: 50)
-                        .overlay {
-                            // The symbols indicating the map's functionality.
-                            VStack {
-                                HStack {
-                                    if !map.transportationNetworks.isEmpty {
-                                        // The symbol indicating whether the map can route.
-                                        Image(systemName: "arrow.triangle.turn.up.right.circle")
-                                    }
-                                    Spacer()
-                                    if mapPackage.locatorTask != nil {
-                                        // The symbol indicating whether the map can geocode.
+                        
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(mapName)
+                            
+                            HStack {
+                                // The symbol indicating whether the map can geocode.
+                                if mapPackage.locatorTask != nil {
+                                    HStack(spacing: 2) {
                                         Image(systemName: "mappin.circle")
+                                        Text("Geocoding")
                                     }
                                 }
-                                .padding(2)
-                                Spacer()
+                                
+                                // The symbol indicating whether the map can route.
+                                if !map.transportationNetworks.isEmpty {
+                                    HStack(spacing: 2) {
+                                        Image(systemName: "arrow.triangle.turn.up.right.circle")
+                                        Text("Routing")
+                                    }
+                                }
                             }
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
                         }
-                        
-                        Text(mapName)
                     }
                 }
             }
