@@ -216,7 +216,7 @@ extension Animate3DGraphicView {
         private(set) var displayLink: CADisplayLink?
         
         /// The speed of the animation.
-        var speed: AnimationSpeed = .medium
+        var speed = AnimationSpeed.medium
         
         /// A Boolean value indicating whether the animation is currently playing.
         var isPlaying = false {
@@ -248,7 +248,7 @@ extension Animate3DGraphicView {
         /// The index of the current frame in the frames list.
         private var currentFrameIndex = 0
         
-        /// Sets up the animation using  a given display link.
+        /// Sets up the animation using a given display link.
         /// - Parameter displayLink: The display link used to run the animation.
         mutating func setup(displayLink: CADisplayLink) {
             // Add the display link to main thread common mode run loop,
