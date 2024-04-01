@@ -33,21 +33,19 @@ exception_proper_nouns = {
     'Web Mercator'
 }
 
-# A set of category folder names for legacy support.
+# A set of category folder names.
 categories = {
-    'Maps',
-    'Layers',
-    'Features',
-    'Display information',
-    'Search',
-    'Edit data',
-    'Geometry',
-    'Route and directions',
     'Analysis',
-    'Cloud and portal',
+    'Augmented Reality',
+    'Cloud and Portal',
+    'Edit and Manage Data',
+    'Layers',
+    'Maps',
     'Scenes',
-    'Utility network',
-    'Augmented reality'
+    'Routing and Logistics',
+    'Search and Query',
+    'Utility Networks',
+    'Visualization'
 }
 # endregion
 
@@ -378,6 +376,19 @@ class Metadata:
             data["offline_data"] = self.offline_data
 
         return json.dumps(data, indent=4, sort_keys=True)
+
+    def check_category(self) -> None:
+        """
+        Check if
+        1. metadata contains a category.
+        2. category is valid.
+        
+        :return: None. Throws if exception occurs.
+        """
+        if not self.category:
+            raise Exception(f'Error category - Missing category.')
+        elif self.category not in categories:
+            raise Exception(f'Error category - Invalid category - "{self.category}".')
 
 
 class Readme:
