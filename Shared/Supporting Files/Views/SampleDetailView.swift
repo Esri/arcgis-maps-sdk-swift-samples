@@ -116,6 +116,6 @@ extension SampleDetailView: Identifiable {
 private extension URL {
     /// The URL to the Samples sub-directory on GitHub's main branch.
     static let samplesDirectory = URL(
-        string: "https://github.com/Esri/arcgis-maps-sdk-swift-samples"
-    )!.appendingPathComponent("tree/main/Shared/Samples")
+        string: "https://github.com/Esri/arcgis-maps-sdk-swift-samples/tree/main/Shared/Samples"
+    )!
 }
