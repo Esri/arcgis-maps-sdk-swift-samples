@@ -86,7 +86,7 @@ struct SampleDetailView: View {
         .toolbar {
             ToolbarItemGroup(placement: .topBarTrailing) {
 #if targetEnvironment(macCatalyst)
-                Link("View on GitHub", destination: .samplesDirectory.appendingPathComponent(sample.name))
+                Link("View on GitHub", destination: sample.gitHubURL)
 #endif
                 Button {
                     isSampleInfoViewPresented = true
@@ -111,11 +111,4 @@ struct SampleDetailView: View {
 
 extension SampleDetailView: Identifiable {
     var id: String { sample.nameInUpperCamelCase }
-}
-
-private extension URL {
-    /// The URL to the Samples sub-directory on GitHub's main branch.
-    static let samplesDirectory = URL(
-        string: "https://github.com/Esri/arcgis-maps-sdk-swift-samples/tree/main/Shared/Samples"
-    )!
 }
