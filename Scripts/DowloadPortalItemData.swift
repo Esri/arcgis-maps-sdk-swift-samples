@@ -19,6 +19,7 @@
 // A mapping of item IDs to filenames is maintained in the download directory.
 // This mapping efficiently checks whether an item has already been downloaded.
 // If an item already exists, it will skip that item.
+// To delete and re-downloaded an item, remove its entry from the plist.
 
 import Foundation
 
@@ -31,7 +32,7 @@ struct SampleDependency: Decodable {
 }
 
 /// A Portal Item and its data URL.
-struct PortalItem {
+struct PortalItem: Hashable {
     static let arcGISOnlinePortalURL = URL(string: "https://www.arcgis.com")!
     
     /// The identifier of the item.
@@ -207,7 +208,7 @@ if !FileManager.default.fileExists(atPath: downloadDirectoryURL.path) {
 }
 
 /// Portal Items created from iterating through all metadata's "offline\_data".
-let portalItems: [PortalItem] = {
+let portalItems: Set<PortalItem> = {
     do {
         // Finds all subdirectories under the root Samples directory.
         let sampleSubDirectories = try FileManager.default
@@ -218,7 +219,7 @@ let portalItems: [PortalItem] = {
         // Omit the decoding errors from samples that don't have dependencies.
         let sampleDependencies = sampleJSONs
             .compactMap { try? parseJSON(at: $0) }
-        return sampleDependencies.flatMap(\.offlineData)
+        return Set(sampleDependencies.lazy.flatMap(\.offlineData))
     } catch {
         print("error: Error decoding Samples dependencies: \(error.localizedDescription)")
         exit(1)
@@ -244,32 +245,38 @@ var downloadedItems = previousDownloadedItems
 // Asynchronously downloads portal items.
 let dispatchGroup = DispatchGroup()
 
-portalItems.forEach { portalItem in
+for portalItem in portalItems {
+    // Checks to see if an item is already downloaded.
+    guard downloadedItems[portalItem.identifier] == nil else {
+        print("note: Item already downloaded: \(portalItem.identifier)")
+        continue
+    }
+    
     let destinationURL = downloadDirectoryURL.appendingPathComponent(portalItem.identifier, isDirectory: true)
-    // Checks if a directory exists or not, to see if an item is already downloaded.
-    if FileManager.default.fileExists(atPath: destinationURL.path) {
-        print("info: Item \(portalItem.identifier) has already been downloaded.")
-    } else {
-        do {
-            // Creates an enclosing directory with portal item ID as its name.
-            try FileManager.default.createDirectory(at: destinationURL, withIntermediateDirectories: false)
-        } catch {
-            print("error: Error creating download directory: \(error.localizedDescription).")
+    
+    // Deletes the directory when the item is not in the plist.
+    try? FileManager.default.removeItem(at: destinationURL)
+    
+    do {
+        // Creates an enclosing directory with portal item ID as its name.
+        try FileManager.default.createDirectory(at: destinationURL, withIntermediateDirectories: false)
+    } catch {
+        print("error: Error creating download directory: \(error.localizedDescription)")
+        exit(1)
+    }
+    
+    print("note: Downloading item \(portalItem.identifier)")
+    fflush(stdout)
+    dispatchGroup.enter()
+    downloadFile(at: portalItem.dataURL, to: destinationURL) { result in
+        switch result {
+        case .success(let url):
+            downloadedItems[portalItem.identifier] = url.lastPathComponent
+            dispatchGroup.leave()
+        case .failure(let error):
+            print("error: Error downloading item \(portalItem.identifier): \(error.localizedDescription)")
+            URLSession.shared.invalidateAndCancel()
             exit(1)
-        }
-        print("info: Downloading item \(portalItem.identifier)")
-        fflush(stdout)
-        dispatchGroup.enter()
-        downloadFile(at: portalItem.dataURL, to: destinationURL) { result in
-            switch result {
-            case .success(let url):
-                downloadedItems[portalItem.identifier] = url.lastPathComponent
-                dispatchGroup.leave()
-            case .failure(let error):
-                print("error: Error downloading item \(portalItem.identifier): \(error.localizedDescription)")
-                URLSession.shared.invalidateAndCancel()
-                exit(1)
-            }
         }
     }
 }
