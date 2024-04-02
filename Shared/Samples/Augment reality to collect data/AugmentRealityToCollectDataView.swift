@@ -191,9 +191,9 @@ private extension AugmentRealityToCollectDataView {
         /// A human-readable label for each kind of tree health.
         var label: String {
             switch self {
-            case .dead: return "Dead"
-            case .distressed: return "Distressed"
-            case .healthy: return "Healthy"
+            case .dead: "Dead"
+            case .distressed: "Distressed"
+            case .healthy: "Healthy"
             }
         }
     }
