@@ -128,8 +128,15 @@ extension Animate3DGraphicView {
         @Published private(set) var cameraPropertyTexts: [CameraProperty: String] = [:]
         
         init() {
-            // Set up the mission and the graphics.
+            // Set up the mission, graphics, and animation.
             updateMission()
+            
+            let displayLink = CADisplayLink(target: self, selector: #selector(updatePositions))
+            animation.setup(displayLink: displayLink)
+        }
+        
+        deinit {
+            Task { await animation.displayLink?.invalidate() }
         }
         
         // MARK: Methods
@@ -153,24 +160,6 @@ extension Animate3DGraphicView {
                     }
                 }
             }
-        }
-        
-        /// Starts a new animation by creating a timer used to move the graphics.
-        func startAnimation() {
-            // Stop any previous on going animation.
-            animation.stop()
-            animation.isPlaying = true
-            
-            // Create a new timer to update the graphics' position each iteration.
-            let interval = 1 / Double(animation.speed)
-            animation.timer = Timer.scheduledTimer(
-                timeInterval: interval,
-                target: self,
-                selector: #selector(updatePositions),
-                userInfo: nil,
-                repeats: true
-            )
-            RunLoop.current.add(animation.timer!, forMode: .common)
         }
         
         /// Updates the text associated with a given camera controller property.
@@ -223,14 +212,18 @@ extension Animate3DGraphicView {
     
     /// A struct containing data for an animation.
     struct Animation {
-        /// The timer for the animation used to loop through the animation frames.
-        var timer: Timer?
+        /// The timer used to loop through the animation frames.
+        private(set) var displayLink: CADisplayLink?
         
-        /// The speed of the animation used to set the timer's time interval.
-        var speed = 50.0
+        /// The speed of the animation.
+        var speed = AnimationSpeed.medium
         
-        /// A Boolean that indicates whether the animation is currently playing.
-        var isPlaying = false
+        /// A Boolean value indicating whether the animation is currently playing.
+        var isPlaying = false {
+            didSet {
+                displayLink?.isPaused = !isPlaying
+            }
+        }
         
         /// The current frame of the animation.
         var currentFrame: Frame {
@@ -255,26 +248,31 @@ extension Animate3DGraphicView {
         /// The index of the current frame in the frames list.
         private var currentFrameIndex = 0
         
-        /// Stops the animation by invalidating the timer.
-        mutating func stop() {
-            timer?.invalidate()
-            isPlaying = false
+        /// Sets up the animation using a given display link.
+        /// - Parameter displayLink: The display link used to run the animation.
+        mutating func setup(displayLink: CADisplayLink) {
+            // Add the display link to main thread common mode run loop,
+            // so it is not effected by UI events.
+            displayLink.add(to: .main, forMode: .common)
+            displayLink.preferredFramesPerSecond = 60
+            self.displayLink = displayLink
         }
         
         /// Resets the animation to the beginning.
         mutating func reset() {
-            stop()
+            isPlaying = false
             currentFrameIndex = 0
         }
         
-        /// Increments the animation to the next frame.
+        /// Increments the animation to the next frame based on the speed.
         mutating func nextFrame() {
-            if currentFrameIndex >= framesCount - 1 {
+            // Increment the frame index using the current speed.
+            let nextFrameIndex = currentFrameIndex + speed.rawValue
+            if frames.indices.contains(nextFrameIndex) {
+                currentFrameIndex = nextFrameIndex
+            } else {
                 // Reset the animation when it has reached the end.
                 reset()
-            } else {
-                // Move the index to point to the next frame.
-                currentFrameIndex += 1
             }
         }
         
@@ -358,6 +356,13 @@ extension Animate3DGraphicView {
             case .pitch: return 0...180
             }
         }
+    }
+    
+    /// An enumeration representing the speed of the animation.
+    enum AnimationSpeed: Int, CaseIterable {
+        case slow = 1
+        case medium = 2
+        case fast = 4
     }
 }
 
