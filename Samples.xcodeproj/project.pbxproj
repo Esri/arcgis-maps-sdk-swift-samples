@@ -851,12 +851,12 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0000FB6D2BBDB17600845921 /* Add 3d tiles layer */ = {
+		0000FB6D2BBDB17600845921 /* Add 3D tiles layer */ = {
 			isa = PBXGroup;
 			children = (
 				0000FB6B2BBDB17600845921 /* Add3DTilesLayerView.swift */,
 			);
-			path = "Add 3d tiles layer";
+			path = "Add 3D tiles layer";
 			sourceTree = "<group>";
 		};
 		0005580D281872BE00224BC6 /* Views */ = {
@@ -943,7 +943,7 @@
 		0074ABB228174B830037244A /* Samples */ = {
 			isa = PBXGroup;
 			children = (
-				0000FB6D2BBDB17600845921 /* Add 3d tiles layer */,
+				0000FB6D2BBDB17600845921 /* Add 3D tiles layer */,
 				79D84D0C2A815BED00F45262 /* Add custom dynamic entity data source */,
 				4D2ADC3E29C26D05003B367F /* Add dynamic entity layer */,
 				00D4EF7E2863840D00B9CC30 /* Add feature layers */,
