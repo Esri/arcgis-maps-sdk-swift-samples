@@ -228,7 +228,7 @@ let previousDownloadedItems: DownloadedItems = {
 }()
 var downloadedItems = previousDownloadedItems
 
-await withTaskGroup(of: (Identifier, Filename?).self) { group in
+await withTaskGroup(of: Void.self) { group in
     for portalItem in portalItems {
         // Checks to see if an item is already downloaded.
         guard downloadedItems[portalItem.identifier] == nil else {
@@ -263,20 +263,18 @@ await withTaskGroup(of: (Identifier, Filename?).self) { group in
                     from: portalItem.dataURL,
                     to: destinationURL
                 )
-                return (portalItem.identifier, downloadName)
+                print("note: Downloaded item: \(portalItem.identifier)")
+                fflush(stdout)
+                
+                await MainActor.run {
+                    downloadedItems[portalItem.identifier] = downloadName
+                }
             } catch {
                 print("error: Error downloading item \(portalItem.identifier): \(error.localizedDescription)")
                 URLSession.shared.invalidateAndCancel()
                 exit(1)
             }
         }
-    }
-    
-    for await (identifier, filename) in group {
-        downloadedItems[identifier] = filename
-        
-        print("note: Downloaded item: \(identifier)")
-        fflush(stdout)
     }
 }
 
