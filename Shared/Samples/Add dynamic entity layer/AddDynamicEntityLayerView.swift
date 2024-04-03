@@ -95,23 +95,16 @@ struct AddDynamicEntityLayerView: View {
         }
         let settingsView = SettingsView(model: model, calloutPlacement: $placement)
         
-        if #available(iOS 16, *) {
-            button
-                .popover(isPresented: $isShowingSettings, arrowEdge: .bottom) {
-                    settingsView
-                        .presentationDetents([.fraction(0.5)])
+        button
+            .popover(isPresented: $isShowingSettings, arrowEdge: .bottom) {
+                settingsView
+                    .presentationDetents([.fraction(0.5)])
 #if targetEnvironment(macCatalyst)
-                        .frame(minWidth: 300, minHeight: 270)
+                    .frame(minWidth: 300, minHeight: 270)
 #else
-                        .frame(minWidth: 320, minHeight: 390)
+                    .frame(minWidth: 320, minHeight: 390)
 #endif
-                }
-        } else {
-            button
-                .sheet(isPresented: $isShowingSettings, detents: [.medium]) {
-                    settingsView
-                }
-        }
+            }
     }
 }
 

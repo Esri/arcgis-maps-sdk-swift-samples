@@ -86,14 +86,8 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
                 }
             })
             .sheet(isPresented: $isConditionMenuPresented) {
-                if #available(iOS 16, *) {
-                    NavigationStack {
-                        conditionMenu
-                    }
-                } else {
-                    NavigationView {
-                        conditionMenu
-                    }
+                NavigationStack {
+                    conditionMenu
                 }
             }
             .overlay(alignment: .center) { loadingView }

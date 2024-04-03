@@ -27,15 +27,8 @@ extension AddDynamicEntityLayerView {
         @Binding var calloutPlacement: CalloutPlacement?
         
         var body: some View {
-            if #available(iOS 16, *) {
-                NavigationStack {
-                    root
-                }
-            } else {
-                NavigationView {
-                    root
-                }
-                .navigationViewStyle(.stack)
+            NavigationStack {
+                root
             }
         }
         

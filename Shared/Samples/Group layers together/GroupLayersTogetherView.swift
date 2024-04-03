@@ -65,23 +65,16 @@ struct GroupLayersTogetherView: View {
             isShowingLayersSheet = true
         }
         
-        if #available(iOS 16, *) {
-            button
-                .popover(isPresented: $isShowingLayersSheet, arrowEdge: .bottom) {
-                    layersList
-                        .presentationDetents([.fraction(0.5)])
+        button
+            .popover(isPresented: $isShowingLayersSheet, arrowEdge: .bottom) {
+                layersList
+                    .presentationDetents([.fraction(0.5)])
 #if targetEnvironment(macCatalyst)
-                        .frame(minWidth: 300, minHeight: 270)
+                    .frame(minWidth: 300, minHeight: 270)
 #else
-                        .frame(minWidth: 320, minHeight: 390)
+                    .frame(minWidth: 320, minHeight: 390)
 #endif
-                }
-        } else {
-            button
-                .sheet(isPresented: $isShowingLayersSheet, detents: [.medium]) {
-                    layersList
-                }
-        }
+            }
     }
     
     /// The list of group layers and their child layers that are currently added to the map.

@@ -75,23 +75,16 @@ extension FindRouteAroundBarriersView {
         @State private var sheetIsShowing = false
         
         var body: some View {
-            if #available(iOS 16, *) {
-                button
-                    .popover(isPresented: $sheetIsShowing, arrowEdge: .bottom) {
-                        sheetContent
-                            .presentationDetents([.fraction(0.5)])
+            button
+                .popover(isPresented: $sheetIsShowing, arrowEdge: .bottom) {
+                    sheetContent
+                        .presentationDetents([.fraction(0.5)])
 #if targetEnvironment(macCatalyst)
-                            .frame(minWidth: 300, minHeight: 270)
+                        .frame(minWidth: 300, minHeight: 270)
 #else
-                            .frame(minWidth: 320, minHeight: 390)
+                        .frame(minWidth: 320, minHeight: 390)
 #endif
-                    }
-            } else {
-                button
-                    .sheet(isPresented: $sheetIsShowing, detents: [.medium]) {
-                        sheetContent
-                    }
-            }
+                }
         }
         
         /// The button that presents the sheet.

@@ -19,19 +19,12 @@ struct ContentView: View {
     @State private var query = ""
     
     var body: some View {
-        if #available(iOS 16, *) {
-            NavigationSplitView {
-                NavigationStack {
-                    sidebar
-                }
-            } detail: {
-                NavigationStack {
-                    detail
-                }
-            }
-        } else {
-            NavigationView {
+        NavigationSplitView {
+            NavigationStack {
                 sidebar
+            }
+        } detail: {
+            NavigationStack {
                 detail
             }
         }

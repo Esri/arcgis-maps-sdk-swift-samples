@@ -94,14 +94,8 @@ struct SampleDetailView: View {
                     Image(systemName: "info.circle")
                 }
                 .sheet(isPresented: $isSampleInfoViewPresented) {
-                    if #available(iOS 16, *) {
-                        NavigationStack {
-                            SampleInfoView(sample: sample)
-                        }
-                    } else {
-                        NavigationView {
-                            SampleInfoView(sample: sample)
-                        }
+                    NavigationStack {
+                        SampleInfoView(sample: sample)
                     }
                 }
             }

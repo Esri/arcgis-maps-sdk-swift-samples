@@ -222,23 +222,16 @@ private extension View {
         @ViewBuilder content: @escaping () -> Content
     ) -> some View where Content: View {
         Group {
-            if #available(iOS 16, *) {
-                self
-                    .popover(isPresented: isPresented, arrowEdge: .bottom) {
-                        content()
-                            .presentationDetents([.medium, .large])
+            self
+                .popover(isPresented: isPresented, arrowEdge: .bottom) {
+                    content()
+                        .presentationDetents([.medium, .large])
 #if targetEnvironment(macCatalyst)
-                            .frame(minWidth: 300, minHeight: 270)
+                        .frame(minWidth: 300, minHeight: 270)
 #else
-                            .frame(minWidth: 320, minHeight: 390)
+                        .frame(minWidth: 320, minHeight: 390)
 #endif
-                    }
-            } else {
-                self
-                    .sheet(isPresented: isPresented, detents: [.medium, .large]) {
-                        content()
-                    }
-            }
+                }
         }
     }
 }

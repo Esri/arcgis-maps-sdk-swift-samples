@@ -104,23 +104,16 @@ private extension CreateMobileGeodatabaseView {
             tableSheetIsShowing = true
         }
         
-        if #available(iOS 16, *) {
-            button
-                .popover(isPresented: $tableSheetIsShowing, arrowEdge: .bottom) {
-                    tableList
-                        .presentationDetents([.fraction(0.5)])
+        button
+            .popover(isPresented: $tableSheetIsShowing, arrowEdge: .bottom) {
+                tableList
+                    .presentationDetents([.fraction(0.5)])
 #if targetEnvironment(macCatalyst)
-                        .frame(minWidth: 300, minHeight: 270)
+                    .frame(minWidth: 300, minHeight: 270)
 #else
-                        .frame(minWidth: 320, minHeight: 390)
+                    .frame(minWidth: 320, minHeight: 390)
 #endif
-                }
-        } else {
-            button
-                .sheet(isPresented: $tableSheetIsShowing) {
-                    tableList
-                }
-        }
+            }
     }
     
     /// The list of features in the feature table.
