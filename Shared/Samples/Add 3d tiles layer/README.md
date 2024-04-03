@@ -1,4 +1,4 @@
-# Add 3d tiles layer
+# Add 3D tiles layer
 
 Add a layer to visualize 3D tiles data that conforms to the OGC 3D Tiles specification.
 
