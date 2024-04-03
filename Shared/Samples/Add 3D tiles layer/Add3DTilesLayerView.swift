@@ -37,8 +37,11 @@ struct Add3DTilesLayerView: View {
         // Sets the surface to the scene's base surface.
         scene.baseSurface = surface
         
-        // Adds a OGC 3D tiles layer from a URL to the scene's operational layers.
-        scene.addOperationalLayer(OGC3DTilesLayer(url: .stuttgart3DTiles))
+        // Creates an OGC 3D tiles layer from a 3D tiles service URL.
+        let ogc3DTileslayer = OGC3DTilesLayer(url: .stuttgart3DTiles)
+        
+        // Adds the layer to the scene's operational layers.
+        scene.addOperationalLayer(ogc3DTileslayer)
         return scene
     }()
     
