@@ -109,7 +109,7 @@ private extension Viewpoint {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         TraceUtilityNetworkView()
     }
 }

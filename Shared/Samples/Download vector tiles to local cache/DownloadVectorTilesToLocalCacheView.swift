@@ -127,7 +127,7 @@ struct DownloadVectorTilesToLocalCacheView: View {
                                 // Removes the temporary files when the cover is dismissed.
                                 model.removeTemporaryFiles()
                             } content: {
-                                NavigationView {
+                                NavigationStack {
                                     MapView(map: model.downloadedVectorTilesMap)
                                         .navigationTitle("Vector tile package")
                                         .navigationBarTitleDisplayMode(.inline)
@@ -314,7 +314,7 @@ private extension Envelope {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         DownloadVectorTilesToLocalCacheView()
     }
 }

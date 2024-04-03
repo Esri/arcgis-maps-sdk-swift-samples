@@ -237,7 +237,6 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
                 }
             }
         }
-        .navigationViewStyle(.stack)
     }
     
     @ViewBuilder var attributesView: some View {
@@ -307,7 +306,7 @@ private extension UtilityNetworkAttributeComparison.Operator {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         AnalyzeNetworkWithSubnetworkTraceView()
     }
 }

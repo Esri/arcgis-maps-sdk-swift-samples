@@ -178,7 +178,7 @@ extension ValidateUtilityNetworkTopologyView {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         ValidateUtilityNetworkTopologyView()
     }
 }

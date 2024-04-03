@@ -109,7 +109,7 @@ struct AddDynamicEntityLayerView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         AddDynamicEntityLayerView()
     }
 }

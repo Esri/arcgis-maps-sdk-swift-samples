@@ -46,7 +46,7 @@ struct ListSpatialReferenceTransformationsView: View {
                 }
                 .errorAlert(presentingError: $error)
             
-            NavigationView {
+            NavigationStack {
                 TransformationsList(model: model)
                     .navigationTitle("Transformations")
                     .navigationBarTitleDisplayMode(.inline)
@@ -56,7 +56,6 @@ struct ListSpatialReferenceTransformationsView: View {
                         }
                     }
             }
-            .navigationViewStyle(.stack)
         }
     }
     

@@ -28,7 +28,7 @@ extension ValidateUtilityNetworkTopologyView {
         @Environment(\.dismiss) private var dismiss: DismissAction
         
         var body: some View {
-            NavigationView {
+            NavigationStack {
                 fieldValuePicker
                     .navigationTitle("Edit Feature")
                     .navigationBarTitleDisplayMode(.inline)
@@ -47,7 +47,6 @@ extension ValidateUtilityNetworkTopologyView {
                         }
                     }
             }
-            .navigationViewStyle(.stack)
         }
         
         /// The picker for the field value options.

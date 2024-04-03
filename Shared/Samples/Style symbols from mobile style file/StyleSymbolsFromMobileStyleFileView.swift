@@ -56,7 +56,7 @@ struct StyleSymbolsFromMobileStyleFileView: View {
     
     /// The list containing the symbol options.
     private var symbolOptionsList: some View {
-        NavigationView {
+        NavigationStack {
             SymbolOptionsListView(model: model)
                 .navigationTitle("Symbol")
                 .navigationBarTitleDisplayMode(.inline)
@@ -68,7 +68,6 @@ struct StyleSymbolsFromMobileStyleFileView: View {
                     }
                 }
         }
-        .navigationViewStyle(.stack)
     }
 }
 

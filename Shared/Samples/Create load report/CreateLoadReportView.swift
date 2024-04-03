@@ -55,7 +55,7 @@ struct CreateLoadReportView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         CreateLoadReportView()
     }
 }

@@ -109,7 +109,7 @@ private extension PortalItem.ID {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         DisplayMapFromPortalItemView()
     }
 }

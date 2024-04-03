@@ -174,7 +174,7 @@ private extension ShowResultOfSpatialOperationsView.Model {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         ShowResultOfSpatialOperationsView()
     }
 }

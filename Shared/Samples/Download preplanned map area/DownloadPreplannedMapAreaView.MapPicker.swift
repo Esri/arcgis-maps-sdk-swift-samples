@@ -24,7 +24,7 @@ extension DownloadPreplannedMapAreaView {
         @ObservedObject var model: Model
         
         var body: some View {
-            NavigationView {
+            NavigationStack {
                 List {
                     Section {
                         Picker("Web Maps (Online)", selection: $model.selectedMap) {
@@ -71,7 +71,6 @@ extension DownloadPreplannedMapAreaView {
                     }
                 }
             }
-            .navigationViewStyle(.stack)
         }
     }
     

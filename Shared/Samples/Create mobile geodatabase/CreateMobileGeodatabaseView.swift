@@ -118,7 +118,7 @@ private extension CreateMobileGeodatabaseView {
     
     /// The list of features in the feature table.
     var tableList: some View {
-        NavigationView {
+        NavigationStack {
             List {
                 Section("OID and Collection Timestamp") {
                     ForEach(model.features, id: \.self) { feature in
@@ -140,7 +140,6 @@ private extension CreateMobileGeodatabaseView {
                 }
             }
         }
-        .navigationViewStyle(.stack)
     }
 }
 
@@ -166,7 +165,7 @@ private extension FormatStyle where Self == Date.VerbatimFormatStyle {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         CreateMobileGeodatabaseView()
     }
 }

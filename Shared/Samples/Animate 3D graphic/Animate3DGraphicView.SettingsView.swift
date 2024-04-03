@@ -50,7 +50,7 @@ extension Animate3DGraphicView {
         
         /// The view content of the settings sheet.
         private var settingsContent: some View {
-            NavigationView {
+            NavigationStack {
                 content
                     .navigationTitle("\(label) Settings")
                     .navigationBarTitleDisplayMode(.inline)
@@ -62,7 +62,6 @@ extension Animate3DGraphicView {
                         }
                     }
             }
-            .navigationViewStyle(.stack)
         }
     }
 }

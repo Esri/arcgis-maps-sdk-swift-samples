@@ -112,7 +112,7 @@ private extension OrbitCameraAroundObjectView {
         @State private var cameraDistanceIsInteractive = false
         
         var body: some View {
-            NavigationView {
+            NavigationStack {
                 List {
                     VStack {
                         Text("Camera Heading")
@@ -155,7 +155,6 @@ private extension OrbitCameraAroundObjectView {
                     }
                 }
             }
-            .navigationViewStyle(.stack)
             .onAppear {
                 planePitch.value = model.planeGraphic.attributes["PITCH"] as! Double
                 cameraHeading.value = model.cameraController.cameraHeadingOffset

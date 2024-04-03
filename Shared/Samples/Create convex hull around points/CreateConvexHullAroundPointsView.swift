@@ -130,7 +130,7 @@ private extension CreateConvexHullAroundPointsView {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         CreateConvexHullAroundPointsView()
     }
 }

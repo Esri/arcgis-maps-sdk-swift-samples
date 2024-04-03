@@ -79,7 +79,7 @@ struct GroupLayersTogetherView: View {
     
     /// The list of group layers and their child layers that are currently added to the map.
     private var layersList: some View {
-        NavigationView {
+        NavigationStack {
             List {
                 ForEach(scene.operationalLayers as! [GroupLayer], id: \.name) { groupLayer in
                     GroupLayerListView(groupLayer: groupLayer)
@@ -95,7 +95,6 @@ struct GroupLayersTogetherView: View {
                 }
             }
         }
-        .navigationViewStyle(.stack)
         .frame(idealWidth: 320, idealHeight: 428)
     }
 }
@@ -180,7 +179,7 @@ private extension URL {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         GroupLayersTogetherView()
     }
 }

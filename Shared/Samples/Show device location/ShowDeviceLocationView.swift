@@ -147,7 +147,7 @@ private extension LocationDisplay.AutoPanMode {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         ShowDeviceLocationView()
     }
 }

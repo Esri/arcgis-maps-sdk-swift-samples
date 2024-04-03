@@ -75,7 +75,7 @@ struct ConfigureClustersView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         ConfigureClustersView()
     }
 }

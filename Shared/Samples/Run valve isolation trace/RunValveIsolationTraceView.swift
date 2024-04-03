@@ -170,7 +170,6 @@ struct RunValveIsolationTraceView: View {
                 Button("Done") { isConfigurationPresented = false }
             }
         }
-        .navigationViewStyle(.stack)
     }
 }
 
@@ -187,7 +186,7 @@ extension RunValveIsolationTraceView.Model.TracingActivity {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         RunValveIsolationTraceView()
     }
 }

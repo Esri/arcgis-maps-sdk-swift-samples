@@ -39,7 +39,7 @@ struct AugmentRealityToShowHiddenInfrastructureView: View {
     @State private var error: Error?
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             MapView(map: model.map, graphicsOverlays: [model.pipesGraphicsOverlay])
                 .locationDisplay(model.locationDisplay)
                 .geometryEditor(model.geometryEditor)
