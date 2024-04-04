@@ -46,16 +46,19 @@ struct ListSpatialReferenceTransformationsView: View {
                 }
                 .errorAlert(presentingError: $error)
             
-            NavigationStack {
-                TransformationsList(model: model)
-                    .navigationTitle("Transformations")
-                    .navigationBarTitleDisplayMode(.inline)
-                    .toolbar {
-                        ToolbarItem(placement: .topBarTrailing) {
-                            transformationsMenu
-                        }
-                    }
+            ZStack {
+                Text("Transformations")
+                    .bold()
+                HStack {
+                    Spacer()
+                    transformationsMenu
+                        .labelStyle(.iconOnly)
+                }
+                .padding()
             }
+            .background(Color(.systemGray6))
+            
+            TransformationsList(model: model)
         }
     }
     
