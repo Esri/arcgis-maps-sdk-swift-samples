@@ -1,0 +1,39 @@
+{
+    "category": "Edit and Manage Data",
+    "description": "Use the Geometry Editor to edit a geometry and align it to existing geometries on a map.",
+    "ignore": false,
+    "images": [
+        "snap-geometry-edits.png"
+    ],
+    "keywords": [
+        "edit",
+        "feature",
+        "geometry editor",
+        "layers",
+        "map",
+        "snapping",
+        "FeatureLayer",
+        "Geometry",
+        "GeometryEditor",
+        "GeometryEditorStyle",
+        "MapView",
+        "SnapSettings",
+        "SnapSource",
+        "SnapSourceSettings"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "FeatureLayer",
+        "Geometry",
+        "GeometryEditor",
+        "GeometryEditorStyle",
+        "MapView",
+        "SnapSettings",
+        "SnapSource",
+        "SnapSourceSettings"
+    ],
+    "snippets": [
+        "SnapGeometryEditsView.swift"
+    ],
+    "title": "Snap geometry edits"
+}
