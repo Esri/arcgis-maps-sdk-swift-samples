@@ -33,7 +33,10 @@
         "SnapSourceSettings"
     ],
     "snippets": [
-        "SnapGeometryEditsView.swift"
+        "SnapGeometryEditsView.swift",
+        "SnapGeometryEditsView.SnapSettingsView.swift",
+        "SnapGeometryEditsView.GeometryEditorModel.swift",
+        "SnapGeometryEditsView.GeometryEditorMenu.swift"
     ],
     "title": "Snap geometry edits"
 }
