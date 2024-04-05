@@ -123,13 +123,14 @@ struct ValidateUtilityNetworkTopologyView: View {
                 Spacer()
                 Button("Clear") { selectedOperation = .clearSelection }
                     .disabled(!model.canClearSelection)
-                    .sheet(isPresented: $editSheetIsPresented, detents: [.medium]) {
+                    .sheet(isPresented: $editSheetIsPresented) {
                         if selectedOperation != .applyEdits {
                             // Clear the selection if the sheet was dismissed without applying.
                             selectedOperation = .clearSelection
                         }
                     } content: {
                         EditFeatureView(model: model, operationSelection: $selectedOperation)
+                            .presentationDetents([.fraction(0.5)])
                     }
             }
         }

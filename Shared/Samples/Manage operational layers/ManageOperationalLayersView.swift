@@ -53,8 +53,10 @@ struct ManageOperationalLayersView: View {
                     Button("Manage Layers") {
                         isShowingSheet = true
                     }
-                    .sheet(isPresented: $isShowingSheet, detents: [.medium], dragIndicatorVisibility: .visible) {
+                    .popover(isPresented: $isShowingSheet) {
                         ManageLayersSheetView(map: map)
+                            .presentationDetents([.fraction(0.5)])
+                            .frame(idealWidth: 320, minHeight: 380)
                     }
                 }
             }
@@ -86,7 +88,7 @@ struct ManageLayersSheetView: View {
                 }
             }
             .padding([.top, .leading, .trailing])
-
+            
             List {
                 Section {
                     ForEach(operationalLayers, id: \.id) { layer in

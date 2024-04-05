@@ -37,8 +37,9 @@ struct StyleSymbolsFromMobileStyleFileView: View {
                     Button("Symbol") {
                         isShowingSymbolOptionsSheet = true
                     }
-                    .sheet(isPresented: $isShowingSymbolOptionsSheet, detents: [.large]) {
+                    .popover(isPresented: $isShowingSymbolOptionsSheet) {
                         symbolOptionsList
+                            .frame(idealWidth: 320, minHeight: 380)
                     }
                     Spacer()
                     Button("Clear") {

@@ -43,8 +43,12 @@ struct SetVisibilityOfSubtypeSublayerView: View {
                     Button("Visibility Settings") {
                         isShowingSettings.toggle()
                     }
-                    .sheet(isPresented: $isShowingSettings, detents: [.medium], dragIndicatorVisibility: .visible) {
-                        SettingsView(model: model)
+                    .popover(isPresented: $isShowingSettings) {
+                        NavigationStack {
+                            SettingsView(model: model)
+                        }
+                        .presentationDetents([.fraction(0.5)])
+                        .frame(idealWidth: 320, minHeight: 340)
                     }
                 }
             }
