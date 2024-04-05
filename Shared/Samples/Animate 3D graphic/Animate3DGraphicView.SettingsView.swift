@@ -27,25 +27,14 @@ extension Animate3DGraphicView {
         @State private var isPresented = false
         
         var body: some View {
-            settingsButton
-        }
-        
-        /// The settings button that brings up the settings sheet.
-        @ViewBuilder private var settingsButton: some View {
-            let button = Button(label) {
+            Button(label) {
                 isPresented = true
             }
-            
-            button
-                .popover(isPresented: $isPresented, arrowEdge: .bottom) {
-                    settingsContent
-                        .presentationDetents([.fraction(0.5)])
-#if targetEnvironment(macCatalyst)
-                        .frame(minWidth: 300, minHeight: 270)
-#else
-                        .frame(minWidth: 320, minHeight: 390)
-#endif
-                }
+            .popover(isPresented: $isPresented) {
+                settingsContent
+                    .presentationDetents([.fraction(0.5)])
+                    .frame(idealWidth: 320, idealHeight: 380)
+            }
         }
         
         /// The view content of the settings sheet.

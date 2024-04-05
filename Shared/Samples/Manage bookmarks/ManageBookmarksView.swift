@@ -72,7 +72,7 @@ struct ManageBookmarksView: View {
                         Button("Bookmarks", systemImage: "book") {
                             bookmarksSheetIsPresented = true
                         }
-                        .halfSheet(isPresented: $bookmarksSheetIsPresented) {
+                        .popover(isPresented: $bookmarksSheetIsPresented) {
                             BookmarksList(map: map) { bookmark in
                                 do {
                                     try await mapViewProxy.setBookmark(bookmark)
@@ -80,6 +80,8 @@ struct ManageBookmarksView: View {
                                     self.error = error
                                 }
                             }
+                            .presentationDetents([.fraction(0.5)])
+                            .frame(idealWidth: 320, idealHeight: 380)
                         }
                     }
                 }
@@ -209,29 +211,6 @@ private extension View {
         onSave: @escaping (String) -> Void
     ) -> some View {
         modifier(ManageBookmarksView.NewBookmarkAlert(isPresented: isPresented, onSave: onSave))
-    }
-    
-    /// Presents a half sheet when a given binding to a Boolean value is true.
-    /// - Parameters:
-    ///   - isPresented: A binding to a Boolean value that determines whether to present the sheet.
-    ///   - content: A closure that returns the content of the sheet.
-    /// - Returns: A new `View`.
-    func halfSheet<Content>(
-        isPresented: Binding<Bool>,
-        @ViewBuilder content: @escaping () -> Content
-    ) -> some View where Content: View {
-        Group {
-            self
-                .popover(isPresented: isPresented, arrowEdge: .bottom) {
-                    content()
-                        .presentationDetents([.medium, .large])
-#if targetEnvironment(macCatalyst)
-                        .frame(minWidth: 300, minHeight: 270)
-#else
-                        .frame(minWidth: 320, minHeight: 390)
-#endif
-                }
-        }
     }
 }
 

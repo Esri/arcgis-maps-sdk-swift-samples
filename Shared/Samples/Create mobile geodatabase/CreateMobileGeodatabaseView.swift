@@ -98,26 +98,19 @@ struct CreateMobileGeodatabaseView: View {
 
 private extension CreateMobileGeodatabaseView {
     /// The button that brings up the feature table sheet.
-    @ViewBuilder var tableButton: some View {
-        /// The button to bring up the sheet.
-        let button = Button("View Table") {
+    var tableButton: some View {
+        Button("Feature Table") {
             tableSheetIsShowing = true
         }
-        
-        button
-            .popover(isPresented: $tableSheetIsShowing, arrowEdge: .bottom) {
-                tableList
-                    .presentationDetents([.fraction(0.5)])
-#if targetEnvironment(macCatalyst)
-                    .frame(minWidth: 300, minHeight: 270)
-#else
-                    .frame(minWidth: 320, minHeight: 390)
-#endif
-            }
+        .popover(isPresented: $tableSheetIsShowing) {
+            tableList
+                .presentationDetents([.medium, .large])
+                .frame(minWidth: 320, minHeight: 380)
+        }
     }
     
     /// The list of features in the feature table.
-    var tableList: some View {
+    private var tableList: some View {
         NavigationStack {
             List {
                 Section("OID and Collection Timestamp") {
