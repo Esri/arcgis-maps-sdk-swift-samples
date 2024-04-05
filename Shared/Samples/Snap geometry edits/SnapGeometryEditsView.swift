@@ -71,8 +71,11 @@ struct SnapGeometryEditsView: View {
                         }
                     }
                     .sheet(isPresented: $showsSnapSettings, detents: [.medium]) {
-                        // Various snapping settings for a geometry editor.
-                        SnapSettingsView(model: model)
+                        NavigationView {
+                            // Various snapping settings for a geometry editor.
+                            SnapSettingsView(model: model)
+                        }
+                        .navigationViewStyle(.stack)
                     }
                     .disabled(!layersAreLoaded)
                 }

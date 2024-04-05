@@ -42,12 +42,21 @@ extension SnapGeometryEditsView {
                         }
                 }
                 
-                Section("Layer Settings") {
+                Section("Layer Snapping") {
                     ForEach(0 ..< snapSources.count, id: \.self) { index in
                         Toggle(snapSources[index].layerName, isOn: $snapSourceEnabledStates[index])
                             .onChange(of: snapSourceEnabledStates[index]) { newValue in
                                 snapSources[index].sourceSettings.isEnabled = newValue
                             }
+                    }
+                }
+            }
+            .navigationTitle("Snap Settings")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") {
+                        dismiss()
                     }
                 }
             }
