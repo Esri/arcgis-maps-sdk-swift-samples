@@ -65,6 +65,9 @@
 		00D4EF9028638BF100B9CC30 /* LA_Trails.geodatabase in Resources */ = {isa = PBXBuildFile; fileRef = 00D4EF8228638BF100B9CC30 /* LA_Trails.geodatabase */; settings = {ASSET_TAGS = (AddFeatureLayers, ); }; };
 		00D4EF9A28638BF100B9CC30 /* AuroraCO.gpkg in Resources */ = {isa = PBXBuildFile; fileRef = 00D4EF8F28638BF100B9CC30 /* AuroraCO.gpkg */; settings = {ASSET_TAGS = (AddFeatureLayers, ); }; };
 		00D4EFB12863CE6300B9CC30 /* ScottishWildlifeTrust_reserves in Resources */ = {isa = PBXBuildFile; fileRef = 00D4EFB02863CE6300B9CC30 /* ScottishWildlifeTrust_reserves */; settings = {ASSET_TAGS = (AddFeatureLayers, ); }; };
+		00E1D90B2BC0AF97001AEB6A /* SnapGeometryEditsView.SnapSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E1D90A2BC0AF97001AEB6A /* SnapGeometryEditsView.SnapSettingsView.swift */; };
+		00E1D90D2BC0B125001AEB6A /* SnapGeometryEditsView.GeometryEditorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E1D90C2BC0B125001AEB6A /* SnapGeometryEditsView.GeometryEditorModel.swift */; };
+		00E1D90F2BC0B1E8001AEB6A /* SnapGeometryEditsView.GeometryEditorMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E1D90E2BC0B1E8001AEB6A /* SnapGeometryEditsView.GeometryEditorMenu.swift */; };
 		00E5401C27F3CCA200CF66D5 /* SamplesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5400C27F3CCA100CF66D5 /* SamplesApp.swift */; };
 		00E5401E27F3CCA200CF66D5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5400D27F3CCA100CF66D5 /* ContentView.swift */; };
 		00E5402027F3CCA200CF66D5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00E5400E27F3CCA200CF66D5 /* Assets.xcassets */; };
@@ -654,6 +657,9 @@
 		00D4EF8228638BF100B9CC30 /* LA_Trails.geodatabase */ = {isa = PBXFileReference; lastKnownFileType = file; path = LA_Trails.geodatabase; sourceTree = "<group>"; };
 		00D4EF8F28638BF100B9CC30 /* AuroraCO.gpkg */ = {isa = PBXFileReference; lastKnownFileType = file; path = AuroraCO.gpkg; sourceTree = "<group>"; };
 		00D4EFB02863CE6300B9CC30 /* ScottishWildlifeTrust_reserves */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ScottishWildlifeTrust_reserves; sourceTree = "<group>"; };
+		00E1D90A2BC0AF97001AEB6A /* SnapGeometryEditsView.SnapSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapGeometryEditsView.SnapSettingsView.swift; sourceTree = "<group>"; };
+		00E1D90C2BC0B125001AEB6A /* SnapGeometryEditsView.GeometryEditorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapGeometryEditsView.GeometryEditorModel.swift; sourceTree = "<group>"; };
+		00E1D90E2BC0B1E8001AEB6A /* SnapGeometryEditsView.GeometryEditorMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapGeometryEditsView.GeometryEditorMenu.swift; sourceTree = "<group>"; };
 		00E5400C27F3CCA100CF66D5 /* SamplesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SamplesApp.swift; sourceTree = "<group>"; };
 		00E5400D27F3CCA100CF66D5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		00E5400E27F3CCA200CF66D5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -1252,6 +1258,9 @@
 			isa = PBXGroup;
 			children = (
 				00E7C1592BBE1BF000B85D69 /* SnapGeometryEditsView.swift */,
+				00E1D90A2BC0AF97001AEB6A /* SnapGeometryEditsView.SnapSettingsView.swift */,
+				00E1D90C2BC0B125001AEB6A /* SnapGeometryEditsView.GeometryEditorModel.swift */,
+				00E1D90E2BC0B1E8001AEB6A /* SnapGeometryEditsView.GeometryEditorMenu.swift */,
 			);
 			path = "Snap geometry edits";
 			sourceTree = "<group>";
@@ -2569,6 +2578,7 @@
 				D7BA8C462B2A8ACA00018633 /* String.swift in Sources */,
 				D76495212B74687E0042699E /* ValidateUtilityNetworkTopologyView.Model.swift in Sources */,
 				D7337C5A2ABCFDB100A5D865 /* StyleSymbolsFromMobileStyleFileView.SymbolOptionsListView.swift in Sources */,
+				00E1D90F2BC0B1E8001AEB6A /* SnapGeometryEditsView.GeometryEditorMenu.swift in Sources */,
 				1C43BC842A43781200509BF8 /* SetVisibilityOfSubtypeSublayerView.swift in Sources */,
 				00A7A1462A2FC58300F035F7 /* DisplayContentOfUtilityNetworkContainerView.swift in Sources */,
 				D7553CDB2AE2DFEC00DC2A70 /* GeocodeOfflineView.swift in Sources */,
@@ -2688,6 +2698,7 @@
 				D76EE6072AF9AFE100DA0325 /* FindRouteAroundBarriersView.Model.swift in Sources */,
 				0086F40128E3770A00974721 /* ShowViewshedFromPointInSceneView.swift in Sources */,
 				0044289229C90C0B00160767 /* GetElevationAtPointOnSurfaceView.swift in Sources */,
+				00E1D90B2BC0AF97001AEB6A /* SnapGeometryEditsView.SnapSettingsView.swift in Sources */,
 				D7E440D72A1ECE7D005D74DE /* CreateBuffersAroundPointsView.swift in Sources */,
 				00D4EF802863842100B9CC30 /* AddFeatureLayersView.swift in Sources */,
 				4D126D7E29CA43D200CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.Model.swift in Sources */,
@@ -2710,6 +2721,7 @@
 				E004A6E62846A61F002A1FE6 /* StyleGraphicsWithSymbolsView.swift in Sources */,
 				0000FB6E2BBDB17600845921 /* Add3DTilesLayerView.swift in Sources */,
 				D74EA7842B6DADA5008F6C7C /* ValidateUtilityNetworkTopologyView.swift in Sources */,
+				00E1D90D2BC0B125001AEB6A /* SnapGeometryEditsView.GeometryEditorModel.swift in Sources */,
 				E088E1742863B5F800413100 /* GenerateOfflineMapView.swift in Sources */,
 				0074ABC428174F430037244A /* Sample.swift in Sources */,
 				00A7A14A2A2FC5B700F035F7 /* DisplayContentOfUtilityNetworkContainerView.Model.swift in Sources */,

@@ -33,7 +33,7 @@ struct SnapGeometryEditsView: View {
     }()
     
     /// The model that is required by the geometry editor menu.
-    @StateObject private var model = GeometryEditorMenuModel(
+    @StateObject private var model = GeometryEditorModel(
         geometryEditor: GeometryEditor(),
         graphicsOverlay: GraphicsOverlay(renderingMode: .dynamic)
     )
@@ -51,15 +51,8 @@ struct SnapGeometryEditsView: View {
         MapView(map: map, graphicsOverlays: [model.graphicsOverlay])
             .geometryEditor(model.geometryEditor)
             .task {
-                do {
-                    // Load every layer in the webmap.
-                    for layer in map.operationalLayers {
-                        try await layer.load()
-                    }
-                    layersAreLoaded = true
-                } catch {
-                    self.error = error
-                }
+                // Load every layer in the webmap when the sample starts.
+                layersAreLoaded = await map.operationalLayers.load()
             }
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
@@ -78,72 +71,13 @@ struct SnapGeometryEditsView: View {
                         }
                     }
                     .sheet(isPresented: $showsSnapSettings, detents: [.medium]) {
+                        // Various snapping settings for a geometry editor.
                         SnapSettingsView(model: model)
                     }
                     .disabled(!layersAreLoaded)
                 }
             }
             .errorAlert(presentingError: $error)
-    }
-}
-
-extension SnapGeometryEditsView {
-    private struct SnapSettingsView: View {
-        /// The action to dismiss the settings sheet.
-        @Environment(\.dismiss) private var dismiss: DismissAction
-        
-        /// The view model for the sample.
-        @ObservedObject var model: GeometryEditorMenuModel
-        
-        /// A Boolean value indicating whether snapping is enabled
-        /// for the geometry editor.
-        @State private var snappingEnabled = false
-        
-        /// An array of snap source layer names and their source settings.
-        @State private var snapSources: [(layerName: String, sourceSettings: SnapSourceSettings)] = []
-        
-        /// An array of Boolean values for each snap source enabled states.
-        @State private var snapSourceEnabledStates: [Bool] = []
-        
-        var body: some View {
-            Form {
-                Section("Snap Source") {
-                    Toggle("Snapping", isOn: $snappingEnabled)
-                        .onChange(of: snappingEnabled) { newValue in
-                            model.geometryEditor.snapSettings.isEnabled = newValue
-                        }
-                }
-                
-                Section("Layer Settings") {
-                    ForEach(0 ..< snapSources.count, id: \.self) { index in
-                        Toggle(snapSources[index].layerName, isOn: $snapSourceEnabledStates[index])
-                            .onChange(of: snapSourceEnabledStates[index]) { newValue in
-                                snapSources[index].sourceSettings.isEnabled = newValue
-                            }
-                    }
-                }
-            }
-            .onAppear {
-                // Enables snapping in the current geometry editor.
-                model.geometryEditor.snapSettings.isEnabled = true
-                snappingEnabled = model.geometryEditor.snapSettings.isEnabled
-                
-                // Creates an array from snap source layers with their
-                // layer name and source settings.
-                snapSources = model.geometryEditor.snapSettings.sourceSettings.compactMap { sourceSettings in
-                    if let layer = sourceSettings.source as? FeatureLayer {
-                        return (layer.name, sourceSettings)
-                    } else {
-                        return nil
-                    }
-                }
-                
-                // Initializes the enabled states from the snap sources.
-                snapSourceEnabledStates = snapSources.map { _, sourceSettings in
-                    return sourceSettings.isEnabled
-                }
-            }
-        }
     }
 }
 
