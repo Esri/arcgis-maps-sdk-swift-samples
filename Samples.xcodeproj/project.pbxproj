@@ -68,6 +68,9 @@
 		00E1D90B2BC0AF97001AEB6A /* SnapGeometryEditsView.SnapSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E1D90A2BC0AF97001AEB6A /* SnapGeometryEditsView.SnapSettingsView.swift */; };
 		00E1D90D2BC0B125001AEB6A /* SnapGeometryEditsView.GeometryEditorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E1D90C2BC0B125001AEB6A /* SnapGeometryEditsView.GeometryEditorModel.swift */; };
 		00E1D90F2BC0B1E8001AEB6A /* SnapGeometryEditsView.GeometryEditorMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E1D90E2BC0B1E8001AEB6A /* SnapGeometryEditsView.GeometryEditorMenu.swift */; };
+		00E1D9102BC0B4D8001AEB6A /* SnapGeometryEditsView.SnapSettingsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 00E1D90A2BC0AF97001AEB6A /* SnapGeometryEditsView.SnapSettingsView.swift */; };
+		00E1D9112BC0B4D8001AEB6A /* SnapGeometryEditsView.GeometryEditorModel.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 00E1D90C2BC0B125001AEB6A /* SnapGeometryEditsView.GeometryEditorModel.swift */; };
+		00E1D9122BC0B4D8001AEB6A /* SnapGeometryEditsView.GeometryEditorMenu.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 00E1D90E2BC0B1E8001AEB6A /* SnapGeometryEditsView.GeometryEditorMenu.swift */; };
 		00E5401C27F3CCA200CF66D5 /* SamplesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5400C27F3CCA100CF66D5 /* SamplesApp.swift */; };
 		00E5401E27F3CCA200CF66D5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E5400D27F3CCA100CF66D5 /* ContentView.swift */; };
 		00E5402027F3CCA200CF66D5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00E5400E27F3CCA200CF66D5 /* Assets.xcassets */; };
@@ -450,6 +453,9 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				00E1D9102BC0B4D8001AEB6A /* SnapGeometryEditsView.SnapSettingsView.swift in Copy Source Code Files */,
+				00E1D9112BC0B4D8001AEB6A /* SnapGeometryEditsView.GeometryEditorModel.swift in Copy Source Code Files */,
+				00E1D9122BC0B4D8001AEB6A /* SnapGeometryEditsView.GeometryEditorMenu.swift in Copy Source Code Files */,
 				00E7C15D2BBF74D800B85D69 /* SnapGeometryEditsView.swift in Copy Source Code Files */,
 				0000FB712BBDC01400845921 /* Add3DTilesLayerView.swift in Copy Source Code Files */,
 				D77D9C012BB2439400B38A6C /* AugmentRealityToShowHiddenInfrastructureView.ARSceneView.swift in Copy Source Code Files */,
