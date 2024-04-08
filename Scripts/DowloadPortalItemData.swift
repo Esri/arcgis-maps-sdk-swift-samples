@@ -126,7 +126,7 @@ func uncompressArchive(at sourceURL: URL, to destinationURL: URL) throws {
     process.waitUntilExit()
 }
 
-/// Downloads a file from a given portal and writes it to a given path.
+/// Downloads a file from a URL to a given location.
 /// - Parameters:
 ///   - sourceURL: The portal URL to the resource.
 ///   - downloadDirectory: The directory to store the downloaded data in.
