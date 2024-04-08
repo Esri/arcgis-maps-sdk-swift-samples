@@ -259,15 +259,15 @@ await withTaskGroup(of: Void.self) { group in
         fflush(stdout)
         group.addTask {
             do {
-                let downloadName = try await downloadFile(
+                guard let downloadName = try await downloadFile(
                     from: portalItem.dataURL,
                     to: destinationURL
-                )
+                ) else { return }
                 print("note: Downloaded item: \(portalItem.identifier)")
                 fflush(stdout)
                 
-                await MainActor.run {
-                    downloadedItems[portalItem.identifier] = downloadName
+                _ = await MainActor.run {
+                    downloadedItems.updateValue(downloadName, forKey: portalItem.identifier)
                 }
             } catch {
                 print("error: Error downloading item \(portalItem.identifier): \(error.localizedDescription)")
