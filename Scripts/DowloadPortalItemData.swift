@@ -230,16 +230,17 @@ var downloadedItems = previousDownloadedItems
 
 await withTaskGroup(of: Void.self) { group in
     for portalItem in portalItems {
-        // Checks to see if an item is already downloaded.
-        guard downloadedItems[portalItem.identifier] == nil else {
-            print("note: Item already downloaded: \(portalItem.identifier)")
-            continue
-        }
-        
         let destinationURL = downloadDirectoryURL.appendingPathComponent(
             portalItem.identifier,
             isDirectory: true
         )
+        
+        // Checks to see if an item needs downloading.
+        guard downloadedItems[portalItem.identifier] == nil ||
+                !FileManager.default.fileExists(atPath: destinationURL.path) else {
+            print("note: Item already downloaded: \(portalItem.identifier)")
+            continue
+        }
         
         // Deletes the directory when the item is not in the plist.
         try? FileManager.default.removeItem(at: destinationURL)
