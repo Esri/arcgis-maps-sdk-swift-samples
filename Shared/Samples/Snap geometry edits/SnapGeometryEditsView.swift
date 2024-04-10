@@ -32,10 +32,7 @@ struct SnapGeometryEditsView: View {
     }()
     
     /// The model that is required by the geometry editor menu.
-    @StateObject private var model = GeometryEditorModel(
-        geometryEditor: GeometryEditor(),
-        graphicsOverlay: GraphicsOverlay(renderingMode: .dynamic)
-    )
+    @StateObject private var model = GeometryEditorModel()
     
     /// The error shown in the error alert.
     @State private var error: Error?

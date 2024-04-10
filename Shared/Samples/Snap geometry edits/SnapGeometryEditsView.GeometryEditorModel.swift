@@ -20,10 +20,10 @@ extension SnapGeometryEditsView {
     @MainActor
     class GeometryEditorModel: ObservableObject {
         /// The geometry editor.
-        let geometryEditor: GeometryEditor
+        let geometryEditor = GeometryEditor()
         
         /// The graphics overlay used to save geometries to.
-        let graphicsOverlay: GraphicsOverlay
+        let graphicsOverlay = GraphicsOverlay(renderingMode: .dynamic)
         
         /// A Boolean value indicating if the geometry editor can perform an undo.
         @Published private(set) var canUndo = false
@@ -69,12 +69,7 @@ extension SnapGeometryEditsView {
         }
         
         /// Creates the geometry menu with a geometry editor.
-        /// - Parameter geometryEditor: The geometry editor that the menu should interact with.
-        /// - Parameter graphicsOverlay: The graphics overlay that is used to save geometries to.
-        init(geometryEditor: GeometryEditor, graphicsOverlay: GraphicsOverlay) {
-            self.geometryEditor = geometryEditor
-            self.graphicsOverlay = graphicsOverlay
-            
+        init() {
             Task { [weak self, geometryEditor] in
                 for await geometry in geometryEditor.$geometry {
                     self?.geometry = geometry
