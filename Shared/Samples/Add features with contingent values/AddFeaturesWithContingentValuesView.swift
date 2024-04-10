@@ -98,6 +98,7 @@ struct AddFeaturesWithContingentValuesView: View {
                                     
                                     ToolbarItem(placement: .confirmationAction) {
                                         Button("Done") {
+                                            model.feature = nil
                                             addFeatureSheetIsPresented = false
                                         }
                                         .disabled(!model.contingenciesAreValid)
@@ -108,10 +109,7 @@ struct AddFeaturesWithContingentValuesView: View {
                     }
                     .task(id: addFeatureSheetIsPresented) {
                         // When the sheet closes, remove the feature if it is invalid.
-                        guard !addFeatureSheetIsPresented,
-                              !model.contingenciesAreValid,
-                              model.feature != nil
-                        else { return }
+                        guard !addFeatureSheetIsPresented, model.feature != nil else { return }
                         
                         do {
                             try await model.removeFeature()
