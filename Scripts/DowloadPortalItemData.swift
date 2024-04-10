@@ -256,8 +256,6 @@ await withTaskGroup(of: Void.self) { group in
             exit(1)
         }
         
-        print("note: Downloading item \(portalItem.identifier)")
-        fflush(stdout)
         group.addTask {
             do {
                 guard let downloadName = try await downloadFile(
