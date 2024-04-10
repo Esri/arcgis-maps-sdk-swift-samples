@@ -22,7 +22,7 @@ struct SnapGeometryEditsView: View {
         let map = Map(
             item: PortalItem(
                 portal: .arcGISOnline(connection: .anonymous),
-                // A stripped down Naperville water distribution network webmap.
+                // A stripped down Naperville water distribution network web map.
                 id: PortalItem.ID("b95fe18073bc4f7788f0375af2bb445e")!
             )
         )
@@ -51,7 +51,7 @@ struct SnapGeometryEditsView: View {
         MapView(map: map, graphicsOverlays: [model.graphicsOverlay])
             .geometryEditor(model.geometryEditor)
             .task {
-                // Load every layer in the webmap when the sample starts.
+                // Load every layer in the web map when the sample starts.
                 layersAreLoaded = await map.operationalLayers.load()
             }
             .toolbar {

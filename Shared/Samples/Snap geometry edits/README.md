@@ -20,7 +20,7 @@ Long press to invoke the magnifier before start moving the pointer to more clear
 
 ## How it works
 
-1. Create a `Map` from the a portal item and add it to the `MapView`.
+1. Create a `Map` from the portal item and add it to the `MapView`.
 2. Set the map's `loadSettings.featureTilingMode` to `enabledWithFullResolutionWhenSupported`.
 3. Create a `GeometryEditor` and connect it to the map view.
 4. Call `syncSourceSettings()` after the map's operational layers are loaded and the geometry editor connected to the map view.

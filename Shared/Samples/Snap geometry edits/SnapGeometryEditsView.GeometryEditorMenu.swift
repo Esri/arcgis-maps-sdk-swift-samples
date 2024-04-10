@@ -39,7 +39,7 @@ extension SnapGeometryEditsView {
         ///
         /// In some instances deleting the selection may be invalid.
         /// One example would be the mid vertex of a line.
-        var deleteButtonIsDisabled: Bool {
+        private var deleteButtonIsDisabled: Bool {
             guard let selection = model.selection else { return true }
             return !selection.canBeDeleted
         }

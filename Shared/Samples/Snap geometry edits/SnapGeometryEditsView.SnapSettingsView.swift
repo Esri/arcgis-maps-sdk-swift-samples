@@ -68,11 +68,8 @@ extension SnapGeometryEditsView {
                 // Creates an array from snap source layers with their
                 // layer name and source settings.
                 snapSources = model.geometryEditor.snapSettings.sourceSettings.compactMap { sourceSettings in
-                    if let layer = sourceSettings.source as? FeatureLayer {
-                        return (layer.name, sourceSettings)
-                    } else {
-                        return nil
-                    }
+                    guard let layer = sourceSettings.source as? FeatureLayer else { return nil }
+                    return (layer.name, sourceSettings)
                 }
                 
                 // Initializes the enabled states from the snap sources.
