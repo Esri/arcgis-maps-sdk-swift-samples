@@ -47,98 +47,68 @@ extension SnapGeometryEditsView {
         /// The content of the main menu.
         private var mainMenuContent: some View {
             VStack {
-                Button {
+                Button("New Point", systemImage: "smallcircle.filled.circle") {
                     model.startEditing(with: VertexTool(), geometryType: Point.self)
-                } label: {
-                    Label("New Point", systemImage: "smallcircle.filled.circle")
                 }
                 
-                Button {
+                Button("New Line", systemImage: "line.diagonal") {
                     model.startEditing(with: VertexTool(), geometryType: Polyline.self)
-                } label: {
-                    Label("New Line", systemImage: "line.diagonal")
                 }
                 
-                Button {
+                Button("New Area", systemImage: "skew") {
                     model.startEditing(with: VertexTool(), geometryType: Polygon.self)
-                } label: {
-                    Label("New Area", systemImage: "skew")
                 }
                 
-                Button {
+                Button("New Multipoint", systemImage: "hand.point.up.braille") {
                     model.startEditing(with: VertexTool(), geometryType: Multipoint.self)
-                } label: {
-                    Label("New Multipoint", systemImage: "hand.point.up.braille")
                 }
                 
-                Button {
+                Button("New Freehand Line", systemImage: "scribble") {
                     model.startEditing(with: FreehandTool(), geometryType: Polyline.self)
-                } label: {
-                    Label("New Freehand Line", systemImage: "scribble")
                 }
                 
-                Button {
+                Button("New Freehand Area", systemImage: "lasso") {
                     model.startEditing(with: FreehandTool(), geometryType: Polygon.self)
-                } label: {
-                    Label("New Freehand Area", systemImage: "lasso")
                 }
                 
                 Menu("Shapes") {
-                    Button {
+                    Button("New Line Arrow", systemImage: "arrowshape.right") {
                         model.startEditing(with: ShapeTool(kind: .arrow), geometryType: Polyline.self)
-                    } label: {
-                        Label("New Line Arrow", systemImage: "arrowshape.right")
                     }
                     
-                    Button {
+                    Button("New Polygon Arrow", systemImage: "arrowshape.right.fill") {
                         model.startEditing(with: ShapeTool(kind: .arrow), geometryType: Polygon.self)
-                    } label: {
-                        Label("New Polygon Arrow", systemImage: "arrowshape.right.fill")
                     }
                     
-                    Button {
+                    Button("New Line Rectangle", systemImage: "rectangle") {
                         model.startEditing(with: ShapeTool(kind: .rectangle), geometryType: Polyline.self)
-                    } label: {
-                        Label("New Line Rectangle", systemImage: "rectangle")
                     }
                     
-                    Button {
+                    Button("New Polygon Rectangle", systemImage: "rectangle.fill") {
                         model.startEditing(with: ShapeTool(kind: .rectangle), geometryType: Polygon.self)
-                    } label: {
-                        Label("New Polygon Rectangle", systemImage: "rectangle.fill")
                     }
                     
-                    Button {
+                    Button("New Line Ellipse", systemImage: "circle") {
                         model.startEditing(with: ShapeTool(kind: .ellipse), geometryType: Polyline.self)
-                    } label: {
-                        Label("New Line Ellipse", systemImage: "circle")
                     }
                     
-                    Button {
+                    Button("New Polygon Ellipse", systemImage: "circle.fill") {
                         model.startEditing(with: ShapeTool(kind: .ellipse), geometryType: Polygon.self)
-                    } label: {
-                        Label("New Polygon Ellipse", systemImage: "circle.fill")
                     }
                     
-                    Button {
+                    Button("New Line Triangle", systemImage: "triangle") {
                         model.startEditing(with: ShapeTool(kind: .triangle), geometryType: Polyline.self)
-                    } label: {
-                        Label("New Line Triangle", systemImage: "triangle")
                     }
                     
-                    Button {
+                    Button("New Polygon Triangle", systemImage: "triangle.fill") {
                         model.startEditing(with: ShapeTool(kind: .triangle), geometryType: Polygon.self)
-                    } label: {
-                        Label("New Polygon Triangle", systemImage: "triangle.fill")
                     }
                 }
                 
                 Divider()
                 
-                Button(role: .destructive) {
+                Button("Clear Saved Sketches", systemImage: "trash", role: .destructive) {
                     model.clearSavedSketches()
-                } label: {
-                    Label("Clear Saved Sketches", systemImage: "trash")
                 }
                 .disabled(!model.canClearSavedSketches)
             }
@@ -147,49 +117,37 @@ extension SnapGeometryEditsView {
         /// The content of the editing menu.
         private var editMenuContent: some View {
             VStack {
-                Button {
+                Button("Undo", systemImage: "arrow.uturn.backward") {
                     model.geometryEditor.undo()
-                } label: {
-                    Label("Undo", systemImage: "arrow.uturn.backward")
                 }
                 .disabled(!model.canUndo)
                 
-                Button {
+                Button("Redo", systemImage: "arrow.uturn.forward") {
                     model.geometryEditor.redo()
-                } label: {
-                    Label("Redo", systemImage: "arrow.uturn.forward")
                 }
                 .disabled(!model.canRedo)
                 
-                Button {
+                Button("Delete Selected Element", systemImage: "xmark.square.fill") {
                     model.geometryEditor.deleteSelectedElement()
-                } label: {
-                    Label("Delete Selected Element", systemImage: "xmark.square.fill")
                 }
                 .disabled(deleteButtonIsDisabled)
                 
                 Toggle("Uniform Scale", isOn: $model.shouldUniformScale)
                 
-                Button(role: .destructive) {
+                Button("Clear Current Sketch", systemImage: "trash", role: .destructive) {
                     model.geometryEditor.clearGeometry()
-                } label: {
-                    Label("Clear Current Sketch", systemImage: "trash")
                 }
                 .disabled(!model.canClearCurrentSketch)
                 
                 Divider()
                 
-                Button {
+                Button("Save Sketch", systemImage: "square.and.arrow.down") {
                     model.save()
-                } label: {
-                    Label("Save Sketch", systemImage: "square.and.arrow.down")
                 }
                 .disabled(!model.canSave)
                 
-                Button {
+                Button("Cancel Sketch", systemImage: "xmark") {
                     model.stop()
-                } label: {
-                    Label("Cancel Sketch", systemImage: "xmark")
                 }
             }
         }
