@@ -15,7 +15,6 @@
 import ArcGIS
 import SwiftUI
 
-/// A view that shows how to interact with the geometry editor with snapping.
 struct SnapGeometryEditsView: View {
     /// The map to display in the view.
     @State private var map: Map = {
