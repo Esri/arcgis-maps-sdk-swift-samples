@@ -81,6 +81,8 @@
 		<string>com.eos-gnss.positioningsource</string>
 		<string>com.geneq.sxbluegpssource</string>
 	</array>
+	<key>NSLocationUsageDescription</key>
+	<string>Your location is used to show your position on the map on Mac Catalyst.</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
