@@ -89,22 +89,19 @@ struct AddDynamicEntityLayerView: View {
         }
     }
     
-    @ViewBuilder private var settingsButton: some View {
-        let button = Button("Dynamic Entity Settings") {
+    private var settingsButton: some View {
+        Button("Dynamic Entity Settings") {
             isShowingSettings = true
         }
-        let settingsView = SettingsView(model: model, calloutPlacement: $placement)
-        
-        button
-            .popover(isPresented: $isShowingSettings, arrowEdge: .bottom) {
-                settingsView
-                    .presentationDetents([.fraction(0.5)])
+        .popover(isPresented: $isShowingSettings, arrowEdge: .bottom) {
+            SettingsView(model: model, calloutPlacement: $placement)
+                .presentationDetents([.fraction(0.5)])
 #if targetEnvironment(macCatalyst)
-                    .frame(minWidth: 300, minHeight: 270)
+                .frame(minWidth: 300, minHeight: 270)
 #else
-                    .frame(minWidth: 320, minHeight: 390)
+                .frame(minWidth: 320, minHeight: 390)
 #endif
-            }
+        }
     }
 }
 

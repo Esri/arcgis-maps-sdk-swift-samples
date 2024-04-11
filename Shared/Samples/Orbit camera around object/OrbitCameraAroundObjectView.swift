@@ -74,22 +74,19 @@ struct OrbitCameraAroundObjectView: View {
     }
     
     /// The button that brings up the settings sheet.
-    @ViewBuilder private var settingsButton: some View {
-        let button = Button("Settings") {
+    private var settingsButton: some View {
+        Button("Settings") {
             settingsSheetIsPresented = true
         }
-        let settingsContent = SettingsView(model: model)
-        
-        button
-            .popover(isPresented: $settingsSheetIsPresented, arrowEdge: .bottom) {
-                settingsContent
-                    .presentationDetents([.fraction(0.5)])
+        .popover(isPresented: $settingsSheetIsPresented, arrowEdge: .bottom) {
+            SettingsView(model: model)
+                .presentationDetents([.fraction(0.5)])
 #if targetEnvironment(macCatalyst)
-                    .frame(minWidth: 300, minHeight: 270)
+                .frame(minWidth: 300, minHeight: 270)
 #else
-                    .frame(minWidth: 320, minHeight: 390)
+                .frame(minWidth: 320, minHeight: 390)
 #endif
-            }
+        }
     }
 }
 

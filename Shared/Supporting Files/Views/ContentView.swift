@@ -21,21 +21,13 @@ struct ContentView: View {
     var body: some View {
         NavigationSplitView {
             NavigationStack {
-                sidebar
+                Sidebar(query: query)
+                    .searchable(text: $query)
             }
         } detail: {
             NavigationStack {
-                detail
+                Text("Select a category from the list.")
             }
         }
-    }
-    
-    var sidebar: some View {
-        Sidebar(query: query)
-            .searchable(text: $query)
-    }
-    
-    var detail: some View {
-        Text("Select a category from the list.")
     }
 }
