@@ -104,3 +104,7 @@ private extension PortalItem.ID {
     /// An id for a USA Congressional Districts Analysis feature table.
     static var usaCongressionalDistricts: Self { Self("cc6a869374434bee9fefad45e291b779 ")! }
 }
+
+#Preview {
+    ShowLabelsOnLayerView()
+}

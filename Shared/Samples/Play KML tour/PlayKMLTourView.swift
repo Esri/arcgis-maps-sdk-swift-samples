@@ -75,26 +75,22 @@ struct PlayKMLTourView: View {
                 tourController.pause()
             }
             .toolbar {
-                ToolbarItem(placement: .bottomBar) {
-                    ZStack {
-                        HStack {
-                            Button {
-                                tourController.reset()
-                                viewpoint = scene.initialViewpoint
-                            } label: {
-                                Image(systemName: "gobackward")
-                            }
-                            .disabled(tourDisabled || tourStatus == .initialized)
-                            Spacer()
-                        }
-                        
-                        Button {
-                            tourStatus == .playing ? tourController.pause() : tourController.play()
-                        } label: {
-                            Image(systemName: tourStatus == .playing ? "pause.fill" : "play.fill")
-                        }
-                        .disabled(tourDisabled)
+                ToolbarItemGroup(placement: .bottomBar) {
+                    Button {
+                        tourController.reset()
+                        viewpoint = scene.initialViewpoint
+                    } label: {
+                        Image(systemName: "gobackward")
                     }
+                    .disabled(tourDisabled || tourStatus == .initialized)
+                    Spacer()
+                    Button {
+                        tourStatus == .playing ? tourController.pause() : tourController.play()
+                    } label: {
+                        Image(systemName: tourStatus == .playing ? "pause.fill" : "play.fill")
+                    }
+                    .disabled(tourDisabled)
+                    Spacer()
                 }
             }
             .overlay(alignment: .top) {
@@ -161,5 +157,11 @@ private extension URL {
     /// A URL to a KMZ file of an Esri Tour on ArcGIS Online.
     static var esriTour: URL {
         URL(string: "https://www.arcgis.com/sharing/rest/content/items/f10b1d37fdd645c9bc9b189fb546307c/data")!
+    }
+}
+
+#Preview {
+    NavigationView {
+        PlayKMLTourView()
     }
 }

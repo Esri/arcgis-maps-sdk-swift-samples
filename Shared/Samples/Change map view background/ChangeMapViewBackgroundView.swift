@@ -27,16 +27,20 @@ struct ChangeMapViewBackgroundView: View {
         MapView(map: model.map)
             .backgroundGrid(model.backgroundGrid)
             .toolbar {
-                ToolbarItemGroup(placement: .bottomBar) {
-                    Spacer()
+                ToolbarItem(placement: .bottomBar) {
                     Button("Background Grid Settings") {
                         isShowingSettings = true
                     }
                     .sheet(isPresented: $isShowingSettings, detents: [.medium], dragIndicatorVisibility: .visible) {
-                        SettingsView()
-                            .environmentObject(model)
+                        SettingsView(model: model)
                     }
                 }
             }
+    }
+}
+
+#Preview {
+    NavigationView {
+        ChangeMapViewBackgroundView()
     }
 }

@@ -25,27 +25,27 @@ struct CreateAndSaveKMLView: View {
             .geometryEditor(model.geometryEditor)
             .errorAlert(presentingError: $model.error)
             .toolbar {
-                ToolbarItem(placement: .primaryAction) {
-                    HStack {
-                        Menu {
-                            if !model.isStarted {
-                                // If the geometry editor is not started, show the main menu.
-                                mainMenuContent
-                            } else {
-                                // If the geometry editor is started, show the edit menu.
-                                editMenuContent
-                            }
-                        } label: {
-                            Label("Geometry Editor", systemImage: "pencil.tip.crop.circle")
+                ToolbarItemGroup(placement: .bottomBar) {
+                    Menu {
+                        if !model.isStarted {
+                            // If the geometry editor is not started, show the main menu.
+                            mainMenuContent
+                        } else {
+                            // If the geometry editor is started, show the edit menu.
+                            editMenuContent
                         }
-                        
-                        Button {
-                            model.showingFileExporter = true
-                        } label: {
-                            Label("Export File", systemImage: "square.and.arrow.up")
-                        }
-                        .disabled(model.fileExporterButtonIsDisabled)
+                    }  label: {
+                        Label("Geometry Editor", systemImage: "pencil.tip.crop.circle")
                     }
+                    
+                    Spacer()
+                    
+                    Button {
+                        model.showingFileExporter = true
+                    } label: {
+                        Label("Export File", systemImage: "square.and.arrow.up")
+                    }
+                    .disabled(model.fileExporterButtonIsDisabled)
                 }
             }
             .task {
@@ -134,4 +134,10 @@ private extension FileManager {
 private extension UTType {
     /// A type that represents a KMZ file.
     static let kmz = UTType(filenameExtension: "kmz")!
+}
+
+#Preview {
+    NavigationView {
+        CreateAndSaveKMLView()
+    }
 }

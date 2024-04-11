@@ -1,0 +1,45 @@
+{
+    "category": "Utility Networks",
+    "description": "Demonstrates the workflow of getting the network state and validating the topology of a utility network.",
+    "ignore": false,
+    "images": [
+        "validate-utility-network-topology.png"
+    ],
+    "keywords": [
+        "dirty areas",
+        "edit",
+        "network topology",
+        "online",
+        "state",
+        "trace",
+        "utility network",
+        "validate",
+        "UtilityElement",
+        "UtilityElementTraceResult",
+        "UtilityNetwork",
+        "UtilityNetworkCapabilities",
+        "UtilityNetworkState",
+        "UtilityNetworkValidationJob",
+        "UtilityTraceConfiguration",
+        "UtilityTraceParameters",
+        "UtilityTraceResult"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "UtilityElement",
+        "UtilityElementTraceResult",
+        "UtilityNetwork",
+        "UtilityNetworkCapabilities",
+        "UtilityNetworkState",
+        "UtilityNetworkValidationJob",
+        "UtilityTraceConfiguration",
+        "UtilityTraceParameters",
+        "UtilityTraceResult"
+    ],
+    "snippets": [
+        "ValidateUtilityNetworkTopologyView.swift",
+        "ValidateUtilityNetworkTopologyView.Model.swift",
+        "ValidateUtilityNetworkTopologyView.Views.swift"
+    ],
+    "title": "Validate utility network topology"
+}

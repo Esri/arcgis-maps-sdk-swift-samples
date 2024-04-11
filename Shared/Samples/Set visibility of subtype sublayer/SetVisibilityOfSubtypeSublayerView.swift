@@ -39,8 +39,8 @@ struct SetVisibilityOfSubtypeSublayerView: View {
                     .multilineTextAlignment(.center)
             }
             .toolbar {
-                ToolbarItemGroup(placement: .bottomBar) {
-                    Button("Settings") {
+                ToolbarItem(placement: .bottomBar) {
+                    Button("Visibility Settings") {
                         isShowingSettings.toggle()
                     }
                     .sheet(isPresented: $isShowingSettings, detents: [.medium], dragIndicatorVisibility: .visible) {
@@ -57,5 +57,11 @@ struct SetVisibilityOfSubtypeSublayerView: View {
                 }
             }
             .errorAlert(presentingError: $error)
+    }
+}
+
+#Preview {
+    NavigationView {
+        SetVisibilityOfSubtypeSublayerView()
     }
 }

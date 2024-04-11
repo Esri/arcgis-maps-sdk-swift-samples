@@ -15,9 +15,6 @@
 import SwiftUI
 
 struct ContentView: View {
-    /// All samples retrieved from the Samples directory.
-    let samples: [Sample]
-    
     /// The search query in the search bar.
     @State private var query = ""
     
@@ -41,7 +38,7 @@ struct ContentView: View {
     }
     
     var sidebar: some View {
-        Sidebar(samples: samples, query: query)
+        Sidebar(query: query)
             .searchable(text: $query)
     }
     

@@ -17,7 +17,7 @@ import SwiftUI
 
 struct TraceUtilityNetworkView: View {
     /// The view model for the sample.
-    @StateObject var model = TraceUtilityNetworkView.Model()
+    @StateObject var model = Model()
     
     var body: some View {
         MapViewReader { mapViewProxy in
@@ -105,5 +105,11 @@ private extension Viewpoint {
                 yRange: (5129980.36635111)...(5130215.41254146)
             )
         )
+    }
+}
+
+#Preview {
+    NavigationView {
+        TraceUtilityNetworkView()
     }
 }

@@ -1,11 +1,25 @@
 # ArcGIS Maps SDK for Swift Samples
 
-This repository contains Swift sample code demonstrating the capabilities of [ArcGIS Maps SDK for Swift](https://developers.arcgis.com/swift/) and how to use them in your own app. The project can be opened in Xcode and run on a simulator or a device. 
+This repository contains Swift sample code demonstrating the capabilities of the [ArcGIS Maps SDK for Swift](https://developers.arcgis.com/swift/) and how to use those capabilities in your own app. The project can be opened in Xcode and run on a simulator or a device.
+
+## Features
+
+* Maps - Open, create, interact with and save maps
+* Scenes - Visualize 3D environments and symbols
+* Layers - Display vector and raster data in maps and scenes
+* Augmented Reality - View data overlaid on the real world through your device's camera
+* Visualization - Show graphics, popups, callouts, sketches, and style maps with symbols and renderers
+* Edit and Manage Data - Add, delete, and edit features and attachments, and taking data offline
+* Search and Query - Find addresses, places, and points of interest
+* Routing and Logistics - Calculate routes between locations and around barriers
+* Analysis - Perform spatial analysis via geoprocessing tasks and services
+* Cloud and Portal - Search for web maps and securely connect to your portal
+* Utility Networks - Work with utility networks, performing traces and exploring network elements
 
 ## Requirements
 
-* [ArcGIS Maps SDK for Swift](https://developers.arcgis.com/swift/) 200.3 (or newer)
-* [ArcGIS Maps SDK for Swift Toolkit](https://github.com/Esri/arcgis-maps-sdk-swift-toolkit) 200.3 (or newer)
+* [ArcGIS Maps SDK for Swift](https://developers.arcgis.com/swift/) 200.4 (or newer)
+* [ArcGIS Maps SDK for Swift Toolkit](https://github.com/Esri/arcgis-maps-sdk-swift-toolkit) 200.4 (or newer)
 * Xcode 15.0 (or newer)
 
 The *ArcGIS Maps SDK for Swift Samples app* has a *Target SDK* version of *15.0*, meaning that it can run on devices with *iOS 15.0* or newer.
@@ -21,6 +35,9 @@ The *ArcGIS Maps SDK for Swift Samples app* has a *Target SDK* version of *15.0*
 
 ## Configuring API Keys
 
+> [!IMPORTANT]
+> Acquire the keys from your [dashboard](https://developers.arcgis.com/dashboard). Visit the developer's website to learn more about [API keys](https://developers.arcgis.com/documentation/mapping-apis-and-services/security/api-keys/).
+
 To run this app and access specific, ready-to-use services such as basemap layer, follow the steps to add an API key to a secrets file stored in the project file's directory, `$(SRCROOT)/.secrets`.
 
 1. Create a hidden secrets file in the project file's directory.
@@ -29,7 +46,7 @@ To run this app and access specific, ready-to-use services such as basemap layer
   touch .secrets
   ```
 
-2. Add your **API Key** to the secrets file aforementioned. Adding an API key allows you to access a set of ready-to-use services, including basemaps. Acquire the keys from your [dashboard](https://developers.arcgis.com/dashboard). Visit the developer's website to learn more about [API keys](https://developers.arcgis.com/documentation/mapping-apis-and-services/security/api-keys/).
+2. Add your **API Key** to the aforementioned secrets file. Adding an API key allows you to access a set of ready-to-use services, including basemaps.
 
   ```sh
   echo ARCGIS_API_KEY_IOS=your-api-key >> .secrets
@@ -54,7 +71,7 @@ Find a bug or want to request a new feature? Please let us know by [creating an 
 
 ## Licensing
 
-Copyright 2022 - 2023 Esri
+Copyright 2022 - 2024 Esri
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

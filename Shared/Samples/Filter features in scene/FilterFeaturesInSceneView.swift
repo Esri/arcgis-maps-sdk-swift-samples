@@ -32,7 +32,7 @@ struct FilterFeaturesInSceneView: View {
                 }
             }
             .toolbar {
-                ToolbarItemGroup(placement: .bottomBar) {
+                ToolbarItem(placement: .bottomBar) {
                     Button(model.filterState.label) {
                         model.handleFilterState()
                     }
@@ -233,4 +233,10 @@ private extension Viewpoint {
             roll: 0
         )
     )
+}
+
+#Preview {
+    NavigationView {
+        FilterFeaturesInSceneView()
+    }
 }

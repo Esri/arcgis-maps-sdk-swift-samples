@@ -41,6 +41,12 @@ protocol Sample {
 // MARK: Computed Variables
 
 extension Sample {
+    /// The URL to a sample's sub-directory on GitHub main branch.
+    var gitHubURL: URL {
+        URL(string: "https://github.com/Esri/arcgis-maps-sdk-swift-samples/tree/main/Shared/Samples")!
+            .appendingPathComponent(name)
+    }
+    
     /// The URL to a sample's `README.md` file.
     var readmeURL: URL {
         Bundle.main.url(forResource: name, withExtension: "md", subdirectory: "READMEs")!

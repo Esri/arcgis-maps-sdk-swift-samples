@@ -21,41 +21,34 @@ struct SamplesSearchView: View {
     /// The search result to display in the various sections.
     private let searchResult: SearchResult
     
+    /// Creates a sample search view.
+    /// - Parameters:
+    ///   - query: The search query in the search bar.
+    init(query: String) {
+        self.query = query
+        self.searchResult = Self.searchSamples(with: query)
+    }
+    
     var body: some View {
         List {
             if !searchResult.nameMatches.isEmpty {
                 Section("Name Results") {
                     ForEach(searchResult.nameMatches, id: \.name) { sample in
-                        NavigationLink {
-                            SampleDetailView(sample: sample)
-                                .id(sample.name)
-                        } label: {
-                            SampleRow(sample: sample, query: query)
-                        }
+                        SampleLink(sample, textToBold: query)
                     }
                 }
             }
             if !searchResult.descriptionMatches.isEmpty {
                 Section("Description Results") {
                     ForEach(searchResult.descriptionMatches, id: \.name) { sample in
-                        NavigationLink {
-                            SampleDetailView(sample: sample)
-                                .id(sample.name)
-                        } label: {
-                            SampleRow(sample: sample, query: query)
-                        }
+                        SampleLink(sample, textToBold: query)
                     }
                 }
             }
             if !searchResult.tagMatches.isEmpty {
                 Section("Tags Results") {
                     ForEach(searchResult.tagMatches, id: \.name) { sample in
-                        NavigationLink {
-                            SampleDetailView(sample: sample)
-                                .id(sample.name)
-                        } label: {
-                            SampleRow(sample: sample, query: query)
-                        }
+                        SampleLink(sample, textToBold: query)
                     }
                 }
             }
@@ -64,17 +57,6 @@ struct SamplesSearchView: View {
 }
 
 // MARK: Search
-
-extension SamplesSearchView {
-    /// Create a sample search view.
-    /// - Parameters:
-    ///   - samples: All samples retrieved from the Samples directory.
-    ///   - query: The search query in the search bar.
-    init(samples: [Sample], query: String) {
-        self.query = query
-        self.searchResult = Self.searchSamples(in: samples, with: query)
-    }
-}
 
 private extension SamplesSearchView {
     /// A struct that contains various search results to be displayed in
@@ -93,11 +75,11 @@ private extension SamplesSearchView {
         }
     }
     
-    /// Searches through a list of samples to find ones that match the query.
+    /// Searches through the list of samples to find ones that match the query.
     /// - Parameters:
-    ///   - samples: The samples to search through.
     ///   - query: The query to search with.
-    private static func searchSamples(in samples: [Sample], with query: String) -> SearchResult {
+    private static func searchSamples(with query: String) -> SearchResult {
+        let samples = SamplesApp.samples
         let nameMatches: [Sample]
         let descriptionMatches: [Sample]
         let tagMatches: [Sample]

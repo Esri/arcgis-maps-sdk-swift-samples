@@ -1,0 +1,50 @@
+{
+    "category": "Routing and Logistics",
+    "description": "Navigate between two points and dynamically recalculate an alternate route when the original route is unavailable.",
+    "ignore": false,
+    "images": [
+        "navigate-route-with-rerouting.png"
+    ],
+    "keywords": [
+        "directions",
+        "maneuver",
+        "navigation",
+        "route",
+        "turn-by-turn",
+        "voice",
+        "DestinationStatus",
+        "DirectionManeuver",
+        "Location",
+        "LocationDataSource",
+        "ReroutingStrategy",
+        "Route",
+        "RouteParameters",
+        "RouteTask",
+        "RouteTracker",
+        "Stop",
+        "VoiceGuidance"
+    ],
+    "offline_data": [
+        "4caec8c55ea2463982f1af7d9611b8d5",
+        "df193653ed39449195af0c9725701dca"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "DestinationStatus",
+        "DirectionManeuver",
+        "Location",
+        "LocationDataSource",
+        "ReroutingStrategy",
+        "Route",
+        "RouteParameters",
+        "RouteTask",
+        "RouteTracker",
+        "Stop",
+        "VoiceGuidance"
+    ],
+    "snippets": [
+        "NavigateRouteWithReroutingView.swift",
+        "NavigateRouteWithReroutingView.Model.swift"
+    ],
+    "title": "Navigate route with rerouting"
+}

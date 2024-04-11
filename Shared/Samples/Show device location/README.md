@@ -40,7 +40,12 @@ Change the "Auto-Pan Mode" to choose if and how the SDK will position the map vi
 
 Location permissions are required for this sample.
 
-**Note**: As of iOS 8, you are required to request the user's permission to enable location services. You must include either `NSLocationWhenInUseUsageDescription` or `NSLocationAlwaysUsageDescription` along with a brief description of how you use location services in the Info plist of your project.
+**Note**: The default location data source, `SystemLocationDataSource`, needs the app to be authorized in order to access the device's location. The app must contain appropriate purpose strings (`NSLocationWhenInUseUsageDescription`, or `NSLocationAlwaysAndWhenInUseUsageDescription` keys) along with a brief description of how you use location services in the project's Info tab.
+
+Please read the documentation below for further details.
+
+* [Requesting authorization to use location services](https://developer.apple.com/documentation/corelocation/requesting_authorization_to_use_location_services)
+* [Device location - Location data sources](https://developers.arcgis.com/swift/device-location/#location-data-sources)
 
 ## Tags
 

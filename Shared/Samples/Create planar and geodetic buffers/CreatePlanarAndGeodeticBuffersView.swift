@@ -16,8 +16,8 @@ import SwiftUI
 import ArcGIS
 
 struct CreatePlanarAndGeodeticBuffersView: View {
-    /// A Boolean value indicating whether to show options.
-    @State private var isShowingOptions = false
+    /// A Boolean value indicating whether the settings are showing.
+    @State private var isShowingSettings = false
     
     /// The possible radii for buffers in miles.
     private let bufferRadii = Measurement.rMin...Measurement.rMax
@@ -36,8 +36,17 @@ struct CreatePlanarAndGeodeticBuffersView: View {
                     // Adds a buffer at the given map point.
                     model.addBuffer(at: mapPoint, bufferDistance: bufferDistance)
                 }
+                .toolbar {
+                    ToolbarItemGroup(placement: .bottomBar) {
+                        Toggle("Settings", isOn: $isShowingSettings.animation())
+                        Spacer()
+                        Button("Clear") {
+                            model.removeAllBufferGraphics()
+                        }
+                    }
+                }
             
-            if isShowingOptions {
+            if isShowingSettings {
                 VStack {
                     Slider(value: $bufferDistance.value, in: bufferRadii.doubleRange) {
                         Text("Buffer Radius")
@@ -51,20 +60,6 @@ struct CreatePlanarAndGeodeticBuffersView: View {
                 }
                 .padding([.horizontal, .top])
             }
-            
-            HStack {
-                Spacer()
-                Toggle(isOn: $isShowingOptions.animation(.spring())) {
-                    Text("Options")
-                }
-                .toggleStyle(.button)
-                Spacer()
-                Button("Clear All") {
-                    model.removeAllBufferGraphics()
-                }
-                Spacer()
-            }
-            .padding()
         }
     }
 }
@@ -178,4 +173,8 @@ private extension Measurement where UnitType == UnitLength {
     static var rMin: Self { Measurement(value: 200, unit: UnitLength.miles) }
     /// The maximum radius.
     static var rMax: Self { Measurement(value: 2_000, unit: UnitLength.miles) }
+}
+
+#Preview {
+    CreatePlanarAndGeodeticBuffersView()
 }

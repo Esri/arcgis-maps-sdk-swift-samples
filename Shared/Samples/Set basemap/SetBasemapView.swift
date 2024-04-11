@@ -46,10 +46,16 @@ struct SetBasemapView: View {
                 .toolbar {
                     ToolbarItem(placement: .primaryAction) {
                         Toggle(isOn: $isShowingBasemapGallery) {
-                            Label("Show base map", systemImage: "map")
+                            Label("Basemap Gallery", systemImage: "map")
                         }
                     }
                 }
         }
+    }
+}
+
+#Preview {
+    NavigationView {
+        SetBasemapView()
     }
 }

@@ -42,6 +42,7 @@ struct Animate3DGraphicView: View {
                         StatRow("Roll", value: model.animation.currentFrame.roll.formatted(.angle))
                     }
                     .frame(width: 170, height: 100)
+                    .padding([.leading, .trailing])
                     .background(.ultraThinMaterial)
                     .cornerRadius(10)
                     .shadow(radius: 3)
@@ -59,7 +60,9 @@ struct Animate3DGraphicView: View {
                         .attributionBarHidden(true)
                         .onSingleTapGesture { _, _ in
                             // Show/hide full map on tap.
-                            isShowingFullMap.toggle()
+                            withAnimation(.default.speed(2)) {
+                                isShowingFullMap.toggle()
+                            }
                         }
                         .frame(width: isShowingFullMap ? nil : 100, height: isShowingFullMap ? nil : 100)
                         .cornerRadius(10)
@@ -79,12 +82,12 @@ struct Animate3DGraphicView: View {
                 
                 /// The play/pause button for the animation.
                 Button {
-                    model.animation.isPlaying ? model.animation.stop() : model.startAnimation()
+                    model.animation.isPlaying.toggle()
                 } label: {
                     Image(systemName: model.animation.isPlaying ? "pause.fill" : "play.fill")
                 }
-                
                 Spacer()
+                
                 SettingsView(label: "Camera") {
                     cameraSettings
                 }
@@ -93,15 +96,18 @@ struct Animate3DGraphicView: View {
         .task {
             await model.monitorCameraController()
         }
-        .onDisappear {
-            model.animation.stop()
-        }
     }
     
     /// The list containing the mission settings.
     private var missionSettings: some View {
         List {
             Section("Mission") {
+                VStack {
+                    StatRow("Progress", value: model.animation.progress.formatted(.rounded))
+                    ProgressView(value: model.animation.progress)
+                }
+                .padding(.vertical)
+                
                 Picker("Mission Selection", selection: $model.currentMission) {
                     ForEach(Mission.allCases, id: \.self) { mission in
                         Text(mission.label)
@@ -111,21 +117,14 @@ struct Animate3DGraphicView: View {
                 .labelsHidden()
             }
             
-            Section {
-                VStack {
-                    StatRow("Animation Speed", value: model.animation.speed.formatted())
-                    Slider(value: $model.animation.speed, in: 1...200, step: 1)
-                        .onChange(of: model.animation.speed) { _ in
-                            if model.animation.isPlaying {
-                                model.startAnimation()
-                            }
-                        }
+            Section("Speed") {
+                Picker("Animation Speed", selection: $model.animation.speed) {
+                    ForEach(AnimationSpeed.allCases, id: \.self) { speed in
+                        Text(String(describing: speed).capitalized)
+                    }
                 }
-                VStack {
-                    StatRow("Mission Progress", value: model.animation.progress.formatted(.rounded))
-                    ProgressView(value: model.animation.progress)
-                        .padding()
-                }
+                .pickerStyle(.inline)
+                .labelsHidden()
             }
         }
     }
@@ -138,6 +137,7 @@ struct Animate3DGraphicView: View {
                     VStack {
                         StatRow(property.label, value: model.cameraPropertyTexts[property] ?? "")
                         Slider(value: cameraPropertyBinding(for: property), in: property.range, step: 1)
+                            .padding(.horizontal)
                     }
                 }
             }
@@ -181,7 +181,6 @@ extension Animate3DGraphicView {
                 Spacer()
                 Text(value)
             }
-            .padding([.leading, .trailing])
         }
     }
 }

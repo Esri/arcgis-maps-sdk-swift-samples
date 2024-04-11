@@ -38,8 +38,7 @@ struct DownloadPreplannedMapAreaView: View {
                         isShowingSelectMapView.toggle()
                     }
                     .sheet(isPresented: $isShowingSelectMapView, detents: [.medium]) {
-                        MapPicker()
-                            .environmentObject(model)
+                        MapPicker(model: model)
                     }
                     
                     Spacer()
@@ -82,5 +81,11 @@ private extension Viewpoint {
         builder.expand(by: 0.5)
         let zoomEnvelope = builder.toGeometry()
         return Viewpoint(boundingGeometry: zoomEnvelope)
+    }
+}
+
+#Preview {
+    NavigationView {
+        DownloadPreplannedMapAreaView()
     }
 }

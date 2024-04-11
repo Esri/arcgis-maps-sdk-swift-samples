@@ -63,6 +63,7 @@ Below is a list of protocol strings for commonly used GNSS external accessories.
 
 * com.amanenterprises.nmeasource
 * com.dualav.xgps150
+* com.emlid.nmea
 * com.garmin.pvt
 * com.junipersys.geode
 * com.leica-geosystems.zeno.gnss

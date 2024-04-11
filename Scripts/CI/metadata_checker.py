@@ -78,6 +78,12 @@ def run_check(path: str) -> None:
         diff = '\n'.join(unified_diff(expected, actual))
         raise Exception(f'Error inconsistent metadata - {path} - {diff}')
 
+    # 4. Check category.
+    try:
+        checker.check_category()
+    except Exception as err:
+        raise Exception(f'{checker.folder_path} - {err}')
+
 
 def all_samples(path: str):
     """

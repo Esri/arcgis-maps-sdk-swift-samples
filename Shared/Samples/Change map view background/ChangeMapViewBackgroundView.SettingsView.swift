@@ -17,7 +17,7 @@ import SwiftUI
 extension ChangeMapViewBackgroundView {
     struct SettingsView: View {
         /// The view model for the sample.
-        @EnvironmentObject private var model: ChangeMapViewBackgroundView.Model
+        @ObservedObject var model: Model
         
         var body: some View {
             List {

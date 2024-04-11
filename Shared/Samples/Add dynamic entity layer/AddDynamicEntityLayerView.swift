@@ -93,8 +93,8 @@ struct AddDynamicEntityLayerView: View {
         let button = Button("Dynamic Entity Settings") {
             isShowingSettings = true
         }
-        let settingsView = SettingsView(calloutPlacement: $placement)
-            .environmentObject(model)
+        let settingsView = SettingsView(model: model, calloutPlacement: $placement)
+        
         if #available(iOS 16, *) {
             button
                 .popover(isPresented: $isShowingSettings, arrowEdge: .bottom) {
@@ -112,5 +112,11 @@ struct AddDynamicEntityLayerView: View {
                     settingsView
                 }
         }
+    }
+}
+
+#Preview {
+    NavigationView {
+        AddDynamicEntityLayerView()
     }
 }

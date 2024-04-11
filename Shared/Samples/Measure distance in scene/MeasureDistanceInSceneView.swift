@@ -172,3 +172,7 @@ private extension URL {
         URL(string: "https://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/Buildings_Brest/SceneServer/layers/0")!
     }
 }
+
+#Preview {
+    MeasureDistanceInSceneView()
+}

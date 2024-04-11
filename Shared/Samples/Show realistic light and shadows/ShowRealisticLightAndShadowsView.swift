@@ -58,7 +58,7 @@ struct ShowRealisticLightAndShadowsView: View {
         }
         .toolbar {
             ToolbarItem(placement: .bottomBar) {
-                Picker("Choose a lighting mode for the scene view.", selection: $lightingMode) {
+                Picker("Lighting Mode", selection: $lightingMode) {
                     ForEach(SceneView.SunLighting.allCases, id: \.self) { mode in
                         Text(mode.label)
                     }
@@ -126,9 +126,9 @@ private extension SceneView.SunLighting {
     var label: String {
         switch self {
         case .lightAndShadows:
-            return "Light And Shadows"
+            return "Light and Shadows"
         case .light:
-            return "Light only"
+            return "Light Only"
         case .off:
             return "No Light"
         @unknown default:
@@ -139,4 +139,10 @@ private extension SceneView.SunLighting {
 
 private extension Date {
     static let startOfDay = Calendar.current.startOfDay(for: .now)
+}
+
+#Preview {
+    NavigationView {
+        ShowRealisticLightAndShadowsView()
+    }
 }

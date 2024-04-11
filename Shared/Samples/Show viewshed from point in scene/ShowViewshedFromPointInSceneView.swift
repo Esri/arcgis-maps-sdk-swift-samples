@@ -37,16 +37,20 @@ struct ShowViewshedFromPointInSceneView: View {
                     .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
             }
             .toolbar {
-                ToolbarItemGroup(placement: .bottomBar) {
-                    Spacer()
+                ToolbarItem(placement: .bottomBar) {
                     Button("Viewshed Settings") {
                         isShowingSettings = true
                     }
                     .sheet(isPresented: $isShowingSettings, detents: [.medium], dragIndicatorVisibility: .visible) {
-                        ViewshedSettingsView()
-                            .environmentObject(model)
+                        ViewshedSettingsView(model: model)
                     }
                 }
             }
+    }
+}
+
+#Preview {
+    NavigationView {
+        ShowViewshedFromPointInSceneView()
     }
 }

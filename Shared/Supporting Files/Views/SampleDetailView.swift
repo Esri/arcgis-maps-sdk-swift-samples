@@ -84,7 +84,10 @@ struct SampleDetailView: View {
         .navigationTitle(sample.name)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
+            ToolbarItemGroup(placement: .topBarTrailing) {
+#if targetEnvironment(macCatalyst)
+                Link("View on GitHub", destination: sample.gitHubURL)
+#endif
                 Button {
                     isSampleInfoViewPresented = true
                 } label: {

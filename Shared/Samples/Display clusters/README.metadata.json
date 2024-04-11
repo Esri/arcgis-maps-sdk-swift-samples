@@ -1,0 +1,37 @@
+{
+    "category": "Layers",
+    "description": "Display a web map with a point feature layer that has feature reduction enabled to aggregate points into clusters.",
+    "ignore": false,
+    "images": [
+        "display-clusters.png"
+    ],
+    "keywords": [
+        "aggregate",
+        "bin",
+        "cluster",
+        "group",
+        "merge",
+        "normalize",
+        "reduce",
+        "summarize",
+        "AggregateGeoElement",
+        "FeatureLayer",
+        "FeatureReduction",
+        "GeoElement",
+        "IdentifyLayerResult"
+    ],
+    "redirect_from": [
+        "/swift/sample-code/display-points-using-clustering-feature-reduction/"
+    ],
+    "relevant_apis": [
+        "AggregateGeoElement",
+        "FeatureLayer",
+        "FeatureReduction",
+        "GeoElement",
+        "IdentifyLayerResult"
+    ],
+    "snippets": [
+        "DisplayClustersView.swift"
+    ],
+    "title": "Display clusters"
+}

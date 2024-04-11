@@ -22,6 +22,9 @@ struct GenerateOfflineMapView: View {
     /// A Boolean value indicating whether the job is cancelling.
     @State private var isCancellingJob = false
     
+    /// The error shown in the error alert.
+    @State private var error: Error?
+    
     /// The view model for this sample.
     @StateObject private var model = Model()
     
@@ -30,9 +33,13 @@ struct GenerateOfflineMapView: View {
             MapViewReader { mapView in
                 MapView(map: model.offlineMap ?? model.onlineMap)
                     .interactionModes(isGeneratingOfflineMap ? [] : [.pan, .zoom])
-                    .errorAlert(presentingError: $model.error)
+                    .errorAlert(presentingError: $error)
                     .task {
-                        await model.initializeOfflineMapTask()
+                        do {
+                            try await model.initializeOfflineMapTask()
+                        } catch {
+                            self.error = error
+                        }
                     }
                     .onDisappear {
                         Task { await model.cancelJob() }
@@ -103,8 +110,12 @@ struct GenerateOfflineMapView: View {
                                 // Creates an envelope from the rectangle.
                                 guard let extent = mapView.envelope(fromViewRect: viewRect) else { return }
                                 
-                                // Generates an offline map.
-                                await model.generateOfflineMap(extent: extent)
+                                do {
+                                    // Generates an offline map.
+                                    try await model.generateOfflineMap(extent: extent)
+                                } catch {
+                                    self.error = error
+                                }
                                 
                                 // Sets generating an offline map to false.
                                 isGeneratingOfflineMap = false
@@ -122,16 +133,13 @@ private extension GenerateOfflineMapView {
     @MainActor
     class Model: ObservableObject {
         /// The offline map that is generated.
-        @Published var offlineMap: Map!
+        @Published private(set) var offlineMap: Map!
         
         /// A Boolean value indicating whether the generate button is disabled.
-        @Published var isGenerateDisabled = true
-        
-        /// The error shown in the error alert.
-        @Published var error: Error?
+        @Published private(set) var isGenerateDisabled = true
         
         /// The generate offline map job.
-        @Published var generateOfflineMapJob: GenerateOfflineMapJob!
+        @Published private(set) var generateOfflineMapJob: GenerateOfflineMapJob!
         
         /// The offline map task.
         private var offlineMapTask: OfflineMapTask!
@@ -151,6 +159,8 @@ private extension GenerateOfflineMapView {
         init() {
             // Initializes the online map.
             onlineMap = Map(item: napervillePortalItem)
+            // Sets the min scale to avoid requesting a huge download.
+            onlineMap.minScale = 1e4
         }
         
         deinit {
@@ -159,41 +169,29 @@ private extension GenerateOfflineMapView {
         }
         
         /// Initializes the offline map task.
-        func initializeOfflineMapTask() async {
-            do {
-                // Waits for the online map to load.
-                try await onlineMap.load()
-                offlineMapTask = OfflineMapTask(onlineMap: onlineMap)
-                isGenerateDisabled = false
-            } catch {
-                self.error = error
-            }
+        func initializeOfflineMapTask() async throws {
+            // Waits for the online map to load.
+            try await onlineMap.load()
+            offlineMapTask = OfflineMapTask(onlineMap: onlineMap)
+            isGenerateDisabled = false
         }
         
         /// Creates the generate offline map parameters.
         /// - Parameter areaOfInterest: The area of interest to create the parameters for.
-        /// - Returns: A `GenerateOfflineMapParameters` if there are no errors. Otherwise, it returns `nil`,
-        private func makeGenerateOfflineMapParameters(areaOfInterest: Envelope) async -> GenerateOfflineMapParameters? {
-            do {
-                // Returns the default parameters for the offline map task.
-                return try await offlineMapTask.makeDefaultGenerateOfflineMapParameters(areaOfInterest: areaOfInterest)
-            } catch {
-                self.error = error
-                return nil
-            }
+        /// - Returns: A `GenerateOfflineMapParameters` if there are no errors.
+        private func makeGenerateOfflineMapParameters(areaOfInterest: Envelope) async throws -> GenerateOfflineMapParameters {
+            // Returns the default parameters for the offline map task.
+            return try await offlineMapTask.makeDefaultGenerateOfflineMapParameters(areaOfInterest: areaOfInterest)
         }
         
         /// Generates the offline map.
         /// - Parameter extent: The area of interest's envelope to generate an offline map for.
-        func generateOfflineMap(extent: Envelope) async {
+        func generateOfflineMap(extent: Envelope) async throws {
             // Disables the generate offline map button.
             isGenerateDisabled = true
             
             // Creates the default parameters for the offline map task.
-            guard let parameters = await makeGenerateOfflineMapParameters(areaOfInterest: extent) else {
-                isGenerateDisabled = false
-                return
-            }
+            let parameters = try await makeGenerateOfflineMapParameters(areaOfInterest: extent)
             
             // Creates the generate offline map job based on the parameters.
             generateOfflineMapJob = offlineMapTask.makeGenerateOfflineMapJob(
@@ -209,17 +207,12 @@ private extension GenerateOfflineMapView {
                 isGenerateDisabled = offlineMap != nil
             }
             
-            do {
-                // Awaits the output of the job.
-                let output = try await generateOfflineMapJob.output
-                // Sets the offline map to the output's offline map.
-                offlineMap = output.offlineMap
-                // Sets the initial viewpoint of the offline map.
-                offlineMap.initialViewpoint = Viewpoint(boundingGeometry: extent.expanded(by: 0.8))
-            } catch {
-                // Shows an alert with the error if the job fails.
-                self.error = error
-            }
+            // Awaits the output of the job.
+            let output = try await generateOfflineMapJob.output
+            // Sets the offline map to the output's offline map.
+            offlineMap = output.offlineMap
+            // Sets the initial viewpoint of the offline map.
+            offlineMap.initialViewpoint = Viewpoint(boundingGeometry: extent.expanded(by: 0.8))
         }
         
         /// Cancels the generate offline map job.
@@ -242,24 +235,17 @@ private extension GenerateOfflineMapView {
     }
 }
 
-private extension MapViewProxy {
-    /// Creates an envelope from the given rectangle.
-    /// - Parameter viewRect: The rectangle to create an envelope of.
-    /// - Returns: An envelope of the given rectangle.
-    func envelope(fromViewRect viewRect: CGRect) -> Envelope? {
-        guard let min = location(fromScreenPoint: CGPoint(x: viewRect.minX, y: viewRect.minY)),
-              let max = location(fromScreenPoint: CGPoint(x: viewRect.maxX, y: viewRect.maxY)) else {
-            return nil
-        }
-        return Envelope(min: min, max: max)
-    }
-}
-
 private extension Envelope {
     /// Expands the envelope by a given factor.
     func expanded(by factor: Double) -> Envelope {
         let builder = EnvelopeBuilder(envelope: self)
         builder.expand(by: factor)
         return builder.toGeometry()
+    }
+}
+
+#Preview {
+    NavigationView {
+        GenerateOfflineMapView()
     }
 }
