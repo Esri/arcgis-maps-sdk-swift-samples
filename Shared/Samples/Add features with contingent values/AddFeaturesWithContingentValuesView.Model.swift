@@ -56,7 +56,7 @@ extension AddFeaturesWithContingentValuesView {
         private var featureTable: ArcGISFeatureTable?
         
         /// The feature in the feature table.
-        private(set) var feature: ArcGISFeature?
+        var feature: ArcGISFeature?
         
         /// A Boolean value indicating whether all the contingency constraints associated with the feature are valid.
         @Published private(set) var contingenciesAreValid = false

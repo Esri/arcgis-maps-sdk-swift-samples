@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0000FB6E2BBDB17600845921 /* Add3DTilesLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0000FB6B2BBDB17600845921 /* Add3DTilesLayerView.swift */; };
+		0000FB712BBDC01400845921 /* Add3DTilesLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 0000FB6B2BBDB17600845921 /* Add3DTilesLayerView.swift */; };
 		0005580A2817C51E00224BC6 /* SampleDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000558092817C51E00224BC6 /* SampleDetailView.swift */; };
 		000D43162B9918420003D3C2 /* ConfigureBasemapStyleParametersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000D43132B9918420003D3C2 /* ConfigureBasemapStyleParametersView.swift */; };
 		000D43182B993A030003D3C2 /* ConfigureBasemapStyleParametersView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 000D43132B9918420003D3C2 /* ConfigureBasemapStyleParametersView.swift */; };
@@ -443,6 +445,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				0000FB712BBDC01400845921 /* Add3DTilesLayerView.swift in Copy Source Code Files */,
 				D77D9C012BB2439400B38A6C /* AugmentRealityToShowHiddenInfrastructureView.ARSceneView.swift in Copy Source Code Files */,
 				D7A737E32BABBA2200B7C7FC /* AugmentRealityToShowHiddenInfrastructureView.swift in Copy Source Code Files */,
 				1C2538542BABACB100337307 /* AugmentRealityToNavigateRouteView.RoutePlannerView.swift in Copy Source Code Files */,
@@ -615,6 +618,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0000FB6B2BBDB17600845921 /* Add3DTilesLayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Add3DTilesLayerView.swift; sourceTree = "<group>"; };
 		000558092817C51E00224BC6 /* SampleDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleDetailView.swift; sourceTree = "<group>"; };
 		000D43132B9918420003D3C2 /* ConfigureBasemapStyleParametersView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigureBasemapStyleParametersView.swift; sourceTree = "<group>"; };
 		00181B452846AD7100654571 /* View+ErrorAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ErrorAlert.swift"; sourceTree = "<group>"; };
@@ -851,6 +855,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0000FB6D2BBDB17600845921 /* Add 3D tiles layer */ = {
+			isa = PBXGroup;
+			children = (
+				0000FB6B2BBDB17600845921 /* Add3DTilesLayerView.swift */,
+			);
+			path = "Add 3D tiles layer";
+			sourceTree = "<group>";
+		};
 		0005580D281872BE00224BC6 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -935,6 +947,7 @@
 		0074ABB228174B830037244A /* Samples */ = {
 			isa = PBXGroup;
 			children = (
+				0000FB6D2BBDB17600845921 /* Add 3D tiles layer */,
 				79D84D0C2A815BED00F45262 /* Add custom dynamic entity data source */,
 				4D2ADC3E29C26D05003B367F /* Add dynamic entity layer */,
 				00D4EF7E2863840D00B9CC30 /* Add feature layers */,
@@ -2681,6 +2694,7 @@
 				1C3B7DCB2A5F64FC00907443 /* AnalyzeNetworkWithSubnetworkTraceView.swift in Sources */,
 				00B042E8282EDC690072E1B4 /* SetBasemapView.swift in Sources */,
 				E004A6E62846A61F002A1FE6 /* StyleGraphicsWithSymbolsView.swift in Sources */,
+				0000FB6E2BBDB17600845921 /* Add3DTilesLayerView.swift in Sources */,
 				D74EA7842B6DADA5008F6C7C /* ValidateUtilityNetworkTopologyView.swift in Sources */,
 				E088E1742863B5F800413100 /* GenerateOfflineMapView.swift in Sources */,
 				0074ABC428174F430037244A /* Sample.swift in Sources */,
@@ -2849,7 +2863,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 200.3.0;
+				MARKETING_VERSION = 200.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.esri.arcgis-swift-sdk-samples";
 				PRODUCT_NAME = Samples;
 				SDKROOT = iphoneos;
@@ -2880,7 +2894,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 200.3.0;
+				MARKETING_VERSION = 200.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.esri.arcgis-swift-sdk-samples";
 				PRODUCT_NAME = Samples;
 				SDKROOT = iphoneos;
@@ -2923,7 +2937,7 @@
 			repositoryURL = "https://github.com/Esri/arcgis-maps-sdk-swift-toolkit/";
 			requirement = {
 				kind = upToNextMinorVersion;
-				minimumVersion = 200.3.0;
+				minimumVersion = 200.4.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
