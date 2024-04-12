@@ -133,7 +133,7 @@ struct DisplayClustersView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         DisplayClustersView()
     }
 }

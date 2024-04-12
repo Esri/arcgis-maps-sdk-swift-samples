@@ -85,7 +85,7 @@ struct AddFeaturesWithContingentValuesView: View {
                 Button("") {}
                     .opacity(0)
                     .sheet(isPresented: $addFeatureSheetIsPresented, detents: [.medium]) {
-                        NavigationView {
+                        NavigationStack {
                             AddFeatureView(model: model)
                                 .navigationTitle("Add Bird Nest")
                                 .navigationBarTitleDisplayMode(.inline)
@@ -105,7 +105,6 @@ struct AddFeaturesWithContingentValuesView: View {
                                     }
                                 }
                         }
-                        .navigationViewStyle(.stack)
                     }
                     .task(id: addFeatureSheetIsPresented) {
                         // When the sheet closes, remove the feature if it is invalid.

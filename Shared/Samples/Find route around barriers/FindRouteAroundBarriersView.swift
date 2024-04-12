@@ -151,7 +151,7 @@ struct FindRouteAroundBarriersView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         FindRouteAroundBarriersView()
     }
 }

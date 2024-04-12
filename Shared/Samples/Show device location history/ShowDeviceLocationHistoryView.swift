@@ -210,7 +210,7 @@ private extension ShowDeviceLocationHistoryView {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         ShowDeviceLocationHistoryView()
     }
 }

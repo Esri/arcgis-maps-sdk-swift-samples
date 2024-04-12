@@ -173,7 +173,9 @@ struct AugmentRealityToNavigateRouteView: View {
         )
         guard let routeTracker else { return }
         
-        routeTracker.voiceGuidanceUnitSystem = Locale.current.usesMetricSystem ? .metric : .imperial
+        routeTracker.voiceGuidanceUnitSystem = Locale.current.measurementSystem == .us
+        ? .imperial
+        : .metric
         
         routeDataModel.routeTracker = routeTracker
         

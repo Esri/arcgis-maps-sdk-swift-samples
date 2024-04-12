@@ -65,7 +65,7 @@ struct FindRouteView: View {
                     }
                     .disabled(model.directions.isEmpty)
                     .popover(isPresented: $isShowingDirections) {
-                        NavigationView {
+                        NavigationStack {
                             List(model.directions, id: \.text) { directionManeuver in
                                 Text(directionManeuver.text)
                             }
@@ -79,7 +79,6 @@ struct FindRouteView: View {
                                 }
                             }
                         }
-                        .navigationViewStyle(.stack)
                         .frame(idealWidth: 320, idealHeight: 428)
                     }
                 }
@@ -217,7 +216,7 @@ private extension URL {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         FindRouteView()
     }
 }

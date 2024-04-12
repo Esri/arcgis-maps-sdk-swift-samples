@@ -160,7 +160,7 @@ private extension URL {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         ManageOperationalLayersView()
     }
 }

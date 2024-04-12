@@ -245,7 +245,7 @@ private extension Envelope {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         GenerateOfflineMapView()
     }
 }

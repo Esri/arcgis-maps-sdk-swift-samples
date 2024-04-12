@@ -176,7 +176,7 @@ private extension Envelope {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         ClipGeometryView()
     }
 }

@@ -61,7 +61,7 @@ struct SetVisibilityOfSubtypeSublayerView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         SetVisibilityOfSubtypeSublayerView()
     }
 }

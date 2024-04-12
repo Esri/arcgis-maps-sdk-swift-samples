@@ -266,7 +266,9 @@ extension NavigateRouteWithReroutingView {
             try await routeTracker.enableRerouting(using: reroutingParameters)
             
             // Update the tracker's voice guidance unit system to the current locale's.
-            routeTracker.voiceGuidanceUnitSystem = Locale.current.usesMetricSystem ? .metric : .imperial
+            routeTracker.voiceGuidanceUnitSystem = Locale.current.measurementSystem == .us
+            ? .imperial
+            : .metric
             
             return routeTracker
         }

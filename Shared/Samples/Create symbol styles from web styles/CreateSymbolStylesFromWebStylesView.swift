@@ -67,7 +67,7 @@ struct CreateSymbolStylesFromWebStylesView: View {
     
     /// The legend list that describes what each symbol represents.
     private var legendList: some View {
-        NavigationView {
+        NavigationStack {
             List(legendItems, id: \.name) { legendItem in
                 Label {
                     Text(legendItem.name)
@@ -85,7 +85,6 @@ struct CreateSymbolStylesFromWebStylesView: View {
                 }
             }
         }
-        .navigationViewStyle(.stack)
         .frame(idealWidth: 320, idealHeight: 428)
     }
 }
@@ -278,7 +277,7 @@ private extension URL {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         CreateSymbolStylesFromWebStylesView()
     }
 }

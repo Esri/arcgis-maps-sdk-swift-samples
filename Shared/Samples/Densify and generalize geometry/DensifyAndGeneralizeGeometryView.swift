@@ -182,7 +182,7 @@ extension DensifyAndGeneralizeGeometryView {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         DensifyAndGeneralizeGeometryView()
     }
 }

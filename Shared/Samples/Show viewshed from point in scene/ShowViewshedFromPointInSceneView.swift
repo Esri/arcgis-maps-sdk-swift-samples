@@ -50,7 +50,7 @@ struct ShowViewshedFromPointInSceneView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         ShowViewshedFromPointInSceneView()
     }
 }
