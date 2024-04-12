@@ -28,46 +28,42 @@ extension AddDynamicEntityLayerView {
         
         var body: some View {
             NavigationStack {
-                root
-            }
-        }
-        
-        @ViewBuilder var root: some View {
-            Form {
-                Section("Track display properties") {
-                    Toggle("Track Lines", isOn: $model.showsTrackLine)
-                    Toggle("Previous Observations", isOn: $model.showsPreviousObservations)
-                }
-                
-                Section("Observations") {
-                    VStack {
-                        HStack {
-                            Text("Observations per track")
-                            Spacer()
-                            Text(model.maximumObservations.formatted())
-                                .foregroundColor(.secondary)
-                        }
-                        Slider(value: $model.maximumObservations, in: model.maxObservationRange, step: 1)
+                Form {
+                    Section("Track display properties") {
+                        Toggle("Track Lines", isOn: $model.showsTrackLine)
+                        Toggle("Previous Observations", isOn: $model.showsPreviousObservations)
                     }
-                    HStack {
-                        Spacer()
-                        Button("Purge All Observations") {
-                            Task {
-                                try? await model.streamService.purgeAll()
-                                calloutPlacement = nil
+                    
+                    Section("Observations") {
+                        VStack {
+                            HStack {
+                                Text("Observations per track")
+                                Spacer()
+                                Text(model.maximumObservations.formatted())
+                                    .foregroundColor(.secondary)
                             }
+                            Slider(value: $model.maximumObservations, in: model.maxObservationRange, step: 1)
                         }
-                        Spacer()
+                        HStack {
+                            Spacer()
+                            Button("Purge All Observations") {
+                                Task {
+                                    try? await model.streamService.purgeAll()
+                                    calloutPlacement = nil
+                                }
+                            }
+                            Spacer()
+                        }
                     }
                 }
-            }
-            .toggleStyle(.switch)
-            .navigationTitle("Dynamic Entity Settings")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") {
-                        dismiss()
+                .toggleStyle(.switch)
+                .navigationTitle("Dynamic Entity Settings")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .confirmationAction) {
+                        Button("Done") {
+                            dismiss()
+                        }
                     }
                 }
             }

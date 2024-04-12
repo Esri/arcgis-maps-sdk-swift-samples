@@ -212,6 +212,27 @@ private extension View {
     ) -> some View {
         modifier(ManageBookmarksView.NewBookmarkAlert(isPresented: isPresented, onSave: onSave))
     }
+    
+    /// Presents a half sheet when a given binding to a Boolean value is true.
+    /// - Parameters:
+    ///   - isPresented: A binding to a Boolean value that determines whether to present the sheet.
+    ///   - content: A closure that returns the content of the sheet.
+    /// - Returns: A new `View`.
+    func halfSheet<Content>(
+        isPresented: Binding<Bool>,
+        @ViewBuilder content: @escaping () -> Content
+    ) -> some View where Content: View {
+        self
+            .popover(isPresented: isPresented, arrowEdge: .bottom) {
+                content()
+                    .presentationDetents([.medium, .large])
+#if targetEnvironment(macCatalyst)
+                    .frame(minWidth: 300, minHeight: 270)
+#else
+                    .frame(minWidth: 320, minHeight: 390)
+#endif
+            }
+    }
 }
 
 #Preview {

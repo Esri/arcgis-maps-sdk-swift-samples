@@ -56,7 +56,7 @@ struct ListSpatialReferenceTransformationsView: View {
                 }
                 .padding()
             }
-            .background(Color(.systemGray6))
+            .background(Color(.systemGroupedBackground))
             
             TransformationsList(model: model)
         }

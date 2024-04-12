@@ -20,7 +20,9 @@
         "GraphicsOverlay",
         "MapView"
     ],
-    "redirect_from": [],
+    "redirect_from": [
+        "/swift/sample-code/sketch-on-map/"
+    ],
     "relevant_apis": [
         "Geometry",
         "GeometryBuilder",

@@ -10,7 +10,7 @@ Feature clustering can be used to dynamically aggregate groups of points that ar
 
 ## How to use the sample
 
-Pan and zoom the map to view how clustering is dynamically updated. Toggle clustering off to view the original point features that make up the clustered elements. When clustering is toggled on, you can tap on a clustered geoelement to view aggregated information and summary statistics for that cluster. When clustering is toggled off and you tap on the original feature you get access to information about individual power plant features.
+Pan and zoom the map to view how clustering is dynamically updated. Toggle clustering off to view the original point features that make up the clustered elements. When clustering is toggled on, you can tap on a clustered geoelement to view aggregated information and summary statistics for that cluster as well as a list of containing geoelements. When clustering is disabled and you tap on the original feature you get access to information about individual power plant features.
 
 ## How it works
 
@@ -20,7 +20,8 @@ Pan and zoom the map to view how clustering is dynamically updated. Toggle clust
 4. Use the `onSingleTapGesture` modifier to listen for tap events on the map view.
 5. Identify tapped features on the map using `identify(on:screenPoint:tolerance:returnPopupsOnly:maximumResults:)` on the feature layer and pass in the map screen point location.
 6. Get the `Popup` from the resulting `IdentifyLayerResult` and use it to construct a `PopupView`.
-7. Use a `FloatingPanel` to display the popup information from the `PopupView`.
+7. Get the `AggregateGeoElement` from the `IdentifyLayerResult` and use `geoElements` to retrieve the contained `GeoElement` objects.
+8. Use a `FloatingPanel` to display the popup information from the `PopupView` and the list containing the `GeoElement` objects.
 
 ## Relevant API
 
