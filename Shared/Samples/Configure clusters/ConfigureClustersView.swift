@@ -64,7 +64,7 @@ struct ConfigureClustersView: View {
                         .popover(isPresented: $showsSettings) {
                             SettingsView(model: model, mapViewScale: mapViewScale)
                                 .presentationDetents([.fraction(0.5)])
-                                .frame(idealWidth: 320, minHeight: 380)
+                                .frame(idealWidth: 320, minHeight: 340)
                         }
                     }
                 }

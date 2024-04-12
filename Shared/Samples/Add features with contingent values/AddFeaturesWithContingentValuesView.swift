@@ -106,7 +106,7 @@ struct AddFeaturesWithContingentValuesView: View {
                                 }
                         }
                         .presentationDetents([.fraction(0.5)])
-                        .frame(idealWidth: 320, idealHeight: 380)
+                        .frame(idealWidth: 320, idealHeight: 320)
                     }
                     .task(id: addFeatureSheetIsPresented) {
                         // When the sheet closes, remove the feature if it is invalid.

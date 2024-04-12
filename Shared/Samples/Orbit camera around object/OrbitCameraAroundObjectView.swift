@@ -81,7 +81,7 @@ struct OrbitCameraAroundObjectView: View {
         .popover(isPresented: $settingsSheetIsPresented) {
             SettingsView(model: model)
                 .presentationDetents([.fraction(0.5)])
-                .frame(idealWidth: 320, idealHeight: 380)
+                .frame(idealWidth: 320, idealHeight: 290)
         }
     }
 }

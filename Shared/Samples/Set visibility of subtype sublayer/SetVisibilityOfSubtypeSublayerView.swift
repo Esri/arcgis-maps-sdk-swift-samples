@@ -48,7 +48,7 @@ struct SetVisibilityOfSubtypeSublayerView: View {
                             SettingsView(model: model)
                         }
                         .presentationDetents([.fraction(0.5)])
-                        .frame(idealWidth: 320, minHeight: 340)
+                        .frame(idealWidth: 320, minHeight: 290)
                     }
                 }
             }

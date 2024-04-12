@@ -36,7 +36,7 @@ struct ChangeMapViewBackgroundView: View {
                             SettingsView(model: model)
                         }
                         .presentationDetents([.fraction(0.5)])
-                        .frame(idealWidth: 320, minHeight: 380)
+                        .frame(idealWidth: 320, minHeight: 310)
                     }
                 }
             }

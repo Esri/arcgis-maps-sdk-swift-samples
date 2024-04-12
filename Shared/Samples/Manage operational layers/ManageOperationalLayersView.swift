@@ -56,7 +56,7 @@ struct ManageOperationalLayersView: View {
                     .popover(isPresented: $isShowingSheet) {
                         ManageLayersSheetView(map: map)
                             .presentationDetents([.fraction(0.5)])
-                            .frame(idealWidth: 320, minHeight: 380)
+                            .frame(idealWidth: 320, minHeight: 320)
                     }
                 }
             }
