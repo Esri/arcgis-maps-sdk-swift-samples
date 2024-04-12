@@ -63,8 +63,15 @@ struct CreateMobileGeodatabaseView: View {
             }
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
-                    tableButton
-                        .disabled(model.features.isEmpty)
+                    Button("Feature Table") {
+                        tableSheetIsShowing = true
+                    }
+                    .popover(isPresented: $tableSheetIsShowing) {
+                        tableList
+                            .presentationDetents([.medium, .large])
+                            .frame(minWidth: 320, minHeight: 380)
+                    }
+                    .disabled(model.features.isEmpty)
                     
                     Spacer()
                     
@@ -93,20 +100,6 @@ struct CreateMobileGeodatabaseView: View {
                 }
             }
             .errorAlert(presentingError: $error)
-    }
-}
-
-private extension CreateMobileGeodatabaseView {
-    /// The button that brings up the feature table sheet.
-    var tableButton: some View {
-        Button("Feature Table") {
-            tableSheetIsShowing = true
-        }
-        .popover(isPresented: $tableSheetIsShowing) {
-            tableList
-                .presentationDetents([.medium, .large])
-                .frame(minWidth: 320, minHeight: 380)
-        }
     }
     
     /// The list of features in the feature table.

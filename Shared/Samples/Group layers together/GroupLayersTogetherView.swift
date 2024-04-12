@@ -54,21 +54,16 @@ struct GroupLayersTogetherView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
-                    layersButton
+                    Button("Layers") {
+                        isShowingLayersSheet = true
+                    }
+                    .popover(isPresented: $isShowingLayersSheet) {
+                        layersList
+                            .presentationDetents([.fraction(0.5)])
+                            .frame(idealWidth: 320, idealHeight: 380)
+                    }
                 }
             }
-    }
-    
-    /// The button that brings up the layers sheet.
-    private var layersButton: some View {
-        Button("Layers") {
-            isShowingLayersSheet = true
-        }
-        .popover(isPresented: $isShowingLayersSheet) {
-            layersList
-                .presentationDetents([.fraction(0.5)])
-                .frame(idealWidth: 320, idealHeight: 380)
-        }
     }
     
     /// The list of group layers and their child layers that are currently added to the map.

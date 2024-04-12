@@ -66,7 +66,14 @@ struct AddDynamicEntityLayerView: View {
                             }
                         }
                         Spacer()
-                        settingsButton
+                        Button("Dynamic Entity Settings") {
+                            isShowingSettings = true
+                        }
+                        .popover(isPresented: $isShowingSettings) {
+                            SettingsView(model: model, calloutPlacement: $placement)
+                                .presentationDetents([.fraction(0.5)])
+                                .frame(idealWidth: 320, idealHeight: 380)
+                        }
                     }
                 }
                 .overlay(alignment: .top) {
@@ -86,17 +93,6 @@ struct AddDynamicEntityLayerView: View {
                         model.connectionStatus = status.description
                     }
                 }
-        }
-    }
-    
-    private var settingsButton: some View {
-        Button("Dynamic Entity Settings") {
-            isShowingSettings = true
-        }
-        .popover(isPresented: $isShowingSettings) {
-            SettingsView(model: model, calloutPlacement: $placement)
-                .presentationDetents([.fraction(0.5)])
-                .frame(idealWidth: 320, idealHeight: 380)
         }
     }
 }
