@@ -152,7 +152,7 @@ extension SetUpLocationDrivenGeotriggersView {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         SetUpLocationDrivenGeotriggersView()
     }
 }

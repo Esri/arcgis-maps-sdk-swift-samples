@@ -19,30 +19,15 @@ struct ContentView: View {
     @State private var query = ""
     
     var body: some View {
-        if #available(iOS 16, *) {
-            NavigationSplitView {
-                NavigationStack {
-                    sidebar
-                }
-            } detail: {
-                NavigationStack {
-                    detail
-                }
+        NavigationSplitView {
+            NavigationStack {
+                Sidebar(query: query)
+                    .searchable(text: $query)
             }
-        } else {
-            NavigationView {
-                sidebar
-                detail
+        } detail: {
+            NavigationStack {
+                Text("Select a category from the list.")
             }
         }
-    }
-    
-    var sidebar: some View {
-        Sidebar(query: query)
-            .searchable(text: $query)
-    }
-    
-    var detail: some View {
-        Text("Select a category from the list.")
     }
 }

@@ -40,7 +40,7 @@ struct ChangeMapViewBackgroundView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         ChangeMapViewBackgroundView()
     }
 }

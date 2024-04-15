@@ -85,7 +85,7 @@ private extension Viewpoint {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         DownloadPreplannedMapAreaView()
     }
 }

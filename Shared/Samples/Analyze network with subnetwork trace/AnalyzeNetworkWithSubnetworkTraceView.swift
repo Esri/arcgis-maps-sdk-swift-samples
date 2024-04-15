@@ -86,14 +86,8 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
                 }
             })
             .sheet(isPresented: $isConditionMenuPresented) {
-                if #available(iOS 16, *) {
-                    NavigationStack {
-                        conditionMenu
-                    }
-                } else {
-                    NavigationView {
-                        conditionMenu
-                    }
+                NavigationStack {
+                    conditionMenu
                 }
             }
             .overlay(alignment: .center) { loadingView }
@@ -243,7 +237,6 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
                 }
             }
         }
-        .navigationViewStyle(.stack)
     }
     
     @ViewBuilder var attributesView: some View {
@@ -313,7 +306,7 @@ private extension UtilityNetworkAttributeComparison.Operator {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         AnalyzeNetworkWithSubnetworkTraceView()
     }
 }

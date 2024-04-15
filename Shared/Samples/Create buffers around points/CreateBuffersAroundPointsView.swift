@@ -288,7 +288,7 @@ private extension CreateBuffersAroundPointsView {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         CreateBuffersAroundPointsView()
     }
 }

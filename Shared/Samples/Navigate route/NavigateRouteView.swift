@@ -204,7 +204,9 @@ private extension NavigateRouteView {
             routeTracker = RouteTracker(routeResult: routeResult, routeIndex: 0, skipsCoincidentStops: true)
             guard let routeTracker else { return }
             
-            routeTracker.voiceGuidanceUnitSystem = Locale.current.usesMetricSystem ? .metric : .imperial
+            routeTracker.voiceGuidanceUnitSystem = Locale.current.measurementSystem == .us
+            ? .imperial
+            : .metric
             
             // Gets the route and its geometry from the route result.
             guard let firstRoute = routeResult.routes.first,
@@ -352,7 +354,7 @@ private extension URL {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         NavigateRouteView()
     }
 }

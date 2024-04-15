@@ -34,6 +34,9 @@ struct DisplayClustersView: View {
     /// The screen point to perform an identify operation.
     @State private var identifyScreenPoint: CGPoint?
     
+    /// The geoelements in the selected cluster.
+    @State private var geoElements: [GeoElement] = []
+    
     /// The popup to be shown as the result of the layer identify operation.
     @State private var popup: Popup?
     
@@ -53,6 +56,9 @@ struct DisplayClustersView: View {
                     identifyScreenPoint = screenPoint
                 }
                 .task(id: identifyScreenPoint) {
+                    layer?.clearSelection()
+                    geoElements.removeAll()
+                    
                     guard let identifyScreenPoint,
                           let layer,
                           let identifyResult = try? await proxy.identify(
@@ -63,6 +69,15 @@ struct DisplayClustersView: View {
                     else { return }
                     self.popup = identifyResult.popups.first
                     self.showsPopup = self.popup != nil
+                    
+                    guard let identifyGeoElement = identifyResult.geoElements.first else { return }
+                    if let aggregateGeoElement = identifyGeoElement as? AggregateGeoElement {
+                        aggregateGeoElement.isSelected = true
+                        let geoElements = try? await aggregateGeoElement.geoElements
+                        self.geoElements = geoElements ?? []
+                    } else if let feature = identifyGeoElement as? Feature {
+                        layer.selectFeature(feature)
+                    }
                 }
                 .floatingPanel(
                     selectedDetent: .constant(.half),
@@ -71,7 +86,26 @@ struct DisplayClustersView: View {
                 ) { [popup] in
                     PopupView(popup: popup!, isPresented: $showsPopup)
                         .showCloseButton(true)
-                        .padding()
+                        .padding([.top, .horizontal])
+                    
+                    if !geoElements.isEmpty {
+                        List {
+                            Section {
+                                ForEach(Array(geoElements.enumerated()),
+                                        id: \.offset
+                                ) { offset, geoElement in
+                                    let name = geoElement.attributes["name"] as? String
+                                    Text(name ?? "Geoelement: \(offset)")
+                                }
+                            } header: {
+                                Text("Geoelements")
+                                    .font(.title3)
+                                    .bold()
+                                    .foregroundColor(.primary)
+                            }
+                        }
+                        .listStyle(.inset)
+                    }
                 }
                 .toolbar {
                     ToolbarItem(placement: .bottomBar) {
@@ -99,7 +133,7 @@ struct DisplayClustersView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         DisplayClustersView()
     }
 }

@@ -74,7 +74,7 @@ extension AugmentRealityToShowHiddenInfrastructureView {
     class SceneModel: ObservableObject {
         /// A scene with an imagery basemap style and an elevation surface.
         let scene: ArcGIS.Scene = {
-            let scene = Scene(basemapStyle: .arcGISImagery)
+            let scene = Scene(basemapStyle: .arcGISImageryStandard)
             
             // Create a surface with an elevation source and set it to the scene's base surface.
             let surface = Surface()

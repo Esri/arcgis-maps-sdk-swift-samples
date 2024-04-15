@@ -141,7 +141,7 @@ struct DisplayContentOfUtilityNetworkContainerView: View {
     
     /// The legends list.
     private var sheetContent: some View {
-        NavigationView {
+        NavigationStack {
             List(model.legendItems, id: \.name) { legend in
                 Label {
                     Text(legend.name)
@@ -159,13 +159,12 @@ struct DisplayContentOfUtilityNetworkContainerView: View {
                 }
             }
         }
-        .navigationViewStyle(.stack)
         .frame(idealWidth: 320, idealHeight: 428)
     }
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         DisplayContentOfUtilityNetworkContainerView()
     }
 }

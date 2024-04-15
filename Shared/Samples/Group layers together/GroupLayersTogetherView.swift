@@ -60,33 +60,24 @@ struct GroupLayersTogetherView: View {
     }
     
     /// The button that brings up the layers sheet.
-    @ViewBuilder private var layersButton: some View {
-        let button = Button("Layers") {
+    private var layersButton: some View {
+        Button("Layers") {
             isShowingLayersSheet = true
         }
-        
-        if #available(iOS 16, *) {
-            button
-                .popover(isPresented: $isShowingLayersSheet, arrowEdge: .bottom) {
-                    layersList
-                        .presentationDetents([.fraction(0.5)])
+        .popover(isPresented: $isShowingLayersSheet, arrowEdge: .bottom) {
+            layersList
+                .presentationDetents([.fraction(0.5)])
 #if targetEnvironment(macCatalyst)
-                        .frame(minWidth: 300, minHeight: 270)
+                .frame(minWidth: 300, minHeight: 270)
 #else
-                        .frame(minWidth: 320, minHeight: 390)
+                .frame(minWidth: 320, minHeight: 390)
 #endif
-                }
-        } else {
-            button
-                .sheet(isPresented: $isShowingLayersSheet, detents: [.medium]) {
-                    layersList
-                }
         }
     }
     
     /// The list of group layers and their child layers that are currently added to the map.
     private var layersList: some View {
-        NavigationView {
+        NavigationStack {
             List {
                 ForEach(scene.operationalLayers as! [GroupLayer], id: \.name) { groupLayer in
                     GroupLayerListView(groupLayer: groupLayer)
@@ -102,7 +93,6 @@ struct GroupLayersTogetherView: View {
                 }
             }
         }
-        .navigationViewStyle(.stack)
         .frame(idealWidth: 320, idealHeight: 428)
     }
 }
@@ -187,7 +177,7 @@ private extension URL {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         GroupLayersTogetherView()
     }
 }

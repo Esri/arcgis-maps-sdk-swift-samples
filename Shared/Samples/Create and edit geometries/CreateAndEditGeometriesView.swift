@@ -365,7 +365,7 @@ class GeometryEditorMenuModel: ObservableObject {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         CreateAndEditGeometriesView()
     }
 }

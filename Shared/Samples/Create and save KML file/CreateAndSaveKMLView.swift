@@ -137,7 +137,7 @@ private extension UTType {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         CreateAndSaveKMLView()
     }
 }

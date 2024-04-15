@@ -80,7 +80,7 @@ private extension FavoritesView {
         }
         
         var body: some View {
-            NavigationView {
+            NavigationStack {
                 List {
                     ForEach(filteredSamples, id: \.name) { sample in
                         Button {

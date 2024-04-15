@@ -39,55 +39,53 @@ struct AugmentRealityToShowHiddenInfrastructureView: View {
     @State private var error: Error?
     
     var body: some View {
-        NavigationView {
-            MapView(map: model.map, graphicsOverlays: [model.pipesGraphicsOverlay])
-                .locationDisplay(model.locationDisplay)
-                .geometryEditor(model.geometryEditor)
-                .toolbar {
-                    ToolbarItemGroup(placement: .bottomBar) {
-                        toolbarButtons
-                    }
+        MapView(map: model.map, graphicsOverlays: [model.pipesGraphicsOverlay])
+            .locationDisplay(model.locationDisplay)
+            .geometryEditor(model.geometryEditor)
+            .toolbar {
+                ToolbarItemGroup(placement: .bottomBar) {
+                    toolbarButtons
                 }
-        }
-        .overlay(alignment: .top) {
-            instructionText
-        }
-        .elevationOffsetAlert(isPresented: $elevationAlertIsPresented) { elevationOffset in
-            model.addPipe(elevationOffset: elevationOffset)
-            canDelete = true
-            
-            if elevationOffset < 0 {
-                statusMessage = "Pipe added \(elevationOffset.formatted()) meter(s) below surface."
-            } else if elevationOffset.isZero {
-                statusMessage = "Pipe added at ground level."
-            } else {
-                statusMessage = "Pipe added \(elevationOffset.formatted()) meter(s) above surface."
             }
-            statusMessage.append("\nTap the camera to view the pipe(s) in AR.")
-            
-            model.geometryEditor.start(withType: Polyline.self)
-        }
-        .task {
-            do {
-                try await model.startLocationDisplay()
-            } catch {
-                self.error = error
+            .overlay(alignment: .top) {
+                instructionText
             }
-            
-            // Start the geometry editor and listen for its geometry updates.
-            model.geometryEditor.start(withType: Polyline.self)
-            
-            for await geometry in model.geometryEditor.$geometry {
-                let polyline = geometry as? Polyline
-                canApplyEdits = polyline?.parts.contains { $0.points.count >= 2 } ?? false
-                if canApplyEdits {
-                    statusMessage = "Tap the check mark to add the pipe."
+            .elevationOffsetAlert(isPresented: $elevationAlertIsPresented) { elevationOffset in
+                model.addPipe(elevationOffset: elevationOffset)
+                canDelete = true
+                
+                if elevationOffset < 0 {
+                    statusMessage = "Pipe added \(elevationOffset.formatted()) meter(s) below surface."
+                } else if elevationOffset.isZero {
+                    statusMessage = "Pipe added at ground level."
+                } else {
+                    statusMessage = "Pipe added \(elevationOffset.formatted()) meter(s) above surface."
+                }
+                statusMessage.append("\nTap the camera to view the pipe(s) in AR.")
+                
+                model.geometryEditor.start(withType: Polyline.self)
+            }
+            .task {
+                do {
+                    try await model.startLocationDisplay()
+                } catch {
+                    self.error = error
                 }
                 
-                geometryEditorCanUndo = model.geometryEditor.canUndo
+                // Start the geometry editor and listen for its geometry updates.
+                model.geometryEditor.start(withType: Polyline.self)
+                
+                for await geometry in model.geometryEditor.$geometry {
+                    let polyline = geometry as? Polyline
+                    canApplyEdits = polyline?.parts.contains { $0.points.count >= 2 } ?? false
+                    if canApplyEdits {
+                        statusMessage = "Tap the check mark to add the pipe."
+                    }
+                    
+                    geometryEditorCanUndo = model.geometryEditor.canUndo
+                }
             }
-        }
-        .errorAlert(presentingError: $error)
+            .errorAlert(presentingError: $error)
     }
     
     /// The buttons in the bottom toolbar.

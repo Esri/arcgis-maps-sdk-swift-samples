@@ -119,7 +119,7 @@ private extension ManageBookmarksView {
         @State private var bookmarks: [Bookmark] = []
         
         var body: some View {
-            NavigationView {
+            NavigationStack {
                 List {
                     ForEach(bookmarks, id: \.self) { bookmark in
                         Button {
@@ -154,12 +154,11 @@ private extension ManageBookmarksView {
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
                         // Note: There is a bug in iOS 17 that prevents the `EditButton` from working
-                        // on the first tap when it is embedded in a `NavigationView` in a `popover`.
+                        // on the first tap when it is embedded in a `NavigationStack` in a `popover`.
                         EditButton()
                     }
                 }
             }
-            .navigationViewStyle(.stack)
             .onAppear {
                 bookmarks = map.bookmarks
             }
@@ -221,30 +220,21 @@ private extension View {
         isPresented: Binding<Bool>,
         @ViewBuilder content: @escaping () -> Content
     ) -> some View where Content: View {
-        Group {
-            if #available(iOS 16, *) {
-                self
-                    .popover(isPresented: isPresented, arrowEdge: .bottom) {
-                        content()
-                            .presentationDetents([.medium, .large])
+        self
+            .popover(isPresented: isPresented, arrowEdge: .bottom) {
+                content()
+                    .presentationDetents([.medium, .large])
 #if targetEnvironment(macCatalyst)
-                            .frame(minWidth: 300, minHeight: 270)
+                    .frame(minWidth: 300, minHeight: 270)
 #else
-                            .frame(minWidth: 320, minHeight: 390)
+                    .frame(minWidth: 320, minHeight: 390)
 #endif
-                    }
-            } else {
-                self
-                    .sheet(isPresented: isPresented, detents: [.medium, .large]) {
-                        content()
-                    }
             }
-        }
     }
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         ManageBookmarksView()
     }
 }

@@ -142,7 +142,7 @@ private extension Date {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         ShowRealisticLightAndShadowsView()
     }
 }

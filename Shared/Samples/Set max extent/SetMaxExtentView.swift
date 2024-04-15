@@ -75,7 +75,7 @@ private extension Envelope {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         SetMaxExtentView()
     }
 }

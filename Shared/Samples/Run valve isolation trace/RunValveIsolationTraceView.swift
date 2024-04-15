@@ -86,14 +86,8 @@ struct RunValveIsolationTraceView: View {
                 }
             }
             .sheet(isPresented: $isConfigurationPresented) {
-                if #available(iOS 16, *) {
-                    NavigationStack {
-                        configurationView
-                    }
-                } else {
-                    NavigationView {
-                        configurationView
-                    }
+                NavigationStack {
+                    configurationView
                 }
             }
             .overlay(alignment: .center) {
@@ -176,7 +170,6 @@ struct RunValveIsolationTraceView: View {
                 Button("Done") { isConfigurationPresented = false }
             }
         }
-        .navigationViewStyle(.stack)
     }
 }
 
@@ -193,7 +186,7 @@ extension RunValveIsolationTraceView.Model.TracingActivity {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         RunValveIsolationTraceView()
     }
 }

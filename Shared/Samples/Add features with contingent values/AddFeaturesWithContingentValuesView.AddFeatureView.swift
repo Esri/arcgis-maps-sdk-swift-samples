@@ -123,6 +123,11 @@ extension AddFeaturesWithContingentValuesView {
                 // Add nil to allow for an empty option in the picker.
                 statusOptions.insert(nil, at: 0)
             }
+            .onDisappear {
+                selectedStatusName = nil
+                selectedProtectionName = nil
+                selectedBufferSize = nil
+            }
         }
     }
 }

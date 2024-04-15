@@ -47,6 +47,16 @@ Select a feature to make edits and then tap "Apply" to send edits to the server.
 
 The [Naperville electric](https://sampleserver7.arcgisonline.com/server/rest/services/UtilityNetwork/NapervilleElectricV5/FeatureServer) feature service contains a utility network that can be used to query the network state and validate network topology before tracing. The [Naperville electric webmap](https://sampleserver7.arcgisonline.com/portal/home/item.html?id=6e3fc6db3d0b4e6589eb4097eb3e5b9b) uses the same feature service endpoint and is shown in this sample. Authentication is required and handled within the sample code.
 
+## Additional information
+
+Starting from 200.4, an Advanced Editing extension is required for editing a utility network in the following cases:
+
+* Stand-alone mobile geodatabase that is exported from ArcGIS Pro 2.7 or higher
+* Sync-enabled mobile geodatabase that is generated from an ArcGIS Enterprise Feature Service 11.2 or higher
+* Web map or service geodatabase that points to an ArcGIS Enterprise Feature Service 11.2 or higher
+
+Please refer to the "Advanced Editing" section in the extension license table in [License and deployment](https://developers.arcgis.com/swift/license-and-deployment/license-levels-and-capabilities/) for details.
+
 ## Tags
 
 dirty areas, edit, network topology, online, state, trace, utility network, validate

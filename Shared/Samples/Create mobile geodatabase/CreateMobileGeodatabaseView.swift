@@ -98,34 +98,25 @@ struct CreateMobileGeodatabaseView: View {
 
 private extension CreateMobileGeodatabaseView {
     /// The button that brings up the feature table sheet.
-    @ViewBuilder var tableButton: some View {
+    var tableButton: some View {
         /// The button to bring up the sheet.
-        let button = Button("View Table") {
+        Button("View Table") {
             tableSheetIsShowing = true
         }
-        
-        if #available(iOS 16, *) {
-            button
-                .popover(isPresented: $tableSheetIsShowing, arrowEdge: .bottom) {
-                    tableList
-                        .presentationDetents([.fraction(0.5)])
+        .popover(isPresented: $tableSheetIsShowing, arrowEdge: .bottom) {
+            tableList
+                .presentationDetents([.fraction(0.5)])
 #if targetEnvironment(macCatalyst)
-                        .frame(minWidth: 300, minHeight: 270)
+                .frame(minWidth: 300, minHeight: 270)
 #else
-                        .frame(minWidth: 320, minHeight: 390)
+                .frame(minWidth: 320, minHeight: 390)
 #endif
-                }
-        } else {
-            button
-                .sheet(isPresented: $tableSheetIsShowing) {
-                    tableList
-                }
         }
     }
     
     /// The list of features in the feature table.
-    var tableList: some View {
-        NavigationView {
+    private var tableList: some View {
+        NavigationStack {
             List {
                 Section("OID and Collection Timestamp") {
                     ForEach(model.features, id: \.self) { feature in
@@ -147,7 +138,6 @@ private extension CreateMobileGeodatabaseView {
                 }
             }
         }
-        .navigationViewStyle(.stack)
     }
 }
 
@@ -173,7 +163,7 @@ private extension FormatStyle where Self == Date.VerbatimFormatStyle {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         CreateMobileGeodatabaseView()
     }
 }
