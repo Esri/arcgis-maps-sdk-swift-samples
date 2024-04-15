@@ -14,16 +14,16 @@ To create a geometry, press the create button to choose the geometry type you wa
 
 To configure snapping, press the snap settings button to enable or disable snapping and choose which layers to snap to.
 
-To interactively snap a vertex, ensure that snapping is enabled and move the mouse pointer or drag a vertex to nearby an existing feature. When the pointer is close to a feature, the edit position will be adjusted to coincide with (or snap to), edges and vertices of that feature. Release the touch pointer to place the vertex at the snapped location.
+To interactively snap a vertex, ensure that snapping is enabled and move the mouse pointer or drag a vertex close to an existing feature. When the pointer is close to a feature, the edit position will be adjusted to coincide with (or snap to), edges and vertices of that feature. Release the touch pointer to place the vertex at the snapped location.
 
-Long press to invoke the magnifier before start moving the pointer to more clearly see how the vertex is snapped.
+To more clearly see how the vertex is snapped, long press to invoke the magnifier before starting to move the pointer.
 
 ## How it works
 
 1. Create a `Map` from the portal item and add it to the `MapView`.
 2. Set the map's `loadSettings.featureTilingMode` to `enabledWithFullResolutionWhenSupported`.
 3. Create a `GeometryEditor` and connect it to the map view.
-4. Call `syncSourceSettings()` after the map's operational layers are loaded and the geometry editor connected to the map view.
+4. Call `syncSourceSettings()` after the map's operational layers are loaded and the geometry editor is connected to the map view.
 5. Set `SnapSettings.isEnabled` and each `SnapSourceSettings.isEnabled` to `true` for the `SnapSource` of interest.
 6. Start the geometry editor with a `GeometryType`.
 
