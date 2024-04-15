@@ -68,18 +68,16 @@ extension SnapGeometryEditsView {
             shouldUniformScale ? .uniform : .stretch
         }
         
-        /// Creates the geometry menu with a geometry editor.
-        init() {
-            Task { [weak self, geometryEditor] in
-                for await geometry in geometryEditor.$geometry {
-                    self?.geometry = geometry
-                }
-            }
-            Task { [weak self, geometryEditor] in
-                for await selection in geometryEditor.$selectedElement {
-                    self?.selection = selection
-                }
-            }
+        /// Updates the selected element when the geometry editor state changes.
+        /// - Parameter newSelectedElement: The new selection.
+        func onSelectedElementChanged(_ newSelectedElement: GeometryEditorElement?) {
+            selection = newSelectedElement
+        }
+        
+        /// Updates the geometry when the geometry editor state changes.
+        /// - Parameter newGeometry: The new geometry.
+        func onGeometryChanged(_ newGeometry: Geometry?) {
+            geometry = newGeometry
         }
         
         /// Saves the current geometry to the graphics overlay and stops editing.
