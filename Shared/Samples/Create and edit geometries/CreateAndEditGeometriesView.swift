@@ -21,15 +21,24 @@ struct CreateAndEditGeometriesView: View {
     @State private var map = Map(basemapStyle: .arcGISTopographic)
     
     /// The model that is required by the menu.
-    @StateObject var model = GeometryEditorMenuModel(
-        geometryEditor: GeometryEditor(),
-        graphicsOverlay: GraphicsOverlay(renderingMode: .dynamic)
-    )
+    @StateObject var model = GeometryEditorMenuModel()
     
     var body: some View {
         VStack {
             MapView(map: map, graphicsOverlays: [model.graphicsOverlay])
                 .geometryEditor(model.geometryEditor)
+                .task {
+                    for await geometry in model.geometryEditor.$geometry {
+                        // Update geometry when there is an update.
+                        model.onGeometryChanged(geometry)
+                    }
+                }
+                .task {
+                    for await selection in model.geometryEditor.$selectedElement {
+                        // Update selected element when there is an update.
+                        model.onSelectedElementChanged(selection)
+                    }
+                }
         }
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
@@ -226,10 +235,10 @@ extension GeometryEditorMenu {
 @MainActor
 class GeometryEditorMenuModel: ObservableObject {
     /// The geometry editor.
-    let geometryEditor: GeometryEditor
+    let geometryEditor = GeometryEditor()
     
     /// The graphics overlay used to save geometries to.
-    let graphicsOverlay: GraphicsOverlay
+    let graphicsOverlay = GraphicsOverlay(renderingMode: .dynamic)
     
     /// A Boolean value indicating if the geometry editor can perform an undo.
     @Published private(set) var canUndo = false
@@ -274,23 +283,16 @@ class GeometryEditorMenuModel: ObservableObject {
         shouldUniformScale ? .uniform : .stretch
     }
     
-    /// Creates the geometry menu with a geometry editor.
-    /// - Parameter geometryEditor: The geometry editor that the menu should interact with.
-    /// - Parameter graphicsOverlay: The graphics overlay that is used to save geometries to.
-    init(geometryEditor: GeometryEditor, graphicsOverlay: GraphicsOverlay) {
-        self.geometryEditor = geometryEditor
-        self.graphicsOverlay = graphicsOverlay
-        
-        Task { [weak self, geometryEditor] in
-            for await geometry in geometryEditor.$geometry {
-                self?.geometry = geometry
-            }
-        }
-        Task { [weak self, geometryEditor] in
-            for await selection in geometryEditor.$selectedElement {
-                self?.selection = selection
-            }
-        }
+    /// Updates the selected element when the geometry editor state changes.
+    /// - Parameter newSelectedElement: The new selection.
+    func onSelectedElementChanged(_ newSelectedElement: GeometryEditorElement?) {
+        selection = newSelectedElement
+    }
+    
+    /// Updates the geometry when the geometry editor state changes.
+    /// - Parameter newGeometry: The new geometry.
+    func onGeometryChanged(_ newGeometry: Geometry?) {
+        geometry = newGeometry
     }
     
     /// Saves the current geometry to the graphics overlay and stops editing.
