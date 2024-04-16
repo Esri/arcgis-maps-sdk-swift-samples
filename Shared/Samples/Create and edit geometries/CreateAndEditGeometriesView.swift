@@ -37,7 +37,7 @@ struct CreateAndEditGeometriesView: View {
 }
 
 /// A view that provides a menu for geometry editor functionality.
-struct GeometryEditorMenu: View {
+private struct GeometryEditorMenu: View {
     /// The model for the menu.
     @ObservedObject var model: GeometryEditorModel
     
@@ -74,7 +74,7 @@ struct GeometryEditorMenu: View {
     }
 }
 
-extension GeometryEditorMenu {
+private extension GeometryEditorMenu {
     /// The content of the main menu.
     private var mainMenuContent: some View {
         VStack {
@@ -226,40 +226,40 @@ extension GeometryEditorMenu {
     }
 }
 
-extension GeometryEditorMenu {
+private extension GeometryEditorMenu {
     /// A Boolean value indicating whether the selection can be deleted.
     ///
     /// In some instances deleting the selection may be invalid. One example would be the mid vertex
     /// of a line.
-    var deleteButtonIsDisabled: Bool {
+    private var deleteButtonIsDisabled: Bool {
         guard let selectedElement else { return true }
         return !selectedElement.canBeDeleted
     }
     
     /// A Boolean value indicating if the geometry editor can perform an undo.
-    var canUndo: Bool {
+    private var canUndo: Bool {
         return model.geometryEditor.canUndo
     }
     
     /// A Boolean value indicating if the geometry editor can perform a redo.
-    var canRedo: Bool {
+    private var canRedo: Bool {
         return model.geometryEditor.canRedo
     }
     
     /// A Boolean value indicating if the geometry can be saved to a graphics overlay.
-    var canSave: Bool {
+    private var canSave: Bool {
         return geometry?.sketchIsValid ?? false
     }
     
     /// A Boolean value indicating if the geometry can be cleared from the geometry editor.
-    var canClearCurrentSketch: Bool {
+    private var canClearCurrentSketch: Bool {
         return geometry.map { !$0.isEmpty } ?? false
     }
 }
 
 /// An object that acts as a view model for the geometry editor menu.
 @MainActor
-class GeometryEditorModel: ObservableObject {
+private class GeometryEditorModel: ObservableObject {
     /// The geometry editor.
     let geometryEditor = GeometryEditor()
     
@@ -270,7 +270,7 @@ class GeometryEditorModel: ObservableObject {
     @Published private(set) var canClearSavedSketches = false
     
     /// A Boolean value indicating if the geometry editor has started.
-    @Published var isStarted = false
+    @Published private(set) var isStarted = false
     
     /// A Boolean value indicating if the scale mode is uniform.
     @Published var shouldUniformScale = false {
@@ -330,7 +330,7 @@ class GeometryEditorModel: ObservableObject {
     /// - Parameters:
     ///   - tool: The geometry editor tool.
     ///   - scaleMode: Preserve the original aspect ratio or scale freely.
-    func configureGeometryEditorTool(_ tool: GeometryEditorTool, scaleMode: GeometryEditorScaleMode) {
+    private func configureGeometryEditorTool(_ tool: GeometryEditorTool, scaleMode: GeometryEditorScaleMode) {
         switch tool {
         case let tool as FreehandTool:
             tool.configuration.scaleMode = scaleMode
