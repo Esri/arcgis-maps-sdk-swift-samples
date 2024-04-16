@@ -67,7 +67,7 @@ struct DisplayContentOfUtilityNetworkContainerView: View {
                         .popover(isPresented: $isShowingLegend) {
                             sheetContent
                                 .presentationDetents([.fraction(0.5)])
-                                .frame(idealWidth: 320, minHeight: 380)
+                                .frame(idealWidth: 320, idealHeight: 380)
                         }
                         .task(id: displayScale) {
                             // Updates the legend info when display scale changes.

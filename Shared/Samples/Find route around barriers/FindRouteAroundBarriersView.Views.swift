@@ -83,7 +83,7 @@ extension FindRouteAroundBarriersView {
             .popover(isPresented: $sheetIsShowing) {
                 sheetContent
                     .presentationDetents([.fraction(0.5)])
-                    .frame(idealWidth: 320, minHeight: 240)
+                    .frame(idealWidth: 320, idealHeight: 240)
             }
         }
         

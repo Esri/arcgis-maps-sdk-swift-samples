@@ -40,7 +40,7 @@ struct DownloadPreplannedMapAreaView: View {
                     .popover(isPresented: $isShowingSelectMapView) {
                         MapPicker(model: model)
                             .presentationDetents([.fraction(0.5)])
-                            .frame(idealWidth: 320, minHeight: 380)
+                            .frame(idealWidth: 320, idealHeight: 380)
                     }
                     
                     Spacer()

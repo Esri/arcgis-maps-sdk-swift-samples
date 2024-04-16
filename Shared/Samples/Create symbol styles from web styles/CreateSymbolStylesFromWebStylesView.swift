@@ -72,7 +72,7 @@ struct CreateSymbolStylesFromWebStylesView: View {
                                 }
                         }
                         .presentationDetents([.fraction(0.5)])
-                        .frame(idealWidth: 320, minHeight: 380)
+                        .frame(idealWidth: 320, idealHeight: 380)
                     }
                 }
             }
