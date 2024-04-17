@@ -58,16 +58,32 @@ struct CreateSymbolStylesFromWebStylesView: View {
                     Button("Legend") {
                         isShowingLegend = true
                     }
-                    .sheet(isPresented: $isShowingLegend, detents: [.medium]) {
-                        legendList
+                    .popover(isPresented: $isShowingLegend) {
+                        NavigationStack {
+                            LegendList(legendItems: $legendItems)
+                                .navigationTitle("Symbol Styles")
+                                .navigationBarTitleDisplayMode(.inline)
+                                .toolbar {
+                                    ToolbarItem(placement: .confirmationAction) {
+                                        Button("Done") {
+                                            isShowingLegend = false
+                                        }
+                                    }
+                                }
+                        }
+                        .presentationDetents([.fraction(0.5)])
+                        .frame(idealWidth: 320, idealHeight: 380)
                     }
                 }
             }
     }
     
     /// The legend list that describes what each symbol represents.
-    private var legendList: some View {
-        NavigationStack {
+    private struct LegendList: View {
+        /// A binding to the list of legend items to show.
+        @Binding var legendItems: [LegendItem]
+        
+        var body: some View {
             List(legendItems, id: \.name) { legendItem in
                 Label {
                     Text(legendItem.name)
@@ -75,17 +91,7 @@ struct CreateSymbolStylesFromWebStylesView: View {
                     Image(uiImage: legendItem.image)
                 }
             }
-            .navigationTitle("Symbol Styles")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") {
-                        isShowingLegend = false
-                    }
-                }
-            }
         }
-        .frame(idealWidth: 320, idealHeight: 428)
     }
 }
 

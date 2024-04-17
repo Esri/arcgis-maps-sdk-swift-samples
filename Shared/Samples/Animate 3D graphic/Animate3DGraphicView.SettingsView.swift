@@ -30,14 +30,10 @@ extension Animate3DGraphicView {
             Button(label) {
                 isPresented = true
             }
-            .popover(isPresented: $isPresented, arrowEdge: .bottom) {
+            .popover(isPresented: $isPresented) {
                 settingsContent
                     .presentationDetents([.fraction(0.5)])
-#if targetEnvironment(macCatalyst)
-                    .frame(minWidth: 300, minHeight: 270)
-#else
-                    .frame(minWidth: 320, minHeight: 390)
-#endif
+                    .frame(idealWidth: 320, idealHeight: 380)
             }
         }
         

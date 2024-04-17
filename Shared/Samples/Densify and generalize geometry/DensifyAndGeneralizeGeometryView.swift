@@ -29,8 +29,12 @@ struct DensifyAndGeneralizeGeometryView: View {
                     Button("Geometry Settings") {
                         isShowingSettings = true
                     }
-                    .sheet(isPresented: $isShowingSettings, detents: [.medium], dragIndicatorVisibility: .visible) {
-                        SettingsView(model: model)
+                    .popover(isPresented: $isShowingSettings) {
+                        NavigationStack {
+                            SettingsView(model: model)
+                        }
+                        .presentationDetents([.fraction(0.5)])
+                        .frame(idealWidth: 320, idealHeight: 380)
                     }
                 }
             }

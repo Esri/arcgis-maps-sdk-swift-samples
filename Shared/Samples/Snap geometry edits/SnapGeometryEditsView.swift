@@ -78,11 +78,13 @@ struct SnapGeometryEditsView: View {
                             self.error = error
                         }
                     }
-                    .sheet(isPresented: $showsSnapSettings, detents: [.medium]) {
+                    .popover(isPresented: $showsSnapSettings) {
                         NavigationStack {
                             // Various snapping settings for a geometry editor.
                             SnapSettingsView(model: model)
                         }
+                        .presentationDetents([.fraction(0.5)])
+                        .frame(idealWidth: 320, idealHeight: 380)
                     }
                     .disabled(!layersAreLoaded)
                 }

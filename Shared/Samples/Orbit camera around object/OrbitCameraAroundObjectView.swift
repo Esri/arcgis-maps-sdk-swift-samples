@@ -78,14 +78,10 @@ struct OrbitCameraAroundObjectView: View {
         Button("Settings") {
             settingsSheetIsPresented = true
         }
-        .popover(isPresented: $settingsSheetIsPresented, arrowEdge: .bottom) {
+        .popover(isPresented: $settingsSheetIsPresented) {
             SettingsView(model: model)
                 .presentationDetents([.fraction(0.5)])
-#if targetEnvironment(macCatalyst)
-                .frame(minWidth: 300, minHeight: 270)
-#else
-                .frame(minWidth: 320, minHeight: 390)
-#endif
+                .frame(idealWidth: 320, idealHeight: 290)
         }
     }
 }

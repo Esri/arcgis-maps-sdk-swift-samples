@@ -66,10 +66,10 @@ extension FindRouteAroundBarriersView {
         let title: String
         
         /// A view that contains the content to display in the sheet.
-        @ViewBuilder let content: () -> Content
+        let content: () -> Content
         
         /// A view that describes the purpose of the button.
-        @ViewBuilder let label: () -> Label
+        let label: () -> Label
         
         /// A Boolean value indicating whether the sheet is showing.
         @State private var sheetIsShowing = false
@@ -80,14 +80,10 @@ extension FindRouteAroundBarriersView {
             } label: {
                 label()
             }
-            .popover(isPresented: $sheetIsShowing, arrowEdge: .bottom) {
+            .popover(isPresented: $sheetIsShowing) {
                 sheetContent
                     .presentationDetents([.fraction(0.5)])
-#if targetEnvironment(macCatalyst)
-                    .frame(minWidth: 300, minHeight: 270)
-#else
-                    .frame(minWidth: 320, minHeight: 390)
-#endif
+                    .frame(idealWidth: 320, idealHeight: 240)
             }
         }
         

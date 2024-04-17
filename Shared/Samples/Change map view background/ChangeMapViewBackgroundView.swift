@@ -31,8 +31,12 @@ struct ChangeMapViewBackgroundView: View {
                     Button("Background Grid Settings") {
                         isShowingSettings = true
                     }
-                    .sheet(isPresented: $isShowingSettings, detents: [.medium], dragIndicatorVisibility: .visible) {
-                        SettingsView(model: model)
+                    .popover(isPresented: $isShowingSettings) {
+                        NavigationStack {
+                            SettingsView(model: model)
+                        }
+                        .presentationDetents([.fraction(0.5)])
+                        .frame(idealWidth: 320, idealHeight: 310)
                     }
                 }
             }
