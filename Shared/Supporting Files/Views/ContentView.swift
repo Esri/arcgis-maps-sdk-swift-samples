@@ -36,9 +36,9 @@ struct ContentView: View {
                     }
                 }
         } content: {
-            Text("Select a category.")
+            Text("No Category Selected")
         } detail: {
-            Text("Select a sample.")
+            Text("No Sample Selected")
         }
     }
 }
