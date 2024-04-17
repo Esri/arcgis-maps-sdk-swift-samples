@@ -40,7 +40,6 @@ struct FavoritesView: View {
                 favoriteNames.remove(atOffsets: atOffsets)
             }
         }
-        .listStyle(.sidebar)
         .toolbar {
             ToolbarItemGroup(placement: .topBarTrailing) {
                 EditButton()

@@ -84,32 +84,25 @@ private extension SamplesSearchView {
         let descriptionMatches: [Sample]
         let tagMatches: [Sample]
         
-        if query.isEmpty {
-            // Show all samples in the name section when query is empty.
-            nameMatches = samples
-            descriptionMatches = []
-            tagMatches = []
-        } else {
-            // The names of the samples already found in a previous section.
-            var previousSearchResults: Set<String> = []
-            
-            // Partially match a query to a sample's name.
-            nameMatches = samples.filter { $0.name.localizedCaseInsensitiveContains(query) }
-            previousSearchResults.formUnion(nameMatches.map(\.name))
-            
-            // Partially match a query to a sample's description.
-            descriptionMatches = samples.filter { $0.description.localizedCaseInsensitiveContains(query) }
-                .filter { !previousSearchResults.contains($0.name) }
-            previousSearchResults.formUnion(descriptionMatches.map(\.name))
-            
-            // Match a query to one of the sample's tags.
-            tagMatches = samples.filter { sample in
-                sample.tags.contains { tag in
-                    tag.localizedCaseInsensitiveCompare(query) == .orderedSame
-                }
-            }
+        // The names of the samples already found in a previous section.
+        var previousSearchResults: Set<String> = []
+        
+        // Partially match a query to a sample's name.
+        nameMatches = samples.filter { $0.name.localizedCaseInsensitiveContains(query) }
+        previousSearchResults.formUnion(nameMatches.map(\.name))
+        
+        // Partially match a query to a sample's description.
+        descriptionMatches = samples.filter { $0.description.localizedCaseInsensitiveContains(query) }
             .filter { !previousSearchResults.contains($0.name) }
+        previousSearchResults.formUnion(descriptionMatches.map(\.name))
+        
+        // Match a query to one of the sample's tags.
+        tagMatches = samples.filter { sample in
+            sample.tags.contains { tag in
+                tag.localizedCaseInsensitiveCompare(query) == .orderedSame
+            }
         }
+        .filter { !previousSearchResults.contains($0.name) }
         
         return SearchResult(
             nameMatches: nameMatches,
