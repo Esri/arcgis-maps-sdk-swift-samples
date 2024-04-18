@@ -18,8 +18,8 @@ struct CategoriesView: View {
     /// The visibility of the leading columns in the navigation split view.
     @Binding var columnVisibility: NavigationSplitViewVisibility
     
-    /// The selected category loaded from user defaults.
-    @AppStorage("selectedCategory") private var selectedCategory: String?
+    /// The category currently selected.
+    @State private var selectedCategory: String?
     
     /// A Boolean value indicating whether the navigation destination is showing.
     @State private var destinationIsPresented = false
@@ -78,10 +78,6 @@ struct CategoriesView: View {
         }
         .onChange(of: selectedCategory) { newSelection in
             destinationIsPresented = newSelection != nil
-        }
-        .onAppear {
-            // Presents the destination if there is a category loaded from the user defaults.
-            destinationIsPresented = selectedCategory != nil
         }
     }
 }
