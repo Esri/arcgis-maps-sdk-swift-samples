@@ -50,18 +50,6 @@ struct SnapGeometryEditsView: View {
                 // Load every layer in the web map when the sample starts.
                 layersAreLoaded = await map.operationalLayers.load()
             }
-            .task {
-                for await geometry in model.geometryEditor.$geometry {
-                    // Update geometry when there is an update.
-                    model.onGeometryChanged(geometry)
-                }
-            }
-            .task {
-                for await selection in model.geometryEditor.$selectedElement {
-                    // Update selected element when there is an update.
-                    model.onSelectedElementChanged(selection)
-                }
-            }
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
                     Spacer()

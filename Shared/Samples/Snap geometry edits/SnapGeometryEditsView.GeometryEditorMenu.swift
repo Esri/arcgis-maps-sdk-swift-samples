@@ -21,6 +21,12 @@ extension SnapGeometryEditsView {
         /// The model for the sample.
         @ObservedObject var model: GeometryEditorModel
         
+        /// The currently selected element.
+        @State private var selectedElement: GeometryEditorElement?
+
+        /// The current geometry of the geometry editor.
+        @State private var geometry: Geometry?
+        
         var body: some View {
             Menu {
                 if !model.isStarted {
@@ -29,6 +35,18 @@ extension SnapGeometryEditsView {
                 } else {
                     // If the geometry editor is started, show the edit menu.
                     editMenuContent
+                        .task {
+                            for await geometry in model.geometryEditor.$geometry {
+                                // Update geometry when there is an update.
+                                self.geometry = geometry
+                            }
+                        }
+                        .task {
+                            for await element in model.geometryEditor.$selectedElement {
+                                // Update selected element when there is an update.
+                                selectedElement = element
+                            }
+                        }
                 }
             } label: {
                 Label("Geometry Editor", systemImage: "pencil.tip.crop.circle")
@@ -40,8 +58,8 @@ extension SnapGeometryEditsView {
         /// In some instances deleting the selection may be invalid.
         /// One example would be the mid vertex of a line.
         private var deleteButtonIsDisabled: Bool {
-            guard let selection = model.selection else { return true }
-            return !selection.canBeDeleted
+            guard let selectedElement else { return true }
+            return !selectedElement.canBeDeleted
         }
         
         /// The content of the main menu.

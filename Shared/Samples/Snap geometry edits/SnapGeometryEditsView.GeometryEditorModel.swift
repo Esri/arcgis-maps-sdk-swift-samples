@@ -31,9 +31,6 @@ extension SnapGeometryEditsView {
         /// A Boolean value indicating if the geometry editor can perform a redo.
         @Published private(set) var canRedo = false
         
-        /// The currently selected element.
-        @Published private(set) var selection: GeometryEditorElement?
-        
         /// A Boolean value indicating if the geometry can be saved to a graphics overlay.
         @Published private(set) var canSave = false
         
@@ -42,16 +39,6 @@ extension SnapGeometryEditsView {
         
         /// A Boolean value indicating if the saved sketches can be cleared.
         @Published private(set) var canClearSavedSketches = false
-        
-        /// The current geometry of the geometry editor.
-        @Published private(set) var geometry: Geometry? {
-            didSet {
-                canUndo = geometryEditor.canUndo
-                canRedo = geometryEditor.canRedo
-                canClearCurrentSketch = geometry.map { !$0.isEmpty } ?? false
-                canSave = geometry?.sketchIsValid ?? false
-            }
-        }
         
         /// A Boolean value indicating if the geometry editor has started.
         @Published private(set) var isStarted = false
@@ -66,18 +53,6 @@ extension SnapGeometryEditsView {
         /// The scale mode to be set on the geometry editor.
         private var scaleMode: GeometryEditorScaleMode {
             shouldUniformScale ? .uniform : .stretch
-        }
-        
-        /// Updates the selected element when the geometry editor state changes.
-        /// - Parameter newSelectedElement: The new selection.
-        func onSelectedElementChanged(_ newSelectedElement: GeometryEditorElement?) {
-            selection = newSelectedElement
-        }
-        
-        /// Updates the geometry when the geometry editor state changes.
-        /// - Parameter newGeometry: The new geometry.
-        func onGeometryChanged(_ newGeometry: Geometry?) {
-            geometry = newGeometry
         }
         
         /// Saves the current geometry to the graphics overlay and stops editing.
