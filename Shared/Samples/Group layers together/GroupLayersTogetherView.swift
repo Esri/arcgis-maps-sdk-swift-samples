@@ -84,7 +84,6 @@ struct GroupLayersTogetherView: View {
                 }
             }
         }
-        .frame(idealWidth: 320, idealHeight: 428)
     }
 }
 
