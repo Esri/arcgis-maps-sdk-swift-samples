@@ -44,7 +44,7 @@ extension SnapGeometryEditsView {
         @Published private(set) var isStarted = false
         
         /// A Boolean value indicating if the scale mode is uniform.
-        @Published var shouldUniformScale = false {
+        @Published var isUniformScale = false {
             didSet {
                 configureGeometryEditorTool(geometryEditor.tool, scaleMode: scaleMode)
             }
@@ -52,7 +52,7 @@ extension SnapGeometryEditsView {
         
         /// The scale mode to be set on the geometry editor.
         private var scaleMode: GeometryEditorScaleMode {
-            shouldUniformScale ? .uniform : .stretch
+            isUniformScale ? .uniform : .stretch
         }
         
         /// Saves the current geometry to the graphics overlay and stops editing.

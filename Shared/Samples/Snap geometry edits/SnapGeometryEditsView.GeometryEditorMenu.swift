@@ -150,7 +150,7 @@ extension SnapGeometryEditsView {
                 }
                 .disabled(deleteButtonIsDisabled)
                 
-                Toggle("Uniform Scale", isOn: $model.shouldUniformScale)
+                Toggle("Uniform Scale", isOn: $model.isUniformScale)
                 
                 Button("Clear Current Sketch", systemImage: "trash", role: .destructive) {
                     model.geometryEditor.clearGeometry()
