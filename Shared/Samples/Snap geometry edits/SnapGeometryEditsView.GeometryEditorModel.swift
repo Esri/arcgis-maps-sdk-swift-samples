@@ -25,18 +25,6 @@ extension SnapGeometryEditsView {
         /// The graphics overlay used to save geometries to.
         let geometryOverlay = GraphicsOverlay(renderingMode: .dynamic)
         
-        /// A Boolean value indicating if the geometry editor can perform an undo.
-        @Published private(set) var canUndo = false
-        
-        /// A Boolean value indicating if the geometry editor can perform a redo.
-        @Published private(set) var canRedo = false
-        
-        /// A Boolean value indicating if the geometry can be saved to a graphics overlay.
-        @Published private(set) var canSave = false
-        
-        /// A Boolean value indicating if the geometry can be cleared from the geometry editor.
-        @Published private(set) var canClearCurrentSketch = false
-        
         /// A Boolean value indicating if the saved sketches can be cleared.
         @Published private(set) var canClearSavedSketches = false
         
@@ -56,9 +44,9 @@ extension SnapGeometryEditsView {
         }
         
         /// Saves the current geometry to the graphics overlay and stops editing.
-        /// - Precondition: `canSave`
+        /// - Precondition: Geometry's sketch must be valid.
         func save() {
-            precondition(canSave)
+            precondition(geometryEditor.geometry?.sketchIsValid ?? false)
             let geometry = geometryEditor.geometry!
             let graphic = Graphic(geometry: geometry, symbol: symbol(for: geometry))
             geometryOverlay.addGraphic(graphic)

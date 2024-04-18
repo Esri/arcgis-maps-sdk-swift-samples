@@ -23,9 +23,38 @@ extension SnapGeometryEditsView {
         
         /// The currently selected element.
         @State private var selectedElement: GeometryEditorElement?
-
+        
         /// The current geometry of the geometry editor.
         @State private var geometry: Geometry?
+        
+        /// A Boolean value indicating if the geometry editor can perform an undo.
+        var canUndo: Bool {
+            return model.geometryEditor.canUndo
+        }
+        
+        /// A Boolean value indicating if the geometry editor can perform a redo.
+        var canRedo: Bool {
+            return model.geometryEditor.canRedo
+        }
+        
+        /// A Boolean value indicating if the geometry can be saved to a graphics overlay.
+        var canSave: Bool {
+            return geometry?.sketchIsValid ?? false
+        }
+        
+        /// A Boolean value indicating if the geometry can be cleared from the geometry editor.
+        var canClearCurrentSketch: Bool {
+            return geometry.map { !$0.isEmpty } ?? false
+        }
+        
+        /// A Boolean value indicating whether the selection can be deleted.
+        ///
+        /// In some instances deleting the selection may be invalid.
+        /// One example would be the mid vertex of a line.
+        private var deleteButtonIsDisabled: Bool {
+            guard let selectedElement else { return true }
+            return !selectedElement.canBeDeleted
+        }
         
         var body: some View {
             Menu {
@@ -51,15 +80,6 @@ extension SnapGeometryEditsView {
             } label: {
                 Label("Geometry Editor", systemImage: "pencil.tip.crop.circle")
             }
-        }
-        
-        /// A Boolean value indicating whether the selection can be deleted.
-        ///
-        /// In some instances deleting the selection may be invalid.
-        /// One example would be the mid vertex of a line.
-        private var deleteButtonIsDisabled: Bool {
-            guard let selectedElement else { return true }
-            return !selectedElement.canBeDeleted
         }
         
         /// The content of the main menu.
@@ -138,12 +158,12 @@ extension SnapGeometryEditsView {
                 Button("Undo", systemImage: "arrow.uturn.backward") {
                     model.geometryEditor.undo()
                 }
-                .disabled(!model.canUndo)
+                .disabled(!canUndo)
                 
                 Button("Redo", systemImage: "arrow.uturn.forward") {
                     model.geometryEditor.redo()
                 }
-                .disabled(!model.canRedo)
+                .disabled(!canRedo)
                 
                 Button("Delete Selected Element", systemImage: "xmark.square.fill") {
                     model.geometryEditor.deleteSelectedElement()
@@ -155,14 +175,14 @@ extension SnapGeometryEditsView {
                 Button("Clear Current Sketch", systemImage: "trash", role: .destructive) {
                     model.geometryEditor.clearGeometry()
                 }
-                .disabled(!model.canClearCurrentSketch)
+                .disabled(!canClearCurrentSketch)
                 
                 Divider()
                 
                 Button("Save Sketch", systemImage: "square.and.arrow.down") {
                     model.save()
                 }
-                .disabled(!model.canSave)
+                .disabled(!canSave)
                 
                 Button("Cancel Sketch", systemImage: "xmark") {
                     model.stop()
