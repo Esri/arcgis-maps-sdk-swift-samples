@@ -55,21 +55,21 @@ private struct GeometryEditorMenu: View {
             } else {
                 // If the geometry editor is started, show the edit menu.
                 editMenuContent
+                    .task {
+                        for await geometry in model.geometryEditor.$geometry {
+                            // Update geometry when there is an update.
+                            self.geometry = geometry
+                        }
+                    }
+                    .task {
+                        for await element in model.geometryEditor.$selectedElement {
+                            // Update selected element when there is an update.
+                            selectedElement = element
+                        }
+                    }
             }
         } label: {
             Label("Geometry Editor", systemImage: "pencil.tip.crop.circle")
-        }
-        .task {
-            for await geometry in model.geometryEditor.$geometry {
-                // Update geometry when there is an update.
-                self.geometry = geometry
-            }
-        }
-        .task {
-            for await element in model.geometryEditor.$selectedElement {
-                // Update selected element when there is an update.
-                selectedElement = element
-            }
         }
     }
 }
