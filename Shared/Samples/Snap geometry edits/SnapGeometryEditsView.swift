@@ -44,7 +44,7 @@ struct SnapGeometryEditsView: View {
     @State private var showsSnapSettings = false
     
     var body: some View {
-        MapView(map: map, graphicsOverlays: [model.graphicsOverlay])
+        MapView(map: map, graphicsOverlays: [model.geometryOverlay])
             .geometryEditor(model.geometryEditor)
             .task {
                 // Load every layer in the web map when the sample starts.
