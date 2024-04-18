@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import SwiftUI
 import ArcGIS
+import SwiftUI
 
 struct ShowExtrudedFeaturesView: View {
     /// A scene with a topographic basemap centered on the US.
