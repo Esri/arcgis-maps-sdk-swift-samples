@@ -76,7 +76,7 @@ private struct GeometryEditorMenu: View {
 
 private extension GeometryEditorMenu {
     /// The content of the main menu.
-    private var mainMenuContent: some View {
+    var mainMenuContent: some View {
         VStack {
             Button {
                 model.startEditing(with: VertexTool(), geometryType: Point.self)
@@ -176,7 +176,7 @@ private extension GeometryEditorMenu {
     }
     
     /// The content of the editing menu.
-    private var editMenuContent: some View {
+    var editMenuContent: some View {
         VStack {
             Button {
                 model.geometryEditor.undo()
@@ -231,28 +231,28 @@ private extension GeometryEditorMenu {
     ///
     /// In some instances deleting the selection may be invalid. One example would be the mid vertex
     /// of a line.
-    private var deleteButtonIsDisabled: Bool {
+    var deleteButtonIsDisabled: Bool {
         guard let selectedElement else { return true }
         return !selectedElement.canBeDeleted
     }
     
     /// A Boolean value indicating if the geometry editor can perform an undo.
-    private var canUndo: Bool {
+    var canUndo: Bool {
         return model.geometryEditor.canUndo
     }
     
     /// A Boolean value indicating if the geometry editor can perform a redo.
-    private var canRedo: Bool {
+    var canRedo: Bool {
         return model.geometryEditor.canRedo
     }
     
     /// A Boolean value indicating if the geometry can be saved to a graphics overlay.
-    private var canSave: Bool {
+    var canSave: Bool {
         return geometry?.sketchIsValid ?? false
     }
     
     /// A Boolean value indicating if the geometry can be cleared from the geometry editor.
-    private var canClearCurrentSketch: Bool {
+    var canClearCurrentSketch: Bool {
         return geometry.map { !$0.isEmpty } ?? false
     }
 }
