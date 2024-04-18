@@ -83,8 +83,11 @@ struct ManageLayersSheetView: View {
                 Text("Manage Layers")
                     .bold()
                 HStack {
-                    Spacer()
                     EditButton()
+                    Spacer()
+                    Button("Done") {
+                        dismiss()
+                    }
                 }
             }
             .padding([.top, .leading, .trailing])

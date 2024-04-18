@@ -105,7 +105,7 @@ private extension FavoritesView {
                         Text("Choose a sample to add to Favorites")
                             .font(.subheadline)
                     }
-                    ToolbarItem(placement: .topBarTrailing) {
+                    ToolbarItem(placement: .confirmationAction) {
                         Button("Done") {
                             dismiss()
                         }

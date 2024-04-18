@@ -20,6 +20,9 @@ extension DensifyAndGeneralizeGeometryView {
         /// The view model for the sample.
         @ObservedObject var model: Model
         
+        /// The action to dismiss the view.
+        @Environment(\.dismiss) private var dismiss
+        
         var body: some View {
             List {
                 // Generalize toggle and slider.
@@ -64,6 +67,15 @@ extension DensifyAndGeneralizeGeometryView {
                         model.reset()
                     }
                     .frame(maxWidth: .infinity)
+                }
+            }
+            .navigationTitle("Geometry Settings")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") {
+                        dismiss()
+                    }
                 }
             }
         }
