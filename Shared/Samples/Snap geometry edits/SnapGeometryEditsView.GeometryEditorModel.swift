@@ -89,7 +89,7 @@ extension SnapGeometryEditsView {
         /// - Parameters:
         ///   - tool: The geometry editor tool.
         ///   - scaleMode: Preserve the original aspect ratio or scale freely.
-        func configureGeometryEditorTool(_ tool: GeometryEditorTool, scaleMode: GeometryEditorScaleMode) {
+        private func configureGeometryEditorTool(_ tool: GeometryEditorTool, scaleMode: GeometryEditorScaleMode) {
             switch tool {
             case let tool as FreehandTool:
                 tool.configuration.scaleMode = scaleMode

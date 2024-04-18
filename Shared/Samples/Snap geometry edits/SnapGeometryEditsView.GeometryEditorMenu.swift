@@ -28,22 +28,22 @@ extension SnapGeometryEditsView {
         @State private var geometry: Geometry?
         
         /// A Boolean value indicating if the geometry editor can perform an undo.
-        var canUndo: Bool {
+        private var canUndo: Bool {
             return model.geometryEditor.canUndo
         }
         
         /// A Boolean value indicating if the geometry editor can perform a redo.
-        var canRedo: Bool {
+        private var canRedo: Bool {
             return model.geometryEditor.canRedo
         }
         
         /// A Boolean value indicating if the geometry can be saved to a graphics overlay.
-        var canSave: Bool {
+        private var canSave: Bool {
             return geometry?.sketchIsValid ?? false
         }
         
         /// A Boolean value indicating if the geometry can be cleared from the geometry editor.
-        var canClearCurrentSketch: Bool {
+        private var canClearCurrentSketch: Bool {
             return geometry.map { !$0.isEmpty } ?? false
         }
         
