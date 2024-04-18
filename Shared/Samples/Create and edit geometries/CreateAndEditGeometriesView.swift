@@ -285,7 +285,7 @@ private class GeometryEditorModel: ObservableObject {
     }
     
     /// Saves the current geometry to the graphics overlay and stops editing.
-    /// - Precondition: Whether or not the geometry is from a valid sketch.
+    /// - Precondition: Geometry's sketch must be valid.
     func save() {
         precondition(geometryEditor.geometry?.sketchIsValid ?? false)
         let geometry = geometryEditor.geometry!
