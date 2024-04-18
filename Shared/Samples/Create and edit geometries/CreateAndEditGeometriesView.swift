@@ -199,7 +199,7 @@ private extension GeometryEditorMenu {
             }
             .disabled(deleteButtonIsDisabled)
             
-            Toggle("Uniform Scale", isOn: $model.shouldUniformScale)
+            Toggle("Uniform Scale", isOn: $model.isUniformScale)
             
             Button(role: .destructive) {
                 model.geometryEditor.clearGeometry()
@@ -273,7 +273,7 @@ private class GeometryEditorModel: ObservableObject {
     @Published private(set) var isStarted = false
     
     /// A Boolean value indicating if the scale mode is uniform.
-    @Published var shouldUniformScale = false {
+    @Published var isUniformScale = false {
         didSet {
             configureGeometryEditorTool(geometryEditor.tool, scaleMode: scaleMode)
         }
@@ -281,7 +281,7 @@ private class GeometryEditorModel: ObservableObject {
     
     /// The scale mode to be set on the geometry editor.
     private var scaleMode: GeometryEditorScaleMode {
-        shouldUniformScale ? .uniform : .stretch
+        isUniformScale ? .uniform : .stretch
     }
     
     /// Saves the current geometry to the graphics overlay and stops editing.
