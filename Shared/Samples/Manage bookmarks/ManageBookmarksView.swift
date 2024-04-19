@@ -154,10 +154,15 @@ private extension ManageBookmarksView {
                 .navigationTitle("Bookmarks")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
-                    ToolbarItem(placement: .topBarTrailing) {
+                    ToolbarItem(placement: .topBarLeading) {
                         // Note: There is a bug in iOS 17 that prevents the `EditButton` from working
                         // on the first tap when it is embedded in a `NavigationStack` in a `popover`.
                         EditButton()
+                    }
+                    ToolbarItem(placement: .confirmationAction) {
+                        Button("Done") {
+                            dismiss()
+                        }
                     }
                 }
             }

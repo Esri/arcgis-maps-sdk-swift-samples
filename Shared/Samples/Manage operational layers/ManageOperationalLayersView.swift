@@ -56,7 +56,7 @@ struct ManageOperationalLayersView: View {
                     .popover(isPresented: $isShowingSheet) {
                         ManageLayersSheetView(map: map)
                             .presentationDetents([.fraction(0.5)])
-                            .frame(idealWidth: 320, idealHeight: 320)
+                            .frame(idealWidth: 320, idealHeight: 360)
                     }
                 }
             }
@@ -83,8 +83,11 @@ struct ManageLayersSheetView: View {
                 Text("Manage Layers")
                     .bold()
                 HStack {
-                    Spacer()
                     EditButton()
+                    Spacer()
+                    Button("Done") {
+                        dismiss()
+                    }
                 }
             }
             .padding([.top, .leading, .trailing])
