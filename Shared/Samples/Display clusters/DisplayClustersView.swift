@@ -13,8 +13,8 @@
 // limitations under the License.
 
 import ArcGIS
-import SwiftUI
 import ArcGISToolkit
+import SwiftUI
 
 struct DisplayClustersView: View {
     /// A map of global power plants.
