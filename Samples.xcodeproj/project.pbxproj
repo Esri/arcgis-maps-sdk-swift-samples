@@ -57,7 +57,6 @@
 		00B042E8282EDC690072E1B4 /* SetBasemapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B042E5282EDC690072E1B4 /* SetBasemapView.swift */; };
 		00B04FB5283EEBA80026C882 /* DisplayOverviewMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B04FB4283EEBA80026C882 /* DisplayOverviewMapView.swift */; };
 		00C43AED2947DC350099AE34 /* ArcGISToolkit in Frameworks */ = {isa = PBXBuildFile; productRef = 00C43AEC2947DC350099AE34 /* ArcGISToolkit */; };
-		00C7993B2A845AAF00AFE342 /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00C7993A2A845AAF00AFE342 /* Sidebar.swift */; };
 		00C94A0D28B53DE1004E42D9 /* raster-file in Resources */ = {isa = PBXBuildFile; fileRef = 00C94A0C28B53DE1004E42D9 /* raster-file */; settings = {ASSET_TAGS = (AddRasterFromFile, ); }; };
 		00CB9138284814A4005C2C5D /* SearchWithGeocodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00CB9137284814A4005C2C5D /* SearchWithGeocodeView.swift */; };
 		00CCB8A5285BAF8700BBAB70 /* OnDemandResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00CCB8A4285BAF8700BBAB70 /* OnDemandResource.swift */; };
@@ -653,7 +652,6 @@
 		00B04272282EC59E0072E1B4 /* AboutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		00B042E5282EDC690072E1B4 /* SetBasemapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetBasemapView.swift; sourceTree = "<group>"; };
 		00B04FB4283EEBA80026C882 /* DisplayOverviewMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayOverviewMapView.swift; sourceTree = "<group>"; };
-		00C7993A2A845AAF00AFE342 /* Sidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sidebar.swift; sourceTree = "<group>"; };
 		00C94A0C28B53DE1004E42D9 /* raster-file */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "raster-file"; sourceTree = "<group>"; };
 		00CB9137284814A4005C2C5D /* SearchWithGeocodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchWithGeocodeView.swift; sourceTree = "<group>"; };
 		00CCB8A2285AAD7D00BBAB70 /* DowloadPortalItemData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DowloadPortalItemData.swift; sourceTree = "<group>"; };
@@ -888,7 +886,6 @@
 				E041ABD6287DB04D0056009B /* SampleInfoView.swift */,
 				00273CF52A82AB8700A7A77D /* SampleLink.swift */,
 				00273CF32A82AB5900A7A77D /* SamplesSearchView.swift */,
-				00C7993A2A845AAF00AFE342 /* Sidebar.swift */,
 				E041ABBF287CA9F00056009B /* WebView.swift */,
 			);
 			path = Views;
@@ -2672,7 +2669,6 @@
 				E088E1572862579D00413100 /* SetSurfacePlacementModeView.swift in Sources */,
 				1CAF831F2A20305F000E1E60 /* ShowUtilityAssociationsView.swift in Sources */,
 				00E7C15C2BBE1BF000B85D69 /* SnapGeometryEditsView.swift in Sources */,
-				00C7993B2A845AAF00AFE342 /* Sidebar.swift in Sources */,
 				E004A6C128414332002A1FE6 /* SetViewpointRotationView.swift in Sources */,
 				883C121529C9136600062FF9 /* DownloadPreplannedMapAreaView.MapPicker.swift in Sources */,
 				D72C43F32AEB066D00B6157B /* GeocodeOfflineView.Model.swift in Sources */,
