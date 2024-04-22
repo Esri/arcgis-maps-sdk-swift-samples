@@ -124,6 +124,7 @@ private extension CategoriesView {
                 }
             }
             .searchable(text: $query, placement: .navigationBarDrawer(displayMode: .always))
+            .scrollDismissesKeyboard(.immediately)
         }
     }
 }

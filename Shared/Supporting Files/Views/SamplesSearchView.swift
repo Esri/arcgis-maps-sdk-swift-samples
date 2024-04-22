@@ -60,7 +60,6 @@ struct SamplesSearchView: View {
                 }
             }
         }
-        .scrollDismissesKeyboard(.immediately)
         .overlay {
             // Once iOS 17.0 is the minimum supported platform,
             // this can be replaced with `ContentUnavailableView.search(text:)`.
