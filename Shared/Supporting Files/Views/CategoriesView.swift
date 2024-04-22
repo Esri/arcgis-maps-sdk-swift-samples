@@ -93,17 +93,29 @@ private extension CategoriesView {
                 .aspectRatio(contentMode: .fit)
                 .overlay {
                     Color(red: 0.24, green: 0.24, blue: 0.26, opacity: 0.6)
-                    Image("\(name.replacingOccurrences(of: " ", with: "-"))-icon")
-                        .resizable()
-                        .colorInvert()
-                        .padding(10)
-                        .frame(width: 50, height: 50)
-                        .background(.black.opacity(0.75))
-                        .clipShape(Circle())
-                    Text(name)
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(.white)
-                        .offset(y: 45)
+                    
+                    GeometryReader { geometry in
+                        Group {
+                            Image("\(name.replacingOccurrences(of: " ", with: "-"))-icon")
+                                .resizable()
+                                .frame(
+                                    width: geometry.size.width * 0.17,
+                                    height: geometry.size.height * 0.17
+                                )
+                                .padding(geometry.size.width * 0.06)
+                                .colorInvert()
+                                .background(.black.opacity(0.75))
+                                .clipShape(Circle())
+                            
+                            Text(name)
+                                .font(.system(size: geometry.size.width * 0.1))
+                                .multilineTextAlignment(.center)
+                                .foregroundColor(.white)
+                                .offset(y: geometry.size.height * 0.31)
+                                .padding()
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    }
                 }
                 .clipShape(RoundedRectangle(cornerRadius: 15))
         }
