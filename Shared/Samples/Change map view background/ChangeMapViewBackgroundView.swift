@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import SwiftUI
 import ArcGIS
+import SwiftUI
 
 struct ChangeMapViewBackgroundView: View {
     /// The view model for the sample.
@@ -36,7 +36,7 @@ struct ChangeMapViewBackgroundView: View {
                             SettingsView(model: model)
                         }
                         .presentationDetents([.fraction(0.5)])
-                        .frame(idealWidth: 320, idealHeight: 310)
+                        .frame(idealWidth: 320, idealHeight: 360)
                     }
                 }
             }

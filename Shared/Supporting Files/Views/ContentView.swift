@@ -15,19 +15,30 @@
 import SwiftUI
 
 struct ContentView: View {
-    /// The search query in the search bar.
-    @State private var query = ""
+    /// The visibility of the leading columns in the navigation split view.
+    @State private var columnVisibility: NavigationSplitViewVisibility = .all
+    
+    /// A Boolean value indicating whether to present the about view.
+    @State private var isAboutViewPresented = false
     
     var body: some View {
-        NavigationSplitView {
-            NavigationStack {
-                Sidebar(query: query)
-                    .searchable(text: $query)
-            }
+        NavigationSplitView(columnVisibility: $columnVisibility) {
+            CategoriesView(columnVisibility: $columnVisibility)
+                .navigationTitle("Categories")
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button("About", systemImage: "info.circle") {
+                            isAboutViewPresented = true
+                        }
+                        .sheet(isPresented: $isAboutViewPresented) {
+                            AboutView()
+                        }
+                    }
+                }
+        } content: {
+            Text("No Category Selected")
         } detail: {
-            NavigationStack {
-                Text("Select a category from the list.")
-            }
+            Text("No Sample Selected")
         }
     }
 }

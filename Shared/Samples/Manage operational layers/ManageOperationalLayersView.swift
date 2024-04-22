@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import SwiftUI
 import ArcGIS
+import SwiftUI
 
 struct ManageOperationalLayersView: View {
     /// A map with a topographic basemap and centered on western USA.
@@ -56,7 +56,7 @@ struct ManageOperationalLayersView: View {
                     .popover(isPresented: $isShowingSheet) {
                         ManageLayersSheetView(map: map)
                             .presentationDetents([.fraction(0.5)])
-                            .frame(idealWidth: 320, idealHeight: 320)
+                            .frame(idealWidth: 320, idealHeight: 360)
                     }
                 }
             }
@@ -83,8 +83,11 @@ struct ManageLayersSheetView: View {
                 Text("Manage Layers")
                     .bold()
                 HStack {
-                    Spacer()
                     EditButton()
+                    Spacer()
+                    Button("Done") {
+                        dismiss()
+                    }
                 }
             }
             .padding([.top, .leading, .trailing])

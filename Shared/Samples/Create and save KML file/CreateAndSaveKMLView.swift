@@ -13,8 +13,8 @@
 // limitations under the License.
 
 import ArcGIS
-import UniformTypeIdentifiers
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct CreateAndSaveKMLView: View {
     /// The view model for this sample.

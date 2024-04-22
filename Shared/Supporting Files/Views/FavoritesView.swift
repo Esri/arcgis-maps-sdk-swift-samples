@@ -40,7 +40,6 @@ struct FavoritesView: View {
                 favoriteNames.remove(atOffsets: atOffsets)
             }
         }
-        .listStyle(.sidebar)
         .toolbar {
             ToolbarItemGroup(placement: .topBarTrailing) {
                 EditButton()
@@ -105,7 +104,7 @@ private extension FavoritesView {
                         Text("Choose a sample to add to Favorites")
                             .font(.subheadline)
                     }
-                    ToolbarItem(placement: .topBarTrailing) {
+                    ToolbarItem(placement: .confirmationAction) {
                         Button("Done") {
                             dismiss()
                         }

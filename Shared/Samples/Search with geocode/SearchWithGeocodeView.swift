@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import SwiftUI
 import ArcGIS
 import ArcGISToolkit
+import SwiftUI
 
 struct SearchWithGeocodeView: View {
     /// The viewpoint used by the search view to pan/zoom the map to the extent

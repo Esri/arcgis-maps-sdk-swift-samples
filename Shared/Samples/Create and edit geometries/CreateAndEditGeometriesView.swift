@@ -20,15 +20,12 @@ struct CreateAndEditGeometriesView: View {
     /// The map to display in the view.
     @State private var map = Map(basemapStyle: .arcGISTopographic)
     
-    /// The model that is required by the menu.
-    @StateObject var model = GeometryEditorMenuModel(
-        geometryEditor: GeometryEditor(),
-        graphicsOverlay: GraphicsOverlay(renderingMode: .dynamic)
-    )
+    /// The view model for this sample.
+    @StateObject private var model = GeometryEditorModel()
     
     var body: some View {
         VStack {
-            MapView(map: map, graphicsOverlays: [model.graphicsOverlay])
+            MapView(map: map, graphicsOverlays: [model.geometryOverlay])
                 .geometryEditor(model.geometryEditor)
         }
         .toolbar {
@@ -40,9 +37,15 @@ struct CreateAndEditGeometriesView: View {
 }
 
 /// A view that provides a menu for geometry editor functionality.
-struct GeometryEditorMenu: View {
+private struct GeometryEditorMenu: View {
     /// The model for the menu.
-    @ObservedObject var model: GeometryEditorMenuModel
+    @ObservedObject var model: GeometryEditorModel
+    
+    /// The currently selected element.
+    @State private var selectedElement: GeometryEditorElement?
+    
+    /// The current geometry of the geometry editor.
+    @State private var geometry: Geometry?
     
     var body: some View {
         Menu {
@@ -52,6 +55,18 @@ struct GeometryEditorMenu: View {
             } else {
                 // If the geometry editor is started, show the edit menu.
                 editMenuContent
+                    .task {
+                        for await geometry in model.geometryEditor.$geometry {
+                            // Update geometry when there is an update.
+                            self.geometry = geometry
+                        }
+                    }
+                    .task {
+                        for await element in model.geometryEditor.$selectedElement {
+                            // Update selected element when there is an update.
+                            selectedElement = element
+                        }
+                    }
             }
         } label: {
             Label("Geometry Editor", systemImage: "pencil.tip.crop.circle")
@@ -59,9 +74,9 @@ struct GeometryEditorMenu: View {
     }
 }
 
-extension GeometryEditorMenu {
+private extension GeometryEditorMenu {
     /// The content of the main menu.
-    private var mainMenuContent: some View {
+    var mainMenuContent: some View {
         VStack {
             Button {
                 model.startEditing(with: VertexTool(), geometryType: Point.self)
@@ -161,21 +176,21 @@ extension GeometryEditorMenu {
     }
     
     /// The content of the editing menu.
-    private var editMenuContent: some View {
+    var editMenuContent: some View {
         VStack {
             Button {
                 model.geometryEditor.undo()
             } label: {
                 Label("Undo", systemImage: "arrow.uturn.backward")
             }
-            .disabled(!model.canUndo)
+            .disabled(!canUndo)
             
             Button {
                 model.geometryEditor.redo()
             } label: {
                 Label("Redo", systemImage: "arrow.uturn.forward")
             }
-            .disabled(!model.canRedo)
+            .disabled(!canRedo)
             
             Button {
                 model.geometryEditor.deleteSelectedElement()
@@ -184,14 +199,14 @@ extension GeometryEditorMenu {
             }
             .disabled(deleteButtonIsDisabled)
             
-            Toggle("Uniform Scale", isOn: $model.shouldUniformScale)
+            Toggle("Uniform Scale", isOn: $model.isUniformScale)
             
             Button(role: .destructive) {
                 model.geometryEditor.clearGeometry()
             } label: {
                 Label("Clear Current Sketch", systemImage: "trash")
             }
-            .disabled(!model.canClearCurrentSketch)
+            .disabled(!canClearCurrentSketch)
             
             Divider()
             
@@ -200,7 +215,7 @@ extension GeometryEditorMenu {
             } label: {
                 Label("Save Sketch", systemImage: "square.and.arrow.down")
             }
-            .disabled(!model.canSave)
+            .disabled(!canSave)
             
             Button {
                 model.stop()
@@ -211,59 +226,54 @@ extension GeometryEditorMenu {
     }
 }
 
-extension GeometryEditorMenu {
+private extension GeometryEditorMenu {
     /// A Boolean value indicating whether the selection can be deleted.
     ///
     /// In some instances deleting the selection may be invalid. One example would be the mid vertex
     /// of a line.
     var deleteButtonIsDisabled: Bool {
-        guard let selection = model.selection else { return true }
-        return !selection.canBeDeleted
+        guard let selectedElement else { return true }
+        return !selectedElement.canBeDeleted
+    }
+    
+    /// A Boolean value indicating if the geometry editor can perform an undo.
+    var canUndo: Bool {
+        return model.geometryEditor.canUndo
+    }
+    
+    /// A Boolean value indicating if the geometry editor can perform a redo.
+    var canRedo: Bool {
+        return model.geometryEditor.canRedo
+    }
+    
+    /// A Boolean value indicating if the geometry can be saved to a graphics overlay.
+    var canSave: Bool {
+        return geometry?.sketchIsValid ?? false
+    }
+    
+    /// A Boolean value indicating if the geometry can be cleared from the geometry editor.
+    var canClearCurrentSketch: Bool {
+        return geometry.map { !$0.isEmpty } ?? false
     }
 }
 
 /// An object that acts as a view model for the geometry editor menu.
 @MainActor
-class GeometryEditorMenuModel: ObservableObject {
+private class GeometryEditorModel: ObservableObject {
     /// The geometry editor.
-    let geometryEditor: GeometryEditor
+    let geometryEditor = GeometryEditor()
     
     /// The graphics overlay used to save geometries to.
-    let graphicsOverlay: GraphicsOverlay
-    
-    /// A Boolean value indicating if the geometry editor can perform an undo.
-    @Published private(set) var canUndo = false
-    
-    /// A Boolean value indicating if the geometry editor can perform a redo.
-    @Published private(set) var canRedo = false
-    
-    /// The currently selected element.
-    @Published private(set) var selection: GeometryEditorElement?
-    
-    /// A Boolean value indicating if the geometry can be saved to a graphics overlay.
-    @Published private(set) var canSave = false
-    
-    /// A Boolean value indicating if the geometry can be cleared from the geometry editor.
-    @Published private(set) var canClearCurrentSketch = false
+    let geometryOverlay = GraphicsOverlay(renderingMode: .dynamic)
     
     /// A Boolean value indicating if the saved sketches can be cleared.
     @Published private(set) var canClearSavedSketches = false
     
-    /// The current geometry of the geometry editor.
-    @Published private(set) var geometry: Geometry? {
-        didSet {
-            canUndo = geometryEditor.canUndo
-            canRedo = geometryEditor.canRedo
-            canClearCurrentSketch = geometry.map { !$0.isEmpty } ?? false
-            canSave = geometry?.sketchIsValid ?? false
-        }
-    }
-    
     /// A Boolean value indicating if the geometry editor has started.
-    @Published var isStarted = false
+    @Published private(set) var isStarted = false
     
     /// A Boolean value indicating if the scale mode is uniform.
-    @Published var shouldUniformScale = false {
+    @Published var isUniformScale = false {
         didSet {
             configureGeometryEditorTool(geometryEditor.tool, scaleMode: scaleMode)
         }
@@ -271,42 +281,23 @@ class GeometryEditorMenuModel: ObservableObject {
     
     /// The scale mode to be set on the geometry editor.
     private var scaleMode: GeometryEditorScaleMode {
-        shouldUniformScale ? .uniform : .stretch
-    }
-    
-    /// Creates the geometry menu with a geometry editor.
-    /// - Parameter geometryEditor: The geometry editor that the menu should interact with.
-    /// - Parameter graphicsOverlay: The graphics overlay that is used to save geometries to.
-    init(geometryEditor: GeometryEditor, graphicsOverlay: GraphicsOverlay) {
-        self.geometryEditor = geometryEditor
-        self.graphicsOverlay = graphicsOverlay
-        
-        Task { [weak self, geometryEditor] in
-            for await geometry in geometryEditor.$geometry {
-                self?.geometry = geometry
-            }
-        }
-        Task { [weak self, geometryEditor] in
-            for await selection in geometryEditor.$selectedElement {
-                self?.selection = selection
-            }
-        }
+        isUniformScale ? .uniform : .stretch
     }
     
     /// Saves the current geometry to the graphics overlay and stops editing.
-    /// - Precondition: `canSave`
+    /// - Precondition: Geometry's sketch must be valid.
     func save() {
-        precondition(canSave)
+        precondition(geometryEditor.geometry?.sketchIsValid ?? false)
         let geometry = geometryEditor.geometry!
         let graphic = Graphic(geometry: geometry, symbol: symbol(for: geometry))
-        graphicsOverlay.addGraphic(graphic)
+        geometryOverlay.addGraphic(graphic)
         stop()
         canClearSavedSketches = true
     }
     
     /// Clears all the saved sketches on the graphics overlay.
     func clearSavedSketches() {
-        graphicsOverlay.removeAllGraphics()
+        geometryOverlay.removeAllGraphics()
         canClearSavedSketches = false
     }
     
@@ -339,7 +330,7 @@ class GeometryEditorMenuModel: ObservableObject {
     /// - Parameters:
     ///   - tool: The geometry editor tool.
     ///   - scaleMode: Preserve the original aspect ratio or scale freely.
-    func configureGeometryEditorTool(_ tool: GeometryEditorTool, scaleMode: GeometryEditorScaleMode) {
+    private func configureGeometryEditorTool(_ tool: GeometryEditorTool, scaleMode: GeometryEditorScaleMode) {
         switch tool {
         case let tool as FreehandTool:
             tool.configuration.scaleMode = scaleMode
