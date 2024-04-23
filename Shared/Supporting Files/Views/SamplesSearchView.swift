@@ -21,6 +21,13 @@ struct SamplesSearchView: View {
     /// The search result to display in the various sections.
     private let searchResult: SearchResult
     
+    /// A Boolean value indicating whether the search result contains any matches.
+    private var hasMatches: Bool {
+        !searchResult.nameMatches.isEmpty ||
+        !searchResult.descriptionMatches.isEmpty ||
+        !searchResult.tagMatches.isEmpty
+    }
+    
     /// Creates a sample search view.
     /// - Parameters:
     ///   - query: The search query in the search bar.
@@ -52,6 +59,19 @@ struct SamplesSearchView: View {
                     }
                 }
             }
+        }
+        .overlay {
+            // Once iOS 17.0 is the minimum supported platform,
+            // this can be replaced with `ContentUnavailableView.search(text:)`.
+            VStack {
+                Text("No Results for \"\(query)\"")
+                    .font(.title2)
+                    .bold()
+                Text("Check the spelling or try a new search.")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+            }
+            .opacity(hasMatches ? 0 : 1)
         }
     }
 }
