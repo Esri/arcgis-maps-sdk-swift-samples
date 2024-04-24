@@ -2,7 +2,9 @@
     "category": "Maps",
     "description": "Determine if a layer is currently being viewed.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "monitor-changes-to-layer-view-state.png"
+    ],
     "keywords": [
         "layer",
         "load",

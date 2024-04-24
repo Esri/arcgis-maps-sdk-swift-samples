@@ -2,7 +2,7 @@
 
 Determine if a layer is currently being viewed.
 
-![Image of monitor changes to layer view state](monitor-changes-to-layer-view-state.png)
+![Image of Monitor changes to layer view state](monitor-changes-to-layer-view-state.png)
 
 ## Use case
 
