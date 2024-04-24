@@ -37,10 +37,16 @@ struct BrowseBuildingFloorsView: View {
         )
     )
     
+    /// The height of the attribution bar at the bottom of the map view.
+    @State private var height: CGFloat?
+    
     var body: some View {
         MapView(map: map)
             .onViewpointChanged(kind: .centerAndScale) { viewpoint = $0 }
             .onNavigatingChanged { isMapNavigating = $0 }
+            .onAttributionBarHeightChanged { height in
+                withAnimation { self.height = height }
+            }
             .errorAlert(presentingError: $error)
             .ignoresSafeArea(.keyboard, edges: .bottom)
             .overlay(alignment: .bottomTrailing) {
@@ -57,7 +63,7 @@ struct BrowseBuildingFloorsView: View {
                         maxHeight: 400
                     )
                     .padding(.toolkitDefault)
-                    .padding(.bottom, 27)
+                    .padding(.bottom, height)
                 }
             }
             .task {
