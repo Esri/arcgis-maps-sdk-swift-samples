@@ -1,0 +1,29 @@
+{
+    "category": "Maps",
+    "description": "Determine if a layer is currently being viewed.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "layer",
+        "load",
+        "map",
+        "status",
+        "view",
+        "visibility",
+        "Layer",
+        "LayerViewState",
+        "Map",
+        "MapView"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Layer",
+        "LayerViewState",
+        "Map",
+        "MapView"
+    ],
+    "snippets": [
+        "MonitorChangesToLayerViewStateView.swift"
+    ],
+    "title": "Monitor changes to layer view state"
+}
