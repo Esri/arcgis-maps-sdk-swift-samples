@@ -6,16 +6,16 @@ Get the draw status of your map view or scene view to know when all layers in th
 
 ## Use case
 
-You may want to display a loading indicator while layers are loading, which could then be removed on `DrawStatus.COMPLETED`.
+You may want to display a loading indicator while layers are loading, which could then be removed on `completed`.
 
 ## How to use the sample
 
-Pan and zoom around the map. Observe how the status bar changes from a loading animation to solid, indicating that drawing has completed.
+Pan and zoom around the map. Observe the map's drawing status in the toolbar.
 
 ## How it works
 
-1. Create a `MapView` and add a `DrawStatusChangedListener` to it.
-2. Use `getDrawStatus` on the `DrawStatusChangedEvent` to determine draw status.
+1. Create a `MapView` with a `Map`.
+2. Use the `onDrawStatusChanged(perform:)` modifier on the map view to get updates to the draw status.
 
 ## Relevant API
 
