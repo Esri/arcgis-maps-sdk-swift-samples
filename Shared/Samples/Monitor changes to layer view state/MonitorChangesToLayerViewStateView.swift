@@ -116,5 +116,7 @@ private extension URL {
 }
 
 #Preview {
-    MonitorChangesToLayerViewStateView()
+    NavigationStack {
+        MonitorChangesToLayerViewStateView()
+    }
 }
