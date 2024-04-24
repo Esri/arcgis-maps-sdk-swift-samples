@@ -1,0 +1,25 @@
+{
+    "category": "Maps",
+    "description": "Get the draw status of your map view or scene view to know when all layers in the map or scene have finished drawing.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "draw",
+        "loading",
+        "map",
+        "render",
+        "DrawStatus",
+        "Map",
+        "MapView"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "DrawStatus",
+        "Map",
+        "MapView"
+    ],
+    "snippets": [
+        "MonitorChangesToDrawStatusView.swift"
+    ],
+    "title": "Monitor changes to draw status"
+}
