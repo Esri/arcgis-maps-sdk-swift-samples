@@ -17,10 +17,45 @@ import SwiftUI
 
 struct MonitorChangesToDrawStatusView: View {
     /// A map with a topographic basemap.
-    @State private var map = Map(basemapStyle: .arcGISTopographic)
+    @State private var map: Map = {
+        let map = Map(basemapStyle: .arcGISTopographic)
+        
+        // Initially centers the map on San Fransisco, CA, USA area.
+        map.initialViewpoint = Viewpoint(
+            center: Point(x: -13623300, y: 4548100, spatialReference: .webMercator),
+            scale: 32e4
+        )
+        
+        return map
+    }()
+    
+    /// A Boolean value indicating whether the map is currently drawing.
+    @State private var mapIsDrawing = false
     
     var body: some View {
         MapView(map: map)
+            .onDrawStatusChanged { drawStatus in
+                // Updates the state when the map's draw status changes.
+                mapIsDrawing = drawStatus == .inProgress
+            }
+            .overlay(alignment: .top) {
+                // The drawing status text at the top of the screen.
+                Text(mapIsDrawing ? "Drawing..." : "Drawing completed.")
+                    .multilineTextAlignment(.center)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .padding(8)
+                    .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
+            }
+            .overlay(alignment: .center) {
+                // The progress view in the center of the screen that shows when the map is drawing.
+                if mapIsDrawing {
+                    ProgressView()
+                        .padding()
+                        .background(.ultraThinMaterial)
+                        .cornerRadius(10)
+                        .shadow(radius: 50)
+                }
+            }
     }
 }
 
