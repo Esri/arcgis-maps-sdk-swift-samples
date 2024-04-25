@@ -40,7 +40,7 @@ struct MonitorChangesToDrawStatusView: View {
             }
             .overlay(alignment: .top) {
                 // The drawing status text at the top of the screen.
-                Text(mapIsDrawing ? "Drawing..." : "Drawing completed.")
+                Text(mapIsDrawing ? "Drawing…" : "Drawing completed.")
                     .multilineTextAlignment(.center)
                     .frame(maxWidth: .infinity, alignment: .center)
                     .padding(8)
