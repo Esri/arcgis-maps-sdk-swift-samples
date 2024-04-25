@@ -2,7 +2,9 @@
     "category": "Scenes",
     "description": "Keep the viewpoints of two views, for example, a map view and a scene view, synchronized with each other.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "match-viewpoint-of-geo-views.png"
+    ],
     "keywords": [
         "3D",
         "automatic refresh",

@@ -2,7 +2,7 @@
 
 Keep the viewpoints of two views, for example, a map view and a scene view, synchronized with each other.
 
-![Image of match viewpoint of geoviews](MatchViewpointOfGeoviews.jpg)
+![Image of Match viewpoint of geo views sample](match-viewpoint-of-geo-views.png)
 
 ## Use case
 
