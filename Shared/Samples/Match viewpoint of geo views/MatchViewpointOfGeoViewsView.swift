@@ -40,7 +40,7 @@ struct MatchViewpointOfGeoViewsView: View {
                 .onNavigatingChanged { mapIsNavigating = $0 }
                 .onViewpointChanged(kind: .centerAndScale) { newViewpoint in
                     // Sets the scene's viewpoint to the map's when the map is navigating,
-                    // or when the scene isn't navigating, e.i., when the viewpoint is first set.
+                    // or when the scene isn't navigating, i.e., when the viewpoint is first set.
                     guard mapIsNavigating || !sceneIsNavigating else { return }
                     sceneViewpoint = newViewpoint
                 }
