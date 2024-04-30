@@ -2,7 +2,10 @@
     "category": "Edit and Manage Data",
     "description": "Create, query, and edit a specific server version using a service geodatabase.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "edit-with-branch-versioning-1.png",
+        "edit-with-branch-versioning-2.png"
+    ],
     "keywords": [
         "branch versioning",
         "edit",
