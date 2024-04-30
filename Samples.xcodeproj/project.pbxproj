@@ -214,6 +214,8 @@
 		D7337C602ABD142D00A5D865 /* ShowMobileMapPackageExpirationDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7337C5F2ABD142D00A5D865 /* ShowMobileMapPackageExpirationDateView.swift */; };
 		D7337C612ABD166A00A5D865 /* ShowMobileMapPackageExpirationDateView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7337C5F2ABD142D00A5D865 /* ShowMobileMapPackageExpirationDateView.swift */; };
 		D734FA0C2A183A5B00246D7E /* SetMaxExtentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D734FA092A183A5B00246D7E /* SetMaxExtentView.swift */; };
+		D7352F8E2BD992C40013FFEF /* MonitorChangesToDrawStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7352F8A2BD992C40013FFEF /* MonitorChangesToDrawStatusView.swift */; };
+		D7352F912BD992E40013FFEF /* MonitorChangesToDrawStatusView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7352F8A2BD992C40013FFEF /* MonitorChangesToDrawStatusView.swift */; };
 		D73723762AF5877500846884 /* FindRouteInMobileMapPackageView.Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73723742AF5877500846884 /* FindRouteInMobileMapPackageView.Models.swift */; };
 		D73723792AF5ADD800846884 /* FindRouteInMobileMapPackageView.MobileMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73723782AF5ADD700846884 /* FindRouteInMobileMapPackageView.MobileMapView.swift */; };
 		D737237A2AF5AE1600846884 /* FindRouteInMobileMapPackageView.MobileMapView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D73723782AF5ADD700846884 /* FindRouteInMobileMapPackageView.MobileMapView.swift */; };
@@ -456,6 +458,7 @@
 			dstSubfolderSpec = 7;
 			files = (
 				D73E61992BDAEEDD00457932 /* MatchViewpointOfGeoViewsView.swift in Copy Source Code Files */,
+				D7352F912BD992E40013FFEF /* MonitorChangesToDrawStatusView.swift in Copy Source Code Files */,
 				D713717C2BD88EF800EB2F86 /* MonitorChangesToLayerViewStateView.swift in Copy Source Code Files */,
 				00E1D9102BC0B4D8001AEB6A /* SnapGeometryEditsView.SnapSettingsView.swift in Copy Source Code Files */,
 				00E1D9112BC0B4D8001AEB6A /* SnapGeometryEditsView.GeometryEditorModel.swift in Copy Source Code Files */,
@@ -747,6 +750,7 @@
 		D7337C592ABCFDB100A5D865 /* StyleSymbolsFromMobileStyleFileView.SymbolOptionsListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleSymbolsFromMobileStyleFileView.SymbolOptionsListView.swift; sourceTree = "<group>"; };
 		D7337C5F2ABD142D00A5D865 /* ShowMobileMapPackageExpirationDateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowMobileMapPackageExpirationDateView.swift; sourceTree = "<group>"; };
 		D734FA092A183A5B00246D7E /* SetMaxExtentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetMaxExtentView.swift; sourceTree = "<group>"; };
+		D7352F8A2BD992C40013FFEF /* MonitorChangesToDrawStatusView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonitorChangesToDrawStatusView.swift; sourceTree = "<group>"; };
 		D73723742AF5877500846884 /* FindRouteInMobileMapPackageView.Models.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindRouteInMobileMapPackageView.Models.swift; sourceTree = "<group>"; };
 		D73723782AF5ADD700846884 /* FindRouteInMobileMapPackageView.MobileMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindRouteInMobileMapPackageView.MobileMapView.swift; sourceTree = "<group>"; };
 		D73E61922BDAEE6600457932 /* MatchViewpointOfGeoViewsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchViewpointOfGeoViewsView.swift; sourceTree = "<group>"; };
@@ -1036,6 +1040,7 @@
 				D752D93C2A3914E5003EB25E /* Manage operational layers */,
 				D73E61952BDAEE6600457932 /* Match viewpoint of geo views */,
 				D7ABA2F52A3256610021822B /* Measure distance in scene */,
+				D7352F8D2BD992C40013FFEF /* Monitor changes to draw status */,
 				D71371782BD88ECC00EB2F86 /* Monitor changes to layer view state */,
 				D752D9422A3A6EB8003EB25E /* Monitor changes to map load status */,
 				75DD739029D38B1B0010229D /* Navigate route */,
@@ -1639,6 +1644,14 @@
 				D73E61922BDAEE6600457932 /* MatchViewpointOfGeoViewsView.swift */,
 			);
 			path = "Match viewpoint of geo views";
+			sourceTree = "<group>";
+		};
+		D7352F8D2BD992C40013FFEF /* Monitor changes to draw status */ = {
+			isa = PBXGroup;
+			children = (
+				D7352F8A2BD992C40013FFEF /* MonitorChangesToDrawStatusView.swift */,
+			);
+			path = "Monitor changes to draw status";
 			sourceTree = "<group>";
 		};
 		D73F06652B5EE73D000B574F /* Query features with Arcade expression */ = {
@@ -2600,6 +2613,7 @@
 				4D2ADC6729C50BD6003B367F /* AddDynamicEntityLayerView.Model.swift in Sources */,
 				E004A6E928493BCE002A1FE6 /* ShowDeviceLocationView.swift in Sources */,
 				1C26ED192A859525009B7721 /* FilterFeaturesInSceneView.swift in Sources */,
+				D7352F8E2BD992C40013FFEF /* MonitorChangesToDrawStatusView.swift in Sources */,
 				F111CCC1288B5D5600205358 /* DisplayMapFromMobileMapPackageView.swift in Sources */,
 				D7BA8C462B2A8ACA00018633 /* String.swift in Sources */,
 				D76495212B74687E0042699E /* ValidateUtilityNetworkTopologyView.Model.swift in Sources */,
