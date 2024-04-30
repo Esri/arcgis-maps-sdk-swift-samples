@@ -1638,20 +1638,20 @@
 			path = "Set max extent";
 			sourceTree = "<group>";
 		};
-		D73E61952BDAEE6600457932 /* Match viewpoint of geo views */ = {
-			isa = PBXGroup;
-			children = (
-				D73E61922BDAEE6600457932 /* MatchViewpointOfGeoViewsView.swift */,
-			);
-			path = "Match viewpoint of geo views";
-			sourceTree = "<group>";
-		};
 		D7352F8D2BD992C40013FFEF /* Monitor changes to draw status */ = {
 			isa = PBXGroup;
 			children = (
 				D7352F8A2BD992C40013FFEF /* MonitorChangesToDrawStatusView.swift */,
 			);
 			path = "Monitor changes to draw status";
+			sourceTree = "<group>";
+		};
+		D73E61952BDAEE6600457932 /* Match viewpoint of geo views */ = {
+			isa = PBXGroup;
+			children = (
+				D73E61922BDAEE6600457932 /* MatchViewpointOfGeoViewsView.swift */,
+			);
+			path = "Match viewpoint of geo views";
 			sourceTree = "<group>";
 		};
 		D73F06652B5EE73D000B574F /* Query features with Arcade expression */ = {
