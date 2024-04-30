@@ -15,7 +15,7 @@ Interact with the map view or scene view by zooming or panning. The other map vi
 ## How it works
 
 1. Use the `onNavigatingChanged(perform:)` modifier on each of the geo views to determine when they are navigating.
-2. When a given geo view is navigating, use the `onViewpointChanged(kind:perform:)` modifier to set its new viewpoint the other geo view's viewpoint.
+2. When a given geo view is navigating, use the `onViewpointChanged(kind:perform:)` modifier to set its new viewpoint on the other geo view's viewpoint.
 
 ## Relevant API
 

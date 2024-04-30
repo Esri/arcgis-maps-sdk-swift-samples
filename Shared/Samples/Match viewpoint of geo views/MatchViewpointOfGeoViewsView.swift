@@ -28,10 +28,10 @@ struct MatchViewpointOfGeoViewsView: View {
     /// The viewpoint of the scene view.
     @State private var sceneViewpoint: Viewpoint?
     
-    /// A Boolean value indicating whether the map view is currently being navigated.
+    /// A Boolean value indicating whether the map view is currently navigating.
     @State private var mapIsNavigating = false
     
-    /// A Boolean value indicating whether the scene view is currently being navigated.
+    /// A Boolean value indicating whether the scene view is currently navigating.
     @State private var sceneIsNavigating = false
     
     var body: some View {
