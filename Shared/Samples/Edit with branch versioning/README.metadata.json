@@ -26,7 +26,8 @@
     ],
     "snippets": [
         "EditWithBranchVersioningView.swift",
-        "EditWithBranchVersioningView.Model.swift"
+        "EditWithBranchVersioningView.Model.swift",
+        "EditWithBranchVersioningView.Views.swift"
     ],
     "title": "Edit with branch versioning"
 }
