@@ -166,7 +166,7 @@ private extension GenerateOfflineMapWithLocalBasemapView {
             FileManager.default.fileExists(atPath: URL.napervilleImageryBasemap.path())
         }()
         
-        /// A Boolian value indicating if the offline map uses a local or online basemap.
+        /// A Boolean value indicating whether the offline map uses the local or online basemap.
         @Published var usesLocalBasemap = false
         
         /// The generate offline map job.
