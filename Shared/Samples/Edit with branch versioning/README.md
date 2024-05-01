@@ -41,7 +41,7 @@ Select a feature to edit an attribute and/or tap a second time to relocate the f
 
 ## About the data
 
-The feature layer used in this sample is [Damage to commercial buildings](https://sampleserver7.arcgisonline.com/server/rest/services/DamageAssessment/FeatureServer/0) located in Naperville, Illinois. 
+The feature layer used in this sample is [Damage to commercial buildings](https://sampleserver7.arcgisonline.com/server/rest/services/DamageAssessment/FeatureServer/0) located in Naperville, Illinois.
 
 ## Additional information
 
