@@ -111,7 +111,7 @@ private extension LayerViewState.Status {
 private extension URL {
     /// The URL for the Satellite (MODIS) Thermal Hotspots and Fire Activity portal item.
     static var thermalHotspotsAndFireActivity: URL {
-        URL(string: "https://runtime.maps.arcgis.com/home/item.html?id=b8f4033069f141729ffb298b7418b653")!
+        URL(string: "https://www.arcgis.com/home/item.html?id=b8f4033069f141729ffb298b7418b653")!
     }
 }
 
