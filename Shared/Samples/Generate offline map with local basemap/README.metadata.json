@@ -1,6 +1,6 @@
 {
     "category": "Edit and Manage Data",
-    "description": "Take a web map offline, but instead of downloading an online basemap, use one which is already on the device.",
+    "description": "Use the `OfflineMapTask` to take a web map offline, but instead of downloading an online basemap, use one which is already on the device.",
     "ignore": false,
     "images": [
         "generate-offline-map-with-local-basemap.png"
@@ -16,6 +16,9 @@
         "GenerateOfflineMapParameters",
         "GenerateOfflineMapResult",
         "OfflineMapTask"
+    ],
+    "offline_data": [
+        "85282f2aaa2844d8935cdb8722e22a93"
     ],
     "redirect_from": [],
     "relevant_apis": [

@@ -29,7 +29,7 @@ struct GenerateOfflineMapWithLocalBasemapView: View {
     @State private var error: Error?
     
     /// The title to show in the confirmation dialog.
-    let basemapChoiceTitle: String = {
+    private let basemapChoiceTitle: String = {
         let displayName = Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as! String
         return String(format: "“%@” has a local imagery basemap that can be used in the map. Would you like to use the local or the online basemap?", displayName)
     }()
@@ -72,7 +72,6 @@ struct GenerateOfflineMapWithLocalBasemapView: View {
                                 }
                                 .disabled(isCancellingJob)
                                 .task(id: isCancellingJob) {
-                                    // Ensures cancelling the job is true.
                                     guard isCancellingJob else { return }
                                     // Cancels the job.
                                     await model.cancelJob()
@@ -106,7 +105,11 @@ struct GenerateOfflineMapWithLocalBasemapView: View {
                                 }
                             }
                             .disabled(model.isGenerateDisabled || isGeneratingOfflineMap)
-                            .confirmationDialog(basemapChoiceTitle, isPresented: $basemapChoiceIsPresented, titleVisibility: .visible) {
+                            .confirmationDialog(
+                                basemapChoiceTitle,
+                                isPresented: $basemapChoiceIsPresented,
+                                titleVisibility: .visible
+                            ) {
                                 Button("Use Local Basemap") {
                                     model.usesLocalBasemap = true
                                     isGeneratingOfflineMap = true
@@ -117,7 +120,6 @@ struct GenerateOfflineMapWithLocalBasemapView: View {
                                 }
                             }
                             .task(id: isGeneratingOfflineMap) {
-                                // Ensures generating an offline map is true.
                                 guard isGeneratingOfflineMap else { return }
                                 
                                 // Creates a rectangle from the area of interest.
@@ -162,12 +164,12 @@ private extension GenerateOfflineMapWithLocalBasemapView {
         @Published private(set) var isGenerateDisabled = true
         
         /// A Boolean value indicating if the local basemap is available to be used.
-        @Published var canUseLocalBasemap: Bool = {
+        var canUseLocalBasemap: Bool = {
             FileManager.default.fileExists(atPath: URL.napervilleImageryBasemap.path())
         }()
         
         /// A Boolean value indicating whether the offline map uses the local or online basemap.
-        @Published var usesLocalBasemap = false
+        var usesLocalBasemap = false
         
         /// The generate offline map job.
         @Published private(set) var generateOfflineMapJob: GenerateOfflineMapJob!
@@ -178,21 +180,22 @@ private extension GenerateOfflineMapWithLocalBasemapView {
         /// A URL to a temporary directory where the offline map files are stored.
         private let temporaryDirectory = createTemporaryDirectory()
         
-        /// A portal item displaying the Naperville, IL water network.
-        private let napervillePortalItem = PortalItem(
-            portal: .arcGISOnline(connection: .anonymous),
-            id: PortalItem.ID("acc027394bc84c2fb04d1ed317aac674")!
-        )
-        
         /// The online map that is loaded from a portal item.
-        let onlineMap: Map
-        
-        init() {
-            // Initializes the online map.
-            onlineMap = Map(item: napervillePortalItem)
+        let onlineMap: Map = {
+            /// A portal item displaying the Naperville, IL water network.
+            let napervillePortalItem = PortalItem(
+                portal: .arcGISOnline(connection: .anonymous),
+                id: .napervilleWaterNetwork
+            )
+            
+            // Creates map with portal item.
+            let map = Map(item: napervillePortalItem)
+            
             // Sets the min scale to avoid requesting a huge download.
-            onlineMap.minScale = 1e4
-        }
+            map.minScale = 1e4
+            
+            return map
+        }()
         
         deinit {
             // Removes the temporary directory.
@@ -273,6 +276,8 @@ private extension GenerateOfflineMapWithLocalBasemapView {
 
 private extension Envelope {
     /// Expands the envelope by a given factor.
+    /// - Parameter factor: The amount to expand the envelope by.
+    /// - Returns: An envelope expanded by the specified factor.
     func expanded(by factor: Double) -> Envelope {
         let builder = EnvelopeBuilder(envelope: self)
         builder.expand(by: factor)
@@ -285,6 +290,11 @@ private extension URL {
     static var napervilleImageryBasemap: URL {
         Bundle.main.url(forResource: "naperville_imagery", withExtension: "tpkx")!
     }
+}
+
+private extension PortalItem.ID {
+    /// The portal item ID of the Naperville water network web map to be displayed on the map.
+    static var napervilleWaterNetwork: Self { Self("acc027394bc84c2fb04d1ed317aac674")! }
 }
 
 #Preview {
