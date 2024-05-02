@@ -25,8 +25,8 @@ extension EditWithBranchVersioningView {
         /// In this sample, only the default version and versions created in current session are shown.
         @Published private(set) var existingVersionNames: [String] = []
         
-        /// The text representing the current state of the model.
-        @Published private(set) var statusText = ""
+        /// The current state of the model.
+        @Published private(set) var state: ModelState = .notLoaded
         
         /// A map with a streets basemap.
         let map: Map = {
@@ -59,11 +59,11 @@ extension EditWithBranchVersioningView {
             // Adds the credential to access the feature service for the service geodatabase.
             try await ArcGISEnvironment.authenticationManager.arcGISCredentialStore.add(.publicSample)
             
-            statusText = "Loading service geodatabase…"
+            state = .loading
             try await serviceGeodatabase.load()
             
             existingVersionNames.append(serviceGeodatabase.defaultVersionName)
-            statusText = "Version: \(serviceGeodatabase.defaultVersionName)"
+            state = .selectedVersion(name: serviceGeodatabase.defaultVersionName)
             
             // Creates a feature layer from the geodatabase and adds it to the map.
             let serviceFeatureTable = serviceGeodatabase.table(withLayerID: 0)!
@@ -76,7 +76,7 @@ extension EditWithBranchVersioningView {
         func createVersion(parameters: ServiceVersionParameters) async throws {
             let versionInfo = try await serviceGeodatabase.makeVersion(parameters: parameters)
             existingVersionNames.append(versionInfo.name)
-            statusText = "Created Version: \(versionInfo.name)"
+            state = .createdVersion(name: versionInfo.name)
         }
         
         /// Switches the geodatabase version to a version with a given name.
@@ -93,7 +93,7 @@ extension EditWithBranchVersioningView {
             clearSelection()
             
             try await serviceGeodatabase.switchToVersion(named: versionName)
-            statusText = "Version: \(serviceGeodatabase.versionName)"
+            state = .selectedVersion(name: versionName)
         }
         
         /// Selects a feature on the feature layer.
@@ -118,6 +118,14 @@ extension EditWithBranchVersioningView {
             
             clearSelection()
         }
+    }
+    
+    /// The state of the model.
+    enum ModelState {
+        case notLoaded
+        case loading
+        case selectedVersion(name: String)
+        case createdVersion(name: String)
     }
 }
 

@@ -127,7 +127,20 @@ struct EditWithBranchVersioningView: View {
                     }
                 }
         }
-        .overlay(alignment: .top) { statusBar }
+        .overlay(alignment: .top) {
+            let statusText = switch model.state {
+            case .notLoaded: ""
+            case .loading: "Loading service geodatabase…"
+            case .selectedVersion(let name): "Version: \(name)"
+            case .createdVersion(let name): "Created: \(name)"
+            }
+            
+            Text(statusText)
+                .multilineTextAlignment(.center)
+                .frame(maxWidth: .infinity, alignment: .center)
+                .padding(8)
+                .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
+        }
         .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
                 createVersionButton
@@ -191,15 +204,6 @@ struct EditWithBranchVersioningView: View {
         } message: {
             Text("Choose a version to switch to.")
         }
-    }
-    
-    /// The view containing the status text.
-    private var statusBar: some View {
-        Text(model.statusText)
-            .multilineTextAlignment(.center)
-            .frame(maxWidth: .infinity, alignment: .center)
-            .padding(8)
-            .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
     }
 }
 
