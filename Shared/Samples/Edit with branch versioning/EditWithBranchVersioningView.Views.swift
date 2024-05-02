@@ -94,7 +94,7 @@ extension EditWithBranchVersioningView {
                     }
                     
                     ToolbarItem(placement: .confirmationAction) {
-                        Button("Done") {
+                        Button("Add") {
                             let parameters = ServiceVersionParameters()
                             parameters.access = selectedVersionAccess!
                             parameters.name = versionName
