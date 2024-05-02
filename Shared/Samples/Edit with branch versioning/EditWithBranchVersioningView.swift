@@ -184,8 +184,8 @@ struct EditWithBranchVersioningView: View {
                 versionParameters = parameters
                 selectedAction = .makeVersion
             }
-            .presentationDetents([.medium])
-            .frame(idealWidth: 320, idealHeight: 380)
+            .presentationDetents([.fraction(0.5)])
+            .frame(idealWidth: 320, idealHeight: 200)
         }
     }
     

@@ -34,52 +34,26 @@ extension EditWithBranchVersioningView {
         @State private var versionDescription = ""
         
         /// The version access for the version selected by the user.
-        @State private var selectedVersionAccess: VersionAccess?
-        
-        /// The text describing an issue with the user entered version name.
-        @State private var nameValidateError: String?
-        
-        /// A Boolean value indicating whether all the user inputs are valid.
-        private var inputsAreValid: Bool {
-            !versionName.isEmpty && nameValidateError == nil && selectedVersionAccess != nil
-        }
+        @State private var selectedVersionAccess: VersionAccess = .public
         
         var body: some View {
             NavigationStack {
                 Form {
-                    Section {
-                        TextField("Name", text: $versionName)
-                            .autocorrectionDisabled()
-                            .textInputAutocapitalization(.never)
-                            .onChange(of: versionName) {
-                                nameValidateError = validateVersionName($0)
-                            }
-                    } header: {
-                        Text("Name")
-                    } footer: {
-                        if let nameValidateError {
-                            Text(nameValidateError)
-                                .foregroundColor(.red)
+                    TextField("Name", text: $versionName)
+                        .autocorrectionDisabled()
+                        .textInputAutocapitalization(.never)
+                        .onChange(of: versionName) { newVersionName in
+                            // Ensures the inputted version name is valid.
+                            self.versionName = String(newVersionName.prefix(62))
+                                .trimmingCharacters(in: .whitespacesAndNewlines)
+                                .filter { !";.'\"".contains($0) }
                         }
-                    }
                     
-                    Section("Description") {
-                        TextField("Description", text: $versionDescription)
-                    }
+                    TextField("Description", text: $versionDescription )
                     
-                    Section {
-                        Picker("Access Permissions", selection: $selectedVersionAccess) {
-                            ForEach(VersionAccess.allCases, id: \.self) { versionAccess in
-                                Text("\(versionAccess)".capitalized)
-                                    .tag(versionAccess as VersionAccess?)
-                            }
-                        }
-                        .pickerStyle(.segmented)
-                    } header: {
-                        Text("Access Permissions")
-                    } footer: {
-                        if let selectedVersionAccess {
-                            Text(selectedVersionAccess.description)
+                    Picker("Access Permissions", selection: $selectedVersionAccess) {
+                        ForEach(VersionAccess.allCases, id: \.self) { versionAccess in
+                            Text("\(versionAccess)".capitalized)
                         }
                     }
                 }
@@ -96,41 +70,16 @@ extension EditWithBranchVersioningView {
                     ToolbarItem(placement: .confirmationAction) {
                         Button("Add") {
                             let parameters = ServiceVersionParameters()
-                            parameters.access = selectedVersionAccess!
+                            parameters.access = selectedVersionAccess
                             parameters.name = versionName
                             parameters.description = versionDescription
                             
                             action(parameters)
                             dismiss()
                         }
-                        .disabled(!inputsAreValid)
+                        .disabled(versionName.isEmpty)
                     }
                 }
-            }
-        }
-        
-        /// Validates a given name to ensure it meets the criteria for a version name.
-        /// - Parameter name: The name to validate.
-        /// - Returns: Text describing the broken validation rule, if any.
-        private func validateVersionName(_ name: String) -> String? {
-            if name.isEmpty {
-                return "Name is required"
-            } else if name.count > 62 {
-                return "Name must not exceed 62 characters"
-            } else if name.first == " " {
-                return "Name must not begin with a space."
-            } else if name.contains(";") {
-                return "Name must not contain semicolons (;)"
-            } else if name.contains(".") {
-                return "Name must not contain periods (.)"
-            } else if name.contains("'") {
-                return "Name must not contain single quotation marks (')"
-            } else if name.contains("\"") {
-                return "Name must not contain double quotation marks (\")"
-            } else if model.existingVersionNames.contains(name) {
-                return "Version already exists"
-            } else {
-                return nil
             }
         }
     }
@@ -139,14 +88,4 @@ extension EditWithBranchVersioningView {
 private extension VersionAccess {
     /// All the version access cases.
     static var allCases: [Self] { [.public, .protected, .private] }
-    
-    /// The text description of the version access.
-    var description: String {
-        switch self {
-        case .public: "Any portal user can view and edit the version."
-        case .protected: "Any portal user can view the version, but only the version owner, feature layer owner, and portal administrator can edit it."
-        case .private: "Only the version owner, feature layer owner, and portal administrator can view and edit the version."
-        @unknown default: "Unknown version access."
-        }
-    }
 }
