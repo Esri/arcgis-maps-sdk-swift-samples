@@ -83,7 +83,7 @@ extension EditWithBranchVersioningView {
                         }
                     }
                 }
-                .navigationTitle("Create Version")
+                .navigationTitle("New Version")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
@@ -143,10 +143,10 @@ private extension VersionAccess {
     /// The text description of the version access.
     var description: String {
         switch self {
-        case .public: return "Any portal user can view and edit the version."
-        case .protected: return "Any portal user can view the version, but only the version owner, feature layer owner, and portal administrator can edit it."
-        case .private: return "Only the version owner, feature layer owner, and portal administrator can view and edit the version."
-        @unknown default: return "Unknown version access."
+        case .public: "Any portal user can view and edit the version."
+        case .protected: "Any portal user can view the version, but only the version owner, feature layer owner, and portal administrator can edit it."
+        case .private: "Only the version owner, feature layer owner, and portal administrator can view and edit the version."
+        @unknown default: "Unknown version access."
         }
     }
 }

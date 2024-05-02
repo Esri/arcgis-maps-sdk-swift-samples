@@ -110,8 +110,11 @@ extension EditWithBranchVersioningView {
         
         /// Updates the selected feature in it's feature table.
         func updateFeature() async throws {
-            guard let selectedFeature else { return }
-            try await selectedFeature.table?.update(selectedFeature)
+            guard let selectedFeature,
+                  let table = selectedFeature.table else {
+                return
+            }
+            try await table.update(selectedFeature)
             
             clearSelection()
         }
