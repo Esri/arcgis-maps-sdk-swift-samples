@@ -100,7 +100,7 @@ struct EditWithBranchVersioningView: View {
                             try await model.setUp()
                             
                         case .makeVersion:
-                            try await model.makeVersion(parameters: versionParameters!)
+                            try await model.createVersion(parameters: versionParameters!)
                             
                         case .switchToVersion(let version):
                             try await model.switchToVersion(named: version)

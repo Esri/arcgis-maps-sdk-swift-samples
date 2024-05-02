@@ -73,7 +73,7 @@ extension EditWithBranchVersioningView {
         
         /// Creates a new version in the service using given parameters.
         /// - Parameter parameters: The properties of the new version.
-        func makeVersion(parameters: ServiceVersionParameters) async throws {
+        func createVersion(parameters: ServiceVersionParameters) async throws {
             let versionInfo = try await serviceGeodatabase.makeVersion(parameters: parameters)
             existingVersionNames.append(versionInfo.name)
             statusText = "Created Version: \(versionInfo.name)"
