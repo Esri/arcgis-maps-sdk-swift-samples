@@ -164,9 +164,7 @@ private extension GenerateOfflineMapWithLocalBasemapView {
         @Published private(set) var isGenerateDisabled = true
         
         /// A Boolean value indicating if the local basemap is available to be used.
-        var canUseLocalBasemap: Bool = {
-            FileManager.default.fileExists(atPath: URL.napervilleImageryBasemap.path())
-        }()
+        let canUseLocalBasemap = FileManager.default.fileExists(atPath: URL.napervilleImageryBasemap.path()
         
         /// A Boolean value indicating whether the offline map uses the local or online basemap.
         var usesLocalBasemap = false
@@ -182,7 +180,7 @@ private extension GenerateOfflineMapWithLocalBasemapView {
         
         /// The online map that is loaded from a portal item.
         let onlineMap: Map = {
-            /// A portal item displaying the Naperville, IL water network.
+            // A portal item displaying the Naperville, IL water network.
             let napervillePortalItem = PortalItem(
                 portal: .arcGISOnline(connection: .anonymous),
                 id: .napervilleWaterNetwork
