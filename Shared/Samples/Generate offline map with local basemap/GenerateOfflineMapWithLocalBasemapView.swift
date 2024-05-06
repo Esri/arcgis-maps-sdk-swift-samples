@@ -164,7 +164,7 @@ private extension GenerateOfflineMapWithLocalBasemapView {
         @Published private(set) var isGenerateDisabled = true
         
         /// A Boolean value indicating if the local basemap is available to be used.
-        let canUseLocalBasemap = FileManager.default.fileExists(atPath: URL.napervilleImageryBasemap.path()
+        let canUseLocalBasemap = FileManager.default.fileExists(atPath: URL.napervilleImageryBasemap.path())
         
         /// A Boolean value indicating whether the offline map uses the local or online basemap.
         var usesLocalBasemap = false
