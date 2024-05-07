@@ -44,9 +44,12 @@ extension EditWithBranchVersioningView {
                         .textInputAutocapitalization(.never)
                         .onChange(of: versionName) { newVersionName in
                             // Ensures the inputted version name is valid.
-                            self.versionName = String(newVersionName.prefix(62))
-                                .trimmingCharacters(in: .whitespacesAndNewlines)
-                                .filter { !";.'\"".contains($0) }
+                            let formattedVersionName = newVersionName
+                                .trimmingPrefix(" ")
+                                .replacing(/[.;'"]/, with: "")
+                                .prefix(62)
+                            
+                            self.versionName = String(formattedVersionName)
                         }
                     
                     TextField("Description", text: $versionDescription )
