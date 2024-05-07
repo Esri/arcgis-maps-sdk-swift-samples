@@ -45,7 +45,6 @@ extension EditWithBranchVersioningView {
                         .onChange(of: versionName) { newVersionName in
                             // Ensures the inputted version name is valid.
                             let formattedVersionName = newVersionName
-                                .trimmingPrefix(" ")
                                 .replacing(/[.;'"]/, with: "")
                                 .prefix(62)
                             

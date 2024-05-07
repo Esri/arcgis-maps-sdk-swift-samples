@@ -54,7 +54,7 @@ The name of the version must meet the following criteria:
 
 1. Must not exceed 62 characters
 2. Must not include: Period (.), Semicolon (;), Single quotation mark ('), Double quotation mark (")
-3. Must not include a space for the first character
+3. Must be unique
 
 * Note - the version name will have the username and a period (.) prepended to it, e.g., "editor01.MyNewUniqueVersionName".
 
