@@ -212,16 +212,12 @@ struct EditWithBranchVersioningView: View {
 private enum AsyncAction: Equatable {
     /// Sets up the sample.
     case setUp
-    
     /// Makes a version with the current version parameters.
     case makeVersion
-    
     /// Switches to a version with an associated version name.
     case switchToVersion(version: String)
-    
     /// Select a feature identified from an associated screen and map point.
     case selectFeature(screenPoint: CGPoint, mapPoint: Point)
-    
     /// Updates the selected feature in it's feature table.
     case updateFeature
 }
@@ -246,7 +242,6 @@ private enum DamageType: String, CaseIterable {
 private extension String {
     /// The key for a feature's damage type attribute.
     static let damageTypeKey = "typdamage"
-    
     /// The key for a feature's place name attribute.
     static let placeNameKey = "placename"
 }
