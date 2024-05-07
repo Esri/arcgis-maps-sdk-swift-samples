@@ -94,7 +94,6 @@ struct EditWithBranchVersioningView: View {
                 )
                 .task(id: selectedAction) {
                     guard let selectedAction else { return }
-                    defer { self.selectedAction = nil }
                     calloutPlacement = nil
                     
                     do {
@@ -131,6 +130,9 @@ struct EditWithBranchVersioningView: View {
                     } catch {
                         self.error = error
                     }
+                    
+                    // Resets the selected action so an action of the same type can be run again.
+                    self.selectedAction = nil
                 }
         }
         .overlay(alignment: .top) {
