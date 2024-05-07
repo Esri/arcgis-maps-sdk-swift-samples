@@ -117,10 +117,11 @@ struct EditWithBranchVersioningView: View {
                                 screenPoint: screenPoint,
                                 tolerance: 10
                             )
-                            guard let feature = result.geoElements.first as? Feature else { return }
                             
-                            model.selectFeature(feature)
-                            calloutPlacement = .geoElement(feature, tapLocation: mapPoint)
+                            if let feature = result.geoElements.first as? Feature {
+                                model.selectFeature(feature)
+                                calloutPlacement = .geoElement(feature, tapLocation: mapPoint)
+                            }
                         }
                     } catch {
                         self.error = error
