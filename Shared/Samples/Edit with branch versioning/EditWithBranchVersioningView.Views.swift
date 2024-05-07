@@ -21,7 +21,7 @@ extension EditWithBranchVersioningView {
         /// The view model for the sample.
         @ObservedObject var model: Model
         
-        /// The action to preform when the parameters are created, i.e, when the "Done" button is pressed.
+        /// The action to perform when the parameters are created, i.e, when the "Done" button is pressed.
         let action: (ServiceVersionParameters) -> Void
         
         /// The action to dismiss the view.
@@ -61,7 +61,7 @@ extension EditWithBranchVersioningView {
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
-                        Button("Cancel") {
+                        Button("Cancel", role: .cancel) {
                             model.clearSelection()
                             dismiss()
                         }
