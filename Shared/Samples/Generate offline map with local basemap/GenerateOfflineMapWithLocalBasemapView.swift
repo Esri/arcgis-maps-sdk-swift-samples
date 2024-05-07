@@ -88,12 +88,11 @@ struct GenerateOfflineMapWithLocalBasemapView: View {
                         }
                     }
                     .overlay(alignment: .top) {
-                        if model.offlineMap != nil {
-                            Text("Offline map generated.")
-                                .frame(maxWidth: .infinity, alignment: .center)
-                                .padding(8)
-                                .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
-                        }
+                        Text("Offline map generated.")
+                            .frame(maxWidth: .infinity, alignment: .center)
+                            .padding(8)
+                            .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
+                            .opacity(model.offlineMap != nil ? 1 : 0)
                     }
                     .toolbar {
                         ToolbarItem(placement: .bottomBar) {
