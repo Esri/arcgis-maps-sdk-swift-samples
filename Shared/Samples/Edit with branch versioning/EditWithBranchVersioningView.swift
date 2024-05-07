@@ -161,7 +161,7 @@ struct EditWithBranchVersioningView: View {
         .disabled(model.onDefaultVersion)
         .confirmationDialog("Damage Type", isPresented: $isSettingDamageType, titleVisibility: .visible) {
             ForEach(DamageType.allCases, id: \.self) { damageType in
-                Button(damageType.rawValue) {
+                Button(damageType.label) {
                     model.selectedFeature?.setAttributeValue(
                         damageType.rawValue,
                         forKey: .damageTypeKey
@@ -228,12 +228,19 @@ private enum AsyncAction: Equatable {
 
 /// The damage type of a feature.
 private enum DamageType: String, CaseIterable {
-    case destroyed = "Destroyed"
-    case major = "Major"
-    case minor = "Minor"
-    case affected = "Affected"
-    case inaccessible = "Inaccessible"
-    case `default` = "Default"
+    case destroyed, major, minor, affected, inaccessible, `default`
+    
+    /// A human-readable label for the damage type.
+    var label: String {
+        switch self {
+        case .destroyed: "Destroyed"
+        case .major: "Major"
+        case .minor: "Minor"
+        case .affected: "Affected"
+        case .inaccessible: "Inaccessible"
+        case .default: "Default"
+        }
+    }
 }
 
 private extension String {
