@@ -53,7 +53,7 @@ extension EditWithBranchVersioningView {
                     
                     Picker("Access Permissions", selection: $selectedVersionAccess) {
                         ForEach(VersionAccess.allCases, id: \.self) { versionAccess in
-                            Text("\(versionAccess)".capitalized)
+                            Text(versionAccess.label)
                         }
                     }
                 }
@@ -88,4 +88,14 @@ extension EditWithBranchVersioningView {
 private extension VersionAccess {
     /// All the version access cases.
     static var allCases: [Self] { [.public, .protected, .private] }
+    
+    /// A human-readable label for the version access.
+    var label: String {
+        switch self {
+        case .public: "Public"
+        case .protected: "Protected"
+        case .private: "Private"
+        @unknown default: "Unknown"
+        }
+    }
 }
