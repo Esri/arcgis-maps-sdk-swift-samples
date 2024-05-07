@@ -98,16 +98,12 @@ struct EditWithBranchVersioningView: View {
                         switch selectedAction {
                         case .setUp:
                             try await model.setUp()
-                            
                         case .makeVersion:
                             try await model.createVersion(parameters: versionParameters!)
-                            
                         case .switchToVersion(let version):
                             try await model.switchToVersion(named: version)
-                            
                         case .updateFeature:
                             try await model.updateFeature()
-                            
                         case .selectFeature(let screenPoint, let mapPoint):
                             model.clearSelection()
                             
