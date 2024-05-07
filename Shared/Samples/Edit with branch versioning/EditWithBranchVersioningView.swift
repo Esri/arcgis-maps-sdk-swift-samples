@@ -25,6 +25,9 @@ struct EditWithBranchVersioningView: View {
     /// The parameters used to create a new version.
     @State private var versionParameters: ServiceVersionParameters?
     
+    /// The text representing the status of the sample.
+    @State private var statusText = ""
+    
     /// The asynchronous action currently being preformed.
     @State private var selectedAction: AsyncAction? = .setUp
     
@@ -97,11 +100,17 @@ struct EditWithBranchVersioningView: View {
                     do {
                         switch selectedAction {
                         case .setUp:
+                            statusText = "Loading service geodatabase…"
                             try await model.setUp()
+                            
+                            guard let versionName = model.existingVersionNames.first else { break }
+                            statusText = "Version: \(versionName)"
                         case .makeVersion:
-                            try await model.createVersion(parameters: versionParameters!)
+                            let name = try await model.createVersion(parameters: versionParameters!)
+                            statusText = "Created: \(name)"
                         case .switchToVersion(let version):
                             try await model.switchToVersion(named: version)
+                            statusText = "Version: \(version)"
                         case .updateFeature:
                             try await model.updateFeature()
                         case .selectFeature(let screenPoint, let mapPoint):
@@ -125,13 +134,6 @@ struct EditWithBranchVersioningView: View {
                 }
         }
         .overlay(alignment: .top) {
-            let statusText = switch model.state {
-            case .notLoaded: ""
-            case .loading: "Loading service geodatabase…"
-            case .selectedVersion(let name): "Version: \(name)"
-            case .createdVersion(let name): "Created: \(name)"
-            }
-            
             Text(statusText)
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: .infinity, alignment: .center)
