@@ -43,12 +43,8 @@ extension EditWithBranchVersioningView {
                         .autocorrectionDisabled()
                         .textInputAutocapitalization(.never)
                         .onChange(of: versionName) { newVersionName in
-                            // Ensures the inputted version name is valid.
-                            let formattedVersionName = newVersionName
-                                .replacing(/[.;'"]/, with: "")
-                                .prefix(62)
-                            
-                            self.versionName = String(formattedVersionName)
+                            // Ensures the inputted version name only contains valid characters.
+                            self.versionName = newVersionName.replacing(/[.;'"]/, with: "")
                         }
                     
                     TextField("Description", text: $versionDescription )
@@ -79,7 +75,10 @@ extension EditWithBranchVersioningView {
                             action(parameters)
                             dismiss()
                         }
-                        .disabled(versionName.isEmpty)
+                        .disabled(
+                            versionName.isEmpty
+                            || versionName.trimmingCharacters(in: .whitespacesAndNewlines).count > 62
+                        )
                     }
                 }
             }
