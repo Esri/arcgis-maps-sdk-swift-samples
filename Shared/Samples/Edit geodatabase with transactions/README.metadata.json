@@ -1,0 +1,26 @@
+{
+    "category": "Edit and Manage Data",
+    "description": "Use transactions to manage how changes are committed to a geodatabase.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "commit",
+        "database",
+        "geodatabase",
+        "geometry editor",
+        "transact",
+        "transactions",
+        "Geodatabase",
+        "GeometryEditor"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Geodatabase",
+        "GeometryEditor"
+    ],
+    "snippets": [
+        "EditGeodatabaseWithTransactionsView.swift",
+        "EditGeodatabaseWithTransactionsView.Model.swift"
+    ],
+    "title": "Edit geodatabase with transactions"
+}
