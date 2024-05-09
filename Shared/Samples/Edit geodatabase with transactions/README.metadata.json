@@ -12,13 +12,21 @@
         "geometry editor",
         "transact",
         "transactions",
+        "GenerateGeodatabaseJob",
+        "GenerateGeodatabaseParameters",
         "Geodatabase",
-        "GeometryEditor"
+        "GeodatabaseSyncTask",
+        "SyncGeodatabaseJob",
+        "SyncGeodatabaseParameters"
     ],
     "redirect_from": [],
     "relevant_apis": [
+        "GenerateGeodatabaseJob",
+        "GenerateGeodatabaseParameters",
         "Geodatabase",
-        "GeometryEditor"
+        "GeodatabaseSyncTask",
+        "SyncGeodatabaseJob",
+        "SyncGeodatabaseParameters"
     ],
     "snippets": [
         "EditGeodatabaseWithTransactionsView.swift",

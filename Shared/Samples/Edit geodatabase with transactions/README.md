@@ -10,20 +10,24 @@ Transactions allow you to control how changes are added to a database. This is u
 
 ## How to use the sample
 
-When the sample loads, a feature service is taken offline as a geodatabase. When the geodatabase is ready, you can add multiple types of features. To apply edits directly, uncheck the 'Require a transaction for edits' checkbox. When using transactions, use the buttons to start editing and stop editing. When you stop editing, you can choose to commit the changes or roll them back. At any point, you can synchronize the local geodatabase with the feature service.
+When the sample loads, a feature service is taken offline as a geodatabase. When the geodatabase is ready, you can add multiple types of features. Tap "Start" to start a transaction. When you stop editing, you can choose to commit the changes or roll them back. To apply edits directly, untoggle "Requires Transaction". You can synchronize the local geodatabase with the feature service by pressing "Sync".
 
 ## How it works
 
 1. Take the feature service offline as a geodatabase and display the local tables from the geodatabase in feature layers.
-2. If the checkbox is checked, begin the transaction on the geodatabase.
-3. Add one or more features.
+2. Begin the transaction on the geodatabase.
+3. Add one or more features to the feature table(s).
 4. When ready, either commit the transaction to the geodatabase or roll back the transaction.
 5. Use a geodatabase sync task to sync changes to the local geodatabase with the feature service.
 
 ## Relevant API
 
+* GenerateGeodatabaseJob
+* GenerateGeodatabaseParameters
 * Geodatabase
-* GeometryEditor
+* GeodatabaseSyncTask
+* SyncGeodatabaseJob
+* SyncGeodatabaseParameters
 
 ## About the data
 
@@ -32,4 +36,3 @@ The sample uses a publicly-editable, sync-enabled [feature service](https://samp
 ## Tags
 
 commit, database, geodatabase, geometry editor, transact, transactions
-
