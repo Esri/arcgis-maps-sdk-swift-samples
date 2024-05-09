@@ -92,7 +92,7 @@ struct ApplyScheduledUpdatesToPreplannedMapAreaView: View {
     
     /// Displays different alerts based on the offline map updates info.
     /// - Parameter info: The updates info from the offline map sync task.
-    func handleUpdatesInfo(_ info: OfflineMapUpdatesInfo) {
+    private func handleUpdatesInfo(_ info: OfflineMapUpdatesInfo) {
         switch info.downloadAvailability {
         case .available:
             updatesAlertIsPresented = true
