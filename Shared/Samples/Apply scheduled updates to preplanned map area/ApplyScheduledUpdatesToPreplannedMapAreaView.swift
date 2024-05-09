@@ -41,10 +41,9 @@ struct ApplyScheduledUpdatesToPreplannedMapAreaView: View {
                 }
             }
             .onChange(of: model.updatesInfo == nil) { _ in
-                if let updatesInfo = model.updatesInfo {
-                    // Handle the updates info from the offline map sync task.
-                    handleUpdatesInfo(updatesInfo)
-                }
+                guard let updatesInfo = model.updatesInfo else { return }
+                // Handle the updates info from the offline map sync task.
+                handleUpdatesInfo(updatesInfo)
             }
             .overlay {
                 // Show a progress view for the offline map sync job that downloads
@@ -62,7 +61,7 @@ struct ApplyScheduledUpdatesToPreplannedMapAreaView: View {
                 }
             }
             .alert("Scheduled Updates Available", isPresented: $updatesAlertIsPresented) {
-                Button("Cancel", role: .cancel, action: {})
+                Button("Cancel", role: .cancel) {}
                 Button("Apply") {
                     Task {
                         do {
@@ -77,14 +76,13 @@ struct ApplyScheduledUpdatesToPreplannedMapAreaView: View {
                 let downloadSizeString = ByteCountFormatter.string(
                     from: Measurement(
                         value: Double(model.updatesInfo?.scheduledUpdatesDownloadSize ?? .zero),
-                        unit: UnitInformationStorage.bytes
+                        unit: .bytes
                     ),
                     countStyle: .file
                 )
                 Text("A \(downloadSizeString) update is available. Would you like to apply it?")
             }
             .alert("Scheduled Updates Unavailable", isPresented: $noUpdatesAlertIsPresented) {
-                Button("OK", action: {})
             } message: {
                 Text("There are no updates available.")
             }
@@ -129,7 +127,7 @@ private extension ApplyScheduledUpdatesToPreplannedMapAreaView {
         /// The sync task used to check for scheduled updates.
         private var offlineMapSyncTask: OfflineMapSyncTask?
         
-        /// Loads the offline map and set up the sync task.
+        /// Loads the offline map and sets up the sync task.
         func setUp() async throws {
             // Open and load the mobile map package from local disk.
             let mobileMapPackageURL = Bundle.main.url(forResource: "canyonlands", withExtension: nil)!
@@ -187,7 +185,8 @@ private extension ApplyScheduledUpdatesToPreplannedMapAreaView {
 }
 
 private extension FileManager {
-    /// Creates a temporary directory and returns the URL of the created directory.
+    /// Creates a temporary directory.
+    /// - Returns: The URL of the created directory.
     static func createTemporaryDirectory() -> URL {
         // swiftlint:disable:next force_try
         try! FileManager.default.url(
