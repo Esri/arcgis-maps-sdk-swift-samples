@@ -2,7 +2,7 @@
 
 Use transactions to manage how changes are committed to a geodatabase.
 
-![Image of edit geodatabase with transactions](EditGeodatabaseWithTransactions.jpg)
+![Image of Edit geodatabase with transactions sample](edit-geodatabase-with-transactions.png)
 
 ## Use case
 

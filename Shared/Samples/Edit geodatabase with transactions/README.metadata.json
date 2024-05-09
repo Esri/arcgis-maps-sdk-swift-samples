@@ -2,7 +2,9 @@
     "category": "Edit and Manage Data",
     "description": "Use transactions to manage how changes are committed to a geodatabase.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "edit-geodatabase-with-transactions.png"
+    ],
     "keywords": [
         "commit",
         "database",
