@@ -1,0 +1,35 @@
+{
+    "category": "Edit and Manage Data",
+    "description": "Synchronize offline edits with a feature service.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "feature service",
+        "geodatabase",
+        "offline",
+        "synchronize",
+        "FeatureLayer",
+        "FeatureTable",
+        "GenerateGeodatabaseJob",
+        "GenerateGeodatabaseParameters",
+        "GeodatabaseSyncTask",
+        "SyncGeodatabaseJob",
+        "SyncGeodatabaseParameters",
+        "SyncLayerOption"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "FeatureLayer",
+        "FeatureTable",
+        "GenerateGeodatabaseJob",
+        "GenerateGeodatabaseParameters",
+        "GeodatabaseSyncTask",
+        "SyncGeodatabaseJob",
+        "SyncGeodatabaseParameters",
+        "SyncLayerOption"
+    ],
+    "snippets": [
+        "EditAndSyncFeaturesWithFeatureServiceView.swift"
+    ],
+    "title": "Edit and sync features with feature service"
+}
