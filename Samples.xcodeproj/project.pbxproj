@@ -44,6 +44,9 @@
 		0044289329C9234300160767 /* GetElevationAtPointOnSurfaceView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 0044289129C90C0B00160767 /* GetElevationAtPointOnSurfaceView.swift */; };
 		0044CDDF2995C39E004618CE /* ShowDeviceLocationHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0044CDDE2995C39E004618CE /* ShowDeviceLocationHistoryView.swift */; };
 		0044CDE02995D4DD004618CE /* ShowDeviceLocationHistoryView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 0044CDDE2995C39E004618CE /* ShowDeviceLocationHistoryView.swift */; };
+		004A2B9D2BED455B00C297CE /* canyonlands in Resources */ = {isa = PBXBuildFile; fileRef = 004A2B9C2BED455B00C297CE /* canyonlands */; settings = {ASSET_TAGS = (ApplyScheduledUpdatesToPreplannedMapArea, ); }; };
+		004A2BA22BED456500C297CE /* ApplyScheduledUpdatesToPreplannedMapAreaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004A2B9E2BED456500C297CE /* ApplyScheduledUpdatesToPreplannedMapAreaView.swift */; };
+		004A2BA52BED458C00C297CE /* ApplyScheduledUpdatesToPreplannedMapAreaView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 004A2B9E2BED456500C297CE /* ApplyScheduledUpdatesToPreplannedMapAreaView.swift */; };
 		004FE87129DF5D8700075217 /* Bristol in Resources */ = {isa = PBXBuildFile; fileRef = 004FE87029DF5D8700075217 /* Bristol */; settings = {ASSET_TAGS = (Animate3DGraphic, ChangeCameraController, OrbitCameraAroundObject, StylePointWithDistanceCompositeSceneSymbol, ); }; };
 		006C835528B40682004AEB7F /* BrowseBuildingFloorsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E0FE32E628747778002C6ACA /* BrowseBuildingFloorsView.swift */; };
 		006C835628B40682004AEB7F /* DisplayMapFromMobileMapPackageView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = F111CCC0288B5D5600205358 /* DisplayMapFromMobileMapPackageView.swift */; };
@@ -460,6 +463,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				004A2BA52BED458C00C297CE /* ApplyScheduledUpdatesToPreplannedMapAreaView.swift in Copy Source Code Files */,
 				D73E61992BDAEEDD00457932 /* MatchViewpointOfGeoViewsView.swift in Copy Source Code Files */,
 				D7352F912BD992E40013FFEF /* MonitorChangesToDrawStatusView.swift in Copy Source Code Files */,
 				D713717C2BD88EF800EB2F86 /* MonitorChangesToLayerViewStateView.swift in Copy Source Code Files */,
@@ -654,6 +658,8 @@
 		0042E24428E4F82B001F33D6 /* ShowViewshedFromPointInSceneView.ViewshedSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowViewshedFromPointInSceneView.ViewshedSettingsView.swift; sourceTree = "<group>"; };
 		0044289129C90C0B00160767 /* GetElevationAtPointOnSurfaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetElevationAtPointOnSurfaceView.swift; sourceTree = "<group>"; };
 		0044CDDE2995C39E004618CE /* ShowDeviceLocationHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowDeviceLocationHistoryView.swift; sourceTree = "<group>"; };
+		004A2B9C2BED455B00C297CE /* canyonlands */ = {isa = PBXFileReference; lastKnownFileType = folder; path = canyonlands; sourceTree = "<group>"; };
+		004A2B9E2BED456500C297CE /* ApplyScheduledUpdatesToPreplannedMapAreaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplyScheduledUpdatesToPreplannedMapAreaView.swift; sourceTree = "<group>"; };
 		004FE87029DF5D8700075217 /* Bristol */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Bristol; sourceTree = "<group>"; };
 		0074ABBE28174BCF0037244A /* DisplayMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayMapView.swift; sourceTree = "<group>"; };
 		0074ABC128174F430037244A /* Sample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sample.swift; sourceTree = "<group>"; };
@@ -961,6 +967,22 @@
 			path = "Show device location history";
 			sourceTree = "<group>";
 		};
+		004A2B962BED454300C297CE /* 740b663bff5e4198b9b6674af93f638a */ = {
+			isa = PBXGroup;
+			children = (
+				004A2B9C2BED455B00C297CE /* canyonlands */,
+			);
+			path = 740b663bff5e4198b9b6674af93f638a;
+			sourceTree = "<group>";
+		};
+		004A2BA12BED456500C297CE /* Apply scheduled updates to preplanned map area */ = {
+			isa = PBXGroup;
+			children = (
+				004A2B9E2BED456500C297CE /* ApplyScheduledUpdatesToPreplannedMapAreaView.swift */,
+			);
+			path = "Apply scheduled updates to preplanned map area";
+			sourceTree = "<group>";
+		};
 		0074ABAF281742420037244A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
@@ -975,6 +997,7 @@
 		0074ABB228174B830037244A /* Samples */ = {
 			isa = PBXGroup;
 			children = (
+				004A2BA12BED456500C297CE /* Apply scheduled updates to preplanned map area */,
 				0000FB6D2BBDB17600845921 /* Add 3D tiles layer */,
 				79D84D0C2A815BED00F45262 /* Add custom dynamic entity data source */,
 				4D2ADC3E29C26D05003B367F /* Add dynamic entity layer */,
@@ -1179,6 +1202,7 @@
 		00CCB8A6285D059300BBAB70 /* Portal Data */ = {
 			isa = PBXGroup;
 			children = (
+				004A2B962BED454300C297CE /* 740b663bff5e4198b9b6674af93f638a */,
 				D701D7242A37C7E4006FF0C8 /* 07d62a792ab6496d9b772a24efea45d0 */,
 				D7C16D232AC5FEA600689E89 /* 12509ffdc684437f8f2656b0129d2c13 */,
 				00D4EF8328638BF100B9CC30 /* 15a7cbd3af1e47cfa5d2c6b93dc44fc2 */,
@@ -2454,6 +2478,7 @@
 					AddRasterFromFile,
 					Animate3DGraphic,
 					AnimateImagesWithImageOverlay,
+					ApplyScheduledUpdatesToPreplannedMapArea,
 					AugmentRealityToShowTabletopScene,
 					ChangeCameraController,
 					DisplayDimensions,
@@ -2533,6 +2558,7 @@
 				00D4EF9A28638BF100B9CC30 /* AuroraCO.gpkg in Resources */,
 				D7C16D282AC5FEB700689E89 /* Hawaii.csv in Resources */,
 				D7D1F3532ADDBE5D009CE2DA /* philadelphia.mspk in Resources */,
+				004A2B9D2BED455B00C297CE /* canyonlands in Resources */,
 				798C2DA72AFC505600EE7E97 /* PrivacyInfo.xcprivacy in Resources */,
 				D7E7D09A2AEB3C47003AAD02 /* san_diego_offline_routing in Resources */,
 				F111CCC4288B641900205358 /* Yellowstone.mmpk in Resources */,
@@ -2687,6 +2713,7 @@
 				E0FE32E728747778002C6ACA /* BrowseBuildingFloorsView.swift in Sources */,
 				D7F8C0432B608F120072BFA7 /* AddFeaturesWithContingentValuesView.AddFeatureView.swift in Sources */,
 				D752D95F2A3BCE06003EB25E /* DisplayMapFromPortalItemView.swift in Sources */,
+				004A2BA22BED456500C297CE /* ApplyScheduledUpdatesToPreplannedMapAreaView.swift in Sources */,
 				1CAB8D4B2A3CEAB0002AA649 /* RunValveIsolationTraceView.Model.swift in Sources */,
 				E070A0A3286F3B6000F2B606 /* DownloadPreplannedMapAreaView.swift in Sources */,
 				D77570C02A2942F800F490CD /* AnimateImagesWithImageOverlayView.swift in Sources */,
