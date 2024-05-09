@@ -12,7 +12,7 @@ This workflow can be used by survey workers operating in remote areas where netw
 
 ## How to use the sample
 
-When the sample loads, it will display an offline map. Check for available updates, and show update availability and size. Tap the button to apply the updates to the local offline map and show the results.
+When the sample loads, it will display an offline map, check for available updates, and show update availability and size. Tap the button to apply the updates to the local offline map and show the results.
 
 ## How it works
 
@@ -22,7 +22,7 @@ When the sample loads, it will display an offline map. Check for available updat
 4. Set the parameters to download all available updates.
 5. Use the parameters to create an `OfflineMapSyncJob` object.
 6. Start the job and get the results once it completes successfully.
-7. Check if the mobile map package needs to be reopened, and do so if necessary.
+7. Check if the mobile map package needs to be reopened and do so if necessary.
 8. Display the updated offline map to see the changes.
 
 ## Relevant API
