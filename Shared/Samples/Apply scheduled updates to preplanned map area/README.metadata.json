@@ -1,0 +1,37 @@
+{
+    "category": "Edit and Manage Data",
+    "description": "Apply scheduled updates to a downloaded preplanned map area.",
+    "ignore": false,
+    "images": [
+        "apply-scheduled-updates-to-preplanned-map-area.png"
+    ],
+    "keywords": [
+        "offline",
+        "pre-planned",
+        "preplanned",
+        "synchronize",
+        "update",
+        "MobileMapPackage",
+        "OfflineMapSyncJob",
+        "OfflineMapSyncParameters",
+        "OfflineMapSyncResult",
+        "OfflineMapSyncTask",
+        "OfflineMapUpdatesInfo"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "MobileMapPackage",
+        "OfflineMapSyncJob",
+        "OfflineMapSyncParameters",
+        "OfflineMapSyncResult",
+        "OfflineMapSyncTask",
+        "OfflineMapUpdatesInfo"
+    ],
+    "offline_data": [
+        "740b663bff5e4198b9b6674af93f638a"
+    ],
+    "snippets": [
+        "ApplyScheduledUpdatesToPreplannedMapAreaView.swift"
+    ],
+    "title": "Apply scheduled updates to preplanned map area"
+}
