@@ -19,11 +19,248 @@ struct EditGeodatabaseWithTransactionsView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
+    /// The action currently being preformed.
+    @State private var selectedAction: Action? = .setUp
+    
+    /// The text describing the status of the sample.
+    @State private var statusText = ""
+    
+    /// The point on the map where the user tapped.
+    @State private var tapLocation: Point?
+    
+    /// A Boolean value indicating whether a transaction is active on the geodatabase.
+    @State private var isInTransaction = false
+    
+    /// A Boolean value indicating whether a transaction is required to add a feature.
+    @State private var transactionIsRequired = true
+    
+    /// A Boolean value indicating whether the select feature type popover is presented.
+    @State private var isSelectingFeatureType = false
+    
+    /// A Boolean value indicating whether the alert to end a transaction is presented.
+    @State private var endTransactionAlertIsPresented = false
+    
+    /// The error shown in the error alert.
+    @State private var error: Error?
+    
     var body: some View {
         MapView(map: model.map)
+            .onSingleTapGesture { _, mapPoint in
+                // Shows the select feature type popover when a feature can currently be added.
+                guard !transactionIsRequired || isInTransaction else { return }
+                
+                tapLocation = mapPoint
+                isSelectingFeatureType = true
+            }
+            .task(id: selectedAction) {
+                guard let selectedAction else { return }
+                
+                do {
+                    switch selectedAction {
+                    case .setUp:
+                        try await model.setUp()
+                    case .addFeature(let tableName, let featureTypeID):
+                        try await model.addFeature(
+                            to: tableName,
+                            featureTypeID: featureTypeID,
+                            point: tapLocation!
+                        )
+                    case .beginTransaction:
+                        try model.geodatabase.beginTransaction()
+                        isInTransaction = true
+                    case .commitTransaction:
+                        try model.geodatabase.commitTransaction()
+                        isInTransaction = false
+                    case .rollbackTransaction:
+                        try model.geodatabase.rollbackTransaction()
+                        isInTransaction = false
+                    case .sync:
+                        try await model.syncGeodatabase()
+                    }
+                    
+                    statusText = selectedAction.completionMessage
+                } catch {
+                    self.error = error
+                }
+                
+                self.selectedAction = nil
+            }
+            .overlay(alignment: .top) {
+                Text(statusText)
+                    .multilineTextAlignment(.center)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .padding(8)
+                    .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
+            }
+            .overlay(alignment: .center) {
+                if let progress = model.progress {
+                    VStack {
+                        Text(selectedAction == .setUp ? "Creating geodatabase…" : "Syncing edits…")
+                            .padding(.bottom)
+                        ProgressView(progress)
+                            .frame(maxWidth: 180)
+                    }
+                    .padding()
+                    .background(.ultraThickMaterial)
+                    .cornerRadius(10)
+                    .shadow(radius: 50)
+                }
+            }
+            .toolbar {
+                ToolbarItemGroup(placement: .bottomBar) {
+                    Button(isInTransaction ? "End" : "Start") {
+                        if isInTransaction {
+                            // Presents the alert to handle the edits.
+                            endTransactionAlertIsPresented = true
+                        } else {
+                            selectedAction = .beginTransaction
+                        }
+                    }
+                    .disabled(!transactionIsRequired)
+                    .popover(isPresented: $isSelectingFeatureType) {
+                        SelectFeatureTypeView(
+                            featureTables: model.geodatabase.featureTables
+                        ) { tableName, featureTypeID in
+                            selectedAction = .addFeature(
+                                tableName: tableName,
+                                featureTypeID: featureTypeID
+                            )
+                        }
+                        .presentationDetents([.fraction(0.5)])
+                        .frame(idealWidth: 320, idealHeight: 380)
+                    }
+                    
+                    Spacer()
+                    
+                    Toggle("Requires Transaction", isOn: $transactionIsRequired)
+                        .disabled(isInTransaction)
+                        .onChange(of: transactionIsRequired) { transactionIsRequired in
+                            statusText = transactionIsRequired
+                            ? "Tap Start to begin a transaction."
+                            : "Tap on the map to add a feature."
+                        }
+                    
+                    Spacer()
+                    
+                    Button("Sync") {
+                        selectedAction = .sync
+                    }
+                    .disabled(isInTransaction || !model.hasLocalEdits)
+                }
+            }
+            .alert("Commit Edits", isPresented: $endTransactionAlertIsPresented) {
+                Button("Commit") {
+                    selectedAction = .commitTransaction
+                }
+                Button("Rollback", role: .destructive) {
+                    selectedAction = .rollbackTransaction
+                }
+                Button("Cancel", role: .cancel) {}
+            } message: {
+                Text("Commit the edits in the transaction to the geodatabase or rollback to discard them.")
+            }
+            .disabled(selectedAction == .setUp || selectedAction == .sync)
+            .errorAlert(presentingError: $error)
+    }
+}
+
+/// An action associated with the geodatabase.
+private enum Action: Equatable {
+    /// Sets up the sample.
+    case setUp
+    /// Adds a feature of a given type to a table in the geodatabase.
+    case addFeature(tableName: String, featureTypeID: Int)
+    /// Starts a transaction on the geodatabase.
+    case beginTransaction
+    /// Commits the edits in the transaction to the geodatabase.
+    case commitTransaction
+    /// Rollback the edits in the transaction from the geodatabase.
+    case rollbackTransaction
+    /// Synchronizes the geodatabase and the feature service.
+    case sync
+    
+    /// The message to display when the action successfully completes.
+    var completionMessage: String {
+        switch self {
+        case .setUp: "Tap Start to begin a transaction."
+        case .addFeature: "Added feature."
+        case .beginTransaction: "Transaction started."
+        case .commitTransaction: "Edits committed to geodatabase."
+        case .rollbackTransaction: "Edits discarded."
+        case .sync: "Synchronized geodatabase and feature service."
+        }
+    }
+}
+
+/// A view allowing the user to select a feature type from given feature tables.
+private struct SelectFeatureTypeView: View {
+    /// The feature tables containing the feature types.
+    let featureTables: [ArcGISFeatureTable]
+    
+    /// The action to perform when the "Done" button is pressed.
+    let action: (_ tableName: String, _ featureTypeID: Int) -> Void
+    
+    /// The action to dismiss the view.
+    @Environment(\.dismiss) private var dismiss
+    
+    /// The name of the feature table selected in the picker.
+    @State private var selectedFeatureTableName = ""
+    
+    /// The ID of the feature type selected by the user.
+    @State private var selectedFeatureTypeID: Int?
+    
+    /// The feature types of the selected feature table.
+    private var featureTypeOptions: [FeatureType] {
+        let selectFeatureTable = featureTables.first { $0.tableName == selectedFeatureTableName }
+        return selectFeatureTable?.featureTypes ?? []
+    }
+    
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section("Feature Type") {
+                    Picker("Feature Table", selection: $selectedFeatureTableName) {
+                        ForEach(featureTables, id: \.tableName) { featureTable in
+                            Text(featureTable.displayName)
+                                .tag(featureTable.tableName)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                    
+                    Picker("Feature Type", selection: $selectedFeatureTypeID) {
+                        ForEach(featureTypeOptions, id: \.name) { featureType in
+                            Text(featureType.name)
+                                .tag(featureType.id as? Int)
+                        }
+                    }
+                    .pickerStyle(.inline)
+                    .labelsHidden()
+                }
+            }
+            .navigationTitle("New Feature")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel", role: .cancel) { dismiss() }
+                }
+                
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") {
+                        action(selectedFeatureTableName, selectedFeatureTypeID!)
+                        dismiss()
+                    }
+                    .disabled(selectedFeatureTypeID == nil)
+                }
+            }
+        }
+        .onAppear {
+            selectedFeatureTableName = featureTables.first?.tableName ?? ""
+        }
     }
 }
 
 #Preview {
-    EditGeodatabaseWithTransactionsView()
+    NavigationStack {
+        EditGeodatabaseWithTransactionsView()
+    }
 }
