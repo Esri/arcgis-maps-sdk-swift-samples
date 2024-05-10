@@ -16,11 +16,22 @@ import ArcGIS
 import SwiftUI
 
 struct EditAndSyncFeaturesWithFeatureServiceView: View {
-    /// A map with a topographic basemap.
-    @State private var map = Map(basemapStyle: .arcGISTopographic)
+    /// A map with a San Fransisco streets basemap.
+    @State private var map: Map = {
+        let tiledLayer = ArcGISTiledLayer(url: .sanFranciscoStreetsTilePackage)
+        let basemap = Basemap(baseLayer: tiledLayer)
+        return Map(basemap: basemap)
+    }()
     
     var body: some View {
         MapView(map: map)
+    }
+}
+
+private extension URL {
+    /// The URL to the local streets tile package of San Francisco, CA, USA.
+    static var sanFranciscoStreetsTilePackage: URL {
+        Bundle.main.url(forResource: "SanFrancisco", withExtension: "tpkx")!
     }
 }
 

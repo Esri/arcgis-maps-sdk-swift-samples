@@ -346,6 +346,7 @@
 		D7C16D282AC5FEB700689E89 /* Hawaii.csv in Resources */ = {isa = PBXBuildFile; fileRef = D7C16D272AC5FEB600689E89 /* Hawaii.csv */; settings = {ASSET_TAGS = (Animate3DGraphic, ); }; };
 		D7C3AB4A2B683291008909B9 /* SetFeatureRequestModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C3AB472B683291008909B9 /* SetFeatureRequestModeView.swift */; };
 		D7C3AB4D2B6832B7008909B9 /* SetFeatureRequestModeView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7C3AB472B683291008909B9 /* SetFeatureRequestModeView.swift */; };
+		D7C523402BED9BBF00E8221A /* SanFrancisco.tpkx in Resources */ = {isa = PBXBuildFile; fileRef = D7C5233E2BED9BBF00E8221A /* SanFrancisco.tpkx */; settings = {ASSET_TAGS = (EditAndSyncFeaturesWithFeatureService, ); }; };
 		D7C6420C2B4F47E10042B8F7 /* SearchForWebMapView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C6420B2B4F47E10042B8F7 /* SearchForWebMapView.Model.swift */; };
 		D7C6420D2B4F5DDB0042B8F7 /* SearchForWebMapView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7C6420B2B4F47E10042B8F7 /* SearchForWebMapView.Model.swift */; };
 		D7C97B562B75C10C0097CDA1 /* ValidateUtilityNetworkTopologyView.Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C97B552B75C10C0097CDA1 /* ValidateUtilityNetworkTopologyView.Views.swift */; };
@@ -834,6 +835,7 @@
 		D7C16D242AC5FEA600689E89 /* Snowdon.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Snowdon.csv; sourceTree = "<group>"; };
 		D7C16D272AC5FEB600689E89 /* Hawaii.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Hawaii.csv; sourceTree = "<group>"; };
 		D7C3AB472B683291008909B9 /* SetFeatureRequestModeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetFeatureRequestModeView.swift; sourceTree = "<group>"; };
+		D7C5233E2BED9BBF00E8221A /* SanFrancisco.tpkx */ = {isa = PBXFileReference; lastKnownFileType = file; path = SanFrancisco.tpkx; sourceTree = "<group>"; };
 		D7C6420B2B4F47E10042B8F7 /* SearchForWebMapView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchForWebMapView.Model.swift; sourceTree = "<group>"; };
 		D7C97B552B75C10C0097CDA1 /* ValidateUtilityNetworkTopologyView.Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValidateUtilityNetworkTopologyView.Views.swift; sourceTree = "<group>"; };
 		D7CC33FD2A31475C00198EDF /* ShowLineOfSightBetweenPointsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowLineOfSightBetweenPointsView.swift; sourceTree = "<group>"; };
@@ -1234,6 +1236,7 @@
 				D7E7D0862AEB3C36003AAD02 /* df193653ed39449195af0c9725701dca */,
 				D7F8C03C2B605AF60072BFA7 /* e12b54ea799f4606a2712157cf9f6e41 */,
 				F111CCC2288B63DB00205358 /* e1f3a7254cb845b09450f54937c16061 */,
+				D7C5233F2BED9BBF00E8221A /* e4a398afe9a945f3b0f4dca1e4faccb5 */,
 				D7C16D262AC5FEB600689E89 /* e87c154fb9c2487f999143df5b08e9b1 */,
 				D7497F3E2AC4BA4100167AD2 /* f5ff6f5556a945bca87ca513b8729a1e */,
 			);
@@ -2125,6 +2128,14 @@
 			path = "Set feature request mode";
 			sourceTree = "<group>";
 		};
+		D7C5233F2BED9BBF00E8221A /* e4a398afe9a945f3b0f4dca1e4faccb5 */ = {
+			isa = PBXGroup;
+			children = (
+				D7C5233E2BED9BBF00E8221A /* SanFrancisco.tpkx */,
+			);
+			path = e4a398afe9a945f3b0f4dca1e4faccb5;
+			sourceTree = "<group>";
+		};
 		D7CC33FB2A31475C00198EDF /* Show line of sight between points */ = {
 			isa = PBXGroup;
 			children = (
@@ -2497,6 +2508,7 @@
 					DisplayDimensions,
 					DisplayMapFromMobileMapPackage,
 					DisplaySceneFromMobileScenePackage,
+					EditAndSyncFeaturesWithFeatureService,
 					FindRouteInMobileMapPackage,
 					FindRouteInTransportNetwork,
 					GenerateOfflineMapWithLocalBasemap,
@@ -2554,6 +2566,7 @@
 				D7C16D1F2AC5FE8200689E89 /* Pyrenees.csv in Resources */,
 				E041AC1A287F54580056009B /* highlight.min.js in Resources */,
 				D7497F402AC4BA4100167AD2 /* Edinburgh_Pylon_Dimensions.mmpk in Resources */,
+				D7C523402BED9BBF00E8221A /* SanFrancisco.tpkx in Resources */,
 				00E5402027F3CCA200CF66D5 /* Assets.xcassets in Resources */,
 				4D126D7C29CA3E6000CFB7A7 /* Redlands.nmea in Resources */,
 				00C94A0D28B53DE1004E42D9 /* raster-file in Resources */,
