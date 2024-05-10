@@ -32,7 +32,8 @@
         "SyncLayerOption"
     ],
     "snippets": [
-        "EditAndSyncFeaturesWithFeatureServiceView.swift"
+        "EditAndSyncFeaturesWithFeatureServiceView.swift",
+        "EditAndSyncFeaturesWithFeatureServiceView.Model.swift"
     ],
     "title": "Edit and sync features with feature service"
 }

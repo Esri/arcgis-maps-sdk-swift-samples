@@ -13,13 +13,23 @@
 // limitations under the License.
 
 import ArcGIS
-import SwiftUI
+import Foundation
 
-struct EditAndSyncFeaturesWithFeatureServiceView: View {
+extension EditAndSyncFeaturesWithFeatureServiceView {
     /// The view model for the sample.
-    @StateObject private var model = Model()
-    
-    var body: some View {
-        MapView(map: model.map)
+    final class Model: ObservableObject {
+        /// A map with a San Fransisco streets basemap.
+        let map: Map = {
+            let tiledLayer = ArcGISTiledLayer(url: .sanFranciscoStreetsTilePackage)
+            let basemap = Basemap(baseLayer: tiledLayer)
+            return Map(basemap: basemap)
+        }()
+    }
+}
+
+private extension URL {
+    /// The URL to the local streets tile package of San Francisco, CA, USA.
+    static var sanFranciscoStreetsTilePackage: URL {
+        Bundle.main.url(forResource: "SanFrancisco", withExtension: "tpkx")!
     }
 }

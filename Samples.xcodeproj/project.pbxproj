@@ -256,6 +256,8 @@
 		D74C8C022ABA6202007C76B8 /* emoji-mobile.stylx in Resources */ = {isa = PBXBuildFile; fileRef = D74C8C012ABA6202007C76B8 /* emoji-mobile.stylx */; settings = {ASSET_TAGS = (StyleSymbolsFromMobileStyleFile, ); }; };
 		D74EA7842B6DADA5008F6C7C /* ValidateUtilityNetworkTopologyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74EA7812B6DADA5008F6C7C /* ValidateUtilityNetworkTopologyView.swift */; };
 		D74EA7872B6DADCC008F6C7C /* ValidateUtilityNetworkTopologyView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D74EA7812B6DADA5008F6C7C /* ValidateUtilityNetworkTopologyView.swift */; };
+		D74ECD0D2BEEAE2F007C0FA6 /* EditAndSyncFeaturesWithFeatureServiceView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74ECD0C2BEEAE2F007C0FA6 /* EditAndSyncFeaturesWithFeatureServiceView.Model.swift */; };
+		D74ECD0E2BEEAE40007C0FA6 /* EditAndSyncFeaturesWithFeatureServiceView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D74ECD0C2BEEAE2F007C0FA6 /* EditAndSyncFeaturesWithFeatureServiceView.Model.swift */; };
 		D74F03F02B609A7D00E83688 /* AddFeaturesWithContingentValuesView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74F03EF2B609A7D00E83688 /* AddFeaturesWithContingentValuesView.Model.swift */; };
 		D75101812A2E493600B8FA48 /* ShowLabelsOnLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75101802A2E493600B8FA48 /* ShowLabelsOnLayerView.swift */; };
 		D75101822A2E497F00B8FA48 /* ShowLabelsOnLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D75101802A2E493600B8FA48 /* ShowLabelsOnLayerView.swift */; };
@@ -466,6 +468,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				D74ECD0E2BEEAE40007C0FA6 /* EditAndSyncFeaturesWithFeatureServiceView.Model.swift in Copy Source Code Files */,
 				D733CA1C2BED982C00FBDE4C /* EditAndSyncFeaturesWithFeatureServiceView.swift in Copy Source Code Files */,
 				004A2BA52BED458C00C297CE /* ApplyScheduledUpdatesToPreplannedMapAreaView.swift in Copy Source Code Files */,
 				D73E61992BDAEEDD00457932 /* MatchViewpointOfGeoViewsView.swift in Copy Source Code Files */,
@@ -785,6 +788,7 @@
 		D74C8BFD2ABA5605007C76B8 /* StyleSymbolsFromMobileStyleFileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleSymbolsFromMobileStyleFileView.swift; sourceTree = "<group>"; };
 		D74C8C012ABA6202007C76B8 /* emoji-mobile.stylx */ = {isa = PBXFileReference; lastKnownFileType = file; path = "emoji-mobile.stylx"; sourceTree = "<group>"; };
 		D74EA7812B6DADA5008F6C7C /* ValidateUtilityNetworkTopologyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValidateUtilityNetworkTopologyView.swift; sourceTree = "<group>"; };
+		D74ECD0C2BEEAE2F007C0FA6 /* EditAndSyncFeaturesWithFeatureServiceView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditAndSyncFeaturesWithFeatureServiceView.Model.swift; sourceTree = "<group>"; };
 		D74F03EF2B609A7D00E83688 /* AddFeaturesWithContingentValuesView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddFeaturesWithContingentValuesView.Model.swift; sourceTree = "<group>"; };
 		D75101802A2E493600B8FA48 /* ShowLabelsOnLayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowLabelsOnLayerView.swift; sourceTree = "<group>"; };
 		D751018D2A2E962D00B8FA48 /* IdentifyLayerFeaturesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentifyLayerFeaturesView.swift; sourceTree = "<group>"; };
@@ -1690,6 +1694,7 @@
 			isa = PBXGroup;
 			children = (
 				D733CA152BED980D00FBDE4C /* EditAndSyncFeaturesWithFeatureServiceView.swift */,
+				D74ECD0C2BEEAE2F007C0FA6 /* EditAndSyncFeaturesWithFeatureServiceView.Model.swift */,
 			);
 			path = "Edit and sync features with feature service";
 			sourceTree = "<group>";
@@ -2863,6 +2868,7 @@
 				D744FD172A2112D90084A66C /* CreateConvexHullAroundPointsView.swift in Sources */,
 				D718A1ED2B575FD900447087 /* ManageBookmarksView.swift in Sources */,
 				D73723762AF5877500846884 /* FindRouteInMobileMapPackageView.Models.swift in Sources */,
+				D74ECD0D2BEEAE2F007C0FA6 /* EditAndSyncFeaturesWithFeatureServiceView.Model.swift in Sources */,
 				00CB9138284814A4005C2C5D /* SearchWithGeocodeView.swift in Sources */,
 				1C43BC7F2A43781200509BF8 /* SetVisibilityOfSubtypeSublayerView.Views.swift in Sources */,
 				D754E3232A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift in Sources */,
