@@ -79,6 +79,8 @@ struct EditGeodatabaseWithTransactionsView: View {
                     }
                     
                     statusText = selectedAction.completionMessage
+                } catch GeodatabaseError.geometryOutsideReplicaExtent {
+                    statusText = "Error: Feature geometry is outside the generate geodatabase geometry."
                 } catch {
                     self.error = error
                 }
