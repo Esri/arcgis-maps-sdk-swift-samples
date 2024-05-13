@@ -81,13 +81,13 @@ class Model: ObservableObject {
     /// Creates and adds a feature to a table in the geodatabase.
     /// - Parameters:
     ///   - tableName: The name of the table in the geodatabase.
-    ///   - featureTypeID: The ID of the type of feature to create.
+    ///   - featureTypeName: The name of the type of feature to create.
     ///   - point: The point on the map to add the feature at.
-    func addFeature(to tableName: String, featureTypeID: Int, point: Point) async throws {
+    func addFeature(tableName: String, featureTypeName: String, point: Point) async throws {
         guard let featureTable = geodatabase.featureTables.first(
             where: { $0.tableName == tableName }
         ), let featureType = featureTable.featureTypes.first(
-            where: { ($0.id as? Int) == featureTypeID }
+            where: { $0.name == featureTypeName }
         ) else { return }
         
         let feature = featureTable.makeFeature(type: featureType, geometry: point)

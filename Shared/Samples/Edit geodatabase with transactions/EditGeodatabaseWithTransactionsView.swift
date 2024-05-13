@@ -59,10 +59,10 @@ struct EditGeodatabaseWithTransactionsView: View {
                     switch selectedAction {
                     case .setUp:
                         try await model.setUp()
-                    case .addFeature(let tableName, let featureTypeID):
+                    case .addFeature(let tableName, let featureTypeName):
                         try await model.addFeature(
-                            to: tableName,
-                            featureTypeID: featureTypeID,
+                            tableName: tableName,
+                            featureTypeName: featureTypeName,
                             point: tapLocation!
                         )
                     case .beginTransaction:
@@ -120,10 +120,10 @@ struct EditGeodatabaseWithTransactionsView: View {
                     .popover(isPresented: $isSelectingFeatureType) {
                         SelectFeatureTypeView(
                             featureTables: model.geodatabase.featureTables
-                        ) { tableName, featureTypeID in
+                        ) { tableName, featureTypeName in
                             selectedAction = .addFeature(
                                 tableName: tableName,
-                                featureTypeID: featureTypeID
+                                featureTypeName: featureTypeName
                             )
                         }
                         .presentationDetents([.fraction(0.5)])
@@ -169,7 +169,7 @@ private enum Action: Equatable {
     /// Sets up the sample.
     case setUp
     /// Adds a feature of a given type to a table in the geodatabase.
-    case addFeature(tableName: String, featureTypeID: Int)
+    case addFeature(tableName: String, featureTypeName: String)
     /// Starts a transaction on the geodatabase.
     case beginTransaction
     /// Commits the edits in the transaction to the geodatabase.
@@ -198,7 +198,7 @@ private struct SelectFeatureTypeView: View {
     let featureTables: [ArcGISFeatureTable]
     
     /// The action to perform when a feature type is selected and the "Done" button is pressed.
-    let onFeatureSelectionAction: (_ tableName: String, _ featureTypeID: Int) -> Void
+    let onFeatureSelectionAction: (_ tableName: String, _ featureTypeName: String) -> Void
     
     /// The action to dismiss the view.
     @Environment(\.dismiss) private var dismiss
@@ -206,8 +206,8 @@ private struct SelectFeatureTypeView: View {
     /// The name of the feature table selected in the picker.
     @State private var selectedFeatureTableName = ""
     
-    /// The ID of the feature type selected by the user.
-    @State private var selectedFeatureTypeID: Int?
+    /// The name of the feature type selected by the user.
+    @State private var selectedFeatureTypeName: String?
     
     /// The feature types of the selected feature table.
     private var featureTypeOptions: [FeatureType] {
@@ -226,10 +226,10 @@ private struct SelectFeatureTypeView: View {
                     }
                     .pickerStyle(.segmented)
                     
-                    Picker("Feature Type", selection: $selectedFeatureTypeID) {
+                    Picker("Feature Type", selection: $selectedFeatureTypeName) {
                         ForEach(featureTypeOptions, id: \.name) { featureType in
                             Text(featureType.name)
-                                .tag(featureType.id as? Int)
+                                .tag(featureType.name as String?)
                         }
                     }
                     .pickerStyle(.inline)
@@ -245,10 +245,10 @@ private struct SelectFeatureTypeView: View {
                 
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Done") {
-                        onFeatureSelectionAction(selectedFeatureTableName, selectedFeatureTypeID!)
+                        onFeatureSelectionAction(selectedFeatureTableName, selectedFeatureTypeName!)
                         dismiss()
                     }
-                    .disabled(selectedFeatureTypeID == nil)
+                    .disabled(selectedFeatureTypeName == nil)
                 }
             }
         }
