@@ -82,7 +82,9 @@ struct EditWithBranchVersioningView: View {
                     isPresented: $isMovingFeature,
                     presenting: moveLocation,
                     actions: { mapPoint in
-                        Button("Cancel", role: .cancel, action: {})
+                        Button("Cancel", role: .cancel) {
+                            calloutPlacement = nil
+                        }
                         Button("Move") {
                             model.selectedFeature?.geometry = mapPoint
                             selectedAction = .updateFeature
