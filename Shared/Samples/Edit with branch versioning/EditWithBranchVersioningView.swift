@@ -84,6 +84,7 @@ struct EditWithBranchVersioningView: View {
                     actions: { mapPoint in
                         Button("Cancel", role: .cancel) {
                             calloutPlacement = nil
+                            model.clearSelection()
                         }
                         Button("Move") {
                             model.selectedFeature?.geometry = mapPoint
