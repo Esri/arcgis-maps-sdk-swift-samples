@@ -170,6 +170,6 @@ private extension Geometry {
 private extension URL {
     /// The URL for the "Save the Bay Sync" feature server.
     static var saveTheBaySync: URL {
-        URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Sync/SaveTheBaySync/FeatureServer/")!
+        URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Sync/SaveTheBaySync/FeatureServer")!
     }
 }
