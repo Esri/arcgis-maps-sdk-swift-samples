@@ -2,7 +2,9 @@
     "category": "Edit and Manage Data",
     "description": "Synchronize offline edits with a feature service.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "edit-and-sync-features-with-feature-service.png"
+    ],
     "keywords": [
         "feature service",
         "geodatabase",
