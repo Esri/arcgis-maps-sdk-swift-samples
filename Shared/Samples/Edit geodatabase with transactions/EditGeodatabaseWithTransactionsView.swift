@@ -197,8 +197,8 @@ private struct SelectFeatureTypeView: View {
     /// The feature tables containing the feature types.
     let featureTables: [ArcGISFeatureTable]
     
-    /// The action to perform when the "Done" button is pressed.
-    let action: (_ tableName: String, _ featureTypeID: Int) -> Void
+    /// The action to perform when a feature type is selected and the "Done" button is pressed.
+    let onFeatureSelectionAction: (_ tableName: String, _ featureTypeID: Int) -> Void
     
     /// The action to dismiss the view.
     @Environment(\.dismiss) private var dismiss
@@ -245,7 +245,7 @@ private struct SelectFeatureTypeView: View {
                 
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Done") {
-                        action(selectedFeatureTableName, selectedFeatureTypeID!)
+                        onFeatureSelectionAction(selectedFeatureTableName, selectedFeatureTypeID!)
                         dismiss()
                     }
                     .disabled(selectedFeatureTypeID == nil)
