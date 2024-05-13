@@ -116,7 +116,6 @@ struct EditAndSyncFeaturesWithFeatureServiceView: View {
                     .padding(EdgeInsets(top: 20, leading: 20, bottom: 44, trailing: 20))
             }
         }
-        .disabled(selectedAction != nil)
         .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
                 Button("Reset") {
@@ -130,6 +129,7 @@ struct EditAndSyncFeaturesWithFeatureServiceView: View {
                 .disabled(model.geodatabase != nil && !(model.geodatabase?.hasLocalEdits ?? false))
             }
         }
+        .disabled(selectedAction != nil)
         .overlay(alignment: .center) {
             // Shows a progress view when there is a job currently running.
             if let progress = model.currentJob?.progress {
