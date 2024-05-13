@@ -222,7 +222,6 @@ private struct SelectFeatureTypeView: View {
                     Picker("Feature Table", selection: $selectedFeatureTableName) {
                         ForEach(featureTables, id: \.tableName) { featureTable in
                             Text(featureTable.displayName)
-                                .tag(featureTable.tableName)
                         }
                     }
                     .pickerStyle(.segmented)
