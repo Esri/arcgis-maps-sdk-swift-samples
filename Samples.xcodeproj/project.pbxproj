@@ -300,10 +300,14 @@
 		D76360032B9296580044AB97 /* DisplayClustersView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7635FED2B9272CB0044AB97 /* DisplayClustersView.swift */; };
 		D76495212B74687E0042699E /* ValidateUtilityNetworkTopologyView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76495202B74687E0042699E /* ValidateUtilityNetworkTopologyView.Model.swift */; };
 		D76495222B7468940042699E /* ValidateUtilityNetworkTopologyView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D76495202B74687E0042699E /* ValidateUtilityNetworkTopologyView.Model.swift */; };
+		D764B7DF2BE2F89D002E2F92 /* EditGeodatabaseWithTransactionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D764B7DB2BE2F89D002E2F92 /* EditGeodatabaseWithTransactionsView.swift */; };
+		D764B7E22BE2F8B8002E2F92 /* EditGeodatabaseWithTransactionsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D764B7DB2BE2F89D002E2F92 /* EditGeodatabaseWithTransactionsView.swift */; };
 		D76929FA2B4F79540047205E /* OrbitCameraAroundObjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76929F52B4F78340047205E /* OrbitCameraAroundObjectView.swift */; };
 		D76929FB2B4F795C0047205E /* OrbitCameraAroundObjectView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D76929F52B4F78340047205E /* OrbitCameraAroundObjectView.swift */; };
 		D769C2122A29019B00030F61 /* SetUpLocationDrivenGeotriggersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D769C2112A29019B00030F61 /* SetUpLocationDrivenGeotriggersView.swift */; };
 		D769C2132A29057200030F61 /* SetUpLocationDrivenGeotriggersView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D769C2112A29019B00030F61 /* SetUpLocationDrivenGeotriggersView.swift */; };
+		D769DF332BEC1A1C0062AE95 /* EditGeodatabaseWithTransactionsView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D769DF322BEC1A1C0062AE95 /* EditGeodatabaseWithTransactionsView.Model.swift */; };
+		D769DF342BEC1A9E0062AE95 /* EditGeodatabaseWithTransactionsView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D769DF322BEC1A1C0062AE95 /* EditGeodatabaseWithTransactionsView.Model.swift */; };
 		D76EE6072AF9AFE100DA0325 /* FindRouteAroundBarriersView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76EE6062AF9AFE100DA0325 /* FindRouteAroundBarriersView.Model.swift */; };
 		D76EE6082AF9AFEC00DA0325 /* FindRouteAroundBarriersView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D76EE6062AF9AFE100DA0325 /* FindRouteAroundBarriersView.Model.swift */; };
 		D7705D582AFC244E00CC0335 /* FindClosestFacilityToMultiplePointsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7705D552AFC244E00CC0335 /* FindClosestFacilityToMultiplePointsView.swift */; };
@@ -470,6 +474,8 @@
 			files = (
 				D74ECD0E2BEEAE40007C0FA6 /* EditAndSyncFeaturesWithFeatureServiceView.Model.swift in Copy Source Code Files */,
 				D733CA1C2BED982C00FBDE4C /* EditAndSyncFeaturesWithFeatureServiceView.swift in Copy Source Code Files */,
+				D769DF342BEC1A9E0062AE95 /* EditGeodatabaseWithTransactionsView.Model.swift in Copy Source Code Files */,
+				D764B7E22BE2F8B8002E2F92 /* EditGeodatabaseWithTransactionsView.swift in Copy Source Code Files */,
 				004A2BA52BED458C00C297CE /* ApplyScheduledUpdatesToPreplannedMapAreaView.swift in Copy Source Code Files */,
 				D73E61992BDAEEDD00457932 /* MatchViewpointOfGeoViewsView.swift in Copy Source Code Files */,
 				D7352F912BD992E40013FFEF /* MonitorChangesToDrawStatusView.swift in Copy Source Code Files */,
@@ -811,8 +817,10 @@
 		D7635FF72B9277DC0044AB97 /* ConfigureClustersView.SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigureClustersView.SettingsView.swift; sourceTree = "<group>"; };
 		D7635FF82B9277DC0044AB97 /* ConfigureClustersView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigureClustersView.swift; sourceTree = "<group>"; };
 		D76495202B74687E0042699E /* ValidateUtilityNetworkTopologyView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValidateUtilityNetworkTopologyView.Model.swift; sourceTree = "<group>"; };
+		D764B7DB2BE2F89D002E2F92 /* EditGeodatabaseWithTransactionsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditGeodatabaseWithTransactionsView.swift; sourceTree = "<group>"; };
 		D76929F52B4F78340047205E /* OrbitCameraAroundObjectView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrbitCameraAroundObjectView.swift; sourceTree = "<group>"; };
 		D769C2112A29019B00030F61 /* SetUpLocationDrivenGeotriggersView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetUpLocationDrivenGeotriggersView.swift; sourceTree = "<group>"; };
+		D769DF322BEC1A1C0062AE95 /* EditGeodatabaseWithTransactionsView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditGeodatabaseWithTransactionsView.Model.swift; sourceTree = "<group>"; };
 		D76EE6062AF9AFE100DA0325 /* FindRouteAroundBarriersView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindRouteAroundBarriersView.Model.swift; sourceTree = "<group>"; };
 		D7705D552AFC244E00CC0335 /* FindClosestFacilityToMultiplePointsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindClosestFacilityToMultiplePointsView.swift; sourceTree = "<group>"; };
 		D7705D612AFC570700CC0335 /* FindClosestFacilityFromPointView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindClosestFacilityFromPointView.swift; sourceTree = "<group>"; };
@@ -1007,7 +1015,6 @@
 		0074ABB228174B830037244A /* Samples */ = {
 			isa = PBXGroup;
 			children = (
-				004A2BA12BED456500C297CE /* Apply scheduled updates to preplanned map area */,
 				0000FB6D2BBDB17600845921 /* Add 3D tiles layer */,
 				79D84D0C2A815BED00F45262 /* Add custom dynamic entity data source */,
 				4D2ADC3E29C26D05003B367F /* Add dynamic entity layer */,
@@ -1019,6 +1026,7 @@
 				1C3B7DC22A5F64FC00907443 /* Analyze network with subnetwork trace */,
 				D7C16D172AC5F6C100689E89 /* Animate 3D graphic */,
 				D77570BC2A29427200F490CD /* Animate images with image overlay */,
+				004A2BA12BED456500C297CE /* Apply scheduled updates to preplanned map area */,
 				D75362CC2A1E862B00D83028 /* Apply unique value renderer */,
 				1C8EC7422BAE2891001A6929 /* Augment reality to collect data */,
 				D7084FA42AD771AA00EC7F4F /* Augment reality to fly over scene */,
@@ -1058,6 +1066,7 @@
 				E070A0A1286F3B3400F2B606 /* Download preplanned map area */,
 				E004A6EE284E4B7A002A1FE6 /* Download vector tiles to local cache */,
 				D733CA182BED980D00FBDE4C /* Edit and sync features with feature service */,
+				D764B7DE2BE2F89D002E2F92 /* Edit geodatabase with transactions */,
 				1C26ED122A859525009B7721 /* Filter features in scene */,
 				D73FCFF32B02A3AA0006360D /* Find address with reverse geocode */,
 				D7705D5F2AFC570700CC0335 /* Find closest facility from point */,
@@ -1959,6 +1968,15 @@
 			path = "Configure clusters";
 			sourceTree = "<group>";
 		};
+		D764B7DE2BE2F89D002E2F92 /* Edit geodatabase with transactions */ = {
+			isa = PBXGroup;
+			children = (
+				D764B7DB2BE2F89D002E2F92 /* EditGeodatabaseWithTransactionsView.swift */,
+				D769DF322BEC1A1C0062AE95 /* EditGeodatabaseWithTransactionsView.Model.swift */,
+			);
+			path = "Edit geodatabase with transactions";
+			sourceTree = "<group>";
+		};
 		D76929F32B4F78340047205E /* Orbit camera around object */ = {
 			isa = PBXGroup;
 			children = (
@@ -2727,6 +2745,7 @@
 				D7084FA92AD771AA00EC7F4F /* AugmentRealityToFlyOverSceneView.swift in Sources */,
 				D75B58512AAFB3030038B3B4 /* StyleFeaturesWithCustomDictionaryView.swift in Sources */,
 				E0D04FF228A5390000747989 /* DownloadPreplannedMapAreaView.Model.swift in Sources */,
+				D764B7DF2BE2F89D002E2F92 /* EditGeodatabaseWithTransactionsView.swift in Sources */,
 				00CCB8A5285BAF8700BBAB70 /* OnDemandResource.swift in Sources */,
 				D7635FFE2B9277DC0044AB97 /* ConfigureClustersView.swift in Sources */,
 				1C19B4F32A578E46001D2506 /* CreateLoadReportView.swift in Sources */,
@@ -2735,6 +2754,7 @@
 				E004A6ED2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift in Sources */,
 				E041ABD7287DB04D0056009B /* SampleInfoView.swift in Sources */,
 				D7635FFD2B9277DC0044AB97 /* ConfigureClustersView.SettingsView.swift in Sources */,
+				D769DF332BEC1A1C0062AE95 /* EditGeodatabaseWithTransactionsView.Model.swift in Sources */,
 				1C43BC822A43781200509BF8 /* SetVisibilityOfSubtypeSublayerView.Model.swift in Sources */,
 				D71FCB8A2AD6277F000E517C /* CreateMobileGeodatabaseView.Model.swift in Sources */,
 				D752D9462A3A6F80003EB25E /* MonitorChangesToMapLoadStatusView.swift in Sources */,
