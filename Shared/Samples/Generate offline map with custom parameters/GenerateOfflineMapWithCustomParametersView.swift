@@ -66,7 +66,6 @@ struct GenerateOfflineMapWithCustomParametersView: View {
                                 }
                                 .disabled(isCancellingJob)
                                 .task(id: isCancellingJob) {
-                                    // Ensures cancelling the job is true.
                                     guard isCancellingJob else { return }
                                     // Cancels the job.
                                     await model.cancelJob()
@@ -107,7 +106,11 @@ struct GenerateOfflineMapWithCustomParametersView: View {
                                 )
                                 // Creates an envelope from the rectangle.
                                 if let extent = mapView.envelope(fromViewRect: viewRect) {
-                                    CustomParameters(model: model, extent: extent, isGeneratingOfflineMap: $isGeneratingOfflineMap)
+                                    CustomParameters(
+                                        model: model,
+                                        extent: extent,
+                                        isGeneratingOfflineMap: $isGeneratingOfflineMap
+                                    )
                                         .presentationDetents([.fraction(1.0)])
                                         .frame(idealWidth: 320, idealHeight: 720)
                                 }
@@ -160,7 +163,7 @@ extension GenerateOfflineMapWithCustomParametersView {
         
         /// The online map that is loaded from a portal item.
         let onlineMap: Map = {
-            /// A portal item displaying the Naperville, IL water network.
+            // A portal item displaying the Naperville, IL water network.
             let napervillePortalItem = PortalItem(
                 portal: .arcGISOnline(connection: .anonymous),
                 id: .napervilleWaterNetwork
@@ -191,17 +194,25 @@ extension GenerateOfflineMapWithCustomParametersView {
         /// Creates the generate offline map parameters.
         /// - Parameter areaOfInterest: The area of interest to create the parameters for.
         /// - Returns: A `GenerateOfflineMapParameters` if there are no errors.
-        private func makeGenerateOfflineMapParameters(areaOfInterest: Envelope) async throws -> GenerateOfflineMapParameters {
+        private func makeGenerateOfflineMapParameters(
+            areaOfInterest: Envelope
+        ) async throws -> GenerateOfflineMapParameters {
             // Returns the default parameters for the offline map task.
-            return try await offlineMapTask.makeDefaultGenerateOfflineMapParameters(areaOfInterest: areaOfInterest)
+            return try await offlineMapTask.makeDefaultGenerateOfflineMapParameters(
+                areaOfInterest: areaOfInterest
+            )
         }
         
         /// Creates the generate offline map parameter overrides.
         /// - Parameter parameters: The generate offline map parameters.
         /// - Returns: A `GenerateOfflineMapParameterOverrides` id there are no errors.
-        private func makeGenerateParameterOverrides(parameters: GenerateOfflineMapParameters) async throws -> GenerateOfflineMapParameterOverrides {
+        private func makeGenerateParameterOverrides(
+            parameters: GenerateOfflineMapParameters
+        ) async throws -> GenerateOfflineMapParameterOverrides {
             // Returns the overrides.
-            return try await offlineMapTask.makeGenerateOfflineMapParameterOverrides(parameters: parameters)
+            return try await offlineMapTask.makeGenerateOfflineMapParameterOverrides(
+                parameters: parameters
+            )
         }
         
         /// Sets up the model by getting the generate offline map parameters and parameter
@@ -211,7 +222,9 @@ extension GenerateOfflineMapWithCustomParametersView {
         func setUpParametersAndOverrides(extent: Envelope) async throws {
             offlineMapParameters = try await makeGenerateOfflineMapParameters(areaOfInterest: extent)
             if let offlineMapParameters {
-                offlineMapParameterOverrides = try await makeGenerateParameterOverrides(parameters: offlineMapParameters)
+                offlineMapParameterOverrides = try await makeGenerateParameterOverrides(
+                    parameters: offlineMapParameters
+                )
             }
         }
         
@@ -298,13 +311,17 @@ extension GenerateOfflineMapWithCustomParametersView {
         /// - Parameter basemapExtentBufferDistance: The distance to extend the area of interest.
         func bufferBasemapAreaOfInterest(by basemapExtentBufferDistance: Double) {
             guard let tileCacheParameters = getExportTileCacheParametersForBasemapLayer(),
-                  /// The area initially specified for download when the default parameters object was created
+                  // The area initially specified for download when the default parameters object
+                  // was created
                   let areaOfInterest = tileCacheParameters.areaOfInterest else {
                 return
             }
             
             // Assuming the distance is positive, expand the downloaded area by the given amount
-            let bufferedArea = GeometryEngine.buffer(around: areaOfInterest, distance: basemapExtentBufferDistance)
+            let bufferedArea = GeometryEngine.buffer(
+                around: areaOfInterest,
+                distance: basemapExtentBufferDistance
+            )
             // Override the default area of interest
             tileCacheParameters.areaOfInterest = bufferedArea
         }
@@ -332,7 +349,8 @@ extension GenerateOfflineMapWithCustomParametersView {
         /// - Parameter minHydrantFlowRate: The minimum flow rate for hydrants shown on the map.
         func filterHydrantFlowRate(to minHydrantFlowRate: Double) {
             for option in getGenerateGeodatabaseParametersLayerOptions(forLayerNamed: "Hydrant") {
-                // Set the SQL where clause for this layer's options, filtering features based on the FLOW field values
+                // Set the SQL where clause for this layer's options, filtering features based on 
+                // the FLOW field values
                 option.whereClause = "FLOW >= \(minHydrantFlowRate)"
             }
         }
@@ -357,7 +375,9 @@ extension GenerateOfflineMapWithCustomParametersView {
             if !cropWaterPipesToExtent {
                 // Two layers contain pipes, so loop through both
                 for pipeLayerName in ["Main", "Lateral"] {
-                    for option in getGenerateGeodatabaseParametersLayerOptions(forLayerNamed: pipeLayerName) {
+                    for option in getGenerateGeodatabaseParametersLayerOptions(
+                        forLayerNamed: pipeLayerName
+                    ) {
                         // Turn off the geometry extent evaluation so that the entire layer is downloaded
                         option.usesGeometry = false
                     }
@@ -367,19 +387,25 @@ extension GenerateOfflineMapWithCustomParametersView {
 
         // MARK: - AGSGenerateGeodatabaseParameters helpers
         /// Retrieves this layer's parameters from the `generateGeodatabaseParameters` dictionary.
-        private func getGenerateGeodatabaseParameters(forLayer layer: Layer) -> GenerateGeodatabaseParameters? {
+        private func getGenerateGeodatabaseParameters(
+            forLayer layer: Layer
+        ) -> GenerateGeodatabaseParameters? {
             /// The parameters key for this layer
             if let key = OfflineMapParametersKey(layer: layer) {
                 return offlineMapParameterOverrides?.generateGeodatabaseParameters[key]
             }
             return nil
         }
-        /// Retrieves the layer's options from the layer's parameter in the `generateGeodatabaseParameters` dictionary.
-        private func getGenerateGeodatabaseParametersLayerOptions(forLayerNamed name: String) -> [GenerateLayerOption] {
+        /// Retrieves the layer's options from the layer's parameter in the 
+        /// `generateGeodatabaseParameters` dictionary.
+        private func getGenerateGeodatabaseParametersLayerOptions(
+            forLayerNamed name: String
+        ) -> [GenerateLayerOption] {
             if let layer = operationalMapLayer(named: name),
                let serviceLayerID = serviceLayerID(for: layer),
                let parameters = getGenerateGeodatabaseParameters(forLayer: layer) {
-                // The layers options may correspond to multiple layers, so filter based on the ID of the target layer.
+                // The layers options may correspond to multiple layers, so filter based on the ID 
+                // of the target layer.
                 return parameters.layerOptions.filter { $0.layerID == serviceLayerID }
             }
             return []
@@ -389,6 +415,8 @@ extension GenerateOfflineMapWithCustomParametersView {
 
 private extension Envelope {
     /// Expands the envelope by a given factor.
+    /// - Parameter factor: The amount to expand the envelope by.
+    /// - Returns: An envelope expanded by the specified factor.
     func expanded(by factor: Double) -> Envelope {
         let builder = EnvelopeBuilder(envelope: self)
         builder.expand(by: factor)

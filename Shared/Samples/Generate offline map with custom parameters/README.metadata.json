@@ -2,7 +2,9 @@
     "category": "Edit and Manage Data",
     "description": "Take a web map offline with additional options for each layer.",
     "ignore": false,
-    "images": [],
+    "images": [
+      "generate-offline-map-with-custom-parameters.png"
+    ],
     "keywords": [
         "LOD",
         "adjust",
