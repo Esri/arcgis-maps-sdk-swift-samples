@@ -15,30 +15,31 @@
         "reduce",
         "scale range",
         "setting",
-        "AGSExportTileCacheParameters",
-        "AGSGenerateGeodatabaseParameters",
-        "AGSGenerateLayerOption",
-        "AGSGenerateOfflineMapJob",
-        "AGSGenerateOfflineMapParameterOverrides",
-        "AGSGenerateOfflineMapParameters",
-        "AGSGenerateOfflineMapResult",
-        "AGSOfflineMapParametersKey",
-        "AGSOfflineMapTask"
+        "ExportTileCacheParameters",
+        "GenerateGeodatabaseParameters",
+        "GenerateLayerOption",
+        "GenerateOfflineMapJob",
+        "GenerateOfflineMapParameterOverrides",
+        "GenerateOfflineMapParameters",
+        "GenerateOfflineMapResult",
+        "OfflineMapParametersKey",
+        "OfflineMapTask"
     ],
     "redirect_from": [],
     "relevant_apis": [
-        "AGSExportTileCacheParameters",
-        "AGSGenerateGeodatabaseParameters",
-        "AGSGenerateLayerOption",
-        "AGSGenerateOfflineMapJob",
-        "AGSGenerateOfflineMapParameterOverrides",
-        "AGSGenerateOfflineMapParameters",
-        "AGSGenerateOfflineMapResult",
-        "AGSOfflineMapParametersKey",
-        "AGSOfflineMapTask"
+        "ExportTileCacheParameters",
+        "GenerateGeodatabaseParameters",
+        "GenerateLayerOption",
+        "GenerateOfflineMapJob",
+        "GenerateOfflineMapParameterOverrides",
+        "GenerateOfflineMapParameters",
+        "GenerateOfflineMapResult",
+        "OfflineMapParametersKey",
+        "OfflineMapTask"
     ],
     "snippets": [
-        "GenerateOfflineMapWithCustomParametersView.swift"
+        "GenerateOfflineMapWithCustomParametersView.swift",
+        "GenerateOfflineMapWithCustomParametersView.CustomParameters.swift"
     ],
     "title": "Generate offline map with custom parameters"
 }
