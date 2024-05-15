@@ -118,6 +118,7 @@ struct EditAndSyncFeaturesWithFeatureServiceView: View {
                 Rectangle()
                     .stroke(.red, lineWidth: 2)
                     .padding(EdgeInsets(top: 20, leading: 20, bottom: 44, trailing: 20))
+                    .opacity(model.geodatabase == nil ? 1 : 0)
             }
         }
         .toolbar {
