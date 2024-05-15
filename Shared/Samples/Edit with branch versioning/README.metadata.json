@@ -1,0 +1,36 @@
+{
+    "category": "Edit and Manage Data",
+    "description": "Create, query, and edit a specific server version using a service geodatabase.",
+    "ignore": false,
+    "images": [
+        "edit-with-branch-versioning-1.png",
+        "edit-with-branch-versioning-2.png"
+    ],
+    "keywords": [
+        "branch versioning",
+        "edit",
+        "version control",
+        "version management server",
+        "FeatureLayer",
+        "ServiceFeatureTable",
+        "ServiceGeodatabase",
+        "ServiceVersionInfo",
+        "ServiceVersionParameters",
+        "VersionAccess"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "FeatureLayer",
+        "ServiceFeatureTable",
+        "ServiceGeodatabase",
+        "ServiceVersionInfo",
+        "ServiceVersionParameters",
+        "VersionAccess"
+    ],
+    "snippets": [
+        "EditWithBranchVersioningView.swift",
+        "EditWithBranchVersioningView.Model.swift",
+        "EditWithBranchVersioningView.Views.swift"
+    ],
+    "title": "Edit with branch versioning"
+}
