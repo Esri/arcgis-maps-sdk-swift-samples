@@ -128,10 +128,16 @@ struct EditAndSyncFeaturesWithFeatureServiceView: View {
                 }
                 .disabled(model.geodatabase == nil)
                 
-                Button(model.geodatabase == nil ? "Generate Geodatabase" : "Sync Geodatabase") {
-                    selectedAction = model.geodatabase == nil ? .generateGeodatabase : .sync
+                if model.geodatabase == nil {
+                    Button("Generate Geodatabase") {
+                        selectedAction = .generateGeodatabase
+                    }
+                } else {
+                    Button("Sync Geodatabase") {
+                        selectedAction = .sync
+                    }
+                    .disabled(!(model.geodatabase?.hasLocalEdits ?? false))
                 }
-                .disabled(model.geodatabase != nil && !(model.geodatabase?.hasLocalEdits ?? false))
             }
         }
         .disabled(selectedAction != nil)
