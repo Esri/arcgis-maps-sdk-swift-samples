@@ -88,6 +88,7 @@
 		108EC04229D25B55000F35D0 /* QueryFeatureTableView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 108EC04029D25B2C000F35D0 /* QueryFeatureTableView.swift */; };
 		10B782052BE55D7E007EAE6C /* GenerateOfflineMapWithCustomParametersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B782042BE55D7E007EAE6C /* GenerateOfflineMapWithCustomParametersView.swift */; };
 		10B782082BE5A058007EAE6C /* GenerateOfflineMapWithCustomParametersView.CustomParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B782072BE5A058007EAE6C /* GenerateOfflineMapWithCustomParametersView.CustomParameters.swift */; };
+		10BD9EB42BF51B4B00ABDBD5 /* GenerateOfflineMapWithCustomParametersView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10BD9EB32BF51B4B00ABDBD5 /* GenerateOfflineMapWithCustomParametersView.Model.swift */; };
 		10D321932BDB187400B39B1B /* naperville_imagery.tpkx in Resources */ = {isa = PBXBuildFile; fileRef = 10D321922BDB187400B39B1B /* naperville_imagery.tpkx */; settings = {ASSET_TAGS = (GenerateOfflineMapWithLocalBasemap, ); }; };
 		10D321962BDB1CB500B39B1B /* GenerateOfflineMapWithLocalBasemapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D321952BDB1CB500B39B1B /* GenerateOfflineMapWithLocalBasemapView.swift */; };
 		10D321972BDC3B4900B39B1B /* GenerateOfflineMapWithLocalBasemapView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 10D321952BDB1CB500B39B1B /* GenerateOfflineMapWithLocalBasemapView.swift */; };
@@ -704,6 +705,7 @@
 		108EC04029D25B2C000F35D0 /* QueryFeatureTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueryFeatureTableView.swift; sourceTree = "<group>"; };
 		10B782042BE55D7E007EAE6C /* GenerateOfflineMapWithCustomParametersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateOfflineMapWithCustomParametersView.swift; sourceTree = "<group>"; };
 		10B782072BE5A058007EAE6C /* GenerateOfflineMapWithCustomParametersView.CustomParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateOfflineMapWithCustomParametersView.CustomParameters.swift; sourceTree = "<group>"; };
+		10BD9EB32BF51B4B00ABDBD5 /* GenerateOfflineMapWithCustomParametersView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateOfflineMapWithCustomParametersView.Model.swift; sourceTree = "<group>"; };
 		10D321922BDB187400B39B1B /* naperville_imagery.tpkx */ = {isa = PBXFileReference; lastKnownFileType = file; path = naperville_imagery.tpkx; sourceTree = "<group>"; };
 		10D321952BDB1CB500B39B1B /* GenerateOfflineMapWithLocalBasemapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateOfflineMapWithLocalBasemapView.swift; sourceTree = "<group>"; };
 		1C0C1C3429D34DAE005C8B24 /* ChangeViewpointView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeViewpointView.swift; sourceTree = "<group>"; };
@@ -1343,6 +1345,7 @@
 			children = (
 				10B782042BE55D7E007EAE6C /* GenerateOfflineMapWithCustomParametersView.swift */,
 				10B782072BE5A058007EAE6C /* GenerateOfflineMapWithCustomParametersView.CustomParameters.swift */,
+				10BD9EB32BF51B4B00ABDBD5 /* GenerateOfflineMapWithCustomParametersView.Model.swift */,
 			);
 			path = "Generate offline map with custom parameters";
 			sourceTree = "<group>";
@@ -2820,6 +2823,7 @@
 				D71C5F642AAA7A88006599FD /* CreateSymbolStylesFromWebStylesView.swift in Sources */,
 				D7CC33FF2A31475C00198EDF /* ShowLineOfSightBetweenPointsView.swift in Sources */,
 				D70BE5792A5624A80022CA02 /* CategoriesView.swift in Sources */,
+				10BD9EB42BF51B4B00ABDBD5 /* GenerateOfflineMapWithCustomParametersView.Model.swift in Sources */,
 				4D2ADC5D29C4F612003B367F /* ChangeMapViewBackgroundView.SettingsView.swift in Sources */,
 				75DD739529D38B1B0010229D /* NavigateRouteView.swift in Sources */,
 				D75362D22A1E886700D83028 /* ApplyUniqueValueRendererView.swift in Sources */,

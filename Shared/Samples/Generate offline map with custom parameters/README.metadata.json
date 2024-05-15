@@ -41,6 +41,7 @@
     ],
     "snippets": [
         "GenerateOfflineMapWithCustomParametersView.swift",
+        "GenerateOfflineMapWithCustomParametersView.Model.swift",
         "GenerateOfflineMapWithCustomParametersView.CustomParameters.swift"
     ],
     "title": "Generate offline map with custom parameters"
