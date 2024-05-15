@@ -89,6 +89,7 @@
 		10B782052BE55D7E007EAE6C /* GenerateOfflineMapWithCustomParametersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B782042BE55D7E007EAE6C /* GenerateOfflineMapWithCustomParametersView.swift */; };
 		10B782082BE5A058007EAE6C /* GenerateOfflineMapWithCustomParametersView.CustomParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B782072BE5A058007EAE6C /* GenerateOfflineMapWithCustomParametersView.CustomParameters.swift */; };
 		10BD9EB42BF51B4B00ABDBD5 /* GenerateOfflineMapWithCustomParametersView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10BD9EB32BF51B4B00ABDBD5 /* GenerateOfflineMapWithCustomParametersView.Model.swift */; };
+		10BD9EB52BF51F9000ABDBD5 /* GenerateOfflineMapWithCustomParametersView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 10BD9EB32BF51B4B00ABDBD5 /* GenerateOfflineMapWithCustomParametersView.Model.swift */; };
 		10D321932BDB187400B39B1B /* naperville_imagery.tpkx in Resources */ = {isa = PBXBuildFile; fileRef = 10D321922BDB187400B39B1B /* naperville_imagery.tpkx */; settings = {ASSET_TAGS = (GenerateOfflineMapWithLocalBasemap, ); }; };
 		10D321962BDB1CB500B39B1B /* GenerateOfflineMapWithLocalBasemapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D321952BDB1CB500B39B1B /* GenerateOfflineMapWithLocalBasemapView.swift */; };
 		10D321972BDC3B4900B39B1B /* GenerateOfflineMapWithLocalBasemapView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 10D321952BDB1CB500B39B1B /* GenerateOfflineMapWithLocalBasemapView.swift */; };
@@ -472,6 +473,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				10BD9EB52BF51F9000ABDBD5 /* GenerateOfflineMapWithCustomParametersView.Model.swift in Copy Source Code Files */,
 				D769DF342BEC1A9E0062AE95 /* EditGeodatabaseWithTransactionsView.Model.swift in Copy Source Code Files */,
 				D764B7E22BE2F8B8002E2F92 /* EditGeodatabaseWithTransactionsView.swift in Copy Source Code Files */,
 				004A2BA52BED458C00C297CE /* ApplyScheduledUpdatesToPreplannedMapAreaView.swift in Copy Source Code Files */,
