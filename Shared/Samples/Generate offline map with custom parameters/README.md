@@ -2,7 +2,7 @@
 
 Take a web map offline with additional options for each layer.
 
-![Image of generate offline map with custom parameters](generate-offline-map-with-custom-parameters.png)
+![Image of Generate offline map with custom parameters sample](generate-offline-map-with-custom-parameters.png)
 
 ## Use case
 

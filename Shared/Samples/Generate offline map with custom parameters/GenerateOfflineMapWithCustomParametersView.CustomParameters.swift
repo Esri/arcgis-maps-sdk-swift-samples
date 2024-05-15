@@ -1,4 +1,4 @@
-// Copyright 2022 Esri
+// Copyright 2024 Esri
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -28,109 +28,90 @@ extension GenerateOfflineMapWithCustomParametersView {
         
         /// A Boolean value indicating whether the job is generating an offline map.
         @Binding var isGeneratingOfflineMap: Bool
-
+        
         /// The error shown in the error alert.
         @State private var error: Error?
-
+        
         /// The min scale level for the output. Note that lower values are zoomed further out,
         /// i.e. 0 has the least detail, but one tile covers the entire Earth.
-        @State var minScaleLevel = 0.0
+        @State private var minScaleLevel = 0.0
         
         /// The max scale level for the output. Note that higher values are zoomed further in,
         /// i.e. 23 has the most detail, but each tile covers a tiny area.
-        @State var maxScaleLevel = 23.0
+        @State private var maxScaleLevel = 23.0
         
         /// The range for scale level values.
-        let scaleLevelRange = 0.0...23.0
+        private let scaleLevelRange = 0.0...23.0
         
         /// The extra padding added to the extent envelope to fetch a larger area, in meters.
-        @State var basemapExtentBufferDistance = 0.0
+        @State private var basemapExtentBufferDistance = 0.0
         
         /// The range for buffering the basemap extent.
-        let basemapExtentBufferRange = 0.0...100.0
+        private let basemapExtentBufferRange = 0.0...100.0
         
         /// A Boolean value indicating if the system valves layer should be included in
         /// the download.
-        @State var includeSystemValves = true
+        @State private var includeSystemValves = true
         
         /// A Boolean value indicating if the service connections layer should be included
         /// in the download.
-        @State var includeServiceConnections = true
+        @State private var includeServiceConnections = true
         
         /// The minimum flow rate by which to filter features in the Hydrants layer,
         /// in gallons per minute.
-        @State var minHydrantFlowRate = 0.0
+        @State private var minHydrantFlowRate = 0.0
         
         /// The hydrant flow rate range.
-        let hydrantFlowRateRange = 0.0...1500.0
+        private let hydrantFlowRateRange = 0.0...1500.0
         
         /// A Boolean value indicating if the pipe layers should be restricted to
         /// the extent frame.
-        @State var shouldCropWaterPipesToExtent = true
+        @State private var shouldCropWaterPipesToExtent = true
         
         var body: some View {
             NavigationStack {
-                ScrollView {
-                    VStack {
+                Form {
+                    Section(header: Text("Adjust Basemap")) {
                         HStack {
-                            Text("Adjust Basemap")
+                            Text("Min Scale Level")
                             Spacer()
+                            Text(minScaleLevel, format: .number.precision(.fractionLength(0)))
                         }
-                        GroupBox {
-                            HStack {
-                                Text("Min Scale Level")
-                                Spacer()
-                                Text(minScaleLevel, format: .number.precision(.fractionLength(0)))
-                            }
-                            Slider(value: $minScaleLevel, in: scaleLevelRange)
-                            
-                            HStack {
-                                Text("Max Scale Level")
-                                Spacer()
-                                Text(maxScaleLevel, format: .number.precision(.fractionLength(0)))
-                            }
-                            Slider(value: $maxScaleLevel, in: scaleLevelRange)
-                            
-                            HStack {
-                                Text("Extent Buffer Distance")
-                                Spacer()
-                                Text(basemapExtentBufferDistance, format: .number.precision(.fractionLength(0)))
-                            }
-                            Slider(value: $basemapExtentBufferDistance, in: basemapExtentBufferRange)
-                        }
+                        Slider(value: $minScaleLevel, in: scaleLevelRange, step: 1.0)
                         
                         HStack {
-                            Text("Include Layers")
+                            Text("Max Scale Level")
                             Spacer()
+                            Text(maxScaleLevel, format: .number.precision(.fractionLength(0)))
                         }
-                        GroupBox {
-                            Toggle("System Valves", isOn: $includeSystemValves)
-                            Toggle("Service Connections", isOn: $includeServiceConnections)
-                        }
+                        Slider(value: $maxScaleLevel, in: scaleLevelRange, step: 1.0)
                         
                         HStack {
-                            Text("Filter Feature Layer")
+                            Text("Extent Buffer Distance")
                             Spacer()
+                            Text(basemapExtentBufferDistance, format: .number.precision(.fractionLength(0)))
                         }
-                        GroupBox {
-                            HStack {
-                                Text("Min Hydrant Flow Rate")
-                                Spacer()
-                                Text(minHydrantFlowRate, format: .number.precision(.fractionLength(0)))
-                            }
-                            Slider(value: $minHydrantFlowRate, in: hydrantFlowRateRange)
-                        }
-                        
+                        Slider(value: $basemapExtentBufferDistance, in: basemapExtentBufferRange)
+                    }
+                    
+                    Section(header: Text("Include Layers")) {
+                        Toggle("System Valves", isOn: $includeSystemValves)
+                        Toggle("Service Connections", isOn: $includeServiceConnections)
+                    }
+                    
+                    Section(header: Text("Filter Feature Layer")) {
                         HStack {
-                            Text("Crop Layer to Extent")
+                            Text("Min Hydrant Flow Rate")
                             Spacer()
+                            Text(minHydrantFlowRate, format: .number.precision(.fractionLength(0)))
                         }
-                        GroupBox {
-                            Toggle("Water Pipes", isOn: $shouldCropWaterPipesToExtent)
-                        }
+                        Slider(value: $minHydrantFlowRate, in: hydrantFlowRateRange, step: 1.0)
+                    }
+                    
+                    Section(header: Text("Crop Layer to Extent")) {
+                        Toggle("Water Pipes", isOn: $shouldCropWaterPipesToExtent)
                     }
                 }
-                .padding()
                 .toolbar {
                     ToolbarItem(placement: .confirmationAction) {
                         Button("Start") {
@@ -172,18 +153,4 @@ extension GenerateOfflineMapWithCustomParametersView {
             model.evaluatePipeLayersExtentCropping(for: shouldCropWaterPipesToExtent)
         }
     }
-}
-
-#Preview {
-    let extent = Envelope(
-        center: Point(latitude: 0, longitude: 0),
-        width: 1,
-        height: 1
-    )
-    @State var isGeneratingOfflineMap = false
-    return GenerateOfflineMapWithCustomParametersView.CustomParameters(
-        model: GenerateOfflineMapWithCustomParametersView.Model(),
-        extent: extent,
-        isGeneratingOfflineMap: $isGeneratingOfflineMap
-    )
 }

@@ -1,4 +1,4 @@
-// Copyright 2022 Esri
+// Copyright 2024 Esri
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -155,11 +155,11 @@ extension GenerateOfflineMapWithCustomParametersView {
         /// A URL to a temporary directory where the offline map files are stored.
         private let temporaryDirectory = createTemporaryDirectory()
         
-        // The parameters used to take the map offline.
-        var offlineMapParameters: GenerateOfflineMapParameters?
+        /// The parameters used to take the map offline.
+        private var offlineMapParameters: GenerateOfflineMapParameters?
         
-        // The parameter overrides used to take the map offline.
-        var offlineMapParameterOverrides: GenerateOfflineMapParameterOverrides?
+        /// The parameter overrides used to take the map offline.
+        private var offlineMapParameterOverrides: GenerateOfflineMapParameterOverrides?
         
         /// The online map that is loaded from a portal item.
         let onlineMap: Map = {
@@ -171,9 +171,6 @@ extension GenerateOfflineMapWithCustomParametersView {
             
             // Creates map with portal item.
             let map = Map(item: napervillePortalItem)
-            
-            // Sets the min scale to avoid requesting a huge download.
-            map.minScale = 1e4
             
             return map
         }()
@@ -205,7 +202,7 @@ extension GenerateOfflineMapWithCustomParametersView {
         
         /// Creates the generate offline map parameter overrides.
         /// - Parameter parameters: The generate offline map parameters.
-        /// - Returns: A `GenerateOfflineMapParameterOverrides` id there are no errors.
+        /// - Returns: A `GenerateOfflineMapParameterOverrides` if there are no errors.
         private func makeGenerateParameterOverrides(
             parameters: GenerateOfflineMapParameters
         ) async throws -> GenerateOfflineMapParameterOverrides {
@@ -217,7 +214,7 @@ extension GenerateOfflineMapWithCustomParametersView {
         
         /// Sets up the model by getting the generate offline map parameters and parameter
         /// overrides.
-        /// - Parameter areaOfInterest: The area of interest to create the parametes and parameter
+        /// - Parameter areaOfInterest: The area of interest to create the parameters and parameter
         /// overrides for.
         func setUpParametersAndOverrides(extent: Envelope) async throws {
             offlineMapParameters = try await makeGenerateOfflineMapParameters(areaOfInterest: extent)
@@ -292,17 +289,17 @@ extension GenerateOfflineMapWithCustomParametersView {
         /// are downloaded. Note that lower values are zoomed further out,
         /// i.e. 0 has the least detail, but one tile covers the entire Earth.
         /// Parameters:
-        /// - minScaleLevel: The minumum scale level to download foe the basemap.
-        /// - maxScaleLevel: The maximun scale level to download for the basemap.
+        /// - minScaleLevel: The minimum scale level to download for the basemap.
+        /// - maxScaleLevel: The maximum scale level to download for the basemap.
         func restrictBasemapScaleLevelRangeTo(minScaleLevel: Double, maxScaleLevel: Double) {
             guard let tileCacheParameters = getExportTileCacheParametersForBasemapLayer(),
-                  // Ensure that the lower bound of the range is not greater than the upper bound
+                  // Ensure that the lower bound of the range is not greater than the upper bound.
                   minScaleLevel <= maxScaleLevel else {
                 return
             }
             
-            let scaleLevelIDs = Array(Int(minScaleLevel.rounded())...Int(maxScaleLevel.rounded()))
-            // Override the default level IDs
+            let scaleLevelIDs = Array(Int(minScaleLevel)...Int(maxScaleLevel))
+            // Override the default level IDs.
             tileCacheParameters.removeAllLevelIDs()
             tileCacheParameters.addLevelIDs(scaleLevelIDs)
         }
@@ -312,17 +309,17 @@ extension GenerateOfflineMapWithCustomParametersView {
         func bufferBasemapAreaOfInterest(by basemapExtentBufferDistance: Double) {
             guard let tileCacheParameters = getExportTileCacheParametersForBasemapLayer(),
                   // The area initially specified for download when the default parameters object
-                  // was created
+                  // was created.
                   let areaOfInterest = tileCacheParameters.areaOfInterest else {
                 return
             }
             
-            // Assuming the distance is positive, expand the downloaded area by the given amount
+            // Assuming the distance is positive, expand the downloaded area by the given amount.
             let bufferedArea = GeometryEngine.buffer(
                 around: areaOfInterest,
                 distance: basemapExtentBufferDistance
             )
-            // Override the default area of interest
+            // Override the default area of interest.
             tileCacheParameters.areaOfInterest = bufferedArea
         }
 
@@ -332,7 +329,7 @@ extension GenerateOfflineMapWithCustomParametersView {
             return onlineMap.operationalLayers.first { $0.name == name }
         }
         
-        /// The service ID retrived from the layer's `ArcGISFeatureLayerInfo`, if it is a feature layer.
+        /// The service ID retrieved from the layer's `ArcGISFeatureLayerInfo`, if it is a feature layer.
         /// Needed for use in conjunction with the `layerID` of `GenerateLayerOption`.
         /// This is not the same as the `layerID` property of `Layer`.
         private func serviceLayerID(for layer: Layer) -> Int? {
@@ -349,8 +346,8 @@ extension GenerateOfflineMapWithCustomParametersView {
         /// - Parameter minHydrantFlowRate: The minimum flow rate for hydrants shown on the map.
         func filterHydrantFlowRate(to minHydrantFlowRate: Double) {
             for option in getGenerateGeodatabaseParametersLayerOptions(forLayerNamed: "Hydrant") {
-                // Set the SQL where clause for this layer's options, filtering features based on 
-                // the FLOW field values
+                // Set the SQL where clause for this layer's options, filtering features based on
+                // the FLOW field values.
                 option.whereClause = "FLOW >= \(minHydrantFlowRate)"
             }
         }
@@ -362,41 +359,42 @@ extension GenerateOfflineMapWithCustomParametersView {
                let serviceLayerID = serviceLayerID(for: layer),
                let parameters = getGenerateGeodatabaseParameters(forLayer: layer),
                let layerOption = parameters.layerOptions.first(where: { $0.layerID == serviceLayerID }) {
-                // Remove the options for this layer from the parameters
+                // Remove the options for this layer from the parameters.
                 parameters.removeLayerOption(layerOption)
             }
         }
         
         /// Sets the layer options to crop the water pipes according the specified Boolean value.
-        /// - Parameter cropWaterPipesToExtent: A Boolean value indicating if the water pipes shoule
+        /// - Parameter cropWaterPipesToExtent: A Boolean value indicating if the water pipes should
         /// be cropped to the area of interest.
         func evaluatePipeLayersExtentCropping(for cropWaterPipesToExtent: Bool) {
-            // If the switch is off
+            // If the switch is off.
             if !cropWaterPipesToExtent {
-                // Two layers contain pipes, so loop through both
+                // Two layers contain pipes, so loop through both.
                 for pipeLayerName in ["Main", "Lateral"] {
                     for option in getGenerateGeodatabaseParametersLayerOptions(
                         forLayerNamed: pipeLayerName
                     ) {
-                        // Turn off the geometry extent evaluation so that the entire layer is downloaded
+                        // Turn off the geometry extent evaluation so that the entire layer is downloaded.
                         option.usesGeometry = false
                     }
                 }
             }
         }
 
-        // MARK: - AGSGenerateGeodatabaseParameters helpers
+        // MARK: - GenerateGeodatabaseParameters helpers
         /// Retrieves this layer's parameters from the `generateGeodatabaseParameters` dictionary.
         private func getGenerateGeodatabaseParameters(
             forLayer layer: Layer
         ) -> GenerateGeodatabaseParameters? {
-            /// The parameters key for this layer
+            /// The parameters key for this layer.
             if let key = OfflineMapParametersKey(layer: layer) {
                 return offlineMapParameterOverrides?.generateGeodatabaseParameters[key]
             }
             return nil
         }
-        /// Retrieves the layer's options from the layer's parameter in the 
+        
+        /// Retrieves the layer's options from the layer's parameter in the
         /// `generateGeodatabaseParameters` dictionary.
         private func getGenerateGeodatabaseParametersLayerOptions(
             forLayerNamed name: String
@@ -404,7 +402,7 @@ extension GenerateOfflineMapWithCustomParametersView {
             if let layer = operationalMapLayer(named: name),
                let serviceLayerID = serviceLayerID(for: layer),
                let parameters = getGenerateGeodatabaseParameters(forLayer: layer) {
-                // The layers options may correspond to multiple layers, so filter based on the ID 
+                // The layers options may correspond to multiple layers, so filter based on the ID
                 // of the target layer.
                 return parameters.layerOptions.filter { $0.layerID == serviceLayerID }
             }
@@ -430,5 +428,7 @@ private extension PortalItem.ID {
  }
 
 #Preview {
-    GenerateOfflineMapWithCustomParametersView()
+    NavigationStack {
+        GenerateOfflineMapWithCustomParametersView()
+    }
 }
