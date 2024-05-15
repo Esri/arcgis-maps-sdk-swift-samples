@@ -24,7 +24,7 @@ extension GenerateOfflineMapWithCustomParametersView {
         @ObservedObject var model: Model
         
         /// The area of interest.
-        var extent: Envelope
+        let extent: Envelope
         
         /// A Boolean value indicating whether the job is generating an offline map.
         @Binding var isGeneratingOfflineMap: Bool
@@ -121,7 +121,7 @@ extension GenerateOfflineMapWithCustomParametersView {
                         }
                     }
                     ToolbarItem(placement: .cancellationAction) {
-                        Button("Cancel") {
+                        Button("Cancel", role: .cancel) {
                             dismiss()
                         }
                     }

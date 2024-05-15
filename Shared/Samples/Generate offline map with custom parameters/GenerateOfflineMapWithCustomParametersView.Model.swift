@@ -139,7 +139,6 @@ extension GenerateOfflineMapWithCustomParametersView {
         
         /// Cancels the generate offline map job.
         func cancelJob() async {
-            // Cancels the generate offline map job.
             await generateOfflineMapJob?.cancel()
             generateOfflineMapJob = nil
         }
@@ -157,12 +156,14 @@ extension GenerateOfflineMapWithCustomParametersView {
         
         // MARK: - Basemap helpers
         private func getExportTileCacheParametersForBasemapLayer() -> ExportTileCacheParameters? {
-            if let basemapLayer = onlineMap.basemap?.baseLayers.first as? Layer {
-                if let key = OfflineMapParametersKey(layer: basemapLayer) {
-                    return offlineMapParameterOverrides?.exportTileCacheParameters[key]
-                }
+            if let basemapLayer = onlineMap.basemap?.baseLayers.first as? Layer,
+               let key = OfflineMapParametersKey(layer: basemapLayer),
+               let offlineMapParameterOverrides
+            {
+                return offlineMapParameterOverrides.exportTileCacheParameters[key]
+            } else {
+                return nil
             }
-            return nil
         }
         
         /// Sets the scale level range so that only the levels between the min and max inclusive,
@@ -190,7 +191,7 @@ extension GenerateOfflineMapWithCustomParametersView {
             guard let tileCacheParameters = getExportTileCacheParametersForBasemapLayer(),
                   // The area initially specified for download when the default parameters object
                   // was created.
-                    let areaOfInterest = tileCacheParameters.areaOfInterest else {
+                  let areaOfInterest = tileCacheParameters.areaOfInterest else {
                 return
             }
             
@@ -267,11 +268,13 @@ extension GenerateOfflineMapWithCustomParametersView {
         private func getGenerateGeodatabaseParameters(
             forLayer layer: Layer
         ) -> GenerateGeodatabaseParameters? {
-            /// The parameters key for this layer.
-            if let key = OfflineMapParametersKey(layer: layer) {
-                return offlineMapParameterOverrides?.generateGeodatabaseParameters[key]
+            // The parameters key for this layer.
+            if let key = OfflineMapParametersKey(layer: layer),
+               let offlineMapParameterOverrides {
+                return offlineMapParameterOverrides.generateGeodatabaseParameters[key]
+            } else {
+                return nil
             }
-            return nil
         }
         
         /// Retrieves the layer's options from the layer's parameter in the
