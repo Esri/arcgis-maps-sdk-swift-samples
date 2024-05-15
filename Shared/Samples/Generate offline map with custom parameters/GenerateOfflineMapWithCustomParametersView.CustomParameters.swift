@@ -23,9 +23,6 @@ extension GenerateOfflineMapWithCustomParametersView {
         /// The view model for the download offline map area view.
         @ObservedObject var model: Model
         
-        /// The area of interest.
-        let extent: Envelope
-        
         /// A Boolean value indicating whether the job is generating an offline map.
         @Binding var isGeneratingOfflineMap: Bool
         
@@ -71,47 +68,53 @@ extension GenerateOfflineMapWithCustomParametersView {
         var body: some View {
             NavigationStack {
                 Form {
-                    Section(header: Text("Adjust Basemap")) {
-                        HStack {
+                    Section("Adjust Basemap") {
+                        VStack {
                             Text("Min Scale Level")
-                            Spacer()
-                            Text(minScaleLevel, format: .number.precision(.fractionLength(0)))
+                                .badge(
+                                    Text(minScaleLevel, format: .number.precision(.fractionLength(0)))
+                                )
+                            Slider(value: $minScaleLevel, in: scaleLevelRange, step: 1)
                         }
-                        Slider(value: $minScaleLevel, in: scaleLevelRange, step: 1.0)
                         
-                        HStack {
+                        VStack {
                             Text("Max Scale Level")
-                            Spacer()
-                            Text(maxScaleLevel, format: .number.precision(.fractionLength(0)))
+                                .badge(
+                                    Text(maxScaleLevel, format: .number.precision(.fractionLength(0)))
+                                )
+                            Slider(value: $maxScaleLevel, in: scaleLevelRange, step: 1.0)
                         }
-                        Slider(value: $maxScaleLevel, in: scaleLevelRange, step: 1.0)
                         
-                        HStack {
+                        VStack {
                             Text("Extent Buffer Distance")
-                            Spacer()
-                            Text(basemapExtentBufferDistance, format: .number.precision(.fractionLength(0)))
+                                .badge(
+                                    Text(basemapExtentBufferDistance, format: .number.precision(.fractionLength(0)))
+                                )
+                            Slider(value: $basemapExtentBufferDistance, in: basemapExtentBufferRange)
                         }
-                        Slider(value: $basemapExtentBufferDistance, in: basemapExtentBufferRange)
                     }
                     
-                    Section(header: Text("Include Layers")) {
+                    Section("Include Layers") {
                         Toggle("System Valves", isOn: $includeSystemValves)
                         Toggle("Service Connections", isOn: $includeServiceConnections)
                     }
                     
-                    Section(header: Text("Filter Feature Layer")) {
-                        HStack {
+                    Section("Filter Feature Layer") {
+                        VStack {
                             Text("Min Hydrant Flow Rate")
-                            Spacer()
-                            Text(minHydrantFlowRate, format: .number.precision(.fractionLength(0)))
+                                .badge(
+                                    Text(minHydrantFlowRate, format: .number.precision(.fractionLength(0)))
+                                )
+                            Slider(value: $minHydrantFlowRate, in: hydrantFlowRateRange, step: 1.0)
                         }
-                        Slider(value: $minHydrantFlowRate, in: hydrantFlowRateRange, step: 1.0)
                     }
                     
-                    Section(header: Text("Crop Layer to Extent")) {
+                    Section("Crop Layer to Extent") {
                         Toggle("Water Pipes", isOn: $shouldCropWaterPipesToExtent)
                     }
                 }
+                .navigationTitle("Generate Offline Map")
+                .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .confirmationAction) {
                         Button("Start") {
@@ -131,7 +134,7 @@ extension GenerateOfflineMapWithCustomParametersView {
                     do {
                         // Gets the GenerateOfflineMapParameters and the
                         // GenerateOfflineMapParameterOverrides.
-                        try await model.setUpParametersAndOverrides(extent: extent)
+                        try await model.setUpParametersAndOverrides()
                     } catch {
                         self.error = error
                     }

@@ -35,6 +35,9 @@ extension GenerateOfflineMapWithCustomParametersView {
         /// A URL to a temporary directory where the offline map files are stored.
         private let temporaryDirectory = createTemporaryDirectory()
         
+        /// The area of interest.
+        var extent: Envelope?
+
         /// The parameters used to take the map offline.
         private var offlineMapParameters: GenerateOfflineMapParameters?
         
@@ -94,9 +97,8 @@ extension GenerateOfflineMapWithCustomParametersView {
         
         /// Sets up the model by getting the generate offline map parameters and parameter
         /// overrides.
-        /// - Parameter areaOfInterest: The area of interest to create the parameters and parameter
-        /// overrides for.
-        func setUpParametersAndOverrides(extent: Envelope) async throws {
+        func setUpParametersAndOverrides() async throws {
+            guard let extent else { return }
             offlineMapParameters = try await makeGenerateOfflineMapParameters(areaOfInterest: extent)
             if let offlineMapParameters {
                 offlineMapParameterOverrides = try await makeGenerateParameterOverrides(
@@ -158,8 +160,7 @@ extension GenerateOfflineMapWithCustomParametersView {
         private func getExportTileCacheParametersForBasemapLayer() -> ExportTileCacheParameters? {
             if let basemapLayer = onlineMap.basemap?.baseLayers.first as? Layer,
                let key = OfflineMapParametersKey(layer: basemapLayer),
-               let offlineMapParameterOverrides
-            {
+               let offlineMapParameterOverrides {
                 return offlineMapParameterOverrides.exportTileCacheParameters[key]
             } else {
                 return nil

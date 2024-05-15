@@ -91,10 +91,6 @@ struct GenerateOfflineMapWithCustomParametersView: View {
                     .toolbar {
                         ToolbarItem(placement: .bottomBar) {
                             Button("Generate Offline Map") {
-                                isShowingSetCustomParameters.toggle()
-                            }
-                            .disabled(model.isGenerateDisabled || isGeneratingOfflineMap)
-                            .popover(isPresented: $isShowingSetCustomParameters) {
                                 // Creates a rectangle from the area of interest.
                                 let viewRect = geometry.frame(in: .local).inset(
                                     by: UIEdgeInsets(
@@ -105,15 +101,16 @@ struct GenerateOfflineMapWithCustomParametersView: View {
                                     )
                                 )
                                 // Creates an envelope from the rectangle.
-                                if let extent = mapView.envelope(fromViewRect: viewRect) {
-                                    CustomParameters(
-                                        model: model,
-                                        extent: extent,
-                                        isGeneratingOfflineMap: $isGeneratingOfflineMap
-                                    )
-                                    .presentationDetents([.fraction(1.0)])
-                                    .frame(idealWidth: 320, idealHeight: 720)
-                                }
+                                model.extent = mapView.envelope(fromViewRect: viewRect)
+                                isShowingSetCustomParameters.toggle()
+                            }
+                            .disabled(model.isGenerateDisabled || isGeneratingOfflineMap)
+                            .popover(isPresented: $isShowingSetCustomParameters) {
+                                CustomParameters(
+                                    model: model,
+                                    isGeneratingOfflineMap: $isGeneratingOfflineMap
+                                )
+                                .frame(idealWidth: 350, idealHeight: 750)
                             }
                             .task(id: isGeneratingOfflineMap) {
                                 guard isGeneratingOfflineMap else { return }
