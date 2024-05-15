@@ -32,7 +32,10 @@ struct EditAndSyncFeaturesWithFeatureServiceView: View {
         GeometryReader { geometryProxy in
             MapViewReader { mapViewProxy in
                 MapView(map: model.map)
-                    .interactionModes(model.geodatabase != nil ? [] : [.all])
+                    .interactionModes(
+                        // Disables the map when a geodatabase has been generated.
+                        model.geodatabase == nil ? [.all] : []
+                    )
                     .onSingleTapGesture { screenPoint, mapPoint in
                         guard model.geodatabase != nil else { return }
                         
@@ -111,6 +114,7 @@ struct EditAndSyncFeaturesWithFeatureServiceView: View {
                     .padding(8)
                     .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
                 
+                // The red rectangle representing the extent of data to include in the geodatabase.
                 Rectangle()
                     .stroke(.red, lineWidth: 2)
                     .padding(EdgeInsets(top: 20, leading: 20, bottom: 44, trailing: 20))
