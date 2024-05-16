@@ -14,11 +14,11 @@ Tap the button in the toolbar to open the grid settings view. You can select typ
 
 ## How it works
 
-1. Create an instance of one of the `AGrid` types.
-2. Grid lines and labels can be styled per grid level with `Grid.setLineSymbol(_:forLevel:)` and `Grid.setTextSymbol(_:forLevel:)` methods on the grid.
+1. Create an instance of one of the `Grid` types.
+2. Grid lines and labels can be styled per grid level with `grid.lineSymbols[0]` and `grid.textSymbols[0]` subscripts on the grid.
 3. The label position, format, unit and visibility can be specified with `labelPosition`, `labelFormat`, `labelUnit` and `isVisible` on the `Grid`.
-4. For the `AGSLatitudeLongitudeGrid` type, you can specify a label format of `LatitudeLongitudeGridLabelFormat.decimalDegrees` or `LatitudeLongitudeGridLabelFormat.degreesMinutesSeconds`.
-5. To set the grid, assign it to the map view's `grid` property.
+4. For the `LatitudeLongitudeGrid` type, you can specify a label format of `decimalDegrees` or `degreesMinutesSeconds`.
+5. To set the grid, assign it to the map view using the `grid(_:)` modifier.
 
 ## Relevant API
 
