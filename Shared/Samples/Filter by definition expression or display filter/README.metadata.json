@@ -2,7 +2,9 @@
     "category": "Search and Query",
     "description": "Filter features displayed on a map using a definition expression or a display filter.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "filter-by-definition-expression-or-display-filter.png"
+    ],
     "keywords": [
         "SQL",
         "definition expression",
