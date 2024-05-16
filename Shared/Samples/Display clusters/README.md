@@ -37,7 +37,7 @@ This sample uses a [web map](https://www.arcgis.com/home/item.html?id=8916d50c44
 
 ## Additional information
 
-Graphics in a graphics overlay can also be aggregated into clusters. To do this, set the `FeatureReduction` property on the `GraphicsOverlay` to a new `ClusteringFeatureReduction`.
+Graphics in a graphics overlay can also be aggregated into clusters. To do this, set the `featureReduction` property on the `GraphicsOverlay` to a new `ClusteringFeatureReduction`.
 
 ## Tags
 
