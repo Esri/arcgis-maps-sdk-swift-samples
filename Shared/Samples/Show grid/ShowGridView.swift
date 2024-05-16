@@ -282,7 +282,7 @@ private extension LatitudeLongitudeGrid.LabelFormat {
         switch self {
         case .decimalDegrees: "Decimal Degrees"
         case .degreesMinutesSeconds: "Degrees, Minutes, Seconds"
-        @unknown default: fatalError("Unknown lat-Lon grid label format")
+        @unknown default: fatalError("Unknown Lat-Lon grid label format")
         }
     }
 }
