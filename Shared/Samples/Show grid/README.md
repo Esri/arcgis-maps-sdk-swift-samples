@@ -1,6 +1,6 @@
 # Show grid
 
-Display coordinate system grids including latitude, longitude, MGRS, UTM and USNG on a map view. Also, toggle label visibility and change the color of grid lines and grid labels.
+Display coordinate system grids including latitude-longitude, MGRS, UTM and USNG on a map view. Also, toggle label visibility and change the color of grid lines and grid labels.
 
 ![Image of Show grid sample](show-grid.png)
 
