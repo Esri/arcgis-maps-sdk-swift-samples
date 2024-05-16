@@ -24,6 +24,9 @@ struct EditFeaturesWithFeatureLinkedAnnotationView: View {
     }
 }
 
-#Preview {
-    EditFeaturesWithFeatureLinkedAnnotationView()
+private extension URL {
+    /// The URL to the local Loudoun Anno geodatabase file.
+    static var loudounAnnoGeodatabase: URL {
+        Bundle.main.url(forResource: "loudoun_anno", withExtension: "geodatabase")!
+    }
 }

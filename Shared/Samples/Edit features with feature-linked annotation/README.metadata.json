@@ -14,6 +14,9 @@
         "FeatureLayer",
         "Geodatabase"
     ],
+    "offline_data": [
+        "74c0c9fa80f4498c9739cc42531e9948"
+    ],
     "redirect_from": [],
     "relevant_apis": [
         "AnnotationLayer",
