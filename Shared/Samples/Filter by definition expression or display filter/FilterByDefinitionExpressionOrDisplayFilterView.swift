@@ -80,91 +80,93 @@ struct FilterByDefinitionExpressionOrDisplayFilterView: View {
     }
 }
 
-/// The mode of filtering a feature layer.
-private enum FilterMode: CaseIterable {
-    case definitionExpression, displayFilterDefinition, none
-    
-    /// A human-readable label for the filter mode.
-    var label: String {
-        switch self {
-        case .definitionExpression: "Expression"
-        case .displayFilterDefinition: "Display Filter"
-        case .none: "None"
+private extension FilterByDefinitionExpressionOrDisplayFilterView {
+    /// The view model for the sample.
+    final class Model: ObservableObject {
+        /// A map with a topographic basemap.
+        let map: Map = {
+            let map = Map(basemapStyle: .arcGISTopographic)
+            
+            // Initially centers the map on San Fransisco, CA, USA.
+            map.initialViewpoint = Viewpoint(
+                center: Point(latitude: 37.7762, longitude: -122.4522),
+                scale: 7e4
+            )
+            return map
+        }()
+        
+        /// A feature layer of San Fransisco 311 incidents.
+        private let featureLayer: FeatureLayer = {
+            // Creates the feature layer from a feature service URL.
+            let featureTable = ServiceFeatureTable(url: .sanFransiscoIncidentsFeatureLayer)
+            return FeatureLayer(featureTable: featureTable)
+        }()
+        
+        /// The parameters for querying the feature layer.
+        private let queryParameters = QueryParameters()
+        
+        /// A definition expression to filter for the "Tree Maintenance or Damage" type.
+        private let treesDefinitionExpression = "req_type = 'Tree Maintenance or Damage'"
+        
+        /// A display filter definition to filter for the "Tree Maintenance or Damage" type.
+        private let treesDisplayFilterDefinition: ManualDisplayFilterDefinition = {
+            // Creates a display filter with a name and an SQL expression.
+            let treesDisplayFilter = DisplayFilter(
+                name: "Trees",
+                whereClause: "req_type LIKE 'Tree Maintenance or Damage'"
+            )
+            
+            // Creates a display filter definition from the display filter.
+            let treesDisplayFilterDefinition = ManualDisplayFilterDefinition(
+                activeFilter: treesDisplayFilter,
+                availableFilters: [treesDisplayFilter]
+            )
+            return treesDisplayFilterDefinition
+        }()
+        
+        init() {
+            map.addOperationalLayer(featureLayer)
+        }
+        
+        /// Filters the feature layer based on a given filter mode.
+        /// - Parameter filterMode: The mode indicating how to filter the layer.
+        func filterFeatureLayer(filterMode: FilterMode) {
+            // Sets the feature layer's definition expression.
+            featureLayer.definitionExpression = filterMode == .definitionExpression
+            ? treesDefinitionExpression
+            : ""
+            
+            // Sets the feature layer's display filter definition.
+            featureLayer.displayFilterDefinition = filterMode == .displayFilterDefinition
+            ? treesDisplayFilterDefinition
+            : nil
+        }
+        
+        /// Queries the count of features on the feature layer within a given extent.
+        /// - Parameter extent: The extent to query.
+        /// - Returns: The number of features within the extent.
+        func queryFeatureCount(extent: Envelope) async throws -> Int {
+            guard let featureTable = featureLayer.featureTable else { return 0 }
+            
+            queryParameters.geometry = extent
+            let featureCount = try await featureTable.queryFeatureCount(using: queryParameters)
+            
+            return featureCount
         }
     }
-}
-
-/// The view model for the sample.
-private final class Model: ObservableObject {
-    /// A map with a topographic basemap.
-    let map: Map = {
-        let map = Map(basemapStyle: .arcGISTopographic)
+    
+    /// The mode of filtering a feature layer.
+    enum FilterMode: CaseIterable {
+        case definitionExpression, displayFilterDefinition, none
         
-        // Initially centers the map on San Fransisco, CA, USA.
-        map.initialViewpoint = Viewpoint(
-            center: Point(latitude: 37.7762, longitude: -122.4522),
-            scale: 7e4
-        )
-        return map
-    }()
-    
-    /// A feature layer of San Fransisco 311 incidents.
-    private let featureLayer: FeatureLayer = {
-        // Creates the feature layer from a feature service URL.
-        let featureTable = ServiceFeatureTable(url: .sanFransiscoIncidentsFeatureLayer)
-        return FeatureLayer(featureTable: featureTable)
-    }()
-    
-    /// The parameters for querying the feature layer.
-    private let queryParameters = QueryParameters()
-    
-    /// A definition expression to filter for the "Tree Maintenance or Damage" type.
-    private let treesDefinitionExpression = "req_type = 'Tree Maintenance or Damage'"
-    
-    /// A display filter definition to filter for the "Tree Maintenance or Damage" type.
-    private let treesDisplayFilterDefinition: ManualDisplayFilterDefinition = {
-        // Creates a display filter with a name and an SQL expression.
-        let treesDisplayFilter = DisplayFilter(
-            name: "Trees",
-            whereClause: "req_type LIKE 'Tree Maintenance or Damage'"
-        )
-        
-        // Creates a display filter definition from the display filter.
-        let treesDisplayFilterDefinition = ManualDisplayFilterDefinition(
-            activeFilter: treesDisplayFilter,
-            availableFilters: [treesDisplayFilter]
-        )
-        return treesDisplayFilterDefinition
-    }()
-    
-    init() {
-        map.addOperationalLayer(featureLayer)
-    }
-    
-    /// Filters the feature layer based on a given filter mode.
-    /// - Parameter filterMode: The mode indicating how to filter the layer.
-    func filterFeatureLayer(filterMode: FilterMode) {
-        // Sets the feature layer's definition expression.
-        featureLayer.definitionExpression = filterMode == .definitionExpression
-        ? treesDefinitionExpression
-        : ""
-        
-        // Sets the feature layer's display filter definition.
-        featureLayer.displayFilterDefinition = filterMode == .displayFilterDefinition
-        ? treesDisplayFilterDefinition
-        : nil
-    }
-    
-    /// Queries the count of features on the feature layer within a given extent.
-    /// - Parameter extent: The extent to query.
-    /// - Returns: The number of features within the extent.
-    func queryFeatureCount(extent: Envelope) async throws -> Int {
-        guard let featureTable = featureLayer.featureTable else { return 0 }
-        
-        queryParameters.geometry = extent
-        let featureCount = try await featureTable.queryFeatureCount(using: queryParameters)
-        
-        return featureCount
+        /// A human-readable label for the filter mode.
+        var label: String {
+            switch self {
+            case .definitionExpression: "Expression"
+            case .displayFilterDefinition: "Display Filter"
+            case .none: "None"
+            }
+        }
     }
 }
 
