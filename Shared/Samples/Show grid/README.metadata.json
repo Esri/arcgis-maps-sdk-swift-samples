@@ -1,0 +1,44 @@
+{
+    "category": "Maps",
+    "description": "Display coordinate system grids including latitude, longitude, MGRS, UTM and USNG on a map view. Also, toggle label visibility and change the color of grid lines and grid labels.",
+    "ignore": false,
+    "images": [
+        "show-grid.png"
+    ],
+    "keywords": [
+        "MGRS",
+        "USNG",
+        "UTM",
+        "coordinates",
+        "degrees",
+        "graticule",
+        "grid",
+        "latitude",
+        "longitude",
+        "minutes",
+        "seconds",
+        "Grid",
+        "LatitudeLongitudeGrid",
+        "MGRSGrid",
+        "MapView",
+        "SimpleLineSymbol",
+        "TextSymbol",
+        "USNGGrid",
+        "UTMGrid"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Grid",
+        "LatitudeLongitudeGrid",
+        "MGRSGrid",
+        "MapView",
+        "SimpleLineSymbol",
+        "TextSymbol",
+        "USNGGrid",
+        "UTMGrid"
+    ],
+    "snippets": [
+        "ShowGridView.swift"
+    ],
+    "title": "Show grid"
+}
