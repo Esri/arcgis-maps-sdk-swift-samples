@@ -234,8 +234,8 @@ private extension ShowGridView {
             switch self {
             case .latLon: "Latitude-Longitude"
             case .mgrs: "MGRS"
-            case .usng: "UTM"
-            case .utm: "USNG"
+            case .usng: "USNG"
+            case .utm: "UTM"
             }
         }
         
