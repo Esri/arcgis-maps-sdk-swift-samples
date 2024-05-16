@@ -1,0 +1,48 @@
+{
+    "category": "Edit and Manage Data",
+    "description": "Take a web map offline with additional options for each layer.",
+    "ignore": false,
+    "images": [
+      "generate-offline-map-with-custom-parameters.png"
+    ],
+    "keywords": [
+        "LOD",
+        "adjust",
+        "download",
+        "extent",
+        "filter",
+        "offline",
+        "override",
+        "parameters",
+        "reduce",
+        "scale range",
+        "setting",
+        "ExportTileCacheParameters",
+        "GenerateGeodatabaseParameters",
+        "GenerateLayerOption",
+        "GenerateOfflineMapJob",
+        "GenerateOfflineMapParameterOverrides",
+        "GenerateOfflineMapParameters",
+        "GenerateOfflineMapResult",
+        "OfflineMapParametersKey",
+        "OfflineMapTask"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "ExportTileCacheParameters",
+        "GenerateGeodatabaseParameters",
+        "GenerateLayerOption",
+        "GenerateOfflineMapJob",
+        "GenerateOfflineMapParameterOverrides",
+        "GenerateOfflineMapParameters",
+        "GenerateOfflineMapResult",
+        "OfflineMapParametersKey",
+        "OfflineMapTask"
+    ],
+    "snippets": [
+        "GenerateOfflineMapWithCustomParametersView.swift",
+        "GenerateOfflineMapWithCustomParametersView.Model.swift",
+        "GenerateOfflineMapWithCustomParametersView.CustomParameters.swift"
+    ],
+    "title": "Generate offline map with custom parameters"
+}
