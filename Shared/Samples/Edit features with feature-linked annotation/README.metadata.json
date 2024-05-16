@@ -1,0 +1,28 @@
+{
+    "category": "Edit and Manage Data",
+    "description": "Edit feature attributes which are linked to annotations through an expression.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "annotation",
+        "attributes",
+        "feature-linked annotation",
+        "features",
+        "fields",
+        "AnnotationLayer",
+        "Feature",
+        "FeatureLayer",
+        "Geodatabase"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "AnnotationLayer",
+        "Feature",
+        "FeatureLayer",
+        "Geodatabase"
+    ],
+    "snippets": [
+        "EditFeaturesWithFeatureLinkedAnnotationView.swift"
+    ],
+    "title": "Edit features with feature-linked annotation"
+}

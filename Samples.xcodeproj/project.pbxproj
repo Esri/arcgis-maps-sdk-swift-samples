@@ -300,6 +300,8 @@
 		D76000AE2AF19C2300B3084D /* FindRouteInMobileMapPackageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76000AB2AF19C2300B3084D /* FindRouteInMobileMapPackageView.swift */; };
 		D76000B12AF19C4600B3084D /* FindRouteInMobileMapPackageView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D76000AB2AF19C2300B3084D /* FindRouteInMobileMapPackageView.swift */; };
 		D76000B72AF19FCA00B3084D /* SanFrancisco.mmpk in Resources */ = {isa = PBXBuildFile; fileRef = D76000B62AF19FCA00B3084D /* SanFrancisco.mmpk */; settings = {ASSET_TAGS = (FindRouteInMobileMapPackage, ); }; };
+		D762AF5F2BF6A7B900ECE3C7 /* EditFeaturesWithFeatureLinkedAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D762AF5B2BF6A7B900ECE3C7 /* EditFeaturesWithFeatureLinkedAnnotationView.swift */; };
+		D762AF622BF6A7D100ECE3C7 /* EditFeaturesWithFeatureLinkedAnnotationView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D762AF5B2BF6A7B900ECE3C7 /* EditFeaturesWithFeatureLinkedAnnotationView.swift */; };
 		D7634FAF2A43B7AC00F8AEFB /* CreateConvexHullAroundGeometriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7634FAE2A43B7AC00F8AEFB /* CreateConvexHullAroundGeometriesView.swift */; };
 		D7634FB02A43B8B000F8AEFB /* CreateConvexHullAroundGeometriesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7634FAE2A43B7AC00F8AEFB /* CreateConvexHullAroundGeometriesView.swift */; };
 		D7635FF12B9272CB0044AB97 /* DisplayClustersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7635FED2B9272CB0044AB97 /* DisplayClustersView.swift */; };
@@ -484,6 +486,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				D762AF622BF6A7D100ECE3C7 /* EditFeaturesWithFeatureLinkedAnnotationView.swift in Copy Source Code Files */,
 				D7044B972BE18D8D000F2C43 /* EditWithBranchVersioningView.Views.swift in Copy Source Code Files */,
 				D7114A0F2BDC6AED00FA68CA /* EditWithBranchVersioningView.Model.swift in Copy Source Code Files */,
 				D73E61A12BDB221B00457932 /* EditWithBranchVersioningView.swift in Copy Source Code Files */,
@@ -835,6 +838,7 @@
 		D75F66332B48EABC00434974 /* SearchForWebMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchForWebMapView.swift; sourceTree = "<group>"; };
 		D76000AB2AF19C2300B3084D /* FindRouteInMobileMapPackageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindRouteInMobileMapPackageView.swift; sourceTree = "<group>"; };
 		D76000B62AF19FCA00B3084D /* SanFrancisco.mmpk */ = {isa = PBXFileReference; lastKnownFileType = file; path = SanFrancisco.mmpk; sourceTree = "<group>"; };
+		D762AF5B2BF6A7B900ECE3C7 /* EditFeaturesWithFeatureLinkedAnnotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditFeaturesWithFeatureLinkedAnnotationView.swift; sourceTree = "<group>"; };
 		D7634FAE2A43B7AC00F8AEFB /* CreateConvexHullAroundGeometriesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateConvexHullAroundGeometriesView.swift; sourceTree = "<group>"; };
 		D7635FED2B9272CB0044AB97 /* DisplayClustersView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayClustersView.swift; sourceTree = "<group>"; };
 		D7635FF52B9277DC0044AB97 /* ConfigureClustersView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigureClustersView.Model.swift; sourceTree = "<group>"; };
@@ -1090,6 +1094,7 @@
 				E070A0A1286F3B3400F2B606 /* Download preplanned map area */,
 				E004A6EE284E4B7A002A1FE6 /* Download vector tiles to local cache */,
 				D733CA182BED980D00FBDE4C /* Edit and sync features with feature service */,
+				D762AF5E2BF6A7B900ECE3C7 /* Edit features with feature-linked annotation */,
 				D764B7DE2BE2F89D002E2F92 /* Edit geodatabase with transactions */,
 				D73E619D2BDB21F400457932 /* Edit with branch versioning */,
 				1C26ED122A859525009B7721 /* Filter features in scene */,
@@ -1996,6 +2001,14 @@
 			path = 260eb6535c824209964cf281766ebe43;
 			sourceTree = "<group>";
 		};
+		D762AF5E2BF6A7B900ECE3C7 /* Edit features with feature-linked annotation */ = {
+			isa = PBXGroup;
+			children = (
+				D762AF5B2BF6A7B900ECE3C7 /* EditFeaturesWithFeatureLinkedAnnotationView.swift */,
+			);
+			path = "Edit features with feature-linked annotation";
+			sourceTree = "<group>";
+		};
 		D7635FEA2B9272CB0044AB97 /* Display clusters */ = {
 			isa = PBXGroup;
 			children = (
@@ -2860,6 +2873,7 @@
 				D73E619E2BDB21F400457932 /* EditWithBranchVersioningView.swift in Sources */,
 				D7705D642AFC570700CC0335 /* FindClosestFacilityFromPointView.swift in Sources */,
 				E088E1572862579D00413100 /* SetSurfacePlacementModeView.swift in Sources */,
+				D762AF5F2BF6A7B900ECE3C7 /* EditFeaturesWithFeatureLinkedAnnotationView.swift in Sources */,
 				1CAF831F2A20305F000E1E60 /* ShowUtilityAssociationsView.swift in Sources */,
 				00E7C15C2BBE1BF000B85D69 /* SnapGeometryEditsView.swift in Sources */,
 				E004A6C128414332002A1FE6 /* SetViewpointRotationView.swift in Sources */,
