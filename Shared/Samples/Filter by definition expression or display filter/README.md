@@ -14,10 +14,10 @@ In this sample, you can filter a dataset of tree quality selecting only those tr
 
 ## How to use the sample
 
-Use the picker in the toolbar to filter the feature layer. 
+Use the picker in the toolbar to filter the feature layer.
 
-* Select "Expression" to apply a definition expression to limit the features requested from the feature layer to those specified by an SQL query. This narrows down the results that are drawn and removes those features from the layer's attribute table. 
-* Select "Display Filter" to filter the results being drawn without modifying the attribute table. 
+* Select "Expression" to apply a definition expression to limit the features requested from the feature layer to those specified by an SQL query. This narrows down the results that are drawn and removes those features from the layer's attribute table.
+* Select "Display Filter" to filter the results being drawn without modifying the attribute table.
 * Select "None" to view the unfiltered feature layer.
 
 The feature count value shows the current number of features in the current map view extent. When a definition expression is applied to narrow down the list of features being drawn, the count is updated to reflect this change. However, if a display filter is applied, the features that are not visible on the map will still be included in the total feature count.
@@ -33,8 +33,8 @@ The feature count value shows the current number of features in the current map 
 
 * DisplayFilter
 * DisplayFilterDefinition
-* ManualDisplayFilterDefinition
 * FeatureLayer
+* ManualDisplayFilterDefinition
 * ServiceFeatureTable
 
 ## About the data

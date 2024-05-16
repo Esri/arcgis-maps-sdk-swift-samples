@@ -16,16 +16,16 @@
         "where clause",
         "DisplayFilter",
         "DisplayFilterDefinition",
-        "ManualDisplayFilterDefinition",
         "FeatureLayer",
+        "ManualDisplayFilterDefinition",
         "ServiceFeatureTable"
     ],
     "redirect_from": [],
     "relevant_apis": [
         "DisplayFilter",
         "DisplayFilterDefinition",
-        "ManualDisplayFilterDefinition",
         "FeatureLayer",
+        "ManualDisplayFilterDefinition",
         "ServiceFeatureTable"
     ],
     "snippets": [
