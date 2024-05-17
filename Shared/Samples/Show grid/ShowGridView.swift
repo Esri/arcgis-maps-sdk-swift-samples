@@ -23,7 +23,7 @@ struct ShowGridView: View {
         return map
     }()
     
-    /// The map view's grid, initially set to a lat-lon grid.
+    /// The map view's grid, initially set to a Lat-Lon grid.
     @State private var grid: ArcGIS.Grid = LatitudeLongitudeGrid()
     
     /// A Boolean value indicating whether the settings view should be presented.
@@ -42,7 +42,7 @@ struct ShowGridView: View {
                             GridSettingsView(grid: $grid)
                         }
                         .presentationDetents([.fraction(0.6), .large])
-                        .frame(idealWidth: 350, idealHeight: 750)
+                        .frame(idealWidth: 350, idealHeight: 450)
                     }
                 }
             }
