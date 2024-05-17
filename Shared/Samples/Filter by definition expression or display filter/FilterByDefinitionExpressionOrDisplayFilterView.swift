@@ -102,9 +102,6 @@ private extension FilterByDefinitionExpressionOrDisplayFilterView {
             featureTable: ServiceFeatureTable(url: .sanFransiscoIncidentsFeatureLayer)
         )
         
-        /// The parameters for querying the feature layer.
-        private let queryParameters = QueryParameters()
-        
         /// A definition expression to filter for the "Tree Maintenance or Damage" type.
         private let treesDefinitionExpression = "req_type = 'Tree Maintenance or Damage'"
         
@@ -149,10 +146,11 @@ private extension FilterByDefinitionExpressionOrDisplayFilterView {
         /// - Parameter extent: The extent to query.
         /// - Returns: The number of features.
         func numberOfFeatures(withinExtent: Envelope) async throws -> Int {
-            guard let featureTable = featureLayer.featureTable else { return 0 }
-            
+            // Creates parameters to filter the results with the extent.
+            let queryParameters = QueryParameters()
             queryParameters.geometry = withinExtent
-            return try await featureTable.queryFeatureCount(using: queryParameters)
+            
+            return try await featureLayer.featureTable!.queryFeatureCount(using: queryParameters)
         }
     }
     
