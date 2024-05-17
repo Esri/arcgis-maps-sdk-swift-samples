@@ -74,7 +74,7 @@ struct FilterByDefinitionExpressionOrDisplayFilterView: View {
                 .pickerStyle(.segmented)
                 .onChange(of: selectedFilterMode) { newFilterMode in
                     // Filters the feature layer based on the new filter mode.
-                    model.filterFeatureLayer(filterMode: newFilterMode)
+                    model.filterFeatureLayer(mode: newFilterMode)
                 }
             }
         }
@@ -128,9 +128,9 @@ private extension FilterByDefinitionExpressionOrDisplayFilterView {
         }
         
         /// Filters the feature layer based on a given filter mode.
-        /// - Parameter filterMode: The mode indicating how to filter the layer.
-        func filterFeatureLayer(filterMode: FilterMode) {
-            let (definitionExpression, displayFilterDefinition): (String, DisplayFilterDefinition?) = switch filterMode {
+        /// - Parameter mode: The mode indicating how to filter the layer.
+        func filterFeatureLayer(mode: FilterMode) {
+            let (definitionExpression, displayFilterDefinition): (String, DisplayFilterDefinition?) = switch mode {
             case .definitionExpression:
                 (treesDefinitionExpression, nil)
             case .displayFilterDefinition:
@@ -138,6 +138,7 @@ private extension FilterByDefinitionExpressionOrDisplayFilterView {
             case .none:
                 ("", nil)
             }
+            
             // Sets the feature layer's definition expression.
             featureLayer.definitionExpression = definitionExpression
             // Sets the feature layer's display filter definition.
