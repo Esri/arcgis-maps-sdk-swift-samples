@@ -44,9 +44,12 @@ struct FilterByDefinitionExpressionOrDisplayFilterView: View {
                             return
                         }
                         
-                        featureCountResult = await Result {
+                        do {
                             // Gets the feature count contained within the envelope.
-                            try await model.numberOfFeatures(withinExtent: viewExtent)
+                            let count = try await model.numberOfFeatures(withinExtent: viewExtent)
+                            featureCountResult = .success(count)
+                        } catch {
+                            featureCountResult = .failure(error)
                         }
                     }
                     .overlay(alignment: .top) {
