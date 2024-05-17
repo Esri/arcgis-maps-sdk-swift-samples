@@ -55,14 +55,14 @@ struct FilterByDefinitionExpressionOrDisplayFilterView: View {
                         }
                     }
                     .errorAlert(presentingError: $error)
+                    .overlay(alignment: .top) {
+                        Text("\(featureCount) feature(s)")
+                            .multilineTextAlignment(.center)
+                            .frame(maxWidth: .infinity, alignment: .center)
+                            .padding(8)
+                            .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
+                    }
             }
-        }
-        .overlay(alignment: .top) {
-            Text("\(featureCount) feature(s)")
-                .multilineTextAlignment(.center)
-                .frame(maxWidth: .infinity, alignment: .center)
-                .padding(8)
-                .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
         }
         .toolbar {
             ToolbarItem(placement: .bottomBar) {
