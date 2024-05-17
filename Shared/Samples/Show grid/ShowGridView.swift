@@ -42,7 +42,7 @@ struct ShowGridView: View {
                             GridSettingsView(grid: $grid)
                         }
                         .presentationDetents([.fraction(0.6), .large])
-                        .frame(idealWidth: 350, idealHeight: 450)
+                        .frame(idealWidth: 350, idealHeight: 480)
                     }
                 }
             }
