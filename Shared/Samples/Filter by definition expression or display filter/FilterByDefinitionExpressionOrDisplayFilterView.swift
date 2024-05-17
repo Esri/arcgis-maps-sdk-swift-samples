@@ -42,9 +42,10 @@ struct FilterByDefinitionExpressionOrDisplayFilterView: View {
                         
                         // Creates an envelope from the frame of the map view.
                         let viewRect = geometryProxy.frame(in: .local)
-                        guard let viewExtent = mapViewProxy.envelope(
-                            fromViewRect: viewRect
-                        ) else { return }
+                        
+                        guard let viewExtent = mapViewProxy.envelope(fromViewRect: viewRect) else {
+                            return
+                        }
                         
                         do {
                             // Gets the feature count contained within the envelope.
@@ -57,7 +58,7 @@ struct FilterByDefinitionExpressionOrDisplayFilterView: View {
             }
         }
         .overlay(alignment: .top) {
-            Text("Feature count: \(featureCount)")
+            Text("\(featureCount) feature(s)")
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: .infinity, alignment: .center)
                 .padding(8)
@@ -96,11 +97,10 @@ private extension FilterByDefinitionExpressionOrDisplayFilterView {
         }()
         
         /// A feature layer of San Fransisco 311 incidents.
-        private let featureLayer: FeatureLayer = {
+        private let featureLayer = FeatureLayer(
             // Creates the feature layer from a feature service URL.
-            let featureTable = ServiceFeatureTable(url: .sanFransiscoIncidentsFeatureLayer)
-            return FeatureLayer(featureTable: featureTable)
-        }()
+            featureTable: ServiceFeatureTable(url: .sanFransiscoIncidentsFeatureLayer)
+        )
         
         /// The parameters for querying the feature layer.
         private let queryParameters = QueryParameters()
@@ -117,11 +117,10 @@ private extension FilterByDefinitionExpressionOrDisplayFilterView {
             )
             
             // Creates a display filter definition from the display filter.
-            let treesDisplayFilterDefinition = ManualDisplayFilterDefinition(
+            return ManualDisplayFilterDefinition(
                 activeFilter: treesDisplayFilter,
                 availableFilters: [treesDisplayFilter]
             )
-            return treesDisplayFilterDefinition
         }()
         
         init() {
@@ -131,15 +130,18 @@ private extension FilterByDefinitionExpressionOrDisplayFilterView {
         /// Filters the feature layer based on a given filter mode.
         /// - Parameter filterMode: The mode indicating how to filter the layer.
         func filterFeatureLayer(filterMode: FilterMode) {
+            let (definitionExpression, displayFilterDefinition): (String, DisplayFilterDefinition?) = switch filterMode {
+            case .definitionExpression:
+                (treesDefinitionExpression, nil)
+            case .displayFilterDefinition:
+                ("", treesDisplayFilterDefinition)
+            case .none:
+                ("", nil)
+            }
             // Sets the feature layer's definition expression.
-            featureLayer.definitionExpression = filterMode == .definitionExpression
-            ? treesDefinitionExpression
-            : ""
-            
+            featureLayer.definitionExpression = definitionExpression
             // Sets the feature layer's display filter definition.
-            featureLayer.displayFilterDefinition = filterMode == .displayFilterDefinition
-            ? treesDisplayFilterDefinition
-            : nil
+            featureLayer.displayFilterDefinition = displayFilterDefinition
         }
         
         /// Queries the count of features on the feature layer within a given extent.
@@ -149,9 +151,7 @@ private extension FilterByDefinitionExpressionOrDisplayFilterView {
             guard let featureTable = featureLayer.featureTable else { return 0 }
             
             queryParameters.geometry = extent
-            let featureCount = try await featureTable.queryFeatureCount(using: queryParameters)
-            
-            return featureCount
+            return try await featureTable.queryFeatureCount(using: queryParameters)
         }
     }
     
