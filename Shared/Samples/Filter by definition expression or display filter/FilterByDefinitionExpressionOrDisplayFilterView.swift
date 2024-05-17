@@ -89,10 +89,7 @@ private extension FilterByDefinitionExpressionOrDisplayFilterView {
             let map = Map(basemapStyle: .arcGISTopographic)
             
             // Initially centers the map on San Fransisco, CA, USA.
-            map.initialViewpoint = Viewpoint(
-                center: Point(latitude: 37.7762, longitude: -122.4522),
-                scale: 7e4
-            )
+            map.initialViewpoint = Viewpoint(latitude: 37.7762, longitude: -122.4522, scale: 7e4)
             return map
         }()
         
