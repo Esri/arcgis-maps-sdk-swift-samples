@@ -49,7 +49,7 @@ struct FilterByDefinitionExpressionOrDisplayFilterView: View {
                         
                         do {
                             // Gets the feature count contained within the envelope.
-                            featureCount = try await model.queryFeatureCount(extent: viewExtent)
+                            featureCount = try await model.numberOfFeatures(withinExtent: viewExtent)
                         } catch {
                             self.error = error
                         }
@@ -145,13 +145,13 @@ private extension FilterByDefinitionExpressionOrDisplayFilterView {
             featureLayer.displayFilterDefinition = displayFilterDefinition
         }
         
-        /// Queries the count of features on the feature layer within a given extent.
+        /// The number of features on the feature layer within a given extent.
         /// - Parameter extent: The extent to query.
-        /// - Returns: The number of features within the extent.
-        func queryFeatureCount(extent: Envelope) async throws -> Int {
+        /// - Returns: The number of features.
+        func numberOfFeatures(withinExtent: Envelope) async throws -> Int {
             guard let featureTable = featureLayer.featureTable else { return 0 }
             
-            queryParameters.geometry = extent
+            queryParameters.geometry = withinExtent
             return try await featureTable.queryFeatureCount(using: queryParameters)
         }
     }
