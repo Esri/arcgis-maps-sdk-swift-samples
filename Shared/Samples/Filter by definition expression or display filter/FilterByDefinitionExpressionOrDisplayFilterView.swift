@@ -22,14 +22,11 @@ struct FilterByDefinitionExpressionOrDisplayFilterView: View {
     /// The draw status of the map view.
     @State private var drawStatus: DrawStatus?
     
-    /// The count of features in the current extent of the map view.
-    @State private var featureCount = 0
+    /// The result of counting the features in the current extent of the map view.
+    @State private var featureCountResult: Result<Int, Error>?
     
     /// The filtering mode selected in the picker.
     @State private var selectedFilterMode: FilterMode = .none
-    
-    /// The error shown in the error alert.
-    @State private var error: Error?
     
     var body: some View {
         GeometryReader { geometryProxy in
@@ -47,16 +44,19 @@ struct FilterByDefinitionExpressionOrDisplayFilterView: View {
                             return
                         }
                         
-                        do {
+                        featureCountResult = await Result {
                             // Gets the feature count contained within the envelope.
-                            featureCount = try await model.numberOfFeatures(withinExtent: viewExtent)
-                        } catch {
-                            self.error = error
+                            try await model.numberOfFeatures(withinExtent: viewExtent)
                         }
                     }
-                    .errorAlert(presentingError: $error)
                     .overlay(alignment: .top) {
-                        Text("\(featureCount) feature(s)")
+                        let statusText = switch featureCountResult {
+                        case .success(let featureCount): "\(featureCount) feature(s)"
+                        case .failure(let failure): "\(failure)"
+                        case nil: "Loading feature layer…"
+                        }
+                        
+                        Text(statusText)
                             .multilineTextAlignment(.center)
                             .frame(maxWidth: .infinity, alignment: .center)
                             .padding(8)
