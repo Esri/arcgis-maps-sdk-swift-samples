@@ -13,13 +13,19 @@
 // limitations under the License.
 
 import ArcGIS
-import SwiftUI
+import Foundation
 
-struct EditFeaturesWithFeatureLinkedAnnotationView: View {
+extension EditFeaturesWithFeatureLinkedAnnotationView {
     /// The view model for the sample.
-    @StateObject private var model = Model()
-    
-    var body: some View {
-        MapView(map: model.map)
+    final class Model: ObservableObject {
+        /// A map with a topographic basemap.
+        let map = Map(basemapStyle: .arcGISTopographic)
+    }
+}
+
+private extension URL {
+    /// The URL to the local Loudoun Anno geodatabase file.
+    static var loudounAnnoGeodatabase: URL {
+        Bundle.main.url(forResource: "loudoun_anno", withExtension: "geodatabase")!
     }
 }

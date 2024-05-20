@@ -25,7 +25,8 @@
         "Geodatabase"
     ],
     "snippets": [
-        "EditFeaturesWithFeatureLinkedAnnotationView.swift"
+        "EditFeaturesWithFeatureLinkedAnnotationView.swift",
+        "EditFeaturesWithFeatureLinkedAnnotationView.Model.swift"
     ],
     "title": "Edit features with feature-linked annotation"
 }
