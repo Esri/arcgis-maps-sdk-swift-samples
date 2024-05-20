@@ -209,7 +209,7 @@ private extension CreateSymbolStylesFromWebStylesView {
         let image: UIImage
     }
     
-    /// The types of symbols to get from the symbol style .
+    /// The types of symbols to get from the symbol style.
     private enum SymbolType: CaseIterable, Comparable {
         case atm, beach, campground, cityHall, hospital, library, park, placeOfWorship, policeStation, postOffice, school, trail
         
