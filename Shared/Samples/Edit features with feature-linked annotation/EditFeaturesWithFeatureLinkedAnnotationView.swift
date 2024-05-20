@@ -93,10 +93,11 @@ struct EditFeaturesWithFeatureLinkedAnnotationView: View {
                 }
         }
         .onChange(of: model.selectedFeature == nil) { _ in
-            if model.selectedFeature?.geometry is Point {
+            if model.selectedFeature?.geometry is Point,
+               let featureAddress = model.selectedFeatureAddress {
                 // Presents the alert to update the feature's address if the feature is a point.
-                buildingNumber = model.selectedFeatureAddress.buildingNumber
-                streetName = model.selectedFeatureAddress.streetName ?? ""
+                buildingNumber = featureAddress.buildingNumber
+                streetName = featureAddress.streetName
                 editAddressAlertIsPresented = true
             } else if let polyline = model.selectedFeature?.geometry as? Polyline,
                       polyline.parts.contains(where: { $0.points.count > 2 }) {
@@ -116,10 +117,11 @@ struct EditFeaturesWithFeatureLinkedAnnotationView: View {
             }
             Button("Done") {
                 selectedAction = .setFeatureAddress(
-                    buildingNumber: buildingNumber,
+                    buildingNumber: buildingNumber!,
                     streetName: streetName
                 )
             }
+            .disabled(buildingNumber == nil || streetName.isEmpty)
         } message: {
             Text("Edit the feature's 'AD_ADDRESS' and 'ST_STR_NAM' attributes.")
         }
@@ -145,7 +147,7 @@ private extension EditFeaturesWithFeatureLinkedAnnotationView {
         /// Selects a feature identified at a given point on the screen.
         case selectFeature(screenPoint: CGPoint)
         /// Sets the address attributes of the selected feature to given values.
-        case setFeatureAddress(buildingNumber: Int32?, streetName: String)
+        case setFeatureAddress(buildingNumber: Int32, streetName: String)
         /// Updates the selected feature's geometry using a given point on the map.
         case updateFeatureGeometry(mapPoint: Point)
     }

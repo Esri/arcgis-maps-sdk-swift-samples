@@ -93,7 +93,7 @@ extension EditFeaturesWithFeatureLinkedAnnotationView {
         /// - Parameters:
         ///   - buildingNumber: The number of the building for the `AD_ADDRESS` field.
         ///   - streetName: The name of street for the `ST_STR_NAM` field.
-        func setFeatureAddress(buildingNumber: Int32?, streetName: String) async throws {
+        func setFeatureAddress(buildingNumber: Int32, streetName: String) async throws {
             selectedFeature?.setAttributeValue(buildingNumber, forKey: .addressFieldKey)
             selectedFeature?.setAttributeValue(streetName, forKey: .streetNameFieldKey)
             
