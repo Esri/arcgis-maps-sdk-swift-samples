@@ -26,7 +26,7 @@ extension EditFeaturesWithFeatureLinkedAnnotationView {
         let map: Map = {
             let map = Map(basemapStyle: .arcGISLightGray)
             
-            // Initially centers the map in Loudoun Country, VA, USA.
+            // Initially centers the map in Loudoun County, VA, USA.
             map.initialViewpoint = Viewpoint(latitude: 39.0204, longitude: -77.4159, scale: 2256)
             return map
         }()
@@ -37,10 +37,13 @@ extension EditFeaturesWithFeatureLinkedAnnotationView {
             .appending(component: "LoudounAnno.geodatabase")
         
         /// The building number and street name of the selected feature.
-        var selectedFeatureAddress: (buildingNumber: Int32?, streetName: String?) {
-            let buildingNumber = selectedFeature?.attributes[.addressFieldKey] as? Int32
-            let streetName = selectedFeature?.attributes[.streetNameFieldKey] as? String
-            return (buildingNumber, streetName)
+        var selectedFeatureAddress: (buildingNumber: Int32, streetName: String)? {
+            if let buildingNumber = selectedFeature?.attributes[.addressFieldKey] as? Int32,
+               let streetName = selectedFeature?.attributes[.streetNameFieldKey] as? String {
+                return (buildingNumber, streetName)
+            } else {
+                return nil
+            }
         }
         
         deinit {

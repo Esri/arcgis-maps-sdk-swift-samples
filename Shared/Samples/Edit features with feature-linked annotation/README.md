@@ -35,7 +35,7 @@ Both expressions were defined by the data author in ArcGIS Pro using [the Arcade
 
 ## Offline data
 
-This sample uses data from [ArcGIS Online](https://arcgisruntime.maps.arcgis.com/home/item.html?id=74c0c9fa80f4498c9739cc42531e9948). It is downloaded automatically.
+This sample uses data from [ArcGIS Online](https://www.arcgis.com/home/item.html?id=74c0c9fa80f4498c9739cc42531e9948). It is downloaded automatically.
 
 ## About the data
 
