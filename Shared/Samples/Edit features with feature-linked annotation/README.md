@@ -43,7 +43,6 @@ This sample uses data derived from the [Loudoun GeoHub](https://geohub-loudoungi
 
 The annotation linked to the point data in this sample is defined by arcade expression `$feature.AD_ADDRESS + " " + $feature.ST_STR_NAM`. The annotation linked to the parcel polyline data is defined by `Round(Length(Geometry($feature), 'feet'), 2)`.
 
-
 ## Tags
 
-annotation, attributes, features, feature-linked annotation, fields
+annotation, attributes, feature-linked annotation, features, fields
