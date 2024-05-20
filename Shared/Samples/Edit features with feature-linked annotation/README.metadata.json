@@ -2,7 +2,9 @@
     "category": "Edit and Manage Data",
     "description": "Edit feature attributes which are linked to annotations through an expression.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "edit-features-with-feature-linked-annotation.png"
+    ],
     "keywords": [
         "annotation",
         "attributes",
