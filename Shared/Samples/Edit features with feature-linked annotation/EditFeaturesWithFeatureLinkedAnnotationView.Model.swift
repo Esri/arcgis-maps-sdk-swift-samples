@@ -81,9 +81,9 @@ extension EditFeaturesWithFeatureLinkedAnnotationView {
             clearSelectedFeature()
             
             // Gets the first feature from the first feature layer in the results.
-            let featureLayerResult = results.first { $0.layerContent is FeatureLayer }
-            guard let featureLayer = featureLayerResult?.layerContent as? FeatureLayer,
-                  let feature = featureLayerResult?.geoElements.first as? ArcGISFeature else { return }
+            guard let featureLayerResult = results.first(where: { $0.layerContent is FeatureLayer }),
+                  let featureLayer = featureLayerResult.layerContent as? FeatureLayer,
+                  let feature = featureLayerResult.geoElements.first as? ArcGISFeature else { return }
             
             featureLayer.selectFeature(feature)
             selectedFeature = feature
@@ -94,8 +94,10 @@ extension EditFeaturesWithFeatureLinkedAnnotationView {
         ///   - buildingNumber: The number of the building for the `AD_ADDRESS` field.
         ///   - streetName: The name of street for the `ST_STR_NAM` field.
         func setFeatureAddress(buildingNumber: Int32, streetName: String) async throws {
-            selectedFeature?.setAttributeValue(buildingNumber, forKey: .addressFieldKey)
-            selectedFeature?.setAttributeValue(streetName, forKey: .streetNameFieldKey)
+            guard let selectedFeature else { return }
+            
+            selectedFeature.setAttributeValue(buildingNumber, forKey: .addressFieldKey)
+            selectedFeature.setAttributeValue(streetName, forKey: .streetNameFieldKey)
             
             try await updateSelectedFeature()
         }
