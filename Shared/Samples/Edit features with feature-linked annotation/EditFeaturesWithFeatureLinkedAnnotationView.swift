@@ -68,7 +68,10 @@ struct EditFeaturesWithFeatureLinkedAnnotationView: View {
                                 tolerance: 10
                             )
                             model.selectFirstFeature(from: layerIdentifyResults)
-                            instruction = .moveFeature
+                            
+                            if model.selectedFeature != nil {
+                                instruction = .moveFeature
+                            }
                         case .setFeatureAddress(let buildingNumber, let streetName):
                             try await model.setFeatureAddress(
                                 buildingNumber: buildingNumber,
