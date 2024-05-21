@@ -2,7 +2,9 @@
     "category": "Search and Query",
     "description": "List features related to the selected feature.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "query-related-features.png"
+    ],
     "keywords": [
         "features",
         "identify",

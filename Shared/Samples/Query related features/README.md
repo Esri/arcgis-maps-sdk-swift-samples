@@ -2,7 +2,7 @@
 
 List features related to the selected feature.
 
-![Image of query related features](QueryRelatedFeatures.png)
+![Image of Query related features sample](query-related-features.png)
 
 ## Use case
 
