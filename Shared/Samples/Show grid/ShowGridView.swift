@@ -226,7 +226,7 @@ private extension ShowGridView {
             case is MGRSGrid: self = .mgrs
             case is USNGGrid: self = .usng
             case is UTMGrid: self = .utm
-            default: return nil
+            default: fatalError("Unknown grid type")
             }
         }
         
