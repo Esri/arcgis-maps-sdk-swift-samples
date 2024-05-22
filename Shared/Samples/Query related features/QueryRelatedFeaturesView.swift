@@ -38,6 +38,7 @@ struct QueryRelatedFeaturesView: View {
             url: .alaskaParksFeatureServer.appending(component: "1")
         )
     )
+    
     /// The text describing the loading status of the sample.
     @State private var loadingStatusText: String?
     
