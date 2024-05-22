@@ -72,7 +72,7 @@ private extension ShowGridView {
         @State private var labelsColor = Color(uiColor: .red)
         
         /// The kind of grid to display
-        @State private var gridType: GridType = .latLon
+        @State private var gridType: GridType = .latitudeLongitude
         
         /// The positioning of the grid's labels.
         @State private var labelPosition: ArcGIS.Grid.LabelPosition = .allSides
@@ -218,11 +218,11 @@ private extension ShowGridView {
 private extension ShowGridView {
     /// The kinds of grid to show in a map view.
     enum GridType: CaseIterable {
-        case latLon, mgrs, usng, utm
+        case latitudeLongitude, mgrs, usng, utm
         
         init?(grid: ArcGIS.Grid) {
             switch grid {
-            case is LatitudeLongitudeGrid: self = .latLon
+            case is LatitudeLongitudeGrid: self = .latitudeLongitude
             case is MGRSGrid: self = .mgrs
             case is USNGGrid: self = .usng
             case is UTMGrid: self = .utm
@@ -232,7 +232,7 @@ private extension ShowGridView {
         
         var label: String {
             switch self {
-            case .latLon: "Latitude-Longitude"
+            case .latitudeLongitude: "Latitude-Longitude"
             case .mgrs: "MGRS"
             case .usng: "USNG"
             case .utm: "UTM"
@@ -241,7 +241,7 @@ private extension ShowGridView {
         
         func makeGrid() -> ArcGIS.Grid {
             switch self {
-            case .latLon: LatitudeLongitudeGrid()
+            case .latitudeLongitude: LatitudeLongitudeGrid()
             case .mgrs: MGRSGrid()
             case .usng: USNGGrid()
             case .utm: UTMGrid()
