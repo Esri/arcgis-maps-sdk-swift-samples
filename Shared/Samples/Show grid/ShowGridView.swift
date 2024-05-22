@@ -130,32 +130,32 @@ private extension ShowGridView {
                         grid.labelPosition = labelPosition
                     }
                     
-                    if grid is LatitudeLongitudeGrid {
+                    if let latitudeLongitudeGrid = grid as? LatitudeLongitudeGrid {
                         Picker("Format", selection: $labelFormat) {
                             ForEach(LatitudeLongitudeGrid.LabelFormat.allCases, id: \.self) { format in
                                 Text(format.label)
                             }
                         }
                         .onChange(of: labelFormat) { _ in
-                            (grid as! LatitudeLongitudeGrid).labelFormat = labelFormat
+                            latitudeLongitudeGrid.labelFormat = labelFormat
                         }
-                    } else if grid is MGRSGrid {
+                    } else if let mgrsGrid = grid as? MGRSGrid {
                         Picker("Unit", selection: $mgrsLabelUnit) {
                             ForEach(MGRSGrid.LabelUnit.allCases, id: \.self) { unit in
                                 Text(unit.label)
                             }
                         }
                         .onChange(of: mgrsLabelUnit) { _ in
-                            (grid as! MGRSGrid).labelUnit = mgrsLabelUnit
+                            mgrsGrid.labelUnit = mgrsLabelUnit
                         }
-                    } else if grid is USNGGrid {
+                    } else if let usngGrid = grid as? USNGGrid {
                         Picker("Unit", selection: $usngLabelUnit) {
                             ForEach(USNGGrid.LabelUnit.allCases, id: \.self) { unit in
                                 Text(unit.label)
                             }
                         }
                         .onChange(of: usngLabelUnit) { _ in
-                            (grid as! USNGGrid).labelUnit = usngLabelUnit
+                            usngGrid.labelUnit = usngLabelUnit
                         }
                     }
                 }
