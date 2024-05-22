@@ -320,6 +320,8 @@
 		D769C2132A29057200030F61 /* SetUpLocationDrivenGeotriggersView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D769C2112A29019B00030F61 /* SetUpLocationDrivenGeotriggersView.swift */; };
 		D769DF332BEC1A1C0062AE95 /* EditGeodatabaseWithTransactionsView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D769DF322BEC1A1C0062AE95 /* EditGeodatabaseWithTransactionsView.Model.swift */; };
 		D769DF342BEC1A9E0062AE95 /* EditGeodatabaseWithTransactionsView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D769DF322BEC1A1C0062AE95 /* EditGeodatabaseWithTransactionsView.Model.swift */; };
+		D76CE8D92BFD7047009A8686 /* SetReferenceScaleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76CE8D52BFD7047009A8686 /* SetReferenceScaleView.swift */; };
+		D76CE8DA2BFD7063009A8686 /* SetReferenceScaleView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D76CE8D52BFD7047009A8686 /* SetReferenceScaleView.swift */; };
 		D76EE6072AF9AFE100DA0325 /* FindRouteAroundBarriersView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76EE6062AF9AFE100DA0325 /* FindRouteAroundBarriersView.Model.swift */; };
 		D76EE6082AF9AFEC00DA0325 /* FindRouteAroundBarriersView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D76EE6062AF9AFE100DA0325 /* FindRouteAroundBarriersView.Model.swift */; };
 		D7705D582AFC244E00CC0335 /* FindClosestFacilityToMultiplePointsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7705D552AFC244E00CC0335 /* FindClosestFacilityToMultiplePointsView.swift */; };
@@ -486,6 +488,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				D76CE8DA2BFD7063009A8686 /* SetReferenceScaleView.swift in Copy Source Code Files */,
 				D7D9FCF92BF2CCA300F972A2 /* FilterByDefinitionExpressionOrDisplayFilterView.swift in Copy Source Code Files */,
 				D7044B972BE18D8D000F2C43 /* EditWithBranchVersioningView.Views.swift in Copy Source Code Files */,
 				D7114A0F2BDC6AED00FA68CA /* EditWithBranchVersioningView.Model.swift in Copy Source Code Files */,
@@ -848,6 +851,7 @@
 		D76929F52B4F78340047205E /* OrbitCameraAroundObjectView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrbitCameraAroundObjectView.swift; sourceTree = "<group>"; };
 		D769C2112A29019B00030F61 /* SetUpLocationDrivenGeotriggersView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetUpLocationDrivenGeotriggersView.swift; sourceTree = "<group>"; };
 		D769DF322BEC1A1C0062AE95 /* EditGeodatabaseWithTransactionsView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditGeodatabaseWithTransactionsView.Model.swift; sourceTree = "<group>"; };
+		D76CE8D52BFD7047009A8686 /* SetReferenceScaleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetReferenceScaleView.swift; sourceTree = "<group>"; };
 		D76EE6062AF9AFE100DA0325 /* FindRouteAroundBarriersView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindRouteAroundBarriersView.Model.swift; sourceTree = "<group>"; };
 		D7705D552AFC244E00CC0335 /* FindClosestFacilityToMultiplePointsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindClosestFacilityToMultiplePointsView.swift; sourceTree = "<group>"; };
 		D7705D612AFC570700CC0335 /* FindClosestFacilityFromPointView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindClosestFacilityFromPointView.swift; sourceTree = "<group>"; };
@@ -1140,6 +1144,7 @@
 				D7C3AB462B683291008909B9 /* Set feature request mode */,
 				D734FA072A183A5A00246D7E /* Set max extent */,
 				D7EAF34F2A1C011000D822C4 /* Set min and max scale */,
+				D76CE8D62BFD7047009A8686 /* Set reference scale */,
 				E088E1552862578800413100 /* Set surface placement mode */,
 				D769C20D2A28FF8600030F61 /* Set up location-driven geotriggers */,
 				E004A6B928414332002A1FE6 /* Set viewpoint rotation */,
@@ -2046,6 +2051,14 @@
 			path = "Set up location-driven geotriggers";
 			sourceTree = "<group>";
 		};
+		D76CE8D62BFD7047009A8686 /* Set reference scale */ = {
+			isa = PBXGroup;
+			children = (
+				D76CE8D52BFD7047009A8686 /* SetReferenceScaleView.swift */,
+			);
+			path = "Set reference scale";
+			sourceTree = "<group>";
+		};
 		D7705D542AFC244E00CC0335 /* Find closest facility to multiple points */ = {
 			isa = PBXGroup;
 			children = (
@@ -2949,6 +2962,7 @@
 				D76000AE2AF19C2300B3084D /* FindRouteInMobileMapPackageView.swift in Sources */,
 				00273CF42A82AB5900A7A77D /* SamplesSearchView.swift in Sources */,
 				D78666AD2A2161F100C60110 /* FindNearestVertexView.swift in Sources */,
+				D76CE8D92BFD7047009A8686 /* SetReferenceScaleView.swift in Sources */,
 				D7C16D1B2AC5F95300689E89 /* Animate3DGraphicView.swift in Sources */,
 				D744FD172A2112D90084A66C /* CreateConvexHullAroundPointsView.swift in Sources */,
 				D7044B962BE18D73000F2C43 /* EditWithBranchVersioningView.Views.swift in Sources */,
