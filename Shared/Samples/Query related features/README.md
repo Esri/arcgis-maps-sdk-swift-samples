@@ -10,11 +10,11 @@ Related features are useful for managing relational information, like what you w
 
 ## How to use the sample
 
-Click on a feature to select it. The related features will be displayed in a list.
+Tap on a feature to select it, and the related features will be displayed in a list.
 
 ## How it works
 
-1. With a `Feature`, call `queryRelatedFeaturesAsync` on the feature's feature table.
+1. With a `ArcGISFeature`, call `ArcGISFeatureTable.queryRelatedFeatures(to:using:)` on the feature's feature table.
 2. Iterate over the result's collection of `RelatedFeatureQueryResult` objects to get the related features and add them to a list.
 
 ## Relevant API
