@@ -60,7 +60,7 @@ extension Sample {
     /// The sample's name in UpperCamelCase.
     /// - Note: For example, "Display map" -> "DisplayMap".
     var nameInUpperCamelCase: String {
-        name.capitalized.filter { !$0.isWhitespace }
+        name.capitalized.filter { !$0.isWhitespace && !$0.isPunctuation }
     }
     
     /// By default, a sample doesn't have dependencies.
