@@ -52,82 +52,79 @@ struct QueryRelatedFeaturesView: View {
     @State private var error: Error?
     
     var body: some View {
-        GeometryReader { geometryProxy in
-            MapViewReader { mapViewProxy in
-                MapView(map: map)
-                    .onSingleTapGesture { screenPoint, _ in
-                        tapPoint = screenPoint
-                    }
-                    .task(id: tapPoint) {
-                        guard let tapPoint else { return }
-                        parksFeatureLayer.clearSelection()
+        MapViewReader { mapViewProxy in
+            MapView(map: map)
+                .onSingleTapGesture { screenPoint, _ in
+                    tapPoint = screenPoint
+                }
+                .task(id: tapPoint) {
+                    guard let tapPoint else { return }
+                    parksFeatureLayer.clearSelection()
+                    
+                    do {
+                        // Identifies the tapped screen point.
+                        loadingStatusText = "Identifying feature…"
+                        defer { loadingStatusText = nil }
                         
-                        do {
-                            // Identifies the tapped screen point.
-                            loadingStatusText = "Identifying feature…"
-                            defer { loadingStatusText = nil }
-                            
-                            let identifyResult = try await mapViewProxy.identify(
-                                on: parksFeatureLayer,
-                                screenPoint: tapPoint,
-                                tolerance: 12
-                            )
-                            
-                            // Selects the first feature in the result.
-                            guard let parkFeature = identifyResult.geoElements.first
-                                    as? ArcGISFeature else { return }
-                            parksFeatureLayer.selectFeature(parkFeature)
-                            
-                            // Queries for related features of the identified feature.
-                            loadingStatusText = "Querying related features…"
-                            
-                            let parksFeatureTable = parksFeatureLayer.featureTable as! ServiceFeatureTable
-                            let queryResults = try await parksFeatureTable.queryRelatedFeatures(
-                                to: parkFeature
-                            )
-                            self.queryResults = RelatedFeatureQueryResults(results: queryResults)
-                        } catch {
-                            self.error = error
+                        let identifyResult = try await mapViewProxy.identify(
+                            on: parksFeatureLayer,
+                            screenPoint: tapPoint,
+                            tolerance: 12
+                        )
+                        
+                        // Selects the first feature in the result.
+                        guard let parkFeature = identifyResult.geoElements.first
+                                as? ArcGISFeature else { return }
+                        parksFeatureLayer.selectFeature(parkFeature)
+                        
+                        // Queries for related features of the identified feature.
+                        loadingStatusText = "Querying related features…"
+                        
+                        let parksFeatureTable = parksFeatureLayer.featureTable as! ServiceFeatureTable
+                        let queryResults = try await parksFeatureTable.queryRelatedFeatures(
+                            to: parkFeature
+                        )
+                        self.queryResults = RelatedFeatureQueryResults(results: queryResults)
+                    } catch {
+                        self.error = error
+                    }
+                }
+                .sheet(
+                    item: $queryResults,
+                    onDismiss: parksFeatureLayer.clearSelection
+                ) { newQueryResults in
+                    RelatedFeaturesList(results: newQueryResults.results)
+                        .frame(idealWidth: 320, idealHeight: 380)
+                }
+                .overlay(alignment: .center) {
+                    // Shows a progress view when there is a loading status.
+                    if let loadingStatusText {
+                        VStack {
+                            Text(loadingStatusText)
+                            ProgressView()
                         }
+                        .padding()
+                        .background(.ultraThickMaterial)
+                        .cornerRadius(10)
+                        .shadow(radius: 50)
                     }
-                    .popover(
-                        item: $queryResults,
-                        attachmentAnchor: .point(tapPoint?.unitPoint(for: geometryProxy.size) ?? .zero)
-                    ) { newQueryResults in
-                        RelatedFeaturesList(results: newQueryResults.results)
-                            .frame(idealWidth: 320, idealHeight: 380)
-                            .onDisappear(perform: parksFeatureLayer.clearSelection)
+                }
+                .task {
+                    // Loads the parks feature layer and zooms the viewpoint to its extent.
+                    do {
+                        loadingStatusText = "Loading feature layer…"
+                        defer { loadingStatusText = nil }
+                        
+                        try await parksFeatureLayer.load()
+                        map.addOperationalLayer(parksFeatureLayer)
+                        
+                        guard let parksLayerExtent = parksFeatureLayer.fullExtent else { return }
+                        await mapViewProxy.setViewpointGeometry(parksLayerExtent, padding: 20)
+                    } catch {
+                        self.error = error
                     }
-                    .overlay(alignment: .center) {
-                        // Shows a progress view when there is a loading status.
-                        if let loadingStatusText {
-                            VStack {
-                                Text(loadingStatusText)
-                                ProgressView()
-                            }
-                            .padding()
-                            .background(.ultraThickMaterial)
-                            .cornerRadius(10)
-                            .shadow(radius: 50)
-                        }
-                    }
-                    .task {
-                        // Loads the parks feature layer and zooms the viewpoint to its extent.
-                        do {
-                            loadingStatusText = "Loading feature layer…"
-                            defer { loadingStatusText = nil }
-                            
-                            try await parksFeatureLayer.load()
-                            map.addOperationalLayer(parksFeatureLayer)
-                            
-                            guard let parksLayerExtent = parksFeatureLayer.fullExtent else { return }
-                            await mapViewProxy.setViewpointGeometry(parksLayerExtent, padding: 20)
-                        } catch {
-                            self.error = error
-                        }
-                    }
-                    .errorAlert(presentingError: $error)
-            }
+                }
+                .errorAlert(presentingError: $error)
         }
     }
 }
@@ -182,15 +179,6 @@ private extension RelatedFeatureQueryResult {
         return features()
             .compactMap { $0.attributes[displayFieldName] as? String }
             .sorted()
-    }
-}
-
-private extension CGPoint {
-    /// The unit point for a given size.
-    /// - Parameter size: The size of the view.
-    /// - Returns: A `UnitPoint` for the point.
-    func unitPoint(for size: CGSize) -> UnitPoint {
-        UnitPoint(x: x / size.width, y: y / size.height)
     }
 }
 
