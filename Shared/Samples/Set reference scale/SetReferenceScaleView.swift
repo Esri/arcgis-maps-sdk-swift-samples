@@ -42,8 +42,8 @@ struct SetReferenceScaleView: View {
                         Button("Map Settings") {
                             settingsPopoverIsPresented = true
                         }
-                        .popover(isPresented: $settingsPopoverIsPresented) {
-                            MapSettingsView(map: map, mapScale: $mapScale) { scale in
+                        .popover(isPresented: $settingsPopoverIsPresented) { [mapScale] in
+                            MapSettingsView(map: map, mapScale: mapScale ?? 0) { scale in
                                 // Sets the map's scale to the selected reference scale
                                 // when the "Set to Reference Scale" button is tapped.
                                 Task {
@@ -66,10 +66,10 @@ private extension SetReferenceScaleView {
         let map: Map
         
         /// A binding to the scale of the map.
-        @Binding var mapScale: Double?
+        let mapScale: Double
         
         /// The action to set the map scale, i.e, when the "Set to Reference Scale" button is pressed.
-        var setMapScaleAction: (_ scale: Double) -> Void
+        let setMapScaleAction: (_ scale: Double) -> Void
         
         /// The action to dismiss the view.
         @Environment(\.dismiss) private var dismiss
@@ -114,7 +114,7 @@ private extension SetReferenceScaleView {
                     Section("Map Scale") {
                         Text("Map Scale")
                             .badge(
-                                Text("1:\(mapScale ?? 0, format: .number.rounded(increment: 1))")
+                                Text("1:\(mapScale, format: .number.rounded(increment: 1))")
                             )
                         
                         Button("Set to Reference Scale") {
