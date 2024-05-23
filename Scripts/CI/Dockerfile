@@ -25,7 +25,7 @@ ADD readme_checker.py /readme_checker.py
 
 # Install dependencies.
 RUN echo "**** Install Ruby and mdl ****" && \
-    apk add --no-cache ruby ruby-rake && \
+    apk add --no-cache ruby ruby-libs && \
     gem install mdl --no-document && \
     echo "**** Install Python ****" && \
     apk add --no-cache python3 && \
