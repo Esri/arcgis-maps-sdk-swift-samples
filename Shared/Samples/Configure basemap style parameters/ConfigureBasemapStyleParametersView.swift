@@ -22,18 +22,12 @@ struct ConfigureBasemapStyleParametersView: View {
     /// The selected basemap style language strategy.
     @State private var selectedLanguage: BasemapStyleLanguage = .strategic(.global)
     
-    /// The selected locale.
-    @State private var selectedLocale: Locale = .current
-    
     var body: some View {
         MapView(map: model.map)
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
                     Spacer()
                     languageMenu
-                        .onChange(of: selectedLanguage) { newLanguage in
-                            model.setBasemapLanguage(newLanguage)
-                        }
                     Spacer()
                 }
             }
@@ -41,49 +35,41 @@ struct ConfigureBasemapStyleParametersView: View {
     
     private var languageMenu: some View {
         Menu("Language Settings") {
-            Section("Language Strategy") {
-                // A picker for specific languages.
-                Menu("Specific Language") {
-                    Picker(selectedLanguage.label, selection: $selectedLocale) {
-                        ForEach(model.languages, id: \.1) { label, code in
-                            Text(label).tag(Locale(identifier: code))
-                        }
-                    }
-                    .onChange(of: selectedLocale) { newLocale in
-                        selectedLanguage = .specific(newLocale)
-                    }
-                }
-                
-                // A series of buttons for general language strategies.
+            Menu("Strategic") {
                 ForEach(
-                    [
-                        // Use the default language setting for the basemap style.
-                        BasemapStyleLanguage.default,
-                        // Use the global language (English) for basemap labels.
-                        BasemapStyleLanguage.global,
-                        // Uses country-local language for basemap labels.
-                        BasemapStyleLanguage.local,
-                        // Use the system locale language for basemap labels.
-                        BasemapStyleLanguage.applicationLocale
-                    ],
+                    [BasemapStyleLanguageStrategy.default, .global, .local, .applicationLocale],
                     id: \.label
-                ) { basemapStyleLanguage in
+                ) { strategy in
                     Button {
-                        selectedLanguage = basemapStyleLanguage
+                        selectedLanguage = .strategic(strategy)
                     } label: {
-                        HStack {
-                            Text(basemapStyleLanguage.label)
-                            Spacer()
-                            if selectedLanguage == basemapStyleLanguage {
-                                Image(systemName: "checkmark")
-                                    .foregroundColor(.accentColor)
-                            }
+                        if selectedLanguage.strategy == strategy {
+                            Label(strategy.label, systemImage: "checkmark")
+                        } else {
+                            Text(strategy.label)
                         }
-                        .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
                 }
             }
+            Menu("Specific") {
+                ForEach(model.languages, id: \.1) { label, languageCode in
+                    Button {
+                        selectedLanguage = .specific(.init(languageCode: languageCode))
+                    } label: {
+                        if selectedLanguage.localeLanguage?.languageCode == languageCode {
+                            Label(label, systemImage: "checkmark")
+                        } else {
+                            Text(label)
+                        }
+                    }
+                }
+            }
+        }
+        .menuOrder(.fixed)
+        .labelStyle(.titleAndIcon)
+        .onChange(of: selectedLanguage) { newLanguage in
+            model.setBasemapLanguage(newLanguage)
         }
     }
 }
@@ -99,7 +85,7 @@ private extension ConfigureBasemapStyleParametersView {
                     // An OpenStreetMap basemap style is used to support localization.
                     style: .osmLightGray,
                     // Set the language strategy to global to use English.
-                    parameters: BasemapStyleParameters(language: .global)
+                    parameters: BasemapStyleParameters(language: .strategic(.global))
                 )
             )
             // Start with a viewpoint over Bulgaria, Greece, and Turkey.
@@ -109,10 +95,10 @@ private extension ConfigureBasemapStyleParametersView {
         }()
         
         /// The language label and Esri language code for the basemap style parameters.
-        let languages: KeyValuePairs<String, String> = [
-            "🇧🇬 Bulgarian": "bg",
-            "🇬🇷 Greek": "el",
-            "🇹🇷 Turkish": "tr"
+        let languages: KeyValuePairs<String, Locale.LanguageCode> = [
+            "🇧🇬 Bulgarian": .bulgarian,
+            "🇬🇷 Greek": .greek,
+            "🇹🇷 Turkish": .turkish
         ]
         
         /// Sets the basemap style parameter with a language strategy.
@@ -125,26 +111,37 @@ private extension ConfigureBasemapStyleParametersView {
 }
 
 private extension BasemapStyleLanguage {
+    var localeLanguage: Locale.Language? {
+        if case let .specific(language) = self {
+            return language
+        } else {
+            return nil
+        }
+    }
+    
+    var strategy: BasemapStyleLanguageStrategy? {
+        if case let .strategic(strategy) = self {
+            return strategy
+        } else {
+            return nil
+        }
+    }
+}
+
+private extension BasemapStyleLanguageStrategy {
     /// A human-readable label for the basemap style language.
     var label: String {
         switch self {
-        case .strategic(let strategy):
-            switch strategy {
-            case .default:
-                return "Default Language"
-            case .global:
-                return "Global"
-            case .local:
-                return "Local"
-            case .applicationLocale:
-                return "System Locale"
-            @unknown default:
-                fatalError("Unknown basemap style language strategy")
-            }
-        case .specific(let locale):
-            return "Specific: \(locale.maximalIdentifier)"
+        case .default:
+            return "Default Language"
+        case .global:
+            return "Global"
+        case .local:
+            return "Local"
+        case .applicationLocale:
+            return "System Locale"
         @unknown default:
-            fatalError("Unknown basemap style language option")
+            fatalError("Unknown basemap style language strategy")
         }
     }
 }
