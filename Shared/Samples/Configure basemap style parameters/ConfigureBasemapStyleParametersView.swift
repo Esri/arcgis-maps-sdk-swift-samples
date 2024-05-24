@@ -20,7 +20,7 @@ struct ConfigureBasemapStyleParametersView: View {
     @StateObject private var model = Model()
     
     /// The selected basemap style language strategy.
-    @State private var selectedLanguage: BasemapStyleLanguage = .global
+    @State private var selectedLanguage: BasemapStyleLanguage = .strategic(.global)
     
     /// The selected locale.
     @State private var selectedLocale: Locale = .current
@@ -128,16 +128,21 @@ private extension BasemapStyleLanguage {
     /// A human-readable label for the basemap style language.
     var label: String {
         switch self {
-        case .default:
-            return "Default Language"
-        case .global:
-            return "Global"
-        case .local:
-            return "Local"
-        case .applicationLocale:
-            return "System Locale"
+        case .strategic(let strategy):
+            switch strategy {
+            case .default:
+                return "Default Language"
+            case .global:
+                return "Global"
+            case .local:
+                return "Local"
+            case .applicationLocale:
+                return "System Locale"
+            @unknown default:
+                fatalError("Unknown basemap style language strategy")
+            }
         case .specific(let locale):
-            return "Specific: \(locale.identifier)"
+            return "Specific: \(locale.maximalIdentifier)"
         @unknown default:
             fatalError("Unknown basemap style language option")
         }
