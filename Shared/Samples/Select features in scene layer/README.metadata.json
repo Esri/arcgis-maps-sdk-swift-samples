@@ -1,0 +1,24 @@
+{
+    "category": "Scenes",
+    "description": "Identify features in a scene to select.",
+    "ignore": false,
+    "images": ["select-features-in-scene.png"],
+    "keywords": [
+        "IdentifyLayerResult",
+        "IdentifyLayerResult.GeoElements",
+        "features",
+        "scene",
+        "ArcGISFeature",
+        "SceneView"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "IdentifyLayerResult",
+        "IdentifyLayerResult.GeoElements",
+        "SceneView"
+    ],
+    "snippets": [
+        "SelectFeaturesInSceneLayerView.swift"
+    ],
+    "title": "Select features in scene layer"
+}
