@@ -1,0 +1,31 @@
+{
+    "category": "Search and Query",
+    "description": "List features related to the selected feature.",
+    "ignore": false,
+    "images": [
+        "query-related-features.png"
+    ],
+    "keywords": [
+        "features",
+        "identify",
+        "query",
+        "related",
+        "relationship",
+        "search",
+        "ArcGISFeature",
+        "ArcGISFeatureTable",
+        "FeatureQueryResult",
+        "RelatedFeatureQueryResult"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "ArcGISFeature",
+        "ArcGISFeatureTable",
+        "FeatureQueryResult",
+        "RelatedFeatureQueryResult"
+    ],
+    "snippets": [
+        "QueryRelatedFeaturesView.swift"
+    ],
+    "title": "Query related features"
+}
