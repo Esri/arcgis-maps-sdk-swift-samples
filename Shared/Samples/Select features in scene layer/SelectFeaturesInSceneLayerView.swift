@@ -17,13 +17,13 @@ import SwiftUI
 
 struct SelectFeaturesInSceneLayerView: View {
     
-    /// The point on the screen where the user tapped.
-    ///
+    // The point on the screen where the user tapped.
+    //
     @State private var tapPoint: CGPoint?
     
     // The feature layer that is added on top of the scene
     //
-    @State private var featureLayer = {
+    @State private var sceneLayer = {
         ArcGISSceneLayer(url: .brestBuildingService)
     }()
     
@@ -32,7 +32,9 @@ struct SelectFeaturesInSceneLayerView: View {
         // Creates a scene and sets an initial viewpoint.
         let scene = Scene(basemapStyle: .arcGISTopographic)
         let point = Point(x: -4.49779, y: 48.38282, z: 40, spatialReference: .wgs84)
+        // set an initial camera location
         let camera = Camera(location: point, heading: 41.65, pitch: 71.2, roll: 0)
+        // set initial viewpoint to camera position at point
         scene.initialViewpoint = Viewpoint(boundingGeometry: point, camera: camera)
         // Creates a surface and adds an elevation source.
         let surface = Surface()
@@ -45,25 +47,31 @@ struct SelectFeaturesInSceneLayerView: View {
     // Add feature layer to scene in initialization
     
     init() {
-        scene.addOperationalLayer(featureLayer)
+        scene.addOperationalLayer(sceneLayer)
     }
     
     var body: some View {
+        // Wrap the SceneView in SceneViewReader and expose its SceneViewProxy.
         SceneViewReader { sceneViewProxy in
             SceneView(scene: scene)
+                // Capture location of tap on screen
                 .onSingleTapGesture { screenPoint, _ in
                     tapPoint = screenPoint
                 }
                 .task(id: tapPoint) {
                     // clear previous selections
-                    featureLayer.clearSelection()
+                    sceneLayer.clearSelection()
                     do {
+                        // ensure there is a tap point captures
                         guard let locationPoint = tapPoint else { return }
-                        let result = try await sceneViewProxy.identify(on: featureLayer, screenPoint: locationPoint, tolerance: 10)
+                        // get a list of possible of the elements that were tapped
+                        let result = try await sceneViewProxy.identify(on: sceneLayer, screenPoint: locationPoint, tolerance: 10)
+                        // grab the first selected element in the array
                         guard let feature = result.geoElements.first as? ArcGISFeature else { return }
-                        featureLayer.selectFeature(feature)
+                        // highlight the selected feature
+                        sceneLayer.selectFeature(feature)
                     } catch {
-                        print(error)
+                       return
                     }
                 }
         }
