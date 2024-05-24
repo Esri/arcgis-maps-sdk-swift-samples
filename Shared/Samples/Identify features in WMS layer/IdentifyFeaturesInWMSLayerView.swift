@@ -27,8 +27,8 @@ struct IdentifyFeaturesInWMSLayerView: View {
     /// The WMS layer with EPA water info.
     @State private var waterInfoLayer: WMSLayer?
     
-    /// The text of a WMS placemark's balloon content that is shown in the callout.
-    @State private var calloutText = String()
+    /// The text of a WMS feature HTML attribute that is shown in the web view.
+    @State private var webViewText = String()
 
     /// The tapped screen point.
     @State var tapScreenPoint: CGPoint?
@@ -47,7 +47,7 @@ struct IdentifyFeaturesInWMSLayerView: View {
                 }
                 .task {
                     do {
-                        // Create a WMS layer from URL and load it.
+                        // Create a WMS layer from a URL and load it.
                         let wmsLayer = WMSLayer(url: .EPAWaterInfo, layerNames: ["4"])
                         try await wmsLayer.load()
                         
@@ -61,18 +61,22 @@ struct IdentifyFeaturesInWMSLayerView: View {
                 }
                 .task(id: tapScreenPoint) {
                     // Identify on WMS layer using the screen point.
-                    if let screenPoint = tapScreenPoint,
-                       let waterInfoLayer,
-                       let identifyResult = try? await mapViewProxy.identify(
-                        on: waterInfoLayer,
-                        screenPoint: screenPoint,
-                        tolerance: 2
-                       ) {
-                        do {
-                            try updateCalloutText(using: identifyResult)
-                        } catch {
-                            self.error = error
-                        }
+                    webViewText = if let screenPoint = tapScreenPoint,
+                                     let waterInfoLayer,
+                                     // Identify feature on water info layer
+                                     let identifyResult = try? await mapViewProxy.identify(
+                                        on: waterInfoLayer,
+                                        screenPoint: screenPoint,
+                                        tolerance: 2
+                                     ),
+                                     // Convert the result to text.
+                                     let feature = identifyResult.geoElements.first,
+                                     let htmlText = feature.attributes["HTML"] as? String,
+                                     // Display the HTML table if it has an OBJECTID column.
+                                     htmlText.contains("OBJECTID") {
+                        htmlText
+                    } else {
+                        String()
                     }
                 }
                 .overlay(alignment: .top) {
@@ -81,33 +85,18 @@ struct IdentifyFeaturesInWMSLayerView: View {
                             .frame(maxWidth: .infinity, alignment: .center)
                             .padding(.top)
                         ScrollView(.horizontal) {
-                            WebView(htmlString: calloutText)
+                            WebView(htmlString: webViewText)
                                 // Set the width so the html is readable.
-                                .frame(width: 800, height: calloutText.isEmpty ? 0 : 95)
+                                .frame(width: 800, height: webViewText.isEmpty ? 0 : 95)
                         }
                         .padding(.leading)
                         .padding(.trailing)
-                        .padding(.bottom, calloutText.isEmpty ? 0 : 10)
+                        .padding(.bottom, webViewText.isEmpty ? 0 : 10)
                     }
                     .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
                 }
         }
         .errorAlert(presentingError: $error)
-    }
-}
-
-private extension IdentifyFeaturesInWMSLayerView {
-    /// Updates the callout text using the HTML attribute of the feature.
-    /// - Parameter result: The identify result.
-    func updateCalloutText(using result: IdentifyLayerResult) throws {
-        // Convert the result to text.
-        calloutText = if let feature = result.geoElements.first,
-                         let htmlText = feature.attributes["HTML"] as? String,
-                         htmlText.contains("OBJECTID") {
-            htmlText
-        } else {
-            String()
-        }
     }
 }
 

@@ -2,7 +2,7 @@
 
 Identify features in a WMS layer and display the associated popup content.
 
-![Image of identify features in WMS layer](IdentifyFeaturesInWmsLayer.jpg)
+![Image of identify features in WMS layer](identify-features-in-wms-layer.png)
 
 ## Use case
 
@@ -15,7 +15,7 @@ Tap a feature to identify it. The HTML content associated with the feature will 
 ## How it works
 
 1. A WMS layer is added via URL and a layer name.
-2. When the map is tapped, `MapView.IdentifyLayerAsync` is used to find matching results within the WMS layer.
+2. When the map is tapped, `MapViewProxy.identify` is used to find matching results within the WMS layer.
 3. If there is a matching feature, the HTML property is taken via a lookup in the feature's attribute dictionary.
 4. This particular server will produce an identify result with an empty table when there is no identified feature. In all other cases, a table with an **OBJECTID** column is added. This sample checks for the presence of **OBJECTID** in the HTML, and doesn't display the result if it is missing.
 5. The HTML is displayed in the web view.
@@ -26,7 +26,7 @@ Tap a feature to identify it. The HTML content associated with the feature will 
 
 * IdentifyLayerResult
 * IdentifyLayerResult.GeoElements
-* MapView.IdentifyLayerAsync
+* MapView.Identify
 * WmsFeature
 * WmsFeature.Attributes
 * WmsLayer
@@ -37,4 +37,4 @@ This sample shows a map of surface water sources in each U.S. state. States with
 
 ## Tags
 
-callout, OGC, web map service, WMS
+OGC, web map service, WMS
