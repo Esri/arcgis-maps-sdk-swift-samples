@@ -28,13 +28,13 @@ struct IdentifyFeaturesInWMSLayerView: View {
     @State private var waterInfoLayer: WMSLayer?
     
     /// The text of a WMS feature HTML attribute that is shown in the web view.
-    @State private var webViewText = String()
+    @State private var webViewText = ""
 
     /// The tapped screen point.
-    @State var tapScreenPoint: CGPoint?
+    @State private var tapScreenPoint: CGPoint?
     
     /// The string text for the identify layer results overlay.
-    @State var overlayText = "Tap on the map to identify features in the WMS layer."
+    @State private var overlayText = "Tap on the map to identify features in the WMS layer."
 
     /// The error shown in the error alert.
     @State private var error: Error?
@@ -89,8 +89,7 @@ struct IdentifyFeaturesInWMSLayerView: View {
                                 // Set the width so the html is readable.
                                 .frame(width: 800, height: webViewText.isEmpty ? 0 : 95)
                         }
-                        .padding(.leading)
-                        .padding(.trailing)
+                        .padding(.horizontal)
                         .padding(.bottom, webViewText.isEmpty ? 0 : 10)
                     }
                     .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
