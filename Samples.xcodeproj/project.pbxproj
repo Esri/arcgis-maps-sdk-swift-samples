@@ -183,7 +183,6 @@
 		88F93CC229C4D3480006B28E /* CreateAndEditGeometriesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 88F93CC029C3D59C0006B28E /* CreateAndEditGeometriesView.swift */; };
 		9529D1942C01676200B5C1A3 /* SelectFeaturesInSceneLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 954AEDED2C01332600265114 /* SelectFeaturesInSceneLayerView.swift */; };
 		954AEDEE2C01332600265114 /* SelectFeaturesInSceneLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954AEDED2C01332600265114 /* SelectFeaturesInSceneLayerView.swift */; };
-		954AEDF22C01409300265114 /* ArcGIS in Frameworks */ = {isa = PBXBuildFile; productRef = 954AEDF12C01409300265114 /* ArcGIS */; };
 		D70082EB2ACF900100E0C3C2 /* IdentifyKMLFeaturesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70082EA2ACF900100E0C3C2 /* IdentifyKMLFeaturesView.swift */; };
 		D70082EC2ACF901600E0C3C2 /* IdentifyKMLFeaturesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D70082EA2ACF900100E0C3C2 /* IdentifyKMLFeaturesView.swift */; };
 		D7010EBF2B05616900D43F55 /* DisplaySceneFromMobileScenePackageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7010EBC2B05616900D43F55 /* DisplaySceneFromMobileScenePackageView.swift */; };
@@ -954,7 +953,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				00C43AED2947DC350099AE34 /* ArcGISToolkit in Frameworks */,
-				954AEDF22C01409300265114 /* ArcGIS in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2635,7 +2633,6 @@
 			name = Samples;
 			packageProductDependencies = (
 				00C43AEC2947DC350099AE34 /* ArcGISToolkit */,
-				954AEDF12C01409300265114 /* ArcGIS */,
 			);
 			productName = "arcgis-swift-sdk-samples (iOS)";
 			productReference = 00E5401327F3CCA200CF66D5 /* Samples.app */;
@@ -2697,7 +2694,6 @@
 			mainGroup = 00E5400627F3CCA100CF66D5;
 			packageReferences = (
 				00C43AEB2947DC350099AE34 /* XCRemoteSwiftPackageReference "arcgis-maps-sdk-swift-toolkit" */,
-				954AEDF02C01409300265114 /* XCRemoteSwiftPackageReference "arcgis-maps-sdk-swift" */,
 			);
 			productRefGroup = 00E5401427F3CCA200CF66D5 /* Products */;
 			projectDirPath = "";
@@ -3258,14 +3254,6 @@
 				minimumVersion = 200.4.0;
 			};
 		};
-		954AEDF02C01409300265114 /* XCRemoteSwiftPackageReference "arcgis-maps-sdk-swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Esri/arcgis-maps-sdk-swift";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 200.4.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -3273,11 +3261,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 00C43AEB2947DC350099AE34 /* XCRemoteSwiftPackageReference "arcgis-maps-sdk-swift-toolkit" */;
 			productName = ArcGISToolkit;
-		};
-		954AEDF12C01409300265114 /* ArcGIS */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 954AEDF02C01409300265114 /* XCRemoteSwiftPackageReference "arcgis-maps-sdk-swift" */;
-			productName = ArcGIS;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
