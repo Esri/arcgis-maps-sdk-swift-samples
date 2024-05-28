@@ -1,22 +1,26 @@
 {
-    "category": "Scenes",
-    "description": "Identify features in a scene to select.",
+    "category": "",
+    "description": "Select features in scene layer.",
     "ignore": false,
     "images": [
         "select-features-in-scene-layer.png"
     ],
     "keywords": [
-        "IdentifyLayerResult",
-        "IdentifyLayerResult.GeoElements",
-        "features",
-        "scene",
-        "ArcGISFeature",
+        "3D",
+        "buildings",
+        "identify",
+        "model",
+        "query",
+        "search",
+        "select",
+        "ArcGISSceneLayer",
+        "Scene",
         "SceneView"
     ],
     "redirect_from": [],
     "relevant_apis": [
-        "IdentifyLayerResult",
-        "IdentifyLayerResult.GeoElements",
+        "ArcGISSceneLayer",
+        "Scene",
         "SceneView"
     ],
     "snippets": [

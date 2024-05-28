@@ -42,7 +42,6 @@ struct SelectFeaturesInSceneLayerView: View {
     }()
     
     /// Add feature layer to scene in initialization
-    
     init() {
         scene.addOperationalLayer(sceneLayer)
     }

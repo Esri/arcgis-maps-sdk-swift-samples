@@ -1,12 +1,12 @@
-# Select feature in scene layer
+# Select features in scene layer
 
-Select feature in a scene layer.
+Select features in scene layer.
 
-![Screenshot of Select feature in scene layer sample](select-features-in-scene-layer.png)
+![Screenshot of Select features in scene layer sample](select-features-in-scene-layer.png)
 
 ## Use case
 
-Select a feature in a scene layer using the tap gesture.
+Select a features in a scene layer using the tap gesture.
 
 ## How to use the sample
 
@@ -21,15 +21,14 @@ Tap on a feature in the scene.
 
 ## Relevant API
 
+* ArcGISSceneLayer
 * Scene
 * SceneView
-* SceneViewReader
 
 ## About the data
 
-This sample uses the [Brest France Buildings Scene](https://www.arcgis.com/home/item.html?id=1c00d02465394b6ebaeffe8eb9739cd1) scene viewer. 
+This sample uses the [Brest France Buildings Scene](https://www.arcgis.com/home/item.html?id=1c00d02465394b6ebaeffe8eb9739cd1) scene viewer.
 
 ## Tags
 
-scenes, layers, select, selection, tap
-
+3D, buildings, identify, model, query, search, select
