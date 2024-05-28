@@ -1,8 +1,8 @@
-# Select feature in scene
+# Select feature in scene layer
 
 Select feature in a scene layer.
 
-![Screenshot of select feature in scene layer sample](select-features-in-scene.png)
+![Screenshot of Select feature in scene layer sample](select-features-in-scene-layer.png)
 
 ## Use case
 
@@ -18,7 +18,6 @@ Tap on a feature in the scene.
 2. Create instances of `SceneViewReader` and `SceneView`.
 3. Asynchronously identify nearby features at the tapped location from the map view using the `SceneViewProxy.identify(layer:screenPoint:tolerance:maximumResults:)` method.
 4. Select all identified features in the feature layer with `ArcGISSceneLayer.select(features:)`.
-
 
 ## Relevant API
 

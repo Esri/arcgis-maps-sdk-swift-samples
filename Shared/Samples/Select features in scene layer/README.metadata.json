@@ -2,7 +2,9 @@
     "category": "Scenes",
     "description": "Identify features in a scene to select.",
     "ignore": false,
-    "images": ["select-features-in-scene.png"],
+    "images": [
+        "select-features-in-scene-layer.png"
+    ],
     "keywords": [
         "IdentifyLayerResult",
         "IdentifyLayerResult.GeoElements",

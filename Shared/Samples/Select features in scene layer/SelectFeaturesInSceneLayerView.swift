@@ -16,13 +16,10 @@ import ArcGIS
 import SwiftUI
 
 struct SelectFeaturesInSceneLayerView: View {
-    
-    // The point on the screen where the user tapped.
-    //
+    /// The point on the screen where the user tapped.
     @State private var tapPoint: CGPoint?
     
-    // The feature layer that is added on top of the scene
-    //
+    /// The scene layer that is added on top of the scene
     @State private var sceneLayer = {
         ArcGISSceneLayer(url: .brestBuildingService)
     }()
@@ -44,7 +41,7 @@ struct SelectFeaturesInSceneLayerView: View {
         return scene
     }()
     
-    // Add feature layer to scene in initialization
+    /// Add feature layer to scene in initialization
     
     init() {
         scene.addOperationalLayer(sceneLayer)
