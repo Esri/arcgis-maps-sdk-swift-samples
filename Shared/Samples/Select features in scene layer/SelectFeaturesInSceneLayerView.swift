@@ -54,7 +54,6 @@ struct SelectFeaturesInSceneLayerView: View {
     }
     
     var body: some View {
-        // Wrap the SceneView in SceneViewReader and expose its SceneViewProxy.
         SceneViewReader { sceneViewProxy in
             SceneView(scene: scene)
             // Captures location of tap on screen.
