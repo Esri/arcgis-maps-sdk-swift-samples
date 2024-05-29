@@ -33,22 +33,34 @@ struct IdentifyFeaturesInWMSLayerView: View {
     /// The tapped screen point.
     @State private var tapScreenPoint: CGPoint?
     
-    /// The string text for the identify layer results overlay.
+    /// The placement of the callout on the map.
+    @State private var calloutPlacement: CalloutPlacement?
+    
+    /// The string text for the identify layer overlay.
     @State private var overlayText = "Tap on the map to identify features in the WMS layer."
-
+    
     /// The error shown in the error alert.
     @State private var error: Error?
 
     var body: some View {
         MapViewReader { mapViewProxy in
             MapView(map: map)
+                .callout(placement: $calloutPlacement.animation(.default.speed(2))) { _ in
+                    ScrollView(.horizontal) {
+                        WebView(htmlString: webViewText)
+                        // Set the width so the html is readable.
+                            .frame(width: 800, height: 95)
+                    }
+                    .frame(maxWidth: 300)
+                    .padding(10)
+                }
                 .onSingleTapGesture { screenPoint, _ in
                     tapScreenPoint = screenPoint
                 }
                 .task {
                     do {
                         // Create a WMS layer from a URL and load it.
-                        let wmsLayer = WMSLayer(url: .EPAWaterInfo, layerNames: ["4"])
+                        let wmsLayer = WMSLayer(url: .epaWaterInfo, layerNames: ["4"])
                         try await wmsLayer.load()
                         
                         // Add the layer to the map.
@@ -60,39 +72,39 @@ struct IdentifyFeaturesInWMSLayerView: View {
                     }
                 }
                 .task(id: tapScreenPoint) {
-                    // Identify on WMS layer using the screen point.
-                    webViewText = if let screenPoint = tapScreenPoint,
-                                     let waterInfoLayer,
-                                     // Identify feature on water info layer
-                                     let identifyResult = try? await mapViewProxy.identify(
-                                        on: waterInfoLayer,
-                                        screenPoint: screenPoint,
-                                        tolerance: 2
-                                     ),
-                                     // Convert the result to text.
-                                     let feature = identifyResult.geoElements.first,
-                                     let htmlText = feature.attributes["HTML"] as? String,
-                                     // Display the HTML table if it has an OBJECTID column.
-                                     htmlText.contains("OBJECTID") {
-                        htmlText
-                    } else {
-                        String()
+                    do {
+                        // Identify on WMS layer using the screen point.
+                        guard let screenPoint = tapScreenPoint,
+                              let waterInfoLayer else {
+                            return
+                        }
+                        // Identify feature on water info layer
+                        let identifyResult = try await mapViewProxy.identify(
+                            on: waterInfoLayer,
+                            screenPoint: screenPoint,
+                            tolerance: 2
+                        )
+                        // Convert the result to text.
+                        if let feature = identifyResult.geoElements.first,
+                           let htmlText = feature.attributes["HTML"] as? String,
+                           // Display the HTML table if it has an OBJECTID column.
+                           htmlText.contains("OBJECTID"),
+                           let location = mapViewProxy.location(fromScreenPoint: screenPoint) {
+                            webViewText = htmlText
+                            calloutPlacement = .location(location)
+                        } else {
+                            webViewText = ""
+                            calloutPlacement = nil
+                        }
+                    } catch {
+                        self.error = error
                     }
                 }
                 .overlay(alignment: .top) {
-                    VStack {
-                        Text(overlayText)
-                            .frame(maxWidth: .infinity, alignment: .center)
-                            .padding(.top)
-                        ScrollView(.horizontal) {
-                            WebView(htmlString: webViewText)
-                                // Set the width so the html is readable.
-                                .frame(width: 800, height: webViewText.isEmpty ? 0 : 95)
-                        }
-                        .padding(.horizontal)
-                        .padding(.bottom, webViewText.isEmpty ? 0 : 10)
-                    }
-                    .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
+                    Text(overlayText)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .padding()
+                        .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
                 }
         }
         .errorAlert(presentingError: $error)
@@ -101,7 +113,7 @@ struct IdentifyFeaturesInWMSLayerView: View {
 
 private extension URL {
     /// A URL to the WMS service showing EPA water info.
-    static var EPAWaterInfo: URL {
+    static var epaWaterInfo: URL {
         URL(string: "https://watersgeo.epa.gov/arcgis/services/OWPROGRAM/SDWIS_WMERC/MapServer/WMSServer?request=GetCapabilities&service=WMS")!
     }
 }
