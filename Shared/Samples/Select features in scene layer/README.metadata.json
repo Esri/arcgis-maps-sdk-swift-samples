@@ -1,6 +1,6 @@
 {
     "category": "Scenes",
-    "description": "Select features in scene layer.",
+    "description": "Identify features in a scene to select.",
     "ignore": false,
     "images": [
         "select-features-in-scene-layer.png"
@@ -15,13 +15,17 @@
         "select",
         "ArcGISSceneLayer",
         "Scene",
-        "SceneView"
+        "SceneView",
+        "SceneViewProxy",
+        "SceneViewReader"
     ],
     "redirect_from": [],
     "relevant_apis": [
         "ArcGISSceneLayer",
         "Scene",
-        "SceneView"
+        "SceneView",
+        "SceneViewProxy",
+        "SceneViewReader"
     ],
     "snippets": [
         "SelectFeaturesInSceneLayerView.swift"
