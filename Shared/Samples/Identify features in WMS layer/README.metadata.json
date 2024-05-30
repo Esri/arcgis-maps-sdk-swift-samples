@@ -2,7 +2,9 @@
     "category": "Layers",
     "description": "Identify features in a WMS layer and display the associated popup content.",
     "ignore": false,
-    "images": ["identify-features-in-wms-layer.png"],
+    "images": [
+      "identify-features-in-wms-layer.png"
+    ],
     "keywords": [
         "OGC",
         "WMS",

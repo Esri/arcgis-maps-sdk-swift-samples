@@ -25,11 +25,11 @@ struct IdentifyFeaturesInWMSLayerView: View {
     }()
     
     /// The WMS layer with EPA water info.
-    @State private var waterInfoLayer: WMSLayer?
+    @State private var waterInfoLayer = WMSLayer(url: .epaWaterInfo, layerNames: ["4"])
     
     /// The text of a WMS feature HTML attribute that is shown in the web view.
     @State private var webViewText = ""
-
+    
     /// The tapped screen point.
     @State private var tapScreenPoint: CGPoint?
     
@@ -37,11 +37,15 @@ struct IdentifyFeaturesInWMSLayerView: View {
     @State private var calloutPlacement: CalloutPlacement?
     
     /// The string text for the identify layer overlay.
-    @State private var overlayText = "Tap on the map to identify features in the WMS layer."
+    private let overlayText = "Tap on the map to identify features in the WMS layer."
     
     /// The error shown in the error alert.
     @State private var error: Error?
-
+    
+    init() {
+        self.map.addOperationalLayer(waterInfoLayer)
+    }
+    
     var body: some View {
         MapViewReader { mapViewProxy in
             MapView(map: map)
@@ -50,6 +54,8 @@ struct IdentifyFeaturesInWMSLayerView: View {
                         WebView(htmlString: webViewText)
                         // Set the width so the html is readable.
                             .frame(width: 800, height: 95)
+                        // Disable the WebView scrolling.
+                            .disabled(true)
                     }
                     .frame(maxWidth: 300)
                     .padding(10)
@@ -57,25 +63,10 @@ struct IdentifyFeaturesInWMSLayerView: View {
                 .onSingleTapGesture { screenPoint, _ in
                     tapScreenPoint = screenPoint
                 }
-                .task {
-                    do {
-                        // Create a WMS layer from a URL and load it.
-                        let wmsLayer = WMSLayer(url: .epaWaterInfo, layerNames: ["4"])
-                        try await wmsLayer.load()
-                        
-                        // Add the layer to the map.
-                        map.addOperationalLayer(wmsLayer)
-                        
-                        waterInfoLayer = wmsLayer
-                    } catch {
-                        self.error = error
-                    }
-                }
                 .task(id: tapScreenPoint) {
                     do {
                         // Identify on WMS layer using the screen point.
-                        guard let screenPoint = tapScreenPoint,
-                              let waterInfoLayer else {
+                        guard let screenPoint = tapScreenPoint else {
                             return
                         }
                         // Identify feature on water info layer
@@ -103,7 +94,8 @@ struct IdentifyFeaturesInWMSLayerView: View {
                 .overlay(alignment: .top) {
                     Text(overlayText)
                         .frame(maxWidth: .infinity, alignment: .center)
-                        .padding()
+                        .padding(8)
+                        .multilineTextAlignment(.center)
                         .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
                 }
         }

@@ -20,7 +20,7 @@ Tap a feature to identify it. The HTML content associated with the feature will 
 4. This particular server will produce an identify result with an empty table when there is no identified feature. In all other cases, a table with an **OBJECTID** column is added. This sample checks for the presence of **OBJECTID** in the HTML, and doesn't display the result if it is missing.
 5. The HTML is displayed in the web view.
 
-**Note**: the service returns HTML regardless of whether there was an identify result. The sample uses a simple rule to hide empty results.
+**Note**: The service returns HTML regardless of whether there was an identify result. The sample uses a simple rule to hide empty results.
 
 ## Relevant API
 
