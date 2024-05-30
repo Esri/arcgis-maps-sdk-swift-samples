@@ -28,7 +28,7 @@ struct SetReferenceScaleView: View {
     }()
     
     /// The scale of the map view.
-    @State private var mapScale: Double?
+    @State private var mapScale: Double = .nan
     
     /// A Boolean value indicating whether the map settings popover is presented.
     @State private var settingsPopoverIsPresented = false
@@ -43,7 +43,7 @@ struct SetReferenceScaleView: View {
                             settingsPopoverIsPresented = true
                         }
                         .popover(isPresented: $settingsPopoverIsPresented) { [mapScale] in
-                            MapSettingsView(map: map, mapScale: mapScale ?? 0) { scale in
+                            MapSettingsView(map: map, mapScale: mapScale) { scale in
                                 // Sets the map's scale to the selected reference scale
                                 // when the "Set to Reference Scale" button is tapped.
                                 Task {
