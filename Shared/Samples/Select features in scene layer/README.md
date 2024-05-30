@@ -6,8 +6,7 @@ Identify features in a scene to select.
 
 ## Use case
 
-You can select features to visually distinguish them with a selection color or highlighting. This can be useful to demonstrate the physical extent or
-associated attributes of a feature, or to initiate another action such as centering that feature in the scene view.
+You can select features to visually distinguish them with a selection color or highlighting. This can be useful to demonstrate the physical extent or associated attributes of a feature, or to initiate another action such as centering that feature in the scene view.
 
 ## How to use the sample
 
@@ -15,11 +14,11 @@ Tap on a building in the scene layer to select it. Deselect buildings by tapping
 
 ## How it works
 
-1. Create an instance of `AGSArcGISSceneLayer`, passing in the URL to a scene layer service.
+1. Create an instance of `ArcGISSceneLayer`, passing in the URL to a scene layer service.
 2. Use the `onSingleTapGesture` on the `SceneView` to get the screen tapped location.
 3. Use `SceneViewProxy.identify(layer:screenPoint:tolerance:maximumResults:)` to identify features in the scene.
-4. From the resulting `AGSIdentifyLayerResult`, get the list of identified `AGSGeoElements`.
-5. Get the first `AGSFeature` in the list and use `ArcGISSceneLayer.selectFeature(features:)`.
+4. From the resulting `IdentifyLayerResult`, get the list of identified `GeoElements`.
+5. Get the first `Feature` in the list and use `ArcGISSceneLayer.selectFeature(features:)`.
 
 ## Relevant API
 

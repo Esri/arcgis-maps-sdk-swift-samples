@@ -29,7 +29,7 @@ struct SelectFeaturesInSceneLayerView: View {
     @State private var scene: ArcGIS.Scene = {
         // Creates a scene and sets an initial viewpoint.
         let scene = Scene(basemapStyle: .arcGISTopographic)
-        // Set an initial camera location.
+        // Sets an initial camera location.
         let camera = Camera(
             latitude: 48.38282,
             longitude: -4.49779,
@@ -38,7 +38,7 @@ struct SelectFeaturesInSceneLayerView: View {
             pitch: 71.2,
             roll: 0
         )
-        // Set initial viewpoint to camera position at point.
+        // Sets initial viewpoint to camera position at point.
         scene.initialViewpoint = Viewpoint(boundingGeometry: camera.location, camera: camera)
         // Creates a surface and adds an elevation source.
         let surface = Surface()
@@ -48,7 +48,7 @@ struct SelectFeaturesInSceneLayerView: View {
         return scene
     }()
     
-    /// Add feature layer to scene in initialization.
+    /// Adds feature layer to scene in initialization.
     init() {
         scene.addOperationalLayer(sceneLayer)
     }
@@ -61,12 +61,16 @@ struct SelectFeaturesInSceneLayerView: View {
                     tapPoint = screenPoint
                 }
                 .task(id: tapPoint) {
-                    // Clear the previous selections.
+                    // Clears the previous selections.
                     sceneLayer.clearSelection()
                     do {
                         guard let locationPoint = tapPoint else { return }
                         // Gets the identify results from the tap point.
-                        let result = try await sceneViewProxy.identify(on: sceneLayer, screenPoint: locationPoint, tolerance: 10)
+                        let result = try await sceneViewProxy.identify(
+                            on: sceneLayer,
+                            screenPoint: locationPoint,
+                            tolerance: 10
+                        )
                         // Gets the first feature from the identify results.
                         guard let feature = result.geoElements.first as? ArcGISFeature else { return }
                         // Selects the feature in the scene layer.
@@ -75,7 +79,8 @@ struct SelectFeaturesInSceneLayerView: View {
                         self.error = error
                     }
                 }
-        }.errorAlert(presentingError: $error)
+        }
+        .errorAlert(presentingError: $error)
     }
 }
 
