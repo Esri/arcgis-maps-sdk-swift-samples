@@ -105,17 +105,14 @@ private extension SetReferenceScaleView {
                                 }
                             }
                         }
-                    } header: {
-                        Text("Reference Scale")
                     } footer: {
                         Text("Selected layers will scale according to the reference scale.")
                     }
                     
-                    Section("Map Scale") {
-                        Text("Map Scale")
-                            .badge(
-                                Text("1:\(mapScale, format: .number.rounded(increment: 1))")
-                            )
+                    Section {
+                        LabeledContent("Map Scale") {
+                            Text("1:\(mapScale, format: .number.rounded(increment: 1))")
+                        }
                         
                         Button("Set to Reference Scale") {
                             setMapScaleAction(selectedReferenceScale)
