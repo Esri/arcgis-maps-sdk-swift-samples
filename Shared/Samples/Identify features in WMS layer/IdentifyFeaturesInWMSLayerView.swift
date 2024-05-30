@@ -43,7 +43,7 @@ struct IdentifyFeaturesInWMSLayerView: View {
     @State private var error: Error?
     
     init() {
-        self.map.addOperationalLayer(waterInfoLayer)
+        map.addOperationalLayer(waterInfoLayer)
     }
     
     var body: some View {
