@@ -92,10 +92,8 @@ private extension SetReferenceScaleView {
                         .onChange(of: selectedReferenceScale) { map.referenceScale = $0 }
                         
                         NavigationLink("Layers") {
-                            Form {
-                                ForEach(map.operationalLayers as! [FeatureLayer], id: \.id) { layer in
-                                    ScalesSymbolsToggle(layer: layer)
-                                }
+                            List(map.operationalLayers as! [FeatureLayer], id: \.id) { layer in
+                                ScalesSymbolsToggle(layer: layer)
                             }
                             .navigationTitle("Layers")
                             .navigationBarTitleDisplayMode(.inline)
