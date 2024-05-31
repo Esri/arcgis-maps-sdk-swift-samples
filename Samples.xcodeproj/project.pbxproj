@@ -1164,6 +1164,7 @@
 				D7C3AB462B683291008909B9 /* Set feature request mode */,
 				D734FA072A183A5A00246D7E /* Set max extent */,
 				D7EAF34F2A1C011000D822C4 /* Set min and max scale */,
+				95F3A52C2C07F0A600885DED /* Set surface navigation constraint */,
 				E088E1552862578800413100 /* Set surface placement mode */,
 				D769C20D2A28FF8600030F61 /* Set up location-driven geotriggers */,
 				E004A6B928414332002A1FE6 /* Set viewpoint rotation */,
@@ -1195,7 +1196,6 @@
 				D74C8BFA2ABA5572007C76B8 /* Style symbols from mobile style file */,
 				7573E81229D6134C00BEED9C /* Trace utility network */,
 				D74EA7802B6DADA5008F6C7C /* Validate utility network topology */,
-				95F3A52C2C07F0A600885DED /* Set surface navigation constraint */,
 			);
 			path = Samples;
 			sourceTree = "<group>";
