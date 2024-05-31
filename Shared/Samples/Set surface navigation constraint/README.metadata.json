@@ -1,5 +1,5 @@
 {
-    "category": "",
+    "category": "Scenes",
     "description": "See through terrain in a scene and move the camera underground.",
     "ignore": false,
     "images": [
@@ -10,11 +10,11 @@
         "subsurface",
         "underground",
         "utilities",
-        "AGSSurface"
+        "Surface"
     ],
     "redirect_from": [],
     "relevant_apis": [
-        "AGSSurface"
+        "Surface"
     ],
     "snippets": [
         "SetSurfaceNavigationConstraintView.swift"

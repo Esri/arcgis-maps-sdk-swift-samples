@@ -25,8 +25,10 @@ struct SetSurfaceNavigationConstraintView: View {
         )
         // Creates the scene using the portal item.
         let scene = Scene(item: portalItem)
-        // Sets the navigation constraint on the scene's base surface to unconstrained which allowd the camera pass above and below the elevation surface.
+        // Sets the navigation constraint on the scene's base surface to unconstrained which allows the camera pass above and below the elevation surface.
         scene.baseSurface.navigationConstraint = .unconstrained
+        // Sets the opacity so that it is possible to see below the surface.
+        scene.baseSurface.opacity = 0.7
         return scene
     }()
 

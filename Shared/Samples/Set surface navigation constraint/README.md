@@ -14,17 +14,17 @@ The sample loads a scene with underground features. Pan and zoom to explore the 
 
 ## How it works
 
-1. Display an `AGSScene` in an `AGSSceneView` which contains layers with underground features.
+1. Display an `Scene` in an `SceneView` which contains layers with underground features.
 2. To see underground, get the scene's base surface and set its opacity to a value between 0 and 1.
-3. To allow the camera to go underground, set the surface's navigation constraint to `none`.
+3. To allow the camera to go underground, set the surface's navigation constraint to `unconstrained`.
 
 ## Relevant API
 
-* AGSSurface
+* Surface
 
 ## About the data
 
-This data is a point scene layer showing underground wellbore paths (green polylines) and seismic events (orange points).
+This sample shows a [Underground Wellbores and Seismic Events (Point Scene Layer) Webscene](https://www.arcgis.com/home/item.html?id=91a4fafd747a47c7bab7797066cb9272) hosted on ArcGIS Online. The data displays a point scene layer showing underground wellbore paths (green polylines) and seismic events (orange points).
 
 ## Tags
 
