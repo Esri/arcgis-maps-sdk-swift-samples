@@ -52,9 +52,9 @@ struct IdentifyFeaturesInWMSLayerView: View {
                 .callout(placement: $calloutPlacement.animation(.default.speed(2))) { _ in
                     ScrollView(.horizontal) {
                         WebView(htmlString: webViewText)
-                        // Set the width so the html is readable.
+                            // Set the width so the html is readable.
                             .frame(width: 800, height: 95)
-                        // Disable the WebView scrolling.
+                            // Disable the WebView scrolling.
                             .disabled(true)
                     }
                     .frame(maxWidth: 300)
@@ -69,7 +69,7 @@ struct IdentifyFeaturesInWMSLayerView: View {
                         guard let screenPoint = tapScreenPoint else {
                             return
                         }
-                        // Identify feature on water info layer
+                        // Identify feature on water info layer.
                         let identifyResult = try await mapViewProxy.identify(
                             on: waterInfoLayer,
                             screenPoint: screenPoint,

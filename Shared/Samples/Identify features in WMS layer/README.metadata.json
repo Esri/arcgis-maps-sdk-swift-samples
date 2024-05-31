@@ -12,18 +12,18 @@
         "IdentifyLayerResult",
         "IdentifyLayerResult.GeoElements",
         "MapView.Identify",
-        "WmsFeature",
-        "WmsFeature.Attributes",
-        "WmsLayer"
+        "WMSFeature",
+        "WMSFeature.Attributes",
+        "WMSLayer"
     ],
     "redirect_from": [],
     "relevant_apis": [
         "IdentifyLayerResult",
         "IdentifyLayerResult.GeoElements",
         "MapView.Identify",
-        "WmsFeature",
-        "WmsFeature.Attributes",
-        "WmsLayer"
+        "WMSFeature",
+        "WMSFeature.Attributes",
+        "WMSLayer"
     ],
     "snippets": [
         "IdentifyFeaturesInWMSLayerView.swift"

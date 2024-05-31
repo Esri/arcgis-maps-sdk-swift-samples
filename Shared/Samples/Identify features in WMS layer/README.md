@@ -27,9 +27,9 @@ Tap a feature to identify it. The HTML content associated with the feature will 
 * IdentifyLayerResult
 * IdentifyLayerResult.GeoElements
 * MapView.Identify
-* WmsFeature
-* WmsFeature.Attributes
-* WmsLayer
+* WMSFeature
+* WMSFeature.Attributes
+* WMSLayer
 
 ## About the data
 
