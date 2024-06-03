@@ -1,0 +1,24 @@
+{
+    "category": "Maps",
+    "description": "Set the map's reference scale and which feature layers should honor the reference scale.",
+    "ignore": false,
+    "images": [
+        "set-reference-scale.png"
+    ],
+    "keywords": [
+        "map",
+        "reference scale",
+        "scene",
+        "FeatureLayer",
+        "Map"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "FeatureLayer",
+        "Map"
+    ],
+    "snippets": [
+        "SetReferenceScaleView.swift"
+    ],
+    "title": "Set reference scale"
+}
