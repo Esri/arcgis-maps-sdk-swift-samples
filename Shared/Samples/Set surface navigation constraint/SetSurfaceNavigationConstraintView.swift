@@ -33,7 +33,7 @@ struct SetSurfaceNavigationConstraintView: View {
         scene.baseSurface.opacity = 0.7
         return scene
     }()
-
+    
     var body: some View {
         // Displays the web scene in the scene view.
         SceneView(scene: scene)
