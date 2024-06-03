@@ -10,11 +10,13 @@
         "subsurface",
         "underground",
         "utilities",
-        "Surface"
+        "Surface",
+        "Surface.NavigationConstraint"
     ],
     "redirect_from": [],
     "relevant_apis": [
-        "Surface"
+        "Surface",
+        "Surface.NavigationConstraint"
     ],
     "snippets": [
         "SetSurfaceNavigationConstraintView.swift"

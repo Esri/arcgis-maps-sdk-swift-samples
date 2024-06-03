@@ -16,9 +16,9 @@ import ArcGIS
 import SwiftUI
 
 struct SetSurfaceNavigationConstraintView: View {
-    /// The Webscene with a portal item.
+    /// The web scene with a portal item.
     @State private var scene: ArcGIS.Scene = {
-        // Creates the portal item using the id of the Webscene in the ArcGIS portal.
+        // Creates the portal item using the ID of the web scene in the ArcGIS portal.
         let portalItem = PortalItem(
             portal: .arcGISOnline(connection: .anonymous),
             id: PortalItem.ID("91a4fafd747a47c7bab7797066cb9272")!
@@ -33,7 +33,7 @@ struct SetSurfaceNavigationConstraintView: View {
     }()
 
     var body: some View {
-        // Displays the Webscene in the SceneView
+        // Displays the web scene in the scene view
         SceneView(scene: scene)
     }
 }

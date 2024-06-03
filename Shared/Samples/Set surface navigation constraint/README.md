@@ -2,7 +2,7 @@
 
 See through terrain in a scene and move the camera underground.
 
-![View content beneath the terrain surface sample](set-surface-navigation-constraint.png)
+![Screenshot of Set surface navigation constraint sample](set-surface-navigation-constraint.png)
 
 ## Use case
 
@@ -21,6 +21,7 @@ The sample loads a scene with underground features. Pan and zoom to explore the 
 ## Relevant API
 
 * Surface
+* Surface.NavigationConstraint
 
 ## About the data
 
