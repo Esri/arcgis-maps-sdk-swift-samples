@@ -1674,7 +1674,7 @@
 				95F3A52A2C07F09C00885DED /* SetSurfaceNavigationConstraintView.swift */,
 			);
 			path = "Set surface navigation constraint";
-      sourceTree = "<group>";
+			sourceTree = "<group>";
 		};
 		954AEDEF2C01332F00265114 /* Select features in scene layer */ = {
 			isa = PBXGroup;
