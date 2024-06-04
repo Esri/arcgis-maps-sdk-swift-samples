@@ -48,9 +48,9 @@ struct AddRasterFromServiceView: View {
                     do {
                         isDownloading = true
                         defer { isDownloading = false }
-                        // Download raster from service
+                        // Downloads raster from online service.
                         try await rasterLayer.load()
-                        // Create a coordinate point which is centered on San Franscisco's Golden Gate Bridge.
+                        // Creates a coordinate point which is centered on San Franscisco's Golden Gate Bridge.
                         var point = Point(x: -13637000, y: 4550000, spatialReference:.webMercator)
                         await mapViewProxy.setViewpointCenter(point, scale: 100000)
                     } catch {
