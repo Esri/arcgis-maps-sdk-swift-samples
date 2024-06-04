@@ -40,7 +40,7 @@ struct AddRasterFromServiceView: View {
     }()
     
     var body: some View {
-        MapViewReader { mapViewProxy in
+        MapViewReader { _ in
             MapView(map: map, viewpoint: viewpoint)
                 .onViewpointChanged(kind: .centerAndScale) { viewpoint = $0 }
                 .overlay(alignment: .center) {
