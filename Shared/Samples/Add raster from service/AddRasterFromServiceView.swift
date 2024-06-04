@@ -45,13 +45,14 @@ struct AddRasterFromServiceView: View {
                     guard let rasterLayer = map.operationalLayers.first as? RasterLayer else {
                         return
                     }
+                    
                     do {
                         isDownloading = true
                         defer { isDownloading = false }
                         // Downloads raster from online service.
                         try await rasterLayer.load()
                         // Creates a coordinate point which is centered on San Franscisco's Golden Gate Bridge.
-                        var point = Point(x: -13637000, y: 4550000, spatialReference:.webMercator)
+                        let point = Point(x: -13637000, y: 4550000, spatialReference: .webMercator)
                         await mapViewProxy.setViewpointCenter(point, scale: 100000)
                     } catch {
                         // Presents an error message if the raster fails to load.
@@ -63,7 +64,7 @@ struct AddRasterFromServiceView: View {
     }
 }
 
-extension URL {
+private extension URL {
     static let imageServiceURL = URL(string: "https://gis.ngdc.noaa.gov/arcgis/rest/services/bag_bathymetry/ImageServer")!
 }
 
