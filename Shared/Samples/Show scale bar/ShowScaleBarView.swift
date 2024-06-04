@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import ArcGIS
+import ArcGISToolkit
 import SwiftUI
 
 struct ShowScaleBarView: View {
@@ -26,8 +27,10 @@ struct ShowScaleBarView: View {
     
     /// The maximum screen width allotted to the scalebar.
     private let maxWidth: Double = 175.0
+    
     /// Allows for communication between the `Scalebar` and `MapView`.
     @State private var viewpoint: Viewpoint?
+    
     /// The location of the scalebar on screen.
     private let alignment: Alignment = .bottomLeading
     
@@ -36,9 +39,8 @@ struct ShowScaleBarView: View {
         return map
     }()
     
-    
     var body: some View {
-        MapViewReader { mapViewProxy in
+        MapViewReader { _ in
             MapView(map: map).onAttributionBarHeightChanged { newHeight in
                 withAnimation { attributionBarHeight = newHeight }
             }
