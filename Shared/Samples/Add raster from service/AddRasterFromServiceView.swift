@@ -16,6 +16,9 @@ struct AddRasterFromServiceView: View {
     /// The current viewpoint of the map view.
     @State private var viewpoint: Viewpoint?
     
+    /// A Boolean value indicating whether a download operation is in progress.
+    @State private var isDownloading = false
+    
     /// A map with a topographic basemap.
     @State private var map: Map = {
         let map = Map(basemapStyle: .arcGISDarkGrayBase)
@@ -29,8 +32,19 @@ struct AddRasterFromServiceView: View {
         MapViewReader { mapViewProxy in
             MapView(map: map, viewpoint: viewpoint)
                 .onViewpointChanged(kind: .centerAndScale) { viewpoint = $0 }
+                .overlay(alignment: .center) {
+                    if isDownloading {
+                        ProgressView("Downloading...")
+                            .padding()
+                            .background(.ultraThickMaterial)
+                            .cornerRadius(10)
+                            .shadow(radius: 50)
+                    }
+                }
                 .task {
                     do {
+                        isDownloading = true
+                        defer { isDownloading = false }
                         let rasterLayer = map.operationalLayers.first! as! RasterLayer
                         try await rasterLayer.load()
                     } catch {
