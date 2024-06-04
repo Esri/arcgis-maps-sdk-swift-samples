@@ -19,8 +19,7 @@ struct AddRasterFromServiceView: View {
     /// A map with a topographic basemap.
     @State private var map: Map = {
         let map = Map(basemapStyle: .arcGISDarkGrayBase)
-        let imageServiceURL = URL(string: "https://gis.ngdc.noaa.gov/arcgis/rest/services/bag_bathymetry/ImageServer")!
-        let imageServiceRaster = ImageServiceRaster(url: imageServiceURL)
+        let imageServiceRaster = ImageServiceRaster(url: .imageServiceURL)
         let rasterLayer = RasterLayer(raster: imageServiceRaster)
         map.addOperationalLayer(rasterLayer)
         return map
@@ -41,6 +40,10 @@ struct AddRasterFromServiceView: View {
                 }
         }
     }
+}
+
+extension URL {
+    static let imageServiceURL = URL(string: "https://gis.ngdc.noaa.gov/arcgis/rest/services/bag_bathymetry/ImageServer")!
 }
 
 #Preview {

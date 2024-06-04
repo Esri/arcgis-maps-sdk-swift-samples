@@ -1081,6 +1081,7 @@
 				00D4EF7E2863840D00B9CC30 /* Add feature layers */,
 				D7F8C0342B60564D0072BFA7 /* Add features with contingent values */,
 				F19A316128906F0D003B7EF9 /* Add raster from file */,
+				955271622C0E6750009B1ED4 /* Add raster from service */,
 				E066DD3E28610F3F004D3D5B /* Add scene layer from service */,
 				D7E557602A1D743100B9FB09 /* Add WMS layer */,
 				1C3B7DC22A5F64FC00907443 /* Analyze network with subnetwork trace */,
@@ -1208,7 +1209,6 @@
 				D74C8BFA2ABA5572007C76B8 /* Style symbols from mobile style file */,
 				7573E81229D6134C00BEED9C /* Trace utility network */,
 				D74EA7802B6DADA5008F6C7C /* Validate utility network topology */,
-				955271622C0E6750009B1ED4 /* Add raster from service */,
 			);
 			path = Samples;
 			sourceTree = "<group>";
