@@ -42,11 +42,15 @@ struct AddRasterFromServiceView: View {
                     }
                 }
                 .task {
+                    guard let rasterLayer = map.operationalLayers.first as? RasterLayer else {
+                        return
+                    }
                     do {
                         isDownloading = true
                         defer { isDownloading = false }
-                        let rasterLayer = map.operationalLayers.first! as! RasterLayer
+                        // Download raster from service
                         try await rasterLayer.load()
+                        // Create a coordinate point which is centered on San Franscisco's Golden Gate Bridge.
                         var point = Point(x: -13637000, y: 4550000, spatialReference:.webMercator)
                         await mapViewProxy.setViewpointCenter(point, scale: 100000)
                     } catch {
@@ -55,6 +59,7 @@ struct AddRasterFromServiceView: View {
                     }
                 }
         }
+        .errorAlert(presentingError: $error)
     }
 }
 
