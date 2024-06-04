@@ -2,7 +2,7 @@
 
 Create a raster layer from a raster image service.
 
-![Image of add raster from service](add-raster-from-service.png)
+![Image of Add raster from service sample](add-raster-from-service.png)
 
 ## Use case
 
@@ -16,7 +16,7 @@ Simply launch the sample to see a raster from an image service being used on a m
 
 1. Create an `ImageServiceRaster` using the service's URL.
 2. Create a `RasterLayer` from the image service raster.
-3. Add the raster layer the the map.
+3. Add the raster layer to the map.
 
 ## Relevant API
 
@@ -25,7 +25,7 @@ Simply launch the sample to see a raster from an image service being used on a m
 
 ## About the data
 
-This sample uses a [NOAA raster image service](https://gis.ngdc.noaa.gov/arcgis/rest/services/bag_hillshades_subsets/ImageServer). The service computes a hillshade image from the depth (in meters) of U.S. coastal waters.
+This sample uses a [NOAA raster image service](https://gis.ngdc.noaa.gov/arcgis/rest/services/bag_bathymetry/ImageServer). The service computes a bathymetry image from the depth (in meters) of U.S. coastal waters.
 
 ## Tags
 
