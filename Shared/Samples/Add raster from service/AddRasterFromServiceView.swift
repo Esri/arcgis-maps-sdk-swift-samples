@@ -47,6 +47,8 @@ struct AddRasterFromServiceView: View {
                         defer { isDownloading = false }
                         let rasterLayer = map.operationalLayers.first! as! RasterLayer
                         try await rasterLayer.load()
+                        var point = Point(x: -13637000, y: 4550000, spatialReference:.webMercator)
+                        await mapViewProxy.setViewpointCenter(point, scale: 100000)
                     } catch {
                         // Presents an error message if the raster fails to load.
                         self.error = error
