@@ -65,7 +65,7 @@ struct AddRasterFromServiceView: View {
                     self.error = error
                 }
             }
-        .errorAlert(presentingError: $error)
+            .errorAlert(presentingError: $error)
     }
 }
 
