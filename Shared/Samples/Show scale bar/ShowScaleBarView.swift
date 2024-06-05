@@ -23,10 +23,10 @@ struct ShowScaleBarView: View {
     /// Allows for communication between the `Scalebar` and `MapView`.
     @State private var spatialReference: SpatialReference?
     
-    //    /// Allows for communication between the `Scalebar` and `MapView`.
+    /// Allows for communication between the `Scalebar` and `MapView`.
     @State private var unitsPerPoint: Double?
     
-    //    /// The maximum screen width allotted to the scalebar.
+    /// The maximum screen width allotted to the scalebar.
     private let maxWidth: Double = 175.0
     
     /// Allows for communication between the `Scalebar` and `MapView`.
@@ -35,8 +35,10 @@ struct ShowScaleBarView: View {
     /// The location of the scalebar on screen.
     private let alignment: Alignment = .bottomLeading
     
+    /// A map with a topographic style.
     @State private var map: Map = {
         let map = Map(basemapStyle: .arcGISTopographic)
+        // Creates an initial Viewpoint with a coordinate point centered on San Franscisco's Golden Gate Bridge.
         map.initialViewpoint = Viewpoint(
             center: Point(x: -13637000,
                           y: 4550000,
@@ -47,6 +49,7 @@ struct ShowScaleBarView: View {
         return map
     }()
     
+    // The ScalebarSettings add the shadow to the scale bar.
     @State private var scaleBarSettings: ScalebarSettings = {
         let settings = ScalebarSettings(
             shadowColor: Color.black,
@@ -72,6 +75,7 @@ struct ShowScaleBarView: View {
                     unitsPerPoint: unitsPerPoint,
                     viewpoint: viewpoint
                 )
+                // The styling around scale bar. 
                 .padding(.leading, 40)
                 .padding(.trailing, 50)
                 .padding(.vertical, 10)
