@@ -22,10 +22,10 @@ struct ShowScaleBarView: View {
     /// Allows for communication between the `Scalebar` and `MapView`.
     @State private var spatialReference: SpatialReference?
     
-    /// Allows for communication between the `Scalebar` and `MapView`.
+    //    /// Allows for communication between the `Scalebar` and `MapView`.
     @State private var unitsPerPoint: Double?
     
-    /// The maximum screen width allotted to the scalebar.
+    //    /// The maximum screen width allotted to the scalebar.
     private let maxWidth: Double = 175.0
     
     /// Allows for communication between the `Scalebar` and `MapView`.
@@ -35,8 +35,19 @@ struct ShowScaleBarView: View {
     private let alignment: Alignment = .bottomLeading
     
     @State private var map: Map = {
-        let map = Map(basemapStyle: .arcGISDarkGrayBase)
+        let map = Map(basemapStyle: .arcGISTopographic)
+        map.initialViewpoint = Viewpoint(
+            center: Point(x: -13637000, 
+                          y: 4550000,
+                          spatialReference: .webMercator),
+            scale: 100_000
+        )
         return map
+    }()
+    
+    @State private var scaleBarSettings: ScalebarSettings = {
+        let settings = ScalebarSettings(shadowColor: Color.black, shadowRadius: 4)
+        return settings
     }()
     
     var body: some View {
@@ -50,11 +61,18 @@ struct ShowScaleBarView: View {
             .overlay(alignment: alignment) {
                 Scalebar(
                     maxWidth: maxWidth,
+                    settings: scaleBarSettings,
                     spatialReference: spatialReference,
+                    style: .graduatedLine,
                     unitsPerPoint: unitsPerPoint,
                     viewpoint: viewpoint
                 )
-                .padding(.horizontal, 10)
+                .padding(.leading, 40)
+                .padding(.trailing, 50)
+                .padding(.vertical, 10)
+                .background(Color.white)
+                .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
+                .cornerRadius(8)
                 .padding(.vertical, 10 + attributionBarHeight)
             }
         }
