@@ -17,6 +17,7 @@ import ArcGISToolkit
 import SwiftUI
 
 struct ShowScaleBarView: View {
+    /// The height of the map view's attribution bar.
     @State private var attributionBarHeight = 0.0
     
     /// Allows for communication between the `Scalebar` and `MapView`.
@@ -37,16 +38,20 @@ struct ShowScaleBarView: View {
     @State private var map: Map = {
         let map = Map(basemapStyle: .arcGISTopographic)
         map.initialViewpoint = Viewpoint(
-            center: Point(x: -13637000, 
+            center: Point(x: -13637000,
                           y: 4550000,
-                          spatialReference: .webMercator),
+                          spatialReference: .webMercator
+                         ),
             scale: 100_000
         )
         return map
     }()
     
     @State private var scaleBarSettings: ScalebarSettings = {
-        let settings = ScalebarSettings(shadowColor: Color.black, shadowRadius: 4)
+        let settings = ScalebarSettings(
+            shadowColor: Color.black,
+            shadowRadius: 4
+        )
         return settings
     }()
     
@@ -71,9 +76,12 @@ struct ShowScaleBarView: View {
                 .padding(.trailing, 50)
                 .padding(.vertical, 10)
                 .background(Color.white)
-                .opacity(/*@START_MENU_TOKEN@*/0.8/*@END_MENU_TOKEN@*/)
+                .opacity(0.8)
                 .cornerRadius(8)
-                .padding(.vertical, 10 + attributionBarHeight)
+                .padding(
+                    .vertical,
+                    10 + attributionBarHeight
+                )
             }
         }
     }
