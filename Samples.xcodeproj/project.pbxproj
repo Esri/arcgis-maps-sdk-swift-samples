@@ -185,6 +185,8 @@
 		88F93CC229C4D3480006B28E /* CreateAndEditGeometriesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 88F93CC029C3D59C0006B28E /* CreateAndEditGeometriesView.swift */; };
 		9529D1942C01676200B5C1A3 /* SelectFeaturesInSceneLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 954AEDED2C01332600265114 /* SelectFeaturesInSceneLayerView.swift */; };
 		954AEDEE2C01332600265114 /* SelectFeaturesInSceneLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954AEDED2C01332600265114 /* SelectFeaturesInSceneLayerView.swift */; };
+		955AFAC42C10FD6F009C8FE5 /* ApplyMosaicRuleToRastersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955AFAC32C10FD6F009C8FE5 /* ApplyMosaicRuleToRastersView.swift */; };
+		955AFAC62C110B8A009C8FE5 /* ApplyMosaicRuleToRastersView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 955AFAC32C10FD6F009C8FE5 /* ApplyMosaicRuleToRastersView.swift */; };
 		95F3A52B2C07F09C00885DED /* SetSurfaceNavigationConstraintView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F3A52A2C07F09C00885DED /* SetSurfaceNavigationConstraintView.swift */; };
 		95F3A52D2C07F28700885DED /* SetSurfaceNavigationConstraintView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 95F3A52A2C07F09C00885DED /* SetSurfaceNavigationConstraintView.swift */; };
 		D70082EB2ACF900100E0C3C2 /* IdentifyKMLFeaturesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70082EA2ACF900100E0C3C2 /* IdentifyKMLFeaturesView.swift */; };
@@ -503,6 +505,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				955AFAC62C110B8A009C8FE5 /* ApplyMosaicRuleToRastersView.swift in Copy Source Code Files */,
 				95F3A52D2C07F28700885DED /* SetSurfaceNavigationConstraintView.swift in Copy Source Code Files */,
 				9529D1942C01676200B5C1A3 /* SelectFeaturesInSceneLayerView.swift in Copy Source Code Files */,
 				D76CE8DA2BFD7063009A8686 /* SetReferenceScaleView.swift in Copy Source Code Files */,
@@ -801,6 +804,7 @@
 		883C121429C9136600062FF9 /* DownloadPreplannedMapAreaView.MapPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadPreplannedMapAreaView.MapPicker.swift; sourceTree = "<group>"; };
 		88F93CC029C3D59C0006B28E /* CreateAndEditGeometriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAndEditGeometriesView.swift; sourceTree = "<group>"; };
 		954AEDED2C01332600265114 /* SelectFeaturesInSceneLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectFeaturesInSceneLayerView.swift; sourceTree = "<group>"; };
+		955AFAC32C10FD6F009C8FE5 /* ApplyMosaicRuleToRastersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyMosaicRuleToRastersView.swift; sourceTree = "<group>"; };
 		95F3A52A2C07F09C00885DED /* SetSurfaceNavigationConstraintView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetSurfaceNavigationConstraintView.swift; sourceTree = "<group>"; };
 		D70082EA2ACF900100E0C3C2 /* IdentifyKMLFeaturesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentifyKMLFeaturesView.swift; sourceTree = "<group>"; };
 		D7010EBC2B05616900D43F55 /* DisplaySceneFromMobileScenePackageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplaySceneFromMobileScenePackageView.swift; sourceTree = "<group>"; };
@@ -1088,6 +1092,7 @@
 				1C3B7DC22A5F64FC00907443 /* Analyze network with subnetwork trace */,
 				D7C16D172AC5F6C100689E89 /* Animate 3D graphic */,
 				D77570BC2A29427200F490CD /* Animate images with image overlay */,
+				955AFAC52C10FD74009C8FE5 /* Apply mosaic rule to rasters */,
 				004A2BA12BED456500C297CE /* Apply scheduled updates to preplanned map area */,
 				D75362CC2A1E862B00D83028 /* Apply unique value renderer */,
 				1C8EC7422BAE2891001A6929 /* Augment reality to collect data */,
@@ -1674,6 +1679,14 @@
 				954AEDED2C01332600265114 /* SelectFeaturesInSceneLayerView.swift */,
 			);
 			path = "Select features in scene layer";
+			sourceTree = "<group>";
+		};
+		955AFAC52C10FD74009C8FE5 /* Apply mosaic rule to rasters */ = {
+			isa = PBXGroup;
+			children = (
+				955AFAC32C10FD6F009C8FE5 /* ApplyMosaicRuleToRastersView.swift */,
+			);
+			path = "Apply mosaic rule to rasters";
 			sourceTree = "<group>";
 		};
 		95F3A52C2C07F0A600885DED /* Set surface navigation constraint */ = {
@@ -2963,6 +2976,7 @@
 				D79EE76E2A4CEA5D005A52AE /* SetUpLocationDrivenGeotriggersView.Model.swift in Sources */,
 				D74F03F02B609A7D00E83688 /* AddFeaturesWithContingentValuesView.Model.swift in Sources */,
 				E004A6F3284E4FEB002A1FE6 /* ShowResultOfSpatialOperationsView.swift in Sources */,
+				955AFAC42C10FD6F009C8FE5 /* ApplyMosaicRuleToRastersView.swift in Sources */,
 				D751018E2A2E962D00B8FA48 /* IdentifyLayerFeaturesView.swift in Sources */,
 				F1E71BF1289473760064C33F /* AddRasterFromFileView.swift in Sources */,
 				00B04273282EC59E0072E1B4 /* AboutView.swift in Sources */,
