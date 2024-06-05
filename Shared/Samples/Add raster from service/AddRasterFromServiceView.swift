@@ -40,33 +40,31 @@ struct AddRasterFromServiceView: View {
     }()
     
     var body: some View {
-        MapViewReader { _ in
-            MapView(map: map, viewpoint: viewpoint)
-                .onViewpointChanged(kind: .centerAndScale) { viewpoint = $0 }
-                .overlay(alignment: .center) {
-                    if isLoading {
-                        ProgressView("Loading...")
-                            .padding()
-                            .background(.ultraThickMaterial)
-                            .cornerRadius(10)
-                            .shadow(radius: 50)
-                    }
+        MapView(map: map, viewpoint: viewpoint)
+            .onViewpointChanged(kind: .centerAndScale) { viewpoint = $0 }
+            .overlay(alignment: .center) {
+                if isLoading {
+                    ProgressView("Loading...")
+                        .padding()
+                        .background(.ultraThickMaterial)
+                        .cornerRadius(10)
+                        .shadow(radius: 50)
                 }
-                .task {
-                    guard let rasterLayer = map.operationalLayers.first as? RasterLayer else {
-                        return
-                    }
-                    do {
-                        isLoading = true
-                        defer { isLoading = false }
-                        // Downloads raster from online service.
-                        try await rasterLayer.load()
-                    } catch {
-                        // Presents an error message if the raster fails to load.
-                        self.error = error
-                    }
+            }
+            .task {
+                guard let rasterLayer = map.operationalLayers.first as? RasterLayer else {
+                    return
                 }
-        }
+                do {
+                    isLoading = true
+                    defer { isLoading = false }
+                    // Downloads raster from online service.
+                    try await rasterLayer.load()
+                } catch {
+                    // Presents an error message if the raster fails to load.
+                    self.error = error
+                }
+            }
         .errorAlert(presentingError: $error)
     }
 }
