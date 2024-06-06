@@ -19,8 +19,8 @@ struct AddRasterFromServiceView: View {
     /// The error shown in the error alert.
     @State private var error: Error?
     
-    /// A Boolean value indicating whether the map is drawing.
-    @State private var mapIsDrawing = false
+    /// A value indicating whether the map is drawing.
+    @State private var currentDrawStatus: DrawStatus = .inProgress
     
     /// A map with a dark gray basemap and a raster layer.
     @State private var map: Map = {
@@ -47,13 +47,13 @@ struct AddRasterFromServiceView: View {
     var body: some View {
         MapView(map: map)
             .onDrawStatusChanged { drawStatus in
-                // Updates the Boolean state when the map's draw status changes.
+                // Updates the state when the map's draw status changes.
                 withAnimation {
-                    mapIsDrawing = drawStatus == .inProgress
+                    currentDrawStatus = drawStatus
                 }
             }
             .overlay(alignment: .center) {
-                if mapIsDrawing {
+                if currentDrawStatus == .inProgress {
                     ProgressView("Drawing…")
                         .padding()
                         .background(.ultraThinMaterial)
