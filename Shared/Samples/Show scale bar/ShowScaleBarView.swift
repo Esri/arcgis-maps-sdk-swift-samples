@@ -20,7 +20,8 @@ struct ShowScaleBarView: View {
     /// The height of the map view's attribution bar.
     @State private var attributionBarHeight = 0.0
     
-    /// Allows for communication between the `Scalebar` and `MapView`.
+    /// The spatial reference specifies how geometry coordinates relate to real-world space.
+    /// This property allows for communication between the `Scalebar` and `MapView`.
     @State private var spatialReference: SpatialReference?
     
     /// Allows for communication between the `Scalebar` and `MapView`.
@@ -38,12 +39,10 @@ struct ShowScaleBarView: View {
     /// A map with a topographic style.
     @State private var map: Map = {
         let map = Map(basemapStyle: .arcGISTopographic)
-        // Creates an initial Viewpoint with a coordinate point centered on San Franscisco's Golden Gate Bridge.
+        // Creates an initial Viewpoint with a coordinate point
+        // centered on San Franscisco's Golden Gate Bridge.
         map.initialViewpoint = Viewpoint(
-            center: Point(x: -13637000,
-                          y: 4550000,
-                          spatialReference: .webMercator
-                         ),
+            center: Point(x: -13637000, y: 4550000, spatialReference: .webMercator),
             scale: 100_000
         )
         return map
@@ -59,34 +58,29 @@ struct ShowScaleBarView: View {
     }()
     
     var body: some View {
-        MapViewReader { _ in
-            MapView(map: map).onAttributionBarHeightChanged { newHeight in
-                withAnimation { attributionBarHeight = newHeight }
-            }
-            .onSpatialReferenceChanged { spatialReference = $0 }
-            .onUnitsPerPointChanged { unitsPerPoint = $0 }
-            .onViewpointChanged(kind: .centerAndScale) { viewpoint = $0 }
-            .overlay(alignment: alignment) {
-                Scalebar(
-                    maxWidth: maxWidth,
-                    settings: scaleBarSettings,
-                    spatialReference: spatialReference,
-                    style: .graduatedLine,
-                    unitsPerPoint: unitsPerPoint,
-                    viewpoint: viewpoint
-                )
-                // The styling around scale bar. 
-                .padding(.leading, 40)
-                .padding(.trailing, 50)
-                .padding(.vertical, 10)
-                .background(Color.white)
-                .opacity(0.8)
-                .cornerRadius(8)
-                .padding(
-                    .vertical,
-                    10 + attributionBarHeight
-                )
-            }
+        MapView(map: map).onAttributionBarHeightChanged { newHeight in
+            withAnimation { attributionBarHeight = newHeight }
+        }
+        .onSpatialReferenceChanged { spatialReference = $0 }
+        .onUnitsPerPointChanged { unitsPerPoint = $0 }
+        .onViewpointChanged(kind: .centerAndScale) { viewpoint = $0 }
+        .overlay(alignment: alignment) {
+            Scalebar(
+                maxWidth: maxWidth,
+                settings: scaleBarSettings,
+                spatialReference: spatialReference,
+                style: .graduatedLine,
+                unitsPerPoint: unitsPerPoint,
+                viewpoint: viewpoint
+            )
+            // The styling around scale bar.
+            .padding(.leading, 40)
+            .padding(.trailing, 50)
+            .padding(.vertical, 10)
+            .background(Color.white)
+            .opacity(0.8)
+            .cornerRadius(8)
+            .padding(.vertical, 10 + attributionBarHeight)
         }
     }
 }
