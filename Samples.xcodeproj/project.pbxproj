@@ -1692,7 +1692,7 @@
 				95A572182C0FDCC9006E8B48 /* ShowScaleBarView.swift */,
 			);
 			path = "Show scale bar";
-      sourceTree = "<group>";
+            sourceTree = "<group>";
 		};
 		955271622C0E6750009B1ED4 /* Add raster from service */ = {
 			isa = PBXGroup;
