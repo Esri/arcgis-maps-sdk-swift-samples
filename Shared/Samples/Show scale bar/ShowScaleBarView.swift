@@ -74,13 +74,13 @@ struct ShowScaleBarView: View {
                     viewpoint: viewpoint
                 )
                 // The styling around scale bar.
-                .padding(.leading, 40)
-                .padding(.trailing, 50)
-                .padding(.vertical, 10)
+                .padding([.leading, .trailing], 20)
+                .padding([.horizontal, .vertical], 10)
                 .background(Color.white)
                 .opacity(0.8)
                 .cornerRadius(8)
                 .padding(.vertical, 10 + attributionBarHeight)
+                .padding(10)
             }
     }
 }
