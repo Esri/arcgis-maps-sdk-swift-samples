@@ -28,7 +28,7 @@ struct AddRasterFromServiceView: View {
         // Creates an initial viewpoint with a coordinate point centered on
         // San Francisco's Golden Gate Bridge.
         map.initialViewpoint = Viewpoint(
-            center: Point(x: -13637000, y: 4550000, spatialReference: .webMercator),
+            center: Point(x: -13_637_000, y: 4_550_000, spatialReference: .webMercator),
             scale: 100_000
         )
         // Creates a raster from an image service.
