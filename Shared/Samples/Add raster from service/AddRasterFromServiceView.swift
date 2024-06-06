@@ -19,7 +19,7 @@ struct AddRasterFromServiceView: View {
     /// The error shown in the error alert.
     @State private var error: Error?
     
-    /// A Boolean value indicating whether the map is drawing.
+    /// A Boolean value indicating whether the map is drawing or not.
     @State private var mapIsDrawing = false
     
     /// A map with a dark gray basemap and a raster layer.
@@ -28,7 +28,7 @@ struct AddRasterFromServiceView: View {
         // Creates an initial viewpoint with a coordinate point centered on
         // San Francisco's Golden Gate Bridge.
         map.initialViewpoint = Viewpoint(
-            center: Point(x: -13637000, y: 4550000, spatialReference: .webMercator),
+            center: Point(x: -13_637_000, y: 4_550_000, spatialReference: .webMercator),
             scale: 100_000
         )
         // Creates a raster from an image service.
