@@ -14,13 +14,13 @@ Zoom in or out of the map. The scale bar will automatically display the appropri
 
 ## How it works
 
-1. Instantiate an `ArcGISMap`object and display it in a `MapView` object.
+1. Instantiate an `Map`object and display it in a `MapView` object.
 2. Instantiate a `ScaleBar` object passing in the map view.
 3. Add the scale bar to the UI overlaying the map view.
 
 ## Relevant API
 
-* ArcGISMap
+* Map
 * MapView
 * Scalebar
 * UnitSystem

@@ -10,14 +10,14 @@
         "measure",
         "scale",
         "toolkit",
-        "ArcGISMap",
+        "Map",
         "MapView",
         "Scalebar",
         "UnitSystem"
     ],
     "redirect_from": [],
     "relevant_apis": [
-        "ArcGISMap",
+        "Map",
         "MapView",
         "Scalebar",
         "UnitSystem"
