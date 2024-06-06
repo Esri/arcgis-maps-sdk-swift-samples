@@ -19,7 +19,7 @@ struct AddRasterFromServiceView: View {
     /// The error shown in the error alert.
     @State private var error: Error?
     
-    /// A value indicating whether the map is drawing.
+    /// The current draw status of the map.
     @State private var currentDrawStatus: DrawStatus = .inProgress
     
     /// A map with a dark gray basemap and a raster layer.
