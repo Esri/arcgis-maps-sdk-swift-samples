@@ -17,56 +17,61 @@ import SwiftUI
 
 struct AddRasterFromServiceView: View {
     /// The error shown in the error alert.
-    @State private var error: Error?
-    
-    /// The current viewpoint of the map view.
-    @State private var viewpoint: Viewpoint?
-    
-    /// A Boolean value indicating whether a download operation is in progress.
-    @State private var isLoading = false
-    
-    /// A map with a dark gray basemap and a raster layer.
-    @State private var map: Map = {
-        let map = Map(basemapStyle: .arcGISDarkGrayBase)
-        // Creates an initial Viewpoint with a coordinate point centered on San Franscisco's Golden Gate Bridge.
-        map.initialViewpoint = Viewpoint(
-            center: Point(x: -13637000, y: 4550000, spatialReference: .webMercator),
-            scale: 100_000
-        )
-        let imageServiceRaster = ImageServiceRaster(url: .imageServiceURL)
-        let rasterLayer = RasterLayer(raster: imageServiceRaster)
-        map.addOperationalLayer(rasterLayer)
-        return map
-    }()
-    
-    var body: some View {
-        MapView(map: map, viewpoint: viewpoint)
-            .onViewpointChanged(kind: .centerAndScale) { viewpoint = $0 }
-            .overlay(alignment: .center) {
-                if isLoading {
-                    ProgressView("Loading...")
-                        .padding()
-                        .background(.ultraThickMaterial)
-                        .cornerRadius(10)
-                        .shadow(radius: 50)
-                }
-            }
-            .task {
-                guard let rasterLayer = map.operationalLayers.first as? RasterLayer else {
-                    return
-                }
-                do {
-                    isLoading = true
-                    defer { isLoading = false }
-                    // Downloads raster from online service.
-                    try await rasterLayer.load()
-                } catch {
-                    // Presents an error message if the raster fails to load.
-                    self.error = error
-                }
-            }
-            .errorAlert(presentingError: $error)
-    }
+       @State private var error: Error?
+       
+       /// A Boolean value indicating whether the map is drawing.
+       @State private var mapIsDrawing = false
+       
+       /// A map with a dark gray basemap and a raster layer.
+       @State private var map: Map = {
+           let map = Map(basemapStyle: .arcGISDarkGrayBase)
+           // Creates an initial viewpoint with a coordinate point centered on
+           // San Francisco's Golden Gate Bridge.
+           map.initialViewpoint = Viewpoint(
+               center: Point(x: -13637000, y: 4550000, spatialReference: .webMercator),
+               scale: 100_000
+           )
+           // Creates a raster from an image service.
+           let imageServiceRaster = ImageServiceRaster(url: .imageServiceURL)
+           // Creates a raster layer from the raster.
+           let rasterLayer = RasterLayer(raster: imageServiceRaster)
+           map.addOperationalLayer(rasterLayer)
+           return map
+       }()
+       
+       /// The raster layer in the map.
+       private var rasterLayer: RasterLayer {
+           map.operationalLayers.first as! RasterLayer
+       }
+       
+       var body: some View {
+           MapView(map: map)
+               .onDrawStatusChanged { drawStatus in
+                   // Updates the Boolean state when the map's draw status changes.
+                   withAnimation {
+                       mapIsDrawing = drawStatus == .inProgress
+                   }
+               }
+               .overlay(alignment: .center) {
+                   if mapIsDrawing {
+                       ProgressView("Drawing…")
+                           .padding()
+                           .background(.ultraThinMaterial)
+                           .cornerRadius(10)
+                           .shadow(radius: 50)
+                   }
+               }
+               .task {
+                   do {
+                       // Loads a raster layer from online service.
+                       try await rasterLayer.load()
+                   } catch {
+                       // Presents an error message if the raster fails to load.
+                       self.error = error
+                   }
+               }
+               .errorAlert(presentingError: $error)
+       }
 }
 
 private extension URL {
