@@ -51,7 +51,7 @@ struct ShowScaleBarView: View {
     @State private var scaleBarSettings: ScalebarSettings = {
         let settings = ScalebarSettings(
             shadowColor: Color.black,
-            shadowRadius: 4
+            shadowRadius: 6
         )
         return settings
     }()
