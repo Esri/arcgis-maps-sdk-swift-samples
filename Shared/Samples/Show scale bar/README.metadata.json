@@ -1,0 +1,29 @@
+{
+    "category": "Maps",
+    "description": "Add a scale bar to visually gauge distances on a map.",
+    "ignore": false,
+    "images": [
+        "show-scale-bar.png"
+    ],
+    "keywords": [
+        "map",
+        "measure",
+        "scale",
+        "toolkit",
+        "Map",
+        "MapView",
+        "Scalebar",
+        "UnitSystem"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Map",
+        "MapView",
+        "Scalebar",
+        "UnitSystem"
+    ],
+    "snippets": [
+        "ShowScaleBarView.swift"
+    ],
+    "title": "Show scale bar"
+}
