@@ -105,11 +105,11 @@ struct ShowViewshedFromPointOnMapView: View {
     private func calculateViewshed(at point: Point) async {
         self.resultGraphicsOverlay.removeAllGraphics()
         await self.geoprocessingJob?.cancel()
+        guard let spatialReference = point.spatialReference else { return }
         let featureCollectionTable = FeatureCollectionTable(
             fields: [Field](),
             geometryType: Point.self,
-            spatialReference: point.spatialReference!
-        )
+            spatialReference: spatialReference)
         do {
             let feature = featureCollectionTable.makeFeature(geometry: point)
             try await featureCollectionTable.add(feature)
@@ -135,7 +135,6 @@ struct ShowViewshedFromPointOnMapView: View {
             }
         case .failure(let errorDescription):
             self.error = errorDescription
-            print(errorDescription)
         }
     }
     
