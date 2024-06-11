@@ -12,23 +12,29 @@ import SwiftUI
 struct ApplyMosaicRuleToRastersView: View {
     /// The error shown in the error alert.
     @State private var error: Error?
-    
     /// A Boolean value indicating whether a download operation is in progress.
     @State private var isLoading = false
     
     @State private var showingAlert = false
-    
     /// The current viewpoint of the map view.
     @State private var viewpoint: Viewpoint?
     
     @State private var map: Map = {
         let map = Map(basemapStyle: .arcGISTopographic)
-        map.initialViewpoint = Viewpoint(center: Point(x: 1320141.0228999995, y: 6350455.22399999), scale: 25000.0)
+        map.initialViewpoint = Viewpoint(
+            center: Point(
+                x: 1320141.0228999995,
+                y: 6350455.22399999
+            ),
+            scale: 25000.0
+        )
         return map
     }()
     
     @State private var imageServiceRaster = {
-        let imageServiceRaster = ImageServiceRaster(url: .imageServiceURL)
+        let imageServiceRaster = ImageServiceRaster(
+            url: .imageServiceURL
+        )
         imageServiceRaster.mosaicRule = MosaicRule()
         return imageServiceRaster
     }()
@@ -58,11 +64,13 @@ struct ApplyMosaicRuleToRastersView: View {
         lockRasterRule.mosaicMethod = .lockRaster
         lockRasterRule.addLockRasterIDs([1, 7, 12])
         
-        return ["None": noneRule,
-                "NorthWest": northWestRule,
-                "Center": centerRule,
-                "ByAttribute": byAttributeRule,
-                "LockRaster": lockRasterRule]
+        return [
+            "None": noneRule,
+            "NorthWest": northWestRule,
+            "Center": centerRule,
+            "ByAttribute": byAttributeRule,
+            "LockRaster": lockRasterRule
+        ]
     }()
     
     init() {
@@ -74,27 +82,21 @@ struct ApplyMosaicRuleToRastersView: View {
         NavigationStack {
             MapViewReader { mapProxy in
                 MapView(map: map, viewpoint: viewpoint)
-                    .overlay(alignment: .center) {
-                        if isLoading {
-                            ProgressView("Loading...")
-                                .padding()
-                                .background(.ultraThickMaterial)
-                                .cornerRadius(10)
-                                .shadow(radius: 50)
-                        }
-                    }
                     .task {
                         guard let rasterLayer = map.operationalLayers.first as? RasterLayer else {
                             return
                         }
                         do {
                             isLoading = true
-                            defer { isLoading = false }
                             // Downloads raster from online service.
                             try await rasterLayer.load()
                             if let center = self.imageServiceRaster.serviceInfo?.fullExtent?.center {
-                                viewpoint = Viewpoint(center: center, scale: 25000.0)
+                                viewpoint = Viewpoint(
+                                    center: center,
+                                    scale: 25000.0
+                                )
                             }
+                            isLoading = false
                         } catch {
                             // Presents an error message if the raster fails to load.
                             self.error = error
@@ -106,34 +108,21 @@ struct ApplyMosaicRuleToRastersView: View {
                                 showingAlert = true
                             }
                             .actionSheet(isPresented: $showingAlert) {
-                                ActionSheet(title: Text("Title"), message: Text("Choose one of this three:"), buttons: [
-                                    .default(Text("NorthWest")) {
-                                        Task {
-                                            await self.mosiacRuleSelect(at: "NorthWest", using: mapProxy)
-                                        }
-                                    },
-                                    .default(Text("Center")) {
-                                        Task {
-                                            await self.mosiacRuleSelect(at: "Center", using: mapProxy)
-                                        }
-                                    },
-                                    .default(Text("ByAttribute")) {
-                                        Task {
-                                            await self.mosiacRuleSelect(at: "ByAttribute", using: mapProxy)
-                                        }
-                                    },
-                                    .default(Text("LockRaster")) {
-                                        Task {
-                                            await self.mosiacRuleSelect(at: "LockRaster", using: mapProxy)
-                                        }
-                                    },
-                                    .default(Text("None")) {
-                                        Task {
-                                            await self.mosiacRuleSelect(at: "None", using: mapProxy)
-                                        }
-                                    }
-                                ])
+                                ActionSheet(
+                                    title: Text("Mosiac Rules"),
+                                    message: Text("Select a mosiac rule to apply to the raster:"),
+                                    buttons: createButtons(mapProxy: mapProxy)
+                                )
                             }
+                        }
+                    }
+                    .overlay(alignment: .center) {
+                        if isLoading {
+                            ProgressView("Loading...")
+                                .padding()
+                                .background(.ultraThickMaterial)
+                                .cornerRadius(10)
+                                .shadow(radius: 50)
                         }
                     }
             }
@@ -141,10 +130,32 @@ struct ApplyMosaicRuleToRastersView: View {
         }
     }
     
+    private func createButtons(mapProxy: MapViewProxy) -> [Alert.Button] {
+        var results = [Alert.Button]()
+        for key in mosaicRulePairs.keys {
+            results.append(
+                Alert.Button.default(Text(key)) {
+                    Task {
+                        await self.mosiacRuleSelect(
+                            at: key,
+                            using: mapProxy
+                        )
+                    }
+                }
+            )
+        }
+        return results
+    }
+    
     private func mosiacRuleSelect(at selection: String, using proxy: MapViewProxy) async {
         imageServiceRaster.mosaicRule = mosaicRulePairs[selection]
         if let center = self.imageServiceRaster.serviceInfo?.fullExtent?.center {
-            await proxy.setViewpoint(Viewpoint(center: center, scale: 25000.0))
+            await proxy.setViewpoint(
+                Viewpoint(
+                    center: center,
+                    scale: 25000.0
+                )
+            )
         }
     }
 }
