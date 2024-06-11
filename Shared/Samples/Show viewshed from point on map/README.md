@@ -34,4 +34,3 @@ Click the map to see all areas visible from that point within a 15km radius. Cli
 ## Tags
 
 geoprocessing, heat map, heatmap, viewshed
-

@@ -20,7 +20,7 @@ struct ShowViewshedFromPointOnMapView: View {
     @State private var error: Error?
     /// The point on the screen where the user tapped.
     @State private var tapScreenPoint: Point?
-    /// The graphics overlay that shows where the user tapped on the screen
+    /// The graphics overlay that shows where the user tapped on the screen.
     @State private var inputGraphicsOverlay = {
         let inputGraphicsOverlay = GraphicsOverlay()
         // Red dot marker that is added to graphic overlay on map on the location where the user taps.
@@ -30,7 +30,7 @@ struct ShowViewshedFromPointOnMapView: View {
         inputGraphicsOverlay.renderer = renderer
         return inputGraphicsOverlay
     }()
-    /// The graphics overlay that displays the viewshed for the tapped location
+    /// The graphics overlay that displays the viewshed for the tapped location.
     @State private var resultGraphicsOverlay = {
         let resultGraphicsOverlay = GraphicsOverlay()
         let fillColor = UIColor(
@@ -57,7 +57,7 @@ struct ShowViewshedFromPointOnMapView: View {
     }()
     /// Handles the execution of the geoprocessing task and gets the reult.
     @State private var geoprocessingJob: GeoprocessingJob?
-    /// Sets map's initial viewpoint to Vanoise National Park in France
+    /// Sets map's initial viewpoint to Vanoise National Park in France.
     @State private var map: Map = {
         let map = Map(basemapStyle: .arcGISTopographicBase)
         map.initialViewpoint = Viewpoint(
@@ -106,9 +106,9 @@ struct ShowViewshedFromPointOnMapView: View {
     }
     
     private func calculateViewshed(at point: Point) async {
-        // Clears previously viewshed drawing
+        // Clears previously viewshed drawing.
         self.resultGraphicsOverlay.removeAllGraphics()
-        // If there is a geoprocessing job in progress it is cancelled
+        // If there is a geoprocessing job in progress it is cancelled.
         await self.geoprocessingJob?.cancel()
         guard let spatialReference = point.spatialReference else { return }
         // Creates a feature collection table based on the spatial reference for the tapped location
