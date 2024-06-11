@@ -55,7 +55,7 @@ struct ShowViewshedFromPointOnMapView: View {
         let geoprocess = GeoprocessingTask(url: .viewshedURL)
         return geoprocess
     }()
-    /// Handles the execution of the geoprocessing task and gets the reult.
+    /// Handles the execution of the geoprocessing task and gets the result.
     @State private var geoprocessingJob: GeoprocessingJob?
     /// Sets map's initial viewpoint to Vanoise National Park in France.
     @State private var map: Map = {
@@ -99,9 +99,9 @@ struct ShowViewshedFromPointOnMapView: View {
     }
     
     /// Removes previously tapped location from overlay and draws new dot on tap location.
-    private func addGraphic(at tappoint: Point) {
+    private func addGraphic(at tapPoint: Point) {
         inputGraphicsOverlay.removeAllGraphics()
-        let graphic = Graphic(geometry: tappoint)
+        let graphic = Graphic(geometry: tapPoint)
         inputGraphicsOverlay.addGraphic(graphic)
     }
     
