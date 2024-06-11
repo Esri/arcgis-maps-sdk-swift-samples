@@ -12,13 +12,13 @@ import SwiftUI
 struct ApplyMosaicRuleToRastersView: View {
     /// The error shown in the error alert.
     @State private var error: Error?
-    /// A Boolean value indicating whether a download operation is in progress.
+    /// A Boolean value indicating whether a operation is in progress.
     @State private var isLoading = false
-    
+    /// A Boolean value indicating whether the action sheet is showing.
     @State private var showingAlert = false
     /// The current viewpoint of the map view.
     @State private var viewpoint: Viewpoint?
-    
+    /// A map with viewpoint set to Amberg, Germany.
     @State private var map: Map = {
         let map = Map(basemapStyle: .arcGISTopographic)
         map.initialViewpoint = Viewpoint(
@@ -30,7 +30,7 @@ struct ApplyMosaicRuleToRastersView: View {
         )
         return map
     }()
-    
+    /// A service that fetches the raster using image source url.
     @State private var imageServiceRaster = {
         let imageServiceRaster = ImageServiceRaster(
             url: .imageServiceURL
@@ -40,9 +40,10 @@ struct ApplyMosaicRuleToRastersView: View {
     }()
     
     @State private var mosaicRulePairs: [String: MosaicRule] = {
-        // A default mosaic rule object, with mosaic method as none.
-        let noneRule = MosaicRule()
-        noneRule.mosaicMethod = .objectID
+        // A default mosaic rule object, with mosaic method as objectID which
+        // functionally is the same as the none rule in earlier versions.
+        let objectIDRule = MosaicRule()
+        objectIDRule.mosaicMethod = .objectID
         
         // A mosaic rule object with northwest method.
         let northWestRule = MosaicRule()
@@ -65,11 +66,11 @@ struct ApplyMosaicRuleToRastersView: View {
         lockRasterRule.addLockRasterIDs([1, 7, 12])
         
         return [
-            "None": noneRule,
-            "NorthWest": northWestRule,
+            "Object ID": objectIDRule,
+            "North West": northWestRule,
             "Center": centerRule,
-            "ByAttribute": byAttributeRule,
-            "LockRaster": lockRasterRule
+            "By Attribute": byAttributeRule,
+            "Lock Raster": lockRasterRule
         ]
     }()
     
@@ -89,7 +90,7 @@ struct ApplyMosaicRuleToRastersView: View {
                         isLoading = true
                         // Downloads raster from online service.
                         try await rasterLayer.load()
-                        if let center = self.imageServiceRaster.serviceInfo?.fullExtent?.center {
+                        if let center = imageServiceRaster.serviceInfo?.fullExtent?.center {
                             viewpoint = Viewpoint(
                                 center: center,
                                 scale: 25000.0
@@ -128,13 +129,14 @@ struct ApplyMosaicRuleToRastersView: View {
         .errorAlert(presentingError: $error)
     }
     
+    /// The function returns an array of alert buttons to add to the action sheet.
     private func createButtons(mapProxy: MapViewProxy) -> [Alert.Button] {
         var results = [Alert.Button]()
         for key in mosaicRulePairs.keys {
             results.append(
                 Alert.Button.default(Text(key)) {
                     Task {
-                        await self.mosiacRuleSelect(
+                        await mosaicRuleSelect(
                             at: key,
                             using: mapProxy
                         )
@@ -145,9 +147,11 @@ struct ApplyMosaicRuleToRastersView: View {
         return results
     }
     
-    private func mosiacRuleSelect(at selection: String, using proxy: MapViewProxy) async {
+    /// Updates the rule selection based on what the user selects and applies it the image raster. At the end it updates the viewpoint
+    /// to the center of the new raster display.
+    private func mosaicRuleSelect(at selection: String, using proxy: MapViewProxy) async {
         imageServiceRaster.mosaicRule = mosaicRulePairs[selection]
-        if let center = self.imageServiceRaster.serviceInfo?.fullExtent?.center {
+        if let center = imageServiceRaster.serviceInfo?.fullExtent?.center {
             await proxy.setViewpoint(
                 Viewpoint(
                     center: center,
@@ -159,6 +163,7 @@ struct ApplyMosaicRuleToRastersView: View {
 }
 
 private extension URL {
+    /// This sample uses a raster image service that shows aerial images of Amberg, Germany.
     static let imageServiceURL = URL(string: "https://sampleserver7.arcgisonline.com/server/rest/services/amberg_germany/ImageServer")!
 }
 
