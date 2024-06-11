@@ -18,15 +18,19 @@ import SwiftUI
 struct ShowViewshedFromPointOnMapView: View {
     /// The error shown in the error alert.
     @State private var error: Error?
+    /// The point on the screen where the user tapped.
     @State private var tapScreenPoint: Point?
+    /// The graphics overlay that shows where the user tapped on the screen
     @State private var inputGraphicsOverlay = {
         let inputGraphicsOverlay = GraphicsOverlay()
+        // Red dot marker that is added to graphic overlay on map on the location where the user taps.
         let pointSymbol = SimpleMarkerSymbol(style: .circle, color: .red, size: 10)
+        // Sets the renderer to draw the dot symbol on the graphics overlay.
         let renderer = SimpleRenderer(symbol: pointSymbol)
         inputGraphicsOverlay.renderer = renderer
         return inputGraphicsOverlay
     }()
-    
+    /// The graphics overlay that displays the viewshed for the tapped location
     @State private var resultGraphicsOverlay = {
         let resultGraphicsOverlay = GraphicsOverlay()
         let fillColor = UIColor(
@@ -44,26 +48,21 @@ struct ShowViewshedFromPointOnMapView: View {
         resultGraphicsOverlay.renderer = resultRenderer
         return resultGraphicsOverlay
     }()
-    
     /// The current draw status of the map.
     @State private var currentDrawStatus: Bool = false
-    
+    /// The processing task that references the online resource through the url.
     @State private var geoprocessingTask: GeoprocessingTask = {
-        let geoprocess = GeoprocessingTask(
-            url: URL(
-                string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Elevation/ESRI_Elevation_World/GPServer/Viewshed"
-            )!
-        )
+        let geoprocess = GeoprocessingTask(url: .viewshedURL)
         return geoprocess
     }()
-    
-    @State private var geoprocessingJob: GeoprocessingJob!
-    
+    /// Handles the execution of the geoprocessing task and gets the reult.
+    @State private var geoprocessingJob: GeoprocessingJob?
+    /// Sets map's initial viewpoint to Vanoise National Park in France
     @State private var map: Map = {
         let map = Map(basemapStyle: .arcGISTopographicBase)
         map.initialViewpoint = Viewpoint(
             center: Point(latitude: 45.3790902612337, longitude: 6.84905317262762),
-            scale: 144447
+            scale: 1444407
         )
         return map
     }()
@@ -74,6 +73,7 @@ struct ShowViewshedFromPointOnMapView: View {
                 self.tapScreenPoint = tapPoint
             }
             .overlay(alignment: .center) {
+                // Sets locating indication when currentDrawStatus is true.
                 if currentDrawStatus == true {
                     ProgressView("Drawing…")
                         .padding()
@@ -85,8 +85,10 @@ struct ShowViewshedFromPointOnMapView: View {
             .task(id: tapScreenPoint) {
                 guard let tapScreenPoint else { return }
                 currentDrawStatus = true
+                // Sets current draw status to false after process tap point operation
+                // completes.
+                defer { currentDrawStatus = false }
                 await process(at: tapScreenPoint)
-                currentDrawStatus = false
             }
             .errorAlert(presentingError: $error)
     }
@@ -96,6 +98,7 @@ struct ShowViewshedFromPointOnMapView: View {
         await self.calculateViewshed(at: tapScreenPoint)
     }
     
+    /// Removes previously tapped location from overlay and draws new dot on tap location.
     private func addGraphic(at tappoint: Point) {
         inputGraphicsOverlay.removeAllGraphics()
         let graphic = Graphic(geometry: tappoint)
@@ -103,15 +106,22 @@ struct ShowViewshedFromPointOnMapView: View {
     }
     
     private func calculateViewshed(at point: Point) async {
+        // Clears previously viewshed drawing
         self.resultGraphicsOverlay.removeAllGraphics()
+        // If there is a geoprocessing job in progress it is cancelled
         await self.geoprocessingJob?.cancel()
         guard let spatialReference = point.spatialReference else { return }
+        // Creates a feature collection table based on the spatial reference for the tapped location
+        // on the map.
         let featureCollectionTable = FeatureCollectionTable(
             fields: [Field](),
             geometryType: Point.self,
-            spatialReference: spatialReference)
+            spatialReference: spatialReference
+        )
         do {
+            // Creates a feature for the point tapped.
             let feature = featureCollectionTable.makeFeature(geometry: point)
+            // Asynchronously adds that feature to the table.
             try await featureCollectionTable.add(feature)
             await self.performGeoprocessing(featureCollectionTable)
         } catch {
@@ -121,31 +131,51 @@ struct ShowViewshedFromPointOnMapView: View {
     
     private func performGeoprocessing(_ featureCollectionTable: FeatureCollectionTable) async {
         let params = GeoprocessingParameters(executionType: .synchronousExecute)
+        // Sets the parameters spatial reference to the point tapped on the map.
         params.processSpatialReference = featureCollectionTable.spatialReference
         params.outputSpatialReference = featureCollectionTable.spatialReference
+        // Create a feature with the feature collection table which has the reference to the tapped location.
         let geoprocessingFeature = GeoprocessingFeatures(features: featureCollectionTable)
+        // Sets the observation point to the tapped location.
         params.setInputValue(geoprocessingFeature, forKey: "Input_Observation_Point")
+        // Creates geoprocessing job and kicks off process of getting viewshed for the point.
         geoprocessingJob = geoprocessingTask.makeJob(parameters: params)
-        geoprocessingJob.start()
-        let result = await geoprocessingJob.result
+        geoprocessingJob?.start()
+        // Get the result of the geoprocessing job asynchronously.
+        let result = await geoprocessingJob?.result
         switch result {
         case .success(let output):
             if let resultFeatures = output.outputs["Viewshed_Result"] as? GeoprocessingFeatures {
                 self.processFeatures(resultFeatures: resultFeatures)
             }
-        case .failure(let errorDescription):
-            self.error = errorDescription
+        case .failure(let error):
+            // Sets error to be displayed.
+            self.error = error
+        case .none:
+            // This case should never execute.
+            break
         }
     }
     
+    /// If the feature set is returned from the geoprocessing, it iterates through each feature and adds it to the
+    /// graphic overlay to display to the user.
     private func processFeatures(resultFeatures: GeoprocessingFeatures) {
         if let featureSet = resultFeatures.features {
+            // Iterates through the feature set.
             for feature in featureSet.features().makeIterator() {
+                // Creates the graphic for each feature's geometry.
                 let graphic = Graphic(geometry: feature.geometry)
+                // Sets the graphic on the overlay to display to the user.
                 self.resultGraphicsOverlay.addGraphic(graphic)
             }
         }
     }
+}
+
+private extension URL {
+    static let viewshedURL = URL(
+        string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Elevation/ESRI_Elevation_World/GPServer/Viewshed"
+    )!
 }
 
 #Preview {
