@@ -1697,7 +1697,7 @@
 				955AFAC32C10FD6F009C8FE5 /* ApplyMosaicRuleToRastersView.swift */,
 			);
 			path = "Apply mosaic rule to rasters";
-      sourceTree = "<group>";
+            sourceTree = "<group>";
 		};
 		95A5721A2C0FDCCE006E8B48 /* Show scale bar */ = {
 			isa = PBXGroup;
@@ -1705,7 +1705,7 @@
 				95A572182C0FDCC9006E8B48 /* ShowScaleBarView.swift */,
 			);
 			path = "Show scale bar";
-      sourceTree = "<group>";
+            sourceTree = "<group>";
 		};
 		955271622C0E6750009B1ED4 /* Add raster from service */ = {
 			isa = PBXGroup;
