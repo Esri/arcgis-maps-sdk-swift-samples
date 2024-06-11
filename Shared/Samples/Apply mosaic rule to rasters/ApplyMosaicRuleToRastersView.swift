@@ -79,55 +79,53 @@ struct ApplyMosaicRuleToRastersView: View {
     }
     
     var body: some View {
-        NavigationStack {
-            MapViewReader { mapProxy in
-                MapView(map: map, viewpoint: viewpoint)
-                    .task {
-                        guard let rasterLayer = map.operationalLayers.first as? RasterLayer else {
-                            return
+        MapViewReader { mapProxy in
+            MapView(map: map, viewpoint: viewpoint)
+                .task {
+                    guard let rasterLayer = map.operationalLayers.first as? RasterLayer else {
+                        return
+                    }
+                    do {
+                        isLoading = true
+                        // Downloads raster from online service.
+                        try await rasterLayer.load()
+                        if let center = self.imageServiceRaster.serviceInfo?.fullExtent?.center {
+                            viewpoint = Viewpoint(
+                                center: center,
+                                scale: 25000.0
+                            )
                         }
-                        do {
-                            isLoading = true
-                            // Downloads raster from online service.
-                            try await rasterLayer.load()
-                            if let center = self.imageServiceRaster.serviceInfo?.fullExtent?.center {
-                                viewpoint = Viewpoint(
-                                    center: center,
-                                    scale: 25000.0
-                                )
-                            }
-                            isLoading = false
-                        } catch {
-                            // Presents an error message if the raster fails to load.
-                            self.error = error
+                        isLoading = false
+                    } catch {
+                        // Presents an error message if the raster fails to load.
+                        self.error = error
+                    }
+                }
+                .toolbar {
+                    ToolbarItemGroup(placement: .primaryAction) {
+                        Button("Rules") {
+                            showingAlert = true
+                        }
+                        .actionSheet(isPresented: $showingAlert) {
+                            ActionSheet(
+                                title: Text("Mosiac Rules"),
+                                message: Text("Select a mosiac rule to apply to the raster:"),
+                                buttons: createButtons(mapProxy: mapProxy)
+                            )
                         }
                     }
-                    .toolbar {
-                        ToolbarItemGroup(placement: .primaryAction) {
-                            Button("Rules") {
-                                showingAlert = true
-                            }
-                            .actionSheet(isPresented: $showingAlert) {
-                                ActionSheet(
-                                    title: Text("Mosiac Rules"),
-                                    message: Text("Select a mosiac rule to apply to the raster:"),
-                                    buttons: createButtons(mapProxy: mapProxy)
-                                )
-                            }
-                        }
+                }
+                .overlay(alignment: .center) {
+                    if isLoading {
+                        ProgressView("Loading...")
+                            .padding()
+                            .background(.ultraThickMaterial)
+                            .cornerRadius(10)
+                            .shadow(radius: 50)
                     }
-                    .overlay(alignment: .center) {
-                        if isLoading {
-                            ProgressView("Loading...")
-                                .padding()
-                                .background(.ultraThickMaterial)
-                                .cornerRadius(10)
-                                .shadow(radius: 50)
-                        }
-                    }
-            }
-            .errorAlert(presentingError: $error)
+                }
         }
+        .errorAlert(presentingError: $error)
     }
     
     private func createButtons(mapProxy: MapViewProxy) -> [Alert.Button] {
