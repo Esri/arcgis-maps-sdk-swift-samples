@@ -22,12 +22,8 @@ struct ApplyMosaicRuleToRastersView: View {
     @State private var viewpoint: Viewpoint?
     
     @State private var map: Map = {
-        let map = Map(basemapStyle: .arcGISDarkGrayBase)
-        // Creates an initial Viewpoint with a coordinate point centered on San Franscisco's Golden Gate Bridge.
-        map.initialViewpoint = Viewpoint(
-            center: Point(x: -13637000, y: 4550000, spatialReference: .webMercator),
-            scale: 100_000
-        )
+        let map = Map(basemapStyle: .arcGISTopographic)
+        map.initialViewpoint = Viewpoint(center: Point(x: 1320141.0228999995, y: 6350455.22399999), scale: 25000.0)
         return map
     }()
     
@@ -40,7 +36,7 @@ struct ApplyMosaicRuleToRastersView: View {
     @State private var mosaicRulePairs: [String: MosaicRule] = {
         // A default mosaic rule object, with mosaic method as none.
         let noneRule = MosaicRule()
-        noneRule.mosaicMethod = .nadir
+        noneRule.mosaicMethod = .objectID
         
         // A mosaic rule object with northwest method.
         let northWestRule = MosaicRule()
@@ -62,7 +58,6 @@ struct ApplyMosaicRuleToRastersView: View {
         lockRasterRule.mosaicMethod = .lockRaster
         lockRasterRule.addLockRasterIDs([1, 7, 12])
         
-        
         return ["None": noneRule,
                 "NorthWest": northWestRule,
                 "Center": centerRule,
@@ -79,7 +74,6 @@ struct ApplyMosaicRuleToRastersView: View {
         NavigationStack {
             MapViewReader { mapProxy in
                 MapView(map: map, viewpoint: viewpoint)
-                    .onViewpointChanged(kind: .centerAndScale) { viewpoint = $0 }
                     .overlay(alignment: .center) {
                         if isLoading {
                             ProgressView("Loading...")
@@ -98,6 +92,9 @@ struct ApplyMosaicRuleToRastersView: View {
                             defer { isLoading = false }
                             // Downloads raster from online service.
                             try await rasterLayer.load()
+                            if let center = self.imageServiceRaster.serviceInfo?.fullExtent?.center {
+                                viewpoint = Viewpoint(center: center, scale: 25000.0)
+                            }
                         } catch {
                             // Presents an error message if the raster fails to load.
                             self.error = error
@@ -107,7 +104,6 @@ struct ApplyMosaicRuleToRastersView: View {
                         ToolbarItemGroup(placement: .primaryAction) {
                             Button("Rules") {
                                 showingAlert = true
-                                print("About tapped!")
                             }
                             .actionSheet(isPresented: $showingAlert) {
                                 ActionSheet(title: Text("Title"), message: Text("Choose one of this three:"), buttons: [
@@ -116,11 +112,11 @@ struct ApplyMosaicRuleToRastersView: View {
                                             await self.mosiacRuleSelect(at: "NorthWest", using: mapProxy)
                                         }
                                     },
-                                        .default(Text("Center")) {
-                                            Task {
-                                                await self.mosiacRuleSelect(at: "Center", using: mapProxy)
-                                            }
-                                        },
+                                    .default(Text("Center")) {
+                                        Task {
+                                            await self.mosiacRuleSelect(at: "Center", using: mapProxy)
+                                        }
+                                    },
                                     .default(Text("ByAttribute")) {
                                         Task {
                                             await self.mosiacRuleSelect(at: "ByAttribute", using: mapProxy)
@@ -141,16 +137,14 @@ struct ApplyMosaicRuleToRastersView: View {
                         }
                     }
             }
+            .errorAlert(presentingError: $error)
         }
     }
     
-    private func mosiacRuleSelect(at selection: String, using proxy: MapViewProxy) async -> Void {
-        guard let rasterLayer = map.operationalLayers.first as? RasterLayer else {
-            return
-        }
+    private func mosiacRuleSelect(at selection: String, using proxy: MapViewProxy) async {
         imageServiceRaster.mosaicRule = mosaicRulePairs[selection]
         if let center = self.imageServiceRaster.serviceInfo?.fullExtent?.center {
-            await proxy.setViewpoint(Viewpoint(center: center, scale: 250000.0))
+            await proxy.setViewpoint(Viewpoint(center: center, scale: 25000.0))
         }
     }
 }
