@@ -94,8 +94,8 @@ struct ShowViewshedFromPointOnMapView: View {
     }
     
     private func process(at tapScreenPoint: Point) async {
-        self.addGraphic(at: tapScreenPoint)
-        await self.calculateViewshed(at: tapScreenPoint)
+        addGraphic(at: tapScreenPoint)
+        await calculateViewshed(at: tapScreenPoint)
     }
     
     /// Removes previously tapped location from overlay and draws new dot on tap location.
@@ -107,9 +107,9 @@ struct ShowViewshedFromPointOnMapView: View {
     
     private func calculateViewshed(at point: Point) async {
         // Clears previously viewshed drawing.
-        self.resultGraphicsOverlay.removeAllGraphics()
+        resultGraphicsOverlay.removeAllGraphics()
         // If there is a geoprocessing job in progress it is cancelled.
-        await self.geoprocessingJob?.cancel()
+        await geoprocessingJob?.cancel()
         guard let spatialReference = point.spatialReference else { return }
         // Creates a feature collection table based on the spatial reference for the tapped location
         // on the map.
@@ -123,7 +123,7 @@ struct ShowViewshedFromPointOnMapView: View {
             let feature = featureCollectionTable.makeFeature(geometry: point)
             // Asynchronously adds that feature to the table.
             try await featureCollectionTable.add(feature)
-            await self.performGeoprocessing(featureCollectionTable)
+            await performGeoprocessing(featureCollectionTable)
         } catch {
             self.error = error
         }
@@ -146,7 +146,7 @@ struct ShowViewshedFromPointOnMapView: View {
         switch result {
         case .success(let output):
             if let resultFeatures = output.outputs["Viewshed_Result"] as? GeoprocessingFeatures {
-                self.processFeatures(resultFeatures: resultFeatures)
+                processFeatures(resultFeatures: resultFeatures)
             }
         case .failure(let error):
             // Sets error to be displayed.
@@ -166,7 +166,7 @@ struct ShowViewshedFromPointOnMapView: View {
                 // Creates the graphic for each feature's geometry.
                 let graphic = Graphic(geometry: feature.geometry)
                 // Sets the graphic on the overlay to display to the user.
-                self.resultGraphicsOverlay.addGraphic(graphic)
+                resultGraphicsOverlay.addGraphic(graphic)
             }
         }
     }
