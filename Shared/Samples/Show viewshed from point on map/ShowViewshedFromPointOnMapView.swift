@@ -138,7 +138,7 @@ private extension ShowViewshedFromPointOnMapView {
         var map: Map = {
             let map = Map(basemapStyle: .arcGISTopographicBase)
             map.initialViewpoint = Viewpoint(
-                center: Point(latitude: 45.3790902612337, longitude: 6.84905317262762),
+                center: Point(latitude: 45.379, longitude: 6.849),
                 scale: 144447
             )
             return map
