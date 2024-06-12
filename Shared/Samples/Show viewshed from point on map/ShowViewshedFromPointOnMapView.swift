@@ -55,7 +55,6 @@ struct ShowViewshedFromPointOnMapView: View {
             .errorAlert(presentingError: $error)
     }
     
-    
     /// Controls the initialization for the geoprocessing of the viewshed and calls the geoprocessing logic.
     /// - Parameter point: Location that the user tapped on the map.
     private func calculateViewshed(at point: Point) async {
