@@ -23,7 +23,7 @@ struct ShowViewshedFromPointOnMapView: View {
     @State private var tapScreenPoint: Point?
     
     /// The current geoprocessing status.
-    @State private var geoprocessingInProgress: Bool = false
+    @State private var geoprocessingInProgress = false
     
     /// The data model for the sample.
     @StateObject private var model = Model()
