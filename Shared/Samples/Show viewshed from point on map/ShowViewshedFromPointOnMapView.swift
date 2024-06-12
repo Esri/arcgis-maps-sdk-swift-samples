@@ -16,9 +16,6 @@ import ArcGIS
 import SwiftUI
 
 struct ShowViewshedFromPointOnMapView: View {
-    /// The error shown in the error alert.
-    @State private var error: Error?
-    
     /// The point on the screen where the user tapped.
     @State private var tapScreenPoint: Point?
     
@@ -50,85 +47,17 @@ struct ShowViewshedFromPointOnMapView: View {
                 defer { geoprocessingInProgress = false }
                 model.addGraphic(at: tapScreenPoint)
                 geoprocessingInProgress = true
-                await calculateViewshed(at: tapScreenPoint)
+                await model.calculateViewshed(at: tapScreenPoint)
             }
-            .errorAlert(presentingError: $error)
-    }
-    
-    /// Controls the initialization for the geoprocessing of the viewshed and calls the geoprocessing logic.
-    /// - Parameter point: Location that the user tapped on the map.
-    private func calculateViewshed(at point: Point) async {
-        // Clears previously viewshed drawing.
-        model.resultGraphicsOverlay.removeAllGraphics()
-        // If there is a geoprocessing job in progress it is cancelled.
-        await model.geoprocessingJob?.cancel()
-        guard let spatialReference = point.spatialReference else { return }
-        // Creates a feature collection table based on the spatial reference for the tapped location
-        // on the map.
-        let featureCollectionTable = FeatureCollectionTable(
-            fields: [Field](),
-            geometryType: Point.self,
-            spatialReference: spatialReference
-        )
-        do {
-            // Creates a feature for the point tapped.
-            let feature = featureCollectionTable.makeFeature(geometry: point)
-            // Asynchronously adds that feature to the table.
-            try await featureCollectionTable.add(feature)
-            await performGeoprocessing(featureCollectionTable)
-        } catch {
-            self.error = error
-        }
-    }
-    
-    /// Contains the logic for the geoprocessing and passes the result on to another function to display.
-    /// - Parameter featureCollectionTable: Holds the tapped location feature
-    private func performGeoprocessing(_ featureCollectionTable: FeatureCollectionTable) async {
-        let params = GeoprocessingParameters(executionType: .synchronousExecute)
-        // Sets the parameters spatial reference to the point tapped on the map.
-        params.processSpatialReference = featureCollectionTable.spatialReference
-        params.outputSpatialReference = featureCollectionTable.spatialReference
-        // Create a feature with the feature collection table which has the reference to the tapped location.
-        let geoprocessingFeature = GeoprocessingFeatures(features: featureCollectionTable)
-        // Sets the observation point to the tapped location.
-        params.setInputValue(geoprocessingFeature, forKey: "Input_Observation_Point")
-        // Creates geoprocessing job and kicks off process of getting viewshed for the point.
-        model.geoprocessingJob = model.geoprocessingTask.makeJob(parameters: params)
-        model.geoprocessingJob?.start()
-        // Get the result of the geoprocessing job asynchronously.
-        let result = await model.geoprocessingJob?.result
-        switch result {
-        case .success(let output):
-            if let resultFeatures = output.outputs["Viewshed_Result"] as? GeoprocessingFeatures {
-                processFeatures(resultFeatures: resultFeatures)
-            }
-        case .failure(let error):
-            // Sets error to be displayed.
-            self.error = error
-        case .none:
-            // This case should never execute.
-            break
-        }
-    }
-    
-    /// If the feature set is returned from the geoprocessing, it iterates through each feature and adds it to the
-    /// graphic overlay to display to the user.
-    /// - Parameter resultFeatures: Passes on the results of the geoprocessing so that they can be displayed.
-    private func processFeatures(resultFeatures: GeoprocessingFeatures) {
-        if let featureSet = resultFeatures.features {
-            // Iterates through the feature set.
-            for feature in featureSet.features().makeIterator() {
-                // Creates the graphic for each feature's geometry.
-                let graphic = Graphic(geometry: feature.geometry)
-                // Sets the graphic on the overlay to display to the user.
-                model.resultGraphicsOverlay.addGraphic(graphic)
-            }
-        }
+            .errorAlert(presentingError: $model.error)
     }
 }
 
 private extension ShowViewshedFromPointOnMapView {
     class Model: ObservableObject {
+        /// The error shown in the error alert.
+        @Published var error: Error?
+        
         /// A map with topographic basemap.
         /// Sets map's initial viewpoint to Vanoise National Park in France.
         let map: Map = {
@@ -182,6 +111,77 @@ private extension ShowViewshedFromPointOnMapView {
             inputGraphicsOverlay.removeAllGraphics()
             let graphic = Graphic(geometry: point)
             inputGraphicsOverlay.addGraphic(graphic)
+        }
+        
+        /// If the feature set is returned from the geoprocessing, it iterates through each feature and adds it to the
+        /// graphic overlay to display to the user.
+        /// - Parameter resultFeatures: Passes on the results of the geoprocessing so that they can be displayed.
+        func processFeatures(resultFeatures: GeoprocessingFeatures) {
+            if let featureSet = resultFeatures.features {
+                // Iterates through the feature set.
+                for feature in featureSet.features().makeIterator() {
+                    // Creates the graphic for each feature's geometry.
+                    let graphic = Graphic(geometry: feature.geometry)
+                    // Sets the graphic on the overlay to display to the user.
+                    resultGraphicsOverlay.addGraphic(graphic)
+                }
+            }
+        }
+        
+        /// Contains the logic for the geoprocessing and passes the result on to another function to display.
+        /// - Parameter featureCollectionTable: Holds the tapped location feature
+        func performGeoprocessing(_ featureCollectionTable: FeatureCollectionTable) async {
+            let params = GeoprocessingParameters(executionType: .synchronousExecute)
+            // Sets the parameters spatial reference to the point tapped on the map.
+            params.processSpatialReference = featureCollectionTable.spatialReference
+            params.outputSpatialReference = featureCollectionTable.spatialReference
+            // Create a feature with the feature collection table which has the reference to the tapped location.
+            let geoprocessingFeature = GeoprocessingFeatures(features: featureCollectionTable)
+            // Sets the observation point to the tapped location.
+            params.setInputValue(geoprocessingFeature, forKey: "Input_Observation_Point")
+            // Creates geoprocessing job and kicks off process of getting viewshed for the point.
+            geoprocessingJob = geoprocessingTask.makeJob(parameters: params)
+            geoprocessingJob?.start()
+            // Get the result of the geoprocessing job asynchronously.
+            let result = await geoprocessingJob?.result
+            switch result {
+            case .success(let output):
+                if let resultFeatures = output.outputs["Viewshed_Result"] as? GeoprocessingFeatures {
+                    processFeatures(resultFeatures: resultFeatures)
+                }
+            case .failure(let error):
+                // Sets error to be displayed.
+                self.error = error
+            case .none:
+                // This case should never execute.
+                break
+            }
+        }
+        
+        /// Controls the initialization for the geoprocessing of the viewshed and calls the geoprocessing logic.
+        /// - Parameter point: Location that the user tapped on the map.
+        func calculateViewshed(at point: Point) async {
+            // Clears previously viewshed drawing.
+            resultGraphicsOverlay.removeAllGraphics()
+            // If there is a geoprocessing job in progress it is cancelled.
+            await geoprocessingJob?.cancel()
+            guard let spatialReference = point.spatialReference else { return }
+            // Creates a feature collection table based on the spatial reference for the tapped location
+            // on the map.
+            let featureCollectionTable = FeatureCollectionTable(
+                fields: [Field](),
+                geometryType: Point.self,
+                spatialReference: spatialReference
+            )
+            do {
+                // Creates a feature for the point tapped.
+                let feature = featureCollectionTable.makeFeature(geometry: point)
+                // Asynchronously adds that feature to the table.
+                try await featureCollectionTable.add(feature)
+                await performGeoprocessing(featureCollectionTable)
+            } catch {
+                self.error = error
+            }
         }
     }
 }
