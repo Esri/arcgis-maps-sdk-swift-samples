@@ -15,7 +15,6 @@
 import ArcGIS
 import SwiftUI
 
-/// Description
 struct ShowViewshedFromPointOnMapView: View {
     /// The error shown in the error alert.
     @State private var error: Error?
@@ -23,7 +22,7 @@ struct ShowViewshedFromPointOnMapView: View {
     /// The point on the screen where the user tapped.
     @State private var tapScreenPoint: Point?
     
-    /// The current geoprocessing status..
+    /// The current geoprocessing status.
     @State private var geoprocessingInProgress: Bool = false
     
     /// The data model for the sample.
@@ -32,11 +31,11 @@ struct ShowViewshedFromPointOnMapView: View {
     var body: some View {
         MapView(map: model.map, graphicsOverlays: [model.inputGraphicsOverlay, model.resultGraphicsOverlay])
             .onSingleTapGesture { _, tapPoint in
-                self.tapScreenPoint = tapPoint
+                tapScreenPoint = tapPoint
             }
             .overlay(alignment: .center) {
                 // Sets indication when geoprocessingInProgress is true.
-                if geoprocessingInProgress == true {
+                if geoprocessingInProgress {
                     ProgressView("Geoprocessing in progress…")
                         .padding()
                         .background(.ultraThinMaterial)
@@ -46,28 +45,19 @@ struct ShowViewshedFromPointOnMapView: View {
             }
             .task(id: tapScreenPoint) {
                 guard let tapScreenPoint else { return }
-                geoprocessingInProgress = true
-                // Sets current geoprocessingInProgress to false after process geoprocessing
-                // completes.
+                // Sets current geoprocessingInProgress to
+                // false after geoprocessing is complete.
                 defer { geoprocessingInProgress = false }
-                addGraphic(at: tapScreenPoint)
+                model.addGraphic(at: tapScreenPoint)
+                geoprocessingInProgress = true
                 await calculateViewshed(at: tapScreenPoint)
             }
             .errorAlert(presentingError: $error)
     }
     
-    /// Removes previously tapped location from overlay and draws new dot on tap location.
-    /// - Parameter tapPoint: Location that the user tapped on the map.
-    
-    private func addGraphic(at tapPoint: Point) {
-        model.inputGraphicsOverlay.removeAllGraphics()
-        let graphic = Graphic(geometry: tapPoint)
-        model.inputGraphicsOverlay.addGraphic(graphic)
-    }
     
     /// Controls the initialization for the geoprocessing of the viewshed and calls the geoprocessing logic.
     /// - Parameter point: Location that the user tapped on the map.
-    
     private func calculateViewshed(at point: Point) async {
         // Clears previously viewshed drawing.
         model.resultGraphicsOverlay.removeAllGraphics()
@@ -94,7 +84,6 @@ struct ShowViewshedFromPointOnMapView: View {
     
     /// Contains the logic for the geoprocessing and passes the result on to another function to display.
     /// - Parameter featureCollectionTable: Holds the tapped location feature
-    
     private func performGeoprocessing(_ featureCollectionTable: FeatureCollectionTable) async {
         let params = GeoprocessingParameters(executionType: .synchronousExecute)
         // Sets the parameters spatial reference to the point tapped on the map.
@@ -126,7 +115,6 @@ struct ShowViewshedFromPointOnMapView: View {
     /// If the feature set is returned from the geoprocessing, it iterates through each feature and adds it to the
     /// graphic overlay to display to the user.
     /// - Parameter resultFeatures: Passes on the results of the geoprocessing so that they can be displayed.
-    
     private func processFeatures(resultFeatures: GeoprocessingFeatures) {
         if let featureSet = resultFeatures.features {
             // Iterates through the feature set.
@@ -141,11 +129,11 @@ struct ShowViewshedFromPointOnMapView: View {
 }
 
 private extension ShowViewshedFromPointOnMapView {
-    private class Model: ObservableObject {
+    class Model: ObservableObject {
         /// A map with topographic basemap.
         /// Sets map's initial viewpoint to Vanoise National Park in France.
-        var map: Map = {
-            let map = Map(basemapStyle: .arcGISTopographicBase)
+        let map: Map = {
+            let map = Map(basemapStyle: .arcGISTopographic)
             map.initialViewpoint = Viewpoint(
                 center: Point(latitude: 45.379, longitude: 6.849),
                 scale: 144447
@@ -188,6 +176,14 @@ private extension ShowViewshedFromPointOnMapView {
         
         /// Handles the execution of the geoprocessing task and gets the result.
         var geoprocessingJob: GeoprocessingJob?
+        
+        /// Removes previously tapped location from overlay and draws new dot on tap location.
+        /// - Parameter tapPoint: Location that the user tapped on the map.
+        func addGraphic(at point: Point) {
+            inputGraphicsOverlay.removeAllGraphics()
+            let graphic = Graphic(geometry: point)
+            inputGraphicsOverlay.addGraphic(graphic)
+        }
     }
 }
 
