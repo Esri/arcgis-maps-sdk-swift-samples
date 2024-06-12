@@ -177,7 +177,7 @@ private extension ShowViewshedFromPointOnMapView {
         var geoprocessingJob: GeoprocessingJob?
         
         /// Removes previously tapped location from overlay and draws new dot on tap location.
-        /// - Parameter tapPoint: Location that the user tapped on the map.
+        /// - Parameter point: Location that the user tapped on the map.
         func addGraphic(at point: Point) {
             inputGraphicsOverlay.removeAllGraphics()
             let graphic = Graphic(geometry: point)
