@@ -15,6 +15,7 @@
 import ArcGIS
 import SwiftUI
 
+/// Description
 struct ShowViewshedFromPointOnMapView: View {
     /// The error shown in the error alert.
     @State private var error: Error?
@@ -56,13 +57,17 @@ struct ShowViewshedFromPointOnMapView: View {
     }
     
     /// Removes previously tapped location from overlay and draws new dot on tap location.
+    /// - Parameter tapPoint: Location that the user tapped on the map.
+    
     private func addGraphic(at tapPoint: Point) {
         model.inputGraphicsOverlay.removeAllGraphics()
         let graphic = Graphic(geometry: tapPoint)
         model.inputGraphicsOverlay.addGraphic(graphic)
     }
     
-    ///  Controls the initialization for the geoprocessing of the viewshed and calls the geoprocessing logic.
+    /// Controls the initialization for the geoprocessing of the viewshed and calls the geoprocessing logic.
+    /// - Parameter point: Location that the user tapped on the map.
+    
     private func calculateViewshed(at point: Point) async {
         // Clears previously viewshed drawing.
         model.resultGraphicsOverlay.removeAllGraphics()
@@ -88,6 +93,8 @@ struct ShowViewshedFromPointOnMapView: View {
     }
     
     /// Contains the logic for the geoprocessing and passes the result on to another function to display.
+    /// - Parameter featureCollectionTable: Holds the tapped location feature
+    
     private func performGeoprocessing(_ featureCollectionTable: FeatureCollectionTable) async {
         let params = GeoprocessingParameters(executionType: .synchronousExecute)
         // Sets the parameters spatial reference to the point tapped on the map.
@@ -118,6 +125,8 @@ struct ShowViewshedFromPointOnMapView: View {
     
     /// If the feature set is returned from the geoprocessing, it iterates through each feature and adds it to the
     /// graphic overlay to display to the user.
+    /// - Parameter resultFeatures: Passes on the results of the geoprocessing so that they can be displayed.
+    
     private func processFeatures(resultFeatures: GeoprocessingFeatures) {
         if let featureSet = resultFeatures.features {
             // Iterates through the feature set.
