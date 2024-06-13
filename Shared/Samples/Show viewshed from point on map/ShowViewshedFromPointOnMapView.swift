@@ -16,6 +16,9 @@ import ArcGIS
 import SwiftUI
 
 struct ShowViewshedFromPointOnMapView: View {
+    /// The error shown in the error alert.
+    @State var error: Error?
+    
     /// The point on the map where the user tapped.
     @State private var tapLocation: Point?
     
@@ -32,6 +35,23 @@ struct ShowViewshedFromPointOnMapView: View {
             }
         // Disables tap while geoprocessing is in progress.
             .allowsHitTesting(!geoprocessingInProgress)
+            .task(id: tapLocation) {
+                guard let tapLocation else { return }
+                model.addInputGraphic(at: tapLocation)
+                geoprocessingInProgress = true
+                do {
+                    try await model.calculateViewshed(at: tapLocation)
+                    geoprocessingInProgress = false
+                } catch {
+                    self.error = error
+                    // This is set because errorAlert hides cancellation errors
+                    // however when kicking off new job we cancel any in progress
+                    // jobs.
+                    if !($error.wrappedValue is CancellationError) {
+                        geoprocessingInProgress = false
+                    }
+                }
+            }
             .overlay(alignment: .center) {
                 // Sets indication when geoprocessingInProgress is true.
                 if geoprocessingInProgress {
@@ -42,25 +62,13 @@ struct ShowViewshedFromPointOnMapView: View {
                         .shadow(radius: 50)
                 }
             }
-            .task(id: tapLocation) {
-                guard let tapLocation else { return }
-                // Sets current geoprocessingInProgress to
-                // false after geoprocessing is complete.
-                defer { geoprocessingInProgress = false }
-                model.addInputGraphic(at: tapLocation)
-                geoprocessingInProgress = true
-                await model.calculateViewshed(at: tapLocation)
-            }
-            .errorAlert(presentingError: $model.error)
+            .errorAlert(presentingError: $error)
     }
 }
 
 private extension ShowViewshedFromPointOnMapView {
     @MainActor
     class Model: ObservableObject {
-        /// The error shown in the error alert.
-        @Published var error: Error?
-        
         /// A map with topographic basemap.
         let map: Map = {
             let map = Map(basemapStyle: .arcGISTopographic)
@@ -112,7 +120,7 @@ private extension ShowViewshedFromPointOnMapView {
         
         /// Controls the initialization for the geoprocessing of the viewshed and calls the geoprocessing logic.
         /// - Parameter point: Location that the user tapped on the map.
-        func calculateViewshed(at point: Point) async {
+        func calculateViewshed(at point: Point) async throws {
             // Clears previously viewshed drawing.
             resultGraphicsOverlay.removeAllGraphics()
             // If there is a geoprocessing job in progress it is cancelled.
@@ -130,15 +138,15 @@ private extension ShowViewshedFromPointOnMapView {
                 let feature = featureCollectionTable.makeFeature(geometry: point)
                 // Asynchronously adds that feature to the table.
                 try await featureCollectionTable.add(feature)
-                await performGeoprocessing(featureCollectionTable)
+                try await performGeoprocessing(featureCollectionTable)
             } catch {
-                self.error = error
+                throw error
             }
         }
         
         /// Contains the logic for the geoprocessing and passes the result on to another function to display.
         /// - Parameter featureCollectionTable: Holds the tapped location feature
-        private func performGeoprocessing(_ featureCollectionTable: FeatureCollectionTable) async {
+        private func performGeoprocessing(_ featureCollectionTable: FeatureCollectionTable) async throws {
             let params = GeoprocessingParameters(executionType: .synchronousExecute)
             // Sets the parameters spatial reference to the point tapped on the map.
             params.processSpatialReference = featureCollectionTable.spatialReference
@@ -159,8 +167,7 @@ private extension ShowViewshedFromPointOnMapView {
                     processFeatures(resultFeatures: resultFeatures)
                 }
             case .failure(let error):
-                // Sets error to be displayed.
-                self.error = error
+                throw error
             case .none:
                 // This case should never execute.
                 break
