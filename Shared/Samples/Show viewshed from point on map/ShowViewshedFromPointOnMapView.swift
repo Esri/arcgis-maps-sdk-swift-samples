@@ -44,9 +44,9 @@ struct ShowViewshedFromPointOnMapView: View {
                     geoprocessingInProgress = false
                 } catch {
                     self.error = error
-                    // This is set because errorAlert hides cancellation errors
-                    // however when kicking off new job we cancel any in progress
-                    // jobs.
+                    // This is set because errorAlert hides cancellation errors,
+                    // however when kicking off new job, we cancel any in progress
+                    // jobs which leads to wrong behavior.
                     if !($error.wrappedValue is CancellationError) {
                         geoprocessingInProgress = false
                     }
