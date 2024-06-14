@@ -156,7 +156,7 @@ private extension ShowViewshedFromPointOnMapView {
             geoprocessingJob = job
             defer { geoprocessingJob = nil }
             job.start()
-            // Get the result of the geoprocessing job asynchronously.
+            // Gets the result of the geoprocessing job asynchronously.
             let output = try await job.output
             // If the feature set is returned from the geoprocessing, it iterates through each feature and adds it to the
             // graphic overlay to display to the user.
