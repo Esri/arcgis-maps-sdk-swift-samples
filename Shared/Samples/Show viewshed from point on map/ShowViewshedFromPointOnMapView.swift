@@ -141,37 +141,30 @@ private extension ShowViewshedFromPointOnMapView {
         }
         
         /// Contains the logic for the geoprocessing and passes the result on to another function to display.
-        /// - Parameter featureCollectionTable: Holds the tapped location feature
+        /// - Parameter featureCollectionTable: Holds the tapped location feature.
         private func performGeoprocessing(_ featureCollectionTable: FeatureCollectionTable) async throws {
             let params = GeoprocessingParameters(executionType: .synchronousExecute)
             // Sets the parameters spatial reference to the point tapped on the map.
             params.processSpatialReference = featureCollectionTable.spatialReference
             params.outputSpatialReference = featureCollectionTable.spatialReference
-            // Create a feature with the feature collection table which has the reference to the tapped location.
+            // Creates a feature with the feature collection table which has the reference to the tapped location.
             let geoprocessingFeature = GeoprocessingFeatures(features: featureCollectionTable)
             // Sets the observation point to the tapped location.
             params.setInputValue(geoprocessingFeature, forKey: "Input_Observation_Point")
             // Creates geoprocessing job and kicks off process of getting viewshed for the point.
-            geoprocessingJob = geoprocessingTask.makeJob(parameters: params)
-            geoprocessingJob?.start()
+            let job = geoprocessingTask.makeJob(parameters: params)
+            geoprocessingJob = job
+            defer { geoprocessingJob = nil }
+            job.start()
             // Get the result of the geoprocessing job asynchronously.
-            let output = try await geoprocessingJob?.output
-            if let resultFeatures = output?.outputs["Viewshed_Result"] as? GeoprocessingFeatures,
+            let output = try await job.output
+            // If the feature set is returned from the geoprocessing, it iterates through each feature and adds it to the
+            // graphic overlay to display to the user.
+            if let resultFeatures = output.outputs["Viewshed_Result"] as? GeoprocessingFeatures,
                let featureSet = resultFeatures.features {
-                processFeatures(in: featureSet)
-            }
-        }
-        
-        /// If the feature set is returned from the geoprocessing, it iterates through each feature and adds it to the
-        /// graphic overlay to display to the user.
-        /// - Parameter resultFeatures: Passes on the results of the geoprocessing so that they can be displayed.
-        private func processFeatures(in featureSet: FeatureSet) {
-            // Iterates through the feature set.
-            for feature in featureSet.features() {
-                // Creates the graphic for each feature's geometry.
-                let graphic = Graphic(geometry: feature.geometry)
-                // Sets the graphic on the overlay to display to the user.
-                resultGraphicsOverlay.addGraphic(graphic)
+                resultGraphicsOverlay.addGraphics(featureSet.features().map {
+                    Graphic(geometry: $0.geometry)
+                })
             }
         }
     }
