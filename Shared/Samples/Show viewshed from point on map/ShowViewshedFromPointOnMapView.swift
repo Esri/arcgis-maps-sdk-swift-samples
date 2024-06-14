@@ -17,7 +17,7 @@ import SwiftUI
 
 struct ShowViewshedFromPointOnMapView: View {
     /// The error shown in the error alert.
-    @State var error: Error?
+    @State private var error: Error?
     
     /// The point on the map where the user tapped.
     @State private var tapLocation: Point?
@@ -47,7 +47,7 @@ struct ShowViewshedFromPointOnMapView: View {
                     // This is set because errorAlert hides cancellation errors,
                     // however when kicking off new job, we cancel any in progress
                     // jobs which leads to wrong behavior.
-                    if !($error.wrappedValue is CancellationError) {
+                    if !(error is CancellationError) {
                         geoprocessingInProgress = false
                     }
                 }
@@ -133,15 +133,11 @@ private extension ShowViewshedFromPointOnMapView {
                 geometryType: Point.self,
                 spatialReference: spatialReference
             )
-            do {
-                // Creates a feature for the point tapped.
-                let feature = featureCollectionTable.makeFeature(geometry: point)
-                // Asynchronously adds that feature to the table.
-                try await featureCollectionTable.add(feature)
-                try await performGeoprocessing(featureCollectionTable)
-            } catch {
-                throw error
-            }
+            // Creates a feature for the point tapped.
+            let feature = featureCollectionTable.makeFeature(geometry: point)
+            // Asynchronously adds that feature to the table.
+            try await featureCollectionTable.add(feature)
+            try await performGeoprocessing(featureCollectionTable)
         }
         
         /// Contains the logic for the geoprocessing and passes the result on to another function to display.
@@ -159,33 +155,23 @@ private extension ShowViewshedFromPointOnMapView {
             geoprocessingJob = geoprocessingTask.makeJob(parameters: params)
             geoprocessingJob?.start()
             // Get the result of the geoprocessing job asynchronously.
-            let result = await geoprocessingJob?.result
-            defer { geoprocessingJob = nil }
-            switch result {
-            case .success(let output):
-                if let resultFeatures = output.outputs["Viewshed_Result"] as? GeoprocessingFeatures {
-                    processFeatures(resultFeatures: resultFeatures)
-                }
-            case .failure(let error):
-                throw error
-            case .none:
-                // This case should never execute.
-                break
+            let output = try await geoprocessingJob?.output
+            if let resultFeatures = output?.outputs["Viewshed_Result"] as? GeoprocessingFeatures,
+               let featureSet = resultFeatures.features {
+                processFeatures(in: featureSet)  // private func processFeatures(in featureSet: FeatureSet)
             }
         }
         
         /// If the feature set is returned from the geoprocessing, it iterates through each feature and adds it to the
         /// graphic overlay to display to the user.
         /// - Parameter resultFeatures: Passes on the results of the geoprocessing so that they can be displayed.
-        private func processFeatures(resultFeatures: GeoprocessingFeatures) {
-            if let featureSet = resultFeatures.features {
-                // Iterates through the feature set.
-                for feature in featureSet.features().makeIterator() {
-                    // Creates the graphic for each feature's geometry.
-                    let graphic = Graphic(geometry: feature.geometry)
-                    // Sets the graphic on the overlay to display to the user.
-                    resultGraphicsOverlay.addGraphic(graphic)
-                }
+        private func processFeatures(in featureSet: FeatureSet) {
+            // Iterates through the feature set.
+            for feature in featureSet.features() {
+                // Creates the graphic for each feature's geometry.
+                let graphic = Graphic(geometry: feature.geometry)
+                // Sets the graphic on the overlay to display to the user.
+                resultGraphicsOverlay.addGraphic(graphic)
             }
         }
     }
