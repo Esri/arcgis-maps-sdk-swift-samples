@@ -158,7 +158,7 @@ private extension ShowViewshedFromPointOnMapView {
             let output = try await geoprocessingJob?.output
             if let resultFeatures = output?.outputs["Viewshed_Result"] as? GeoprocessingFeatures,
                let featureSet = resultFeatures.features {
-                processFeatures(in: featureSet)  // private func processFeatures(in featureSet: FeatureSet)
+                processFeatures(in: featureSet)
             }
         }
         
