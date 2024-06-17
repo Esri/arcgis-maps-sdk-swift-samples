@@ -49,7 +49,6 @@ struct ApplyMosaicRuleToRastersView: View {
                         isLoading = true
                         // Downloads raster from online service
                         try await rasterLayer.load()
-                        
                         await mapProxy.setViewpoint(
                             Viewpoint(
                                 center: model.getCenter(),
@@ -62,12 +61,12 @@ struct ApplyMosaicRuleToRastersView: View {
                 }
                 .toolbar {
                     ToolbarItemGroup(placement: .principal) {
-                        Picker("Rule Pairs", selection: $model.rulePair) {
-                            ForEach(RulePairs.allCases, id: \.self) { rule in
+                        Picker("Rule Pairs", selection: $model.ruleSelection) {
+                            ForEach(RuleSelection.allCases, id: \.self) { rule in
                                 Text(rule.label)
                             }
                         }
-                        .onChange(of: model.rulePair) { rulePair in
+                        .onChange(of: model.ruleSelection) { rulePair in
                             Task {
                                 isLoading = true
                                 model.updateMosiacRule(with: rulePair)
@@ -88,8 +87,8 @@ struct ApplyMosaicRuleToRastersView: View {
     }
 }
 
-private enum RulePairs: CaseIterable, Equatable {
-    static var allCases: [RulePairs] {
+private enum RuleSelection: CaseIterable, Equatable {
+    static var allCases: [RuleSelection] {
         return [.objectID, .northWest, .center, .byAttribute, lockRaster]
     }
     
@@ -113,7 +112,7 @@ private enum RulePairs: CaseIterable, Equatable {
         }
     }
     
-    static func == (lhs: RulePairs, rhs: RulePairs) -> Bool {
+    static func == (lhs: RuleSelection, rhs: RuleSelection) -> Bool {
         return lhs.label == rhs.label
     }
 }
@@ -121,7 +120,9 @@ private enum RulePairs: CaseIterable, Equatable {
 private extension ApplyMosaicRuleToRastersView {
     @MainActor
     class Model: ObservableObject {
-        @Published var rulePair: RulePairs = .objectID
+        /// Holds the reference the currently selected rule.
+        @Published var ruleSelection: RuleSelection = .objectID
+        
         /// A map with viewpoint set to Amberg, Germany.
         let map: Map = {
             let map = Map(basemapStyle: .arcGISTopographic)
@@ -144,6 +145,8 @@ private extension ApplyMosaicRuleToRastersView {
             return serviceRaster
         }()
         
+        
+        /// A static property dictionary that maps a string to a mosiac rule.
         static let mosaicRulePairs: [String: MosaicRule] = {
             // A default mosaic rule object, with mosaic method as objectID which
             // functionally is the same as the none rule in earlier versions.
@@ -184,10 +187,14 @@ private extension ApplyMosaicRuleToRastersView {
             map.addOperationalLayer(rasterLayer)
         }
         
-        func updateMosiacRule(with rulePair: RulePairs) {
+        /// A helper function to update the imageService mosiac rule on selection.
+        /// - Parameter rulePair: The rule selected for to update the raster.
+        func updateMosiacRule(with rulePair: RuleSelection) {
             imageServiceRaster.mosaicRule = Model.mosaicRulePairs[rulePair.label]
         }
         
+        /// A helper function returns center of raster so that map recenters on rule change.
+        /// - Returns: A point which is the center of the raster.
         func getCenter() -> Point {
             return imageServiceRaster.serviceInfo?.fullExtent?.center ?? Point(x: 0, y: 0)
         }
