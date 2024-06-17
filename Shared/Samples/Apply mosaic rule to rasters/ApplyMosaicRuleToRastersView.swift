@@ -15,13 +15,12 @@
 import ArcGIS
 import SwiftUI
 
-/// tw
 struct ApplyMosaicRuleToRastersView: View {
+    /// The error shown in the error alert.
+    @State var error: Error?
+    
     /// A Boolean value indicating whether a operation is in progress.
     @State private var isLoading = false
-    
-    /// A Boolean value indicating whether the action sheet is showing.
-    @State private var showingAlert = false
     
     /// The current viewpoint of the map view.
     @State private var viewpoint: Viewpoint?
@@ -45,85 +44,84 @@ struct ApplyMosaicRuleToRastersView: View {
                     guard let rasterLayer = model.map.operationalLayers.first as? RasterLayer else {
                         return
                     }
+                    defer { isLoading = false }
                     do {
-                        defer { isLoading = false }
-                        // Downloads raster from online service.
                         isLoading = true
+                        // Downloads raster from online service
                         try await rasterLayer.load()
-                        if let center = model.imageServiceRaster.serviceInfo?.fullExtent?.center {
-                            viewpoint = Viewpoint(
-                                center: center,
+                        
+                        await mapProxy.setViewpoint(
+                            Viewpoint(
+                                center: model.getCenter(),
                                 scale: 25000.0
                             )
-                        }
+                        )
                     } catch {
-                        // Presents an error message if the raster fails to load.
-                        model.error = error
+                        self.error = error
                     }
                 }
                 .toolbar {
-                    ToolbarItemGroup(placement: .primaryAction) {
-                        Button("Rules") {
-                            showingAlert = true
+                    ToolbarItemGroup(placement: .principal) {
+                        Picker("Rule Pairs", selection: $model.rulePair) {
+                            ForEach(RulePairs.allCases, id: \.self) { rule in
+                                Text(rule.label)
+                            }
                         }
-                        .actionSheet(isPresented: $showingAlert) {
-                            ActionSheet(
-                                title: Text("Mosiac Rules"),
-                                message: Text("Select a mosiac rule to apply to the raster:"),
-                                buttons: createButtons(mapProxy: mapProxy)
-                            )
+                        .onChange(of: model.rulePair) { rulePair in
+                            Task {
+                                isLoading = true
+                                model.updateMosiacRule(with: rulePair)
+                                await mapProxy.setViewpoint(
+                                    Viewpoint(
+                                        center: model.getCenter(),
+                                        scale: 25000.0
+                                    )
+                                )
+                                isLoading = false
+                            }
                         }
+                        .pickerStyle(.menu)
                     }
                 }
         }
-        .errorAlert(presentingError: $model.error)
+        .errorAlert(presentingError: $error)
+    }
+}
+
+private enum RulePairs: CaseIterable, Equatable {
+    static var allCases: [RulePairs] {
+        return [.objectID, .northWest, .center, .byAttribute, lockRaster]
     }
     
-    /// The function returns an array of alert buttons to add to the action sheet.
-    /// - Parameter mapProxy: passes proxy to function in button
-    /// - Returns: Array of alert buttons
-    private func createButtons(mapProxy: MapViewProxy) -> [Alert.Button] {
-        var results = [Alert.Button]()
-        for key in model.mosaicRulePairs.keys.sorted() {
-            results.append(
-                Alert.Button.default(Text(key)) {
-                    Task {
-                        await mosaicRuleSelect(
-                            at: key,
-                            using: mapProxy
-                        )
-                    }
-                }
-            )
+    case objectID, northWest, center, byAttribute, lockRaster
+    
+    @available(*, unavailable)
+    case all
+    
+    var label: String {
+        switch self {
+        case .objectID:
+            return "Object ID"
+        case .northWest:
+            return "North West"
+        case .center:
+            return "Center"
+        case .byAttribute:
+            return "By Attribute"
+        case .lockRaster:
+            return "Lock Raster"
         }
-        return results
     }
     
-    /// Updates the rule selection based on what the user selects and applies it the image raster. At the end it updates the viewpoint
-    /// to the center of the new raster display.
-    /// - Parameters:
-    ///   - selection: selected mosiac rule
-    ///   - proxy: the `MapView` proxy
-    private func mosaicRuleSelect(at selection: String, using proxy: MapViewProxy) async {
-        isLoading = true
-        defer { isLoading = false }
-        model.imageServiceRaster.mosaicRule = model.mosaicRulePairs[selection]
-        if let center = model.imageServiceRaster.serviceInfo?.fullExtent?.center {
-            await proxy.setViewpoint(
-                Viewpoint(
-                    center: center,
-                    scale: 25000.0
-                )
-            )
-        }
+    static func == (lhs: RulePairs, rhs: RulePairs) -> Bool {
+        return lhs.label == rhs.label
     }
 }
 
 private extension ApplyMosaicRuleToRastersView {
+    @MainActor
     class Model: ObservableObject {
-        /// The error shown in the error alert.
-        @Published var error: Error?
-        
+        @Published var rulePair: RulePairs = .objectID
         /// A map with viewpoint set to Amberg, Germany.
         let map: Map = {
             let map = Map(basemapStyle: .arcGISTopographic)
@@ -146,7 +144,7 @@ private extension ApplyMosaicRuleToRastersView {
             return serviceRaster
         }()
         
-        let mosaicRulePairs: [String: MosaicRule] = {
+        static let mosaicRulePairs: [String: MosaicRule] = {
             // A default mosaic rule object, with mosaic method as objectID which
             // functionally is the same as the none rule in earlier versions.
             let objectIDRule = MosaicRule()
@@ -184,6 +182,14 @@ private extension ApplyMosaicRuleToRastersView {
         init() {
             let rasterLayer = RasterLayer(raster: imageServiceRaster)
             map.addOperationalLayer(rasterLayer)
+        }
+        
+        func updateMosiacRule(with rulePair: RulePairs) {
+            imageServiceRaster.mosaicRule = Model.mosaicRulePairs[rulePair.label]
+        }
+        
+        func getCenter() -> Point {
+            return imageServiceRaster.serviceInfo?.fullExtent?.center ?? Point(x: 0, y: 0)
         }
     }
 }
