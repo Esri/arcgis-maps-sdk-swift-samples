@@ -60,7 +60,7 @@ struct ApplyMosaicRuleToRastersView: View {
                     }
                 }
                 .toolbar {
-                    ToolbarItemGroup(placement: .principal) {
+                    ToolbarItemGroup(placement: .navigation) {
                         Picker("Rule Pairs", selection: $model.ruleSelection) {
                             ForEach(RuleSelection.allCases, id: \.self) { rule in
                                 Text(rule.label)
