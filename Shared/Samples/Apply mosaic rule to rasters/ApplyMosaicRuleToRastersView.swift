@@ -61,15 +61,15 @@ struct ApplyMosaicRuleToRastersView: View {
                 }
                 .toolbar {
                     ToolbarItemGroup(placement: .navigation) {
-                        Picker("Rule Pairs", selection: $model.ruleSelection) {
+                        Picker("Mosiac Rules", selection: $model.ruleSelection) {
                             ForEach(RuleSelection.allCases, id: \.self) { rule in
                                 Text(rule.label)
                             }
                         }
-                        .onChange(of: model.ruleSelection) { rulePair in
+                        .onChange(of: model.ruleSelection) { ruleSelection in
                             Task {
                                 isLoading = true
-                                model.updateMosiacRule(with: rulePair)
+                                model.updateMosiacRule(with: ruleSelection.rule)
                                 await mapProxy.setViewpoint(
                                     Viewpoint(
                                         center: model.getCenter(),
@@ -89,7 +89,7 @@ struct ApplyMosaicRuleToRastersView: View {
 
 private enum RuleSelection: CaseIterable, Equatable {
     static var allCases: [RuleSelection] {
-        return [.objectID, .northWest, .center, .byAttribute, lockRaster]
+        return [.objectID, .northWest, .center, .byAttribute, .lockRaster]
     }
     
     case objectID, northWest, center, byAttribute, lockRaster
@@ -109,6 +109,41 @@ private enum RuleSelection: CaseIterable, Equatable {
             return "By Attribute"
         case .lockRaster:
             return "Lock Raster"
+        }
+    }
+    
+    var rule: MosaicRule {
+        switch self {
+        case .objectID:
+            // A default mosaic rule object, with mosaic method as objectID which
+            // functionally is the same as the none rule in earlier versions.
+            let objectIDRule = MosaicRule()
+            objectIDRule.mosaicMethod = .objectID
+            return objectIDRule
+        case .northWest:
+            // A mosaic rule object with northwest method.
+            let northWestRule = MosaicRule()
+            northWestRule.mosaicMethod = .northwest
+            northWestRule.mosaicOperation = .first
+            return northWestRule
+        case .center:
+            // A mosaic rule object with center method and blend operation.
+            let centerRule = MosaicRule()
+            centerRule.mosaicMethod = .center
+            centerRule.mosaicOperation = .blend
+            return centerRule
+        case .byAttribute:
+            // A mosaic rule object with byAttribute method and sort on "OBJECTID" field of the service.
+            let byAttributeRule = MosaicRule()
+            byAttributeRule.mosaicMethod = .attribute
+            byAttributeRule.sortField = "OBJECTID"
+            return byAttributeRule
+        case .lockRaster:
+            // A mosaic rule object with lockRaster method and locks 3 image rasters.
+            let lockRasterRule = MosaicRule()
+            lockRasterRule.mosaicMethod = .lockRaster
+            lockRasterRule.addLockRasterIDs([1, 7, 12])
+            return lockRasterRule
         }
     }
     
@@ -145,43 +180,6 @@ private extension ApplyMosaicRuleToRastersView {
             return serviceRaster
         }()
         
-        
-        /// A static property dictionary that maps a string to a mosiac rule.
-        static let mosaicRulePairs: [String: MosaicRule] = {
-            // A default mosaic rule object, with mosaic method as objectID which
-            // functionally is the same as the none rule in earlier versions.
-            let objectIDRule = MosaicRule()
-            objectIDRule.mosaicMethod = .objectID
-            
-            // A mosaic rule object with northwest method.
-            let northWestRule = MosaicRule()
-            northWestRule.mosaicMethod = .northwest
-            northWestRule.mosaicOperation = .first
-            
-            // A mosaic rule object with center method and blend operation.
-            let centerRule = MosaicRule()
-            centerRule.mosaicMethod = .center
-            centerRule.mosaicOperation = .blend
-            
-            // A mosaic rule object with byAttribute method and sort on "OBJECTID" field of the service.
-            let byAttributeRule = MosaicRule()
-            byAttributeRule.mosaicMethod = .attribute
-            byAttributeRule.sortField = "OBJECTID"
-            
-            // A mosaic rule object with lockRaster method and locks 3 image rasters.
-            let lockRasterRule = MosaicRule()
-            lockRasterRule.mosaicMethod = .lockRaster
-            lockRasterRule.addLockRasterIDs([1, 7, 12])
-            
-            return [
-                "Object ID": objectIDRule,
-                "North West": northWestRule,
-                "Center": centerRule,
-                "By Attribute": byAttributeRule,
-                "Lock Raster": lockRasterRule
-            ]
-        }()
-        
         init() {
             let rasterLayer = RasterLayer(raster: imageServiceRaster)
             map.addOperationalLayer(rasterLayer)
@@ -189,8 +187,8 @@ private extension ApplyMosaicRuleToRastersView {
         
         /// A helper function to update the imageService mosiac rule on selection.
         /// - Parameter rulePair: The rule selected for to update the raster.
-        func updateMosiacRule(with rulePair: RuleSelection) {
-            imageServiceRaster.mosaicRule = Model.mosaicRulePairs[rulePair.label]
+        func updateMosiacRule(with rule: MosaicRule) {
+            imageServiceRaster.mosaicRule = rule
         }
         
         /// A helper function returns center of raster so that map recenters on rule change.
