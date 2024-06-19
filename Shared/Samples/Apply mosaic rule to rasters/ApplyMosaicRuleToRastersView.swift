@@ -60,7 +60,7 @@ struct ApplyMosaicRuleToRastersView: View {
                     }
                 }
                 .toolbar {
-                    ToolbarItemGroup(placement: .navigation) {
+                    ToolbarItemGroup(placement: .bottomBar) {
                         Picker("Mosiac Rules", selection: $model.ruleSelection) {
                             ForEach(RuleSelection.allCases, id: \.self) { rule in
                                 Text(rule.label)
@@ -79,7 +79,7 @@ struct ApplyMosaicRuleToRastersView: View {
                                 isLoading = false
                             }
                         }
-                        .pickerStyle(.menu)
+                        .pickerStyle(.automatic)
                     }
                 }
         }
@@ -155,7 +155,7 @@ private enum RuleSelection: CaseIterable, Equatable {
 private extension ApplyMosaicRuleToRastersView {
     @MainActor
     class Model: ObservableObject {
-        /// Holds the reference the currently selected rule.
+        /// Holds the reference to the currently selected rule.
         @Published var ruleSelection: RuleSelection = .objectID
         
         /// A map with viewpoint set to Amberg, Germany.
@@ -186,7 +186,7 @@ private extension ApplyMosaicRuleToRastersView {
         }
         
         /// A helper function to update the imageService mosiac rule on selection.
-        /// - Parameter rulePair: The rule selected for to update the raster.
+        /// - Parameter rule: The rule selected to update the raster.
         func updateMosiacRule(with rule: MosaicRule) {
             imageServiceRaster.mosaicRule = rule
         }

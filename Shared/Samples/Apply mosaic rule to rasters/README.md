@@ -2,7 +2,7 @@
 
 Apply mosaic rule to a mosaic dataset of rasters.
 
-![Apply mosaic rule to rasters](apply-mosaic-rule-to-rasters.png)
+![Image of Apply mosaic rule to rasters sample](apply-mosaic-rule-to-rasters.png)
 
 ## Use case
 
@@ -19,8 +19,8 @@ When the rasters are loaded, choose from a list of preset mosaic rules to apply 
 ## How it works
 
 1. Create an `ImageServiceRaster` using the service's URL.
-2. Create an `MosaicRule` object and set it to the `mosaicRule` property of the image service raster, if it does not specify a mosaic rule.
-3. Create an `RasterLayer` from the image service raster and add it to the map.
+2. Create a `MosaicRule` object and set it to the `mosaicRule` property of the image service raster.
+3. Create a `RasterLayer` from the image service raster and add it to the map.
 4. Set the `mosaicMethod`, `mosaicOperation` and other properties of the mosaic rule object accordingly to specify the rule on the raster dataset.
 
 ## Relevant API
