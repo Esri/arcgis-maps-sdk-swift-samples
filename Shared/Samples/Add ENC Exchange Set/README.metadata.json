@@ -26,7 +26,7 @@
         "EncLayer"
     ],
     "snippets": [
-        "AddEncExchangeSetView.swift"
+        "AddENCExchangeSetView.swift"
     ],
     "title": "Add ENC exchange set"
 }
