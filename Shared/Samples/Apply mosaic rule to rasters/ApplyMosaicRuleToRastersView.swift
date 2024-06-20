@@ -16,11 +16,11 @@ import ArcGIS
 import SwiftUI
 
 struct ApplyMosaicRuleToRastersView: View {
+    /// The current draw status of the map.
+    @State private var currentDrawStatus: DrawStatus = .inProgress
+    
     /// The error shown in the error alert.
     @State var error: Error?
-    
-    /// A Boolean value indicating whether a operation is in progress.
-    @State private var isLoading = false
     
     /// The current viewpoint of the map view.
     @State private var viewpoint: Viewpoint?
@@ -31,8 +31,14 @@ struct ApplyMosaicRuleToRastersView: View {
     var body: some View {
         MapViewReader { mapProxy in
             MapView(map: model.map, viewpoint: viewpoint)
+                .onDrawStatusChanged { drawStatus in
+                    // Updates the state when the map's draw status changes.
+                    withAnimation {
+                        currentDrawStatus = drawStatus
+                    }
+                }
                 .overlay(alignment: .center) {
-                    if isLoading {
+                    if currentDrawStatus == .inProgress {
                         ProgressView("Loading...")
                             .padding()
                             .background(.ultraThickMaterial)
@@ -40,13 +46,11 @@ struct ApplyMosaicRuleToRastersView: View {
                             .shadow(radius: 50)
                     }
                 }
-                .task {
+                .task(id: model.ruleSelection) {
                     guard let rasterLayer = model.map.operationalLayers.first as? RasterLayer else {
                         return
                     }
-                    defer { isLoading = false }
                     do {
-                        isLoading = true
                         // Downloads raster from online service
                         try await rasterLayer.load()
                         await mapProxy.setViewpoint(
@@ -68,7 +72,6 @@ struct ApplyMosaicRuleToRastersView: View {
                         }
                         .onChange(of: model.ruleSelection) { ruleSelection in
                             Task {
-                                isLoading = true
                                 model.updateMosiacRule(with: ruleSelection.rule)
                                 await mapProxy.setViewpoint(
                                     Viewpoint(
@@ -76,7 +79,6 @@ struct ApplyMosaicRuleToRastersView: View {
                                         scale: 25000.0
                                     )
                                 )
-                                isLoading = false
                             }
                         }
                         .pickerStyle(.automatic)
