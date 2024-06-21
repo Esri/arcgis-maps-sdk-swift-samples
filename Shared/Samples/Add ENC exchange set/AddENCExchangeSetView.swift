@@ -96,14 +96,14 @@ private extension AddENCExchangeSetView {
             try await exchangeSet.load()
             let result = exchangeSet.loadStatus
             if result == .loaded {
-                try await update(
+                try await renderENCData(
                     dataSet: exchangeSet.datasets,
                     mapProxy: proxy
                 )
             }
         }
         
-        private func update(dataSet: [ENCDataset], mapProxy: MapViewProxy) async throws {
+        private func renderENCData(dataSet: [ENCDataset], mapProxy: MapViewProxy) async throws {
             let encLayers = dataSet.map {
                 ENCLayer(
                     cell: ENCCell(
