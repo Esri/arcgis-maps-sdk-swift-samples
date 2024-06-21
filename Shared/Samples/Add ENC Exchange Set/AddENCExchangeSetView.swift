@@ -15,16 +15,26 @@
 import ArcGIS
 import SwiftUI
 
-
 struct AddENCExchangeSetView: View {
-    @State private var isLoading = false
+    /// The current draw status of the map.
+    @State private var currentDrawStatus: DrawStatus = .inProgress
+    
+    /// The error shown in the error alert.
+    @State var error: Error?
+    
     @StateObject private var model = Model()
     
     var body: some View {
         MapViewReader { mapProxy in
             MapView(map: model.map)
+                .onDrawStatusChanged { drawStatus in
+                    // Updates the state when the map's draw status changes.
+                    withAnimation {
+                        currentDrawStatus = drawStatus
+                    }
+                }
                 .overlay(alignment: .center) {
-                    if isLoading {
+                    if currentDrawStatus == .inProgress {
                         ProgressView("Loading...")
                             .padding()
                             .background(.ultraThickMaterial)
@@ -34,12 +44,13 @@ struct AddENCExchangeSetView: View {
                 }
                 .task {
                     do {
-                        try await model.addENCExchangeSet()
+                        try await model.addENCExchangeSet(proxy: mapProxy)
                     } catch {
-                        print(error)
+                        self.error = error
                     }
                 }
         }
+        .errorAlert(presentingError: $error)
     }
 }
 
@@ -52,27 +63,70 @@ private extension AddENCExchangeSetView {
             map.initialViewpoint = Viewpoint(
                 latitude: -32.5,
                 longitude: 60.95,
-                scale: 125_00
+                scale: 6_000_00
             )
             return map
         }()
         
-        func addENCExchangeSet() async throws {
-            print(URL.exchangeSet.absoluteString)
+        /// A URL to the temporary SENC data directory.
+        let temporaryURL: URL = {
+            let directoryURL = FileManager.default.temporaryDirectory.appendingPathComponent(ProcessInfo().globallyUniqueString)
+            // Create and return the full, unique URL to the temporary folder.
+            try? FileManager.default.createDirectory(at: directoryURL, withIntermediateDirectories: true)
+            return directoryURL
+        }()
+        
+        func addENCExchangeSet(proxy: MapViewProxy) async throws {
             let exchangeSet = ENCExchangeSet(fileURLs: [.exchangeSet])
+            // URL to the "hydrography" data folder that contains the "S57DataDictionary.xml" file.
+            let hydrographyDirectory = Bundle.main.url(
+                forResource: "S57DataDictionary",
+                withExtension: "xml",
+                subdirectory: "ExchangeSetwithoutUpdates/ExchangeSetwithoutUpdates/ENC_ROOT/hydrography"
+            )!.deletingLastPathComponent()
+            // Set environment settings for loading the dataset.
+            let environmentSettings = ENCEnvironmentSettings.shared
+            environmentSettings.resourceURL = hydrographyDirectory
+            // The SENC data directory is for temporarily storing generated files.
+            environmentSettings.sencDataURL = temporaryURL
+            updateDisplaySettings()
             try await exchangeSet.load()
             let result = exchangeSet.loadStatus
-            switch result {
-            case .loaded:
-                print(exchangeSet.datasets)
-                
-            case .failed:
-                print("failed")
-            case .notLoaded:
-                print("not loaded")
-            case .loading:
-                print("loading")
+            if result == .loaded {
+                try await update(dataSet: exchangeSet.datasets, mapProxy: proxy)
             }
+        }
+        
+        private func update(dataSet: [ENCDataset], mapProxy: MapViewProxy) async throws {
+            let encLayers = dataSet.map { ENCLayer(cell: ENCCell(dataset: $0)) }
+            var completeExtent: Envelope?
+            for encLayer in encLayers {
+                map.addOperationalLayer(encLayer)
+                try await encLayer.load()
+                if encLayer.loadStatus == .loaded {
+                    let envelope = encLayer.fullExtent
+                    if completeExtent == nil {
+                        completeExtent = envelope
+                    } else {
+                        completeExtent = GeometryEngine.combineExtents(completeExtent!, envelope!)
+                    }
+                }
+            }
+            await mapProxy.setViewpoint(
+                Viewpoint(center: completeExtent!.center, scale: 60000)
+            )
+        }
+        
+        /// Update the display settings to make the chart less cluttered.
+        private func updateDisplaySettings() {
+            let displaySettings = ENCEnvironmentSettings.shared.displaySettings
+            let textGroupVisibilitySettings = displaySettings.textGroupVisibilitySettings
+            textGroupVisibilitySettings.includesGeographicNames = false
+            textGroupVisibilitySettings.includesNatureOfSeabed = false
+            let viewingGroupSettings = displaySettings.viewingGroupSettings
+            viewingGroupSettings.includesBuoysBeaconsAidsToNavigation = false
+            viewingGroupSettings.includesDepthContours = false
+            viewingGroupSettings.includesSpotSoundings = false
         }
     }
 }
