@@ -185,10 +185,12 @@
 		88F93CC229C4D3480006B28E /* CreateAndEditGeometriesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 88F93CC029C3D59C0006B28E /* CreateAndEditGeometriesView.swift */; };
 		9529D1942C01676200B5C1A3 /* SelectFeaturesInSceneLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 954AEDED2C01332600265114 /* SelectFeaturesInSceneLayerView.swift */; };
 		954AEDEE2C01332600265114 /* SelectFeaturesInSceneLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954AEDED2C01332600265114 /* SelectFeaturesInSceneLayerView.swift */; };
+		955271612C0E6749009B1ED4 /* AddRasterFromServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955271602C0E6749009B1ED4 /* AddRasterFromServiceView.swift */; };
+		9567D0FE2C262C45003014FC /* ShowServiceAreaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9567D0FD2C262C45003014FC /* ShowServiceAreaView.swift */; };
+		9567D1002C262C84003014FC /* ShowServiceAreaView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 9567D0FD2C262C45003014FC /* ShowServiceAreaView.swift */; };
+		95A3773C2C0F93770044D1CC /* AddRasterFromServiceView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 955271602C0E6749009B1ED4 /* AddRasterFromServiceView.swift */; };
 		95A572192C0FDCC9006E8B48 /* ShowScaleBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A572182C0FDCC9006E8B48 /* ShowScaleBarView.swift */; };
 		95A5721B2C0FDD34006E8B48 /* ShowScaleBarView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 95A572182C0FDCC9006E8B48 /* ShowScaleBarView.swift */; };
-		955271612C0E6749009B1ED4 /* AddRasterFromServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955271602C0E6749009B1ED4 /* AddRasterFromServiceView.swift */; };
-		95A3773C2C0F93770044D1CC /* AddRasterFromServiceView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 955271602C0E6749009B1ED4 /* AddRasterFromServiceView.swift */; };
 		95DEB9B62C127A92009BEC35 /* ShowViewshedFromPointOnMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95DEB9B52C127A92009BEC35 /* ShowViewshedFromPointOnMapView.swift */; };
 		95DEB9B82C127B5E009BEC35 /* ShowViewshedFromPointOnMapView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 95DEB9B52C127A92009BEC35 /* ShowViewshedFromPointOnMapView.swift */; };
 		95F3A52B2C07F09C00885DED /* SetSurfaceNavigationConstraintView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F3A52A2C07F09C00885DED /* SetSurfaceNavigationConstraintView.swift */; };
@@ -509,6 +511,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				9567D1002C262C84003014FC /* ShowServiceAreaView.swift in Copy Source Code Files */,
 				95DEB9B82C127B5E009BEC35 /* ShowViewshedFromPointOnMapView.swift in Copy Source Code Files */,
 				95A5721B2C0FDD34006E8B48 /* ShowScaleBarView.swift in Copy Source Code Files */,
 				95A3773C2C0F93770044D1CC /* AddRasterFromServiceView.swift in Copy Source Code Files */,
@@ -810,8 +813,9 @@
 		883C121429C9136600062FF9 /* DownloadPreplannedMapAreaView.MapPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadPreplannedMapAreaView.MapPicker.swift; sourceTree = "<group>"; };
 		88F93CC029C3D59C0006B28E /* CreateAndEditGeometriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAndEditGeometriesView.swift; sourceTree = "<group>"; };
 		954AEDED2C01332600265114 /* SelectFeaturesInSceneLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectFeaturesInSceneLayerView.swift; sourceTree = "<group>"; };
-		95A572182C0FDCC9006E8B48 /* ShowScaleBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowScaleBarView.swift; sourceTree = "<group>"; };
 		955271602C0E6749009B1ED4 /* AddRasterFromServiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRasterFromServiceView.swift; sourceTree = "<group>"; };
+		9567D0FD2C262C45003014FC /* ShowServiceAreaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowServiceAreaView.swift; sourceTree = "<group>"; };
+		95A572182C0FDCC9006E8B48 /* ShowScaleBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowScaleBarView.swift; sourceTree = "<group>"; };
 		95DEB9B52C127A92009BEC35 /* ShowViewshedFromPointOnMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowViewshedFromPointOnMapView.swift; sourceTree = "<group>"; };
 		95F3A52A2C07F09C00885DED /* SetSurfaceNavigationConstraintView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetSurfaceNavigationConstraintView.swift; sourceTree = "<group>"; };
 		D70082EA2ACF900100E0C3C2 /* IdentifyKMLFeaturesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentifyKMLFeaturesView.swift; sourceTree = "<group>"; };
@@ -1212,6 +1216,7 @@
 				E004A6F1284E4F80002A1FE6 /* Show result of spatial operations */,
 				E066DD392860C9EE004D3D5B /* Show result of spatial relationships */,
 				95A5721A2C0FDCCE006E8B48 /* Show scale bar */,
+				9567D0FF2C262C5C003014FC /* Show service area */,
 				1CAF831A2A20305F000E1E60 /* Show utility associations */,
 				D7ABA2FB2A3287C10021822B /* Show viewshed from geoelement in scene */,
 				0086F3FC28E3770900974721 /* Show viewshed from point in scene */,
@@ -1691,20 +1696,28 @@
 			path = "Select features in scene layer";
 			sourceTree = "<group>";
 		};
-		95A5721A2C0FDCCE006E8B48 /* Show scale bar */ = {
-			isa = PBXGroup;
-			children = (
-				95A572182C0FDCC9006E8B48 /* ShowScaleBarView.swift */,
-			);
-			path = "Show scale bar";
-                        sourceTree = "<group>";
-		};
 		955271622C0E6750009B1ED4 /* Add raster from service */ = {
 			isa = PBXGroup;
 			children = (
 				955271602C0E6749009B1ED4 /* AddRasterFromServiceView.swift */,
 			);
 			path = "Add raster from service";
+			sourceTree = "<group>";
+		};
+		9567D0FF2C262C5C003014FC /* Show service area */ = {
+			isa = PBXGroup;
+			children = (
+				9567D0FD2C262C45003014FC /* ShowServiceAreaView.swift */,
+			);
+			path = "Show service area";
+			sourceTree = "<group>";
+		};
+		95A5721A2C0FDCCE006E8B48 /* Show scale bar */ = {
+			isa = PBXGroup;
+			children = (
+				95A572182C0FDCC9006E8B48 /* ShowScaleBarView.swift */,
+			);
+			path = "Show scale bar";
 			sourceTree = "<group>";
 		};
 		95DEB9B72C127A97009BEC35 /* Show viewshed from point on map */ = {
@@ -3027,6 +3040,7 @@
 				0044CDDF2995C39E004618CE /* ShowDeviceLocationHistoryView.swift in Sources */,
 				E041ABC0287CA9F00056009B /* WebView.swift in Sources */,
 				D73E619E2BDB21F400457932 /* EditWithBranchVersioningView.swift in Sources */,
+				9567D0FE2C262C45003014FC /* ShowServiceAreaView.swift in Sources */,
 				D7705D642AFC570700CC0335 /* FindClosestFacilityFromPointView.swift in Sources */,
 				E088E1572862579D00413100 /* SetSurfacePlacementModeView.swift in Sources */,
 				D762AF5F2BF6A7B900ECE3C7 /* EditFeaturesWithFeatureLinkedAnnotationView.swift in Sources */,

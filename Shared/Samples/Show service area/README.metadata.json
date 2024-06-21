@@ -1,0 +1,32 @@
+{
+    "category": "",
+    "description": "Find the service area within a network from a given point.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "barriers",
+        "facilities",
+        "impedance",
+        "logistics",
+        "routing",
+        "PolylineBarrier",
+        "ServiceAreaFacility",
+        "ServiceAreaParameters",
+        "ServiceAreaPolygon",
+        "ServiceAreaResult",
+        "ServiceAreaTask"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "PolylineBarrier",
+        "ServiceAreaFacility",
+        "ServiceAreaParameters",
+        "ServiceAreaPolygon",
+        "ServiceAreaResult",
+        "ServiceAreaTask"
+    ],
+    "snippets": [
+        "ShowServiceAreaView.swift"
+    ],
+    "title": "Show service area"
+}
