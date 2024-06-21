@@ -1096,7 +1096,7 @@
 				0000FB6D2BBDB17600845921 /* Add 3D tiles layer */,
 				79D84D0C2A815BED00F45262 /* Add custom dynamic entity data source */,
 				4D2ADC3E29C26D05003B367F /* Add dynamic entity layer */,
-				9537AFB52C2208CD000923C5 /* Add ENC Exchange Set */,
+				9537AFB52C2208CD000923C5 /* Add ENC exchange set */,
 				00D4EF7E2863840D00B9CC30 /* Add feature layers */,
 				D7F8C0342B60564D0072BFA7 /* Add features with contingent values */,
 				F19A316128906F0D003B7EF9 /* Add raster from file */,
@@ -1689,12 +1689,12 @@
 			path = "Create and edit geometries";
 			sourceTree = "<group>";
 		};
-		9537AFB52C2208CD000923C5 /* Add ENC Exchange Set */ = {
+		9537AFB52C2208CD000923C5 /* Add ENC exchange set */ = {
 			isa = PBXGroup;
 			children = (
 				9537AFB32C2208B5000923C5 /* AddENCExchangeSetView.swift */,
 			);
-			path = "Add ENC Exchange Set";
+			path = "Add ENC exchange set";
 			sourceTree = "<group>";
 		};
 		9537AFC82C220ECB000923C5 /* 9d2987a825c646468b3ce7512fb76e2d */ = {
