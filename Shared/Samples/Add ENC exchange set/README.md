@@ -1,4 +1,4 @@
-# Add ENC Exchange Set
+# Add ENC exchange set
 
 Display nautical charts per the ENC specification.
 
