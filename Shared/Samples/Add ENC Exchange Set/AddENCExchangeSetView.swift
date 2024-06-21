@@ -63,58 +63,74 @@ private extension AddENCExchangeSetView {
             map.initialViewpoint = Viewpoint(
                 latitude: -32.5,
                 longitude: 60.95,
-                scale: 6_000_00
+                scale: 67000
             )
             return map
         }()
         
+        var completeExtent: Envelope?
+        
         /// A URL to the temporary SENC data directory.
         let temporaryURL: URL = {
-            let directoryURL = FileManager.default.temporaryDirectory.appendingPathComponent(ProcessInfo().globallyUniqueString)
+            let directoryURL = FileManager.default.temporaryDirectory.appendingPathComponent(
+                ProcessInfo().globallyUniqueString
+            )
             // Create and return the full, unique URL to the temporary folder.
-            try? FileManager.default.createDirectory(at: directoryURL, withIntermediateDirectories: true)
+            try? FileManager.default.createDirectory(
+                at: directoryURL,
+                withIntermediateDirectories: true
+            )
             return directoryURL
         }()
         
         func addENCExchangeSet(proxy: MapViewProxy) async throws {
             let exchangeSet = ENCExchangeSet(fileURLs: [.exchangeSet])
             // URL to the "hydrography" data folder that contains the "S57DataDictionary.xml" file.
-            let hydrographyDirectory = Bundle.main.url(
-                forResource: "S57DataDictionary",
-                withExtension: "xml",
-                subdirectory: "ExchangeSetwithoutUpdates/ExchangeSetwithoutUpdates/ENC_ROOT/hydrography"
-            )!.deletingLastPathComponent()
+            let resourceURL = URL.hydrographyDirectory.deletingLastPathComponent()
             // Set environment settings for loading the dataset.
             let environmentSettings = ENCEnvironmentSettings.shared
-            environmentSettings.resourceURL = hydrographyDirectory
+            environmentSettings.resourceURL = resourceURL
             // The SENC data directory is for temporarily storing generated files.
             environmentSettings.sencDataURL = temporaryURL
             updateDisplaySettings()
             try await exchangeSet.load()
             let result = exchangeSet.loadStatus
             if result == .loaded {
-                try await update(dataSet: exchangeSet.datasets, mapProxy: proxy)
+                try await update(
+                    dataSet: exchangeSet.datasets,
+                    mapProxy: proxy
+                )
             }
         }
         
         private func update(dataSet: [ENCDataset], mapProxy: MapViewProxy) async throws {
-            let encLayers = dataSet.map { ENCLayer(cell: ENCCell(dataset: $0)) }
-            var completeExtent: Envelope?
+            let encLayers = dataSet.map {
+                ENCLayer(
+                    cell: ENCCell(
+                        dataset: $0
+                    )
+                )
+            }
             for encLayer in encLayers {
                 map.addOperationalLayer(encLayer)
                 try await encLayer.load()
-                if encLayer.loadStatus == .loaded {
-                    let envelope = encLayer.fullExtent
+                if encLayer.loadStatus == .loaded,
+                   let envelope = encLayer.fullExtent {
                     if completeExtent == nil {
                         completeExtent = envelope
                     } else {
-                        completeExtent = GeometryEngine.combineExtents(completeExtent!, envelope!)
+                        completeExtent = GeometryEngine.combineExtents(
+                            completeExtent!,
+                            envelope
+                        )
                     }
                 }
             }
-            await mapProxy.setViewpoint(
-                Viewpoint(center: completeExtent!.center, scale: 60000)
-            )
+            if let extent = completeExtent {
+                await mapProxy.setViewpoint(
+                    Viewpoint(center: extent.center, scale: 67000)
+                )
+            }
         }
         
         /// Update the display settings to make the chart less cluttered.
@@ -132,7 +148,17 @@ private extension AddENCExchangeSetView {
 }
 
 private extension URL {
-    static let exchangeSet = Bundle.main.url(forResource: "CATALOG", withExtension: "031", subdirectory: "ExchangeSetwithoutUpdates/ExchangeSetwithoutUpdates/ENC_ROOT")!
+    static let exchangeSet = Bundle.main.url(
+        forResource: "CATALOG",
+        withExtension: "031",
+        subdirectory: "ExchangeSetwithoutUpdates/ExchangeSetwithoutUpdates/ENC_ROOT"
+    )!
+    
+    static let hydrographyDirectory = Bundle.main.url(
+        forResource: "S57DataDictionary",
+        withExtension: "xml",
+        subdirectory: "ExchangeSetwithoutUpdates/ExchangeSetwithoutUpdates/ENC_ROOT/hydrography"
+    )!
 }
 
 #Preview {
