@@ -16,11 +16,11 @@ import ArcGIS
 import SwiftUI
 
 struct AddENCExchangeSetView: View {
-    /// The current draw status of the map.
-    @State private var currentDrawStatus: DrawStatus = .inProgress
+    // The tracking status for the loading operation.
+    @State private var isLoading = false
     
     /// The error shown in the error alert.
-    @State var error: Error?
+    @State private var error: Error?
     
     @StateObject private var model = Model()
     
@@ -30,11 +30,13 @@ struct AddENCExchangeSetView: View {
                 .onDrawStatusChanged { drawStatus in
                     // Updates the state when the map's draw status changes.
                     withAnimation {
-                        currentDrawStatus = drawStatus
+                        if drawStatus == .completed {
+                            isLoading = false
+                        }
                     }
                 }
                 .overlay(alignment: .center) {
-                    if currentDrawStatus == .inProgress {
+                    if isLoading {
                         ProgressView("Loading...")
                             .padding()
                             .background(.ultraThickMaterial)
@@ -44,6 +46,7 @@ struct AddENCExchangeSetView: View {
                 }
                 .task {
                     do {
+                        isLoading = true
                         try await model.addENCExchangeSet(proxy: mapProxy)
                     } catch {
                         self.error = error
@@ -94,8 +97,7 @@ private extension AddENCExchangeSetView {
             environmentSettings.sencDataURL = temporaryURL
             updateDisplaySettings()
             try await exchangeSet.load()
-            let result = exchangeSet.loadStatus
-            if result == .loaded {
+            if exchangeSet.loadStatus == .loaded {
                 try await renderENCData(
                     dataSet: exchangeSet.datasets,
                     mapProxy: proxy
