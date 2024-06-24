@@ -48,7 +48,7 @@ struct ApplyMosaicRuleToRastersView: View {
                         return
                     }
                     do {
-                        // Downloads raster from online service
+                        // Downloads raster from online service.
                         try await rasterLayer.load()
                         await mapProxy.setViewpoint(
                             Viewpoint(
