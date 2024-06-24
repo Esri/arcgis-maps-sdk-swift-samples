@@ -136,16 +136,9 @@ private enum RuleSelection: CaseIterable, Equatable {
 private extension ApplyMosaicRuleToRastersView {
     @MainActor
     class Model: ObservableObject {
-        /// A map with viewpoint set to Amberg, Germany.
+        /// A map with a topographic style.
         let map: Map = {
             let map = Map(basemapStyle: .arcGISTopographic)
-            map.initialViewpoint = Viewpoint(
-                center: Point(
-                    x: 1320141.02289,
-                    y: 6350455.2239
-                ),
-                scale: 25000
-            )
             return map
         }()
         
