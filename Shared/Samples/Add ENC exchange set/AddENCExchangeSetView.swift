@@ -47,7 +47,7 @@ struct AddENCExchangeSetView: View {
                 .task {
                     do {
                         isLoading = true
-                        try await model.addENCExchangeSet(proxy: mapProxy)
+                        try await model.addENCExchangeSet(mapProxy: mapProxy)
                     } catch {
                         self.error = error
                     }
@@ -71,10 +71,10 @@ private extension AddENCExchangeSetView {
             return map
         }()
         
-        var completeExtent: Envelope?
+        private var completeExtent: Envelope?
         
         /// A URL to the temporary SENC data directory.
-        let temporaryURL: URL = {
+        private let temporaryURL: URL = {
             let directoryURL = FileManager.default.temporaryDirectory.appendingPathComponent(
                 ProcessInfo().globallyUniqueString
             )
@@ -86,7 +86,9 @@ private extension AddENCExchangeSetView {
             return directoryURL
         }()
         
-        func addENCExchangeSet(proxy: MapViewProxy) async throws {
+        /// Gets the ENC exchange set data and loads it and sets the display settings.
+        /// - Parameter mapProxy: MapView proxy
+        func addENCExchangeSet(mapProxy: MapViewProxy) async throws {
             let exchangeSet = ENCExchangeSet(fileURLs: [.exchangeSet])
             // URL to the "hydrography" data folder that contains the "S57DataDictionary.xml" file.
             let resourceURL = URL.hydrographyDirectory.deletingLastPathComponent()
@@ -98,14 +100,19 @@ private extension AddENCExchangeSetView {
             updateDisplaySettings()
             try await exchangeSet.load()
             if exchangeSet.loadStatus == .loaded {
-                try await renderENCData(
-                    dataSet: exchangeSet.datasets,
-                    mapProxy: proxy
-                )
+                try await renderENCData(dataSet: exchangeSet.datasets)
+                if let extent = completeExtent {
+                    await mapProxy.setViewpoint(
+                        Viewpoint(center: extent.center, scale: 67000)
+                    )
+                }
             }
         }
         
-        private func renderENCData(dataSet: [ENCDataset], mapProxy: MapViewProxy) async throws {
+        
+        /// Maps the exchange set data to ENC layer and ENC cells and loads the layers.
+        /// - Parameter dataSet: ENC dataset
+        private func renderENCData(dataSet: [ENCDataset]) async throws {
             let encLayers = dataSet.map {
                 ENCLayer(
                     cell: ENCCell(
@@ -127,11 +134,6 @@ private extension AddENCExchangeSetView {
                         )
                     }
                 }
-            }
-            if let extent = completeExtent {
-                await mapProxy.setViewpoint(
-                    Viewpoint(center: extent.center, scale: 67000)
-                )
             }
         }
         
