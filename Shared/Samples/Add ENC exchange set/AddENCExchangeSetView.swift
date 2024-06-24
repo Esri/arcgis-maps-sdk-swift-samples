@@ -22,6 +22,7 @@ struct AddENCExchangeSetView: View {
     /// The error shown in the error alert.
     @State private var error: Error?
     
+    /// The data model for the sample.
     @StateObject private var model = Model()
     
     var body: some View {
@@ -60,7 +61,7 @@ struct AddENCExchangeSetView: View {
 private extension AddENCExchangeSetView {
     @MainActor
     class Model: ObservableObject {
-        /// A map with viewpoint set to Amberg, Germany.
+        /// A map with Oceans style.
         let map: Map = {
             let map = Map(basemapStyle: .arcGISOceans)
             map.initialViewpoint = Viewpoint(
@@ -71,6 +72,8 @@ private extension AddENCExchangeSetView {
             return map
         }()
         
+        /// The geometry that represents a rectangular shape that encompasses the area on the
+        /// map where the ENC data will be rendering.
         private var completeExtent: Envelope?
         
         /// A URL to the temporary SENC data directory.
@@ -87,7 +90,7 @@ private extension AddENCExchangeSetView {
         }()
         
         /// Gets the ENC exchange set data and loads it and sets the display settings.
-        /// - Parameter mapProxy: MapView proxy
+        /// - Parameter mapProxy: MapView proxy for centering the map on the ENC envelope.
         func addENCExchangeSet(mapProxy: MapViewProxy) async throws {
             let exchangeSet = ENCExchangeSet(fileURLs: [.exchangeSet])
             // URL to the "hydrography" data folder that contains the "S57DataDictionary.xml" file.
@@ -111,7 +114,7 @@ private extension AddENCExchangeSetView {
         
         
         /// Maps the exchange set data to ENC layer and ENC cells and loads the layers.
-        /// - Parameter dataSet: ENC dataset
+        /// - Parameter dataSet: The ENC dataset previously loaded.
         private func renderENCData(dataSet: [ENCDataset]) async throws {
             let encLayers = dataSet.map {
                 ENCLayer(
