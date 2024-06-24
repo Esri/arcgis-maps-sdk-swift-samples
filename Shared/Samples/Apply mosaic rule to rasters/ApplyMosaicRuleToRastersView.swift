@@ -16,7 +16,7 @@ import ArcGIS
 import SwiftUI
 
 struct ApplyMosaicRuleToRastersView: View {
-    // The tracking status for the loading operation.
+    /// The tracking status for the loading operation.
     @State private var isLoading = false
     
     /// The error shown in the error alert.
