@@ -25,6 +25,9 @@ struct ApplyMosaicRuleToRastersView: View {
     /// The data model for the sample.
     @StateObject private var model = Model()
     
+    /// Holds the reference to the currently selected rule.
+    @State private var ruleSelection: RuleSelection = .objectID
+    
     var body: some View {
         MapViewReader { mapProxy in
             MapView(map: model.map)
@@ -43,7 +46,7 @@ struct ApplyMosaicRuleToRastersView: View {
                             .shadow(radius: 50)
                     }
                 }
-                .task(id: model.ruleSelection) {
+                .task {
                     guard let rasterLayer = model.map.operationalLayers.first as? RasterLayer else {
                         return
                     }
@@ -62,21 +65,19 @@ struct ApplyMosaicRuleToRastersView: View {
                 }
                 .toolbar {
                     ToolbarItemGroup(placement: .bottomBar) {
-                        Picker("Mosiac Rules", selection: $model.ruleSelection) {
+                        Picker("Mosiac Rules", selection: $ruleSelection) {
                             ForEach(RuleSelection.allCases, id: \.self) { rule in
                                 Text(rule.label)
                             }
                         }
-                        .onChange(of: model.ruleSelection) { ruleSelection in
-                            Task {
-                                model.imageServiceRaster.mosaicRule = ruleSelection.rule
-                                await mapProxy.setViewpoint(
-                                    Viewpoint(
-                                        center: model.imageServiceRasterCenter,
-                                        scale: 25000
-                                    )
+                        .task(id: ruleSelection) {
+                            model.imageServiceRaster.mosaicRule = ruleSelection.rule
+                            await mapProxy.setViewpoint(
+                                Viewpoint(
+                                    center: model.imageServiceRasterCenter,
+                                    scale: 25000
                                 )
-                            }
+                            )
                         }
                         .pickerStyle(.automatic)
                     }
@@ -115,11 +116,11 @@ private enum RuleSelection: CaseIterable, Equatable {
             mosaicRule.mosaicMethod = .northwest
             mosaicRule.mosaicOperation = .first
         case .center:
-            // Sets the mosiac method to center and uses blend operation.
+            // Sets the mosaic method to center and uses blend operation.
             mosaicRule.mosaicMethod = .center
             mosaicRule.mosaicOperation = .blend
         case .byAttribute:
-            // Sets the mosiac method to attribute and sorts on "OBJECTID"
+            // Sets the mosaic method to attribute and sorts on "OBJECTID"
             // field of the service.
             mosaicRule.mosaicMethod = .attribute
             mosaicRule.sortField = "OBJECTID"
@@ -135,9 +136,6 @@ private enum RuleSelection: CaseIterable, Equatable {
 private extension ApplyMosaicRuleToRastersView {
     @MainActor
     class Model: ObservableObject {
-        /// Holds the reference to the currently selected rule.
-        @Published var ruleSelection: RuleSelection = .objectID
-        
         /// A map with viewpoint set to Amberg, Germany.
         let map: Map = {
             let map = Map(basemapStyle: .arcGISTopographic)
