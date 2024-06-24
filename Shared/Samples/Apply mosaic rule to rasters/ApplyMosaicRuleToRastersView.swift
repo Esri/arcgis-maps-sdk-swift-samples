@@ -16,8 +16,8 @@ import ArcGIS
 import SwiftUI
 
 struct ApplyMosaicRuleToRastersView: View {
-    /// The current draw status of the map.
-    @State private var currentDrawStatus: DrawStatus = .inProgress
+    // The tracking status for the loading operation.
+    @State private var isLoading = false
     
     /// The error shown in the error alert.
     @State private var error: Error?
@@ -32,13 +32,15 @@ struct ApplyMosaicRuleToRastersView: View {
         MapViewReader { mapProxy in
             MapView(map: model.map)
                 .onDrawStatusChanged { drawStatus in
-                    // Updates the state when the map's draw status changes.
+                    // Updates the the loading state when the map's draw status is completed.
                     withAnimation {
-                        currentDrawStatus = drawStatus
+                        if drawStatus == .completed {
+                            isLoading = false
+                        }
                     }
                 }
                 .overlay(alignment: .center) {
-                    if currentDrawStatus == .inProgress {
+                    if isLoading {
                         ProgressView("Loading...")
                             .padding()
                             .background(.ultraThickMaterial)
@@ -71,6 +73,7 @@ struct ApplyMosaicRuleToRastersView: View {
                             }
                         }
                         .task(id: ruleSelection) {
+                            isLoading = true
                             model.imageServiceRaster.mosaicRule = ruleSelection.rule
                             await mapProxy.setViewpoint(
                                 Viewpoint(
