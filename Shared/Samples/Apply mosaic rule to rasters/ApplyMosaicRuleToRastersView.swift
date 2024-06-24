@@ -65,7 +65,7 @@ struct ApplyMosaicRuleToRastersView: View {
                 }
                 .toolbar {
                     ToolbarItemGroup(placement: .bottomBar) {
-                        Picker("Mosiac Rules", selection: $ruleSelection) {
+                        Picker("Mosaic Rule", selection: $ruleSelection) {
                             ForEach(RuleSelection.allCases, id: \.self) { rule in
                                 Text(rule.label)
                             }
@@ -101,7 +101,7 @@ private enum RuleSelection: CaseIterable, Equatable {
         }
     }
     
-    /// For the selected rule type it creates a new `MosiacRule`
+    /// For the selected rule type it creates a new `MosaicRule`
     /// and applies the selected and attributes.
     var rule: MosaicRule {
         let mosaicRule = MosaicRule()
@@ -134,7 +134,6 @@ private enum RuleSelection: CaseIterable, Equatable {
 }
 
 private extension ApplyMosaicRuleToRastersView {
-    @MainActor
     class Model: ObservableObject {
         /// A map with a topographic style.
         let map: Map = {
