@@ -71,7 +71,7 @@ struct SnapGeometryEditsView: View {
                             // Various snapping settings for a geometry editor.
                             SnapSettingsView(model: model)
                         }
-                        .presentationDetents([.fraction(0.5)])
+                        .presentationDetents([.fraction(0.6)])
                         .frame(idealWidth: 320, idealHeight: 380)
                     }
                     .disabled(!layersAreLoaded)
