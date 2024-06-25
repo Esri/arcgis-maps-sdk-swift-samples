@@ -27,8 +27,8 @@ extension SnapGeometryEditsView {
         /// for the geometry editor.
         @State private var snappingEnabled = false
         
-        /// An array of snap source layer names and their source settings.
-        @State private var snapSources: [(layerName: String, sourceSettings: SnapSourceSettings)] = []
+        /// An array of snap source names and their source settings.
+        @State private var snapSources: [(name: String, sourceSettings: SnapSourceSettings)] = []
         
         /// An array of Boolean values for each snap source enabled states.
         @State private var snapSourceEnabledStates: [Bool] = []
@@ -44,7 +44,7 @@ extension SnapGeometryEditsView {
                 
                 Section("Individual Source Snapping") {
                     ForEach(0 ..< snapSources.count, id: \.self) { index in
-                        Toggle(snapSources[index].layerName, isOn: $snapSourceEnabledStates[index])
+                        Toggle(snapSources[index].name, isOn: $snapSourceEnabledStates[index])
                             .onChange(of: snapSourceEnabledStates[index]) { newValue in
                                 snapSources[index].sourceSettings.isEnabled = newValue
                             }
