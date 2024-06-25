@@ -11,6 +11,19 @@ import SwiftUI
 
 struct ShowServiceAreaView: View {
     @StateObject private var model = Model()
+    
+    /// The point on the map where the user tapped.
+    @State private var tapLocation: Point?
+    
+    @State private var firstTimeBreak: Double = 3
+    @State private var secondTimeBreak: Double = 8
+    
+    var selections = ["Facilities", "Barriers"]
+
+//    @State private var timeElement = "Time"
+//    
+    @State private var selected = "Facilities"
+    
     var body: some View {
         MapViewReader { mapProxy in
             MapView(
@@ -21,22 +34,47 @@ struct ShowServiceAreaView: View {
                     model.serviceAreaGraphicsOverlay
                 ]
             )
-            .onSingleTapGesture { tapPoint, point in
-                model.onTap(point: point)
-                Task {
-                    do {
-                        try await model.serviceArea()
-                    } catch {
-                        print(error)
-                    }
-                }
+            .onSingleTapGesture { _, point in
+                tapLocation = point
+                model.onTap(point: point, selection: self.selected)
             }
-            .task {
-                do {
-                    //                    try await model.setServiceArea()
-                    try await model.serviceArea()
-                } catch {
-                    print(error)
+            .toolbar {
+                ToolbarItemGroup(placement: .bottomBar) {
+                    Picker("Mode", selection: $selected) {
+                        ForEach(selections, id: \.self) {
+                            Text($0)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                    Menu(content: {
+                        Slider(value: $firstTimeBreak,
+                               in: 1...10,
+                               step: 1,
+                               label: { Text("First Break: \(Int(firstTimeBreak))") }
+                        )
+                        .padding(.horizontal, 4)
+                        .padding(.vertical, 4)
+                        
+                        Slider(value: $secondTimeBreak,
+                               in: 1...10,
+                               step: 1,
+                               label: { Text("Second Break: \(Int(secondTimeBreak))") }
+                        )
+                        .padding(.horizontal, 4)
+                        .padding(.vertical, 4)
+                    }, label: { Text("Time Break") })
+                    Button("Facs") {
+                        Task {
+                            do {
+                                try await model.serviceArea()
+                            } catch {
+                                print(error.localizedDescription)
+                            }
+                        }
+                    }
+                    Button("Clear") {
+                        model.removeAllGraphics()
+                    }
                 }
             }
         }
@@ -50,7 +88,11 @@ private extension ShowServiceAreaView {
         let map: Map = {
             let map = Map(basemapStyle: .arcGISTerrain)
             map.initialViewpoint = Viewpoint(
-                center: Point(x: -13041154, y: 3858170, spatialReference: .webMercator),
+                center: Point(
+                    x: -13041154,
+                    y: 3858170,
+                    spatialReference: .webMercator
+                ),
                 scale: 60000
             )
             return map
@@ -58,7 +100,7 @@ private extension ShowServiceAreaView {
         
         var facilitiesGraphicsOverlay: GraphicsOverlay = {
             var facilitiesGraphicsOverlay = GraphicsOverlay()
-            let facilitySymbol = PictureMarkerSymbol(image: UIImage(named: "RedMarker")!)
+            let facilitySymbol = PictureMarkerSymbol(image: UIImage(named: "PinBlueStar")!)
             //PictureMarkerSymbol(image: UIImage(named: "Facility")!)
             // offset symbol in Y to align image properly
             facilitySymbol.offsetY = 21
@@ -83,22 +125,21 @@ private extension ShowServiceAreaView {
         var secondTimeBreak: Int = 8
         
         func setServiceArea() async throws {
-            self.serviceAreaTask = ServiceAreaTask(url: URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/NetworkAnalysis/SanDiego/NAServer/ServiceArea")!)
-            try await getDefaultParameters()
+            serviceAreaTask = ServiceAreaTask(url: .serviceArea)
+            serviceAreaParameters = try await serviceAreaTask.makeDefaultParameters()
         }
         
-        func onTap(point: Point) {
-            let graphic = Graphic(geometry: point, symbol: nil)
-            self.facilitiesGraphicsOverlay.addGraphic(graphic)
-            let bufferedGeometry = GeometryEngine.buffer(around: point, distance: 500)
-            //bufferGeometry(point, byDistance: 500)
-            let graphic2 = Graphic(geometry: bufferedGeometry, symbol: nil)
-            self.barriersGraphicsOverlay.addGraphic(graphic2)
-            //                  } else {
-            //                      // barriers selected
-            //                      let bufferedGeometry = AGSGeometryEngine.bufferGeometry(mapPoint, byDistance: 500)
-            //                      let graphic = AGSGraphic(geometry: bufferedGeometry, symbol: nil, attributes: nil)
-            //                      self.barriersGraphicsOverlay.graphics.add(graphic)
+        func onTap(point: Point, selection: String) {
+            if selection == "Facilities" {
+                // facilities selected
+                let graphic = Graphic(geometry: point, symbol: nil)
+                self.facilitiesGraphicsOverlay.addGraphic(graphic)
+            } else {
+                // barriers selected
+                let bufferedGeometry = GeometryEngine.buffer(around: point, distance: 500)
+                let graphic = Graphic(geometry: bufferedGeometry, symbol: nil)
+                self.barriersGraphicsOverlay.addGraphic(graphic)
+            }
         }
         
         func serviceArea() async throws {
@@ -106,26 +147,17 @@ private extension ShowServiceAreaView {
             
             // remove previously added service areas
             serviceAreaGraphicsOverlay.removeAllGraphics()
-            
             let facilitiesGraphics = facilitiesGraphicsOverlay.graphics
-            //
-            //               // check if at least a single facility is added
-            //               guard !facilitiesGraphics.isEmpty else {
-            //                   presentAlert(message: "At least one facility is required")
-            //                   return
-            //               }
-            
+            // check if at least a single facility is added
             // add facilities
             var facilities = [ServiceAreaFacility]()
-            
             // for each graphic in facilities graphicsOverlay add a facility to the parameters
             for graphic in facilitiesGraphics {
                 let point = graphic.geometry as! Point
                 let facility = ServiceAreaFacility(point: point)
                 facilities.append(facility)
             }
-            self.serviceAreaParameters.setFacilities(facilities)
-            
+            serviceAreaParameters.setFacilities(facilities)
             // add barriers
             var barriers = [PolygonBarrier]()
             
@@ -136,35 +168,74 @@ private extension ShowServiceAreaView {
                 barriers.append(barrier)
             }
             serviceAreaParameters.setPolygonBarriers(barriers)
+            serviceAreaParameters.removeAllDefaultImpedanceCutoffs()
             serviceAreaParameters.addDefaultImpedanceCutoffs([Double(firstTimeBreak), Double(secondTimeBreak)])
+            //            serviceAreaParameters.removeDefaultImpedanceCutoff(5.0)
             serviceAreaParameters.geometryAtOverlap = .dissolve
-            print("here")
             let result = try await serviceAreaTask.solveServiceArea(using: serviceAreaParameters)
-            
             let polygons = result.resultPolygons(forFacilityAtIndex: 0)
             for i in polygons.indices {
                 let polygon = polygons[i]
-                let fillSymbol = self.serviceAreaSymbol(for: i)
+                let fillSymbol = serviceAreaSymbol(for: i)
                 let graphic = Graphic(geometry: polygon.geometry, symbol: fillSymbol)
-                self.serviceAreaGraphicsOverlay.addGraphic(graphic)
+                serviceAreaGraphicsOverlay.addGraphic(graphic)
             }
         }
         
-        private func getDefaultParameters() async throws {
-            // get default parameters
-            serviceAreaParameters = try await self.serviceAreaTask.makeDefaultParameters()
+        func removeAllGraphics() {
+            serviceAreaGraphicsOverlay.removeAllGraphics()
+            facilitiesGraphicsOverlay.removeAllGraphics()
+            barriersGraphicsOverlay.removeAllGraphics()
         }
+        
+        
         
         private func serviceAreaSymbol(for index: Int) -> Symbol {
             // fill symbol for service area
             var fillSymbol: SimpleFillSymbol
             
             if index == 0 {
-                let lineSymbol = SimpleLineSymbol(style: .solid, color: UIColor(red: 0.4, green: 0.4, blue: 0, alpha: 0.3), width: 2)
-                fillSymbol = SimpleFillSymbol(style: .solid, color: UIColor(red: 0.8, green: 0.8, blue: 0, alpha: 0.3), outline: lineSymbol)
+                let lineSymbol = SimpleLineSymbol(
+                    style: .solid,
+                    color: UIColor(
+                        red: 0.4,
+                        green: 0.4,
+                        blue: 0,
+                        alpha: 0.3
+                    ),
+                    width: 2
+                )
+                fillSymbol = SimpleFillSymbol(
+                    style: .solid,
+                    color: UIColor(
+                        red: 0.8,
+                        green: 0.8,
+                        blue: 0,
+                        alpha: 0.3
+                    ),
+                    outline: lineSymbol
+                )
             } else {
-                let lineSymbol = SimpleLineSymbol(style: .solid, color: UIColor(red: 0, green: 0.4, blue: 0, alpha: 0.3), width: 2)
-                fillSymbol = SimpleFillSymbol(style: .solid, color: UIColor(red: 0, green: 0.8, blue: 0, alpha: 0.3), outline: lineSymbol)
+                let lineSymbol = SimpleLineSymbol(
+                    style: .solid,
+                    color: UIColor(
+                        red: 0,
+                        green: 0.4,
+                        blue: 0,
+                        alpha: 0.3
+                    ),
+                    width: 2
+                )
+                fillSymbol = SimpleFillSymbol(
+                    style: .solid,
+                    color: UIColor(
+                        red: 0,
+                        green: 0.8,
+                        blue: 0,
+                        alpha: 0.3
+                    ),
+                    outline: lineSymbol
+                )
             }
             
             return fillSymbol
