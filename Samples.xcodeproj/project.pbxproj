@@ -1716,7 +1716,8 @@
 				954AEDED2C01332600265114 /* SelectFeaturesInSceneLayerView.swift */,
 			);
 			path = "Select features in scene layer";
-    };
+			sourceTree = "<group>";
+		};
 		955271622C0E6750009B1ED4 /* Add raster from service */ = {
 			isa = PBXGroup;
 			children = (
