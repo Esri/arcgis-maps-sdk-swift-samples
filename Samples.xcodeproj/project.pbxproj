@@ -183,6 +183,7 @@
 		883C121929C914E100062FF9 /* DownloadPreplannedMapAreaView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E070A0A2286F3B6000F2B606 /* DownloadPreplannedMapAreaView.swift */; };
 		88F93CC129C3D59D0006B28E /* CreateAndEditGeometriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F93CC029C3D59C0006B28E /* CreateAndEditGeometriesView.swift */; };
 		88F93CC229C4D3480006B28E /* CreateAndEditGeometriesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 88F93CC029C3D59C0006B28E /* CreateAndEditGeometriesView.swift */; };
+		950D5B0D2C2CC35D00DF2E4E /* hydrography in Resources */ = {isa = PBXBuildFile; fileRef = 950D5B0C2C2CC35D00DF2E4E /* hydrography */; settings = {ASSET_TAGS = (AddEncExchangeSet, ); }; };
 		9529D1942C01676200B5C1A3 /* SelectFeaturesInSceneLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 954AEDED2C01332600265114 /* SelectFeaturesInSceneLayerView.swift */; };
 		9537AFB42C2208B5000923C5 /* AddENCExchangeSetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9537AFB32C2208B5000923C5 /* AddENCExchangeSetView.swift */; };
 		9537AFD72C220EF0000923C5 /* ExchangeSetwithoutUpdates in Resources */ = {isa = PBXBuildFile; fileRef = 9537AFD62C220EF0000923C5 /* ExchangeSetwithoutUpdates */; settings = {ASSET_TAGS = (AddEncExchangeSet, ); }; };
@@ -814,6 +815,7 @@
 		79D84D0D2A815C5B00F45262 /* AddCustomDynamicEntityDataSourceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCustomDynamicEntityDataSourceView.swift; sourceTree = "<group>"; };
 		883C121429C9136600062FF9 /* DownloadPreplannedMapAreaView.MapPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadPreplannedMapAreaView.MapPicker.swift; sourceTree = "<group>"; };
 		88F93CC029C3D59C0006B28E /* CreateAndEditGeometriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAndEditGeometriesView.swift; sourceTree = "<group>"; };
+		950D5B0C2C2CC35D00DF2E4E /* hydrography */ = {isa = PBXFileReference; lastKnownFileType = folder; path = hydrography; sourceTree = "<group>"; };
 		9537AFB32C2208B5000923C5 /* AddENCExchangeSetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddENCExchangeSetView.swift; sourceTree = "<group>"; };
 		9537AFD62C220EF0000923C5 /* ExchangeSetwithoutUpdates */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExchangeSetwithoutUpdates; sourceTree = "<group>"; };
 		954AEDED2C01332600265114 /* SelectFeaturesInSceneLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectFeaturesInSceneLayerView.swift; sourceTree = "<group>"; };
@@ -1327,6 +1329,7 @@
 		00CCB8A6285D059300BBAB70 /* Portal Data */ = {
 			isa = PBXGroup;
 			children = (
+				950D5AF62C2CC2F100DF2E4E /* c16f3845b9cc4b93a908d87d28823afd */,
 				9537AFC82C220ECB000923C5 /* 9d2987a825c646468b3ce7512fb76e2d */,
 				D762AF642BF6A96100ECE3C7 /* 74c0c9fa80f4498c9739cc42531e9948 */,
 				004A2B962BED454300C297CE /* 740b663bff5e4198b9b6674af93f638a */,
@@ -1694,6 +1697,14 @@
 			path = "Create and edit geometries";
 			sourceTree = "<group>";
 		};
+		950D5AF62C2CC2F100DF2E4E /* c16f3845b9cc4b93a908d87d28823afd */ = {
+			isa = PBXGroup;
+			children = (
+				950D5B0C2C2CC35D00DF2E4E /* hydrography */,
+			);
+			path = c16f3845b9cc4b93a908d87d28823afd;
+			sourceTree = "<group>";
+		};
 		9537AFB52C2208CD000923C5 /* Add ENC exchange set */ = {
 			isa = PBXGroup;
 			children = (
@@ -1732,14 +1743,6 @@
 				955AFAC32C10FD6F009C8FE5 /* ApplyMosaicRuleToRastersView.swift */,
 			);
 			path = "Apply mosaic rule to rasters";
-			sourceTree = "<group>";
-		};
-		95A5721A2C0FDCCE006E8B48 /* Show scale bar */ = {
-			isa = PBXGroup;
-			children = (
-				95A572182C0FDCC9006E8B48 /* ShowScaleBarView.swift */,
-			);
-			path = "Show scale bar";
 			sourceTree = "<group>";
 		};
 		95A5721A2C0FDCCE006E8B48 /* Show scale bar */ = {
@@ -2837,6 +2840,7 @@
 				E041AC1E288076A60056009B /* info.css in Resources */,
 				D7CE9F9B2AE2F575008F7A5F /* streetmap_SD.tpkx in Resources */,
 				D721EEA82ABDFF550040BE46 /* LothianRiversAnno.mmpk in Resources */,
+				950D5B0D2C2CC35D00DF2E4E /* hydrography in Resources */,
 				D7C16D1F2AC5FE8200689E89 /* Pyrenees.csv in Resources */,
 				E041AC1A287F54580056009B /* highlight.min.js in Resources */,
 				D7497F402AC4BA4100167AD2 /* Edinburgh_Pylon_Dimensions.mmpk in Resources */,
