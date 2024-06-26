@@ -16,7 +16,7 @@ import ArcGIS
 import SwiftUI
 
 struct AddENCExchangeSetView: View {
-    // The tracking status for the loading operation.
+    /// The tracking status for the loading operation.
     @State private var isLoading = false
     
     /// The error shown in the error alert.
@@ -38,7 +38,7 @@ struct AddENCExchangeSetView: View {
                 }
                 .overlay(alignment: .center) {
                     if isLoading {
-                        ProgressView("Loading...")
+                        ProgressView("Loading…")
                             .padding()
                             .background(.ultraThickMaterial)
                             .cornerRadius(10)
@@ -111,7 +111,6 @@ private extension AddENCExchangeSetView {
                 }
             }
         }
-        
         
         /// Maps the exchange set data to ENC layer and ENC cells and loads the layers.
         /// - Parameter dataSet: The ENC dataset previously loaded.
