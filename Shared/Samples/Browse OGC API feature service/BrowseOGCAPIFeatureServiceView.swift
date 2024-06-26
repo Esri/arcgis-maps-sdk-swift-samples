@@ -1,22 +1,36 @@
+// Copyright 2024 Esri
 //
-//  BrowseOGCAPIFeatureServiceView.swift
-//  Samples
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
 //
-//  Created by Christopher Webb on 6/21/24.
-//  Copyright © 2024 Esri. All rights reserved.
+//   https://www.apache.org/licenses/LICENSE-2.0
 //
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 import ArcGIS
 import ArcGISToolkit
 import SwiftUI
 
 struct BrowseOGCAPIFeatureServiceView: View {
+    /// The error shown in the error alert.
     @State private var error: Error?
+    
+    /// Ensures that the alert is only shown once.
     @State private var presentAlert = true
+    
+    /// The data model for the sample.
     @StateObject private var model = Model()
+    
+    /// The user input for the OGC service resource.
     @State private var userInput = "https://demo.ldproxy.net/daraa"
+    
+    /// The selected layer name.
     @State private var selection = ""
-    @State private var shown: Bool = false
     
     var body: some View {
         MapViewReader { mapProxy in
@@ -24,15 +38,17 @@ struct BrowseOGCAPIFeatureServiceView: View {
                 .toolbar {
                     ToolbarItemGroup(placement: .bottomBar) {
                         Picker("Layers", selection: $selection) {
-                            ForEach(model.elements, id: \.self) { title in
+                            ForEach(model.layerNames, id: \.self) { title in
                                 Text(title)
                             }
                         }.task(id: selection) {
-                            let element = model.featureCollectionInfos.first(where: { $0.title == selection })
-                            model.selectedInfo = element
+                            model.update(for: selection)
                             if let selection = model.selectedInfo {
                                 do {
-                                    try await model.displayLayer(with: selection, proxy: mapProxy)
+                                    try await model.displayLayer(
+                                        with: selection,
+                                        proxy: mapProxy
+                                    )
                                 } catch {
                                     self.error = error
                                 }
@@ -47,7 +63,10 @@ struct BrowseOGCAPIFeatureServiceView: View {
                         presentAlert = false
                         Task {
                             do {
-                                try await model.loadOGCFeatureData(mapProxy: mapProxy, url: URL(string: userInput))
+                                try await model.loadOGCFeatureData(
+                                    mapProxy: mapProxy,
+                                    url: URL(string: userInput)
+                                )
                             } catch {
                                 self.error = error
                             }
@@ -75,15 +94,15 @@ private extension BrowseOGCAPIFeatureServiceView {
             )
             return map
         }()
+    
+        @Published var layerNames: [String] = []
         
-        @Published var elements: [String] = []
-        
-        var featureCollectionInfos: [OGCFeatureCollectionInfo] = []
+        private var featureCollectionInfos: [OGCFeatureCollectionInfo] = []
         private var service: OGCFeatureService!
         var selectedInfo: OGCFeatureCollectionInfo?
         
         /// The query parameters to populate features from the OGC API service.
-        let queryParameters: QueryParameters = {
+        private let queryParameters: QueryParameters = {
             let queryParameters = QueryParameters()
             // Set a limit of 1000 on the number of returned features per request,
             // because the default on some services could be as low as 10.
@@ -91,38 +110,86 @@ private extension BrowseOGCAPIFeatureServiceView {
             return queryParameters
         }()
         
-        func getRendererForTable(withType geometryType: Geometry.Type) -> SimpleRenderer? {
+        
+        /// Returns a renderer for a specified geometry type.
+        /// - Parameter geometryType: The ARCGis Geometry type.
+        /// - Returns: Returns a `SimpleRenderer` optional with the correct settings for the given geometry.
+        private func getRendererForTable(withType geometryType: Geometry.Type) -> SimpleRenderer? {
             var renderer: SimpleRenderer?
             if geometryType == Point.self {
-                renderer = SimpleRenderer(symbol: SimpleMarkerSymbol(style: .circle, color: .blue, size: 5))
+                renderer = SimpleRenderer(
+                    symbol: SimpleMarkerSymbol(
+                        style: .circle,
+                        color: .blue,
+                        size: 5
+                    )
+                )
             }
             if geometryType == Multipoint.self {
-                renderer = SimpleRenderer(symbol: SimpleMarkerSymbol(style: .circle, color: .blue, size: 5))
+                renderer = SimpleRenderer(
+                    symbol: SimpleMarkerSymbol(
+                        style: .circle,
+                        color: .blue,
+                        size: 5
+                    )
+                )
             }
             if geometryType == Polyline.self {
-                renderer = SimpleRenderer(symbol: SimpleLineSymbol(style: .solid, color: .blue, width: 1))
+                renderer = SimpleRenderer(
+                    symbol: SimpleLineSymbol(
+                        style: .solid,
+                        color: .blue,
+                        width: 1
+                    )
+                )
             }
             if geometryType == Polygon.self {
-                renderer = SimpleRenderer(symbol: SimpleFillSymbol(style: .solid, color: .blue, outline: nil))
+                renderer = SimpleRenderer(
+                    symbol: SimpleFillSymbol(
+                        style: .solid,
+                        color: .blue,
+                        outline: nil
+                    )
+                )
             }
             return renderer
         }
         
         /// Create and load the OGC API features service from a URL.
-        func makeService(url: URL) async throws -> OGCFeatureService {
+        /// - Parameter url: The URL of the OGC service.
+        /// - Returns: Returns a `OCGFeatureService` that has been loaded and initialized.
+        private func makeService(url: URL) async throws -> OGCFeatureService {
             let service = OGCFeatureService(url: url)
             try await service.load()
             if service.loadStatus == .loaded,
                let serviceInfo = service.serviceInfo {
                 featureCollectionInfos = serviceInfo.featureCollectionInfos
-                self.elements = featureCollectionInfos.map(\.title)
+                layerNames = featureCollectionInfos.map(\.title)
             }
             return service
         }
         
+        
+        /// Loads OGC service for a URL so that it can be rendered on the map.
+        /// - Parameters:
+        ///   - mapProxy: Allows access to `MapView`
+        ///   - url: The URL of the OGC service.
         func loadOGCFeatureData(mapProxy: MapViewProxy, url: URL?) async throws {
-            service = try await makeService(url: url ?? .defaultServiceURL)
-            try await displayLayer(with: featureCollectionInfos[0], proxy: mapProxy)
+            service = try await makeService(
+                url: url ?? .defaultServiceURL
+            )
+            try await displayLayer(
+                with: featureCollectionInfos[0],
+                proxy: mapProxy
+            )
+        }
+        
+        /// Updates the selected info property for the users selection.
+        /// - Parameter selection: String with the name of the selected layer to display.
+        func update(for selection: String) {
+            selectedInfo = featureCollectionInfos.first(where: {
+                $0.title == selection
+            })
         }
         
         /// Load and display a feature layer from the OGC feature collection table.
