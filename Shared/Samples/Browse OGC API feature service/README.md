@@ -40,4 +40,3 @@ See the [OGC API website](https://ogcapi.ogc.org/) for more information on the O
 ## Tags
 
 browse, catalog, feature, layers, OGC, OGC API, service, web
-
