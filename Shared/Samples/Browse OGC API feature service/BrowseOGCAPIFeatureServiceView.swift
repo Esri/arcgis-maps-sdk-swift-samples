@@ -17,6 +17,9 @@ import ArcGISToolkit
 import SwiftUI
 
 struct BrowseOGCAPIFeatureServiceView: View {
+    /// The tracking status for the loading operation.
+    @State private var isLoading = false
+    
     /// The error shown in the error alert.
     @State private var error: Error?
     
@@ -30,47 +33,77 @@ struct BrowseOGCAPIFeatureServiceView: View {
     @State private var userInput = "https://demo.ldproxy.net/daraa"
     
     /// The selected layer name.
-    @State private var selection = ""
+    @State private var selection: String = ""
     
     var body: some View {
         MapViewReader { mapProxy in
             MapView(map: model.map)
+                .onDrawStatusChanged { drawStatus in
+                    // Updates the state when the map's draw status changes.
+                    withAnimation {
+                        if drawStatus == .completed {
+                            isLoading = false
+                        }
+                    }
+                }
+                .overlay(alignment: .center) {
+                    if isLoading {
+                        ProgressView("Loading…")
+                            .padding()
+                            .background(.ultraThickMaterial)
+                            .cornerRadius(10)
+                            .shadow(radius: 50)
+                    }
+                }
                 .toolbar {
                     ToolbarItemGroup(placement: .bottomBar) {
-                        Picker("Layers", selection: $selection) {
-                            ForEach(model.layerNames, id: \.self) { title in
-                                Text(title)
-                            }
-                        }.task(id: selection) {
-                            model.update(for: selection)
-                            if let selection = model.selectedInfo {
-                                do {
-                                    try await model.displayLayer(
-                                        with: selection,
-                                        proxy: mapProxy
-                                    )
-                                } catch {
-                                    self.error = error
+                        Button(action: {
+                            presentAlert = true
+                        }, label: {
+                            Text("Open Service")
+                        })
+                        Spacer()
+                        if !selection.isEmpty {
+                            Picker("Layers", selection: $selection) {
+                                ForEach(model.layerNames, id: \.self) { title in
+                                    Text(title)
+                                }
+                            }.task(id: selection) {
+                                model.update(for: selection)
+                                if let selection = model.selectedInfo {
+                                    do {
+                                        try await model.displayLayer(
+                                            with: selection,
+                                            proxy: mapProxy
+                                        )
+                                    } catch {
+                                        self.error = error
+                                    }
                                 }
                             }
+                            .pickerStyle(.automatic)
                         }
-                        .pickerStyle(.automatic)
                     }
                 }
                 .alert("Load OGC API feature service", isPresented: $presentAlert, actions: {
                     TextField("URL:", text: $userInput)
                     Button("Load", action: {
                         presentAlert = false
+                        isLoading = true
                         Task {
                             do {
                                 try await model.loadOGCFeatureData(
                                     mapProxy: mapProxy,
                                     url: URL(string: userInput)
                                 )
+                                selection = model.layerNames.first ?? ""
                             } catch {
                                 self.error = error
                             }
                         }
+                    })
+                    Button("Cancel", role: .cancel, action: {
+                        presentAlert = false
                     })
                 }, message: {
                     Text("Please provide a URL to an OGC API feature service.")
@@ -94,7 +127,7 @@ private extension BrowseOGCAPIFeatureServiceView {
             )
             return map
         }()
-    
+        
         @Published var layerNames: [String] = []
         
         private var featureCollectionInfos: [OGCFeatureCollectionInfo] = []
@@ -217,5 +250,7 @@ private extension URL {
 }
 
 #Preview {
-    BrowseOGCAPIFeatureServiceView()
+    NavigationStack {
+        BrowseOGCAPIFeatureServiceView()
+    }
 }
