@@ -172,7 +172,7 @@ private extension URL {
     static let hydrographyDirectory = Bundle.main.url(
         forResource: "S57DataDictionary",
         withExtension: "xml",
-        subdirectory: "ExchangeSetwithoutUpdates/ExchangeSetwithoutUpdates/ENC_ROOT/hydrography"
+        subdirectory: "hydrography"
     )!
 }
 
