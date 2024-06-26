@@ -23,7 +23,11 @@ extension SnapGeometryEditsView {
         let geometryEditor = GeometryEditor()
         
         /// The graphics overlay used to save geometries to.
-        let geometryOverlay = GraphicsOverlay(renderingMode: .dynamic)
+        let geometryOverlay: GraphicsOverlay = {
+            let overlay = GraphicsOverlay(renderingMode: .dynamic)
+            overlay.id = "Graphics Overlay"
+            return overlay
+        }()
         
         /// A Boolean value indicating if the saved sketches can be cleared.
         @Published private(set) var canClearSavedSketches = false
