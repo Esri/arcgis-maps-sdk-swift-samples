@@ -59,7 +59,6 @@ struct AddENCExchangeSetView: View {
 }
 
 private extension AddENCExchangeSetView {
-    @MainActor
     class Model: ObservableObject {
         /// A map with Oceans style.
         let map: Map = {
@@ -88,6 +87,16 @@ private extension AddENCExchangeSetView {
             )
             return directoryURL
         }()
+        
+        deinit {
+            // Recursively remove all files in the sample-specific
+            // temporary folder and the folder itself.
+            try? FileManager.default.removeItem(at: temporaryURL)
+            // Reset ENC environment display settings.
+            let displaySettings = ENCEnvironmentSettings.shared.displaySettings
+            displaySettings.textGroupVisibilitySettings.resetToDefaults()
+            displaySettings.viewingGroupSettings.resetToDefaults()
+        }
         
         /// Gets the ENC exchange set data and loads it and sets the display settings.
         /// - Parameter mapProxy: MapView proxy for centering the map on the ENC envelope.
