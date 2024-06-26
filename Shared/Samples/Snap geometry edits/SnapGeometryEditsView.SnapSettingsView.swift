@@ -27,24 +27,24 @@ extension SnapGeometryEditsView {
         /// for the geometry editor.
         @State private var snappingEnabled = false
         
-        /// An array of snap source layer names and their source settings.
-        @State private var snapSources: [(layerName: String, sourceSettings: SnapSourceSettings)] = []
+        /// An array of snap source names and their source settings.
+        @State private var snapSources: [(name: String, sourceSettings: SnapSourceSettings)] = []
         
         /// An array of Boolean values for each snap source enabled states.
         @State private var snapSourceEnabledStates: [Bool] = []
         
         var body: some View {
             Form {
-                Section("Snap Source") {
+                Section("Geometry Editor Snapping") {
                     Toggle("Snapping", isOn: $snappingEnabled)
                         .onChange(of: snappingEnabled) { newValue in
                             model.geometryEditor.snapSettings.isEnabled = newValue
                         }
                 }
                 
-                Section("Layer Snapping") {
+                Section("Individual Source Snapping") {
                     ForEach(0 ..< snapSources.count, id: \.self) { index in
-                        Toggle(snapSources[index].layerName, isOn: $snapSourceEnabledStates[index])
+                        Toggle(snapSources[index].name, isOn: $snapSourceEnabledStates[index])
                             .onChange(of: snapSourceEnabledStates[index]) { newValue in
                                 snapSources[index].sourceSettings.isEnabled = newValue
                             }
@@ -65,11 +65,16 @@ extension SnapGeometryEditsView {
                 model.geometryEditor.snapSettings.isEnabled = true
                 snappingEnabled = model.geometryEditor.snapSettings.isEnabled
                 
-                // Creates an array from snap source layers with their
-                // layer name and source settings.
+                // Creates an array from snap source layers or graphics overlays
+                // with their name and source settings.
                 snapSources = model.geometryEditor.snapSettings.sourceSettings.compactMap { sourceSettings in
-                    guard let layer = sourceSettings.source as? FeatureLayer else { return nil }
-                    return (layer.name, sourceSettings)
+                    if let layer = sourceSettings.source as? FeatureLayer {
+                        return (layer.name, sourceSettings)
+                    } else if let graphicsOverlay = sourceSettings.source as? GraphicsOverlay {
+                        return (graphicsOverlay.id, sourceSettings)
+                    } else {
+                        return nil
+                    }
                 }
                 
                 // Initializes the enabled states from the snap sources.

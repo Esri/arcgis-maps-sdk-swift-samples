@@ -12,9 +12,9 @@ A field worker can create new features by editing and snapping the vertices of a
 
 To create a geometry, press the create button to choose the geometry type you want to create (i.e. points, multipoints, polyline, or polygon) and interactively tap and drag on the map view to create the geometry.
 
-To configure snapping, press the snap settings button to enable or disable snapping and choose which layers to snap to.
+To configure snapping, press the snap settings button to enable or disable snapping and choose which snap sources to snap to.
 
-To interactively snap a vertex, ensure that snapping is enabled and move the mouse pointer or drag a vertex close to an existing feature. When the pointer is close to a feature, the edit position will be adjusted to coincide with (or snap to), edges and vertices of that feature. Release the touch pointer to place the vertex at the snapped location.
+To interactively snap a vertex to a feature or graphic, ensure that snapping is enabled for the relevant snap source and move the mouse pointer or drag a vertex close to an existing feature or graphic. When the pointer is close to that existing geoelement, the edit position will be adjusted to coincide with (or snap to), edges and vertices of its geometry. Release the touch pointer to place the vertex at the snapped location.
 
 To more clearly see how the vertex is snapped, long press to invoke the magnifier before starting to move the pointer.
 
@@ -33,6 +33,7 @@ To more clearly see how the vertex is snapped, long press to invoke the magnifie
 * Geometry
 * GeometryEditor
 * GeometryEditorStyle
+* GraphicsOverlay
 * MapView
 * SnapSettings
 * SnapSource
@@ -52,4 +53,4 @@ Snapping can be used during interactive edits that move existing vertices using 
 
 ## Tags
 
-edit, feature, geometry editor, layers, map, snapping
+edit, feature, geometry editor, graphics, layers, map, snapping
