@@ -57,9 +57,9 @@ struct BrowseOGCAPIFeatureServiceView: View {
                         .pickerStyle(.automatic)
                     }
                 }
-                .alert("Set URL", isPresented: $presentAlert, actions: {
+                .alert("Load OGC API feature service", isPresented: $presentAlert, actions: {
                     TextField("URL:", text: $userInput)
-                    Button("Go", action: {
+                    Button("Load", action: {
                         presentAlert = false
                         Task {
                             do {
@@ -73,7 +73,7 @@ struct BrowseOGCAPIFeatureServiceView: View {
                         }
                     })
                 }, message: {
-                    Text("Please enter the address of the OGC API")
+                    Text("Please provide a URL to an OGC API feature service.")
                 })
                 .errorAlert(presentingError: $error)
         }
@@ -109,7 +109,6 @@ private extension BrowseOGCAPIFeatureServiceView {
             queryParameters.maxFeatures = 1_000
             return queryParameters
         }()
-        
         
         /// Returns a renderer for a specified geometry type.
         /// - Parameter geometryType: The ARCGis Geometry type.
@@ -168,7 +167,6 @@ private extension BrowseOGCAPIFeatureServiceView {
             }
             return service
         }
-        
         
         /// Loads OGC service for a URL so that it can be rendered on the map.
         /// - Parameters:
