@@ -17,9 +17,6 @@ import ArcGISToolkit
 import SwiftUI
 
 struct BrowseOGCAPIFeatureServiceView: View {
-    /// The tracking status for the loading operation.
-    @State private var isLoading = false
-    
     /// The error shown in the error alert.
     @State private var error: Error?
     
@@ -38,31 +35,12 @@ struct BrowseOGCAPIFeatureServiceView: View {
     var body: some View {
         MapViewReader { mapProxy in
             MapView(map: model.map)
-                .onDrawStatusChanged { drawStatus in
-                    // Updates the state when the map's draw status changes.
-                    withAnimation {
-                        if drawStatus == .completed {
-                            isLoading = false
-                        }
-                    }
-                }
-                .overlay(alignment: .center) {
-                    if isLoading {
-                        ProgressView("Loading…")
-                            .padding()
-                            .background(.ultraThickMaterial)
-                            .cornerRadius(10)
-                            .shadow(radius: 50)
-                    }
-                }
                 .toolbar {
                     ToolbarItemGroup(placement: .bottomBar) {
                         // The button in toolbar that allows user to launch the load alert.
-                        Button(action: {
+                        Button("Open Service") {
                             presentAlert = true
-                        }, label: {
-                            Text("Open Service")
-                        })
+                        }
                         Spacer()
                         // The layers button will not appear until selection is set.
                         if !selection.isEmpty {
@@ -93,9 +71,8 @@ struct BrowseOGCAPIFeatureServiceView: View {
                 .alert("Load OGC API feature service", isPresented: $presentAlert, actions: {
                     // Alert is set with a default url for the OGC API, the user can update the url.
                     TextField("URL:", text: $userInput)
-                    Button("Load", action: {
+                    Button("Load") {
                         presentAlert = false
-                        isLoading = true
                         Task {
                             do {
                                 try await model.loadOGCFeatureData(url: URL(string: userInput))
@@ -112,10 +89,10 @@ struct BrowseOGCAPIFeatureServiceView: View {
                                 self.error = error
                             }
                         }
-                    })
-                    Button("Cancel", role: .cancel, action: {
+                    }
+                    Button("Cancel", role: .cancel) {
                         presentAlert = false
-                    })
+                    }
                 }, message: {
                     Text("Please provide a URL to an OGC API feature service.")
                 })
@@ -134,7 +111,7 @@ private extension BrowseOGCAPIFeatureServiceView {
                     latitude: 32.62,
                     longitude: 36.10
                 ),
-                scale: 200000
+                scale: 200_000
             )
             return map
         }()
@@ -169,7 +146,8 @@ private extension BrowseOGCAPIFeatureServiceView {
         /// - Returns: Returns a `SimpleRenderer` optional with the correct settings for the given geometry.
         private func getRenderer(withType geometryType: Geometry.Type) -> SimpleRenderer? {
             var renderer: SimpleRenderer?
-            if geometryType == Point.self {
+            switch geometryType {
+            case is Point.Type:
                 renderer = SimpleRenderer(
                     symbol: SimpleMarkerSymbol(
                         style: .circle,
@@ -177,8 +155,7 @@ private extension BrowseOGCAPIFeatureServiceView {
                         size: 5
                     )
                 )
-            }
-            if geometryType == Multipoint.self {
+            case is Multipoint.Type:
                 renderer = SimpleRenderer(
                     symbol: SimpleMarkerSymbol(
                         style: .circle,
@@ -186,8 +163,7 @@ private extension BrowseOGCAPIFeatureServiceView {
                         size: 5
                     )
                 )
-            }
-            if geometryType == Polyline.self {
+            case is Polyline.Type:
                 renderer = SimpleRenderer(
                     symbol: SimpleLineSymbol(
                         style: .solid,
@@ -195,8 +171,7 @@ private extension BrowseOGCAPIFeatureServiceView {
                         width: 1
                     )
                 )
-            }
-            if geometryType == Polygon.self {
+            case is Polygon.Type:
                 renderer = SimpleRenderer(
                     symbol: SimpleFillSymbol(
                         style: .solid,
@@ -204,18 +179,19 @@ private extension BrowseOGCAPIFeatureServiceView {
                         outline: nil
                     )
                 )
+            default:
+                print("Not Point.")
             }
             return renderer
         }
         
-        /// Create and load the OGC API features service from a URL.
+        /// Creates and loads the OGC API features service from a URL.
         /// - Parameter url: The URL of the OGC service.
         /// - Returns: Returns a `OCGFeatureService` that has been loaded and initialized.
         private func makeService(url: URL) async throws -> OGCFeatureService {
             let service = OGCFeatureService(url: url)
             try await service.load()
-            if service.loadStatus == .loaded,
-               let serviceInfo = service.serviceInfo {
+            if let serviceInfo = service.serviceInfo {
                 featureCollectionInfos = serviceInfo.featureCollectionInfos
                 layerNames = featureCollectionInfos.map(\.title)
             }
@@ -226,7 +202,8 @@ private extension BrowseOGCAPIFeatureServiceView {
         /// - Parameters:
         ///   - url: The URL of the OGC service.
         func loadOGCFeatureData(url: URL?) async throws {
-            service = try await makeService(url: url ?? .defaultServiceURL)
+            guard let url = url else { return }
+            service = try await makeService(url: url)
             try await displayLayer(with: featureCollectionInfos[0])
         }
         
@@ -236,7 +213,7 @@ private extension BrowseOGCAPIFeatureServiceView {
             selectedInfo = featureCollectionInfos.first(where: { $0.title == selection })
         }
         
-        /// Load and display a feature layer from the OGC feature collection table.
+        /// Loads and displays a feature layer from the OGC feature collection table.
         /// - Parameter info: The `OGCFeatureCollectionInfo` selected by user.
         func displayLayer(with info: OGCFeatureCollectionInfo) async throws {
             let table = OGCFeatureCollectionTable(featureCollectionInfo: info)
@@ -257,11 +234,6 @@ private extension BrowseOGCAPIFeatureServiceView {
             }
         }
     }
-}
-
-private extension URL {
-    // This is for fallback url.
-    static let defaultServiceURL = URL(string: "https://demo.ldproxy.net/daraa")!
 }
 
 #Preview {
