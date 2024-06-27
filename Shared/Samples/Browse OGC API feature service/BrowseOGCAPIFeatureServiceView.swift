@@ -57,14 +57,14 @@ struct BrowseOGCAPIFeatureServiceView: View {
                 }
                 .toolbar {
                     ToolbarItemGroup(placement: .bottomBar) {
-                        // Button in toolbar that allows user to launch the load alert.
+                        // The button in toolbar that allows user to launch the load alert.
                         Button(action: {
                             presentAlert = true
                         }, label: {
                             Text("Open Service")
                         })
                         Spacer()
-                        // Layers button will not appear until selection is set.
+                        // The layers button will not appear until selection is set.
                         if !selection.isEmpty {
                             Picker("Layers", selection: $selection) {
                                 ForEach(model.layerNames, id: \.self) { title in
@@ -91,7 +91,7 @@ struct BrowseOGCAPIFeatureServiceView: View {
                     }
                 }
                 .alert("Load OGC API feature service", isPresented: $presentAlert, actions: {
-                    // Alert is set with a default url that the user can edit.
+                    // Alert is set with a default url for the OGC API, the user can update the url.
                     TextField("URL:", text: $userInput)
                     Button("Load", action: {
                         presentAlert = false
@@ -100,7 +100,7 @@ struct BrowseOGCAPIFeatureServiceView: View {
                             do {
                                 try await model.loadOGCFeatureData(url: URL(string: userInput))
                                 // This selects the first layer in the layer name list. This is
-                                // needed so that the layer selection picker set in the toolbar.
+                                // needed so that the layer selection picker is set in the toolbar.
                                 selection = model.layerNames.first ?? ""
                                 if let extent = model.completeExtent {
                                     await mapProxy.setViewpointGeometry(
@@ -215,7 +215,6 @@ private extension BrowseOGCAPIFeatureServiceView {
         
         /// Loads OGC service for a URL so that it can be rendered on the map.
         /// - Parameters:
-        ///   - mapProxy: Allows access to `MapView`
         ///   - url: The URL of the OGC service.
         func loadOGCFeatureData(url: URL?) async throws {
             service = try await makeService(url: url ?? .defaultServiceURL)
