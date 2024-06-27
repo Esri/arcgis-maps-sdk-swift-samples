@@ -72,10 +72,13 @@ struct BrowseOGCAPIFeatureServiceView: View {
                                 model.update(for: selection)
                                 if let selection = model.selectedInfo {
                                     do {
-                                        try await model.displayLayer(
-                                            with: selection,
-                                            proxy: mapProxy
-                                        )
+                                        try await model.displayLayer(with: selection)
+                                        if let extent = model.completeExtent {
+                                            await mapProxy.setViewpointGeometry(
+                                                extent,
+                                                padding: 100
+                                            )
+                                        }
                                     } catch {
                                         self.error = error
                                     }
@@ -85,18 +88,24 @@ struct BrowseOGCAPIFeatureServiceView: View {
                         }
                     }
                 }
-                .alert("Load OGC API feature service", isPresented: $presentAlert, actions: {
+                .alert("Load OGC API feature service",
+                       isPresented: $presentAlert,
+                       actions: {
                     TextField("URL:", text: $userInput)
-                    Button("Load", action: {
+                    Button("Load",
+                           action: {
                         presentAlert = false
                         isLoading = true
                         Task {
                             do {
-                                try await model.loadOGCFeatureData(
-                                    mapProxy: mapProxy,
-                                    url: URL(string: userInput)
-                                )
+                                try await model.loadOGCFeatureData(url: URL(string: userInput))
                                 selection = model.layerNames.first ?? ""
+                                if let extent = model.completeExtent {
+                                    await mapProxy.setViewpointGeometry(
+                                        extent,
+                                        padding: 100
+                                    )
+                                }
                             } catch {
                                 self.error = error
                             }
@@ -105,7 +114,8 @@ struct BrowseOGCAPIFeatureServiceView: View {
                     Button("Cancel", role: .cancel, action: {
                         presentAlert = false
                     })
-                }, message: {
+                },
+                       message: {
                     Text("Please provide a URL to an OGC API feature service.")
                 })
                 .errorAlert(presentingError: $error)
@@ -129,7 +139,8 @@ private extension BrowseOGCAPIFeatureServiceView {
         }()
         
         @Published var layerNames: [String] = []
-        
+        /// The geometry that represents a rectangular shape that encompasses the area.
+        private(set) var completeExtent: Envelope?
         private var featureCollectionInfos: [OGCFeatureCollectionInfo] = []
         private var service: OGCFeatureService!
         var selectedInfo: OGCFeatureCollectionInfo?
@@ -205,41 +216,35 @@ private extension BrowseOGCAPIFeatureServiceView {
         /// - Parameters:
         ///   - mapProxy: Allows access to `MapView`
         ///   - url: The URL of the OGC service.
-        func loadOGCFeatureData(mapProxy: MapViewProxy, url: URL?) async throws {
-            service = try await makeService(
-                url: url ?? .defaultServiceURL
-            )
-            try await displayLayer(
-                with: featureCollectionInfos[0],
-                proxy: mapProxy
-            )
+        func loadOGCFeatureData(url: URL?) async throws {
+            service = try await makeService(url: url ?? .defaultServiceURL)
+            try await displayLayer(with: featureCollectionInfos[0])
         }
         
         /// Updates the selected info property for the users selection.
         /// - Parameter selection: String with the name of the selected layer to display.
         func update(for selection: String) {
-            selectedInfo = featureCollectionInfos.first(where: {
-                $0.title == selection
-            })
+            selectedInfo = featureCollectionInfos.first(where: { $0.title == selection })
         }
         
         /// Load and display a feature layer from the OGC feature collection table.
         /// - Parameter info: The `OGCFeatureCollectionInfo` selected by user.
-        func displayLayer(with info: OGCFeatureCollectionInfo, proxy: MapViewProxy) async throws {
+        func displayLayer(with info: OGCFeatureCollectionInfo) async throws {
             let table = OGCFeatureCollectionTable(featureCollectionInfo: info)
             // Set the feature request mode to manual (only manual is currently
             // supported). In this mode, you must manually populate the table -
             // panning and zooming won't request features automatically.
             table.featureRequestMode = .manualCache
-            _ = try await table.populateFromService(using: queryParameters, clearCache: false)
-            if let extent = info.extent {
-                let featureLayer = FeatureLayer(featureTable: table)
-                if let geoType = table.geometryType {
-                    featureLayer.renderer = getRendererForTable(withType: geoType)
-                    map.addOperationalLayers([featureLayer])
-                    await proxy.setViewpointGeometry(extent, padding: 100)
-                    self.selectedInfo = info
-                }
+            _ = try await table.populateFromService(
+                using: queryParameters,
+                clearCache: false
+            )
+            completeExtent = info.extent
+            let featureLayer = FeatureLayer(featureTable: table)
+            if let geoType = table.geometryType {
+                featureLayer.renderer = getRendererForTable(withType: geoType)
+                map.addOperationalLayers([featureLayer])
+                selectedInfo = info
             }
         }
     }
