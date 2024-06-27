@@ -180,7 +180,8 @@ private extension BrowseOGCAPIFeatureServiceView {
                     )
                 )
             default:
-                print("Not Point.")
+                // This should never execute.
+                break
             }
             return renderer
         }
