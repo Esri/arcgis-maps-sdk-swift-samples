@@ -32,7 +32,7 @@ Run the sample and view the ENC data. Pan and zoom around the map. Take note of 
 
 This sample downloads the [ENC Exchange Set without updates](https://www.arcgis.com/home/item.html?id=9d2987a825c646468b3ce7512fb76e2d) item from ArcGIS Online.
 
-The latest [hydrography package](https://www.arcgis.com/home/item.html?id=c16f3845b9cc4b93a908d87d28823afd) can be downloaded from ArcGIS for Developers. The S57DataDictionary.xml file is contained in it along with many others but a user does not need to know that in order to render ENC data.
+The latest [hydrography package](https://developers.arcgis.com/swift/downloads/#hydrography-data) can be downloaded from ArcGIS for Developers. The S57DataDictionary.xml file is contained in it along with many others but a user does not need to know that in order to render ENC data.
 
 ## Tags
 
