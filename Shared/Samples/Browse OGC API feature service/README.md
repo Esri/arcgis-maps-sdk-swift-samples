@@ -14,20 +14,20 @@ Select a layer to display from the list of layers shown in an OGC API service. T
 
 ## How it works
 
-1. Create an `OgcFeatureService` object with a URL to an OGC API feature service.
-2. Obtain the `OgcFeatureServiceInfo` from `OgcFeatureService.ServiceInfo`.
-3. Create a list of feature collections from the `OgcFeatureServiceInfo.FeatureCollectionInfos`
-4. When a feature collection is selected, create an `OgcFeatureCollectionTable` from the `OgcFeatureCollectionInfo`.
-5. Populate the `OgcFeatureCollectionTable` using `PopulateFromServiceAsync` with `QueryParameters` that contain a `MaxFeatures` property.
+1. Create an `OGCFeatureService` object with a URL to an OGC API feature service.
+2. Obtain the `OGCFeatureServiceInfo` from `OGCFeatureService.ServiceInfo`.
+3. Create a list of feature collections from the `OGCFeatureServiceInfo.FeatureCollectionInfos`
+4. When a feature collection is selected, create an `OGCFeatureCollectionTable` from the `OGCFeatureCollectionInfo`.
+5. Populate the `OGCFeatureCollectionTable` using `PopulateFromService` with `QueryParameters` that contain a `MaxFeatures` property.
 6. Create a feature layer from the feature table.
 7. Add the feature layer to the map.
 
 ## Relevant API
 
-* OgcFeatureCollectionInfo
-* OgcFeatureCollectionTable
-* OgcFeatureService
-* OgcFeatureServiceInfo
+* OGCFeatureCollectionInfo
+* OGCFeatureCollectionTable
+* OGCFeatureService
+* OGCFeatureServiceInfo
 
 ## About the data
 

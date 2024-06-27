@@ -57,6 +57,7 @@ struct BrowseOGCAPIFeatureServiceView: View {
                 }
                 .toolbar {
                     ToolbarItemGroup(placement: .bottomBar) {
+                        // Button in toolbar that allows user to launch the load alert.
                         Button(action: {
                             presentAlert = true
                         }, label: {
@@ -90,6 +91,7 @@ struct BrowseOGCAPIFeatureServiceView: View {
                     }
                 }
                 .alert("Load OGC API feature service", isPresented: $presentAlert, actions: {
+                    // Alert is set with a default url that the user can edit.
                     TextField("URL:", text: $userInput)
                     Button("Load", action: {
                         presentAlert = false
@@ -97,6 +99,8 @@ struct BrowseOGCAPIFeatureServiceView: View {
                         Task {
                             do {
                                 try await model.loadOGCFeatureData(url: URL(string: userInput))
+                                // This selects the first layer in the layer name list. This is
+                                // needed so that the layer selection picker set in the toolbar.
                                 selection = model.layerNames.first ?? ""
                                 if let extent = model.completeExtent {
                                     await mapProxy.setViewpointGeometry(
@@ -112,8 +116,7 @@ struct BrowseOGCAPIFeatureServiceView: View {
                     Button("Cancel", role: .cancel, action: {
                         presentAlert = false
                     })
-                },
-                       message: {
+                }, message: {
                     Text("Please provide a URL to an OGC API feature service.")
                 })
                 .errorAlert(presentingError: $error)
