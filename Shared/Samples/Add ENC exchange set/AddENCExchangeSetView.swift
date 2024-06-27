@@ -112,8 +112,8 @@ private extension AddENCExchangeSetView {
         }
         
         /// Maps the exchange set data to ENC layer and ENC cells and loads the layers.
-        /// - Parameter dataset: The ENC dataset previously loaded.
-        private func renderENCData(dataset: [ENCDataset]) async throws {
+        /// - Parameter datasets: The ENC datasets previously loaded.
+        private func renderENCData(datasets: [ENCDataset]) async throws {
             let encLayers = dataset.map {
                 ENCLayer(
                     cell: ENCCell(
