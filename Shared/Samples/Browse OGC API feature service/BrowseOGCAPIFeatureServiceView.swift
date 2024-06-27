@@ -139,12 +139,21 @@ private extension BrowseOGCAPIFeatureServiceView {
             return map
         }()
         
+        /// When the information on the layers is returned, we map the titles into an array
+        /// to use as the datasource for the picker.
         @Published var layerNames: [String] = []
+        
         /// The geometry that represents a rectangular shape that encompasses the area.
         private(set) var completeExtent: Envelope?
-        private var featureCollectionInfos: [OGCFeatureCollectionInfo] = []
-        private var service: OGCFeatureService!
+        
+        /// This is a reference to the currently selected layer.
         private(set) var selectedInfo: OGCFeatureCollectionInfo?
+        
+        /// This holds the data sent back by the server.
+        private var featureCollectionInfos: [OGCFeatureCollectionInfo] = []
+        
+        /// This is a reference to the service that is loading the OGC API data into the application.
+        private var service: OGCFeatureService!
         
         /// The query parameters to populate features from the OGC API service.
         private let queryParameters: QueryParameters = {
