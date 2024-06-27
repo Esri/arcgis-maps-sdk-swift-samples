@@ -48,7 +48,12 @@ struct AddENCExchangeSetView: View {
                 .task {
                     do {
                         isLoading = true
-                        try await model.addENCExchangeSet(mapProxy: mapProxy)
+                        try await model.addENCExchangeSet()
+                        if let extent = model.completeExtent {
+                            await mapProxy.setViewpoint(
+                                Viewpoint(center: extent.center, scale: 67000)
+                            )
+                        }
                     } catch {
                         self.error = error
                     }
@@ -73,7 +78,7 @@ private extension AddENCExchangeSetView {
         
         /// The geometry that represents a rectangular shape that encompasses the area on the
         /// map where the ENC data will be rendering.
-        private var completeExtent: Envelope?
+        private(set) var completeExtent: Envelope?
         
         /// A URL to the temporary SENC data directory.
         private let temporaryURL: URL = {
@@ -100,7 +105,7 @@ private extension AddENCExchangeSetView {
         
         /// Gets the ENC exchange set data and loads it and sets the display settings.
         /// - Parameter mapProxy: MapView proxy for centering the map on the ENC envelope.
-        func addENCExchangeSet(mapProxy: MapViewProxy) async throws {
+        func addENCExchangeSet() async throws {
             let exchangeSet = ENCExchangeSet(fileURLs: [.exchangeSet])
             // URL to the "hydrography" data folder that contains the "S57DataDictionary.xml" file.
             let resourceURL = URL.hydrographyDirectory.deletingLastPathComponent()
@@ -111,44 +116,26 @@ private extension AddENCExchangeSetView {
             environmentSettings.sencDataURL = temporaryURL
             updateDisplaySettings()
             try await exchangeSet.load()
-            if exchangeSet.loadStatus == .loaded {
-                try await renderENCData(dataSet: exchangeSet.datasets)
-                if let extent = completeExtent {
-                    await mapProxy.setViewpoint(
-                        Viewpoint(center: extent.center, scale: 67000)
-                    )
-                }
-            }
+            try await renderENCData(dataset: exchangeSet.datasets)
         }
         
         /// Maps the exchange set data to ENC layer and ENC cells and loads the layers.
-        /// - Parameter dataSet: The ENC dataset previously loaded.
-        private func renderENCData(dataSet: [ENCDataset]) async throws {
-            let encLayers = dataSet.map {
+        /// - Parameter dataset: The ENC dataset previously loaded.
+        private func renderENCData(dataset: [ENCDataset]) async throws {
+            let encLayers = dataset.map {
                 ENCLayer(
                     cell: ENCCell(
                         dataset: $0
                     )
                 )
             }
-            for encLayer in encLayers {
-                map.addOperationalLayer(encLayer)
-                try await encLayer.load()
-                if encLayer.loadStatus == .loaded,
-                   let envelope = encLayer.fullExtent {
-                    if completeExtent == nil {
-                        completeExtent = envelope
-                    } else {
-                        completeExtent = GeometryEngine.combineExtents(
-                            completeExtent!,
-                            envelope
-                        )
-                    }
-                }
-            }
+            map.addOperationalLayers(encLayers)
+            await encLayers.load()
+            let extents = map.operationalLayers.compactMap(\.fullExtent)
+            completeExtent = GeometryEngine.combineExtents(of: extents)
         }
         
-        /// Update the display settings to make the chart less cluttered.
+        /// Updates the display settings to make the chart less cluttered.
         private func updateDisplaySettings() {
             let displaySettings = ENCEnvironmentSettings.shared.displaySettings
             let textGroupVisibilitySettings = displaySettings.textGroupVisibilitySettings

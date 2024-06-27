@@ -16,21 +16,21 @@ Run the sample and view the ENC data. Pan and zoom around the map. Take note of 
 
 ## How it works
 
-1. Specify the path to a local CATALOG.031 file to create an `EncExchangeSet`.
-2. After loading the exchange set, get the `EncDataset` objects asynchronously.
-3. Create an `EncCell` for each dataset. Then create an `EncLayer` for each cell.
+1. Specify the path to a local CATALOG.031 file to create an `ENCExchangeSet`.
+2. After loading the exchange set, get the `ENCDataset` objects asynchronously.
+3. Create an `ENCCell` for each dataset. Then create an `ENCLayer` for each cell.
 4. Add the ENC layer to a map's operational layers collection to display it.
 
 ## Relevant API
 
-* EncCell
-* EncDataset
-* EncExchangeSet
-* EncLayer
+* ENCCell
+* ENCDataset
+* ENCExchangeSet
+* ENCLayer
 
 ## Offline data
 
-This sample downloads the [ENC Exchange Set without updates](https://www.arcgis.com/home/item.html?id=9d2987a825c646468b3ce7512fb76e2d) item from ArcGIS Online.
+This sample downloads the [ENC Exchange Set without updates](https://www.arcgis.com/home/item.html?id=9d2987a825c646468b3ce7512fb76e2d) and [Hydrography dataset resources](https://www.arcgis.com/home/item.html?id=c16f3845b9cc4b93a908d87d28823afd) items from ArcGIS Online.
 
 ## Tags
 
