@@ -248,7 +248,6 @@ private extension BrowseOGCAPIFeatureServiceView {
     }
 }
 
-
 private extension URL {
     // This is for fallback url.
     static let defaultServiceURL = URL(string: "https://demo.ldproxy.net/daraa")!
