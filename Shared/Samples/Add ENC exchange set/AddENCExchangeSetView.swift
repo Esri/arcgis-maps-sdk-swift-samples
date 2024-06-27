@@ -28,14 +28,6 @@ struct AddENCExchangeSetView: View {
     var body: some View {
         MapViewReader { mapProxy in
             MapView(map: model.map)
-                .onDrawStatusChanged { drawStatus in
-                    // Updates the state when the map's draw status changes.
-                    withAnimation {
-                        if drawStatus == .completed {
-                            isLoading = false
-                        }
-                    }
-                }
                 .overlay(alignment: .center) {
                     if isLoading {
                         ProgressView("Loading…")
@@ -54,6 +46,7 @@ struct AddENCExchangeSetView: View {
                                 Viewpoint(center: extent.center, scale: 67000)
                             )
                         }
+                        isLoading = false
                     } catch {
                         self.error = error
                     }
@@ -104,7 +97,6 @@ private extension AddENCExchangeSetView {
         }
         
         /// Gets the ENC exchange set data and loads it and sets the display settings.
-        /// - Parameter mapProxy: MapView proxy for centering the map on the ENC envelope.
         func addENCExchangeSet() async throws {
             let exchangeSet = ENCExchangeSet(fileURLs: [.exchangeSet])
             // URL to the "hydrography" data folder that contains the "S57DataDictionary.xml" file.
