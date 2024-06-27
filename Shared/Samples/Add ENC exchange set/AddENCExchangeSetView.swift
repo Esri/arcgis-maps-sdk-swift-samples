@@ -108,13 +108,13 @@ private extension AddENCExchangeSetView {
             environmentSettings.sencDataURL = temporaryURL
             updateDisplaySettings()
             try await exchangeSet.load()
-            try await renderENCData(dataset: exchangeSet.datasets)
+            try await renderENCData(datasets: exchangeSet.datasets)
         }
         
         /// Maps the exchange set data to ENC layer and ENC cells and loads the layers.
         /// - Parameter datasets: The ENC datasets previously loaded.
         private func renderENCData(datasets: [ENCDataset]) async throws {
-            let encLayers = dataset.map {
+            let encLayers = datasets.map {
                 ENCLayer(
                     cell: ENCCell(
                         dataset: $0
