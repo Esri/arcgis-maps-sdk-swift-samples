@@ -63,6 +63,7 @@ struct BrowseOGCAPIFeatureServiceView: View {
                             Text("Open Service")
                         })
                         Spacer()
+                        // Layers button will not appear until selection is set.
                         if !selection.isEmpty {
                             Picker("Layers", selection: $selection) {
                                 ForEach(model.layerNames, id: \.self) { title in
@@ -88,12 +89,9 @@ struct BrowseOGCAPIFeatureServiceView: View {
                         }
                     }
                 }
-                .alert("Load OGC API feature service",
-                       isPresented: $presentAlert,
-                       actions: {
+                .alert("Load OGC API feature service", isPresented: $presentAlert, actions: {
                     TextField("URL:", text: $userInput)
-                    Button("Load",
-                           action: {
+                    Button("Load", action: {
                         presentAlert = false
                         isLoading = true
                         Task {
@@ -143,7 +141,7 @@ private extension BrowseOGCAPIFeatureServiceView {
         private(set) var completeExtent: Envelope?
         private var featureCollectionInfos: [OGCFeatureCollectionInfo] = []
         private var service: OGCFeatureService!
-        var selectedInfo: OGCFeatureCollectionInfo?
+        private(set) var selectedInfo: OGCFeatureCollectionInfo?
         
         /// The query parameters to populate features from the OGC API service.
         private let queryParameters: QueryParameters = {
@@ -157,7 +155,7 @@ private extension BrowseOGCAPIFeatureServiceView {
         /// Returns a renderer for a specified geometry type.
         /// - Parameter geometryType: The ARCGis Geometry type.
         /// - Returns: Returns a `SimpleRenderer` optional with the correct settings for the given geometry.
-        private func getRendererForTable(withType geometryType: Geometry.Type) -> SimpleRenderer? {
+        private func getRenderer(withType geometryType: Geometry.Type) -> SimpleRenderer? {
             var renderer: SimpleRenderer?
             if geometryType == Point.self {
                 renderer = SimpleRenderer(
@@ -242,7 +240,7 @@ private extension BrowseOGCAPIFeatureServiceView {
             completeExtent = info.extent
             let featureLayer = FeatureLayer(featureTable: table)
             if let geoType = table.geometryType {
-                featureLayer.renderer = getRendererForTable(withType: geoType)
+                featureLayer.renderer = getRenderer(withType: geoType)
                 map.addOperationalLayers([featureLayer])
                 selectedInfo = info
             }
@@ -250,12 +248,12 @@ private extension BrowseOGCAPIFeatureServiceView {
     }
 }
 
+
 private extension URL {
+    // This is for fallback url.
     static let defaultServiceURL = URL(string: "https://demo.ldproxy.net/daraa")!
 }
 
 #Preview {
-    NavigationStack {
-        BrowseOGCAPIFeatureServiceView()
-    }
+    BrowseOGCAPIFeatureServiceView()
 }
