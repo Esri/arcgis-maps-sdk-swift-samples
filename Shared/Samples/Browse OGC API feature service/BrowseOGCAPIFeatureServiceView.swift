@@ -231,7 +231,7 @@ private extension BrowseOGCAPIFeatureServiceView {
             let featureLayer = FeatureLayer(featureTable: table)
             if let geometryType = table.geometryType {
                 featureLayer.renderer = getRenderer(withType: geometryType)
-                map.addOperationalLayers([featureLayer])
+                map.addOperationalLayer(featureLayer)
                 selectedInfo = info
             }
         }
