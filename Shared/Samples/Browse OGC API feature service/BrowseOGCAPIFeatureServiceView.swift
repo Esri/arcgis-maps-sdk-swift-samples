@@ -60,7 +60,6 @@ struct BrowseOGCAPIFeatureServiceView: View {
                                     self.error = error
                                 }
                             }
-                            .pickerStyle(.automatic)
                         }
                     }
                 }
