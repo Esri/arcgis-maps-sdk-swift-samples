@@ -1,27 +1,36 @@
+// Copyright 2024 Esri
 //
-//  ShowServiceAreaView.swift
-//  Samples
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
 //
-//  Created by Christopher Webb on 6/21/24.
-//  Copyright © 2024 Esri. All rights reserved.
+//   https://www.apache.org/licenses/LICENSE-2.0
 //
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 import ArcGIS
 import SwiftUI
 
 struct ShowServiceAreaView: View {
+    /// The error shown in the error alert.
+    @State private var error: Error?
+    
+    /// The data model for the sample.
     @StateObject private var model = Model()
     
     /// The point on the map where the user tapped.
     @State private var tapLocation: Point?
     
     @State private var firstTimeBreak: Double = 3
+    
     @State private var secondTimeBreak: Double = 8
     
     var selections = ["Facilities", "Barriers"]
-
-//    @State private var timeElement = "Time"
-//    
+    
     @State private var selected = "Facilities"
     
     var body: some View {
@@ -36,7 +45,7 @@ struct ShowServiceAreaView: View {
             )
             .onSingleTapGesture { _, point in
                 tapLocation = point
-                model.onTap(point: point, selection: self.selected)
+                model.onTap(point: point, selection: selected)
             }
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
@@ -52,16 +61,11 @@ struct ShowServiceAreaView: View {
                                step: 1,
                                label: { Text("First Break: \(Int(firstTimeBreak))") }
                         )
-                        .padding(.horizontal, 4)
-                        .padding(.vertical, 4)
-                        
                         Slider(value: $secondTimeBreak,
                                in: 1...10,
                                step: 1,
                                label: { Text("Second Break: \(Int(secondTimeBreak))") }
                         )
-                        .padding(.horizontal, 4)
-                        .padding(.vertical, 4)
                     }, label: { Text("Time Break") })
                     Button("Facs") {
                         Task {
@@ -84,7 +88,6 @@ struct ShowServiceAreaView: View {
 private extension ShowServiceAreaView {
     @MainActor
     class Model: ObservableObject {
-        /// A map with viewpoint set to Amberg, Germany.
         let map: Map = {
             let map = Map(basemapStyle: .arcGISTerrain)
             map.initialViewpoint = Viewpoint(
@@ -118,30 +121,55 @@ private extension ShowServiceAreaView {
         }()
         
         var serviceAreaGraphicsOverlay = GraphicsOverlay()
+        
         private var barrierGraphic: Graphic!
+        
         private var serviceAreaTask: ServiceAreaTask!
+        
         private var serviceAreaParameters: ServiceAreaParameters!
+        
         var firstTimeBreak: Int = 3
+        
         var secondTimeBreak: Int = 8
         
+        
+        /// Sets the service area task using the url and then sets the parameter to the default parameters returned
+        /// from the service area task.
         func setServiceArea() async throws {
             serviceAreaTask = ServiceAreaTask(url: .serviceArea)
             serviceAreaParameters = try await serviceAreaTask.makeDefaultParameters()
         }
         
+        
+        /// On user tapping on screen, depending on the selection type, it sets
+        /// either the barrier or facilities overlays on the map at the tap point.
+        /// - Parameters:
+        ///   - point: The tap location.
+        ///   - selection: The type of graphic to be added to the view.
         func onTap(point: Point, selection: String) {
             if selection == "Facilities" {
                 // facilities selected
-                let graphic = Graphic(geometry: point, symbol: nil)
+                let graphic = Graphic(
+                    geometry: point,
+                    symbol: nil
+                )
                 self.facilitiesGraphicsOverlay.addGraphic(graphic)
             } else {
                 // barriers selected
-                let bufferedGeometry = GeometryEngine.buffer(around: point, distance: 500)
-                let graphic = Graphic(geometry: bufferedGeometry, symbol: nil)
+                let bufferedGeometry = GeometryEngine.buffer(
+                    around: point,
+                    distance: 500
+                )
+                let graphic = Graphic(
+                    geometry: bufferedGeometry,
+                    symbol: nil
+                )
                 self.barriersGraphicsOverlay.addGraphic(graphic)
             }
         }
         
+        
+        /// Gets the service area data and then renders the service area on the map.
         func serviceArea() async throws {
             try await setServiceArea()
             
@@ -169,7 +197,16 @@ private extension ShowServiceAreaView {
             }
             serviceAreaParameters.setPolygonBarriers(barriers)
             serviceAreaParameters.removeAllDefaultImpedanceCutoffs()
-            serviceAreaParameters.addDefaultImpedanceCutoffs([Double(firstTimeBreak), Double(secondTimeBreak)])
+            serviceAreaParameters.addDefaultImpedanceCutoffs(
+                [
+                    Double(
+                        firstTimeBreak
+                    ),
+                    Double(
+                        secondTimeBreak
+                    )
+                ]
+            )
             //            serviceAreaParameters.removeDefaultImpedanceCutoff(5.0)
             serviceAreaParameters.geometryAtOverlap = .dissolve
             let result = try await serviceAreaTask.solveServiceArea(using: serviceAreaParameters)
@@ -182,6 +219,8 @@ private extension ShowServiceAreaView {
             }
         }
         
+        
+        /// Resets the graphics, removes the barriers, facilities and service area.
         func removeAllGraphics() {
             serviceAreaGraphicsOverlay.removeAllGraphics()
             facilitiesGraphicsOverlay.removeAllGraphics()
@@ -189,7 +228,9 @@ private extension ShowServiceAreaView {
         }
         
         
-        
+        /// Sets the symbols drawn on that map for given selection.
+        /// - Parameter index: Takes the index to decide how to render.
+        /// - Returns: Returns the symbol.
         private func serviceAreaSymbol(for index: Int) -> Symbol {
             // fill symbol for service area
             var fillSymbol: SimpleFillSymbol
