@@ -25,17 +25,8 @@ struct ShowServiceAreaView: View {
     /// The point on the map where the user tapped.
     @State private var tapLocation: Point?
     
-    /// <#Description#>
-    @State private var firstTimeBreak: Double = 3
-    
-    /// <#Description#>
-    @State private var secondTimeBreak: Double = 8
-    
-    /// <#Description#>
-    var selections = ["Facilities", "Barriers"]
-    
-    /// <#Description#>
-    @State private var selected = "Facilities"
+    /// Tracks whether to add facilities or barriers to map.
+    @State private var selected: SelectedGraphicType = .facilities
     
     var body: some View {
         MapView(
@@ -53,27 +44,27 @@ struct ShowServiceAreaView: View {
         .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
                 Picker("Mode", selection: $selected) {
-                    ForEach(selections, id: \.self) {
-                        Text($0)
+                    ForEach(SelectedGraphicType.allCases, id: \.self) {
+                        Text($0.label)
                     }
                 }
                 .pickerStyle(.segmented)
                 Menu(content: {
-                    Slider(value: $firstTimeBreak,
+                    Slider(value: $model.secondTimeBreak,
                            in: 1...10,
                            step: 1,
-                           label: { Text("First Break: \(Int(firstTimeBreak))") }
+                           label: { Text("Finished: \(Int(model.secondTimeBreak))") }
                     )
-                    Slider(value: $secondTimeBreak,
+                    Slider(value: $model.firstTimeBreak,
                            in: 1...10,
                            step: 1,
-                           label: { Text("Second Break: \(Int(secondTimeBreak))") }
+                           label: { Text("Start: \(Int(model.firstTimeBreak))") }
                     )
-                }, label: { Text("Time Break") })
-                Button("Area") {
+                }, label: { Text("Time") })
+                Button("Show Area") {
                     Task {
                         do {
-                            try await model.serviceArea()
+                            try await model.showServiceArea()
                         } catch {
                             print(error.localizedDescription)
                         }
@@ -87,11 +78,10 @@ struct ShowServiceAreaView: View {
     }
 }
 
-
-enum SelectedGraphicType: Equatable {
+enum SelectedGraphicType: Equatable, CaseIterable {
     case facilities, barriers
     
-    /// <#Description#>
+    /// The string representation of the SelectedGraphic type.
     var label: String {
         switch self {
         case .barriers: "Barriers"
@@ -116,11 +106,10 @@ private extension ShowServiceAreaView {
             return map
         }()
         
-        /// <#Description#>
         var facilitiesGraphicsOverlay: GraphicsOverlay = {
             var facilitiesGraphicsOverlay = GraphicsOverlay()
+            // Previously using PictureMarkerSymbol(image: UIImage(named: "Facility")!)
             let facilitySymbol = PictureMarkerSymbol(image: UIImage(named: "PinBlueStar")!)
-            //PictureMarkerSymbol(image: UIImage(named: "Facility")!)
             // offset symbol in Y to align image properly
             facilitySymbol.offsetY = 21
             // assign renderer on facilities graphics overlay using the picture marker symbol
@@ -128,7 +117,6 @@ private extension ShowServiceAreaView {
             return facilitiesGraphicsOverlay
         }()
         
-        /// <#Description#>
         var barriersGraphicsOverlay: GraphicsOverlay = {
             var barriersGraphicsOverlay = GraphicsOverlay()
             let barrierSymbol = SimpleFillSymbol(style: .diagonalCross, color: .red, outline: nil)
@@ -145,9 +133,9 @@ private extension ShowServiceAreaView {
         
         private var serviceAreaParameters: ServiceAreaParameters!
         
-        var firstTimeBreak: Int = 3
+        @Published var firstTimeBreak: Double = 3
         
-        var secondTimeBreak: Int = 8
+        @Published var secondTimeBreak: Double = 8
         
         /// Sets the service area task using the url and then sets the parameter to the default parameters returned
         /// from the service area task.
@@ -161,73 +149,51 @@ private extension ShowServiceAreaView {
         /// - Parameters:
         ///   - point: The tap location.
         ///   - selection: The type of graphic to be added to the view.
-        func onTap(point: Point, selection: String) {
-            if selection == "Facilities" {
-                // facilities selected
-                let graphic = Graphic(
-                    geometry: point,
-                    symbol: nil
-                )
-                self.facilitiesGraphicsOverlay.addGraphic(graphic)
-            } else {
-                // barriers selected
-                let bufferedGeometry = GeometryEngine.buffer(
-                    around: point,
-                    distance: 500
-                )
-                let graphic = Graphic(
-                    geometry: bufferedGeometry,
-                    symbol: nil
-                )
-                self.barriersGraphicsOverlay.addGraphic(graphic)
+        func onTap(point: Point, selection: SelectedGraphicType) {
+            switch selection {
+            case .facilities:
+                let graphic = Graphic(geometry: point, symbol: nil)
+                facilitiesGraphicsOverlay.addGraphic(graphic)
+            case .barriers:
+                let bufferedGeometry = GeometryEngine.buffer(around: point, distance: 500)
+                let graphic = Graphic(geometry: bufferedGeometry, symbol: nil)
+                barriersGraphicsOverlay.addGraphic(graphic)
             }
         }
         
         /// Gets the service area data and then renders the service area on the map.
-        func serviceArea() async throws {
+        func showServiceArea() async throws {
             try await setServiceArea()
-            
-            // remove previously added service areas
             serviceAreaGraphicsOverlay.removeAllGraphics()
             let facilitiesGraphics = facilitiesGraphicsOverlay.graphics
-            // check if at least a single facility is added
-            // add facilities
             var facilities = [ServiceAreaFacility]()
-            // for each graphic in facilities graphicsOverlay add a facility to the parameters
+            // In the facilities graphicsOverlays add a facility to the parameters for each one.
             for graphic in facilitiesGraphics {
-                let point = graphic.geometry as! Point
-                let facility = ServiceAreaFacility(point: point)
-                facilities.append(facility)
+                if let point = graphic.geometry as? Point {
+                    let facility = ServiceAreaFacility(point: point)
+                    facilities.append(facility)
+                }
             }
             serviceAreaParameters.setFacilities(facilities)
-            // add barriers
             var barriers = [PolygonBarrier]()
-            
-            // for each graphic in barrier graphicsOverlay add a barrier to the parameters
             for graphic in barriersGraphicsOverlay.graphics {
-                let polygon = graphic.geometry as! Polygon
-                let barrier = PolygonBarrier(polygon: polygon)
-                barriers.append(barrier)
+                if let polygon = graphic.geometry as? Polygon {
+                    let barrier = PolygonBarrier(polygon: polygon)
+                    barriers.append(barrier)
+                }
             }
             serviceAreaParameters.setPolygonBarriers(barriers)
             serviceAreaParameters.removeAllDefaultImpedanceCutoffs()
-            serviceAreaParameters.addDefaultImpedanceCutoffs(
-                [
-                    Double(
-                        firstTimeBreak
-                    ),
-                    Double(
-                        secondTimeBreak
-                    )
-                ]
-            )
-            //            serviceAreaParameters.removeDefaultImpedanceCutoff(5.0)
+            serviceAreaParameters.addDefaultImpedanceCutoffs([
+                Double(firstTimeBreak),
+                Double(secondTimeBreak)
+            ])
             serviceAreaParameters.geometryAtOverlap = .dissolve
             let result = try await serviceAreaTask.solveServiceArea(using: serviceAreaParameters)
             let polygons = result.resultPolygons(forFacilityAtIndex: 0)
-            for i in polygons.indices {
-                let polygon = polygons[i]
-                let fillSymbol = serviceAreaSymbol(for: i)
+            for index in polygons.indices {
+                let polygon = polygons[index]
+                let fillSymbol = serviceAreaSymbol(for: index)
                 let graphic = Graphic(geometry: polygon.geometry, symbol: fillSymbol)
                 serviceAreaGraphicsOverlay.addGraphic(graphic)
             }
@@ -250,43 +216,23 @@ private extension ShowServiceAreaView {
             if index == 0 {
                 let lineSymbol = SimpleLineSymbol(
                     style: .solid,
-                    color: UIColor(
-                        red: 0.4,
-                        green: 0.4,
-                        blue: 0,
-                        alpha: 0.3
-                    ),
+                    color: UIColor(red: 0.4, green: 0.4, blue: 0, alpha: 0.3),
                     width: 2
                 )
                 fillSymbol = SimpleFillSymbol(
                     style: .solid,
-                    color: UIColor(
-                        red: 0.8,
-                        green: 0.8,
-                        blue: 0,
-                        alpha: 0.3
-                    ),
+                    color: UIColor(red: 0.8, green: 0.8, blue: 0, alpha: 0.3),
                     outline: lineSymbol
                 )
             } else {
                 let lineSymbol = SimpleLineSymbol(
                     style: .solid,
-                    color: UIColor(
-                        red: 0,
-                        green: 0.4,
-                        blue: 0,
-                        alpha: 0.3
-                    ),
+                    color: UIColor(red: 0, green: 0.4, blue: 0, alpha: 0.3),
                     width: 2
                 )
                 fillSymbol = SimpleFillSymbol(
                     style: .solid,
-                    color: UIColor(
-                        red: 0,
-                        green: 0.8,
-                        blue: 0,
-                        alpha: 0.3
-                    ),
+                    color: UIColor(red: 0, green: 0.8, blue: 0, alpha: 0.3),
                     outline: lineSymbol
                 )
             }
@@ -297,8 +243,7 @@ private extension ShowServiceAreaView {
 }
 
 private extension URL {
-    static let serviceArea = URL(
-        string:"https://sampleserver6.arcgisonline.com/arcgis/rest/services/NetworkAnalysis/SanDiego/NAServer/ServiceArea"
+    static let serviceArea = URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/NetworkAnalysis/SanDiego/NAServer/ServiceArea"
     )!
 }
 
