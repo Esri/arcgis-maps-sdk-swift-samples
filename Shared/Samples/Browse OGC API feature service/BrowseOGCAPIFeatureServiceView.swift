@@ -70,7 +70,6 @@ struct BrowseOGCAPIFeatureServiceView: View {
                     }
                 }
                 .alert("Load OGC API feature service", isPresented: $alertIsPresented, actions: {
-                    // Alert is set with a default url for the OGC API, the user can update the url.
                     TextField("URL:", text: $featureServiceURL)
                     Button("Load") {
                         alertIsPresented = false
