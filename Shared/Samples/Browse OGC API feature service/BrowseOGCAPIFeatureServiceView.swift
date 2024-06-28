@@ -20,14 +20,14 @@ struct BrowseOGCAPIFeatureServiceView: View {
     /// The error shown in the error alert.
     @State private var error: Error?
     
-    /// Ensures that the alert is only shown once.
-    @State private var presentAlert = true
+    /// A Boolean value indicating whether the alert is presented.
+    @State private var alertIsPresented = true
     
     /// The data model for the sample.
     @StateObject private var model = Model()
     
-    /// The user input for the OGC service resource.
-    @State private var userInput = "https://demo.ldproxy.net/daraa"
+    /// The input obtained from the user for the OGC service URL.
+    @State private var featureServiceURL = "https://demo.ldproxy.net/daraa"
     
     /// The selected layer name.
     @State private var selection: String = ""
@@ -39,7 +39,7 @@ struct BrowseOGCAPIFeatureServiceView: View {
                     ToolbarItemGroup(placement: .bottomBar) {
                         // The button in toolbar that allows user to launch the load alert.
                         Button("Open Service") {
-                            presentAlert = true
+                            alertIsPresented = true
                         }
                         Spacer()
                         // The layers button will not appear until selection is set.
@@ -48,7 +48,8 @@ struct BrowseOGCAPIFeatureServiceView: View {
                                 ForEach(model.layerNames, id: \.self) { title in
                                     Text(title)
                                 }
-                            }.task(id: selection) {
+                            }
+                            .task(id: selection) {
                                 model.update(for: selection)
                                 if let selection = model.selectedInfo {
                                     do {
@@ -68,14 +69,14 @@ struct BrowseOGCAPIFeatureServiceView: View {
                         }
                     }
                 }
-                .alert("Load OGC API feature service", isPresented: $presentAlert, actions: {
+                .alert("Load OGC API feature service", isPresented: $alertIsPresented, actions: {
                     // Alert is set with a default url for the OGC API, the user can update the url.
-                    TextField("URL:", text: $userInput)
+                    TextField("URL:", text: $featureServiceURL)
                     Button("Load") {
-                        presentAlert = false
+                        alertIsPresented = false
                         Task {
                             do {
-                                try await model.loadOGCFeatureData(url: URL(string: userInput))
+                                try await model.loadOGCFeatureData(url: URL(string: featureServiceURL))
                                 // This selects the first layer in the layer name list. This is
                                 // needed so that the layer selection picker is set in the toolbar.
                                 selection = model.layerNames.first ?? ""
@@ -91,7 +92,7 @@ struct BrowseOGCAPIFeatureServiceView: View {
                         }
                     }
                     Button("Cancel", role: .cancel) {
-                        presentAlert = false
+                        alertIsPresented = false
                     }
                 }, message: {
                     Text("Please provide a URL to an OGC API feature service.")
@@ -142,7 +143,7 @@ private extension BrowseOGCAPIFeatureServiceView {
         }()
         
         /// Returns a renderer for a specified geometry type.
-        /// - Parameter geometryType: The ARCGis Geometry type.
+        /// - Parameter geometryType: The geometry type.
         /// - Returns: Returns a `SimpleRenderer` optional with the correct settings for the given geometry.
         private func getRenderer(withType geometryType: Geometry.Type) -> SimpleRenderer? {
             var renderer: SimpleRenderer?
@@ -228,8 +229,8 @@ private extension BrowseOGCAPIFeatureServiceView {
             )
             completeExtent = info.extent
             let featureLayer = FeatureLayer(featureTable: table)
-            if let geoType = table.geometryType {
-                featureLayer.renderer = getRenderer(withType: geoType)
+            if let geometryType = table.geometryType {
+                featureLayer.renderer = getRenderer(withType: geometryType)
                 map.addOperationalLayers([featureLayer])
                 selectedInfo = info
             }
