@@ -25,62 +25,77 @@ struct ShowServiceAreaView: View {
     /// The point on the map where the user tapped.
     @State private var tapLocation: Point?
     
+    /// <#Description#>
     @State private var firstTimeBreak: Double = 3
     
+    /// <#Description#>
     @State private var secondTimeBreak: Double = 8
     
+    /// <#Description#>
     var selections = ["Facilities", "Barriers"]
     
+    /// <#Description#>
     @State private var selected = "Facilities"
     
     var body: some View {
-        MapViewReader { mapProxy in
-            MapView(
-                map: model.map,
-                graphicsOverlays: [
-                    model.facilitiesGraphicsOverlay,
-                    model.barriersGraphicsOverlay,
-                    model.serviceAreaGraphicsOverlay
-                ]
-            )
-            .onSingleTapGesture { _, point in
-                tapLocation = point
-                model.onTap(point: point, selection: selected)
-            }
-            .toolbar {
-                ToolbarItemGroup(placement: .bottomBar) {
-                    Picker("Mode", selection: $selected) {
-                        ForEach(selections, id: \.self) {
-                            Text($0)
-                        }
-                    }
-                    .pickerStyle(.segmented)
-                    Menu(content: {
-                        Slider(value: $firstTimeBreak,
-                               in: 1...10,
-                               step: 1,
-                               label: { Text("First Break: \(Int(firstTimeBreak))") }
-                        )
-                        Slider(value: $secondTimeBreak,
-                               in: 1...10,
-                               step: 1,
-                               label: { Text("Second Break: \(Int(secondTimeBreak))") }
-                        )
-                    }, label: { Text("Time Break") })
-                    Button("Facs") {
-                        Task {
-                            do {
-                                try await model.serviceArea()
-                            } catch {
-                                print(error.localizedDescription)
-                            }
-                        }
-                    }
-                    Button("Clear") {
-                        model.removeAllGraphics()
+        MapView(
+            map: model.map,
+            graphicsOverlays: [
+                model.facilitiesGraphicsOverlay,
+                model.barriersGraphicsOverlay,
+                model.serviceAreaGraphicsOverlay
+            ]
+        )
+        .onSingleTapGesture { _, point in
+            tapLocation = point
+            model.onTap(point: point, selection: selected)
+        }
+        .toolbar {
+            ToolbarItemGroup(placement: .bottomBar) {
+                Picker("Mode", selection: $selected) {
+                    ForEach(selections, id: \.self) {
+                        Text($0)
                     }
                 }
+                .pickerStyle(.segmented)
+                Menu(content: {
+                    Slider(value: $firstTimeBreak,
+                           in: 1...10,
+                           step: 1,
+                           label: { Text("First Break: \(Int(firstTimeBreak))") }
+                    )
+                    Slider(value: $secondTimeBreak,
+                           in: 1...10,
+                           step: 1,
+                           label: { Text("Second Break: \(Int(secondTimeBreak))") }
+                    )
+                }, label: { Text("Time Break") })
+                Button("Area") {
+                    Task {
+                        do {
+                            try await model.serviceArea()
+                        } catch {
+                            print(error.localizedDescription)
+                        }
+                    }
+                }
+                Button("Clear") {
+                    model.removeAllGraphics()
+                }
             }
+        }
+    }
+}
+
+
+enum SelectedGraphicType: Equatable {
+    case facilities, barriers
+    
+    /// <#Description#>
+    var label: String {
+        switch self {
+        case .barriers: "Barriers"
+        case .facilities: "Facilities"
         }
     }
 }
@@ -101,6 +116,7 @@ private extension ShowServiceAreaView {
             return map
         }()
         
+        /// <#Description#>
         var facilitiesGraphicsOverlay: GraphicsOverlay = {
             var facilitiesGraphicsOverlay = GraphicsOverlay()
             let facilitySymbol = PictureMarkerSymbol(image: UIImage(named: "PinBlueStar")!)
@@ -112,6 +128,7 @@ private extension ShowServiceAreaView {
             return facilitiesGraphicsOverlay
         }()
         
+        /// <#Description#>
         var barriersGraphicsOverlay: GraphicsOverlay = {
             var barriersGraphicsOverlay = GraphicsOverlay()
             let barrierSymbol = SimpleFillSymbol(style: .diagonalCross, color: .red, outline: nil)
@@ -132,14 +149,12 @@ private extension ShowServiceAreaView {
         
         var secondTimeBreak: Int = 8
         
-        
         /// Sets the service area task using the url and then sets the parameter to the default parameters returned
         /// from the service area task.
         func setServiceArea() async throws {
             serviceAreaTask = ServiceAreaTask(url: .serviceArea)
             serviceAreaParameters = try await serviceAreaTask.makeDefaultParameters()
         }
-        
         
         /// On user tapping on screen, depending on the selection type, it sets
         /// either the barrier or facilities overlays on the map at the tap point.
@@ -167,7 +182,6 @@ private extension ShowServiceAreaView {
                 self.barriersGraphicsOverlay.addGraphic(graphic)
             }
         }
-        
         
         /// Gets the service area data and then renders the service area on the map.
         func serviceArea() async throws {
@@ -219,14 +233,12 @@ private extension ShowServiceAreaView {
             }
         }
         
-        
         /// Resets the graphics, removes the barriers, facilities and service area.
         func removeAllGraphics() {
             serviceAreaGraphicsOverlay.removeAllGraphics()
             facilitiesGraphicsOverlay.removeAllGraphics()
             barriersGraphicsOverlay.removeAllGraphics()
         }
-        
         
         /// Sets the symbols drawn on that map for given selection.
         /// - Parameter index: Takes the index to decide how to render.
@@ -285,7 +297,9 @@ private extension ShowServiceAreaView {
 }
 
 private extension URL {
-    static let serviceArea = URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/NetworkAnalysis/SanDiego/NAServer/ServiceArea")!
+    static let serviceArea = URL(
+        string:"https://sampleserver6.arcgisonline.com/arcgis/rest/services/NetworkAnalysis/SanDiego/NAServer/ServiceArea"
+    )!
 }
 
 #Preview {
