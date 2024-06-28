@@ -44,8 +44,8 @@ struct BrowseOGCAPIFeatureServiceView: View {
                         
                         if !model.featureCollectionTitles.isEmpty {
                             Picker("Layers", selection: $selectedTitle) {
-                                ForEach(model.featureCollectionTitles, id: \.self) { name in
-                                    Text(name)
+                                ForEach(model.featureCollectionTitles, id: \.self) { title in
+                                    Text(title)
                                 }
                             }
                             .task(id: selectedTitle) {
@@ -74,10 +74,10 @@ struct BrowseOGCAPIFeatureServiceView: View {
                         Task {
                             do {
                                 try await model.loadOGCFeatureData(url: url)
-                                // Set the picker selection to the first layer in the layer name list.
-                                if let name = model.featureCollectionTitles.first,
-                                   let extent = model.featureCollectionInfos[name]?.extent {
-                                    selectedTitle = name
+                                // Set the picker selection to the first title in the title list.
+                                if let title = model.featureCollectionTitles.first,
+                                   let extent = model.featureCollectionInfos[title]?.extent {
+                                    selectedTitle = title
                                     await mapProxy.setViewpointGeometry(extent, padding: 100)
                                 }
                             } catch {
@@ -170,8 +170,8 @@ private extension BrowseOGCAPIFeatureServiceView {
         /// - Parameter url: The URL of the OGC service.
         func loadOGCFeatureData(url: URL) async throws {
             service = try await makeService(url: url)
-            if let firstFeatureCollectionName = featureCollectionTitles.first,
-               let info = featureCollectionInfos[firstFeatureCollectionName] {
+            if let firstFeatureCollectionTitle = featureCollectionTitles.first,
+               let info = featureCollectionInfos[firstFeatureCollectionTitle] {
                 try await displayLayer(with: info)
             }
         }
