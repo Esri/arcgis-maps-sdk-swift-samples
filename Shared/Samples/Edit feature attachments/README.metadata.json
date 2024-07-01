@@ -1,0 +1,36 @@
+{
+    "category": "Edit and Manage Data",
+    "description": "Add, delete, and download attachments for features from a service.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "Edit and manage data",
+        "JPEG",
+        "PDF",
+        "PNG",
+        "TXT",
+        "image",
+        "picture",
+        "ApplyEditsAsync",
+        "DeleteAttachmentAsync",
+        "FeatureLayer",
+        "FetchAttachmentsAsync",
+        "FetchDataAsync",
+        "ServiceFeatureTable",
+        "UpdateFeatureAsync"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "ApplyEditsAsync",
+        "DeleteAttachmentAsync",
+        "FeatureLayer",
+        "FetchAttachmentsAsync",
+        "FetchDataAsync",
+        "ServiceFeatureTable",
+        "UpdateFeatureAsync"
+    ],
+    "snippets": [
+        "EditFeatureAttachmentsView.swift"
+    ],
+    "title": "Edit feature attachments"
+}
