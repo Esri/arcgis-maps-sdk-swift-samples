@@ -22,9 +22,6 @@ struct ShowServiceAreaView: View {
     /// The data model for the sample.
     @StateObject private var model = Model()
     
-    /// The point on the map where the user tapped.
-    @State private var tapLocation: Point?
-    
     /// Tracks whether to add facilities or barriers to map.
     @State private var selected: SelectedGraphicType = .facilities
     
@@ -38,8 +35,7 @@ struct ShowServiceAreaView: View {
             ]
         )
         .onSingleTapGesture { _, point in
-            tapLocation = point
-            model.onTap(point: point, selection: selected)
+            model.placeGraphicOnTapLocation(point: point, selection: selected)
         }
         .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
@@ -110,9 +106,9 @@ private extension ShowServiceAreaView {
             var facilitiesGraphicsOverlay = GraphicsOverlay()
             // Previously using PictureMarkerSymbol(image: UIImage(named: "Facility")!)
             let facilitySymbol = PictureMarkerSymbol(image: UIImage(named: "PinBlueStar")!)
-            // offset symbol in Y to align image properly
+            // Offsets symbol in Y to align image properly.
             facilitySymbol.offsetY = 21
-            // assign renderer on facilities graphics overlay using the picture marker symbol
+            // Assigns renderer on facilities graphics overlay using the picture marker symbol.
             facilitiesGraphicsOverlay.renderer = SimpleRenderer(symbol: facilitySymbol)
             return facilitiesGraphicsOverlay
         }()
@@ -120,7 +116,7 @@ private extension ShowServiceAreaView {
         private(set) var barriersGraphicsOverlay: GraphicsOverlay = {
             var barriersGraphicsOverlay = GraphicsOverlay()
             let barrierSymbol = SimpleFillSymbol(style: .diagonalCross, color: .red, outline: nil)
-            // set symbol on barrier graphics overlay using renderer
+            // Sets symbol on barrier graphics overlay using renderer.
             barriersGraphicsOverlay.renderer = SimpleRenderer(symbol: barrierSymbol)
             return barriersGraphicsOverlay
         }()
@@ -147,7 +143,7 @@ private extension ShowServiceAreaView {
         /// - Parameters:
         ///   - point: The tap location.
         ///   - selection: The type of graphic to be added to the view.
-        func onTap(point: Point, selection: SelectedGraphicType) {
+        func placeGraphicOnTapLocation(point: Point, selection: SelectedGraphicType) {
             switch selection {
             case .facilities:
                 let graphic = Graphic(geometry: point, symbol: nil)
@@ -163,23 +159,10 @@ private extension ShowServiceAreaView {
         func showServiceArea() async throws {
             try await setServiceArea()
             serviceAreaGraphicsOverlay.removeAllGraphics()
-            let facilitiesGraphics = facilitiesGraphicsOverlay.graphics
-            var facilities = [ServiceAreaFacility]()
             // In the facilities graphicsOverlays add a facility to the parameters for each one.
-            for graphic in facilitiesGraphics {
-                if let point = graphic.geometry as? Point {
-                    let facility = ServiceAreaFacility(point: point)
-                    facilities.append(facility)
-                }
-            }
+            let facilities = facilitiesGraphicsOverlay.graphics.map { ServiceAreaFacility(point: $0.geometry as! Point) }
             serviceAreaParameters.setFacilities(facilities)
-            var barriers = [PolygonBarrier]()
-            for graphic in barriersGraphicsOverlay.graphics {
-                if let polygon = graphic.geometry as? Polygon {
-                    let barrier = PolygonBarrier(polygon: polygon)
-                    barriers.append(barrier)
-                }
-            }
+            let barriers = barriersGraphicsOverlay.graphics.map { PolygonBarrier(polygon: $0.geometry as! Polygon) }
             serviceAreaParameters.setPolygonBarriers(barriers)
             serviceAreaParameters.removeAllDefaultImpedanceCutoffs()
             serviceAreaParameters.addDefaultImpedanceCutoffs([
@@ -238,7 +221,8 @@ private extension ShowServiceAreaView {
 }
 
 private extension URL {
-    static let serviceArea = URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/NetworkAnalysis/SanDiego/NAServer/ServiceArea"
+    static let serviceArea = URL(
+        string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/NetworkAnalysis/SanDiego/NAServer/ServiceArea"
     )!
 }
 
