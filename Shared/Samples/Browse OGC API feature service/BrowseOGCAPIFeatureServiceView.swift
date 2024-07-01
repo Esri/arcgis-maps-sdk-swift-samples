@@ -20,82 +20,79 @@ struct BrowseOGCAPIFeatureServiceView: View {
     /// The error shown in the error alert.
     @State private var error: Error?
     
-    /// A Boolean value indicating whether the alert is presented.
-    @State private var alertIsPresented = true
-    
+    /// A Boolean value indicating whether the textfield alert should be presented.
+    @State private var textfieldAlertIsPresented = true
+
     /// The data model for the sample.
     @StateObject private var model = Model()
     
-    /// The input obtained from the user for the OGC service URL.
-    @State private var featureServiceURL = "https://demo.ldproxy.net/daraa"
+    /// The user input for the OGC service resource.
+    @State private var userInput = URL.daraaService.absoluteString
     
-    /// The selected layer name.
-    @State private var selection: String = ""
+    /// The selected feature collection's title.
+    @State private var selectedTitle = ""
     
     var body: some View {
         MapViewReader { mapProxy in
             MapView(map: model.map)
                 .toolbar {
                     ToolbarItemGroup(placement: .bottomBar) {
-                        // The button in toolbar that allows user to launch the load alert.
                         Button("Open Service") {
-                            alertIsPresented = true
+                            textfieldAlertIsPresented = true
                         }
+                        
                         Spacer()
-                        // The layers button will not appear until selection is set.
-                        if !selection.isEmpty {
-                            Picker("Layers", selection: $selection) {
-                                ForEach(model.layerNames, id: \.self) { title in
+                        
+                        if !model.featureCollectionTitles.isEmpty {
+                            Picker("Layers", selection: $selectedTitle) {
+                                ForEach(model.featureCollectionTitles, id: \.self) { title in
                                     Text(title)
                                 }
                             }
-                            .task(id: selection) {
-                                model.update(for: selection)
-                                if let selection = model.selectedInfo {
-                                    do {
-                                        try await model.displayLayer(with: selection)
-                                        if let extent = model.completeExtent {
-                                            await mapProxy.setViewpointGeometry(
-                                                extent,
-                                                padding: 100
-                                            )
-                                        }
-                                    } catch {
-                                        self.error = error
+                            .task(id: selectedTitle) {
+                                guard !selectedTitle.isEmpty else { return }
+                                let featureCollectionInfo = model.featureCollectionInfos[selectedTitle]!
+                                do {
+                                    try await model.displayLayer(with: featureCollectionInfo)
+                                    if let extent = featureCollectionInfo.extent {
+                                        await mapProxy.setViewpointGeometry(extent, padding: 100)
                                     }
+                                } catch {
+                                    self.error = error
                                 }
                             }
-                            .pickerStyle(.automatic)
                         }
                     }
                 }
-                .alert("Load OGC API feature service", isPresented: $alertIsPresented, actions: {
-                    TextField("URL:", text: $featureServiceURL)
+                .alert("Load OGC API feature service", isPresented: $textfieldAlertIsPresented) {
+                    // Textfield has a default OGC API URL.
+                    TextField("URL", text: $userInput)
+                        .keyboardType(.URL)
+                        .textContentType(.URL)
                     Button("Load") {
-                        alertIsPresented = false
+                        guard let url = URL(string: userInput) else { return }
                         Task {
                             do {
-                                try await model.loadOGCFeatureData(url: URL(string: featureServiceURL))
-                                // This selects the first layer in the layer name list. This is
-                                // needed so that the layer selection picker is set in the toolbar.
-                                selection = model.layerNames.first ?? ""
-                                if let extent = model.completeExtent {
-                                    await mapProxy.setViewpointGeometry(
-                                        extent,
-                                        padding: 100
-                                    )
+                                try await model.loadOGCFeatureData(url: url)
+                                // Set the picker selection to the first title in the title list.
+                                if let title = model.featureCollectionTitles.first,
+                                   let extent = model.featureCollectionInfos[title]?.extent {
+                                    selectedTitle = title
+                                    await mapProxy.setViewpointGeometry(extent, padding: 100)
                                 }
                             } catch {
                                 self.error = error
                             }
                         }
                     }
+                    .disabled(userInput.isEmpty)
                     Button("Cancel", role: .cancel) {
-                        alertIsPresented = false
+                        // Reset the default value of the textfield.
+                        userInput = URL.daraaService.absoluteString
                     }
-                }, message: {
+                } message: {
                     Text("Please provide a URL to an OGC API feature service.")
-                })
+                }
                 .errorAlert(presentingError: $error)
         }
     }
@@ -104,32 +101,23 @@ struct BrowseOGCAPIFeatureServiceView: View {
 private extension BrowseOGCAPIFeatureServiceView {
     @MainActor
     class Model: ObservableObject {
+        /// A map with a topographic basemap of the Daraa, Syria.
         let map: Map = {
             let map = Map(basemapStyle: .arcGISTopographic)
             map.initialViewpoint = Viewpoint(
-                center: Point(
-                    latitude: 32.62,
-                    longitude: 36.10
-                ),
+                center: Point(latitude: 32.62, longitude: 36.10),
                 scale: 200_000
             )
             return map
         }()
         
-        /// When the information on the layers is returned, we map the titles into an array
-        /// to use as the datasource for the picker.
-        @Published var layerNames: [String] = []
+        /// The titles of the feature collection infos in the OGC API.
+        @Published private(set) var featureCollectionTitles: [String] = []
         
-        /// The geometry that represents a rectangular shape that encompasses the area.
-        private(set) var completeExtent: Envelope?
+        /// The OGC feature collection info from the OCG API.
+        private(set) var featureCollectionInfos: [String: OGCFeatureCollectionInfo] = [:]
         
-        /// This is a reference to the currently selected layer.
-        private(set) var selectedInfo: OGCFeatureCollectionInfo?
-        
-        /// This holds the data sent back by the server.
-        private var featureCollectionInfos: [OGCFeatureCollectionInfo] = []
-        
-        /// This is a reference to the service that is loading the OGC API data into the application.
+        /// The OGC API feature service.
         private var service: OGCFeatureService!
         
         /// The query parameters to populate features from the OGC API service.
@@ -141,82 +129,57 @@ private extension BrowseOGCAPIFeatureServiceView {
             return queryParameters
         }()
         
-        /// Returns a renderer for a specified geometry type.
+        /// Returns a renderer with the appropriate symbol type for a geometry type.
         /// - Parameter geometryType: The geometry type.
-        /// - Returns: Returns a `SimpleRenderer` optional with the correct settings for the given geometry.
-        private func getRenderer(withType geometryType: Geometry.Type) -> SimpleRenderer? {
-            var renderer: SimpleRenderer?
+        /// - Returns: A `SimpleRenderer` with the correct symbol for the given geometry.
+        private func makeRenderer(withType geometryType: Geometry.Type) -> SimpleRenderer? {
+            let symbol: Symbol
             switch geometryType {
-            case is Point.Type:
-                renderer = SimpleRenderer(
-                    symbol: SimpleMarkerSymbol(
-                        style: .circle,
-                        color: .blue,
-                        size: 5
-                    )
-                )
-            case is Multipoint.Type:
-                renderer = SimpleRenderer(
-                    symbol: SimpleMarkerSymbol(
-                        style: .circle,
-                        color: .blue,
-                        size: 5
-                    )
-                )
+            case is Point.Type, is Multipoint.Type:
+                symbol = SimpleMarkerSymbol(style: .circle, color: .blue, size: 5)
             case is Polyline.Type:
-                renderer = SimpleRenderer(
-                    symbol: SimpleLineSymbol(
-                        style: .solid,
-                        color: .blue,
-                        width: 1
-                    )
-                )
-            case is Polygon.Type:
-                renderer = SimpleRenderer(
-                    symbol: SimpleFillSymbol(
-                        style: .solid,
-                        color: .blue,
-                        outline: nil
-                    )
-                )
+                symbol = SimpleLineSymbol(style: .solid, color: .blue, width: 1)
+            case is Polygon.Type, is Envelope.Type:
+                symbol = SimpleFillSymbol(style: .solid, color: .blue)
             default:
-                // This should never execute.
-                break
+                return nil
             }
-            return renderer
+            return SimpleRenderer(symbol: symbol)
         }
         
         /// Creates and loads the OGC API features service from a URL.
         /// - Parameter url: The URL of the OGC service.
-        /// - Returns: Returns a `OCGFeatureService` that has been loaded and initialized.
+        /// - Returns: Returns a loaded `OCGFeatureService`.
         private func makeService(url: URL) async throws -> OGCFeatureService {
             let service = OGCFeatureService(url: url)
             try await service.load()
             if let serviceInfo = service.serviceInfo {
-                featureCollectionInfos = serviceInfo.featureCollectionInfos
-                layerNames = featureCollectionInfos.map(\.title)
+                let infos = serviceInfo.featureCollectionInfos
+                featureCollectionTitles = infos.map(\.title)
+                // The sample assumes there is no duplicate titles in the service.
+                // Collections with duplicate titles will be discarded.
+                featureCollectionInfos = Dictionary(
+                    infos.map { ($0.title, $0) },
+                    uniquingKeysWith: { (title, _) in title }
+                )
             }
             return service
         }
         
         /// Loads OGC service for a URL so that it can be rendered on the map.
-        /// - Parameters:
-        ///   - url: The URL of the OGC service.
-        func loadOGCFeatureData(url: URL?) async throws {
-            guard let url = url else { return }
+        /// - Parameter url: The URL of the OGC service.
+        func loadOGCFeatureData(url: URL) async throws {
             service = try await makeService(url: url)
-            try await displayLayer(with: featureCollectionInfos[0])
+            if let firstFeatureCollectionTitle = featureCollectionTitles.first,
+               let info = featureCollectionInfos[firstFeatureCollectionTitle] {
+                try await displayLayer(with: info)
+            }
         }
         
-        /// Updates the selected info property for the users selection.
-        /// - Parameter selection: String with the name of the selected layer to display.
-        func update(for selection: String) {
-            selectedInfo = featureCollectionInfos.first(where: { $0.title == selection })
-        }
-        
-        /// Loads and displays a feature layer from the OGC feature collection table.
+        /// Populates and displays a feature layer from an OGC feature collection table.
         /// - Parameter info: The `OGCFeatureCollectionInfo` selected by user.
         func displayLayer(with info: OGCFeatureCollectionInfo) async throws {
+            map.removeAllOperationalLayers()
             let table = OGCFeatureCollectionTable(featureCollectionInfo: info)
             // Set the feature request mode to manual (only manual is currently
             // supported). In this mode, you must manually populate the table -
@@ -226,15 +189,18 @@ private extension BrowseOGCAPIFeatureServiceView {
                 using: queryParameters,
                 clearCache: false
             )
-            completeExtent = info.extent
             let featureLayer = FeatureLayer(featureTable: table)
             if let geometryType = table.geometryType {
-                featureLayer.renderer = getRenderer(withType: geometryType)
+                featureLayer.renderer = makeRenderer(withType: geometryType)
                 map.addOperationalLayer(featureLayer)
-                selectedInfo = info
             }
         }
     }
+}
+
+private extension URL {
+    /// The Daraa, Syria OGC API feature service URL.
+    static var daraaService: URL { URL(string: "https://demo.ldproxy.net/daraa")! }
 }
 
 #Preview {
