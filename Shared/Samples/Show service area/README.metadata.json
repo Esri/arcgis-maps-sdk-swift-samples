@@ -2,7 +2,9 @@
     "category": "Analysis",
     "description": "Find the service area within a network from a given point.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "show-service-area.png"
+    ],
     "keywords": [
         "barriers",
         "facilities",
