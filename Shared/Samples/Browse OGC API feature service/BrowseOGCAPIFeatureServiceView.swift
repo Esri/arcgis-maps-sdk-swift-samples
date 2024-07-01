@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import ArcGIS
-import ArcGISToolkit
 import SwiftUI
 
 struct BrowseOGCAPIFeatureServiceView: View {
