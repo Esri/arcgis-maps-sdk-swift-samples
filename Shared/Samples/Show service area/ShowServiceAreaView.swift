@@ -66,7 +66,7 @@ struct ShowServiceAreaView: View {
                         do {
                             try await model.showServiceArea()
                         } catch {
-                            print(error.localizedDescription)
+                            self.error = error
                         }
                     }
                 }
@@ -106,7 +106,7 @@ private extension ShowServiceAreaView {
             return map
         }()
         
-        var facilitiesGraphicsOverlay: GraphicsOverlay = {
+        private(set) var facilitiesGraphicsOverlay: GraphicsOverlay = {
             var facilitiesGraphicsOverlay = GraphicsOverlay()
             // Previously using PictureMarkerSymbol(image: UIImage(named: "Facility")!)
             let facilitySymbol = PictureMarkerSymbol(image: UIImage(named: "PinBlueStar")!)
@@ -117,7 +117,7 @@ private extension ShowServiceAreaView {
             return facilitiesGraphicsOverlay
         }()
         
-        var barriersGraphicsOverlay: GraphicsOverlay = {
+        private(set) var barriersGraphicsOverlay: GraphicsOverlay = {
             var barriersGraphicsOverlay = GraphicsOverlay()
             let barrierSymbol = SimpleFillSymbol(style: .diagonalCross, color: .red, outline: nil)
             // set symbol on barrier graphics overlay using renderer
@@ -125,9 +125,7 @@ private extension ShowServiceAreaView {
             return barriersGraphicsOverlay
         }()
         
-        var serviceAreaGraphicsOverlay = GraphicsOverlay()
-        
-        private var barrierGraphic: Graphic!
+        private(set) var serviceAreaGraphicsOverlay = GraphicsOverlay()
         
         private var serviceAreaTask: ServiceAreaTask!
         
@@ -139,7 +137,7 @@ private extension ShowServiceAreaView {
         
         /// Sets the service area task using the url and then sets the parameter to the default parameters returned
         /// from the service area task.
-        func setServiceArea() async throws {
+        private func setServiceArea() async throws {
             serviceAreaTask = ServiceAreaTask(url: .serviceArea)
             serviceAreaParameters = try await serviceAreaTask.makeDefaultParameters()
         }
@@ -210,9 +208,7 @@ private extension ShowServiceAreaView {
         /// - Parameter index: Takes the index to decide how to render.
         /// - Returns: Returns the symbol.
         private func serviceAreaSymbol(for index: Int) -> Symbol {
-            // fill symbol for service area
             var fillSymbol: SimpleFillSymbol
-            
             if index == 0 {
                 let lineSymbol = SimpleLineSymbol(
                     style: .solid,
@@ -236,7 +232,6 @@ private extension ShowServiceAreaView {
                     outline: lineSymbol
                 )
             }
-            
             return fillSymbol
         }
     }
