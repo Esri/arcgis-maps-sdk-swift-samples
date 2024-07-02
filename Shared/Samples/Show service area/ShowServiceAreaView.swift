@@ -68,7 +68,7 @@ struct ShowServiceAreaView: View {
     }
 }
 
-enum SelectedGraphicType: Equatable, CaseIterable {
+private enum SelectedGraphicType: Equatable, CaseIterable {
     case facilities, barriers
     
     /// The string representation of the SelectedGraphic type.
@@ -83,6 +83,7 @@ enum SelectedGraphicType: Equatable, CaseIterable {
 private extension ShowServiceAreaView {
     @MainActor
     class Model: ObservableObject {
+        /// Map with terrain style centered over San Diego.
         let map: Map = {
             let map = Map(basemapStyle: .arcGISTerrain)
             map.initialViewpoint = Viewpoint(
