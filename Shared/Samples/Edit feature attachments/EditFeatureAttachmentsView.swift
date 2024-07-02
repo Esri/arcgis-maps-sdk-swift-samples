@@ -15,6 +15,17 @@
 import ArcGIS
 import SwiftUI
 
+struct PurpleButtonStyle: ButtonStyle {
+    func makeBody(configuration: Self.Configuration) -> some View {
+        return configuration.label
+            .padding(8)
+            .border(.purple, width: 1)
+            .foregroundColor(.white)
+            .background(Color.purple)
+            .font(.footnote)
+    }
+}
+
 struct EditFeatureAttachmentsView: View {
     /// The error shown in the error alert.
     @State private var error: Error?
@@ -73,18 +84,13 @@ struct EditFeatureAttachmentsView: View {
                                                 Button("Download") {
                                                     Task {
                                                         do {
-                                                            let data = try await attachments[index].data
-                                                            print(data)
+                                                            try await model.storeAttachment(url: model.tempURL!, attachment: attachments[index])
                                                         } catch {
                                                             self.error = error
                                                         }
                                                     }
                                                 }
-                                                .padding(8)
-                                                .border(.purple, width: 1)
-                                                .foregroundColor(.white)
-                                                .background(Color.purple)
-                                                .font(.footnote)
+                                                .buttonStyle(PurpleButtonStyle())
                                                 Button("Delete") {
                                                     Task {
                                                         do {
@@ -94,11 +100,7 @@ struct EditFeatureAttachmentsView: View {
                                                         }
                                                     }
                                                 }
-                                                .padding(8)
-                                                .border(.purple, width: 1)
-                                                .foregroundColor(.white)
-                                                .background(Color.purple)
-                                                .font(.footnote)
+                                                .buttonStyle(PurpleButtonStyle())
                                             }
                                         }
                                     }
@@ -213,13 +215,11 @@ private extension EditFeatureAttachmentsView {
             return directoryURL
         }
         
-        func storeAttachment(url: URL) {
-            let data = Data("Test Message".utf8)
-            let attachmentURL = tempURL?.appending(path: "messages.txt")
+        func storeAttachment(url: URL, attachment: Attachment) async throws {
+            let data = try await attachment.data
+            let attachmentURL = url.appending(path: attachment.name)
             do {
-                try data.write(to: attachmentURL!, options: [.atomic, .completeFileProtection])
-                let input = try String(contentsOf: attachmentURL!)
-                print(input)
+                try data.write(to: attachmentURL, options: [.atomic, .completeFileProtection])
             } catch {
                 print(error.localizedDescription)
             }
