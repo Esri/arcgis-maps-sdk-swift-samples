@@ -171,6 +171,10 @@ private extension ShowServiceAreaView {
                 Double(secondTimeBreak)
             ])
             serviceAreaParameters.geometryAtOverlap = .dissolve
+            try await renderServiceAreaPolygons()
+        }
+        
+        private func renderServiceAreaPolygons() async throws {
             let result = try await serviceAreaTask.solveServiceArea(using: serviceAreaParameters)
             let polygons = result.resultPolygons(forFacilityAtIndex: 0)
             for index in polygons.indices {
