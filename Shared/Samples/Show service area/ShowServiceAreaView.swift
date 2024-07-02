@@ -86,7 +86,6 @@ private enum SelectedGraphicType: Equatable, CaseIterable {
 }
 
 private extension ShowServiceAreaView {
-//    @MainActor
     class Model: ObservableObject {
         /// Map with terrain style centered over San Diego.
         let map: Map = {
