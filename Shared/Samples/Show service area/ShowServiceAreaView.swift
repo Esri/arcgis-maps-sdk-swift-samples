@@ -23,7 +23,7 @@ struct ShowServiceAreaView: View {
     @StateObject private var model = Model()
     
     /// Tracks whether to add facilities or barriers to map.
-    @State private var selected: SelectedGraphicType = .facilities
+    @State private var selectedGraphicType: SelectedGraphicType = .facilities
     
     var body: some View {
         MapView(map: model.map, graphicsOverlays: [
@@ -32,25 +32,29 @@ struct ShowServiceAreaView: View {
             model.serviceAreaGraphicsOverlay
         ])
         .onSingleTapGesture { _, point in
-            model.placeGraphicOnTapLocation(point: point, selection: selected)
+            model.placeGraphicOnTapLocation(point: point, selection: selectedGraphicType)
         }
         .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
-                Picker("Mode", selection: $selected) {
+                Picker("Mode", selection: $selectedGraphicType) {
                     ForEach(SelectedGraphicType.allCases, id: \.self) {
                         Text($0.label)
                     }
                 }
                 .pickerStyle(.segmented)
-                Menu("Time") {
+                Spacer()
+                Menu {
                     Slider(value: $model.secondTimeBreak, in: 1...10, step: 1) {
                         Text("Finished: \(Int(model.secondTimeBreak))")
                     }
                     Slider(value: $model.firstTimeBreak, in: 1...10, step: 1) {
                         Text("Start: \(Int(model.firstTimeBreak))")
                     }
+                } label: {
+                    Label("Time", systemImage: "gear")
                 }
-                Button("Show Area") {
+                Spacer()
+                Button("Service Area") {
                     Task {
                         do {
                             try await model.showServiceArea()
@@ -59,7 +63,8 @@ struct ShowServiceAreaView: View {
                         }
                     }
                 }
-                Button("Clear") {
+                Spacer()
+                Button("Clear", systemImage: "trash.fill") {
                     model.removeAllGraphics()
                 }
             }
