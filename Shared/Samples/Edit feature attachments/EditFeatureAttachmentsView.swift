@@ -32,10 +32,7 @@ struct EditFeatureAttachmentsView: View {
     
     @State private var tapPoint: CGPoint?
     
-    @State var attachments: [Attachment] = []
-    
-    /// The current draw status of the map.
-    @State private var currentDrawStatus: DrawStatus = .inProgress
+    @State private var attachments: [Attachment] = []
     
     /// The data model for the sample.
     @StateObject private var model = Model()
@@ -44,6 +41,12 @@ struct EditFeatureAttachmentsView: View {
     
     @State private var showingSheet = false
     
+    @State private var isImporting = false
+    
+    @State private var text = ""
+    
+    @State private var images: [Image] = []
+    
     var body: some View {
         MapViewReader { mapProxy in
             MapView(map: model.map)
@@ -51,7 +54,7 @@ struct EditFeatureAttachmentsView: View {
                     .animation(model.calloutShouldOffset ? nil : .default.speed(2))
                 ) { _ in
                     HStack {
-                        VStack {
+                        VStack(alignment: .leading, spacing: 3) {
                             Text(model.calloutText)
                                 .font(.callout)
                                 .multilineTextAlignment(.leading)
@@ -59,38 +62,58 @@ struct EditFeatureAttachmentsView: View {
                                 .font(.footnote)
                                 .multilineTextAlignment(.leading)
                         }
-                        .padding(8)
-                        Button("Detail", systemImage: "exclamationmark.circle.fill") {
+                        .padding(6)
+                        Button("", systemImage: "exclamationmark.circle") {
                             showingSheet = true
                         }
                         .sheet(isPresented: $showingSheet) {
                             VStack {
                                 Spacer()
+                                
                                 List {
                                     ForEach(0...attachments.count, id: \.self) { index in
                                         if index == attachments.count {
                                             HStack {
                                                 Spacer()
-                                                Button("Add Attachment") {
-                                                    print("here")
+                                                Button {
+                                                    Task {
+                                                        do {
+                                                            if let data = UIImage(named: "PinBlueStar")?.pngData() {
+                                                                try await model.add(name: "Attachment2", type: "png", dataElement: data)
+                                                                try await model.applyEdits()
+                                                            }
+                                                        } catch {
+                                                            self.error = error
+                                                        }
+                                                    }
+                                                } label: {
+                                                    Label("Add Attachment", systemImage: "paperclip")
                                                 }
                                                 Spacer()
                                             }
                                         } else {
                                             HStack {
                                                 Text("\(attachments[index].name)")
-                                                    .font(.footnote)
+                                                    .font(.title3)
                                                 Spacer()
-                                                Button("Download") {
+                                                Button {
                                                     Task {
                                                         do {
-                                                            try await model.storeAttachment(url: model.tempURL!, attachment: attachments[index])
+                                                            let result = try await attachments[index].data
+                                                            let image = Image(uiImage: UIImage(data: result)!)
+                                                            images.append(image)
                                                         } catch {
                                                             self.error = error
                                                         }
                                                     }
+                                                } label: {
+                                                    if !images.isEmpty {
+                                                        images[index]
+                                                    } else {
+                                                        Image(systemName: "icloud.and.arrow.down.fill")
+                                                    }
                                                 }
-                                                .buttonStyle(PurpleButtonStyle())
+                                            }.swipeActions {
                                                 Button("Delete") {
                                                     Task {
                                                         do {
@@ -100,7 +123,7 @@ struct EditFeatureAttachmentsView: View {
                                                         }
                                                     }
                                                 }
-                                                .buttonStyle(PurpleButtonStyle())
+                                                .tint(.red)
                                             }
                                         }
                                     }
@@ -124,11 +147,7 @@ struct EditFeatureAttachmentsView: View {
                     model.featureLayer.clearSelection()
                     do {
                         model.tempURL = try model.createTemporaryDirectory()
-                        let result = try await mapProxy.identify(
-                            on: model.featureLayer,
-                            screenPoint: point,
-                            tolerance: 5
-                        )
+                        let result = try await mapProxy.identify(on: model.featureLayer, screenPoint: point, tolerance: 5)
                         guard let features = result.geoElements as? [ArcGISFeature],
                               let feature = features.first else {
                             return
@@ -136,16 +155,11 @@ struct EditFeatureAttachmentsView: View {
                         model.selectedFeature = feature
                         model.selectFeature()
                         if let selectedFeature = model.selectedFeature {
-                            let title = selectedFeature.attributes["typdamage"] as? String
-                            try await selectedFeature.load()
-                            guard let pngData = UIImage(named: "Layers-icon")?.pngData() else { return }
-                            try await model.add(name: "Attachment.png", type: "png", dataElement: pngData)
-                            let attachments = try await selectedFeature.attachments
-                            self.attachments = attachments
-                            print(attachments)
+                            //                            guard let pngData = UIImage(named: "Layers-icon")?.pngData() else { return }
+                            //                            try await model.add(name: "Attachment.png", type: "png", dataElement: pngData)
+                            let fetchAttachments = try await model.updateForSelectedFeature()
+                            attachments = fetchAttachments
                             model.updateCalloutPlacement(to: point, using: mapProxy)
-                            model.calloutText = title ?? "Callout"
-                            model.calloutDetailText = " \(attachments.count) attachments"
                         }
                     } catch {
                         self.error = error
@@ -153,7 +167,7 @@ struct EditFeatureAttachmentsView: View {
                 }
                 .overlay(alignment: .center) {
                     if !loaded {
-                        ProgressView("Drawing…")
+                        ProgressView("Loading…")
                             .padding()
                             .background(.ultraThinMaterial)
                             .cornerRadius(10)
@@ -243,6 +257,18 @@ private extension EditFeatureAttachmentsView {
             if let selectedFeature = selectedFeature {
                 featureLayer.selectFeature(selectedFeature)
             }
+        }
+        
+        func updateForSelectedFeature() async throws -> [Attachment] {
+            if let selectedFeature = selectedFeature {
+                let title = selectedFeature.attributes["typdamage"] as? String
+                try await selectedFeature.load()
+                let fetchAttachments = try await selectedFeature.attachments
+                calloutText = title ?? "Callout"
+                calloutDetailText = "Number of attachments: \(fetchAttachments.count)"
+                return fetchAttachments
+            }
+            return []
         }
         
         func add(name: String, type: String, dataElement: Data) async throws {
