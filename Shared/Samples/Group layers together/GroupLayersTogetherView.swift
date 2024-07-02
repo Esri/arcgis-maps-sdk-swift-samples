@@ -67,6 +67,7 @@ struct GroupLayersTogetherView: View {
     }
     
     /// The list of group layers and their child layers that are currently added to the map.
+    @MainActor
     private var layersList: some View {
         NavigationStack {
             List {
