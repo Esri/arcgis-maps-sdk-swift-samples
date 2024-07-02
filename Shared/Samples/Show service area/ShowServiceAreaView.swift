@@ -173,6 +173,9 @@ private extension ShowServiceAreaView {
             try await renderServiceAreaPolygons()
         }
         
+        
+        /// Asynchronously uses the service area task to solve for the service area using the parameters and then iterates through resulting
+        /// polygons and creates a graphic which is added to the overlay for rendering.
         private func renderServiceAreaPolygons() async throws {
             let result = try await serviceAreaTask.solveServiceArea(using: serviceAreaParameters)
             let polygons = result.resultPolygons(forFacilityAtIndex: 0)
