@@ -32,7 +32,7 @@ struct ShowServiceAreaView: View {
             model.serviceAreaGraphicsOverlay
         ])
         .onSingleTapGesture { _, point in
-            model.placeGraphicOnTapLocation(point: point, selection: selectedGraphicType)
+            model.placeGraphicOnTapLocation(at: point, with: selectedGraphicType)
         }
         .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
@@ -126,8 +126,10 @@ private extension ShowServiceAreaView {
         
         private var serviceAreaParameters: ServiceAreaParameters!
         
+        /// Start time property set in first slider.
         @Published var firstTimeBreak: Double = 3
         
+        /// Second time property set in first slider.
         @Published var secondTimeBreak: Double = 8
         
         /// Sets the service area task using the url and then sets the parameter to the default parameters returned
@@ -142,7 +144,7 @@ private extension ShowServiceAreaView {
         /// - Parameters:
         ///   - point: The tap location.
         ///   - selection: The type of graphic to be added to the view.
-        func placeGraphicOnTapLocation(point: Point, selection: SelectedGraphicType) {
+        func placeGraphicOnTapLocation(at point: Point, with selection: SelectedGraphicType) {
             switch selection {
             case .facilities:
                 let graphic = Graphic(geometry: point, symbol: nil)
@@ -173,7 +175,7 @@ private extension ShowServiceAreaView {
             let polygons = result.resultPolygons(forFacilityAtIndex: 0)
             for index in polygons.indices {
                 let polygon = polygons[index]
-                let fillSymbol = serviceAreaSymbol(for: index)
+                let fillSymbol = makeServiceAreaSymbol(for: index)
                 let graphic = Graphic(geometry: polygon.geometry, symbol: fillSymbol)
                 serviceAreaGraphicsOverlay.addGraphic(graphic)
             }
@@ -189,7 +191,7 @@ private extension ShowServiceAreaView {
         /// Sets the symbols drawn on that map for given selection.
         /// - Parameter index: Takes the index to decide how to render.
         /// - Returns: Returns the symbol.
-        private func serviceAreaSymbol(for index: Int) -> Symbol {
+        private func makeServiceAreaSymbol(for index: Int) -> Symbol {
             var fillSymbol: SimpleFillSymbol
             if index == 0 {
                 let lineSymbol = SimpleLineSymbol(style: .solid, color: UIColor(red: 0.4, green: 0.4, blue: 0, alpha: 0.3), width: 2)
