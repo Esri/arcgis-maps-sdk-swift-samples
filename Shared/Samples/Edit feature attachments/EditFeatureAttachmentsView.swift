@@ -58,8 +58,12 @@ struct EditFeatureAttachmentsView: View {
                                 List {
                                     ForEach(0...attachments.count, id: \.self) { index in
                                         if index == attachments.count {
-                                            Button("Add Attachment") {
-                                                print("here")
+                                            HStack {
+                                                Spacer()
+                                                Button("Add Attachment") {
+                                                    print("here")
+                                                }
+                                                Spacer()
                                             }
                                         } else {
                                             HStack {
@@ -77,7 +81,9 @@ struct EditFeatureAttachmentsView: View {
                                                     }
                                                 }
                                                 .padding(8)
-                                                .border(.black, width: 1)
+                                                .border(.purple, width: 1)
+                                                .foregroundColor(.white)
+                                                .background(Color.purple)
                                                 .font(.footnote)
                                                 Button("Delete") {
                                                     Task {
@@ -89,7 +95,9 @@ struct EditFeatureAttachmentsView: View {
                                                     }
                                                 }
                                                 .padding(8)
-                                                .border(.black, width: 1)
+                                                .border(.purple, width: 1)
+                                                .foregroundColor(.white)
+                                                .background(Color.purple)
                                                 .font(.footnote)
                                             }
                                         }
@@ -113,6 +121,7 @@ struct EditFeatureAttachmentsView: View {
                     guard let point = tapPoint else { return }
                     model.featureLayer.clearSelection()
                     do {
+                        model.tempURL = try model.createTemporaryDirectory()
                         let result = try await mapProxy.identify(
                             on: model.featureLayer,
                             screenPoint: point,
@@ -186,8 +195,34 @@ private extension EditFeatureAttachmentsView {
             return featureLayer
         }()
         
+        var tempURL: URL?
+        
         init() {
             map.addOperationalLayer(featureLayer)
+        }
+        
+        func createTemporaryDirectory() throws -> URL {
+            let directoryURL = FileManager.default.temporaryDirectory.appendingPathComponent(
+                "Attachments"
+            )
+            // Create and return the full, unique URL to the temporary folder.
+            try? FileManager.default.createDirectory(
+                at: directoryURL,
+                withIntermediateDirectories: true
+            )
+            return directoryURL
+        }
+        
+        func storeAttachment(url: URL) {
+            let data = Data("Test Message".utf8)
+            let attachmentURL = tempURL?.appending(path: "messages.txt")
+            do {
+                try data.write(to: attachmentURL!, options: [.atomic, .completeFileProtection])
+                let input = try String(contentsOf: attachmentURL!)
+                print(input)
+            } catch {
+                print(error.localizedDescription)
+            }
         }
         
         /// Updates the location of the callout placement to a given screen point.
@@ -197,6 +232,7 @@ private extension EditFeatureAttachmentsView {
         func updateCalloutPlacement(to screenPoint: CGPoint, using proxy: MapViewProxy) {
             // Create an offset to offset the callout if needed, e.g. the magnifier is showing.
             let offset = calloutShouldOffset ? CGPoint(x: 0, y: -70) : .zero
+            
             // Get the map location of the screen point from the map view proxy.
             if let location = proxy.location(fromScreenPoint: screenPoint) {
                 calloutPlacement = .location(location, offset: offset)
