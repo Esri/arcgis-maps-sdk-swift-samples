@@ -26,14 +26,11 @@ struct ShowServiceAreaView: View {
     @State private var selected: SelectedGraphicType = .facilities
     
     var body: some View {
-        MapView(
-            map: model.map,
-            graphicsOverlays: [
-                model.facilitiesGraphicsOverlay,
-                model.barriersGraphicsOverlay,
-                model.serviceAreaGraphicsOverlay
-            ]
-        )
+        MapView(map: model.map, graphicsOverlays: [
+            model.facilitiesGraphicsOverlay,
+            model.barriersGraphicsOverlay,
+            model.serviceAreaGraphicsOverlay
+        ])
         .onSingleTapGesture { _, point in
             model.placeGraphicOnTapLocation(point: point, selection: selected)
         }
@@ -45,18 +42,14 @@ struct ShowServiceAreaView: View {
                     }
                 }
                 .pickerStyle(.segmented)
-                Menu(content: {
-                    Slider(value: $model.secondTimeBreak,
-                           in: 1...10,
-                           step: 1,
-                           label: { Text("Finished: \(Int(model.secondTimeBreak))") }
-                    )
-                    Slider(value: $model.firstTimeBreak,
-                           in: 1...10,
-                           step: 1,
-                           label: { Text("Start: \(Int(model.firstTimeBreak))") }
-                    )
-                }, label: { Text("Time") })
+                Menu("Time") {
+                    Slider(value: $model.secondTimeBreak, in: 1...10, step: 1) {
+                        Text("Finished: \(Int(model.secondTimeBreak))")
+                    }
+                    Slider(value: $model.firstTimeBreak, in: 1...10, step: 1) {
+                        Text("Start: \(Int(model.firstTimeBreak))")
+                    }
+                }
                 Button("Show Area") {
                     Task {
                         do {
@@ -71,6 +64,7 @@ struct ShowServiceAreaView: View {
                 }
             }
         }
+        .errorAlert(presentingError: $error)
     }
 }
 
@@ -193,27 +187,11 @@ private extension ShowServiceAreaView {
         private func serviceAreaSymbol(for index: Int) -> Symbol {
             var fillSymbol: SimpleFillSymbol
             if index == 0 {
-                let lineSymbol = SimpleLineSymbol(
-                    style: .solid,
-                    color: UIColor(red: 0.4, green: 0.4, blue: 0, alpha: 0.3),
-                    width: 2
-                )
-                fillSymbol = SimpleFillSymbol(
-                    style: .solid,
-                    color: UIColor(red: 0.8, green: 0.8, blue: 0, alpha: 0.3),
-                    outline: lineSymbol
-                )
+                let lineSymbol = SimpleLineSymbol(style: .solid, color: UIColor(red: 0.4, green: 0.4, blue: 0, alpha: 0.3), width: 2)
+                fillSymbol = SimpleFillSymbol(style: .solid, color: UIColor(red: 0.8, green: 0.8, blue: 0, alpha: 0.3), outline: lineSymbol)
             } else {
-                let lineSymbol = SimpleLineSymbol(
-                    style: .solid,
-                    color: UIColor(red: 0, green: 0.4, blue: 0, alpha: 0.3),
-                    width: 2
-                )
-                fillSymbol = SimpleFillSymbol(
-                    style: .solid,
-                    color: UIColor(red: 0, green: 0.8, blue: 0, alpha: 0.3),
-                    outline: lineSymbol
-                )
+                let lineSymbol = SimpleLineSymbol(style: .solid, color: UIColor(red: 0, green: 0.4, blue: 0, alpha: 0.3), width: 2)
+                fillSymbol = SimpleFillSymbol(style: .solid, color: UIColor(red: 0, green: 0.8, blue: 0, alpha: 0.3), outline: lineSymbol)
             }
             return fillSymbol
         }
