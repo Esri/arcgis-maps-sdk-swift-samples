@@ -15,7 +15,7 @@
 import SwiftUI
 
 /// A type that represents a sample in the sample viewer.
-protocol Sample {
+protocol Sample: Sendable {
     /// The name of the sample.
     var name: String { get }
     

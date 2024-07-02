@@ -79,7 +79,7 @@ final class KMZFile: FileDocument {
     /// The temporary URL to the KMZ file.
     private var temporaryDocumentURL: URL?
     
-    static var readableContentTypes = [UTType.kmz]
+    static let readableContentTypes = [UTType.kmz]
     
     /// Creates a KMZ file with a KML document.
     /// - Parameter document: The KML document that is used when creating the KMZ file.
