@@ -44,11 +44,11 @@ struct ShowServiceAreaView: View {
                 .pickerStyle(.segmented)
                 Spacer()
                 Menu {
-                    Slider(value: $model.secondTimeBreak, in: 1...10, step: 1) {
-                        Text("Finished: \(Int(model.secondTimeBreak))")
+                    Slider(value: $model.secondTimeBreak, in: 1...15, step: 1) {
+                        Text("Second: \(Int(model.secondTimeBreak))")
                     }
-                    Slider(value: $model.firstTimeBreak, in: 1...10, step: 1) {
-                        Text("Start: \(Int(model.firstTimeBreak))")
+                    Slider(value: $model.firstTimeBreak, in: 1...15, step: 1) {
+                        Text("First: \(Int(model.firstTimeBreak))")
                     }
                 } label: {
                     Label("Time", systemImage: "gear")
@@ -86,7 +86,7 @@ private enum SelectedGraphicType: Equatable, CaseIterable {
 }
 
 private extension ShowServiceAreaView {
-    @MainActor
+//    @MainActor
     class Model: ObservableObject {
         /// Map with terrain style centered over San Diego.
         let map: Map = {
@@ -126,10 +126,10 @@ private extension ShowServiceAreaView {
         
         private var serviceAreaParameters: ServiceAreaParameters!
         
-        /// Start time property set in first slider.
+        /// First time break property set in first slider.
         @Published var firstTimeBreak: Double = 3
         
-        /// Second time property set in first slider.
+        /// Second time break property set in second slider.
         @Published var secondTimeBreak: Double = 8
         
         /// Sets the service area task using the url and then sets the parameter to the default parameters returned
