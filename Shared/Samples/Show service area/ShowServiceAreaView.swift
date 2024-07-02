@@ -104,7 +104,6 @@ private extension ShowServiceAreaView {
         
         private(set) var facilitiesGraphicsOverlay: GraphicsOverlay = {
             var facilitiesGraphicsOverlay = GraphicsOverlay()
-            // Previously using PictureMarkerSymbol(image: UIImage(named: "Facility")!)
             let facilitySymbol = PictureMarkerSymbol(image: UIImage(named: "PinBlueStar")!)
             // Offsets symbol in Y to align image properly.
             facilitySymbol.offsetY = 21
