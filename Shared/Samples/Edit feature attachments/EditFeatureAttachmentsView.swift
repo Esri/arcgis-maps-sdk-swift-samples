@@ -16,24 +16,21 @@ import ArcGIS
 import SwiftUI
 
 private struct CalloutView: View {
-    /// The text shown on the callout.
-    @State var calloutText: String = ""
-    
-    /// The text shown on the callout.
-    @State var calloutDetailText: String = ""
+    @ObservedObject var model: EditFeatureAttachmentsView.Model
     
     var body: some View {
         VStack(alignment: .leading, spacing: 3) {
-            Text(calloutText)
+            Text(model.calloutText)
                 .font(.callout)
                 .multilineTextAlignment(.leading)
-            Text(calloutDetailText)
+            Text(model.calloutDetailText)
                 .font(.footnote)
                 .multilineTextAlignment(.leading)
         }
     }
 }
 
+//
 private struct AttachmentView: View {
     var attachment: Attachment
     @State var image: Image?
@@ -64,8 +61,8 @@ private struct AttachmentView: View {
         }
     }
 }
-
-struct AddingAttachmentToFeatureView: View {
+//
+private struct AddingAttachmentToFeatureView: View {
     let onAdd: (() -> Void)
     var body: some View {
         HStack {
@@ -80,33 +77,11 @@ struct AddingAttachmentToFeatureView: View {
     }
 }
 
-struct AttachmentSheetView: View {
-    @State var attachments: [Attachment] = []
-    let onAdd: (() -> Void)
-    let onDelete: ((Attachment) -> Void)
-    var body: some View {
-        VStack {
-            Spacer()
-            List {
-                ForEach(0...attachments.count, id: \.self) { index in
-                    if index == attachments.count {
-                        AddingAttachmentToFeatureView(onAdd: onAdd)
-                    } else {
-                        AttachmentView(attachment: attachments[index], onDelete: onDelete)
-                    }
-                }
-            }
-        }
-    }
-}
-
 struct EditFeatureAttachmentsView: View {
     /// The error shown in the error alert.
     @State private var error: Error?
     
     @State private var tapPoint: CGPoint?
-    
-    @State private var attachments: [Attachment] = []
     
     /// The data model for the sample.
     @StateObject private var model = Model()
@@ -128,37 +103,48 @@ struct EditFeatureAttachmentsView: View {
                     .animation(model.calloutShouldOffset ? nil : .default.speed(2))
                 ) { _ in
                     HStack {
-                        CalloutView(calloutText: model.calloutText, calloutDetailText: model.calloutDetailText)
+                        CalloutView(model: model)
                             .padding(6)
                         Button("", systemImage: "exclamationmark.circle") {
                             showingSheet = true
                         }
                         .sheet(isPresented: $showingSheet) {
-                            AttachmentSheetView(attachments: attachments, onAdd: {
-                                Task {
-                                    print("click")
-                                    do {
-                                        if let data = UIImage(named: "PinBlueStar")?.pngData() {
-                                            print(data)
-                                            try await model.add(name: "Attachment2", type: "png", dataElement: data)
-                                            try await model.applyEdits()
+                            VStack {
+                                Spacer()
+                                List {
+                                    ForEach(0...$model.attachments.count, id: \.self) { index in
+                                        if index == model.attachments.count {
+                                            AddingAttachmentToFeatureView(onAdd: {
+                                                Task {
+                                                    do {
+                                                        if let data = UIImage(named: "PinBlueStar")?.pngData() {
+                                                            try await model.add(name: "Attachment2", type: "png", dataElement: data)
+                                                            try await model.applyEdits()
+                                                            let fetchAttachments = try await model.updateForSelectedFeature()
+                                                            model.attachments = fetchAttachments
+                                                        }
+                                                    } catch {
+                                                        self.error = error
+                                                    }
+                                                }
+                                            })
+                                        } else {
+                                            AttachmentView(attachment: model.attachments[index], onDelete: { attachment in
+                                                Task {
+                                                    do {
+                                                        try await model.delete(attachment: attachment)
+                                                        try await model.applyEdits()
+                                                        let fetchAttachments = try await model.updateForSelectedFeature()
+                                                        model.attachments = fetchAttachments
+                                                    } catch {
+                                                        print(error)
+                                                    }
+                                                }
+                                            })
                                         }
-                                        try await model.updateForSelectedFeature()
-                                    } catch {
-                                        print(error)
-                                        self.error = error
                                     }
                                 }
-                            }, onDelete: { attachment in
-                                Task {
-                                    do {
-                                        print("delete")
-                                        try await model.delete(attachment: attachment)
-                                    } catch {
-                                        print(error)
-                                    }
-                                }
-                            })
+                            }
                         }
                         .padding(8)
                     }
@@ -185,10 +171,8 @@ struct EditFeatureAttachmentsView: View {
                         model.selectedFeature = feature
                         model.selectFeature()
                         if let selectedFeature = model.selectedFeature {
-                            //                            guard let pngData = UIImage(named: "Layers-icon")?.pngData() else { return }
-                            //                            try await model.add(name: "Attachment.png", type: "png", dataElement: pngData)
                             let fetchAttachments = try await model.updateForSelectedFeature()
-                            attachments = fetchAttachments
+                            model.attachments = fetchAttachments
                             model.updateCalloutPlacement(to: point, using: mapProxy)
                         }
                     } catch {
@@ -208,6 +192,7 @@ struct EditFeatureAttachmentsView: View {
         .errorAlert(presentingError: $error)
     }
 }
+
 
 /// The authentication model used to handle challenges and credentials.
 private struct ChallengeHandler: ArcGISAuthenticationChallengeHandler {
@@ -238,6 +223,8 @@ private extension EditFeatureAttachmentsView {
         @Published var calloutPlacement: CalloutPlacement?
         
         @Published var selectedFeature: ArcGISFeature?
+        
+        @Published var attachments: [Attachment] = []
         
         /// The text shown on the callout.
         @Published var calloutText: String = ""
