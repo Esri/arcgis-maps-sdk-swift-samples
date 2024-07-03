@@ -16,67 +16,63 @@ import ArcGIS
 import SwiftUI
 
 struct ShowServiceAreaView: View {
+    /// The currently selected graphic type.
+    /// Used to track whether to add facilities or barriers to the map.
+    @State private var selectedGraphicType: GraphicType = .facilities
     /// The error shown in the error alert.
     @State private var error: Error?
     
     /// The data model for the sample.
     @StateObject private var model = Model()
     
-    /// Tracks whether to add facilities or barriers to map.
-    @State private var selectedGraphicType: SelectedGraphicType = .facilities
-    
     var body: some View {
-        MapView(map: model.map, graphicsOverlays: [
-            model.facilitiesGraphicsOverlay,
-            model.barriersGraphicsOverlay,
-            model.serviceAreaGraphicsOverlay
-        ])
-        .onSingleTapGesture { _, point in
-            model.placeGraphicOnTapLocation(at: point, with: selectedGraphicType)
-        }
-        .toolbar {
-            ToolbarItemGroup(placement: .bottomBar) {
-                Picker("Mode", selection: $selectedGraphicType) {
-                    ForEach(SelectedGraphicType.allCases, id: \.self) {
-                        Text($0.label)
-                    }
-                }
-                .pickerStyle(.segmented)
-                Spacer()
-                Menu {
-                    Slider(value: $model.secondTimeBreak, in: 1...15, step: 1) {
-                        Text("Second: \(Int(model.secondTimeBreak))")
-                    }
-                    Slider(value: $model.firstTimeBreak, in: 1...15, step: 1) {
-                        Text("First: \(Int(model.firstTimeBreak))")
-                    }
-                } label: {
-                    Label("Time", systemImage: "gear")
-                }
-                Spacer()
-                Button("Service Area") {
-                    Task {
-                        do {
-                            try await model.showServiceArea()
-                        } catch {
-                            self.error = error
+        MapView(map: model.map, graphicsOverlays: model.graphicsOverlays)
+            .onSingleTapGesture { _, point in
+                model.placeGraphicOnTapLocation(at: point, with: selectedGraphicType)
+            }
+            .toolbar {
+                ToolbarItemGroup(placement: .bottomBar) {
+                    Picker("Mode", selection: $selectedGraphicType) {
+                        ForEach(GraphicType.allCases, id: \.self) {
+                            Text($0.label)
                         }
                     }
-                }
-                Spacer()
-                Button("Clear", systemImage: "trash.fill") {
-                    model.removeAllGraphics()
+                    .pickerStyle(.segmented)
+                    Spacer()
+                    Menu {
+                        Slider(value: $model.secondTimeBreak, in: 1...15, step: 1) {
+                            Text("Second: \(Int(model.secondTimeBreak))")
+                        }
+                        Slider(value: $model.firstTimeBreak, in: 1...15, step: 1) {
+                            Text("First: \(Int(model.firstTimeBreak))")
+                        }
+                    } label: {
+                        Label("Time", systemImage: "gear")
+                    }
+                    Spacer()
+                    Button("Service Area") {
+                        Task {
+                            do {
+                                try await model.showServiceArea()
+                            } catch {
+                                self.error = error
+                            }
+                        }
+                    }
+                    Spacer()
+                    Button("Clear", systemImage: "trash.fill") {
+                        model.removeAllGraphics()
+                    }
                 }
             }
-        }
-        .errorAlert(presentingError: $error)
+            .errorAlert(presentingError: $error)
     }
 }
 
-private enum SelectedGraphicType: Equatable, CaseIterable {
+private enum GraphicType: Equatable, CaseIterable {
     case facilities, barriers
     
-    /// The string representation of the SelectedGraphic type.
+    /// The string representation of this graphic type.
     var label: String {
         switch self {
         case .barriers: "Barriers"
@@ -87,7 +83,7 @@ private enum SelectedGraphicType: Equatable, CaseIterable {
 
 private extension ShowServiceAreaView {
     class Model: ObservableObject {
-        /// Map with terrain style centered over San Diego.
+        /// A map with terrain style centered over San Diego.
         let map: Map = {
             let map = Map(basemapStyle: .arcGISTerrain)
             map.initialViewpoint = Viewpoint(
@@ -96,13 +92,13 @@ private extension ShowServiceAreaView {
                     y: 3858170,
                     spatialReference: .webMercator
                 ),
-                scale: 60000
+                scale: 60_000
             )
             return map
         }()
         
-        private(set) var facilitiesGraphicsOverlay: GraphicsOverlay = {
-            var facilitiesGraphicsOverlay = GraphicsOverlay()
+        let facilitiesGraphicsOverlay: GraphicsOverlay = {
+            let facilitiesGraphicsOverlay = GraphicsOverlay()
             let facilitySymbol = PictureMarkerSymbol(image: UIImage(named: "PinBlueStar")!)
             // Offsets symbol in Y to align image properly.
             facilitySymbol.offsetY = 21
@@ -111,17 +107,22 @@ private extension ShowServiceAreaView {
             return facilitiesGraphicsOverlay
         }()
         
-        private(set) var barriersGraphicsOverlay: GraphicsOverlay = {
-            var barriersGraphicsOverlay = GraphicsOverlay()
+        let barriersGraphicsOverlay: GraphicsOverlay = {
+            let barriersGraphicsOverlay = GraphicsOverlay()
             let barrierSymbol = SimpleFillSymbol(style: .diagonalCross, color: .red, outline: nil)
             // Sets symbol on barrier graphics overlay using renderer.
             barriersGraphicsOverlay.renderer = SimpleRenderer(symbol: barrierSymbol)
             return barriersGraphicsOverlay
         }()
         
-        private(set) var serviceAreaGraphicsOverlay = GraphicsOverlay()
+        let serviceAreaGraphicsOverlay = GraphicsOverlay()
         
-        private var serviceAreaTask: ServiceAreaTask!
+        /// The graphics overlays used by this model.
+        var graphicsOverlays: [GraphicsOverlay] {
+            [facilitiesGraphicsOverlay, barriersGraphicsOverlay, serviceAreaGraphicsOverlay]
+        }
+        
+        private let serviceAreaTask = ServiceAreaTask(url: .serviceArea)
         
         private var serviceAreaParameters: ServiceAreaParameters!
         
@@ -130,20 +131,12 @@ private extension ShowServiceAreaView {
         
         /// Second time break property set in second slider.
         @Published var secondTimeBreak: Double = 8
-        
-        /// Sets the service area task using the url and then sets the parameter to the default parameters returned
-        /// from the service area task.
-        private func setServiceArea() async throws {
-            serviceAreaTask = ServiceAreaTask(url: .serviceArea)
-            serviceAreaParameters = try await serviceAreaTask.makeDefaultParameters()
-        }
-        
         /// On user tapping on screen, depending on the selection type, it sets
         /// either the barrier or facilities overlays on the map at the tap point.
         /// - Parameters:
         ///   - point: The tap location.
         ///   - selection: The type of graphic to be added to the view.
-        func placeGraphicOnTapLocation(at point: Point, with selection: SelectedGraphicType) {
+        func placeGraphicOnTapLocation(at point: Point, with selection: GraphicType) {
             switch selection {
             case .facilities:
                 let graphic = Graphic(geometry: point, symbol: nil)
@@ -157,31 +150,30 @@ private extension ShowServiceAreaView {
         
         /// Gets the service area data and then renders the service area on the map.
         func showServiceArea() async throws {
-            try await setServiceArea()
+            if serviceAreaParameters == nil {
+                serviceAreaParameters = try await serviceAreaTask.makeDefaultParameters()
+                serviceAreaParameters.geometryAtOverlap = .dissolve
+            }
             serviceAreaGraphicsOverlay.removeAllGraphics()
             // In the facilities graphicsOverlays add a facility to the parameters for each one.
-            let facilities = facilitiesGraphicsOverlay.graphics.map { ServiceAreaFacility(point: $0.geometry as! Point) }
-            serviceAreaParameters.setFacilities(facilities)
-            let barriers = barriersGraphicsOverlay.graphics.map { PolygonBarrier(polygon: $0.geometry as! Polygon) }
-            serviceAreaParameters.setPolygonBarriers(barriers)
+            serviceAreaParameters.setFacilities(
+                facilitiesGraphicsOverlay.graphics.lazy.map { .init(point: $0.geometry as! Point) }
+            )
+            serviceAreaParameters.setPolygonBarriers(
+                barriersGraphicsOverlay.graphics.lazy.map { .init(polygon: $0.geometry as! ArcGIS.Polygon) }
+            )
             serviceAreaParameters.removeAllDefaultImpedanceCutoffs()
-            serviceAreaParameters.addDefaultImpedanceCutoffs([
-                Double(firstTimeBreak),
-                Double(secondTimeBreak)
-            ])
-            serviceAreaParameters.geometryAtOverlap = .dissolve
+            serviceAreaParameters.addDefaultImpedanceCutoffs([Double(firstTimeBreak), Double(secondTimeBreak)])
             try await renderServiceAreaPolygons()
         }
-        
         
         /// Asynchronously uses the service area task to solve for the service area using the parameters and then iterates through resulting
         /// polygons and creates a graphic which is added to the overlay for rendering.
         private func renderServiceAreaPolygons() async throws {
             let result = try await serviceAreaTask.solveServiceArea(using: serviceAreaParameters)
             let polygons = result.resultPolygons(forFacilityAtIndex: 0)
-            for index in polygons.indices {
-                let polygon = polygons[index]
-                let fillSymbol = makeServiceAreaSymbol(for: index)
+            for (offset, polygon) in polygons.enumerated() {
+                let fillSymbol = makeServiceAreaSymbol(isFirst: offset == .zero)
                 let graphic = Graphic(geometry: polygon.geometry, symbol: fillSymbol)
                 serviceAreaGraphicsOverlay.addGraphic(graphic)
             }
@@ -197,26 +189,28 @@ private extension ShowServiceAreaView {
         /// Sets the symbols drawn on that map for given selection.
         /// - Parameter index: Takes the index to decide how to render.
         /// - Returns: Returns the symbol.
-        private func makeServiceAreaSymbol(for index: Int) -> Symbol {
-            var fillSymbol: SimpleFillSymbol
-            if index == 0 {
-                let lineSymbol = SimpleLineSymbol(style: .solid, color: UIColor(red: 0.4, green: 0.4, blue: 0, alpha: 0.3), width: 2)
-                fillSymbol = SimpleFillSymbol(style: .solid, color: UIColor(red: 0.8, green: 0.8, blue: 0, alpha: 0.3), outline: lineSymbol)
+        private func makeServiceAreaSymbol(isFirst: Bool) -> Symbol {
+            let lineSymbolColor: UIColor
+            let fillSymbolColor: UIColor
+            if isFirst {
+                lineSymbolColor = UIColor(red: 0.4, green: 0.4, blue: 0, alpha: 0.3)
+                fillSymbolColor = UIColor(red: 0.8, green: 0.8, blue: 0, alpha: 0.3)
             } else {
-                let lineSymbol = SimpleLineSymbol(style: .solid, color: UIColor(red: 0, green: 0.4, blue: 0, alpha: 0.3), width: 2)
-                fillSymbol = SimpleFillSymbol(style: .solid, color: UIColor(red: 0, green: 0.8, blue: 0, alpha: 0.3), outline: lineSymbol)
+                lineSymbolColor = UIColor(red: 0, green: 0.4, blue: 0, alpha: 0.3)
+                fillSymbolColor = UIColor(red: 0, green: 0.8, blue: 0, alpha: 0.3)
             }
-            return fillSymbol
+            let outline = SimpleLineSymbol(style: .solid, color: lineSymbolColor, width: 2)
+            return SimpleFillSymbol(style: .solid, color: fillSymbolColor, outline: outline)
         }
     }
 }
 
-private extension URL {
-    static let serviceArea = URL(
-        string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/NetworkAnalysis/SanDiego/NAServer/ServiceArea"
-    )!
-}
-
 #Preview {
     ShowServiceAreaView()
+}
+
+private extension URL {
+    static var serviceArea: URL {
+        URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/NetworkAnalysis/SanDiego/NAServer/ServiceArea")!
+    }
 }
