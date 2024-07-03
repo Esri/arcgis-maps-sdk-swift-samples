@@ -35,6 +35,7 @@ protocol Sample {
     var hasDependencies: Bool { get }
     
     /// Creates the view for the sample.
+    @MainActor
     func makeBody() -> AnyView
 }
 
