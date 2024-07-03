@@ -90,10 +90,6 @@ struct EditFeatureAttachmentsView: View {
     
     @State private var showingSheet = false
     
-    @State private var isImporting = false
-    
-    @State private var text = ""
-    
     @State private var images: [Image] = []
     
     var body: some View {
@@ -119,9 +115,6 @@ struct EditFeatureAttachmentsView: View {
                                                     do {
                                                         if let data = UIImage(named: "PinBlueStar")?.pngData() {
                                                             try await model.add(name: "Attachment2", type: "png", dataElement: data)
-                                                            try await model.applyEdits()
-                                                            let fetchAttachments = try await model.updateForSelectedFeature()
-                                                            model.attachments = fetchAttachments
                                                         }
                                                     } catch {
                                                         self.error = error
@@ -133,9 +126,6 @@ struct EditFeatureAttachmentsView: View {
                                                 Task {
                                                     do {
                                                         try await model.delete(attachment: attachment)
-                                                        try await model.applyEdits()
-                                                        let fetchAttachments = try await model.updateForSelectedFeature()
-                                                        model.attachments = fetchAttachments
                                                     } catch {
                                                         print(error)
                                                     }
@@ -170,9 +160,10 @@ struct EditFeatureAttachmentsView: View {
                         }
                         model.selectedFeature = feature
                         model.selectFeature()
-                        if let selectedFeature = model.selectedFeature {
-                            let fetchAttachments = try await model.updateForSelectedFeature()
+                        if let feature = model.selectedFeature as? ArcGISFeature {
+                            let fetchAttachments = try await feature.attachments
                             model.attachments = fetchAttachments
+                            model.updateForSelectedFeature()
                             model.updateCalloutPlacement(to: point, using: mapProxy)
                         }
                     } catch {
@@ -190,20 +181,6 @@ struct EditFeatureAttachmentsView: View {
                 }
         }
         .errorAlert(presentingError: $error)
-    }
-}
-
-
-/// The authentication model used to handle challenges and credentials.
-private struct ChallengeHandler: ArcGISAuthenticationChallengeHandler {
-    func handleArcGISAuthenticationChallenge(
-        _ challenge: ArcGISAuthenticationChallenge
-    ) async throws -> ArcGISAuthenticationChallenge.Disposition {
-        // NOTE: Never hardcode login information in a production application.
-        // This is done solely for the sake of the sample.
-        return .continueWithCredential(
-            try await TokenCredential.credential(for: challenge, username: "viewer01", password: "I68VGU^nMurF")
-        )
     }
 }
 
@@ -237,7 +214,6 @@ private extension EditFeatureAttachmentsView {
         
         var featureLayer: FeatureLayer = {
             let featureTable = ServiceFeatureTable(url: .featureServiceURL)
-            featureTable.featureRequestMode = .onInteractionCache
             var featureLayer = FeatureLayer(featureTable: featureTable)
             return featureLayer
         }()
@@ -245,8 +221,6 @@ private extension EditFeatureAttachmentsView {
         var tempURL: URL?
         
         init() {
-            ArcGISEnvironment.apiKey = APIKey("AAPKf9d8312d139e441b9df7b9abc9ac392adrCnoMbvSgy7cN3WG0-W2WCP0l-vD2vJVTQzYexR_4HGdB8XQt1YGsDXOoiuCA_x")
-            ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = ChallengeHandler()
             map.addOperationalLayer(featureLayer)
         }
         
@@ -279,7 +253,6 @@ private extension EditFeatureAttachmentsView {
         func updateCalloutPlacement(to screenPoint: CGPoint, using proxy: MapViewProxy) {
             // Create an offset to offset the callout if needed, e.g. the magnifier is showing.
             let offset = calloutShouldOffset ? CGPoint(x: 0, y: -70) : .zero
-            
             // Get the map location of the screen point from the map view proxy.
             if let location = proxy.location(fromScreenPoint: screenPoint) {
                 calloutPlacement = .location(location, offset: offset)
@@ -292,40 +265,36 @@ private extension EditFeatureAttachmentsView {
             }
         }
         
-        func updateForSelectedFeature() async throws -> [Attachment] {
+        func updateForSelectedFeature() {
             if let selectedFeature = selectedFeature {
                 let title = selectedFeature.attributes["typdamage"] as? String
-                try await selectedFeature.load()
-                let fetchAttachments = try await selectedFeature.attachments
                 calloutText = title ?? "Callout"
-                calloutDetailText = "Number of attachments: \(fetchAttachments.count)"
-                return fetchAttachments
+                calloutDetailText = "Number of attachments: \(attachments.count)"
             }
-            return []
         }
         
         func add(name: String, type: String, dataElement: Data) async throws {
-            try await selectedFeature?.addAttachment(named: name, contentType: type, data: dataElement)
+            if let feature = selectedFeature as? ArcGISFeature {
+                let result = try await feature.addAttachment(named: "Attachment.png", contentType: "png", data: dataElement)
+                attachments.append(result)
+                try await doneAction()
+            }
         }
         
         func delete(attachment: Attachment) async throws {
-            try await selectedFeature?.deleteAttachment(attachment)
+            if let feature = selectedFeature as? ArcGISFeature {
+                try await feature.deleteAttachment(attachment)
+                try await doneAction()
+            }
         }
         
         func edit(attachment: Attachment, named: String, typed: String, dataElement: Data) async throws {
             try await selectedFeature?.updateAttachment(attachment, name: named, contentType: typed, data: dataElement)
         }
         
-        func applyEdits() async throws {
-            if let serviceTable = featureLayer.featureTable as? ServiceFeatureTable, let feature = selectedFeature {
-                print("applying")
-                try await serviceTable.update(feature)
-                let updatedServerResult = try await serviceTable.applyEdits()
-                //                let edits = try await serviceTable.applyEdits()
-                //                for edited in edits {
-                //                    let result = edited.attachmentResults
-                //                    print(result)
-                //                }
+        func doneAction() async throws {
+            if let table = selectedFeature?.table as? ServiceFeatureTable {
+                let result = try await table.applyEdits()
             }
         }
     }
