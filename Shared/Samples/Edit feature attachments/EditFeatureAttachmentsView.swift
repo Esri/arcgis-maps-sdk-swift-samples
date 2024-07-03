@@ -115,6 +115,9 @@ struct EditFeatureAttachmentsView: View {
                                                     do {
                                                         if let data = UIImage(named: "PinBlueStar")?.pngData() {
                                                             try await model.add(name: "Attachment2", type: "png", dataElement: data)
+                                                            try await model.updateAttachments()
+                                                            model.updateForSelectedFeature()
+                                                            model.updateCalloutPlacement(to: tapPoint!, using: mapProxy)
                                                         }
                                                     } catch {
                                                         self.error = error
@@ -126,6 +129,9 @@ struct EditFeatureAttachmentsView: View {
                                                 Task {
                                                     do {
                                                         try await model.delete(attachment: attachment)
+                                                        try await model.updateAttachments()
+                                                        model.updateForSelectedFeature()
+                                                        model.updateCalloutPlacement(to: tapPoint!, using: mapProxy)
                                                     } catch {
                                                         print(error)
                                                     }
@@ -161,8 +167,7 @@ struct EditFeatureAttachmentsView: View {
                         model.selectedFeature = feature
                         model.selectFeature()
                         if let feature = model.selectedFeature as? ArcGISFeature {
-                            let fetchAttachments = try await feature.attachments
-                            model.attachments = fetchAttachments
+                            try await model.updateAttachments()
                             model.updateForSelectedFeature()
                             model.updateCalloutPlacement(to: point, using: mapProxy)
                         }
@@ -295,6 +300,13 @@ private extension EditFeatureAttachmentsView {
         func doneAction() async throws {
             if let table = selectedFeature?.table as? ServiceFeatureTable {
                 let result = try await table.applyEdits()
+            }
+        }
+        
+        func updateAttachments() async throws {
+            if let feature = selectedFeature as? ArcGISFeature {
+                let fetchAttachments = try await feature.attachments
+                attachments = fetchAttachments
             }
         }
     }
