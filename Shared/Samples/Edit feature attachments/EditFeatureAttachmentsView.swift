@@ -30,7 +30,6 @@ private struct CalloutView: View {
     }
 }
 
-//
 private struct AttachmentView: View {
     var attachment: Attachment
     @State var image: Image?
@@ -61,7 +60,7 @@ private struct AttachmentView: View {
         }
     }
 }
-//
+
 private struct AddingAttachmentToFeatureView: View {
     let onAdd: (() -> Void)
     var body: some View {
@@ -158,7 +157,6 @@ struct EditFeatureAttachmentsView: View {
                     guard let point = tapPoint else { return }
                     model.featureLayer.clearSelection()
                     do {
-                        model.tempURL = try model.createTemporaryDirectory()
                         let result = try await mapProxy.identify(on: model.featureLayer, screenPoint: point, tolerance: 5)
                         guard let features = result.geoElements as? [ArcGISFeature],
                               let feature = features.first else {
@@ -166,11 +164,9 @@ struct EditFeatureAttachmentsView: View {
                         }
                         model.selectedFeature = feature
                         model.selectFeature()
-                        if let feature = model.selectedFeature as? ArcGISFeature {
-                            try await model.updateAttachments()
-                            model.updateForSelectedFeature()
-                            model.updateCalloutPlacement(to: point, using: mapProxy)
-                        }
+                        try await model.updateAttachments()
+                        model.updateForSelectedFeature()
+                        model.updateCalloutPlacement(to: point, using: mapProxy)
                     } catch {
                         self.error = error
                     }
@@ -223,32 +219,8 @@ private extension EditFeatureAttachmentsView {
             return featureLayer
         }()
         
-        var tempURL: URL?
-        
         init() {
             map.addOperationalLayer(featureLayer)
-        }
-        
-        func createTemporaryDirectory() throws -> URL {
-            let directoryURL = FileManager.default.temporaryDirectory.appendingPathComponent(
-                "Attachments"
-            )
-            // Create and return the full, unique URL to the temporary folder.
-            try? FileManager.default.createDirectory(
-                at: directoryURL,
-                withIntermediateDirectories: true
-            )
-            return directoryURL
-        }
-        
-        func storeAttachment(url: URL, attachment: Attachment) async throws {
-            let data = try await attachment.data
-            let attachmentURL = url.appending(path: attachment.name)
-            do {
-                try data.write(to: attachmentURL, options: [.atomic, .completeFileProtection])
-            } catch {
-                print(error.localizedDescription)
-            }
         }
         
         /// Updates the location of the callout placement to a given screen point.
@@ -279,7 +251,7 @@ private extension EditFeatureAttachmentsView {
         }
         
         func add(name: String, type: String, dataElement: Data) async throws {
-            if let feature = selectedFeature as? ArcGISFeature {
+            if let feature = selectedFeature {
                 let result = try await feature.addAttachment(named: "Attachment.png", contentType: "png", data: dataElement)
                 attachments.append(result)
                 try await doneAction()
@@ -287,7 +259,7 @@ private extension EditFeatureAttachmentsView {
         }
         
         func delete(attachment: Attachment) async throws {
-            if let feature = selectedFeature as? ArcGISFeature {
+            if let feature = selectedFeature {
                 try await feature.deleteAttachment(attachment)
                 try await doneAction()
             }
@@ -304,7 +276,7 @@ private extension EditFeatureAttachmentsView {
         }
         
         func updateAttachments() async throws {
-            if let feature = selectedFeature as? ArcGISFeature {
+            if let feature = selectedFeature {
                 let fetchAttachments = try await feature.attachments
                 attachments = fetchAttachments
             }
