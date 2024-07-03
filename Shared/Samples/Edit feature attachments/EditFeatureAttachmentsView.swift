@@ -34,8 +34,10 @@ private struct CalloutView: View {
 private struct AttachmentView: View {
     // The attachment that is being displayed.
     var attachment: Attachment
+    
     // The closure called when the delete button is tapped.
     let onDelete: ((Attachment) -> Void)
+    
     // The image in the attachment.
     @State var image: Image?
     
@@ -123,8 +125,7 @@ struct EditFeatureAttachmentsView: View {
                                                     do {
                                                         if let data = UIImage(named: "PinBlueStar")?.pngData() {
                                                             try await model.add(name: "Attachment2", type: "png", dataElement: data)
-                                                            try await model.updateAttachments()
-                                                            model.updateForSelectedFeature()
+                                                            try await model.loadFeatureUpdate()
                                                             model.updateCalloutPlacement(to: tapPoint!, using: mapProxy)
                                                         }
                                                     } catch {
@@ -137,11 +138,10 @@ struct EditFeatureAttachmentsView: View {
                                                 Task {
                                                     do {
                                                         try await model.delete(attachment: attachment)
-                                                        try await model.updateAttachments()
-                                                        model.updateForSelectedFeature()
+                                                        try await model.loadFeatureUpdate()
                                                         model.updateCalloutPlacement(to: tapPoint!, using: mapProxy)
                                                     } catch {
-                                                        print(error)
+                                                        self.error = error
                                                     }
                                                 }
                                             })
@@ -173,8 +173,7 @@ struct EditFeatureAttachmentsView: View {
                         }
                         model.selectedFeature = feature
                         model.selectFeature()
-                        try await model.updateAttachments()
-                        model.updateForSelectedFeature()
+                        try await model.loadFeatureUpdate()
                         model.updateCalloutPlacement(to: point, using: mapProxy)
                     } catch {
                         self.error = error
@@ -263,6 +262,11 @@ private extension EditFeatureAttachmentsView {
             }
         }
         
+        /// <#Description#>
+        /// - Parameters:
+        ///   - name: <#name description#>
+        ///   - type: <#type description#>
+        ///   - dataElement: <#dataElement description#>
         func add(name: String, type: String, dataElement: Data) async throws {
             if let feature = selectedFeature {
                 let result = try await feature.addAttachment(named: "Attachment.png", contentType: "png", data: dataElement)
@@ -271,6 +275,8 @@ private extension EditFeatureAttachmentsView {
             }
         }
         
+        /// <#Description#>
+        /// - Parameter attachment: <#attachment description#>
         func delete(attachment: Attachment) async throws {
             if let feature = selectedFeature {
                 try await feature.deleteAttachment(attachment)
@@ -291,6 +297,12 @@ private extension EditFeatureAttachmentsView {
                 let fetchAttachments = try await feature.attachments
                 attachments = fetchAttachments
             }
+        }
+        
+        /// <#Description#>
+        func loadFeatureUpdate() async throws {
+            try await updateAttachments()
+            updateForSelectedFeature()
         }
     }
 }
