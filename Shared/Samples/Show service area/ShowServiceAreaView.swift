@@ -19,6 +19,7 @@ struct ShowServiceAreaView: View {
     /// The currently selected graphic type.
     /// Used to track whether to add facilities or barriers to the map.
     @State private var selectedGraphicType: GraphicType = .facilities
+    
     /// The error shown in the error alert.
     @State private var error: Error?
     
@@ -41,10 +42,10 @@ struct ShowServiceAreaView: View {
                     Spacer()
                     Menu {
                         Slider(value: $model.secondTimeBreak, in: 1...15, step: 1) {
-                            Text("Second: \(Int(model.secondTimeBreak))")
+                            Text("Second: \(model.secondTimeBreak)")
                         }
                         Slider(value: $model.firstTimeBreak, in: 1...15, step: 1) {
-                            Text("First: \(Int(model.firstTimeBreak))")
+                            Text("First: \(model.firstTimeBreak)")
                         }
                     } label: {
                         Label("Time", systemImage: "gear")
@@ -53,7 +54,7 @@ struct ShowServiceAreaView: View {
                     Button("Service Area") {
                         Task {
                             do {
-                                try await model.showServiceArea()
+                                try await model.showServiceArea(timeBreaks: [model.firstTimeBreak, model.secondTimeBreak])
                             } catch {
                                 self.error = error
                             }
@@ -131,6 +132,7 @@ private extension ShowServiceAreaView {
         
         /// Second time break property set in second slider.
         @Published var secondTimeBreak: Double = 8
+        
         /// On user tapping on screen, depending on the selection type, it sets
         /// either the barrier or facilities overlays on the map at the tap point.
         /// - Parameters:
@@ -149,13 +151,13 @@ private extension ShowServiceAreaView {
         }
         
         /// Gets the service area data and then renders the service area on the map.
-        func showServiceArea() async throws {
+        func showServiceArea(timeBreaks: [Double]) async throws {
             if serviceAreaParameters == nil {
                 serviceAreaParameters = try await serviceAreaTask.makeDefaultParameters()
                 serviceAreaParameters.geometryAtOverlap = .dissolve
             }
             serviceAreaGraphicsOverlay.removeAllGraphics()
-            // In the facilities graphicsOverlays add a facility to the parameters for each one.
+            // Add the graphics to the overlays with their respective geometry types.
             serviceAreaParameters.setFacilities(
                 facilitiesGraphicsOverlay.graphics.lazy.map { .init(point: $0.geometry as! Point) }
             )
@@ -163,7 +165,7 @@ private extension ShowServiceAreaView {
                 barriersGraphicsOverlay.graphics.lazy.map { .init(polygon: $0.geometry as! ArcGIS.Polygon) }
             )
             serviceAreaParameters.removeAllDefaultImpedanceCutoffs()
-            serviceAreaParameters.addDefaultImpedanceCutoffs([Double(firstTimeBreak), Double(secondTimeBreak)])
+            serviceAreaParameters.addDefaultImpedanceCutoffs(timeBreaks)
             try await renderServiceAreaPolygons()
         }
         
