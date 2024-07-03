@@ -88,8 +88,7 @@ extension FindRouteAroundBarriersView {
         }
         
         /// The content to display in the sheet with a title and done button.
-        @MainActor
-        private var sheetContent: some View {
+        @MainActor private var sheetContent: some View {
             NavigationStack {
                 content()
                     .navigationTitle(title)
