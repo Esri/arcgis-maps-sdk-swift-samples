@@ -41,12 +41,8 @@ struct ShowServiceAreaView: View {
                     .pickerStyle(.segmented)
                     Spacer()
                     Menu {
-                        Slider(value: $model.secondTimeBreak, in: 1...15, step: 1) {
-                            Text("Second: \(model.secondTimeBreak)")
-                        }
-                        Slider(value: $model.firstTimeBreak, in: 1...15, step: 1) {
-                            Text("First: \(model.firstTimeBreak)")
-                        }
+                        Stepper("Second: \(model.secondTimeBreak)", value: $model.secondTimeBreak, in: 1...15)
+                        Stepper("First: \(model.firstTimeBreak)", value: $model.firstTimeBreak, in: 1...15)
                     } label: {
                         Label("Time", systemImage: "gear")
                     }
