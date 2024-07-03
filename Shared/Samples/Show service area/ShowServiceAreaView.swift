@@ -50,7 +50,7 @@ struct ShowServiceAreaView: View {
                     Button("Service Area") {
                         Task {
                             do {
-                                try await model.showServiceArea(timeBreaks: [model.firstTimeBreak, model.secondTimeBreak])
+                                try await model.showServiceArea(timeBreaks: [Double(model.firstTimeBreak), Double(model.secondTimeBreak)])
                             } catch {
                                 self.error = error
                             }
@@ -123,11 +123,11 @@ private extension ShowServiceAreaView {
         
         private var serviceAreaParameters: ServiceAreaParameters!
         
-        /// First time break property set in first slider.
-        @Published var firstTimeBreak: Double = 3
+        /// First time break property set in first stepper.
+        @Published var firstTimeBreak: Int = 3
         
-        /// Second time break property set in second slider.
-        @Published var secondTimeBreak: Double = 8
+        /// Second time break property set in second stepper.
+        @Published var secondTimeBreak: Int = 8
         
         /// On user tapping on screen, depending on the selection type, it sets
         /// either the barrier or facilities overlays on the map at the tap point.
