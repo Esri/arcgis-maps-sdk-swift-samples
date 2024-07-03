@@ -38,7 +38,7 @@ The *ArcGIS Maps SDK for Swift Samples app* has a *Target SDK* version of *16.0*
 > [!IMPORTANT]
 > To run this app and access ArcGIS Location Services, follow these steps to obtain an **API key** access token and store it in a secrets file stored in the project file's directory, `$(SRCROOT)/.secrets`.
 
-1. Go to the [Create an API key](http://links.esri.com/create-an-api-key) tutorial to obtain the API key access token. Ensure that the following privileges are enabled:
+1. Go to the [Create an API key](https://developers.arcgis.com/documentation/security-and-authentication/api-key-authentication/tutorials/create-an-api-key/) tutorial to obtain the API key access token. Ensure that the following privileges are enabled:
 
 * Location services > Basemaps
 * Location services > Geocoding
