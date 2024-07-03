@@ -367,6 +367,8 @@
 		D77D9C012BB2439400B38A6C /* AugmentRealityToShowHiddenInfrastructureView.ARSceneView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D77D9BFF2BB2438200B38A6C /* AugmentRealityToShowHiddenInfrastructureView.ARSceneView.swift */; };
 		D78666AD2A2161F100C60110 /* FindNearestVertexView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78666AC2A2161F100C60110 /* FindNearestVertexView.swift */; };
 		D78666AE2A21629200C60110 /* FindNearestVertexView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D78666AC2A2161F100C60110 /* FindNearestVertexView.swift */; };
+		D79482D42C35D872006521CD /* CreateDynamicBasemapGalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79482D02C35D872006521CD /* CreateDynamicBasemapGalleryView.swift */; };
+		D79482D72C35D8A3006521CD /* CreateDynamicBasemapGalleryView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D79482D02C35D872006521CD /* CreateDynamicBasemapGalleryView.swift */; };
 		D79EE76E2A4CEA5D005A52AE /* SetUpLocationDrivenGeotriggersView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79EE76D2A4CEA5D005A52AE /* SetUpLocationDrivenGeotriggersView.Model.swift */; };
 		D79EE76F2A4CEA7F005A52AE /* SetUpLocationDrivenGeotriggersView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D79EE76D2A4CEA5D005A52AE /* SetUpLocationDrivenGeotriggersView.Model.swift */; };
 		D7A737E02BABB9FE00B7C7FC /* AugmentRealityToShowHiddenInfrastructureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A737DC2BABB9FE00B7C7FC /* AugmentRealityToShowHiddenInfrastructureView.swift */; };
@@ -516,6 +518,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				D79482D72C35D8A3006521CD /* CreateDynamicBasemapGalleryView.swift in Copy Source Code Files */,
 				95E980742C26189E00CB8912 /* BrowseOGCAPIFeatureServiceView.swift in Copy Source Code Files */,
 				955AFAC62C110B8A009C8FE5 /* ApplyMosaicRuleToRastersView.swift in Copy Source Code Files */,
 				95DEB9B82C127B5E009BEC35 /* ShowViewshedFromPointOnMapView.swift in Copy Source Code Files */,
@@ -918,6 +921,7 @@
 		D77BC5362B59A2D3007B49B6 /* StylePointWithDistanceCompositeSceneSymbolView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StylePointWithDistanceCompositeSceneSymbolView.swift; sourceTree = "<group>"; };
 		D77D9BFF2BB2438200B38A6C /* AugmentRealityToShowHiddenInfrastructureView.ARSceneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AugmentRealityToShowHiddenInfrastructureView.ARSceneView.swift; sourceTree = "<group>"; };
 		D78666AC2A2161F100C60110 /* FindNearestVertexView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindNearestVertexView.swift; sourceTree = "<group>"; };
+		D79482D02C35D872006521CD /* CreateDynamicBasemapGalleryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateDynamicBasemapGalleryView.swift; sourceTree = "<group>"; };
 		D79EE76D2A4CEA5D005A52AE /* SetUpLocationDrivenGeotriggersView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetUpLocationDrivenGeotriggersView.Model.swift; sourceTree = "<group>"; };
 		D7A737DC2BABB9FE00B7C7FC /* AugmentRealityToShowHiddenInfrastructureView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AugmentRealityToShowHiddenInfrastructureView.swift; sourceTree = "<group>"; };
 		D7ABA2F82A32579C0021822B /* MeasureDistanceInSceneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeasureDistanceInSceneView.swift; sourceTree = "<group>"; };
@@ -1138,6 +1142,7 @@
 				D7E440D12A1ECBC2005D74DE /* Create buffers around points */,
 				D7B3C5C02A43B71E001DA4D8 /* Create convex hull around geometries */,
 				D744FD132A2112360084A66C /* Create convex hull around points */,
+				D79482D32C35D872006521CD /* Create dynamic basemap gallery */,
 				1C19B4EA2A578E46001D2506 /* Create load report */,
 				D73FABE82AD4A0370048EC70 /* Create mobile geodatabase */,
 				E004A6EB28495538002A1FE6 /* Create planar and geodetic buffers */,
@@ -2308,6 +2313,14 @@
 			path = "Find nearest vertex";
 			sourceTree = "<group>";
 		};
+		D79482D32C35D872006521CD /* Create dynamic basemap gallery */ = {
+			isa = PBXGroup;
+			children = (
+				D79482D02C35D872006521CD /* CreateDynamicBasemapGalleryView.swift */,
+			);
+			path = "Create dynamic basemap gallery";
+			sourceTree = "<group>";
+		};
 		D7A737DF2BABB9FE00B7C7FC /* Augment reality to show hidden infrastructure */ = {
 			isa = PBXGroup;
 			children = (
@@ -3042,6 +3055,7 @@
 				004A2BA22BED456500C297CE /* ApplyScheduledUpdatesToPreplannedMapAreaView.swift in Sources */,
 				1CAB8D4B2A3CEAB0002AA649 /* RunValveIsolationTraceView.Model.swift in Sources */,
 				E070A0A3286F3B6000F2B606 /* DownloadPreplannedMapAreaView.swift in Sources */,
+				D79482D42C35D872006521CD /* CreateDynamicBasemapGalleryView.swift in Sources */,
 				D77570C02A2942F800F490CD /* AnimateImagesWithImageOverlayView.swift in Sources */,
 				D7054AE92ACCCB6C007235BA /* Animate3DGraphicView.SettingsView.swift in Sources */,
 				D7BA8C442B2A4DAA00018633 /* Array+RawRepresentable.swift in Sources */,
