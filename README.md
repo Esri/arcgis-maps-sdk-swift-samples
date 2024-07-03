@@ -58,7 +58,7 @@ The *ArcGIS Maps SDK for Swift Samples app* has a *Target SDK* version of *16.0*
 
   > Replace 'your-api-key' with your API Key access token.
 
-Please see [Configure App Secrets](Documentation/ConfigureAppSecrets.md) for adding license key and other details.
+Please see [Configure App Secrets](Documentation/ConfigureAppSecrets.md) for adding license string and other details.
 
 ## Additional Resources
 

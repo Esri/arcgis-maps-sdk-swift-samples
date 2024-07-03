@@ -4,7 +4,7 @@ As a best-practice principle, our project conceals app secrets from source code 
 
 This build rule looks for a secrets file stored in the project's root directory, `$(SRCROOT)/.secrets`.
 
-Note: License keys are not required for development. Without licensing or licensing with invalid keys do not throw an exception, but simply fail to license the app, falling back to Developer Mode (which will display a watermark on the map and scene views). Apply the license keys when your app is ready for deployment.
+Note: License strings are not required for development. Without licensing or licensing with invalid keys do not throw an exception, but simply fail to license the app, falling back to Developer Mode (which will display a watermark on the map and scene views). Apply the license strings when your app is ready for deployment.
 
 1. Create a hidden secrets file in your project's root directory.
 
