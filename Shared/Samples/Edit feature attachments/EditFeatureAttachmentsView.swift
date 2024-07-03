@@ -16,6 +16,7 @@ import ArcGIS
 import SwiftUI
 
 private struct CalloutView: View {
+    // The model that holds the callout text and callout detail text.
     @ObservedObject var model: EditFeatureAttachmentsView.Model
     
     var body: some View {
@@ -31,9 +32,12 @@ private struct CalloutView: View {
 }
 
 private struct AttachmentView: View {
+    // The attachment that is being displayed.
     var attachment: Attachment
-    @State var image: Image?
+    // The closure called when the delete button is tapped.
     let onDelete: ((Attachment) -> Void)
+    // The image in the attachment.
+    @State var image: Image?
     
     var body: some View {
         HStack {
@@ -62,7 +66,9 @@ private struct AttachmentView: View {
 }
 
 private struct AddingAttachmentToFeatureView: View {
+    // The closure called when add button is tapped.
     let onAdd: (() -> Void)
+    
     var body: some View {
         HStack {
             Spacer()
@@ -80,13 +86,16 @@ struct EditFeatureAttachmentsView: View {
     /// The error shown in the error alert.
     @State private var error: Error?
     
+    // The location that the user tapped on the map.
     @State private var tapPoint: CGPoint?
     
     /// The data model for the sample.
     @StateObject private var model = Model()
     
+    // Value that shows loading indicator until features are loaded.
     @State private var loaded = false
     
+    // Value for toggling whether the attachment sheet is showing.
     @State private var showingSheet = false
     
     @State private var images: [Image] = []
@@ -200,8 +209,10 @@ private extension EditFeatureAttachmentsView {
         /// The placement of the callout on the map.
         @Published var calloutPlacement: CalloutPlacement?
         
+        // The currently selected map feature.
         @Published var selectedFeature: ArcGISFeature?
         
+        // Holds the attachments of the currently selected feature.
         @Published var attachments: [Attachment] = []
         
         /// The text shown on the callout.
@@ -236,12 +247,14 @@ private extension EditFeatureAttachmentsView {
             }
         }
         
+        /// Selects the feature that is tapped.
         func selectFeature() {
             if let selectedFeature = selectedFeature {
                 featureLayer.selectFeature(selectedFeature)
             }
         }
         
+        /// Updates the callout text for the selected feature.
         func updateForSelectedFeature() {
             if let selectedFeature = selectedFeature {
                 let title = selectedFeature.attributes["typdamage"] as? String
@@ -265,16 +278,14 @@ private extension EditFeatureAttachmentsView {
             }
         }
         
-        func edit(attachment: Attachment, named: String, typed: String, dataElement: Data) async throws {
-            try await selectedFeature?.updateAttachment(attachment, name: named, contentType: typed, data: dataElement)
-        }
-        
+        /// Applies edits and syncs attachments and features with server.
         func doneAction() async throws {
             if let table = selectedFeature?.table as? ServiceFeatureTable {
-                let result = try await table.applyEdits()
+                _ = try await table.applyEdits()
             }
         }
         
+        /// Fetches attachments for feature from server.
         func updateAttachments() async throws {
             if let feature = selectedFeature {
                 let fetchAttachments = try await feature.attachments
