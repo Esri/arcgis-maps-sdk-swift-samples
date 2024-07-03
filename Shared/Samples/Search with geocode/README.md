@@ -30,7 +30,7 @@ Choose an address from the suggestions or submit your own address to show its lo
 
 ## Additional information
 
-This sample uses the World Geocoding Service. For more information, see [Geocoding service](https://developers.arcgis.com/documentation/mapping-apis-and-services/search/services/geocoding-service/) from ArcGIS Developer website.
+This sample uses the World Geocoding Service. For more information, see [Geocoding service](https://developers.arcgis.com/rest/geocode/api-reference/overview-world-geocoding-service.htm) from ArcGIS Developer website.
 
 ## Tags
 
