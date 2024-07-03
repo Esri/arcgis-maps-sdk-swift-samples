@@ -26,6 +26,12 @@ struct ShowServiceAreaView: View {
     /// The data model for the sample.
     @StateObject private var model = Model()
     
+    /// First time break property set in first stepper.
+    @State private var firstTimeBreak: Int = 3
+    
+    /// Second time break property set in second stepper.
+    @State private var secondTimeBreak: Int = 8
+    
     var body: some View {
         MapView(map: model.map, graphicsOverlays: model.graphicsOverlays)
             .onSingleTapGesture { _, point in
@@ -41,8 +47,8 @@ struct ShowServiceAreaView: View {
                     .pickerStyle(.segmented)
                     Spacer()
                     Menu {
-                        Stepper("Second: \(model.secondTimeBreak)", value: $model.secondTimeBreak, in: 1...15)
-                        Stepper("First: \(model.firstTimeBreak)", value: $model.firstTimeBreak, in: 1...15)
+                        Stepper("Second: \(secondTimeBreak)", value: $secondTimeBreak, in: 1...15)
+                        Stepper("First: \(firstTimeBreak)", value: $firstTimeBreak, in: 1...15)
                     } label: {
                         Label("Time", systemImage: "gear")
                     }
@@ -50,7 +56,7 @@ struct ShowServiceAreaView: View {
                     Button("Service Area") {
                         Task {
                             do {
-                                try await model.showServiceArea(timeBreaks: [Double(model.firstTimeBreak), Double(model.secondTimeBreak)])
+                                try await model.showServiceArea(timeBreaks: [Double(firstTimeBreak), Double(secondTimeBreak)])
                             } catch {
                                 self.error = error
                             }
@@ -123,12 +129,6 @@ private extension ShowServiceAreaView {
         
         private var serviceAreaParameters: ServiceAreaParameters!
         
-        /// First time break property set in first stepper.
-        @Published var firstTimeBreak: Int = 3
-        
-        /// Second time break property set in second stepper.
-        @Published var secondTimeBreak: Int = 8
-        
         /// On user tapping on screen, depending on the selection type, it sets
         /// either the barrier or facilities overlays on the map at the tap point.
         /// - Parameters:
@@ -147,6 +147,8 @@ private extension ShowServiceAreaView {
         }
         
         /// Gets the service area data and then renders the service area on the map.
+        /// - Parameters:
+        ///   - timeBreaks: Double values that user sets for the impedance cutoffs.
         func showServiceArea(timeBreaks: [Double]) async throws {
             if serviceAreaParameters == nil {
                 serviceAreaParameters = try await serviceAreaTask.makeDefaultParameters()
