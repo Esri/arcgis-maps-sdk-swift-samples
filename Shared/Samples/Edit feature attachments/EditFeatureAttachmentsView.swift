@@ -15,76 +15,9 @@
 import ArcGIS
 import SwiftUI
 
-private struct CalloutView: View {
-    // The model that holds the callout text and callout detail text.
-    @ObservedObject var model: EditFeatureAttachmentsView.Model
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 3) {
-            Text(model.calloutText)
-                .font(.callout)
-                .multilineTextAlignment(.leading)
-            Text(model.calloutDetailText)
-                .font(.footnote)
-                .multilineTextAlignment(.leading)
-        }
-    }
-}
-
-private struct AttachmentView: View {
-    // The attachment that is being displayed.
-    var attachment: Attachment
-    
-    // The closure called when the delete button is tapped.
-    let onDelete: ((Attachment) -> Void)
-    
-    // The image in the attachment.
-    @State var image: Image?
-    
-    var body: some View {
-        HStack {
-            Text("\(attachment.name)")
-                .font(.title3)
-            Spacer()
-            Button {
-                Task {
-                    let result = try await attachment.data
-                    image = Image(uiImage: UIImage(data: result)!)
-                }
-            } label: {
-                if let image = image {
-                    image
-                } else {
-                    Image(systemName: "icloud.and.arrow.down.fill")
-                }
-            }
-        }.swipeActions {
-            Button("Delete") {
-                onDelete(attachment)
-            }
-            .tint(.red)
-        }
-    }
-}
-
-private struct AddingAttachmentToFeatureView: View {
-    // The closure called when add button is tapped.
-    let onAdd: (() -> Void)
-    
-    var body: some View {
-        HStack {
-            Spacer()
-            Button {
-                onAdd()
-            } label: {
-                Label("Add Attachment", systemImage: "paperclip")
-            }
-            Spacer()
-        }
-    }
-}
-
 struct EditFeatureAttachmentsView: View {
+    // MARK: - View
+    
     /// The error shown in the error alert.
     @State private var error: Error?
     
@@ -194,6 +127,89 @@ struct EditFeatureAttachmentsView: View {
 }
 
 private extension EditFeatureAttachmentsView {
+    // MARK: - CalloutView
+    
+    struct CalloutView: View {
+        // The model that holds the callout text and callout detail text.
+        @ObservedObject var model: Model
+        
+        var body: some View {
+            VStack(alignment: .leading, spacing: 3) {
+                Text(model.calloutText)
+                    .font(.callout)
+                    .multilineTextAlignment(.leading)
+                Text(model.calloutDetailText)
+                    .font(.footnote)
+                    .multilineTextAlignment(.leading)
+            }
+        }
+    }
+}
+
+private extension EditFeatureAttachmentsView {
+    // MARK: - AttachmentView
+    
+    struct AttachmentView: View {
+        // The attachment that is being displayed.
+        var attachment: Attachment
+        
+        // The closure called when the delete button is tapped.
+        let onDelete: ((Attachment) -> Void)
+        
+        // The image in the attachment.
+        @State var image: Image?
+        
+        var body: some View {
+            HStack {
+                Text("\(attachment.name)")
+                    .font(.title3)
+                Spacer()
+                Button {
+                    Task {
+                        let result = try await attachment.data
+                        image = Image(uiImage: UIImage(data: result)!)
+                    }
+                } label: {
+                    if let image = image {
+                        image
+                    } else {
+                        Image(systemName: "icloud.and.arrow.down.fill")
+                    }
+                }
+            }.swipeActions {
+                Button("Delete") {
+                    onDelete(attachment)
+                }
+                .tint(.red)
+            }
+        }
+    }
+}
+
+private extension EditFeatureAttachmentsView {
+    // MARK: - AddingAttachmentToFeatureView
+    
+    struct AddingAttachmentToFeatureView: View {
+        // The closure called when add button is tapped.
+        let onAdd: (() -> Void)
+        
+        var body: some View {
+            HStack {
+                Spacer()
+                Button {
+                    onAdd()
+                } label: {
+                    Label("Add Attachment", systemImage: "paperclip")
+                }
+                Spacer()
+            }
+        }
+    }
+}
+
+private extension EditFeatureAttachmentsView {
+    // MARK: - Model
+    
     @MainActor
     class Model: ObservableObject {
         let map: Map = {
