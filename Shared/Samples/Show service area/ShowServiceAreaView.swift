@@ -16,6 +16,8 @@ import ArcGIS
 import SwiftUI
 
 struct ShowServiceAreaView: View {
+    // MARK: - View
+    
     /// The currently selected graphic type.
     /// Used to track whether to add facilities or barriers to the map.
     @State private var selectedGraphicType: GraphicType = .facilities
@@ -35,7 +37,12 @@ struct ShowServiceAreaView: View {
     var body: some View {
         MapView(map: model.map, graphicsOverlays: model.graphicsOverlays)
             .onSingleTapGesture { _, point in
-                model.placeGraphicOnTapLocation(at: point, with: selectedGraphicType)
+                switch selectedGraphicType {
+                case .facilities:
+                    model.addFacilityGraphic(at: point)
+                case .barriers:
+                    model.addBarriersGraphic(at: point)
+                }
             }
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
@@ -72,19 +79,25 @@ struct ShowServiceAreaView: View {
     }
 }
 
-private enum GraphicType: Equatable, CaseIterable {
-    case facilities, barriers
+private extension ShowServiceAreaView {
+    // MARK: - GraphicType
     
-    /// The string representation of this graphic type.
-    var label: String {
-        switch self {
-        case .barriers: "Barriers"
-        case .facilities: "Facilities"
+    enum GraphicType: Equatable, CaseIterable {
+        case facilities, barriers
+        
+        /// The string representation of this graphic type.
+        var label: String {
+            switch self {
+            case .barriers: "Barriers"
+            case .facilities: "Facilities"
+            }
         }
     }
 }
 
 private extension ShowServiceAreaView {
+    // MARK: - Model
+    
     class Model: ObservableObject {
         /// A map with terrain style centered over San Diego.
         let map: Map = {
@@ -122,7 +135,7 @@ private extension ShowServiceAreaView {
         
         /// The graphics overlays used by this model.
         var graphicsOverlays: [GraphicsOverlay] {
-            [facilitiesGraphicsOverlay, barriersGraphicsOverlay, serviceAreaGraphicsOverlay]
+            return [facilitiesGraphicsOverlay, barriersGraphicsOverlay, serviceAreaGraphicsOverlay]
         }
         
         private let serviceAreaTask = ServiceAreaTask(url: .serviceArea)
@@ -131,19 +144,15 @@ private extension ShowServiceAreaView {
         
         /// On user tapping on screen, depending on the selection type, it sets
         /// either the barrier or facilities overlays on the map at the tap point.
-        /// - Parameters:
-        ///   - point: The tap location.
-        ///   - selection: The type of graphic to be added to the view.
-        func placeGraphicOnTapLocation(at point: Point, with selection: GraphicType) {
-            switch selection {
-            case .facilities:
-                let graphic = Graphic(geometry: point, symbol: nil)
-                facilitiesGraphicsOverlay.addGraphic(graphic)
-            case .barriers:
-                let bufferedGeometry = GeometryEngine.buffer(around: point, distance: 500)
-                let graphic = Graphic(geometry: bufferedGeometry, symbol: nil)
-                barriersGraphicsOverlay.addGraphic(graphic)
-            }
+        func addFacilityGraphic(at point: Point) {
+            let graphic = Graphic(geometry: point, symbol: nil)
+            facilitiesGraphicsOverlay.addGraphic(graphic)
+        }
+        
+        func addBarriersGraphic(at point: Point) {
+            let bufferedGeometry = GeometryEngine.buffer(around: point, distance: 500)
+            let graphic = Graphic(geometry: bufferedGeometry, symbol: nil)
+            barriersGraphicsOverlay.addGraphic(graphic)
         }
         
         /// Gets the service area data and then renders the service area on the map.
@@ -210,6 +219,8 @@ private extension ShowServiceAreaView {
 }
 
 private extension URL {
+    // MARK: - URLs
+    
     static var serviceArea: URL {
         URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/NetworkAnalysis/SanDiego/NAServer/ServiceArea")!
     }
