@@ -26,7 +26,7 @@ extension AddCustomDynamicEntityDataSourceView {
         /// The location of the vessel.
         let geometry: Geometry
         /// The attributes of the vessel.
-        let attributes: [String: Any]
+        let attributes: [String: any Sendable]
     }
 }
 
@@ -57,7 +57,7 @@ extension AddCustomDynamicEntityDataSourceView.Vessel: Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         let geometry = try container.decode(Geometry.self, forKey: .geometry)
-        let attributes: [String: Any] = try {
+        let attributes: [String: any Sendable] = try {
             let attributes = try container.decode(Attributes.self, forKey: .attributes)
             return [
                 Attributes.CodingKeys.mmsi.rawValue: attributes.mmsi,

@@ -117,7 +117,7 @@ extension AddFeaturesWithContingentValuesView {
         /// - Parameters:
         ///   - value: The value.
         ///   - key: The key associated with the attribute.
-        func setFeatureAttributeValue(_ value: Any?, forKey key: String) {
+        func setFeatureAttributeValue(_ value: (any Sendable)?, forKey key: String) {
             guard let featureTable, let feature else { return }
             
             // Update the feature's attribute.
