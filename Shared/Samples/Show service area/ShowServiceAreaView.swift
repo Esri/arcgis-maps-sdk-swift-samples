@@ -41,7 +41,7 @@ struct ShowServiceAreaView: View {
                 case .facilities:
                     model.addFacilityGraphic(at: point)
                 case .barriers:
-                    model.addBarriersGraphic(at: point)
+                    model.addBarrierGraphic(at: point)
                 }
             }
             .toolbar {
@@ -149,7 +149,7 @@ private extension ShowServiceAreaView {
         }
         
         /// On user tapping on screen it add a barrier graphic to the barriers overlay on the map at that point.
-        func addBarriersGraphic(at point: Point) {
+        func addBarrierGraphic(at point: Point) {
             let bufferedGeometry = GeometryEngine.buffer(around: point, distance: 500)
             let graphic = Graphic(geometry: bufferedGeometry, symbol: nil)
             barriersGraphicsOverlay.addGraphic(graphic)
