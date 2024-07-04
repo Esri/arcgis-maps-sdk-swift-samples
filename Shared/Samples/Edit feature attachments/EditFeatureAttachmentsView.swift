@@ -58,8 +58,6 @@ struct EditFeatureAttachmentsView: View {
                                                     do {
                                                         if let data = UIImage(named: "PinBlueStar")?.pngData() {
                                                             try await model.add(name: "Attachment2", type: "png", dataElement: data)
-                                                            try await model.loadFeatureUpdate()
-                                                            model.updateCalloutPlacement(to: tapPoint!, using: mapProxy)
                                                         }
                                                     } catch {
                                                         self.error = error
@@ -71,8 +69,6 @@ struct EditFeatureAttachmentsView: View {
                                                 Task {
                                                     do {
                                                         try await model.delete(attachment: attachment)
-                                                        try await model.loadFeatureUpdate()
-                                                        model.updateCalloutPlacement(to: tapPoint!, using: mapProxy)
                                                     } catch {
                                                         self.error = error
                                                     }
@@ -270,7 +266,7 @@ private extension EditFeatureAttachmentsView {
         }
         
         /// Updates the callout text for the selected feature.
-        func updateForSelectedFeature() {
+        func updateCalloutDetailsForSelectedFeature() {
             if let selectedFeature = selectedFeature {
                 let title = selectedFeature.attributes["typdamage"] as? String
                 calloutText = title ?? "Callout"
@@ -278,47 +274,49 @@ private extension EditFeatureAttachmentsView {
             }
         }
         
-        /// <#Description#>
+        /// Adds a new attachment with the given parameters and synch this change with the server.
         /// - Parameters:
-        ///   - name: <#name description#>
-        ///   - type: <#type description#>
-        ///   - dataElement: <#dataElement description#>
+        ///   - name: The attachment name.
+        ///   - type: The attachments data type.
+        ///   - dataElement: The attachment data.
         func add(name: String, type: String, dataElement: Data) async throws {
             if let feature = selectedFeature {
                 let result = try await feature.addAttachment(named: "Attachment.png", contentType: "png", data: dataElement)
                 attachments.append(result)
-                try await doneAction()
+                try await syncChanges()
+                try await loadFeatureUpdate()
             }
         }
         
-        /// <#Description#>
-        /// - Parameter attachment: <#attachment description#>
+        /// Deletes the specified attachment and syncs the changes with the server.
+        /// - Parameter attachment: The attachment to be deleted.
         func delete(attachment: Attachment) async throws {
             if let feature = selectedFeature {
                 try await feature.deleteAttachment(attachment)
-                try await doneAction()
+                try await syncChanges()
+                try await loadFeatureUpdate()
             }
         }
         
         /// Applies edits and syncs attachments and features with server.
-        func doneAction() async throws {
+        func syncChanges() async throws {
             if let table = selectedFeature?.table as? ServiceFeatureTable {
                 _ = try await table.applyEdits()
             }
         }
         
         /// Fetches attachments for feature from server.
-        func updateAttachments() async throws {
+        func fetchAndUpdateAttachments() async throws {
             if let feature = selectedFeature {
                 let fetchAttachments = try await feature.attachments
                 attachments = fetchAttachments
             }
         }
         
-        /// <#Description#>
+        /// Fetches attachments from server and updates the selected feature's callout with the details 
         func loadFeatureUpdate() async throws {
-            try await updateAttachments()
-            updateForSelectedFeature()
+            try await fetchAndUpdateAttachments()
+            updateCalloutDetailsForSelectedFeature()
         }
     }
 }
