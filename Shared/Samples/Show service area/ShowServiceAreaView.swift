@@ -21,7 +21,7 @@ struct ShowServiceAreaView: View {
     /// The currently selected graphic type.
     ///
     /// Used to track whether to add facilities or barriers to the map.
-    @State private var selectedGraphicType: GraphicType = .facilities
+    @State private var selectedGraphicType: GraphicType = .facility
     /// The error shown in the error alert.
     @State private var error: Error?
     /// First time break property set in first stepper.
@@ -36,9 +36,9 @@ struct ShowServiceAreaView: View {
         MapView(map: model.map, graphicsOverlays: model.graphicsOverlays)
             .onSingleTapGesture { _, point in
                 switch selectedGraphicType {
-                case .facilities:
+                case .facility:
                     model.addFacilityGraphic(at: point)
-                case .barriers:
+                case .barrier:
                     model.addBarrierGraphic(at: point)
                 }
             }
@@ -81,13 +81,13 @@ private extension ShowServiceAreaView {
     // MARK: - GraphicType
     
     enum GraphicType: Equatable, CaseIterable {
-        case facilities, barriers
+        case facility, barrier
         
         /// The string representation of this graphic type.
         var label: String {
             switch self {
-            case .barriers: "Barriers"
-            case .facilities: "Facilities"
+            case .barrier: "Barriers"
+            case .facility: "Facilities"
             }
         }
     }
@@ -111,7 +111,7 @@ private extension ShowServiceAreaView {
             return map
         }()
         
-        let facilitiesGraphicsOverlay: GraphicsOverlay = {
+        private let facilitiesGraphicsOverlay: GraphicsOverlay = {
             let facilitiesGraphicsOverlay = GraphicsOverlay()
             let facilitySymbol = PictureMarkerSymbol(image: UIImage(named: "PinBlueStar")!)
             // Offsets symbol in Y to align image properly.
@@ -121,7 +121,7 @@ private extension ShowServiceAreaView {
             return facilitiesGraphicsOverlay
         }()
         
-        let barriersGraphicsOverlay: GraphicsOverlay = {
+       private let barriersGraphicsOverlay: GraphicsOverlay = {
             let barriersGraphicsOverlay = GraphicsOverlay()
             let barrierSymbol = SimpleFillSymbol(style: .diagonalCross, color: .red, outline: nil)
             // Sets symbol on barrier graphics overlay using renderer.
@@ -129,7 +129,7 @@ private extension ShowServiceAreaView {
             return barriersGraphicsOverlay
         }()
         
-        let serviceAreaGraphicsOverlay = GraphicsOverlay()
+       private let serviceAreaGraphicsOverlay = GraphicsOverlay()
         
         /// The graphics overlays used by this model.
         var graphicsOverlays: [GraphicsOverlay] {
@@ -143,7 +143,7 @@ private extension ShowServiceAreaView {
         /// On user tapping on screen it add a facility graphic to the facilities overlay on the map at that point.
         /// - Parameter point: The coordinates for the graphic.
         func addFacilityGraphic(at point: Point) {
-            let graphic = Graphic(geometry: point, symbol: nil)
+            let graphic = Graphic(geometry: point)
             facilitiesGraphicsOverlay.addGraphic(graphic)
         }
         
@@ -151,7 +151,7 @@ private extension ShowServiceAreaView {
         /// - Parameter point: The coordinates for the graphic.
         func addBarrierGraphic(at point: Point) {
             let bufferedGeometry = GeometryEngine.buffer(around: point, distance: 500)
-            let graphic = Graphic(geometry: bufferedGeometry, symbol: nil)
+            let graphic = Graphic(geometry: bufferedGeometry)
             barriersGraphicsOverlay.addGraphic(graphic)
         }
         
