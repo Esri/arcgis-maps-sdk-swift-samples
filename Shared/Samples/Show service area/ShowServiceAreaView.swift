@@ -19,20 +19,18 @@ struct ShowServiceAreaView: View {
     // MARK: - View
     
     /// The currently selected graphic type.
+    ///
     /// Used to track whether to add facilities or barriers to the map.
     @State private var selectedGraphicType: GraphicType = .facilities
-    
     /// The error shown in the error alert.
     @State private var error: Error?
+    /// First time break property set in first stepper.
+    @State private var firstTimeBreak: Int = 3
+    /// Second time break property set in second stepper.
+    @State private var secondTimeBreak: Int = 8
     
     /// The data model for the sample.
     @StateObject private var model = Model()
-    
-    /// First time break property set in first stepper.
-    @State private var firstTimeBreak: Int = 3
-    
-    /// Second time break property set in second stepper.
-    @State private var secondTimeBreak: Int = 8
     
     var body: some View {
         MapView(map: model.map, graphicsOverlays: model.graphicsOverlays)
