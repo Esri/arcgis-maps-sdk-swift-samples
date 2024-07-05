@@ -143,12 +143,14 @@ private extension ShowServiceAreaView {
         private var serviceAreaParameters: ServiceAreaParameters!
         
         /// On user tapping on screen it add a facility graphic to the facilities overlay on the map at that point.
+        /// - Parameter point: The coordinates for the graphic.
         func addFacilityGraphic(at point: Point) {
             let graphic = Graphic(geometry: point, symbol: nil)
             facilitiesGraphicsOverlay.addGraphic(graphic)
         }
         
         /// On user tapping on screen it add a barrier graphic to the barriers overlay on the map at that point.
+        /// - Parameter point: The coordinates for the graphic.
         func addBarrierGraphic(at point: Point) {
             let bufferedGeometry = GeometryEngine.buffer(around: point, distance: 500)
             let graphic = Graphic(geometry: bufferedGeometry, symbol: nil)
@@ -196,7 +198,7 @@ private extension ShowServiceAreaView {
         }
         
         /// Sets the symbols drawn on that map for given selection.
-        /// - Parameter index: Takes the index to decide how to render.
+        /// - Parameter isFirst: Tracks which element in is first in order to correctly set the color for the symbols.
         /// - Returns: Returns the symbol.
         private func makeServiceAreaSymbol(isFirst: Bool) -> Symbol {
             let lineSymbolColor: UIColor
