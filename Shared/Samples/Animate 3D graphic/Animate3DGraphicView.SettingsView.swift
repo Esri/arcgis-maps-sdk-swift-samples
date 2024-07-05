@@ -38,7 +38,7 @@ extension Animate3DGraphicView {
         }
         
         /// The view content of the settings sheet.
-        private var settingsContent: some View {
+        @MainActor private var settingsContent: some View {
             NavigationStack {
                 content
                     .navigationTitle("\(label) Settings")
