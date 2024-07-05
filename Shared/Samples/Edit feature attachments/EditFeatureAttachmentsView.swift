@@ -20,20 +20,17 @@ struct EditFeatureAttachmentsView: View {
     
     /// The error shown in the error alert.
     @State private var error: Error?
-    
     // The location that the user tapped on the map.
     @State private var tapPoint: CGPoint?
-    
-    /// The data model for the sample.
-    @StateObject private var model = Model()
-    
     // Value that shows loading indicator until features are loaded.
     @State private var loaded = false
-    
     // Value for toggling whether the attachment sheet is showing.
     @State private var showingSheet = false
     
     @State private var images: [Image] = []
+    
+    /// The data model for the sample.
+    @StateObject private var model = Model()
     
     var body: some View {
         MapViewReader { mapProxy in
@@ -66,15 +63,20 @@ struct EditFeatureAttachmentsView: View {
                     guard let point = tapPoint else { return }
                     model.featureLayer.clearSelection()
                     do {
-                        let result = try await mapProxy.identify(on: model.featureLayer, screenPoint: point, tolerance: 5)
+                        let result = try await mapProxy.identify(
+                            on: model.featureLayer,
+                            screenPoint: point,
+                            tolerance: 5
+                        )
                         guard let features = result.geoElements as? [ArcGISFeature],
                               let feature = features.first else {
                             return
                         }
-                        model.selectedFeature = feature
-                        model.selectFeature()
-                        try await model.loadFeatureUpdate()
-                        model.updateCalloutPlacement(to: point, using: mapProxy)
+                        model.setSelectedFeature(for: feature)
+                        try await model.fetchAttachmentsAndUpdateFeature()
+                        if let location = mapProxy.location(fromScreenPoint: point) {
+                            model.updateCalloutPlacement(to: location)
+                        }
                     } catch {
                         self.error = error
                     }
@@ -97,6 +99,9 @@ private extension EditFeatureAttachmentsView {
     // MARK: - AttachmentSheetView
     
     struct AttachmentSheetView: View {
+        /// The error shown in the error alert.
+        @State private var error: Error?
+        
         @ObservedObject var model: Model
         
         var body: some View {
@@ -109,10 +114,14 @@ private extension EditFeatureAttachmentsView {
                                 Task {
                                     do {
                                         if let data = UIImage(named: "PinBlueStar")?.pngData() {
-                                            try await model.add(name: "Attachment2", type: "png", dataElement: data)
+                                            try await model.add(
+                                                name: "Attachment2",
+                                                type: "png",
+                                                dataElement: data
+                                            )
                                         }
                                     } catch {
-                                        print(error)
+                                        self.error = error
                                     }
                                 }
                             })
@@ -122,7 +131,7 @@ private extension EditFeatureAttachmentsView {
                                     do {
                                         try await model.delete(attachment: attachment)
                                     } catch {
-                                        print(error)
+                                        self.error = error
                                     }
                                 }
                             })
@@ -130,6 +139,7 @@ private extension EditFeatureAttachmentsView {
                     }
                 }
             }
+            .errorAlert(presentingError: $error)
         }
     }
 }
@@ -160,12 +170,10 @@ private extension EditFeatureAttachmentsView {
     struct AttachmentView: View {
         // The attachment that is being displayed.
         var attachment: Attachment
-        
         // The closure called when the delete button is tapped.
         let onDelete: ((Attachment) -> Void)
-        
         // The image in the attachment.
-        @State var image: Image?
+        @State private var image: Image?
         
         var body: some View {
             HStack {
@@ -233,7 +241,7 @@ private extension EditFeatureAttachmentsView {
         @Published var calloutPlacement: CalloutPlacement?
         
         // The currently selected map feature.
-        @Published var selectedFeature: ArcGISFeature?
+        private var selectedFeature: ArcGISFeature?
         
         // Holds the attachments of the currently selected feature.
         @Published var attachments: [Attachment] = []
@@ -244,7 +252,7 @@ private extension EditFeatureAttachmentsView {
         /// The text shown on the callout.
         @Published var calloutDetailText: String = ""
         
-        /// A Boolean value that indicates whether the callout placement should be offsetted for the map magnifier.
+        /// A Boolean value that indicates whether the callout placement should be offset for the map magnifier.
         @Published var calloutShouldOffset = false
         
         var featureLayer: FeatureLayer = {
@@ -259,26 +267,23 @@ private extension EditFeatureAttachmentsView {
         
         /// Updates the location of the callout placement to a given screen point.
         /// - Parameters:
-        ///   - screenPoint: The screen point at which to place the callout.
-        ///   - proxy: The proxy used to convert the screen point to a map point.
-        func updateCalloutPlacement(to screenPoint: CGPoint, using proxy: MapViewProxy) {
+        ///   - Location: The screen point at which to place the callout.
+        func updateCalloutPlacement(to location: Point) {
             // Create an offset to offset the callout if needed, e.g. the magnifier is showing.
             let offset = calloutShouldOffset ? CGPoint(x: 0, y: -70) : .zero
-            // Get the map location of the screen point from the map view proxy.
-            if let location = proxy.location(fromScreenPoint: screenPoint) {
-                calloutPlacement = .location(location, offset: offset)
-            }
+            calloutPlacement = .location(location, offset: offset)
         }
         
         /// Selects the feature that is tapped.
-        func selectFeature() {
+        func setSelectedFeature(for feature: ArcGISFeature) {
+            selectedFeature = feature
             if let selectedFeature = selectedFeature {
                 featureLayer.selectFeature(selectedFeature)
             }
         }
         
         /// Updates the callout text for the selected feature.
-        func updateCalloutDetailsForSelectedFeature() {
+        private func updateCalloutDetailsForSelectedFeature() {
             if let selectedFeature = selectedFeature {
                 let title = selectedFeature.attributes["typdamage"] as? String
                 calloutText = title ?? "Callout"
@@ -296,7 +301,7 @@ private extension EditFeatureAttachmentsView {
                 let result = try await feature.addAttachment(named: "Attachment.png", contentType: "png", data: dataElement)
                 attachments.append(result)
                 try await syncChanges()
-                try await loadFeatureUpdate()
+                try await fetchAttachmentsAndUpdateFeature()
             }
         }
         
@@ -306,19 +311,19 @@ private extension EditFeatureAttachmentsView {
             if let feature = selectedFeature {
                 try await feature.deleteAttachment(attachment)
                 try await syncChanges()
-                try await loadFeatureUpdate()
+                try await fetchAttachmentsAndUpdateFeature()
             }
         }
         
         /// Applies edits and syncs attachments and features with server.
-        func syncChanges() async throws {
+        private func syncChanges() async throws {
             if let table = selectedFeature?.table as? ServiceFeatureTable {
                 _ = try await table.applyEdits()
             }
         }
         
         /// Fetches attachments for feature from server.
-        func fetchAndUpdateAttachments() async throws {
+        private func fetchAndUpdateAttachments() async throws {
             if let feature = selectedFeature {
                 let fetchAttachments = try await feature.attachments
                 attachments = fetchAttachments
@@ -326,7 +331,7 @@ private extension EditFeatureAttachmentsView {
         }
         
         /// Fetches attachments from server and updates the selected feature's callout with the details
-        func loadFeatureUpdate() async throws {
+        func fetchAttachmentsAndUpdateFeature() async throws {
             try await fetchAndUpdateAttachments()
             updateCalloutDetailsForSelectedFeature()
         }
