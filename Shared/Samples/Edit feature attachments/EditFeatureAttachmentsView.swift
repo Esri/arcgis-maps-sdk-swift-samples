@@ -48,36 +48,7 @@ struct EditFeatureAttachmentsView: View {
                             showingSheet = true
                         }
                         .sheet(isPresented: $showingSheet) {
-                            VStack {
-                                Spacer()
-                                List {
-                                    ForEach(0...$model.attachments.count, id: \.self) { index in
-                                        if index == model.attachments.count {
-                                            AddingAttachmentToFeatureView(onAdd: {
-                                                Task {
-                                                    do {
-                                                        if let data = UIImage(named: "PinBlueStar")?.pngData() {
-                                                            try await model.add(name: "Attachment2", type: "png", dataElement: data)
-                                                        }
-                                                    } catch {
-                                                        self.error = error
-                                                    }
-                                                }
-                                            })
-                                        } else {
-                                            AttachmentView(attachment: model.attachments[index], onDelete: { attachment in
-                                                Task {
-                                                    do {
-                                                        try await model.delete(attachment: attachment)
-                                                    } catch {
-                                                        self.error = error
-                                                    }
-                                                }
-                                            })
-                                        }
-                                    }
-                                }
-                            }
+                            AttachmentSheetView(model: model)
                         }
                         .padding(8)
                     }
@@ -119,6 +90,47 @@ struct EditFeatureAttachmentsView: View {
                 }
         }
         .errorAlert(presentingError: $error)
+    }
+}
+
+private extension EditFeatureAttachmentsView {
+    // MARK: - AttachmentSheetView
+    
+    struct AttachmentSheetView: View {
+        @ObservedObject var model: Model
+        
+        var body: some View {
+            VStack {
+                Spacer()
+                List {
+                    ForEach(0...$model.attachments.count, id: \.self) { index in
+                        if index == model.attachments.count {
+                            AddingAttachmentToFeatureView(onAdd: {
+                                Task {
+                                    do {
+                                        if let data = UIImage(named: "PinBlueStar")?.pngData() {
+                                            try await model.add(name: "Attachment2", type: "png", dataElement: data)
+                                        }
+                                    } catch {
+                                        print(error)
+                                    }
+                                }
+                            })
+                        } else {
+                            AttachmentView(attachment: model.attachments[index], onDelete: { attachment in
+                                Task {
+                                    do {
+                                        try await model.delete(attachment: attachment)
+                                    } catch {
+                                        print(error)
+                                    }
+                                }
+                            })
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -313,7 +325,7 @@ private extension EditFeatureAttachmentsView {
             }
         }
         
-        /// Fetches attachments from server and updates the selected feature's callout with the details 
+        /// Fetches attachments from server and updates the selected feature's callout with the details
         func loadFeatureUpdate() async throws {
             try await fetchAndUpdateAttachments()
             updateCalloutDetailsForSelectedFeature()
