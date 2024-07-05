@@ -138,7 +138,7 @@ private extension BrowseOGCAPIFeatureServiceView {
                 symbol = SimpleMarkerSymbol(style: .circle, color: .blue, size: 5)
             case is Polyline.Type:
                 symbol = SimpleLineSymbol(style: .solid, color: .blue, width: 1)
-            case is Polygon.Type, is Envelope.Type:
+            case is ArcGIS.Polygon.Type, is Envelope.Type:
                 symbol = SimpleFillSymbol(style: .solid, color: .blue)
             default:
                 return nil
