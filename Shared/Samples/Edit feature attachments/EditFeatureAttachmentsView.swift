@@ -23,11 +23,9 @@ struct EditFeatureAttachmentsView: View {
     // The location that the user tapped on the map.
     @State private var tapPoint: CGPoint?
     // Value that shows loading indicator until features are loaded.
-    @State private var loaded = false
+    @State private var isLoaded = false
     // Value for toggling whether the attachment sheet is showing.
-    @State private var showingSheet = false
-    
-    @State private var images: [Image] = []
+    @State private var isAttachmentSheetPresented = false
     
     /// The data model for the sample.
     @StateObject private var model = Model()
@@ -42,9 +40,9 @@ struct EditFeatureAttachmentsView: View {
                         CalloutView(model: model)
                             .padding(6)
                         Button("", systemImage: "exclamationmark.circle") {
-                            showingSheet = true
+                            isAttachmentSheetPresented = true
                         }
-                        .sheet(isPresented: $showingSheet) {
+                        .sheet(isPresented: $isAttachmentSheetPresented) {
                             AttachmentSheetView(model: model)
                         }
                         .padding(8)
@@ -53,7 +51,7 @@ struct EditFeatureAttachmentsView: View {
                 .onDrawStatusChanged { drawStatus in
                     // Updates the state when the map's draw status changes.
                     if drawStatus == .completed {
-                        loaded = true
+                        isLoaded = true
                     }
                 }
                 .onSingleTapGesture { tap, _ in
@@ -72,8 +70,7 @@ struct EditFeatureAttachmentsView: View {
                               let feature = features.first else {
                             return
                         }
-                        model.setSelectedFeature(for: feature)
-                        try await model.fetchAttachmentsAndUpdateFeature()
+                        try await model.setSelectedFeature(for: feature)
                         if let location = mapProxy.location(fromScreenPoint: point) {
                             model.updateCalloutPlacement(to: location)
                         }
@@ -82,7 +79,7 @@ struct EditFeatureAttachmentsView: View {
                     }
                 }
                 .overlay(alignment: .center) {
-                    if !loaded {
+                    if !isLoaded {
                         ProgressView("Loading…")
                             .padding()
                             .background(.ultraThinMaterial)
@@ -102,6 +99,7 @@ private extension EditFeatureAttachmentsView {
         /// The error shown in the error alert.
         @State private var error: Error?
         
+        /// The data model for the sample.
         @ObservedObject var model: Model
         
         var body: some View {
@@ -113,20 +111,24 @@ private extension EditFeatureAttachmentsView {
                             AddingAttachmentToFeatureView(onAdd: {
                                 Task {
                                     do {
-                                        if let data = UIImage(named: "PinBlueStar")?.pngData() {
-                                            try await model.add(
-                                                name: "Attachment2",
-                                                type: "png",
-                                                dataElement: data
-                                            )
+                                        guard let pngData = UIImage(
+                                            named: "PinBlueStar"
+                                        )?.pngData() else {
+                                            return
                                         }
+                                        try await model.add(
+                                            name: "Attachment2",
+                                            type: "png",
+                                            dataElement: pngData
+                                        )
                                     } catch {
                                         self.error = error
                                     }
                                 }
                             })
                         } else {
-                            AttachmentView(attachment: model.attachments[index], onDelete: { attachment in
+                            let attachment = model.attachments[index]
+                            AttachmentView(attachment: attachment, onDelete: { attachment in
                                 Task {
                                     do {
                                         try await model.delete(attachment: attachment)
@@ -148,7 +150,7 @@ private extension EditFeatureAttachmentsView {
     // MARK: - CalloutView
     
     struct CalloutView: View {
-        // The model that holds the callout text and callout detail text.
+        /// The data model for the sample.
         @ObservedObject var model: Model
         
         var body: some View {
@@ -183,7 +185,9 @@ private extension EditFeatureAttachmentsView {
                 Button {
                     Task {
                         let result = try await attachment.data
-                        image = Image(uiImage: UIImage(data: result)!)
+                        if let uiImage = UIImage(data: result) {
+                            image = Image(uiImage: uiImage)
+                        }
                     }
                 } label: {
                     if let image = image {
@@ -275,11 +279,11 @@ private extension EditFeatureAttachmentsView {
         }
         
         /// Selects the feature that is tapped.
-        func setSelectedFeature(for feature: ArcGISFeature) {
+        /// - Parameter feature: The feature to set as the selected feature.
+        func setSelectedFeature(for feature: ArcGISFeature) async throws {
             selectedFeature = feature
-            if let selectedFeature = selectedFeature {
-                featureLayer.selectFeature(selectedFeature)
-            }
+            featureLayer.selectFeature(selectedFeature!)
+            try await fetchAttachmentsAndUpdateFeature()
         }
         
         /// Updates the callout text for the selected feature.
@@ -298,7 +302,11 @@ private extension EditFeatureAttachmentsView {
         ///   - dataElement: The attachment data.
         func add(name: String, type: String, dataElement: Data) async throws {
             if let feature = selectedFeature {
-                let result = try await feature.addAttachment(named: "Attachment.png", contentType: "png", data: dataElement)
+                let result = try await feature.addAttachment(
+                    named: "Attachment.png",
+                    contentType: "png",
+                    data: dataElement
+                )
                 attachments.append(result)
                 try await syncChanges()
                 try await fetchAttachmentsAndUpdateFeature()
@@ -331,7 +339,7 @@ private extension EditFeatureAttachmentsView {
         }
         
         /// Fetches attachments from server and updates the selected feature's callout with the details
-        func fetchAttachmentsAndUpdateFeature() async throws {
+        private func fetchAttachmentsAndUpdateFeature() async throws {
             try await fetchAndUpdateAttachments()
             updateCalloutDetailsForSelectedFeature()
         }
@@ -339,6 +347,8 @@ private extension EditFeatureAttachmentsView {
 }
 
 private extension URL {
+    // MARK: - URLs
+    
     static let featureServiceURL = URL(
         string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/DamageAssessment/FeatureServer/0"
     )!
