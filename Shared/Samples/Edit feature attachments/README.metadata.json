@@ -2,7 +2,9 @@
     "category": "Edit and Manage Data",
     "description": "Add, delete, and download attachments for features from a service.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "edit-feature-attachments.png"
+    ],
     "keywords": [
         "Edit and manage data",
         "JPEG",
