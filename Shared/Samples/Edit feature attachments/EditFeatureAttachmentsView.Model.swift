@@ -29,13 +29,13 @@ extension EditFeatureAttachmentsView {
             return map
         }()
         
-        // The currently selected map feature.
+        /// The currently selected map feature.
         private var selectedFeature: ArcGISFeature?
         
         /// The placement of the callout on the map.
         var calloutPlacement: CalloutPlacement?
         
-        // Holds the attachments of the currently selected feature.
+        /// Holds the attachments of the currently selected feature.
         @Published var attachments: [Attachment] = []
         
         /// The text shown on the callout.
@@ -58,7 +58,7 @@ extension EditFeatureAttachmentsView {
         }
         
         /// Updates the location of the callout placement to a given screen point.
-        /// - Parameter Location: The screen point at which to place the callout.
+        /// - Parameter location: The screen point at which to place the callout.
         func updateCalloutPlacement(to location: Point) {
             // Create an offset to offset the callout if needed, e.g. the magnifier is showing.
             let offset = calloutShouldOffset ? CGPoint(x: 0, y: -70) : .zero
@@ -87,10 +87,10 @@ extension EditFeatureAttachmentsView {
         ///   - name: The attachment name.
         ///   - type: The attachments data type.
         ///   - dataElement: The attachment data.
-        func add(name: String, type: String, dataElement: Data) async throws {
+        func addAttachment(named: String, type: String, dataElement: Data) async throws {
             if let table = selectedFeature?.table as? ServiceFeatureTable, table.hasAttachments,
-                let feature = selectedFeature {
-                let result = try await feature.addAttachment(
+               let feature = selectedFeature {
+                _ = try await feature.addAttachment(
                     named: "Attachment.png",
                     contentType: "png",
                     data: dataElement
@@ -102,9 +102,9 @@ extension EditFeatureAttachmentsView {
         
         /// Deletes the specified attachment and syncs the changes with the server.
         /// - Parameter attachment: The attachment to be deleted.
-        func delete(attachment: Attachment) async throws {
+        func deleteAttachment(attachment: Attachment) async throws {
             if let table = selectedFeature?.table as? ServiceFeatureTable, table.hasAttachments,
-                let feature = selectedFeature {
+               let feature = selectedFeature {
                 try await feature.deleteAttachment(attachment)
                 try await syncChanges()
                 try await fetchAttachmentsAndUpdateFeature()

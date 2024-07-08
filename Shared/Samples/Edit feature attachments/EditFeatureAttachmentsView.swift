@@ -16,33 +16,33 @@ import ArcGIS
 import SwiftUI
 
 struct EditFeatureAttachmentsView: View {
-    // MARK: - View
-    
     /// The error shown in the error alert.
     @State private var error: Error?
-    // The location that the user tapped on the map.
-    @State private var tapPoint: CGPoint?
-    // Value that shows loading indicator until features are loaded.
-    @State private var isLoaded = false
-    // Value for toggling whether the attachment sheet is showing.
-    @State private var isAttachmentSheetPresented = false
-    
     /// The data model for the sample.
     @StateObject private var model = Model()
+    /// The location that the user tapped on the map.
+    @State private var screenPoint: CGPoint?
+    /// A Boolean value indicating whether the features are loaded.
+    @State private var isLoaded = false
+    /// A Boolean value indicating whether the attachment sheet is showing.
+    @State private var attachmentSheetIsPresented = false
     
     var body: some View {
         MapViewReader { mapProxy in
             MapView(map: model.map)
-                .callout(placement: $model.calloutPlacement
-                    .animation(model.calloutShouldOffset ? nil : .default.speed(2))
+                .callout(
+                    placement: $model.calloutPlacement.animation(
+                        model.calloutShouldOffset ? nil : .default.speed(2))
                 ) { _ in
                     HStack {
                         CalloutView(model: model)
                             .padding(6)
-                        Button("", systemImage: "exclamationmark.circle") {
-                            isAttachmentSheetPresented = true
+                        Button {
+                            attachmentSheetIsPresented = true
+                        } label: {
+                            Image(systemName: "exclamationmark.circle")
                         }
-                        .sheet(isPresented: $isAttachmentSheetPresented) {
+                        .sheet(isPresented: $attachmentSheetIsPresented) {
                             AttachmentSheetView(model: model)
                         }
                         .padding(8)
@@ -55,10 +55,10 @@ struct EditFeatureAttachmentsView: View {
                     }
                 }
                 .onSingleTapGesture { tap, _ in
-                    self.tapPoint = tap
+                    self.screenPoint = tap
                 }
-                .task(id: tapPoint) {
-                    guard let point = tapPoint else { return }
+                .task(id: screenPoint) {
+                    guard let point = screenPoint else { return }
                     model.featureLayer.clearSelection()
                     do {
                         let result = try await mapProxy.identify(
@@ -103,35 +103,15 @@ private extension EditFeatureAttachmentsView {
         @ObservedObject var model: Model
         
         var body: some View {
-            VStack {
-                Spacer()
-                List {
-                    ForEach(0...$model.attachments.count, id: \.self) { index in
-                        if index == model.attachments.count {
-                            AddAttachmentView(onAdd: {
-                                Task {
-                                    do {
-                                        guard let pngData = UIImage(
-                                            named: "PinBlueStar"
-                                        )?.pngData() else {
-                                            return
-                                        }
-                                        try await model.add(
-                                            name: "Attachment",
-                                            type: "png",
-                                            dataElement: pngData
-                                        )
-                                    } catch {
-                                        self.error = error
-                                    }
-                                }
-                            })
-                        } else {
+            Form {
+                Section {
+                    List {
+                        ForEach($model.attachments.indices, id: \.self) { index in
                             let attachment = model.attachments[index]
                             AttachmentView(attachment: attachment, onDelete: { attachment in
                                 Task {
                                     do {
-                                        try await model.delete(attachment: attachment)
+                                        try await model.deleteAttachment(attachment: attachment)
                                     } catch {
                                         self.error = error
                                     }
@@ -139,6 +119,26 @@ private extension EditFeatureAttachmentsView {
                             })
                         }
                     }
+                }
+                Section {
+                    AddAttachmentView(onAdd: {
+                        Task {
+                            do {
+                                guard let pngData = UIImage(
+                                    named: "PinBlueStar"
+                                )?.pngData() else {
+                                    return
+                                }
+                                try await model.addAttachment(
+                                    named: "Attachment",
+                                    type: "png",
+                                    dataElement: pngData
+                                )
+                            } catch {
+                                self.error = error
+                            }
+                        }
+                    })
                 }
             }
             .errorAlert(presentingError: $error)
@@ -193,10 +193,11 @@ private extension EditFeatureAttachmentsView {
                     if let image = image {
                         image
                     } else {
-                        Image(systemName: "icloud.and.arrow.down.fill")
+                        Image(systemName: "arrow.down.circle.fill")
                     }
                 }
-            }.swipeActions {
+            }
+            .swipeActions {
                 Button("Delete") {
                     onDelete(attachment)
                 }
