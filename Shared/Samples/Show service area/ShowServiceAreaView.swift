@@ -55,7 +55,7 @@ struct ShowServiceAreaView: View {
                         Stepper("Second: \(secondTimeBreak)", value: $secondTimeBreak, in: 1...15)
                         Stepper("First: \(firstTimeBreak)", value: $firstTimeBreak, in: 1...15)
                     } label: {
-                        Label("Time", systemImage: "gear")
+                        Label("Time Breaks", systemImage: "gear")
                     }
                     Spacer()
                     Button("Service Area") {
@@ -68,7 +68,7 @@ struct ShowServiceAreaView: View {
                         }
                     }
                     Spacer()
-                    Button("Clear", systemImage: "trash.fill") {
+                    Button("Clear", systemImage: "trash") {
                         model.removeAllGraphics()
                     }
                 }
@@ -156,8 +156,7 @@ private extension ShowServiceAreaView {
         }
         
         /// Gets the service area data and then renders the service area on the map.
-        /// - Parameters:
-        ///   - timeBreaks: Double values that user sets for the impedance cutoffs.
+        /// - Parameter timeBreaks: Double values that user sets for the impedance cutoffs.
         func showServiceArea(timeBreaks: [Double]) async throws {
             if serviceAreaParameters == nil {
                 serviceAreaParameters = try await serviceAreaTask.makeDefaultParameters()
