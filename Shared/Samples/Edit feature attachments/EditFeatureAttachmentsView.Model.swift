@@ -1,10 +1,16 @@
+// Copyright 2024 Esri
 //
-//  EditFeatureAttachmentsView.Model.swift
-//  Samples
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
 //
-//  Created by Christopher Webb on 7/8/24.
-//  Copyright © 2024 Esri. All rights reserved.
+//   https://www.apache.org/licenses/LICENSE-2.0
 //
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 import ArcGIS
 import SwiftUI
@@ -98,7 +104,7 @@ extension EditFeatureAttachmentsView {
         /// Deletes the specified attachment and syncs the changes with the server.
         /// - Parameter attachment: The attachment to be deleted.
         func delete(attachment: Attachment) async throws {
-            if let table = selectedFeature?.table as? ServiceFeatureTable, table.hasAttachments, 
+            if let table = selectedFeature?.table as? ServiceFeatureTable, table.hasAttachments,
                 let feature = selectedFeature {
                 try await feature.deleteAttachment(attachment)
                 try await syncChanges()

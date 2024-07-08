@@ -32,8 +32,8 @@
         "UpdateFeature"
     ],
     "snippets": [
-        "EditFeatureAttachmentsView.Model.swift",
-        "EditFeatureAttachmentsView.swift"
+        "EditFeatureAttachmentsView.swift",
+        "EditFeatureAttachmentsView.Model.swift"
     ],
     "title": "Edit feature attachments"
 }
