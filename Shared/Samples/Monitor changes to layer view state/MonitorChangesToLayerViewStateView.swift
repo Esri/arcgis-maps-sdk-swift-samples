@@ -40,6 +40,7 @@ struct MonitorChangesToLayerViewStateView: View {
     /// A Boolean value indicating whether the feature layer is visible.
     @State private var layerIsVisible = true
     
+    /// Array containing the current statuses for the `LayerViewState.Status` in human readable form.
     @State private var labels = [String]()
     
     var body: some View {
@@ -78,7 +79,7 @@ struct MonitorChangesToLayerViewStateView: View {
 }
 
 private extension LayerViewState.Status {
-    /// A human-readable labels for the status.
+    /// A human-readable array of labels for the statuses.
     var labels: [String] {
         var statuses: [String] = []
         if self.contains(.active) {
