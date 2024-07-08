@@ -187,6 +187,7 @@
 		9529D1942C01676200B5C1A3 /* SelectFeaturesInSceneLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 954AEDED2C01332600265114 /* SelectFeaturesInSceneLayerView.swift */; };
 		9537AFB42C2208B5000923C5 /* AddENCExchangeSetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9537AFB32C2208B5000923C5 /* AddENCExchangeSetView.swift */; };
 		9537AFD72C220EF0000923C5 /* ExchangeSetwithoutUpdates in Resources */ = {isa = PBXBuildFile; fileRef = 9537AFD62C220EF0000923C5 /* ExchangeSetwithoutUpdates */; settings = {ASSET_TAGS = (AddEncExchangeSet, ); }; };
+		954708642C3C798C00CA8579 /* AddENCExchangeSetView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 9537AFB32C2208B5000923C5 /* AddENCExchangeSetView.swift */; };
 		954AEDEE2C01332600265114 /* SelectFeaturesInSceneLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954AEDED2C01332600265114 /* SelectFeaturesInSceneLayerView.swift */; };
 		955271612C0E6749009B1ED4 /* AddRasterFromServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955271602C0E6749009B1ED4 /* AddRasterFromServiceView.swift */; };
 		955AFAC42C10FD6F009C8FE5 /* ApplyMosaicRuleToRastersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955AFAC32C10FD6F009C8FE5 /* ApplyMosaicRuleToRastersView.swift */; };
@@ -516,6 +517,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				954708642C3C798C00CA8579 /* AddENCExchangeSetView.swift in Copy Source Code Files */,
 				95E980742C26189E00CB8912 /* BrowseOGCAPIFeatureServiceView.swift in Copy Source Code Files */,
 				955AFAC62C110B8A009C8FE5 /* ApplyMosaicRuleToRastersView.swift in Copy Source Code Files */,
 				95DEB9B82C127B5E009BEC35 /* ShowViewshedFromPointOnMapView.swift in Copy Source Code Files */,
