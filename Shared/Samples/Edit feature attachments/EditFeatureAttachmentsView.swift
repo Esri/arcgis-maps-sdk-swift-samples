@@ -108,7 +108,7 @@ private extension EditFeatureAttachmentsView {
                 List {
                     ForEach(0...$model.attachments.count, id: \.self) { index in
                         if index == model.attachments.count {
-                            AddingAttachmentToFeatureView(onAdd: {
+                            AddAttachmentView(onAdd: {
                                 Task {
                                     do {
                                         guard let pngData = UIImage(
@@ -207,9 +207,9 @@ private extension EditFeatureAttachmentsView {
 }
 
 private extension EditFeatureAttachmentsView {
-    // MARK: - AddingAttachmentToFeatureView
+    // MARK: - AddAttachmentView
     
-    struct AddingAttachmentToFeatureView: View {
+    struct AddAttachmentView: View {
         // The closure called when add button is tapped.
         let onAdd: (() -> Void)
         

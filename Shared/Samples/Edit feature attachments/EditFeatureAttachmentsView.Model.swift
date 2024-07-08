@@ -9,7 +9,7 @@
 import ArcGIS
 import SwiftUI
 
-private extension EditFeatureAttachmentsView {
+extension EditFeatureAttachmentsView {
     // MARK: - Model
     
     @MainActor
