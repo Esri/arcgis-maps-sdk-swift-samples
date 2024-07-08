@@ -69,7 +69,7 @@ struct SamplesSearchView: View {
                     .bold()
                 Text("Check the spelling or try a new search.")
                     .font(.subheadline)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
             }
             .opacity(hasMatches ? 0 : 1)
         }

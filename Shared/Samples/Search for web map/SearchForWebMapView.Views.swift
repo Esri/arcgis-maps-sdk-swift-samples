@@ -93,7 +93,7 @@ extension SearchForWebMapView {
                         .overlay(.black)
                     
                     Text(item.owner)
-                        .foregroundColor(.accentColor)
+                        .foregroundStyle(Color.accentColor)
                     
                     Spacer()
                 }

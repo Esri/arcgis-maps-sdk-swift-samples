@@ -62,7 +62,7 @@ extension ValidateUtilityNetworkTopologyView {
                                 Spacer()
                                 if option.name == model.selectedFieldValue?.name {
                                     Image(systemName: "checkmark")
-                                        .foregroundColor(.accentColor)
+                                        .foregroundStyle(Color.accentColor)
                                 }
                             }
                             .contentShape(Rectangle())

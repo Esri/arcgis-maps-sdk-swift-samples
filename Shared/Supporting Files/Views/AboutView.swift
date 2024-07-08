@@ -31,7 +31,7 @@ struct AboutView: View {
                             .font(.headline)
                         copyrightText
                             .font(.footnote)
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                     }
                     .listRowBackground(Color.clear)
                     .frame(maxWidth: .infinity)
@@ -91,7 +91,7 @@ private struct VersionRow: View {
             Text(title)
             Spacer()
             versionText
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
         }
     }
 }

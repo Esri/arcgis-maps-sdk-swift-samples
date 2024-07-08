@@ -110,7 +110,7 @@ private extension CategoriesView {
                             Text(name)
                                 .font(.system(size: geometry.size.width * 0.1))
                                 .multilineTextAlignment(.center)
-                                .foregroundColor(.white)
+                                .foregroundStyle(.white)
                                 .offset(y: geometry.size.height * 0.31)
                                 .padding()
                         }

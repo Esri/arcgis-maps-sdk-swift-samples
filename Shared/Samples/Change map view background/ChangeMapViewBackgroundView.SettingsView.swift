@@ -32,7 +32,7 @@ extension ChangeMapViewBackgroundView {
                             Text("Line Width")
                             Spacer()
                             Text(model.lineWidth.formatted())
-                                .foregroundColor(.secondary)
+                                .foregroundStyle(.secondary)
                         }
                         Slider(value: $model.lineWidth, in: model.lineWidthRange, step: 1)
                     }
@@ -41,7 +41,7 @@ extension ChangeMapViewBackgroundView {
                             Text("Grid Size")
                             Spacer()
                             Text(model.size.formatted())
-                                .foregroundColor(.secondary)
+                                .foregroundStyle(.secondary)
                         }
                         Spacer()
                         Slider(value: $model.size, in: model.sizeRange, step: 1)

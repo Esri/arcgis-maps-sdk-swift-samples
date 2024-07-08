@@ -73,7 +73,7 @@ extension ShowViewshedFromPointInSceneView {
                         Measurement(value: measurementValue, unit: unit),
                         format: .measurement(width: .narrow, numberFormatStyle: .number.precision(.fractionLength(0)))
                     )
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                 }
                 Slider(value: $measurementValue, in: range)
             }
