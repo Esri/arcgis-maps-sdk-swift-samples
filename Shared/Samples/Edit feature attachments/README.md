@@ -24,13 +24,13 @@ Tap a feature on the map to open a callout displaying the number of attachments.
 
 ## Relevant API
 
-* ApplyEditsAsync
-* DeleteAttachmentAsync
+* ApplyEdits
+* DeleteAttachment
 * FeatureLayer
-* FetchAttachmentsAsync
-* FetchDataAsync
+* FetchAttachments
+* FetchData
 * ServiceFeatureTable
-* UpdateFeatureAsync
+* UpdateFeature
 
 ## Additional information
 

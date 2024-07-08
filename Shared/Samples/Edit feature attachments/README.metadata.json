@@ -13,23 +13,23 @@
         "TXT",
         "image",
         "picture",
-        "ApplyEditsAsync",
-        "DeleteAttachmentAsync",
+        "ApplyEdits",
+        "DeleteAttachment",
         "FeatureLayer",
-        "FetchAttachmentsAsync",
-        "FetchDataAsync",
+        "FetchAttachments",
+        "FetchData",
         "ServiceFeatureTable",
-        "UpdateFeatureAsync"
+        "UpdateFeature"
     ],
     "redirect_from": [],
     "relevant_apis": [
-        "ApplyEditsAsync",
-        "DeleteAttachmentAsync",
+        "ApplyEdits",
+        "DeleteAttachment,
         "FeatureLayer",
-        "FetchAttachmentsAsync",
-        "FetchDataAsync",
+        "FetchAttachments",
+        "FetchData",
         "ServiceFeatureTable",
-        "UpdateFeatureAsync"
+        "UpdateFeature"
     ],
     "snippets": [
         "EditFeatureAttachmentsView.Model.swift",
