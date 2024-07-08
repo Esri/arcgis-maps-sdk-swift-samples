@@ -33,7 +33,7 @@ extension EditFeatureAttachmentsView {
         private var selectedFeature: ArcGISFeature?
         
         /// The placement of the callout on the map.
-        @Published var calloutPlacement: CalloutPlacement?
+        var calloutPlacement: CalloutPlacement?
         
         // Holds the attachments of the currently selected feature.
         @Published var attachments: [Attachment] = []
@@ -95,7 +95,6 @@ extension EditFeatureAttachmentsView {
                     contentType: "png",
                     data: dataElement
                 )
-                attachments.append(result)
                 try await syncChanges()
                 try await fetchAttachmentsAndUpdateFeature()
             }
