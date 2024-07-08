@@ -171,7 +171,7 @@ private extension EditFeatureAttachmentsView {
     
     struct AttachmentView: View {
         // The attachment that is being displayed.
-        var attachment: Attachment
+        let attachment: Attachment
         // The closure called when the delete button is tapped.
         let onDelete: ((Attachment) -> Void)
         // The image in the attachment.
@@ -241,11 +241,11 @@ private extension EditFeatureAttachmentsView {
             return map
         }()
         
-        /// The placement of the callout on the map.
-        @Published var calloutPlacement: CalloutPlacement?
-        
         // The currently selected map feature.
         private var selectedFeature: ArcGISFeature?
+        
+        /// The placement of the callout on the map.
+        @Published var calloutPlacement: CalloutPlacement?
         
         // Holds the attachments of the currently selected feature.
         @Published var attachments: [Attachment] = []
@@ -270,8 +270,7 @@ private extension EditFeatureAttachmentsView {
         }
         
         /// Updates the location of the callout placement to a given screen point.
-        /// - Parameters:
-        ///   - Location: The screen point at which to place the callout.
+        /// - Parameter Location: The screen point at which to place the callout.
         func updateCalloutPlacement(to location: Point) {
             // Create an offset to offset the callout if needed, e.g. the magnifier is showing.
             let offset = calloutShouldOffset ? CGPoint(x: 0, y: -70) : .zero
