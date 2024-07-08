@@ -37,27 +37,27 @@ struct MonitorChangesToLayerViewStateView: View {
         return featureLayer
     }()
     
-    /// The text representing the view status of the feature layer.
-    @State private var statusText = ""
-    
     /// A Boolean value indicating whether the feature layer is visible.
     @State private var layerIsVisible = true
+    
+    @State private var labels = [String]()
     
     var body: some View {
         MapView(map: map)
             .onLayerViewStateChanged { layer, layerViewState in
                 // Only checks the view state of the feature layer.
                 guard layer.id == featureLayer.id else { return }
-                
-                // Gets the status from the view state for the layer.
-                statusText = layerViewState.status.label
+                labels = layerViewState.status.labels
             }
             .overlay(alignment: .top) {
-                Text("Layer view status:\n\(statusText)")
-                    .multilineTextAlignment(.center)
-                    .frame(maxWidth: .infinity, alignment: .center)
-                    .padding(8)
-                    .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
+                Text("""
+                      Layer view status:
+                      \(labels, format: .list(type: .and, width: .narrow))
+                      """)
+                .multilineTextAlignment(.center)
+                .frame(maxWidth: .infinity, alignment: .center)
+                .padding(8)
+                .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
             }
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
@@ -78,8 +78,8 @@ struct MonitorChangesToLayerViewStateView: View {
 }
 
 private extension LayerViewState.Status {
-    /// A human-readable label for the status.
-    var label: String {
+    /// A human-readable labels for the status.
+    var labels: [String] {
         var statuses: [String] = []
         if self.contains(.active) {
             statuses.append("Active")
@@ -99,12 +99,10 @@ private extension LayerViewState.Status {
         if self.contains(.warning) {
             statuses.append("Warning")
         }
-        
-        if !statuses.isEmpty {
-            return statuses.joined(separator: ", ")
-        } else {
-            return "Unknown"
+        if statuses.isEmpty {
+            return ["Unknown"]
         }
+        return statuses
     }
 }
 
