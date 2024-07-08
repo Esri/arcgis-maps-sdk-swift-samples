@@ -47,6 +47,7 @@ extension EditFeatureAttachmentsView {
         /// A Boolean value that indicates whether the callout placement should be offset for the map magnifier.
         @Published var calloutShouldOffset = false
         
+        /// The `FeatureLayer` populated with data by the feature table using the remote service url. 
         var featureLayer: FeatureLayer = {
             let featureTable = ServiceFeatureTable(url: .featureServiceURL)
             var featureLayer = FeatureLayer(featureTable: featureTable)
@@ -84,7 +85,7 @@ extension EditFeatureAttachmentsView {
         
         /// Adds a new attachment with the given parameters and synch this change with the server.
         /// - Parameters:
-        ///   - name: The attachment name.
+        ///   - named: The attachment name.
         ///   - type: The attachments data type.
         ///   - dataElement: The attachment data.
         func addAttachment(named: String, type: String, dataElement: Data) async throws {
