@@ -24,7 +24,7 @@
     "redirect_from": [],
     "relevant_apis": [
         "ApplyEdits",
-        "DeleteAttachment,
+        "DeleteAttachment",
         "FeatureLayer",
         "FetchAttachments",
         "FetchData",
