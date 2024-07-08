@@ -82,7 +82,8 @@ extension EditFeatureAttachmentsView {
         ///   - type: The attachments data type.
         ///   - dataElement: The attachment data.
         func add(name: String, type: String, dataElement: Data) async throws {
-            if let feature = selectedFeature {
+            if let table = selectedFeature?.table as? ServiceFeatureTable, table.hasAttachments,
+                let feature = selectedFeature {
                 let result = try await feature.addAttachment(
                     named: "Attachment.png",
                     contentType: "png",
@@ -97,7 +98,8 @@ extension EditFeatureAttachmentsView {
         /// Deletes the specified attachment and syncs the changes with the server.
         /// - Parameter attachment: The attachment to be deleted.
         func delete(attachment: Attachment) async throws {
-            if let feature = selectedFeature {
+            if let table = selectedFeature?.table as? ServiceFeatureTable, table.hasAttachments, 
+                let feature = selectedFeature {
                 try await feature.deleteAttachment(attachment)
                 try await syncChanges()
                 try await fetchAttachmentsAndUpdateFeature()
@@ -113,7 +115,8 @@ extension EditFeatureAttachmentsView {
         
         /// Fetches attachments for feature from server.
         private func fetchAndUpdateAttachments() async throws {
-            if let feature = selectedFeature {
+            if let table = selectedFeature?.table as? ServiceFeatureTable, table.hasAttachments,
+               let feature = selectedFeature {
                 let fetchAttachments = try await feature.attachments
                 attachments = fetchAttachments
             }

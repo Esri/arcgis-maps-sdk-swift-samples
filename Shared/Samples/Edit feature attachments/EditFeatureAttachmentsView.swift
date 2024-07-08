@@ -117,7 +117,7 @@ private extension EditFeatureAttachmentsView {
                                             return
                                         }
                                         try await model.add(
-                                            name: "Attachment2",
+                                            name: "Attachment",
                                             type: "png",
                                             dataElement: pngData
                                         )
