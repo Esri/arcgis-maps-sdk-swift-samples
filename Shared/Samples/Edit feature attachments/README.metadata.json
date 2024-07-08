@@ -1,5 +1,5 @@
 {
-    "category": "Edit and Manage Data",
+    "category": "",
     "description": "Add, delete, and download attachments for features from a service.",
     "ignore": false,
     "images": [
@@ -32,6 +32,7 @@
         "UpdateFeatureAsync"
     ],
     "snippets": [
+        "EditFeatureAttachmentsView.Model.swift",
         "EditFeatureAttachmentsView.swift"
     ],
     "title": "Edit feature attachments"
