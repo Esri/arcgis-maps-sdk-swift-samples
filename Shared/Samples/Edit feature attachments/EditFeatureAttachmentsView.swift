@@ -111,7 +111,7 @@ private extension EditFeatureAttachmentsView {
                             AttachmentView(attachment: attachment, onDelete: { attachment in
                                 Task {
                                     do {
-                                        try await model.deleteAttachment(attachment: attachment)
+                                        try await model.deleteAttachment(attachment)
                                     } catch {
                                         self.error = error
                                     }

@@ -85,10 +85,10 @@ extension EditFeatureAttachmentsView {
         
         /// Adds a new attachment with the given parameters and synch this change with the server.
         /// - Parameters:
-        ///   - named: The attachment name.
+        ///   - name: The attachment name.
         ///   - type: The attachments data type.
         ///   - dataElement: The attachment data.
-        func addAttachment(named: String, type: String, dataElement: Data) async throws {
+        func addAttachment(named name: String, type: String, dataElement: Data) async throws {
             if let table = selectedFeature?.table as? ServiceFeatureTable, table.hasAttachments,
                let feature = selectedFeature {
                 _ = try await feature.addAttachment(
@@ -103,7 +103,7 @@ extension EditFeatureAttachmentsView {
         
         /// Deletes the specified attachment and syncs the changes with the server.
         /// - Parameter attachment: The attachment to be deleted.
-        func deleteAttachment(attachment: Attachment) async throws {
+        func deleteAttachment(_ attachment: Attachment) async throws {
             if let table = selectedFeature?.table as? ServiceFeatureTable, table.hasAttachments,
                let feature = selectedFeature {
                 try await feature.deleteAttachment(attachment)
