@@ -1,6 +1,6 @@
-# ArcGIS Maps SDK for Swift Samples
+# ArcGIS Maps SDK for Swift Samples [![](https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg)](https://apps.apple.com/us/app/arcgis-maps-swift-samples/id1630449018)
 
-This repository contains Swift sample code demonstrating the capabilities of the [ArcGIS Maps SDK for Swift](https://developers.arcgis.com/swift/) and how to use those capabilities in your own app. The project can be opened in Xcode and run on a simulator or a device.
+This repository contains Swift sample code demonstrating the capabilities of the [ArcGIS Maps SDK for Swift](https://developers.arcgis.com/swift/) and how to use those capabilities in your own app. The project can be opened in Xcode and run on a simulator or a device.  Or you can [download the app from the App Store](https://apps.apple.com/us/app/arcgis-maps-swift-samples/id1630449018) on your iOS device.
 
 ## Features
 
