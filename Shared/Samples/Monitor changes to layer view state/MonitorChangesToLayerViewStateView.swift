@@ -51,10 +51,12 @@ struct MonitorChangesToLayerViewStateView: View {
                 layerStatus = layerViewState.status
             }
             .overlay(alignment: .top) {
-                Text("""
-                      Layer view status:
-                      \(layerStatus.labels, format: .list(type: .and, width: .narrow))
-                      """)
+                Text(
+                    """
+                    Layer view status:
+                    \(layerStatus.labels, format: .list(type: .and, width: .narrow))
+                    """
+                )
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: .infinity, alignment: .center)
                 .padding(8)
