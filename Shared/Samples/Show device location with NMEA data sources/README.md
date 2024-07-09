@@ -56,6 +56,7 @@ Below is a list of protocol strings for commonly used GNSS external accessories.
 ### Supported by this sample
 
 * com.bad-elf.gps
+* com.emlid.nmea
 * com.eos-gnss.positioningsource
 * com.geneq.sxbluegpssource
 
@@ -63,7 +64,6 @@ Below is a list of protocol strings for commonly used GNSS external accessories.
 
 * com.amanenterprises.nmeasource
 * com.dualav.xgps150
-* com.emlid.nmea
 * com.garmin.pvt
 * com.junipersys.geode
 * com.leica-geosystems.zeno.gnss
