@@ -41,7 +41,9 @@ struct EditFeatureAttachmentsView: View {
                             Image(systemName: "exclamationmark.circle")
                         }
                         .sheet(isPresented: $attachmentSheetIsPresented) {
-                            AttachmentSheetView(model: model)
+                            NavigationView {
+                                AttachmentSheetView(model: model)
+                            }
                         }
                         .padding(8)
                     }
@@ -83,6 +85,8 @@ private extension EditFeatureAttachmentsView {
         @State private var error: Error?
         /// The data model for the sample.
         @ObservedObject var model: Model
+        /// The action to dismiss the sheet.
+        @Environment(\.dismiss) private var dismiss: DismissAction
         
         var body: some View {
             Form {
@@ -121,6 +125,15 @@ private extension EditFeatureAttachmentsView {
                             }
                         }
                     })
+                }
+            }
+            .navigationTitle("Attachments")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") {
+                        dismiss()
+                    }
                 }
             }
             .errorAlert(presentingError: $error)

@@ -33,14 +33,14 @@ extension EditFeatureAttachmentsView {
         
         /// The text shown on the callout.
         @Published var calloutText = ""
-    
+        
         /// The text shown on the callout.
         @Published var calloutDetailText = ""
         
         /// A Boolean value that indicates whether the callout placement should be offset for the map magnifier.
         @Published var calloutShouldOffset = false
         
-        /// The `FeatureLayer` populated with data by the feature table using the remote service url. 
+        /// The feature layer populated with data by the feature table using the remote service url.
         let featureLayer = FeatureLayer(featureTable: ServiceFeatureTable(url: .featureServiceURL))
         
         init() {
@@ -108,7 +108,7 @@ extension EditFeatureAttachmentsView {
             }
         }
         
-        /// Fetches attachments for feature from server.
+        /// Fetches attachments for the selected feature from the server.
         private func fetchAndUpdateAttachments() async throws {
             if let table = selectedFeature?.table as? ServiceFeatureTable, table.hasAttachments,
                let feature = selectedFeature {
@@ -126,8 +126,6 @@ extension EditFeatureAttachmentsView {
 }
 
 private extension URL {
-    // MARK: - URLs
-    
     static var featureServiceURL: URL {
         URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/DamageAssessment/FeatureServer/0")!
     }
