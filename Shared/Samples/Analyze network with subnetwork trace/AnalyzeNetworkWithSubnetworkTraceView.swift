@@ -152,7 +152,7 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
                     if let selectedAttribute = selectedAttribute {
                         Spacer()
                         Text(selectedAttribute.name)
-                            .foregroundStyle(Color.secondary)
+                            .foregroundStyle(.secondary)
                     }
                 }
             }
@@ -164,7 +164,7 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
                     if let selectedComparison = selectedComparison {
                         Spacer()
                         Text(selectedComparison.title)
-                            .foregroundStyle(Color.secondary)
+                            .foregroundStyle(.secondary)
                     }
                 }
             }
@@ -177,7 +177,7 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
                         if let value = selectedValue as? CodedValue {
                             Spacer()
                             Text(value.name)
-                                .foregroundStyle(Color.secondary)
+                                .foregroundStyle(.secondary)
                         }
                     }
                 }
