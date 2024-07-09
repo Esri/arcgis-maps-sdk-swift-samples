@@ -40,7 +40,7 @@ struct MonitorChangesToLayerViewStateView: View {
     /// A Boolean value indicating whether the feature layer is visible.
     @State private var layerIsVisible = true
     
-    /// The current `LayerViewState.Status`for the view.
+    /// The current `LayerViewState.Status` for the view.
     @State private var layerStatus: LayerViewState.Status = []
     
     var body: some View {
