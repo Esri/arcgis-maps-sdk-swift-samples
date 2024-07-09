@@ -133,7 +133,7 @@ struct RunValveIsolationTraceView: View {
                         Spacer()
                         if category === model.selectedCategory {
                             Image(systemName: "checkmark")
-                                .foregroundStyle(.accentColor)
+                                .foregroundStyle(Color.accentColor)
                         }
                     }
                     // Allows the whole row to be tapped. Without this only the text is
