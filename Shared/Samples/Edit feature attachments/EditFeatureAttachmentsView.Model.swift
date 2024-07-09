@@ -55,9 +55,9 @@ extension EditFeatureAttachmentsView {
             calloutPlacement = .location(location, offset: offset)
         }
         
-        /// Selects the feature that is tapped.
-        /// - Parameter feature: The feature to set as the selected feature.
-        func setSelectedFeature(for feature: ArcGISFeature) async throws {
+        /// Selects the tapped feature.
+        /// - Parameter feature: The selected feature.
+        func selectFeature(_ feature: ArcGISFeature) async throws {
             selectedFeature = feature
             featureLayer.selectFeature(feature)
             try await fetchAttachmentsAndUpdateFeature()
@@ -72,15 +72,15 @@ extension EditFeatureAttachmentsView {
             }
         }
         
-        /// Adds a new attachment with the given parameters and synch this change with the server.
+        /// Adds a new attachment with the given parameters and syncs this change with the server.
         /// - Parameters:
         ///   - name: The attachment name.
         ///   - type: The attachments data type.
         ///   - dataElement: The attachment data.
         func addAttachment(named name: String, type: String, dataElement: Data) async throws {
-            if let table = selectedFeature?.table as? ServiceFeatureTable, table.hasAttachments,
-               let feature = selectedFeature {
-                _ = try await feature.addAttachment(
+            if let selectedFeature, let table = selectedFeature.table as? ServiceFeatureTable,
+               table.hasAttachments {
+                _ = try await selectedFeature.addAttachment(
                     named: "Attachment.png",
                     contentType: "png",
                     data: dataElement
@@ -93,15 +93,15 @@ extension EditFeatureAttachmentsView {
         /// Deletes the specified attachment and syncs the changes with the server.
         /// - Parameter attachment: The attachment to be deleted.
         func deleteAttachment(_ attachment: Attachment) async throws {
-            if let table = selectedFeature?.table as? ServiceFeatureTable, table.hasAttachments,
-               let feature = selectedFeature {
-                try await feature.deleteAttachment(attachment)
+            if let selectedFeature, let table = selectedFeature.table as? ServiceFeatureTable,
+               table.hasAttachments {
+                try await selectedFeature.deleteAttachment(attachment)
                 try await syncChanges()
                 try await fetchAttachmentsAndUpdateFeature()
             }
         }
         
-        /// Applies edits and syncs attachments and features with server.
+        /// Applies edits and syncs attachments and features with the server.
         private func syncChanges() async throws {
             if let table = selectedFeature?.table as? ServiceFeatureTable {
                 _ = try await table.applyEdits()
@@ -110,9 +110,9 @@ extension EditFeatureAttachmentsView {
         
         /// Fetches attachments for the selected feature from the server.
         private func fetchAndUpdateAttachments() async throws {
-            if let table = selectedFeature?.table as? ServiceFeatureTable, table.hasAttachments,
-               let feature = selectedFeature {
-                let fetchAttachments = try await feature.attachments
+            if let selectedFeature, let table = selectedFeature.table as? ServiceFeatureTable,
+               table.hasAttachments {
+                let fetchAttachments = try await selectedFeature.attachments
                 attachments = fetchAttachments
             }
         }

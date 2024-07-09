@@ -48,8 +48,8 @@ struct EditFeatureAttachmentsView: View {
                         .padding(8)
                     }
                 }
-                .onSingleTapGesture { tap, _ in
-                    self.screenPoint = tap
+                .onSingleTapGesture { screenPoint, _ in
+                    self.screenPoint = screenPoint
                 }
                 .task(id: screenPoint) {
                     guard let screenPoint else { return }
@@ -64,7 +64,7 @@ struct EditFeatureAttachmentsView: View {
                               let feature = features.first else {
                             return
                         }
-                        try await model.setSelectedFeature(for: feature)
+                        try await model.selectFeature(feature)
                         if let location = mapProxy.location(fromScreenPoint: screenPoint) {
                             model.updateCalloutPlacement(to: location)
                         }
@@ -174,7 +174,7 @@ private extension EditFeatureAttachmentsView {
         
         var body: some View {
             HStack {
-                Text("\(attachment.name)")
+                Text(attachment.name)
                     .font(.title3)
                 Spacer()
                 Button {
@@ -185,7 +185,7 @@ private extension EditFeatureAttachmentsView {
                         }
                     }
                 } label: {
-                    if let image = image {
+                    if let image {
                         image
                     } else {
                         Image(systemName: "arrow.down.circle.fill")
