@@ -127,7 +127,7 @@ private extension ListSpatialReferenceTransformationsView {
                             Spacer()
                             if transformation == model.selectedTransformation {
                                 Image(systemName: "checkmark")
-                                    .foregroundStyle(Color.accentColor)
+                                    .foregroundStyle(.accentColor)
                             }
                         }
                         

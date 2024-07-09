@@ -246,7 +246,7 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
                 Spacer()
                 if attribute === selectedAttribute {
                     Image(systemName: "checkmark")
-                        .foregroundStyle(Color.accentColor)
+                        .foregroundStyle(.accentColor)
                 }
             }
             .contentShape(Rectangle())
@@ -265,7 +265,7 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
                     Spacer()
                     if comparison == selectedComparison {
                         Image(systemName: "checkmark")
-                            .foregroundStyle(Color.accentColor)
+                            .foregroundStyle(.accentColor)
                     }
                 }
                 .contentShape(Rectangle())
@@ -286,7 +286,7 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
                         Spacer()
                         if value === selectedValue as? CodedValue {
                             Image(systemName: "checkmark")
-                                .foregroundStyle(Color.accentColor)
+                                .foregroundStyle(.accentColor)
                         }
                     }
                     .contentShape(Rectangle())
