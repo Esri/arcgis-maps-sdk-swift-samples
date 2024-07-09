@@ -94,7 +94,7 @@ extension DownloadPreplannedMapAreaView {
                                 .foregroundStyle(.red)
                         case .none:
                             Image(systemName: "tray.and.arrow.down")
-                                .foregroundStyle(.accentColor)
+                                .foregroundStyle(Color.accentColor)
                         }
                     
                     VStack(alignment: .leading, spacing: 4) {
