@@ -39,9 +39,9 @@ struct MonitorChangesToLayerViewStateView: View {
     
     /// A Boolean value indicating whether the feature layer is visible.
     @State private var layerIsVisible = true
-
+    
     /// The current `LayerViewState.Status`for the view.
-    @State private var layerStatus: LayerViewState.Status = .loading
+    @State private var layerStatus: LayerViewState.Status = []
     
     var body: some View {
         MapView(map: map)
@@ -82,28 +82,25 @@ private extension LayerViewState.Status {
     /// A human-readable array of labels for the statuses.
     var labels: [String] {
         var statuses: [String] = []
-        if self.contains(.active) {
+        if contains(.active) {
             statuses.append("Active")
         }
-        if self.contains(.notVisible) {
+        if contains(.notVisible) {
             statuses.append("Not Visible")
         }
-        if self.contains(.outOfScale) {
+        if contains(.outOfScale) {
             statuses.append("Out of Scale")
         }
-        if self.contains(.loading) {
+        if contains(.loading) {
             statuses.append("Loading")
         }
-        if self.contains(.error) {
+        if contains(.error) {
             statuses.append("Error")
         }
-        if self.contains(.warning) {
+        if contains(.warning) {
             statuses.append("Warning")
         }
-        if statuses.isEmpty {
-            return ["Unknown"]
-        }
-        return statuses
+        return if !statuses.isEmpty { statuses } else { ["Unknown"] }
     }
 }
 
