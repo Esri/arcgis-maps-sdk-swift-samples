@@ -128,7 +128,7 @@ extension EditFeatureAttachmentsView {
 private extension URL {
     // MARK: - URLs
     
-    static let featureServiceURL = URL(
-        string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/DamageAssessment/FeatureServer/0"
-    )!
+    static var featureServiceURL: URL {
+        URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/DamageAssessment/FeatureServer/0")!
+    }
 }
