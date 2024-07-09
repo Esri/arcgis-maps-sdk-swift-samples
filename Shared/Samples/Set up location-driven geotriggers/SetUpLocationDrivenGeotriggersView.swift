@@ -85,7 +85,7 @@ struct SetUpLocationDrivenGeotriggersView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                     
                     Text(nearbyFeaturesText)
-                        .foregroundColor(.orange)
+                        .foregroundStyle(.orange)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 .padding(8)

@@ -40,7 +40,7 @@ extension AddDynamicEntityLayerView {
                                 Text("Observations per track")
                                 Spacer()
                                 Text(model.maximumObservations.formatted())
-                                    .foregroundColor(.secondary)
+                                    .foregroundStyle(.secondary)
                             }
                             Slider(value: $model.maximumObservations, in: model.maxObservationRange, step: 1)
                         }

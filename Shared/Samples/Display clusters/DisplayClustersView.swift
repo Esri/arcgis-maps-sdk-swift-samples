@@ -101,7 +101,7 @@ struct DisplayClustersView: View {
                                 Text("Geoelements")
                                     .font(.title3)
                                     .bold()
-                                    .foregroundColor(.primary)
+                                    .foregroundStyle(.primary)
                             }
                         }
                         .listStyle(.inset)

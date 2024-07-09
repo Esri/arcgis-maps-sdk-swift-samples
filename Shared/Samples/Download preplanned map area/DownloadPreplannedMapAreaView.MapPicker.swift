@@ -91,15 +91,15 @@ extension DownloadPreplannedMapAreaView {
                             EmptyView()
                         case .failure:
                             Image(systemName: "exclamationmark.circle")
-                                .foregroundColor(.red)
+                                .foregroundStyle(.red)
                         case .none:
                             Image(systemName: "tray.and.arrow.down")
-                                .foregroundColor(.accentColor)
+                                .foregroundStyle(Color.accentColor)
                         }
                     
                     VStack(alignment: .leading, spacing: 4) {
                         Text(model.preplannedMapArea.portalItem.title)
-                            .foregroundColor(titleColor(for: model.result))
+                            .foregroundStyle(titleColor(for: model.result))
                         
                         // If failed then show tap to retry text.
                         if case .failure = model.result {
