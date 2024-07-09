@@ -22,8 +22,6 @@ struct EditFeatureAttachmentsView: View {
     @StateObject private var model = Model()
     /// The location that the user tapped on the map.
     @State private var screenPoint: CGPoint?
-    /// A Boolean value indicating whether the features are loaded.
-    @State private var isLoaded = false
     /// A Boolean value indicating whether the attachment sheet is showing.
     @State private var attachmentSheetIsPresented = false
     
@@ -48,22 +46,16 @@ struct EditFeatureAttachmentsView: View {
                         .padding(8)
                     }
                 }
-                .onDrawStatusChanged { drawStatus in
-                    // Updates the state when the map's draw status changes.
-                    if drawStatus == .completed {
-                        isLoaded = true
-                    }
-                }
                 .onSingleTapGesture { tap, _ in
                     self.screenPoint = tap
                 }
                 .task(id: screenPoint) {
-                    guard let point = screenPoint else { return }
+                    guard let screenPoint else { return }
                     model.featureLayer.clearSelection()
                     do {
                         let result = try await mapProxy.identify(
                             on: model.featureLayer,
-                            screenPoint: point,
+                            screenPoint: screenPoint,
                             tolerance: 5
                         )
                         guard let features = result.geoElements as? [ArcGISFeature],
@@ -71,20 +63,11 @@ struct EditFeatureAttachmentsView: View {
                             return
                         }
                         try await model.setSelectedFeature(for: feature)
-                        if let location = mapProxy.location(fromScreenPoint: point) {
+                        if let location = mapProxy.location(fromScreenPoint: screenPoint) {
                             model.updateCalloutPlacement(to: location)
                         }
                     } catch {
                         self.error = error
-                    }
-                }
-                .overlay(alignment: .center) {
-                    if !isLoaded {
-                        ProgressView("Loading…")
-                            .padding()
-                            .background(.ultraThinMaterial)
-                            .cornerRadius(10)
-                            .shadow(radius: 50)
                     }
                 }
         }
@@ -98,7 +81,6 @@ private extension EditFeatureAttachmentsView {
     struct AttachmentSheetView: View {
         /// The error shown in the error alert.
         @State private var error: Error?
-        
         /// The data model for the sample.
         @ObservedObject var model: Model
         

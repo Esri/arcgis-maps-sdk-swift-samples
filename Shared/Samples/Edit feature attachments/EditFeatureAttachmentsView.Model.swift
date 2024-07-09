@@ -20,14 +20,7 @@ extension EditFeatureAttachmentsView {
     
     @MainActor
     class Model: ObservableObject {
-        let map: Map = {
-            let map = Map(basemapStyle: .arcGISOceans)
-            map.initialViewpoint = Viewpoint(
-                center: Point(x: 0, y: 0, spatialReference: .webMercator),
-                scale: 100_000_000
-            )
-            return map
-        }()
+        let map = Map(basemapStyle: .arcGISOceans)
         
         /// The currently selected map feature.
         private var selectedFeature: ArcGISFeature?
@@ -39,20 +32,16 @@ extension EditFeatureAttachmentsView {
         @Published var attachments: [Attachment] = []
         
         /// The text shown on the callout.
-        @Published var calloutText: String = ""
-        
+        @Published var calloutText = ""
+    
         /// The text shown on the callout.
-        @Published var calloutDetailText: String = ""
+        @Published var calloutDetailText = ""
         
         /// A Boolean value that indicates whether the callout placement should be offset for the map magnifier.
         @Published var calloutShouldOffset = false
         
         /// The `FeatureLayer` populated with data by the feature table using the remote service url. 
-        var featureLayer: FeatureLayer = {
-            let featureTable = ServiceFeatureTable(url: .featureServiceURL)
-            var featureLayer = FeatureLayer(featureTable: featureTable)
-            return featureLayer
-        }()
+        let featureLayer = FeatureLayer(featureTable: ServiceFeatureTable(url: .featureServiceURL))
         
         init() {
             map.addOperationalLayer(featureLayer)
@@ -70,13 +59,13 @@ extension EditFeatureAttachmentsView {
         /// - Parameter feature: The feature to set as the selected feature.
         func setSelectedFeature(for feature: ArcGISFeature) async throws {
             selectedFeature = feature
-            featureLayer.selectFeature(selectedFeature!)
+            featureLayer.selectFeature(feature)
             try await fetchAttachmentsAndUpdateFeature()
         }
         
         /// Updates the callout text for the selected feature.
         private func updateCalloutDetailsForSelectedFeature() {
-            if let selectedFeature = selectedFeature {
+            if let selectedFeature {
                 let title = selectedFeature.attributes["typdamage"] as? String
                 calloutText = title ?? "Callout"
                 calloutDetailText = "Number of attachments: \(attachments.count)"
@@ -128,7 +117,7 @@ extension EditFeatureAttachmentsView {
             }
         }
         
-        /// Fetches attachments from server and updates the selected feature's callout with the details
+        /// Fetches attachments from server and updates the selected feature's callout with the details.
         private func fetchAttachmentsAndUpdateFeature() async throws {
             try await fetchAndUpdateAttachments()
             updateCalloutDetailsForSelectedFeature()
