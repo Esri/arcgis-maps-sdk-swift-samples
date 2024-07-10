@@ -37,7 +37,9 @@ struct CategoriesView: View {
             LazyVGrid(columns: [GridItem(), GridItem()]) {
                 ForEach(categories, id: \.self) { category in
                     Button {
-                        selectedCategory = category
+                        withAnimation(.easeInOut) {
+                            selectedCategory = category
+                        }
                         columnVisibility = .doubleColumn
                     } label: {
                         CategoryTile(name: category)
