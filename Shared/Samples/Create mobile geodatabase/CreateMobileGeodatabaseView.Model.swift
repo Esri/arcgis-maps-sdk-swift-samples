@@ -168,7 +168,7 @@ extension CreateMobileGeodatabaseView {
 
 extension CreateMobileGeodatabaseView.GeodatabaseFile: FileDocument {
     /// The file and data types that the document reads from.
-    static var readableContentTypes = [UTType.geodatabase]
+    static var readableContentTypes: [UTType] { [.geodatabase] }
     
     /// Creates a document and initializes it with the contents of a file.
     convenience init(configuration: ReadConfiguration) throws {
