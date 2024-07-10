@@ -31,7 +31,7 @@ struct SamplesApp: App {
 // MARK: - License
 
 extension SamplesApp {
-    /// Licenses the app with ArcGIS Maps SDK deployment license strings.
+    /// Licenses the app with an ArcGIS Maps SDK license string.
     /// - Note: An invalid string does not throw an exception, but simply fails to
     /// license the app, falling back to Developer Mode (which will display
     /// a watermark on the map view).
