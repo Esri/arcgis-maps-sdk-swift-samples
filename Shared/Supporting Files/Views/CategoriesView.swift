@@ -37,7 +37,9 @@ struct CategoriesView: View {
             LazyVGrid(columns: [GridItem(), GridItem()]) {
                 ForEach(categories, id: \.self) { category in
                     Button {
-                        selectedCategory = category
+                        withAnimation(.easeInOut) {
+                            selectedCategory = category
+                        }
                         columnVisibility = .doubleColumn
                     } label: {
                         CategoryTile(name: category)
@@ -74,7 +76,9 @@ struct CategoriesView: View {
         .onChange(of: destinationIsPresented) { _ in
             // Resets the selection when the navigation destination is no longer presented.
             guard !destinationIsPresented else { return }
-            selectedCategory = nil
+            withAnimation(.easeInOut) {
+                selectedCategory = nil
+            }
         }
         .onChange(of: selectedCategory) { newSelection in
             destinationIsPresented = newSelection != nil
