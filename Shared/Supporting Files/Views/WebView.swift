@@ -41,14 +41,12 @@ struct WebView: UIViewRepresentable {
     }
     
     class Coordinator: NSObject, WKNavigationDelegate {
+        @MainActor
         func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction) async -> WKNavigationActionPolicy {
             switch navigationAction.navigationType {
             case .linkActivated:
-                if let url = navigationAction.request.url,
-                   await UIApplication.shared.canOpenURL(url) {
-                    Task { @MainActor in
-                        UIApplication.shared.open(url)
-                    }
+                if let url = navigationAction.request.url, UIApplication.shared.canOpenURL(url) {
+                    await UIApplication.shared.open(url)
                 }
                 return .cancel
             default:
