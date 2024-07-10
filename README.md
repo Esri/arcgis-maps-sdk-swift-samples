@@ -50,7 +50,7 @@ The *ArcGIS Maps SDK for Swift Samples app* has a *Target SDK* version of *16.0*
   touch .secrets
   ```
 
-3. Add your API key to the aforementioned secrets file. Adding an API key allows you to access a set of ready-to-use services, including basemaps.
+3. Add your API key to the aforementioned secrets file. Adding an API key allows you to access ArcGIS location services, such as the basemap styles service.
 
   ```sh
   echo ARCGIS_API_KEY_IOS=your-api-key >> .secrets
