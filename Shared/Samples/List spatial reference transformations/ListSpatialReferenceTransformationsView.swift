@@ -163,9 +163,9 @@ private extension ListSpatialReferenceTransformationsView {
 }
 
 private extension URL {
-    /// A URL to the Projection Engine Data Downloads on ArcGIS for Developers.
+    /// A URL to download the Projection Engine Data.
     static var projectionEngineDataDownloads: URL {
-        URL(string: "https://developers.arcgis.com/downloads/#pedata")!
+        URL(string: "https://developers.arcgis.com/swift/downloads/#projection-engine-data")!
     }
 }
 

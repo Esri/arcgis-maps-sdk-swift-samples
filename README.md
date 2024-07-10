@@ -36,25 +36,29 @@ The *ArcGIS Maps SDK for Swift Samples app* has a *Target SDK* version of *16.0*
 ## Configuring API Keys
 
 > [!IMPORTANT]
-> Acquire the keys from your [dashboard](https://developers.arcgis.com/dashboard). Visit the developer's website to learn more about [API keys](https://developers.arcgis.com/documentation/mapping-apis-and-services/security/api-keys/).
+> To run this app and access ArcGIS Location Services, follow these steps to obtain an **API key** access token and store it in a secrets file stored in the project file's directory, `$(SRCROOT)/.secrets`.
 
-To run this app and access specific, ready-to-use services such as basemap layer, follow the steps to add an API key to a secrets file stored in the project file's directory, `$(SRCROOT)/.secrets`.
+1. Go to the [Create an API key](https://developers.arcgis.com/documentation/security-and-authentication/api-key-authentication/tutorials/create-an-api-key/) tutorial to obtain the API key access token. Ensure that the following privileges are enabled:
 
-1. Create a hidden secrets file in the project file's directory.
+* Location services > Basemaps
+* Location services > Geocoding
+* Location services > Routing
+
+2. Create a hidden secrets file in the project file's directory.
 
   ```sh
   touch .secrets
   ```
 
-2. Add your **API Key** to the aforementioned secrets file. Adding an API key allows you to access a set of ready-to-use services, including basemaps.
+3. Add your API key to the aforementioned secrets file. Adding an API key allows you to access ArcGIS location services, such as the basemap styles service.
 
   ```sh
   echo ARCGIS_API_KEY_IOS=your-api-key >> .secrets
   ```
 
-  > Replace 'your-api-key' with your keys.
+  > Replace 'your-api-key' with your API Key access token.
 
-Please see [Configure App Secrets](Documentation/ConfigureAppSecrets.md) for adding license key and other details.
+Please see [Configure App Secrets](Documentation/ConfigureAppSecrets.md) for adding license string and other details.
 
 ## Additional Resources
 

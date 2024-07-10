@@ -36,7 +36,7 @@ This sample uses the [USA 116th Congressional Districts](https://www.arcgis.com/
 
 ## Additional information
 
-Help regarding the Arcade label expression script for defining a label definition can be found on the [ArcGIS Developers site](https://developers.arcgis.com/arcade/).
+Help regarding the Arcade label expression script for defining a label definition can be found on the [Esri Developer](https://developers.arcgis.com/arcade/) website.
 
 ## Tags
 

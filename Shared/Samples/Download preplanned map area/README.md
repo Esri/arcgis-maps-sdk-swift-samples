@@ -47,7 +47,7 @@ The [Naperville water network](https://www.arcgis.com/home/item.html?id=acc02739
 * `downloadScheduledUpdates`: Scheduled, read-only updates will be downloaded from the online map area and applied to the local mobile geodatabases.
 * `downloadScheduledUpdatesAndUploadNewFeatures`: An advanced workflow where scheduled, read-only updates will be downloaded from the online map area and applied to the local mobile geodatabases, and new features added on the client side can also be synchronized with the server.
 
-For more information about offline workflows, see [Offline maps, scenes, and data](https://developers.arcgis.com/swift/offline-maps-scenes-and-data/) in the *ArcGIS Developers* guide.
+For more information about offline workflows, see [Offline maps, scenes, and data](https://developers.arcgis.com/swift/offline-maps-scenes-and-data/) on the Esri Developer website.
 
 ## Tags
 
