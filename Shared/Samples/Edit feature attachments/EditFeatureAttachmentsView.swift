@@ -28,7 +28,7 @@ struct EditFeatureAttachmentsView: View {
     var body: some View {
         MapViewReader { mapProxy in
             MapView(map: model.map)
-                .callout(placement: $model.calloutPlacement.animation(.default.speed(2))) { _ in
+                .callout(placement: $model.calloutPlacement.animation()) { _ in
                     if model.selectedFeature != nil {
                         HStack {
                             CalloutView(model: model)
@@ -57,7 +57,7 @@ struct EditFeatureAttachmentsView: View {
                         let result = try await mapProxy.identify(
                             on: model.featureLayer,
                             screenPoint: screenPoint,
-                            tolerance: 5
+                            tolerance: 2
                         )
                         guard let feature = result.geoElements.first as? ArcGISFeature else {
                             model.calloutPlacement = nil
@@ -69,6 +69,8 @@ struct EditFeatureAttachmentsView: View {
                             model.calloutPlacement = .location(location, offset: CGPoint(x: 0, y: 0))
                         }
                     } catch {
+                        model.calloutPlacement = nil
+                        model.selectedFeature = nil
                         self.error = error
                     }
                 }
