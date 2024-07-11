@@ -13,27 +13,23 @@
         "TXT",
         "image",
         "picture",
-        "ApplyEdits",
-        "DeleteAttachment",
+        "ArcGISFeature.deleteAttachment(_:)",
+        "Attachments",
         "FeatureLayer",
-        "FetchAttachments",
-        "FetchData",
         "ServiceFeatureTable",
-        "UpdateFeature"
+        "ServiceFeatureTable.applyEdits()"
     ],
     "redirect_from": [],
     "relevant_apis": [
-        "ApplyEdits",
-        "DeleteAttachment",
+        "ArcGISFeature.deleteAttachment(_:)",
+        "Attachments",
         "FeatureLayer",
-        "FetchAttachments",
-        "FetchData",
         "ServiceFeatureTable",
-        "UpdateFeature"
+        "ServiceFeatureTable.applyEdits()"
     ],
     "snippets": [
-        "EditFeatureAttachmentsView.swift",
-        "EditFeatureAttachmentsView.Model.swift"
+        "EditFeatureAttachmentsView.Model.swift",
+        "EditFeatureAttachmentsView.swift"
     ],
     "title": "Edit feature attachments"
 }
