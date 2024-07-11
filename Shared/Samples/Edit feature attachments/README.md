@@ -24,11 +24,11 @@ Tap a feature on the map to open a callout displaying the number of attachments.
 
 ## Relevant API
 
-* ServiceFeatureTable.applyEdits()
 * ArcGISFeature.deleteAttachment(_:)
-* FeatureLayer
 * Attachments
+* FeatureLayer
 * ServiceFeatureTable
+* ServiceFeatureTable.applyEdits()
 
 ## Additional information
 
