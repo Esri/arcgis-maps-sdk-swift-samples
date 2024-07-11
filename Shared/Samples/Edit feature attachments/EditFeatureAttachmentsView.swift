@@ -79,8 +79,9 @@ struct EditFeatureAttachmentsView: View {
     }
 }
 
+// MARK: - AttachmentSheetView
+
 private extension EditFeatureAttachmentsView {
-    // MARK: - AttachmentSheetView
     
     struct AttachmentSheetView: View {
         /// The error shown in the error alert.
@@ -142,8 +143,9 @@ private extension EditFeatureAttachmentsView {
     }
 }
 
+// MARK: - CalloutView
+
 private extension EditFeatureAttachmentsView {
-    // MARK: - CalloutView
     
     struct CalloutView: View {
         /// The data model for the sample.
@@ -162,8 +164,9 @@ private extension EditFeatureAttachmentsView {
     }
 }
 
+// MARK: - AttachmentView
+
 private extension EditFeatureAttachmentsView {
-    // MARK: - AttachmentView
     
     struct AttachmentView: View {
         // The attachment that is being displayed.
@@ -203,8 +206,9 @@ private extension EditFeatureAttachmentsView {
     }
 }
 
+// MARK: - AddAttachmentView
+
 private extension EditFeatureAttachmentsView {
-    // MARK: - AddAttachmentView
     
     struct AddAttachmentView: View {
         // The closure called when add button is tapped.

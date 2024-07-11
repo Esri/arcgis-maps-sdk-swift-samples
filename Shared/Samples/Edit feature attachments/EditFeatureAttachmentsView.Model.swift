@@ -16,7 +16,6 @@ import ArcGIS
 import SwiftUI
 
 extension EditFeatureAttachmentsView {
-    // MARK: - Model
     
     @MainActor
     class Model: ObservableObject {
