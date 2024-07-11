@@ -101,6 +101,8 @@ extension SnapGeometryEditsView {
                 tool.configuration.scaleMode = scaleMode
             case let tool as VertexTool:
                 tool.configuration.scaleMode = scaleMode
+            case _ as ReticleVertexTool:
+                break
             default:
                 fatalError("Unexpected tool type")
             }
