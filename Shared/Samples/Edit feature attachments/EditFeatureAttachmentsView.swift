@@ -28,24 +28,23 @@ struct EditFeatureAttachmentsView: View {
     var body: some View {
         MapViewReader { mapProxy in
             MapView(map: model.map)
-                .callout(
-                    placement: $model.calloutPlacement.animation(
-                        model.calloutShouldOffset ? nil : .default.speed(2))
-                ) { _ in
-                    HStack {
-                        CalloutView(model: model)
-                            .padding(6)
-                        Button {
-                            attachmentSheetIsPresented = true
-                        } label: {
-                            Image(systemName: "exclamationmark.circle")
-                        }
-                        .sheet(isPresented: $attachmentSheetIsPresented) {
-                            NavigationView {
-                                AttachmentSheetView(model: model)
+                .callout(placement: $model.calloutPlacement.animation(.default.speed(2))) { _ in
+                    if model.selectedFeature != nil {
+                        HStack {
+                            CalloutView(model: model)
+                                .padding(6)
+                            Button {
+                                attachmentSheetIsPresented = true
+                            } label: {
+                                Image(systemName: "exclamationmark.circle")
                             }
+                            .sheet(isPresented: $attachmentSheetIsPresented) {
+                                NavigationStack {
+                                    AttachmentSheetView(model: model)
+                                }
+                            }
+                            .padding(8)
                         }
-                        .padding(8)
                     }
                 }
                 .onSingleTapGesture { screenPoint, _ in
@@ -60,13 +59,14 @@ struct EditFeatureAttachmentsView: View {
                             screenPoint: screenPoint,
                             tolerance: 5
                         )
-                        guard let features = result.geoElements as? [ArcGISFeature],
-                              let feature = features.first else {
+                        guard let feature = result.geoElements.first as? ArcGISFeature else {
+                            model.calloutPlacement = nil
+                            model.selectedFeature = nil
                             return
                         }
                         try await model.selectFeature(feature)
                         if let location = mapProxy.location(fromScreenPoint: screenPoint) {
-                            model.updateCalloutPlacement(to: location)
+                            model.calloutPlacement = .location(location, offset: CGPoint(x: 0, y: 0))
                         }
                     } catch {
                         self.error = error
@@ -92,8 +92,7 @@ private extension EditFeatureAttachmentsView {
             Form {
                 Section {
                     List {
-                        ForEach($model.attachments.indices, id: \.self) { index in
-                            let attachment = model.attachments[index]
+                        ForEach(model.attachments, id: \.id) { attachment in
                             AttachmentView(attachment: attachment, onDelete: { attachment in
                                 Task {
                                     do {

@@ -23,36 +23,25 @@ extension EditFeatureAttachmentsView {
         let map = Map(basemapStyle: .arcGISOceans)
         
         /// The currently selected map feature.
-        private var selectedFeature: ArcGISFeature?
+        var selectedFeature: ArcGISFeature?
         
         /// The placement of the callout on the map.
-        var calloutPlacement: CalloutPlacement?
+        @Published var calloutPlacement: CalloutPlacement?
         
         /// Holds the attachments of the currently selected feature.
         @Published var attachments: [Attachment] = []
         
         /// The text shown on the callout.
-        @Published var calloutText = ""
+        @Published private(set) var calloutText = ""
         
         /// The text shown on the callout.
-        @Published var calloutDetailText = ""
-        
-        /// A Boolean value that indicates whether the callout placement should be offset for the map magnifier.
-        @Published var calloutShouldOffset = false
+        @Published private(set) var calloutDetailText = ""
         
         /// The feature layer populated with data by the feature table using the remote service url.
         let featureLayer = FeatureLayer(featureTable: ServiceFeatureTable(url: .featureServiceURL))
         
         init() {
             map.addOperationalLayer(featureLayer)
-        }
-        
-        /// Updates the location of the callout placement to a given screen point.
-        /// - Parameter location: The screen point at which to place the callout.
-        func updateCalloutPlacement(to location: Point) {
-            // Create an offset to offset the callout if needed, e.g. the magnifier is showing.
-            let offset = calloutShouldOffset ? CGPoint(x: 0, y: -70) : .zero
-            calloutPlacement = .location(location, offset: offset)
         }
         
         /// Selects the tapped feature.
@@ -85,7 +74,7 @@ extension EditFeatureAttachmentsView {
                     contentType: "png",
                     data: dataElement
                 )
-                try await syncChanges()
+                _ = try await table.applyEdits()
                 try await fetchAttachmentsAndUpdateFeature()
             }
         }
@@ -96,15 +85,8 @@ extension EditFeatureAttachmentsView {
             if let selectedFeature, let table = selectedFeature.table as? ServiceFeatureTable,
                table.hasAttachments {
                 try await selectedFeature.deleteAttachment(attachment)
-                try await syncChanges()
-                try await fetchAttachmentsAndUpdateFeature()
-            }
-        }
-        
-        /// Applies edits and syncs attachments and features with the server.
-        private func syncChanges() async throws {
-            if let table = selectedFeature?.table as? ServiceFeatureTable {
                 _ = try await table.applyEdits()
+                try await fetchAttachmentsAndUpdateFeature()
             }
         }
         
