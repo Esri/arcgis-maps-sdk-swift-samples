@@ -16,7 +16,6 @@ import ArcGIS
 import SwiftUI
 
 extension EditFeatureAttachmentsView {
-    
     @MainActor
     class Model: ObservableObject {
         let map = Map(basemapStyle: .arcGISOceans)
