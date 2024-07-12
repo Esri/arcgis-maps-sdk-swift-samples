@@ -19,6 +19,7 @@
         "GeometryEditorStyle",
         "GraphicsOverlay",
         "MapView",
+        "ReticleVertexTool"
         "SnapSettings",
         "SnapSource",
         "SnapSourceSettings"
@@ -31,6 +32,7 @@
         "GeometryEditorStyle",
         "GraphicsOverlay",
         "MapView",
+        "ReticleVertexTool"
         "SnapSettings",
         "SnapSource",
         "SnapSourceSettings"

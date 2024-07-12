@@ -35,6 +35,7 @@ To more clearly see how the vertex is snapped, long press to invoke the magnifie
 * GeometryEditorStyle
 * GraphicsOverlay
 * MapView
+* ReticleVertexTool
 * SnapSettings
 * SnapSource
 * SnapSourceSettings
