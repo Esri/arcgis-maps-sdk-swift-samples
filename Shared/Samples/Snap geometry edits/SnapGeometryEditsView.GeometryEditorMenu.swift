@@ -29,7 +29,7 @@ extension SnapGeometryEditsView {
         
         /// The geometry editor tool used to edit geometries for the most optimal
         /// snapping experience based on the device type.
-        private var geometryEditorTool: GeometryEditorTool {
+        private var adaptiveVertexTool: GeometryEditorTool {
 #if targetEnvironment(macCatalyst)
             VertexTool()
 #else
@@ -96,19 +96,19 @@ extension SnapGeometryEditsView {
         private var mainMenuContent: some View {
             VStack {
                 Button("New Point", systemImage: "smallcircle.filled.circle") {
-                    model.startEditing(with: geometryEditorTool, geometryType: Point.self)
+                    model.startEditing(with: adaptiveVertexTool, geometryType: Point.self)
                 }
                 
                 Button("New Line", systemImage: "line.diagonal") {
-                    model.startEditing(with: geometryEditorTool, geometryType: Polyline.self)
+                    model.startEditing(with: adaptiveVertexTool, geometryType: Polyline.self)
                 }
                 
                 Button("New Area", systemImage: "skew") {
-                    model.startEditing(with: geometryEditorTool, geometryType: Polygon.self)
+                    model.startEditing(with: adaptiveVertexTool, geometryType: Polygon.self)
                 }
                 
                 Button("New Multipoint", systemImage: "hand.point.up.braille") {
-                    model.startEditing(with: geometryEditorTool, geometryType: Multipoint.self)
+                    model.startEditing(with: adaptiveVertexTool, geometryType: Multipoint.self)
                 }
                 
                 Button("New Freehand Line", systemImage: "scribble") {
