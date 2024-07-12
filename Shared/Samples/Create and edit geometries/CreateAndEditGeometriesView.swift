@@ -78,40 +78,70 @@ private extension GeometryEditorMenu {
     /// The content of the main menu.
     var mainMenuContent: some View {
         VStack {
-            Button {
-                model.startEditing(with: VertexTool(), geometryType: Point.self)
-            } label: {
-                Label("New Point", systemImage: "smallcircle.filled.circle")
+            Menu("Reticle Vertex Tool") {
+                Button {
+                    model.startEditing(with: ReticleVertexTool(), geometryType: Point.self)
+                } label: {
+                    Label("New Point", systemImage: "smallcircle.filled.circle")
+                }
+                
+                Button {
+                    model.startEditing(with: ReticleVertexTool(), geometryType: Polyline.self)
+                } label: {
+                    Label("New Line", systemImage: "line.diagonal")
+                }
+                
+                Button {
+                    model.startEditing(with: ReticleVertexTool(), geometryType: Polygon.self)
+                } label: {
+                    Label("New Area", systemImage: "skew")
+                }
+                
+                Button {
+                    model.startEditing(with: ReticleVertexTool(), geometryType: Multipoint.self)
+                } label: {
+                    Label("New Multipoint", systemImage: "hand.point.up.braille")
+                }
             }
             
-            Button {
-                model.startEditing(with: VertexTool(), geometryType: Polyline.self)
-            } label: {
-                Label("New Line", systemImage: "line.diagonal")
+            Menu("Vertex Tool") {
+                Button {
+                    model.startEditing(with: VertexTool(), geometryType: Point.self)
+                } label: {
+                    Label("New Point", systemImage: "smallcircle.filled.circle")
+                }
+                
+                Button {
+                    model.startEditing(with: VertexTool(), geometryType: Polyline.self)
+                } label: {
+                    Label("New Line", systemImage: "line.diagonal")
+                }
+                
+                Button {
+                    model.startEditing(with: VertexTool(), geometryType: Polygon.self)
+                } label: {
+                    Label("New Area", systemImage: "skew")
+                }
+                
+                Button {
+                    model.startEditing(with: VertexTool(), geometryType: Multipoint.self)
+                } label: {
+                    Label("New Multipoint", systemImage: "hand.point.up.braille")
+                }
             }
             
-            Button {
-                model.startEditing(with: VertexTool(), geometryType: Polygon.self)
-            } label: {
-                Label("New Area", systemImage: "skew")
-            }
-            
-            Button {
-                model.startEditing(with: VertexTool(), geometryType: Multipoint.self)
-            } label: {
-                Label("New Multipoint", systemImage: "hand.point.up.braille")
-            }
-            
-            Button {
-                model.startEditing(with: FreehandTool(), geometryType: Polyline.self)
-            } label: {
-                Label("New Freehand Line", systemImage: "scribble")
-            }
-            
-            Button {
-                model.startEditing(with: FreehandTool(), geometryType: Polygon.self)
-            } label: {
-                Label("New Freehand Area", systemImage: "lasso")
+            Menu("Freehand Tool") {
+                Button {
+                    model.startEditing(with: FreehandTool(), geometryType: Polyline.self)
+                } label: {
+                    Label("New Freehand Line", systemImage: "scribble")
+                }
+                
+                Button {
+                    model.startEditing(with: FreehandTool(), geometryType: Polygon.self)
+                } label: {
+                    Label("New Freehand Area", systemImage: "lasso")
+                }
             }
             
             Menu("Shapes") {
@@ -338,6 +368,8 @@ private class GeometryEditorModel: ObservableObject {
             tool.configuration.scaleMode = scaleMode
         case let tool as VertexTool:
             tool.configuration.scaleMode = scaleMode
+        case _ as ReticleVertexTool:
+            break
         default:
             fatalError("Unexpected tool type")
         }
