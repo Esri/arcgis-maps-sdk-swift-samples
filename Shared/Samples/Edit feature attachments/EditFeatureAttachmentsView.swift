@@ -28,7 +28,7 @@ struct EditFeatureAttachmentsView: View {
     var body: some View {
         MapViewReader { mapProxy in
             MapView(map: model.map)
-                .callout(placement: $model.calloutPlacement.animation()) { _ in
+                .callout(placement: $model.calloutPlacement.animation(.default.speed(2))) { _ in
                     if model.selectedFeature != nil {
                         HStack {
                             CalloutView(model: model)
@@ -36,7 +36,7 @@ struct EditFeatureAttachmentsView: View {
                             Button {
                                 attachmentSheetIsPresented = true
                             } label: {
-                                Image(systemName: "exclamationmark.circle")
+                                Image(systemName: "info.circle")
                             }
                             .sheet(isPresented: $attachmentSheetIsPresented) {
                                 NavigationStack {
@@ -66,7 +66,7 @@ struct EditFeatureAttachmentsView: View {
                         }
                         try await model.selectFeature(feature)
                         if let location = mapProxy.location(fromScreenPoint: screenPoint) {
-                            model.calloutPlacement = .location(location, offset: CGPoint(x: 0, y: 0))
+                            model.calloutPlacement = .location(location)
                         }
                     } catch {
                         model.calloutPlacement = nil
@@ -82,7 +82,6 @@ struct EditFeatureAttachmentsView: View {
 // MARK: - AttachmentSheetView
 
 private extension EditFeatureAttachmentsView {
-    
     struct AttachmentSheetView: View {
         /// The error shown in the error alert.
         @State private var error: Error?
@@ -112,11 +111,7 @@ private extension EditFeatureAttachmentsView {
                     AddAttachmentView(onAdd: {
                         Task {
                             do {
-                                guard let pngData = UIImage(
-                                    named: "PinBlueStar"
-                                )?.pngData() else {
-                                    return
-                                }
+                                guard let pngData = UIImage(named: "PinBlueStar")?.pngData()! else { return }
                                 try await model.addAttachment(
                                     named: "Attachment",
                                     type: "png",
@@ -146,7 +141,6 @@ private extension EditFeatureAttachmentsView {
 // MARK: - CalloutView
 
 private extension EditFeatureAttachmentsView {
-    
     struct CalloutView: View {
         /// The data model for the sample.
         @ObservedObject var model: Model
@@ -167,7 +161,6 @@ private extension EditFeatureAttachmentsView {
 // MARK: - AttachmentView
 
 private extension EditFeatureAttachmentsView {
-    
     struct AttachmentView: View {
         // The attachment that is being displayed.
         let attachment: Attachment
@@ -186,6 +179,8 @@ private extension EditFeatureAttachmentsView {
                         let result = try await attachment.data
                         if let uiImage = UIImage(data: result) {
                             image = Image(uiImage: uiImage)
+                        } else {
+                            image = Image(systemName: "exclamationmark.triangle")
                         }
                     }
                 } label: {
@@ -209,7 +204,6 @@ private extension EditFeatureAttachmentsView {
 // MARK: - AddAttachmentView
 
 private extension EditFeatureAttachmentsView {
-    
     struct AddAttachmentView: View {
         // The closure called when add button is tapped.
         let onAdd: (() -> Void)
