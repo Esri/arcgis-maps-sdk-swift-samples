@@ -349,15 +349,14 @@ private class GeometryEditorModel: ObservableObject {
     /// - Returns: Either a marker or fill symbol depending on the type of provided geometry.
     private func symbol(for geometry: Geometry) -> Symbol {
         switch geometry {
-        case is Point, is Multipoint:
-            return SimpleMarkerSymbol(style: .circle, color: .blue, size: 20)
+        case is Point:
+            return .point()
+        case is Multipoint:
+            return .multiPoint()
         case is Polyline:
-            return SimpleLineSymbol(color: .blue, width: 2)
+            return .polyline()
         case is ArcGIS.Polygon:
-            return SimpleFillSymbol(
-                color: .gray.withAlphaComponent(0.5),
-                outline: SimpleLineSymbol(color: .blue, width: 2)
-            )
+            return .polygon()
         default:
             fatalError("Unexpected geometry type")
         }
@@ -398,6 +397,43 @@ private extension Geometry {
     /// The area around the island of Inis Meáin (Aran Islands) in Ireland.
     static var aranIslands: Envelope {
         Envelope(center: Point(x: -9.5920, y: 53.08230, spatialReference: .wgs84), width: 1, height: 1, depth: 1)
+    }
+}
+
+private extension Symbol {
+    static func point() -> SimpleMarkerSymbol {
+        SimpleMarkerSymbol(
+            style: .square,
+            color: .red,
+            size: 10
+        )
+    }
+    
+    static func multiPoint() -> SimpleMarkerSymbol {
+        SimpleMarkerSymbol(
+            style: .circle,
+            color: .yellow,
+            size: 5
+        )
+    }
+    
+    static func polyline() -> SimpleLineSymbol {
+        SimpleLineSymbol(
+            color: .blue,
+            width: 2
+        )
+    }
+    
+    static func polygon() -> SimpleFillSymbol {
+        SimpleFillSymbol(
+            style: .solid,
+            color: .red.withAlphaComponent(0.3),
+            outline: SimpleLineSymbol(
+                style: .dash,
+                color: .black,
+                width: 1
+            )
+        )
     }
 }
 
