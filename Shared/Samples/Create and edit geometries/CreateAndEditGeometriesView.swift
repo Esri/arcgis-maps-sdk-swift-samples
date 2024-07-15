@@ -17,8 +17,15 @@ import SwiftUI
 
 /// A view that shows how to interact with the geometry editor.
 struct CreateAndEditGeometriesView: View {
-    /// The map to display in the view.
-    @State private var map = Map(basemapStyle: .arcGISTopographic)
+    /// A map with an imagery basemap.
+    @State private var map: Map = {
+        let map = Map(basemapStyle: .arcGISImagery)
+        map.initialViewpoint = Viewpoint(
+            center: .aranIslands.center,
+            scale: 5_000
+        )
+        return map
+    }()
     
     /// The view model for this sample.
     @StateObject private var model = GeometryEditorModel()
@@ -384,6 +391,13 @@ private class GeometryEditorModel: ObservableObject {
         geometryEditor.tool = tool
         geometryEditor.start(withType: geometryType)
         isStarted = true
+    }
+}
+
+private extension Geometry {
+    /// The area around the island of Inis Meáin (Aran Islands) in Ireland.
+    static var aranIslands: Envelope {
+        Envelope(center: Point(x: -9.5920, y: 53.08230, spatialReference: .wgs84), width: 1, height: 1, depth: 1)
     }
 }
 
