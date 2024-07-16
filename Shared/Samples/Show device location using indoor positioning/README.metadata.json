@@ -42,8 +42,8 @@
         "MapView"
     ],
     "snippets": [
-        "ShowDeviceLocationUsingIndoorPositioningView.Model.swift",
-        "ShowDeviceLocationUsingIndoorPositioningView.swift"
+        "ShowDeviceLocationUsingIndoorPositioningView.swift",
+        "ShowDeviceLocationUsingIndoorPositioningView.Model.swift"
     ],
     "title": "Show device location using indoor positioning"
 }
