@@ -34,6 +34,7 @@ When using the reticle vertex tool, you can move the map position of the reticle
 * MapView
 
 ## Additional information
+
 The sample opens with the ArcGIS Imagery basemap centered on the island of Inis Meáin (Aran Islands) in Ireland. Inis Meáin comprises a landscape of interlinked stone walls, roads, buildings, archaeological sites, and geological features, producing complex geometrical relationships.
 
 ## Tags
