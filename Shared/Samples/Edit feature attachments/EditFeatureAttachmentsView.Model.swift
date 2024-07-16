@@ -48,11 +48,11 @@ extension EditFeatureAttachmentsView {
         func selectFeature(_ feature: ArcGISFeature) async throws {
             selectedFeature = feature
             featureLayer.selectFeature(feature)
-            try await fetchAttachmentsAndUpdateFeature(feature: feature)
+            try await fetchAttachmentsAndUpdate(feature)
         }
         
         /// Updates the callout text for the selected feature.
-        private func updateCalloutDetailsForSelectedFeature(feature: ArcGISFeature) {
+        private func updateCalloutDetails(for feature: ArcGISFeature) {
             let title = feature.attributes["typdamage"] as? String
             calloutText = title ?? "Callout"
             calloutDetailText = "Number of attachments: \(attachments.count)"
@@ -73,7 +73,7 @@ extension EditFeatureAttachmentsView {
                     data: dataElement
                 )
                 _ = try await table.applyEdits()
-                try await fetchAttachmentsAndUpdateFeature(feature: selectedFeature)
+                try await fetchAttachmentsAndUpdate(selectedFeature)
             }
         }
         
@@ -85,12 +85,12 @@ extension EditFeatureAttachmentsView {
                table.hasAttachments {
                 try await selectedFeature.deleteAttachment(attachment)
                 _ = try await table.applyEdits()
-                try await fetchAttachmentsAndUpdateFeature(feature: selectedFeature)
+                try await fetchAttachmentsAndUpdate(selectedFeature)
             }
         }
         
         /// Fetches attachments for the selected feature from the server.
-        private func fetchAndUpdateAttachments(feature: ArcGISFeature) async throws {
+        private func refreshAttachments(feature: ArcGISFeature) async throws {
             if let table = feature.table as? ServiceFeatureTable,
                table.hasAttachments {
                 attachments = try await feature.attachments
@@ -98,9 +98,9 @@ extension EditFeatureAttachmentsView {
         }
         
         /// Fetches attachments from server and updates the selected feature's callout with the details.
-        private func fetchAttachmentsAndUpdateFeature(feature: ArcGISFeature) async throws {
-            try await fetchAndUpdateAttachments(feature: feature)
-            updateCalloutDetailsForSelectedFeature(feature: feature)
+        private func fetchAttachmentsAndUpdate(_ feature: ArcGISFeature) async throws {
+            try await refreshAttachments(feature: feature)
+            updateCalloutDetails(for: feature)
         }
     }
 }

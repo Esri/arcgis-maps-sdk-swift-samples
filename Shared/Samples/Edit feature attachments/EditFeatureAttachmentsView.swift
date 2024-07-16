@@ -20,8 +20,10 @@ struct EditFeatureAttachmentsView: View {
     @State private var error: Error?
     /// The data model for the sample.
     @StateObject private var model = Model()
-    /// The location that the user tapped on the map.
+    /// The location that the user tapped on the screen.
     @State private var screenPoint: CGPoint?
+    /// The location that the user tapped on the map.
+    @State private var mapPoint: Point?
     /// A Boolean value indicating whether the attachment sheet is showing.
     @State private var attachmentSheetIsPresented = false
     
@@ -47,11 +49,12 @@ struct EditFeatureAttachmentsView: View {
                         }
                     }
                 }
-                .onSingleTapGesture { screenPoint, _ in
+                .onSingleTapGesture { screenPoint, mapPoint in
+                    self.mapPoint = mapPoint
                     self.screenPoint = screenPoint
                 }
                 .task(id: screenPoint) {
-                    guard let screenPoint else { return }
+                    guard let screenPoint, let mapPoint else { return }
                     model.featureLayer.clearSelection()
                     do {
                         let result = try await mapProxy.identify(
@@ -65,9 +68,7 @@ struct EditFeatureAttachmentsView: View {
                             return
                         }
                         try await model.selectFeature(feature)
-                        if let location = mapProxy.location(fromScreenPoint: screenPoint) {
-                            model.calloutPlacement = .location(location)
-                        }
+                        model.calloutPlacement = .location(mapPoint)
                     } catch {
                         model.calloutPlacement = nil
                         model.selectedFeature = nil
@@ -186,6 +187,9 @@ private extension EditFeatureAttachmentsView {
                 } label: {
                     if let image {
                         image
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 40, height: 40)
                     } else {
                         Image(systemName: "arrow.down.circle.fill")
                     }
