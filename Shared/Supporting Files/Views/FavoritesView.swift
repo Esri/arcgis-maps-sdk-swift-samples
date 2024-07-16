@@ -15,6 +15,9 @@
 import SwiftUI
 
 struct FavoritesView: View {
+    /// The editing mode of the environment.
+    @Environment(\.editMode) private var editMode
+    
     /// A Boolean value indicating whether the add favorite sheet is showing.
     @State private var addFavoriteSheetIsShowing = false
     
@@ -53,6 +56,9 @@ struct FavoritesView: View {
                     AddFavoriteView()
                 }
             }
+        }
+        .onDisappear {
+            editMode?.wrappedValue = .inactive
         }
     }
 }
