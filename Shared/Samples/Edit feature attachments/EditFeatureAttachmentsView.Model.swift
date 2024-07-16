@@ -90,7 +90,7 @@ extension EditFeatureAttachmentsView {
         }
         
         /// Fetches attachments for the selected feature from the server.
-        private func refreshAttachments(feature: ArcGISFeature) async throws {
+        private func refreshAttachments(for feature: ArcGISFeature) async throws {
             if let table = feature.table as? ServiceFeatureTable,
                table.hasAttachments {
                 attachments = try await feature.attachments
@@ -99,7 +99,7 @@ extension EditFeatureAttachmentsView {
         
         /// Fetches attachments from server and updates the selected feature's callout with the details.
         private func fetchAttachmentsAndUpdate(_ feature: ArcGISFeature) async throws {
-            try await refreshAttachments(feature: feature)
+            try await refreshAttachments(for: feature)
             updateCalloutDetails(for: feature)
         }
     }
