@@ -20,8 +20,9 @@ struct CreateAndEditGeometriesView: View {
     /// A map with an imagery basemap.
     @State private var map: Map = {
         let map = Map(basemapStyle: .arcGISImagery)
+        // A viewpoint centered at the island of Inis Meáin (Aran Islands) in Ireland.
         map.initialViewpoint = Viewpoint(
-            center: .aranIslands.center,
+            center: Point(latitude: 53.08230, longitude: -9.5920),
             scale: 5_000
         )
         return map
@@ -30,10 +31,28 @@ struct CreateAndEditGeometriesView: View {
     /// The view model for this sample.
     @StateObject private var model = GeometryEditorModel()
     
+    /// The screen point to perform an identify operation.
+    @State private var identifyScreenPoint: CGPoint?
+    
     var body: some View {
         VStack {
-            MapView(map: map, graphicsOverlays: [model.geometryOverlay])
-                .geometryEditor(model.geometryEditor)
+            MapViewReader { proxy in
+                MapView(map: map, graphicsOverlays: [model.geometryOverlay])
+                    .geometryEditor(model.geometryEditor)
+                    .onSingleTapGesture { screenPoint, _ in
+                        identifyScreenPoint = screenPoint
+                    }
+                    .task(id: identifyScreenPoint) {
+                        guard let identifyScreenPoint,
+                              let identifyResult = try? await proxy.identify(
+                                on: model.geometryOverlay,
+                                screenPoint: identifyScreenPoint,
+                                tolerance: 10
+                              ),
+                              let graphic = identifyResult.graphics.first else { return }
+                        model.startEditing(withGraphic: graphic)
+                    }
+            }
         }
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
@@ -321,6 +340,9 @@ private class GeometryEditorModel: ObservableObject {
         isUniformScale ? .uniform : .stretch
     }
     
+    /// The selected graphic to edit.
+    private var selectedGraphic: Graphic?
+    
     init() {
         let boundaryGraphic = Graphic(geometry: .boundary(), symbol: .polygon)
         
@@ -347,6 +369,10 @@ private class GeometryEditorModel: ObservableObject {
     /// - Precondition: Geometry's sketch must be valid.
     func save() {
         precondition(geometryEditor.geometry?.sketchIsValid ?? false)
+        if let selectedGraphic {
+            // Remove the selected graphic to edit when saving edits.
+            geometryOverlay.removeGraphic(selectedGraphic)
+        }
         let geometry = geometryEditor.geometry!
         let graphic = Graphic(geometry: geometry, symbol: symbol(for: geometry))
         geometryOverlay.addGraphic(graphic)
@@ -364,6 +390,7 @@ private class GeometryEditorModel: ObservableObject {
     func stop() {
         geometryEditor.stop()
         isStarted = false
+        selectedGraphic?.isVisible = true
     }
     
     /// Returns the symbology for graphics saved to the graphics overlay.
@@ -413,24 +440,30 @@ private class GeometryEditorModel: ObservableObject {
         geometryEditor.start(withType: geometryType)
         isStarted = true
     }
+    
+    /// Starts editing a given graphic with the geometry editor.
+    /// - Parameter graphic: The graphic to edit.
+    func startEditing(withGraphic graphic: Graphic) {
+        guard let geometry = graphic.geometry else { return }
+        selectedGraphic = graphic
+        selectedGraphic?.isVisible = false
+        geometryEditor.start(withInitial: geometry)
+        isStarted = true
+    }
 }
 
 private extension Geometry {
-    /// The area around the island of Inis Meáin (Aran Islands) in Ireland.
-    static var aranIslands: Envelope {
-        Envelope(center: Point(x: -9.5920, y: 53.08230, spatialReference: .wgs84), width: 1, height: 1, depth: 1)
-    }
-    
-    static func house() -> Point? {
+    // swiftlint:disable force_try
+    static func house() -> Point {
         let jsonStr = """
                 {"x":-1067898.59,
                  "y":6998366.62,
                  "spatialReference":{"latestWkid":3857,"wkid":102100}}
             """
-        return try? Point.fromJSON(jsonStr)
+        return try! Point.fromJSON(jsonStr)
     }
     
-    static func road1() -> Polyline? {
+    static func road1() -> Polyline {
         let jsonStr = """
                 {"paths":[[[-1068095.40,6998123.52],[-1068086.16,6998134.60],
                           [-1068083.20,6998160.44],[-1068104.27,6998205.37],
@@ -440,10 +473,10 @@ private extension Geometry {
                           [-1067848.08,6998495.26],[-1067832.92,6998521.11]]],
                         "spatialReference":{"latestWkid":3857,"wkid":102100}}
             """
-        return try? Polyline.fromJSON(jsonStr)
+        return try! Polyline.fromJSON(jsonStr)
     }
     
-    static func road2() -> Polyline? {
+    static func road2() -> Polyline {
         let jsonStr = """
                 {"paths":[[[-1067999.28,6998061.97],[-1067994.48,6998086.59],
                         [-1067964.53,6998125.37],[-1067952.70,6998215.84],
@@ -452,10 +485,10 @@ private extension Geometry {
                         [-1067889.49,6998483.56],[-1067880.98,6998527.26]]],
                     "spatialReference":{"latestWkid":3857,"wkid":102100}}
             """
-        return try? Polyline.fromJSON(jsonStr)
+        return try! Polyline.fromJSON(jsonStr)
     }
     
-    static func outbuildings() -> Multipoint? {
+    static func outbuildings() -> Multipoint {
         let jsonStr = """
                 {"points":[[-1067984.26,6998346.28],[-1067966.80,6998244.84],
                           [-1067921.88,6998284.65],[-1067934.36,6998340.74],
@@ -464,10 +497,10 @@ private extension Geometry {
                           [-1067873.22,6998386.78],[-1067896.72,6998244.49]],
                         "spatialReference":{"latestWkid":3857,"wkid":102100}}
             """
-        return try? Multipoint.fromJSON(jsonStr)
+        return try! Multipoint.fromJSON(jsonStr)
     }
     
-    static func boundary() -> Polygon? {
+    static func boundary() -> Polygon {
         let jsonStr = """
                 {"rings":[[[-1067943.67,6998403.86],[-1067938.17,6998427.60],
                            [-1067898.77,6998415.86],[-1067888.26,6998398.80],
@@ -483,8 +516,9 @@ private extension Geometry {
                            [-1068004.43,6998409.28],[-1067943.67,6998403.86]]],
                         "spatialReference":{"latestWkid":3857,"wkid":102100}}
             """
-        return try? Polygon.fromJSON(jsonStr)
+        return try! Polygon.fromJSON(jsonStr)
     }
+    // swiftlint:enable force_try
 }
 
 private extension Symbol {
