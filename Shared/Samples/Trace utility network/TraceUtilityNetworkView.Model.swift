@@ -158,20 +158,16 @@ extension TraceUtilityNetworkView {
                             fractionalLengthClosestTo: mapPoint,
                             tolerance: -1
                         )
-                        Task {
-                            updateUserHint(
-                                withMessage: String(format: "fractionAlongEdge: %.3f", element.fractionAlongEdge)
-                            )
-                        }
+                        updateUserHint(
+                            withMessage: String(format: "fractionAlongEdge: %.3f", element.fractionAlongEdge)
+                        )
                         add(element, at: mapPoint)
                     }
                 @unknown default:
                     return
                 }
             } else {
-                Task {
-                    updateUserHint(withMessage: "An error occurred while adding element to the trace.")
-                }
+                updateUserHint(withMessage: "An error occurred while adding element to the trace.")
             }
         }
         
