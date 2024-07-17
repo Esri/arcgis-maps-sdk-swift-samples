@@ -21,14 +21,14 @@ import SwiftUI
 // "DO NOT PUSH"!!!
 
 struct ShowDeviceLocationUsingIndoorPositioningView: View {
+    /// The data model for the sample.
     @StateObject private var model = Model()
     /// The error shown in the error alert.
     @State private var error: Error?
-    
+    /// Basic map with topographic style.
     @State private var map = Map(basemapStyle: .arcGISTopographic)
-    
+    /// Represents whether the loading state is true or false.
     @State private var isLoading = false
-    
     /// The measurement formatter for sensor accuracy.
     let measurementFormatter: MeasurementFormatter = {
         let formatter = MeasurementFormatter()
@@ -43,9 +43,9 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
                 .locationDisplay(model.locationDisplay)
                 .overlay(alignment: .center) {
                     if model.currentFloor > -1 {
-                        if let accuracy = model.horizontalAccuracy {
+                        if let accuracy = model.horizontalAccuracy, let sensorCount = model.sensorCount {
                             let text = measurementFormatter.string(from: Measurement(value: accuracy, unit: UnitLength.meters))
-                            Text("Current Floor: \(model.currentFloor)\nAccuracy: \(text)")
+                            Text("Current Floor: \(model.currentFloor)\n Accuracy: \(text)\n Number of sensors \(sensorCount)\n Data source: \(model.source) ")
                         }
                     } else {
                         Text("No floor data")
@@ -58,18 +58,6 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
                             .background(.ultraThinMaterial)
                             .cornerRadius(10)
                             .shadow(radius: 50)
-                    }
-                }
-                .overlay(alignment: .topTrailing) {
-                    VStack {
-                        Text("Data source: \(model.source)")
-                    }
-                }
-                .overlay(alignment: .topLeading) {
-                    if let sensorCount = model.sensorCount {
-                        Text("Number of sensors \(sensorCount)")
-                    } else {
-                        Text("No Sensors")
                     }
                 }
                 .task {
@@ -101,8 +89,6 @@ private extension URL {
         URL(string: "")!
     }
 }
-
-
 
 private struct ChallengeHandler: ArcGISAuthenticationChallengeHandler {
     private struct Credentials {
