@@ -22,7 +22,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         /// A indoors location data source based on sensor data, including but not
         /// limited to radio, GPS, motion sensors.
         @Published var indoorsLocationDataSource: IndoorsLocationDataSource?
-        @Published var currentFloor: Int = 0
+        @Published var currentFloor: Int = -1
         
         @Published var sensorCount: Int!
         
@@ -33,7 +33,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         /// The map's location display.
         @Published var locationDisplay = LocationDisplay()
         
-        @Published var enveloper: Envelope?
+        @Published var envelope: Envelope?
         
         @Published var source: String = ""
         
@@ -48,8 +48,10 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         }()
         
         func setIndoorDatasource(map: Map) async throws {
-            locationDisplay.autoPanMode = .navigation
+            locationDisplay.autoPanMode = .compassNavigation
             try await map.indoorPositioningDefinition?.load()
+            try await map.floorManager?.load()
+            print(map.floorManager?.levelLayer?.name)
             indoorsLocationDataSource = IndoorsLocationDataSource(definition: map.indoorPositioningDefinition!)
             locationDisplay.dataSource = indoorsLocationDataSource!
             try await startLocationDisplay()
@@ -59,10 +61,11 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         func updateLocation(map: Map) async throws {
             for try await location in locationDisplay.dataSource.locations {
                 if let floorLevel = location.additionalSourceProperties[.floor] as? Int {
-                    currentFloor = floorLevel
-                    try await displayFeatures(map: map, onFloor: currentFloor + 1)
+                    if (floorLevel + 1) != currentFloor {
+                        currentFloor = floorLevel + 1
+                        try await displayFeatures(map: map, onFloor: currentFloor)
+                    }
                 }
-                
                 if let floorLevelID = location.additionalSourceProperties[.floorLevelID] as? UUID {
                     levelID = floorLevelID
                 }
@@ -91,13 +94,28 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         /// Display features on a certain floor level using definition expression.
         /// - Parameter floor: The floor level of the features to be displayed.
         func displayFeatures(map: Map, onFloor floor: Int) async throws {
+            map.floorManager!.levels.forEach {
+                if $0.longName == "M3" && currentFloor == 3 {
+                    $0.isVisible = true
+                } else if $0.longName == "M2" && currentFloor == 2 {
+                    $0.isVisible = true
+                } else if $0.longName == "M1" && currentFloor == 1 {
+                    $0.isVisible = true
+                } else {
+                    $0.isVisible = false
+                }
+//                print($0.longName)
+//                print($0.isVisible)
+            }
             for layer in map.operationalLayers {
-                if layer.name == "Details" || layer.name == "Units" || layer.name == "Levels" {
+                if layer.name == "Details" || layer.name == "Levels" {
                     if let featureLayer = layer as? FeatureLayer {
                         featureLayer.definitionExpression = "VERTICAL_ORDER = \(floor)"
                     }
                 }
             }
+            
+            //|| layer.name == "Units"
         }
     }
 }

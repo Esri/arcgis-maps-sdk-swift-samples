@@ -18,7 +18,7 @@
 import ArcGIS
 import SwiftUI
 
-// "DO NOT PUSH"
+// "DO NOT PUSH"!!!
 
 struct ShowDeviceLocationUsingIndoorPositioningView: View {
     @StateObject private var model = Model()
@@ -32,10 +32,10 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
             MapView(map: map)
                 .locationDisplay(model.locationDisplay)
                 .overlay(alignment: .center) {
-                    if model.currentFloor > 0 {
+                    if model.currentFloor > -1 {
                         if let accuracy = model.horizontalAccuracy {
                             let text = model.measurementFormatter.string(from: Measurement(value: accuracy, unit: UnitLength.meters))
-                            Text("Current Floor: \(model.currentFloor) accuracy: \(text)")
+                            Text("Current Floor: \(model.currentFloor)  \n Accuracy: \(text)")
                         }
                     } else {
                         Text("No floor data")
@@ -44,6 +44,7 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
                 .overlay(alignment: .centerFirstTextBaseline) {
                     Text(model.source)
                 }
+
                 .overlay(alignment: .topLeading) {
                     if let sensorCount = model.sensorCount {
                         Text("Sensors \(sensorCount)")
@@ -53,9 +54,9 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
                 }
                 .overlay(alignment: .topTrailing) {
                     if let satelliteCount = model.satelliteCount {
-                        Text("Sattelites \(satelliteCount)")
+                        Text("Satellites \(satelliteCount)")
                     } else {
-                        Text("No Sattelites")
+                        Text("No Satellites")
                     }
                 }
                 .task {
