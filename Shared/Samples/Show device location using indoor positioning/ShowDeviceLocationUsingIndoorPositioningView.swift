@@ -27,6 +27,16 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
     
     @State private var map = Map(basemapStyle: .arcGISTopographic)
     
+    @State private var isLoading = false
+    
+    /// The measurement formatter for sensor accuracy.
+    let measurementFormatter: MeasurementFormatter = {
+        let formatter = MeasurementFormatter()
+        formatter.unitStyle = .short
+        formatter.unitOptions = .providedUnit
+        return formatter
+    }()
+    
     var body: some View {
         MapViewReader { mapProxy in
             MapView(map: map)
@@ -34,36 +44,42 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
                 .overlay(alignment: .center) {
                     if model.currentFloor > -1 {
                         if let accuracy = model.horizontalAccuracy {
-                            let text = model.measurementFormatter.string(from: Measurement(value: accuracy, unit: UnitLength.meters))
-                            Text("Current Floor: \(model.currentFloor)  \n Accuracy: \(text)")
+                            let text = measurementFormatter.string(from: Measurement(value: accuracy, unit: UnitLength.meters))
+                            Text("Current Floor: \(model.currentFloor)\nAccuracy: \(text)")
                         }
                     } else {
                         Text("No floor data")
                     }
                 }
-                .overlay(alignment: .centerFirstTextBaseline) {
-                    Text(model.source)
+                .overlay(alignment: .center) {
+                    if isLoading {
+                        ProgressView("Loading…")
+                            .padding()
+                            .background(.ultraThinMaterial)
+                            .cornerRadius(10)
+                            .shadow(radius: 50)
+                    }
                 }
-
+                .overlay(alignment: .topTrailing) {
+                    VStack {
+                        Text("Data source: \(model.source)")
+                    }
+                }
                 .overlay(alignment: .topLeading) {
                     if let sensorCount = model.sensorCount {
-                        Text("Sensors \(sensorCount)")
+                        Text("Number of sensors \(sensorCount)")
                     } else {
                         Text("No Sensors")
                     }
                 }
-                .overlay(alignment: .topTrailing) {
-                    if let satelliteCount = model.satelliteCount {
-                        Text("Satellites \(satelliteCount)")
-                    } else {
-                        Text("No Satellites")
-                    }
-                }
                 .task {
+                    isLoading = true
                     do {
                         try await map.load()
+                        isLoading = false
                         try await model.setIndoorDatasource(map: map)
                     } catch {
+                        isLoading = false
                         self.error = error
                     }
                 }
@@ -72,7 +88,7 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
         .onAppear {
             ArcGISEnvironment.apiKey = nil
             ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = ChallengeHandler()
-            map = Map(url: URL(string: "")!)!
+            map = Map(url: .indoorsMap)!
         }
         .onDisappear {
             ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = nil
@@ -80,12 +96,25 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
     }
 }
 
+private extension URL {
+    static var indoorsMap: URL {
+        URL(string: "")!
+    }
+}
+
+
+
 private struct ChallengeHandler: ArcGISAuthenticationChallengeHandler {
+    private struct Credentials {
+        static let userName = ""
+        static let password = ""
+    }
+    
     func handleArcGISAuthenticationChallenge(
         _ challenge: ArcGISAuthenticationChallenge
     ) async throws -> ArcGISAuthenticationChallenge.Disposition {
         return .continueWithCredential(
-            try await TokenCredential.credential(for: challenge, username: "", password: "")
+            try await TokenCredential.credential(for: challenge, username: Credentials.userName, password: Credentials.password)
         )
     }
 }
