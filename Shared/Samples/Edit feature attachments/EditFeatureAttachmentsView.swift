@@ -112,7 +112,7 @@ private extension EditFeatureAttachmentsView {
                     AddAttachmentView(onAdd: {
                         Task {
                             do {
-                                guard let pngData = UIImage(named: "PinBlueStar")?.pngData()! else { return }
+                                guard let pngData = UIImage(named: "PinBlueStar")?.pngData() else { return }
                                 try await model.addAttachment(
                                     named: "Attachment",
                                     type: "png",
