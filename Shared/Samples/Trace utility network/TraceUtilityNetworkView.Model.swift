@@ -17,6 +17,7 @@ import UIKit.UIColor
 
 extension TraceUtilityNetworkView {
     /// The model used to manage the state of the trace view.
+    @MainActor
     class Model: ObservableObject {
         // MARK: Properties
         
@@ -158,7 +159,7 @@ extension TraceUtilityNetworkView {
                             tolerance: -1
                         )
                         Task {
-                            await updateUserHint(
+                            updateUserHint(
                                 withMessage: String(format: "fractionAlongEdge: %.3f", element.fractionAlongEdge)
                             )
                         }
@@ -169,7 +170,7 @@ extension TraceUtilityNetworkView {
                 }
             } else {
                 Task {
-                    await updateUserHint(withMessage: "An error occurred while adding element to the trace.")
+                    updateUserHint(withMessage: "An error occurred while adding element to the trace.")
                 }
             }
         }
@@ -200,7 +201,7 @@ extension TraceUtilityNetworkView {
                 try await map.load()
                 try await network.load()
             } catch {
-                await updateUserHint(withMessage: "An error occurred while loading the network.")
+                updateUserHint(withMessage: "An error occurred while loading the network.")
                 return
             }
             
@@ -247,7 +248,6 @@ extension TraceUtilityNetworkView {
         ///
         /// If no message is provided a default hint is used.
         /// - Parameter message: The message to display to the user.
-        @MainActor
         func updateUserHint(withMessage message: String? = nil) {
             if let message {
                 hint = message

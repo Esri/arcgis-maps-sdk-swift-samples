@@ -15,6 +15,7 @@
 import ArcGIS
 import SwiftUI
 
+@MainActor
 struct IdentifyKMLFeaturesView: View {
     /// A map with a dark gray base basemap centered on the USA.
     @State private var map: Map = {

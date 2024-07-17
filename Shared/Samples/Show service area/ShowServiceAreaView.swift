@@ -96,6 +96,7 @@ private extension ShowServiceAreaView {
 private extension ShowServiceAreaView {
     // MARK: - Model
     
+    @MainActor
     class Model: ObservableObject {
         /// A map with terrain style centered over San Diego.
         let map: Map = {

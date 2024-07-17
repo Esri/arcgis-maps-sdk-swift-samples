@@ -57,6 +57,7 @@ struct AddENCExchangeSetView: View {
 }
 
 private extension AddENCExchangeSetView {
+    @MainActor
     class Model: ObservableObject {
         /// A map with Oceans style.
         let map: Map = {

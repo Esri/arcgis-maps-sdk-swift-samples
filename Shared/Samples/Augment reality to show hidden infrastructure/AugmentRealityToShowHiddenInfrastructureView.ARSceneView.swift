@@ -71,6 +71,7 @@ extension AugmentRealityToShowHiddenInfrastructureView {
     // MARK: Scene Model
     
     /// The view model for scene view in the sample.
+    @MainActor
     class SceneModel: ObservableObject {
         /// A scene with an imagery basemap style and an elevation surface.
         let scene: ArcGIS.Scene = {
