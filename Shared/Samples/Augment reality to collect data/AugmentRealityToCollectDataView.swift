@@ -29,37 +29,34 @@ struct AugmentRealityToCollectDataView: View {
     @State private var error: Error?
     
     var body: some View {
-        VStack(spacing: 0) {
-            WorldScaleSceneView { _ in
-                SceneView(scene: model.scene, graphicsOverlays: [model.graphicsOverlay])
+        WorldScaleSceneView { _ in
+            SceneView(scene: model.scene, graphicsOverlays: [model.graphicsOverlay])
+        }
+        .calibrationButtonAlignment(.bottomLeading)
+        .onCalibratingChanged { newCalibrating in
+            model.scene.baseSurface.opacity = newCalibrating ? 0.5 : 0
+        }
+        .onSingleTapGesture { _, scenePoint in
+            model.graphicsOverlay.removeAllGraphics()
+            canAddFeature = true
+            
+            // Add feature graphic.
+            model.graphicsOverlay.addGraphic(Graphic(geometry: scenePoint))
+            statusText = "Placed relative to ARKit plane"
+        }
+        .task {
+            do {
+                try await model.featureTable.load()
+            } catch {
+                self.error = error
             }
-            .calibrationButtonAlignment(.bottomLeading)
-            .onCalibratingChanged { newCalibrating in
-                model.scene.baseSurface.opacity = newCalibrating ? 0.5 : 0
-            }
-            .onSingleTapGesture { _, scenePoint in
-                model.graphicsOverlay.removeAllGraphics()
-                canAddFeature = true
-                
-                // Add feature graphic.
-                model.graphicsOverlay.addGraphic(Graphic(geometry: scenePoint))
-                statusText = "Placed relative to ARKit plane"
-            }
-            .task {
-                do {
-                    try await model.featureTable.load()
-                } catch {
-                    self.error = error
-                }
-            }
-            .overlay(alignment: .top) {
-                Text(statusText)
-                    .multilineTextAlignment(.center)
-                    .frame(maxWidth: .infinity, alignment: .center)
-                    .padding(8)
-                    .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
-            }
-            Divider()
+        }
+        .overlay(alignment: .top) {
+            Text(statusText)
+                .multilineTextAlignment(.center)
+                .frame(maxWidth: .infinity, alignment: .center)
+                .padding(8)
+                .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
         }
         .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
@@ -94,6 +91,7 @@ struct AugmentRealityToCollectDataView: View {
                     })
             }
         }
+        .toolbarBackground(.visible, for: .bottomBar)
         .errorAlert(presentingError: $error)
     }
 }

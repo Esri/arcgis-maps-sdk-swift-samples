@@ -64,32 +64,29 @@ struct AugmentRealityToNavigateRouteView: View {
                     try? await elevationSource.load()
                 }
         } else {
-            VStack(spacing: 0) {
-                WorldScaleSceneView { _ in
-                    SceneView(scene: scene, graphicsOverlays: [graphicsOverlay])
+            WorldScaleSceneView { _ in
+                SceneView(scene: scene, graphicsOverlays: [graphicsOverlay])
+            }
+            .calibrationButtonAlignment(.bottomLeading)
+            .onCalibratingChanged { isPresented in
+                scene.baseSurface.opacity = isPresented ? 0.6 : 0
+            }
+            .task {
+                try? await locationDataSource.start()
+                
+                for await location in locationDataSource.locations {
+                    try? await routeDataModel.routeTracker?.track(location)
                 }
-                .calibrationButtonAlignment(.bottomLeading)
-                .onCalibratingChanged { isPresented in
-                    scene.baseSurface.opacity = isPresented ? 0.6 : 0
-                }
-                .task {
-                    try? await locationDataSource.start()
-                    
-                    for await location in locationDataSource.locations {
-                        try? await routeDataModel.routeTracker?.track(location)
-                    }
-                }
-                .overlay(alignment: .top) {
-                    Text(statusText)
-                        .multilineTextAlignment(.center)
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        .padding(8)
-                        .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
-                }
-                .onDisappear {
-                    Task { await locationDataSource.stop() }
-                }
-                Divider()
+            }
+            .overlay(alignment: .top) {
+                Text(statusText)
+                    .multilineTextAlignment(.center)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .padding(8)
+                    .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
+            }
+            .onDisappear {
+                Task { await locationDataSource.stop() }
             }
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
@@ -106,6 +103,7 @@ struct AugmentRealityToNavigateRouteView: View {
                     .disabled(isNavigating)
                 }
             }
+            .toolbarBackground(.visible, for: .bottomBar)
         }
     }
     
