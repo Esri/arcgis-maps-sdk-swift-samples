@@ -22,20 +22,29 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         /// A indoors location data source based on sensor data, including but not
         /// limited to radio, GPS, motion sensors.
         @Published private(set) var indoorsLocationDataSource: IndoorsLocationDataSource?
+        
         /// The value of the current floor with -1 being used to represent floor that has not been set.
         @Published private(set) var currentFloor: Int = -1
+        
         /// The number of BLE sensors which are being used for indoor location.
         @Published private(set) var sensorCount: Int!
+        
         /// Counts the number of satellites which being used for the GPS location.
         @Published private(set) var satelliteCount: Int!
+        
         /// The value of the horizontal accuracy of the location (in meters)
         @Published private(set) var horizontalAccuracy: Double!
+        
         /// The map's location display.
         @Published private(set) var locationDisplay = LocationDisplay()
+        
         ///  This value tracks whether the source is GPS or BLE
         @Published private(set) var source: String = ""
         
-        func checkForIndoorDefinition(map: Map) async throws -> Bool {
+        /// A function that attempts to load an indoor definition attached to the map and returns a boolean value based whether it is loaded.
+        /// - Parameter map: The map that contains the IndoorDefinition
+        /// - Returns: A boolean value for whether the IndoorDefinition is loaded.
+        func loadAndCheckForIndoorDefinition(map: Map) async throws -> Bool {
             try await map.indoorPositioningDefinition?.load()
             if map.indoorPositioningDefinition?.loadStatus == .loaded {
                 return true
@@ -43,22 +52,24 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
             return false
         }
         
+        /// Sets the indoor datasource on the location display depending on whether the map contains an IndoorDefinition.
+        /// - Parameter map: The map which is checked for an indoor definition.
         func setIndoorDatasource(map: Map) async throws {
             locationDisplay.autoPanMode = .compassNavigation
             try await map.floorManager?.load()
-            if try await checkForIndoorDefinition(map: map),
+            if try await loadAndCheckForIndoorDefinition(map: map),
                let indoorPositioningDefinition = map.indoorPositioningDefinition {
                 indoorsLocationDataSource = IndoorsLocationDataSource(definition: indoorPositioningDefinition)
-                locationDisplay.dataSource = indoorsLocationDataSource!
             } else {
                 indoorsLocationDataSource = try await createIndoorLocationDataSource(map: map)
             }
             locationDisplay.dataSource = indoorsLocationDataSource!
-            try await startLocationDisplay()
-            try await updateLocation(map: map)
         }
         
-        func createIndoorLocationDataSource(map: Map) async throws -> IndoorsLocationDataSource? {
+        /// Creates an indoor location datasource from the maps tables if there is no indoors definition.
+        /// - Parameter map: The map which contains the tables from which the data source is constructed.
+        /// - Returns: Returns a configured IndoorsLocationDataSource created from the IPS position table.
+        private func createIndoorLocationDataSource(map: Map) async throws -> IndoorsLocationDataSource? {
             // Gets the positioning table from the map.
             guard let positioningTable = map.tables.first(where: { $0.displayName == "IPS_Positioning" }) else { return nil }
             // Creates and configures the query parameters.
@@ -91,15 +102,17 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
             )
         }
         
-        private func updateLocation(map: Map) async throws {
+        /// The method that updates the location when the indoors location datasource is triggered.
+        /// - Parameter floorManager: The floor manager that filters what is displayed on the map by floor.
+        func updateLocation(floorManager: FloorManager) async throws {
             for try await location in locationDisplay.dataSource.locations {
                 if let floorLevel = location.additionalSourceProperties[.floor] as? Int {
                     if (floorLevel + 1) != currentFloor {
                         currentFloor = floorLevel + 1
-                        try await displayFeatures(map: map, onFloor: currentFloor)
+                        try await displayFeatures(floorManager: floorManager, onFloor: currentFloor)
                     }
                 }
-                source = location.additionalSourceProperties[.positionSource] as? String ?? "NA"
+                source = location.additionalSourceProperties[.positionSource] as? String ?? "N/A"
                 switch source {
                 case "GNSS":
                     satelliteCount = location.additionalSourceProperties[.satelliteCount] as? Int ?? 0
@@ -111,7 +124,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         }
         
         /// Starts the location display to show user's location on the map.
-        private func startLocationDisplay() async throws {
+        func startLocationDisplay() async throws {
             // Request location permission if it has not yet been determined.
             let locationManager = CLLocationManager()
             if locationManager.authorizationStatus == .notDetermined {
@@ -122,9 +135,10 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         }
         
         /// Display features on a certain floor level using definition expression.
-        /// - Parameter floor: The floor level of the features to be displayed.
-        private func displayFeatures(map: Map, onFloor floor: Int) async throws {
-            guard let floorManager = map.floorManager else { return }
+        /// - Parameters:
+        ///   - floorManager: A floor manager for filtering what is displayed on the map.
+        ///   - floor:  The floor level of the features to be displayed.
+        private func displayFeatures(floorManager: FloorManager, onFloor floor: Int) async throws {
             floorManager.levels.forEach {
                 if currentFloor == $0.levelNumber {
                     $0.isVisible = true

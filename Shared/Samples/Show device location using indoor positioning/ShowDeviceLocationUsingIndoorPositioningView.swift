@@ -18,8 +18,6 @@
 import ArcGIS
 import SwiftUI
 
-// "DO NOT PUSH"!!!
-
 struct ShowDeviceLocationUsingIndoorPositioningView: View {
     /// The data model for the sample.
     @StateObject private var model = Model()
@@ -38,49 +36,52 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
     }()
     
     var body: some View {
-        MapViewReader { mapProxy in
-            MapView(map: map)
-                .locationDisplay(model.locationDisplay)
-                .overlay(alignment: .center) {
-                    if model.currentFloor > -1 {
-                        if let accuracy = model.horizontalAccuracy, let sensorCount = model.sensorCount {
-                            let text = measurementFormatter.string(from: Measurement(value: accuracy, unit: UnitLength.meters))
-                            Text("Current Floor: \(model.currentFloor)\n Accuracy: \(text)\n Number of sensors \(sensorCount)\n Data source: \(model.source) ")
-                        }
-                    } else {
-                        Text("No floor data")
+        MapView(map: map)
+            .locationDisplay(model.locationDisplay)
+            .overlay(alignment: .center) {
+                if model.currentFloor > -1 {
+                    if let accuracy = model.horizontalAccuracy,
+                        let sensorCount = model.sensorCount {
+                        let text = measurementFormatter.string(from: Measurement(value: accuracy, unit: UnitLength.meters))
+                        Text("Current Floor: \(model.currentFloor)\nAccuracy: \(text)\nNumber of sensors \(sensorCount)\nData source: \(model.source)")
                     }
+                } else {
+                    Text("No floor data")
                 }
-                .overlay(alignment: .center) {
-                    if isLoading {
-                        ProgressView("Loading…")
-                            .padding()
-                            .background(.ultraThinMaterial)
-                            .cornerRadius(10)
-                            .shadow(radius: 50)
+            }
+            .overlay(alignment: .center) {
+                if isLoading {
+                    ProgressView("Loading…")
+                        .padding()
+                        .background(.ultraThinMaterial)
+                        .cornerRadius(10)
+                        .shadow(radius: 50)
+                }
+            }
+            .task {
+                isLoading = true
+                do {
+                    try await map.load()
+                    try await model.setIndoorDatasource(map: map)
+                    try await model.startLocationDisplay()
+                    isLoading = false
+                    if let floorManager = map.floorManager {
+                        try await model.updateLocation(floorManager: floorManager)
                     }
+                } catch {
+                    isLoading = false
+                    self.error = error
                 }
-                .task {
-                    isLoading = true
-                    do {
-                        try await map.load()
-                        isLoading = false
-                        try await model.setIndoorDatasource(map: map)
-                    } catch {
-                        isLoading = false
-                        self.error = error
-                    }
-                }
-                .errorAlert(presentingError: $error)
-        }
-        .onAppear {
-            ArcGISEnvironment.apiKey = nil
-            ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = ChallengeHandler()
-            map = Map(url: .indoorsMap)!
-        }
-        .onDisappear {
-            ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = nil
-        }
+            }
+            .errorAlert(presentingError: $error)
+            .onAppear {
+                ArcGISEnvironment.apiKey = nil
+                ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = ChallengeHandler()
+                map = Map(url: .indoorsMap)!
+            }
+            .onDisappear {
+                ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = nil
+            }
     }
 }
 
