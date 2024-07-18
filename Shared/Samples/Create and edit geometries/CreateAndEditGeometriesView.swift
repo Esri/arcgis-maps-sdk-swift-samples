@@ -47,9 +47,10 @@ struct CreateAndEditGeometriesView: View {
                               let identifyResult = try? await proxy.identify(
                                 on: model.geometryOverlay,
                                 screenPoint: identifyScreenPoint,
-                                tolerance: 10
+                                tolerance: 5
                               ),
-                              let graphic = identifyResult.graphics.first else { return }
+                              let graphic = identifyResult.graphics.first,
+                              !model.isStarted else { return }
                         model.startEditing(withGraphic: graphic)
                     }
             }
@@ -369,15 +370,18 @@ private class GeometryEditorModel: ObservableObject {
     /// - Precondition: Geometry's sketch must be valid.
     func save() {
         precondition(geometryEditor.geometry?.sketchIsValid ?? false)
-        if let selectedGraphic {
-            // Remove the selected graphic to edit when saving edits.
-            geometryOverlay.removeGraphic(selectedGraphic)
-        }
         let geometry = geometryEditor.geometry!
-        let graphic = Graphic(geometry: geometry, symbol: symbol(for: geometry))
-        geometryOverlay.addGraphic(graphic)
+        if let selectedGraphic {
+            // Update geometry for edited graphic.
+            selectedGraphic.geometry = geometryEditor.stop()
+        } else {
+            // Add new graphic.
+            let graphic = Graphic(geometry: geometry, symbol: symbol(for: geometry))
+            geometryOverlay.addGraphic(graphic)
+        }
         stop()
         canClearGraphics = true
+        selectedGraphic = nil
     }
     
     /// Removes the initial graphics and saved sketches on the graphics overlay.
@@ -435,6 +439,7 @@ private class GeometryEditorModel: ObservableObject {
     ///   - tool: The tool to draw with.
     ///   - geometryType: The type of geometry to draw.
     func startEditing(with tool: GeometryEditorTool, geometryType: Geometry.Type) {
+        selectedGraphic = nil
         configureGeometryEditorTool(tool, scaleMode: scaleMode)
         geometryEditor.tool = tool
         geometryEditor.start(withType: geometryType)
@@ -445,8 +450,16 @@ private class GeometryEditorModel: ObservableObject {
     /// - Parameter graphic: The graphic to edit.
     func startEditing(withGraphic graphic: Graphic) {
         guard let geometry = graphic.geometry else { return }
+        
+        switch geometry {
+        case is Point, is Multipoint:
+            geometryEditor.tool = VertexTool()
+        default:
+            break
+        }
+        
         selectedGraphic = graphic
-        selectedGraphic?.isVisible = false
+        graphic.isVisible = false
         geometryEditor.start(withInitial: geometry)
         isStarted = true
     }
