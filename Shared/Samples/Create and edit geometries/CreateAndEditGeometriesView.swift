@@ -370,18 +370,32 @@ private class GeometryEditorModel: ObservableObject {
     /// - Precondition: Geometry's sketch must be valid.
     func save() {
         precondition(geometryEditor.geometry?.sketchIsValid ?? false)
-        let geometry = geometryEditor.geometry!
-        if let selectedGraphic {
+        
+        if selectedGraphic != nil {
             // Update geometry for edited graphic.
-            selectedGraphic.geometry = geometryEditor.stop()
+            updateGraphic()
         } else {
             // Add new graphic.
-            let graphic = Graphic(geometry: geometry, symbol: symbol(for: geometry))
-            geometryOverlay.addGraphic(graphic)
+            addGraphic()
         }
+    }
+    
+    /// Updates the selected graphic with the current geometry.
+    private func updateGraphic() {
+        defer { selectedGraphic = nil }
+        guard let selectedGraphic else { return }
+        selectedGraphic.geometry = geometryEditor.stop()
+        isStarted = false
+        selectedGraphic.isVisible = true
+    }
+    
+    /// Adds a new graphic for the current geometry to the graphics overlay.
+    private func addGraphic() {
+        let geometry = geometryEditor.geometry!
+        let graphic = Graphic(geometry: geometry, symbol: symbol(for: geometry))
+        geometryOverlay.addGraphic(graphic)
         stop()
         canClearGraphics = true
-        selectedGraphic = nil
     }
     
     /// Removes the initial graphics and saved sketches on the graphics overlay.
