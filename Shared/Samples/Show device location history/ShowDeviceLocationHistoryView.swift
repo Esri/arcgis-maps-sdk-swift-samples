@@ -61,6 +61,7 @@ struct ShowDeviceLocationHistoryView: View {
 private extension ShowDeviceLocationHistoryView {
     /// The model used to store the geo model and other expensive objects
     /// used in this view.
+    @MainActor
     class Model: ObservableObject {
         /// A map with a light gray basemap style.
         let map = Map(basemapStyle: .arcGISLightGrayBase)

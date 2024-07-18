@@ -91,6 +91,7 @@ struct FindClosestFacilityFromPointView: View {
 
 private extension FindClosestFacilityFromPointView {
     /// The view model for the sample.
+    @MainActor
     class Model: ObservableObject {
         /// A map with a streets relief basemap.
         let map = Map(basemapStyle: .arcGISStreetsRelief)

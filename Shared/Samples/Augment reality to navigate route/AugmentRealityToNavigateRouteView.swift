@@ -17,6 +17,7 @@ import ArcGISToolkit
 import AVFoundation
 import SwiftUI
 
+@MainActor
 struct AugmentRealityToNavigateRouteView: View {
     /// The data model for the selected route.
     @StateObject private var routeDataModel = RouteDataModel()
@@ -147,7 +148,7 @@ struct AugmentRealityToNavigateRouteView: View {
     ) {
         if let densifiedPolyline = GeometryEngine.densify(polyline, maxSegmentLength: 0.3) as? Polyline {
             let polylineBuilder = PolylineBuilder(spatialReference: densifiedPolyline.spatialReference)
-            Task {
+            Task { @MainActor in
                 for part in densifiedPolyline.parts {
                     for point in part.points {
                         async let elevation = try await elevationSurface.elevation(at: point)

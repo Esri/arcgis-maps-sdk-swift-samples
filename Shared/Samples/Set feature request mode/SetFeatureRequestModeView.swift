@@ -98,6 +98,7 @@ struct SetFeatureRequestModeView: View {
 
 private extension SetFeatureRequestModeView {
     /// The view model for the sample.
+    @MainActor
     class Model: ObservableObject {
         /// A map with a topographic basemap centered on Portland OR, USA.
         let map: Map = {

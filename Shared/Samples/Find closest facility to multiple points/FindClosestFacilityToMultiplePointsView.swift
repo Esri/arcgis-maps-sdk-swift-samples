@@ -57,6 +57,7 @@ struct FindClosestFacilityToMultiplePointsView: View {
 
 private extension FindClosestFacilityToMultiplePointsView {
     /// The view model for the sample.
+    @MainActor
     class Model: ObservableObject {
         /// A map with a streets basemap centered on San Diego, CA, USA.
         let map = {

@@ -132,6 +132,7 @@ private extension AugmentRealityToShowHiddenInfrastructureView {
     // MARK: Map Model
     
     /// The view model for the map view in the sample.
+    @MainActor
     class MapModel: ObservableObject {
         /// A map with an imagery basemap style.
         let map = Map(basemapStyle: .arcGISImagery)

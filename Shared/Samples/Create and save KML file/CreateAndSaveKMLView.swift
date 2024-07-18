@@ -105,6 +105,7 @@ final class KMZFile: FileDocument {
     }
     
     /// Saves the KML document as a KMZ file to a temporary location.
+    @MainActor
     func saveFile() async throws {
         temporaryDirectory = FileManager.createTemporaryDirectory()
         
