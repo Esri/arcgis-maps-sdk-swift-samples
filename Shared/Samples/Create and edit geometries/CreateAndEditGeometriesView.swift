@@ -51,7 +51,7 @@ struct CreateAndEditGeometriesView: View {
                               ),
                               let graphic = identifyResult.graphics.first,
                               !model.isStarted else { return }
-                        model.startEditing(withGraphic: graphic)
+                        model.startEditing(with: graphic)
                     }
             }
         }
@@ -382,11 +382,11 @@ private class GeometryEditorModel: ObservableObject {
     
     /// Updates the selected graphic with the current geometry.
     private func updateGraphic() {
-        defer { selectedGraphic = nil }
         guard let selectedGraphic else { return }
         selectedGraphic.geometry = geometryEditor.stop()
         isStarted = false
         selectedGraphic.isVisible = true
+        self.selectedGraphic = nil
     }
     
     /// Adds a new graphic for the current geometry to the graphics overlay.
@@ -453,7 +453,6 @@ private class GeometryEditorModel: ObservableObject {
     ///   - tool: The tool to draw with.
     ///   - geometryType: The type of geometry to draw.
     func startEditing(with tool: GeometryEditorTool, geometryType: Geometry.Type) {
-        selectedGraphic = nil
         configureGeometryEditorTool(tool, scaleMode: scaleMode)
         geometryEditor.tool = tool
         geometryEditor.start(withType: geometryType)
@@ -462,8 +461,8 @@ private class GeometryEditorModel: ObservableObject {
     
     /// Starts editing a given graphic with the geometry editor.
     /// - Parameter graphic: The graphic to edit.
-    func startEditing(withGraphic graphic: Graphic) {
-        guard let geometry = graphic.geometry else { return }
+    func startEditing(with graphic: Graphic) {
+        let geometry = graphic.geometry!
         
         switch geometry {
         case is Point, is Multipoint:
