@@ -772,7 +772,7 @@
 		00E5400C27F3CCA100CF66D5 /* SamplesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SamplesApp.swift; sourceTree = "<group>"; };
 		00E5400D27F3CCA100CF66D5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		00E5400E27F3CCA200CF66D5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		00E5401327F3CCA200CF66D5 /* Samples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Samples.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E5401327F3CCA200CF66D5 /* ArcGIS Maps SDK Samples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ArcGIS Maps SDK Samples.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E5402A27F775EA00CF66D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E7C1592BBE1BF000B85D69 /* SnapGeometryEditsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapGeometryEditsView.swift; sourceTree = "<group>"; };
 		00F279D52AF418DC00CECAF8 /* AddDynamicEntityLayerView.VehicleCallout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDynamicEntityLayerView.VehicleCallout.swift; sourceTree = "<group>"; };
@@ -1446,7 +1446,7 @@
 		00E5401427F3CCA200CF66D5 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				00E5401327F3CCA200CF66D5 /* Samples.app */,
+				00E5401327F3CCA200CF66D5 /* ArcGIS Maps SDK Samples.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2803,7 +2803,7 @@
 				00C43AEC2947DC350099AE34 /* ArcGISToolkit */,
 			);
 			productName = "arcgis-swift-sdk-samples (iOS)";
-			productReference = 00E5401327F3CCA200CF66D5 /* Samples.app */;
+			productReference = 00E5401327F3CCA200CF66D5 /* ArcGIS Maps SDK Samples.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -3362,7 +3362,7 @@
 				);
 				MARKETING_VERSION = 200.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.esri.arcgis-swift-sdk-samples";
-				PRODUCT_NAME = Samples;
+				PRODUCT_NAME = "ArcGIS Maps SDK Samples";
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
@@ -3393,7 +3393,7 @@
 				);
 				MARKETING_VERSION = 200.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.esri.arcgis-swift-sdk-samples";
-				PRODUCT_NAME = Samples;
+				PRODUCT_NAME = "ArcGIS Maps SDK Samples";
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
