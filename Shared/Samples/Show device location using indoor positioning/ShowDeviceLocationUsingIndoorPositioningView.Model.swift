@@ -19,12 +19,12 @@ import SwiftUI
 extension ShowDeviceLocationUsingIndoorPositioningView {
     enum DataSourceType: CaseIterable {
         case indoorDefinition
-        case ipsTables
+        case IPSTables
         
         var label: String {
             switch self {
             case .indoorDefinition: "Indoors Definition"
-            case .ipsTables: "IPS Tables"
+            case .IPSTables: "IPS Tables"
             }
         }
     }
@@ -56,13 +56,15 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         
         /// A indoors location data source based on sensor data, including but not
         /// limited to radio, GPS, motion sensors.
-        @Published private(set) var indoorsLocationDataSource: IndoorsLocationDataSource?
+        @Published private var indoorsLocationDataSource: IndoorsLocationDataSource?
         
         /// The map's location display.
-        @Published private(set) var locationDisplay = LocationDisplay()
+        @Published private(set) var locationDisplay = LocationDisplay(dataSource: SystemLocationDataSource())
         
-        /// Represents loading state of indoors data, blocks interaction until loaded. 
+        /// Represents loading state of indoors data, blocks interaction until loaded.
         @Published var isLoading = false
+        
+        private var currentDataSourceType: DataSourceType = .indoorDefinition
         
         /// The measurement formatter for sensor accuracy.
         private let measurementFormatter: MeasurementFormatter = {
@@ -74,21 +76,20 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         
         /// Kicks off the logic for displaying the indoors position.
         /// - Parameter dataSourceType: The data model type to use when displaying indoor position.
-        func loadAndDisplayIndoorData(for dataSourceType: DataSourceType) async throws {
+        func displayIndoorData(for dataSourceType: DataSourceType) async throws {
             try await setIndoorDatasource(for: dataSourceType)
             try await startLocationDisplay()
-            try await updateLocation()
+            try await dataChangesOnLocationUpdate()
         }
         
         /// A function that attempts to load an indoor definition attached to the map
         /// and returns a boolean value based whether it is loaded.
         /// - Parameter map: The map that contains the IndoorDefinition.
         /// - Returns: A boolean value for whether the IndoorDefinition is loaded.
-        private func loadAndCheckForIndoorDefinition(map: Map) async throws -> Bool {
-            guard let indoorPositioningDefinition = map.indoorPositioningDefinition else { return false }
-            if indoorPositioningDefinition.loadStatus != .loaded {
-                try await indoorPositioningDefinition.load()
-                return indoorPositioningDefinition.loadStatus == .loaded
+        private func indoorDefinitionIsLoaded(map: Map) async throws -> Bool {
+            if map.indoorPositioningDefinition?.loadStatus != .loaded {
+                try await map.indoorPositioningDefinition?.load()
+                return map.indoorPositioningDefinition?.loadStatus == .loaded
             }
             return true
         }
@@ -97,16 +98,20 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         /// whether the map contains an IndoorDefinition.
         /// - Parameter map: The map which is checked for an indoor definition.
         private func setIndoorDatasource(for type: DataSourceType) async throws {
+            if type == currentDataSourceType && currentFloor != -1 {
+                return
+            }
+            currentDataSourceType = type
             await indoorsLocationDataSource?.stop()
             indoorsLocationDataSource = nil
             try await map.floorManager?.load()
             switch type {
             case .indoorDefinition:
-                if try await loadAndCheckForIndoorDefinition(map: map),
+                if try await indoorDefinitionIsLoaded(map: map),
                    let indoorPositioningDefinition = map.indoorPositioningDefinition {
                     indoorsLocationDataSource = IndoorsLocationDataSource(definition: indoorPositioningDefinition)
                 }
-            case .ipsTables:
+            case .IPSTables:
                 indoorsLocationDataSource = try await createIndoorLocationDataSource(map: map)
             }
             guard let dataSource = indoorsLocationDataSource else { return }
@@ -157,7 +162,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         
         /// The method that updates the location when the indoors location datasource is triggered.
         /// - Parameter floorManager: The floor manager that filters what is displayed on the map by floor.
-        private func updateLocation() async throws {
+        private func dataChangesOnLocationUpdate() async throws {
             guard let floorManager = map.floorManager else { return }
             for try await location in locationDisplay.dataSource.locations {
                 if let floorLevel = location.additionalSourceProperties[.floor] as? Int,
@@ -186,16 +191,13 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
                 result += "Current floor: \(currentFloor)\n"
                 if horizontalAccuracy > -1.0 {
                     let formattedAccuracy = measurementFormatter.string(
-                        from: Measurement(
-                            value: horizontalAccuracy,
-                            unit: UnitLength.meters
-                        )
+                        from: Measurement(value: horizontalAccuracy, unit: UnitLength.meters)
                     )
                     result += "Accuracy: \(formattedAccuracy)\n"
                 }
                 if sensorCount > -1 {
                     result += "Number of sensor: \(sensorCount)\n"
-                } else if satelliteCount > -1 {
+                } else if satelliteCount > -1 && source == "GNSS" {
                     result += "Number of satellites: \(satelliteCount)\n"
                 }
                 result += "Data source: \(source)"
