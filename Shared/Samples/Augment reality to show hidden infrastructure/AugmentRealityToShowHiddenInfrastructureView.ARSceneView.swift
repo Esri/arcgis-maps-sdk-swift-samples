@@ -45,7 +45,7 @@ extension AugmentRealityToShowHiddenInfrastructureView {
                     settingsMenu
                 }
             }
-            .toolbar(.visible, for: .bottomBar)
+            .toolbarBackground(.visible, for: .bottomBar)
         }
         
         /// The settings menu.
