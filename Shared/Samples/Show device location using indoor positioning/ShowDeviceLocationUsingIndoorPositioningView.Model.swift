@@ -61,6 +61,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         /// The map's location display.
         @Published private(set) var locationDisplay = LocationDisplay()
         
+        /// Represents loading state of indoors data, blocks interaction until loaded. 
         @Published var isLoading = false
         
         /// The measurement formatter for sensor accuracy.
