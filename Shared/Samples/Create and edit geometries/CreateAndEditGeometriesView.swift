@@ -17,16 +17,43 @@ import SwiftUI
 
 /// A view that shows how to interact with the geometry editor.
 struct CreateAndEditGeometriesView: View {
-    /// The map to display in the view.
-    @State private var map = Map(basemapStyle: .arcGISTopographic)
+    /// A map with an imagery basemap.
+    @State private var map: Map = {
+        let map = Map(basemapStyle: .arcGISImagery)
+        // A viewpoint centered at the island of Inis Meáin (Aran Islands) in Ireland.
+        map.initialViewpoint = Viewpoint(
+            center: Point(latitude: 53.08230, longitude: -9.5920),
+            scale: 5_000
+        )
+        return map
+    }()
     
     /// The view model for this sample.
     @StateObject private var model = GeometryEditorModel()
     
+    /// The screen point to perform an identify operation.
+    @State private var identifyScreenPoint: CGPoint?
+    
     var body: some View {
         VStack {
-            MapView(map: map, graphicsOverlays: [model.geometryOverlay])
-                .geometryEditor(model.geometryEditor)
+            MapViewReader { proxy in
+                MapView(map: map, graphicsOverlays: [model.geometryOverlay])
+                    .geometryEditor(model.geometryEditor)
+                    .onSingleTapGesture { screenPoint, _ in
+                        identifyScreenPoint = screenPoint
+                    }
+                    .task(id: identifyScreenPoint) {
+                        guard let identifyScreenPoint,
+                              let identifyResult = try? await proxy.identify(
+                                on: model.geometryOverlay,
+                                screenPoint: identifyScreenPoint,
+                                tolerance: 5
+                              ),
+                              let graphic = identifyResult.graphics.first,
+                              !model.isStarted else { return }
+                        model.startEditing(with: graphic)
+                    }
+            }
         }
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
@@ -197,11 +224,11 @@ private extension GeometryEditorMenu {
             Divider()
             
             Button(role: .destructive) {
-                model.clearSavedSketches()
+                model.deleteAllGeometries()
             } label: {
-                Label("Clear Saved Sketches", systemImage: "trash")
+                Label("Delete All Geometries", systemImage: "trash")
             }
-            .disabled(!model.canClearSavedSketches)
+            .disabled(!model.canClearGraphics)
         }
     }
     
@@ -296,8 +323,8 @@ private class GeometryEditorModel: ObservableObject {
     /// The graphics overlay used to save geometries to.
     let geometryOverlay = GraphicsOverlay(renderingMode: .dynamic)
     
-    /// A Boolean value indicating if the saved sketches can be cleared.
-    @Published private(set) var canClearSavedSketches = false
+    /// A Boolean value indicating if the initial graphics and saved sketches can be cleared.
+    @Published private(set) var canClearGraphics = false
     
     /// A Boolean value indicating if the geometry editor has started.
     @Published private(set) var isStarted = false
@@ -314,27 +341,74 @@ private class GeometryEditorModel: ObservableObject {
         isUniformScale ? .uniform : .stretch
     }
     
+    /// The selected graphic to edit.
+    private var selectedGraphic: Graphic?
+    
+    init() {
+        let boundaryGraphic = Graphic(geometry: .boundary(), symbol: .polygon)
+        
+        let road1Graphic = Graphic(geometry: .road1(), symbol: .polyline)
+        
+        let road2Graphic = Graphic(geometry: .road2(), symbol: .polyline)
+        
+        let outbuildingsGraphic = Graphic(geometry: .outbuildings(), symbol: .multipoint)
+        
+        let houseGraphic = Graphic(geometry: .house(), symbol: .point)
+        
+        geometryOverlay.addGraphics([
+            boundaryGraphic,
+            road1Graphic,
+            road2Graphic,
+            outbuildingsGraphic,
+            houseGraphic
+        ])
+        
+        canClearGraphics = true
+    }
+    
     /// Saves the current geometry to the graphics overlay and stops editing.
     /// - Precondition: Geometry's sketch must be valid.
     func save() {
         precondition(geometryEditor.geometry?.sketchIsValid ?? false)
+        
+        if selectedGraphic != nil {
+            // Update geometry for edited graphic.
+            updateGraphic()
+        } else {
+            // Add new graphic.
+            addGraphic()
+        }
+    }
+    
+    /// Updates the selected graphic with the current geometry.
+    private func updateGraphic() {
+        guard let selectedGraphic else { return }
+        selectedGraphic.geometry = geometryEditor.stop()
+        isStarted = false
+        selectedGraphic.isVisible = true
+        self.selectedGraphic = nil
+    }
+    
+    /// Adds a new graphic for the current geometry to the graphics overlay.
+    private func addGraphic() {
         let geometry = geometryEditor.geometry!
         let graphic = Graphic(geometry: geometry, symbol: symbol(for: geometry))
         geometryOverlay.addGraphic(graphic)
         stop()
-        canClearSavedSketches = true
+        canClearGraphics = true
     }
     
-    /// Clears all the saved sketches on the graphics overlay.
-    func clearSavedSketches() {
+    /// Removes the initial graphics and saved sketches on the graphics overlay.
+    func deleteAllGeometries() {
         geometryOverlay.removeAllGraphics()
-        canClearSavedSketches = false
+        canClearGraphics = false
     }
     
     /// Stops editing with the geometry editor.
     func stop() {
         geometryEditor.stop()
         isStarted = false
+        selectedGraphic?.isVisible = true
     }
     
     /// Returns the symbology for graphics saved to the graphics overlay.
@@ -342,15 +416,14 @@ private class GeometryEditorModel: ObservableObject {
     /// - Returns: Either a marker or fill symbol depending on the type of provided geometry.
     private func symbol(for geometry: Geometry) -> Symbol {
         switch geometry {
-        case is Point, is Multipoint:
-            return SimpleMarkerSymbol(style: .circle, color: .blue, size: 20)
+        case is Point:
+            return .point
+        case is Multipoint:
+            return .multipoint
         case is Polyline:
-            return SimpleLineSymbol(color: .blue, width: 2)
+            return .polyline
         case is ArcGIS.Polygon:
-            return SimpleFillSymbol(
-                color: .gray.withAlphaComponent(0.5),
-                outline: SimpleLineSymbol(color: .blue, width: 2)
-            )
+            return .polygon
         default:
             fatalError("Unexpected geometry type")
         }
@@ -384,6 +457,122 @@ private class GeometryEditorModel: ObservableObject {
         geometryEditor.tool = tool
         geometryEditor.start(withType: geometryType)
         isStarted = true
+    }
+    
+    /// Starts editing a given graphic with the geometry editor.
+    /// - Parameter graphic: The graphic to edit.
+    func startEditing(with graphic: Graphic) {
+        selectedGraphic = graphic
+        graphic.isVisible = false
+        let geometry = graphic.geometry!
+        geometryEditor.start(withInitial: geometry)
+        isStarted = true
+    }
+}
+
+private extension Geometry {
+    // swiftlint:disable force_try
+    static func house() -> Point {
+        let jsonStr = """
+                {"x":-1067898.59,
+                 "y":6998366.62,
+                 "spatialReference":{"latestWkid":3857,"wkid":102100}}
+            """
+        return try! Point.fromJSON(jsonStr)
+    }
+    
+    static func road1() -> Polyline {
+        let jsonStr = """
+                {"paths":[[[-1068095.40,6998123.52],[-1068086.16,6998134.60],
+                          [-1068083.20,6998160.44],[-1068104.27,6998205.37],
+                          [-1068070.63,6998255.22],[-1068014.44,6998291.54],
+                          [-1067952.33,6998351.85],[-1067927.93,6998386.93],
+                          [-1067907.97,6998396.78],[-1067889.86,6998406.63],
+                          [-1067848.08,6998495.26],[-1067832.92,6998521.11]]],
+                        "spatialReference":{"latestWkid":3857,"wkid":102100}}
+            """
+        return try! Polyline.fromJSON(jsonStr)
+    }
+    
+    static func road2() -> Polyline {
+        let jsonStr = """
+                {"paths":[[[-1067999.28,6998061.97],[-1067994.48,6998086.59],
+                        [-1067964.53,6998125.37],[-1067952.70,6998215.84],
+                        [-1067923.13,6998347.54],[-1067903.90,6998391.86],
+                        [-1067895.40,6998422.02],[-1067891.70,6998460.18],
+                        [-1067889.49,6998483.56],[-1067880.98,6998527.26]]],
+                    "spatialReference":{"latestWkid":3857,"wkid":102100}}
+            """
+        return try! Polyline.fromJSON(jsonStr)
+    }
+    
+    static func outbuildings() -> Multipoint {
+        let jsonStr = """
+                {"points":[[-1067984.26,6998346.28],[-1067966.80,6998244.84],
+                          [-1067921.88,6998284.65],[-1067934.36,6998340.74],
+                          [-1067917.93,6998373.97],[-1067828.30,6998355.28],
+                          [-1067832.25,6998339.70],[-1067823.10,6998336.93],
+                          [-1067873.22,6998386.78],[-1067896.72,6998244.49]],
+                        "spatialReference":{"latestWkid":3857,"wkid":102100}}
+            """
+        return try! Multipoint.fromJSON(jsonStr)
+    }
+    
+    static func boundary() -> Polygon {
+        let jsonStr = """
+                {"rings":[[[-1067943.67,6998403.86],[-1067938.17,6998427.60],
+                           [-1067898.77,6998415.86],[-1067888.26,6998398.80],
+                           [-1067800.85,6998372.93],[-1067799.61,6998342.81],
+                           [-1067809.38,6998330.00],[-1067817.07,6998307.85],
+                           [-1067838.07,6998285.34],[-1067849.10,6998250.38],
+                           [-1067874.02,6998256.00],[-1067879.87,6998235.95],
+                           [-1067913.41,6998245.03],[-1067934.84,6998291.34],
+                           [-1067948.41,6998251.90],[-1067961.18,6998186.68],
+                           [-1068008.59,6998199.49],[-1068052.89,6998225.45],
+                           [-1068039.37,6998261.11],[-1068064.12,6998265.26],
+                           [-1068043.32,6998299.88],[-1068036.25,6998327.93],
+                           [-1068004.43,6998409.28],[-1067943.67,6998403.86]]],
+                        "spatialReference":{"latestWkid":3857,"wkid":102100}}
+            """
+        return try! Polygon.fromJSON(jsonStr)
+    }
+    // swiftlint:enable force_try
+}
+
+private extension Symbol {
+    static var point: SimpleMarkerSymbol {
+        SimpleMarkerSymbol(
+            style: .square,
+            color: .red,
+            size: 10
+        )
+    }
+    
+    static var multipoint: SimpleMarkerSymbol {
+        SimpleMarkerSymbol(
+            style: .circle,
+            color: .yellow,
+            size: 5
+        )
+    }
+    
+    static var polyline: SimpleLineSymbol {
+        SimpleLineSymbol(
+            color: .blue,
+            width: 2
+        )
+    }
+    
+    static var polygon: SimpleFillSymbol {
+        SimpleFillSymbol(
+            style: .solid,
+            color: .red.withAlphaComponent(0.3),
+            outline: SimpleLineSymbol(
+                style: .dash,
+                color: .black,
+                width: 1
+            )
+        )
     }
 }
 
