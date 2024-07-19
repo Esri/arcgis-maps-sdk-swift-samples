@@ -462,17 +462,9 @@ private class GeometryEditorModel: ObservableObject {
     /// Starts editing a given graphic with the geometry editor.
     /// - Parameter graphic: The graphic to edit.
     func startEditing(with graphic: Graphic) {
-        let geometry = graphic.geometry!
-        
-        switch geometry {
-        case is Point, is Multipoint:
-            geometryEditor.tool = VertexTool()
-        default:
-            break
-        }
-        
         selectedGraphic = graphic
         graphic.isVisible = false
+        let geometry = graphic.geometry!
         geometryEditor.start(withInitial: geometry)
         isStarted = true
     }
