@@ -2,7 +2,7 @@
 
 Implement a basemap gallery that automatically retrieves the latest customization options from the basemap styles service.
 
-![screenshot](screenshot.png)
+![Screenshot of Create dynamic basemap gallery sample](create-dynamic-basemap-gallery.png)
 
 ## Use case
 

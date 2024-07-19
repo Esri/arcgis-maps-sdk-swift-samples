@@ -2,7 +2,9 @@
     "category": "Maps",
     "description": "Implement a basemap gallery that automatically retrieves the latest customization options from the basemap styles service.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "create-dynamic-basemap-gallery.png"
+    ],
     "keywords": [
         "basemap",
         "languages",
