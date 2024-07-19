@@ -17,34 +17,71 @@ import CoreLocation
 import SwiftUI
 
 extension ShowDeviceLocationUsingIndoorPositioningView {
+    enum DataSourceType: CaseIterable {
+        case indoorDefinition
+        case ipsTables
+        
+        var label: String {
+            switch self {
+            case .indoorDefinition: "Indoors Definition"
+            case .ipsTables: "IPS Tables"
+            }
+        }
+    }
+}
+
+extension ShowDeviceLocationUsingIndoorPositioningView {
     @MainActor
     class Model: ObservableObject {
+        /// Basic map with topographic style.
+        var map = Map(basemapStyle: .arcGISTopographic)
+        
+        /// The value of the current floor with -1 being used to represent floor that has not been set.
+        private var currentFloor: Int = -1
+        
+        /// The number of BLE sensors which are being used for indoor location.
+        private var sensorCount: Int = -1
+        
+        /// Counts the number of satellites which being used for the GPS location.
+        private var satelliteCount: Int = -1
+        
+        /// The value of the horizontal accuracy of the location (in meters).
+        private var horizontalAccuracy: Double = -1.0
+        
+        ///  This value tracks whether the source is GPS or BLE.
+        private var source: String = ""
+        
+        /// This is the published value of the data that is displayed.
+        @Published private(set) var labelText: String = ""
+        
         /// A indoors location data source based on sensor data, including but not
         /// limited to radio, GPS, motion sensors.
         @Published private(set) var indoorsLocationDataSource: IndoorsLocationDataSource?
         
-        /// The value of the current floor with -1 being used to represent floor that has not been set.
-        @Published private(set) var currentFloor: Int = -1
-        
-        /// The number of BLE sensors which are being used for indoor location.
-        @Published private(set) var sensorCount: Int!
-        
-        /// Counts the number of satellites which being used for the GPS location.
-        @Published private(set) var satelliteCount: Int!
-        
-        /// The value of the horizontal accuracy of the location (in meters)
-        @Published private(set) var horizontalAccuracy: Double!
-        
         /// The map's location display.
         @Published private(set) var locationDisplay = LocationDisplay()
         
-        ///  This value tracks whether the source is GPS or BLE
-        @Published private(set) var source: String = ""
+        /// The measurement formatter for sensor accuracy.
+        private let measurementFormatter: MeasurementFormatter = {
+            let formatter = MeasurementFormatter()
+            formatter.unitStyle = .short
+            formatter.unitOptions = .providedUnit
+            return formatter
+        }()
         
-        /// A function that attempts to load an indoor definition attached to the map and returns a boolean value based whether it is loaded.
-        /// - Parameter map: The map that contains the IndoorDefinition
+        /// Kicks off the logic for displaying the indoors position.
+        /// - Parameter dataSourceType: The data model type to use when displaying indoor position.
+        func loadAndDisplayIndoorData(for dataSourceType: DataSourceType) async throws {
+            try await setIndoorDatasource(for: dataSourceType)
+            try await startLocationDisplay()
+            try await updateLocation()
+        }
+        
+        /// A function that attempts to load an indoor definition attached to the map
+        /// and returns a boolean value based whether it is loaded.
+        /// - Parameter map: The map that contains the IndoorDefinition.
         /// - Returns: A boolean value for whether the IndoorDefinition is loaded.
-        func loadAndCheckForIndoorDefinition(map: Map) async throws -> Bool {
+        private func loadAndCheckForIndoorDefinition(map: Map) async throws -> Bool {
             try await map.indoorPositioningDefinition?.load()
             if map.indoorPositioningDefinition?.loadStatus == .loaded {
                 return true
@@ -52,18 +89,30 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
             return false
         }
         
-        /// Sets the indoor datasource on the location display depending on whether the map contains an IndoorDefinition.
+        /// Sets the indoor datasource on the location display depending on
+        /// whether the map contains an IndoorDefinition.
         /// - Parameter map: The map which is checked for an indoor definition.
-        func setIndoorDatasource(map: Map) async throws {
-            locationDisplay.autoPanMode = .compassNavigation
+        private func setIndoorDatasource(for type: DataSourceType) async throws {
+            await indoorsLocationDataSource?.stop()
+            indoorsLocationDataSource = nil
             try await map.floorManager?.load()
-            if try await loadAndCheckForIndoorDefinition(map: map),
-               let indoorPositioningDefinition = map.indoorPositioningDefinition {
-                indoorsLocationDataSource = IndoorsLocationDataSource(definition: indoorPositioningDefinition)
-            } else {
+            switch type {
+            case .indoorDefinition:
+                if try await loadAndCheckForIndoorDefinition(map: map),
+                   let indoorPositioningDefinition = map.indoorPositioningDefinition {
+                    indoorsLocationDataSource = IndoorsLocationDataSource(definition: indoorPositioningDefinition)
+                }
+            case .ipsTables:
                 indoorsLocationDataSource = try await createIndoorLocationDataSource(map: map)
             }
-            locationDisplay.dataSource = indoorsLocationDataSource!
+            guard let dataSource = indoorsLocationDataSource else { return }
+            locationDisplay.dataSource = dataSource
+            locationDisplay.autoPanMode = .recenter
+            for featLayer in map.operationalLayers {
+                if featLayer.name == "Transitions" || featLayer.name == "Details" {
+                    featLayer.isVisible = true
+                }
+            }
         }
         
         /// Creates an indoor location datasource from the maps tables if there is no indoors definition.
@@ -104,15 +153,18 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         
         /// The method that updates the location when the indoors location datasource is triggered.
         /// - Parameter floorManager: The floor manager that filters what is displayed on the map by floor.
-        func updateLocation(floorManager: FloorManager) async throws {
+        private func updateLocation() async throws {
+            guard let floorManager = map.floorManager else { return }
             for try await location in locationDisplay.dataSource.locations {
                 if let floorLevel = location.additionalSourceProperties[.floor] as? Int {
                     if (floorLevel + 1) != currentFloor {
                         currentFloor = floorLevel + 1
-                        try await displayFeatures(floorManager: floorManager, onFloor: currentFloor)
+                        floorManager.levels.forEach {
+                            $0.isVisible = currentFloor == $0.levelNumber
+                        }
                     }
                 }
-                source = location.additionalSourceProperties[.positionSource] as? String ?? "N/A"
+                source = location.additionalSourceProperties[.positionSource] as? String ?? ""
                 switch source {
                 case "GNSS":
                     satelliteCount = location.additionalSourceProperties[.satelliteCount] as? Int ?? 0
@@ -120,7 +172,34 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
                     sensorCount = location.additionalSourceProperties[.transmitterCount] as? Int ?? 0
                 }
                 horizontalAccuracy = location.horizontalAccuracy
+                labelText = getStatusLabelText()
             }
+        }
+        
+        /// Updates the labels on the view with the current state of the indoors data source.
+        private func getStatusLabelText() -> String {
+            var result = ""
+            if currentFloor > -1 {
+                result += "Current floor: \(currentFloor)\n"
+                if horizontalAccuracy > -1.0 {
+                    let formattedAccuracy = measurementFormatter.string(
+                        from: Measurement(
+                            value: horizontalAccuracy,
+                            unit: UnitLength.meters
+                        )
+                    )
+                    result += "Accuracy: \(formattedAccuracy)\n"
+                }
+                if sensorCount > -1 {
+                    result += "Number of sensor: \(sensorCount)\n"
+                } else if satelliteCount > -1 {
+                    result += "Number of satellites: \(satelliteCount)\n"
+                }
+                result += "Data source: \(source)"
+            } else {
+                result = "No floor data."
+            }
+            return result
         }
         
         /// Starts the location display to show user's location on the map.
@@ -132,20 +211,6 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
             }
             // Start the location display to zoom to the user's current location.
             try await locationDisplay.dataSource.start()
-        }
-        
-        /// Display features on a certain floor level using definition expression.
-        /// - Parameters:
-        ///   - floorManager: A floor manager for filtering what is displayed on the map.
-        ///   - floor:  The floor level of the features to be displayed.
-        private func displayFeatures(floorManager: FloorManager, onFloor floor: Int) async throws {
-            floorManager.levels.forEach {
-                if currentFloor == $0.levelNumber {
-                    $0.isVisible = true
-                } else {
-                    $0.isVisible = false
-                }
-            }
         }
     }
 }

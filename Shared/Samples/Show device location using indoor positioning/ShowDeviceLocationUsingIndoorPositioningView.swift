@@ -23,30 +23,27 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
     @StateObject private var model = Model()
     /// The error shown in the error alert.
     @State private var error: Error?
-    /// Basic map with topographic style.
-    @State private var map = Map(basemapStyle: .arcGISTopographic)
     /// Represents whether the loading state is true or false.
     @State private var isLoading = false
-    /// The measurement formatter for sensor accuracy.
-    let measurementFormatter: MeasurementFormatter = {
-        let formatter = MeasurementFormatter()
-        formatter.unitStyle = .short
-        formatter.unitOptions = .providedUnit
-        return formatter
-    }()
+    /// Represents the data model being used.
+    @State private var dataSourceType: DataSourceType = .indoorDefinition
     
     var body: some View {
-        MapView(map: map)
+        MapView(map: model.map)
+            .onDrawStatusChanged { drawStatus in
+                // Updates the state when the map's draw status changes.
+                if drawStatus == .completed {
+                    isLoading = false
+                }
+            }
             .locationDisplay(model.locationDisplay)
-            .overlay(alignment: .center) {
-                if model.currentFloor > -1 {
-                    if let accuracy = model.horizontalAccuracy,
-                        let sensorCount = model.sensorCount {
-                        let text = measurementFormatter.string(from: Measurement(value: accuracy, unit: UnitLength.meters))
-                        Text("Current Floor: \(model.currentFloor)\nAccuracy: \(text)\nNumber of sensors \(sensorCount)\nData source: \(model.source)")
-                    }
-                } else {
-                    Text("No floor data")
+            .overlay(alignment: .top) {
+                VStack(spacing: 2) {
+                    Spacer()
+                    Text(model.labelText)
+                    Spacer()
+                    Spacer()
+                    Spacer()
                 }
             }
             .overlay(alignment: .center) {
@@ -61,23 +58,36 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
             .task {
                 isLoading = true
                 do {
-                    try await map.load()
-                    try await model.setIndoorDatasource(map: map)
-                    try await model.startLocationDisplay()
-                    isLoading = false
-                    if let floorManager = map.floorManager {
-                        try await model.updateLocation(floorManager: floorManager)
-                    }
+                    try await model.map.load()
+                    try await model.loadAndDisplayIndoorData(for: dataSourceType)
                 } catch {
-                    isLoading = false
                     self.error = error
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .bottomBar) {
+                    Picker("Data Source Type", selection: $dataSourceType) {
+                        ForEach(DataSourceType.allCases, id: \.self) { type in
+                            Text(type.label)
+                        }
+                    }
+                    .task(id: dataSourceType) {
+                        Task {
+                            isLoading = true
+                            do {
+                                try await model.loadAndDisplayIndoorData(for: dataSourceType)
+                            } catch {
+                                self.error = error
+                            }
+                        }
+                    }
                 }
             }
             .errorAlert(presentingError: $error)
             .onAppear {
                 ArcGISEnvironment.apiKey = nil
                 ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = ChallengeHandler()
-                map = Map(url: .indoorsMap)!
+                model.map = Map(url: .indoorsMap)!
             }
             .onDisappear {
                 ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = nil
@@ -92,16 +102,18 @@ private extension URL {
 }
 
 private struct ChallengeHandler: ArcGISAuthenticationChallengeHandler {
-    private struct Credentials {
+    enum Credentials {
         static let userName = ""
         static let password = ""
     }
     
-    func handleArcGISAuthenticationChallenge(
-        _ challenge: ArcGISAuthenticationChallenge
-    ) async throws -> ArcGISAuthenticationChallenge.Disposition {
+    func handleArcGISAuthenticationChallenge(_ challenge: ArcGISAuthenticationChallenge) async throws -> ArcGISAuthenticationChallenge.Disposition {
         return .continueWithCredential(
-            try await TokenCredential.credential(for: challenge, username: Credentials.userName, password: Credentials.password)
+            try await TokenCredential.credential(
+                for: challenge,
+                username: Credentials.userName,
+                password: Credentials.password
+            )
         )
     }
 }
