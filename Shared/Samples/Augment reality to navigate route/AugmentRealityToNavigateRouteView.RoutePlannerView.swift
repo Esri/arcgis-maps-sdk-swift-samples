@@ -156,7 +156,7 @@ private extension AugmentRealityToNavigateRouteView.RoutePlannerView {
         /// A point representing the start of navigation.
         var startPoint: Point? {
             didSet {
-                let stopSymbol = PictureMarkerSymbol(image: UIImage(named: "StopA")!)
+                let stopSymbol = PictureMarkerSymbol(image: .stopA)
                 let startStopGraphic = Graphic(geometry: startPoint, symbol: stopSymbol)
                 stopGraphicsOverlay.addGraphic(startStopGraphic)
             }
@@ -164,7 +164,7 @@ private extension AugmentRealityToNavigateRouteView.RoutePlannerView {
         /// A point representing the destination of navigation.
         var endPoint: Point? {
             didSet {
-                let stopSymbol = PictureMarkerSymbol(image: UIImage(named: "StopB")!)
+                let stopSymbol = PictureMarkerSymbol(image: .stopB)
                 let endStopGraphic = Graphic(geometry: endPoint, symbol: stopSymbol)
                 stopGraphicsOverlay.addGraphic(endStopGraphic)
             }
