@@ -159,12 +159,11 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         private func updateLocation() async throws {
             guard let floorManager = map.floorManager else { return }
             for try await location in locationDisplay.dataSource.locations {
-                if let floorLevel = location.additionalSourceProperties[.floor] as? Int {
-                    if (floorLevel + 1) != currentFloor {
-                        currentFloor = floorLevel + 1
-                        floorManager.levels.forEach {
-                            $0.isVisible = currentFloor == $0.levelNumber
-                        }
+                if let floorLevel = location.additionalSourceProperties[.floor] as? Int,
+                   (floorLevel + 1) != currentFloor {
+                    currentFloor = floorLevel + 1
+                    floorManager.levels.forEach {
+                        $0.isVisible = currentFloor == $0.levelNumber
                     }
                 }
                 source = location.additionalSourceProperties[.positionSource] as? String ?? ""
