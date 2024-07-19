@@ -206,7 +206,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         }
         
         /// Starts the location display to show user's location on the map.
-        func startLocationDisplay() async throws {
+        private func startLocationDisplay() async throws {
             // Request location permission if it has not yet been determined.
             let locationManager = CLLocationManager()
             if locationManager.authorizationStatus == .notDetermined {
