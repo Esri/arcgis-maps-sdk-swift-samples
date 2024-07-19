@@ -518,7 +518,7 @@ private extension Geometry {
         return try! Multipoint.fromJSON(jsonStr)
     }
     
-    static func boundary() -> Polygon {
+    static func boundary() -> ArcGIS.Polygon {
         let jsonStr = """
                 {"rings":[[[-1067943.67,6998403.86],[-1067938.17,6998427.60],
                            [-1067898.77,6998415.86],[-1067888.26,6998398.80],
