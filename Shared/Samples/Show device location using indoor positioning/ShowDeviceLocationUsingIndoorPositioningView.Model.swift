@@ -61,6 +61,8 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         /// The map's location display.
         @Published private(set) var locationDisplay = LocationDisplay()
         
+        @Published var isLoading = false
+        
         /// The measurement formatter for sensor accuracy.
         private let measurementFormatter: MeasurementFormatter = {
             let formatter = MeasurementFormatter()
@@ -197,6 +199,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
                     result += "Number of satellites: \(satelliteCount)\n"
                 }
                 result += "Data source: \(source)"
+                isLoading = false
             } else {
                 result = "No floor data."
             }

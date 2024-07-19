@@ -23,8 +23,6 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
     @StateObject private var model = Model()
     /// The error shown in the error alert.
     @State private var error: Error?
-    /// Represents whether the loading state is true or false.
-    @State private var isLoading = false
     /// Represents whether the map is loaded.
     @State private var mapIsLoaded = false
     /// Represents the data model being used.
@@ -32,24 +30,19 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
     
     var body: some View {
         MapView(map: model.map)
-            .onDrawStatusChanged { drawStatus in
-                // Updates the state when the map's draw status changes.
-                if drawStatus == .completed {
-                    isLoading = false
-                }
-            }
             .locationDisplay(model.locationDisplay)
             .overlay(alignment: .top) {
                 VStack(spacing: 2) {
                     Spacer()
                     Text(model.labelText)
+                        .padding()
                     Spacer()
                     Spacer()
                     Spacer()
                 }
             }
             .overlay(alignment: .center) {
-                if isLoading {
+                if model.isLoading {
                     ProgressView("Loading…")
                         .padding()
                         .background(.ultraThinMaterial)
@@ -58,7 +51,7 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
                 }
             }
             .task(id: dataSourceType) {
-                isLoading = true
+                model.isLoading = true
                 do {
                     try await model.map.load()
                     mapIsLoaded = true
@@ -76,7 +69,7 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
                         }
                         .task(id: dataSourceType) {
                             Task {
-                                isLoading = true
+                                model.isLoading = true
                                 do {
                                     try await model.loadAndDisplayIndoorData(for: dataSourceType)
                                 } catch {
