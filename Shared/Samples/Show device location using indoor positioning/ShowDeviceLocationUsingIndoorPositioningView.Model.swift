@@ -82,11 +82,12 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         /// - Parameter map: The map that contains the IndoorDefinition.
         /// - Returns: A boolean value for whether the IndoorDefinition is loaded.
         private func loadAndCheckForIndoorDefinition(map: Map) async throws -> Bool {
-            try await map.indoorPositioningDefinition?.load()
-            if map.indoorPositioningDefinition?.loadStatus == .loaded {
-                return true
+            guard let indoorPositioningDefinition = map.indoorPositioningDefinition else { return false }
+            if indoorPositioningDefinition.loadStatus != .loaded {
+                try await indoorPositioningDefinition.load()
+                return indoorPositioningDefinition.loadStatus == .loaded
             }
-            return false
+            return true
         }
         
         /// Sets the indoor datasource on the location display depending on

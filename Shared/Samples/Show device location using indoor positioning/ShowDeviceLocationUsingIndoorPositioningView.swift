@@ -25,6 +25,8 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
     @State private var error: Error?
     /// Represents whether the loading state is true or false.
     @State private var isLoading = false
+    /// Represents whether the map is loaded.
+    @State private var mapIsLoaded = false
     /// Represents the data model being used.
     @State private var dataSourceType: DataSourceType = .indoorDefinition
     
@@ -55,29 +57,31 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
                         .shadow(radius: 50)
                 }
             }
-            .task {
+            .task(id: dataSourceType) {
                 isLoading = true
                 do {
                     try await model.map.load()
-                    try await model.loadAndDisplayIndoorData(for: dataSourceType)
+                    mapIsLoaded = true
                 } catch {
                     self.error = error
                 }
             }
             .toolbar {
-                ToolbarItem(placement: .bottomBar) {
-                    Picker("Data Source Type", selection: $dataSourceType) {
-                        ForEach(DataSourceType.allCases, id: \.self) { type in
-                            Text(type.label)
+                if mapIsLoaded {
+                    ToolbarItem(placement: .bottomBar) {
+                        Picker("Data Source Type", selection: $dataSourceType) {
+                            ForEach(DataSourceType.allCases, id: \.self) { type in
+                                Text(type.label)
+                            }
                         }
-                    }
-                    .task(id: dataSourceType) {
-                        Task {
-                            isLoading = true
-                            do {
-                                try await model.loadAndDisplayIndoorData(for: dataSourceType)
-                            } catch {
-                                self.error = error
+                        .task(id: dataSourceType) {
+                            Task {
+                                isLoading = true
+                                do {
+                                    try await model.loadAndDisplayIndoorData(for: dataSourceType)
+                                } catch {
+                                    self.error = error
+                                }
                             }
                         }
                     }
