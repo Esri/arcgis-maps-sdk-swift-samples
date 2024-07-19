@@ -25,7 +25,8 @@
         "Worldview"
     ],
     "snippets": [
-        "CreateDynamicBasemapGalleryView.swift"
+        "CreateDynamicBasemapGalleryView.swift",
+        "CreateDynamicBasemapGalleryView.Views.swift"
     ],
     "title": "Create dynamic basemap gallery"
 }
