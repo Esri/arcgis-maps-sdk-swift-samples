@@ -99,7 +99,7 @@ extension CreateDynamicBasemapGalleryView {
         @Published private(set) var stylesInfo: [BasemapStyleInfo] = []
         
         /// The basemap style info for the basemap style.
-        @Published private var basemapStyleInfo: BasemapStyleInfo?
+        @Published private(set) var basemapStyleInfo: BasemapStyleInfo?
         
         /// The basemap style language strategy options for the basemap style info.
         var languageStrategies: [BasemapStyleLanguageStrategy] {

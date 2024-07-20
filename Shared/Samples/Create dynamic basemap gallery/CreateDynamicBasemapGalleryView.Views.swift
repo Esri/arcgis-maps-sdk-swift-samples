@@ -55,6 +55,7 @@ extension CreateDynamicBasemapGalleryView {
                         }
                     }
                 }
+                .disabled(model.basemapStyleInfo?.languageStrategies.isEmpty ?? true)
                 
                 Picker("Worldview", selection: $model.worldviewCode) {
                     ForEach(model.worldviews, id: \.?.code) { worldview in
@@ -62,6 +63,7 @@ extension CreateDynamicBasemapGalleryView {
                             .tag(worldview?.code)
                     }
                 }
+                .disabled(model.basemapStyleInfo?.worldviews.isEmpty ?? true)
             }
         }
     }
