@@ -294,9 +294,9 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
         func addConditionalExpression(
             attribute: UtilityNetworkAttribute,
             comparison: UtilityNetworkAttributeComparison.Operator,
-            value: Any
+            value: any Sendable
         ) throws {
-            let convertedValue: Any
+            let convertedValue: any Sendable
             
             if let codedValue = value as? CodedValue, attribute.domain is CodedValueDomain {
                 convertedValue = convertToDataType(value: codedValue.code!, dataType: attribute.dataType)
@@ -331,7 +331,7 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
         ///   - value: The right hand side value used in the conditional expression.
         ///   - dataType: An `UtilityNetworkAttribute.DataType` enum case.
         /// - Returns: Converted value.
-        func convertToDataType(value: Any, dataType: UtilityNetworkAttribute.DataType) -> Any {
+        func convertToDataType(value: any Sendable, dataType: UtilityNetworkAttribute.DataType) -> any Sendable {
             switch dataType {
             case .integer:
                 if let value = value as? Int16 {

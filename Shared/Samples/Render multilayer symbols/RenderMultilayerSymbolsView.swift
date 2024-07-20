@@ -149,12 +149,10 @@ private extension RenderMultilayerSymbolsView {
         )
         
         // Create a pin graphic using an image in the project assets.
-        if let pinImage = UIImage(named: "PinBlueStar") {
-            let pinLayer = PictureMarkerSymbolLayer(image: pinImage)
-            graphics.append(
-                makeGraphicFromPictureMarkerSymbol(layer: pinLayer, offset: 40)
-            )
-        }
+        let pinLayer = PictureMarkerSymbolLayer(image: .pinBlueStar)
+        graphics.append(
+            makeGraphicFromPictureMarkerSymbol(layer: pinLayer, offset: 40)
+        )
         
         return graphics
     }

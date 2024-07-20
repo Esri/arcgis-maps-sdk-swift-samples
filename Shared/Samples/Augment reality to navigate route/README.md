@@ -21,7 +21,7 @@ When you start, route instructions will be displayed and spoken. As you proceed 
 1. The map page is used to plan the route before starting the AR experience. See *Navigate route*, *Find route*, and *Offline routing* samples for a more focused demonstration of that workflow.
 2. Pass the resulting `RouteResult` and the input `RouteTask` and `RouteParameters` to the view used for the AR portion of the navigation experience.
     * The route task and parameters are used to support a rerouting capability where routes are recalculated on-the-fly if you deviate. Due to service limitations, this sample doesn't support on-the-fly rerouting. You can incorporate offline routing to support rerouting in your app.
-3. Start ARKit/ARCore tracking with continuous location updates when the AR view is shown.
+3. Start ARKit tracking with continuous location updates when the AR view is shown.
 4. Get the route geometry from the first route in the `RouteResult`. Use the scene's base surface to apply elevation to the line so that it will follow the terrain.
     * First, densify the polyline to ensure that the elevation adjustment can be applied smoothly along the line with `GeometryEngine.densify(_:maxSegmentLength:)`
     * Next, create a polyline builder with a spatial reference matching the input route geometry
@@ -51,15 +51,15 @@ This sample uses Esri's [world elevation service](https://elevation3d.arcgis.com
 
 ## Additional information
 
-This sample requires a device that is compatible with ARKit 1 on iOS.
+This sample requires a device that is compatible with ARKit on iOS.
 
 Unlike other scene samples, there's no need for a basemap while navigating, because context is provided by the camera feed showing the real environment. The base surface's opacity is set to zero to prevent it from interfering with the AR experience.
 
 A digital elevation model is used to ensure that the displayed route is positioned appropriately relative to the terrain of the route. If you don't want to display the route line floating, you could show the line draped on the surface instead.
 
-**World-scale AR** is one of three main patterns for working with geographic information in augmented reality. Augmented reality is made possible with the ArcGIS Runtime Toolkit. See [Augmented reality](https://developers.arcgis.com/ios/scenes-3d/display-scenes-in-augmented-reality/) in the guide for more information about augmented reality and adding it to your app.
+**World-scale AR** is one of three main patterns for working with geographic information in augmented reality. Augmented reality is made possible with the ArcGIS Maps SDK Toolkit. See [Augmented reality](https://developers.arcgis.com/swift/scenes-3d/display-scenes-in-augmented-reality/) in the guide for more information about augmented reality and adding it to your app.
 
-Because most navigation scenarios involve traveling beyond the accurate range for ARKit/ARCore positioning, this sample relies on **continuous location updates** from the location data source. Because the origin camera is constantly being reset by the location data source, the sample doesn't allow the user to pan to calibrate or adjust the altitude with a slider. The location data source doesn't provide a heading, so it isn't overwritten when the location refreshes.
+Because most navigation scenarios involve traveling beyond the accurate range for ARKit positioning, this sample relies on **continuous location updates** from the location data source. Because the origin camera is constantly being reset by the location data source, the sample doesn't allow the user to pan to calibrate or adjust the altitude with a slider. The location data source doesn't provide a heading, so it isn't overwritten when the location refreshes.
 
 ## Tags
 

@@ -97,7 +97,7 @@ struct ManageLayersSheetView: View {
                     ForEach(operationalLayers, id: \.id) { layer in
                         HStack {
                             Image(systemName: "minus.circle.fill")
-                                .foregroundColor(.red)
+                                .foregroundStyle(.red)
                                 .imageScale(.large)
                                 .clipped()
                                 .onTapGesture {
@@ -128,7 +128,7 @@ struct ManageLayersSheetView: View {
                     ForEach(removedLayers, id: \.id) { layer in
                         HStack {
                             Image(systemName: "plus.circle.fill")
-                                .foregroundColor(.green)
+                                .foregroundStyle(.green)
                                 .imageScale(.large)
                                 .clipped()
                                 .onTapGesture {

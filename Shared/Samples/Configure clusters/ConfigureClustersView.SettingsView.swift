@@ -62,7 +62,7 @@ extension ConfigureClustersView {
                             Text("Current Map Scale")
                             Spacer()
                             Text(mapViewScale, format: .number.precision(.fractionLength(0)))
-                                .foregroundColor(.secondary)
+                                .foregroundStyle(.secondary)
                         }
                     }
                 }

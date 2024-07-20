@@ -251,15 +251,17 @@ private extension ShowGridView {
 }
 
 private extension ArcGIS.Grid.LabelPosition {
-    static var allCases: [Self] = [
-        .allSides,
-        .center,
-        .topLeft,
-        .topRight,
-        .bottomLeft,
-        .bottomRight,
-        .geographic
-    ]
+    static var allCases: [Self] {
+        return [
+            .allSides,
+            .center,
+            .topLeft,
+            .topRight,
+            .bottomLeft,
+            .bottomRight,
+            .geographic
+        ]
+    }
     
     var label: String {
         switch self {
@@ -276,7 +278,7 @@ private extension ArcGIS.Grid.LabelPosition {
 }
 
 private extension LatitudeLongitudeGrid.LabelFormat {
-    static var allCases: [Self] = [.decimalDegrees, .degreesMinutesSeconds]
+    static var allCases: [Self] { [.decimalDegrees, .degreesMinutesSeconds] }
     
     var label: String {
         switch self {
@@ -288,7 +290,7 @@ private extension LatitudeLongitudeGrid.LabelFormat {
 }
 
 private extension MGRSGrid.LabelUnit {
-    static var allCases: [Self] = [.kilometersMeters, .meters]
+    static var allCases: [Self] { [.kilometersMeters, .meters] }
     
     var label: String {
         switch self {
@@ -300,7 +302,7 @@ private extension MGRSGrid.LabelUnit {
 }
 
 private extension USNGGrid.LabelUnit {
-    static var allCases: [Self] = [.kilometersMeters, .meters]
+    static var allCases: [Self] { [.kilometersMeters, .meters] }
     
     var label: String {
         switch self {

@@ -86,6 +86,7 @@ struct FilterByDefinitionExpressionOrDisplayFilterView: View {
 
 private extension FilterByDefinitionExpressionOrDisplayFilterView {
     /// The view model for the sample.
+    @MainActor
     final class Model: ObservableObject {
         /// A map with a topographic basemap.
         let map: Map = {

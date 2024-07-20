@@ -37,10 +37,10 @@ struct SetUpLocationDrivenGeotriggersView: View {
     private func startGeotriggerMonitors(_ geotriggerMonitors: [GeotriggerMonitor]) async throws {
         await withThrowingTaskGroup(of: Void.self) { group in
             for monitor in geotriggerMonitors {
-                group.addTask {
+                group.addTask { @MainActor in
                     try await monitor.start()
                     for await newNotification in monitor.notifications where newNotification is FenceGeotriggerNotificationInfo {
-                        await model.handleGeotriggerNotification(newNotification as! FenceGeotriggerNotificationInfo)
+                        model.handleGeotriggerNotification(newNotification as! FenceGeotriggerNotificationInfo)
                     }
                 }
             }
@@ -85,7 +85,7 @@ struct SetUpLocationDrivenGeotriggersView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                     
                     Text(nearbyFeaturesText)
-                        .foregroundColor(.orange)
+                        .foregroundStyle(.orange)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 .padding(8)

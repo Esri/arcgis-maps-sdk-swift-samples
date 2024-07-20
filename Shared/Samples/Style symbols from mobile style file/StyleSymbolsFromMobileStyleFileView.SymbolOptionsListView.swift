@@ -53,7 +53,7 @@ extension StyleSymbolsFromMobileStyleFileView {
                                 Text("Size")
                                 Spacer()
                                 Text(model.symbolOptionSelections.size.formatted(.number.rounded()))
-                                    .foregroundColor(.secondary)
+                                    .foregroundStyle(.secondary)
                             }
                             Slider(value: $model.symbolOptionSelections.size, in: 20...60, step: 1)
                         }

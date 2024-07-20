@@ -87,7 +87,7 @@ private extension SampleLink {
                 
                 if sampleIsFavorite {
                     Image(systemName: "star.fill")
-                        .foregroundColor(.yellow)
+                        .foregroundStyle(.yellow)
                 }
                 
                 Label {} icon: {

@@ -37,27 +37,30 @@ struct MonitorChangesToLayerViewStateView: View {
         return featureLayer
     }()
     
-    /// The text representing the view status of the feature layer.
-    @State private var statusText = ""
-    
     /// A Boolean value indicating whether the feature layer is visible.
     @State private var layerIsVisible = true
+    
+    /// The current `LayerViewState.Status` for the view.
+    @State private var layerStatus: LayerViewState.Status = []
     
     var body: some View {
         MapView(map: map)
             .onLayerViewStateChanged { layer, layerViewState in
                 // Only checks the view state of the feature layer.
                 guard layer.id == featureLayer.id else { return }
-                
-                // Gets the status from the view state for the layer.
-                statusText = layerViewState.status.label
+                layerStatus = layerViewState.status
             }
             .overlay(alignment: .top) {
-                Text("Layer view status:\n\(statusText)")
-                    .multilineTextAlignment(.center)
-                    .frame(maxWidth: .infinity, alignment: .center)
-                    .padding(8)
-                    .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
+                Text(
+                    """
+                    Layer view status:
+                    \(layerStatus.labels, format: .list(type: .and, width: .narrow))
+                    """
+                )
+                .multilineTextAlignment(.center)
+                .frame(maxWidth: .infinity, alignment: .center)
+                .padding(8)
+                .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
             }
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
@@ -78,33 +81,28 @@ struct MonitorChangesToLayerViewStateView: View {
 }
 
 private extension LayerViewState.Status {
-    /// A human-readable label for the status.
-    var label: String {
+    /// A human-readable array of labels for the statuses.
+    var labels: [String] {
         var statuses: [String] = []
-        if self.contains(.active) {
+        if contains(.active) {
             statuses.append("Active")
         }
-        if self.contains(.notVisible) {
+        if contains(.notVisible) {
             statuses.append("Not Visible")
         }
-        if self.contains(.outOfScale) {
+        if contains(.outOfScale) {
             statuses.append("Out of Scale")
         }
-        if self.contains(.loading) {
+        if contains(.loading) {
             statuses.append("Loading")
         }
-        if self.contains(.error) {
+        if contains(.error) {
             statuses.append("Error")
         }
-        if self.contains(.warning) {
+        if contains(.warning) {
             statuses.append("Warning")
         }
-        
-        if !statuses.isEmpty {
-            return statuses.joined(separator: ", ")
-        } else {
-            return "Unknown"
-        }
+        return if !statuses.isEmpty { statuses } else { ["Unknown"] }
     }
 }
 

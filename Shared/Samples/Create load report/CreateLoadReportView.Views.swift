@@ -26,7 +26,7 @@ extension CreateLoadReportView {
                     ForEach(model.includedPhases, id: \.name) { phase in
                         HStack {
                             Image(systemName: "minus.circle.fill")
-                                .foregroundColor(.red)
+                                .foregroundStyle(.red)
                                 .imageScale(.large)
                                 .clipped()
                                 .onTapGesture {
@@ -46,7 +46,7 @@ extension CreateLoadReportView {
                         ForEach(model.excludedPhases, id: \.name) { phase in
                             HStack {
                                 Image(systemName: "plus.circle.fill")
-                                    .foregroundColor(.green)
+                                    .foregroundStyle(.green)
                                     .imageScale(.large)
                                     .clipped()
                                 Text(phase.name)
