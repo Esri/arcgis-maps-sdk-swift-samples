@@ -3364,7 +3364,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 200.4.0;
+				MARKETING_VERSION = 200.5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.esri.arcgis-swift-sdk-samples";
 				PRODUCT_NAME = "ArcGIS Maps SDK Samples";
 				SDKROOT = iphoneos;
@@ -3396,7 +3396,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 200.4.0;
+				MARKETING_VERSION = 200.5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.esri.arcgis-swift-sdk-samples";
 				PRODUCT_NAME = "ArcGIS Maps SDK Samples";
 				SDKROOT = iphoneos;
@@ -3440,7 +3440,7 @@
 			repositoryURL = "https://github.com/Esri/arcgis-maps-sdk-swift-toolkit/";
 			requirement = {
 				kind = upToNextMinorVersion;
-				minimumVersion = 200.4.0;
+				minimumVersion = 200.5.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
