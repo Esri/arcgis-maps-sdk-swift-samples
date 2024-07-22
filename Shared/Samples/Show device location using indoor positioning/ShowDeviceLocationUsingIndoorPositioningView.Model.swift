@@ -17,20 +17,6 @@ import CoreLocation
 import SwiftUI
 
 extension ShowDeviceLocationUsingIndoorPositioningView {
-    enum DataSourceType: CaseIterable {
-        case indoorDefinition
-        case IPSTables
-        
-        var label: String {
-            switch self {
-            case .indoorDefinition: "Indoors Definition"
-            case .IPSTables: "IPS Tables"
-            }
-        }
-    }
-}
-
-extension ShowDeviceLocationUsingIndoorPositioningView {
     @MainActor
     class Model: ObservableObject {
         /// Basic map with topographic style.
@@ -65,9 +51,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         @Published var isLoading = false
         
         private let locationManager = CLLocationManager()
-        
-        private var currentDataSourceType: DataSourceType = .indoorDefinition
-        
+                
         /// The measurement formatter for sensor accuracy.
         private let measurementFormatter: MeasurementFormatter = {
             let formatter = MeasurementFormatter()
@@ -78,8 +62,8 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         
         /// Kicks off the logic for displaying the indoors position.
         /// - Parameter dataSourceType: The data model type to use when displaying indoor position.
-        func displayIndoorData(for dataSourceType: DataSourceType) async throws {
-            try await setIndoorDatasource(for: dataSourceType)
+        func displayIndoorData() async throws {
+            try await setIndoorDatasource()
             try await startLocationDisplay()
             try await dataChangesOnLocationUpdate()
         }
@@ -99,22 +83,13 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         /// Sets the indoor datasource on the location display depending on
         /// whether the map contains an IndoorDefinition.
         /// - Parameter map: The map which is checked for an indoor definition.
-        private func setIndoorDatasource(for type: DataSourceType) async throws {
-            if type == currentDataSourceType && currentFloor != -1 {
-                return
-            }
-            currentDataSourceType = type
+        private func setIndoorDatasource() async throws {
             labelText = "Indoor data loading..."
-            await indoorsLocationDataSource?.stop()
-            indoorsLocationDataSource = nil
             try await map.floorManager?.load()
-            switch type {
-            case .indoorDefinition:
-                if try await indoorDefinitionIsLoaded(map: map),
-                   let indoorPositioningDefinition = map.indoorPositioningDefinition {
-                    indoorsLocationDataSource = IndoorsLocationDataSource(definition: indoorPositioningDefinition)
-                }
-            case .IPSTables:
+            if try await indoorDefinitionIsLoaded(map: map),
+               let indoorPositioningDefinition = map.indoorPositioningDefinition {
+                indoorsLocationDataSource = IndoorsLocationDataSource(definition: indoorPositioningDefinition)
+            } else {
                 indoorsLocationDataSource = try await createIndoorLocationDataSource(map: map)
             }
             guard let dataSource = indoorsLocationDataSource else { return }

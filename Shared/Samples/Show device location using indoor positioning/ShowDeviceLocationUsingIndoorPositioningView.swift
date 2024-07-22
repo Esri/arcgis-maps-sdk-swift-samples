@@ -25,8 +25,6 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
     @State private var error: Error?
     /// Represents whether the map is loaded.
     @State private var mapIsLoaded = false
-    /// Represents the data model being used.
-    @State private var selectedDataSourceType: DataSourceType = .indoorDefinition
     
     var body: some View {
         MapView(map: model.map)
@@ -50,34 +48,15 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
                         .shadow(radius: 50)
                 }
             }
-            .task(id: selectedDataSourceType) {
+            .task {
                 model.isLoading = true
                 do {
                     try await model.map.load()
                     mapIsLoaded = true
+                    model.isLoading = true
+                    try await model.displayIndoorData()
                 } catch {
                     self.error = error
-                }
-            }
-            .toolbar {
-                if mapIsLoaded {
-                    ToolbarItem(placement: .bottomBar) {
-                        Picker("Data Source Type", selection: $selectedDataSourceType) {
-                            ForEach(DataSourceType.allCases, id: \.self) { type in
-                                Text(type.label)
-                            }
-                        }
-                        .task(id: selectedDataSourceType) {
-                            Task {
-                                model.isLoading = true
-                                do {
-                                    try await model.displayIndoorData(for: selectedDataSourceType)
-                                } catch {
-                                    self.error = error
-                                }
-                            }
-                        }
-                    }
                 }
             }
             .errorAlert(presentingError: $error)
