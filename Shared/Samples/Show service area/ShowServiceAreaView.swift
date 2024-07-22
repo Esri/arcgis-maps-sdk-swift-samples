@@ -138,7 +138,7 @@ private extension ShowServiceAreaView {
             return facilitiesGraphicsOverlay
         }()
         
-       private let barriersGraphicsOverlay: GraphicsOverlay = {
+        private let barriersGraphicsOverlay: GraphicsOverlay = {
             let barriersGraphicsOverlay = GraphicsOverlay()
             let barrierSymbol = SimpleFillSymbol(style: .diagonalCross, color: .red, outline: nil)
             // Sets symbol on barrier graphics overlay using renderer.
@@ -146,7 +146,7 @@ private extension ShowServiceAreaView {
             return barriersGraphicsOverlay
         }()
         
-       private let serviceAreaGraphicsOverlay = GraphicsOverlay()
+        private let serviceAreaGraphicsOverlay = GraphicsOverlay()
         
         /// The graphics overlays used by this model.
         var graphicsOverlays: [GraphicsOverlay] {
