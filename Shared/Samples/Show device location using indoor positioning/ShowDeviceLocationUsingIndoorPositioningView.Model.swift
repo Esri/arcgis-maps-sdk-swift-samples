@@ -64,6 +64,8 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         /// Represents loading state of indoors data, blocks interaction until loaded.
         @Published var isLoading = false
         
+        private let locationManager = CLLocationManager()
+        
         private var currentDataSourceType: DataSourceType = .indoorDefinition
         
         /// The measurement formatter for sensor accuracy.
@@ -102,6 +104,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
                 return
             }
             currentDataSourceType = type
+            labelText = "Indoor data loading..."
             await indoorsLocationDataSource?.stop()
             indoorsLocationDataSource = nil
             try await map.floorManager?.load()
@@ -211,7 +214,6 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         /// Starts the location display to show user's location on the map.
         private func startLocationDisplay() async throws {
             // Request location permission if it has not yet been determined.
-            let locationManager = CLLocationManager()
             if locationManager.authorizationStatus == .notDetermined {
                 locationManager.requestWhenInUseAuthorization()
             }
