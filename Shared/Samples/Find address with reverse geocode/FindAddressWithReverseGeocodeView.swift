@@ -121,8 +121,8 @@ private extension FindAddressWithReverseGeocodeView {
         /// The red map marker graphic used to indicate a tap location on the map.
         let markerGraphic = {
             // Create a symbol using the image from the project assets.
-            guard let markerImage = UIImage(named: "RedMarker") else { return Graphic() }
-            let markerSymbol = PictureMarkerSymbol(image: markerImage)
+            let markerImage = UIImage.redMarker
+            let markerSymbol = PictureMarkerSymbol(image: .redMarker)
             
             // Change the symbol's offsets, so it aligns properly to a given point.
             markerSymbol.leaderOffsetY = markerImage.size.height / 2

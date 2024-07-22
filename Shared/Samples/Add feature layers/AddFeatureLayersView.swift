@@ -76,6 +76,7 @@ private struct ChallengeHandler: ArcGISAuthenticationChallengeHandler {
 private extension AddFeatureLayersView {
     /// The model used to store the geo model and other expensive objects
     /// used in this view.
+    @MainActor
     class Model: ObservableObject {
         /// A map with a topographic basemap style.
         let map = Map(basemapStyle: .arcGISTopographic)

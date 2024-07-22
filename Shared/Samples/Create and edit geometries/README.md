@@ -13,6 +13,8 @@ A field worker can mark features of interest on a map using an appropriate geome
 
 Tap the pencil button to choose a geometry editor tool. Begin interactively sketching on the map view. Tap the pencil button again for editing options.
 
+When using the reticle vertex tool, you can move the map position of the reticle by dragging and zooming the map. Insert a vertex under the reticle by tapping on the map. Move a vertex by tapping when the reticle is located over a vertex, drag the map to move the position of the reticle, then tap a second time to place the vertex.
+
 ## How it works
 
 1. Create a `GeometryEditor` and assign it to a map view with the `geometryEditor` view modifier.
@@ -30,6 +32,10 @@ Tap the pencil button to choose a geometry editor tool. Begin interactively sket
 * Graphic
 * GraphicsOverlay
 * MapView
+
+## Additional information
+
+The sample opens with the ArcGIS Imagery basemap centered on the island of Inis Meáin (Aran Islands) in Ireland. Inis Meáin comprises a landscape of interlinked stone walls, roads, buildings, archaeological sites, and geological features, producing complex geometrical relationships.
 
 ## Tags
 

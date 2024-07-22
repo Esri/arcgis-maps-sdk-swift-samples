@@ -45,7 +45,7 @@ extension FindRouteAroundBarriersView {
         
         /// The blue marker symbol for the stop graphics.
         private let stopSymbol = {
-            let markerImage = UIImage(named: "BlueMarker")!
+            let markerImage = UIImage.blueMarker
             let markerSymbol = PictureMarkerSymbol(image: markerImage)
             markerSymbol.offsetY = markerImage.size.height / 2
             return markerSymbol
