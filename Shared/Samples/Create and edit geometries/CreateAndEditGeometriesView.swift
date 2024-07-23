@@ -465,6 +465,14 @@ private class GeometryEditorModel: ObservableObject {
         selectedGraphic = graphic
         graphic.isVisible = false
         let geometry = graphic.geometry!
+        
+        switch geometry {
+        case is Point, is Multipoint:
+            geometryEditor.tool = VertexTool()
+        default:
+            break
+        }
+        
         geometryEditor.start(withInitial: geometry)
         isStarted = true
     }
