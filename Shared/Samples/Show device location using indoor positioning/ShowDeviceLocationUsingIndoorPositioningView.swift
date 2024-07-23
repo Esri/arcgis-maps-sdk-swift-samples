@@ -53,7 +53,6 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
                 do {
                     try await model.map.load()
                     mapIsLoaded = true
-                    model.isLoading = true
                     try await model.displayIndoorData()
                 } catch {
                     model.isLoading = false
