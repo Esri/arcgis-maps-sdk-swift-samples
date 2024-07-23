@@ -37,12 +37,12 @@ When there is no IPS beacons nearby, or other errors occur while initializing th
 
 ## About the data
 
-This sample uses an [IPS-enabled web map](https://www.arcgis.com/home/item.html?id=8fa941613b4b4b2b8a34ad4cdc3e4bba) that displays Building L on the Esri Redlands campus. Please note: you would only be able to use the indoor positioning functionalities when you are inside this building. Swap the web map to test with your own IPS setup.
+This sample uses an [IPS-aware web map](https://www.arcgis.com/home/item.html?id=8fa941613b4b4b2b8a34ad4cdc3e4bba) that displays Building L on the Esri Redlands campus. Please note: you would only be able to use the indoor positioning functionalities when you are inside this building. Swap the web map to test with your own IPS setup.
 
 ## Additional information
 
 * Location and Bluetooth permissions are required for this sample.
-* To learn more about IPS, read the [Indoor positioning](https://developers.arcgis.com/ios/device-location/indoor-positioning/) article on ArcGIS Developer website.
+* To learn more about IPS, read the [Indoor positioning](https://developers.arcgis.com/swift/device-location/indoor-positioning/) article on ArcGIS Developer website.
 * To learn more about how to deploy the indoor positioning system, read the [Deploy ArcGIS IPS](https://doc.arcgis.com/en/ips/latest/get-started/introduction-to-the-deployment-of-arcgis-ips.htm) article.
 
 ## Tags

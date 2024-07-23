@@ -20,7 +20,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
     @MainActor
     class Model: ObservableObject {
         /// Basic map with topographic style.
-        var map = Map(url: .indoorsMap)!
+        let map = Map(url: .indoorsMap)!
         
         /// The value of the current floor with -1 being used to represent floor that has not been set.
         private var currentFloor: Int = -1
@@ -62,7 +62,6 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         }()
         
         /// Kicks off the logic for displaying the indoors position.
-        /// - Parameter dataSourceType: The data model type to use when displaying indoor position.
         func displayIndoorData() async throws {
             try await setIndoorDatasource()
             try await startLocationDisplay()
@@ -83,7 +82,6 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         
         /// Sets the indoor datasource on the location display depending on
         /// whether the map contains an IndoorDefinition.
-        /// - Parameter map: The map which is checked for an indoor definition.
         private func setIndoorDatasource() async throws {
             labelText = "Indoor data has not been loaded."
             try await map.floorManager?.load()
@@ -140,7 +138,6 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         }
         
         /// The method that updates the location when the indoors location datasource is triggered.
-        /// - Parameter floorManager: The floor manager that filters what is displayed on the map by floor.
         private func dataChangesOnLocationUpdate() async throws {
             for try await location in locationDisplay.dataSource.locations {
                 if let floorLevel = location.additionalSourceProperties[.floor] as? Int,
