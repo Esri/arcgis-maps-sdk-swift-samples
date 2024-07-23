@@ -20,7 +20,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
     @MainActor
     class Model: ObservableObject {
         /// Basic map with topographic style.
-        var map = Map(basemapStyle: .arcGISTopographic)
+        var map = Map(url: .indoorsMap)!
         
         /// The value of the current floor with -1 being used to represent floor that has not been set.
         private var currentFloor: Int = -1
@@ -84,7 +84,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         /// whether the map contains an IndoorDefinition.
         /// - Parameter map: The map which is checked for an indoor definition.
         private func setIndoorDatasource() async throws {
-            labelText = "Indoor data loading..."
+            labelText = "Indoor data has not been loaded."
             try await map.floorManager?.load()
             if try await indoorDefinitionIsLoaded(map: map),
                let indoorPositioningDefinition = map.indoorPositioningDefinition {
@@ -141,13 +141,14 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         /// The method that updates the location when the indoors location datasource is triggered.
         /// - Parameter floorManager: The floor manager that filters what is displayed on the map by floor.
         private func dataChangesOnLocationUpdate() async throws {
-            guard let floorManager = map.floorManager else { return }
             for try await location in locationDisplay.dataSource.locations {
                 if let floorLevel = location.additionalSourceProperties[.floor] as? Int,
                    (floorLevel + 1) != currentFloor {
                     currentFloor = floorLevel + 1
-                    floorManager.levels.forEach {
-                        $0.isVisible = currentFloor == $0.levelNumber
+                    if let floorManager = map.floorManager {
+                        floorManager.levels.forEach {
+                            $0.isVisible = currentFloor == $0.levelNumber
+                        }
                     }
                 }
                 source = location.additionalSourceProperties[.positionSource] as? String ?? ""
@@ -195,5 +196,11 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
             // Start the location display to zoom to the user's current location.
             try await locationDisplay.dataSource.start()
         }
+    }
+}
+
+private extension URL {
+    static var indoorsMap: URL {
+        URL(string: "https://www.arcgis.com/home/item.html?id=8fa941613b4b4b2b8a34ad4cdc3e4bba")!
     }
 }

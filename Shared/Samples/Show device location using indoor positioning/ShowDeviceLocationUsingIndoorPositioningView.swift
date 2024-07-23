@@ -56,41 +56,11 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
                     model.isLoading = true
                     try await model.displayIndoorData()
                 } catch {
+                    model.isLoading = false
                     self.error = error
                 }
             }
             .errorAlert(presentingError: $error)
-            .onAppear {
-                ArcGISEnvironment.apiKey = nil
-                ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = ChallengeHandler()
-                model.map = Map(url: .indoorsMap)!
-            }
-            .onDisappear {
-                ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = nil
-            }
-    }
-}
-
-private extension URL {
-    static var indoorsMap: URL {
-        URL(string: "")!
-    }
-}
-
-private struct ChallengeHandler: ArcGISAuthenticationChallengeHandler {
-    enum Credentials {
-        static let userName = ""
-        static let password = ""
-    }
-    
-    func handleArcGISAuthenticationChallenge(_ challenge: ArcGISAuthenticationChallenge) async throws -> ArcGISAuthenticationChallenge.Disposition {
-        return .continueWithCredential(
-            try await TokenCredential.credential(
-                for: challenge,
-                username: Credentials.userName,
-                password: Credentials.password
-            )
-        )
     }
 }
 
