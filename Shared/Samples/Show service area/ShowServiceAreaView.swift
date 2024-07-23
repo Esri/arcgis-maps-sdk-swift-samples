@@ -28,6 +28,8 @@ struct ShowServiceAreaView: View {
     @State private var firstTimeBreak: Int = 3
     /// Second time break property set in second stepper.
     @State private var secondTimeBreak: Int = 8
+    /// A Boolean value indicating whether the time breaks settings are presented.
+    @State private var settingsArePresented = false
     
     /// The data model for the sample.
     @StateObject private var model = Model()
@@ -51,11 +53,25 @@ struct ShowServiceAreaView: View {
                     }
                     .pickerStyle(.segmented)
                     Spacer()
-                    Menu {
-                        Stepper("Second: \(secondTimeBreak)", value: $secondTimeBreak, in: 1...15)
-                        Stepper("First: \(firstTimeBreak)", value: $firstTimeBreak, in: 1...15)
-                    } label: {
-                        Label("Time Breaks", systemImage: "gear")
+                    Button("Time Breaks", systemImage: "gear") {
+                        settingsArePresented = true
+                    }
+                    .popover(isPresented: $settingsArePresented) {
+                        NavigationStack {
+                            Form {
+                                Stepper("First: \(firstTimeBreak)", value: $firstTimeBreak, in: 1...15)
+                                Stepper("Second: \(secondTimeBreak)", value: $secondTimeBreak, in: 1...15)
+                            }
+                            .navigationTitle("Time Breaks")
+                            .navigationBarTitleDisplayMode(.inline)
+                            .toolbar {
+                                ToolbarItem(placement: .confirmationAction) {
+                                    Button("Done") { settingsArePresented = false }
+                                }
+                            }
+                        }
+                        .presentationDetents([.fraction(0.25)])
+                        .frame(idealWidth: 320, idealHeight: 160)
                     }
                     Spacer()
                     Button("Service Area") {
@@ -122,7 +138,7 @@ private extension ShowServiceAreaView {
             return facilitiesGraphicsOverlay
         }()
         
-       private let barriersGraphicsOverlay: GraphicsOverlay = {
+        private let barriersGraphicsOverlay: GraphicsOverlay = {
             let barriersGraphicsOverlay = GraphicsOverlay()
             let barrierSymbol = SimpleFillSymbol(style: .diagonalCross, color: .red, outline: nil)
             // Sets symbol on barrier graphics overlay using renderer.
@@ -130,7 +146,7 @@ private extension ShowServiceAreaView {
             return barriersGraphicsOverlay
         }()
         
-       private let serviceAreaGraphicsOverlay = GraphicsOverlay()
+        private let serviceAreaGraphicsOverlay = GraphicsOverlay()
         
         /// The graphics overlays used by this model.
         var graphicsOverlays: [GraphicsOverlay] {
