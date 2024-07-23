@@ -23,8 +23,6 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
     @StateObject private var model = Model()
     /// The error shown in the error alert.
     @State private var error: Error?
-    /// Represents whether the map is loaded.
-    @State private var mapIsLoaded = false
     
     var body: some View {
         MapView(map: model.map)
@@ -52,7 +50,6 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
                 model.isLoading = true
                 do {
                     try await model.map.load()
-                    mapIsLoaded = true
                     try await model.displayIndoorData()
                 } catch {
                     model.isLoading = false

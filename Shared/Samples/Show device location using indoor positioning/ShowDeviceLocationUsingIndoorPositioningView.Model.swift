@@ -50,6 +50,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         /// Represents loading state of indoors data, blocks interaction until loaded.
         @Published var isLoading = false
         
+        /// The location manager which handles the location data.
         private let locationManager = CLLocationManager()
                 
         /// The measurement formatter for sensor accuracy.
