@@ -40,6 +40,9 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         /// This is the published value of the data that is displayed.
         @Published private(set) var labelText: String = ""
         
+        /// This is the published value of the data that is displayed.
+        @Published private(set) var labelTextTwo: String = ""
+        
         /// A indoors location data source based on sensor data, including but not
         /// limited to radio, GPS, motion sensors.
         @Published private var indoorsLocationDataSource: IndoorsLocationDataSource?
@@ -50,9 +53,6 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         /// Represents loading state of indoors data, blocks interaction until loaded.
         @Published var isLoading = false
         
-        /// The location manager which handles the location data.
-        private let locationManager = CLLocationManager()
-                
         /// The measurement formatter for sensor accuracy.
         private let measurementFormatter: MeasurementFormatter = {
             let formatter = MeasurementFormatter()
@@ -65,7 +65,6 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         func displayIndoorData() async throws {
             try await setIndoorDatasource()
             try await startLocationDisplay()
-            try await dataChangesOnLocationUpdate()
         }
         
         /// A function that attempts to load an indoor definition attached to the map
@@ -83,7 +82,6 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         /// Sets the indoor datasource on the location display depending on
         /// whether the map contains an IndoorDefinition.
         private func setIndoorDatasource() async throws {
-            labelText = "Indoor data has not been loaded."
             try await map.floorManager?.load()
             if try await indoorDefinitionIsLoaded(map: map),
                let indoorPositioningDefinition = map.indoorPositioningDefinition {
@@ -93,7 +91,9 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
             }
             guard let dataSource = indoorsLocationDataSource else { return }
             locationDisplay.dataSource = dataSource
-            locationDisplay.autoPanMode = .recenter
+            locationDisplay.autoPanMode = .compassNavigation
+            // Start the location display to zoom to the user's current location.
+            try await locationDisplay.dataSource.start()
             for featLayer in map.operationalLayers {
                 if featLayer.name == "Transitions" || featLayer.name == "Details" {
                     featLayer.isVisible = true
@@ -138,7 +138,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         }
         
         /// The method that updates the location when the indoors location datasource is triggered.
-        private func dataChangesOnLocationUpdate() async throws {
+        func dataChangesOnLocationUpdate() async throws {
             for try await location in locationDisplay.dataSource.locations {
                 if let floorLevel = location.additionalSourceProperties[.floor] as? Int,
                    (floorLevel + 1) != currentFloor {
@@ -157,42 +157,42 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
                     sensorCount = location.additionalSourceProperties[.transmitterCount] as? Int ?? 0
                 }
                 horizontalAccuracy = location.horizontalAccuracy
-                labelText = getStatusLabelText()
+                getStatusLabelText()
+                isLoading = false
             }
         }
         
         /// Updates the labels on the view with the current state of the indoors data source.
-        private func getStatusLabelText() -> String {
-            var result = ""
+        private func getStatusLabelText() {
+            labelText = ""
+            labelTextTwo = ""
             if currentFloor > -1 {
-                result += "Current floor: \(currentFloor)\n"
+                labelText += "Current floor: \(currentFloor)\n"
                 if horizontalAccuracy > -1.0 {
                     let formattedAccuracy = measurementFormatter.string(
                         from: Measurement(value: horizontalAccuracy, unit: UnitLength.meters)
                     )
-                    result += "Accuracy: \(formattedAccuracy)\n"
+                    labelText += "Accuracy: \(formattedAccuracy)"
                 }
                 if sensorCount > -1 {
-                    result += "Number of sensor: \(sensorCount)\n"
+                    labelTextTwo += "Number of sensor: \(sensorCount)\n"
                 } else if satelliteCount > -1 && source == "GNSS" {
-                    result += "Number of satellites: \(satelliteCount)\n"
+                    labelTextTwo += "Number of satellites: \(satelliteCount)\n"
                 }
-                result += "Data source: \(source)"
-                isLoading = false
+                labelTextTwo += "Data source: \(source)"
             } else {
-                result = "No floor data."
+                labelText = "No floor data."
             }
-            return result
         }
         
         /// Starts the location display to show user's location on the map.
         private func startLocationDisplay() async throws {
+            /// The location manager which handles the location data.
+            let locationManager = CLLocationManager()
             // Request location permission if it has not yet been determined.
             if locationManager.authorizationStatus == .notDetermined {
                 locationManager.requestWhenInUseAuthorization()
             }
-            // Start the location display to zoom to the user's current location.
-            try await locationDisplay.dataSource.start()
         }
     }
 }

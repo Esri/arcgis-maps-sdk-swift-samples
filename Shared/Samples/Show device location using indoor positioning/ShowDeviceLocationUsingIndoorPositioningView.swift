@@ -26,9 +26,14 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
             .locationDisplay(model.locationDisplay)
             .overlay(alignment: .top) {
                 VStack(spacing: 2) {
-                    Spacer()
-                    Text(model.labelText)
-                        .padding()
+                    HStack {
+                        Text(model.labelText)
+                            .frame(maxWidth: 150)
+                        Text(model.labelTextTwo)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .background(.white)
+                    .opacity(0.5)
                     Spacer()
                     Spacer()
                     Spacer()
@@ -44,10 +49,11 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
                 }
             }
             .task {
-                model.isLoading = true
                 do {
                     try await model.map.load()
+                    model.isLoading = true
                     try await model.displayIndoorData()
+                    try await model.dataChangesOnLocationUpdate()
                 } catch {
                     model.isLoading = false
                     self.error = error
