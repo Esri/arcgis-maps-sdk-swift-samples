@@ -16,22 +16,15 @@ import ArcGIS
 import SwiftUI
 
 struct ShowGridView: View {
-    /// A map with topographic basemap.
-    @State private var map: Map = {
-        let map = Map(basemapStyle: .arcGISTopographic)
-        map.initialViewpoint = Viewpoint(latitude: 34.05, longitude: -118.25, scale: 8e6)
-        return map
-    }()
-    
-    /// The map view's grid, initially set to a Lat-Lon grid.
-    @State private var grid: ArcGIS.Grid = LatitudeLongitudeGrid()
+    /// The view model for the sample.
+    @StateObject private var model = Model()
     
     /// A Boolean value indicating whether the settings view should be presented.
     @State private var showsGridSettingsView = false
     
     var body: some View {
-        MapView(map: map)
-            .grid(grid)
+        MapView(map: model.map)
+            .grid(model.grid)
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
                     Button("Grid Settings") {
@@ -39,7 +32,7 @@ struct ShowGridView: View {
                     }
                     .popover(isPresented: $showsGridSettingsView) {
                         NavigationStack {
-                            GridSettingsView(grid: $grid)
+                            GridSettingsView(model: model)
                         }
                         .presentationDetents([.fraction(0.6), .large])
                         .frame(idealWidth: 350, idealHeight: 480)
@@ -49,113 +42,127 @@ struct ShowGridView: View {
     }
 }
 
-// MARK: - Settings View
-
 private extension ShowGridView {
+    // MARK: - Model
+    
+    /// The view model for the sample.
+    final class Model: ObservableObject {
+        /// A map with topographic basemap.
+        let map: Map = {
+            let map = Map(basemapStyle: .arcGISTopographic)
+            map.initialViewpoint = Viewpoint(latitude: 34.05, longitude: -118.25, scale: 8e6)
+            return map
+        }()
+        
+        /// The map view's grid, initially set to a Lat-Lon grid.
+        @Published var grid: ArcGIS.Grid = LatitudeLongitudeGrid()
+        
+        /// The kind of grid to display.
+        @Published var gridType: GridType = .latitudeLongitude {
+            didSet { grid = makeGrid(type: gridType) }
+        }
+        
+        /// The format used for labeling the grid.
+        @Published var labelFormat: LatitudeLongitudeGrid.LabelFormat = .decimalDegrees
+        
+        /// The units used for labeling the USNG grid.
+        @Published var usngLabelUnit: USNGGrid.LabelUnit = .kilometersMeters
+        
+        /// The units used for labeling the MGRS grid.
+        @Published var mgrsLabelUnit: MGRSGrid.LabelUnit = .kilometersMeters
+        
+        /// Creates a new grid of a given type.
+        /// - Parameter gridType: The kind of grid to make.
+        /// - Returns: A new `Grid` object.
+        private func makeGrid(type gridType: GridType) -> ArcGIS.Grid {
+            let newGrid: ArcGIS.Grid
+            switch gridType {
+            case .latitudeLongitude:
+                let latitudeLongitudeGrid = LatitudeLongitudeGrid()
+                latitudeLongitudeGrid.labelFormat = labelFormat
+                newGrid = latitudeLongitudeGrid
+            case .mgrs:
+                let mgrsGrid = MGRSGrid()
+                mgrsGrid.labelUnit = mgrsLabelUnit
+                newGrid = mgrsGrid
+            case .usng:
+                let usngGrid = USNGGrid()
+                usngGrid.labelUnit = usngLabelUnit
+                newGrid = usngGrid
+            case .utm:
+                newGrid = UTMGrid()
+            }
+            
+            newGrid.isVisible = grid.isVisible
+            newGrid.labelsAreVisible = grid.labelsAreVisible
+            newGrid.linesColor = grid.linesColor
+            newGrid.labelsColor = grid.labelsColor
+            newGrid.labelPosition = grid.labelPosition
+            
+            return newGrid
+        }
+    }
+    
+    // MARK: - Settings View
+    
     struct GridSettingsView: View {
         /// The action to dismiss the sheet.
         @Environment(\.dismiss) private var dismiss
         
-        /// The binding to the grid object.
-        @Binding var grid: ArcGIS.Grid
-        
-        /// A Boolean value indicating whether the grid is visible.
-        @State private var gridIsVisible = true
-        
-        /// A Boolean value indicating whether the grid labels are visible.
-        @State private var labelsAreVisible = true
-        
-        /// The color of the grid lines.
-        @State private var gridColor = Color(uiColor: .red)
-        
-        /// The color of the grid labels.
-        @State private var labelsColor = Color(uiColor: .red)
-        
-        /// The kind of grid to display
-        @State private var gridType: GridType = .latitudeLongitude
-        
-        /// The positioning of the grid's labels.
-        @State private var labelPosition: ArcGIS.Grid.LabelPosition = .allSides
-        
-        /// The format used for labeling the grid.
-        @State private var labelFormat: LatitudeLongitudeGrid.LabelFormat = .decimalDegrees
-        
-        /// The units used for labeling the USNG grid.
-        @State private var usngLabelUnit: USNGGrid.LabelUnit = .kilometersMeters
-        
-        /// The units used for labeling the MGRS grid.
-        @State private var mgrsLabelUnit: MGRSGrid.LabelUnit = .kilometersMeters
+        /// The view model for the sample.
+        @ObservedObject var model: Model
         
         var body: some View {
             Form {
                 Section("Grid Line Settings") {
-                    Picker("Grid Type", selection: $gridType) {
+                    Picker("Grid Type", selection: $model.gridType) {
                         ForEach(GridType.allCases, id: \.self) { type in
                             Text(type.label)
                         }
                     }
-                    .onChange(of: gridType) { _ in
-                        grid = gridType.makeGrid()
-                        updateUI()
-                    }
                     
-                    Toggle("Visible", isOn: $gridIsVisible)
-                        .onChange(of: gridIsVisible) { _ in
-                            grid.isVisible = gridIsVisible
-                        }
+                    Toggle("Visible", isOn: $model.grid.isVisible)
                     
-                    ColorPicker("Color", selection: $gridColor)
-                        .onChange(of: gridColor) { _ in
-                            changeGridColor(to: UIColor(gridColor))
-                        }
+                    ColorPicker("Color", selection: $model.grid.linesColor)
                 }
                 
                 Section("Labels Settings") {
-                    Toggle("Visible", isOn: $labelsAreVisible)
-                        .onChange(of: labelsAreVisible) { _ in
-                            grid.labelsAreVisible = labelsAreVisible
-                        }
+                    Toggle("Visible", isOn: $model.grid.labelsAreVisible)
                     
-                    ColorPicker("Color", selection: $labelsColor)
-                        .onChange(of: labelsColor) { _ in
-                            changeLabelColor(to: UIColor(labelsColor))
-                        }
+                    ColorPicker("Color", selection: $model.grid.labelsColor)
                     
-                    Picker("Position", selection: $labelPosition) {
+                    Picker("Position", selection: $model.grid.labelPosition) {
                         ForEach(Grid.LabelPosition.allCases, id: \.self) { position in
                             Text(position.label)
                         }
                     }
-                    .onChange(of: labelPosition) { _ in
-                        grid.labelPosition = labelPosition
-                    }
                     
-                    if let latitudeLongitudeGrid = grid as? LatitudeLongitudeGrid {
-                        Picker("Format", selection: $labelFormat) {
+                    if let latitudeLongitudeGrid = model.grid as? LatitudeLongitudeGrid {
+                        Picker("Format", selection: $model.labelFormat) {
                             ForEach(LatitudeLongitudeGrid.LabelFormat.allCases, id: \.self) { format in
                                 Text(format.label)
                             }
                         }
-                        .onChange(of: labelFormat) { _ in
-                            latitudeLongitudeGrid.labelFormat = labelFormat
+                        .onChange(of: model.labelFormat) { newLabelFormat in
+                            latitudeLongitudeGrid.labelFormat = newLabelFormat
                         }
-                    } else if let mgrsGrid = grid as? MGRSGrid {
-                        Picker("Unit", selection: $mgrsLabelUnit) {
+                    } else if let mgrsGrid = model.grid as? MGRSGrid {
+                        Picker("Unit", selection: $model.mgrsLabelUnit) {
                             ForEach(MGRSGrid.LabelUnit.allCases, id: \.self) { unit in
                                 Text(unit.label)
                             }
                         }
-                        .onChange(of: mgrsLabelUnit) { _ in
-                            mgrsGrid.labelUnit = mgrsLabelUnit
+                        .onChange(of: model.mgrsLabelUnit) { newMGRSLabelUnit in
+                            mgrsGrid.labelUnit = newMGRSLabelUnit
                         }
-                    } else if let usngGrid = grid as? USNGGrid {
-                        Picker("Unit", selection: $usngLabelUnit) {
+                    } else if let usngGrid = model.grid as? USNGGrid {
+                        Picker("Unit", selection: $model.usngLabelUnit) {
                             ForEach(USNGGrid.LabelUnit.allCases, id: \.self) { unit in
                                 Text(unit.label)
                             }
                         }
-                        .onChange(of: usngLabelUnit) { _ in
-                            usngGrid.labelUnit = usngLabelUnit
+                        .onChange(of: model.usngLabelUnit) { newUSNGLabelUnit in
+                            usngGrid.labelUnit = newUSNGLabelUnit
                         }
                     }
                 }
@@ -167,68 +174,46 @@ private extension ShowGridView {
                     Button("Done") { dismiss() }
                 }
             }
-            .onAppear {
-                updateUI()
-            }
-        }
-        
-        /// Update states and UI based on grid properties.
-        private func updateUI() {
-            gridIsVisible = grid.isVisible
-            if let lineSymbolColor = (grid.lineSymbols.first { $0 is LineSymbol } as? LineSymbol)?.color {
-                gridColor = Color(uiColor: lineSymbolColor)
-            }
-            gridType = GridType(grid: grid)!
-            labelsAreVisible = grid.labelsAreVisible
-            if let textSymbolColor = (grid.textSymbols.first { $0 is TextSymbol } as? TextSymbol)?.color {
-                labelsColor = Color(uiColor: textSymbolColor)
-            }
-            labelPosition = grid.labelPosition
-            if grid is LatitudeLongitudeGrid {
-                labelFormat = (grid as! LatitudeLongitudeGrid).labelFormat
-            } else if grid is MGRSGrid {
-                mgrsLabelUnit = (grid as! MGRSGrid).labelUnit
-            } else if grid is USNGGrid {
-                usngLabelUnit = (grid as! USNGGrid).labelUnit
-            }
-        }
-        
-        /// Changes the grid line color.
-        /// - Parameter color: The color for the grid lines.
-        private func changeGridColor(to color: UIColor) {
-            for symbol in grid.lineSymbols where symbol is LineSymbol {
-                let lineSymbol = symbol as! LineSymbol
-                lineSymbol.color = color
-            }
-        }
-        
-        /// Changes the grid labels color.
-        /// - Parameter color: The color for the text symbols.
-        private func changeLabelColor(to color: UIColor) {
-            for symbol in grid.textSymbols where symbol is TextSymbol {
-                let textSymbol = symbol as! TextSymbol
-                textSymbol.color = color
-            }
         }
     }
 }
 
 // MARK: - Helper Extensions
 
+private extension ArcGIS.Grid {
+    /// The color of the grid lines.
+    var linesColor: Color {
+        get {
+            let lineSymbol = lineSymbols.first(where: { $0 is LineSymbol }) as! LineSymbol
+            return Color(uiColor: lineSymbol.color)
+        }
+        set {
+            for symbol in lineSymbols where symbol is LineSymbol {
+                let lineSymbol = symbol as! LineSymbol
+                lineSymbol.color = UIColor(newValue)
+            }
+        }
+    }
+    
+    /// The color of the grid labels.
+    var labelsColor: Color {
+        get {
+            let textSymbol = textSymbols.first(where: { $0 is TextSymbol }) as! TextSymbol
+            return Color(uiColor: textSymbol.color)
+        }
+        set {
+            for symbol in textSymbols where symbol is TextSymbol {
+                let textSymbol = symbol as! TextSymbol
+                textSymbol.color = UIColor(newValue)
+            }
+        }
+    }
+}
+
 private extension ShowGridView {
     /// The kinds of grid to show in a map view.
     enum GridType: CaseIterable {
         case latitudeLongitude, mgrs, usng, utm
-        
-        init?(grid: ArcGIS.Grid) {
-            switch grid {
-            case is LatitudeLongitudeGrid: self = .latitudeLongitude
-            case is MGRSGrid: self = .mgrs
-            case is USNGGrid: self = .usng
-            case is UTMGrid: self = .utm
-            default: fatalError("Unknown grid type")
-            }
-        }
         
         var label: String {
             switch self {
@@ -236,15 +221,6 @@ private extension ShowGridView {
             case .mgrs: "MGRS"
             case .usng: "USNG"
             case .utm: "UTM"
-            }
-        }
-        
-        func makeGrid() -> ArcGIS.Grid {
-            switch self {
-            case .latitudeLongitude: LatitudeLongitudeGrid()
-            case .mgrs: MGRSGrid()
-            case .usng: USNGGrid()
-            case .utm: UTMGrid()
             }
         }
     }
