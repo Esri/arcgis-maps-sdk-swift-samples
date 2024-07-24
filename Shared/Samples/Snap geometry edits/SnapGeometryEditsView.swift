@@ -37,8 +37,8 @@ struct SnapGeometryEditsView: View {
     /// The error shown in the error alert.
     @State private var error: Error?
     
-    /// A Boolean value indicating whether all the operational layers are loaded.
-    @State private var layersAreLoaded = false
+    /// A Boolean value indicating whether all the snap sources on the map view are loaded.
+    @State private var snapSourcesAreLoaded = false
     
     /// A Boolean value indicating whether the snap settings are presented.
     @State private var showsSnapSettings = false
@@ -46,9 +46,9 @@ struct SnapGeometryEditsView: View {
     var body: some View {
         MapView(map: map, graphicsOverlays: [model.geometryOverlay])
             .geometryEditor(model.geometryEditor)
-            .task {
-                // Load every layer in the web map when the sample starts.
-                layersAreLoaded = await map.operationalLayers.load()
+            .onDrawStatusChanged { drawStatus in
+                guard !snapSourcesAreLoaded else { return }
+                snapSourcesAreLoaded = drawStatus == .completed
             }
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
@@ -74,7 +74,7 @@ struct SnapGeometryEditsView: View {
                         .presentationDetents([.fraction(0.6)])
                         .frame(idealWidth: 320, idealHeight: 380)
                     }
-                    .disabled(!layersAreLoaded)
+                    .disabled(!snapSourcesAreLoaded)
                 }
             }
             .errorAlert(presentingError: $error)
