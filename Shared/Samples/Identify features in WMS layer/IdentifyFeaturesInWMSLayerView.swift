@@ -69,6 +69,8 @@ struct IdentifyFeaturesInWMSLayerView: View {
                         guard let screenPoint = tapScreenPoint else {
                             return
                         }
+                        calloutPlacement = nil
+                        
                         // Identify feature on water info layer.
                         let identifyResult = try await mapViewProxy.identify(
                             on: waterInfoLayer,
@@ -83,9 +85,6 @@ struct IdentifyFeaturesInWMSLayerView: View {
                            let location = mapViewProxy.location(fromScreenPoint: screenPoint) {
                             webViewText = htmlText
                             calloutPlacement = .location(location)
-                        } else {
-                            webViewText = ""
-                            calloutPlacement = nil
                         }
                     } catch {
                         self.error = error
