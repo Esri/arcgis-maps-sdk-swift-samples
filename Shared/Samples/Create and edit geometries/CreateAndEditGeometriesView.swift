@@ -409,6 +409,7 @@ private class GeometryEditorModel: ObservableObject {
         geometryEditor.stop()
         isStarted = false
         selectedGraphic?.isVisible = true
+        selectedGraphic = nil
     }
     
     /// Returns the symbology for graphics saved to the graphics overlay.
