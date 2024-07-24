@@ -1,0 +1,34 @@
+{
+    "category": "Maps",
+    "description": "Implement a basemap gallery that automatically retrieves the latest customization options from the basemap styles service.",
+    "ignore": false,
+    "images": [
+        "create-dynamic-basemap-gallery.png"
+    ],
+    "keywords": [
+        "basemap",
+        "languages",
+        "service",
+        "style",
+        "BasemapStyleInfo",
+        "BasemapStyleLanguageInfo",
+        "BasemapStyleParameters",
+        "BasemapStylesService",
+        "BasemapStylesServiceInfo",
+        "Worldview"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "BasemapStyleInfo",
+        "BasemapStyleLanguageInfo",
+        "BasemapStyleParameters",
+        "BasemapStylesService",
+        "BasemapStylesServiceInfo",
+        "Worldview"
+    ],
+    "snippets": [
+        "CreateDynamicBasemapGalleryView.swift",
+        "CreateDynamicBasemapGalleryView.Views.swift"
+    ],
+    "title": "Create dynamic basemap gallery"
+}
