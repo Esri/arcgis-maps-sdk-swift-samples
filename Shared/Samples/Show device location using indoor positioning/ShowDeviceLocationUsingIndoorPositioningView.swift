@@ -46,7 +46,6 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
                 }
             }
             .task {
-                model.isLoading = true
                 do {
                     try await model.loadIndoorData()
                     try await model.updateDisplayOnLocationChange()

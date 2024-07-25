@@ -68,6 +68,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         
         /// Kicks off the logic loading the data for the indoors map and indoors location.
         func loadIndoorData() async throws {
+            isLoading = true 
             try await map.load()
             try await setIndoorDatasource()
             try await requestLocationServicesAuthorizationIfNecessary()
