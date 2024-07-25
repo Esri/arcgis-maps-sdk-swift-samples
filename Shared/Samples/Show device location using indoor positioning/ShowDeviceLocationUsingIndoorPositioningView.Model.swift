@@ -53,6 +53,9 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         /// Represents loading state of indoors data, blocks interaction until loaded.
         @Published var isLoading = false
         
+        /// The location manager which handles the location data.
+        private let locationManager = CLLocationManager()
+        
         /// The measurement formatter for sensor accuracy.
         private let measurementFormatter: MeasurementFormatter = {
             let formatter = MeasurementFormatter()
@@ -66,7 +69,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         /// Kicks off the logic for displaying the indoors position.
         func displayIndoorData() async throws {
             try await setIndoorDatasource()
-            try await startLocationDisplay()
+            try await requestLocationServicesAuthorizationIfNecessary()
         }
         
         /// Stops the location data source.
@@ -157,13 +160,19 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
                 // one is added to the floor level value.
                 if let floorLevel = location.additionalSourceProperties[.floor] as? Int,
                    (floorLevel + 1) != currentFloor {
+                    // Sets the currentFloor to the new floor level and adds one, since location uses
+                    // zero based flooring system.
                     currentFloor = floorLevel + 1
+                    // The floor manager is used to filter so that only the data from the current floor is
+                    // displayed to the user.
                     if let floorManager = map.floorManager {
                         floorManager.levels.forEach {
                             $0.isVisible = currentFloor == $0.levelNumber
                         }
                     }
                 }
+                // This indicates whether the location data was sourced from GNSS (Satellites), BLE (Bluetooth Low Energy)
+                // or AppleIPS (Apple's proprietary location system.
                 source = location.additionalSourceProperties[.positionSource] as? String ?? ""
                 switch source {
                 case "GNSS":
@@ -201,9 +210,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         }
         
         /// Starts the location display to show user's location on the map.
-        private func startLocationDisplay() async throws {
-            /// The location manager which handles the location data.
-            let locationManager = CLLocationManager()
+        private func requestLocationServicesAuthorizationIfNecessary() async throws {
             // Request location permission if it has not yet been determined.
             if locationManager.authorizationStatus == .notDetermined {
                 locationManager.requestWhenInUseAuthorization()
