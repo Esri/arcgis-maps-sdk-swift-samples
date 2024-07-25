@@ -19,7 +19,7 @@ import SwiftUI
 extension ShowDeviceLocationUsingIndoorPositioningView {
     @MainActor
     class Model: ObservableObject {
-        /// Map of Esri Campus indoors/.
+        /// Map of Esri Campus indoors.
         let map = Map(url: .indoorsMap)!
         
         /// The value of the current floor with -1 being used to represent floor that has not been set.
@@ -41,17 +41,8 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         /// limited to radio, GPS, motion sensors.
         private var indoorsLocationDataSource: IndoorsLocationDataSource?
         
-        /// This is the published value of the data that is displayed.
-        @Published private(set) var labelTextLeading: String = ""
-        
-        /// This is the published value of the data that is displayed.
-        @Published private(set) var labelTextTrailing: String = ""
-        
         /// The map's location display.
         private(set) var locationDisplay = LocationDisplay(dataSource: SystemLocationDataSource())
-        
-        /// Represents loading state of indoors data, blocks interaction until loaded.
-        @Published var isLoading = false
         
         /// The location manager which handles the location data.
         private let locationManager = CLLocationManager()
@@ -65,6 +56,15 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
             formatter.numberFormatter.roundingMode = .up
             return formatter
         }()
+        
+        /// This is the published value of the data that is displayed.
+        @Published private(set) var labelTextLeading: String = ""
+        
+        /// This is the published value of the data that is displayed.
+        @Published private(set) var labelTextTrailing: String = ""
+        
+        /// Represents loading state of indoors data, blocks interaction until loaded.
+        @Published var isLoading = false
         
         /// Kicks off the logic for displaying the indoors position.
         func loadIndoorData() async throws {
