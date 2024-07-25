@@ -48,7 +48,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         @Published private(set) var labelTextTrailing: String = ""
         
         /// The map's location display.
-        @Published private(set) var locationDisplay = LocationDisplay(dataSource: SystemLocationDataSource())
+        private(set) var locationDisplay = LocationDisplay(dataSource: SystemLocationDataSource())
         
         /// Represents loading state of indoors data, blocks interaction until loaded.
         @Published var isLoading = false
