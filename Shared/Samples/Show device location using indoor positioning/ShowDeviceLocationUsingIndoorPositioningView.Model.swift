@@ -49,7 +49,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         
         /// The map's location display.
         @Published private(set) var locationDisplay = LocationDisplay(dataSource: SystemLocationDataSource())
-    
+        
         /// Represents loading state of indoors data, blocks interaction until loaded.
         @Published var isLoading = false
         
@@ -67,7 +67,8 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         }()
         
         /// Kicks off the logic for displaying the indoors position.
-        func displayIndoorData() async throws {
+        func loadIndoorData() async throws {
+            try await map.load()
             try await setIndoorDatasource()
             try await requestLocationServicesAuthorizationIfNecessary()
         }
@@ -98,7 +99,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
             if try await indoorDefinitionIsLoaded(map: map),
                let indoorPositioningDefinition = map.indoorPositioningDefinition {
                 indoorsLocationDataSource = IndoorsLocationDataSource(definition: indoorPositioningDefinition)
-            // Otherwise the IndoorsDataSource attempts to create itself using IPS table information.
+                // Otherwise the IndoorsDataSource attempts to create itself using IPS table information.
             } else {
                 indoorsLocationDataSource = try await createIndoorLocationDataSource(map: map)
             }
@@ -156,7 +157,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         }
         
         /// The method that updates the location when the indoors location datasource is triggered.
-        func updateAndDisplayOnLocationChange() async throws {
+        func updateDisplayOnLocationChange() async throws {
             for try await location in locationDisplay.dataSource.locations {
                 // Since this listens for new location changes, it is important
                 // to ensure any blocking UI is dismissed once location updates begins.
