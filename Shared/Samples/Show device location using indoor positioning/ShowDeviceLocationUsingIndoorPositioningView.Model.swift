@@ -150,7 +150,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         }
         
         /// The method that updates the location when the indoors location datasource is triggered.
-        func dataChangesOnLocationUpdate() async throws {
+        func updateAndDisplayOnLocationChange() async throws {
             for try await location in locationDisplay.dataSource.locations {
                 // Floors in location are zero indexed however floorManager levels begin at one. Since
                 // it is necessary to display the same information to the user as the floor manager levelNumber

@@ -57,7 +57,7 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
                     // Since the method dataChangesOnLocationUpdate listens for new location changes, it is important
                     // to ensure any blocking UI is dismissed before it is called.
                     model.isLoading = false
-                    try await model.dataChangesOnLocationUpdate()
+                    try await model.updateAndDisplayOnLocationChange()
                 } catch {
                     model.isLoading = false
                     self.error = error
