@@ -43,12 +43,12 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         /// This is the published value of the data that is displayed.
         @Published private(set) var labelTextTwo: String = ""
         
-        /// A indoors location data source based on sensor data, including but not
-        /// limited to radio, GPS, motion sensors.
-        @Published private var indoorsLocationDataSource: IndoorsLocationDataSource?
-        
         /// The map's location display.
         @Published private(set) var locationDisplay = LocationDisplay(dataSource: SystemLocationDataSource())
+        
+        /// A indoors location data source based on sensor data, including but not
+        /// limited to radio, GPS, motion sensors.
+        private var indoorsLocationDataSource: IndoorsLocationDataSource?
         
         /// Represents loading state of indoors data, blocks interaction until loaded.
         @Published var isLoading = false
