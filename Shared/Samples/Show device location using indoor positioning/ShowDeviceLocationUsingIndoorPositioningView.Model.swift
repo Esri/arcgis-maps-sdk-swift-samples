@@ -58,6 +58,8 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
             let formatter = MeasurementFormatter()
             formatter.unitStyle = .short
             formatter.unitOptions = .providedUnit
+            formatter.numberFormatter.maximumFractionDigits = 1
+            formatter.numberFormatter.roundingMode = .up
             return formatter
         }()
         
@@ -79,23 +81,25 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         /// - Parameter map: The map that contains the IndoorDefinition.
         /// - Returns: A boolean value for whether the IndoorDefinition is loaded.
         private func indoorDefinitionIsLoaded(map: Map) async throws -> Bool {
-            if map.indoorPositioningDefinition?.loadStatus != .loaded {
-                try await map.indoorPositioningDefinition?.load()
-                return map.indoorPositioningDefinition?.loadStatus == .loaded
-            }
-            return true
+            guard map.indoorPositioningDefinition?.loadStatus != .loaded else { return true }
+            try await map.indoorPositioningDefinition?.load()
+            return map.indoorPositioningDefinition?.loadStatus == .loaded
         }
         
         /// Sets the indoor datasource on the location display depending on
         /// whether the map contains an IndoorDefinition.
         private func setIndoorDatasource() async throws {
             try await map.floorManager?.load()
+            // If an indoor definition exists in the map, it gets loaded and sets the IndoorsDataSource to pull information
+            // from the definition.
             if try await indoorDefinitionIsLoaded(map: map),
                let indoorPositioningDefinition = map.indoorPositioningDefinition {
                 indoorsLocationDataSource = IndoorsLocationDataSource(definition: indoorPositioningDefinition)
+            // Otherwise the IndoorsDataSource attempts to create itself using IPS table information.
             } else {
                 indoorsLocationDataSource = try await createIndoorLocationDataSource(map: map)
             }
+            // This ensures that the details of the inside of the building, like room layouts are displayed.
             for featLayer in map.operationalLayers {
                 if featLayer.name == "Transitions" || featLayer.name == "Details" {
                     featLayer.isVisible = true
@@ -148,6 +152,9 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         /// The method that updates the location when the indoors location datasource is triggered.
         func dataChangesOnLocationUpdate() async throws {
             for try await location in locationDisplay.dataSource.locations {
+                // Floors in location are zero indexed however floorManager levels begin at one. Since
+                // it is necessary to display the same information to the user as the floor manager levelNumber
+                // one is added to the floor level value.
                 if let floorLevel = location.additionalSourceProperties[.floor] as? Int,
                    (floorLevel + 1) != currentFloor {
                     currentFloor = floorLevel + 1
@@ -165,6 +172,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
                     sensorCount = location.additionalSourceProperties[.transmitterCount] as? Int ?? 0
                 }
                 horizontalAccuracy = location.horizontalAccuracy
+                // Updates every time the location changes.
                 getStatusLabelText()
             }
         }

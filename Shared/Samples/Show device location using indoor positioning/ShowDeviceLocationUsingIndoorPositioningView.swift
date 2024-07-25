@@ -28,7 +28,8 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
                 VStack(spacing: 2) {
                     HStack {
                         Text(model.labelTextLeading)
-                            .frame(maxWidth: 150)
+                            .frame(width: 140)
+                            .multilineTextAlignment(.leading)
                         Text(model.labelTextTrailing)
                     }
                     .frame(maxWidth: .infinity)
@@ -41,7 +42,7 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
             }
             .overlay(alignment: .center) {
                 if model.isLoading {
-                    ProgressView("Loading…")
+                    ProgressView("Loading indoor data…")
                         .padding()
                         .background(.ultraThinMaterial)
                         .cornerRadius(10)
@@ -53,6 +54,8 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
                 do {
                     try await model.map.load()
                     try await model.displayIndoorData()
+                    // Since the method dataChangesOnLocationUpdate listens for new location changes, it is important
+                    // to ensure any blocking UI is dismissed before it is called.
                     model.isLoading = false
                     try await model.dataChangesOnLocationUpdate()
                 } catch {
