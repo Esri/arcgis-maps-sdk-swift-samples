@@ -37,11 +37,12 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
             }
             .overlay(alignment: .center) {
                 if model.isLoading {
-                    ProgressView("Loading indoor data…")
+                    ProgressView("Loading\n indoor data…")
                         .padding()
                         .background(.ultraThinMaterial)
                         .cornerRadius(10)
                         .shadow(radius: 50)
+                        .multilineTextAlignment(.center)
                 }
             }
             .task {
@@ -49,9 +50,6 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
                 do {
                     try await model.map.load()
                     try await model.displayIndoorData()
-                    // Since the method dataChangesOnLocationUpdate listens for new location changes, it is important
-                    // to ensure any blocking UI is dismissed before it is called.
-                    model.isLoading = false
                     try await model.updateAndDisplayOnLocationChange()
                 } catch {
                     model.isLoading = false

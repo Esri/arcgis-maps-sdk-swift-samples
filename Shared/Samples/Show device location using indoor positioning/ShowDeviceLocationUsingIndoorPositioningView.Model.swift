@@ -19,7 +19,7 @@ import SwiftUI
 extension ShowDeviceLocationUsingIndoorPositioningView {
     @MainActor
     class Model: ObservableObject {
-        /// Basic map with topographic style.
+        /// Map of Esri Campus indoors/.
         let map = Map(url: .indoorsMap)!
         
         /// The value of the current floor with -1 being used to represent floor that has not been set.
@@ -108,6 +108,9 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
                     featLayer.isVisible = true
                 }
             }
+            // The indoorsLocationDataSource should always be there. Since the createIndoorLocationDataSource returns an optional value
+            // it cannot be guaranteed. Best option is you get to this point without a datasource is to return
+            // (ideally an error would have been thrown before this point and the flow broken.)
             guard let dataSource = indoorsLocationDataSource else { return }
             locationDisplay.dataSource = dataSource
             locationDisplay.autoPanMode = .compassNavigation
@@ -155,6 +158,9 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         /// The method that updates the location when the indoors location datasource is triggered.
         func updateAndDisplayOnLocationChange() async throws {
             for try await location in locationDisplay.dataSource.locations {
+                // Since this listens for new location changes, it is important
+                // to ensure any blocking UI is dismissed once location updates begins.
+                isLoading = false
                 // Floors in location are zero indexed however floorManager levels begin at one. Since
                 // it is necessary to display the same information to the user as the floor manager levelNumber
                 // one is added to the floor level value.
@@ -211,7 +217,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         
         /// Starts the location display to show user's location on the map.
         private func requestLocationServicesAuthorizationIfNecessary() async throws {
-            // Request location permission if it has not yet been determined.
+            // Requests location permission if it has not yet been determined.
             if locationManager.authorizationStatus == .notDetermined {
                 locationManager.requestWhenInUseAuthorization()
             }
