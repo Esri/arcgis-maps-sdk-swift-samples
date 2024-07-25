@@ -33,7 +33,7 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
                     }
                     .frame(maxWidth: .infinity)
                     .background(.white)
-                    .opacity(0.5)
+                    .opacity(model.labelTextLeading.isEmpty ? 0 : 0.5)
                     Spacer()
                     Spacer()
                     Spacer()
@@ -49,15 +49,19 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
                 }
             }
             .task {
+                model.isLoading = true
                 do {
                     try await model.map.load()
-                    model.isLoading = true
                     try await model.displayIndoorData()
+                    model.isLoading = false
                     try await model.dataChangesOnLocationUpdate()
                 } catch {
                     model.isLoading = false
                     self.error = error
                 }
+            }
+            .onDisappear {
+                model.stopLocationDataSource()
             }
             .errorAlert(presentingError: $error)
     }

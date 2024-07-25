@@ -67,6 +67,13 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
             try await startLocationDisplay()
         }
         
+        /// Stops the location data source.
+        func stopLocationDataSource() {
+            Task {
+                await locationDisplay.dataSource.stop()
+            }
+        }
+        
         /// A function that attempts to load an indoor definition attached to the map
         /// and returns a boolean value based whether it is loaded.
         /// - Parameter map: The map that contains the IndoorDefinition.
@@ -89,16 +96,17 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
             } else {
                 indoorsLocationDataSource = try await createIndoorLocationDataSource(map: map)
             }
-            guard let dataSource = indoorsLocationDataSource else { return }
-            locationDisplay.dataSource = dataSource
-            locationDisplay.autoPanMode = .compassNavigation
-            // Start the location display to zoom to the user's current location.
-            try await locationDisplay.dataSource.start()
             for featLayer in map.operationalLayers {
                 if featLayer.name == "Transitions" || featLayer.name == "Details" {
                     featLayer.isVisible = true
                 }
             }
+            guard let dataSource = indoorsLocationDataSource else { return }
+            locationDisplay.dataSource = dataSource
+            locationDisplay.autoPanMode = .compassNavigation
+            // Start the location display to zoom to the user's current location.
+            guard locationDisplay.dataSource.status != .started else { return }
+            try await locationDisplay.dataSource.start()
         }
         
         /// Creates an indoor location datasource from the maps tables if there is no indoors definition.
@@ -158,7 +166,6 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
                 }
                 horizontalAccuracy = location.horizontalAccuracy
                 getStatusLabelText()
-                isLoading = false
             }
         }
         
@@ -167,7 +174,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
             labelTextLeading = ""
             labelTextTrailing = ""
             if currentFloor > -1 {
-                labelTextTrailing += "Current floor: \(currentFloor)\n"
+                labelTextLeading += "Current floor: \(currentFloor)\n"
                 if horizontalAccuracy > -1.0 {
                     let formattedAccuracy = measurementFormatter.string(
                         from: Measurement(value: horizontalAccuracy, unit: UnitLength.meters)
