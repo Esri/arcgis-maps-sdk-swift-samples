@@ -37,19 +37,19 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         ///  This value tracks whether the source is GPS or BLE.
         private var source: String = ""
         
-        /// This is the published value of the data that is displayed.
-        @Published private(set) var labelText: String = ""
-        
-        /// This is the published value of the data that is displayed.
-        @Published private(set) var labelTextTwo: String = ""
-        
-        /// The map's location display.
-        @Published private(set) var locationDisplay = LocationDisplay(dataSource: SystemLocationDataSource())
-        
         /// A indoors location data source based on sensor data, including but not
         /// limited to radio, GPS, motion sensors.
         private var indoorsLocationDataSource: IndoorsLocationDataSource?
         
+        /// This is the published value of the data that is displayed.
+        @Published private(set) var labelTextLeading: String = ""
+        
+        /// This is the published value of the data that is displayed.
+        @Published private(set) var labelTextTrailing: String = ""
+        
+        /// The map's location display.
+        @Published private(set) var locationDisplay = LocationDisplay(dataSource: SystemLocationDataSource())
+    
         /// Represents loading state of indoors data, blocks interaction until loaded.
         @Published var isLoading = false
         
@@ -164,24 +164,24 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         
         /// Updates the labels on the view with the current state of the indoors data source.
         private func getStatusLabelText() {
-            labelText = ""
-            labelTextTwo = ""
+            labelTextLeading = ""
+            labelTextTrailing = ""
             if currentFloor > -1 {
-                labelText += "Current floor: \(currentFloor)\n"
+                labelTextTrailing += "Current floor: \(currentFloor)\n"
                 if horizontalAccuracy > -1.0 {
                     let formattedAccuracy = measurementFormatter.string(
                         from: Measurement(value: horizontalAccuracy, unit: UnitLength.meters)
                     )
-                    labelText += "Accuracy: \(formattedAccuracy)"
+                    labelTextLeading += "Accuracy: \(formattedAccuracy)"
                 }
                 if sensorCount > -1 {
-                    labelTextTwo += "Number of sensor: \(sensorCount)\n"
+                    labelTextTrailing += "Number of sensor: \(sensorCount)\n"
                 } else if satelliteCount > -1 && source == "GNSS" {
-                    labelTextTwo += "Number of satellites: \(satelliteCount)\n"
+                    labelTextTrailing += "Number of satellites: \(satelliteCount)\n"
                 }
-                labelTextTwo += "Data source: \(source)"
+                labelTextTrailing += "Data source: \(source)"
             } else {
-                labelText = "No floor data."
+                labelTextLeading = "No floor data."
             }
         }
         

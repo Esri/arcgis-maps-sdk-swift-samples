@@ -27,9 +27,9 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
             .overlay(alignment: .top) {
                 VStack(spacing: 2) {
                     HStack {
-                        Text(model.labelText)
+                        Text(model.labelTextLeading)
                             .frame(maxWidth: 150)
-                        Text(model.labelTextTwo)
+                        Text(model.labelTextTrailing)
                     }
                     .frame(maxWidth: .infinity)
                     .background(.white)
