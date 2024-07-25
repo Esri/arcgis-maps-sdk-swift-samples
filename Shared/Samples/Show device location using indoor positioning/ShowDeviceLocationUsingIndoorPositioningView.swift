@@ -25,20 +25,15 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
         MapView(map: model.map)
             .locationDisplay(model.locationDisplay)
             .overlay(alignment: .top) {
-                VStack(spacing: 2) {
-                    HStack {
-                        Text(model.labelTextLeading)
-                            .frame(width: 140)
-                            .multilineTextAlignment(.leading)
-                        Text(model.labelTextTrailing)
-                    }
-                    .frame(maxWidth: .infinity)
-                    .background(.white)
-                    .opacity(model.labelTextLeading.isEmpty ? 0 : 0.5)
-                    Spacer()
-                    Spacer()
-                    Spacer()
+                HStack {
+                    Text(model.labelTextLeading)
+                        .frame(width: 140)
+                        .multilineTextAlignment(.leading)
+                    Text(model.labelTextTrailing)
                 }
+                .frame(maxWidth: .infinity, maxHeight: 60)
+                .background(.white)
+                .opacity(model.labelTextLeading.isEmpty ? 0 : 0.5)
             }
             .overlay(alignment: .center) {
                 if model.isLoading {
