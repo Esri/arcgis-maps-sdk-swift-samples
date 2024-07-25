@@ -66,7 +66,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         /// Represents loading state of indoors data, blocks interaction until loaded.
         @Published var isLoading = false
         
-        /// Kicks off the logic for displaying the indoors position.
+        /// Kicks off the logic loading the data for the indoors map and indoors location.
         func loadIndoorData() async throws {
             try await map.load()
             try await setIndoorDatasource()
@@ -101,7 +101,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
                 indoorsLocationDataSource = IndoorsLocationDataSource(definition: indoorPositioningDefinition)
                 // Otherwise the IndoorsDataSource attempts to create itself using IPS table information.
             } else {
-                indoorsLocationDataSource = try await createIndoorLocationDataSource(map: map)
+                indoorsLocationDataSource = try await createIndoorLocationDataSourceFromTables(map: map)
             }
             // This ensures that the details of the inside of the building, like room layouts are displayed.
             for featLayer in map.operationalLayers {
@@ -109,8 +109,8 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
                     featLayer.isVisible = true
                 }
             }
-            // The indoorsLocationDataSource should always be there. Since the createIndoorLocationDataSource returns an optional value
-            // it cannot be guaranteed. Best option is you get to this point without a datasource is to return
+            // The indoorsLocationDataSource should always be there. Since the createIndoorLocationDataSourceFromTables returns an optional value
+            // it cannot be guaranteed. Best option if you get to this point without a datasource is to return
             // (ideally an error would have been thrown before this point and the flow broken.)
             guard let dataSource = indoorsLocationDataSource else { return }
             locationDisplay.dataSource = dataSource
@@ -123,7 +123,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         /// Creates an indoor location datasource from the maps tables if there is no indoors definition.
         /// - Parameter map: The map which contains the tables from which the data source is constructed.
         /// - Returns: Returns a configured IndoorsLocationDataSource created from the IPS position table.
-        private func createIndoorLocationDataSource(map: Map) async throws -> IndoorsLocationDataSource? {
+        private func createIndoorLocationDataSourceFromTables(map: Map) async throws -> IndoorsLocationDataSource? {
             // Gets the positioning table from the map.
             guard let positioningTable = map.tables.first(where: { $0.displayName == "IPS_Positioning" }) else { return nil }
             // Creates and configures the query parameters.
