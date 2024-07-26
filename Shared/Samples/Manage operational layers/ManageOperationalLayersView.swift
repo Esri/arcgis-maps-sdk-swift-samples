@@ -84,7 +84,7 @@ private struct LayersManager: View {
                                 map.removeOperationalLayer(layer)
                                 
                                 withAnimation {
-                                    operationalLayers.removeAll { $0.id == layer.id }
+                                    operationalLayers.removeAll(where: { $0.id == layer.id })
                                     removedLayers.append(layer)
                                 }
                             }
