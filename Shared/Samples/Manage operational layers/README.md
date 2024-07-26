@@ -20,7 +20,7 @@ The second section shows layers that have been removed from the map. Tap the plu
 ## How it works
 
 1. Get the operational layers from the map's `operationalLayers` property.
-2. Add a layer using `Map.addOperationalLayer(newOperationalLayer:)` or remove a layer using `Map.removeOperationalLayer(operationalLayer:)`. The last layer in the array will be rendered on top.
+2. Add a layer using `Map.addOperationalLayer(_:)` or remove a layer using `Map.removeOperationalLayer(_:)`. The last layer in the array will be rendered on top.
 
 ## Relevant API
 
