@@ -16,8 +16,8 @@ import ArcGIS
 import SwiftUI
 
 struct ManageOperationalLayersView: View {
-    /// A map with a topographic basemap and centered on western USA.
-    @State private var map = {
+    /// A map with a topographic basemap centered on western USA.
+    @State private var map: Map = {
         let map = Map(basemapStyle: .arcGISTopographic)
         map.initialViewpoint = Viewpoint(
             center: Point(x: -133e5, y: 45e5, spatialReference: .webMercator),
@@ -26,128 +26,122 @@ struct ManageOperationalLayersView: View {
         return map
     }()
     
-    /// A Boolean value indicating whether to show the manage layers sheet.
-    @State private var isShowingSheet = false
+    /// The operational layers for the sample.
+    @State private var operationalLayers: [Layer] = [
+        ArcGISMapImageLayer(url: .worldElevations),
+        ArcGISMapImageLayer(url: .censusTiles)
+    ]
     
-    /// The error shown in the error alert.
-    @State private var error: Error?
+    /// A Boolean value indicating whether the layers manager is presented.
+    @State private var layersManagerIsPresented = false
     
     var body: some View {
         MapView(map: map)
             .task {
-                do {
-                    // Add layers from urls.
-                    let elevationImageLayer = ArcGISMapImageLayer(url: .worldElevations)
-                    try await elevationImageLayer.load()
-                    
-                    let censusTiledLayer = ArcGISMapImageLayer(url: .censusTiles)
-                    try await censusTiledLayer.load()
-                    
-                    map.addOperationalLayers([elevationImageLayer, censusTiledLayer])
-                } catch {
-                    self.error = error
-                }
+                // Loads and adds the operational layers to the map.
+                await operationalLayers.load()
+                map.addOperationalLayers(operationalLayers)
             }
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
                     Button("Manage Layers") {
-                        isShowingSheet = true
+                        layersManagerIsPresented = true
                     }
-                    .popover(isPresented: $isShowingSheet) {
-                        ManageLayersSheetView(map: map)
-                            .presentationDetents([.fraction(0.5)])
-                            .frame(idealWidth: 320, idealHeight: 360)
+                    .popover(isPresented: $layersManagerIsPresented) {
+                        LayersManager(map: map, layers: operationalLayers)
+                            .presentationDetents([.fraction(0.4)])
+                            .frame(idealWidth: 320, idealHeight: 260)
                     }
                 }
             }
-            .errorAlert(presentingError: $error)
     }
 }
 
-struct ManageLayersSheetView: View {
-    /// The map with the operational layers.
+/// A view for managing the layers of a given map.
+private struct LayersManager: View {
+    /// The map to manage.
     let map: Map
     
-    /// The action to dismiss the manage layers sheet.
+    /// The layers to add to and remove from the map.
+    let layers: [Layer]
+    
+    /// The action to dismiss the view.
     @Environment(\.dismiss) private var dismiss
     
-    /// An array for all the layers currently on the map.
+    /// The layers currently added to the map.
     @State private var operationalLayers: [Layer] = []
     
-    /// An array for all the layers removed from the map.
+    /// The layers removed from the map.
     @State private var removedLayers: [Layer] = []
     
     var body: some View {
-        VStack {
-            ZStack {
-                Text("Manage Layers")
-                    .bold()
-                HStack {
-                    EditButton()
-                    Spacer()
-                    Button("Done") {
-                        dismiss()
-                    }
-                }
-            }
-            .padding([.top, .leading, .trailing])
-            
-            List {
+        NavigationStack {
+            Form {
                 Section {
                     ForEach(operationalLayers, id: \.id) { layer in
                         HStack {
-                            Image(systemName: "minus.circle.fill")
-                                .foregroundStyle(.red)
-                                .imageScale(.large)
-                                .clipped()
-                                .onTapGesture {
-                                    // Remove layer from map on minus press.
-                                    map.removeOperationalLayer(layer)
-                                    removedLayers.append(layer)
+                            Button("Remove Layer", systemImage: "minus.circle.fill") {
+                                map.removeOperationalLayer(layer)
+                                
+                                withAnimation {
                                     operationalLayers.removeAll(where: { $0.id == layer.id })
+                                    removedLayers.append(layer)
                                 }
+                            }
+                            .foregroundStyle(.red)
+                            
                             Text(layer.name)
                         }
                     }
-                    .onMove { fromOffsets, toOffset in
-                        // Reorder the map's operational layers on list row move.
-                        operationalLayers.move(fromOffsets: fromOffsets, toOffset: toOffset)
-                        map.removeAllOperationalLayers()
-                        map.addOperationalLayers(operationalLayers)
-                    }
                 } header: {
-                    Text("Operational Layers")
-                        #if targetEnvironment(macCatalyst)
-                        .padding(.top)
-                        #endif
-                } footer: {
-                    Text("Tap \"Edit\" to reorder the layers.")
+                    HStack {
+                        Text("Operational Layers")
+                        Spacer()
+                        Button("Swap Layers", systemImage: "arrow.up.arrow.down.circle") {
+                            let layer = operationalLayers.first!
+                            map.removeOperationalLayer(layer)
+                            map.addOperationalLayer(layer)
+                            
+                            withAnimation {
+                                operationalLayers.reverse()
+                            }
+                        }
+                        .disabled(operationalLayers.count < 2)
+                    }
                 }
                 
-                Section {
+                Section("Removed Layers") {
                     ForEach(removedLayers, id: \.id) { layer in
                         HStack {
-                            Image(systemName: "plus.circle.fill")
-                                .foregroundStyle(.green)
-                                .imageScale(.large)
-                                .clipped()
-                                .onTapGesture {
-                                    // Add layer to map on plus press.
-                                    map.addOperationalLayer(layer)
+                            Button("Add Layer", systemImage: "plus.circle.fill") {
+                                map.addOperationalLayer(layer)
+                                
+                                withAnimation {
+                                    removedLayers.removeAll { $0.id == layer.id }
                                     operationalLayers.append(layer)
-                                    removedLayers.removeAll(where: { $0.id == layer.id })
                                 }
+                            }
+                            .foregroundStyle(.green)
+                            
                             Text(layer.name)
                         }
                     }
-                } header: {
-                    Text("Removed Layers")
+                }
+            }
+            .labelStyle(.iconOnly)
+            .navigationTitle("Manage Layers")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done", action: dismiss.callAsFunction)
                 }
             }
         }
-        .background(Color(.systemGroupedBackground))
         .onAppear {
             operationalLayers = map.operationalLayers
+            removedLayers = layers.filter { layer in
+                !operationalLayers.contains { $0.id == layer.id }
+            }
         }
     }
 }
