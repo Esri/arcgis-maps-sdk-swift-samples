@@ -32,8 +32,8 @@ struct ManageOperationalLayersView: View {
         ArcGISMapImageLayer(url: .censusTiles)
     ]
     
-    /// A Boolean value indicating whether the manage layers view is presented.
-    @State private var manageLayersIsPresented = false
+    /// A Boolean value indicating whether the layers manager is presented.
+    @State private var layersManagerIsPresented = false
     
     var body: some View {
         MapView(map: map)
@@ -45,10 +45,10 @@ struct ManageOperationalLayersView: View {
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
                     Button("Manage Layers") {
-                        manageLayersIsPresented = true
+                        layersManagerIsPresented = true
                     }
-                    .popover(isPresented: $manageLayersIsPresented) {
-                        ManageLayersView(map: map, layers: operationalLayers)
+                    .popover(isPresented: $layersManagerIsPresented) {
+                        LayersManager(map: map, layers: operationalLayers)
                             .presentationDetents([.fraction(0.4)])
                             .frame(idealWidth: 320, idealHeight: 260)
                     }
@@ -58,7 +58,7 @@ struct ManageOperationalLayersView: View {
 }
 
 /// A view for managing the layers of a given map.
-private struct ManageLayersView: View {
+private struct LayersManager: View {
     /// The map to manage.
     let map: Map
     
