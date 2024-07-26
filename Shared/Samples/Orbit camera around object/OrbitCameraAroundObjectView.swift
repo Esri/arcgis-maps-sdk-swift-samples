@@ -108,10 +108,7 @@ private extension OrbitCameraAroundObjectView {
             NavigationStack {
                 List {
                     VStack {
-                        Text("Camera Heading")
-                            .badge(
-                                Text(cameraHeading, format: .degrees)
-                            )
+                        LabeledContent("Camera Heading", value: cameraHeading, format: .degrees)
                         
                         Slider(value: $cameraHeading.value, in: -45...45)
                             .onChange(of: cameraHeading.value) { newValue in
@@ -120,10 +117,7 @@ private extension OrbitCameraAroundObjectView {
                     }
                     
                     VStack {
-                        Text("Plane Pitch")
-                            .badge(
-                                Text(planePitch, format: .degrees)
-                            )
+                        LabeledContent("Plane Pitch", value: planePitch, format: .degrees)
                         
                         Slider(value: $planePitch.value, in: -90...90)
                             .onChange(of: planePitch.value) { newValue in
