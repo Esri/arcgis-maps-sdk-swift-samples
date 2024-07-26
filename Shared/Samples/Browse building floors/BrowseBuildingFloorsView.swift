@@ -48,7 +48,6 @@ struct BrowseBuildingFloorsView: View {
                 withAnimation { attributionBarHeight = height }
             }
             .errorAlert(presentingError: $error)
-            .ignoresSafeArea(.keyboard, edges: .bottom)
             .overlay(alignment: .bottomTrailing) {
                 if isMapLoaded,
                    let floorManager = map.floorManager {

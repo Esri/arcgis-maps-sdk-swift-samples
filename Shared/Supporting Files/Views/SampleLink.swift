@@ -34,6 +34,7 @@ struct SampleLink: View {
         NavigationLink {
             SampleDetailView(sample: sample)
                 .id(sample.name)
+                .ignoresSafeArea(.keyboard, edges: .bottom)
         } label: {
             SampleRow(
                 name: sample.name.boldingFirstOccurrence(of: textToBold),
