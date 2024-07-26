@@ -48,18 +48,9 @@ struct ManageOperationalLayersView: View {
                         manageLayersIsPresented = true
                     }
                     .popover(isPresented: $manageLayersIsPresented) {
-                        NavigationStack {
-                            ManageLayersView(map: map, layers: operationalLayers)
-                                .navigationTitle("Manage Layers")
-                                .navigationBarTitleDisplayMode(.inline)
-                                .toolbar {
-                                    ToolbarItem(placement: .confirmationAction) {
-                                        Button("Done") { manageLayersIsPresented = false }
-                                    }
-                                }
-                        }
-                        .presentationDetents([.fraction(0.4)])
-                        .frame(idealWidth: 320, idealHeight: 260)
+                        ManageLayersView(map: map, layers: operationalLayers)
+                            .presentationDetents([.fraction(0.4)])
+                            .frame(idealWidth: 320, idealHeight: 260)
                     }
                 }
             }
@@ -74,6 +65,9 @@ private struct ManageLayersView: View {
     /// The layers to add to and remove from the map.
     let layers: [Layer]
     
+    /// The action to dismiss the view.
+    @Environment(\.dismiss) private var dismiss
+    
     /// The layers currently added to the map.
     @State private var operationalLayers: [Layer] = []
     
@@ -81,59 +75,68 @@ private struct ManageLayersView: View {
     @State private var removedLayers: [Layer] = []
     
     var body: some View {
-        Form {
-            Section {
-                ForEach(operationalLayers, id: \.id) { layer in
-                    HStack {
-                        Button("Remove Layer", systemImage: "minus.circle.fill") {
-                            map.removeOperationalLayer(layer)
-                            
-                            withAnimation {
-                                operationalLayers.removeAll { $0.id == layer.id }
-                                removedLayers.append(layer)
+        NavigationStack {
+            Form {
+                Section {
+                    ForEach(operationalLayers, id: \.id) { layer in
+                        HStack {
+                            Button("Remove Layer", systemImage: "minus.circle.fill") {
+                                map.removeOperationalLayer(layer)
+                                
+                                withAnimation {
+                                    operationalLayers.removeAll { $0.id == layer.id }
+                                    removedLayers.append(layer)
+                                }
                             }
-                        }
-                        .foregroundStyle(.red)
-                        
-                        Text(layer.name)
-                    }
-                }
-            } header: {
-                HStack {
-                    Text("Operational Layers")
-                    Spacer()
-                    Button("Swap Layers", systemImage: "arrow.up.arrow.down.circle") {
-                        let layer = operationalLayers.first!
-                        map.removeOperationalLayer(layer)
-                        map.addOperationalLayer(layer)
-                        
-                        withAnimation {
-                            operationalLayers.reverse()
+                            .foregroundStyle(.red)
+                            
+                            Text(layer.name)
                         }
                     }
-                    .disabled(operationalLayers.count < 2)
-                }
-            }
-            
-            Section("Removed Layers") {
-                ForEach(removedLayers, id: \.id) { layer in
+                } header: {
                     HStack {
-                        Button("Add Layer", systemImage: "plus.circle.fill") {
+                        Text("Operational Layers")
+                        Spacer()
+                        Button("Swap Layers", systemImage: "arrow.up.arrow.down.circle") {
+                            let layer = operationalLayers.first!
+                            map.removeOperationalLayer(layer)
                             map.addOperationalLayer(layer)
                             
                             withAnimation {
-                                removedLayers.removeAll { $0.id == layer.id }
-                                operationalLayers.append(layer)
+                                operationalLayers.reverse()
                             }
                         }
-                        .foregroundStyle(.green)
-                        
-                        Text(layer.name)
+                        .disabled(operationalLayers.count < 2)
+                    }
+                }
+                
+                Section("Removed Layers") {
+                    ForEach(removedLayers, id: \.id) { layer in
+                        HStack {
+                            Button("Add Layer", systemImage: "plus.circle.fill") {
+                                map.addOperationalLayer(layer)
+                                
+                                withAnimation {
+                                    removedLayers.removeAll { $0.id == layer.id }
+                                    operationalLayers.append(layer)
+                                }
+                            }
+                            .foregroundStyle(.green)
+                            
+                            Text(layer.name)
+                        }
                     }
                 }
             }
+            .labelStyle(.iconOnly)
+            .navigationTitle("Manage Layers")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done", action: dismiss.callAsFunction)
+                }
+            }
         }
-        .labelStyle(.iconOnly)
         .onAppear {
             operationalLayers = map.operationalLayers
             removedLayers = layers.filter { layer in
