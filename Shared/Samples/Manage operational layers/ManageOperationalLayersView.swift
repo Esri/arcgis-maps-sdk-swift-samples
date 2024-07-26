@@ -58,8 +58,8 @@ struct ManageOperationalLayersView: View {
                                     }
                                 }
                         }
-                        .presentationDetents([.fraction(0.5)])
-                        .frame(idealWidth: 320, idealHeight: 360)
+                        .presentationDetents([.fraction(0.4)])
+                        .frame(idealWidth: 320, idealHeight: 260)
                     }
                 }
             }
