@@ -29,63 +29,65 @@ struct SearchForWebMapView: View {
     @State private var error: Error?
     
     var body: some View {
-        ScrollView {
-            LazyVStack {
-                ForEach(model.portalItems, id: \.id) { item in
-                    NavigationLink {
-                        SafeMapView(map: Map(item: item))
-                            .navigationTitle(item.title)
-                    } label: {
-                        PortalItemRowView(item: item)
-                    }
-                    .buttonStyle(.plain)
-                    .task {
-                        // Load the next results when the last item is reached.
-                        guard item.id == model.portalItems.last?.id else { return }
-                        
-                        resultsAreLoading = true
-                        defer { resultsAreLoading = false }
-                        
-                        do {
-                            try await model.findNextItems()
-                        } catch {
-                            self.error = error
+        NavigationStack {
+            ScrollView {
+                LazyVStack {
+                    ForEach(model.portalItems, id: \.id) { item in
+                        NavigationLink {
+                            SafeMapView(map: Map(item: item))
+                                .navigationTitle(item.title)
+                        } label: {
+                            PortalItemRowView(item: item)
+                        }
+                        .buttonStyle(.plain)
+                        .task {
+                            // Load the next results when the last item is reached.
+                            guard item.id == model.portalItems.last?.id else { return }
+                            
+                            resultsAreLoading = true
+                            defer { resultsAreLoading = false }
+                            
+                            do {
+                                try await model.findNextItems()
+                            } catch {
+                                self.error = error
+                            }
                         }
                     }
-                }
-                
-                if resultsAreLoading {
-                    ProgressView()
+                    
+                    if resultsAreLoading {
+                        ProgressView()
+                            .padding()
+                    } else if !query.isEmpty && model.portalItems.isEmpty {
+                        VStack {
+                            Text("No Results")
+                                .font(.headline)
+                            Text("Check spelling or try a new search.")
+                                .font(.footnote)
+                        }
                         .padding()
-                } else if !query.isEmpty && model.portalItems.isEmpty {
-                    VStack {
-                        Text("No Results")
-                            .font(.headline)
-                        Text("Check spelling or try a new search.")
-                            .font(.footnote)
                     }
-                    .padding()
                 }
             }
-        }
-        .background(Color(.secondarySystemBackground))
-        .searchable(
-            text: $query,
-            placement: .navigationBarDrawer(displayMode: .always),
-            prompt: "Web Maps"
-        )
-        .task(id: query) {
-            // Load new results when the query changes.
-            resultsAreLoading = true
-            defer { resultsAreLoading = false }
-            
-            do {
-                try await model.findItems(for: query)
-            } catch {
-                self.error = error
+            .background(Color(.secondarySystemBackground))
+            .searchable(
+                text: $query,
+                placement: .navigationBarDrawer(displayMode: .always),
+                prompt: "Web Maps"
+            )
+            .task(id: query) {
+                // Load new results when the query changes.
+                resultsAreLoading = true
+                defer { resultsAreLoading = false }
+                
+                do {
+                    try await model.findItems(for: query)
+                } catch {
+                    self.error = error
+                }
             }
+            .errorAlert(presentingError: $error)
         }
-        .errorAlert(presentingError: $error)
     }
 }
 
