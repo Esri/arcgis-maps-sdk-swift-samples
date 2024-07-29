@@ -35,11 +35,11 @@ struct Animate3DGraphicView: View {
             VStack {
                 HStack {
                     Spacer()
-                    VStack {
-                        StatRow("Altitude", value: model.animation.currentFrame.altitude.formatted(.length))
-                        StatRow("Heading", value: model.animation.currentFrame.heading.formatted(.angle))
-                        StatRow("Pitch", value: model.animation.currentFrame.pitch.formatted(.angle))
-                        StatRow("Roll", value: model.animation.currentFrame.roll.formatted(.angle))
+                    VStack(spacing: 3) {
+                        LabeledContent("Altitude", value: model.animation.currentFrame.altitude, format: .length)
+                        LabeledContent("Heading", value: model.animation.currentFrame.heading, format: .angle)
+                        LabeledContent("Pitch", value: model.animation.currentFrame.pitch, format: .angle)
+                        LabeledContent("Roll", value: model.animation.currentFrame.roll, format: .angle)
                     }
                     .frame(width: 170, height: 100)
                     .padding([.leading, .trailing])
@@ -103,7 +103,7 @@ struct Animate3DGraphicView: View {
         List {
             Section("Mission") {
                 VStack {
-                    StatRow("Progress", value: model.animation.progress.formatted(.rounded))
+                    LabeledContent("Progress", value: model.animation.progress, format: .rounded)
                     ProgressView(value: model.animation.progress)
                 }
                 .padding(.vertical)
@@ -135,7 +135,7 @@ struct Animate3DGraphicView: View {
             Section {
                 ForEach(CameraProperty.allCases, id: \.self) { property in
                     VStack {
-                        StatRow(property.label, value: model.cameraPropertyTexts[property] ?? "")
+                        LabeledContent(property.label, value: model.cameraPropertyTexts[property] ?? "")
                         Slider(value: cameraPropertyBinding(for: property), in: property.range, step: 1)
                             .padding(.horizontal)
                     }
@@ -160,27 +160,6 @@ extension Animate3DGraphicView {
         case .distance: return $model.cameraController.cameraDistance
         case .heading: return $model.cameraController.cameraHeadingOffset
         case .pitch: return $model.cameraController.cameraPitchOffset
-        }
-    }
-    
-    /// A view for displaying a statistic name and value in a row.
-    struct StatRow: View {
-        /// The name of the statistic.
-        var label: String
-        /// The formatted value of the statistic.
-        var value: String
-        
-        init(_ label: String, value: String) {
-            self.label = label
-            self.value = value
-        }
-        
-        var body: some View {
-            HStack {
-                Text(label)
-                Spacer()
-                Text(value)
-            }
         }
     }
 }

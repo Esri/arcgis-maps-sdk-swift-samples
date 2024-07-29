@@ -42,12 +42,7 @@ extension SetVisibilityOfSubtypeSublayerView {
                         }
                 }
                 Section("Sublayer Minimum Scale") {
-                    HStack {
-                        Text("Minimum Scale")
-                        Spacer()
-                        Text(model.minimumScaleText)
-                            .foregroundStyle(.secondary)
-                    }
+                    LabeledContent("Minimum Scale", value: model.minimumScaleText)
                     HStack {
                         Button("Set Current to Minimum Scale") {
                             model.setMinimumScale()

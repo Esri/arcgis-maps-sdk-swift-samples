@@ -66,15 +66,14 @@ extension ShowViewshedFromPointInSceneView {
         
         var body: some View {
             VStack {
-                HStack {
-                    Text(label)
-                    Spacer()
-                    Text(
-                        Measurement(value: measurementValue, unit: unit),
-                        format: .measurement(width: .narrow, numberFormatStyle: .number.precision(.fractionLength(0)))
+                LabeledContent(
+                    label,
+                    value: Measurement(value: measurementValue, unit: unit),
+                    format: .measurement(
+                        width: .narrow,
+                        numberFormatStyle: .number.precision(.fractionLength(0))
                     )
-                    .foregroundStyle(.secondary)
-                }
+                )
                 Slider(value: $measurementValue, in: range)
             }
         }
