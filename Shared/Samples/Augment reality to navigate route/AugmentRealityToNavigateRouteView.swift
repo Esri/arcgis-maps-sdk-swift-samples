@@ -25,28 +25,32 @@ struct AugmentRealityToNavigateRouteView: View {
     /// The error shown in the error alert.
     @State private var error: Error?
     
+    /// The point on the map where the user tapped.
+    @State private var tapLocation: Point?
+    
     var body: some View {
         MapView(
             map: model.map,
             graphicsOverlays: model.graphicsOverlays
         )
+        .locationDisplay(model.locationDisplay)
         .onSingleTapGesture { _, mapPoint in
-            Task {
-                do {
-                    try await model.addRouteGraphic(for: mapPoint)
-                } catch {
-                    self.error = error
-                }
+            tapLocation = mapPoint
+        }
+        .task(id: tapLocation) {
+            guard let tapLocation else { return }
+            
+            do {
+                try await model.addRouteGraphic(for: tapLocation)
+            } catch {
+                self.error = error
             }
         }
-        .locationDisplay(model.locationDisplay)
         .task {
-            Task {
-                do {
-                    try await model.setup()
-                } catch {
-                    self.error = error
-                }
+            do {
+                try await model.setUp()
+            } catch {
+                self.error = error
             }
         }
         .overlay(alignment: .top) {
@@ -172,7 +176,7 @@ private extension AugmentRealityToNavigateRouteView {
         
         /// Performs important tasks including setting up the location display, creating route parameters,
         /// and loading the scene elevation source.
-        func setup() async throws {
+        func setUp() async throws {
             try await startLocationDisplay()
             try await makeParameters()
             try await sceneModel.loadElevationSource()
@@ -215,21 +219,15 @@ private extension AugmentRealityToNavigateRouteView {
                 endPoint = mapPoint
                 sceneModel.routeParameters.setStops(makeStops())
                 
-                Task {
-                    do {
-                        let routeResult = try await sceneModel.routeTask.solveRoute(
-                            using: sceneModel.routeParameters
-                        )
-                        if let firstRoute = routeResult.routes.first {
-                            let routeGraphic = Graphic(geometry: firstRoute.geometry)
-                            routeGraphicsOverlay.addGraphic(routeGraphic)
-                            sceneModel.routeResult = routeResult
-                            try await sceneModel.makeRouteOverlay()
-                            statusText = "Tap camera to start navigation."
-                        }
-                    } catch {
-                        throw error
-                    }
+                let routeResult = try await sceneModel.routeTask.solveRoute(
+                    using: sceneModel.routeParameters
+                )
+                if let firstRoute = routeResult.routes.first {
+                    let routeGraphic = Graphic(geometry: firstRoute.geometry)
+                    routeGraphicsOverlay.addGraphic(routeGraphic)
+                    sceneModel.routeResult = routeResult
+                    try await sceneModel.makeRouteOverlay()
+                    statusText = "Tap camera to start navigation."
                 }
             }
         }

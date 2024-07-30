@@ -97,7 +97,7 @@ extension AugmentRealityToNavigateRouteView {
         private(set) var routeGraphicsOverlay = GraphicsOverlay()
         
         /// The elevation surface set to the base surface of the scene.
-        private(set) var elevationSurface: Surface = {
+        private let elevationSurface: Surface = {
             let elevationSurface = Surface()
             elevationSurface.navigationConstraint = .unconstrained
             elevationSurface.opacity = 0
@@ -177,25 +177,22 @@ extension AugmentRealityToNavigateRouteView {
         ///   - polyline: The polyline geometry of the route.
         /// - Returns: A polyline with adjusted elevation.
         private func addingElevation(_ z: Double, to polyline: Polyline) async throws -> Polyline? {
-            if let densifiedPolyline = GeometryEngine.densify(polyline, maxSegmentLength: 0.3) as? Polyline {
-                let polylineBuilder = PolylineBuilder(spatialReference: densifiedPolyline.spatialReference)
-                for part in densifiedPolyline.parts {
-                    for point in part.points {
-                        let elevation = try await elevationSurface.elevation(at: point)
-                        let newPoint = GeometryEngine.makeGeometry(from: point, z: elevation + z)
-                        // Put the new point 3 meters above the ground elevation.
-                        polylineBuilder.add(newPoint)
-                    }
+            guard let densifiedPolyline = GeometryEngine.densify(polyline, maxSegmentLength: 0.3) as? Polyline else { return nil }
+            let polylineBuilder = PolylineBuilder(spatialReference: densifiedPolyline.spatialReference)
+            for part in densifiedPolyline.parts {
+                for point in part.points {
+                    let elevation = try await elevationSurface.elevation(at: point)
+                    let newPoint = GeometryEngine.makeGeometry(from: point, z: elevation + z)
+                    // Put the new point 3 meters above the ground elevation.
+                    polylineBuilder.add(newPoint)
                 }
-                return polylineBuilder.toGeometry()
-            } else {
-                return nil
             }
+            return polylineBuilder.toGeometry()
         }
         
         /// Starts navigating the route.
         func startNavigation() async throws {
-            guard let routeResult = routeResult else { return }
+            guard let routeResult else { return }
             routeTracker = RouteTracker(
                 routeResult: routeResult,
                 routeIndex: 0,
@@ -237,7 +234,7 @@ extension AugmentRealityToNavigateRouteView {
         
         /// Monitors the asynchronous stream of voice guidances.
         private func trackVoiceGuidance() async {
-            guard let routeTracker = routeTracker else { return }
+            guard let routeTracker else { return }
             for try await voiceGuidance in routeTracker.voiceGuidances {
                 speechSynthesizer.stopSpeaking(at: .word)
                 speechSynthesizer.speak(AVSpeechUtterance(string: voiceGuidance.text))
