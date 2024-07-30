@@ -23,7 +23,7 @@ extension AugmentRealityToNavigateRouteView {
         /// The view model for scene view in the sample.
         @ObservedObject var model: SceneModel
         
-        /// A Boolean value indicating whether the use is navigatig the route.
+        /// A Boolean value indicating whether the use is navigating the route.
         @State private var isNavigating = false
         
         /// The error shown in the error alert.
@@ -42,12 +42,10 @@ extension AugmentRealityToNavigateRouteView {
                     model.scene.baseSurface.opacity = isPresented ? 0.6 : 0
                 }
                 .task {
-                    Task {
-                        do {
-                            try await model.startTrackingLocation()
-                        } catch {
-                            self.error = error
-                        }
+                    do {
+                        try await model.startTrackingLocation()
+                    } catch {
+                        self.error = error
                     }
                 }
                 .overlay(alignment: .top) {
@@ -69,15 +67,16 @@ extension AugmentRealityToNavigateRouteView {
                 ToolbarItemGroup(placement: .bottomBar) {
                     Button("Start") {
                         isNavigating = true
-                        Task {
-                            do {
-                                try await model.startNavigation()
-                            } catch {
-                                print("Failed to start navigation.")
-                            }
-                        }
                     }
                     .disabled(isNavigating)
+                    .task(id: isNavigating) {
+                        guard isNavigating else { return }
+                        do {
+                            try await model.startNavigation()
+                        } catch {
+                            self.error = error
+                        }
+                    }
                 }
             }
             .errorAlert(presentingError: $error)
@@ -92,13 +91,13 @@ extension AugmentRealityToNavigateRouteView {
     @MainActor
     class SceneModel: ObservableObject {
         /// A scene with an imagery basemap.
-        @Published var scene = Scene(basemapStyle: .arcGISImagery)
+        let scene = Scene(basemapStyle: .arcGISImagery)
         
         /// The graphics overlay containing a graphic for the route.
-        @Published var routeGraphicsOverlay = GraphicsOverlay()
+        private(set) var routeGraphicsOverlay = GraphicsOverlay()
         
         /// The elevation surface set to the base surface of the scene.
-        @Published var elevationSurface: Surface = {
+        private(set) var elevationSurface: Surface = {
             let elevationSurface = Surface()
             elevationSurface.navigationConstraint = .unconstrained
             elevationSurface.opacity = 0
@@ -107,13 +106,13 @@ extension AugmentRealityToNavigateRouteView {
         }()
         
         /// The elevation source with elevation service URL.
-        @Published private var elevationSource = ArcGISTiledElevationSource(url: .worldElevationService)
+        private var elevationSource = ArcGISTiledElevationSource(url: .worldElevationService)
         
         /// The route tracker.
-        @Published var routeTracker: RouteTracker?
+        private(set) var routeTracker: RouteTracker?
         
         /// The route result.
-        @Published var routeResult: RouteResult?
+        var routeResult: RouteResult?
         
         /// An AVSpeechSynthesizer for text to speech.
         private let speechSynthesizer = AVSpeechSynthesizer()
@@ -142,12 +141,8 @@ extension AugmentRealityToNavigateRouteView {
         
         /// Tracks the location datasource locations.
         func startTrackingLocation() async throws {
-            do {
-                for await location in locationDataSource.locations {
-                    try await routeTracker?.track(location)
-                }
-            } catch {
-                throw error
+            for await location in locationDataSource.locations {
+                try await routeTracker?.track(location)
             }
         }
         
@@ -186,14 +181,10 @@ extension AugmentRealityToNavigateRouteView {
                 let polylineBuilder = PolylineBuilder(spatialReference: densifiedPolyline.spatialReference)
                 for part in densifiedPolyline.parts {
                     for point in part.points {
-                        do {
-                            let elevation = try await elevationSurface.elevation(at: point)
-                            let newPoint = GeometryEngine.makeGeometry(from: point, z: elevation + z)
-                            // Put the new point 3 meters above the ground elevation.
-                            polylineBuilder.add(newPoint)
-                        } catch {
-                            throw error
-                        }
+                        let elevation = try await elevationSurface.elevation(at: point)
+                        let newPoint = GeometryEngine.makeGeometry(from: point, z: elevation + z)
+                        // Put the new point 3 meters above the ground elevation.
+                        polylineBuilder.add(newPoint)
                     }
                 }
                 return polylineBuilder.toGeometry()
@@ -216,22 +207,14 @@ extension AugmentRealityToNavigateRouteView {
             ? .imperial
             : .metric
             
-            do {
-                try await routeTask.load()
-            } catch {
-                throw error
-            }
+            try await routeTask.load()
             
             if routeTask.info.supportsRerouting,
                let reroutingParameters = ReroutingParameters(
                 routeTask: routeTask,
                 routeParameters: routeParameters
                ) {
-                do {
-                    try await routeTracker.enableRerouting(using: reroutingParameters)
-                } catch {
-                    throw error
-                }
+                try await routeTracker.enableRerouting(using: reroutingParameters)
             }
             
             statusText = "Navigation will start."

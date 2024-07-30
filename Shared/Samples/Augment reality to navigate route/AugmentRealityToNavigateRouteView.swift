@@ -116,7 +116,7 @@ private extension AugmentRealityToNavigateRouteView {
         /// The graphics overlay for the stops.
         private let stopGraphicsOverlay = GraphicsOverlay()
         
-        /// A graphic overlay for route graphics.
+        /// A graphics overlay for route graphics.
         private let routeGraphicsOverlay: GraphicsOverlay = {
             let overlay = GraphicsOverlay()
             overlay.renderer = SimpleRenderer(
@@ -137,6 +137,7 @@ private extension AugmentRealityToNavigateRouteView {
                 stopGraphicsOverlay.addGraphic(startStopGraphic)
             }
         }
+        
         /// A point representing the destination of navigation.
         private var endPoint: Point? {
             didSet {
