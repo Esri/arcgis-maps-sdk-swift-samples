@@ -104,14 +104,12 @@ struct AugmentRealityToShowHiddenInfrastructureView: View {
         .disabled(!geometryEditorCanUndo && !canDelete)
         Spacer()
         
-        NavigationStack {
-            NavigationLink {
-                ARPipesSceneView(model: model.sceneModel)
-            } label: {
-                Image(systemName: "camera")
-            }
-            .disabled(geometryEditorCanUndo || !canDelete)
+        NavigationLink {
+            ARPipesSceneView(model: model.sceneModel)
+        } label: {
+            Image(systemName: "camera")
         }
+        .disabled(geometryEditorCanUndo || !canDelete)
         Spacer()
         
         Button("Done", systemImage: "checkmark") {
