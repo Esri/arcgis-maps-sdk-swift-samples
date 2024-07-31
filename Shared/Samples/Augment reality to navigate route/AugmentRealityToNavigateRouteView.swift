@@ -61,9 +61,6 @@ struct AugmentRealityToNavigateRouteView: View {
                 toolbarButtons
             }
         }
-        .onAppear {
-            model.statusText = "Tap to place a start point."
-        }
         .errorAlert(presentingError: $error)
     }
     
@@ -163,7 +160,7 @@ private extension AugmentRealityToNavigateRouteView {
         let sceneModel = SceneModel()
         
         /// The status text displayed to the user.
-        @Published var statusText = ""
+        @Published var statusText = "Tap to place a start point."
         
         deinit {
             Task {
