@@ -70,15 +70,13 @@ struct AugmentRealityToNavigateRouteView: View {
     /// The buttons in the bottom toolbar.
     @ViewBuilder private var toolbarButtons: some View {
         Spacer()
-        NavigationStack {
-            NavigationLink {
-                ARRouteSceneView(model: model.sceneModel)
-            } label: {
-                Image(systemName: "camera")
-                    .imageScale(.large)
-            }
-            .disabled(!model.didSelectRoute)
+        NavigationLink {
+            ARRouteSceneView(model: model.sceneModel)
+        } label: {
+            Image(systemName: "camera")
+                .imageScale(.large)
         }
+        .disabled(!model.didSelectRoute)
         
         Spacer()
         Button {
