@@ -32,9 +32,10 @@ extension CreateLoadReportView {
                                 .onTapGesture {
                                     model.deletePhase(phase)
                                 }
-                            Text("Phase: \(phase.name)")
-                            Spacer()
-                            Text(model.summaryForPhase(phase))
+                            LabeledContent(
+                                "Phase: \(phase.name)",
+                                value: model.summaryForPhase(phase)
+                            )
                         }
                     }
                     .onDelete { indexSet in

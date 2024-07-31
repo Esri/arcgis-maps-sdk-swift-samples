@@ -87,11 +87,11 @@ extension AddFeaturesWithContingentValuesView {
                     }
                     
                     VStack {
-                        HStack {
-                            Text("Exclusion Area Buffer Size")
-                            Spacer()
-                            Text("\(Int(selectedBufferSize ?? 0))")
-                        }
+                        LabeledContent(
+                            "Exclusion Area Buffer Size",
+                            value: selectedBufferSize ?? 0,
+                            format: .number.precision(.fractionLength(0))
+                        )
                         
                         Slider(
                             value: Binding(

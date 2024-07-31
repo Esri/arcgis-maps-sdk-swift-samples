@@ -70,26 +70,29 @@ extension GenerateOfflineMapWithCustomParametersView {
                 Form {
                     Section("Adjust Basemap") {
                         VStack {
-                            Text("Min Scale Level")
-                                .badge(
-                                    Text(minScaleLevel, format: .number.precision(.fractionLength(0)))
-                                )
+                            LabeledContent(
+                                "Min Scale Level",
+                                value: minScaleLevel,
+                                format: .number.precision(.fractionLength(0))
+                            )
                             Slider(value: $minScaleLevel, in: scaleLevelRange, step: 1)
                         }
                         
                         VStack {
-                            Text("Max Scale Level")
-                                .badge(
-                                    Text(maxScaleLevel, format: .number.precision(.fractionLength(0)))
-                                )
+                            LabeledContent(
+                                "Max Scale Level",
+                                value: maxScaleLevel,
+                                format: .number.precision(.fractionLength(0))
+                            )
                             Slider(value: $maxScaleLevel, in: scaleLevelRange, step: 1.0)
                         }
                         
                         VStack {
-                            Text("Extent Buffer Distance")
-                                .badge(
-                                    Text(basemapExtentBufferDistance, format: .number.precision(.fractionLength(0)))
-                                )
+                            LabeledContent(
+                                "Extent Buffer Distance",
+                                value: basemapExtentBufferDistance,
+                                format: .number.precision(.fractionLength(0))
+                            )
                             Slider(value: $basemapExtentBufferDistance, in: basemapExtentBufferRange)
                         }
                     }
@@ -101,10 +104,11 @@ extension GenerateOfflineMapWithCustomParametersView {
                     
                     Section("Filter Feature Layer") {
                         VStack {
-                            Text("Min Hydrant Flow Rate")
-                                .badge(
-                                    Text(minHydrantFlowRate, format: .number.precision(.fractionLength(0)))
-                                )
+                            LabeledContent(
+                                "Min Hydrant Flow Rate",
+                                value: minHydrantFlowRate,
+                                format: .number.precision(.fractionLength(0))
+                            )
                             Slider(value: $minHydrantFlowRate, in: hydrantFlowRateRange, step: 1.0)
                         }
                     }

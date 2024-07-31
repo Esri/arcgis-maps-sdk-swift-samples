@@ -32,11 +32,11 @@ extension DensifyAndGeneralizeGeometryView {
                             model.updateGraphics()
                         }
                     VStack {
-                        HStack {
-                            Text("Max Deviation")
-                            Spacer()
-                            Text(String(Int(model.maxDeviation)))
-                        }
+                        LabeledContent(
+                            "Max Deviation",
+                            value: model.maxDeviation,
+                            format: .number.precision(.fractionLength(0))
+                        )
                         Slider(value: $model.maxDeviation, in: 1...250)
                             .onChange(of: model.maxDeviation) { _ in
                                 model.updateGraphics()
@@ -50,11 +50,11 @@ extension DensifyAndGeneralizeGeometryView {
                             model.updateGraphics()
                         }
                     VStack {
-                        HStack {
-                            Text("Max Segment Length")
-                            Spacer()
-                            Text(String(Int(model.maxSegmentLength)))
-                        }
+                        LabeledContent(
+                            "Max Segment Length",
+                            value: model.maxSegmentLength,
+                            format: .number.precision(.fractionLength(0))
+                        )
                         Slider(value: $model.maxSegmentLength, in: 50...500)
                             .onChange(of: model.maxSegmentLength) { _ in
                                 model.updateGraphics()

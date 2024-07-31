@@ -38,7 +38,9 @@ struct ContentView: View {
         } content: {
             Text("No Category Selected")
         } detail: {
-            Text("No Sample Selected")
+            NavigationStack {
+                Text("No Sample Selected")
+            }
         }
     }
 }
