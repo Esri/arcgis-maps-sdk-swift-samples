@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import ArcGIS
+import CoreLocation
 import SwiftUI
 
 struct ShowDeviceLocationUsingIndoorPositioningView: View {
@@ -25,13 +26,10 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
         MapView(map: model.map)
             .locationDisplay(model.locationDisplay)
             .overlay(alignment: .top) {
-                HStack {
+                HStack(alignment: .center, spacing: 10) {
                     Text(model.labelTextLeading)
-                        .frame(width: 140)
-                        .multilineTextAlignment(.leading)
                     Text(model.labelTextTrailing)
                 }
-                .frame(maxWidth: .infinity, maxHeight: 60)
                 .background(.white)
                 .opacity(model.labelTextLeading.isEmpty ? 0 : 0.5)
             }
@@ -47,10 +45,10 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
             }
             .task {
                 do {
+                    try await requestLocationServicesAuthorizationIfNecessary()
                     try await model.loadIndoorData()
                     try await model.updateDisplayOnLocationChange()
                 } catch {
-                    model.isLoading = false
                     self.error = error
                 }
             }
@@ -58,6 +56,16 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
                 model.stopLocationDataSource()
             }
             .errorAlert(presentingError: $error)
+    }
+    
+    /// Starts the location display to show user's location on the map.
+    private func requestLocationServicesAuthorizationIfNecessary() async throws {
+        /// The location manager which handles the location data.
+        let locationManager = CLLocationManager()
+        // Requests location permission if it has not yet been determined.
+        if locationManager.authorizationStatus == .notDetermined {
+            locationManager.requestWhenInUseAuthorization()
+        }
     }
 }
 

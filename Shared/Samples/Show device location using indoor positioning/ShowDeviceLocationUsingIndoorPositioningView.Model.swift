@@ -19,7 +19,7 @@ import SwiftUI
 extension ShowDeviceLocationUsingIndoorPositioningView {
     @MainActor
     class Model: ObservableObject {
-        /// Map of Esri Campus indoors.
+        /// An IPS-aware web map for all three floors of Esri Building L in Redlands.
         let map = Map(url: .indoorsMap)!
         
         /// The value of the current floor with -1 being used to represent floor that has not been set.
@@ -34,18 +34,12 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         /// The value of the horizontal accuracy of the location (in meters).
         private var horizontalAccuracy: Double = -1.0
         
-        ///  This value tracks whether the source is GPS or BLE.
-        private var source: String = ""
-        
-        /// A indoors location data source based on sensor data, including but not
+        /// An indoors location data source based on sensor data, including but not
         /// limited to radio, GPS, motion sensors.
         private var indoorsLocationDataSource: IndoorsLocationDataSource?
         
         /// The map's location display.
-        private(set) var locationDisplay = LocationDisplay(dataSource: SystemLocationDataSource())
-        
-        /// The location manager which handles the location data.
-        private let locationManager = CLLocationManager()
+        let locationDisplay = LocationDisplay(dataSource: SystemLocationDataSource())
         
         /// The measurement formatter for sensor accuracy.
         private let measurementFormatter: MeasurementFormatter = {
@@ -64,14 +58,14 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         @Published private(set) var labelTextTrailing: String = ""
         
         /// Represents loading state of indoors data, blocks interaction until loaded.
-        @Published var isLoading = false
+        @Published private(set) var isLoading = false
         
         /// Kicks off the logic loading the data for the indoors map and indoors location.
         func loadIndoorData() async throws {
-            isLoading = true 
+            isLoading = true
+            defer { isLoading = false }
             try await map.load()
             try await setIndoorDatasource()
-            try await requestLocationServicesAuthorizationIfNecessary()
         }
         
         /// Stops the location data source.
@@ -81,26 +75,15 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
             }
         }
         
-        /// A function that attempts to load an indoor definition attached to the map
-        /// and returns a boolean value based whether it is loaded.
-        /// - Parameter map: The map that contains the IndoorDefinition.
-        /// - Returns: A boolean value for whether the IndoorDefinition is loaded.
-        private func indoorDefinitionIsLoaded(map: Map) async throws -> Bool {
-            guard map.indoorPositioningDefinition?.loadStatus != .loaded else { return true }
-            try await map.indoorPositioningDefinition?.load()
-            return map.indoorPositioningDefinition?.loadStatus == .loaded
-        }
-        
         /// Sets the indoor datasource on the location display depending on
         /// whether the map contains an IndoorDefinition.
         private func setIndoorDatasource() async throws {
             try await map.floorManager?.load()
             // If an indoor definition exists in the map, it gets loaded and sets the IndoorsDataSource to pull information
-            // from the definition.
-            if try await indoorDefinitionIsLoaded(map: map),
-               let indoorPositioningDefinition = map.indoorPositioningDefinition {
+            // from the definition, otherwise the IndoorsDataSource attempts to create itself using IPS table information.
+            if let indoorPositioningDefinition = map.indoorPositioningDefinition {
+                try await indoorPositioningDefinition.load()
                 indoorsLocationDataSource = IndoorsLocationDataSource(definition: indoorPositioningDefinition)
-                // Otherwise the IndoorsDataSource attempts to create itself using IPS table information.
             } else {
                 indoorsLocationDataSource = try await createIndoorLocationDataSourceFromTables(map: map)
             }
@@ -110,9 +93,9 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
                     featLayer.isVisible = true
                 }
             }
-            // The indoorsLocationDataSource should always be there. Since the createIndoorLocationDataSourceFromTables returns an optional value
-            // it cannot be guaranteed. Best option if you get to this point without a datasource is to return
-            // (ideally an error would have been thrown before this point and the flow broken.)
+            // The indoorsLocationDataSource should always be there. Since the createIndoorLocationDataSourceFromTables returns
+            // an optional value it cannot be guaranteed. Best option if you get to this point without a datasource
+            // is to return (ideally an error would have been thrown before this point and the flow broken.)
             guard let dataSource = indoorsLocationDataSource else { return }
             locationDisplay.dataSource = dataSource
             locationDisplay.autoPanMode = .compassNavigation
@@ -162,7 +145,6 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
             for try await location in locationDisplay.dataSource.locations {
                 // Since this listens for new location changes, it is important
                 // to ensure any blocking UI is dismissed once location updates begins.
-                isLoading = false
                 // Floors in location are zero indexed however floorManager levels begin at one. Since
                 // it is necessary to display the same information to the user as the floor manager levelNumber
                 // one is added to the floor level value.
@@ -181,7 +163,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
                 }
                 // This indicates whether the location data was sourced from GNSS (Satellites), BLE (Bluetooth Low Energy)
                 // or AppleIPS (Apple's proprietary location system.
-                source = location.additionalSourceProperties[.positionSource] as? String ?? ""
+                var source = location.additionalSourceProperties[.positionSource] as? String ?? ""
                 switch source {
                 case "GNSS":
                     satelliteCount = location.additionalSourceProperties[.satelliteCount] as? Int ?? 0
@@ -190,12 +172,12 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
                 }
                 horizontalAccuracy = location.horizontalAccuracy
                 // Updates every time the location changes.
-                getStatusLabelText()
+                getStatusLabelText(source: source)
             }
         }
         
         /// Updates the labels on the view with the current state of the indoors data source.
-        private func getStatusLabelText() {
+        private func getStatusLabelText(source: String) {
             labelTextLeading = ""
             labelTextTrailing = ""
             if currentFloor > -1 {
@@ -214,14 +196,6 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
                 labelTextTrailing += "Data source: \(source)"
             } else {
                 labelTextLeading = "No floor data."
-            }
-        }
-        
-        /// Starts the location display to show user's location on the map.
-        private func requestLocationServicesAuthorizationIfNecessary() async throws {
-            // Requests location permission if it has not yet been determined.
-            if locationManager.authorizationStatus == .notDetermined {
-                locationManager.requestWhenInUseAuthorization()
             }
         }
     }
