@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import SwiftUI
 import ArcGIS
 import ArcGISToolkit
+import SwiftUI
 
 struct SetBasemapView: View {
     /// A Boolean value that indicates whether to show the basemap gallery.
@@ -55,7 +55,7 @@ struct SetBasemapView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         SetBasemapView()
     }
 }

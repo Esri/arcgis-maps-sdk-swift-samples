@@ -27,54 +27,41 @@ extension AddDynamicEntityLayerView {
         @Binding var calloutPlacement: CalloutPlacement?
         
         var body: some View {
-            if #available(iOS 16, *) {
-                NavigationStack {
-                    root
-                }
-            } else {
-                NavigationView {
-                    root
-                }
-                .navigationViewStyle(.stack)
-            }
-        }
-        
-        @ViewBuilder var root: some View {
-            Form {
-                Section("Track display properties") {
-                    Toggle("Track Lines", isOn: $model.showsTrackLine)
-                    Toggle("Previous Observations", isOn: $model.showsPreviousObservations)
-                }
-                
-                Section("Observations") {
-                    VStack {
+            NavigationStack {
+                Form {
+                    Section("Track display properties") {
+                        Toggle("Track Lines", isOn: $model.showsTrackLine)
+                        Toggle("Previous Observations", isOn: $model.showsPreviousObservations)
+                    }
+                    
+                    Section("Observations") {
+                        VStack {
+                            LabeledContent(
+                                "Observations per track",
+                                value: model.maximumObservations.formatted()
+                            )
+                            Slider(value: $model.maximumObservations, in: model.maxObservationRange, step: 1)
+                        }
                         HStack {
-                            Text("Observations per track")
                             Spacer()
-                            Text(model.maximumObservations.formatted())
-                                .foregroundColor(.secondary)
-                        }
-                        Slider(value: $model.maximumObservations, in: model.maxObservationRange, step: 1)
-                    }
-                    HStack {
-                        Spacer()
-                        Button("Purge All Observations") {
-                            Task {
-                                try? await model.streamService.purgeAll()
-                                calloutPlacement = nil
+                            Button("Purge All Observations") {
+                                Task {
+                                    try? await model.streamService.purgeAll()
+                                    calloutPlacement = nil
+                                }
                             }
+                            Spacer()
                         }
-                        Spacer()
                     }
                 }
-            }
-            .toggleStyle(.switch)
-            .navigationTitle("Dynamic Entity Settings")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") {
-                        dismiss()
+                .toggleStyle(.switch)
+                .navigationTitle("Dynamic Entity Settings")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .confirmationAction) {
+                        Button("Done") {
+                            dismiss()
+                        }
                     }
                 }
             }

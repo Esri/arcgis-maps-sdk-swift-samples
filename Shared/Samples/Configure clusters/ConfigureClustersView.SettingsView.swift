@@ -32,7 +32,7 @@ extension ConfigureClustersView {
         @State private var selectedMaxScale = 0
         
         var body: some View {
-            NavigationView {
+            NavigationStack {
                 Form {
                     Section("Cluster Labels Visibility") {
                         Toggle("Show Labels", isOn: $model.showsLabels)
@@ -58,12 +58,11 @@ extension ConfigureClustersView {
                             model.maxScale = Double(newMaxScale)
                         }
                         
-                        HStack {
-                            Text("Current Map Scale")
-                            Spacer()
-                            Text(mapViewScale, format: .number.precision(.fractionLength(0)))
-                                .foregroundColor(.secondary)
-                        }
+                        LabeledContent(
+                            "Current Map Scale",
+                            value: mapViewScale,
+                            format: .number.precision(.fractionLength(0))
+                        )
                     }
                 }
                 .navigationTitle("Clustering Settings")
@@ -76,7 +75,6 @@ extension ConfigureClustersView {
                     }
                 }
             }
-            .navigationViewStyle(.stack)
         }
     }
 }

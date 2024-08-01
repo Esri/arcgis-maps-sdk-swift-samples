@@ -37,7 +37,7 @@ The [feature service layer](https://sampleserver7.arcgisonline.com/server/rest/s
 
 ## Additional information
 
-Help regarding the Arcade label expression script for defining a label definition can be found on the [ArcGIS Developers](https://developers.arcgis.com/arcade/) site.
+Help regarding the Arcade label expression script for defining a label definition can be found on the [Esri Developers](https://developers.arcgis.com/arcade/) website.
 
 ## Tags
 

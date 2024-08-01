@@ -84,8 +84,8 @@ struct AddFeaturesWithContingentValuesView: View {
                 // A button that allows the popover to display.
                 Button("") {}
                     .opacity(0)
-                    .sheet(isPresented: $addFeatureSheetIsPresented, detents: [.medium]) {
-                        NavigationView {
+                    .popover(isPresented: $addFeatureSheetIsPresented) {
+                        NavigationStack {
                             AddFeatureView(model: model)
                                 .navigationTitle("Add Bird Nest")
                                 .navigationBarTitleDisplayMode(.inline)
@@ -98,20 +98,19 @@ struct AddFeaturesWithContingentValuesView: View {
                                     
                                     ToolbarItem(placement: .confirmationAction) {
                                         Button("Done") {
+                                            model.feature = nil
                                             addFeatureSheetIsPresented = false
                                         }
                                         .disabled(!model.contingenciesAreValid)
                                     }
                                 }
                         }
-                        .navigationViewStyle(.stack)
+                        .presentationDetents([.fraction(0.5)])
+                        .frame(idealWidth: 320, idealHeight: 320)
                     }
                     .task(id: addFeatureSheetIsPresented) {
                         // When the sheet closes, remove the feature if it is invalid.
-                        guard !addFeatureSheetIsPresented,
-                              !model.contingenciesAreValid,
-                              model.feature != nil
-                        else { return }
+                        guard !addFeatureSheetIsPresented, model.feature != nil else { return }
                         
                         do {
                             try await model.removeFeature()

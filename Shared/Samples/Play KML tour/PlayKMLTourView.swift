@@ -161,7 +161,7 @@ private extension URL {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         PlayKMLTourView()
     }
 }

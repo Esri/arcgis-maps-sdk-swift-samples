@@ -90,7 +90,7 @@ struct SearchForWebMapView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         SearchForWebMapView()
     }
 }

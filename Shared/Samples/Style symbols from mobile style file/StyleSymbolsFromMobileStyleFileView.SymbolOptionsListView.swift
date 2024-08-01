@@ -49,12 +49,11 @@ extension StyleSymbolsFromMobileStyleFileView {
                     Section {
                         ColorPicker("Color", selection: $model.symbolOptionSelections.color)
                         VStack {
-                            HStack {
-                                Text("Size")
-                                Spacer()
-                                Text(model.symbolOptionSelections.size.formatted(.number.rounded()))
-                                    .foregroundColor(.secondary)
-                            }
+                            LabeledContent(
+                                "Size",
+                                value: model.symbolOptionSelections.size,
+                                format: .number.rounded()
+                            )
                             Slider(value: $model.symbolOptionSelections.size, in: 20...60, step: 1)
                         }
                     }

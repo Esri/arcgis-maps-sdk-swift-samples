@@ -18,6 +18,7 @@ import UIKit.UIColor
 extension ConfigureClustersView {
     /// The model used to store the geo model and other expensive objects
     /// used in this view.
+    @MainActor
     class Model: ObservableObject {
         /// A Zurich buildings web map.
         let map = Map(

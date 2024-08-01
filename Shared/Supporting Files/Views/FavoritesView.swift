@@ -15,6 +15,9 @@
 import SwiftUI
 
 struct FavoritesView: View {
+    /// The editing mode of the environment.
+    @Environment(\.editMode) private var editMode
+    
     /// A Boolean value indicating whether the add favorite sheet is showing.
     @State private var addFavoriteSheetIsShowing = false
     
@@ -40,7 +43,6 @@ struct FavoritesView: View {
                 favoriteNames.remove(atOffsets: atOffsets)
             }
         }
-        .listStyle(.sidebar)
         .toolbar {
             ToolbarItemGroup(placement: .topBarTrailing) {
                 EditButton()
@@ -54,6 +56,9 @@ struct FavoritesView: View {
                     AddFavoriteView()
                 }
             }
+        }
+        .onDisappear {
+            editMode?.wrappedValue = .inactive
         }
     }
 }
@@ -80,7 +85,7 @@ private extension FavoritesView {
         }
         
         var body: some View {
-            NavigationView {
+            NavigationStack {
                 List {
                     ForEach(filteredSamples, id: \.name) { sample in
                         Button {
@@ -105,7 +110,7 @@ private extension FavoritesView {
                         Text("Choose a sample to add to Favorites")
                             .font(.subheadline)
                     }
-                    ToolbarItem(placement: .topBarTrailing) {
+                    ToolbarItem(placement: .confirmationAction) {
                         Button("Done") {
                             dismiss()
                         }

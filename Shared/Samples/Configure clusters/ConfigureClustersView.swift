@@ -61,8 +61,10 @@ struct ConfigureClustersView: View {
                         Button("Clustering Settings") {
                             showsSettings = true
                         }
-                        .sheet(isPresented: $showsSettings, detents: [.medium], dragIndicatorVisibility: .visible) {
+                        .popover(isPresented: $showsSettings) {
                             SettingsView(model: model, mapViewScale: mapViewScale)
+                                .presentationDetents([.fraction(0.5)])
+                                .frame(idealWidth: 320, idealHeight: 340)
                         }
                     }
                 }
@@ -75,7 +77,7 @@ struct ConfigureClustersView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         ConfigureClustersView()
     }
 }

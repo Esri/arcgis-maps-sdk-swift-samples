@@ -13,8 +13,8 @@
 // limitations under the License.
 
 import ArcGIS
-import SwiftUI
 import ArcGISToolkit
+import SwiftUI
 
 struct DisplayClustersView: View {
     /// A map of global power plants.
@@ -101,7 +101,7 @@ struct DisplayClustersView: View {
                                 Text("Geoelements")
                                     .font(.title3)
                                     .bold()
-                                    .foregroundColor(.primary)
+                                    .foregroundStyle(.primary)
                             }
                         }
                         .listStyle(.inset)
@@ -133,7 +133,7 @@ struct DisplayClustersView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         DisplayClustersView()
     }
 }

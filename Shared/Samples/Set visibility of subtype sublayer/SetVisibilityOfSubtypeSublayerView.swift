@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import SwiftUI
 import ArcGIS
+import SwiftUI
 
 struct SetVisibilityOfSubtypeSublayerView: View {
     /// The view model for the sample.
@@ -43,8 +43,12 @@ struct SetVisibilityOfSubtypeSublayerView: View {
                     Button("Visibility Settings") {
                         isShowingSettings.toggle()
                     }
-                    .sheet(isPresented: $isShowingSettings, detents: [.medium], dragIndicatorVisibility: .visible) {
-                        SettingsView(model: model)
+                    .popover(isPresented: $isShowingSettings) {
+                        NavigationStack {
+                            SettingsView(model: model)
+                        }
+                        .presentationDetents([.fraction(0.5)])
+                        .frame(idealWidth: 320, idealHeight: 340)
                     }
                 }
             }
@@ -61,7 +65,7 @@ struct SetVisibilityOfSubtypeSublayerView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         SetVisibilityOfSubtypeSublayerView()
     }
 }

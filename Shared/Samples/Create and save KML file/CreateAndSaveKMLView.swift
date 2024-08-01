@@ -13,8 +13,8 @@
 // limitations under the License.
 
 import ArcGIS
-import UniformTypeIdentifiers
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct CreateAndSaveKMLView: View {
     /// The view model for this sample.
@@ -79,7 +79,7 @@ final class KMZFile: FileDocument {
     /// The temporary URL to the KMZ file.
     private var temporaryDocumentURL: URL?
     
-    static var readableContentTypes = [UTType.kmz]
+    static var readableContentTypes: [UTType] { [.kmz] }
     
     /// Creates a KMZ file with a KML document.
     /// - Parameter document: The KML document that is used when creating the KMZ file.
@@ -105,6 +105,7 @@ final class KMZFile: FileDocument {
     }
     
     /// Saves the KML document as a KMZ file to a temporary location.
+    @MainActor
     func saveFile() async throws {
         temporaryDirectory = FileManager.createTemporaryDirectory()
         
@@ -137,7 +138,7 @@ private extension UTType {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         CreateAndSaveKMLView()
     }
 }

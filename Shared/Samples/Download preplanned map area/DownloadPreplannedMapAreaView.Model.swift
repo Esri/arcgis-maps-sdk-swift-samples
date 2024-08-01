@@ -70,8 +70,8 @@ extension DownloadPreplannedMapAreaView {
         /// Gets the preplanned map areas from the offline map task and creates the
         /// offline map models.
         func makeOfflineMapModels() async {
-            self.offlineMapModels = await Result {
-                try await offlineMapTask.preplannedMapAreas
+            do {
+                let models = try await offlineMapTask.preplannedMapAreas
                     .sorted(using: KeyPathComparator(\.portalItem.title))
                     .compactMap {
                         OfflineMapModel(
@@ -80,6 +80,9 @@ extension DownloadPreplannedMapAreaView {
                             temporaryDirectory: temporaryDirectory
                         )
                     }
+                offlineMapModels = .success(models)
+            } catch {
+                offlineMapModels = .failure(error)
             }
         }
         
@@ -123,9 +126,9 @@ extension DownloadPreplannedMapAreaView {
         /// Cancels all current jobs.
         private func cancelAllJobs() async {
             await withTaskGroup(of: Void.self) { group in
-                allOfflineMapModels.forEach { model in
+                for model in allOfflineMapModels {
                     if model.isDownloading {
-                        group.addTask {
+                        group.addTask { @MainActor in
                             await model.cancelDownloading()
                         }
                     }

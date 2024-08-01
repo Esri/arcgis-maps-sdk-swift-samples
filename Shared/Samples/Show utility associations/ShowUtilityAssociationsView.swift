@@ -100,6 +100,7 @@ private extension ShowUtilityAssociationsView {
 private extension ShowUtilityAssociationsView {
     /// The model used to store the geo model and other expensive objects
     /// used in this view.
+    @MainActor
     class Model: ObservableObject {
         // MARK: Properties
         
@@ -272,7 +273,7 @@ private extension Viewpoint {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         ShowUtilityAssociationsView()
     }
 }

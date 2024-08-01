@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import SwiftUI
 import ArcGIS
+import SwiftUI
 
 struct DisplayMapFromPortalItemView: View {
     /// The current portal item map.
@@ -109,7 +109,7 @@ private extension PortalItem.ID {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         DisplayMapFromPortalItemView()
     }
 }

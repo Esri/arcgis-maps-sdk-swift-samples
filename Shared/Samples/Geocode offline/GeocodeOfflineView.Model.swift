@@ -37,7 +37,7 @@ extension GeocodeOfflineView {
         /// The red map marker graphic used to indicate a given location on the map.
         private let markerGraphic = {
             // Create a symbol using the image from the project assets.
-            guard let markerImage = UIImage(named: "RedMarker") else { return Graphic() }
+            let markerImage = UIImage.redMarker
             let markerSymbol = PictureMarkerSymbol(image: markerImage)
             
             // Change the symbol's offsets, so it aligns properly to a given point.

@@ -15,7 +15,7 @@
 import SwiftUI
 
 /// A type that represents a sample in the sample viewer.
-protocol Sample {
+protocol Sample: Sendable {
     /// The name of the sample.
     var name: String { get }
     
@@ -35,6 +35,7 @@ protocol Sample {
     var hasDependencies: Bool { get }
     
     /// Creates the view for the sample.
+    @MainActor
     func makeBody() -> AnyView
 }
 
@@ -60,7 +61,7 @@ extension Sample {
     /// The sample's name in UpperCamelCase.
     /// - Note: For example, "Display map" -> "DisplayMap".
     var nameInUpperCamelCase: String {
-        name.capitalized.filter { !$0.isWhitespace }
+        name.capitalized.filter { !$0.isWhitespace && !$0.isPunctuation }
     }
     
     /// By default, a sample doesn't have dependencies.

@@ -17,6 +17,7 @@ import SwiftUI
 
 extension OrbitCameraAroundObjectView {
     /// The view model for the sample.
+    @MainActor
     class Model: ObservableObject {
         // MARK: Properties
         

@@ -34,6 +34,9 @@ struct SampleLink: View {
         NavigationLink {
             SampleDetailView(sample: sample)
                 .id(sample.name)
+                // Workaround for bug that causes a map view to jump to the bottom
+                // of its map when a keyboard is presented in landscape mode.
+                .ignoresSafeArea(.keyboard, edges: .bottom)
         } label: {
             SampleRow(
                 name: sample.name.boldingFirstOccurrence(of: textToBold),
@@ -87,7 +90,7 @@ private extension SampleLink {
                 
                 if sampleIsFavorite {
                     Image(systemName: "star.fill")
-                        .foregroundColor(.yellow)
+                        .foregroundStyle(.yellow)
                 }
                 
                 Label {} icon: {

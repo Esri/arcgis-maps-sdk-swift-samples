@@ -12,13 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import SwiftUI
 import ArcGIS
+import SwiftUI
 
 extension SetVisibilityOfSubtypeSublayerView {
     struct SettingsView: View {
         /// The view model for the sample.
         @ObservedObject var model: Model
+        
+        /// The action to dismiss the view.
+        @Environment(\.dismiss) private var dismiss
         
         /// A Boolean value indicating whether to show the subtype sublayer.
         @State private var showsSublayer = true
@@ -39,17 +42,21 @@ extension SetVisibilityOfSubtypeSublayerView {
                         }
                 }
                 Section("Sublayer Minimum Scale") {
-                    HStack {
-                        Text("Minimum Scale")
-                        Spacer()
-                        Text(model.minimumScaleText)
-                            .foregroundColor(.secondary)
-                    }
+                    LabeledContent("Minimum Scale", value: model.minimumScaleText)
                     HStack {
                         Button("Set Current to Minimum Scale") {
                             model.setMinimumScale()
                         }
                         .frame(maxWidth: .infinity, alignment: .center)
+                    }
+                }
+            }
+            .navigationTitle("Visibility Settings")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") {
+                        dismiss()
                     }
                 }
             }

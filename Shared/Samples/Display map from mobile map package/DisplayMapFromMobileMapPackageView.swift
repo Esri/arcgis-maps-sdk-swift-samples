@@ -15,6 +15,7 @@
 import ArcGIS
 import SwiftUI
 
+@MainActor
 struct DisplayMapFromMobileMapPackageView: View {
     /// A map with no specified style.
     @State private var map = Map()

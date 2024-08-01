@@ -72,7 +72,7 @@ struct ManageBookmarksView: View {
                         Button("Bookmarks", systemImage: "book") {
                             bookmarksSheetIsPresented = true
                         }
-                        .halfSheet(isPresented: $bookmarksSheetIsPresented) {
+                        .popover(isPresented: $bookmarksSheetIsPresented) {
                             BookmarksList(map: map) { bookmark in
                                 do {
                                     try await mapViewProxy.setBookmark(bookmark)
@@ -80,6 +80,8 @@ struct ManageBookmarksView: View {
                                     self.error = error
                                 }
                             }
+                            .presentationDetents([.fraction(0.5)])
+                            .frame(idealWidth: 320, idealHeight: 380)
                         }
                     }
                 }
@@ -119,7 +121,7 @@ private extension ManageBookmarksView {
         @State private var bookmarks: [Bookmark] = []
         
         var body: some View {
-            NavigationView {
+            NavigationStack {
                 List {
                     ForEach(bookmarks, id: \.self) { bookmark in
                         Button {
@@ -152,14 +154,18 @@ private extension ManageBookmarksView {
                 .navigationTitle("Bookmarks")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
-                    ToolbarItem(placement: .topBarTrailing) {
+                    ToolbarItem(placement: .topBarLeading) {
                         // Note: There is a bug in iOS 17 that prevents the `EditButton` from working
-                        // on the first tap when it is embedded in a `NavigationView` in a `popover`.
+                        // on the first tap when it is embedded in a `NavigationStack` in a `popover`.
                         EditButton()
+                    }
+                    ToolbarItem(placement: .confirmationAction) {
+                        Button("Done") {
+                            dismiss()
+                        }
                     }
                 }
             }
-            .navigationViewStyle(.stack)
             .onAppear {
                 bookmarks = map.bookmarks
             }
@@ -211,40 +217,10 @@ private extension View {
     ) -> some View {
         modifier(ManageBookmarksView.NewBookmarkAlert(isPresented: isPresented, onSave: onSave))
     }
-    
-    /// Presents a half sheet when a given binding to a Boolean value is true.
-    /// - Parameters:
-    ///   - isPresented: A binding to a Boolean value that determines whether to present the sheet.
-    ///   - content: A closure that returns the content of the sheet.
-    /// - Returns: A new `View`.
-    func halfSheet<Content>(
-        isPresented: Binding<Bool>,
-        @ViewBuilder content: @escaping () -> Content
-    ) -> some View where Content: View {
-        Group {
-            if #available(iOS 16, *) {
-                self
-                    .popover(isPresented: isPresented, arrowEdge: .bottom) {
-                        content()
-                            .presentationDetents([.medium, .large])
-#if targetEnvironment(macCatalyst)
-                            .frame(minWidth: 300, minHeight: 270)
-#else
-                            .frame(minWidth: 320, minHeight: 390)
-#endif
-                    }
-            } else {
-                self
-                    .sheet(isPresented: isPresented, detents: [.medium, .large]) {
-                        content()
-                    }
-            }
-        }
-    }
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         ManageBookmarksView()
     }
 }

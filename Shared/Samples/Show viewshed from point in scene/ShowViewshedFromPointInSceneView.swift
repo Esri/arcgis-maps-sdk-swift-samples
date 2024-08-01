@@ -41,8 +41,12 @@ struct ShowViewshedFromPointInSceneView: View {
                     Button("Viewshed Settings") {
                         isShowingSettings = true
                     }
-                    .sheet(isPresented: $isShowingSettings, detents: [.medium], dragIndicatorVisibility: .visible) {
-                        ViewshedSettingsView(model: model)
+                    .popover(isPresented: $isShowingSettings) {
+                        NavigationStack {
+                            ViewshedSettingsView(model: model)
+                        }
+                        .presentationDetents([.fraction(0.5)])
+                        .frame(idealWidth: 320, idealHeight: 380)
                     }
                 }
             }
@@ -50,7 +54,7 @@ struct ShowViewshedFromPointInSceneView: View {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         ShowViewshedFromPointInSceneView()
     }
 }

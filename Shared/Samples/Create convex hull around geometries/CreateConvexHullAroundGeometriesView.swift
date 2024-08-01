@@ -143,7 +143,7 @@ private extension Geometry {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         CreateConvexHullAroundGeometriesView()
     }
 }

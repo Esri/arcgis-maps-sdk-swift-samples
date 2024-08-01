@@ -19,29 +19,30 @@ extension ChangeMapViewBackgroundView {
         /// The view model for the sample.
         @ObservedObject var model: Model
         
+        /// The action to dismiss the view.
+        @Environment(\.dismiss) private var dismiss
+        
         var body: some View {
             List {
                 Section("Background Grid") {
                     ColorPicker("Color", selection: $model.color)
                     ColorPicker("Line Color", selection: $model.lineColor)
                     VStack {
-                        HStack {
-                            Text("Line Width")
-                            Spacer()
-                            Text(model.lineWidth.formatted())
-                                .foregroundColor(.secondary)
-                        }
+                        LabeledContent("Line Width", value: model.lineWidth.formatted())
                         Slider(value: $model.lineWidth, in: model.lineWidthRange, step: 1)
                     }
                     VStack {
-                        HStack {
-                            Text("Grid Size")
-                            Spacer()
-                            Text(model.size.formatted())
-                                .foregroundColor(.secondary)
-                        }
-                        Spacer()
+                        LabeledContent("Grid Size", value: model.size.formatted())
                         Slider(value: $model.size, in: model.sizeRange, step: 1)
+                    }
+                }
+            }
+            .navigationTitle("Background Settings")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") {
+                        dismiss()
                     }
                 }
             }

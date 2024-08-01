@@ -37,7 +37,7 @@
     ],
     "snippets": [
         "AugmentRealityToNavigateRouteView.swift",
-        "AugmentRealityToNavigateRouteView.RoutePlannerView.swift"
+        "AugmentRealityToNavigateRouteView.ARSceneView.swift"
     ],
     "title": "Augment reality to navigate route"
 }

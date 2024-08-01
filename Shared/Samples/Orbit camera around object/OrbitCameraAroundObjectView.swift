@@ -74,28 +74,14 @@ struct OrbitCameraAroundObjectView: View {
     }
     
     /// The button that brings up the settings sheet.
-    @ViewBuilder private var settingsButton: some View {
-        let button = Button("Settings") {
+    private var settingsButton: some View {
+        Button("Settings") {
             settingsSheetIsPresented = true
         }
-        let settingsContent = SettingsView(model: model)
-        
-        if #available(iOS 16, *) {
-            button
-                .popover(isPresented: $settingsSheetIsPresented, arrowEdge: .bottom) {
-                    settingsContent
-                        .presentationDetents([.fraction(0.5)])
-#if targetEnvironment(macCatalyst)
-                        .frame(minWidth: 300, minHeight: 270)
-#else
-                        .frame(minWidth: 320, minHeight: 390)
-#endif
-                }
-        } else {
-            button
-                .sheet(isPresented: $settingsSheetIsPresented, detents: [.medium]) {
-                    settingsContent
-                }
+        .popover(isPresented: $settingsSheetIsPresented) {
+            SettingsView(model: model)
+                .presentationDetents([.fraction(0.5)])
+                .frame(idealWidth: 320, idealHeight: 290)
         }
     }
 }
@@ -119,13 +105,10 @@ private extension OrbitCameraAroundObjectView {
         @State private var cameraDistanceIsInteractive = false
         
         var body: some View {
-            NavigationView {
+            NavigationStack {
                 List {
                     VStack {
-                        Text("Camera Heading")
-                            .badge(
-                                Text(cameraHeading, format: .degrees)
-                            )
+                        LabeledContent("Camera Heading", value: cameraHeading, format: .degrees)
                         
                         Slider(value: $cameraHeading.value, in: -45...45)
                             .onChange(of: cameraHeading.value) { newValue in
@@ -134,10 +117,7 @@ private extension OrbitCameraAroundObjectView {
                     }
                     
                     VStack {
-                        Text("Plane Pitch")
-                            .badge(
-                                Text(planePitch, format: .degrees)
-                            )
+                        LabeledContent("Plane Pitch", value: planePitch, format: .degrees)
                         
                         Slider(value: $planePitch.value, in: -90...90)
                             .onChange(of: planePitch.value) { newValue in
@@ -162,7 +142,6 @@ private extension OrbitCameraAroundObjectView {
                     }
                 }
             }
-            .navigationViewStyle(.stack)
             .onAppear {
                 planePitch.value = model.planeGraphic.attributes["PITCH"] as! Double
                 cameraHeading.value = model.cameraController.cameraHeadingOffset

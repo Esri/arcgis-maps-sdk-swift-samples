@@ -15,6 +15,7 @@
 import ArcGIS
 import SwiftUI
 
+@MainActor
 struct CreateSymbolStylesFromWebStylesView: View {
     /// The display scale of the environment.
     @Environment(\.displayScale) private var displayScale
@@ -58,16 +59,32 @@ struct CreateSymbolStylesFromWebStylesView: View {
                     Button("Legend") {
                         isShowingLegend = true
                     }
-                    .sheet(isPresented: $isShowingLegend, detents: [.medium]) {
-                        legendList
+                    .popover(isPresented: $isShowingLegend) {
+                        NavigationStack {
+                            LegendList(legendItems: $legendItems)
+                                .navigationTitle("Symbol Styles")
+                                .navigationBarTitleDisplayMode(.inline)
+                                .toolbar {
+                                    ToolbarItem(placement: .confirmationAction) {
+                                        Button("Done") {
+                                            isShowingLegend = false
+                                        }
+                                    }
+                                }
+                        }
+                        .presentationDetents([.fraction(0.5)])
+                        .frame(idealWidth: 320, idealHeight: 380)
                     }
                 }
             }
     }
     
     /// The legend list that describes what each symbol represents.
-    private var legendList: some View {
-        NavigationView {
+    private struct LegendList: View {
+        /// A binding to the list of legend items to show.
+        @Binding var legendItems: [LegendItem]
+        
+        var body: some View {
             List(legendItems, id: \.name) { legendItem in
                 Label {
                     Text(legendItem.name)
@@ -75,18 +92,7 @@ struct CreateSymbolStylesFromWebStylesView: View {
                     Image(uiImage: legendItem.image)
                 }
             }
-            .navigationTitle("Symbol Styles")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") {
-                        isShowingLegend = false
-                    }
-                }
-            }
         }
-        .navigationViewStyle(.stack)
-        .frame(idealWidth: 320, idealHeight: 428)
     }
 }
 
@@ -204,7 +210,7 @@ private extension CreateSymbolStylesFromWebStylesView {
         let image: UIImage
     }
     
-    /// The types of symbols to get from the symbol style .
+    /// The types of symbols to get from the symbol style.
     private enum SymbolType: CaseIterable, Comparable {
         case atm, beach, campground, cityHall, hospital, library, park, placeOfWorship, policeStation, postOffice, school, trail
         
@@ -278,7 +284,7 @@ private extension URL {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         CreateSymbolStylesFromWebStylesView()
     }
 }

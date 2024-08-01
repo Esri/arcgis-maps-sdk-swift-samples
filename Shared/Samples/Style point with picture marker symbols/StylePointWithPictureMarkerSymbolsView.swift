@@ -38,10 +38,8 @@ struct StylePointWithPictureMarkerSymbolsView: View {
     /// Creates a picture marker symbol from an image in the project assets.
     /// - Returns: A picture marker symbol
     private static func makePictureMarkerSymbolFromImage() -> Graphic {
-        let imageName = "PinBlueStar"
-        
         // Create pin symbol using the image.
-        let pinSymbol = PictureMarkerSymbol(image: UIImage(named: imageName)!)
+        let pinSymbol = PictureMarkerSymbol(image: .pinBlueStar)
         
         // Change offsets, so the symbol aligns properly to the point.
         pinSymbol.offsetY = pinSymbol.image!.size.height / 2

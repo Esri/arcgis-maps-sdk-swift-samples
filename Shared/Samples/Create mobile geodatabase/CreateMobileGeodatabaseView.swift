@@ -63,8 +63,15 @@ struct CreateMobileGeodatabaseView: View {
             }
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
-                    tableButton
-                        .disabled(model.features.isEmpty)
+                    Button("Feature Table") {
+                        tableSheetIsShowing = true
+                    }
+                    .popover(isPresented: $tableSheetIsShowing) {
+                        tableList
+                            .presentationDetents([.medium, .large])
+                            .frame(minWidth: 320, minHeight: 380)
+                    }
+                    .disabled(model.features.isEmpty)
                     
                     Spacer()
                     
@@ -94,38 +101,10 @@ struct CreateMobileGeodatabaseView: View {
             }
             .errorAlert(presentingError: $error)
     }
-}
-
-private extension CreateMobileGeodatabaseView {
-    /// The button that brings up the feature table sheet.
-    @ViewBuilder var tableButton: some View {
-        /// The button to bring up the sheet.
-        let button = Button("View Table") {
-            tableSheetIsShowing = true
-        }
-        
-        if #available(iOS 16, *) {
-            button
-                .popover(isPresented: $tableSheetIsShowing, arrowEdge: .bottom) {
-                    tableList
-                        .presentationDetents([.fraction(0.5)])
-#if targetEnvironment(macCatalyst)
-                        .frame(minWidth: 300, minHeight: 270)
-#else
-                        .frame(minWidth: 320, minHeight: 390)
-#endif
-                }
-        } else {
-            button
-                .sheet(isPresented: $tableSheetIsShowing) {
-                    tableList
-                }
-        }
-    }
     
     /// The list of features in the feature table.
-    var tableList: some View {
-        NavigationView {
+    private var tableList: some View {
+        NavigationStack {
             List {
                 Section("OID and Collection Timestamp") {
                     ForEach(model.features, id: \.self) { feature in
@@ -147,7 +126,6 @@ private extension CreateMobileGeodatabaseView {
                 }
             }
         }
-        .navigationViewStyle(.stack)
     }
 }
 
@@ -173,7 +151,7 @@ private extension FormatStyle where Self == Date.VerbatimFormatStyle {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         CreateMobileGeodatabaseView()
     }
 }

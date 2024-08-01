@@ -19,6 +19,9 @@ extension ShowViewshedFromPointInSceneView {
         /// The view model for the sample.
         @ObservedObject var model: Model
         
+        /// The action to dismiss the view.
+        @Environment(\.dismiss) private var dismiss
+        
         var body: some View {
             List {
                 Section("Visibility") {
@@ -42,6 +45,15 @@ extension ShowViewshedFromPointInSceneView {
                     PerspectiveRow(label: "Max Distance", measurementValue: $model.maxDistance, range: 1000...2000, unit: UnitLength.meters)
                 }
             }
+            .navigationTitle("Viewshed Settings")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") {
+                        dismiss()
+                    }
+                }
+            }
         }
     }
     
@@ -54,15 +66,14 @@ extension ShowViewshedFromPointInSceneView {
         
         var body: some View {
             VStack {
-                HStack {
-                    Text(label)
-                    Spacer()
-                    Text(
-                        Measurement(value: measurementValue, unit: unit),
-                        format: .measurement(width: .narrow, numberFormatStyle: .number.precision(.fractionLength(0)))
+                LabeledContent(
+                    label,
+                    value: Measurement(value: measurementValue, unit: unit),
+                    format: .measurement(
+                        width: .narrow,
+                        numberFormatStyle: .number.precision(.fractionLength(0))
                     )
-                    .foregroundColor(.secondary)
-                }
+                )
                 Slider(value: $measurementValue, in: range)
             }
         }

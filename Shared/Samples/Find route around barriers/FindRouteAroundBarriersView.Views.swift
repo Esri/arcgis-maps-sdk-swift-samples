@@ -66,46 +66,30 @@ extension FindRouteAroundBarriersView {
         let title: String
         
         /// A view that contains the content to display in the sheet.
-        @ViewBuilder let content: () -> Content
+        let content: () -> Content
         
         /// A view that describes the purpose of the button.
-        @ViewBuilder let label: () -> Label
+        let label: () -> Label
         
         /// A Boolean value indicating whether the sheet is showing.
         @State private var sheetIsShowing = false
         
         var body: some View {
-            if #available(iOS 16, *) {
-                button
-                    .popover(isPresented: $sheetIsShowing, arrowEdge: .bottom) {
-                        sheetContent
-                            .presentationDetents([.fraction(0.5)])
-#if targetEnvironment(macCatalyst)
-                            .frame(minWidth: 300, minHeight: 270)
-#else
-                            .frame(minWidth: 320, minHeight: 390)
-#endif
-                    }
-            } else {
-                button
-                    .sheet(isPresented: $sheetIsShowing, detents: [.medium]) {
-                        sheetContent
-                    }
-            }
-        }
-        
-        /// The button that presents the sheet.
-        @ViewBuilder private var button: some View {
             Button {
                 sheetIsShowing = true
             } label: {
                 label()
             }
+            .popover(isPresented: $sheetIsShowing) {
+                sheetContent
+                    .presentationDetents([.fraction(0.5)])
+                    .frame(idealWidth: 320, idealHeight: 240)
+            }
         }
         
         /// The content to display in the sheet with a title and done button.
-        @ViewBuilder private var sheetContent: some View {
-            NavigationView {
+        @MainActor private var sheetContent: some View {
+            NavigationStack {
                 content()
                     .navigationTitle(title)
                     .navigationBarTitleDisplayMode(.inline)
@@ -117,7 +101,6 @@ extension FindRouteAroundBarriersView {
                         }
                     }
             }
-            .navigationViewStyle(.stack)
         }
     }
 }

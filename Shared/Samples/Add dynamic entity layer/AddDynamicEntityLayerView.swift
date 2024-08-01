@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import SwiftUI
 import ArcGIS
+import SwiftUI
 
 struct AddDynamicEntityLayerView: View {
     /// The view model for the sample.
@@ -66,7 +66,14 @@ struct AddDynamicEntityLayerView: View {
                             }
                         }
                         Spacer()
-                        settingsButton
+                        Button("Dynamic Entity Settings") {
+                            isShowingSettings = true
+                        }
+                        .popover(isPresented: $isShowingSettings) {
+                            SettingsView(model: model, calloutPlacement: $placement)
+                                .presentationDetents([.fraction(0.5)])
+                                .frame(idealWidth: 320, idealHeight: 380)
+                        }
                     }
                 }
                 .overlay(alignment: .top) {
@@ -88,35 +95,10 @@ struct AddDynamicEntityLayerView: View {
                 }
         }
     }
-    
-    @ViewBuilder private var settingsButton: some View {
-        let button = Button("Dynamic Entity Settings") {
-            isShowingSettings = true
-        }
-        let settingsView = SettingsView(model: model, calloutPlacement: $placement)
-        
-        if #available(iOS 16, *) {
-            button
-                .popover(isPresented: $isShowingSettings, arrowEdge: .bottom) {
-                    settingsView
-                        .presentationDetents([.fraction(0.5)])
-#if targetEnvironment(macCatalyst)
-                        .frame(minWidth: 300, minHeight: 270)
-#else
-                        .frame(minWidth: 320, minHeight: 390)
-#endif
-                }
-        } else {
-            button
-                .sheet(isPresented: $isShowingSettings, detents: [.medium]) {
-                    settingsView
-                }
-        }
-    }
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         AddDynamicEntityLayerView()
     }
 }

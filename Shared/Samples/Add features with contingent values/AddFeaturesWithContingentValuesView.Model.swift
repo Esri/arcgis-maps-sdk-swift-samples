@@ -56,7 +56,7 @@ extension AddFeaturesWithContingentValuesView {
         private var featureTable: ArcGISFeatureTable?
         
         /// The feature in the feature table.
-        private(set) var feature: ArcGISFeature?
+        var feature: ArcGISFeature?
         
         /// A Boolean value indicating whether all the contingency constraints associated with the feature are valid.
         @Published private(set) var contingenciesAreValid = false
@@ -117,7 +117,7 @@ extension AddFeaturesWithContingentValuesView {
         /// - Parameters:
         ///   - value: The value.
         ///   - key: The key associated with the attribute.
-        func setFeatureAttributeValue(_ value: Any?, forKey key: String) {
+        func setFeatureAttributeValue(_ value: (any Sendable)?, forKey key: String) {
             guard let featureTable, let feature else { return }
             
             // Update the feature's attribute.

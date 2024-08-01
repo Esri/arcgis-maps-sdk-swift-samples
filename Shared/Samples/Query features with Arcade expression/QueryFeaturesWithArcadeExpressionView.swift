@@ -133,7 +133,7 @@ private extension QueryFeaturesWithArcadeExpressionView {
             defer { isEvaluating = false }
             
             // Create the profile variables for the script with the feature and map.
-            let profileVariables: [String: Any] = ["$feature": feature, "$map": map]
+            let profileVariables: [String: any Sendable] = ["$feature": feature, "$map": map]
             
             // Evaluate for the profile variables using the evaluator.
             let result = try await crimeCountEvaluator.evaluate(withProfileVariables: profileVariables)

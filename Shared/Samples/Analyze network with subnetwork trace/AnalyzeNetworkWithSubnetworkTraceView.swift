@@ -86,14 +86,8 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
                 }
             })
             .sheet(isPresented: $isConditionMenuPresented) {
-                if #available(iOS 16, *) {
-                    NavigationStack {
-                        conditionMenu
-                    }
-                } else {
-                    NavigationView {
-                        conditionMenu
-                    }
+                NavigationStack {
+                    conditionMenu
                 }
             }
             .overlay(alignment: .center) { loadingView }
@@ -158,7 +152,7 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
                     if let selectedAttribute = selectedAttribute {
                         Spacer()
                         Text(selectedAttribute.name)
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                     }
                 }
             }
@@ -170,7 +164,7 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
                     if let selectedComparison = selectedComparison {
                         Spacer()
                         Text(selectedComparison.title)
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                     }
                 }
             }
@@ -183,7 +177,7 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
                         if let value = selectedValue as? CodedValue {
                             Spacer()
                             Text(value.name)
-                                .foregroundColor(.secondary)
+                                .foregroundStyle(.secondary)
                         }
                     }
                 }
@@ -243,7 +237,6 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
                 }
             }
         }
-        .navigationViewStyle(.stack)
     }
     
     @ViewBuilder var attributesView: some View {
@@ -253,7 +246,7 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
                 Spacer()
                 if attribute === selectedAttribute {
                     Image(systemName: "checkmark")
-                        .foregroundColor(.accentColor)
+                        .foregroundStyle(Color.accentColor)
                 }
             }
             .contentShape(Rectangle())
@@ -272,7 +265,7 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
                     Spacer()
                     if comparison == selectedComparison {
                         Image(systemName: "checkmark")
-                            .foregroundColor(.accentColor)
+                            .foregroundStyle(Color.accentColor)
                     }
                 }
                 .contentShape(Rectangle())
@@ -293,7 +286,7 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
                         Spacer()
                         if value === selectedValue as? CodedValue {
                             Image(systemName: "checkmark")
-                                .foregroundColor(.accentColor)
+                                .foregroundStyle(Color.accentColor)
                         }
                     }
                     .contentShape(Rectangle())
@@ -313,7 +306,7 @@ private extension UtilityNetworkAttributeComparison.Operator {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         AnalyzeNetworkWithSubnetworkTraceView()
     }
 }

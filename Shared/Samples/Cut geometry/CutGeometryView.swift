@@ -154,7 +154,7 @@ private extension Geometry {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         CutGeometryView()
     }
 }

@@ -46,17 +46,19 @@ struct ListSpatialReferenceTransformationsView: View {
                 }
                 .errorAlert(presentingError: $error)
             
-            NavigationView {
-                TransformationsList(model: model)
-                    .navigationTitle("Transformations")
-                    .navigationBarTitleDisplayMode(.inline)
-                    .toolbar {
-                        ToolbarItem(placement: .topBarTrailing) {
-                            transformationsMenu
-                        }
-                    }
+            ZStack {
+                Text("Transformations")
+                    .bold()
+                HStack {
+                    Spacer()
+                    transformationsMenu
+                        .labelStyle(.iconOnly)
+                }
+                .padding()
             }
-            .navigationViewStyle(.stack)
+            .background(Color(.systemGroupedBackground))
+            
+            TransformationsList(model: model)
         }
     }
     
@@ -125,7 +127,7 @@ private extension ListSpatialReferenceTransformationsView {
                             Spacer()
                             if transformation == model.selectedTransformation {
                                 Image(systemName: "checkmark")
-                                    .foregroundColor(.accentColor)
+                                    .foregroundStyle(Color.accentColor)
                             }
                         }
                         
@@ -161,9 +163,9 @@ private extension ListSpatialReferenceTransformationsView {
 }
 
 private extension URL {
-    /// A URL to the Projection Engine Data Downloads on ArcGIS for Developers.
+    /// A URL to download the Projection Engine Data.
     static var projectionEngineDataDownloads: URL {
-        URL(string: "https://developers.arcgis.com/downloads/#pedata")!
+        URL(string: "https://developers.arcgis.com/swift/downloads/#projection-engine-data")!
     }
 }
 

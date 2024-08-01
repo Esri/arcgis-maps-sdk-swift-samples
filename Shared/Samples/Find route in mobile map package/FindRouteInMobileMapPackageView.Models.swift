@@ -88,7 +88,7 @@ extension FindRouteInMobileMapPackageView.MobileMapView {
         /// The blue marker symbol for creating a marker graphic.
         private let markerSymbol = {
             // Create a symbol using the Blue Marker image from the project's assets.
-            let markerImage = UIImage(named: "BlueMarker")!
+            let markerImage = UIImage.blueMarker
             let markerSymbol = PictureMarkerSymbol(image: markerImage)
             
             // Change the symbol's offsets, so it aligns properly to a given point.

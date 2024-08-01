@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import SwiftUI
 import ArcGIS
+import SwiftUI
 
 struct DisplaySceneView: View {
     /// A scene with imagery basemap style and a tiled elevation source.

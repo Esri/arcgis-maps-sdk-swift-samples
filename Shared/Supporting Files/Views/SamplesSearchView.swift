@@ -21,6 +21,13 @@ struct SamplesSearchView: View {
     /// The search result to display in the various sections.
     private let searchResult: SearchResult
     
+    /// A Boolean value indicating whether the search result contains any matches.
+    private var hasMatches: Bool {
+        !searchResult.nameMatches.isEmpty ||
+        !searchResult.descriptionMatches.isEmpty ||
+        !searchResult.tagMatches.isEmpty
+    }
+    
     /// Creates a sample search view.
     /// - Parameters:
     ///   - query: The search query in the search bar.
@@ -53,6 +60,19 @@ struct SamplesSearchView: View {
                 }
             }
         }
+        .overlay {
+            // Once iOS 17.0 is the minimum supported platform,
+            // this can be replaced with `ContentUnavailableView.search(text:)`.
+            VStack {
+                Text("No Results for \"\(query)\"")
+                    .font(.title2)
+                    .bold()
+                Text("Check the spelling or try a new search.")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+            }
+            .opacity(hasMatches ? 0 : 1)
+        }
     }
 }
 
@@ -84,32 +104,25 @@ private extension SamplesSearchView {
         let descriptionMatches: [Sample]
         let tagMatches: [Sample]
         
-        if query.isEmpty {
-            // Show all samples in the name section when query is empty.
-            nameMatches = samples
-            descriptionMatches = []
-            tagMatches = []
-        } else {
-            // The names of the samples already found in a previous section.
-            var previousSearchResults: Set<String> = []
-            
-            // Partially match a query to a sample's name.
-            nameMatches = samples.filter { $0.name.localizedCaseInsensitiveContains(query) }
-            previousSearchResults.formUnion(nameMatches.map(\.name))
-            
-            // Partially match a query to a sample's description.
-            descriptionMatches = samples.filter { $0.description.localizedCaseInsensitiveContains(query) }
-                .filter { !previousSearchResults.contains($0.name) }
-            previousSearchResults.formUnion(descriptionMatches.map(\.name))
-            
-            // Match a query to one of the sample's tags.
-            tagMatches = samples.filter { sample in
-                sample.tags.contains { tag in
-                    tag.localizedCaseInsensitiveCompare(query) == .orderedSame
-                }
-            }
+        // The names of the samples already found in a previous section.
+        var previousSearchResults: Set<String> = []
+        
+        // Partially match a query to a sample's name.
+        nameMatches = samples.filter { $0.name.localizedCaseInsensitiveContains(query) }
+        previousSearchResults.formUnion(nameMatches.map(\.name))
+        
+        // Partially match a query to a sample's description.
+        descriptionMatches = samples.filter { $0.description.localizedCaseInsensitiveContains(query) }
             .filter { !previousSearchResults.contains($0.name) }
+        previousSearchResults.formUnion(descriptionMatches.map(\.name))
+        
+        // Match a query to one of the sample's tags.
+        tagMatches = samples.filter { sample in
+            sample.tags.contains { tag in
+                tag.localizedCaseInsensitiveCompare(query) == .orderedSame
+            }
         }
+        .filter { !previousSearchResults.contains($0.name) }
         
         return SearchResult(
             nameMatches: nameMatches,

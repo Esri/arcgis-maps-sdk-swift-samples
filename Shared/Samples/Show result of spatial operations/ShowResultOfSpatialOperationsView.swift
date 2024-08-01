@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import SwiftUI
 import ArcGIS
+import SwiftUI
 
 struct ShowResultOfSpatialOperationsView: View {
     /// The current spatial operation performed.
@@ -174,7 +174,7 @@ private extension ShowResultOfSpatialOperationsView.Model {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         ShowResultOfSpatialOperationsView()
     }
 }

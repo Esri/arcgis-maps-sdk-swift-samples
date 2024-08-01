@@ -87,11 +87,11 @@ extension AddFeaturesWithContingentValuesView {
                     }
                     
                     VStack {
-                        HStack {
-                            Text("Exclusion Area Buffer Size")
-                            Spacer()
-                            Text("\(Int(selectedBufferSize ?? 0))")
-                        }
+                        LabeledContent(
+                            "Exclusion Area Buffer Size",
+                            value: selectedBufferSize ?? 0,
+                            format: .number.precision(.fractionLength(0))
+                        )
                         
                         Slider(
                             value: Binding(
@@ -122,6 +122,11 @@ extension AddFeaturesWithContingentValuesView {
                 
                 // Add nil to allow for an empty option in the picker.
                 statusOptions.insert(nil, at: 0)
+            }
+            .onDisappear {
+                selectedStatusName = nil
+                selectedProtectionName = nil
+                selectedBufferSize = nil
             }
         }
     }

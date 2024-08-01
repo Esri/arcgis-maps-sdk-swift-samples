@@ -1,0 +1,35 @@
+{
+    "category": "Search and Query",
+    "description": "Filter features displayed on a map using a definition expression or a display filter.",
+    "ignore": false,
+    "images": [
+        "filter-by-definition-expression-or-display-filter.png"
+    ],
+    "keywords": [
+        "SQL",
+        "definition expression",
+        "display filter",
+        "filter",
+        "limit data",
+        "query",
+        "restrict data",
+        "where clause",
+        "DisplayFilter",
+        "DisplayFilterDefinition",
+        "FeatureLayer",
+        "ManualDisplayFilterDefinition",
+        "ServiceFeatureTable"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "DisplayFilter",
+        "DisplayFilterDefinition",
+        "FeatureLayer",
+        "ManualDisplayFilterDefinition",
+        "ServiceFeatureTable"
+    ],
+    "snippets": [
+        "FilterByDefinitionExpressionOrDisplayFilterView.swift"
+    ],
+    "title": "Filter by definition expression or display filter"
+}

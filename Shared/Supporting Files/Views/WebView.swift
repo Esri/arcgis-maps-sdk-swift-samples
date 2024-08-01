@@ -41,20 +41,22 @@ struct WebView: UIViewRepresentable {
     }
     
     class Coordinator: NSObject, WKNavigationDelegate {
-        func webView(
-            _ webView: WKWebView,
-            decidePolicyFor navigationAction: WKNavigationAction,
-            decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
-        ) {
+        func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction) async -> WKNavigationActionPolicy {
             switch navigationAction.navigationType {
             case .linkActivated:
-                if let url = navigationAction.request.url, UIApplication.shared.canOpenURL(url) {
-                    UIApplication.shared.open(url)
+                if let url = navigationAction.request.url {
+                    await Self.openURL(url)
                 }
-                decisionHandler(.cancel)
+                return .cancel
             default:
-                decisionHandler(.allow)
+                return .allow
             }
+        }
+        
+        @MainActor
+        static func openURL(_ url: URL) {
+            guard UIApplication.shared.canOpenURL(url) else { return }
+            UIApplication.shared.open(url)
         }
     }
 }

@@ -53,7 +53,7 @@ struct Add3DTilesLayerView: View {
 private extension URL {
     /// The URL of a Stuttgart, Germany city 3D tiles service.
     static var stuttgart3DTiles: URL {
-        URL(string: "https://tiles.arcgis.com/tiles/N82JbI5EYtAkuUKU/arcgis/rest/services/Stuttgart/3DTilesServer/tileset.json")!
+        URL(string: "https://tiles.arcgis.com/tiles/ZQgQTuoyBrtmoGdP/arcgis/rest/services/Stuttgart/3DTilesServer/tileset.json")!
     }
     
     /// The URL of the Terrain 3D ArcGIS REST Service.

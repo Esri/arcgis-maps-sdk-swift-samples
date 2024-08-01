@@ -57,6 +57,7 @@ extension ShowDeviceLocationWithNMEADataSourcesView {
         /// communicate with external accessory hardware.
         private let supportedProtocolStrings: Set = [
             "com.bad-elf.gps",
+            "com.emlid.nmea",
             "com.eos-gnss.positioningsource",
             "com.geneq.sxbluegpssource"
         ]

@@ -37,8 +37,9 @@ struct StyleSymbolsFromMobileStyleFileView: View {
                     Button("Symbol") {
                         isShowingSymbolOptionsSheet = true
                     }
-                    .sheet(isPresented: $isShowingSymbolOptionsSheet, detents: [.large]) {
+                    .popover(isPresented: $isShowingSymbolOptionsSheet) {
                         symbolOptionsList
+                            .frame(idealWidth: 320, idealHeight: 380)
                     }
                     Spacer()
                     Button("Clear") {
@@ -56,7 +57,7 @@ struct StyleSymbolsFromMobileStyleFileView: View {
     
     /// The list containing the symbol options.
     private var symbolOptionsList: some View {
-        NavigationView {
+        NavigationStack {
             SymbolOptionsListView(model: model)
                 .navigationTitle("Symbol")
                 .navigationBarTitleDisplayMode(.inline)
@@ -68,7 +69,6 @@ struct StyleSymbolsFromMobileStyleFileView: View {
                     }
                 }
         }
-        .navigationViewStyle(.stack)
     }
 }
 

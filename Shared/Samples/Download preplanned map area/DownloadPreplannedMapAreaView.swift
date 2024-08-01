@@ -37,8 +37,10 @@ struct DownloadPreplannedMapAreaView: View {
                     Button("Select Map") {
                         isShowingSelectMapView.toggle()
                     }
-                    .sheet(isPresented: $isShowingSelectMapView, detents: [.medium]) {
+                    .popover(isPresented: $isShowingSelectMapView) {
                         MapPicker(model: model)
+                            .presentationDetents([.fraction(0.5)])
+                            .frame(idealWidth: 320, idealHeight: 380)
                     }
                     
                     Spacer()
@@ -85,7 +87,7 @@ private extension Viewpoint {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         DownloadPreplannedMapAreaView()
     }
 }

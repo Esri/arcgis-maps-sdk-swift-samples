@@ -15,38 +15,73 @@
 import SwiftUI
 
 struct CategoriesView: View {
-    /// The sample categories generated from the samples list.
-    private let categories = Set(SamplesApp.samples.map(\.category)).sorted()
+    /// The visibility of the leading columns in the navigation split view.
+    @Binding var columnVisibility: NavigationSplitViewVisibility
+    
+    /// The category currently selected.
+    @State private var selectedCategory: String?
+    
+    /// A Boolean value indicating whether the navigation destination is showing.
+    @State private var destinationIsPresented = false
+    
+    /// The list of categories.
+    private let categories: [String] = {
+        var categories = ["All", "Favorites"]
+        let sampleCategories = Set(SamplesApp.samples.map(\.category))
+        categories.append(contentsOf: sampleCategories.sorted())
+        return categories
+    }()
     
     var body: some View {
         ScrollView {
             LazyVGrid(columns: [GridItem(), GridItem()]) {
-                NavigationLink {
-                    FavoritesView()
-                        .navigationTitle("Favorites")
-                } label: {
-                    CategoryTile(name: "Favorites")
-                }
-                .isDetailLink(false)
-                .buttonStyle(.plain)
-                .contentShape(RoundedRectangle(cornerRadius: 30))
-                
                 ForEach(categories, id: \.self) { category in
-                    NavigationLink {
-                        List(SamplesApp.samples.filter { $0.category == category }, id: \.name) { sample in
-                            SampleLink(sample)
+                    Button {
+                        withAnimation(.easeInOut) {
+                            selectedCategory = category
                         }
-                        .listStyle(.sidebar)
-                        .navigationTitle(category)
+                        columnVisibility = .doubleColumn
                     } label: {
                         CategoryTile(name: category)
                     }
-                    .isDetailLink(false)
                     .buttonStyle(.plain)
-                    .contentShape(RoundedRectangle(cornerRadius: 30))
+                    .contentShape(RoundedRectangle(cornerRadius: 15))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 15)
+                            .stroke(
+                                category == selectedCategory ? Color.accentColor : Color.clear,
+                                lineWidth: 5
+                            )
+                    )
                 }
             }
             .padding()
+        }
+        .navigationDestination(isPresented: $destinationIsPresented) {
+            Group {
+                switch selectedCategory {
+                case "All":
+                    AllSamplesView()
+                case "Favorites":
+                    FavoritesView()
+                default:
+                    List(SamplesApp.samples.filter { $0.category == selectedCategory }, id: \.name) {
+                        SampleLink($0)
+                    }
+                }
+            }
+            .listStyle(.insetGrouped)
+            .navigationTitle(selectedCategory ?? "")
+        }
+        .onChange(of: destinationIsPresented) { _ in
+            // Resets the selection when the navigation destination is no longer presented.
+            guard !destinationIsPresented else { return }
+            withAnimation(.easeInOut) {
+                selectedCategory = nil
+            }
+        }
+        .onChange(of: selectedCategory) { newSelection in
+            destinationIsPresented = newSelection != nil
         }
     }
 }
@@ -62,19 +97,50 @@ private extension CategoriesView {
                 .aspectRatio(contentMode: .fit)
                 .overlay {
                     Color(red: 0.24, green: 0.24, blue: 0.26, opacity: 0.6)
-                    Image("\(name.replacingOccurrences(of: " ", with: "-"))-icon")
-                        .resizable()
-                        .colorInvert()
-                        .padding(10)
-                        .frame(width: 50, height: 50)
-                        .background(.black.opacity(0.75))
-                        .clipShape(Circle())
-                    Text(name)
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(.white)
-                        .offset(y: 45)
+                    
+                    GeometryReader { geometry in
+                        Group {
+                            Image("\(name.replacingOccurrences(of: " ", with: "-"))-icon")
+                                .resizable()
+                                .frame(
+                                    width: geometry.size.width * 0.17,
+                                    height: geometry.size.height * 0.17
+                                )
+                                .padding(geometry.size.width * 0.06)
+                                .colorInvert()
+                                .background(.black.opacity(0.75))
+                                .clipShape(Circle())
+                            
+                            Text(name)
+                                .font(.system(size: geometry.size.width * 0.1))
+                                .multilineTextAlignment(.center)
+                                .foregroundStyle(.white)
+                                .offset(y: geometry.size.height * 0.31)
+                                .padding()
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    }
                 }
                 .clipShape(RoundedRectangle(cornerRadius: 15))
+        }
+    }
+    
+    struct AllSamplesView: View {
+        /// The query in the search bar
+        @State private var query = ""
+        
+        var body: some View {
+            Group {
+                if !query.isEmpty {
+                    SamplesSearchView(query: query)
+                } else {
+                    List(SamplesApp.samples, id: \.name) { sample in
+                        SampleLink(sample, textToBold: query)
+                    }
+                }
+            }
+            .searchable(text: $query, placement: .navigationBarDrawer(displayMode: .always))
+            .scrollDismissesKeyboard(.immediately)
         }
     }
 }

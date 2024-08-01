@@ -153,7 +153,7 @@ private extension AugmentRealityToCollectDataView {
                   let featurePoint = featureGraphic.geometry as? Point else { return }
             
             // Create attributes for the new feature.
-            let featureAttributes: [String: Any] = [
+            let featureAttributes: [String: any Sendable] = [
                 "Health": health.rawValue,
                 "Height": 3.2,
                 "Diameter": 1.2

@@ -26,15 +26,16 @@ extension CreateLoadReportView {
                     ForEach(model.includedPhases, id: \.name) { phase in
                         HStack {
                             Image(systemName: "minus.circle.fill")
-                                .foregroundColor(.red)
+                                .foregroundStyle(.red)
                                 .imageScale(.large)
                                 .clipped()
                                 .onTapGesture {
                                     model.deletePhase(phase)
                                 }
-                            Text("Phase: \(phase.name)")
-                            Spacer()
-                            Text(model.summaryForPhase(phase))
+                            LabeledContent(
+                                "Phase: \(phase.name)",
+                                value: model.summaryForPhase(phase)
+                            )
                         }
                     }
                     .onDelete { indexSet in
@@ -46,7 +47,7 @@ extension CreateLoadReportView {
                         ForEach(model.excludedPhases, id: \.name) { phase in
                             HStack {
                                 Image(systemName: "plus.circle.fill")
-                                    .foregroundColor(.green)
+                                    .foregroundStyle(.green)
                                     .imageScale(.large)
                                     .clipped()
                                 Text(phase.name)
