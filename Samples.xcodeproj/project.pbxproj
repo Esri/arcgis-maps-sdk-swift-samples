@@ -106,10 +106,10 @@
 		1C19B4F72A578E69001D2506 /* CreateLoadReportView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C19B4EF2A578E46001D2506 /* CreateLoadReportView.Model.swift */; };
 		1C19B4F82A578E69001D2506 /* CreateLoadReportView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C19B4ED2A578E46001D2506 /* CreateLoadReportView.swift */; };
 		1C19B4F92A578E69001D2506 /* CreateLoadReportView.Views.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C19B4EB2A578E46001D2506 /* CreateLoadReportView.Views.swift */; };
-		1C2538542BABACB100337307 /* AugmentRealityToNavigateRouteView.RoutePlannerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C2538522BABACB100337307 /* AugmentRealityToNavigateRouteView.RoutePlannerView.swift */; };
+		1C2538542BABACB100337307 /* AugmentRealityToNavigateRouteView.ARSceneView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C2538522BABACB100337307 /* AugmentRealityToNavigateRouteView.ARSceneView.swift */; };
 		1C2538552BABACB100337307 /* AugmentRealityToNavigateRouteView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C2538532BABACB100337307 /* AugmentRealityToNavigateRouteView.swift */; };
 		1C2538562BABACFD00337307 /* AugmentRealityToNavigateRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C2538532BABACB100337307 /* AugmentRealityToNavigateRouteView.swift */; };
-		1C2538572BABACFD00337307 /* AugmentRealityToNavigateRouteView.RoutePlannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C2538522BABACB100337307 /* AugmentRealityToNavigateRouteView.RoutePlannerView.swift */; };
+		1C2538572BABACFD00337307 /* AugmentRealityToNavigateRouteView.ARSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C2538522BABACB100337307 /* AugmentRealityToNavigateRouteView.ARSceneView.swift */; };
 		1C26ED192A859525009B7721 /* FilterFeaturesInSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C26ED152A859525009B7721 /* FilterFeaturesInSceneView.swift */; };
 		1C26ED202A8BEC63009B7721 /* FilterFeaturesInSceneView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C26ED152A859525009B7721 /* FilterFeaturesInSceneView.swift */; };
 		1C3B7DC82A5F64FC00907443 /* AnalyzeNetworkWithSubnetworkTraceView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3B7DC32A5F64FC00907443 /* AnalyzeNetworkWithSubnetworkTraceView.Model.swift */; };
@@ -569,7 +569,7 @@
 				0000FB712BBDC01400845921 /* Add3DTilesLayerView.swift in Copy Source Code Files */,
 				D77D9C012BB2439400B38A6C /* AugmentRealityToShowHiddenInfrastructureView.ARSceneView.swift in Copy Source Code Files */,
 				D7A737E32BABBA2200B7C7FC /* AugmentRealityToShowHiddenInfrastructureView.swift in Copy Source Code Files */,
-				1C2538542BABACB100337307 /* AugmentRealityToNavigateRouteView.RoutePlannerView.swift in Copy Source Code Files */,
+				1C2538542BABACB100337307 /* AugmentRealityToNavigateRouteView.ARSceneView.swift in Copy Source Code Files */,
 				1C2538552BABACB100337307 /* AugmentRealityToNavigateRouteView.swift in Copy Source Code Files */,
 				1C8EC74B2BAE28A9001A6929 /* AugmentRealityToCollectDataView.swift in Copy Source Code Files */,
 				000D43182B993A030003D3C2 /* ConfigureBasemapStyleParametersView.swift in Copy Source Code Files */,
@@ -795,7 +795,7 @@
 		1C19B4EB2A578E46001D2506 /* CreateLoadReportView.Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateLoadReportView.Views.swift; sourceTree = "<group>"; };
 		1C19B4ED2A578E46001D2506 /* CreateLoadReportView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateLoadReportView.swift; sourceTree = "<group>"; };
 		1C19B4EF2A578E46001D2506 /* CreateLoadReportView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateLoadReportView.Model.swift; sourceTree = "<group>"; };
-		1C2538522BABACB100337307 /* AugmentRealityToNavigateRouteView.RoutePlannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AugmentRealityToNavigateRouteView.RoutePlannerView.swift; sourceTree = "<group>"; };
+		1C2538522BABACB100337307 /* AugmentRealityToNavigateRouteView.ARSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AugmentRealityToNavigateRouteView.ARSceneView.swift; sourceTree = "<group>"; };
 		1C2538532BABACB100337307 /* AugmentRealityToNavigateRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AugmentRealityToNavigateRouteView.swift; sourceTree = "<group>"; };
 		1C26ED152A859525009B7721 /* FilterFeaturesInSceneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterFeaturesInSceneView.swift; sourceTree = "<group>"; };
 		1C3B7DC32A5F64FC00907443 /* AnalyzeNetworkWithSubnetworkTraceView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyzeNetworkWithSubnetworkTraceView.Model.swift; sourceTree = "<group>"; };
@@ -1537,7 +1537,7 @@
 			isa = PBXGroup;
 			children = (
 				1C2538532BABACB100337307 /* AugmentRealityToNavigateRouteView.swift */,
-				1C2538522BABACB100337307 /* AugmentRealityToNavigateRouteView.RoutePlannerView.swift */,
+				1C2538522BABACB100337307 /* AugmentRealityToNavigateRouteView.ARSceneView.swift */,
 			);
 			path = "Augment reality to navigate route";
 			sourceTree = "<group>";
@@ -3027,7 +3027,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1C2538562BABACFD00337307 /* AugmentRealityToNavigateRouteView.swift in Sources */,
-				1C2538572BABACFD00337307 /* AugmentRealityToNavigateRouteView.RoutePlannerView.swift in Sources */,
+				1C2538572BABACFD00337307 /* AugmentRealityToNavigateRouteView.ARSceneView.swift in Sources */,
 				D76929FA2B4F79540047205E /* OrbitCameraAroundObjectView.swift in Sources */,
 				79D84D132A81711A00F45262 /* AddCustomDynamicEntityDataSourceView.swift in Sources */,
 				102B6A372BFD5B55009F763C /* IdentifyFeaturesInWMSLayerView.swift in Sources */,
