@@ -30,6 +30,7 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
                     Text(model.labelTextLeading)
                     Text(model.labelTextTrailing)
                 }
+                .frame(maxWidth: .infinity)
                 .background(.white)
                 .opacity(model.labelTextLeading.isEmpty ? 0 : 0.5)
             }
