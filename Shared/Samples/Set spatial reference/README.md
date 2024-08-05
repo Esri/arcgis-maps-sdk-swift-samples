@@ -14,16 +14,16 @@ Pan and zoom around the map. Observe how the map is displayed using the World Bo
 
 ## How it works
 
-1. Instantiate an `ArcGISMap` object using a spatial reference e.g. `ArcGISMap(SpatialReference.create(54024))`.
+1. Instantiate a `Map` object using a spatial reference e.g. `Map(spatialReference: SpatialReference(wkid: WKID(54024))`.
 2. Instantiate a `Basemap` object using an `ArcGISMapImageLayer` object.
 3. Set the base map to the map.
 4. Set the map to a `MapView` object.
 
-The ArcGIS map image layer will now use the spatial reference set to the ArcGIS map (World Bonne (WKID: 54024)) and not it's default spatial reference.
+The ArcGIS map image layer will now use the spatial reference set to the map (World Bonne (WKID: 54024)) and not its default spatial reference.
 
 ## Relevant API
 
-* ArcGISMap
+* Map
 * ArcGISMapImageLayer
 * Basemap
 * MapView

@@ -8,7 +8,7 @@
     "keywords": [
         "WKID",
         "project",
-        "ArcGISMap",
+        "Map",
         "ArcGISMapImageLayer",
         "Basemap",
         "MapView",
@@ -16,7 +16,7 @@
     ],
     "redirect_from": [],
     "relevant_apis": [
-        "ArcGISMap",
+        "Map",
         "ArcGISMapImageLayer",
         "Basemap",
         "MapView",
