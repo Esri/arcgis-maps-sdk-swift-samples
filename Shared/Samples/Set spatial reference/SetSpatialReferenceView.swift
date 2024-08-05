@@ -45,4 +45,3 @@ private extension URL {
 #Preview {
     SetSpatialReferenceView()
 }
-
