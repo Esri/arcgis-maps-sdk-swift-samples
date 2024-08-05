@@ -1,0 +1,29 @@
+{
+    "category": "Maps,
+    "description": "Display the map at an initial viewpoint representing a bounding geometry.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "envelope",
+        "extent",
+        "initial viewpoint",
+        "zoom.",
+        "Envelope",
+        "Map",
+        "MapView",
+        "Point",
+        "Viewpoint"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Envelope",
+        "Map",
+        "MapView",
+        "Point",
+        "Viewpoint"
+    ],
+    "snippets": [
+        "SetInitialViewpointView.swift"
+    ],
+    "title": "Set initial viewpoint"
+}
