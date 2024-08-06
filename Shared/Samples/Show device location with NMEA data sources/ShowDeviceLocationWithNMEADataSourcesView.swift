@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import ArcGIS
-import ExternalAccessory
 import SwiftUI
 
 struct ShowDeviceLocationWithNMEADataSourcesView: View {
