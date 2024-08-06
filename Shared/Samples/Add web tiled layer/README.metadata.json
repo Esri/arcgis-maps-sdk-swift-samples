@@ -1,0 +1,23 @@
+{
+    "category": "Maps",
+    "description": "Display a tiled web layer.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "OGC",
+        "layer",
+        "tiled",
+        "tiles",
+        "Basemap",
+        "WebTiledLayer"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Basemap",
+        "WebTiledLayer"
+    ],
+    "snippets": [
+        "AddWebTiledLayerView.swift"
+    ],
+    "title": "Add web tiled layer"
+}

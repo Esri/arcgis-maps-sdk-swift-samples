@@ -138,6 +138,7 @@
 		1CAF831F2A20305F000E1E60 /* ShowUtilityAssociationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAF831B2A20305F000E1E60 /* ShowUtilityAssociationsView.swift */; };
 		218F35B829C28F4A00502022 /* AuthenticateWithOAuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218F35B329C28F4A00502022 /* AuthenticateWithOAuthView.swift */; };
 		218F35C229C290BF00502022 /* AuthenticateWithOAuthView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 218F35B329C28F4A00502022 /* AuthenticateWithOAuthView.swift */; };
+		3E26AFB62C627F0900BD2CBC /* AddWebTiledLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E26AFB52C627F0900BD2CBC /* AddWebTiledLayerView.swift */; };
 		4D126D6D29CA1B6000CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D126D6929CA1B6000CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift */; };
 		4D126D7229CA1E1800CFB7A7 /* FileNMEASentenceReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D126D7129CA1E1800CFB7A7 /* FileNMEASentenceReader.swift */; };
 		4D126D7329CA1EFD00CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4D126D6929CA1B6000CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift */; };
@@ -811,6 +812,7 @@
 		1CAB8D472A3CEAB0002AA649 /* RunValveIsolationTraceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunValveIsolationTraceView.swift; sourceTree = "<group>"; };
 		1CAF831B2A20305F000E1E60 /* ShowUtilityAssociationsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowUtilityAssociationsView.swift; sourceTree = "<group>"; };
 		218F35B329C28F4A00502022 /* AuthenticateWithOAuthView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticateWithOAuthView.swift; sourceTree = "<group>"; };
+		3E26AFB52C627F0900BD2CBC /* AddWebTiledLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWebTiledLayerView.swift; sourceTree = "<group>"; };
 		4D126D6929CA1B6000CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowDeviceLocationWithNMEADataSourcesView.swift; sourceTree = "<group>"; };
 		4D126D7129CA1E1800CFB7A7 /* FileNMEASentenceReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileNMEASentenceReader.swift; sourceTree = "<group>"; };
 		4D126D7B29CA3E6000CFB7A7 /* Redlands.nmea */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Redlands.nmea; sourceTree = "<group>"; };
@@ -1134,6 +1136,7 @@
 				F19A316128906F0D003B7EF9 /* Add raster from file */,
 				955271622C0E6750009B1ED4 /* Add raster from service */,
 				E066DD3E28610F3F004D3D5B /* Add scene layer from service */,
+				3E26AFB42C627EAE00BD2CBC /* Add web tiled layer */,
 				D7E557602A1D743100B9FB09 /* Add WMS layer */,
 				1C3B7DC22A5F64FC00907443 /* Analyze network with subnetwork trace */,
 				D7C16D172AC5F6C100689E89 /* Animate 3D graphic */,
@@ -1632,6 +1635,14 @@
 				218F35B329C28F4A00502022 /* AuthenticateWithOAuthView.swift */,
 			);
 			path = "Authenticate with OAuth";
+			sourceTree = "<group>";
+		};
+		3E26AFB42C627EAE00BD2CBC /* Add web tiled layer */ = {
+			isa = PBXGroup;
+			children = (
+				3E26AFB52C627F0900BD2CBC /* AddWebTiledLayerView.swift */,
+			);
+			path = "Add web tiled layer";
 			sourceTree = "<group>";
 		};
 		4D126D6829CA1B6000CFB7A7 /* Show device location with NMEA data sources */ = {
@@ -3117,6 +3128,7 @@
 				0074ABCD2817BCC30037244A /* SamplesApp+Samples.swift.tache in Sources */,
 				D79EE76E2A4CEA5D005A52AE /* SetUpLocationDrivenGeotriggersView.Model.swift in Sources */,
 				D74F03F02B609A7D00E83688 /* AddFeaturesWithContingentValuesView.Model.swift in Sources */,
+				3E26AFB62C627F0900BD2CBC /* AddWebTiledLayerView.swift in Sources */,
 				E004A6F3284E4FEB002A1FE6 /* ShowResultOfSpatialOperationsView.swift in Sources */,
 				955AFAC42C10FD6F009C8FE5 /* ApplyMosaicRuleToRastersView.swift in Sources */,
 				D751018E2A2E962D00B8FA48 /* IdentifyLayerFeaturesView.swift in Sources */,
