@@ -137,8 +137,6 @@ private extension AugmentRealityToCollectDataView {
             graphicsOverlay.sceneProperties.surfacePlacement = .absolute
             return graphicsOverlay
         }()
-        /// The selected tree health for the new feature.
-        @State private var treeHealth: TreeHealth?
         
         init() {
             let featureLayer = FeatureLayer(featureTable: featureTable)
