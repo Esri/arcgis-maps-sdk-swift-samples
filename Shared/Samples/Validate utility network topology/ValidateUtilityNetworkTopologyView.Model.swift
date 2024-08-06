@@ -13,7 +13,8 @@
 // limitations under the License.
 
 import ArcGIS
-import SwiftUI
+import Combine
+import UIKit
 
 extension ValidateUtilityNetworkTopologyView {
     /// The view model for the sample.
