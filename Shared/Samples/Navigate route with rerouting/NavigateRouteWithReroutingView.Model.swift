@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import ArcGIS
-import AVFoundation
+import AVFAudio
 import Combine
 
 extension NavigateRouteWithReroutingView {
