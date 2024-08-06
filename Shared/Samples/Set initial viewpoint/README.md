@@ -14,9 +14,9 @@ When the sample loads, note the map is opened at the initial view point that is 
 
 ## How it works
 
-1. Instantiate an `Map` object.
+1. Instantiate a `Map` object.
 2. Instantiate a `Viewpoint` object using an `Envelope` object.
-3. Set the starting location of the map with `setInitialViewpoint(Viewpoint)`.
+3. Set the starting location of the map with `map.initialViewpoint = Viewpoint(boundingGeometry:)`.
 4. Set the map to a `MapView` object.
 
 ## Relevant API
