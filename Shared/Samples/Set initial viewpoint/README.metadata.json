@@ -1,5 +1,5 @@
 {
-    "category": "Maps,
+    "category": "Maps",
     "description": "Display the map at an initial viewpoint representing a bounding geometry.",
     "ignore": false,
     "images": [],

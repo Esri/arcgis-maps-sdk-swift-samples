@@ -139,6 +139,7 @@
 		218F35B829C28F4A00502022 /* AuthenticateWithOAuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218F35B329C28F4A00502022 /* AuthenticateWithOAuthView.swift */; };
 		218F35C229C290BF00502022 /* AuthenticateWithOAuthView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 218F35B329C28F4A00502022 /* AuthenticateWithOAuthView.swift */; };
 		3E720F9D2C619B1700E22A9E /* SetInitialViewpointView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E720F9C2C619B1700E22A9E /* SetInitialViewpointView.swift */; };
+		3E720F9E2C61A0B700E22A9E /* SetInitialViewpointView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 3E720F9C2C619B1700E22A9E /* SetInitialViewpointView.swift */; };
 		4D126D6D29CA1B6000CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D126D6929CA1B6000CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift */; };
 		4D126D7229CA1E1800CFB7A7 /* FileNMEASentenceReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D126D7129CA1E1800CFB7A7 /* FileNMEASentenceReader.swift */; };
 		4D126D7329CA1EFD00CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4D126D6929CA1B6000CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift */; };
@@ -528,6 +529,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				3E720F9E2C61A0B700E22A9E /* SetInitialViewpointView.swift in Copy Source Code Files */,
 				D78FA4952C3C8E8A0079313E /* CreateDynamicBasemapGalleryView.Views.swift in Copy Source Code Files */,
 				D79482D72C35D8A3006521CD /* CreateDynamicBasemapGalleryView.swift in Copy Source Code Files */,
 				003B36F92C5042BA00A75F66 /* ShowServiceAreaView.swift in Copy Source Code Files */,
@@ -1127,7 +1129,6 @@
 		0074ABB228174B830037244A /* Samples */ = {
 			isa = PBXGroup;
 			children = (
-				3E720F9B2C619ACD00E22A9E /* Set initial viewpoint */,
 				0000FB6D2BBDB17600845921 /* Add 3D tiles layer */,
 				79D84D0C2A815BED00F45262 /* Add custom dynamic entity data source */,
 				4D2ADC3E29C26D05003B367F /* Add dynamic entity layer */,
@@ -1233,6 +1234,7 @@
 				954AEDEF2C01332F00265114 /* Select features in scene layer */,
 				00B042E3282EDC690072E1B4 /* Set basemap */,
 				D7C3AB462B683291008909B9 /* Set feature request mode */,
+				3E720F9B2C619ACD00E22A9E /* Set initial viewpoint */,
 				D734FA072A183A5A00246D7E /* Set max extent */,
 				D7EAF34F2A1C011000D822C4 /* Set min and max scale */,
 				D76CE8D62BFD7047009A8686 /* Set reference scale */,
