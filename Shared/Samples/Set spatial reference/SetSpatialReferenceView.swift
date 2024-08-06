@@ -31,12 +31,12 @@ struct SetSpatialReferenceView: View {
 }
 
 private extension SpatialReference {
-    /// The spatial reference for the sample World Bonne (WKID: 54024).
+    /// The spatial reference for the sample, World Bonne (WKID: 54024).
     static var worldBonne: Self { SpatialReference(wkid: WKID(54024)!)! }
 }
 
 private extension URL {
-    /// The URL to the World Cities image layer for the basemap.
+    /// The URL to the World Cities map service for the image layer.
     static var worldCities: URL {
         URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/SampleWorldCities/MapServer")!
     }
