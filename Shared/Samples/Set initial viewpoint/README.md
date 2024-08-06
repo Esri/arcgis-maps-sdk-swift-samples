@@ -2,7 +2,7 @@
 
 Display the map at an initial viewpoint representing a bounding geometry.
 
-![Image of set initial viewpoint](set-initial-viewpoint.png)
+![Image of Set initial viewpoint](set-initial-viewpoint.png)
 
 ## Use case
 
