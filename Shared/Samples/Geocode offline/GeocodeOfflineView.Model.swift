@@ -13,7 +13,8 @@
 // limitations under the License.
 
 import ArcGIS
-import SwiftUI
+import Combine
+import UIKit
 
 extension GeocodeOfflineView {
     /// The view model for the sample.
