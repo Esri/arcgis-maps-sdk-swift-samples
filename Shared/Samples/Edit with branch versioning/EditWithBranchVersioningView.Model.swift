@@ -38,7 +38,7 @@ extension EditWithBranchVersioningView {
         }()
         
         /// A geodatabase connected to the damage assessment feature service.
-        private let serviceGeodatabase = ServiceGeodatabase(url: .damageAssessmentFeatureService)
+        let serviceGeodatabase = ServiceGeodatabase(url: .damageAssessmentFeatureService)
         
         /// The feature layer for displaying the damaged building features.
         private(set) var featureLayer: FeatureLayer!

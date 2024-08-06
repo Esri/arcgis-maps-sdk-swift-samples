@@ -36,12 +36,10 @@ extension AddDynamicEntityLayerView {
                     
                     Section("Observations") {
                         VStack {
-                            HStack {
-                                Text("Observations per track")
-                                Spacer()
-                                Text(model.maximumObservations.formatted())
-                                    .foregroundStyle(.secondary)
-                            }
+                            LabeledContent(
+                                "Observations per track",
+                                value: model.maximumObservations.formatted()
+                            )
                             Slider(value: $model.maximumObservations, in: model.maxObservationRange, step: 1)
                         }
                         HStack {

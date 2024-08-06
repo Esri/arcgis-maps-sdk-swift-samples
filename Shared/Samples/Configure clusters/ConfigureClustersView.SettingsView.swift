@@ -58,12 +58,11 @@ extension ConfigureClustersView {
                             model.maxScale = Double(newMaxScale)
                         }
                         
-                        HStack {
-                            Text("Current Map Scale")
-                            Spacer()
-                            Text(mapViewScale, format: .number.precision(.fractionLength(0)))
-                                .foregroundStyle(.secondary)
-                        }
+                        LabeledContent(
+                            "Current Map Scale",
+                            value: mapViewScale,
+                            format: .number.precision(.fractionLength(0))
+                        )
                     }
                 }
                 .navigationTitle("Clustering Settings")

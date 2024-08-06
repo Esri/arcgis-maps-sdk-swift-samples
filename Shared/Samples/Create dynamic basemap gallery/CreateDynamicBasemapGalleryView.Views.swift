@@ -69,19 +69,6 @@ extension CreateDynamicBasemapGalleryView {
     }
 }
 
-extension BasemapStyleLanguage: Hashable {
-    public func hash(into hasher: inout Hasher) {
-        switch self {
-        case .strategic(let strategy):
-            hasher.combine(strategy)
-        case .specific(let language):
-            hasher.combine(language)
-        @unknown default:
-            fatalError("Unknown basemap style language.")
-        }
-    }
-}
-
 private extension BasemapStyleLanguage {
     /// A human-readable label for the basemap style language.
     var label: String? {

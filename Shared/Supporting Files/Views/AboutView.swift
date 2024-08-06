@@ -21,6 +21,10 @@ struct AboutView: View {
         Text("Copyright © 2022 - 2024 Esri. All Rights Reserved.")
     }
     
+    let arcGISVersion = Bundle.arcGIS.version.isEmpty
+    ? Bundle.arcGIS.shortVersion
+    : "\(Bundle.arcGIS.shortVersion) (\(Bundle.arcGIS.version))"
+    
     var body: some View {
         NavigationStack {
             List {
@@ -37,8 +41,8 @@ struct AboutView: View {
                     .frame(maxWidth: .infinity)
                 }
                 Section {
-                    VersionRow(title: "Version", version: Bundle.main.shortVersion)
-                    VersionRow(title: "SDK Version", version: Bundle.arcGIS.shortVersion, build: Bundle.arcGIS.version)
+                    LabeledContent("Version", value: Bundle.main.shortVersion)
+                    LabeledContent("SDK Version", value: arcGISVersion)
                 }
                 Section(header: Text("Powered By")) {
                     Link("ArcGIS Maps SDK for Swift Toolkit", destination: .toolkit)
@@ -63,35 +67,6 @@ struct AboutView: View {
                     }
                 }
             }
-        }
-    }
-}
-
-private struct VersionRow: View {
-    let title: String
-    let version: String
-    let build: String
-    
-    init(title: String, version: String, build: String = "") {
-        self.title = title
-        self.version = version
-        self.build = build
-    }
-    
-    var versionText: Text {
-        if !build.isEmpty {
-            return Text("\(version) (\(build))")
-        } else {
-            return Text("\(version)")
-        }
-    }
-    
-    var body: some View {
-        HStack {
-            Text(title)
-            Spacer()
-            versionText
-                .foregroundStyle(.secondary)
         }
     }
 }
