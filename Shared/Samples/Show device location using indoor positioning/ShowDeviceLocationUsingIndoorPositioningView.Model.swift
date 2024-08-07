@@ -13,8 +13,8 @@
 // limitations under the License.
 
 import ArcGIS
+import Combine
 import CoreLocation
-import SwiftUI
 
 extension ShowDeviceLocationUsingIndoorPositioningView {
     @MainActor
@@ -28,7 +28,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         /// The number of BLE sensors which are being used for indoor location.
         private var sensorCount: Int?
         
-        /// Counts the number of satellites which being used for the GPS location.
+        /// The number of satellites which are being used for the GPS location.
         private var satelliteCount: Int?
         
         /// The value of the horizontal accuracy of the location (in meters).
@@ -58,15 +58,8 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
             try await setIndoorDatasource()
         }
         
-        /// Stops the location data source.
-        func stopLocationDataSource() {
-            Task {
-                await locationDisplay.dataSource.stop()
-            }
-        }
-        
         /// Sets the indoor datasource on the location display depending on
-        /// whether the map contains an IndoorDefinition.
+        /// whether the map contains an indoor definition.
         private func setIndoorDatasource() async throws {
             try await map.floorManager?.load()
             // If an indoor definition exists in the map, it gets loaded and sets the IndoorsDataSource to pull information
@@ -78,10 +71,8 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
                 indoorsLocationDataSource = try await createIndoorLocationDataSourceFromTables(map: map)
             }
             // This ensures that the details of the inside of the building, like room layouts are displayed.
-            for featLayer in map.operationalLayers {
-                if featLayer.name == "Transitions" || featLayer.name == "Details" {
-                    featLayer.isVisible = true
-                }
+            for layer in map.operationalLayers where layer.name == "Transitions" || layer.name == "Details" {
+                layer.isVisible = true
             }
             // The indoorsLocationDataSource should always be there. Since the createIndoorLocationDataSourceFromTables returns
             // an optional value it cannot be guaranteed. Best option if you get to this point without a datasource
@@ -105,7 +96,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
             queryParameters.whereClause = "1 = 1"
             // Queries positioning table to get the positioning ID.
             let queryResult = try await positioningTable.queryFeatures(using: queryParameters)
-            guard let feature = queryResult.features().makeIterator().next() else { return nil }
+            guard let feature = queryResult.features().first(where: { _ in true }) else { return nil }
             let serviceFeatureTable = positioningTable as! ServiceFeatureTable
             let positioningID = feature.attributes[serviceFeatureTable.globalIDField] as? UUID
             
@@ -115,12 +106,6 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
             let levelsLayer = map.operationalLayers.first(where: { $0.name == "Levels" }) as! FeatureLayer
             
             // Setting up IndoorsLocationDataSource with positioning, pathways tables and positioning ID.
-            // positioningTable - the "IPS_Positioning" feature table from an IPS-aware map.
-            // pathwaysTable - An ArcGISFeatureTable that contains pathways as per the ArcGIS Indoors Information Model.
-            // Setting this property enables path snapping of locations provided by the IndoorsLocationDataSource.
-            // levelsTable - An ArcGISFeatureTable that contains floor levels in accordance with the ArcGIS Indoors Information Model.
-            // Providing this table enables the retrieval of a location's floor level ID.
-            // positioningID - an ID which identifies a specific row in the positioningTable that should be used for setting up IPS.
             return IndoorsLocationDataSource(
                 positioningTable: positioningTable,
                 pathwaysTable: pathwaysLayer.featureTable as? ArcGISFeatureTable,
@@ -129,7 +114,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
             )
         }
         
-        /// The method that updates the location when the indoors location datasource is triggered.
+        /// Updates the location when the indoors location datasource is triggered.
         func updateDisplayOnLocationChange() async throws {
             for await location in locationDisplay.dataSource.locations {
                 // Since this listens for new location changes, it is important
@@ -145,8 +130,8 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
                     // The floor manager is used to filter so that only the data from the current floor is
                     // displayed to the user.
                     if let floorManager = map.floorManager {
-                        floorManager.levels.forEach {
-                            $0.isVisible = currentFloor == $0.levelNumber
+                        for level in floorManager.levels {
+                            level.isVisible = currentFloor == level.levelNumber
                         }
                     }
                 }

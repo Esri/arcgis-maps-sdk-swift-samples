@@ -29,9 +29,8 @@ When there is no IPS beacons nearby, or other errors occur while initializing th
 * FeatureTable
 * IndoorPositioningDefinition
 * IndoorsLocationDataSource
-* LocationChangeHandlerDelegate
 * LocationDisplay
-* LocationDisplayAutoPanMode
+* LocationDisplay.AutoPanMode
 * Map
 * MapView
 
@@ -42,7 +41,7 @@ This sample uses an [IPS-aware web map](https://www.arcgis.com/home/item.html?id
 ## Additional information
 
 * Location and Bluetooth permissions are required for this sample.
-* You could construct the `IndoorsLocationDataSource` from individual feature tables stored in different data sources, such as map, mobile geodatabase, and feature services. With version 200.5 and higher, you can construct the `IndoorsLocationDataSource` using a single `IndoorPositioningDefinition` available in your IPS-aware map. In short…
+* You could initialize the `IndoorsLocationDataSource` from individual feature tables stored in different data sources, such as map, mobile geodatabase, and feature services. With version 200.5 and higher, you can construct the `IndoorsLocationDataSource` using a single `IndoorPositioningDefinition` available in your IPS-aware map. In short…
     * If an `IndoorPositioningDefinition` is available in your IPS-aware map, use it to construct `IndoorslocationDataSource`.
     * If your map does not have an `IndoorPositioningDefinition`, construct the location data source from individual feature tables as described in [Manually create an indoor location data source](https://developers.arcgis.com/swift/device-location/indoor-positioning/#manually-create-an-indoor-location-data-source) documentation.
 * To learn more about IPS, read the [Indoor positioning](https://developers.arcgis.com/swift/device-location/indoor-positioning/) article on ArcGIS Developer website.

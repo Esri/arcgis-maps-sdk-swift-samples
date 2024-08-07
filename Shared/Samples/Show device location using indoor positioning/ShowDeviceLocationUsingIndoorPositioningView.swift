@@ -54,7 +54,9 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
                 }
             }
             .onDisappear {
-                model.stopLocationDataSource()
+                Task {
+                    await model.locationDisplay.dataSource.stop()
+                }
             }
             .errorAlert(presentingError: $error)
     }
