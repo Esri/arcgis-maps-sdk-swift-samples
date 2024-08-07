@@ -10,7 +10,7 @@ Setting the initial viewpoint is useful when a user wishes to first load the map
 
 ## How to use the sample
 
-When the sample loads, note the map is opened at the initial view point that is set to it.
+When the sample loads, note the map is opened at the initial viewpoint that is set to it.
 
 ## How it works
 
@@ -29,4 +29,4 @@ When the sample loads, note the map is opened at the initial view point that is 
 
 ## Tags
 
-envelope, extent, initial viewpoint, zoom.
+envelope, extent, initial viewpoint, zoom

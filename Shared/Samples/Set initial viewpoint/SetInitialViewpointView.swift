@@ -16,7 +16,7 @@ import ArcGIS
 import SwiftUI
 
 struct SetInitialViewpointView: View {
-    /// A map with a basemap and an initial viewpoint
+    /// A map with a basemap and an initial viewpoint.
     @State private var map: Map = {
         let map = Map(basemapStyle: .arcGISImageryStandard)
         map.initialViewpoint = Viewpoint(boundingGeometry: .potashPonds)
@@ -29,7 +29,7 @@ struct SetInitialViewpointView: View {
 }
 
 private extension Geometry {
-    /// The area around Potash Ponds, Moab, Utah
+    /// The area around Potash Ponds, Moab, Utah.
     static var potashPonds: Envelope {
         Envelope(
             xRange: -12211308.778729 ... -12208257.879667,
