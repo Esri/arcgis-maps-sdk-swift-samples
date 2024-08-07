@@ -313,8 +313,6 @@
 		D752D9602A3BCE63003EB25E /* DisplayMapFromPortalItemView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D752D95E2A3BCE06003EB25E /* DisplayMapFromPortalItemView.swift */; };
 		D75362D22A1E886700D83028 /* ApplyUniqueValueRendererView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75362D12A1E886700D83028 /* ApplyUniqueValueRendererView.swift */; };
 		D75362D32A1E8C8800D83028 /* ApplyUniqueValueRendererView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D75362D12A1E886700D83028 /* ApplyUniqueValueRendererView.swift */; };
-		D754E3232A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D754E3222A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift */; };
-		D754E3242A1D66C20006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D754E3222A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift */; };
 		D7553CDB2AE2DFEC00DC2A70 /* GeocodeOfflineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7553CD82AE2DFEC00DC2A70 /* GeocodeOfflineView.swift */; };
 		D7553CDD2AE2E00E00DC2A70 /* GeocodeOfflineView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7553CD82AE2DFEC00DC2A70 /* GeocodeOfflineView.swift */; };
 		D757D14B2B6C46E50065F78F /* ListSpatialReferenceTransformationsView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D757D14A2B6C46E50065F78F /* ListSpatialReferenceTransformationsView.Model.swift */; };
@@ -677,7 +675,6 @@
 				D78666AE2A21629200C60110 /* FindNearestVertexView.swift in Copy Source Code Files */,
 				D7E440D82A1ECEB3005D74DE /* CreateBuffersAroundPointsView.swift in Copy Source Code Files */,
 				D744FD182A2113C70084A66C /* CreateConvexHullAroundPointsView.swift in Copy Source Code Files */,
-				D754E3242A1D66C20006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift in Copy Source Code Files */,
 				D7F2784C2A1D76F5002E4567 /* AddWMSLayerView.swift in Copy Source Code Files */,
 				D75362D32A1E8C8800D83028 /* ApplyUniqueValueRendererView.swift in Copy Source Code Files */,
 				1C929F092A27B86800134252 /* ShowUtilityAssociationsView.swift in Copy Source Code Files */,
@@ -908,7 +905,6 @@
 		D752D9452A3A6F7F003EB25E /* MonitorChangesToMapLoadStatusView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonitorChangesToMapLoadStatusView.swift; sourceTree = "<group>"; };
 		D752D95E2A3BCE06003EB25E /* DisplayMapFromPortalItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayMapFromPortalItemView.swift; sourceTree = "<group>"; };
 		D75362D12A1E886700D83028 /* ApplyUniqueValueRendererView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplyUniqueValueRendererView.swift; sourceTree = "<group>"; };
-		D754E3222A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StylePointWithPictureMarkerSymbolsView.swift; sourceTree = "<group>"; };
 		D7553CD82AE2DFEC00DC2A70 /* GeocodeOfflineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeocodeOfflineView.swift; sourceTree = "<group>"; };
 		D757D14A2B6C46E50065F78F /* ListSpatialReferenceTransformationsView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListSpatialReferenceTransformationsView.Model.swift; sourceTree = "<group>"; };
 		D7588F5C2B7D8DAA008B75E2 /* NavigateRouteWithReroutingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigateRouteWithReroutingView.swift; sourceTree = "<group>"; };
@@ -1268,7 +1264,6 @@
 				E066DD362860AB0B004D3D5B /* Style graphics with renderer */,
 				E004A6E42846A609002A1FE6 /* Style graphics with symbols */,
 				D77BC5352B59A2D3007B49B6 /* Style point with distance composite scene symbol */,
-				D754E31D2A1D661D0006C5F1 /* Style point with picture marker symbols */,
 				D7058B0B2B59E44B000A888A /* Style point with scene symbol */,
 				D74C8BFA2ABA5572007C76B8 /* Style symbols from mobile style file */,
 				7573E81229D6134C00BEED9C /* Trace utility network */,
@@ -2164,14 +2159,6 @@
 				D75362D12A1E886700D83028 /* ApplyUniqueValueRendererView.swift */,
 			);
 			path = "Apply unique value renderer";
-			sourceTree = "<group>";
-		};
-		D754E31D2A1D661D0006C5F1 /* Style point with picture marker symbols */ = {
-			isa = PBXGroup;
-			children = (
-				D754E3222A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift */,
-			);
-			path = "Style point with picture marker symbols";
 			sourceTree = "<group>";
 		};
 		D7553CD62AE2DFEC00DC2A70 /* Geocode offline */ = {
@@ -3251,7 +3238,6 @@
 				D74ECD0D2BEEAE2F007C0FA6 /* EditAndSyncFeaturesWithFeatureServiceView.Model.swift in Sources */,
 				00CB9138284814A4005C2C5D /* SearchWithGeocodeView.swift in Sources */,
 				1C43BC7F2A43781200509BF8 /* SetVisibilityOfSubtypeSublayerView.Views.swift in Sources */,
-				D754E3232A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift in Sources */,
 				D731F3C12AD0D2AC00A8431E /* IdentifyGraphicsView.swift in Sources */,
 				00E5401C27F3CCA200CF66D5 /* SamplesApp.swift in Sources */,
 				D73E61962BDAEE6600457932 /* MatchViewpointOfGeoViewsView.swift in Sources */,
