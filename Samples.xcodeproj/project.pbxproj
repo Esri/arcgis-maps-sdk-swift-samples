@@ -251,6 +251,8 @@
 		D7232EE12AC1E5AA0079ABFF /* PlayKMLTourView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7232EE02AC1E5AA0079ABFF /* PlayKMLTourView.swift */; };
 		D7232EE22AC1E6DC0079ABFF /* PlayKMLTourView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7232EE02AC1E5AA0079ABFF /* PlayKMLTourView.swift */; };
 		D72C43F32AEB066D00B6157B /* GeocodeOfflineView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72C43F22AEB066D00B6157B /* GeocodeOfflineView.Model.swift */; };
+		D72CA1432C643158004C0630 /* StyleGeometriesWithSymbolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72CA13F2C643158004C0630 /* StyleGeometriesWithSymbolsView.swift */; };
+		D72CA1442C6431AA004C0630 /* StyleGeometriesWithSymbolsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D72CA13F2C643158004C0630 /* StyleGeometriesWithSymbolsView.swift */; };
 		D72F272E2ADA1E4400F906DA /* AugmentRealityToShowTabletopSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72F272B2ADA1E4400F906DA /* AugmentRealityToShowTabletopSceneView.swift */; };
 		D72F27302ADA1E9900F906DA /* AugmentRealityToShowTabletopSceneView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D72F272B2ADA1E4400F906DA /* AugmentRealityToShowTabletopSceneView.swift */; };
 		D731F3C12AD0D2AC00A8431E /* IdentifyGraphicsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D731F3C02AD0D2AC00A8431E /* IdentifyGraphicsView.swift */; };
@@ -527,6 +529,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				D72CA1442C6431AA004C0630 /* StyleGeometriesWithSymbolsView.swift in Copy Source Code Files */,
 				3E30884A2C5D789A00ECEAC5 /* SetSpatialReferenceView.swift in Copy Source Code Files */,
 				D78FA4952C3C8E8A0079313E /* CreateDynamicBasemapGalleryView.Views.swift in Copy Source Code Files */,
 				D79482D72C35D8A3006521CD /* CreateDynamicBasemapGalleryView.swift in Copy Source Code Files */,
@@ -872,6 +875,7 @@
 		D722BD212A420DAD002C2087 /* ShowExtrudedFeaturesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowExtrudedFeaturesView.swift; sourceTree = "<group>"; };
 		D7232EE02AC1E5AA0079ABFF /* PlayKMLTourView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayKMLTourView.swift; sourceTree = "<group>"; };
 		D72C43F22AEB066D00B6157B /* GeocodeOfflineView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeocodeOfflineView.Model.swift; sourceTree = "<group>"; };
+		D72CA13F2C643158004C0630 /* StyleGeometriesWithSymbolsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleGeometriesWithSymbolsView.swift; sourceTree = "<group>"; };
 		D72F272B2ADA1E4400F906DA /* AugmentRealityToShowTabletopSceneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AugmentRealityToShowTabletopSceneView.swift; sourceTree = "<group>"; };
 		D731F3C02AD0D2AC00A8431E /* IdentifyGraphicsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentifyGraphicsView.swift; sourceTree = "<group>"; };
 		D7337C592ABCFDB100A5D865 /* StyleSymbolsFromMobileStyleFileView.SymbolOptionsListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleSymbolsFromMobileStyleFileView.SymbolOptionsListView.swift; sourceTree = "<group>"; };
@@ -1261,6 +1265,7 @@
 				95DEB9B72C127A97009BEC35 /* Show viewshed from point on map */,
 				00E7C15A2BBE1BF000B85D69 /* Snap geometry edits */,
 				D75B584D2AAFB2C20038B3B4 /* Style features with custom dictionary */,
+				D72CA1402C643158004C0630 /* Style geometries with symbols */,
 				E066DD362860AB0B004D3D5B /* Style graphics with renderer */,
 				E004A6E42846A609002A1FE6 /* Style graphics with symbols */,
 				D77BC5352B59A2D3007B49B6 /* Style point with distance composite scene symbol */,
@@ -1936,6 +1941,14 @@
 				D7232EE02AC1E5AA0079ABFF /* PlayKMLTourView.swift */,
 			);
 			path = "Play KML tour";
+			sourceTree = "<group>";
+		};
+		D72CA1402C643158004C0630 /* Style geometries with symbols */ = {
+			isa = PBXGroup;
+			children = (
+				D72CA13F2C643158004C0630 /* StyleGeometriesWithSymbolsView.swift */,
+			);
+			path = "Style geometries with symbols";
 			sourceTree = "<group>";
 		};
 		D72F27292ADA1E4400F906DA /* Augment reality to show tabletop scene */ = {
@@ -3222,6 +3235,7 @@
 				D7635FFB2B9277DC0044AB97 /* ConfigureClustersView.Model.swift in Sources */,
 				D7EAF35A2A1C023800D822C4 /* SetMinAndMaxScaleView.swift in Sources */,
 				1C19B4F52A578E46001D2506 /* CreateLoadReportView.Model.swift in Sources */,
+				D72CA1432C643158004C0630 /* StyleGeometriesWithSymbolsView.swift in Sources */,
 				9547085C2C3C719800CA8579 /* EditFeatureAttachmentsView.Model.swift in Sources */,
 				0042E24528E4F82C001F33D6 /* ShowViewshedFromPointInSceneView.ViewshedSettingsView.swift in Sources */,
 				D7DDF8532AF47C6C004352D9 /* FindRouteAroundBarriersView.swift in Sources */,
