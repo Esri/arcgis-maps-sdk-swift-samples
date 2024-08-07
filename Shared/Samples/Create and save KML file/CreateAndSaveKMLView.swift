@@ -68,54 +68,56 @@ struct CreateAndSaveKMLView: View {
     }
 }
 
-/// A KMZ file that can be used with the native file exporter.
-final class KMZFile: FileDocument {
-    /// The KML document that is used to create the KMZ file.
-    private let document: KMLDocument
-    
-    /// The temporary directory where the KMZ file will be stored.
-    private var temporaryDirectory: URL?
-    
-    /// The temporary URL to the KMZ file.
-    private var temporaryDocumentURL: URL?
-    
-    static var readableContentTypes: [UTType] { [.kmz] }
-    
-    /// Creates a KMZ file with a KML document.
-    /// - Parameter document: The KML document that is used when creating the KMZ file.
-    init(document: KMLDocument) {
-        self.document = document
-    }
-    
-    // This initializer loads data that has been saved previously.
-    init(configuration: ReadConfiguration) throws {
-        fatalError("Loading KML files is not supported by this sample")
-    }
-    
-    // This will be called when the system wants to write our data to disk
-    func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
-        guard let temporaryDocumentURL else { return FileWrapper() }
-        return try FileWrapper(url: temporaryDocumentURL)
-    }
-    
-    /// Deletes the temporarily stored KMZ file.
-    func deleteFile() {
-        guard let url = temporaryDirectory else { return }
-        try? FileManager.default.removeItem(at: url)
-    }
-    
-    /// Saves the KML document as a KMZ file to a temporary location.
-    @MainActor
-    func saveFile() async throws {
-        temporaryDirectory = FileManager.createTemporaryDirectory()
+extension CreateAndSaveKMLView {
+    /// A KMZ file that can be used with the native file exporter.
+    final class KMZFile: FileDocument {
+        /// The KML document that is used to create the KMZ file.
+        private let document: KMLDocument
         
-        if document.name.isEmpty {
-            document.name = "Untitled"
+        /// The temporary directory where the KMZ file will be stored.
+        private var temporaryDirectory: URL?
+        
+        /// The temporary URL to the KMZ file.
+        private var temporaryDocumentURL: URL?
+        
+        static var readableContentTypes: [UTType] { [.kmz] }
+        
+        /// Creates a KMZ file with a KML document.
+        /// - Parameter document: The KML document that is used when creating the KMZ file.
+        init(document: KMLDocument) {
+            self.document = document
         }
         
-        temporaryDocumentURL = temporaryDirectory?.appendingPathComponent("\(document.name).kmz")
+        // This initializer loads data that has been saved previously.
+        init(configuration: ReadConfiguration) throws {
+            fatalError("Loading KML files is not supported by this sample")
+        }
         
-        try await document.save(to: temporaryDocumentURL!)
+        // This will be called when the system wants to write our data to disk
+        func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
+            guard let temporaryDocumentURL else { return FileWrapper() }
+            return try FileWrapper(url: temporaryDocumentURL)
+        }
+        
+        /// Deletes the temporarily stored KMZ file.
+        func deleteFile() {
+            guard let url = temporaryDirectory else { return }
+            try? FileManager.default.removeItem(at: url)
+        }
+        
+        /// Saves the KML document as a KMZ file to a temporary location.
+        @MainActor
+        func saveFile() async throws {
+            temporaryDirectory = FileManager.createTemporaryDirectory()
+            
+            if document.name.isEmpty {
+                document.name = "Untitled"
+            }
+            
+            temporaryDocumentURL = temporaryDirectory?.appendingPathComponent("\(document.name).kmz")
+            
+            try await document.save(to: temporaryDocumentURL!)
+        }
     }
 }
 

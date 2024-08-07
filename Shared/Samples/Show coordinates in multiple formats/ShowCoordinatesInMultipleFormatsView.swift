@@ -93,7 +93,7 @@ struct ShowCoordinatesInMultipleFormatsView: View {
     }
 }
 
-struct CoordinateTextField: View {
+private struct CoordinateTextField: View {
     /// The title of the text field.
     var title: String
     
