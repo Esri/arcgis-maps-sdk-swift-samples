@@ -44,12 +44,17 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
             }
             .overlay(alignment: .center) {
                 if model.isLoading {
-                    ProgressView("Loading\n indoor data…")
-                        .padding()
-                        .background(.ultraThinMaterial)
-                        .cornerRadius(10)
-                        .shadow(radius: 50)
-                        .multilineTextAlignment(.center)
+                    ProgressView(
+                        """
+                        Loading
+                        indoor data…
+                        """
+                    )
+                    .padding()
+                    .background(.ultraThinMaterial)
+                    .cornerRadius(10)
+                    .shadow(radius: 50)
+                    .multilineTextAlignment(.center)
                 }
             }
             .task {
