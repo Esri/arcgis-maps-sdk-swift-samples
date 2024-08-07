@@ -21,26 +21,24 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
     @StateObject private var model = Model()
     /// The error shown in the error alert.
     @State private var error: Error?
-    /// The value of the current floor with -1 being used to represent floor that has not been set.
-    @State private(set) var currentFloor: Int?
-    /// The number of BLE sensors which are being used for indoor location.
-    @State private(set) var sensorCount: Int?
-    /// The number of satellites which are being used for the GPS location.
-    @State private(set) var satelliteCount: Int?
-    /// The value of the horizontal accuracy of the location (in meters).
-    @State private(set) var horizontalAccuracy: Double?
+    
+    /// This is the published value of the data that is displayed.
+    @State private var labelTextLeading: String = ""
+    
+    /// This is the published value of the data that is displayed.
+    @State private var labelTextTrailing: String = ""
     
     var body: some View {
         MapView(map: model.map)
             .locationDisplay(model.locationDisplay)
             .overlay(alignment: .top) {
                 HStack(alignment: .center, spacing: 10) {
-                    Text(model.labelTextLeading)
-                    Text(model.labelTextTrailing)
+                    Text(labelTextLeading)
+                    Text(labelTextTrailing)
                 }
                 .frame(maxWidth: .infinity)
                 .background(.white)
-                .opacity(model.labelTextLeading.isEmpty ? 0 : 0.8)
+                .opacity(labelTextLeading.isEmpty ? 0 : 0.8)
             }
             .overlay(alignment: .center) {
                 if model.isLoading {
@@ -61,7 +59,9 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
                 do {
                     try await requestLocationServicesAuthorizationIfNecessary()
                     try await model.loadIndoorData()
-                    try await model.updateDisplayOnLocationChange()
+                    try await model.updateDisplayOnLocationChange {
+                        updateStatusText()
+                    }
                 } catch {
                     self.error = error
                 }
@@ -82,6 +82,34 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
         if locationManager.authorizationStatus == .notDetermined {
             locationManager.requestWhenInUseAuthorization()
         }
+    }
+    
+    /// Updates the labels on the view with the current state of the indoors data source.
+    private func updateStatusText() {
+        labelTextLeading = ""
+        labelTextTrailing = ""
+        if let currentFloor = model.currentFloor {
+            labelTextLeading += "Current floor: \(currentFloor)\n"
+            if let horizontalAccuracy = model.horizontalAccuracy {
+                let horizontalAccuracyMeasurement = Measurement<UnitLength>(value: horizontalAccuracy, unit: .meters)
+                labelTextLeading += "Accuracy: \(horizontalAccuracyMeasurement.formatted(.distance))"
+            }
+            if let sensorCount = model.sensorCount {
+                labelTextTrailing += "Number of sensors: \(sensorCount)\n"
+            } else if let satelliteCount = model.satelliteCount, model.source == "GNSS" {
+                labelTextTrailing += "Number of satellites: \(satelliteCount)\n"
+            }
+            labelTextTrailing += "Data source: \(model.source ?? "")"
+        } else {
+            labelTextLeading = "No floor data."
+        }
+    }
+}
+
+private extension FormatStyle where Self == Measurement<UnitLength>.FormatStyle {
+    /// The format style for the distances.
+    static var distance: Self {
+        .measurement(width: .abbreviated, usage: .asProvided, numberFormatStyle: .number.precision(.fractionLength(2)))
     }
 }
 

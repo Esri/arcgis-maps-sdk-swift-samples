@@ -23,16 +23,18 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         let map = Map(url: .indoorsMap)!
         
         /// The value of the current floor with -1 being used to represent floor that has not been set.
-        private var currentFloor: Int?
+        @Published private(set) var currentFloor: Int?
         
         /// The number of BLE sensors which are being used for indoor location.
-        private var sensorCount: Int?
+        @Published private(set) var sensorCount: Int?
         
         /// The number of satellites which are being used for the GPS location.
-        private var satelliteCount: Int?
+        @Published private(set) var satelliteCount: Int?
         
         /// The value of the horizontal accuracy of the location (in meters).
-        private var horizontalAccuracy: Double?
+        @Published private(set) var horizontalAccuracy: Double?
+        
+        @Published private(set) var source: String?
         
         /// An indoors location data source based on sensor data, including but not
         /// limited to radio, GPS, motion sensors.
@@ -40,12 +42,6 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         
         /// The map's location display.
         let locationDisplay = LocationDisplay(dataSource: SystemLocationDataSource())
-        
-        /// This is the published value of the data that is displayed.
-        @Published private(set) var labelTextLeading: String = ""
-        
-        /// This is the published value of the data that is displayed.
-        @Published private(set) var labelTextTrailing: String = ""
         
         /// Represents loading state of indoors data, blocks interaction until loaded.
         @Published private(set) var isLoading = false
@@ -115,7 +111,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         }
         
         /// Updates the location when the indoors location datasource is triggered.
-        func updateDisplayOnLocationChange() async throws {
+        func updateDisplayOnLocationChange(locationUpdate: () -> Void) async throws {
             for await location in locationDisplay.dataSource.locations {
                 // Since this listens for new location changes, it is important
                 // to ensure any blocking UI is dismissed once location updates begins.
@@ -137,7 +133,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
                 }
                 // This indicates whether the location data was sourced from GNSS (Satellites), BLE (Bluetooth Low Energy)
                 // or AppleIPS (Apple's proprietary location system.
-                let source = location.additionalSourceProperties[.positionSource] as? String ?? ""
+                source = location.additionalSourceProperties[.positionSource] as? String ?? ""
                 switch source {
                 case "GNSS":
                     satelliteCount = location.additionalSourceProperties[.satelliteCount] as? Int ?? 0
@@ -145,29 +141,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
                     sensorCount = location.additionalSourceProperties[.transmitterCount] as? Int ?? 0
                 }
                 horizontalAccuracy = location.horizontalAccuracy
-                // Updates every time the location changes.
-                getStatusLabelText(source: source)
-            }
-        }
-        
-        /// Updates the labels on the view with the current state of the indoors data source.
-        private func getStatusLabelText(source: String) {
-            labelTextLeading = ""
-            labelTextTrailing = ""
-            if let currentFloor {
-                labelTextLeading += "Current floor: \(currentFloor)\n"
-                if let horizontalAccuracy {
-                    let horizontalAccuracyMeasurement = Measurement<UnitLength>(value: horizontalAccuracy, unit: .meters)
-                    labelTextLeading += "Accuracy: \(horizontalAccuracyMeasurement.formatted(.distance))"
-                }
-                if let sensorCount {
-                    labelTextTrailing += "Number of sensors: \(sensorCount)\n"
-                } else if let satelliteCount, source == "GNSS" {
-                    labelTextTrailing += "Number of satellites: \(satelliteCount)\n"
-                }
-                labelTextTrailing += "Data source: \(source)"
-            } else {
-                labelTextLeading = "No floor data."
+                locationUpdate()
             }
         }
     }
@@ -176,12 +150,5 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
 private extension URL {
     static var indoorsMap: URL {
         URL(string: "https://www.arcgis.com/home/item.html?id=8fa941613b4b4b2b8a34ad4cdc3e4bba")!
-    }
-}
-
-private extension FormatStyle where Self == Measurement<UnitLength>.FormatStyle {
-    /// The format style for the distances.
-    static var distance: Self {
-        .measurement(width: .abbreviated, usage: .asProvided, numberFormatStyle: .number.precision(.fractionLength(2)))
     }
 }
