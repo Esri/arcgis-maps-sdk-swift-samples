@@ -346,7 +346,7 @@ private extension CreateLoadReportView {
     }
 }
 
-extension CreateLoadReportView.Model {
+private extension CreateLoadReportView.Model {
     /// An error returned when data required to setup the sample cannot be found.
     struct SetupError: LocalizedError {
         var errorDescription: String? {
