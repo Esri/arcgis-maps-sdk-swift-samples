@@ -88,11 +88,6 @@ private extension SamplesSearchView {
         let descriptionMatches: [Sample]
         /// The samples which one of the tags matches the search query.
         let tagMatches: [Sample]
-        
-        /// A Boolean value indicating whether all the matches are empty.
-        var isEmpty: Bool {
-            nameMatches.isEmpty && descriptionMatches.isEmpty && tagMatches.isEmpty
-        }
     }
     
     /// Searches through the list of samples to find ones that match the query.
