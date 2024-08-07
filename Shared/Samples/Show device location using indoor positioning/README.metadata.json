@@ -25,9 +25,8 @@
         "FeatureTable",
         "IndoorPositioningDefinition",
         "IndoorsLocationDataSource",
-        "LocationChangeHandlerDelegate",
         "LocationDisplay",
-        "LocationDisplayAutoPanMode",
+        "LocationDisplay.AutoPanMode",
         "Map",
         "MapView"
     ],
@@ -37,9 +36,8 @@
         "FeatureTable",
         "IndoorPositioningDefinition",
         "IndoorsLocationDataSource",
-        "LocationChangeHandlerDelegate",
         "LocationDisplay",
-        "LocationDisplayAutoPanMode",
+        "LocationDisplay.AutoPanMode",
         "Map",
         "MapView"
     ],
