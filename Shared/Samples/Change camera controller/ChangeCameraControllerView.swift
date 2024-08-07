@@ -66,9 +66,6 @@ struct ChangeCameraControllerView: View {
         return graphicsOverlay
     }()
     
-    /// A Boolean value indicating whether the settings view should be presented.
-    @State private var isShowingSettings = false
-    
     /// The camera controller kind of the scene view.
     @State private var cameraControllerKind: CameraControllerKind = .globe
     

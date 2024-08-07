@@ -13,7 +13,8 @@
 // limitations under the License.
 
 import ArcGIS
-import SwiftUI
+import Combine
+import QuartzCore
 
 extension Animate3DGraphicView {
     /// The view model for the sample.

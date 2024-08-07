@@ -69,20 +69,6 @@ extension CreateDynamicBasemapGalleryView {
     }
 }
 
-private extension BasemapStyleLanguage {
-    /// A human-readable label for the basemap style language.
-    var label: String? {
-        switch self {
-        case .strategic(let strategy):
-            strategy.label
-        case .specific(let language):
-            language.label
-        @unknown default:
-            fatalError("Unknown basemap style language.")
-        }
-    }
-}
-
 private extension BasemapStyleLanguageStrategy {
     /// A human-readable label for the basemap style language strategy.
     var label: String {

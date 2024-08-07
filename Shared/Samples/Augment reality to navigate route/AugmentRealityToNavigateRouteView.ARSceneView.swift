@@ -14,7 +14,7 @@
 
 import ArcGIS
 import ArcGISToolkit
-import AVFoundation
+import AVFAudio
 import SwiftUI
 
 extension AugmentRealityToNavigateRouteView {

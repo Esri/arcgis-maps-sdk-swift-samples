@@ -31,9 +31,6 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
     /// A Boolean value indicating if the add condition menu is presented.
     @State private var isConditionMenuPresented = false
     
-    /// A Boolean value indicating whether the input box is showing.
-    @State private var inputBoxIsPresented = false
-    
     /// The value input by the user.
     @State private var inputValue: Double?
     
