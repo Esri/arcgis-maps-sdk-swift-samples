@@ -28,7 +28,7 @@ struct ChangeViewpointView: View {
     /// The current viewpoint type.
     @State private var viewpointType: ViewpointType = .centerAndScale
     
-    enum ViewpointType: CaseIterable {
+    private enum ViewpointType: CaseIterable {
         case geometry, centerAndScale, animate
         
         /// A human-readable label for the viewpoint type.
@@ -90,7 +90,7 @@ struct ChangeViewpointView: View {
     }
 }
 
-extension ChangeViewpointView {
+private extension ChangeViewpointView {
     /// The model used to store the geo model and other expensive objects
     /// used in this view.
     class Model: ObservableObject {

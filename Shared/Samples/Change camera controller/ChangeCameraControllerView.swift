@@ -72,7 +72,7 @@ struct ChangeCameraControllerView: View {
     /// The camera controller kind of the scene view.
     @State private var cameraControllerKind: CameraControllerKind = .globe
     
-    enum CameraControllerKind: CaseIterable {
+    private enum CameraControllerKind: CaseIterable {
         case globe
         case plane
         case crater
@@ -113,7 +113,7 @@ struct ChangeCameraControllerView: View {
     /// Creates a camera controller with the given kind of camera controller.
     /// - Parameter kind: The camera controller kind.
     /// - Returns: A camera controller.
-    func makeCameraController(kind: CameraControllerKind) -> CameraController {
+    private func makeCameraController(kind: CameraControllerKind) -> CameraController {
         switch kind {
         case .crater:
             let targetLocation = Point(

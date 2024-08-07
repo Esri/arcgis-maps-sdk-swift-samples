@@ -32,7 +32,7 @@ struct AddDynamicEntityLayerView: View {
     @State private var placement: CalloutPlacement?
     
     /// A Boolean value indicating if the stream service is connected.
-    var isConnected: Bool {
+    private var isConnected: Bool {
         model.streamService.connectionStatus == .connected
     }
     

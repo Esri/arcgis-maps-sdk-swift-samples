@@ -113,7 +113,7 @@ extension DownloadPreplannedMapAreaView {
         }
         
         /// The color of the title for a given result.
-        func titleColor(for result: Result<MobileMapPackage, Error>?) -> Color {
+        private func titleColor(for result: Result<MobileMapPackage, Error>?) -> Color {
             switch model.result {
             case .success:
                 return .primary
