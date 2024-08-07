@@ -21,6 +21,14 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
     @StateObject private var model = Model()
     /// The error shown in the error alert.
     @State private var error: Error?
+    /// The value of the current floor with -1 being used to represent floor that has not been set.
+    @State private(set) var currentFloor: Int?
+    /// The number of BLE sensors which are being used for indoor location.
+    @State private(set) var sensorCount: Int?
+    /// The number of satellites which are being used for the GPS location.
+    @State private(set) var satelliteCount: Int?
+    /// The value of the horizontal accuracy of the location (in meters).
+    @State private(set) var horizontalAccuracy: Double?
     
     var body: some View {
         MapView(map: model.map)
@@ -32,7 +40,7 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
                 }
                 .frame(maxWidth: .infinity)
                 .background(.white)
-                .opacity(model.labelTextLeading.isEmpty ? 0 : 0.5)
+                .opacity(model.labelTextLeading.isEmpty ? 0 : 0.8)
             }
             .overlay(alignment: .center) {
                 if model.isLoading {

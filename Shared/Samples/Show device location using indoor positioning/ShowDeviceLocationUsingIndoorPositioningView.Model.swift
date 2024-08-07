@@ -157,7 +157,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
             if let currentFloor {
                 labelTextLeading += "Current floor: \(currentFloor)\n"
                 if let horizontalAccuracy {
-                    var horizontalAccuracyMeasurement = Measurement<UnitLength>(value: horizontalAccuracy, unit: .meters)
+                    let horizontalAccuracyMeasurement = Measurement<UnitLength>(value: horizontalAccuracy, unit: .meters)
                     labelTextLeading += "Accuracy: \(horizontalAccuracyMeasurement.formatted(.distance))"
                 }
                 if let sensorCount {
