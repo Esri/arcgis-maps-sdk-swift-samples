@@ -2,11 +2,11 @@
 
 Display a tiled web layer.
 
-![Image of Add web tiled layer](add-web-tiled-layer.png)
+![Image of Add web tiled layer sample](add-web-tiled-layer.png)
 
 ## Use case
 
-Tiled map services are a set of pre-generated images (e.g. "tiles") arranged in folders for each row, column, and zoom level. As you navigate the map, map tiles are requested for the current extent. `ArcGISTiledLayer` and `WMTSLayer` are types of tiled map services used for specific data types. `WebTiledLayer` is useful for displaying other data sources that contain tiles arranged in a row/column/level directory structure, such as OpenStreetMap.
+Tiled map services are a set of pre-generated images (e.g., "tiles") arranged in folders for each row, column, and zoom level. As you navigate the map, map tiles are requested for the current extent. `ArcGISTiledLayer` and `WMTSLayer` are types of tiled map services used for specific data types. `WebTiledLayer` is useful for displaying other data sources that contain tiles arranged in a row/column/level directory structure, such as OpenStreetMap.
 
 ## How to use the sample
 
@@ -29,7 +29,7 @@ To display the web tiled layer, this sample:
 For more information about web tiled layers, see the following resources:
 
 * [Wikipedia: tiled web maps](https://en.wikipedia.org/wiki/Tiled_web_map)
-* [ArcGIS Pro: Share a web tile layer](http://pro.arcgis.com/en/pro-app/help/sharing/overview/web-tile-layer.htm)
+* [ArcGIS Pro: Share a web tile layer](https://pro.arcgis.com/en/pro-app/latest/help/sharing/overview/web-tile-layer.htm)
 
 ## Relevant API
 
