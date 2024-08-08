@@ -71,8 +71,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
                 layer.isVisible = true
             }
             // The indoorsLocationDataSource should always be there. Since the createIndoorLocationDataSourceFromTables returns
-            // an optional value it cannot be guaranteed. Best option if you get to this point without a datasource
-            // is to return (ideally an error would have been thrown before this point and the flow broken.)
+            // an optional value, it cannot be guaranteed.
             guard let dataSource = indoorsLocationDataSource else { return }
             locationDisplay.dataSource = dataSource
             locationDisplay.autoPanMode = .compassNavigation
