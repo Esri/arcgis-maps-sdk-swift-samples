@@ -74,8 +74,6 @@ struct EditGeodatabaseWithTransactionsView: View {
                     case .rollbackTransaction:
                         try model.geodatabase.rollbackTransaction()
                         isInTransaction = false
-                    case .sync:
-                        try await model.syncGeodatabase()
                     }
                     
                     statusText = selectedAction.completionMessage
@@ -94,23 +92,9 @@ struct EditGeodatabaseWithTransactionsView: View {
                     .padding(8)
                     .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
             }
-            .overlay(alignment: .center) {
-                if let progress = model.progress {
-                    VStack {
-                        Text(selectedAction == .setUp ? "Creating geodatabase…" : "Syncing edits…")
-                            .padding(.bottom)
-                        ProgressView(progress)
-                            .frame(maxWidth: 180)
-                    }
-                    .padding()
-                    .background(.ultraThickMaterial)
-                    .cornerRadius(10)
-                    .shadow(radius: 50)
-                }
-            }
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
-                    Button(isInTransaction ? "End" : "Start") {
+                    Button(isInTransaction ? "End Transaction" : "Start Transaction") {
                         if isInTransaction {
                             // Presents the alert to handle the edits.
                             endTransactionAlertIsPresented = true
@@ -141,13 +125,6 @@ struct EditGeodatabaseWithTransactionsView: View {
                             ? "Tap Start to begin a transaction."
                             : "Tap on the map to add a feature."
                         }
-                    
-                    Spacer()
-                    
-                    Button("Sync") {
-                        selectedAction = .sync
-                    }
-                    .disabled(isInTransaction || !model.hasLocalEdits)
                 }
             }
             .alert("Commit Edits", isPresented: $endTransactionAlertIsPresented) {
@@ -161,7 +138,7 @@ struct EditGeodatabaseWithTransactionsView: View {
             } message: {
                 Text("Commit the edits in the transaction to the geodatabase or rollback to discard them.")
             }
-            .disabled(selectedAction == .setUp || selectedAction == .sync)
+            .disabled(selectedAction == .setUp)
             .errorAlert(presentingError: $error)
     }
 }
@@ -178,8 +155,6 @@ private enum Action: Equatable {
     case commitTransaction
     /// Rollback the edits in the transaction from the geodatabase.
     case rollbackTransaction
-    /// Synchronizes the geodatabase and the feature service.
-    case sync
     
     /// The message to display when the action successfully completes.
     var completionMessage: String {
@@ -189,7 +164,6 @@ private enum Action: Equatable {
         case .beginTransaction: "Transaction started."
         case .commitTransaction: "Edits committed to geodatabase."
         case .rollbackTransaction: "Edits discarded."
-        case .sync: "Synchronized geodatabase and feature service."
         }
     }
 }

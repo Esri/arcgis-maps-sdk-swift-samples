@@ -9,24 +9,24 @@
         "commit",
         "database",
         "geodatabase",
-        "geometry editor",
         "transact",
         "transactions",
-        "GenerateGeodatabaseJob",
-        "GenerateGeodatabaseParameters",
         "Geodatabase",
-        "GeodatabaseSyncTask",
-        "SyncGeodatabaseJob",
-        "SyncGeodatabaseParameters"
+        "Geodatabase.BeginTransaction",
+        "Geodatabase.CommitTransaction",
+        "Geodatabase.IsInTransaction",
+        "Geodatabase.RollbackTransaction"
+    ],
+    "offline_data": [
+        "43809fd639f242fd8045ecbafd61a579"
     ],
     "redirect_from": [],
     "relevant_apis": [
-        "GenerateGeodatabaseJob",
-        "GenerateGeodatabaseParameters",
         "Geodatabase",
-        "GeodatabaseSyncTask",
-        "SyncGeodatabaseJob",
-        "SyncGeodatabaseParameters"
+        "Geodatabase.BeginTransaction",
+        "Geodatabase.CommitTransaction",
+        "Geodatabase.IsInTransaction",
+        "Geodatabase.RollbackTransaction"
     ],
     "snippets": [
         "EditGeodatabaseWithTransactionsView.swift",

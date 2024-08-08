@@ -2,7 +2,7 @@
 
 Use transactions to manage how changes are committed to a geodatabase.
 
-![Image of Edit geodatabase with transactions sample](edit-geodatabase-with-transactions.png)
+![Screenshot of Edit geodatabase with transactions sample](edit-geodatabase-with-transactions.png)
 
 ## Use case
 
@@ -10,29 +10,32 @@ Transactions allow you to control how changes are added to a database. This is u
 
 ## How to use the sample
 
-When the sample loads, a feature service is taken offline as a geodatabase. When the geodatabase is ready, you can add multiple types of features. Tap "Start" to start a transaction. When you stop editing, you can choose to commit the changes or roll them back. To apply edits directly, untoggle "Requires Transaction". You can synchronize the local geodatabase with the feature service by pressing "Sync".
+Tap on the map to add multiple types of features. To apply edits directly, uncheck the "Requires Transaction". When using transactions, use the buttons to start editing and stop editing. When you stop editing, you can choose to commit the changes or roll them back.
 
 ## How it works
 
-1. Take the feature service offline as a geodatabase and display the local tables from the geodatabase in feature layers.
-2. Begin the transaction on the geodatabase.
-3. Add one or more features to the feature table(s).
-4. When ready, either commit the transaction to the geodatabase or roll back the transaction.
-5. Use a geodatabase sync task to sync changes to the local geodatabase with the feature service.
+1. Create a `Geodatabase` using the mobile geodatabase file location.
+2. Display the `Geodatabase.featureTables` in feature layers.
+3. If a transaction is required, begin one using `Geodatabase.beginTransaction()`.
+4. Add one or more features to the feature table(s).
+5. When ready, either commit the transaction to the geodatabase with `Geodatabase.commitTransaction()` or roll back the transaction with `Geodatabase.rollbackTransaction()`.
 
 ## Relevant API
 
-* GenerateGeodatabaseJob
-* GenerateGeodatabaseParameters
 * Geodatabase
-* GeodatabaseSyncTask
-* SyncGeodatabaseJob
-* SyncGeodatabaseParameters
+* Geodatabase.BeginTransaction
+* Geodatabase.CommitTransaction
+* Geodatabase.IsInTransaction
+* Geodatabase.RollbackTransaction
+
+## Offline data
+
+This sample downloads the [Save The Bay Geodatabase](https://www.arcgis.com/home/item.html?id=43809fd639f242fd8045ecbafd61a579) item from ArcGIS Online.
 
 ## About the data
 
-The sample uses a publicly-editable, sync-enabled [feature service](https://sampleserver6.arcgisonline.com/arcgis/rest/services/Sync/SaveTheBaySync/FeatureServer) demonstrating a schema for recording wildlife sightings.
+The mobile geodatabase contains a collection schema for wildlife sightings around Christmas Bay, TX, USA. It was created using data from the [Save The Bay Feature Service](https://sampleserver6.arcgisonline.com/arcgis/rest/services/Sync/SaveTheBaySync/FeatureServer).
 
 ## Tags
 
-commit, database, geodatabase, geometry editor, transact, transactions
+commit, database, geodatabase, transact, transactions
