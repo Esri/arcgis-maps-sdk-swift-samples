@@ -166,7 +166,7 @@ struct ShowDeviceLocationWithNMEADataSourcesView: View {
             }
     }
     
-    func reset() {
+    private func reset() {
         // Reset the status text.
         accuracyStatus = "Accuracy info will be shown here."
         satelliteStatus = "Satellites info will be shown here."
@@ -179,7 +179,7 @@ struct ShowDeviceLocationWithNMEADataSourcesView: View {
         }
     }
     
-    func selectDevice() throws {
+    private func selectDevice() throws {
         if let (accessory, protocolString) = model.firstSupportedAccessoryWithProtocol() {
             // Use the supported accessory directly if it's already connected.
             model.accessoryDidConnect(connectedAccessory: accessory, protocolString: protocolString)

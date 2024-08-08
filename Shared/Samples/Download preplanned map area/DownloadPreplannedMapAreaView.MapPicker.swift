@@ -29,7 +29,7 @@ extension DownloadPreplannedMapAreaView {
                     Section {
                         Picker("Web Maps (Online)", selection: $model.selectedMap) {
                             Text("Web Map (Online)")
-                                .tag(Model.SelectedMap.onlineWebMap)
+                                .tag(SelectedMap.onlineWebMap)
                         }
                         .labelsHidden()
                         .pickerStyle(.inline)
@@ -109,11 +109,11 @@ extension DownloadPreplannedMapAreaView {
                     }
                 }
             }
-            .tag(Model.SelectedMap.offlineMap(model))
+            .tag(SelectedMap.offlineMap(model))
         }
         
         /// The color of the title for a given result.
-        func titleColor(for result: Result<MobileMapPackage, Error>?) -> Color {
+        private func titleColor(for result: Result<MobileMapPackage, Error>?) -> Color {
             switch model.result {
             case .success:
                 return .primary

@@ -68,7 +68,7 @@ struct ShowRealisticLightAndShadowsView: View {
     }
     
     /// An overlay showing the date time adjusted by the slider.
-    var dateTimeOverlay: some View {
+    private var dateTimeOverlay: some View {
         Text(dateTimeText)
             .frame(maxWidth: .infinity)
             .padding(.vertical, 6)
@@ -85,7 +85,7 @@ struct ShowRealisticLightAndShadowsView: View {
     }
 }
 
-extension ShowRealisticLightAndShadowsView {
+private extension ShowRealisticLightAndShadowsView {
     /// The model used to store the geo model and other expensive objects
     /// used in this view.
     class Model: ObservableObject {
