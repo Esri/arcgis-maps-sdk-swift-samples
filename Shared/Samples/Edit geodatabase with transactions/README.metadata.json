@@ -19,6 +19,9 @@
         "SyncGeodatabaseJob",
         "SyncGeodatabaseParameters"
     ],
+    "offline_data": [
+        "43809fd639f242fd8045ecbafd61a579"
+    ],
     "redirect_from": [],
     "relevant_apis": [
         "GenerateGeodatabaseJob",
