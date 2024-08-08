@@ -1,8 +1,10 @@
 {
-    "category": "Maps",
+    "category": "Layers",
     "description": "Display a tiled web layer.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "add-web-tiled-layer.png"
+    ],
     "keywords": [
         "OGC",
         "layer",
