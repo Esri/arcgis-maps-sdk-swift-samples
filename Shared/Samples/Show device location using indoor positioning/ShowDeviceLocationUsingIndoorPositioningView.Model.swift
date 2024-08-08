@@ -34,6 +34,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         /// The value of the horizontal accuracy of the location (in meters).
         @Published private(set) var horizontalAccuracy: Double?
         
+        /// The value of the source of the location data.
         @Published private(set) var source: String?
         
         /// An indoors location data source based on sensor data, including but not
