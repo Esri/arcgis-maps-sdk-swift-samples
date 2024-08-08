@@ -21,10 +21,8 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
     @StateObject private var model = Model()
     /// The error shown in the error alert.
     @State private var error: Error?
-    
     /// This is the published value of the data that is displayed.
     @State private var labelTextLeading: String = ""
-    
     /// This is the published value of the data that is displayed.
     @State private var labelTextTrailing: String = ""
     
@@ -60,7 +58,7 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
                     try await requestLocationServicesAuthorizationIfNecessary()
                     try await model.loadIndoorData()
                     try await model.updateDisplayOnLocationChange {
-                        updateStatusText()
+                        updateStatusTextDisplay()
                     }
                 } catch {
                     self.error = error
@@ -85,14 +83,14 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
     }
     
     /// Updates the labels on the view with the current state of the indoors data source.
-    private func updateStatusText() {
+    private func updateStatusTextDisplay() {
         labelTextLeading = ""
         labelTextTrailing = ""
         if let currentFloor = model.currentFloor {
             labelTextLeading += "Current floor: \(currentFloor)\n"
             if let horizontalAccuracy = model.horizontalAccuracy {
-                let horizontalAccuracyMeasurement = Measurement<UnitLength>(value: horizontalAccuracy, unit: .meters)
-                labelTextLeading += "Accuracy: \(horizontalAccuracyMeasurement.formatted(.distance))"
+                let measuredAccuracy = Measurement(value: horizontalAccuracy, unit: UnitLength.meters)
+                labelTextLeading += "Accuracy: \(measuredAccuracy.formatted(.measurement(width: .abbreviated, usage: .asProvided, numberFormatStyle: .number.precision(.fractionLength(2)))))"
             }
             if let sensorCount = model.sensorCount {
                 labelTextTrailing += "Number of sensors: \(sensorCount)\n"
@@ -103,13 +101,6 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
         } else {
             labelTextLeading = "No floor data."
         }
-    }
-}
-
-private extension FormatStyle where Self == Measurement<UnitLength>.FormatStyle {
-    /// The format style for the distances.
-    static var distance: Self {
-        .measurement(width: .abbreviated, usage: .asProvided, numberFormatStyle: .number.precision(.fractionLength(2)))
     }
 }
 
