@@ -16,50 +16,31 @@ import ArcGIS
 import SwiftUI
 
 struct AddWebTiledLayerView: View {
-    /// The view model for the sample.
-    @StateObject private var model = Model()
+    // A map with web tiled layer as a basemap.
+    @State private var map: Map = {
+        // Build the web tiled layer from ArcGIS Living Atlas of the World tile service url.
+        let webTiledLayer = WebTiledLayer(urlTemplate: .worldTileServiceStringURL)
+        webTiledLayer.setAttribution(.attributionString)
+        
+        let basemap = Basemap(baseLayer: webTiledLayer)
+        let map = Map(basemap: basemap)
+        map.initialViewpoint = Viewpoint(
+            center: Point(x: -1e6, y: 1e6),
+            scale: 15e7
+        )
+        return map
+    }()
     
     var body: some View {
-        VStack {
-            MapView(map: model.map)
-        }
+        MapView(map: map)
     }
 }
 
-private extension AddWebTiledLayerView {
-    // MARK: - Model
-    
-    /// The view model for the sample.
-    final class Model: ObservableObject {
-        @Published var map: Map
-        
-        init() {
-            self.map = Model.makeMap()
-        }
-        
-        /// A map with a web tiled layer as basemap.
-        static func makeMap() -> Map {
-            let webTiledLayer = webTiledLayer()
-            let basemap = Basemap(baseLayer: webTiledLayer)
-            let map = Map(basemap: basemap)
-            return map
-        }
-        
-        static func webTiledLayer() -> WebTiledLayer {
-            let  worldTileServiceURL = "https://server.arcgisonline.com/arcgis/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{level}/{row}/{col}.jpg"
-            
-            let attribution = """
-                Map tiles by <a href="https://livingatlas.arcgis.com">ArcGIS Living Atlas of the World</a>, under <a href="https://www.esri.com/en-us/legal/terms/full-master-agreement">Esri Master License Agreement</a>. Data by Esri, Garmin, GEBCO, NOAA NGDC, and other contributors.
-                """
-            
-            // Build the web tiled layer from ArcGIS Living Atlas of the World tile service url.
-            let webTiledLayer = WebTiledLayer(urlTemplate: worldTileServiceURL)
-            // Set the attribution on the layer.
-            webTiledLayer.setAttribution(attribution)
-            
-            return webTiledLayer
-        }
-    }
+private extension String {
+    static let attributionString = """
+        Map tiles by <a href="https://livingatlas.arcgis.com">ArcGIS Living Atlas of the World</a>, under <a href="https://www.esri.com/en-us/legal/terms/full-master-agreement">Esri Master License Agreement</a>. Data by Esri, Garmin, GEBCO, NOAA NGDC, and other contributors.
+        """
+    static var worldTileServiceStringURL = "https://services.arcgisonline.com/ArcGIS/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{level}/{row}/{col}.jpg"
 }
 
 #Preview {
