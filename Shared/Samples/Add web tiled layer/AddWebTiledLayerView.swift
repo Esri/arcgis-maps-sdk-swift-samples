@@ -34,11 +34,11 @@ private extension AddWebTiledLayerView {
         @Published var map: Map
         
         init() {
-            self.map = Model.createMap()
+            self.map = Model.makeMap()
         }
         
         /// A map with a web tiled layer as basemap.
-        static func createMap() -> Map {
+        static func makeMap() -> Map {
             let webTiledLayer = webTiledLayer()
             let basemap = Basemap(baseLayer: webTiledLayer)
             let map = Map(basemap: basemap)
@@ -59,12 +59,6 @@ private extension AddWebTiledLayerView {
             
             return webTiledLayer
         }
-    }
-}
-
-struct AddWebTiledLayerView_Previews: PreviewProvider {
-    static var previews: some View {
-        AddWebTiledLayerView()
     }
 }
 
