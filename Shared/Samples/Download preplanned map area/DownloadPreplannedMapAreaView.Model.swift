@@ -205,13 +205,16 @@ extension DownloadPreplannedMapAreaView {
     }
 }
 
-extension DownloadPreplannedMapAreaView.OfflineMapModel: Hashable {
-    typealias OfflineMapModel = DownloadPreplannedMapAreaView.OfflineMapModel
-    
-    static func == (lhs: OfflineMapModel, rhs: OfflineMapModel) -> Bool {
+extension DownloadPreplannedMapAreaView.OfflineMapModel: Equatable {
+    static func == (
+        lhs: DownloadPreplannedMapAreaView.OfflineMapModel,
+        rhs: DownloadPreplannedMapAreaView.OfflineMapModel
+    ) -> Bool {
         lhs === rhs
     }
-    
+}
+
+extension DownloadPreplannedMapAreaView.OfflineMapModel: Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(ObjectIdentifier(self))
     }
