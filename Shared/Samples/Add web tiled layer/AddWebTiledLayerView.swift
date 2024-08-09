@@ -16,7 +16,7 @@ import ArcGIS
 import SwiftUI
 
 struct AddWebTiledLayerView: View {
-    // A map with web tiled layer as a basemap.
+    // A map with web tiled layer.
     @State private var map: Map = {
         // Build the web tiled layer from ArcGIS Living Atlas of the World tile service url.
         let webTiledLayer = WebTiledLayer(urlTemplate: .worldTileServiceStringURL)
