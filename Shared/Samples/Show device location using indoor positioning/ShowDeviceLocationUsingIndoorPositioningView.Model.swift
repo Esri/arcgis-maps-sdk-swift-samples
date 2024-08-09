@@ -14,7 +14,7 @@
 
 import ArcGIS
 import Combine
-import CoreLocation
+import Foundation
 
 extension ShowDeviceLocationUsingIndoorPositioningView {
     @MainActor
@@ -119,7 +119,8 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
                 // it is necessary to display the same information to the user as the floor manager levelNumber
                 // one is added to the floor level value.
                 if let floorLevel = location.additionalSourceProperties[.floor] as? Int,
-                   (floorLevel + 1) != currentFloor {
+                   var floor = currentFloor,
+                   floorLevel != floor - 1 {
                     // Sets the currentFloor to the new floor level and adds one, since location uses
                     // zero based flooring system.
                     currentFloor = floorLevel + 1

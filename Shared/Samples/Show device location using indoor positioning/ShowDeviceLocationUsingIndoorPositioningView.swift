@@ -89,8 +89,8 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
         if let currentFloor = model.currentFloor {
             labelTextLeading += "Current floor: \(currentFloor)\n"
             if let horizontalAccuracy = model.horizontalAccuracy {
-                let measuredAccuracy = Measurement(value: horizontalAccuracy, unit: UnitLength.meters)
-                labelTextLeading += "Accuracy: \(measuredAccuracy.formatted(.measurement(width: .abbreviated, usage: .asProvided, numberFormatStyle: .number.precision(.fractionLength(2)))))"
+                let accuracyMeasurement = Measurement(value: horizontalAccuracy, unit: UnitLength.meters)
+                labelTextLeading += "Accuracy: \(accuracyMeasurement.formatted(.measurement(width: .abbreviated, usage: .asProvided, numberFormatStyle: .number.precision(.fractionLength(2)))))"
             }
             if let sensorCount = model.sensorCount {
                 labelTextTrailing += "Number of sensors: \(sensorCount)\n"
