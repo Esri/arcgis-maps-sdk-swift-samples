@@ -37,10 +37,14 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
                 HStack(alignment: .center, spacing: 10) {
                     VStack(alignment: .leading) {
                         Text("Current floor: \(model.currentFloor ?? 0)")
-                        Text("Accuracy: \(Measurement(value: model.horizontalAccuracy ?? 0.0, unit: UnitLength.meters), format: .measurement(width: .abbreviated, usage: .asProvided, numberFormatStyle: .number.precision(.fractionLength(2))))")
+                        Text(
+                            """
+                          Accuracy: \(Measurement(value: model.horizontalAccuracy ?? 0.0, unit: UnitLength.meters), format: .measurement(width: .abbreviated, usage: .asProvided, numberFormatStyle: .number.precision(.fractionLength(2))))
+                          """
+                        )
                     }
                     VStack(alignment: .leading) {
-                        Text("Data source: \(model.source ?? "No data source")")
+                        Text("Data source: \(model.source ?? "None")")
                         Text("Number of sensors: \(model.sensorCount ?? 0)")
                     }
                 }

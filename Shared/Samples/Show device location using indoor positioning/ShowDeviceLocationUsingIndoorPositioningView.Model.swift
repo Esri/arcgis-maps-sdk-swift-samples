@@ -133,7 +133,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
                     }
                 }
                 // This indicates whether the location data was sourced from GNSS (Satellites), BLE (Bluetooth Low Energy)
-                // or AppleIPS (Apple's proprietary location system.
+                // or AppleIPS (Apple's proprietary location system.)
                 source = location.additionalSourceProperties[.positionSource] as? String ?? ""
                 switch source {
                 case "GNSS":
