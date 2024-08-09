@@ -21,22 +21,32 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
     @StateObject private var model = Model()
     /// The error shown in the error alert.
     @State private var error: Error?
-    /// This is the published value of the data that is displayed.
-    @State private var labelTextLeading: String = ""
-    /// This is the published value of the data that is displayed.
-    @State private var labelTextTrailing: String = ""
+    /// This is the text description of the current floor that is displayed.
+    @State private var currentFloorText: String = ""
+    /// This is the text description of the data source that is displayed.
+    @State private var sourceText: String = ""
+    /// This is the text description of the number sensor of the data that is displayed.
+    @State private var sensorText: String = ""
+    /// This is the text description of the horizontal accuracy data that is displayed.
+    @State private var accuracyText: String = ""
     
     var body: some View {
         MapView(map: model.map)
             .locationDisplay(model.locationDisplay)
             .overlay(alignment: .top) {
                 HStack(alignment: .center, spacing: 10) {
-                    Text(labelTextLeading)
-                    Text(labelTextTrailing)
+                    VStack(alignment: .leading) {
+                        Text(currentFloorText)
+                        Text(accuracyText)
+                    }
+                    VStack(alignment: .leading) {
+                        Text(sourceText)
+                        Text(sensorText)
+                    }
                 }
                 .frame(maxWidth: .infinity)
                 .background(.white)
-                .opacity(labelTextLeading.isEmpty ? 0 : 0.8)
+                .opacity(currentFloorText.isEmpty ? 0 : 0.8)
             }
             .overlay(alignment: .center) {
                 if model.isLoading {
@@ -84,22 +94,20 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
     
     /// Updates the labels on the view with the current state of the indoors data source.
     private func updateStatusTextDisplay() {
-        labelTextLeading = ""
-        labelTextTrailing = ""
         if let currentFloor = model.currentFloor {
-            labelTextLeading += "Current floor: \(currentFloor)\n"
+            currentFloorText = "Current floor: \(currentFloor)\n"
             if let horizontalAccuracy = model.horizontalAccuracy {
                 let accuracyMeasurement = Measurement(value: horizontalAccuracy, unit: UnitLength.meters)
-                labelTextLeading += "Accuracy: \(accuracyMeasurement.formatted(.measurement(width: .abbreviated, usage: .asProvided, numberFormatStyle: .number.precision(.fractionLength(2)))))"
+                accuracyText = "Accuracy: \(accuracyMeasurement.formatted(.measurement(width: .abbreviated, usage: .asProvided, numberFormatStyle: .number.precision(.fractionLength(2)))))"
             }
             if let sensorCount = model.sensorCount {
-                labelTextTrailing += "Number of sensors: \(sensorCount)\n"
+                sensorText = "Number of sensors: \(sensorCount)\n"
             } else if let satelliteCount = model.satelliteCount, model.source == "GNSS" {
-                labelTextTrailing += "Number of satellites: \(satelliteCount)\n"
+                sensorText = "Number of satellites: \(satelliteCount)\n"
             }
-            labelTextTrailing += "Data source: \(model.source ?? "")"
+            sourceText = "Data source: \(model.source ?? "")"
         } else {
-            labelTextLeading = "No floor data."
+            currentFloorText = "No floor data."
         }
     }
 }
