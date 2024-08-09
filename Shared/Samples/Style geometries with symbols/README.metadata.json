@@ -33,7 +33,8 @@
         "SimpleMarkerSymbol"
     ],
     "snippets": [
-        "StyleGeometriesWithSymbolsView.swift"
+        "StyleGeometriesWithSymbolsView.swift",
+        "StyleGeometriesWithSymbolsView.Views.swift"
     ],
     "title": "Style geometries with symbols"
 }
