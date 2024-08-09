@@ -111,7 +111,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         }
         
         /// Updates the location when the indoors location datasource is triggered.
-        func updateDisplayOnLocationChange(locationUpdate: () -> Void) async throws {
+        func updateDisplayOnLocationChange() async throws {
             for await location in locationDisplay.dataSource.locations {
                 // Since this listens for new location changes, it is important
                 // to ensure any blocking UI is dismissed once location updates begins.
@@ -119,7 +119,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
                 // it is necessary to display the same information to the user as the floor manager levelNumber
                 // one is added to the floor level value.
                 if let floorLevel = location.additionalSourceProperties[.floor] as? Int,
-                   var floor = currentFloor,
+                   let floor = currentFloor,
                    floorLevel != floor - 1 {
                     // Sets the currentFloor to the new floor level and adds one, since location uses
                     // zero based flooring system.
@@ -142,7 +142,6 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
                     sensorCount = location.additionalSourceProperties[.transmitterCount] as? Int ?? 0
                 }
                 horizontalAccuracy = location.horizontalAccuracy
-                locationUpdate()
             }
         }
     }

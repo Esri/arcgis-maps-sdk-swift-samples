@@ -36,17 +36,17 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
             .overlay(alignment: .top) {
                 HStack(alignment: .center, spacing: 10) {
                     VStack(alignment: .leading) {
-                        Text(currentFloorText)
-                        Text(accuracyText)
+                        Text("Current floor: \(model.currentFloor ?? 0)")
+                        Text("Accuracy: \(Measurement(value: model.horizontalAccuracy ?? 0.0, unit: UnitLength.meters), format: .measurement(width: .abbreviated, usage: .asProvided, numberFormatStyle: .number.precision(.fractionLength(2))))")
                     }
                     VStack(alignment: .leading) {
-                        Text(sourceText)
-                        Text(sensorText)
+                        Text("Data source: \(model.source ?? "No data source")")
+                        Text("Number of sensors: \(model.sensorCount ?? 0)")
                     }
                 }
                 .frame(maxWidth: .infinity)
                 .background(.white)
-                .opacity(currentFloorText.isEmpty ? 0 : 0.8)
+                .opacity(model.currentFloor != nil ? 0 : 0.8)
             }
             .overlay(alignment: .center) {
                 if model.isLoading {
@@ -67,9 +67,7 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
                 do {
                     try await requestLocationServicesAuthorizationIfNecessary()
                     try await model.loadIndoorData()
-                    try await model.updateDisplayOnLocationChange {
-                        updateStatusTextDisplay()
-                    }
+                    try await model.updateDisplayOnLocationChange()
                 } catch {
                     self.error = error
                 }
@@ -89,25 +87,6 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
         // Requests location permission if it has not yet been determined.
         if locationManager.authorizationStatus == .notDetermined {
             locationManager.requestWhenInUseAuthorization()
-        }
-    }
-    
-    /// Updates the labels on the view with the current state of the indoors data source.
-    private func updateStatusTextDisplay() {
-        if let currentFloor = model.currentFloor {
-            currentFloorText = "Current floor: \(currentFloor)\n"
-            if let horizontalAccuracy = model.horizontalAccuracy {
-                let accuracyMeasurement = Measurement(value: horizontalAccuracy, unit: UnitLength.meters)
-                accuracyText = "Accuracy: \(accuracyMeasurement.formatted(.measurement(width: .abbreviated, usage: .asProvided, numberFormatStyle: .number.precision(.fractionLength(2)))))"
-            }
-            if let sensorCount = model.sensorCount {
-                sensorText = "Number of sensors: \(sensorCount)\n"
-            } else if let satelliteCount = model.satelliteCount, model.source == "GNSS" {
-                sensorText = "Number of satellites: \(satelliteCount)\n"
-            }
-            sourceText = "Data source: \(model.source ?? "")"
-        } else {
-            currentFloorText = "No floor data."
         }
     }
 }
