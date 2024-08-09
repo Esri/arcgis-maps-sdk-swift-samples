@@ -16,7 +16,7 @@ import ArcGIS
 import SwiftUI
 
 struct AddWebTiledLayerView: View {
-    // A map with web tiled layer.
+    /// A map with web tiled layer.
     @State private var map: Map = {
         // Build the web tiled layer from ArcGIS Living Atlas of the World tile service url.
         let webTiledLayer = WebTiledLayer(urlTemplate: .worldTileServiceStringURL)
@@ -37,10 +37,12 @@ struct AddWebTiledLayerView: View {
 }
 
 private extension String {
+    /// The attribution string for the ArcGIS Living Atlas of the World.
     static let attributionString = """
         Map tiles by <a href="https://livingatlas.arcgis.com">ArcGIS Living Atlas of the World</a>, under <a href="https://www.esri.com/en-us/legal/terms/full-master-agreement">Esri Master License Agreement</a>. Data by Esri, Garmin, GEBCO, NOAA NGDC, and other contributors.
         """
-    static var worldTileServiceStringURL = "https://services.arcgisonline.com/ArcGIS/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{level}/{row}/{col}.jpg"
+    /// The web tile service url from ArcGIS Living Atlas of the World.
+    static let worldTileServiceStringURL = "https://services.arcgisonline.com/ArcGIS/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{level}/{row}/{col}.jpg"
 }
 
 #Preview {
