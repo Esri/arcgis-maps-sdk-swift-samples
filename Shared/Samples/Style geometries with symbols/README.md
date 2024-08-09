@@ -2,7 +2,7 @@
 
 Use a symbol to display a geometry on a map.
 
-![Screenshot of Style geometries with symbols](style-geometries-with-symbols.png)
+![Screenshot of Style geometries with symbols samples](style-geometries-with-symbols.png)
 
 ## Use case
 
@@ -10,7 +10,7 @@ Customize the appearance of a geometry with a symbol style suitable for the data
 
 ## How to use the sample
 
-Tap "Edit Style" and select a geometry to edit with the picker. Use the controls to change the symbol properties for the geometry.
+Tap "Edit Styles" and select a geometry to edit with the picker. Use the controls to change the symbol properties for the geometry.
 
 ## How it works
 
@@ -18,7 +18,7 @@ Tap "Edit Style" and select a geometry to edit with the picker. Use the controls
     * For the picture marker symbol, create it using a URL or image and set its height property.
     * For the simple marker symbol, set the `style`, `color`, and `size` properties.
 2. Create a `SimpleLineSymbol` to style a `Polyline`.
-    * Set the `style`, `color`, `size`, `markerStyle`, and `markerPlacement` properties.
+    * Set the `style`, `color`, and `size` properties.
 3. Create a `SimpleFillSymbol` to style a `Polygon`.
     * Set the `style`, `color`, and `outline` properties.
 4. Create `Graphic`s using the geometries and symbols and add them to a `GraphicsOverlay`.

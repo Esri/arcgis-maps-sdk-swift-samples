@@ -2,7 +2,9 @@
     "category": "Visualization",
     "description": "Use a symbol to display a geometry on a map.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "style-geometries-with-symbols.png"
+    ],
     "keywords": [
         "display",
         "fill",
