@@ -22,7 +22,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         /// An IPS-aware web map for all three floors of Esri Building L in Redlands.
         let map = Map(url: .indoorsMap)!
         
-        /// The value of the current floor with -1 being used to represent floor that has not been set.
+        /// The value of the current floor.
         @Published private(set) var currentFloor: Int?
         
         /// The number of BLE sensors which are being used for indoor location.

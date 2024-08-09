@@ -21,15 +21,7 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
     @StateObject private var model = Model()
     /// The error shown in the error alert.
     @State private var error: Error?
-    /// This is the text description of the current floor that is displayed.
-    @State private var currentFloorText: String = ""
-    /// This is the text description of the data source that is displayed.
-    @State private var sourceText: String = ""
-    /// This is the text description of the number sensor of the data that is displayed.
-    @State private var sensorText: String = ""
-    /// This is the text description of the horizontal accuracy data that is displayed.
-    @State private var accuracyText: String = ""
-    
+
     var body: some View {
         MapView(map: model.map)
             .locationDisplay(model.locationDisplay)
@@ -37,11 +29,7 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
                 HStack(alignment: .center, spacing: 10) {
                     VStack(alignment: .leading) {
                         Text("Current floor: \(model.currentFloor ?? 0)")
-                        Text(
-                            """
-                          Accuracy: \(Measurement(value: model.horizontalAccuracy ?? 0.0, unit: UnitLength.meters), format: .measurement(width: .abbreviated, usage: .asProvided, numberFormatStyle: .number.precision(.fractionLength(2))))
-                          """
-                        )
+                        Text("Accuracy: \(Measurement(value: model.horizontalAccuracy ?? 0.0, unit: UnitLength.meters), format: .measurement(width: .abbreviated, usage: .asProvided, numberFormatStyle: .number.precision(.fractionLength(2))))")
                     }
                     VStack(alignment: .leading) {
                         Text("Data source: \(model.source ?? "None")")
