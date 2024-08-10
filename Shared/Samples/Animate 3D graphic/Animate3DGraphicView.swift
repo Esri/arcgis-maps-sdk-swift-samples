@@ -151,7 +151,7 @@ struct Animate3DGraphicView: View {
     }
 }
 
-extension Animate3DGraphicView {
+private extension Animate3DGraphicView {
     /// Creates a binding to a camera controller property based on a given property.
     /// - Parameter property: The property associated with a corresponding camera controller property.
     /// - Returns: A binding to a camera controller property on the model.

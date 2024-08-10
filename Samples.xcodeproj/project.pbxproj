@@ -139,6 +139,10 @@
 		218F35B829C28F4A00502022 /* AuthenticateWithOAuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218F35B329C28F4A00502022 /* AuthenticateWithOAuthView.swift */; };
 		218F35C229C290BF00502022 /* AuthenticateWithOAuthView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 218F35B329C28F4A00502022 /* AuthenticateWithOAuthView.swift */; };
 		3E30884A2C5D789A00ECEAC5 /* SetSpatialReferenceView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 3EEDE7CD2C5D73F700510104 /* SetSpatialReferenceView.swift */; };
+		3E54CF222C66AFBE00DD2F18 /* AddWebTiledLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E54CF212C66AFBE00DD2F18 /* AddWebTiledLayerView.swift */; };
+		3E54CF232C66B00500DD2F18 /* AddWebTiledLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 3E54CF212C66AFBE00DD2F18 /* AddWebTiledLayerView.swift */; };
+		3E720F9D2C619B1700E22A9E /* SetInitialViewpointView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E720F9C2C619B1700E22A9E /* SetInitialViewpointView.swift */; };
+		3E720F9E2C61A0B700E22A9E /* SetInitialViewpointView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 3E720F9C2C619B1700E22A9E /* SetInitialViewpointView.swift */; };
 		3EEDE7CE2C5D73F700510104 /* SetSpatialReferenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EEDE7CD2C5D73F700510104 /* SetSpatialReferenceView.swift */; };
 		4D126D6D29CA1B6000CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D126D6929CA1B6000CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift */; };
 		4D126D7229CA1E1800CFB7A7 /* FileNMEASentenceReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D126D7129CA1E1800CFB7A7 /* FileNMEASentenceReader.swift */; };
@@ -535,7 +539,9 @@
 			files = (
 				95E0DBCA2C503E2500224A82 /* ShowDeviceLocationUsingIndoorPositioningView.swift in Copy Source Code Files */,
 				95E0DBCB2C503E2500224A82 /* ShowDeviceLocationUsingIndoorPositioningView.Model.swift in Copy Source Code Files */,
+				3E54CF232C66B00500DD2F18 /* AddWebTiledLayerView.swift in Copy Source Code Files */,
 				3E30884A2C5D789A00ECEAC5 /* SetSpatialReferenceView.swift in Copy Source Code Files */,
+				3E720F9E2C61A0B700E22A9E /* SetInitialViewpointView.swift in Copy Source Code Files */,
 				D78FA4952C3C8E8A0079313E /* CreateDynamicBasemapGalleryView.Views.swift in Copy Source Code Files */,
 				D79482D72C35D8A3006521CD /* CreateDynamicBasemapGalleryView.swift in Copy Source Code Files */,
 				003B36F92C5042BA00A75F66 /* ShowServiceAreaView.swift in Copy Source Code Files */,
@@ -820,6 +826,8 @@
 		1CAB8D472A3CEAB0002AA649 /* RunValveIsolationTraceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunValveIsolationTraceView.swift; sourceTree = "<group>"; };
 		1CAF831B2A20305F000E1E60 /* ShowUtilityAssociationsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowUtilityAssociationsView.swift; sourceTree = "<group>"; };
 		218F35B329C28F4A00502022 /* AuthenticateWithOAuthView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticateWithOAuthView.swift; sourceTree = "<group>"; };
+		3E54CF212C66AFBE00DD2F18 /* AddWebTiledLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWebTiledLayerView.swift; sourceTree = "<group>"; };
+		3E720F9C2C619B1700E22A9E /* SetInitialViewpointView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetInitialViewpointView.swift; sourceTree = "<group>"; };
 		3EEDE7CD2C5D73F700510104 /* SetSpatialReferenceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetSpatialReferenceView.swift; sourceTree = "<group>"; };
 		4D126D6929CA1B6000CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowDeviceLocationWithNMEADataSourcesView.swift; sourceTree = "<group>"; };
 		4D126D7129CA1E1800CFB7A7 /* FileNMEASentenceReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileNMEASentenceReader.swift; sourceTree = "<group>"; };
@@ -1146,6 +1154,7 @@
 				F19A316128906F0D003B7EF9 /* Add raster from file */,
 				955271622C0E6750009B1ED4 /* Add raster from service */,
 				E066DD3E28610F3F004D3D5B /* Add scene layer from service */,
+				3E54CF202C66AFA400DD2F18 /* Add web tiled layer */,
 				D7E557602A1D743100B9FB09 /* Add WMS layer */,
 				1C3B7DC22A5F64FC00907443 /* Analyze network with subnetwork trace */,
 				D7C16D172AC5F6C100689E89 /* Animate 3D graphic */,
@@ -1242,6 +1251,7 @@
 				954AEDEF2C01332F00265114 /* Select features in scene layer */,
 				00B042E3282EDC690072E1B4 /* Set basemap */,
 				D7C3AB462B683291008909B9 /* Set feature request mode */,
+				3E720F9B2C619ACD00E22A9E /* Set initial viewpoint */,
 				D734FA072A183A5A00246D7E /* Set max extent */,
 				D7EAF34F2A1C011000D822C4 /* Set min and max scale */,
 				D76CE8D62BFD7047009A8686 /* Set reference scale */,
@@ -1646,6 +1656,22 @@
 				218F35B329C28F4A00502022 /* AuthenticateWithOAuthView.swift */,
 			);
 			path = "Authenticate with OAuth";
+			sourceTree = "<group>";
+		};
+		3E54CF202C66AFA400DD2F18 /* Add web tiled layer */ = {
+			isa = PBXGroup;
+			children = (
+				3E54CF212C66AFBE00DD2F18 /* AddWebTiledLayerView.swift */,
+			);
+			path = "Add web tiled layer";
+			sourceTree = "<group>";
+		};
+		3E720F9B2C619ACD00E22A9E /* Set initial viewpoint */ = {
+			isa = PBXGroup;
+			children = (
+				3E720F9C2C619B1700E22A9E /* SetInitialViewpointView.swift */,
+			);
+			path = "Set initial viewpoint";
 			sourceTree = "<group>";
 		};
 		3EEDE7CC2C5D735E00510104 /* Set spatial reference */ = {
@@ -3256,12 +3282,14 @@
 				D7EAF35A2A1C023800D822C4 /* SetMinAndMaxScaleView.swift in Sources */,
 				1C19B4F52A578E46001D2506 /* CreateLoadReportView.Model.swift in Sources */,
 				9547085C2C3C719800CA8579 /* EditFeatureAttachmentsView.Model.swift in Sources */,
+				3E54CF222C66AFBE00DD2F18 /* AddWebTiledLayerView.swift in Sources */,
 				0042E24528E4F82C001F33D6 /* ShowViewshedFromPointInSceneView.ViewshedSettingsView.swift in Sources */,
 				D7DDF8532AF47C6C004352D9 /* FindRouteAroundBarriersView.swift in Sources */,
 				1C9B74D929DB54560038B06F /* ChangeCameraControllerView.swift in Sources */,
 				D76000AE2AF19C2300B3084D /* FindRouteInMobileMapPackageView.swift in Sources */,
 				00273CF42A82AB5900A7A77D /* SamplesSearchView.swift in Sources */,
 				D78666AD2A2161F100C60110 /* FindNearestVertexView.swift in Sources */,
+				3E720F9D2C619B1700E22A9E /* SetInitialViewpointView.swift in Sources */,
 				D76CE8D92BFD7047009A8686 /* SetReferenceScaleView.swift in Sources */,
 				D7C16D1B2AC5F95300689E89 /* Animate3DGraphicView.swift in Sources */,
 				D744FD172A2112D90084A66C /* CreateConvexHullAroundPointsView.swift in Sources */,

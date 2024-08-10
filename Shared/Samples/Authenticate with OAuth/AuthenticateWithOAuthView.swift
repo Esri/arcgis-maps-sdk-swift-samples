@@ -66,7 +66,7 @@ struct AuthenticateWithOAuthView: View {
     }
     
     /// Signs out from the portal by revoking OAuth tokens and clearing credential stores.
-    func signOut() {
+    private func signOut() {
         Task {
             await ArcGISEnvironment.authenticationManager.revokeOAuthTokens()
             await ArcGISEnvironment.authenticationManager.clearCredentialStores()
@@ -74,7 +74,7 @@ struct AuthenticateWithOAuthView: View {
     }
     
     // Sets up new ArcGIS and Network credential stores that will be persisted in the keychain.
-    func setupPersistentCredentialStorage() {
+    private func setupPersistentCredentialStorage() {
         Task {
             try await ArcGISEnvironment.authenticationManager.setupPersistentCredentialStorage(
                 access: .whenUnlockedThisDeviceOnly,

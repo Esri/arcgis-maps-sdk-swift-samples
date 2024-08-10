@@ -31,9 +31,6 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
     /// A Boolean value indicating if the add condition menu is presented.
     @State private var isConditionMenuPresented = false
     
-    /// A Boolean value indicating whether the input box is showing.
-    @State private var inputBoxIsPresented = false
-    
     /// The value input by the user.
     @State private var inputValue: Double?
     
@@ -97,7 +94,7 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
         }
     }
     
-    @ViewBuilder var toolbarItems: some View {
+    @ViewBuilder private var toolbarItems: some View {
         Button("Reset") {
             model.reset()
         }
@@ -124,7 +121,7 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
         .disabled(!model.traceEnabled)
     }
     
-    @ViewBuilder var loadingView: some View {
+    @ViewBuilder private var loadingView: some View {
         ZStack {
             if !model.statusText.isEmpty {
                 Color.clear.background(.ultraThinMaterial)
@@ -142,7 +139,7 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
         .errorAlert(presentingError: $error)
     }
     
-    @ViewBuilder var conditionMenu: some View {
+    @ViewBuilder private var conditionMenu: some View {
         List {
             NavigationLink {
                 attributesView
@@ -239,7 +236,7 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
         }
     }
     
-    @ViewBuilder var attributesView: some View {
+    @ViewBuilder private var attributesView: some View {
         List(model.possibleAttributes, id: \.name) { attribute in
             HStack {
                 Text(attribute.name)
@@ -257,7 +254,7 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
         .navigationTitle("Attributes")
     }
     
-    @ViewBuilder var operatorsView: some View {
+    @ViewBuilder private var operatorsView: some View {
         Section {
             List(UtilityNetworkAttributeComparison.Operator.allCases, id: \.self) { comparison in
                 HStack {
@@ -277,7 +274,7 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
         .navigationTitle("Operators")
     }
     
-    @ViewBuilder var valuesView: some View {
+    @ViewBuilder private var valuesView: some View {
         if let domain = selectedAttribute?.domain as? CodedValueDomain {
             Section {
                 List(domain.codedValues, id: \.name) { value in
