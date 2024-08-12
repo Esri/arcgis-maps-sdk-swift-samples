@@ -129,7 +129,7 @@ private extension ShowViewshedFromPointOnMapView {
             // Creates a feature collection table based on the spatial reference for the tapped location
             // on the map.
             let featureCollectionTable = FeatureCollectionTable(
-                fields: [Field](),
+                fields: [],
                 geometryType: Point.self,
                 spatialReference: spatialReference
             )

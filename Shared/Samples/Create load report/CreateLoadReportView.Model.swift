@@ -36,15 +36,15 @@ extension CreateLoadReportView {
         
         /// A list of possible phases populated from the network's attributes.
         /// By default, they are not included in the load report.
-        @Published private(set) var excludedPhases = [CodedValue]()
+        @Published private(set) var excludedPhases: [CodedValue] = []
         
         /// A list of phases that are included in the load report.
-        @Published private(set) var includedPhases = [CodedValue]() {
+        @Published private(set) var includedPhases: [CodedValue] = [] {
             didSet { updateAllowsCreateLoadReport() }
         }
         
         /// A list of possible phases populated from the network's attributes.
-        private var allPhases = [CodedValue]()
+        private var allPhases: [CodedValue] = []
         
         /// The phase summaries in the load report.
         private var summaries = PhaseSummaries()
@@ -316,7 +316,7 @@ private extension CreateLoadReportView {
     
     /// A struct for the load report's phase summaries.
     struct PhaseSummaries {
-        private var storage = [ObjectIdentifier: PhaseSummary]()
+        private var storage: [ObjectIdentifier: PhaseSummary] = [:]
         
         /// Sets the summary for a phase.
         /// - Parameters:

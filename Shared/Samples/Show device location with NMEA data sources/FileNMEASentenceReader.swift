@@ -39,11 +39,11 @@ extension ShowDeviceLocationWithNMEADataSourcesView {
         ///   - speed: The playback time interval in second.
         init(url: URL, interval: TimeInterval = 1.0) {
             // An empty container for NMEA data.
-            var dataBySeconds = [Data]()
+            var dataBySeconds: [Data] = []
             
             if let nmeaStrings = try? String(contentsOf: url, encoding: .utf8).components(separatedBy: .newlines).filter({ !$0.isEmpty }) {
                 // A temporary container for the NMEA sentences at current timestamp.
-                var currentTimestamp = [String]()
+                var currentTimestamp: [String] = []
                 for nmeaLine in nmeaStrings {
                     currentTimestamp.append(nmeaLine)
                     // In the mock data file, the sentences in each second end with
