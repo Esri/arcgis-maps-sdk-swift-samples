@@ -19,7 +19,7 @@
 build_destination="generic/platform=iOS Simulator"
 log_name=.xcodebuild.log
 
-# Delete derived data. Otherwise, swift lint won't find any files to analyze.
+# Delete derived data. Otherwise, SwiftLint won't find any files to analyze.
 rm -rf ~/Library/Developer/Xcode/DerivedData
 
 # Go to project root directory.
