@@ -1,0 +1,38 @@
+{
+    "category": "Analysis",
+    "description": "Zoom to features matching a query and count the features in the current visible extent.",
+    "ignore": false,
+    "images": [
+        "query-feature-count-and-extent.png"
+    ],
+    "keywords": [
+        "count",
+        "feature layer",
+        "feature table",
+        "features",
+        "filter",
+        "number",
+        "query",
+        "FeatureTable.QueryExtentAsync",
+        "FeatureTable.QueryFeatureCountAsync",
+        "MapView",
+        "QueryParameters",
+        "QueryParameters.Geometry",
+        "QueryParameters.SpatialRelationship",
+        "QueryParameters.WhereClause"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "FeatureTable.QueryExtentAsync",
+        "FeatureTable.QueryFeatureCountAsync",
+        "MapView",
+        "QueryParameters",
+        "QueryParameters.Geometry",
+        "QueryParameters.SpatialRelationship",
+        "QueryParameters.WhereClause"
+    ],
+    "snippets": [
+        "QueryFeatureCountAndExtentView.swift"
+    ],
+    "title": "Query feature count and extent"
+}
