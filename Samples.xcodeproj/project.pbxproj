@@ -403,6 +403,7 @@
 		D7BA389A2BFBFC2E009954F5 /* QueryRelatedFeaturesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7BA38932BFBFC0F009954F5 /* QueryRelatedFeaturesView.swift */; };
 		D7BA8C442B2A4DAA00018633 /* Array+RawRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BA8C432B2A4DAA00018633 /* Array+RawRepresentable.swift */; };
 		D7BA8C462B2A8ACA00018633 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BA8C452B2A8ACA00018633 /* String.swift */; };
+		D7BB3DD22C5D781800FFCD56 /* SaveTheBay.geodatabase in Resources */ = {isa = PBXBuildFile; fileRef = D7BB3DD02C5D781800FFCD56 /* SaveTheBay.geodatabase */; settings = {ASSET_TAGS = (EditGeodatabaseWithTransactions, ); }; };
 		D7C16D1B2AC5F95300689E89 /* Animate3DGraphicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C16D1A2AC5F95300689E89 /* Animate3DGraphicView.swift */; };
 		D7C16D1C2AC5F96900689E89 /* Animate3DGraphicView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7C16D1A2AC5F95300689E89 /* Animate3DGraphicView.swift */; };
 		D7C16D1F2AC5FE8200689E89 /* Pyrenees.csv in Resources */ = {isa = PBXBuildFile; fileRef = D7C16D1E2AC5FE8200689E89 /* Pyrenees.csv */; settings = {ASSET_TAGS = (Animate3DGraphic, ); }; };
@@ -962,6 +963,7 @@
 		D7BA38932BFBFC0F009954F5 /* QueryRelatedFeaturesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueryRelatedFeaturesView.swift; sourceTree = "<group>"; };
 		D7BA8C432B2A4DAA00018633 /* Array+RawRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+RawRepresentable.swift"; sourceTree = "<group>"; };
 		D7BA8C452B2A8ACA00018633 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		D7BB3DD02C5D781800FFCD56 /* SaveTheBay.geodatabase */ = {isa = PBXFileReference; lastKnownFileType = file; path = SaveTheBay.geodatabase; sourceTree = "<group>"; };
 		D7C16D1A2AC5F95300689E89 /* Animate3DGraphicView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animate3DGraphicView.swift; sourceTree = "<group>"; };
 		D7C16D1E2AC5FE8200689E89 /* Pyrenees.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Pyrenees.csv; sourceTree = "<group>"; };
 		D7C16D212AC5FE9800689E89 /* GrandCanyon.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = GrandCanyon.csv; sourceTree = "<group>"; };
@@ -1374,37 +1376,38 @@
 		00CCB8A6285D059300BBAB70 /* Portal Data */ = {
 			isa = PBXGroup;
 			children = (
-				950D5AF62C2CC2F100DF2E4E /* c16f3845b9cc4b93a908d87d28823afd */,
-				9537AFC82C220ECB000923C5 /* 9d2987a825c646468b3ce7512fb76e2d */,
-				D762AF642BF6A96100ECE3C7 /* 74c0c9fa80f4498c9739cc42531e9948 */,
-				004A2B962BED454300C297CE /* 740b663bff5e4198b9b6674af93f638a */,
-				D701D7242A37C7E4006FF0C8 /* 07d62a792ab6496d9b772a24efea45d0 */,
-				D7C16D232AC5FEA600689E89 /* 12509ffdc684437f8f2656b0129d2c13 */,
-				00D4EF8328638BF100B9CC30 /* 15a7cbd3af1e47cfa5d2c6b93dc44fc2 */,
-				D721EEA62ABDFF550040BE46 /* 174150279af74a2ba6f8b87a567f480b */,
 				D74C8C002ABA6202007C76B8 /* 1bd036f221f54a99abc9e46ff3511cbf */,
-				D7CE9F992AE2F575008F7A5F /* 22c3083d4fa74e3e9b25adfc9f8c0496 */,
-				D76000B52AF19FC900B3084D /* 260eb6535c824209964cf281766ebe43 */,
-				D7C16D202AC5FE9800689E89 /* 290f0c571c394461a8b58b6775d0bd63 */,
-				D7CE9F9C2AE2F585008F7A5F /* 3424d442ebe54f3cbf34462382d3aebe */,
 				D7781D472B7EB03400E53C51 /* 4caec8c55ea2463982f1af7d9611b8d5 */,
 				D7C16D1D2AC5FE8200689E89 /* 5a9b60cee9ba41e79640a06bcdf8084d */,
-				1C965C4629DBA879002F8536 /* 681d6f7694644709a7c830ec57a2d72b */,
-				00D4EF8E28638BF100B9CC30 /* 68ec42517cdd439e81b036210483e8e7 */,
-				D73F8CF22AB1089900CD39DA /* 751138a2e0844e06853522d54103222a */,
 				00C94A0228B53DCC004E42D9 /* 7c4c679ab06a4df19dc497f577f111bd */,
+				D701D7242A37C7E4006FF0C8 /* 07d62a792ab6496d9b772a24efea45d0 */,
 				D7D1F3512ADDBE5D009CE2DA /* 7dd2f97bb007466ea939160d0de96a9d */,
+				9537AFC82C220ECB000923C5 /* 9d2987a825c646468b3ce7512fb76e2d */,
+				00D4EF8328638BF100B9CC30 /* 15a7cbd3af1e47cfa5d2c6b93dc44fc2 */,
+				D7CE9F992AE2F575008F7A5F /* 22c3083d4fa74e3e9b25adfc9f8c0496 */,
+				00D4EF8E28638BF100B9CC30 /* 68ec42517cdd439e81b036210483e8e7 */,
+				D762AF642BF6A96100ECE3C7 /* 74c0c9fa80f4498c9739cc42531e9948 */,
+				D76000B52AF19FC900B3084D /* 260eb6535c824209964cf281766ebe43 */,
+				D7C16D202AC5FE9800689E89 /* 290f0c571c394461a8b58b6775d0bd63 */,
+				1C965C4629DBA879002F8536 /* 681d6f7694644709a7c830ec57a2d72b */,
+				004A2B962BED454300C297CE /* 740b663bff5e4198b9b6674af93f638a */,
+				D7CE9F9C2AE2F585008F7A5F /* 3424d442ebe54f3cbf34462382d3aebe */,
+				D7C16D232AC5FEA600689E89 /* 12509ffdc684437f8f2656b0129d2c13 */,
+				D7BB3DD12C5D781800FFCD56 /* 43809fd639f242fd8045ecbafd61a579 */,
 				10D321912BDB187400B39B1B /* 85282f2aaa2844d8935cdb8722e22a93 */,
+				D73F8CF22AB1089900CD39DA /* 751138a2e0844e06853522d54103222a */,
+				D721EEA62ABDFF550040BE46 /* 174150279af74a2ba6f8b87a567f480b */,
 				792222DB2A81AA5D00619FFE /* a8a942c228af4fac96baa78ad60f511f */,
-				D7F8C03F2B605E720072BFA7 /* b5106355f1634b8996e634c04b6a930a */,
 				D7464F202ACE0910007FEE88 /* b5f977c78ec74b3a8857ca86d1d9b318 */,
+				D7F8C03F2B605E720072BFA7 /* b5106355f1634b8996e634c04b6a930a */,
+				950D5AF62C2CC2F100DF2E4E /* c16f3845b9cc4b93a908d87d28823afd */,
 				00D4EF8128638BF100B9CC30 /* cb1b20748a9f4d128dad8a87244e3e37 */,
-				D77572AC2A295DC100F490CD /* d1453556d91e46dea191c20c398b82cd */,
 				4D126D7629CA3B3F00CFB7A7 /* d5bad9f4fee9483791e405880fb466da */,
+				D77572AC2A295DC100F490CD /* d1453556d91e46dea191c20c398b82cd */,
 				D7E7D0862AEB3C36003AAD02 /* df193653ed39449195af0c9725701dca */,
-				D7F8C03C2B605AF60072BFA7 /* e12b54ea799f4606a2712157cf9f6e41 */,
 				F111CCC2288B63DB00205358 /* e1f3a7254cb845b09450f54937c16061 */,
 				D7C5233F2BED9BBF00E8221A /* e4a398afe9a945f3b0f4dca1e4faccb5 */,
+				D7F8C03C2B605AF60072BFA7 /* e12b54ea799f4606a2712157cf9f6e41 */,
 				D7C16D262AC5FEB600689E89 /* e87c154fb9c2487f999143df5b08e9b1 */,
 				D7497F3E2AC4BA4100167AD2 /* f5ff6f5556a945bca87ca513b8729a1e */,
 			);
@@ -2447,6 +2450,14 @@
 			path = "Query related features";
 			sourceTree = "<group>";
 		};
+		D7BB3DD12C5D781800FFCD56 /* 43809fd639f242fd8045ecbafd61a579 */ = {
+			isa = PBXGroup;
+			children = (
+				D7BB3DD02C5D781800FFCD56 /* SaveTheBay.geodatabase */,
+			);
+			path = 43809fd639f242fd8045ecbafd61a579;
+			sourceTree = "<group>";
+		};
 		D7C16D172AC5F6C100689E89 /* Animate 3D graphic */ = {
 			isa = PBXGroup;
 			children = (
@@ -2888,6 +2899,7 @@
 					DisplaySceneFromMobileScenePackage,
 					EditAndSyncFeaturesWithFeatureService,
 					EditFeaturesWithFeatureLinkedAnnotation,
+					EditGeodatabaseWithTransactions,
 					FindRouteInMobileMapPackage,
 					FindRouteInTransportNetwork,
 					GenerateOfflineMapWithLocalBasemap,
@@ -2955,6 +2967,7 @@
 				004FE87129DF5D8700075217 /* Bristol in Resources */,
 				D7C16D252AC5FEA600689E89 /* Snowdon.csv in Resources */,
 				D73F8CF42AB1089900CD39DA /* Restaurant.stylx in Resources */,
+				D7BB3DD22C5D781800FFCD56 /* SaveTheBay.geodatabase in Resources */,
 				D74C8C022ABA6202007C76B8 /* emoji-mobile.stylx in Resources */,
 				D7CE9FA32AE2F595008F7A5F /* san-diego-eagle-locator in Resources */,
 				D76000B72AF19FCA00B3084D /* SanFrancisco.mmpk in Resources */,
