@@ -44,7 +44,7 @@ extension StyleGeometryTypesWithSymbolsView {
         }
     }
     
-    /// The types of the geometries support by this sample.
+    /// The types of the geometries supported by this sample.
     private enum GeometryType: CaseIterable, LabeledEnumeration {
         case point, polyline, polygon
         

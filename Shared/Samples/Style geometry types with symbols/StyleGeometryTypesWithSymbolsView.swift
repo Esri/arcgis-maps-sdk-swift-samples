@@ -70,7 +70,7 @@ extension StyleGeometryTypesWithSymbolsView {
             return map
         }()
         
-        /// A graphics overlay for display the geometry graphics on the map view.
+        /// A graphics overlay for displaying the geometry graphics on the map view.
         let graphicsOverlay = GraphicsOverlay()
         
         /// The simple marker symbol for styling the point.
