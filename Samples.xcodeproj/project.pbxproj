@@ -239,13 +239,16 @@
 		D7114A0F2BDC6AED00FA68CA /* EditWithBranchVersioningView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7114A0C2BDC6A3300FA68CA /* EditWithBranchVersioningView.Model.swift */; };
 		D71371792BD88ECC00EB2F86 /* MonitorChangesToLayerViewStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71371752BD88ECC00EB2F86 /* MonitorChangesToLayerViewStateView.swift */; };
 		D713717C2BD88EF800EB2F86 /* MonitorChangesToLayerViewStateView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D71371752BD88ECC00EB2F86 /* MonitorChangesToLayerViewStateView.swift */; };
-		D71563472C65447900A6CD30 /* StyleGeometriesWithSymbolsView.Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71563462C65447900A6CD30 /* StyleGeometriesWithSymbolsView.Views.swift */; };
 		D718A1E72B570F7500447087 /* OrbitCameraAroundObjectView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D718A1E62B570F7500447087 /* OrbitCameraAroundObjectView.Model.swift */; };
 		D718A1E82B571C9100447087 /* OrbitCameraAroundObjectView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D718A1E62B570F7500447087 /* OrbitCameraAroundObjectView.Model.swift */; };
 		D718A1ED2B575FD900447087 /* ManageBookmarksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D718A1EA2B575FD900447087 /* ManageBookmarksView.swift */; };
 		D718A1F02B57602000447087 /* ManageBookmarksView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D718A1EA2B575FD900447087 /* ManageBookmarksView.swift */; };
 		D71C5F642AAA7A88006599FD /* CreateSymbolStylesFromWebStylesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71C5F632AAA7A88006599FD /* CreateSymbolStylesFromWebStylesView.swift */; };
 		D71C5F652AAA83D2006599FD /* CreateSymbolStylesFromWebStylesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D71C5F632AAA7A88006599FD /* CreateSymbolStylesFromWebStylesView.swift */; };
+		D71C90A22C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71C909C2C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.swift */; };
+		D71C90A32C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71C909D2C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.Views.swift */; };
+		D71C90A42C6C252B0018C63E /* StyleGeometryTypesWithSymbolsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D71C909C2C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.swift */; };
+		D71C90A52C6C252F0018C63E /* StyleGeometryTypesWithSymbolsView.Views.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D71C909D2C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.Views.swift */; };
 		D71D516E2B51D7B600B2A2BE /* SearchForWebMapView.Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71D516D2B51D7B600B2A2BE /* SearchForWebMapView.Views.swift */; };
 		D71D516F2B51D87700B2A2BE /* SearchForWebMapView.Views.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D71D516D2B51D7B600B2A2BE /* SearchForWebMapView.Views.swift */; };
 		D71FCB8A2AD6277F000E517C /* CreateMobileGeodatabaseView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71FCB892AD6277E000E517C /* CreateMobileGeodatabaseView.Model.swift */; };
@@ -256,8 +259,6 @@
 		D7232EE12AC1E5AA0079ABFF /* PlayKMLTourView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7232EE02AC1E5AA0079ABFF /* PlayKMLTourView.swift */; };
 		D7232EE22AC1E6DC0079ABFF /* PlayKMLTourView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7232EE02AC1E5AA0079ABFF /* PlayKMLTourView.swift */; };
 		D72C43F32AEB066D00B6157B /* GeocodeOfflineView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72C43F22AEB066D00B6157B /* GeocodeOfflineView.Model.swift */; };
-		D72CA1432C643158004C0630 /* StyleGeometriesWithSymbolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72CA13F2C643158004C0630 /* StyleGeometriesWithSymbolsView.swift */; };
-		D72CA1442C6431AA004C0630 /* StyleGeometriesWithSymbolsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D72CA13F2C643158004C0630 /* StyleGeometriesWithSymbolsView.swift */; };
 		D72F272E2ADA1E4400F906DA /* AugmentRealityToShowTabletopSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72F272B2ADA1E4400F906DA /* AugmentRealityToShowTabletopSceneView.swift */; };
 		D72F27302ADA1E9900F906DA /* AugmentRealityToShowTabletopSceneView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D72F272B2ADA1E4400F906DA /* AugmentRealityToShowTabletopSceneView.swift */; };
 		D731F3C12AD0D2AC00A8431E /* IdentifyGraphicsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D731F3C02AD0D2AC00A8431E /* IdentifyGraphicsView.swift */; };
@@ -422,7 +423,6 @@
 		D7CE9F9B2AE2F575008F7A5F /* streetmap_SD.tpkx in Resources */ = {isa = PBXBuildFile; fileRef = D7CE9F9A2AE2F575008F7A5F /* streetmap_SD.tpkx */; settings = {ASSET_TAGS = (GeocodeOffline, ); }; };
 		D7CE9FA32AE2F595008F7A5F /* san-diego-eagle-locator in Resources */ = {isa = PBXBuildFile; fileRef = D7CE9FA22AE2F595008F7A5F /* san-diego-eagle-locator */; settings = {ASSET_TAGS = (GeocodeOffline, ); }; };
 		D7D1F3532ADDBE5D009CE2DA /* philadelphia.mspk in Resources */ = {isa = PBXBuildFile; fileRef = D7D1F3522ADDBE5D009CE2DA /* philadelphia.mspk */; settings = {ASSET_TAGS = (AugmentRealityToShowTabletopScene, DisplaySceneFromMobileScenePackage, ); }; };
-		D7D5000E2C6692990099C585 /* StyleGeometriesWithSymbolsView.Views.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D71563462C65447900A6CD30 /* StyleGeometriesWithSymbolsView.Views.swift */; };
 		D7D9FCF62BF2CC8600F972A2 /* FilterByDefinitionExpressionOrDisplayFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D9FCF22BF2CC8600F972A2 /* FilterByDefinitionExpressionOrDisplayFilterView.swift */; };
 		D7D9FCF92BF2CCA300F972A2 /* FilterByDefinitionExpressionOrDisplayFilterView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7D9FCF22BF2CC8600F972A2 /* FilterByDefinitionExpressionOrDisplayFilterView.swift */; };
 		D7DDF84E2AF43AA2004352D9 /* GeocodeOfflineView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D72C43F22AEB066D00B6157B /* GeocodeOfflineView.Model.swift */; };
@@ -536,8 +536,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
-				D7D5000E2C6692990099C585 /* StyleGeometriesWithSymbolsView.Views.swift in Copy Source Code Files */,
-				D72CA1442C6431AA004C0630 /* StyleGeometriesWithSymbolsView.swift in Copy Source Code Files */,
+				D71C90A52C6C252F0018C63E /* StyleGeometryTypesWithSymbolsView.Views.swift in Copy Source Code Files */,
+				D71C90A42C6C252B0018C63E /* StyleGeometryTypesWithSymbolsView.swift in Copy Source Code Files */,
 				3E54CF232C66B00500DD2F18 /* AddWebTiledLayerView.swift in Copy Source Code Files */,
 				3E30884A2C5D789A00ECEAC5 /* SetSpatialReferenceView.swift in Copy Source Code Files */,
 				3E720F9E2C61A0B700E22A9E /* SetInitialViewpointView.swift in Copy Source Code Files */,
@@ -878,17 +878,17 @@
 		D710996F2A2802FA0065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DensifyAndGeneralizeGeometryView.SettingsView.swift; sourceTree = "<group>"; };
 		D7114A0C2BDC6A3300FA68CA /* EditWithBranchVersioningView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditWithBranchVersioningView.Model.swift; sourceTree = "<group>"; };
 		D71371752BD88ECC00EB2F86 /* MonitorChangesToLayerViewStateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonitorChangesToLayerViewStateView.swift; sourceTree = "<group>"; };
-		D71563462C65447900A6CD30 /* StyleGeometriesWithSymbolsView.Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleGeometriesWithSymbolsView.Views.swift; sourceTree = "<group>"; };
 		D718A1E62B570F7500447087 /* OrbitCameraAroundObjectView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrbitCameraAroundObjectView.Model.swift; sourceTree = "<group>"; };
 		D718A1EA2B575FD900447087 /* ManageBookmarksView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageBookmarksView.swift; sourceTree = "<group>"; };
 		D71C5F632AAA7A88006599FD /* CreateSymbolStylesFromWebStylesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateSymbolStylesFromWebStylesView.swift; sourceTree = "<group>"; };
+		D71C909C2C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleGeometryTypesWithSymbolsView.swift; sourceTree = "<group>"; };
+		D71C909D2C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleGeometryTypesWithSymbolsView.Views.swift; sourceTree = "<group>"; };
 		D71D516D2B51D7B600B2A2BE /* SearchForWebMapView.Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchForWebMapView.Views.swift; sourceTree = "<group>"; };
 		D71FCB892AD6277E000E517C /* CreateMobileGeodatabaseView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateMobileGeodatabaseView.Model.swift; sourceTree = "<group>"; };
 		D721EEA72ABDFF550040BE46 /* LothianRiversAnno.mmpk */ = {isa = PBXFileReference; lastKnownFileType = file; path = LothianRiversAnno.mmpk; sourceTree = "<group>"; };
 		D722BD212A420DAD002C2087 /* ShowExtrudedFeaturesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowExtrudedFeaturesView.swift; sourceTree = "<group>"; };
 		D7232EE02AC1E5AA0079ABFF /* PlayKMLTourView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayKMLTourView.swift; sourceTree = "<group>"; };
 		D72C43F22AEB066D00B6157B /* GeocodeOfflineView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeocodeOfflineView.Model.swift; sourceTree = "<group>"; };
-		D72CA13F2C643158004C0630 /* StyleGeometriesWithSymbolsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleGeometriesWithSymbolsView.swift; sourceTree = "<group>"; };
 		D72F272B2ADA1E4400F906DA /* AugmentRealityToShowTabletopSceneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AugmentRealityToShowTabletopSceneView.swift; sourceTree = "<group>"; };
 		D731F3C02AD0D2AC00A8431E /* IdentifyGraphicsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentifyGraphicsView.swift; sourceTree = "<group>"; };
 		D7337C592ABCFDB100A5D865 /* StyleSymbolsFromMobileStyleFileView.SymbolOptionsListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleSymbolsFromMobileStyleFileView.SymbolOptionsListView.swift; sourceTree = "<group>"; };
@@ -1281,7 +1281,7 @@
 				95DEB9B72C127A97009BEC35 /* Show viewshed from point on map */,
 				00E7C15A2BBE1BF000B85D69 /* Snap geometry edits */,
 				D75B584D2AAFB2C20038B3B4 /* Style features with custom dictionary */,
-				D72CA1402C643158004C0630 /* Style geometries with symbols */,
+				D71C909E2C6C249B0018C63E /* Style geometry types with symbols */,
 				E066DD362860AB0B004D3D5B /* Style graphics with renderer */,
 				E004A6E42846A609002A1FE6 /* Style graphics with symbols */,
 				D77BC5352B59A2D3007B49B6 /* Style point with distance composite scene symbol */,
@@ -1952,6 +1952,15 @@
 			path = "Create symbol styles from web styles";
 			sourceTree = "<group>";
 		};
+		D71C909E2C6C249B0018C63E /* Style geometry types with symbols */ = {
+			isa = PBXGroup;
+			children = (
+				D71C909C2C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.swift */,
+				D71C909D2C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.Views.swift */,
+			);
+			path = "Style geometry types with symbols";
+			sourceTree = "<group>";
+		};
 		D721EEA62ABDFF550040BE46 /* 174150279af74a2ba6f8b87a567f480b */ = {
 			isa = PBXGroup;
 			children = (
@@ -1974,15 +1983,6 @@
 				D7232EE02AC1E5AA0079ABFF /* PlayKMLTourView.swift */,
 			);
 			path = "Play KML tour";
-			sourceTree = "<group>";
-		};
-		D72CA1402C643158004C0630 /* Style geometries with symbols */ = {
-			isa = PBXGroup;
-			children = (
-				D72CA13F2C643158004C0630 /* StyleGeometriesWithSymbolsView.swift */,
-				D71563462C65447900A6CD30 /* StyleGeometriesWithSymbolsView.Views.swift */,
-			);
-			path = "Style geometries with symbols";
 			sourceTree = "<group>";
 		};
 		D72F27292ADA1E4400F906DA /* Augment reality to show tabletop scene */ = {
@@ -3257,7 +3257,6 @@
 				D71371792BD88ECC00EB2F86 /* MonitorChangesToLayerViewStateView.swift in Sources */,
 				D7B759B32B1FFBE300017FDD /* FavoritesView.swift in Sources */,
 				D722BD222A420DAD002C2087 /* ShowExtrudedFeaturesView.swift in Sources */,
-				D71563472C65447900A6CD30 /* StyleGeometriesWithSymbolsView.Views.swift in Sources */,
 				E004A6F6284FA42A002A1FE6 /* SelectFeaturesInFeatureLayerView.swift in Sources */,
 				D77688132B69826B007C3860 /* ListSpatialReferenceTransformationsView.swift in Sources */,
 				D75101812A2E493600B8FA48 /* ShowLabelsOnLayerView.swift in Sources */,
@@ -3280,8 +3279,8 @@
 				D7635FFB2B9277DC0044AB97 /* ConfigureClustersView.Model.swift in Sources */,
 				D7EAF35A2A1C023800D822C4 /* SetMinAndMaxScaleView.swift in Sources */,
 				1C19B4F52A578E46001D2506 /* CreateLoadReportView.Model.swift in Sources */,
-				D72CA1432C643158004C0630 /* StyleGeometriesWithSymbolsView.swift in Sources */,
 				9547085C2C3C719800CA8579 /* EditFeatureAttachmentsView.Model.swift in Sources */,
+				D71C90A22C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.swift in Sources */,
 				3E54CF222C66AFBE00DD2F18 /* AddWebTiledLayerView.swift in Sources */,
 				0042E24528E4F82C001F33D6 /* ShowViewshedFromPointInSceneView.ViewshedSettingsView.swift in Sources */,
 				D7DDF8532AF47C6C004352D9 /* FindRouteAroundBarriersView.swift in Sources */,
@@ -3294,6 +3293,7 @@
 				D7C16D1B2AC5F95300689E89 /* Animate3DGraphicView.swift in Sources */,
 				D744FD172A2112D90084A66C /* CreateConvexHullAroundPointsView.swift in Sources */,
 				D7044B962BE18D73000F2C43 /* EditWithBranchVersioningView.Views.swift in Sources */,
+				D71C90A32C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.Views.swift in Sources */,
 				D718A1ED2B575FD900447087 /* ManageBookmarksView.swift in Sources */,
 				D73723762AF5877500846884 /* FindRouteInMobileMapPackageView.Models.swift in Sources */,
 				D74ECD0D2BEEAE2F007C0FA6 /* EditAndSyncFeaturesWithFeatureServiceView.Model.swift in Sources */,

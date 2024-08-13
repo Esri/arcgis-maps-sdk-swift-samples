@@ -3,7 +3,7 @@
     "description": "Use a symbol to display a geometry on a map.",
     "ignore": false,
     "images": [
-        "style-geometries-with-symbols.png"
+        "style-geometry-types-with-symbols.png"
     ],
     "keywords": [
         "display",
@@ -35,8 +35,8 @@
         "SimpleMarkerSymbol"
     ],
     "snippets": [
-        "StyleGeometriesWithSymbolsView.swift",
-        "StyleGeometriesWithSymbolsView.Views.swift"
+        "StyleGeometryTypesWithSymbolsView.swift",
+        "StyleGeometryTypesWithSymbolsView.Views.swift"
     ],
-    "title": "Style geometries with symbols"
+    "title": "Style geometry types with symbols"
 }

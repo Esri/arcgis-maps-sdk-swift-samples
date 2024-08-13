@@ -15,7 +15,7 @@
 import ArcGIS
 import SwiftUI
 
-extension StyleGeometriesWithSymbolsView {
+extension StyleGeometryTypesWithSymbolsView {
     /// Controls for editing the symbols contained in a given model.
     struct SymbolsEditor: View {
         /// The view model for the sample containing the symbols to edit.

@@ -15,7 +15,7 @@
 import ArcGIS
 import SwiftUI
 
-struct StyleGeometriesWithSymbolsView: View {
+struct StyleGeometryTypesWithSymbolsView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
@@ -60,7 +60,7 @@ struct StyleGeometriesWithSymbolsView: View {
     }
 }
 
-extension StyleGeometriesWithSymbolsView {
+extension StyleGeometryTypesWithSymbolsView {
     /// The view model for the sample.
     final class Model: ObservableObject {
         /// A map with topographic basemap initially centered on Woolgarston, England.
@@ -153,5 +153,5 @@ extension StyleGeometriesWithSymbolsView {
 }
 
 #Preview {
-    StyleGeometriesWithSymbolsView()
+    StyleGeometryTypesWithSymbolsView()
 }

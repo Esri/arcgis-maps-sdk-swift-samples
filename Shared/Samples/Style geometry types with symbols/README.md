@@ -1,12 +1,12 @@
-# Style geometries with symbols
+# Style geometry types with symbols
 
 Use a symbol to display a geometry on a map.
 
-![Screenshot of Style geometries with symbols samples](style-geometries-with-symbols.png)
+![Screenshot of Style geometry types with symbols sample](style-geometry-types-with-symbols.png)
 
 ## Use case
 
-Customize the appearance of a geometry with a symbol style suitable for the data. For example, a tourism office may use pictures of landmarks as symbols on an online map or app to help prospective visitors orient themselves more easily around a city. A point on the map styled with a circle could represent a drilled borehole location, whereas a cross could represent the location of an old coal mine shaft. A red line with a dashed style could represent a geological fault mapped on a geological map. A polygon with a brown 'forward-diagonal' fill style could represent an area of artificial ground mapped on a geological map.
+Customize the appearance of a geometry type with a symbol style suitable for the data. For example, a tourism office may use pictures of landmarks as symbols on an online map or app to help prospective visitors orient themselves more easily around a city. A point on the map styled with a circle could represent a drilled borehole location, whereas a cross could represent the location of an old coal mine shaft. A red line with a dashed style could represent a geological fault mapped on a geological map. A polygon with a brown 'forward-diagonal' fill style could represent an area of artificial ground mapped on a geological map.
 
 ## How to use the sample
 
