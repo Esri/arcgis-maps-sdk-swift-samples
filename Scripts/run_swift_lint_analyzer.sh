@@ -23,7 +23,7 @@ log_name=.xcodebuild.log
 rm -rf ~/Library/Developer/Xcode/DerivedData
 
 # Go to project root directory.
-cd "$(dirname "$0")/../.."
+cd "$(dirname "$0")/.."
 
 echo "Building '$log_name'"
 xcodebuild -project Samples.xcodeproj -scheme Samples -destination "$build_destination" > $log_name
