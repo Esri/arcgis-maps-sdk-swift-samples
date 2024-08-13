@@ -10,7 +10,7 @@ Queries can be used to search for features in a feature table using text entry. 
 
 ## How to use the sample
 
-Use the picker to zoom to the extent of the state specified. Use the button to count the features in the current extent.
+Use the button select state then use the picker to zoom to the extent of the state specified. Use the button to count the features in the current extent.
 
 ## How it works
 

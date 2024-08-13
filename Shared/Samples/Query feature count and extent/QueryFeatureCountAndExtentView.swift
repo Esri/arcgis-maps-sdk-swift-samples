@@ -201,7 +201,7 @@ struct ZoomAndExtendPopup: View {
                     .multilineTextAlignment(.center)
                     .padding()
                 
-                Picker("Select States", selection: $tempSelectedState) {
+                Picker("Select State", selection: $tempSelectedState) {
                     ForEach(stateAbbreviations, id: \.self) { abbreviation in
                         Text(abbreviation).tag(abbreviation as String?)
                     }
