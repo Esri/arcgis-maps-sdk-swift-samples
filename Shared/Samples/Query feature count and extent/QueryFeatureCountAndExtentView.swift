@@ -18,91 +18,78 @@ import SwiftUI
 struct QueryFeatureCountAndExtentView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
+    
+    /// A Boolean value indicating whether the feature count bar is showing.
     @State private var showFeatureCountBar = false
-    @State private var showAlert = false
-    @State private var alertMessage = ""
+    
+    /// The error shown in the error alert.
+    @State private var error: Error?
     
     var body: some View {
-        ZStack {
-            VStack {
-                MapViewReader { proxy in
-                    MapView(map: model.map)
-                    // Perform update viewpoint.
-                        .onViewpointChanged(kind: .boundingGeometry) { newViewpoint in
-                            model.viewpoint = newViewpoint
-                        }
-                    // Perform query when the selected state changes.
-                        .onChange(of: model.selectedState) { _ in
-                            Task {
-                                do {
-                                    try await model.performQuery(on: proxy)
-                                } catch {
-                                    alertMessage = "Failed to perform query: \(error.localizedDescription)"
-                                    showAlert = true
-                                }
-                            }
-                        }
-                }
-                
-                Spacer()
-                
-                HStack {
-                    Button("Select State") {
-                        model.showPopup.toggle()
+        VStack {
+            MapViewReader { proxy in
+                MapView(map: model.map)
+                // Perform update viewpoint.
+                    .onViewpointChanged(kind: .boundingGeometry) { newViewpoint in
+                        model.viewpoint = newViewpoint
                     }
-                    
-                    Spacer()
-                    
-                    Button("Count Features") {
-                        // Perform feature count.
+                // Perform query when the selected state changes.
+                    .onChange(of: model.selectedState) { _ in
                         Task {
                             do {
-                                if let viewpoint = model.viewpoint {
-                                    model.featureCountResult = try await model.performCountOnVisibleExtent(
-                                        withinViewpoint: viewpoint
-                                    )
-                                    showFeatureCountBar = true
-                                }
+                                try await model.performQuery(on: proxy)
+                                showFeatureCountBar = false
                             } catch {
-                                alertMessage = "Failed to count features: \(error.localizedDescription)"
-                                showAlert = true
+                                self.error = error
                             }
                         }
                     }
-                }
-                .padding()
             }
-            
-            if showFeatureCountBar {
-                VStack {
-                    if let featureCountResult = model.featureCountResult {
-                        Text("\(featureCountResult) feature(s) in extent")
+        }.overlay {
+            GeometryReader { geometry in
+                if showFeatureCountBar {
+                    VStack {
+                        Text("\(model.featureCountResult) feature(s) in extent")
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 6)
                             .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
                     }
-                    Spacer()
+                    .frame(width: geometry.size.width)
+                    .transition(.move(edge: .top))
                 }
             }
-            
-            if model.showPopup {
-                ZoomAndExtendPopup(
-                    showPopup: $model.showPopup,
-                    selectedState: $model.selectedState,
-                    stateAbbreviations: model.stateAbbreviations
-                )
-                .transition(.opacity)
-                .zIndex(1)
-                .frame(width: 300, height: 200)
+        }
+        .toolbar {
+            ToolbarItemGroup(placement: .bottomBar) {
+                // Menu to select a state.
+                Menu {
+                    ForEach(model.stateAbbreviations, id: \.self) { abbreviation in
+                        Button {
+                            model.selectedState = abbreviation
+                        } label: {
+                            Text(abbreviation)
+                        }
+                    }
+                } label: {
+                    Text("Select State")
+                }
+                
+                // Button to count features within the visible extent.
+                Button("Count Features") {
+                    Task {
+                        do {
+                            if let viewpoint = model.viewpoint {
+                                try await model.performCountOnVisibleExtent(withinViewpoint: viewpoint)
+                                showFeatureCountBar = true
+                            }
+                        } catch {
+                            self.error = error
+                        }
+                    }
+                }
             }
         }
-        .alert(isPresented: $showAlert) {
-            Alert(
-                title: Text("Error"),
-                message: Text(alertMessage),
-                dismissButton: .default(Text("OK"))
-            )
-        }
+        .errorAlert(presentingError: $error)
     }
 }
 
@@ -120,19 +107,22 @@ private extension QueryFeatureCountAndExtentView {
             return map
         }()
         
-        /// A boolean value that determines if the popup is shown.
-        @Published var showPopup = false
-        
-        /// The current state abbreviation selected in the popup.
+        /// The currently selected state abbreviation.
         @Published var selectedState: String?
         
         /// The count of features within the current viewpoint.
-        @Published var featureCountResult: Int?
+        @Published var featureCountResult: Int = 0
         
         /// The current viewpoint of the map.
         @Published var viewpoint: Viewpoint?
         
-        /// List of state abbreviations for use in select states.
+        /// The layer that displays features on the map.
+        private let featureLayer: FeatureLayer
+        
+        /// The table for querying features from a server.
+        private let featureTable: ServiceFeatureTable
+        
+        /// The list of state abbreviations for selection.
         let stateAbbreviations: [String] = [
             "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL", "GA", "HI",
             "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN",
@@ -140,9 +130,6 @@ private extension QueryFeatureCountAndExtentView {
             "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA",
             "WV", "WI", "WY"
         ]
-        
-        private let featureLayer: FeatureLayer
-        private let featureTable: ServiceFeatureTable
         
         init() {
             featureTable = ServiceFeatureTable(url: .medicareHospitalSpendLayer)
@@ -172,66 +159,22 @@ private extension QueryFeatureCountAndExtentView {
         }
         
         /// Counts the number of features within the specified viewpoint extent.
-        /// - Parameter withinViewpoint: The viewpoint defining the extent to query
+        /// - Parameter withinViewpoint: The viewpoint defining the extent to query.
         /// - Returns: The count of features within the specified extent.
         /// - Throws: An error if the count operation fails.
-        func performCountOnVisibleExtent(withinViewpoint: Viewpoint?) async throws -> Int {
+        func performCountOnVisibleExtent(withinViewpoint: Viewpoint?) async throws {
             let queryParameters = QueryParameters()
             queryParameters.geometry = withinViewpoint?.targetGeometry
             queryParameters.spatialRelationship = .intersects
-            let count = try await featureLayer.featureTable!.queryFeatureCount(
+            featureCountResult = try await featureLayer.featureTable!.queryFeatureCount(
                 using: queryParameters
             )
-            return count
-        }
-    }
-}
-
-/// A view that provides a popup for selecting a state and zooming to features.
-struct ZoomAndExtendPopup: View {
-    @Binding var showPopup: Bool
-    @Binding var selectedState: String?
-    @State private var tempSelectedState: String = "AL"
-    let stateAbbreviations: [String]
-    
-    var body: some View {
-        GeometryReader { geometry in
-            VStack {
-                Text("Click 'Zoom' to zoom to features matching the given state abbreviation.")
-                    .multilineTextAlignment(.center)
-                    .padding()
-                
-                Picker("Select State", selection: $tempSelectedState) {
-                    ForEach(stateAbbreviations, id: \.self) { abbreviation in
-                        Text(abbreviation).tag(abbreviation as String?)
-                    }
-                }
-                .pickerStyle(MenuPickerStyle())
-                
-                HStack {
-                    Button("Cancel") {
-                        showPopup = false
-                    }
-                    
-                    Spacer()
-                    
-                    Button("Zoom") {
-                        selectedState = tempSelectedState
-                        showPopup = false
-                    }
-                }
-                .padding()
-            }
-            .frame(width: 300, height: 200)
-            .background(Color.white)
-            .cornerRadius(10)
-            .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
         }
     }
 }
 
 private extension URL {
-    /// URL for the Medicare Hospital Spending layer service.
+    /// The URL for the Medicare Hospital Spending layer service.
     static var medicareHospitalSpendLayer: URL {
         URL(string: "https://services1.arcgis.com/4yjifSiIG17X0gW4/arcgis/rest/services/Medicare_Hospital_Spending_per_Patient/FeatureServer/0")!
     }
