@@ -73,7 +73,7 @@ struct AuthenticateWithOAuthView: View {
         }
     }
     
-    // Sets up new ArcGIS and Network credential stores that will be persisted in the keychain.
+    /// Sets up new ArcGIS and Network credential stores that will be persisted in the keychain.
     private func setupPersistentCredentialStorage() {
         Task {
             try await ArcGISEnvironment.authenticationManager.setupPersistentCredentialStorage(

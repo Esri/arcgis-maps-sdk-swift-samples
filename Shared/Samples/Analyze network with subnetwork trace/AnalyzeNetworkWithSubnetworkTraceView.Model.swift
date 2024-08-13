@@ -266,7 +266,7 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
         ///   - dataType: A `UtilityNetworkAttributeDataType` enum that tells the type of 2 values.
         ///   - value1: The lhs value to compare.
         ///   - value2: The rhs value to compare.
-        /// - Returns: A boolean indicating if the values are euqal both in type and in value.
+        /// - Returns: A boolean indicating if the values are equal both in type and in value.
         func compareAttributeData(dataType: UtilityNetworkAttribute.DataType, value1: Any, value2: Any) -> Bool {
             switch dataType {
             case .boolean:

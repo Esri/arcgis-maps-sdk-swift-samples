@@ -85,7 +85,7 @@ struct ShowCoordinatesInMultipleFormatsView: View {
             
             MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
                 .onSingleTapGesture { _, mapPoint in
-                    /// Updates the `mapPoint`, its graphic, and the corresponding coordinates.
+                    // Updates the `mapPoint`, its graphic, and the corresponding coordinates.
                     self.tappedPoint = mapPoint
                     model.updateCoordinates(point: mapPoint)
                 }
