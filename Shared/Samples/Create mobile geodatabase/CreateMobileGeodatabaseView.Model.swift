@@ -56,7 +56,7 @@ extension CreateMobileGeodatabaseView {
         }()
         
         /// The list of features in the feature table.
-        @Published private(set) var features = [FeatureItem]()
+        @Published private(set) var features: [FeatureItem] = []
         
         /// Creates a new feature table from a geodatabase.
         func createFeatureTable() async throws {

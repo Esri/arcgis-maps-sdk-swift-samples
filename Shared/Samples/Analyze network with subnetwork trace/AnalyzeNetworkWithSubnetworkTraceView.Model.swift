@@ -371,7 +371,7 @@ private extension ArcGISCredential {
     }
 }
 
-extension AnalyzeNetworkWithSubnetworkTraceView.Model {
+private extension AnalyzeNetworkWithSubnetworkTraceView.Model {
     /// An error returned when data required to setup the sample cannot be found.
     struct SetupError: LocalizedError {
         var errorDescription: String? {

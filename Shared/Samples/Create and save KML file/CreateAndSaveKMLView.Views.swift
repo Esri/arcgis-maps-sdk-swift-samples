@@ -76,7 +76,7 @@ extension CreateAndSaveKMLView {
     }
     
     /// The point style menu.
-    var pointStyleMenuContent: some View {
+    private var pointStyleMenuContent: some View {
         VStack {
             Button {
                 model.kmlStyle = KMLStyle(iconURL: URL(string: "http://resources.esri.com/help/900/arcgisexplorer/sdk/doc/bitmaps/148cca9a-87a8-42bd-9da4-5fe427b6fb7b127.png")!)
@@ -130,7 +130,7 @@ extension CreateAndSaveKMLView {
     }
     
     /// The polyline style menu.
-    var polylineStyleMenuContent: some View {
+    private var polylineStyleMenuContent: some View {
         VStack {
             Button {
                 model.kmlStyle = KMLStyle(lineColor: .red)
@@ -177,7 +177,7 @@ extension CreateAndSaveKMLView {
     }
     
     /// The polygon style menu.
-    var polygonStyleMenuContent: some View {
+    private var polygonStyleMenuContent: some View {
         VStack {
             Button {
                 model.kmlStyle = KMLStyle(fillColor: .red)

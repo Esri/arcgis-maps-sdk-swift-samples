@@ -21,13 +21,13 @@ extension FindRouteInMobileMapPackageView {
     @MainActor
     class Model: ObservableObject {
         /// The list of loaded mobile map packages.
-        @Published private(set) var mapPackages = [MobileMapPackage]()
+        @Published private(set) var mapPackages: [MobileMapPackage] = []
         
         /// The error shown in the error alert.
         @Published var error: Error?
         
         /// The list of file URLs that have been securely accessed.
-        private var accessedURLs = [URL]()
+        private var accessedURLs: [URL] = []
         
         deinit {
             // Release access to all the accessed URLs.
