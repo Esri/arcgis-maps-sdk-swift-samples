@@ -86,16 +86,16 @@ extension DownloadPreplannedMapAreaView {
                         .progressViewStyle(.gauge)
                     Text(model.preplannedMapArea.portalItem.title)
                 } else {
-                        switch model.result {
-                        case .success:
-                            EmptyView()
-                        case .failure:
-                            Image(systemName: "exclamationmark.circle")
-                                .foregroundStyle(.red)
-                        case .none:
-                            Image(systemName: "tray.and.arrow.down")
-                                .foregroundStyle(Color.accentColor)
-                        }
+                    switch model.result {
+                    case .success:
+                        EmptyView()
+                    case .failure:
+                        Image(systemName: "exclamationmark.circle")
+                            .foregroundStyle(.red)
+                    case .none:
+                        Image(systemName: "tray.and.arrow.down")
+                            .foregroundStyle(Color.accentColor)
+                    }
                     
                     VStack(alignment: .leading, spacing: 4) {
                         Text(model.preplannedMapArea.portalItem.title)

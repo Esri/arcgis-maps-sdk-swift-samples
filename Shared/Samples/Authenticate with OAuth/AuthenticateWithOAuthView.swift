@@ -60,7 +60,7 @@ struct AuthenticateWithOAuthView: View {
                 
                 // Resets challenge handlers.
                 ArcGISEnvironment.authenticationManager.handleChallenges(using: nil)
-
+                
                 signOut()
             }
     }

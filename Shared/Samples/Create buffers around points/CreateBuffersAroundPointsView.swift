@@ -75,7 +75,7 @@ struct CreateBuffersAroundPointsView: View {
                     guard let tapPoint else {
                         preconditionFailure("Missing tap point")
                     }
-
+                    
                     let newStatus: Status
                     // Check to ensure the tapPoint is within the boundary.
                     if model.boundaryContains(tapPoint) {

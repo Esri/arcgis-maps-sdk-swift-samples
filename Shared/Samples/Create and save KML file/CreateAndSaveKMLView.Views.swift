@@ -145,28 +145,28 @@ extension CreateAndSaveKMLView {
             } label: {
                 Text("Yellow")
             }
-
+            
             Button {
                 model.kmlStyle = KMLStyle(lineColor: .white)
                 model.startGeometryEditor(withType: Polyline.self)
             } label: {
                 Text("White")
             }
-
+            
             Button {
                 model.kmlStyle = KMLStyle(lineColor: .purple)
                 model.startGeometryEditor(withType: Polyline.self)
             } label: {
                 Text("Purple")
             }
-
+            
             Button {
                 model.kmlStyle = KMLStyle(lineColor: .orange)
                 model.startGeometryEditor(withType: Polyline.self)
             } label: {
                 Text("Orange")
             }
-
+            
             Button {
                 model.kmlStyle = KMLStyle(lineColor: .magenta)
                 model.startGeometryEditor(withType: Polyline.self)
@@ -185,35 +185,35 @@ extension CreateAndSaveKMLView {
             } label: {
                 Text("Red")
             }
-
+            
             Button {
                 model.kmlStyle = KMLStyle(fillColor: .yellow)
                 model.startGeometryEditor(withType: Polygon.self)
             } label: {
                 Text("Yellow")
             }
-
+            
             Button {
                 model.kmlStyle = KMLStyle(fillColor: .white)
                 model.startGeometryEditor(withType: Polygon.self)
             } label: {
                 Text("White")
             }
-
+            
             Button {
                 model.kmlStyle = KMLStyle(fillColor: .purple)
                 model.startGeometryEditor(withType: Polygon.self)
             } label: {
                 Text("Purple")
             }
-
+            
             Button {
                 model.kmlStyle = KMLStyle(fillColor: .orange)
                 model.startGeometryEditor(withType: Polygon.self)
             } label: {
                 Text("Orange")
             }
-
+            
             Button {
                 model.kmlStyle = KMLStyle(fillColor: .magenta)
                 model.startGeometryEditor(withType: Polygon.self)

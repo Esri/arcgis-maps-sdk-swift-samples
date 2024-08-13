@@ -185,7 +185,7 @@ struct ShowDeviceLocationWithNMEADataSourcesView: View {
             model.accessoryDidConnect(connectedAccessory: accessory, protocolString: protocolString)
         } else {
             throw AccessoryError.noBluetoothDevices
-        
+            
             // NOTE: The code below shows how to use the built-in Bluetooth picker
             // to pair a device. However there are a couple of issues that
             // prevent the built-in picker from functioning as desired.

@@ -19,7 +19,7 @@ import UniformTypeIdentifiers
 struct CreateAndSaveKMLView: View {
     /// The view model for this sample.
     @StateObject var model = Model()
-        
+    
     var body: some View {
         MapView(map: model.map)
             .geometryEditor(model.geometryEditor)
