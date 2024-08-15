@@ -28,17 +28,30 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
             .overlay(alignment: .top) {
                 HStack(alignment: .center, spacing: 10) {
                     VStack(alignment: .leading) {
-                        Text("Current floor: \(model.currentFloor ?? 0)")
-                        Text("Accuracy: \(Measurement(value: model.horizontalAccuracy ?? 0.0, unit: UnitLength.meters), format: .measurement(width: .abbreviated, usage: .asProvided, numberFormatStyle: .number.precision(.fractionLength(2))))")
+                        // The floor number of a location when in a building
+                        // where the ground floor is 0. Negative numbers
+                        // indicate floors below ground level.
+                        if let floor = model.currentFloor {
+                            Text("Current floor: \(floor)")
+                        }
+                        if let accuracy = model.horizontalAccuracy {
+                            let formatStyle = Measurement<UnitLength>.FormatStyle.measurement(
+                                width: .abbreviated,
+                                usage: .asProvided,
+                                numberFormatStyle: .number.precision(.fractionLength(2))
+                            )
+                            Text("Accuracy: \(Measurement<UnitLength>(value: accuracy, unit: .meters), format: formatStyle)")
+                        }
                     }
+                    .opacity(model.currentFloor != nil ? 1 : 0)
                     VStack(alignment: .leading) {
-                        Text("Data source: \(model.source ?? "None")")
-                        Text("Number of sensors: \(model.sensorCount ?? 0)")
+                        let sourceType = model.positionSource == "GNSS" ? "Satellites" : "Transmitters"
+                        Text("Data source: \(model.positionSource ?? "None")")
+                        Text("Number of \(sourceType): \(model.signalSourceCount ?? 0)")
                     }
                 }
                 .frame(maxWidth: .infinity)
-                .background(.white)
-                .opacity(model.currentFloor != nil ? 0 : 0.8)
+                .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
             }
             .overlay(alignment: .center) {
                 if model.isLoading {
@@ -56,13 +69,18 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
                 }
             }
             .task {
+                // Requests location permission if it has not yet been determined.
+                let locationManager = CLLocationManager()
+                if locationManager.authorizationStatus == .notDetermined {
+                    locationManager.requestWhenInUseAuthorization()
+                }
                 do {
-                    try await requestLocationServicesAuthorizationIfNecessary()
                     try await model.loadIndoorData()
-                    try await model.updateDisplayOnLocationChange()
                 } catch {
                     self.error = error
                 }
+                // Starts to receive updates from the location data source.
+                await model.updateDisplayOnLocationChange()
             }
             .onDisappear {
                 Task {
@@ -70,16 +88,6 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
                 }
             }
             .errorAlert(presentingError: $error)
-    }
-    
-    /// Starts the location display to show user's location on the map.
-    private func requestLocationServicesAuthorizationIfNecessary() async throws {
-        /// The location manager which handles the location data.
-        let locationManager = CLLocationManager()
-        // Requests location permission if it has not yet been determined.
-        if locationManager.authorizationStatus == .notDetermined {
-            locationManager.requestWhenInUseAuthorization()
-        }
     }
 }
 
