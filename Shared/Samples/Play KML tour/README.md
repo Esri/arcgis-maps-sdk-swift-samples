@@ -33,11 +33,11 @@ The sample will load the KMZ file from ArcGIS Online. When a tour is found, the 
 
 Data will be downloaded by the sample viewer automatically.
 
-* [Esri_tour.kmz](https://arcgisruntime.maps.arcgis.com/home/item.html?id=f10b1d37fdd645c9bc9b189fb546307c)
+* [Esri_tour.kmz](https://www.arcgis.com/home/item.html?id=f10b1d37fdd645c9bc9b189fb546307c)
 
 ## About the data
 
-This sample uses a custom tour created by a member of the ArcGIS Runtime API samples team. When you play the tour, you'll see a narrated journey through some of Esri's offices.
+This sample uses a custom tour created by a member of the ArcGIS Map SDK samples team. When you play the tour, you'll see a narrated journey through some of Esri's offices.
 
 ## Additional information
 

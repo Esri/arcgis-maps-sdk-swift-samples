@@ -19,50 +19,39 @@ extension EditGeodatabaseWithTransactionsView {
     /// The view model for the sample.
     @MainActor
     class Model: ObservableObject {
-        /// The current progress of the running job.
-        @Published private(set) var progress: Progress?
-        
         /// A map with an oceans basemap.
         let map: Map = {
             let map = Map(basemapStyle: .arcGISOceans)
-            map.initialViewpoint = Viewpoint(center: .christmasBay.center, scale: 8e4)
+            map.initialViewpoint = Viewpoint(
+                center: Point(x: -95.2043, y: 29.0699, spatialReference: .wgs84),
+                scale: 8e4
+            )
             return map
         }()
         
         /// The local geodatabase to edit.
-        private(set) var geodatabase: Geodatabase!
+        let geodatabase: Geodatabase
         
-        /// The task for generating and synchronizing the geodatabase with the feature service.
-        private let geodatabaseSyncTask = GeodatabaseSyncTask(url: .saveTheBaySync)
+        /// A URL to a temporary file containing the geodatabase.
+        private let temporaryGeodatabaseURL = FileManager.createTemporaryDirectory()
+            .appending(component: "SaveTheBay.geodatabase")
         
-        /// The parameters for synchronizing the geodatabase and the feature service.
-        private var syncGeodatabaseParameters: SyncGeodatabaseParameters?
-        
-        /// A URL to a temporary directory where the geodatabase file is stored.
-        private let temporaryDirectoryURL = FileManager.createTemporaryDirectory()
-        
-        /// A Boolean value indicating whether a transaction is active on the geodatabase.
-        var hasLocalEdits: Bool {
-            geodatabase?.hasLocalEdits ?? false
+        init() {
+            try? FileManager.default.copyItem(at: .saveTheBay, to: temporaryGeodatabaseURL)
+            geodatabase = Geodatabase(fileURL: temporaryGeodatabaseURL)
         }
         
         deinit {
             // Removes the temporary directory and geodatabase file.
+            let temporaryDirectoryURL = temporaryGeodatabaseURL.deletingLastPathComponent()
             try? FileManager.default.removeItem(at: temporaryDirectoryURL)
         }
         
-        /// Sets up geodatabase and map.
+        /// Sets up geodatabase tables and map layers.
         func setUp() async throws {
-            geodatabase = try await makeGeodatabase()
-            
-            // Creates the default parameters for synchronizing the geodatabase.
-            syncGeodatabaseParameters = try await geodatabaseSyncTask.makeDefaultSyncGeodatabaseParameters(
-                geodatabase: geodatabase
-            )
+            try await geodatabase.load()
             
             // Adds the geodatabase's tables to the map as feature layers.
-            await geodatabase.featureTables.load()
-            
             let featureLayers = geodatabase.featureTables
                 .map(FeatureLayer.init(featureTable:))
             map.addOperationalLayers(featureLayers)
@@ -94,53 +83,6 @@ extension EditGeodatabaseWithTransactionsView {
             let feature = featureTable.makeFeature(type: featureType, geometry: point)
             try await featureTable.add(feature)
         }
-        
-        /// Synchronizes the geodatabase and feature service.
-        func syncGeodatabase() async throws {
-            guard let syncGeodatabaseParameters else { return }
-            
-            // Creates the sync job using the parameters.
-            let syncGeodatabaseJob = geodatabaseSyncTask.makeSyncGeodatabaseJob(
-                parameters: syncGeodatabaseParameters,
-                geodatabase: geodatabase
-            )
-            progress = syncGeodatabaseJob.progress
-            defer { progress = nil }
-            
-            // Synchronizes the geodatabase with the feature service.
-            syncGeodatabaseJob.start()
-            _ = try await syncGeodatabaseJob.output
-        }
-        
-        /// Makes a geodatabase using the geodatabase sync task.
-        /// - Returns: A new `Geodatabase` object.
-        private func makeGeodatabase() async throws -> Geodatabase {
-            // Creates the parameters for generating the geodatabase from the sync task.
-            let parameters = try await geodatabaseSyncTask.makeDefaultGenerateGeodatabaseParameters(
-                extent: .christmasBay
-            )
-            parameters.outSpatialReference = map.spatialReference
-            
-            let areaLayerOption = parameters.layerOptions.first { $0.layerID == 2 }!
-            parameters.removeLayerOption(areaLayerOption)
-            
-            // Creates the job to generate the geodatabase.
-            let temporaryGeodatabaseURL = temporaryDirectoryURL
-                .appending(component: "SaveTheBay.geodatabase")
-            let generateGeodatabaseJob = geodatabaseSyncTask.makeGenerateGeodatabaseJob(
-                parameters: parameters,
-                downloadFileURL: temporaryGeodatabaseURL
-            )
-            progress = generateGeodatabaseJob.progress
-            defer { progress = nil }
-            
-            // Generates the geodatabase.
-            generateGeodatabaseJob.start()
-            let geodatabase = try await generateGeodatabaseJob.output
-            try await geodatabase.load()
-            
-            return geodatabase
-        }
     }
 }
 
@@ -158,20 +100,9 @@ private extension FileManager {
     }
 }
 
-private extension Geometry {
-    /// The area around Christmas Bay, TX, USA.
-    static var christmasBay: Envelope {
-        Envelope(
-            xRange: -95.3035 ... -95.1053,
-            yRange: 29.0100 ... 29.1298,
-            spatialReference: .wgs84
-        )
-    }
-}
-
 private extension URL {
-    /// The URL for the "Save the Bay Sync" feature server.
-    static var saveTheBaySync: URL {
-        URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Sync/SaveTheBaySync/FeatureServer")!
+    /// The URL for the "Save The Bay" geodatabase file in the bundle.
+    static var saveTheBay: URL {
+        Bundle.main.url(forResource: "SaveTheBay", withExtension: "geodatabase")!
     }
 }

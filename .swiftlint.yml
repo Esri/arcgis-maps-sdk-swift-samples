@@ -73,6 +73,11 @@ opt_in_rules:
   - vertical_whitespace_closing_braces
   - vertical_whitespace_opening_braces
   - yoda_condition
+  
+analyzer_rules:
+  - typesafe_array_init
+  - unused_declaration
+  - unused_import
 
 attributes:
   attributes_with_arguments_always_on_line_above: false
