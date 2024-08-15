@@ -78,7 +78,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
                 // Otherwise, creates the IndoorsLocationDataSource using
                 // IPS positioning table information. This is useful for
                 // manually creating an indoors location data source.
-                dataSource = try await makeIndoorLocationDataSourceFromTables(map: map, positioningTable: positioningTable)
+                dataSource = try await makeIndoorsLocationDataSourceFromTables(map: map, positioningTable: positioningTable)
             } else {
                 throw SetupError.failedToLoadIPS
             }
@@ -96,7 +96,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         ///   an IPS-aware map.
         /// - Returns: Returns a configured `IndoorsLocationDataSource` created
         /// from the various tables.
-        private func makeIndoorLocationDataSourceFromTables(
+        private func makeIndoorsLocationDataSourceFromTables(
             map: Map,
             positioningTable: ServiceFeatureTable
         ) async throws -> IndoorsLocationDataSource {
