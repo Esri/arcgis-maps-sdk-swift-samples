@@ -29,10 +29,10 @@ struct QueryFeatureCountAndExtentView: View {
     @State private var error: Error?
     
     /// The current viewpoint of the map.
-    @State var viewpoint: Viewpoint?
+    @State private var viewpoint: Viewpoint?
     
     /// The count of features within the current viewpoint.
-    @State var featureCountResult: Int?
+    @State private var featureCountResult: Int?
     
     var body: some View {
         MapViewReader { proxy in
@@ -52,11 +52,12 @@ struct QueryFeatureCountAndExtentView: View {
                     } catch {
                         self.error = error
                     }
+                    selectedState = nil
                 }
         }
         .overlay(alignment: .top) {
             if showFeatureCountBar {
-                Text("\(String(describing: featureCountResult)) feature(s) in extent")
+                Text("\(featureCountResult ?? 0) feature(s) in extent")
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 6)
                     .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
@@ -130,7 +131,7 @@ private extension QueryFeatureCountAndExtentView {
             map.addOperationalLayer(featureLayer)
         }
         
-        /// Queries the extent for the selected state.
+        /// Queries the extent for the specified state.
         /// - Parameter stateAbbreviation: The state abbreviation to query.
         /// - Returns: The combined extent of the queried features or `nil` if no features are found.
         /// - Throws: An error if the query fails.
@@ -147,8 +148,9 @@ private extension QueryFeatureCountAndExtentView {
                 return GeometryEngine.combineExtents(
                     of: queryResultFeatures.compactMap(\.geometry)
                 )
+            } else {
+                return nil
             }
-            return nil
         }
         
         /// Counts the number of features within the specified extent.

@@ -10,21 +10,21 @@ Queries can be used to search for features in a feature table using text entry. 
 
 ## How to use the sample
 
-Use the button select a state, then use the picker to zoom to the extent of the state specified. Use the button to count the features in the current extent.
+Use the button Select State, then use the picker to zoom to the extent of the state specified. Use the button to count the features in the current extent.
 
 ## How it works
 
 Querying by state abbreviation:
 
 1. A `QueryParameters` object is created with a `WhereClause`.
-2. `FeatureTable.QueryExtentAsync` is called with the `QueryParameters` object to obtain the extent that contains all matching features.
+2. `FeatureTable.QueryFeatures` is called with the `QueryParameters` object to obtain the extent that contains all matching features.
 3. The extent is converted to a `Viewpoint`, which is passed to `MapView.SetViewpointAsync`.
 
 Counting features in the current extent:
 
 1. The current visible extent is obtained from a call to `MapView.onViewpointChanged(kind:)`.
 2. A `QueryParameters` object is created with the visible extent and a defined `SpatialRelationship` (in this case 'intersects').
-3. The count of matching features is obtained from a call to `FeatureTable.QueryFeatureCountAsync`.
+3. The count of matching features is obtained from a call to `FeatureTable.QueryFeatureCount`.
 
 ## Relevant API
 
