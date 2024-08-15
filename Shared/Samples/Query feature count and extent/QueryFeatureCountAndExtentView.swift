@@ -19,25 +19,34 @@ struct QueryFeatureCountAndExtentView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
+    /// The currently selected state abbreviation.
+    @State private var selectedState: String?
+    
     /// A Boolean value indicating whether the feature count bar is showing.
     @State private var showFeatureCountBar = false
     
     /// The error shown in the error alert.
     @State private var error: Error?
     
+    /// The current viewpoint of the map.
+    @State var viewpoint: Viewpoint?
+    
     var body: some View {
         MapViewReader { proxy in
             MapView(map: model.map)
                 .onViewpointChanged(kind: .boundingGeometry) { newViewpoint in
-                    // Perform update viewpoint.
-                    model.viewpoint = newViewpoint
+                    // Update viewpoint when it changes.
+                    viewpoint = newViewpoint
                 }
-                .task(id: model.selectedState) {
-                    // Perform query when the selected state changes.
-                    guard let state = model.selectedState else { return }
+                .task(id: selectedState) {
+                    // Perform query and update the viewpoint when the selected state changes.
+                    guard let state = selectedState else { return }
                     do {
-                        try await model.performQuery(on: proxy)
-                        showFeatureCountBar = false
+                        if let combinedExtent = try await model.queryExtent(stateAbbreviation: state) {
+                            // Set the viewpoint using the proxy
+                            await proxy.setViewpointGeometry(combinedExtent)
+                            showFeatureCountBar = false
+                        }
                     } catch {
                         self.error = error
                     }
@@ -58,7 +67,7 @@ struct QueryFeatureCountAndExtentView: View {
                 Menu("Select State") {
                     ForEach(model.stateAbbreviations, id: \.self) { abbreviation in
                         Button {
-                            model.selectedState = abbreviation
+                            selectedState = abbreviation
                         } label: {
                             Text(abbreviation)
                         }
@@ -69,7 +78,7 @@ struct QueryFeatureCountAndExtentView: View {
                 Button("Count Features") {
                     Task {
                         do {
-                            if let viewpoint = model.viewpoint {
+                            if let viewpoint = viewpoint {
                                 try await model.performCountOnVisibleExtent(withinViewpoint: viewpoint)
                                 showFeatureCountBar = true
                             }
@@ -98,14 +107,8 @@ private extension QueryFeatureCountAndExtentView {
             return map
         }()
         
-        /// The currently selected state abbreviation.
-        @Published var selectedState: String?
-        
         /// The count of features within the current viewpoint.
         @Published var featureCountResult = 0
-        
-        /// The current viewpoint of the map.
-        @Published var viewpoint: Viewpoint?
         
         /// The layer that displays features on the map.
         private let featureLayer: FeatureLayer
@@ -128,25 +131,25 @@ private extension QueryFeatureCountAndExtentView {
             map.addOperationalLayer(featureLayer)
         }
         
-        /// Performs a query based on the selected state and updates the map viewpoint to encompass the results.
-        /// - Parameter mapViewProxy: The proxy to update the map viewpoint.
+        /// Queries the extent for the selected state.
+        /// - Parameter stateAbbreviation: The state abbreviation to query.
+        /// - Returns: The combined extent of the queried features or `nil` if no features are found.
         /// - Throws: An error if the query fails.
-        func performQuery(on mapViewProxy: MapViewProxy?) async throws {
-            guard let abbreviation = selectedState, !abbreviation.isEmpty else { return }
+        func queryExtent(stateAbbreviation: String) async throws -> Envelope? {
+            guard !stateAbbreviation.isEmpty else { return nil }
             featureLayer.clearSelection()
             let queryParameters = QueryParameters()
-            queryParameters.whereClause = "State LIKE '%\(abbreviation)%'"
+            queryParameters.whereClause = "State LIKE '%\(stateAbbreviation)%'"
             
             let queryResult = try await featureTable.queryFeatures(using: queryParameters)
             let queryResultFeatures = Array(queryResult.features())
             
             if !queryResultFeatures.isEmpty {
-                if let combinedExtent = GeometryEngine.combineExtents(
+                return GeometryEngine.combineExtents(
                     of: queryResultFeatures.compactMap(\.geometry)
-                ) {
-                    await mapViewProxy?.setViewpointGeometry(combinedExtent)
-                }
+                )
             }
+            return nil
         }
         
         /// Counts the number of features within the specified viewpoint extent.
