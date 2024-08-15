@@ -26,43 +26,36 @@ struct QueryFeatureCountAndExtentView: View {
     @State private var error: Error?
     
     var body: some View {
-        VStack {
-            MapViewReader { proxy in
-                MapView(map: model.map)
-                // Perform update viewpoint.
-                    .onViewpointChanged(kind: .boundingGeometry) { newViewpoint in
-                        model.viewpoint = newViewpoint
-                    }
-                // Perform query when the selected state changes.
-                    .onChange(of: model.selectedState) { _ in
-                        Task {
-                            do {
-                                try await model.performQuery(on: proxy)
-                                showFeatureCountBar = false
-                            } catch {
-                                self.error = error
-                            }
-                        }
-                    }
-            }
-        }.overlay {
-            GeometryReader { geometry in
-                if showFeatureCountBar {
-                    VStack {
-                        Text("\(model.featureCountResult) feature(s) in extent")
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 6)
-                            .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
-                    }
-                    .frame(width: geometry.size.width)
-                    .transition(.move(edge: .top))
+        MapViewReader { proxy in
+            MapView(map: model.map)
+                .onViewpointChanged(kind: .boundingGeometry) { newViewpoint in
+                    // Perform update viewpoint.
+                    model.viewpoint = newViewpoint
                 }
+                .task(id: model.selectedState) {
+                    // Perform query when the selected state changes.
+                    guard let state = model.selectedState else { return }
+                    do {
+                        try await model.performQuery(on: proxy)
+                        showFeatureCountBar = false
+                    } catch {
+                        self.error = error
+                    }
+                }
+        }
+        .overlay(alignment: .top) {
+            if showFeatureCountBar {
+                Text("\(model.featureCountResult) feature(s) in extent")
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 6)
+                    .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
+                    .transition(.move(edge: .top))
             }
         }
         .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
                 // Menu to select a state.
-                Menu {
+                Menu("Select State") {
                     ForEach(model.stateAbbreviations, id: \.self) { abbreviation in
                         Button {
                             model.selectedState = abbreviation
@@ -70,8 +63,6 @@ struct QueryFeatureCountAndExtentView: View {
                             Text(abbreviation)
                         }
                     }
-                } label: {
-                    Text("Select State")
                 }
                 
                 // Button to count features within the visible extent.
@@ -111,7 +102,7 @@ private extension QueryFeatureCountAndExtentView {
         @Published var selectedState: String?
         
         /// The count of features within the current viewpoint.
-        @Published var featureCountResult: Int = 0
+        @Published var featureCountResult = 0
         
         /// The current viewpoint of the map.
         @Published var viewpoint: Viewpoint?
@@ -123,7 +114,7 @@ private extension QueryFeatureCountAndExtentView {
         private let featureTable: ServiceFeatureTable
         
         /// The list of state abbreviations for selection.
-        let stateAbbreviations: [String] = [
+        let stateAbbreviations = [
             "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL", "GA", "HI",
             "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN",
             "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH",
