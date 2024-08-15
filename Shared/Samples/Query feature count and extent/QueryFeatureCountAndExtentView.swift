@@ -31,6 +31,9 @@ struct QueryFeatureCountAndExtentView: View {
     /// The current viewpoint of the map.
     @State var viewpoint: Viewpoint?
     
+    /// The count of features within the current viewpoint.
+    @State var featureCountResult: Int?
+    
     var body: some View {
         MapViewReader { proxy in
             MapView(map: model.map)
@@ -43,7 +46,6 @@ struct QueryFeatureCountAndExtentView: View {
                     guard let state = selectedState else { return }
                     do {
                         if let combinedExtent = try await model.queryExtent(stateAbbreviation: state) {
-                            // Set the viewpoint using the proxy
                             await proxy.setViewpointGeometry(combinedExtent)
                             showFeatureCountBar = false
                         }
@@ -54,7 +56,7 @@ struct QueryFeatureCountAndExtentView: View {
         }
         .overlay(alignment: .top) {
             if showFeatureCountBar {
-                Text("\(model.featureCountResult) feature(s) in extent")
+                Text("\(String(describing: featureCountResult)) feature(s) in extent")
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 6)
                     .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
@@ -79,7 +81,7 @@ struct QueryFeatureCountAndExtentView: View {
                     Task {
                         do {
                             if let viewpoint = viewpoint {
-                                try await model.performCountOnVisibleExtent(withinViewpoint: viewpoint)
+                                featureCountResult = try await model.countFeaturesWithinExtent(extent: viewpoint.targetGeometry)
                                 showFeatureCountBar = true
                             }
                         } catch {
@@ -106,9 +108,6 @@ private extension QueryFeatureCountAndExtentView {
             )
             return map
         }()
-        
-        /// The count of features within the current viewpoint.
-        @Published var featureCountResult = 0
         
         /// The layer that displays features on the map.
         private let featureLayer: FeatureLayer
@@ -152,15 +151,15 @@ private extension QueryFeatureCountAndExtentView {
             return nil
         }
         
-        /// Counts the number of features within the specified viewpoint extent.
-        /// - Parameter withinViewpoint: The viewpoint defining the extent to query.
+        /// Counts the number of features within the specified extent.
+        /// - Parameter extent: The geometry defining the extent to query.
         /// - Returns: The count of features within the specified extent.
         /// - Throws: An error if the count operation fails.
-        func performCountOnVisibleExtent(withinViewpoint: Viewpoint?) async throws {
+        func countFeaturesWithinExtent(extent: Geometry) async throws -> Int {
             let queryParameters = QueryParameters()
-            queryParameters.geometry = withinViewpoint?.targetGeometry
+            queryParameters.geometry = extent
             queryParameters.spatialRelationship = .intersects
-            featureCountResult = try await featureLayer.featureTable!.queryFeatureCount(
+            return try await featureLayer.featureTable!.queryFeatureCount(
                 using: queryParameters
             )
         }
