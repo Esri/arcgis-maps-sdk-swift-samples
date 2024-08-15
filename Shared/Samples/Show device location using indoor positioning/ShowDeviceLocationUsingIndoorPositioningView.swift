@@ -32,7 +32,14 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
                         // where the ground floor is 0. Negative numbers
                         // indicate floors below ground level.
                         if let floor = model.currentFloor {
-                            Text("Current floor: \(floor)")
+                            let humanReadableFloor = if floor >= .zero {
+                                // Add 1 to above the ground floor levels.
+                                floor + 1
+                            } else {
+                                // Don't change the underground floor levels.
+                                floor
+                            }
+                            Text("Current floor: \(humanReadableFloor)")
                         }
                         if let accuracy = model.horizontalAccuracy {
                             let formatStyle = Measurement<UnitLength>.FormatStyle.measurement(
@@ -69,17 +76,17 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
                 }
             }
             .task {
-                // Requests location permission if it has not yet been determined.
+                // Request location permission if it has not yet been determined.
                 let locationManager = CLLocationManager()
                 if locationManager.authorizationStatus == .notDetermined {
                     locationManager.requestWhenInUseAuthorization()
                 }
                 do {
-                    try await model.loadIndoorData()
+                    try await model.loadIndoorsData()
                 } catch {
                     self.error = error
                 }
-                // Starts to receive updates from the location data source.
+                // Start to receive updates from the location data source.
                 await model.updateDisplayOnLocationChange()
             }
             .onDisappear {
