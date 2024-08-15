@@ -28,8 +28,8 @@ Counting features in the current extent:
 
 ## Relevant API
 
-* FeatureTable.QueryExtentAsync
-* FeatureTable.QueryFeatureCountAsync
+* FeatureTable.QueryExtent
+* FeatureTable.QueryFeatureCount
 * MapView
 * QueryParameters
 * QueryParameters.Geometry
