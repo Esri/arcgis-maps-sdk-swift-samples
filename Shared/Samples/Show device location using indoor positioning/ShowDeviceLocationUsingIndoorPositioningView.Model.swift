@@ -19,136 +19,171 @@ import Foundation
 extension ShowDeviceLocationUsingIndoorPositioningView {
     @MainActor
     class Model: ObservableObject {
-        /// An IPS-aware web map for all three floors of Esri Building L in Redlands.
-        let map = Map(url: .indoorsMap)!
+        /// An IPS-aware and floor-aware web map for all three floors of 
+        /// Esri Building L in Redlands.
+        let map = Map(item: PortalItem(portal: .arcGISOnline(connection: .anonymous), id: .indoorsMap))
         
-        /// The value of the current floor.
-        @Published private(set) var currentFloor: Int?
-        
-        /// The number of BLE sensors which are being used for indoor location.
-        @Published private(set) var sensorCount: Int?
-        
-        /// The number of satellites which are being used for the GPS location.
-        @Published private(set) var satelliteCount: Int?
-        
-        /// The value of the horizontal accuracy of the location (in meters).
-        @Published private(set) var horizontalAccuracy: Double?
-        
-        /// The value of the source of the location data.
-        @Published private(set) var source: String?
-        
-        /// An indoors location data source based on sensor data, including but not
-        /// limited to radio, GPS, motion sensors.
-        private var indoorsLocationDataSource: IndoorsLocationDataSource?
-        
-        /// The map's location display.
-        let locationDisplay = LocationDisplay(dataSource: SystemLocationDataSource())
-        
-        /// Represents loading state of indoors data, blocks interaction until loaded.
+        /// A Boolean value indicating whether the indoors data is loaded.
         @Published private(set) var isLoading = false
         
-        /// Kicks off the logic loading the data for the indoors map and indoors location.
-        func loadIndoorData() async throws {
+        /// The current floor level.
+        @Published private(set) var currentFloor: Int?
+        
+        /// The horizontal accuracy of the location (in meters).
+        @Published private(set) var horizontalAccuracy: Double?
+        
+        /// The source of the location data.
+        @Published private(set) var positionSource: String?
+        
+        /// The number of BLE sensors or GNSS satellites used for providing location.
+        @Published private(set) var signalSourceCount: Int?
+        
+        /// The map's location display.
+        let locationDisplay: LocationDisplay = {
+            // By default, uses the device's system location.
+            let locationDisplay = LocationDisplay(dataSource: SystemLocationDataSource())
+            locationDisplay.autoPanMode = .compassNavigation
+            return locationDisplay
+        }()
+        
+        /// Loads the indoors data.
+        func loadIndoorsData() async throws {
             isLoading = true
             defer { isLoading = false }
             try await map.load()
-            try await setIndoorDatasource()
+            // For manually creating the indoors location data source only.
+            await map.tables.load()
+            if let floorManager = map.floorManager {
+                // Load the floor manager if the map is floor-aware.
+                // Most IPS-aware maps are also floor-aware.
+                try await floorManager.load()
+                // Only displays the ground floor when initialized.
+                for level in floorManager.levels {
+                    level.isVisible = level.verticalOrder == .zero
+                }
+            }
+            try await setUpIndoorsLocationDataSource()
         }
         
-        /// Sets the indoor datasource on the location display depending on
-        /// whether the map contains an indoor definition.
-        private func setIndoorDatasource() async throws {
-            try await map.floorManager?.load()
-            // If an indoor definition exists in the map, it gets loaded and sets the IndoorsDataSource to pull information
-            // from the definition, otherwise the IndoorsDataSource attempts to create itself using IPS table information.
+        /// Sets the indoors location data source on the location display
+        /// depending on whether the map contains an indoor positioning definition.
+        private func setUpIndoorsLocationDataSource() async throws {
+            let dataSource: IndoorsLocationDataSource
             if let indoorPositioningDefinition = map.indoorPositioningDefinition {
+                // If an indoor positioning definition exists in the map, uses it
+                // to set the IndoorsLocationDataSource. This is the recommended approach.
                 try await indoorPositioningDefinition.load()
-                indoorsLocationDataSource = IndoorsLocationDataSource(definition: indoorPositioningDefinition)
+                dataSource = IndoorsLocationDataSource(definition: indoorPositioningDefinition)
+            } else if let positioningTable = map.tables.first(where: { $0.tableName == "ips_positioning" }) as? ServiceFeatureTable {
+                // Otherwise, creates the IndoorsLocationDataSource using
+                // IPS positioning table information. This is useful for
+                // manually creating an indoors location data source.
+                dataSource = try await makeIndoorLocationDataSourceFromTables(map: map, positioningTable: positioningTable)
             } else {
-                indoorsLocationDataSource = try await createIndoorLocationDataSourceFromTables(map: map)
+                throw SetupError.failedToLoadIPS
             }
-            // This ensures that the details of the inside of the building, like room layouts are displayed.
-            for layer in map.operationalLayers where layer.name == "Transitions" || layer.name == "Details" {
-                layer.isVisible = true
-            }
-            // The indoorsLocationDataSource should always be there. Since the createIndoorLocationDataSourceFromTables returns
-            // an optional value, it cannot be guaranteed.
-            guard let dataSource = indoorsLocationDataSource else { return }
             locationDisplay.dataSource = dataSource
-            locationDisplay.autoPanMode = .compassNavigation
-            // Start the location display to zoom to the user's current location.
+            // Starts the location display.
             try await locationDisplay.dataSource.start()
         }
         
-        /// Creates an indoor location datasource from the maps tables if there is no indoors definition.
-        /// - Parameter map: The map which contains the tables from which the data source is constructed.
-        /// - Returns: Returns a configured IndoorsLocationDataSource created from the IPS position table.
-        private func createIndoorLocationDataSourceFromTables(map: Map) async throws -> IndoorsLocationDataSource? {
-            // Gets the positioning table from the map.
-            guard let positioningTable = map.tables.first(where: { $0.displayName == "IPS_Positioning" }) else { return nil }
-            // Creates and configures the query parameters.
+        /// Creates an indoor location data source from the maps tables
+        /// when there is no indoors definition.
+        /// - Parameters:
+        ///   - map: The map which contains the data in accordance with
+        ///   the ArcGIS Indoors Information Model.
+        ///   - positioningTable: The “ips\_positioning” table from
+        ///   an IPS-aware map.
+        /// - Returns: Returns a configured `IndoorsLocationDataSource` created
+        /// from the various tables.
+        private func makeIndoorLocationDataSourceFromTables(
+            map: Map,
+            positioningTable: ServiceFeatureTable
+        ) async throws -> IndoorsLocationDataSource {
             let queryParameters = QueryParameters()
             queryParameters.maxFeatures = 1
-            queryParameters.whereClause = "1 = 1"
-            // Queries positioning table to get the positioning ID.
+            // Gets the specific version of data that is compatible to the schema.
+            // When use your own map, make sure the query returns the correct data.
+            queryParameters.whereClause = "OBJECTID=2"
+            // Queries a feature in the positioning table to get the positioning ID.
             let queryResult = try await positioningTable.queryFeatures(using: queryParameters)
-            guard let feature = queryResult.features().first(where: { _ in true }) else { return nil }
-            let serviceFeatureTable = positioningTable as! ServiceFeatureTable
-            let positioningID = feature.attributes[serviceFeatureTable.globalIDField] as? UUID
-            
-            // Gets the pathways layer (optional for creating the IndoorsLocationDataSource).
-            let pathwaysLayer = map.operationalLayers.first(where: { $0.name == "Pathways" }) as! FeatureLayer
+            let feature = queryResult.features().makeIterator().next()!
+            // The ID that identifies a row in the positioning table.
+            // It is possible to initialize ILDS without globalID,
+            // in which case the first row of the positioning table
+            // will be used.
+            let positioningID = feature.attributes[positioningTable.globalIDField] as? UUID
+            // Gets the pathways table (optional for creating the IndoorsLocationDataSource).
+            // The network pathways for routing between locations on the same level.
+            let pathwaysTable = (
+                map.operationalLayers.first(where: { $0.name == "Pathways" }) as! FeatureLayer
+            ).featureTable as! ArcGISFeatureTable
             // Gets the levels layer (optional for creating the IndoorsLocationDataSource).
-            let levelsLayer = map.operationalLayers.first(where: { $0.name == "Levels" }) as! FeatureLayer
-            
-            // Setting up IndoorsLocationDataSource with positioning, pathways tables and positioning ID.
+            // The table that contains floor levels.
+            let levelsTable = (
+                map.operationalLayers.first(where: { $0.name == "Levels" }) as! FeatureLayer
+            ).featureTable as! ArcGISFeatureTable
+            // Initialize an IndoorsLocationDataSource with positioning, pathways,
+            // levels tables, and positioning ID.
             return IndoorsLocationDataSource(
                 positioningTable: positioningTable,
-                pathwaysTable: pathwaysLayer.featureTable as? ArcGISFeatureTable,
-                levelsTable: levelsLayer.featureTable as? ArcGISFeatureTable,
+                pathwaysTable: pathwaysTable,
+                levelsTable: levelsTable,
                 positioningID: positioningID
             )
         }
         
-        /// Updates the location when the indoors location datasource is triggered.
-        func updateDisplayOnLocationChange() async throws {
+        /// Updates the location when the location data source is triggered.
+        func updateDisplayOnLocationChange() async {
             for await location in locationDisplay.dataSource.locations {
-                // Since this listens for new location changes, it is important
-                // to ensure any blocking UI is dismissed once location updates begins.
-                // Floors in location are zero indexed however floorManager levels begin at one. Since
-                // it is necessary to display the same information to the user as the floor manager levelNumber
-                // one is added to the floor level value.
-                if let floorLevel = location.additionalSourceProperties[.floor] as? Int,
-                   let floor = currentFloor,
-                   floorLevel != floor - 1 {
-                    // Sets the currentFloor to the new floor level and adds one, since location uses
-                    // zero based flooring system.
-                    currentFloor = floorLevel + 1
-                    // The floor manager is used to filter so that only the data from the current floor is
-                    // displayed to the user.
+                // The floor level from the location.
+                if let floor = location.additionalSourceProperties[.floor] as? Int,
+                   let levelID = location.additionalSourceProperties[.floorLevelID] as? String {
+                    currentFloor = floor
+                    // Only displays the current floor.
                     if let floorManager = map.floorManager {
                         for level in floorManager.levels {
-                            level.isVisible = currentFloor == level.levelNumber
+                            level.isVisible = FloorLevel.ID(levelID) == level.id
                         }
                     }
                 }
-                // This indicates whether the location data was sourced from GNSS (Satellites), BLE (Bluetooth Low Energy)
-                // or AppleIPS (Apple's proprietary location system.)
-                source = location.additionalSourceProperties[.positionSource] as? String ?? ""
-                switch source {
-                case "GNSS":
-                    satelliteCount = location.additionalSourceProperties[.satelliteCount] as? Int ?? 0
-                default:
-                    sensorCount = location.additionalSourceProperties[.transmitterCount] as? Int ?? 0
+                // The position source where the location data was sourced from:
+                // GNSS (Satellites), BLE (Bluetooth Low Energy),
+                // or AppleIPS (Apple's proprietary location system), etc.
+                if let source = location.additionalSourceProperties[.positionSource] as? String {
+                    positionSource = source
+                    switch source {
+                    case "GNSS":
+                        signalSourceCount = location.additionalSourceProperties[.satelliteCount] as? Int
+                    default:
+                        // Bluetooth, Cellular, WiFi, etc.
+                        signalSourceCount = location.additionalSourceProperties[.transmitterCount] as? Int
+                    }
                 }
+                // The horizontal accuracy of the location in meters.
                 horizontalAccuracy = location.horizontalAccuracy
             }
         }
     }
 }
 
-private extension URL {
-    static var indoorsMap: URL {
-        URL(string: "https://www.arcgis.com/home/item.html?id=8fa941613b4b4b2b8a34ad4cdc3e4bba")!
+private extension PortalItem.ID {
+    /// Esri campus Building L IPS data.
+    static var indoorsMap: Self { Self("8fa941613b4b4b2b8a34ad4cdc3e4bba")! }
+}
+
+private extension ShowDeviceLocationUsingIndoorPositioningView.Model {
+    enum SetupError: LocalizedError {
+        case failedToLoadIPS
+        
+        var errorDescription: String? {
+            switch self {
+            case .failedToLoadIPS:
+                NSLocalizedString(
+                    "Cannot initialize indoors location data source.",
+                    comment: "No indoor positioning definition or positioning table is found."
+                )
+            }
+        }
     }
 }
