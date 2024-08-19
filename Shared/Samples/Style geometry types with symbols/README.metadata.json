@@ -1,0 +1,42 @@
+{
+    "category": "Visualization",
+    "description": "Use a symbol to display a geometry on a map.",
+    "ignore": false,
+    "images": [
+        "style-geometry-types-with-symbols.png"
+    ],
+    "keywords": [
+        "display",
+        "fill",
+        "graphics",
+        "line",
+        "marker",
+        "overlay",
+        "picture",
+        "point",
+        "symbol",
+        "visualization",
+        "Geometry",
+        "Graphic",
+        "GraphicsOverlay",
+        "PictureMarkerSymbol",
+        "SimpleFillSymbol",
+        "SimpleLineSymbol",
+        "SimpleMarkerSymbol"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Geometry",
+        "Graphic",
+        "GraphicsOverlay",
+        "PictureMarkerSymbol",
+        "SimpleFillSymbol",
+        "SimpleLineSymbol",
+        "SimpleMarkerSymbol"
+    ],
+    "snippets": [
+        "StyleGeometryTypesWithSymbolsView.swift",
+        "StyleGeometryTypesWithSymbolsView.Views.swift"
+    ],
+    "title": "Style geometry types with symbols"
+}
