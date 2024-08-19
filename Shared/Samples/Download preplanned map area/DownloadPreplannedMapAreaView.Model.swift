@@ -43,7 +43,7 @@ extension DownloadPreplannedMapAreaView {
         
         /// A URL to a temporary directory where the downloaded map packages are stored.
         private let temporaryDirectory: URL
-    
+        
         /// The offline map information.
         @Published private(set) var offlineMapModels: Result<[OfflineMapModel], Error>?
         

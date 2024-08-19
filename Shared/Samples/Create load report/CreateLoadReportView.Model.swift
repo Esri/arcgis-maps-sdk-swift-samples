@@ -267,7 +267,7 @@ extension CreateLoadReportView {
             deletePhase(includedPhases[index])
         }
         
-        /// Sorts the included and exluded phases by name.
+        /// Sorts the included and excluded phases by name.
         private func sortPhases() {
             includedPhases.sort { $0.name < $1.name }
             excludedPhases.sort { $0.name < $1.name }

@@ -37,7 +37,7 @@ extension GenerateOfflineMapWithCustomParametersView {
         
         /// The area of interest.
         var extent: Envelope?
-
+        
         /// The parameters used to take the map offline.
         private var offlineMapParameters: GenerateOfflineMapParameters?
         
@@ -192,7 +192,7 @@ extension GenerateOfflineMapWithCustomParametersView {
             guard let tileCacheParameters = getExportTileCacheParametersForBasemapLayer(),
                   // The area initially specified for download when the default parameters object
                   // was created.
-                  let areaOfInterest = tileCacheParameters.areaOfInterest else {
+                    let areaOfInterest = tileCacheParameters.areaOfInterest else {
                 return
             }
             

@@ -115,7 +115,7 @@ private extension ShowRealisticLightAndShadowsView {
         /// The range is 0 to 86,340 seconds ((60 seconds * 60 minutes * 24 hours)  - 60 seconds),
         /// which means 12 am to 11:59 pm.
         static var dateSecondValueRange: ClosedRange<Float> { 0...86340 }
-
+        
         /// The number of seconds to represent 12 pm (60 seconds * 60 minutes * 12 hours).
         static let dateSecondsNoon: Float = 43200
     }
