@@ -80,7 +80,7 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
                 // manually creating an indoors location data source.
                 dataSource = try await makeIndoorsLocationDataSourceFromTables(map: map, positioningTable: positioningTable)
             } else {
-                throw SetupError.failedToLoadIPS
+                throw SetupError()
             }
             locationDisplay.dataSource = dataSource
             // Starts the location display.
@@ -173,17 +173,13 @@ private extension PortalItem.ID {
 }
 
 private extension ShowDeviceLocationUsingIndoorPositioningView.Model {
-    enum SetupError: LocalizedError {
-        case failedToLoadIPS
-        
+    /// An error returned when the indoors data required to setup the sample is malformatted.
+    struct SetupError: LocalizedError {
         var errorDescription: String? {
-            switch self {
-            case .failedToLoadIPS:
-                NSLocalizedString(
-                    "Cannot initialize indoors location data source.",
-                    comment: "No indoor positioning definition or positioning table is found."
-                )
-            }
+            .init(
+                localized: "Cannot initialize indoors location data source.",
+                comment: "No indoor positioning definition or positioning table is found."
+            )
         }
     }
 }
