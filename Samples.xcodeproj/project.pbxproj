@@ -247,6 +247,10 @@
 		D718A1F02B57602000447087 /* ManageBookmarksView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D718A1EA2B575FD900447087 /* ManageBookmarksView.swift */; };
 		D71C5F642AAA7A88006599FD /* CreateSymbolStylesFromWebStylesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71C5F632AAA7A88006599FD /* CreateSymbolStylesFromWebStylesView.swift */; };
 		D71C5F652AAA83D2006599FD /* CreateSymbolStylesFromWebStylesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D71C5F632AAA7A88006599FD /* CreateSymbolStylesFromWebStylesView.swift */; };
+		D71C90A22C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71C909C2C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.swift */; };
+		D71C90A32C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71C909D2C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.Views.swift */; };
+		D71C90A42C6C252B0018C63E /* StyleGeometryTypesWithSymbolsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D71C909C2C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.swift */; };
+		D71C90A52C6C252F0018C63E /* StyleGeometryTypesWithSymbolsView.Views.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D71C909D2C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.Views.swift */; };
 		D71D516E2B51D7B600B2A2BE /* SearchForWebMapView.Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71D516D2B51D7B600B2A2BE /* SearchForWebMapView.Views.swift */; };
 		D71D516F2B51D87700B2A2BE /* SearchForWebMapView.Views.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D71D516D2B51D7B600B2A2BE /* SearchForWebMapView.Views.swift */; };
 		D71FCB8A2AD6277F000E517C /* CreateMobileGeodatabaseView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71FCB892AD6277E000E517C /* CreateMobileGeodatabaseView.Model.swift */; };
@@ -319,8 +323,6 @@
 		D752D9602A3BCE63003EB25E /* DisplayMapFromPortalItemView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D752D95E2A3BCE06003EB25E /* DisplayMapFromPortalItemView.swift */; };
 		D75362D22A1E886700D83028 /* ApplyUniqueValueRendererView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75362D12A1E886700D83028 /* ApplyUniqueValueRendererView.swift */; };
 		D75362D32A1E8C8800D83028 /* ApplyUniqueValueRendererView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D75362D12A1E886700D83028 /* ApplyUniqueValueRendererView.swift */; };
-		D754E3232A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D754E3222A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift */; };
-		D754E3242A1D66C20006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D754E3222A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift */; };
 		D7553CDB2AE2DFEC00DC2A70 /* GeocodeOfflineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7553CD82AE2DFEC00DC2A70 /* GeocodeOfflineView.swift */; };
 		D7553CDD2AE2E00E00DC2A70 /* GeocodeOfflineView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7553CD82AE2DFEC00DC2A70 /* GeocodeOfflineView.swift */; };
 		D757D14B2B6C46E50065F78F /* ListSpatialReferenceTransformationsView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D757D14A2B6C46E50065F78F /* ListSpatialReferenceTransformationsView.Model.swift */; };
@@ -536,6 +538,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				D71C90A52C6C252F0018C63E /* StyleGeometryTypesWithSymbolsView.Views.swift in Copy Source Code Files */,
+				D71C90A42C6C252B0018C63E /* StyleGeometryTypesWithSymbolsView.swift in Copy Source Code Files */,
 				3E9F77742C6A6E670022CAB5 /* QueryFeatureCountAndExtentView.swift in Copy Source Code Files */,
 				3E54CF232C66B00500DD2F18 /* AddWebTiledLayerView.swift in Copy Source Code Files */,
 				3E30884A2C5D789A00ECEAC5 /* SetSpatialReferenceView.swift in Copy Source Code Files */,
@@ -687,7 +691,6 @@
 				D78666AE2A21629200C60110 /* FindNearestVertexView.swift in Copy Source Code Files */,
 				D7E440D82A1ECEB3005D74DE /* CreateBuffersAroundPointsView.swift in Copy Source Code Files */,
 				D744FD182A2113C70084A66C /* CreateConvexHullAroundPointsView.swift in Copy Source Code Files */,
-				D754E3242A1D66C20006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift in Copy Source Code Files */,
 				D7F2784C2A1D76F5002E4567 /* AddWMSLayerView.swift in Copy Source Code Files */,
 				D75362D32A1E8C8800D83028 /* ApplyUniqueValueRendererView.swift in Copy Source Code Files */,
 				1C929F092A27B86800134252 /* ShowUtilityAssociationsView.swift in Copy Source Code Files */,
@@ -882,6 +885,8 @@
 		D718A1E62B570F7500447087 /* OrbitCameraAroundObjectView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrbitCameraAroundObjectView.Model.swift; sourceTree = "<group>"; };
 		D718A1EA2B575FD900447087 /* ManageBookmarksView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageBookmarksView.swift; sourceTree = "<group>"; };
 		D71C5F632AAA7A88006599FD /* CreateSymbolStylesFromWebStylesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateSymbolStylesFromWebStylesView.swift; sourceTree = "<group>"; };
+		D71C909C2C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleGeometryTypesWithSymbolsView.swift; sourceTree = "<group>"; };
+		D71C909D2C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleGeometryTypesWithSymbolsView.Views.swift; sourceTree = "<group>"; };
 		D71D516D2B51D7B600B2A2BE /* SearchForWebMapView.Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchForWebMapView.Views.swift; sourceTree = "<group>"; };
 		D71FCB892AD6277E000E517C /* CreateMobileGeodatabaseView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateMobileGeodatabaseView.Model.swift; sourceTree = "<group>"; };
 		D721EEA72ABDFF550040BE46 /* LothianRiversAnno.mmpk */ = {isa = PBXFileReference; lastKnownFileType = file; path = LothianRiversAnno.mmpk; sourceTree = "<group>"; };
@@ -921,7 +926,6 @@
 		D752D9452A3A6F7F003EB25E /* MonitorChangesToMapLoadStatusView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonitorChangesToMapLoadStatusView.swift; sourceTree = "<group>"; };
 		D752D95E2A3BCE06003EB25E /* DisplayMapFromPortalItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayMapFromPortalItemView.swift; sourceTree = "<group>"; };
 		D75362D12A1E886700D83028 /* ApplyUniqueValueRendererView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplyUniqueValueRendererView.swift; sourceTree = "<group>"; };
-		D754E3222A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StylePointWithPictureMarkerSymbolsView.swift; sourceTree = "<group>"; };
 		D7553CD82AE2DFEC00DC2A70 /* GeocodeOfflineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeocodeOfflineView.swift; sourceTree = "<group>"; };
 		D757D14A2B6C46E50065F78F /* ListSpatialReferenceTransformationsView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListSpatialReferenceTransformationsView.Model.swift; sourceTree = "<group>"; };
 		D7588F5C2B7D8DAA008B75E2 /* NavigateRouteWithReroutingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigateRouteWithReroutingView.swift; sourceTree = "<group>"; };
@@ -1282,10 +1286,10 @@
 				95DEB9B72C127A97009BEC35 /* Show viewshed from point on map */,
 				00E7C15A2BBE1BF000B85D69 /* Snap geometry edits */,
 				D75B584D2AAFB2C20038B3B4 /* Style features with custom dictionary */,
+				D71C909E2C6C249B0018C63E /* Style geometry types with symbols */,
 				E066DD362860AB0B004D3D5B /* Style graphics with renderer */,
 				E004A6E42846A609002A1FE6 /* Style graphics with symbols */,
 				D77BC5352B59A2D3007B49B6 /* Style point with distance composite scene symbol */,
-				D754E31D2A1D661D0006C5F1 /* Style point with picture marker symbols */,
 				D7058B0B2B59E44B000A888A /* Style point with scene symbol */,
 				D74C8BFA2ABA5572007C76B8 /* Style symbols from mobile style file */,
 				7573E81229D6134C00BEED9C /* Trace utility network */,
@@ -1961,6 +1965,15 @@
 			path = "Create symbol styles from web styles";
 			sourceTree = "<group>";
 		};
+		D71C909E2C6C249B0018C63E /* Style geometry types with symbols */ = {
+			isa = PBXGroup;
+			children = (
+				D71C909C2C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.swift */,
+				D71C909D2C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.Views.swift */,
+			);
+			path = "Style geometry types with symbols";
+			sourceTree = "<group>";
+		};
 		D721EEA62ABDFF550040BE46 /* 174150279af74a2ba6f8b87a567f480b */ = {
 			isa = PBXGroup;
 			children = (
@@ -2206,14 +2219,6 @@
 				D75362D12A1E886700D83028 /* ApplyUniqueValueRendererView.swift */,
 			);
 			path = "Apply unique value renderer";
-			sourceTree = "<group>";
-		};
-		D754E31D2A1D661D0006C5F1 /* Style point with picture marker symbols */ = {
-			isa = PBXGroup;
-			children = (
-				D754E3222A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift */,
-			);
-			path = "Style point with picture marker symbols";
 			sourceTree = "<group>";
 		};
 		D7553CD62AE2DFEC00DC2A70 /* Geocode offline */ = {
@@ -3289,6 +3294,7 @@
 				D7EAF35A2A1C023800D822C4 /* SetMinAndMaxScaleView.swift in Sources */,
 				1C19B4F52A578E46001D2506 /* CreateLoadReportView.Model.swift in Sources */,
 				9547085C2C3C719800CA8579 /* EditFeatureAttachmentsView.Model.swift in Sources */,
+				D71C90A22C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.swift in Sources */,
 				3E54CF222C66AFBE00DD2F18 /* AddWebTiledLayerView.swift in Sources */,
 				0042E24528E4F82C001F33D6 /* ShowViewshedFromPointInSceneView.ViewshedSettingsView.swift in Sources */,
 				D7DDF8532AF47C6C004352D9 /* FindRouteAroundBarriersView.swift in Sources */,
@@ -3301,12 +3307,12 @@
 				D7C16D1B2AC5F95300689E89 /* Animate3DGraphicView.swift in Sources */,
 				D744FD172A2112D90084A66C /* CreateConvexHullAroundPointsView.swift in Sources */,
 				D7044B962BE18D73000F2C43 /* EditWithBranchVersioningView.Views.swift in Sources */,
+				D71C90A32C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.Views.swift in Sources */,
 				D718A1ED2B575FD900447087 /* ManageBookmarksView.swift in Sources */,
 				D73723762AF5877500846884 /* FindRouteInMobileMapPackageView.Models.swift in Sources */,
 				D74ECD0D2BEEAE2F007C0FA6 /* EditAndSyncFeaturesWithFeatureServiceView.Model.swift in Sources */,
 				00CB9138284814A4005C2C5D /* SearchWithGeocodeView.swift in Sources */,
 				1C43BC7F2A43781200509BF8 /* SetVisibilityOfSubtypeSublayerView.Views.swift in Sources */,
-				D754E3232A1D66820006C5F1 /* StylePointWithPictureMarkerSymbolsView.swift in Sources */,
 				D731F3C12AD0D2AC00A8431E /* IdentifyGraphicsView.swift in Sources */,
 				00E5401C27F3CCA200CF66D5 /* SamplesApp.swift in Sources */,
 				D73E61962BDAEE6600457932 /* MatchViewpointOfGeoViewsView.swift in Sources */,
