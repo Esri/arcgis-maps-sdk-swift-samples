@@ -58,6 +58,7 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
                     }
                 }
                 .frame(maxWidth: .infinity)
+                .padding(8)
                 .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
             }
             .overlay(alignment: .center) {
