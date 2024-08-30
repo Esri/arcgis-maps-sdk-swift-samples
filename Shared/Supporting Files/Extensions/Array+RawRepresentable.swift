@@ -29,9 +29,7 @@ extension Array: RawRepresentable where Element == String {
     
     /// The raw value of the array.
     public var rawValue: String {
-        guard let data = try? JSONEncoder().encode(self),
-              let result = String(data: data, encoding: .utf8)
-        else { return "[]" }
-        return result
+        guard let data = try? JSONEncoder().encode(self) else { return "[]" }
+        return String(decoding: data, as: UTF8.self)
     }
 }
