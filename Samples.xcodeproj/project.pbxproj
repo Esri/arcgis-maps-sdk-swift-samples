@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 60;
+	objectVersion = 77;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -2960,7 +2960,6 @@
 				};
 			};
 			buildConfigurationList = 00E5400A27F3CCA100CF66D5 /* Build configuration list for PBXProject "Samples" */;
-			compatibilityVersion = "Xcode 15.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -2971,6 +2970,7 @@
 			packageReferences = (
 				00C43AEB2947DC350099AE34 /* XCRemoteSwiftPackageReference "arcgis-maps-sdk-swift-toolkit" */,
 			);
+			preferredProjectObjectVersion = 77;
 			productRefGroup = 00E5401427F3CCA200CF66D5 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
