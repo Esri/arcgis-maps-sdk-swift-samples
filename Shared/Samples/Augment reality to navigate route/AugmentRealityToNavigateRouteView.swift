@@ -162,10 +162,7 @@ private extension AugmentRealityToNavigateRouteView {
         @Published var statusText = "Tap to place a start point."
         
         deinit {
-            Task {
-                /// Stop the location data source.
-                await locationDisplay.dataSource.stop()
-            }
+            stopLocationDisplay()
         }
         
         /// Performs important tasks including setting up the location display, creating route parameters,
@@ -188,6 +185,14 @@ private extension AugmentRealityToNavigateRouteView {
             
             // Start the location display to zoom to the user's current location.
             try await locationDisplay.dataSource.start()
+        }
+        
+        /// Stops the location display.
+        nonisolated private func stopLocationDisplay() {
+            Task {
+                // Stop the location data source.
+                await locationDisplay.dataSource.stop()
+            }
         }
         
         /// Creates walking route parameters.

@@ -137,7 +137,7 @@ extension Animate3DGraphicView {
         }
         
         deinit {
-            Task { await animation.displayLink?.invalidate() }
+            invalidateAnimation()
         }
         
         // MARK: Methods
@@ -207,6 +207,15 @@ extension Animate3DGraphicView {
             // Move to the next frame in the animation.
             if animation.isPlaying {
                 animation.nextFrame()
+            }
+        }
+        
+        /// Invalidates the animation.
+        nonisolated private func invalidateAnimation() {
+            Task {
+                await MainActor.run {
+                    animation.displayLink?.invalidate()
+                }
             }
         }
     }
