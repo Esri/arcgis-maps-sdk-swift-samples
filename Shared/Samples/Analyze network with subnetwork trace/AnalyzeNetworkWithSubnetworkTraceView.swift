@@ -26,7 +26,7 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
     @State private var selectedComparison: UtilityNetworkAttributeComparison.Operator?
     
     /// The value selected by the user.
-    @State private var selectedValue: Any?
+    @State private var selectedValue: (any Sendable)?
     
     /// A Boolean value indicating if the add condition menu is presented.
     @State private var isConditionMenuPresented = false
