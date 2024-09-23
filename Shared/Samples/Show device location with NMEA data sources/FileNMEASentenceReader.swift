@@ -16,7 +16,7 @@ import Foundation
 
 extension ShowDeviceLocationWithNMEADataSourcesView {
     /// A data source simulating a hardware that emits NMEA data.
-    class FileNMEASentenceReader {
+    class FileNMEASentenceReader: @unchecked Sendable {
         /// The playback time interval.
         private let interval: TimeInterval
         
@@ -79,7 +79,7 @@ extension ShowDeviceLocationWithNMEADataSourcesView {
                     withTimeInterval: interval,
                     repeats: true
                 ) { [weak self] _ in
-                    guard let self = self else { return }
+                    guard let self else { return }
                     let data = self.nmeaDataIterator.next()!
                     continuation.yield(data)
                 }

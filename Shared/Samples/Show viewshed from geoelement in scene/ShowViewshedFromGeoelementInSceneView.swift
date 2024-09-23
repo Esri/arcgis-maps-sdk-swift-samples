@@ -46,7 +46,7 @@ struct ShowViewshedFromGeoelementInSceneView: View {
 
 private extension ShowViewshedFromGeoelementInSceneView {
     /// The view model for the sample.
-    class Model: ObservableObject {
+    class Model: ObservableObject, @unchecked Sendable {
         /// A scene with an imagery basemap.
         let scene: ArcGIS.Scene = {
             let scene = Scene(basemapStyle: .arcGISImagery)
