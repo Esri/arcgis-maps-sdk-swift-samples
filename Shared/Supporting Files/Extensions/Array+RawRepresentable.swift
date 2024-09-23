@@ -15,7 +15,7 @@
 import Foundation
 
 /// An extension allowing an array to be used with the app storage property wrapper.
-extension Array: RawRepresentable where Element == String {
+extension Array: @retroactive RawRepresentable where Element == String {
     /// Creates a new array from a given raw value.
     /// - Parameter rawValue: The raw value of the array to create.
     public init(rawValue: String) {
