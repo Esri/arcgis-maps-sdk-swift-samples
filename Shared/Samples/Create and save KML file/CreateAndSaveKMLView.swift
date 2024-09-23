@@ -70,7 +70,8 @@ struct CreateAndSaveKMLView: View {
 
 extension CreateAndSaveKMLView {
     /// A KMZ file that can be used with the native file exporter.
-    final class KMZFile: FileDocument {
+    @MainActor
+    final class KMZFile: @preconcurrency FileDocument, Sendable {
         /// The KML document that is used to create the KMZ file.
         private let document: KMLDocument
         
@@ -106,7 +107,6 @@ extension CreateAndSaveKMLView {
         }
         
         /// Saves the KML document as a KMZ file to a temporary location.
-        @MainActor
         func saveFile() async throws {
             temporaryDirectory = FileManager.createTemporaryDirectory()
             

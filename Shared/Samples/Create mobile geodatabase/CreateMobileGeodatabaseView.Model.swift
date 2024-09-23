@@ -117,7 +117,8 @@ extension CreateMobileGeodatabaseView {
     // MARK: GeodatabaseFile
     
     /// A geodatabase file that can be used with the native file exporter.
-    final class GeodatabaseFile {
+    @MainActor
+    final class GeodatabaseFile: Sendable {
         /// The mobile geodatabase used to create the geodatabase file.
         private(set) var geodatabase: Geodatabase?
         
@@ -166,7 +167,7 @@ extension CreateMobileGeodatabaseView {
     }
 }
 
-extension CreateMobileGeodatabaseView.GeodatabaseFile: FileDocument {
+extension CreateMobileGeodatabaseView.GeodatabaseFile: @preconcurrency FileDocument {
     /// The file and data types that the document reads from.
     static var readableContentTypes: [UTType] { [.geodatabase] }
     
