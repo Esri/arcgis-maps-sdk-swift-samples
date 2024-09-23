@@ -45,7 +45,7 @@ struct WebView: UIViewRepresentable {
             switch navigationAction.navigationType {
             case .linkActivated:
                 if let url = navigationAction.request.url {
-                    await Self.openURL(url)
+                    Self.openURL(url)
                 }
                 return .cancel
             default:
@@ -53,7 +53,6 @@ struct WebView: UIViewRepresentable {
             }
         }
         
-        @MainActor
         static func openURL(_ url: URL) {
             guard UIApplication.shared.canOpenURL(url) else { return }
             UIApplication.shared.open(url)
