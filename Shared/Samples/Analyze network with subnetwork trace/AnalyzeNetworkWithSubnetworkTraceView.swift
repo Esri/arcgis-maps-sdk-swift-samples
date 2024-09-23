@@ -165,7 +165,7 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
                     }
                 }
             }
-            if selectedAttribute?.domain as? CodedValueDomain != nil {
+            if selectedAttribute?.domain is CodedValueDomain {
                 NavigationLink {
                     valuesView
                 } label: {
