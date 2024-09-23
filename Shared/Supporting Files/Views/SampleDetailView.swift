@@ -104,5 +104,5 @@ struct SampleDetailView: View {
 }
 
 extension SampleDetailView: Identifiable {
-    var id: String { sample.nameInUpperCamelCase }
+    nonisolated var id: String { sample.nameInUpperCamelCase }
 }
