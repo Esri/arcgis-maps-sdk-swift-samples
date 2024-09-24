@@ -30,6 +30,7 @@ extension Array: RawRepresentable where Element == String {
     /// The raw value of the array.
     public var rawValue: String {
         guard let data = try? JSONEncoder().encode(self) else { return "[]" }
+        // swiftlint:disable:next optional_data_string_conversion
         return String(decoding: data, as: UTF8.self)
     }
 }
