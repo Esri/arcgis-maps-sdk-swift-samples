@@ -86,6 +86,10 @@ struct Animate3DGraphicView: View {
                 } label: {
                     Image(systemName: model.animation.isPlaying ? "pause.fill" : "play.fill")
                 }
+                .onDisappear {
+                    model.animation.displayLink?.invalidate()
+                }
+                
                 Spacer()
                 
                 SettingsView(label: "Camera") {

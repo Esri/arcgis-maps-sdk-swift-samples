@@ -36,6 +36,11 @@ struct AugmentRealityToNavigateRouteView: View {
         .onSingleTapGesture { _, mapPoint in
             tapLocation = mapPoint
         }
+        .onDisappear {
+            Task {
+                await model.locationDisplay.dataSource.stop()
+            }
+        }
         .task(id: tapLocation) {
             guard let tapLocation else { return }
             
@@ -161,10 +166,6 @@ private extension AugmentRealityToNavigateRouteView {
         /// The status text displayed to the user.
         @Published var statusText = "Tap to place a start point."
         
-        deinit {
-            stopLocationDisplay()
-        }
-        
         /// Performs important tasks including setting up the location display, creating route parameters,
         /// and loading the scene elevation source.
         func setUp() async throws {
@@ -185,14 +186,6 @@ private extension AugmentRealityToNavigateRouteView {
             
             // Start the location display to zoom to the user's current location.
             try await locationDisplay.dataSource.start()
-        }
-        
-        /// Stops the location display.
-        nonisolated private func stopLocationDisplay() {
-            Task {
-                // Stop the location data source.
-                await locationDisplay.dataSource.stop()
-            }
         }
         
         /// Creates walking route parameters.

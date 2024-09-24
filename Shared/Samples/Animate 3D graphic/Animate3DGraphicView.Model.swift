@@ -136,10 +136,6 @@ extension Animate3DGraphicView {
             animation.setup(displayLink: displayLink)
         }
         
-        deinit {
-            invalidateAnimation()
-        }
-        
         // MARK: Methods
         
         /// Monitors the camera controller's properties to update the associated text when they change.
@@ -207,15 +203,6 @@ extension Animate3DGraphicView {
             // Move to the next frame in the animation.
             if animation.isPlaying {
                 animation.nextFrame()
-            }
-        }
-        
-        /// Invalidates the animation.
-        nonisolated private func invalidateAnimation() {
-            Task {
-                await MainActor.run {
-                    animation.displayLink?.invalidate()
-                }
             }
         }
     }
