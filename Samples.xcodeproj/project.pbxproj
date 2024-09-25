@@ -409,7 +409,7 @@
 		D7BA38922BFBC4F0009954F5 /* EditFeaturesWithFeatureLinkedAnnotationView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7BA38902BFBC476009954F5 /* EditFeaturesWithFeatureLinkedAnnotationView.Model.swift */; };
 		D7BA38972BFBFC0F009954F5 /* QueryRelatedFeaturesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BA38932BFBFC0F009954F5 /* QueryRelatedFeaturesView.swift */; };
 		D7BA389A2BFBFC2E009954F5 /* QueryRelatedFeaturesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7BA38932BFBFC0F009954F5 /* QueryRelatedFeaturesView.swift */; };
-		D7BA8C442B2A4DAA00018633 /* Array+RawRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BA8C432B2A4DAA00018633 /* Array+RawRepresentable.swift */; };
+		D7BA8C442B2A4DAA00018633 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BA8C432B2A4DAA00018633 /* Array.swift */; };
 		D7BA8C462B2A8ACA00018633 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BA8C452B2A8ACA00018633 /* String.swift */; };
 		D7BB3DD22C5D781800FFCD56 /* SaveTheBay.geodatabase in Resources */ = {isa = PBXBuildFile; fileRef = D7BB3DD02C5D781800FFCD56 /* SaveTheBay.geodatabase */; settings = {ASSET_TAGS = (EditGeodatabaseWithTransactions, ); }; };
 		D7C16D1B2AC5F95300689E89 /* Animate3DGraphicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C16D1A2AC5F95300689E89 /* Animate3DGraphicView.swift */; };
@@ -977,7 +977,7 @@
 		D7B759B22B1FFBE300017FDD /* FavoritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesView.swift; sourceTree = "<group>"; };
 		D7BA38902BFBC476009954F5 /* EditFeaturesWithFeatureLinkedAnnotationView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditFeaturesWithFeatureLinkedAnnotationView.Model.swift; sourceTree = "<group>"; };
 		D7BA38932BFBFC0F009954F5 /* QueryRelatedFeaturesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueryRelatedFeaturesView.swift; sourceTree = "<group>"; };
-		D7BA8C432B2A4DAA00018633 /* Array+RawRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+RawRepresentable.swift"; sourceTree = "<group>"; };
+		D7BA8C432B2A4DAA00018633 /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		D7BA8C452B2A8ACA00018633 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		D7BB3DD02C5D781800FFCD56 /* SaveTheBay.geodatabase */ = {isa = PBXFileReference; lastKnownFileType = file; path = SaveTheBay.geodatabase; sourceTree = "<group>"; };
 		D7C16D1A2AC5F95300689E89 /* Animate3DGraphicView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animate3DGraphicView.swift; sourceTree = "<group>"; };
@@ -1084,7 +1084,7 @@
 		00181B442846AD3900654571 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				D7BA8C432B2A4DAA00018633 /* Array+RawRepresentable.swift */,
+				D7BA8C432B2A4DAA00018633 /* Array.swift */,
 				D7BA8C452B2A8ACA00018633 /* String.swift */,
 				00181B452846AD7100654571 /* View+ErrorAlert.swift */,
 			);
@@ -3188,7 +3188,7 @@
 				D79482D42C35D872006521CD /* CreateDynamicBasemapGalleryView.swift in Sources */,
 				D77570C02A2942F800F490CD /* AnimateImagesWithImageOverlayView.swift in Sources */,
 				D7054AE92ACCCB6C007235BA /* Animate3DGraphicView.SettingsView.swift in Sources */,
-				D7BA8C442B2A4DAA00018633 /* Array+RawRepresentable.swift in Sources */,
+				D7BA8C442B2A4DAA00018633 /* Array.swift in Sources */,
 				D78FA4942C3C88880079313E /* CreateDynamicBasemapGalleryView.Views.swift in Sources */,
 				E0EA0B772866390E00C9621D /* ProjectGeometryView.swift in Sources */,
 				D74C8BFE2ABA5605007C76B8 /* StyleSymbolsFromMobileStyleFileView.swift in Sources */,
