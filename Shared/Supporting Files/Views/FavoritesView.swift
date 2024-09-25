@@ -27,7 +27,7 @@ struct FavoritesView: View {
     /// A helper property to decode the app storage string to an array of
     /// sample names.
     private var favoriteNames: [String] {
-        get { .init(rawValue: favoriteNamesString) }
+        get { .init(jsonString: favoriteNamesString) }
         nonmutating set { favoriteNamesString = newValue.jsonString }
     }
     
@@ -82,7 +82,7 @@ private extension FavoritesView {
         /// A helper property to decode the app storage string to an array of
         /// sample names.
         private var favoriteNames: [String] {
-            get { .init(rawValue: favoriteNamesString) }
+            get { .init(jsonString: favoriteNamesString) }
             nonmutating set { favoriteNamesString = newValue.jsonString }
         }
         
