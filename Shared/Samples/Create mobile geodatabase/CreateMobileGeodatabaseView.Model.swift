@@ -118,7 +118,7 @@ extension CreateMobileGeodatabaseView {
     
     /// A geodatabase file that can be used with the native file exporter.
     @MainActor
-    final class GeodatabaseFile: Sendable {
+    final class GeodatabaseFile {
         /// The mobile geodatabase used to create the geodatabase file.
         private(set) var geodatabase: Geodatabase?
         
@@ -167,17 +167,17 @@ extension CreateMobileGeodatabaseView {
     }
 }
 
-extension CreateMobileGeodatabaseView.GeodatabaseFile: @preconcurrency FileDocument {
+extension CreateMobileGeodatabaseView.GeodatabaseFile: FileDocument {
     /// The file and data types that the document reads from.
-    static var readableContentTypes: [UTType] { [.geodatabase] }
+    nonisolated static var readableContentTypes: [UTType] { [.geodatabase] }
     
     /// Creates a document and initializes it with the contents of a file.
-    convenience init(configuration: ReadConfiguration) throws {
+    nonisolated convenience init(configuration: ReadConfiguration) throws {
         fatalError("Loading geodatabase files is not supported by this sample.")
     }
     
     /// Serializes a document snapshot to a file wrapper.
-    func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
+    nonisolated func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
         return try FileWrapper(url: geodatabaseURL)
     }
 }
