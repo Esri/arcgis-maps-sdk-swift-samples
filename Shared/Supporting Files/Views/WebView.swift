@@ -44,18 +44,14 @@ struct WebView: UIViewRepresentable {
         func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction) async -> WKNavigationActionPolicy {
             switch navigationAction.navigationType {
             case .linkActivated:
-                if let url = navigationAction.request.url {
-                    Self.openURL(url)
+                if let url = navigationAction.request.url,
+                   UIApplication.shared.canOpenURL(url) {
+                    await UIApplication.shared.open(url)
                 }
                 return .cancel
             default:
                 return .allow
             }
-        }
-        
-        static func openURL(_ url: URL) {
-            guard UIApplication.shared.canOpenURL(url) else { return }
-            UIApplication.shared.open(url)
         }
     }
 }
