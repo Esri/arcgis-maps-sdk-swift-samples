@@ -15,7 +15,6 @@
 import ArcGIS
 import SwiftUI
 
-@MainActor
 struct DisplayDimensionsView: View {
     /// A map with no specified style.
     @State private var map = Map()
