@@ -80,8 +80,8 @@ extension ShowDeviceLocationWithNMEADataSourcesView {
                     withTimeInterval: interval,
                     repeats: true
                 ) { [weak self] _ in
-                    guard let self else { return }
                     Task { @MainActor in
+                        guard let self else { return }
                         let data = self.nmeaDataIterator.next()!
                         continuation.yield(data)
                     }
