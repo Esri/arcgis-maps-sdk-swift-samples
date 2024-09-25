@@ -70,16 +70,18 @@ struct CreateAndSaveKMLView: View {
 
 extension CreateAndSaveKMLView {
     /// A KMZ file that can be used with the native file exporter.
-    @MainActor
-    final class KMZFile: @preconcurrency FileDocument, Sendable {
+    final class KMZFile: FileDocument {
         /// The KML document that is used to create the KMZ file.
         private let document: KMLDocument
         
         /// The temporary directory where the KMZ file will be stored.
-        private var temporaryDirectory: URL?
+        private let temporaryDirectory = FileManager.createTemporaryDirectory()
         
         /// The temporary URL to the KMZ file.
-        private var temporaryDocumentURL: URL?
+        private var temporaryDocumentURL: URL? {
+            temporaryDirectory
+                .appendingPathComponent("\(document.name).kmz")
+        }
         
         static var readableContentTypes: [UTType] { [.kmz] }
         
@@ -102,19 +104,14 @@ extension CreateAndSaveKMLView {
         
         /// Deletes the temporarily stored KMZ file.
         func deleteFile() {
-            guard let url = temporaryDirectory else { return }
-            try? FileManager.default.removeItem(at: url)
+            try? FileManager.default.removeItem(at: temporaryDirectory)
         }
         
         /// Saves the KML document as a KMZ file to a temporary location.
         func saveFile() async throws {
-            temporaryDirectory = FileManager.createTemporaryDirectory()
-            
             if document.name.isEmpty {
                 document.name = "Untitled"
             }
-            
-            temporaryDocumentURL = temporaryDirectory?.appendingPathComponent("\(document.name).kmz")
             
             try await document.save(to: temporaryDocumentURL!)
         }
