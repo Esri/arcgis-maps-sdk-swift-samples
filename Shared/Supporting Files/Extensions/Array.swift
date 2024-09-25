@@ -30,6 +30,7 @@ extension Array<String> {
     /// The JSON representation of the array.
     var jsonString: String {
         guard let data = try? JSONEncoder().encode(self) else { return "[]" }
+        // swiftlint:disable:next optional_data_string_conversion
         return String(decoding: data, as: UTF8.self)
     }
 }
