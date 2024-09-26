@@ -136,10 +136,6 @@ extension Animate3DGraphicView {
             animation.setup(displayLink: displayLink)
         }
         
-        deinit {
-            Task { await animation.displayLink?.invalidate() }
-        }
-        
         // MARK: Methods
         
         /// Monitors the camera controller's properties to update the associated text when they change.

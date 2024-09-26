@@ -128,7 +128,7 @@ extension DownloadPreplannedMapAreaView {
             await withTaskGroup(of: Void.self) { group in
                 for model in allOfflineMapModels {
                     if model.isDownloading {
-                        group.addTask { @MainActor in
+                        group.addTask { @MainActor @Sendable in
                             await model.cancelDownloading()
                         }
                     }

@@ -37,7 +37,7 @@ struct SetUpLocationDrivenGeotriggersView: View {
     private func startGeotriggerMonitors(_ geotriggerMonitors: [GeotriggerMonitor]) async throws {
         await withThrowingTaskGroup(of: Void.self) { group in
             for monitor in geotriggerMonitors {
-                group.addTask { @MainActor in
+                group.addTask { @MainActor @Sendable in
                     try await monitor.start()
                     for await newNotification in monitor.notifications where newNotification is FenceGeotriggerNotificationInfo {
                         model.handleGeotriggerNotification(newNotification as! FenceGeotriggerNotificationInfo)
