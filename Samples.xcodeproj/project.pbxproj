@@ -193,7 +193,6 @@
 		88F93CC129C3D59D0006B28E /* CreateAndEditGeometriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F93CC029C3D59C0006B28E /* CreateAndEditGeometriesView.swift */; };
 		88F93CC229C4D3480006B28E /* CreateAndEditGeometriesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 88F93CC029C3D59C0006B28E /* CreateAndEditGeometriesView.swift */; };
 		9503056E2C46ECB70091B32D /* ShowDeviceLocationUsingIndoorPositioningView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9503056D2C46ECB70091B32D /* ShowDeviceLocationUsingIndoorPositioningView.Model.swift */; };
-		950D5B0D2C2CC35D00DF2E4E /* hydrography in Resources */ = {isa = PBXBuildFile; fileRef = 950D5B0C2C2CC35D00DF2E4E /* hydrography */; settings = {ASSET_TAGS = (AddEncExchangeSet, ); }; };
 		9529D1942C01676200B5C1A3 /* SelectFeaturesInSceneLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 954AEDED2C01332600265114 /* SelectFeaturesInSceneLayerView.swift */; };
 		9537AFB42C2208B5000923C5 /* AddENCExchangeSetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9537AFB32C2208B5000923C5 /* AddENCExchangeSetView.swift */; };
 		9537AFD72C220EF0000923C5 /* ExchangeSetwithoutUpdates in Resources */ = {isa = PBXBuildFile; fileRef = 9537AFD62C220EF0000923C5 /* ExchangeSetwithoutUpdates */; settings = {ASSET_TAGS = (AddEncExchangeSet, ); }; };
@@ -278,6 +277,7 @@
 		D734FA0C2A183A5B00246D7E /* SetMaxExtentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D734FA092A183A5B00246D7E /* SetMaxExtentView.swift */; };
 		D7352F8E2BD992C40013FFEF /* MonitorChangesToDrawStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7352F8A2BD992C40013FFEF /* MonitorChangesToDrawStatusView.swift */; };
 		D7352F912BD992E40013FFEF /* MonitorChangesToDrawStatusView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7352F8A2BD992C40013FFEF /* MonitorChangesToDrawStatusView.swift */; };
+		D73571D72CB613220046A433 /* hydrography in Resources */ = {isa = PBXBuildFile; fileRef = D73571D62CB6131E0046A433 /* hydrography */; };
 		D73723762AF5877500846884 /* FindRouteInMobileMapPackageView.Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73723742AF5877500846884 /* FindRouteInMobileMapPackageView.Models.swift */; };
 		D73723792AF5ADD800846884 /* FindRouteInMobileMapPackageView.MobileMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73723782AF5ADD700846884 /* FindRouteInMobileMapPackageView.MobileMapView.swift */; };
 		D737237A2AF5AE1600846884 /* FindRouteInMobileMapPackageView.MobileMapView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D73723782AF5ADD700846884 /* FindRouteInMobileMapPackageView.MobileMapView.swift */; };
@@ -862,7 +862,6 @@
 		883C121429C9136600062FF9 /* DownloadPreplannedMapAreaView.MapPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadPreplannedMapAreaView.MapPicker.swift; sourceTree = "<group>"; };
 		88F93CC029C3D59C0006B28E /* CreateAndEditGeometriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAndEditGeometriesView.swift; sourceTree = "<group>"; };
 		9503056D2C46ECB70091B32D /* ShowDeviceLocationUsingIndoorPositioningView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowDeviceLocationUsingIndoorPositioningView.Model.swift; sourceTree = "<group>"; };
-		950D5B0C2C2CC35D00DF2E4E /* hydrography */ = {isa = PBXFileReference; lastKnownFileType = folder; path = hydrography; sourceTree = "<group>"; };
 		9537AFB32C2208B5000923C5 /* AddENCExchangeSetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddENCExchangeSetView.swift; sourceTree = "<group>"; };
 		9537AFD62C220EF0000923C5 /* ExchangeSetwithoutUpdates */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExchangeSetwithoutUpdates; sourceTree = "<group>"; };
 		9547085B2C3C719800CA8579 /* EditFeatureAttachmentsView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFeatureAttachmentsView.Model.swift; sourceTree = "<group>"; };
@@ -908,6 +907,7 @@
 		D733CA152BED980D00FBDE4C /* EditAndSyncFeaturesWithFeatureServiceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditAndSyncFeaturesWithFeatureServiceView.swift; sourceTree = "<group>"; };
 		D734FA092A183A5B00246D7E /* SetMaxExtentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetMaxExtentView.swift; sourceTree = "<group>"; };
 		D7352F8A2BD992C40013FFEF /* MonitorChangesToDrawStatusView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonitorChangesToDrawStatusView.swift; sourceTree = "<group>"; };
+		D73571D62CB6131E0046A433 /* hydrography */ = {isa = PBXFileReference; lastKnownFileType = folder; path = hydrography; sourceTree = "<group>"; };
 		D73723742AF5877500846884 /* FindRouteInMobileMapPackageView.Models.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindRouteInMobileMapPackageView.Models.swift; sourceTree = "<group>"; };
 		D73723782AF5ADD700846884 /* FindRouteInMobileMapPackageView.MobileMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindRouteInMobileMapPackageView.MobileMapView.swift; sourceTree = "<group>"; };
 		D73E61922BDAEE6600457932 /* MatchViewpointOfGeoViewsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchViewpointOfGeoViewsView.swift; sourceTree = "<group>"; };
@@ -1410,6 +1410,7 @@
 				1C965C4629DBA879002F8536 /* 681d6f7694644709a7c830ec57a2d72b */,
 				004A2B962BED454300C297CE /* 740b663bff5e4198b9b6674af93f638a */,
 				D7CE9F9C2AE2F585008F7A5F /* 3424d442ebe54f3cbf34462382d3aebe */,
+				D735717F2CB613100046A433 /* 5028bf3513ff4c38b28822d010a4937c */,
 				D7C16D232AC5FEA600689E89 /* 12509ffdc684437f8f2656b0129d2c13 */,
 				D7BB3DD12C5D781800FFCD56 /* 43809fd639f242fd8045ecbafd61a579 */,
 				10D321912BDB187400B39B1B /* 85282f2aaa2844d8935cdb8722e22a93 */,
@@ -1418,7 +1419,6 @@
 				792222DB2A81AA5D00619FFE /* a8a942c228af4fac96baa78ad60f511f */,
 				D7464F202ACE0910007FEE88 /* b5f977c78ec74b3a8857ca86d1d9b318 */,
 				D7F8C03F2B605E720072BFA7 /* b5106355f1634b8996e634c04b6a930a */,
-				950D5AF62C2CC2F100DF2E4E /* c16f3845b9cc4b93a908d87d28823afd */,
 				00D4EF8128638BF100B9CC30 /* cb1b20748a9f4d128dad8a87244e3e37 */,
 				4D126D7629CA3B3F00CFB7A7 /* d5bad9f4fee9483791e405880fb466da */,
 				D77572AC2A295DC100F490CD /* d1453556d91e46dea191c20c398b82cd */,
@@ -1795,14 +1795,6 @@
 			path = "Create and edit geometries";
 			sourceTree = "<group>";
 		};
-		950D5AF62C2CC2F100DF2E4E /* c16f3845b9cc4b93a908d87d28823afd */ = {
-			isa = PBXGroup;
-			children = (
-				950D5B0C2C2CC35D00DF2E4E /* hydrography */,
-			);
-			path = c16f3845b9cc4b93a908d87d28823afd;
-			sourceTree = "<group>";
-		};
 		9537AFB52C2208CD000923C5 /* Add ENC exchange set */ = {
 			isa = PBXGroup;
 			children = (
@@ -2063,6 +2055,14 @@
 				D7352F8A2BD992C40013FFEF /* MonitorChangesToDrawStatusView.swift */,
 			);
 			path = "Monitor changes to draw status";
+			sourceTree = "<group>";
+		};
+		D735717F2CB613100046A433 /* 5028bf3513ff4c38b28822d010a4937c */ = {
+			isa = PBXGroup;
+			children = (
+				D73571D62CB6131E0046A433 /* hydrography */,
+			);
+			path = 5028bf3513ff4c38b28822d010a4937c;
 			sourceTree = "<group>";
 		};
 		D73E61952BDAEE6600457932 /* Match viewpoint of geo views */ = {
@@ -2991,7 +2991,6 @@
 				E041AC1E288076A60056009B /* info.css in Resources */,
 				D7CE9F9B2AE2F575008F7A5F /* streetmap_SD.tpkx in Resources */,
 				D721EEA82ABDFF550040BE46 /* LothianRiversAnno.mmpk in Resources */,
-				950D5B0D2C2CC35D00DF2E4E /* hydrography in Resources */,
 				D7C16D1F2AC5FE8200689E89 /* Pyrenees.csv in Resources */,
 				E041AC1A287F54580056009B /* highlight.min.js in Resources */,
 				D7497F402AC4BA4100167AD2 /* Edinburgh_Pylon_Dimensions.mmpk in Resources */,
@@ -3014,6 +3013,7 @@
 				D701D72C2A37C7F7006FF0C8 /* bradley_low_3ds in Resources */,
 				00D4EF9A28638BF100B9CC30 /* AuroraCO.gpkg in Resources */,
 				D7C16D282AC5FEB700689E89 /* Hawaii.csv in Resources */,
+				D73571D72CB613220046A433 /* hydrography in Resources */,
 				D7D1F3532ADDBE5D009CE2DA /* philadelphia.mspk in Resources */,
 				004A2B9D2BED455B00C297CE /* canyonlands in Resources */,
 				798C2DA72AFC505600EE7E97 /* PrivacyInfo.xcprivacy in Resources */,
