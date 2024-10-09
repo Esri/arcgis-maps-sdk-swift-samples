@@ -277,7 +277,7 @@
 		D734FA0C2A183A5B00246D7E /* SetMaxExtentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D734FA092A183A5B00246D7E /* SetMaxExtentView.swift */; };
 		D7352F8E2BD992C40013FFEF /* MonitorChangesToDrawStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7352F8A2BD992C40013FFEF /* MonitorChangesToDrawStatusView.swift */; };
 		D7352F912BD992E40013FFEF /* MonitorChangesToDrawStatusView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7352F8A2BD992C40013FFEF /* MonitorChangesToDrawStatusView.swift */; };
-		D73571D72CB613220046A433 /* hydrography in Resources */ = {isa = PBXBuildFile; fileRef = D73571D62CB6131E0046A433 /* hydrography */; };
+		D73571D72CB613220046A433 /* hydrography in Resources */ = {isa = PBXBuildFile; fileRef = D73571D62CB6131E0046A433 /* hydrography */; settings = {ASSET_TAGS = (AddEncExchangeSet, ); }; };
 		D73723762AF5877500846884 /* FindRouteInMobileMapPackageView.Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73723742AF5877500846884 /* FindRouteInMobileMapPackageView.Models.swift */; };
 		D73723792AF5ADD800846884 /* FindRouteInMobileMapPackageView.MobileMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73723782AF5ADD700846884 /* FindRouteInMobileMapPackageView.MobileMapView.swift */; };
 		D737237A2AF5AE1600846884 /* FindRouteInMobileMapPackageView.MobileMapView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D73723782AF5ADD700846884 /* FindRouteInMobileMapPackageView.MobileMapView.swift */; };
