@@ -1,0 +1,20 @@
+{
+    "category": "Scenes",
+    "description": "Display local 3D point cloud data.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "3D",
+        "lidar",
+        "point cloud",
+        "PointCloudLayer"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "PointCloudLayer"
+    ],
+    "snippets": [
+        "AddPointCloudLayerFromFileView.swift"
+    ],
+    "title": "Add point cloud layer from file"
+}

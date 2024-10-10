@@ -426,6 +426,8 @@
 		D7C97B562B75C10C0097CDA1 /* ValidateUtilityNetworkTopologyView.Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C97B552B75C10C0097CDA1 /* ValidateUtilityNetworkTopologyView.Views.swift */; };
 		D7CC33FF2A31475C00198EDF /* ShowLineOfSightBetweenPointsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CC33FD2A31475C00198EDF /* ShowLineOfSightBetweenPointsView.swift */; };
 		D7CC34002A3147FF00198EDF /* ShowLineOfSightBetweenPointsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7CC33FD2A31475C00198EDF /* ShowLineOfSightBetweenPointsView.swift */; };
+		D7CDD38B2CB86F0A00DE9766 /* AddPointCloudLayerFromFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CDD3852CB86F0A00DE9766 /* AddPointCloudLayerFromFileView.swift */; };
+		D7CDD38C2CB86F4A00DE9766 /* AddPointCloudLayerFromFileView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7CDD3852CB86F0A00DE9766 /* AddPointCloudLayerFromFileView.swift */; };
 		D7CE9F9B2AE2F575008F7A5F /* streetmap_SD.tpkx in Resources */ = {isa = PBXBuildFile; fileRef = D7CE9F9A2AE2F575008F7A5F /* streetmap_SD.tpkx */; settings = {ASSET_TAGS = (GeocodeOffline, ); }; };
 		D7CE9FA32AE2F595008F7A5F /* san-diego-eagle-locator in Resources */ = {isa = PBXBuildFile; fileRef = D7CE9FA22AE2F595008F7A5F /* san-diego-eagle-locator */; settings = {ASSET_TAGS = (GeocodeOffline, ); }; };
 		D7D1F3532ADDBE5D009CE2DA /* philadelphia.mspk in Resources */ = {isa = PBXBuildFile; fileRef = D7D1F3522ADDBE5D009CE2DA /* philadelphia.mspk */; settings = {ASSET_TAGS = (AugmentRealityToShowTabletopScene, DisplaySceneFromMobileScenePackage, ); }; };
@@ -542,6 +544,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				D7CDD38C2CB86F4A00DE9766 /* AddPointCloudLayerFromFileView.swift in Copy Source Code Files */,
 				95E0DBCA2C503E2500224A82 /* ShowDeviceLocationUsingIndoorPositioningView.swift in Copy Source Code Files */,
 				95E0DBCB2C503E2500224A82 /* ShowDeviceLocationUsingIndoorPositioningView.Model.swift in Copy Source Code Files */,
 				D71C90A52C6C252F0018C63E /* StyleGeometryTypesWithSymbolsView.Views.swift in Copy Source Code Files */,
@@ -990,6 +993,7 @@
 		D7C6420B2B4F47E10042B8F7 /* SearchForWebMapView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchForWebMapView.Model.swift; sourceTree = "<group>"; };
 		D7C97B552B75C10C0097CDA1 /* ValidateUtilityNetworkTopologyView.Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValidateUtilityNetworkTopologyView.Views.swift; sourceTree = "<group>"; };
 		D7CC33FD2A31475C00198EDF /* ShowLineOfSightBetweenPointsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowLineOfSightBetweenPointsView.swift; sourceTree = "<group>"; };
+		D7CDD3852CB86F0A00DE9766 /* AddPointCloudLayerFromFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPointCloudLayerFromFileView.swift; sourceTree = "<group>"; };
 		D7CE9F9A2AE2F575008F7A5F /* streetmap_SD.tpkx */ = {isa = PBXFileReference; lastKnownFileType = file; path = streetmap_SD.tpkx; sourceTree = "<group>"; };
 		D7CE9FA22AE2F595008F7A5F /* san-diego-eagle-locator */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "san-diego-eagle-locator"; sourceTree = "<group>"; };
 		D7D1F3522ADDBE5D009CE2DA /* philadelphia.mspk */ = {isa = PBXFileReference; lastKnownFileType = file; path = philadelphia.mspk; sourceTree = "<group>"; };
@@ -1161,6 +1165,7 @@
 				9537AFB52C2208CD000923C5 /* Add ENC exchange set */,
 				00D4EF7E2863840D00B9CC30 /* Add feature layers */,
 				D7F8C0342B60564D0072BFA7 /* Add features with contingent values */,
+				D7CDD3882CB86F0A00DE9766 /* Add point cloud layer from file */,
 				F19A316128906F0D003B7EF9 /* Add raster from file */,
 				955271622C0E6750009B1ED4 /* Add raster from service */,
 				E066DD3E28610F3F004D3D5B /* Add scene layer from service */,
@@ -2560,6 +2565,14 @@
 			path = "Show line of sight between points";
 			sourceTree = "<group>";
 		};
+		D7CDD3882CB86F0A00DE9766 /* Add point cloud layer from file */ = {
+			isa = PBXGroup;
+			children = (
+				D7CDD3852CB86F0A00DE9766 /* AddPointCloudLayerFromFileView.swift */,
+			);
+			path = "Add point cloud layer from file";
+			sourceTree = "<group>";
+		};
 		D7CE9F992AE2F575008F7A5F /* 22c3083d4fa74e3e9b25adfc9f8c0496 */ = {
 			isa = PBXGroup;
 			children = (
@@ -3145,6 +3158,7 @@
 				1C3B7DC82A5F64FC00907443 /* AnalyzeNetworkWithSubnetworkTraceView.Model.swift in Sources */,
 				D752D9402A39154C003EB25E /* ManageOperationalLayersView.swift in Sources */,
 				D7ABA2F92A32579C0021822B /* MeasureDistanceInSceneView.swift in Sources */,
+				D7CDD38B2CB86F0A00DE9766 /* AddPointCloudLayerFromFileView.swift in Sources */,
 				D7BA38912BFBC476009954F5 /* EditFeaturesWithFeatureLinkedAnnotationView.Model.swift in Sources */,
 				10D321962BDB1CB500B39B1B /* GenerateOfflineMapWithLocalBasemapView.swift in Sources */,
 				D73723792AF5ADD800846884 /* FindRouteInMobileMapPackageView.MobileMapView.swift in Sources */,
