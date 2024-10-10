@@ -428,6 +428,7 @@
 		D7CC34002A3147FF00198EDF /* ShowLineOfSightBetweenPointsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7CC33FD2A31475C00198EDF /* ShowLineOfSightBetweenPointsView.swift */; };
 		D7CDD38B2CB86F0A00DE9766 /* AddPointCloudLayerFromFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CDD3852CB86F0A00DE9766 /* AddPointCloudLayerFromFileView.swift */; };
 		D7CDD38C2CB86F4A00DE9766 /* AddPointCloudLayerFromFileView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7CDD3852CB86F0A00DE9766 /* AddPointCloudLayerFromFileView.swift */; };
+		D7CDD38F2CB872EA00DE9766 /* sandiego-north-balboa-pointcloud.slpk in Resources */ = {isa = PBXBuildFile; fileRef = D7CDD38D2CB872EA00DE9766 /* sandiego-north-balboa-pointcloud.slpk */; settings = {ASSET_TAGS = (AddPointCloudLayerFromFile, ); }; };
 		D7CE9F9B2AE2F575008F7A5F /* streetmap_SD.tpkx in Resources */ = {isa = PBXBuildFile; fileRef = D7CE9F9A2AE2F575008F7A5F /* streetmap_SD.tpkx */; settings = {ASSET_TAGS = (GeocodeOffline, ); }; };
 		D7CE9FA32AE2F595008F7A5F /* san-diego-eagle-locator in Resources */ = {isa = PBXBuildFile; fileRef = D7CE9FA22AE2F595008F7A5F /* san-diego-eagle-locator */; settings = {ASSET_TAGS = (GeocodeOffline, ); }; };
 		D7D1F3532ADDBE5D009CE2DA /* philadelphia.mspk in Resources */ = {isa = PBXBuildFile; fileRef = D7D1F3522ADDBE5D009CE2DA /* philadelphia.mspk */; settings = {ASSET_TAGS = (AugmentRealityToShowTabletopScene, DisplaySceneFromMobileScenePackage, ); }; };
@@ -994,6 +995,7 @@
 		D7C97B552B75C10C0097CDA1 /* ValidateUtilityNetworkTopologyView.Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValidateUtilityNetworkTopologyView.Views.swift; sourceTree = "<group>"; };
 		D7CC33FD2A31475C00198EDF /* ShowLineOfSightBetweenPointsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowLineOfSightBetweenPointsView.swift; sourceTree = "<group>"; };
 		D7CDD3852CB86F0A00DE9766 /* AddPointCloudLayerFromFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPointCloudLayerFromFileView.swift; sourceTree = "<group>"; };
+		D7CDD38D2CB872EA00DE9766 /* sandiego-north-balboa-pointcloud.slpk */ = {isa = PBXFileReference; lastKnownFileType = file; path = "sandiego-north-balboa-pointcloud.slpk"; sourceTree = "<group>"; };
 		D7CE9F9A2AE2F575008F7A5F /* streetmap_SD.tpkx */ = {isa = PBXFileReference; lastKnownFileType = file; path = streetmap_SD.tpkx; sourceTree = "<group>"; };
 		D7CE9FA22AE2F595008F7A5F /* san-diego-eagle-locator */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "san-diego-eagle-locator"; sourceTree = "<group>"; };
 		D7D1F3522ADDBE5D009CE2DA /* philadelphia.mspk */ = {isa = PBXFileReference; lastKnownFileType = file; path = philadelphia.mspk; sourceTree = "<group>"; };
@@ -1408,6 +1410,7 @@
 				9537AFC82C220ECB000923C5 /* 9d2987a825c646468b3ce7512fb76e2d */,
 				00D4EF8328638BF100B9CC30 /* 15a7cbd3af1e47cfa5d2c6b93dc44fc2 */,
 				D7CE9F992AE2F575008F7A5F /* 22c3083d4fa74e3e9b25adfc9f8c0496 */,
+				D7CDD38E2CB872EA00DE9766 /* 34da965ca51d4c68aa9b3a38edb29e00 */,
 				00D4EF8E28638BF100B9CC30 /* 68ec42517cdd439e81b036210483e8e7 */,
 				D762AF642BF6A96100ECE3C7 /* 74c0c9fa80f4498c9739cc42531e9948 */,
 				D76000B52AF19FC900B3084D /* 260eb6535c824209964cf281766ebe43 */,
@@ -2573,6 +2576,14 @@
 			path = "Add point cloud layer from file";
 			sourceTree = "<group>";
 		};
+		D7CDD38E2CB872EA00DE9766 /* 34da965ca51d4c68aa9b3a38edb29e00 */ = {
+			isa = PBXGroup;
+			children = (
+				D7CDD38D2CB872EA00DE9766 /* sandiego-north-balboa-pointcloud.slpk */,
+			);
+			path = 34da965ca51d4c68aa9b3a38edb29e00;
+			sourceTree = "<group>";
+		};
 		D7CE9F992AE2F575008F7A5F /* 22c3083d4fa74e3e9b25adfc9f8c0496 */ = {
 			isa = PBXGroup;
 			children = (
@@ -2937,6 +2948,7 @@
 					AddEncExchangeSet,
 					AddFeatureLayers,
 					AddFeaturesWithContingentValues,
+					AddPointCloudLayerFromFile,
 					AddRasterFromFile,
 					Animate3DGraphic,
 					AnimateImagesWithImageOverlay,
@@ -3025,6 +3037,7 @@
 				E041AC20288077B90056009B /* xcode.css in Resources */,
 				00D4EF9028638BF100B9CC30 /* LA_Trails.geodatabase in Resources */,
 				D701D72C2A37C7F7006FF0C8 /* bradley_low_3ds in Resources */,
+				D7CDD38F2CB872EA00DE9766 /* sandiego-north-balboa-pointcloud.slpk in Resources */,
 				00D4EF9A28638BF100B9CC30 /* AuroraCO.gpkg in Resources */,
 				D7C16D282AC5FEB700689E89 /* Hawaii.csv in Resources */,
 				D7D1F3532ADDBE5D009CE2DA /* philadelphia.mspk in Resources */,

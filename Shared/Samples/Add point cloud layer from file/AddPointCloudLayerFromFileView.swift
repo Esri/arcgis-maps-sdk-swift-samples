@@ -23,6 +23,12 @@ struct AddPointCloudLayerFromFileView: View {
     }
 }
 
-#Preview {
-    AddPointCloudLayerFromFileView()
+private extension URL {
+    /// The URL to the local point cloud scene layer package file.
+    static var sanDiegoNorthBalboaPointCloud: URL {
+        Bundle.main.url(
+            forResource: "sandiego-north-balboa-pointcloud",
+            withExtension: "slpk"
+        )!
+    }
 }
