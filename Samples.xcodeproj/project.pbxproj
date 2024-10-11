@@ -246,6 +246,7 @@
 		D713717C2BD88EF800EB2F86 /* MonitorChangesToLayerViewStateView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D71371752BD88ECC00EB2F86 /* MonitorChangesToLayerViewStateView.swift */; };
 		D713C6D72CB990600073AA72 /* AddKMLLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D713C6D12CB990600073AA72 /* AddKMLLayerView.swift */; };
 		D713C6D82CB990800073AA72 /* AddKMLLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D713C6D12CB990600073AA72 /* AddKMLLayerView.swift */; };
+		D713C6F72CB9B9A60073AA72 /* US_State_Capitals.kml in Resources */ = {isa = PBXBuildFile; fileRef = D713C6F52CB9B9A60073AA72 /* US_State_Capitals.kml */; settings = {ASSET_TAGS = (AddKmlLayer, ); }; };
 		D718A1E72B570F7500447087 /* OrbitCameraAroundObjectView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D718A1E62B570F7500447087 /* OrbitCameraAroundObjectView.Model.swift */; };
 		D718A1E82B571C9100447087 /* OrbitCameraAroundObjectView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D718A1E62B570F7500447087 /* OrbitCameraAroundObjectView.Model.swift */; };
 		D718A1ED2B575FD900447087 /* ManageBookmarksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D718A1EA2B575FD900447087 /* ManageBookmarksView.swift */; };
@@ -903,6 +904,7 @@
 		D7114A0C2BDC6A3300FA68CA /* EditWithBranchVersioningView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditWithBranchVersioningView.Model.swift; sourceTree = "<group>"; };
 		D71371752BD88ECC00EB2F86 /* MonitorChangesToLayerViewStateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonitorChangesToLayerViewStateView.swift; sourceTree = "<group>"; };
 		D713C6D12CB990600073AA72 /* AddKMLLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddKMLLayerView.swift; sourceTree = "<group>"; };
+		D713C6F52CB9B9A60073AA72 /* US_State_Capitals.kml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = US_State_Capitals.kml; sourceTree = "<group>"; };
 		D718A1E62B570F7500447087 /* OrbitCameraAroundObjectView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrbitCameraAroundObjectView.Model.swift; sourceTree = "<group>"; };
 		D718A1EA2B575FD900447087 /* ManageBookmarksView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageBookmarksView.swift; sourceTree = "<group>"; };
 		D71C5F632AAA7A88006599FD /* CreateSymbolStylesFromWebStylesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateSymbolStylesFromWebStylesView.swift; sourceTree = "<group>"; };
@@ -1430,6 +1432,7 @@
 				D762AF642BF6A96100ECE3C7 /* 74c0c9fa80f4498c9739cc42531e9948 */,
 				D76000B52AF19FC900B3084D /* 260eb6535c824209964cf281766ebe43 */,
 				D7C16D202AC5FE9800689E89 /* 290f0c571c394461a8b58b6775d0bd63 */,
+				D713C6F62CB9B9A60073AA72 /* 324e4742820e46cfbe5029ff2c32cb1f */,
 				1C965C4629DBA879002F8536 /* 681d6f7694644709a7c830ec57a2d72b */,
 				004A2B962BED454300C297CE /* 740b663bff5e4198b9b6674af93f638a */,
 				D7CE9F9C2AE2F585008F7A5F /* 3424d442ebe54f3cbf34462382d3aebe */,
@@ -1988,6 +1991,14 @@
 				D713C6D12CB990600073AA72 /* AddKMLLayerView.swift */,
 			);
 			path = "Add KML layer";
+			sourceTree = "<group>";
+		};
+		D713C6F62CB9B9A60073AA72 /* 324e4742820e46cfbe5029ff2c32cb1f */ = {
+			isa = PBXGroup;
+			children = (
+				D713C6F52CB9B9A60073AA72 /* US_State_Capitals.kml */,
+			);
+			path = 324e4742820e46cfbe5029ff2c32cb1f;
 			sourceTree = "<group>";
 		};
 		D718A1E92B575FD900447087 /* Manage bookmarks */ = {
@@ -2988,6 +2999,7 @@
 					AddFeatureLayers,
 					AddFeaturesWithContingentValues,
 					AddPointCloudLayerFromFile,
+					AddKmlLayer,
 					AddRasterFromFile,
 					Animate3DGraphic,
 					AnimateImagesWithImageOverlay,
@@ -3064,6 +3076,7 @@
 				00C94A0D28B53DE1004E42D9 /* raster-file in Resources */,
 				D7464F2B2ACE0965007FEE88 /* SA_EVI_8Day_03May20 in Resources */,
 				004FE87129DF5D8700075217 /* Bristol in Resources */,
+				D713C6F72CB9B9A60073AA72 /* US_State_Capitals.kml in Resources */,
 				D7C16D252AC5FEA600689E89 /* Snowdon.csv in Resources */,
 				D73F8CF42AB1089900CD39DA /* Restaurant.stylx in Resources */,
 				D7BB3DD22C5D781800FFCD56 /* SaveTheBay.geodatabase in Resources */,

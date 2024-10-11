@@ -22,7 +22,3 @@ struct AddKMLLayerView: View {
         MapView(map: map)
     }
 }
-
-#Preview {
-    AddKMLLayerView()
-}
