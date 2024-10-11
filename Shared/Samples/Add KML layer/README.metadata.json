@@ -1,0 +1,23 @@
+{
+    "category": "Layers",
+    "description": "Display KML from a URL, portal item, or local KML file.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "KML",
+        "KMZ",
+        "OGC",
+        "keyhole",
+        "KmlDataset",
+        "KmlLayer"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "KmlDataset",
+        "KmlLayer"
+    ],
+    "snippets": [
+        "AddKMLLayerView.swift"
+    ],
+    "title": "Add KML layer"
+}
