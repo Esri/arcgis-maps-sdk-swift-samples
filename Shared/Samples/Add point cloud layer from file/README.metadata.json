@@ -2,7 +2,9 @@
     "category": "Scenes",
     "description": "Display local 3D point cloud data.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "add-point-cloud-layer-from-file.png"
+    ],
     "keywords": [
         "3D",
         "lidar",
