@@ -2,7 +2,9 @@
     "category": "Layers",
     "description": "Display a layer from an ArcGIS map image layer service.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "add-map-image-layer.png"
+    ],
     "keywords": [
         "display",
         "image",
