@@ -2,7 +2,7 @@
 
 Display KML from a URL, portal item, or local KML file.
 
-![Image of add KML layer](AddKmlLayer.jpg)
+![Screenshot of Add KML layer sample](add-kml-layer.png)
 
 ## Use case
 
@@ -10,33 +10,31 @@ Keyhole Markup Language (KML) is a data format used by Google Earth. KML is popu
 
 ## How to use the sample
 
-Use the drop-down menu to select a source. A KML file from that source will be loaded and displayed in the map.
+Use the picker to select a source. A KML layer created from that source will then be displayed in the map.
 
 ## How it works
 
-1. To create a KML layer from a URL, create a `KmlDataset` using the URL to the KML file. Then pass the dataset to the `KmlLayer` constructor.
-2. To create a KML layer from a portal item, construct a `PortalItem` with a `Portal` and the KML portal item ID. Pass the portal item to the `KmlLayer` constructor.
-3. To create a KML layer from a local file, create a `KmlDataset` using the absolute file path to the local KML file. Then pass the dataset to the `KmlLayer` constructor.
-4. Add the layer as an operational layer to the map with `map.getOperationalLayers().add(kmlLayer)`.
+1. To create a KML layer from a URL, create a `KMLDataset` with the URL to the KML file. Then, create a `KMLLayer` using the dataset.
+2. To create a KML layer from a portal item, create a `PortalItem` with a `Portal` and the KML portal item ID. Then, create a `KMLLayer` using the portal item.
+3. To create a KML layer from a local file, create a `KMLDataset` using the absolute file path to the local KML file. Then, create a `KMLLayer` using the dataset.
+4. Add the layer to the map with `addOperationalLayer(_:)`.
 
 ## Relevant API
 
-* KmlDataset
-* KmlLayer
+* KMLDataset
+* KMLLayer
 
 ## Offline data
 
-Link | Local Location
----------|-------|
-|[US State Capitals](https://www.arcgis.com/home/item.html?id=324e4742820e46cfbe5029ff2c32cb1f)| `<userhome>`/ArcGIS/Runtime/Data/kml/US_State_Capitals.kml |
+This sample uses the [US State Capitals](https://www.arcgis.com/home/item.html?id=324e4742820e46cfbe5029ff2c32cb1f) KML file. It is downloaded from ArcGIS Online automatically.
 
 ## About the data
 
 This sample displays three different KML files:
 
-* From URL - this is a map of the significant weather outlook produced by NOAA/NWS. It uses KML network links to always show the latest data.
-* From local file - this is a map of U.S. state capitals. It doesn't define an icon, so the default pushpin is used for the points.
-* From portal item - this is a map of U.S. states.
+* From URL: This is a map of the significant weather outlook produced by NOAA/NWS. It uses KML network links to always show the latest data.
+* From local file: This is a map of U.S. state capitals. It doesn't define an icon, so the default pushpin is used for the points.
+* From portal item: This is a map of U.S. states.
 
 ## Tags
 
