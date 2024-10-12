@@ -16,9 +16,21 @@ import ArcGIS
 import SwiftUI
 
 struct AddMapImageLayerView: View {
-    @State private var map = Map(basemapStyle: .arcGISTopographic)
+    /// A map with a map image layer of world elevations.
+    @State private var map: Map = {
+        // Creates the map image layer using a web URL.
+        let url = URL(string: "https://sampleserver5.arcgisonline.com/arcgis/rest/services/Elevation/WorldElevations/MapServer")!
+        let mapImageLayer = ArcGISMapImageLayer(url: url)
+        
+        // Creates the map and adds the layer to the map's operational layers.
+        let map = Map()
+        map.addOperationalLayer(mapImageLayer)
+        
+        return map
+    }()
     
     var body: some View {
+        // Displays the map using a map view.
         MapView(map: map)
     }
 }
