@@ -414,6 +414,7 @@
 		D7BA8C442B2A4DAA00018633 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BA8C432B2A4DAA00018633 /* Array.swift */; };
 		D7BA8C462B2A8ACA00018633 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BA8C452B2A8ACA00018633 /* String.swift */; };
 		D7BB3DD22C5D781800FFCD56 /* SaveTheBay.geodatabase in Resources */ = {isa = PBXBuildFile; fileRef = D7BB3DD02C5D781800FFCD56 /* SaveTheBay.geodatabase */; settings = {ASSET_TAGS = (EditGeodatabaseWithTransactions, ); }; };
+		D7BEBAA02CBD9CCA00F882E7 /* MontereyElevation.dt2 in Resources */ = {isa = PBXBuildFile; fileRef = D7BEBA9E2CBD9CCA00F882E7 /* MontereyElevation.dt2 */; settings = {ASSET_TAGS = (AddElevationSourceFromRaster, ); }; };
 		D7C16D1B2AC5F95300689E89 /* Animate3DGraphicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C16D1A2AC5F95300689E89 /* Animate3DGraphicView.swift */; };
 		D7C16D1C2AC5F96900689E89 /* Animate3DGraphicView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7C16D1A2AC5F95300689E89 /* Animate3DGraphicView.swift */; };
 		D7C16D1F2AC5FE8200689E89 /* Pyrenees.csv in Resources */ = {isa = PBXBuildFile; fileRef = D7C16D1E2AC5FE8200689E89 /* Pyrenees.csv */; settings = {ASSET_TAGS = (Animate3DGraphic, ); }; };
@@ -991,6 +992,7 @@
 		D7BA8C432B2A4DAA00018633 /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		D7BA8C452B2A8ACA00018633 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		D7BB3DD02C5D781800FFCD56 /* SaveTheBay.geodatabase */ = {isa = PBXFileReference; lastKnownFileType = file; path = SaveTheBay.geodatabase; sourceTree = "<group>"; };
+		D7BEBA9E2CBD9CCA00F882E7 /* MontereyElevation.dt2 */ = {isa = PBXFileReference; lastKnownFileType = text; path = MontereyElevation.dt2; sourceTree = "<group>"; };
 		D7C16D1A2AC5F95300689E89 /* Animate3DGraphicView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animate3DGraphicView.swift; sourceTree = "<group>"; };
 		D7C16D1E2AC5FE8200689E89 /* Pyrenees.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Pyrenees.csv; sourceTree = "<group>"; };
 		D7C16D212AC5FE9800689E89 /* GrandCanyon.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = GrandCanyon.csv; sourceTree = "<group>"; };
@@ -1433,6 +1435,7 @@
 				D7BB3DD12C5D781800FFCD56 /* 43809fd639f242fd8045ecbafd61a579 */,
 				10D321912BDB187400B39B1B /* 85282f2aaa2844d8935cdb8722e22a93 */,
 				D73F8CF22AB1089900CD39DA /* 751138a2e0844e06853522d54103222a */,
+				D7BEBA9F2CBD9CCA00F882E7 /* 98092369c4ae4d549bbbd45dba993ebc */,
 				D721EEA62ABDFF550040BE46 /* 174150279af74a2ba6f8b87a567f480b */,
 				792222DB2A81AA5D00619FFE /* a8a942c228af4fac96baa78ad60f511f */,
 				D7464F202ACE0910007FEE88 /* b5f977c78ec74b3a8857ca86d1d9b318 */,
@@ -2520,6 +2523,14 @@
 			path = 43809fd639f242fd8045ecbafd61a579;
 			sourceTree = "<group>";
 		};
+		D7BEBA9F2CBD9CCA00F882E7 /* 98092369c4ae4d549bbbd45dba993ebc */ = {
+			isa = PBXGroup;
+			children = (
+				D7BEBA9E2CBD9CCA00F882E7 /* MontereyElevation.dt2 */,
+			);
+			path = 98092369c4ae4d549bbbd45dba993ebc;
+			sourceTree = "<group>";
+		};
 		D7C16D172AC5F6C100689E89 /* Animate 3D graphic */ = {
 			isa = PBXGroup;
 			children = (
@@ -2971,6 +2982,7 @@
 				BuildIndependentTargetsInParallel = 1;
 				KnownAssetTags = (
 					AddCustomDynamicEntityDataSource,
+					AddElevationSourceFromRaster,
 					AddEncExchangeSet,
 					AddFeatureLayers,
 					AddFeaturesWithContingentValues,
@@ -3076,6 +3088,7 @@
 				00D4EFB12863CE6300B9CC30 /* ScottishWildlifeTrust_reserves in Resources */,
 				D7781D492B7EB03400E53C51 /* SanDiegoTourPath.json in Resources */,
 				D7C16D222AC5FE9800689E89 /* GrandCanyon.csv in Resources */,
+				D7BEBAA02CBD9CCA00F882E7 /* MontereyElevation.dt2 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

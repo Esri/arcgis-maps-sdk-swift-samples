@@ -23,6 +23,13 @@ struct AddElevationSourceFromRasterView: View {
     }
 }
 
+private extension URL {
+    /// The URL to the local DTED2 Raster file with elevation for Monterey, California.
+    static var montereyElevation: URL {
+        Bundle.main.url(forResource: "MontereyElevation", withExtension: "dt2")!
+    }
+}
+
 #Preview {
     AddElevationSourceFromRasterView()
 }

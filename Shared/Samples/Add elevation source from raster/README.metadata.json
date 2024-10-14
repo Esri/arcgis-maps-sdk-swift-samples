@@ -12,6 +12,9 @@
         "RasterElevationSource",
         "Surface"
     ],
+    "offline_data": [
+        "98092369c4ae4d549bbbd45dba993ebc"
+    ],
     "redirect_from": [],
     "relevant_apis": [
         "RasterElevationSource",
