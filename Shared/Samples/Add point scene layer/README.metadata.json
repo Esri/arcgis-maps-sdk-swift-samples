@@ -2,7 +2,9 @@
     "category": "Layers",
     "description": "View a point scene layer from a scene service.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "add-point-scene-layer.png"
+    ],
     "keywords": [
         "3D",
         "layers",

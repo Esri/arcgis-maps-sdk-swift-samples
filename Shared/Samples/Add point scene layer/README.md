@@ -2,7 +2,7 @@
 
 View a point scene layer from a scene service.
 
-![Image of a point scene layer](AddPointSceneLayer.png)
+![Screenshot of Add point scene layer samples](add-point-scene-layer.png)
 
 ## Use case
 
@@ -14,9 +14,9 @@ Pan around the scene and zoom in. Notice how many thousands of additional featur
 
 ## How it works
 
-1. Create a scene.
+1. Create a `Scene`.
 2. Create an `ArcGISSceneLayer` with the URL to a point scene layer service.
-3. Add the layer to the scene's operational layers collection.
+3. Add the layer to the scene's operational layers.
 
 ## Relevant API
 
