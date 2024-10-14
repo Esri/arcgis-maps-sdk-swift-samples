@@ -414,6 +414,7 @@
 		D7BB3DD22C5D781800FFCD56 /* SaveTheBay.geodatabase in Resources */ = {isa = PBXBuildFile; fileRef = D7BB3DD02C5D781800FFCD56 /* SaveTheBay.geodatabase */; settings = {ASSET_TAGS = (EditGeodatabaseWithTransactions, ); }; };
 		D7BEBAC52CBDC0F800F882E7 /* AddElevationSourceFromTilePackageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BEBABF2CBDC0F800F882E7 /* AddElevationSourceFromTilePackageView.swift */; };
 		D7BEBAC62CBDC11600F882E7 /* AddElevationSourceFromTilePackageView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7BEBABF2CBDC0F800F882E7 /* AddElevationSourceFromTilePackageView.swift */; };
+		D7BEBAC92CBDC81200F882E7 /* MontereyElevation.tpkx in Resources */ = {isa = PBXBuildFile; fileRef = D7BEBAC72CBDC81200F882E7 /* MontereyElevation.tpkx */; settings = {ASSET_TAGS = (AddElevationSourceFromTilePackage, ); }; };
 		D7C16D1B2AC5F95300689E89 /* Animate3DGraphicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C16D1A2AC5F95300689E89 /* Animate3DGraphicView.swift */; };
 		D7C16D1C2AC5F96900689E89 /* Animate3DGraphicView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7C16D1A2AC5F95300689E89 /* Animate3DGraphicView.swift */; };
 		D7C16D1F2AC5FE8200689E89 /* Pyrenees.csv in Resources */ = {isa = PBXBuildFile; fileRef = D7C16D1E2AC5FE8200689E89 /* Pyrenees.csv */; settings = {ASSET_TAGS = (Animate3DGraphic, ); }; };
@@ -991,6 +992,7 @@
 		D7BA8C452B2A8ACA00018633 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		D7BB3DD02C5D781800FFCD56 /* SaveTheBay.geodatabase */ = {isa = PBXFileReference; lastKnownFileType = file; path = SaveTheBay.geodatabase; sourceTree = "<group>"; };
 		D7BEBABF2CBDC0F800F882E7 /* AddElevationSourceFromTilePackageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddElevationSourceFromTilePackageView.swift; sourceTree = "<group>"; };
+		D7BEBAC72CBDC81200F882E7 /* MontereyElevation.tpkx */ = {isa = PBXFileReference; lastKnownFileType = file; path = MontereyElevation.tpkx; sourceTree = "<group>"; };
 		D7C16D1A2AC5F95300689E89 /* Animate3DGraphicView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animate3DGraphicView.swift; sourceTree = "<group>"; };
 		D7C16D1E2AC5FE8200689E89 /* Pyrenees.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Pyrenees.csv; sourceTree = "<group>"; };
 		D7C16D212AC5FE9800689E89 /* GrandCanyon.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = GrandCanyon.csv; sourceTree = "<group>"; };
@@ -1421,6 +1423,7 @@
 				00D4EF8328638BF100B9CC30 /* 15a7cbd3af1e47cfa5d2c6b93dc44fc2 */,
 				D7CE9F992AE2F575008F7A5F /* 22c3083d4fa74e3e9b25adfc9f8c0496 */,
 				D7CDD38E2CB872EA00DE9766 /* 34da965ca51d4c68aa9b3a38edb29e00 */,
+				D7BEBAC82CBDC81200F882E7 /* 52ca74b4ba8042b78b3c653696f34a9c */,
 				00D4EF8E28638BF100B9CC30 /* 68ec42517cdd439e81b036210483e8e7 */,
 				D762AF642BF6A96100ECE3C7 /* 74c0c9fa80f4498c9739cc42531e9948 */,
 				D76000B52AF19FC900B3084D /* 260eb6535c824209964cf281766ebe43 */,
@@ -2520,6 +2523,14 @@
 			path = "Add elevation source from tile package";
 			sourceTree = "<group>";
 		};
+		D7BEBAC82CBDC81200F882E7 /* 52ca74b4ba8042b78b3c653696f34a9c */ = {
+			isa = PBXGroup;
+			children = (
+				D7BEBAC72CBDC81200F882E7 /* MontereyElevation.tpkx */,
+			);
+			path = 52ca74b4ba8042b78b3c653696f34a9c;
+			sourceTree = "<group>";
+		};
 		D7C16D172AC5F6C100689E89 /* Animate 3D graphic */ = {
 			isa = PBXGroup;
 			children = (
@@ -2971,6 +2982,7 @@
 				BuildIndependentTargetsInParallel = 1;
 				KnownAssetTags = (
 					AddCustomDynamicEntityDataSource,
+					AddElevationSourceFromTilePackage,
 					AddEncExchangeSet,
 					AddFeatureLayers,
 					AddFeaturesWithContingentValues,
@@ -3066,6 +3078,7 @@
 				00D4EF9A28638BF100B9CC30 /* AuroraCO.gpkg in Resources */,
 				D7C16D282AC5FEB700689E89 /* Hawaii.csv in Resources */,
 				D73571D72CB613220046A433 /* hydrography in Resources */,
+				D7BEBAC92CBDC81200F882E7 /* MontereyElevation.tpkx in Resources */,
 				D7D1F3532ADDBE5D009CE2DA /* philadelphia.mspk in Resources */,
 				004A2B9D2BED455B00C297CE /* canyonlands in Resources */,
 				798C2DA72AFC505600EE7E97 /* PrivacyInfo.xcprivacy in Resources */,

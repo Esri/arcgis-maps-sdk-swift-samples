@@ -23,6 +23,13 @@ struct AddElevationSourceFromTilePackageView: View {
     }
 }
 
+private extension URL {
+    /// The URL to the local tile package file with elevation data for Monterey, California.
+    static var montereyElevationTilePackage: URL {
+        Bundle.main.url(forResource: "MontereyElevation", withExtension: "tpkx")!
+    }
+}
+
 #Preview {
     AddElevationSourceFromTilePackageView()
 }

@@ -13,6 +13,9 @@
         "ArcGISTiledElevationSource",
         "Surface"
     ],
+    "offline_data": [
+        "52ca74b4ba8042b78b3c653696f34a9c"
+    ],
     "redirect_from": [],
     "relevant_apis": [
         "ArcGISTiledElevationSource",
