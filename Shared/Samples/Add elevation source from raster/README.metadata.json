@@ -2,7 +2,9 @@
     "category": "Scenes",
     "description": "Set the terrain surface with elevation described by a raster file.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "add-elevation-source-from-raster.png"
+    ],
     "keywords": [
         "3D",
         "elevation",

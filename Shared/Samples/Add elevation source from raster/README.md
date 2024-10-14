@@ -2,7 +2,7 @@
 
 Set the terrain surface with elevation described by a raster file.
 
-![Image of add elevation source from raster](AddElevationSourceFromRaster.png)
+![Screenshot of Add elevation source from raster sample](add-elevation-source-from-raster.png)
 
 ## Use case
 
@@ -10,18 +10,22 @@ In a scene view, the terrain surface is what the basemap, operational layers, an
 
 ## How to use the sample
 
-When loaded, the sample will show a scene with a terrain surface applied. Pan and zoom to explore the scene and observe how the terrain surface allows visualizing elevation differences.
+When opened, the sample displays a scene with a terrain surface applied. Pan and zoom to explore the scene and observe how the terrain surface allows visualizing elevation differences.
 
 ## How it works
 
-1. Create an `ArcGISScene` and add it to a `SceneView`.
-2. Create a `RasterElevationSource` with a list of raster file paths.
-3. Add this source to the scene's base surface: `scene.getBaseSurface().getElevationSources().add(rasterElevationSource)`.
+1. Create a `Scene` and add it to a `SceneView`.
+2. Create a `RasterElevationSource` with an array of raster file URLs.
+3. Add the source to the scene's base surface.
 
 ## Relevant API
 
 * RasterElevationSource
 * Surface
+
+## Offline data
+
+This sample uses the [MontereyElevation](https://arcgisruntime.maps.arcgis.com/home/item.html?id=98092369c4ae4d549bbbd45dba993ebc) raster. It is downloaded from ArcGIS Online automatically.
 
 ## Additional information
 
