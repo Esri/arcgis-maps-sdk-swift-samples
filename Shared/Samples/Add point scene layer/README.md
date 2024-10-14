@@ -2,7 +2,7 @@
 
 View a point scene layer from a scene service.
 
-![Screenshot of Add point scene layer samples](add-point-scene-layer.png)
+![Screenshot of Add point scene layer sample](add-point-scene-layer.png)
 
 ## Use case
 
