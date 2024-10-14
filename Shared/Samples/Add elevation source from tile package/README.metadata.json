@@ -1,0 +1,25 @@
+{
+    "category": "Scenes",
+    "description": "Set the terrain surface with elevation described by a local tile package.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "3D",
+        "LERC",
+        "elevation",
+        "surface",
+        "terrain",
+        "tile cache",
+        "ArcGISTiledElevationSource",
+        "Surface"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "ArcGISTiledElevationSource",
+        "Surface"
+    ],
+    "snippets": [
+        "AddElevationSourceFromTilePackageView.swift"
+    ],
+    "title": "Add elevation source from tile package"
+}
