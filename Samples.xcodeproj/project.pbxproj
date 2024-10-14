@@ -437,6 +437,8 @@
 		D7DDF84E2AF43AA2004352D9 /* GeocodeOfflineView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D72C43F22AEB066D00B6157B /* GeocodeOfflineView.Model.swift */; };
 		D7DDF8532AF47C6C004352D9 /* FindRouteAroundBarriersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7DDF8502AF47C6C004352D9 /* FindRouteAroundBarriersView.swift */; };
 		D7DDF8562AF47C86004352D9 /* FindRouteAroundBarriersView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7DDF8502AF47C6C004352D9 /* FindRouteAroundBarriersView.swift */; };
+		D7DFA0EA2CBA0242007C31F2 /* AddMapImageLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7DFA0E62CBA0242007C31F2 /* AddMapImageLayerView.swift */; };
+		D7DFA0ED2CBA0260007C31F2 /* AddMapImageLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7DFA0E62CBA0242007C31F2 /* AddMapImageLayerView.swift */; };
 		D7E440D72A1ECE7D005D74DE /* CreateBuffersAroundPointsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E440D62A1ECE7D005D74DE /* CreateBuffersAroundPointsView.swift */; };
 		D7E440D82A1ECEB3005D74DE /* CreateBuffersAroundPointsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7E440D62A1ECE7D005D74DE /* CreateBuffersAroundPointsView.swift */; };
 		D7E557682A1D768800B9FB09 /* AddWMSLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E557672A1D768800B9FB09 /* AddWMSLayerView.swift */; };
@@ -545,6 +547,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				D7DFA0ED2CBA0260007C31F2 /* AddMapImageLayerView.swift in Copy Source Code Files */,
 				D7CDD38C2CB86F4A00DE9766 /* AddPointCloudLayerFromFileView.swift in Copy Source Code Files */,
 				95E0DBCA2C503E2500224A82 /* ShowDeviceLocationUsingIndoorPositioningView.swift in Copy Source Code Files */,
 				95E0DBCB2C503E2500224A82 /* ShowDeviceLocationUsingIndoorPositioningView.Model.swift in Copy Source Code Files */,
@@ -1001,6 +1004,7 @@
 		D7D1F3522ADDBE5D009CE2DA /* philadelphia.mspk */ = {isa = PBXFileReference; lastKnownFileType = file; path = philadelphia.mspk; sourceTree = "<group>"; };
 		D7D9FCF22BF2CC8600F972A2 /* FilterByDefinitionExpressionOrDisplayFilterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterByDefinitionExpressionOrDisplayFilterView.swift; sourceTree = "<group>"; };
 		D7DDF8502AF47C6C004352D9 /* FindRouteAroundBarriersView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindRouteAroundBarriersView.swift; sourceTree = "<group>"; };
+		D7DFA0E62CBA0242007C31F2 /* AddMapImageLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMapImageLayerView.swift; sourceTree = "<group>"; };
 		D7E440D62A1ECE7D005D74DE /* CreateBuffersAroundPointsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateBuffersAroundPointsView.swift; sourceTree = "<group>"; };
 		D7E557672A1D768800B9FB09 /* AddWMSLayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddWMSLayerView.swift; sourceTree = "<group>"; };
 		D7E7D0802AEB39D5003AAD02 /* FindRouteInTransportNetworkView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindRouteInTransportNetworkView.swift; sourceTree = "<group>"; };
@@ -1167,6 +1171,7 @@
 				9537AFB52C2208CD000923C5 /* Add ENC exchange set */,
 				00D4EF7E2863840D00B9CC30 /* Add feature layers */,
 				D7F8C0342B60564D0072BFA7 /* Add features with contingent values */,
+				D7DFA0E92CBA0242007C31F2 /* Add map image layer */,
 				D7CDD3882CB86F0A00DE9766 /* Add point cloud layer from file */,
 				F19A316128906F0D003B7EF9 /* Add raster from file */,
 				955271622C0E6750009B1ED4 /* Add raster from service */,
@@ -2626,6 +2631,14 @@
 			path = "Find route around barriers";
 			sourceTree = "<group>";
 		};
+		D7DFA0E92CBA0242007C31F2 /* Add map image layer */ = {
+			isa = PBXGroup;
+			children = (
+				D7DFA0E62CBA0242007C31F2 /* AddMapImageLayerView.swift */,
+			);
+			path = "Add map image layer";
+			sourceTree = "<group>";
+		};
 		D7E440D12A1ECBC2005D74DE /* Create buffers around points */ = {
 			isa = PBXGroup;
 			children = (
@@ -3264,6 +3277,7 @@
 				0044CDDF2995C39E004618CE /* ShowDeviceLocationHistoryView.swift in Sources */,
 				E041ABC0287CA9F00056009B /* WebView.swift in Sources */,
 				D73E619E2BDB21F400457932 /* EditWithBranchVersioningView.swift in Sources */,
+				D7DFA0EA2CBA0242007C31F2 /* AddMapImageLayerView.swift in Sources */,
 				D7705D642AFC570700CC0335 /* FindClosestFacilityFromPointView.swift in Sources */,
 				E088E1572862579D00413100 /* SetSurfacePlacementModeView.swift in Sources */,
 				9579FCEA2C3360BB00FC8A1D /* EditFeatureAttachmentsView.swift in Sources */,
