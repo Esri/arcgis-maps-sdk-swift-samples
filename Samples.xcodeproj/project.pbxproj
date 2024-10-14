@@ -386,6 +386,8 @@
 		D77BC53C2B59A309007B49B6 /* StylePointWithDistanceCompositeSceneSymbolView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D77BC5362B59A2D3007B49B6 /* StylePointWithDistanceCompositeSceneSymbolView.swift */; };
 		D77D9C002BB2438200B38A6C /* AugmentRealityToShowHiddenInfrastructureView.ARSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77D9BFF2BB2438200B38A6C /* AugmentRealityToShowHiddenInfrastructureView.ARSceneView.swift */; };
 		D77D9C012BB2439400B38A6C /* AugmentRealityToShowHiddenInfrastructureView.ARSceneView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D77D9BFF2BB2438200B38A6C /* AugmentRealityToShowHiddenInfrastructureView.ARSceneView.swift */; };
+		D7848EFE2CBD986400F6F546 /* AddElevationSourceFromRasterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7848EFA2CBD986400F6F546 /* AddElevationSourceFromRasterView.swift */; };
+		D7848F012CBD987B00F6F546 /* AddElevationSourceFromRasterView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7848EFA2CBD986400F6F546 /* AddElevationSourceFromRasterView.swift */; };
 		D78666AD2A2161F100C60110 /* FindNearestVertexView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78666AC2A2161F100C60110 /* FindNearestVertexView.swift */; };
 		D78666AE2A21629200C60110 /* FindNearestVertexView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D78666AC2A2161F100C60110 /* FindNearestVertexView.swift */; };
 		D78FA4942C3C88880079313E /* CreateDynamicBasemapGalleryView.Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78FA4932C3C88880079313E /* CreateDynamicBasemapGalleryView.Views.swift */; };
@@ -547,6 +549,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				D7848F012CBD987B00F6F546 /* AddElevationSourceFromRasterView.swift in Copy Source Code Files */,
 				D7DFA0ED2CBA0260007C31F2 /* AddMapImageLayerView.swift in Copy Source Code Files */,
 				D7CDD38C2CB86F4A00DE9766 /* AddPointCloudLayerFromFileView.swift in Copy Source Code Files */,
 				95E0DBCA2C503E2500224A82 /* ShowDeviceLocationUsingIndoorPositioningView.swift in Copy Source Code Files */,
@@ -973,6 +976,7 @@
 		D7781D4A2B7ECCB700E53C51 /* NavigateRouteWithReroutingView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigateRouteWithReroutingView.Model.swift; sourceTree = "<group>"; };
 		D77BC5362B59A2D3007B49B6 /* StylePointWithDistanceCompositeSceneSymbolView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StylePointWithDistanceCompositeSceneSymbolView.swift; sourceTree = "<group>"; };
 		D77D9BFF2BB2438200B38A6C /* AugmentRealityToShowHiddenInfrastructureView.ARSceneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AugmentRealityToShowHiddenInfrastructureView.ARSceneView.swift; sourceTree = "<group>"; };
+		D7848EFA2CBD986400F6F546 /* AddElevationSourceFromRasterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddElevationSourceFromRasterView.swift; sourceTree = "<group>"; };
 		D78666AC2A2161F100C60110 /* FindNearestVertexView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindNearestVertexView.swift; sourceTree = "<group>"; };
 		D78FA4932C3C88880079313E /* CreateDynamicBasemapGalleryView.Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateDynamicBasemapGalleryView.Views.swift; sourceTree = "<group>"; };
 		D79482D02C35D872006521CD /* CreateDynamicBasemapGalleryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateDynamicBasemapGalleryView.swift; sourceTree = "<group>"; };
@@ -1168,6 +1172,7 @@
 				0000FB6D2BBDB17600845921 /* Add 3D tiles layer */,
 				79D84D0C2A815BED00F45262 /* Add custom dynamic entity data source */,
 				4D2ADC3E29C26D05003B367F /* Add dynamic entity layer */,
+				D7848EFD2CBD986400F6F546 /* Add elevation source from raster */,
 				9537AFB52C2208CD000923C5 /* Add ENC exchange set */,
 				00D4EF7E2863840D00B9CC30 /* Add feature layers */,
 				D7F8C0342B60564D0072BFA7 /* Add features with contingent values */,
@@ -2433,6 +2438,14 @@
 			path = "Style point with distance composite scene symbol";
 			sourceTree = "<group>";
 		};
+		D7848EFD2CBD986400F6F546 /* Add elevation source from raster */ = {
+			isa = PBXGroup;
+			children = (
+				D7848EFA2CBD986400F6F546 /* AddElevationSourceFromRasterView.swift */,
+			);
+			path = "Add elevation source from raster";
+			sourceTree = "<group>";
+		};
 		D78666A92A21616D00C60110 /* Find nearest vertex */ = {
 			isa = PBXGroup;
 			children = (
@@ -3227,6 +3240,7 @@
 				E070A0A3286F3B6000F2B606 /* DownloadPreplannedMapAreaView.swift in Sources */,
 				D79482D42C35D872006521CD /* CreateDynamicBasemapGalleryView.swift in Sources */,
 				D77570C02A2942F800F490CD /* AnimateImagesWithImageOverlayView.swift in Sources */,
+				D7848EFE2CBD986400F6F546 /* AddElevationSourceFromRasterView.swift in Sources */,
 				D7054AE92ACCCB6C007235BA /* Animate3DGraphicView.SettingsView.swift in Sources */,
 				D7BA8C442B2A4DAA00018633 /* Array.swift in Sources */,
 				D78FA4942C3C88880079313E /* CreateDynamicBasemapGalleryView.Views.swift in Sources */,
