@@ -16,10 +16,36 @@ import ArcGIS
 import SwiftUI
 
 struct AddPointSceneLayerView: View {
-    @State private var map = Map(basemapStyle: .arcGISTopographic)
+    /// A scene with scene layer of world airport locations.
+    @State private var scene: ArcGIS.Scene = {
+        let scene = Scene(basemapStyle: .arcGISImagery)
+        
+        // Creates the scene layer using a URL and adds it to the scene.
+        let sceneLayer = ArcGISSceneLayer(url: .airportsPointSceneLayer)
+        scene.addOperationalLayer(sceneLayer)
+        
+        // Adds an elevation source to display elevation on the scene's surface.
+        let elevationSource = ArcGISTiledElevationSource(url: .worldElevationService)
+        scene.baseSurface.addElevationSource(elevationSource)
+        
+        return scene
+    }()
     
     var body: some View {
-        MapView(map: map)
+        // Displays the scene in a scene view.
+        SceneView(scene: scene)
+    }
+}
+
+private extension URL {
+    /// A web URL to a scene layer with points at world airport locations.
+    static var airportsPointSceneLayer: URL {
+        URL(string: "https://tiles.arcgis.com/tiles/V6ZHFr6zdgNZuVG0/arcgis/rest/services/Airports_PointSceneLayer/SceneServer/layers/0")!
+    }
+    
+    /// A web URL to the Terrain3D image server on ArcGIS REST.
+    static var worldElevationService: URL {
+        URL(string: "https://elevation3d.arcgis.com/arcagis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!
     }
 }
 
