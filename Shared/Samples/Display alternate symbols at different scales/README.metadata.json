@@ -1,8 +1,10 @@
 {
-    "category": "Layers",
+    "category": "Visualization",
     "description": "Apply a unique value with alternate symbols at different scales.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "display-alternate-symbols-at-different-scales.gif"
+    ],
     "keywords": [
         "alternate symbols",
         "multilayer symbol",

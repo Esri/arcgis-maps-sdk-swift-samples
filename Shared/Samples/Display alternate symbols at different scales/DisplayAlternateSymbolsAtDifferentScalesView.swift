@@ -51,7 +51,7 @@ struct DisplayAlternateSymbolsAtDifferentScalesView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
-                    Button("Reset viewpoint") {
+                    Button("Reset Viewpoint") {
                         viewpoint = map.initialViewpoint
                     }
                 }
