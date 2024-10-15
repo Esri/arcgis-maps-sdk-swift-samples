@@ -2,7 +2,7 @@
 
 Set the terrain surface with elevation described by a local tile package.
 
-![Image of add elevation source from tile package](AddElevationSourceFromTilePackage.png)
+![Screenshot of Add elevation source from tile package sample](add-elevation-source-from-tile-package.png)
 
 ## Use case
 
@@ -14,9 +14,9 @@ When loaded, the sample will show a scene with a terrain surface applied. Pan an
 
 ## How it works
 
-1. Create an `ArcGISScene` and add it to a `SceneView`.
+1. Create a `Scene` and add it to a `SceneView`.
 2. Create an `ArcGISTiledElevationSource` with the path to the local tile package.
-3. Add this source to the scene's base surface: `scene.getBaseSurface().getElevationSources().add(tiledElevationSource)`.
+3. Add the source to the scene's base surface.
 
 ## Relevant API
 
@@ -25,11 +25,11 @@ When loaded, the sample will show a scene with a terrain surface applied. Pan an
 
 ## Offline data
 
-This sample uses the [Monterey Elevation](https://arcgisruntime.maps.arcgis.com/home/item.html?id=52ca74b4ba8042b78b3c653696f34a9c) tile package, using CompactV2 storage format (.tpkx).
+This sample uses the [Monterey Elevation](https://arcgisruntime.maps.arcgis.com/home/item.html?id=52ca74b4ba8042b78b3c653696f34a9c) tile package, using CompactV2 storage format (.tpkx). It is downloaded from ArcGIS Online automatically.
 
 ## Additional information
 
-The tile package must be a LERC (limited error raster compression) encoded TPK/TPKX. Details on can be found in the topic [Share a tile package](https://pro.arcgis.com/en/pro-app/help/sharing/overview/tile-package.htm) in the *ArcGIS Pro* documentation.
+The tile package must be a LERC (limited error raster compression) encoded TPK/TPKX. Details on the topic can be found in [Share a tile package](https://pro.arcgis.com/en/pro-app/help/sharing/overview/tile-package.htm) in the *ArcGIS Pro* documentation.
 
 ## Tags
 

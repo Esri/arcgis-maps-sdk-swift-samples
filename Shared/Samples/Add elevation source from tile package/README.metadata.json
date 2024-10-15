@@ -2,7 +2,9 @@
     "category": "Scenes",
     "description": "Set the terrain surface with elevation described by a local tile package.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "add-elevation-source-from-tile-package.png"
+    ],
     "keywords": [
         "3D",
         "LERC",
