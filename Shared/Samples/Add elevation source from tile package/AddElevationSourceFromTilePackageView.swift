@@ -16,10 +16,36 @@ import ArcGIS
 import SwiftUI
 
 struct AddElevationSourceFromTilePackageView: View {
-    @State private var map = Map(basemapStyle: .arcGISTopographic)
+    /// A scene with elevation for Monterey, California.
+    @State private var scene: ArcGIS.Scene = {
+        let scene = Scene(basemapStyle: .arcGISImagery)
+        
+        // Creates the tiled elevation source using a URL.
+        let rasterElevationSource = ArcGISTiledElevationSource(url: .montereyElevationTilePackage)
+        
+        // Creates a surface to add the elevation source to the scene.
+        let surface = Surface()
+        surface.addElevationSource(rasterElevationSource)
+        scene.baseSurface = surface
+        
+        // Sets the scene's initial camera to showcase the elevation.
+        let camera = Camera(
+            latitude: 36.525,
+            longitude: -121.8,
+            altitude: 300,
+            heading: 180,
+            pitch: 80,
+            roll: 0
+        )
+        let viewpoint = Viewpoint(latitude: .nan, longitude: .nan, scale: .nan, camera: camera)
+        scene.initialViewpoint = viewpoint
+        
+        return scene
+    }()
     
     var body: some View {
-        MapView(map: map)
+        // Displays the scene in a scene view.
+        SceneView(scene: scene)
     }
 }
 
