@@ -1,0 +1,33 @@
+{
+    "category": "Layers",
+    "description": "Apply a unique value with alternate symbols at different scales.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "alternate symbols",
+        "multilayer symbol",
+        "scale based rendering",
+        "simple marker symbol",
+        "symbol reference properties",
+        "symbology",
+        "unique value",
+        "unique value renderer",
+        "MultilayerSymbol",
+        "SimpleMarkerSymbol",
+        "SymbolReferenceProperties",
+        "UniqueValue",
+        "UniqueValueRenderer"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "MultilayerSymbol",
+        "SimpleMarkerSymbol",
+        "SymbolReferenceProperties",
+        "UniqueValue",
+        "UniqueValueRenderer"
+    ],
+    "snippets": [
+        "DisplayAlternateSymbolsAtDifferentScalesView.swift"
+    ],
+    "title": "Display alternate symbols at different scales"
+}
