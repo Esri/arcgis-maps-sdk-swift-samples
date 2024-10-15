@@ -386,6 +386,8 @@
 		D77BC53C2B59A309007B49B6 /* StylePointWithDistanceCompositeSceneSymbolView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D77BC5362B59A2D3007B49B6 /* StylePointWithDistanceCompositeSceneSymbolView.swift */; };
 		D77D9C002BB2438200B38A6C /* AugmentRealityToShowHiddenInfrastructureView.ARSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77D9BFF2BB2438200B38A6C /* AugmentRealityToShowHiddenInfrastructureView.ARSceneView.swift */; };
 		D77D9C012BB2439400B38A6C /* AugmentRealityToShowHiddenInfrastructureView.ARSceneView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D77D9BFF2BB2438200B38A6C /* AugmentRealityToShowHiddenInfrastructureView.ARSceneView.swift */; };
+		D7848ED82CBD85A300F6F546 /* AddPointSceneLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7848ED42CBD85A300F6F546 /* AddPointSceneLayerView.swift */; };
+		D7848EDB2CBD85D100F6F546 /* AddPointSceneLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7848ED42CBD85A300F6F546 /* AddPointSceneLayerView.swift */; };
 		D78666AD2A2161F100C60110 /* FindNearestVertexView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78666AC2A2161F100C60110 /* FindNearestVertexView.swift */; };
 		D78666AE2A21629200C60110 /* FindNearestVertexView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D78666AC2A2161F100C60110 /* FindNearestVertexView.swift */; };
 		D78FA4942C3C88880079313E /* CreateDynamicBasemapGalleryView.Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78FA4932C3C88880079313E /* CreateDynamicBasemapGalleryView.Views.swift */; };
@@ -551,6 +553,7 @@
 			dstSubfolderSpec = 7;
 			files = (
 				D7BEBAC62CBDC11600F882E7 /* AddElevationSourceFromTilePackageView.swift in Copy Source Code Files */,
+				D7848EDB2CBD85D100F6F546 /* AddPointSceneLayerView.swift in Copy Source Code Files */,
 				D7DFA0ED2CBA0260007C31F2 /* AddMapImageLayerView.swift in Copy Source Code Files */,
 				D7CDD38C2CB86F4A00DE9766 /* AddPointCloudLayerFromFileView.swift in Copy Source Code Files */,
 				95E0DBCA2C503E2500224A82 /* ShowDeviceLocationUsingIndoorPositioningView.swift in Copy Source Code Files */,
@@ -977,6 +980,7 @@
 		D7781D4A2B7ECCB700E53C51 /* NavigateRouteWithReroutingView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigateRouteWithReroutingView.Model.swift; sourceTree = "<group>"; };
 		D77BC5362B59A2D3007B49B6 /* StylePointWithDistanceCompositeSceneSymbolView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StylePointWithDistanceCompositeSceneSymbolView.swift; sourceTree = "<group>"; };
 		D77D9BFF2BB2438200B38A6C /* AugmentRealityToShowHiddenInfrastructureView.ARSceneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AugmentRealityToShowHiddenInfrastructureView.ARSceneView.swift; sourceTree = "<group>"; };
+		D7848ED42CBD85A300F6F546 /* AddPointSceneLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPointSceneLayerView.swift; sourceTree = "<group>"; };
 		D78666AC2A2161F100C60110 /* FindNearestVertexView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindNearestVertexView.swift; sourceTree = "<group>"; };
 		D78FA4932C3C88880079313E /* CreateDynamicBasemapGalleryView.Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateDynamicBasemapGalleryView.Views.swift; sourceTree = "<group>"; };
 		D79482D02C35D872006521CD /* CreateDynamicBasemapGalleryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateDynamicBasemapGalleryView.swift; sourceTree = "<group>"; };
@@ -1180,6 +1184,7 @@
 				D7F8C0342B60564D0072BFA7 /* Add features with contingent values */,
 				D7DFA0E92CBA0242007C31F2 /* Add map image layer */,
 				D7CDD3882CB86F0A00DE9766 /* Add point cloud layer from file */,
+				D7848ED72CBD85A300F6F546 /* Add point scene layer */,
 				F19A316128906F0D003B7EF9 /* Add raster from file */,
 				955271622C0E6750009B1ED4 /* Add raster from service */,
 				E066DD3E28610F3F004D3D5B /* Add scene layer from service */,
@@ -2441,6 +2446,14 @@
 			path = "Style point with distance composite scene symbol";
 			sourceTree = "<group>";
 		};
+		D7848ED72CBD85A300F6F546 /* Add point scene layer */ = {
+			isa = PBXGroup;
+			children = (
+				D7848ED42CBD85A300F6F546 /* AddPointSceneLayerView.swift */,
+			);
+			path = "Add point scene layer";
+			sourceTree = "<group>";
+		};
 		D78666A92A21616D00C60110 /* Find nearest vertex */ = {
 			isa = PBXGroup;
 			children = (
@@ -3272,6 +3285,7 @@
 				1C8EC7472BAE2891001A6929 /* AugmentRealityToCollectDataView.swift in Sources */,
 				D75C35672AB50338003CD55F /* GroupLayersTogetherView.GroupLayerListView.swift in Sources */,
 				4D2ADC6229C5071C003B367F /* ChangeMapViewBackgroundView.Model.swift in Sources */,
+				D7848ED82CBD85A300F6F546 /* AddPointSceneLayerView.swift in Sources */,
 				0074ABCD2817BCC30037244A /* SamplesApp+Samples.swift.tache in Sources */,
 				D79EE76E2A4CEA5D005A52AE /* SetUpLocationDrivenGeotriggersView.Model.swift in Sources */,
 				D74F03F02B609A7D00E83688 /* AddFeaturesWithContingentValuesView.Model.swift in Sources */,
