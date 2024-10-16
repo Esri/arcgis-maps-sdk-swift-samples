@@ -338,6 +338,7 @@
 		D75C35672AB50338003CD55F /* GroupLayersTogetherView.GroupLayerListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75C35662AB50338003CD55F /* GroupLayersTogetherView.GroupLayerListView.swift */; };
 		D75E5EE62CC0340100252595 /* ListContentsOfKMLFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75E5EE22CC0340100252595 /* ListContentsOfKMLFileView.swift */; };
 		D75E5EE92CC0342700252595 /* ListContentsOfKMLFileView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D75E5EE22CC0340100252595 /* ListContentsOfKMLFileView.swift */; };
+		D75E5EEC2CC0466900252595 /* esri_test_data.kmz in Resources */ = {isa = PBXBuildFile; fileRef = D75E5EEA2CC0466900252595 /* esri_test_data.kmz */; settings = {ASSET_TAGS = (ListContentsOfKmlFile, ); }; };
 		D75F66362B48EABC00434974 /* SearchForWebMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75F66332B48EABC00434974 /* SearchForWebMapView.swift */; };
 		D75F66392B48EB1800434974 /* SearchForWebMapView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D75F66332B48EABC00434974 /* SearchForWebMapView.swift */; };
 		D76000A22AF18BAB00B3084D /* FindRouteInTransportNetworkView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7749AD52AF08BF50086632F /* FindRouteInTransportNetworkView.Model.swift */; };
@@ -953,6 +954,7 @@
 		D75B58502AAFB3030038B3B4 /* StyleFeaturesWithCustomDictionaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleFeaturesWithCustomDictionaryView.swift; sourceTree = "<group>"; };
 		D75C35662AB50338003CD55F /* GroupLayersTogetherView.GroupLayerListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupLayersTogetherView.GroupLayerListView.swift; sourceTree = "<group>"; };
 		D75E5EE22CC0340100252595 /* ListContentsOfKMLFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListContentsOfKMLFileView.swift; sourceTree = "<group>"; };
+		D75E5EEA2CC0466900252595 /* esri_test_data.kmz */ = {isa = PBXFileReference; lastKnownFileType = file; path = esri_test_data.kmz; sourceTree = "<group>"; };
 		D75F66332B48EABC00434974 /* SearchForWebMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchForWebMapView.swift; sourceTree = "<group>"; };
 		D76000AB2AF19C2300B3084D /* FindRouteInMobileMapPackageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindRouteInMobileMapPackageView.swift; sourceTree = "<group>"; };
 		D76000B62AF19FCA00B3084D /* SanFrancisco.mmpk */ = {isa = PBXFileReference; lastKnownFileType = file; path = SanFrancisco.mmpk; sourceTree = "<group>"; };
@@ -1445,6 +1447,7 @@
 				00D4EF8128638BF100B9CC30 /* cb1b20748a9f4d128dad8a87244e3e37 */,
 				4D126D7629CA3B3F00CFB7A7 /* d5bad9f4fee9483791e405880fb466da */,
 				D77572AC2A295DC100F490CD /* d1453556d91e46dea191c20c398b82cd */,
+				D75E5EEB2CC0466900252595 /* da301cb122874d5497f8a8f6c81eb36e */,
 				D7E7D0862AEB3C36003AAD02 /* df193653ed39449195af0c9725701dca */,
 				F111CCC2288B63DB00205358 /* e1f3a7254cb845b09450f54937c16061 */,
 				D7C5233F2BED9BBF00E8221A /* e4a398afe9a945f3b0f4dca1e4faccb5 */,
@@ -2296,6 +2299,14 @@
 			path = "List contents of KML file";
 			sourceTree = "<group>";
 		};
+		D75E5EEB2CC0466900252595 /* da301cb122874d5497f8a8f6c81eb36e */ = {
+			isa = PBXGroup;
+			children = (
+				D75E5EEA2CC0466900252595 /* esri_test_data.kmz */,
+			);
+			path = da301cb122874d5497f8a8f6c81eb36e;
+			sourceTree = "<group>";
+		};
 		D75F66322B48EABC00434974 /* Search for web map */ = {
 			isa = PBXGroup;
 			children = (
@@ -3005,6 +3016,7 @@
 					GenerateOfflineMapWithLocalBasemap,
 					GeocodeOffline,
 					IdentifyRasterCell,
+					ListContentsOfKmlFile,
 					NavigateRouteWithRerouting,
 					OrbitCameraAroundObject,
 					ShowDeviceLocationWithNmeaDataSources,
@@ -3085,6 +3097,7 @@
 				D7E7D09A2AEB3C47003AAD02 /* san_diego_offline_routing in Resources */,
 				F111CCC4288B641900205358 /* Yellowstone.mmpk in Resources */,
 				D77572AE2A295DDE00F490CD /* PacificSouthWest2 in Resources */,
+				D75E5EEC2CC0466900252595 /* esri_test_data.kmz in Resources */,
 				10D321932BDB187400B39B1B /* naperville_imagery.tpkx in Resources */,
 				00D4EFB12863CE6300B9CC30 /* ScottishWildlifeTrust_reserves in Resources */,
 				D7781D492B7EB03400E53C51 /* SanDiegoTourPath.json in Resources */,

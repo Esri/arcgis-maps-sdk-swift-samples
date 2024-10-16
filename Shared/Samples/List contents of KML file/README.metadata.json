@@ -20,6 +20,9 @@
         "KMLPlacemark",
         "KMLScreenOverlay"
     ],
+    "offline_data": [
+        "da301cb122874d5497f8a8f6c81eb36e"
+    ],
     "redirect_from": [],
     "relevant_apis": [
         "KMLContainer",

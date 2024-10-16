@@ -32,6 +32,10 @@ The contents of the KML file are shown in a tree. Select a node to zoom to that 
 * KMLPlacemark
 * KMLScreenOverlay
 
+## Offline data
+
+This sample uses the [esri_test_data](https://www.arcgis.com/home/item.html?id=da301cb122874d5497f8a8f6c81eb36e) KML file. It is downloaded from ArcGIS Online automatically.
+
 ## Tags
 
 Keyhole, KML, KMZ, layers, OGC
