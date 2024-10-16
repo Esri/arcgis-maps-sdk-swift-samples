@@ -58,7 +58,7 @@ struct DisplayAlternateSymbolsAtDifferentScalesView: View {
             }
     }
     
-    /// Creates a unique value renderer with symbols for
+    /// Creates a unique value renderer with alternate symbols for different scales.
     /// - Returns: A new `UniqueValueRenderer` object.
     private static func makeUniqueValueRenderer() -> UniqueValueRenderer {
         // The multilayer symbol for the low range scale.
