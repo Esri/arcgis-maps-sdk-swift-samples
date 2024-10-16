@@ -1005,8 +1005,8 @@
 		D7BA8C432B2A4DAA00018633 /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		D7BA8C452B2A8ACA00018633 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		D7BB3DD02C5D781800FFCD56 /* SaveTheBay.geodatabase */ = {isa = PBXFileReference; lastKnownFileType = file; path = SaveTheBay.geodatabase; sourceTree = "<group>"; };
-		D7BEBACE2CBDFE1C00F882E7 /* DisplayAlternateSymbolsAtDifferentScalesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayAlternateSymbolsAtDifferentScalesView.swift; sourceTree = "<group>"; };
 		D7BEBA9E2CBD9CCA00F882E7 /* MontereyElevation.dt2 */ = {isa = PBXFileReference; lastKnownFileType = text; path = MontereyElevation.dt2; sourceTree = "<group>"; };
+		D7BEBACE2CBDFE1C00F882E7 /* DisplayAlternateSymbolsAtDifferentScalesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayAlternateSymbolsAtDifferentScalesView.swift; sourceTree = "<group>"; };
 		D7C16D1A2AC5F95300689E89 /* Animate3DGraphicView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animate3DGraphicView.swift; sourceTree = "<group>"; };
 		D7C16D1E2AC5FE8200689E89 /* Pyrenees.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Pyrenees.csv; sourceTree = "<group>"; };
 		D7C16D212AC5FE9800689E89 /* GrandCanyon.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = GrandCanyon.csv; sourceTree = "<group>"; };
@@ -2565,20 +2565,20 @@
 			path = 43809fd639f242fd8045ecbafd61a579;
 			sourceTree = "<group>";
 		};
-		D7BEBAD12CBDFE1C00F882E7 /* Display alternate symbols at different scales */ = {
-			isa = PBXGroup;
-			children = (
-				D7BEBACE2CBDFE1C00F882E7 /* DisplayAlternateSymbolsAtDifferentScalesView.swift */,
-			);
-			path = "Display alternate symbols at different scales";
-   			sourceTree = "<group>";
-		};         
 		D7BEBA9F2CBD9CCA00F882E7 /* 98092369c4ae4d549bbbd45dba993ebc */ = {
 			isa = PBXGroup;
 			children = (
 				D7BEBA9E2CBD9CCA00F882E7 /* MontereyElevation.dt2 */,
 			);
 			path = 98092369c4ae4d549bbbd45dba993ebc;
+			sourceTree = "<group>";
+		};
+		D7BEBAD12CBDFE1C00F882E7 /* Display alternate symbols at different scales */ = {
+			isa = PBXGroup;
+			children = (
+				D7BEBACE2CBDFE1C00F882E7 /* DisplayAlternateSymbolsAtDifferentScalesView.swift */,
+			);
+			path = "Display alternate symbols at different scales";
 			sourceTree = "<group>";
 		};
 		D7C16D172AC5F6C100689E89 /* Animate 3D graphic */ = {
