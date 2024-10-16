@@ -1,0 +1,40 @@
+{
+    "category": "Edit and Manage Data",
+    "description": "List the contents of a KML file.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "KML",
+        "KMZ",
+        "Keyhole",
+        "OGC",
+        "layers",
+        "KMLContainer",
+        "KMLDataset",
+        "KMLDocument",
+        "KMLFolder",
+        "KMLGroundOverlay",
+        "KMLLayer",
+        "KMLNetworkLink",
+        "KMLNode",
+        "KMLPlacemark",
+        "KMLScreenOverlay"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "KMLContainer",
+        "KMLDataset",
+        "KMLDocument",
+        "KMLFolder",
+        "KMLGroundOverlay",
+        "KMLLayer",
+        "KMLNetworkLink",
+        "KMLNode",
+        "KMLPlacemark",
+        "KMLScreenOverlay"
+    ],
+    "snippets": [
+        "ListContentsOfKMLFileView.swift"
+    ],
+    "title": "List contents of KML file"
+}
