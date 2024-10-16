@@ -391,6 +391,8 @@
 		D77D9C012BB2439400B38A6C /* AugmentRealityToShowHiddenInfrastructureView.ARSceneView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D77D9BFF2BB2438200B38A6C /* AugmentRealityToShowHiddenInfrastructureView.ARSceneView.swift */; };
 		D7848ED82CBD85A300F6F546 /* AddPointSceneLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7848ED42CBD85A300F6F546 /* AddPointSceneLayerView.swift */; };
 		D7848EDB2CBD85D100F6F546 /* AddPointSceneLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7848ED42CBD85A300F6F546 /* AddPointSceneLayerView.swift */; };
+		D7848EFE2CBD986400F6F546 /* AddElevationSourceFromRasterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7848EFA2CBD986400F6F546 /* AddElevationSourceFromRasterView.swift */; };
+		D7848F012CBD987B00F6F546 /* AddElevationSourceFromRasterView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7848EFA2CBD986400F6F546 /* AddElevationSourceFromRasterView.swift */; };
 		D78666AD2A2161F100C60110 /* FindNearestVertexView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78666AC2A2161F100C60110 /* FindNearestVertexView.swift */; };
 		D78666AE2A21629200C60110 /* FindNearestVertexView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D78666AC2A2161F100C60110 /* FindNearestVertexView.swift */; };
 		D78FA4942C3C88880079313E /* CreateDynamicBasemapGalleryView.Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78FA4932C3C88880079313E /* CreateDynamicBasemapGalleryView.Views.swift */; };
@@ -417,6 +419,7 @@
 		D7BA8C442B2A4DAA00018633 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BA8C432B2A4DAA00018633 /* Array.swift */; };
 		D7BA8C462B2A8ACA00018633 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BA8C452B2A8ACA00018633 /* String.swift */; };
 		D7BB3DD22C5D781800FFCD56 /* SaveTheBay.geodatabase in Resources */ = {isa = PBXBuildFile; fileRef = D7BB3DD02C5D781800FFCD56 /* SaveTheBay.geodatabase */; settings = {ASSET_TAGS = (EditGeodatabaseWithTransactions, ); }; };
+		D7BEBAA02CBD9CCA00F882E7 /* MontereyElevation.dt2 in Resources */ = {isa = PBXBuildFile; fileRef = D7BEBA9E2CBD9CCA00F882E7 /* MontereyElevation.dt2 */; settings = {ASSET_TAGS = (AddElevationSourceFromRaster, ); }; };
 		D7C16D1B2AC5F95300689E89 /* Animate3DGraphicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C16D1A2AC5F95300689E89 /* Animate3DGraphicView.swift */; };
 		D7C16D1C2AC5F96900689E89 /* Animate3DGraphicView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7C16D1A2AC5F95300689E89 /* Animate3DGraphicView.swift */; };
 		D7C16D1F2AC5FE8200689E89 /* Pyrenees.csv in Resources */ = {isa = PBXBuildFile; fileRef = D7C16D1E2AC5FE8200689E89 /* Pyrenees.csv */; settings = {ASSET_TAGS = (Animate3DGraphic, ); }; };
@@ -552,6 +555,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				D7848F012CBD987B00F6F546 /* AddElevationSourceFromRasterView.swift in Copy Source Code Files */,
 				D7848EDB2CBD85D100F6F546 /* AddPointSceneLayerView.swift in Copy Source Code Files */,
 				D7DFA0ED2CBA0260007C31F2 /* AddMapImageLayerView.swift in Copy Source Code Files */,
 				D7CDD38C2CB86F4A00DE9766 /* AddPointCloudLayerFromFileView.swift in Copy Source Code Files */,
@@ -983,6 +987,7 @@
 		D77BC5362B59A2D3007B49B6 /* StylePointWithDistanceCompositeSceneSymbolView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StylePointWithDistanceCompositeSceneSymbolView.swift; sourceTree = "<group>"; };
 		D77D9BFF2BB2438200B38A6C /* AugmentRealityToShowHiddenInfrastructureView.ARSceneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AugmentRealityToShowHiddenInfrastructureView.ARSceneView.swift; sourceTree = "<group>"; };
 		D7848ED42CBD85A300F6F546 /* AddPointSceneLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPointSceneLayerView.swift; sourceTree = "<group>"; };
+		D7848EFA2CBD986400F6F546 /* AddElevationSourceFromRasterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddElevationSourceFromRasterView.swift; sourceTree = "<group>"; };
 		D78666AC2A2161F100C60110 /* FindNearestVertexView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindNearestVertexView.swift; sourceTree = "<group>"; };
 		D78FA4932C3C88880079313E /* CreateDynamicBasemapGalleryView.Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateDynamicBasemapGalleryView.Views.swift; sourceTree = "<group>"; };
 		D79482D02C35D872006521CD /* CreateDynamicBasemapGalleryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateDynamicBasemapGalleryView.swift; sourceTree = "<group>"; };
@@ -997,6 +1002,7 @@
 		D7BA8C432B2A4DAA00018633 /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		D7BA8C452B2A8ACA00018633 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		D7BB3DD02C5D781800FFCD56 /* SaveTheBay.geodatabase */ = {isa = PBXFileReference; lastKnownFileType = file; path = SaveTheBay.geodatabase; sourceTree = "<group>"; };
+		D7BEBA9E2CBD9CCA00F882E7 /* MontereyElevation.dt2 */ = {isa = PBXFileReference; lastKnownFileType = text; path = MontereyElevation.dt2; sourceTree = "<group>"; };
 		D7C16D1A2AC5F95300689E89 /* Animate3DGraphicView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animate3DGraphicView.swift; sourceTree = "<group>"; };
 		D7C16D1E2AC5FE8200689E89 /* Pyrenees.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Pyrenees.csv; sourceTree = "<group>"; };
 		D7C16D212AC5FE9800689E89 /* GrandCanyon.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = GrandCanyon.csv; sourceTree = "<group>"; };
@@ -1178,6 +1184,7 @@
 				0000FB6D2BBDB17600845921 /* Add 3D tiles layer */,
 				79D84D0C2A815BED00F45262 /* Add custom dynamic entity data source */,
 				4D2ADC3E29C26D05003B367F /* Add dynamic entity layer */,
+				D7848EFD2CBD986400F6F546 /* Add elevation source from raster */,
 				9537AFB52C2208CD000923C5 /* Add ENC exchange set */,
 				00D4EF7E2863840D00B9CC30 /* Add feature layers */,
 				D7F8C0342B60564D0072BFA7 /* Add features with contingent values */,
@@ -1441,6 +1448,7 @@
 				D7BB3DD12C5D781800FFCD56 /* 43809fd639f242fd8045ecbafd61a579 */,
 				10D321912BDB187400B39B1B /* 85282f2aaa2844d8935cdb8722e22a93 */,
 				D73F8CF22AB1089900CD39DA /* 751138a2e0844e06853522d54103222a */,
+				D7BEBA9F2CBD9CCA00F882E7 /* 98092369c4ae4d549bbbd45dba993ebc */,
 				D721EEA62ABDFF550040BE46 /* 174150279af74a2ba6f8b87a567f480b */,
 				792222DB2A81AA5D00619FFE /* a8a942c228af4fac96baa78ad60f511f */,
 				D7464F202ACE0910007FEE88 /* b5f977c78ec74b3a8857ca86d1d9b318 */,
@@ -2470,6 +2478,14 @@
 			path = "Add point scene layer";
 			sourceTree = "<group>";
 		};
+		D7848EFD2CBD986400F6F546 /* Add elevation source from raster */ = {
+			isa = PBXGroup;
+			children = (
+				D7848EFA2CBD986400F6F546 /* AddElevationSourceFromRasterView.swift */,
+			);
+			path = "Add elevation source from raster";
+			sourceTree = "<group>";
+		};
 		D78666A92A21616D00C60110 /* Find nearest vertex */ = {
 			isa = PBXGroup;
 			children = (
@@ -2542,6 +2558,14 @@
 				D7BB3DD02C5D781800FFCD56 /* SaveTheBay.geodatabase */,
 			);
 			path = 43809fd639f242fd8045ecbafd61a579;
+			sourceTree = "<group>";
+		};
+		D7BEBA9F2CBD9CCA00F882E7 /* 98092369c4ae4d549bbbd45dba993ebc */ = {
+			isa = PBXGroup;
+			children = (
+				D7BEBA9E2CBD9CCA00F882E7 /* MontereyElevation.dt2 */,
+			);
+			path = 98092369c4ae4d549bbbd45dba993ebc;
 			sourceTree = "<group>";
 		};
 		D7C16D172AC5F6C100689E89 /* Animate 3D graphic */ = {
@@ -2995,6 +3019,7 @@
 				BuildIndependentTargetsInParallel = 1;
 				KnownAssetTags = (
 					AddCustomDynamicEntityDataSource,
+					AddElevationSourceFromRaster,
 					AddEncExchangeSet,
 					AddFeatureLayers,
 					AddFeaturesWithContingentValues,
@@ -3102,6 +3127,7 @@
 				00D4EFB12863CE6300B9CC30 /* ScottishWildlifeTrust_reserves in Resources */,
 				D7781D492B7EB03400E53C51 /* SanDiegoTourPath.json in Resources */,
 				D7C16D222AC5FE9800689E89 /* GrandCanyon.csv in Resources */,
+				D7BEBAA02CBD9CCA00F882E7 /* MontereyElevation.dt2 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3266,6 +3292,7 @@
 				E070A0A3286F3B6000F2B606 /* DownloadPreplannedMapAreaView.swift in Sources */,
 				D79482D42C35D872006521CD /* CreateDynamicBasemapGalleryView.swift in Sources */,
 				D77570C02A2942F800F490CD /* AnimateImagesWithImageOverlayView.swift in Sources */,
+				D7848EFE2CBD986400F6F546 /* AddElevationSourceFromRasterView.swift in Sources */,
 				D7054AE92ACCCB6C007235BA /* Animate3DGraphicView.SettingsView.swift in Sources */,
 				D7BA8C442B2A4DAA00018633 /* Array.swift in Sources */,
 				D78FA4942C3C88880079313E /* CreateDynamicBasemapGalleryView.Views.swift in Sources */,
