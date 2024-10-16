@@ -1,0 +1,29 @@
+{
+    "category": "Scenes",
+    "description": "Set the terrain surface with elevation described by a raster file.",
+    "ignore": false,
+    "images": [
+        "add-elevation-source-from-raster.png"
+    ],
+    "keywords": [
+        "3D",
+        "elevation",
+        "raster",
+        "surface",
+        "terrain",
+        "RasterElevationSource",
+        "Surface"
+    ],
+    "offline_data": [
+        "98092369c4ae4d549bbbd45dba993ebc"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "RasterElevationSource",
+        "Surface"
+    ],
+    "snippets": [
+        "AddElevationSourceFromRasterView.swift"
+    ],
+    "title": "Add elevation source from raster"
+}
