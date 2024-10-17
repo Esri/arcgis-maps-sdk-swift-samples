@@ -15,7 +15,7 @@ Open the sample to view the "World Topographic Map" tile layer as the basemap.
 ## How it works
 
 1. Create an `ArcGISTiledLayer` object from a URL.
-2. Create a `Basemap` passing in the tiled layer.
+2. Create a `Basemap`, passing in the tiled layer.
 3. Create a `Map` with the basemap.
 4. Set the map on the `MapView`.
 
@@ -32,7 +32,7 @@ The application utilizes the "World Topographic Map" tile layer. This presents a
 
 ## Additional information
 
-An ArcGISTiledLayer can also be added to the ArcGISMap as a layer, but it's best practice to use it as a basemap since its purpose is to provide geographical context. ArcGIS tiled layers do not support reprojection, query, select, identify, or editing.
+An ArcGIS tiled layer can also be added to a map as a layer, but it's best practice to use it as a basemap since its purpose is to provide geographical context. ArcGIS tiled layers do not support reprojection, query, select, identify, or editing.
 
 ## Tags
 
