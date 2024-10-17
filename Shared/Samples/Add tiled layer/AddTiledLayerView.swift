@@ -16,9 +16,35 @@ import ArcGIS
 import SwiftUI
 
 struct AddTiledLayerView: View {
-    @State private var map = Map(basemapStyle: .arcGISTopographic)
+    /// A map with a "World Topographic Map" tiled layer.
+    @State private var map: Map = {
+        // A web URL to the "World_Topo_Map" map server on ArcGIS Online.
+        let worldTopographicMap = URL(
+            string: "https://services.arcgisonline.com/arcgis/rest/services/World_Topo_Map/MapServer"
+        )!
+        
+        // Creates a tiled layer using the URL.
+        let tiledLayer = ArcGISTiledLayer(url: worldTopographicMap)
+        
+        // Creates a basemap using the layer.
+        let basemap = Basemap(baseLayer: tiledLayer)
+        
+        // Creates a map using the basemap.
+        let map = Map(basemap: basemap)
+        
+        // Sets the initial viewpoint on the map to zoom in on the layer.
+        let extent = Envelope(
+            xRange: -18546390...(-1833410),
+            yRange: -10740120...18985720,
+            spatialReference: .webMercator
+        )
+        map.initialViewpoint = Viewpoint(boundingGeometry: extent)
+        
+        return map
+    }()
     
     var body: some View {
+        // Displays the map using a map view.
         MapView(map: map)
     }
 }
