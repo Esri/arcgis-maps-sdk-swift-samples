@@ -1,0 +1,28 @@
+{
+    "category": "Layers",
+    "description": "Load an ArcGIS tiled layer from a URL.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "basemap",
+        "layers",
+        "raster tiles",
+        "tiled layer",
+        "visualization",
+        "ArcGISTiledLayer",
+        "Basemap",
+        "Map",
+        "MapView"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "ArcGISTiledLayer",
+        "Basemap",
+        "Map",
+        "MapView"
+    ],
+    "snippets": [
+        "AddTiledLayerView.swift"
+    ],
+    "title": "Add tiled layer"
+}
