@@ -419,6 +419,8 @@
 		D7BA8C442B2A4DAA00018633 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BA8C432B2A4DAA00018633 /* Array.swift */; };
 		D7BA8C462B2A8ACA00018633 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BA8C452B2A8ACA00018633 /* String.swift */; };
 		D7BB3DD22C5D781800FFCD56 /* SaveTheBay.geodatabase in Resources */ = {isa = PBXBuildFile; fileRef = D7BB3DD02C5D781800FFCD56 /* SaveTheBay.geodatabase */; settings = {ASSET_TAGS = (EditGeodatabaseWithTransactions, ); }; };
+		D7BE7E6F2CC19CC3006DDB0C /* AddTiledLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BE7E6B2CC19CC3006DDB0C /* AddTiledLayerView.swift */; };
+		D7BE7E722CC19CE5006DDB0C /* AddTiledLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7BE7E6B2CC19CC3006DDB0C /* AddTiledLayerView.swift */; };
 		D7BEBAA02CBD9CCA00F882E7 /* MontereyElevation.dt2 in Resources */ = {isa = PBXBuildFile; fileRef = D7BEBA9E2CBD9CCA00F882E7 /* MontereyElevation.dt2 */; settings = {ASSET_TAGS = (AddElevationSourceFromRaster, ); }; };
 		D7BEBAC52CBDC0F800F882E7 /* AddElevationSourceFromTilePackageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BEBABF2CBDC0F800F882E7 /* AddElevationSourceFromTilePackageView.swift */; };
 		D7BEBAC62CBDC11600F882E7 /* AddElevationSourceFromTilePackageView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7BEBABF2CBDC0F800F882E7 /* AddElevationSourceFromTilePackageView.swift */; };
@@ -560,6 +562,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				D7BE7E722CC19CE5006DDB0C /* AddTiledLayerView.swift in Copy Source Code Files */,
 				D7BEBAD52CBDFE3900F882E7 /* DisplayAlternateSymbolsAtDifferentScalesView.swift in Copy Source Code Files */,
 				D7BEBAC62CBDC11600F882E7 /* AddElevationSourceFromTilePackageView.swift in Copy Source Code Files */,
 				D7848F012CBD987B00F6F546 /* AddElevationSourceFromRasterView.swift in Copy Source Code Files */,
@@ -1009,6 +1012,7 @@
 		D7BA8C432B2A4DAA00018633 /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		D7BA8C452B2A8ACA00018633 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		D7BB3DD02C5D781800FFCD56 /* SaveTheBay.geodatabase */ = {isa = PBXFileReference; lastKnownFileType = file; path = SaveTheBay.geodatabase; sourceTree = "<group>"; };
+		D7BE7E6B2CC19CC3006DDB0C /* AddTiledLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTiledLayerView.swift; sourceTree = "<group>"; };
 		D7BEBA9E2CBD9CCA00F882E7 /* MontereyElevation.dt2 */ = {isa = PBXFileReference; lastKnownFileType = text; path = MontereyElevation.dt2; sourceTree = "<group>"; };
 		D7BEBABF2CBDC0F800F882E7 /* AddElevationSourceFromTilePackageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddElevationSourceFromTilePackageView.swift; sourceTree = "<group>"; };
 		D7BEBAC72CBDC81200F882E7 /* MontereyElevation.tpkx */ = {isa = PBXFileReference; lastKnownFileType = file; path = MontereyElevation.tpkx; sourceTree = "<group>"; };
@@ -1206,6 +1210,7 @@
 				F19A316128906F0D003B7EF9 /* Add raster from file */,
 				955271622C0E6750009B1ED4 /* Add raster from service */,
 				E066DD3E28610F3F004D3D5B /* Add scene layer from service */,
+				D7BE7E6E2CC19CC3006DDB0C /* Add tiled layer */,
 				3E54CF202C66AFA400DD2F18 /* Add web tiled layer */,
 				D7E557602A1D743100B9FB09 /* Add WMS layer */,
 				1C3B7DC22A5F64FC00907443 /* Analyze network with subnetwork trace */,
@@ -2573,6 +2578,14 @@
 			path = 43809fd639f242fd8045ecbafd61a579;
 			sourceTree = "<group>";
 		};
+		D7BE7E6E2CC19CC3006DDB0C /* Add tiled layer */ = {
+			isa = PBXGroup;
+			children = (
+				D7BE7E6B2CC19CC3006DDB0C /* AddTiledLayerView.swift */,
+			);
+			path = "Add tiled layer";
+			sourceTree = "<group>";
+		};
 		D7BEBA9F2CBD9CCA00F882E7 /* 98092369c4ae4d549bbbd45dba993ebc */ = {
 			isa = PBXGroup;
 			children = (
@@ -3294,6 +3307,7 @@
 				D73723792AF5ADD800846884 /* FindRouteInMobileMapPackageView.MobileMapView.swift in Sources */,
 				E004A6E028466279002A1FE6 /* ShowCalloutView.swift in Sources */,
 				E000E763286A0B18005D87C5 /* CutGeometryView.swift in Sources */,
+				D7BE7E6F2CC19CC3006DDB0C /* AddTiledLayerView.swift in Sources */,
 				D7705D582AFC244E00CC0335 /* FindClosestFacilityToMultiplePointsView.swift in Sources */,
 				D73FCFFF2B02C7630006360D /* FindRouteAroundBarriersView.Views.swift in Sources */,
 				3EEDE7CE2C5D73F700510104 /* SetSpatialReferenceView.swift in Sources */,
