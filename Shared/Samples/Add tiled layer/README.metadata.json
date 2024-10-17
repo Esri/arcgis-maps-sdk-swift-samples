@@ -2,7 +2,9 @@
     "category": "Layers",
     "description": "Load an ArcGIS tiled layer from a URL.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "add-tiled-layer.png"
+    ],
     "keywords": [
         "basemap",
         "layers",

@@ -2,7 +2,7 @@
 
 Load an ArcGIS tiled layer from a URL.
 
-![Image of add tiled layer](AddTiledLayer.png)
+![Screenshot of Add tiled layer sample](add-tiled-layer.png)
 
 ## Use case
 
@@ -10,13 +10,13 @@ An `ArcGISTiledLayer` consumes raster tiles provided by an ArcGIS service or a t
 
 ## How to use the sample
 
-Launch the app to view the "World Topographic Map" tile layer as the basemap.
+Open the sample to view the "World Topographic Map" tile layer as the basemap.
 
 ## How it works
 
-1. Create a `ArcGISTiledLayer` object from a URL.
+1. Create an `ArcGISTiledLayer` object from a URL.
 2. Create a `Basemap` passing in the tiled layer.
-3. Create a `ArcGISMap` with the basemap.
+3. Create a `Map` with the basemap.
 4. Set the map on the `MapView`.
 
 ## Relevant API
@@ -32,7 +32,7 @@ The application utilizes the "World Topographic Map" tile layer. This presents a
 
 ## Additional information
 
-An ArcGISTiledLayer can also be added to the ArcGISMap as a layer, but it's best practice to use as a basemap since its purpose is to provide geographical context. ArcGIS tiled layers do not support reprojection, query, select, identify, or editing.
+An ArcGISTiledLayer can also be added to the ArcGISMap as a layer, but it's best practice to use it as a basemap since its purpose is to provide geographical context. ArcGIS tiled layers do not support reprojection, query, select, identify, or editing.
 
 ## Tags
 
