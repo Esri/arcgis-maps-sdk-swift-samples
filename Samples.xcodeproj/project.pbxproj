@@ -419,12 +419,12 @@
 		D7BA8C442B2A4DAA00018633 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BA8C432B2A4DAA00018633 /* Array.swift */; };
 		D7BA8C462B2A8ACA00018633 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BA8C452B2A8ACA00018633 /* String.swift */; };
 		D7BB3DD22C5D781800FFCD56 /* SaveTheBay.geodatabase in Resources */ = {isa = PBXBuildFile; fileRef = D7BB3DD02C5D781800FFCD56 /* SaveTheBay.geodatabase */; settings = {ASSET_TAGS = (EditGeodatabaseWithTransactions, ); }; };
-		D7BEBAD22CBDFE1C00F882E7 /* DisplayAlternateSymbolsAtDifferentScalesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BEBACE2CBDFE1C00F882E7 /* DisplayAlternateSymbolsAtDifferentScalesView.swift */; };
-		D7BEBAD52CBDFE3900F882E7 /* DisplayAlternateSymbolsAtDifferentScalesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7BEBACE2CBDFE1C00F882E7 /* DisplayAlternateSymbolsAtDifferentScalesView.swift */; };
 		D7BEBAA02CBD9CCA00F882E7 /* MontereyElevation.dt2 in Resources */ = {isa = PBXBuildFile; fileRef = D7BEBA9E2CBD9CCA00F882E7 /* MontereyElevation.dt2 */; settings = {ASSET_TAGS = (AddElevationSourceFromRaster, ); }; };
 		D7BEBAC52CBDC0F800F882E7 /* AddElevationSourceFromTilePackageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BEBABF2CBDC0F800F882E7 /* AddElevationSourceFromTilePackageView.swift */; };
 		D7BEBAC62CBDC11600F882E7 /* AddElevationSourceFromTilePackageView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7BEBABF2CBDC0F800F882E7 /* AddElevationSourceFromTilePackageView.swift */; };
 		D7BEBAC92CBDC81200F882E7 /* MontereyElevation.tpkx in Resources */ = {isa = PBXBuildFile; fileRef = D7BEBAC72CBDC81200F882E7 /* MontereyElevation.tpkx */; settings = {ASSET_TAGS = (AddElevationSourceFromTilePackage, ); }; };
+		D7BEBAD22CBDFE1C00F882E7 /* DisplayAlternateSymbolsAtDifferentScalesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BEBACE2CBDFE1C00F882E7 /* DisplayAlternateSymbolsAtDifferentScalesView.swift */; };
+		D7BEBAD52CBDFE3900F882E7 /* DisplayAlternateSymbolsAtDifferentScalesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7BEBACE2CBDFE1C00F882E7 /* DisplayAlternateSymbolsAtDifferentScalesView.swift */; };
 		D7C16D1B2AC5F95300689E89 /* Animate3DGraphicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C16D1A2AC5F95300689E89 /* Animate3DGraphicView.swift */; };
 		D7C16D1C2AC5F96900689E89 /* Animate3DGraphicView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7C16D1A2AC5F95300689E89 /* Animate3DGraphicView.swift */; };
 		D7C16D1F2AC5FE8200689E89 /* Pyrenees.csv in Resources */ = {isa = PBXBuildFile; fileRef = D7C16D1E2AC5FE8200689E89 /* Pyrenees.csv */; settings = {ASSET_TAGS = (Animate3DGraphic, ); }; };
@@ -1010,9 +1010,9 @@
 		D7BA8C452B2A8ACA00018633 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		D7BB3DD02C5D781800FFCD56 /* SaveTheBay.geodatabase */ = {isa = PBXFileReference; lastKnownFileType = file; path = SaveTheBay.geodatabase; sourceTree = "<group>"; };
 		D7BEBA9E2CBD9CCA00F882E7 /* MontereyElevation.dt2 */ = {isa = PBXFileReference; lastKnownFileType = text; path = MontereyElevation.dt2; sourceTree = "<group>"; };
-		D7BEBACE2CBDFE1C00F882E7 /* DisplayAlternateSymbolsAtDifferentScalesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayAlternateSymbolsAtDifferentScalesView.swift; sourceTree = "<group>"; };
 		D7BEBABF2CBDC0F800F882E7 /* AddElevationSourceFromTilePackageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddElevationSourceFromTilePackageView.swift; sourceTree = "<group>"; };
 		D7BEBAC72CBDC81200F882E7 /* MontereyElevation.tpkx */ = {isa = PBXFileReference; lastKnownFileType = file; path = MontereyElevation.tpkx; sourceTree = "<group>"; };
+		D7BEBACE2CBDFE1C00F882E7 /* DisplayAlternateSymbolsAtDifferentScalesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayAlternateSymbolsAtDifferentScalesView.swift; sourceTree = "<group>"; };
 		D7C16D1A2AC5F95300689E89 /* Animate3DGraphicView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animate3DGraphicView.swift; sourceTree = "<group>"; };
 		D7C16D1E2AC5FE8200689E89 /* Pyrenees.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Pyrenees.csv; sourceTree = "<group>"; };
 		D7C16D212AC5FE9800689E89 /* GrandCanyon.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = GrandCanyon.csv; sourceTree = "<group>"; };
@@ -2581,14 +2581,6 @@
 			path = 98092369c4ae4d549bbbd45dba993ebc;
 			sourceTree = "<group>";
 		};
-		D7BEBAD12CBDFE1C00F882E7 /* Display alternate symbols at different scales */ = {
-			isa = PBXGroup;
-			children = (
-				D7BEBACE2CBDFE1C00F882E7 /* DisplayAlternateSymbolsAtDifferentScalesView.swift */,
-			);
-			path = "Display alternate symbols at different scales";
-			sourceTree = "<group>";
-		};
 		D7BEBAC22CBDC0F800F882E7 /* Add elevation source from tile package */ = {
 			isa = PBXGroup;
 			children = (
@@ -2603,6 +2595,14 @@
 				D7BEBAC72CBDC81200F882E7 /* MontereyElevation.tpkx */,
 			);
 			path = 52ca74b4ba8042b78b3c653696f34a9c;
+			sourceTree = "<group>";
+		};
+		D7BEBAD12CBDFE1C00F882E7 /* Display alternate symbols at different scales */ = {
+			isa = PBXGroup;
+			children = (
+				D7BEBACE2CBDFE1C00F882E7 /* DisplayAlternateSymbolsAtDifferentScalesView.swift */,
+			);
+			path = "Display alternate symbols at different scales";
 			sourceTree = "<group>";
 		};
 		D7C16D172AC5F6C100689E89 /* Animate 3D graphic */ = {
