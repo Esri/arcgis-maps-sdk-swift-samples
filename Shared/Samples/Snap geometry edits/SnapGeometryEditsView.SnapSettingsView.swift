@@ -27,10 +27,10 @@ extension SnapGeometryEditsView {
         /// for the geometry editor.
         @State private var snappingEnabled = false
         
-        /// A Boolean value indicating whether the geometry editor editor snaps to geometry guides.
+        /// A Boolean value indicating whether the geometry editor snaps to geometry guides.
         @State private var snapsToGeometryGuides = false
         
-        /// A Boolean value indicating whether the geometry editor editor snaps to features and graphics.
+        /// A Boolean value indicating whether the geometry editor snaps to features and graphics.
         @State private var snapsToFeatures = false
         
         /// An array of snap source names and their source settings.
