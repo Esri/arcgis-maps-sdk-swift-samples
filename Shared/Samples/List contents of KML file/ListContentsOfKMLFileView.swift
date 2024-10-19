@@ -59,10 +59,10 @@ struct ListContentsOfKMLFileView: View {
 
 // MARK: Model
 
-extension ListContentsOfKMLFileView {
+private extension ListContentsOfKMLFileView {
     /// The view model for the sample.
     @MainActor
-    fileprivate final class Model: ObservableObject {
+    final class Model: ObservableObject {
         /// A dataset containing the KML data from a local file.
         @Published private(set) var kmlDataset: KMLDataset?
         
@@ -137,9 +137,9 @@ extension ListContentsOfKMLFileView {
 
 // MARK: Helper Extensions
 
-extension KMLNode {
+private extension KMLNode {
     /// The child nodes of the node, if any.
-    fileprivate var children: [KMLNode]? {
+    var children: [KMLNode]? {
         switch self {
         case let container as KMLContainer:
             container.childNodes
@@ -151,7 +151,7 @@ extension KMLNode {
     }
     
     /// A human-readable label of the type of the node.
-    fileprivate var typeLabel: String {
+    var typeLabel: String {
         switch self {
         case is KMLDocument: "Document"
         case is KMLFolder: "Folder"
@@ -167,12 +167,12 @@ extension KMLNode {
     }
 }
 
-extension Viewpoint {
+private extension Viewpoint {
     /// Creates a viewpoint from a KML node.
     /// - Parameters:
     ///   - kmlNode: The KML node.
     ///   - surface: A surface for determining the elevation needed to offset the viewpoint.
-    fileprivate init?(kmlNode: KMLNode, surface: Surface) async throws {
+    init?(kmlNode: KMLNode, surface: Surface) async throws {
         if let kmlViewpoint = kmlNode.viewpoint {
             try await self.init(kmlViewpoint: kmlViewpoint, surface: surface)
         } else if let extent = kmlNode.extent {
@@ -253,9 +253,9 @@ extension Viewpoint {
     }
 }
 
-extension URL {
+private extension URL {
     /// A web URL to the Terrain3D image server on ArcGIS REST.
-    fileprivate static var worldElevationService: URL {
+    static var worldElevationService: URL {
         URL(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!
     }
 }
