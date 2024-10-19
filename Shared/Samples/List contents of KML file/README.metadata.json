@@ -2,7 +2,9 @@
     "category": "Edit and Manage Data",
     "description": "List the contents of a KML file.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "list-contents-of-kml-file.png"
+    ],
     "keywords": [
         "KML",
         "KMZ",

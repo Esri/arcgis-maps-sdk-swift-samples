@@ -2,7 +2,7 @@
 
 List the contents of a KML file.
 
-![Image of list contents of KML file](ListContentsOfKMLFile.jpg)
+![Screenshot of List contents of KML file sample](list-contents-of-kml-file.png)
 
 ## Use case
 
@@ -10,14 +10,14 @@ KML files can contain a hierarchy of features, including network links to other 
 
 ## How to use the sample
 
-The contents of the KML file are shown in a tree. Select a node to zoom to that node. Not all nodes can be zoomed to (e.g. screen overlays).
+The contents of the KML file are shown in a tree. Tap on a disclosure to reveal a node's children. Tap on a node to open it in a scene zoomed to that node. Not all nodes can be zoomed to (e.g., screen overlays).
 
 ## How it works
 
 1. Add the KML file to the scene as a layer.
 2. Explore the root nodes of the `KMLDataset` recursively explored to create a view model.
-  * Each node is enabled for display at this step. KML files may include nodes that are turned off by default.
-3. When a node is selected, use the node's `Extent` to determine a viewpoint and set the `SceneView` object's viewpoint do it.
+    * Each node is enabled for display at this step. KML files may include nodes that are turned off by default.
+3. When a node is selected, use the node's `extent` to create a `Viewpoint` and pass it to the `SceneView`.
 
 ## Relevant API
 
