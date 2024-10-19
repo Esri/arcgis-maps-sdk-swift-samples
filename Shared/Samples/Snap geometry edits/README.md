@@ -25,7 +25,7 @@ To more clearly see how the vertex is snapped, long press to invoke the magnifie
 3. Create a `GeometryEditor` and connect it to the map view.
 4. Call `syncSourceSettings()` after the map's operational layers are loaded and the geometry editor is connected to the map view.
 5. Set `SnapSettings.isEnabled` and each `SnapSourceSettings.isEnabled` to `true` for the `SnapSource` of interest.
-6. Toggle geometry guides using `SnapSettings.isGeometryGuidesEnabled` and feature snapping using `SnapSettings.isFeatureSnappingEnabled`.
+6. Toggle geometry guides using `SnapSettings.snapsToGeometryGuides` and feature snapping using `SnapSettings.snapsToFeatures`.
 7. Start the geometry editor with a `GeometryType`.
 
 ## Relevant API

@@ -23,7 +23,7 @@ extension SnapGeometryEditsView {
         let geometryEditor: GeometryEditor = {
             let geometryEditor = GeometryEditor()
             geometryEditor.snapSettings.isEnabled = true
-            geometryEditor.snapSettings.isGeometryGuidesEnabled = true
+            geometryEditor.snapSettings.snapsToGeometryGuides = true
             return geometryEditor
         }()
         
