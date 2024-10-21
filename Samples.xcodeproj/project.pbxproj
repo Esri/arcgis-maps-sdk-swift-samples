@@ -437,7 +437,7 @@
 		D7C16D282AC5FEB700689E89 /* Hawaii.csv in Resources */ = {isa = PBXBuildFile; fileRef = D7C16D272AC5FEB600689E89 /* Hawaii.csv */; settings = {ASSET_TAGS = (Animate3DGraphic, ); }; };
 		D7C3AB4A2B683291008909B9 /* SetFeatureRequestModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C3AB472B683291008909B9 /* SetFeatureRequestModeView.swift */; };
 		D7C3AB4D2B6832B7008909B9 /* SetFeatureRequestModeView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7C3AB472B683291008909B9 /* SetFeatureRequestModeView.swift */; };
-		D7C523402BED9BBF00E8221A /* SanFrancisco.tpkx in Resources */ = {isa = PBXBuildFile; fileRef = D7C5233E2BED9BBF00E8221A /* SanFrancisco.tpkx */; settings = {ASSET_TAGS = (EditAndSyncFeaturesWithFeatureService, ); }; };
+		D7C523402BED9BBF00E8221A /* SanFrancisco.tpkx in Resources */ = {isa = PBXBuildFile; fileRef = D7C5233E2BED9BBF00E8221A /* SanFrancisco.tpkx */; settings = {ASSET_TAGS = (AddTiledLayerAsBasemap, EditAndSyncFeaturesWithFeatureService, ); }; };
 		D7C6420C2B4F47E10042B8F7 /* SearchForWebMapView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C6420B2B4F47E10042B8F7 /* SearchForWebMapView.Model.swift */; };
 		D7C6420D2B4F5DDB0042B8F7 /* SearchForWebMapView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7C6420B2B4F47E10042B8F7 /* SearchForWebMapView.Model.swift */; };
 		D7C97B562B75C10C0097CDA1 /* ValidateUtilityNetworkTopologyView.Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C97B552B75C10C0097CDA1 /* ValidateUtilityNetworkTopologyView.Views.swift */; };
@@ -3090,6 +3090,7 @@
 					AddKmlLayer,
 					AddPointCloudLayerFromFile,
 					AddRasterFromFile,
+					AddTiledLayerAsBasemap,
 					Animate3DGraphic,
 					AnimateImagesWithImageOverlay,
 					ApplyScheduledUpdatesToPreplannedMapArea,

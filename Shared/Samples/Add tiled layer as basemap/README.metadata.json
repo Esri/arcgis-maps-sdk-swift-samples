@@ -13,6 +13,9 @@
         "Map",
         "TileCache"
     ],
+    "offline_data": [
+        "e4a398afe9a945f3b0f4dca1e4faccb5"
+    ],
     "redirect_from": [],
     "relevant_apis": [
         "ArcGISTiledLayer",

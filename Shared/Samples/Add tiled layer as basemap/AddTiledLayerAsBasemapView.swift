@@ -23,6 +23,9 @@ struct AddTiledLayerAsBasemapView: View {
     }
 }
 
-#Preview {
-    AddTiledLayerAsBasemapView()
+private extension URL {
+    /// The URL to the local tile package file with street data for San Francisco, CA, USA.
+    static var sanFranciscoStreetsTilePackage: URL {
+        Bundle.main.url(forResource: "SanFrancisco", withExtension: "tpkx")!
+    }
 }
