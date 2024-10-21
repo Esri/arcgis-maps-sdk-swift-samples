@@ -17,7 +17,7 @@ Launch the app to view the "San Francisco offline tile package" as the basemap.
 1. Create a `TileCache`, specifying the path to the local tile package.
 2. Create an `ArcGISTiledLayer` with the tile cache.
 3. Create a `Basemap` with the tiled layer.
-4. Create an `ArcGISMap` with the basemap and pass it to a MapView.
+4. Create a `Map` with the basemap and pass it to a MapView.
 
 ## Relevant API
 
