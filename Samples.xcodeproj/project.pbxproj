@@ -263,6 +263,7 @@
 		D71FCB8B2AD628B9000E517C /* CreateMobileGeodatabaseView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D71FCB892AD6277E000E517C /* CreateMobileGeodatabaseView.Model.swift */; };
 		D7201D042CC6D3B5004BDB7D /* AddVectorTiledLayerFromCustomStyleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7201D002CC6D3B5004BDB7D /* AddVectorTiledLayerFromCustomStyleView.swift */; };
 		D7201D072CC6D3D3004BDB7D /* AddVectorTiledLayerFromCustomStyleView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7201D002CC6D3B5004BDB7D /* AddVectorTiledLayerFromCustomStyleView.swift */; };
+		D7201D2B2CC6D829004BDB7D /* dodge_city.vtpk in Resources */ = {isa = PBXBuildFile; fileRef = D7201D292CC6D829004BDB7D /* dodge_city.vtpk */; settings = {ASSET_TAGS = (AddVectorTiledLayerFromCustomStyle, ); }; };
 		D721EEA82ABDFF550040BE46 /* LothianRiversAnno.mmpk in Resources */ = {isa = PBXBuildFile; fileRef = D721EEA72ABDFF550040BE46 /* LothianRiversAnno.mmpk */; settings = {ASSET_TAGS = (ShowMobileMapPackageExpirationDate, ); }; };
 		D722BD222A420DAD002C2087 /* ShowExtrudedFeaturesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D722BD212A420DAD002C2087 /* ShowExtrudedFeaturesView.swift */; };
 		D722BD232A420DEC002C2087 /* ShowExtrudedFeaturesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D722BD212A420DAD002C2087 /* ShowExtrudedFeaturesView.swift */; };
@@ -930,6 +931,7 @@
 		D71D516D2B51D7B600B2A2BE /* SearchForWebMapView.Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchForWebMapView.Views.swift; sourceTree = "<group>"; };
 		D71FCB892AD6277E000E517C /* CreateMobileGeodatabaseView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateMobileGeodatabaseView.Model.swift; sourceTree = "<group>"; };
 		D7201D002CC6D3B5004BDB7D /* AddVectorTiledLayerFromCustomStyleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddVectorTiledLayerFromCustomStyleView.swift; sourceTree = "<group>"; };
+		D7201D292CC6D829004BDB7D /* dodge_city.vtpk */ = {isa = PBXFileReference; lastKnownFileType = file; path = dodge_city.vtpk; sourceTree = "<group>"; };
 		D721EEA72ABDFF550040BE46 /* LothianRiversAnno.mmpk */ = {isa = PBXFileReference; lastKnownFileType = file; path = LothianRiversAnno.mmpk; sourceTree = "<group>"; };
 		D722BD212A420DAD002C2087 /* ShowExtrudedFeaturesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowExtrudedFeaturesView.swift; sourceTree = "<group>"; };
 		D7232EE02AC1E5AA0079ABFF /* PlayKMLTourView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayKMLTourView.swift; sourceTree = "<group>"; };
@@ -1484,6 +1486,7 @@
 				D7C5233F2BED9BBF00E8221A /* e4a398afe9a945f3b0f4dca1e4faccb5 */,
 				D7F8C03C2B605AF60072BFA7 /* e12b54ea799f4606a2712157cf9f6e41 */,
 				D7C16D262AC5FEB600689E89 /* e87c154fb9c2487f999143df5b08e9b1 */,
+				D7201D2A2CC6D829004BDB7D /* f4b742a57af344988b02227e2824ca5f */,
 				D7497F3E2AC4BA4100167AD2 /* f5ff6f5556a945bca87ca513b8729a1e */,
 			);
 			path = "Portal Data";
@@ -2063,6 +2066,14 @@
 				D7201D002CC6D3B5004BDB7D /* AddVectorTiledLayerFromCustomStyleView.swift */,
 			);
 			path = "Add vector tiled layer from custom style";
+			sourceTree = "<group>";
+		};
+		D7201D2A2CC6D829004BDB7D /* f4b742a57af344988b02227e2824ca5f */ = {
+			isa = PBXGroup;
+			children = (
+				D7201D292CC6D829004BDB7D /* dodge_city.vtpk */,
+			);
+			path = f4b742a57af344988b02227e2824ca5f;
 			sourceTree = "<group>";
 		};
 		D721EEA62ABDFF550040BE46 /* 174150279af74a2ba6f8b87a567f480b */ = {
@@ -3090,6 +3101,7 @@
 					AddKmlLayer,
 					AddPointCloudLayerFromFile,
 					AddRasterFromFile,
+					AddVectorTiledLayerFromCustomStyle,
 					Animate3DGraphic,
 					AnimateImagesWithImageOverlay,
 					ApplyScheduledUpdatesToPreplannedMapArea,
@@ -3183,6 +3195,7 @@
 				D73571D72CB613220046A433 /* hydrography in Resources */,
 				D7BEBAC92CBDC81200F882E7 /* MontereyElevation.tpkx in Resources */,
 				D7D1F3532ADDBE5D009CE2DA /* philadelphia.mspk in Resources */,
+				D7201D2B2CC6D829004BDB7D /* dodge_city.vtpk in Resources */,
 				004A2B9D2BED455B00C297CE /* canyonlands in Resources */,
 				798C2DA72AFC505600EE7E97 /* PrivacyInfo.xcprivacy in Resources */,
 				D7E7D09A2AEB3C47003AAD02 /* san_diego_offline_routing in Resources */,

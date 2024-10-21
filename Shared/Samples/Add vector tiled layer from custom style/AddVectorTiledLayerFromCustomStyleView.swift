@@ -23,6 +23,9 @@ struct AddVectorTiledLayerFromCustomStyleView: View {
     }
 }
 
-#Preview {
-    AddVectorTiledLayerFromCustomStyleView()
+private extension URL {
+    /// The URL to the local vector tile package file of Dodge City, KS, USA.
+    static var dodgeCityVectorTilePackage: URL {
+        Bundle.main.url(forResource: "dodge_city", withExtension: "vtpk")!
+    }
 }
