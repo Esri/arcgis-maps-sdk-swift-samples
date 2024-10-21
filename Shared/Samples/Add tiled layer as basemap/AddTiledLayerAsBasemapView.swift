@@ -16,9 +16,23 @@ import ArcGIS
 import SwiftUI
 
 struct AddTiledLayerAsBasemapView: View {
-    @State private var map = Map(basemapStyle: .arcGISTopographic)
+    /// A map of the streets in San Francisco.
+    @State private var map: Map = {
+        // Creates a tile cache using a URL to a local tile package file.
+        let tileCache = TileCache(fileURL: .sanFranciscoStreetsTilePackage)
+        
+        // Creates a tiled layer using the tile cache.
+        let tiledLayer = ArcGISTiledLayer(tileCache: tileCache)
+        
+        // Creates a basemap using the layer.
+        let basemap = Basemap(baseLayer: tiledLayer)
+        
+        // Creates a map using the basemap.
+        return Map(basemap: basemap)
+    }()
     
     var body: some View {
+        // Displays the map using a map view.
         MapView(map: map)
     }
 }
