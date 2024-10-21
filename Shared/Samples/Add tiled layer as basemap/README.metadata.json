@@ -2,7 +2,9 @@
     "category": "Edit and Manage Data",
     "description": "Load an offline copy of a tiled map service as a basemap.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "add-tiled-layer-as-basemap.png"
+    ],
     "keywords": [
         "cache",
         "layers",
