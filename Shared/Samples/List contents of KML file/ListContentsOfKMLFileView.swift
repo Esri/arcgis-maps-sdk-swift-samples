@@ -171,7 +171,7 @@ private extension Viewpoint {
     /// Creates a viewpoint from a KML node.
     /// - Parameters:
     ///   - kmlNode: The KML node.
-    ///   - surface: A surface for determining the elevation needed to offset the viewpoint.
+    ///   - surface: A surface that determines the elevation needed to offset the viewpoint.
     init?(kmlNode: KMLNode, surface: Surface) async throws {
         if let kmlViewpoint = kmlNode.viewpoint {
             try await self.init(kmlViewpoint: kmlViewpoint, surface: surface)
@@ -186,7 +186,7 @@ private extension Viewpoint {
     /// Creates a viewpoint from a KML viewpoint.
     /// - Parameters:
     ///   - kmlViewpoint: The KML viewpoint.
-    ///   - surface: A surface for determining the elevation needed to offset the viewpoint.
+    ///   - surface: A surface that determines the elevation needed to offset the viewpoint.
     private init(kmlViewpoint: KMLViewpoint, surface: Surface) async throws {
         switch kmlViewpoint.kind {
         case .lookAt:
@@ -221,7 +221,7 @@ private extension Viewpoint {
     /// Creates a viewpoint from the extent of a KML node.
     /// - Parameters:
     ///   - extent: The extent of a KML node.
-    ///   - surface: A surface for determining the elevation needed to offset the viewpoint.
+    ///   - surface: A surface that determines the elevation needed to offset the viewpoint.
     private init?(kmlNodeExtent extent: Envelope, surface: Surface) async throws {
         // Ensures the extent isn't empty since some nodes don't include a geometry.
         guard !extent.isEmpty else { return nil }
