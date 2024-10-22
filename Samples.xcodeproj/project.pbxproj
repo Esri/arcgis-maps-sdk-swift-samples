@@ -261,6 +261,8 @@
 		D71D516F2B51D87700B2A2BE /* SearchForWebMapView.Views.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D71D516D2B51D7B600B2A2BE /* SearchForWebMapView.Views.swift */; };
 		D71FCB8A2AD6277F000E517C /* CreateMobileGeodatabaseView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71FCB892AD6277E000E517C /* CreateMobileGeodatabaseView.Model.swift */; };
 		D71FCB8B2AD628B9000E517C /* CreateMobileGeodatabaseView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D71FCB892AD6277E000E517C /* CreateMobileGeodatabaseView.Model.swift */; };
+		D7201CDA2CC6B710004BDB7D /* AddTiledLayerAsBasemapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7201CD42CC6B710004BDB7D /* AddTiledLayerAsBasemapView.swift */; };
+		D7201CDB2CC6B72A004BDB7D /* AddTiledLayerAsBasemapView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7201CD42CC6B710004BDB7D /* AddTiledLayerAsBasemapView.swift */; };
 		D721EEA82ABDFF550040BE46 /* LothianRiversAnno.mmpk in Resources */ = {isa = PBXBuildFile; fileRef = D721EEA72ABDFF550040BE46 /* LothianRiversAnno.mmpk */; settings = {ASSET_TAGS = (ShowMobileMapPackageExpirationDate, ); }; };
 		D722BD222A420DAD002C2087 /* ShowExtrudedFeaturesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D722BD212A420DAD002C2087 /* ShowExtrudedFeaturesView.swift */; };
 		D722BD232A420DEC002C2087 /* ShowExtrudedFeaturesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D722BD212A420DAD002C2087 /* ShowExtrudedFeaturesView.swift */; };
@@ -438,7 +440,7 @@
 		D7C16D282AC5FEB700689E89 /* Hawaii.csv in Resources */ = {isa = PBXBuildFile; fileRef = D7C16D272AC5FEB600689E89 /* Hawaii.csv */; settings = {ASSET_TAGS = (Animate3DGraphic, ); }; };
 		D7C3AB4A2B683291008909B9 /* SetFeatureRequestModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C3AB472B683291008909B9 /* SetFeatureRequestModeView.swift */; };
 		D7C3AB4D2B6832B7008909B9 /* SetFeatureRequestModeView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7C3AB472B683291008909B9 /* SetFeatureRequestModeView.swift */; };
-		D7C523402BED9BBF00E8221A /* SanFrancisco.tpkx in Resources */ = {isa = PBXBuildFile; fileRef = D7C5233E2BED9BBF00E8221A /* SanFrancisco.tpkx */; settings = {ASSET_TAGS = (EditAndSyncFeaturesWithFeatureService, ); }; };
+		D7C523402BED9BBF00E8221A /* SanFrancisco.tpkx in Resources */ = {isa = PBXBuildFile; fileRef = D7C5233E2BED9BBF00E8221A /* SanFrancisco.tpkx */; settings = {ASSET_TAGS = (AddTiledLayerAsBasemap, EditAndSyncFeaturesWithFeatureService, ); }; };
 		D7C6420C2B4F47E10042B8F7 /* SearchForWebMapView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C6420B2B4F47E10042B8F7 /* SearchForWebMapView.Model.swift */; };
 		D7C6420D2B4F5DDB0042B8F7 /* SearchForWebMapView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7C6420B2B4F47E10042B8F7 /* SearchForWebMapView.Model.swift */; };
 		D7C97B562B75C10C0097CDA1 /* ValidateUtilityNetworkTopologyView.Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C97B552B75C10C0097CDA1 /* ValidateUtilityNetworkTopologyView.Views.swift */; };
@@ -566,6 +568,7 @@
 			dstSubfolderSpec = 7;
 			files = (
 				D75E5EE92CC0342700252595 /* ListContentsOfKMLFileView.swift in Copy Source Code Files */,
+				D7201CDB2CC6B72A004BDB7D /* AddTiledLayerAsBasemapView.swift in Copy Source Code Files */,
 				D7BE7E722CC19CE5006DDB0C /* AddTiledLayerView.swift in Copy Source Code Files */,
 				D7BEBAD52CBDFE3900F882E7 /* DisplayAlternateSymbolsAtDifferentScalesView.swift in Copy Source Code Files */,
 				D7BEBAC62CBDC11600F882E7 /* AddElevationSourceFromTilePackageView.swift in Copy Source Code Files */,
@@ -930,6 +933,7 @@
 		D71C909D2C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleGeometryTypesWithSymbolsView.Views.swift; sourceTree = "<group>"; };
 		D71D516D2B51D7B600B2A2BE /* SearchForWebMapView.Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchForWebMapView.Views.swift; sourceTree = "<group>"; };
 		D71FCB892AD6277E000E517C /* CreateMobileGeodatabaseView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateMobileGeodatabaseView.Model.swift; sourceTree = "<group>"; };
+		D7201CD42CC6B710004BDB7D /* AddTiledLayerAsBasemapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTiledLayerAsBasemapView.swift; sourceTree = "<group>"; };
 		D721EEA72ABDFF550040BE46 /* LothianRiversAnno.mmpk */ = {isa = PBXFileReference; lastKnownFileType = file; path = LothianRiversAnno.mmpk; sourceTree = "<group>"; };
 		D722BD212A420DAD002C2087 /* ShowExtrudedFeaturesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowExtrudedFeaturesView.swift; sourceTree = "<group>"; };
 		D7232EE02AC1E5AA0079ABFF /* PlayKMLTourView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayKMLTourView.swift; sourceTree = "<group>"; };
@@ -1217,6 +1221,7 @@
 				955271622C0E6750009B1ED4 /* Add raster from service */,
 				E066DD3E28610F3F004D3D5B /* Add scene layer from service */,
 				D7BE7E6E2CC19CC3006DDB0C /* Add tiled layer */,
+				D7201CD72CC6B710004BDB7D /* Add tiled layer as basemap */,
 				3E54CF202C66AFA400DD2F18 /* Add web tiled layer */,
 				D7E557602A1D743100B9FB09 /* Add WMS layer */,
 				1C3B7DC22A5F64FC00907443 /* Analyze network with subnetwork trace */,
@@ -2058,6 +2063,14 @@
 				D71C909D2C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.Views.swift */,
 			);
 			path = "Style geometry types with symbols";
+			sourceTree = "<group>";
+		};
+		D7201CD72CC6B710004BDB7D /* Add tiled layer as basemap */ = {
+			isa = PBXGroup;
+			children = (
+				D7201CD42CC6B710004BDB7D /* AddTiledLayerAsBasemapView.swift */,
+			);
+			path = "Add tiled layer as basemap";
 			sourceTree = "<group>";
 		};
 		D721EEA62ABDFF550040BE46 /* 174150279af74a2ba6f8b87a567f480b */ = {
@@ -3101,6 +3114,7 @@
 					AddKmlLayer,
 					AddPointCloudLayerFromFile,
 					AddRasterFromFile,
+					AddTiledLayerAsBasemap,
 					Animate3DGraphic,
 					AnimateImagesWithImageOverlay,
 					ApplyScheduledUpdatesToPreplannedMapArea,
@@ -3330,6 +3344,7 @@
 				D7CDD38B2CB86F0A00DE9766 /* AddPointCloudLayerFromFileView.swift in Sources */,
 				D7BA38912BFBC476009954F5 /* EditFeaturesWithFeatureLinkedAnnotationView.Model.swift in Sources */,
 				10D321962BDB1CB500B39B1B /* GenerateOfflineMapWithLocalBasemapView.swift in Sources */,
+				D7201CDA2CC6B710004BDB7D /* AddTiledLayerAsBasemapView.swift in Sources */,
 				D73723792AF5ADD800846884 /* FindRouteInMobileMapPackageView.MobileMapView.swift in Sources */,
 				E004A6E028466279002A1FE6 /* ShowCalloutView.swift in Sources */,
 				E000E763286A0B18005D87C5 /* CutGeometryView.swift in Sources */,
