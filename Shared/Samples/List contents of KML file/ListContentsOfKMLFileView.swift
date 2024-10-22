@@ -81,7 +81,7 @@ private extension ListContentsOfKMLFileView {
         }()
         
         /// The task used for the asynchronous setup operations.
-        private var setupTask: Task<Void, Error>?
+        private var setupTask: Task<Void, Never>?
         
         init() {
             setupTask = Task { [weak self] in
