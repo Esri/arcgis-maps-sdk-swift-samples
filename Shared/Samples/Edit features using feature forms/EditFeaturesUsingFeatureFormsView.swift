@@ -65,7 +65,6 @@ struct EditFeaturesUsingFeatureFormsView: View {
         MapViewReader { mapViewProxy in
             MapView(map: map)
                 .onSingleTapGesture { screenPoint, _ in
-                    print("")
                     if isShowingFeatureForm {
                         isShowingDiscardEditsAlert = true
                     } else {
