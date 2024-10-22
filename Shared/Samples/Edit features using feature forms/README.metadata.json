@@ -2,9 +2,10 @@
     "category": "Edit and Manage Data",
     "description": "Display and edit feature attributes using feature forms.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "edit-features-using-feature-forms.png"
+    ],
     "keywords": [
-        "compose",
         "edits",
         "feature",
         "feature forms",
@@ -15,7 +16,8 @@
         "FeatureLayer",
         "FieldFormElement",
         "GroupFormElement",
-        "ServiceFeatureTable"
+        "ServiceFeatureTable",
+        "ServiceGeodatabase"
     ],
     "redirect_from": [],
     "relevant_apis": [
@@ -24,7 +26,8 @@
         "FeatureLayer",
         "FieldFormElement",
         "GroupFormElement",
-        "ServiceFeatureTable"
+        "ServiceFeatureTable",
+        "ServiceGeodatabase"
     ],
     "snippets": [
         "EditFeaturesUsingFeatureFormsView.swift"
