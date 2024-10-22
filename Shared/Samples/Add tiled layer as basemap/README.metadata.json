@@ -1,0 +1,32 @@
+{
+    "category": "Edit and Manage Data",
+    "description": "Load an offline copy of a tiled map service as a basemap.",
+    "ignore": false,
+    "images": [
+        "add-tiled-layer-as-basemap.png"
+    ],
+    "keywords": [
+        "cache",
+        "layers",
+        "offline",
+        "tile",
+        "ArcGISTiledLayer",
+        "Basemap",
+        "Map",
+        "TileCache"
+    ],
+    "offline_data": [
+        "e4a398afe9a945f3b0f4dca1e4faccb5"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "ArcGISTiledLayer",
+        "Basemap",
+        "Map",
+        "TileCache"
+    ],
+    "snippets": [
+        "AddTiledLayerAsBasemapView.swift"
+    ],
+    "title": "Add tiled layer as basemap"
+}

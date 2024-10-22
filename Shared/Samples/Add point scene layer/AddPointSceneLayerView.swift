@@ -45,7 +45,7 @@ private extension URL {
     
     /// A web URL to the Terrain3D image server on ArcGIS REST.
     static var worldElevationService: URL {
-        URL(string: "https://elevation3d.arcgis.com/arcagis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!
+        URL(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!
     }
 }
 
