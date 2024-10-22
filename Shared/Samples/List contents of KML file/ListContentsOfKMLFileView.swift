@@ -176,7 +176,7 @@ private extension Viewpoint {
         if let kmlViewpoint = kmlNode.viewpoint {
             try await self.init(kmlViewpoint: kmlViewpoint, surface: surface)
         } else if let extent = kmlNode.extent {
-            // the node does not have a predefined viewpoint, so create a viewpoint based on its extent
+            // Creates a viewpoint with node's extent if it doesn't have a predefined viewpoint.
             try await self.init(kmlNodeExtent: extent, surface: surface)
         } else {
             return nil
