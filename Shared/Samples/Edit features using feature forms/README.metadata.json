@@ -1,0 +1,36 @@
+{
+    "category": "Edit and Manage Data",
+    "description": "Display and edit feature attributes using feature forms.",
+    "ignore": false,
+    "images": [
+        "edit-features-using-feature-forms.png"
+    ],
+    "keywords": [
+        "edits",
+        "feature",
+        "feature forms",
+        "form",
+        "toolkit",
+        "ArcGISFeature",
+        "FeatureForm",
+        "FeatureLayer",
+        "FieldFormElement",
+        "GroupFormElement",
+        "ServiceFeatureTable",
+        "ServiceGeodatabase"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "ArcGISFeature",
+        "FeatureForm",
+        "FeatureLayer",
+        "FieldFormElement",
+        "GroupFormElement",
+        "ServiceFeatureTable",
+        "ServiceGeodatabase"
+    ],
+    "snippets": [
+        "EditFeaturesUsingFeatureFormsView.swift"
+    ],
+    "title": "Edit features using feature forms"
+}
