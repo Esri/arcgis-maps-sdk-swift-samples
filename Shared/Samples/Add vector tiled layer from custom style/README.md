@@ -15,15 +15,15 @@ Pan and zoom to explore the vector tile basemap. Select a theme to see it applie
 
 ## How it works
 
-1. Construct an `ArcGISVectorTiledLayer` with the URL of a custom style from AcrGIS Online.
-2. Alternatively, construct an `ArcGISVectorTiledLayer` by taking a portal item offline and apply it to an offline vector tile package:
+1. Create an `ArcGISVectorTiledLayer` with the URL of a custom style from AcrGIS Online.
+2. Alternatively, create an `ArcGISVectorTiledLayer` by taking a portal item offline and applying it to an offline vector tile package:
     i. Create a `PortalItem` using the URL of a custom style.  
     ii. Create an `ExportVectorTilesTask` using the portal item.  
     iii. Get the `ExportVectorTilesJob` using `ExportVectorTilesTask.makeExportStyleResourceCacheJob(itemResourceCacheURL:)`.  
-    iv. Start the job using  `ExportVectorTilesJob.start()`.  
-    v. Construct an `VectorTileCache` using the path of the local vector tile package.  
-    vi. Once the job is complete, construct an `ArcGISVectorTiledLayer` using the vector tile cache and the `ItemResourceCache` from the job's result.  
-3. Create an `Basemap` from the `ArcGISVectorTiledLayer`.
+    iv. Start the job using  `Job.start()`.  
+    v. Create a `VectorTileCache` using the path of the local vector tile package.  
+    vi. Once the job is complete, create an `ArcGISVectorTiledLayer` using the vector tile cache and the `ItemResourceCache` from the job's result.  
+3. Create a `Basemap` from the `ArcGISVectorTiledLayer`.
 4. Assign the basemap to the map's `basemap`.
 
 ## Relevant API

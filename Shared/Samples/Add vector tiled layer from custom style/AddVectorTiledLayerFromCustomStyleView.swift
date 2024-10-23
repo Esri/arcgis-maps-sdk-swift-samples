@@ -109,12 +109,12 @@ private extension AddVectorTiledLayerFromCustomStyleView {
             }
             map.basemap = Basemap(baseLayer: vectorTiledLayer)
             
-            if vectorTiledLayer.vectorTileCache != nil {
+            return if vectorTiledLayer.vectorTileCache != nil {
                 // Uses a Dodge City, KS viewpoint if the layer was created using the tile cache.
-                return Viewpoint(latitude: 37.76528, longitude: -100.01766, scale: 4e4)
+                Viewpoint(latitude: 37.76528, longitude: -100.01766, scale: 4e4)
             } else {
                 // Uses a Europe/Africa viewpoint if the layer was created using an online style.
-                return Viewpoint(latitude: 28.53345, longitude: 17.56488, scale: 1e8)
+                Viewpoint(latitude: 28.53345, longitude: 17.56488, scale: 1e8)
             }
         }
         
