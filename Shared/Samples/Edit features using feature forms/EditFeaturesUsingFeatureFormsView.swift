@@ -155,7 +155,7 @@ struct EditFeaturesUsingFeatureFormsView: View {
                 defer { isApplyingEdits = false }
                 
                 do {
-                    try await featureForm?.finishEditing()
+                    try await applyEdits()
                     endEditing()
                 } catch {
                     self.error = error
@@ -173,6 +173,25 @@ struct EditFeaturesUsingFeatureFormsView: View {
         
         let featureLayer = map.operationalLayers.first as? FeatureLayer
         featureLayer?.clearSelection()
+    }
+    
+    /// Applies the edits made in the feature form to the feature service.
+    private func applyEdits() async throws {
+        // Saves the feature form edits to the database.
+        try await featureForm?.finishEditing()
+        
+        guard let serviceFeatureTable = featureForm?.feature.table as? ServiceFeatureTable else {
+            return
+        }
+        
+        // Applies the edits to the feature service using either the database or feature table.
+        if let serviceGeodatabase = serviceFeatureTable.serviceGeodatabase,
+           let serviceInfo = serviceGeodatabase.serviceInfo,
+           serviceInfo.canUseServiceGeodatabaseApplyEdits {
+            _ = try await serviceGeodatabase.applyEdits()
+        } else {
+            _ = try await serviceFeatureTable.applyEdits()
+        }
     }
 }
 
