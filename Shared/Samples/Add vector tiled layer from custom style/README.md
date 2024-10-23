@@ -2,12 +2,12 @@
 
 Load an ArcGIS vector tiled layers using custom styles.
 
-![Custom styled ArcGIS vector tiled layer](vector-tiled-layer-custom-1.png)
-![Offline custom style](vector-tiled-layer-custom-2.png)
+![Screenshot of Add vector tiled layer from custom style sample](add-vector-tiled-layer-from-custom-style-1.png)
+![Screenshot of Add vector tiled layer from custom style sample](add-vector-tiled-layer-from-custom-style-2.png)
 
 ## Use case
 
-Vector tile basemaps can be created in ArcGIS Pro and published as offline packages or online services. You can create a custom style tailored to your needs and easily apply them to your map. `AGSArcGISVectorTiledLayer` has many advantages over traditional raster based basemaps (`AGSArcGISTiledLayer`), including smooth scaling between different screen DPIs, smaller package sizes, and the ability to rotate symbols and labels dynamically.
+Vector tile basemaps can be created in ArcGIS Pro and published as offline packages or online services. You can create a custom style tailored to your needs and easily apply them to your map. `ArcGISVectorTiledLayer` has many advantages over traditional raster based basemaps (`ArcGISTiledLayer`), including smooth scaling between different screen DPIs, smaller package sizes, and the ability to rotate symbols and labels dynamically.
 
 ## How to use the sample
 
@@ -15,16 +15,16 @@ Pan and zoom to explore the vector tile basemap. Select a theme to see it applie
 
 ## How it works
 
-1. Construct an `AGSArcGISVectorTiledLayer` with the URL of a custom style from AGOL.
-2. Alternatively, construct an `AGSArcGISVectorTiledLayer` by taking a portal item offline and apply it to an offline vector tile package:     
-    i. Create an `AGSPortalItem` using the URL of a custom style.  
-    ii. Create an `AGSExportVectorTilesTask` using the portal item.  
-    iii. Get the `AGSExportVectorTilesJob` using `AGSExportVectorTilesTask.exportStyleResourceCacheJob(withDownloadDirectory:)`.  
-    iv. Start the job using  `AGSExportVectorTilesJob.start(statusHandler:completion:)`.  
-    v. Construct an `AGSVectorTileCache` using the name of the local vector tile package.  
-    vi. Once the job is complete, construct an `AGSArcGISVectorTiledLayer` using the vector tile cache and the `AGSItemResourceCache` from the job's result.  
-3. Create an `AGSBasemap` from the `AGSArcGISVectorTiledLayer`.
-4. Assign the `AGSBasemap` to the map's `basemap`.
+1. Construct an `ArcGISVectorTiledLayer` with the URL of a custom style from AcrGIS Online.
+2. Alternatively, construct an `ArcGISVectorTiledLayer` by taking a portal item offline and apply it to an offline vector tile package:
+    i. Create a `PortalItem` using the URL of a custom style.  
+    ii. Create an `ExportVectorTilesTask` using the portal item.  
+    iii. Get the `ExportVectorTilesJob` using `ExportVectorTilesTask.makeExportStyleResourceCacheJob(itemResourceCacheURL:)`.  
+    iv. Start the job using  `ExportVectorTilesJob.start()`.  
+    v. Construct an `VectorTileCache` using the path of the local vector tile package.  
+    vi. Once the job is complete, construct an `ArcGISVectorTiledLayer` using the vector tile cache and the `ItemResourceCache` from the job's result.  
+3. Create an `Basemap` from the `ArcGISVectorTiledLayer`.
+4. Assign the basemap to the map's `basemap`.
 
 ## Relevant API
 

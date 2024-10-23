@@ -2,7 +2,10 @@
     "category": "Visualization",
     "description": "Load an ArcGIS vector tiled layers using custom styles.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "add-vector-tiled-layer-from-custom-style-1.png",
+        "add-vector-tiled-layer-from-custom-style-2.png"
+    ],
     "keywords": [
         "tiles",
         "vector",
