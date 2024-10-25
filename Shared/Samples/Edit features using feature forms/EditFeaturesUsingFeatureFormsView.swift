@@ -118,8 +118,7 @@ struct EditFeaturesUsingFeatureFormsView: View {
                     }
                 }
                 .alert("Discard Edits", isPresented: $isShowingDiscardEditsAlert) {
-                    Button("Cancel", role: .cancel) {
-                    }
+                    Button("Cancel", role: .cancel) {}
                     Button("Discard", role: .destructive) {
                         featureForm?.discardEdits()
                         endEditing()
@@ -134,7 +133,7 @@ struct EditFeaturesUsingFeatureFormsView: View {
     /// The toolbar for the feature form panel.
     private var featureFormToolbar: some View {
         HStack {
-            Button("Discard Edits", systemImage: "trash", role: .destructive) {
+            Button("Discard Edits", systemImage: "x.circle", role: .destructive) {
                 isShowingDiscardEditsAlert = true
             }
             
