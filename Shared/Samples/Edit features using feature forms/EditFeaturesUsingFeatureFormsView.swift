@@ -77,7 +77,6 @@ struct EditFeaturesUsingFeatureFormsView: View {
                 .task(id: tapPoint) {
                     // Identifies the feature at the tapped point and creates a feature form from it.
                     guard let tapPoint else { return }
-                    defer { self.tapPoint = nil }
                     
                     do {
                         let identifyLayerResult = try await mapViewProxy.identify(
