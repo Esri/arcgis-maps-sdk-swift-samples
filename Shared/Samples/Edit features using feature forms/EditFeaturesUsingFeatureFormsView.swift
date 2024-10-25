@@ -59,6 +59,11 @@ struct EditFeaturesUsingFeatureFormsView: View {
         }
     }
     
+    /// The feature layer on the map.
+    private var featureLayer: FeatureLayer {
+        map.operationalLayers.first as! FeatureLayer
+    }
+    
     var body: some View {
         MapViewReader { mapViewProxy in
             MapView(map: map)
@@ -71,10 +76,7 @@ struct EditFeaturesUsingFeatureFormsView: View {
                 }
                 .task(id: tapPoint) {
                     // Identifies the feature at the tapped point and creates a feature form from it.
-                    guard let tapPoint,
-                          let featureLayer = map.operationalLayers.first as? FeatureLayer else {
-                        return
-                    }
+                    guard let tapPoint else { return }
                     defer { self.tapPoint = nil }
                     
                     do {
@@ -166,9 +168,7 @@ struct EditFeaturesUsingFeatureFormsView: View {
     /// Closes the feature form panel and resets the feature selection.
     private func endEditing() {
         isShowingFeatureForm = false
-        
-        let featureLayer = map.operationalLayers.first as? FeatureLayer
-        featureLayer?.clearSelection()
+        featureLayer.clearSelection()
     }
     
     /// Applies the edits made in the feature form to the feature service.
