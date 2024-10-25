@@ -347,6 +347,8 @@
 		D75E5EE62CC0340100252595 /* ListContentsOfKMLFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75E5EE22CC0340100252595 /* ListContentsOfKMLFileView.swift */; };
 		D75E5EE92CC0342700252595 /* ListContentsOfKMLFileView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D75E5EE22CC0340100252595 /* ListContentsOfKMLFileView.swift */; };
 		D75E5EEC2CC0466900252595 /* esri_test_data.kmz in Resources */ = {isa = PBXBuildFile; fileRef = D75E5EEA2CC0466900252595 /* esri_test_data.kmz */; settings = {ASSET_TAGS = (ListContentsOfKmlFile, ); }; };
+		D75E5EF12CC049D500252595 /* EditFeaturesUsingFeatureFormsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75E5EED2CC049D500252595 /* EditFeaturesUsingFeatureFormsView.swift */; };
+		D75E5EF42CC04A0C00252595 /* EditFeaturesUsingFeatureFormsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D75E5EED2CC049D500252595 /* EditFeaturesUsingFeatureFormsView.swift */; };
 		D75F66362B48EABC00434974 /* SearchForWebMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75F66332B48EABC00434974 /* SearchForWebMapView.swift */; };
 		D75F66392B48EB1800434974 /* SearchForWebMapView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D75F66332B48EABC00434974 /* SearchForWebMapView.swift */; };
 		D76000A22AF18BAB00B3084D /* FindRouteInTransportNetworkView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7749AD52AF08BF50086632F /* FindRouteInTransportNetworkView.Model.swift */; };
@@ -570,6 +572,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				D75E5EF42CC04A0C00252595 /* EditFeaturesUsingFeatureFormsView.swift in Copy Source Code Files */,
 				D7201D072CC6D3D3004BDB7D /* AddVectorTiledLayerFromCustomStyleView.swift in Copy Source Code Files */,
 				D75E5EE92CC0342700252595 /* ListContentsOfKMLFileView.swift in Copy Source Code Files */,
 				D7201CDB2CC6B72A004BDB7D /* AddTiledLayerAsBasemapView.swift in Copy Source Code Files */,
@@ -985,6 +988,7 @@
 		D75C35662AB50338003CD55F /* GroupLayersTogetherView.GroupLayerListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupLayersTogetherView.GroupLayerListView.swift; sourceTree = "<group>"; };
 		D75E5EE22CC0340100252595 /* ListContentsOfKMLFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListContentsOfKMLFileView.swift; sourceTree = "<group>"; };
 		D75E5EEA2CC0466900252595 /* esri_test_data.kmz */ = {isa = PBXFileReference; lastKnownFileType = file; path = esri_test_data.kmz; sourceTree = "<group>"; };
+		D75E5EED2CC049D500252595 /* EditFeaturesUsingFeatureFormsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFeaturesUsingFeatureFormsView.swift; sourceTree = "<group>"; };
 		D75F66332B48EABC00434974 /* SearchForWebMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchForWebMapView.swift; sourceTree = "<group>"; };
 		D76000AB2AF19C2300B3084D /* FindRouteInMobileMapPackageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindRouteInMobileMapPackageView.swift; sourceTree = "<group>"; };
 		D76000B62AF19FCA00B3084D /* SanFrancisco.mmpk */ = {isa = PBXFileReference; lastKnownFileType = file; path = SanFrancisco.mmpk; sourceTree = "<group>"; };
@@ -1279,6 +1283,7 @@
 				E004A6EE284E4B7A002A1FE6 /* Download vector tiles to local cache */,
 				D733CA182BED980D00FBDE4C /* Edit and sync features with feature service */,
 				9579FCEB2C3360CA00FC8A1D /* Edit feature attachments */,
+				D75E5EF02CC049D500252595 /* Edit features using feature forms */,
 				D762AF5E2BF6A7B900ECE3C7 /* Edit features with feature-linked annotation */,
 				D764B7DE2BE2F89D002E2F92 /* Edit geodatabase with transactions */,
 				D73E619D2BDB21F400457932 /* Edit with branch versioning */,
@@ -2394,6 +2399,14 @@
 			path = da301cb122874d5497f8a8f6c81eb36e;
 			sourceTree = "<group>";
 		};
+		D75E5EF02CC049D500252595 /* Edit features using feature forms */ = {
+			isa = PBXGroup;
+			children = (
+				D75E5EED2CC049D500252595 /* EditFeaturesUsingFeatureFormsView.swift */,
+			);
+			path = "Edit features using feature forms";
+			sourceTree = "<group>";
+		};
 		D75F66322B48EABC00434974 /* Search for web map */ = {
 			isa = PBXGroup;
 			children = (
@@ -3347,6 +3360,7 @@
 				4D2ADC6729C50BD6003B367F /* AddDynamicEntityLayerView.Model.swift in Sources */,
 				E004A6E928493BCE002A1FE6 /* ShowDeviceLocationView.swift in Sources */,
 				1C26ED192A859525009B7721 /* FilterFeaturesInSceneView.swift in Sources */,
+				D75E5EF12CC049D500252595 /* EditFeaturesUsingFeatureFormsView.swift in Sources */,
 				D7352F8E2BD992C40013FFEF /* MonitorChangesToDrawStatusView.swift in Sources */,
 				F111CCC1288B5D5600205358 /* DisplayMapFromMobileMapPackageView.swift in Sources */,
 				D7BA8C462B2A8ACA00018633 /* String.swift in Sources */,
