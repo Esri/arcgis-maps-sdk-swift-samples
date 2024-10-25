@@ -18,14 +18,12 @@ import SwiftUI
 
 struct EditFeaturesUsingFeatureFormsView: View {
     /// The map that contains the features for editing.
-    @State private var map: Map = {
-        // Creates the map from the "Feature Form Places" web map portal item.
-        let portalItem = PortalItem(
+    @State private var map = Map(
+        item: PortalItem(
             portal: .arcGISOnline(connection: .anonymous),
             id: .featureFormPlacesWebMap
         )
-        return Map(item: portalItem)
-    }()
+    )
     
     /// The feature form for the selected feature.
     @State private var featureForm: FeatureForm?
@@ -119,10 +117,8 @@ struct EditFeaturesUsingFeatureFormsView: View {
                 }
                 .alert("Discard Edits", isPresented: $isShowingDiscardEditsAlert) {
                     Button("Cancel", role: .cancel) {
-                        isShowingDiscardEditsAlert = false
                     }
                     Button("Discard", role: .destructive) {
-                        isShowingDiscardEditsAlert = false
                         featureForm?.discardEdits()
                         endEditing()
                     }

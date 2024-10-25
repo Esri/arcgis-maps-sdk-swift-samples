@@ -24,9 +24,9 @@ Tap a feature on the map to open a sheet displaying the feature form. Select for
 7. To commit edits on the service geodatabase:
     1. Call `featureForm.finishEditing()` to save edits to the database.
     2. Retrieve the backing service feature table's geodatabase using `serviceFeatureTable.serviceGeodatabase`.
-    3. Verify the service geodatabase can commit changes back to the service using `serviceGeodatabase.serviceInfo.canUseServiceGeodatabaseApplyEdits`
+    3. Verify the service geodatabase can commit changes back to the service using `serviceGeodatabase.serviceInfo.canUseServiceGeodatabaseApplyEdits`.
     4. If apply edits are allowed, call `serviceGeodatabase.applyEdits()` to apply local edits to the online service.
-    5. If edits are not allowed on the `ServiceGeodatabase`, then apply edits to the `ServiceFeatureTable` using `ServiceFeatureTable.applyEdits()`
+    5. If edits are not allowed on the `ServiceGeodatabase`, then apply edits to the `ServiceFeatureTable` using `ServiceFeatureTable.applyEdits()`.
 
 ## Relevant API
 
@@ -44,7 +44,7 @@ This sample uses a feature forms enabled [Feature Form Places web map](https://w
 
 ## Additional information
 
-Follow the [tutorial](https://doc.arcgis.com/en/arcgis-online/create-maps/create-form-mv.htm) to create your own form using the Map Viewer. This sample uses the Feature Form Toolkit component. For information about setting up the toolkit, as well as code for the underlying component, visit [ArcGIS Maps SDK for Swift Toolkit](https://github.com/ArcGIS/arcgis-maps-sdk-swift-toolkit).
+Follow the [tutorial](https://doc.arcgis.com/en/arcgis-online/create-maps/create-form-mv.htm) to create your own form using the Map Viewer. This sample uses the Feature Form Toolkit component. For information about setting up the toolkit, as well as code for the underlying component, visit [ArcGIS Maps SDK for Swift Toolkit](https://github.com/Esri/arcgis-maps-sdk-swift-toolkit).
 
 ## Tags
 
