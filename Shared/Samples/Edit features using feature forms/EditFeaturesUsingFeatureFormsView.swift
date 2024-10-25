@@ -173,10 +173,12 @@ struct EditFeaturesUsingFeatureFormsView: View {
     
     /// Applies the edits made in the feature form to the feature service.
     private func applyEdits() async throws {
-        // Saves the feature form edits to the database.
-        try await featureForm?.finishEditing()
+        guard let featureForm else { return }
         
-        guard let serviceFeatureTable = featureForm?.feature.table as? ServiceFeatureTable else {
+        // Saves the feature form edits to the database.
+        try await featureForm.finishEditing()
+        
+        guard let serviceFeatureTable = featureForm.feature.table as? ServiceFeatureTable else {
             return
         }
         
