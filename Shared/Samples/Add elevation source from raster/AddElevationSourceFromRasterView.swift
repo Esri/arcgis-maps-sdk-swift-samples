@@ -55,7 +55,3 @@ private extension URL {
         Bundle.main.url(forResource: "MontereyElevation", withExtension: "dt2")!
     }
 }
-
-#Preview {
-    AddElevationSourceFromRasterView()
-}
