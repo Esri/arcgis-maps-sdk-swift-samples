@@ -55,6 +55,8 @@ Snapping can be used during interactive edits that move existing vertices using 
 
 Geometry guides are enabled by default when snapping is enabled. These allow for snapping to a point coinciding with, parallel to, perpendicular to, or extending an existing geometry.
 
+On supported platforms, haptic feedback on `SnapState.snappedToFeature` and `SnapState.snappedToGeometryGuide` is enabled by default when snapping is enabled. Custom haptic feedback can be configured by setting `SnapSettings.hapticFeedbackIsEnabled` to false and listening to the `GeometryEditor.snapChanges` stream to provide specific feedback depending on the `SnapState`.
+
 ## Tags
 
 edit, feature, geometry editor, graphics, layers, map, snapping
