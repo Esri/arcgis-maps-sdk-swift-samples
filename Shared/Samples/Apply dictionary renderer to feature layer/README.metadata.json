@@ -2,7 +2,9 @@
     "category": "Visualization",
     "description": "Convert features into graphics to show them with mil2525d symbols.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "apply-dictionary-renderer-to-feature-layer.png"
+    ],
     "keywords": [
         "military",
         "symbol",
