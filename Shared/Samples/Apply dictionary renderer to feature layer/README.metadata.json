@@ -9,6 +9,10 @@
         "DictionaryRenderer",
         "DictionarySymbolStyle"
     ],
+    "offline_data": [
+        "c78b149a1d52414682c86a5feeb13d30",
+        "e0d41b4b409a49a5a7ba11939d8535dc"
+    ],
     "redirect_from": [],
     "relevant_apis": [
         "DictionaryRenderer",

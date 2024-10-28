@@ -23,6 +23,14 @@ struct ApplyDictionaryRendererToFeatureLayerView: View {
     }
 }
 
-#Preview {
-    ApplyDictionaryRendererToFeatureLayerView()
+private extension URL {
+    /// The URL to the local "Joint Military Symbology MIL-STD-2525D" mobile style file.
+    static var mil2525dStyleFile: URL {
+        Bundle.main.url(forResource: "mil2525d", withExtension: "stylx")!
+    }
+    
+    /// The URL to the local "Military Overlay" geodatabase.
+    static var militaryOverlayGeodatabase: URL {
+        Bundle.main.url(forResource: "militaryoverlay", withExtension: ".geodatabase")!
+    }
 }
