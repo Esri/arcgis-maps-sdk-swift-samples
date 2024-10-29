@@ -233,6 +233,8 @@
 		D7058B122B59E468000A888A /* StylePointWithSceneSymbolView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7058B0D2B59E44B000A888A /* StylePointWithSceneSymbolView.swift */; };
 		D7058FB12ACB423C00A40F14 /* Animate3DGraphicView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7058FB02ACB423C00A40F14 /* Animate3DGraphicView.Model.swift */; };
 		D7058FB22ACB424E00A40F14 /* Animate3DGraphicView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7058FB02ACB423C00A40F14 /* Animate3DGraphicView.Model.swift */; };
+		D70789922CD160FD000DF215 /* ApplyDictionaryRendererToGraphicsOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D707898E2CD160FD000DF215 /* ApplyDictionaryRendererToGraphicsOverlayView.swift */; };
+		D70789952CD1611E000DF215 /* ApplyDictionaryRendererToGraphicsOverlayView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D707898E2CD160FD000DF215 /* ApplyDictionaryRendererToGraphicsOverlayView.swift */; };
 		D7084FA92AD771AA00EC7F4F /* AugmentRealityToFlyOverSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7084FA62AD771AA00EC7F4F /* AugmentRealityToFlyOverSceneView.swift */; };
 		D7084FAB2AD771F600EC7F4F /* AugmentRealityToFlyOverSceneView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7084FA62AD771AA00EC7F4F /* AugmentRealityToFlyOverSceneView.swift */; };
 		D70BE5792A5624A80022CA02 /* CategoriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70BE5782A5624A80022CA02 /* CategoriesView.swift */; };
@@ -572,6 +574,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				D70789952CD1611E000DF215 /* ApplyDictionaryRendererToGraphicsOverlayView.swift in Copy Source Code Files */,
 				D75E5EF42CC04A0C00252595 /* EditFeaturesUsingFeatureFormsView.swift in Copy Source Code Files */,
 				D7201D072CC6D3D3004BDB7D /* AddVectorTiledLayerFromCustomStyleView.swift in Copy Source Code Files */,
 				D75E5EE92CC0342700252595 /* ListContentsOfKMLFileView.swift in Copy Source Code Files */,
@@ -925,6 +928,7 @@
 		D7054AE82ACCCB6C007235BA /* Animate3DGraphicView.SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animate3DGraphicView.SettingsView.swift; sourceTree = "<group>"; };
 		D7058B0D2B59E44B000A888A /* StylePointWithSceneSymbolView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StylePointWithSceneSymbolView.swift; sourceTree = "<group>"; };
 		D7058FB02ACB423C00A40F14 /* Animate3DGraphicView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animate3DGraphicView.Model.swift; sourceTree = "<group>"; };
+		D707898E2CD160FD000DF215 /* ApplyDictionaryRendererToGraphicsOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyDictionaryRendererToGraphicsOverlayView.swift; sourceTree = "<group>"; };
 		D7084FA62AD771AA00EC7F4F /* AugmentRealityToFlyOverSceneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AugmentRealityToFlyOverSceneView.swift; sourceTree = "<group>"; };
 		D70BE5782A5624A80022CA02 /* CategoriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesView.swift; sourceTree = "<group>"; };
 		D710996C2A27D9210065A1C1 /* DensifyAndGeneralizeGeometryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DensifyAndGeneralizeGeometryView.swift; sourceTree = "<group>"; };
@@ -1238,6 +1242,7 @@
 				1C3B7DC22A5F64FC00907443 /* Analyze network with subnetwork trace */,
 				D7C16D172AC5F6C100689E89 /* Animate 3D graphic */,
 				D77570BC2A29427200F490CD /* Animate images with image overlay */,
+				D70789912CD160FD000DF215 /* Apply dictionary renderer to graphics overlay */,
 				955AFAC52C10FD74009C8FE5 /* Apply mosaic rule to rasters */,
 				004A2BA12BED456500C297CE /* Apply scheduled updates to preplanned map area */,
 				D75362CC2A1E862B00D83028 /* Apply unique value renderer */,
@@ -2010,6 +2015,14 @@
 				D7058B0D2B59E44B000A888A /* StylePointWithSceneSymbolView.swift */,
 			);
 			path = "Style point with scene symbol";
+			sourceTree = "<group>";
+		};
+		D70789912CD160FD000DF215 /* Apply dictionary renderer to graphics overlay */ = {
+			isa = PBXGroup;
+			children = (
+				D707898E2CD160FD000DF215 /* ApplyDictionaryRendererToGraphicsOverlayView.swift */,
+			);
+			path = "Apply dictionary renderer to graphics overlay";
 			sourceTree = "<group>";
 		};
 		D7084FA42AD771AA00EC7F4F /* Augment reality to fly over scene */ = {
@@ -3426,6 +3439,7 @@
 				1CAB8D4B2A3CEAB0002AA649 /* RunValveIsolationTraceView.Model.swift in Sources */,
 				E070A0A3286F3B6000F2B606 /* DownloadPreplannedMapAreaView.swift in Sources */,
 				D79482D42C35D872006521CD /* CreateDynamicBasemapGalleryView.swift in Sources */,
+				D70789922CD160FD000DF215 /* ApplyDictionaryRendererToGraphicsOverlayView.swift in Sources */,
 				D77570C02A2942F800F490CD /* AnimateImagesWithImageOverlayView.swift in Sources */,
 				D7848EFE2CBD986400F6F546 /* AddElevationSourceFromRasterView.swift in Sources */,
 				D7054AE92ACCCB6C007235BA /* Animate3DGraphicView.SettingsView.swift in Sources */,
