@@ -13,6 +13,9 @@
         "DictionarySymbolStyle",
         "GraphicsOverlay"
     ],
+    "offline_data": [
+        "8776cfc26eed4485a03de6316826384c"
+    ],
     "redirect_from": [],
     "relevant_apis": [
         "DictionaryRenderer",

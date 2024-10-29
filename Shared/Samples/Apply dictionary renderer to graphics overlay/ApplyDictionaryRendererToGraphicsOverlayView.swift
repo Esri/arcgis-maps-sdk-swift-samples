@@ -23,6 +23,9 @@ struct ApplyDictionaryRendererToGraphicsOverlayView: View {
     }
 }
 
-#Preview {
-    ApplyDictionaryRendererToGraphicsOverlayView()
+private extension URL {
+    /// The URL to the local XML file containing messages with MIL-STD-2525D fields.
+    static var mil2525dMessages: URL {
+        Bundle.main.url(forResource: "Mil2525DMessages", withExtension: "xml")!
+    }
 }
