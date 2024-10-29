@@ -227,6 +227,8 @@
 		D7044B972BE18D8D000F2C43 /* EditWithBranchVersioningView.Views.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7044B952BE18D73000F2C43 /* EditWithBranchVersioningView.Views.swift */; };
 		D704AA5A2AB22C1A00A3BB63 /* GroupLayersTogetherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D704AA592AB22C1A00A3BB63 /* GroupLayersTogetherView.swift */; };
 		D704AA5B2AB22D8400A3BB63 /* GroupLayersTogetherView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D704AA592AB22C1A00A3BB63 /* GroupLayersTogetherView.swift */; };
+		D705390A2CD0122D00F63F4A /* mil2525d.stylx in Resources */ = {isa = PBXBuildFile; fileRef = D70539032CD0122D00F63F4A /* mil2525d.stylx */; settings = {ASSET_TAGS = (ApplyDictionaryRendererToFeatureLayer, ); }; };
+		D70539102CD012BB00F63F4A /* militaryoverlay.geodatabase in Resources */ = {isa = PBXBuildFile; fileRef = D705390F2CD0127700F63F4A /* militaryoverlay.geodatabase */; settings = {ASSET_TAGS = (ApplyDictionaryRendererToFeatureLayer, ); }; };
 		D7054AE92ACCCB6C007235BA /* Animate3DGraphicView.SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7054AE82ACCCB6C007235BA /* Animate3DGraphicView.SettingsView.swift */; };
 		D7054AEA2ACCCC34007235BA /* Animate3DGraphicView.SettingsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7054AE82ACCCB6C007235BA /* Animate3DGraphicView.SettingsView.swift */; };
 		D7058B102B59E44B000A888A /* StylePointWithSceneSymbolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7058B0D2B59E44B000A888A /* StylePointWithSceneSymbolView.swift */; };
@@ -478,6 +480,8 @@
 		D7EF5D752A26A03A00FEBDE5 /* ShowCoordinatesInMultipleFormatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7EF5D742A26A03A00FEBDE5 /* ShowCoordinatesInMultipleFormatsView.swift */; };
 		D7EF5D762A26A1EE00FEBDE5 /* ShowCoordinatesInMultipleFormatsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7EF5D742A26A03A00FEBDE5 /* ShowCoordinatesInMultipleFormatsView.swift */; };
 		D7F2784C2A1D76F5002E4567 /* AddWMSLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7E557672A1D768800B9FB09 /* AddWMSLayerView.swift */; };
+		D7F2A02F2CD00F1C0008D981 /* ApplyDictionaryRendererToFeatureLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F2A0292CD00F1C0008D981 /* ApplyDictionaryRendererToFeatureLayerView.swift */; };
+		D7F2A0302CD00F400008D981 /* ApplyDictionaryRendererToFeatureLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7F2A0292CD00F1C0008D981 /* ApplyDictionaryRendererToFeatureLayerView.swift */; };
 		D7F850042B7C427A00680D7C /* ValidateUtilityNetworkTopologyView.Views.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7C97B552B75C10C0097CDA1 /* ValidateUtilityNetworkTopologyView.Views.swift */; };
 		D7F8C0392B60564D0072BFA7 /* AddFeaturesWithContingentValuesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F8C0362B60564D0072BFA7 /* AddFeaturesWithContingentValuesView.swift */; };
 		D7F8C03B2B6056790072BFA7 /* AddFeaturesWithContingentValuesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7F8C0362B60564D0072BFA7 /* AddFeaturesWithContingentValuesView.swift */; };
@@ -572,6 +576,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				D7F2A0302CD00F400008D981 /* ApplyDictionaryRendererToFeatureLayerView.swift in Copy Source Code Files */,
 				D75E5EF42CC04A0C00252595 /* EditFeaturesUsingFeatureFormsView.swift in Copy Source Code Files */,
 				D7201D072CC6D3D3004BDB7D /* AddVectorTiledLayerFromCustomStyleView.swift in Copy Source Code Files */,
 				D75E5EE92CC0342700252595 /* ListContentsOfKMLFileView.swift in Copy Source Code Files */,
@@ -922,6 +927,8 @@
 		D701D72B2A37C7F7006FF0C8 /* bradley_low_3ds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bradley_low_3ds; sourceTree = "<group>"; };
 		D7044B952BE18D73000F2C43 /* EditWithBranchVersioningView.Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditWithBranchVersioningView.Views.swift; sourceTree = "<group>"; };
 		D704AA592AB22C1A00A3BB63 /* GroupLayersTogetherView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupLayersTogetherView.swift; sourceTree = "<group>"; };
+		D70539032CD0122D00F63F4A /* mil2525d.stylx */ = {isa = PBXFileReference; lastKnownFileType = file; path = mil2525d.stylx; sourceTree = "<group>"; };
+		D705390F2CD0127700F63F4A /* militaryoverlay.geodatabase */ = {isa = PBXFileReference; lastKnownFileType = folder; path = militaryoverlay.geodatabase; sourceTree = "<group>"; };
 		D7054AE82ACCCB6C007235BA /* Animate3DGraphicView.SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animate3DGraphicView.SettingsView.swift; sourceTree = "<group>"; };
 		D7058B0D2B59E44B000A888A /* StylePointWithSceneSymbolView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StylePointWithSceneSymbolView.swift; sourceTree = "<group>"; };
 		D7058FB02ACB423C00A40F14 /* Animate3DGraphicView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animate3DGraphicView.Model.swift; sourceTree = "<group>"; };
@@ -1062,6 +1069,7 @@
 		D7EAF3592A1C023800D822C4 /* SetMinAndMaxScaleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetMinAndMaxScaleView.swift; sourceTree = "<group>"; };
 		D7ECF5972AB8BE63003FB2BE /* RenderMultilayerSymbolsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenderMultilayerSymbolsView.swift; sourceTree = "<group>"; };
 		D7EF5D742A26A03A00FEBDE5 /* ShowCoordinatesInMultipleFormatsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowCoordinatesInMultipleFormatsView.swift; sourceTree = "<group>"; };
+		D7F2A0292CD00F1C0008D981 /* ApplyDictionaryRendererToFeatureLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyDictionaryRendererToFeatureLayerView.swift; sourceTree = "<group>"; };
 		D7F8C0362B60564D0072BFA7 /* AddFeaturesWithContingentValuesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddFeaturesWithContingentValuesView.swift; sourceTree = "<group>"; };
 		D7F8C03D2B605AF60072BFA7 /* ContingentValuesBirdNests.geodatabase */ = {isa = PBXFileReference; lastKnownFileType = file; path = ContingentValuesBirdNests.geodatabase; sourceTree = "<group>"; };
 		D7F8C0402B605E720072BFA7 /* FillmoreTopographicMap.vtpk */ = {isa = PBXFileReference; lastKnownFileType = file; path = FillmoreTopographicMap.vtpk; sourceTree = "<group>"; };
@@ -1238,6 +1246,7 @@
 				1C3B7DC22A5F64FC00907443 /* Analyze network with subnetwork trace */,
 				D7C16D172AC5F6C100689E89 /* Animate 3D graphic */,
 				D77570BC2A29427200F490CD /* Animate images with image overlay */,
+				D7F2A02C2CD00F1C0008D981 /* Apply dictionary renderer to feature layer */,
 				955AFAC52C10FD74009C8FE5 /* Apply mosaic rule to rasters */,
 				004A2BA12BED456500C297CE /* Apply scheduled updates to preplanned map area */,
 				D75362CC2A1E862B00D83028 /* Apply unique value renderer */,
@@ -1495,11 +1504,13 @@
 				792222DB2A81AA5D00619FFE /* a8a942c228af4fac96baa78ad60f511f */,
 				D7464F202ACE0910007FEE88 /* b5f977c78ec74b3a8857ca86d1d9b318 */,
 				D7F8C03F2B605E720072BFA7 /* b5106355f1634b8996e634c04b6a930a */,
+				D70539042CD0122D00F63F4A /* c78b149a1d52414682c86a5feeb13d30 */,
 				00D4EF8128638BF100B9CC30 /* cb1b20748a9f4d128dad8a87244e3e37 */,
 				4D126D7629CA3B3F00CFB7A7 /* d5bad9f4fee9483791e405880fb466da */,
 				D77572AC2A295DC100F490CD /* d1453556d91e46dea191c20c398b82cd */,
 				D75E5EEB2CC0466900252595 /* da301cb122874d5497f8a8f6c81eb36e */,
 				D7E7D0862AEB3C36003AAD02 /* df193653ed39449195af0c9725701dca */,
+				D70539082CD0122D00F63F4A /* e0d41b4b409a49a5a7ba11939d8535dc */,
 				F111CCC2288B63DB00205358 /* e1f3a7254cb845b09450f54937c16061 */,
 				D7C5233F2BED9BBF00E8221A /* e4a398afe9a945f3b0f4dca1e4faccb5 */,
 				D7F8C03C2B605AF60072BFA7 /* e12b54ea799f4606a2712157cf9f6e41 */,
@@ -2002,6 +2013,22 @@
 				D75C35662AB50338003CD55F /* GroupLayersTogetherView.GroupLayerListView.swift */,
 			);
 			path = "Group layers together";
+			sourceTree = "<group>";
+		};
+		D70539042CD0122D00F63F4A /* c78b149a1d52414682c86a5feeb13d30 */ = {
+			isa = PBXGroup;
+			children = (
+				D70539032CD0122D00F63F4A /* mil2525d.stylx */,
+			);
+			path = c78b149a1d52414682c86a5feeb13d30;
+			sourceTree = "<group>";
+		};
+		D70539082CD0122D00F63F4A /* e0d41b4b409a49a5a7ba11939d8535dc */ = {
+			isa = PBXGroup;
+			children = (
+				D705390F2CD0127700F63F4A /* militaryoverlay.geodatabase */,
+			);
+			path = e0d41b4b409a49a5a7ba11939d8535dc;
 			sourceTree = "<group>";
 		};
 		D7058B0B2B59E44B000A888A /* Style point with scene symbol */ = {
@@ -2881,6 +2908,14 @@
 			path = "Show coordinates in multiple formats";
 			sourceTree = "<group>";
 		};
+		D7F2A02C2CD00F1C0008D981 /* Apply dictionary renderer to feature layer */ = {
+			isa = PBXGroup;
+			children = (
+				D7F2A0292CD00F1C0008D981 /* ApplyDictionaryRendererToFeatureLayerView.swift */,
+			);
+			path = "Apply dictionary renderer to feature layer";
+			sourceTree = "<group>";
+		};
 		D7F8C0342B60564D0072BFA7 /* Add features with contingent values */ = {
 			isa = PBXGroup;
 			children = (
@@ -3155,6 +3190,7 @@
 					AddVectorTiledLayerFromCustomStyle,
 					Animate3DGraphic,
 					AnimateImagesWithImageOverlay,
+					ApplyDictionaryRendererToFeatureLayer,
 					ApplyScheduledUpdatesToPreplannedMapArea,
 					AugmentRealityToShowTabletopScene,
 					ChangeCameraController,
@@ -3235,6 +3271,7 @@
 				D7BB3DD22C5D781800FFCD56 /* SaveTheBay.geodatabase in Resources */,
 				D74C8C022ABA6202007C76B8 /* emoji-mobile.stylx in Resources */,
 				D7CE9FA32AE2F595008F7A5F /* san-diego-eagle-locator in Resources */,
+				D70539102CD012BB00F63F4A /* militaryoverlay.geodatabase in Resources */,
 				D76000B72AF19FCA00B3084D /* SanFrancisco.mmpk in Resources */,
 				D762AF652BF6A96100ECE3C7 /* loudoun_anno.geodatabase in Resources */,
 				792222DD2A81AA5D00619FFE /* AIS_MarineCadastre_SelectedVessels_CustomDataSource.jsonl in Resources */,
@@ -3252,6 +3289,7 @@
 				798C2DA72AFC505600EE7E97 /* PrivacyInfo.xcprivacy in Resources */,
 				D7E7D09A2AEB3C47003AAD02 /* san_diego_offline_routing in Resources */,
 				F111CCC4288B641900205358 /* Yellowstone.mmpk in Resources */,
+				D705390A2CD0122D00F63F4A /* mil2525d.stylx in Resources */,
 				D77572AE2A295DDE00F490CD /* PacificSouthWest2 in Resources */,
 				D75E5EEC2CC0466900252595 /* esri_test_data.kmz in Resources */,
 				10D321932BDB187400B39B1B /* naperville_imagery.tpkx in Resources */,
@@ -3463,6 +3501,7 @@
 				1C42E04729D2396B004FC4BE /* ShowPopupView.swift in Sources */,
 				79302F872A1ED71B0002336A /* CreateAndSaveKMLView.Views.swift in Sources */,
 				D73FC0FD2AD4A18D0067A19B /* CreateMobileGeodatabaseView.swift in Sources */,
+				D7F2A02F2CD00F1C0008D981 /* ApplyDictionaryRendererToFeatureLayerView.swift in Sources */,
 				1C19B4F12A578E46001D2506 /* CreateLoadReportView.Views.swift in Sources */,
 				E066DD3B2860CA08004D3D5B /* ShowResultOfSpatialRelationshipsView.swift in Sources */,
 				7573E81E29D6134C00BEED9C /* TraceUtilityNetworkView.Views.swift in Sources */,
