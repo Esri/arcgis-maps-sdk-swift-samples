@@ -1,8 +1,10 @@
 {
     "category": "Visualization",
-    "description": "Create graphics from an XML file with key-value pairs for each graphic, and display the military symbols using a MIL-STD-2525D web style in 3D.",
+    "description": "Create graphics from an XML file with key-value pairs for each graphic and display the military symbols using a MIL-STD-2525D web style in 3D.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "apply-dictionary-renderer-to-graphics-overlay.png"
+    ],
     "keywords": [
         "defense",
         "military",
