@@ -27,11 +27,12 @@ struct ShowGridView: View {
     
     var body: some View {
         Group {
-            if model.geoViewType == .mapView {
+            switch model.geoViewType {
+            case .mapView:
                 MapView(map: model.map, viewpoint: viewpoint)
                     .grid(model.grid)
                     .onViewpointChanged(kind: .centerAndScale) { viewpoint = $0 }
-            } else {
+            case .sceneView:
                 SceneView(scene: model.scene, viewpoint: viewpoint)
                     .grid(model.grid)
                     .onViewpointChanged(kind: .centerAndScale) { viewpoint = $0 }
