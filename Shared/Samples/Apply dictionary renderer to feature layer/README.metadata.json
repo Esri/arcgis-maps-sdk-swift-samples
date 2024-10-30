@@ -1,0 +1,27 @@
+{
+    "category": "Visualization",
+    "description": "Convert features into graphics to show them with mil2525d symbols.",
+    "ignore": false,
+    "images": [
+        "apply-dictionary-renderer-to-feature-layer.png"
+    ],
+    "keywords": [
+        "military",
+        "symbol",
+        "DictionaryRenderer",
+        "DictionarySymbolStyle"
+    ],
+    "offline_data": [
+        "c78b149a1d52414682c86a5feeb13d30",
+        "e0d41b4b409a49a5a7ba11939d8535dc"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "DictionaryRenderer",
+        "DictionarySymbolStyle"
+    ],
+    "snippets": [
+        "ApplyDictionaryRendererToFeatureLayerView.swift"
+    ],
+    "title": "Apply dictionary renderer to feature layer"
+}
