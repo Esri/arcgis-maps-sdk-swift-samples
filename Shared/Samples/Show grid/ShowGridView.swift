@@ -19,26 +19,44 @@ struct ShowGridView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
+    /// The current viewpoint of the geo views.
+    @State private var viewpoint = Viewpoint(latitude: 34.05, longitude: -118.25, scale: 8e6)
+    
     /// A Boolean value indicating whether the settings view should be presented.
     @State private var showsGridSettingsView = false
     
     var body: some View {
-        MapView(map: model.map)
-            .grid(model.grid)
-            .toolbar {
-                ToolbarItem(placement: .bottomBar) {
-                    Button("Grid Settings") {
-                        showsGridSettingsView = true
+        Group {
+            switch model.geoViewType {
+            case .mapView:
+                MapView(map: model.map, viewpoint: viewpoint)
+                    .grid(model.grid)
+                    .onViewpointChanged(kind: .centerAndScale) { viewpoint = $0 }
+            case .sceneView:
+                SceneView(scene: model.scene, viewpoint: viewpoint)
+                    .grid(model.grid)
+                    .onViewpointChanged(kind: .centerAndScale) { viewpoint = $0 }
+            }
+        }
+        .toolbar {
+            ToolbarItemGroup(placement: .bottomBar) {
+                Button("Grid Settings") {
+                    showsGridSettingsView = true
+                }
+                .popover(isPresented: $showsGridSettingsView) {
+                    NavigationStack {
+                        GridSettingsView(model: model)
                     }
-                    .popover(isPresented: $showsGridSettingsView) {
-                        NavigationStack {
-                            GridSettingsView(model: model)
-                        }
-                        .presentationDetents([.fraction(0.6), .large])
-                        .frame(idealWidth: 350, idealHeight: 480)
-                    }
+                    .presentationDetents([.fraction(0.6), .large])
+                    .frame(idealWidth: 350, idealHeight: 480)
+                }
+                
+                Picker("Geo View", selection: $model.geoViewType) {
+                    Text("Map View").tag(GeoViewType.mapView)
+                    Text("Scene View").tag(GeoViewType.sceneView)
                 }
             }
+        }
     }
 }
 
@@ -47,14 +65,23 @@ private extension ShowGridView {
     
     /// The view model for the sample.
     final class Model: ObservableObject {
-        /// A map with topographic basemap.
-        let map: Map = {
-            let map = Map(basemapStyle: .arcGISTopographic)
-            map.initialViewpoint = Viewpoint(latitude: 34.05, longitude: -118.25, scale: 8e6)
-            return map
+        /// A map with a topographic basemap.
+        let map = Map(basemapStyle: .arcGISTopographic)
+        
+        /// A scene with elevation and a topographic basemap.
+        let scene: ArcGIS.Scene = {
+            let scene = Scene(basemapStyle: .arcGISTopographic)
+            let elevationSource = ArcGISTiledElevationSource(url: .worldElevationService)
+            scene.baseSurface.addElevationSource(elevationSource)
+            return scene
         }()
         
-        /// The map view's grid, initially set to a Lat-Lon grid.
+        /// The type of geo view that is showing.
+        @Published var geoViewType = GeoViewType.mapView {
+            didSet { grid = makeGrid(type: gridType) }
+        }
+        
+        /// The geo view's grid, initially set to a Lat-Lon grid.
         @Published var grid: ArcGIS.Grid = LatitudeLongitudeGrid()
         
         /// The kind of grid to display.
@@ -70,6 +97,11 @@ private extension ShowGridView {
         
         /// The units used for labeling the MGRS grid.
         @Published var mgrsLabelUnit: MGRSGrid.LabelUnit = .kilometersMeters
+        
+        /// A Boolean value indicating whether the current grid only supports `LabelPosition.geographic`.
+        var gridOnlySupportsGeographic: Bool {
+            geoViewType == .sceneView && gridType != .latitudeLongitude
+        }
         
         /// Creates a new grid of a given type.
         /// - Parameter gridType: The kind of grid to make.
@@ -97,10 +129,15 @@ private extension ShowGridView {
             newGrid.labelsAreVisible = grid.labelsAreVisible
             newGrid.linesColor = grid.linesColor
             newGrid.labelsColor = grid.labelsColor
-            newGrid.labelPosition = grid.labelPosition
+            newGrid.labelPosition = gridOnlySupportsGeographic ? .geographic : grid.labelPosition
             
             return newGrid
         }
+    }
+    
+    /// A type of `GeoView`.
+    enum GeoViewType {
+        case mapView, sceneView
     }
     
     // MARK: - Settings View
@@ -136,6 +173,7 @@ private extension ShowGridView {
                             Text(position.label)
                         }
                     }
+                    .disabled(model.gridOnlySupportsGeographic)
                     
                     if let latitudeLongitudeGrid = model.grid as? LatitudeLongitudeGrid {
                         Picker("Format", selection: $model.labelFormat) {
@@ -211,7 +249,7 @@ private extension ArcGIS.Grid {
 }
 
 private extension ShowGridView {
-    /// The kinds of grid to show in a map view.
+    /// The kinds of grid to show on the geo view.
     enum GridType: CaseIterable {
         case latitudeLongitude, mgrs, usng, utm
         
@@ -286,6 +324,13 @@ private extension USNGGrid.LabelUnit {
         case .meters: "Meters"
         @unknown default: fatalError("Unknown USNG grid label unit")
         }
+    }
+}
+
+private extension URL {
+    /// A web URL to the Terrain3D image server on ArcGIS REST.
+    static var worldElevationService: URL {
+        URL(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!
     }
 }
 
