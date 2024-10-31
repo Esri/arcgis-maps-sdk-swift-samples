@@ -132,7 +132,7 @@ struct EditFeaturesUsingFeatureFormsView: View {
     /// The toolbar for the feature form panel.
     private var featureFormToolbar: some View {
         HStack {
-            Button("Discard Edits", systemImage: "x.circle", role: .destructive) {
+            Button("Discard Edits", systemImage: "xmark.circle", role: .destructive) {
                 isShowingDiscardEditsAlert = true
             }
             

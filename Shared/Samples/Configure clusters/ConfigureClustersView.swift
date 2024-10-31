@@ -61,7 +61,7 @@ struct ConfigureClustersView: View {
                         Button("Clustering Settings") {
                             showsSettings = true
                         }
-                        .popover(isPresented: $showsSettings) {
+                        .popover(isPresented: $showsSettings) { [mapViewScale] in
                             SettingsView(model: model, mapViewScale: mapViewScale)
                                 .presentationDetents([.fraction(0.5)])
                                 .frame(idealWidth: 320, idealHeight: 340)
