@@ -235,6 +235,9 @@
 		D7058B122B59E468000A888A /* StylePointWithSceneSymbolView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7058B0D2B59E44B000A888A /* StylePointWithSceneSymbolView.swift */; };
 		D7058FB12ACB423C00A40F14 /* Animate3DGraphicView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7058FB02ACB423C00A40F14 /* Animate3DGraphicView.Model.swift */; };
 		D7058FB22ACB424E00A40F14 /* Animate3DGraphicView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7058FB02ACB423C00A40F14 /* Animate3DGraphicView.Model.swift */; };
+		D70789922CD160FD000DF215 /* ApplyDictionaryRendererToGraphicsOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D707898E2CD160FD000DF215 /* ApplyDictionaryRendererToGraphicsOverlayView.swift */; };
+		D70789952CD1611E000DF215 /* ApplyDictionaryRendererToGraphicsOverlayView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D707898E2CD160FD000DF215 /* ApplyDictionaryRendererToGraphicsOverlayView.swift */; };
+		D707899B2CD16324000DF215 /* Mil2525DMessages.xml in Resources */ = {isa = PBXBuildFile; fileRef = D70789992CD16324000DF215 /* Mil2525DMessages.xml */; settings = {ASSET_TAGS = (ApplyDictionaryRendererToGraphicsOverlay, ); }; };
 		D7084FA92AD771AA00EC7F4F /* AugmentRealityToFlyOverSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7084FA62AD771AA00EC7F4F /* AugmentRealityToFlyOverSceneView.swift */; };
 		D7084FAB2AD771F600EC7F4F /* AugmentRealityToFlyOverSceneView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7084FA62AD771AA00EC7F4F /* AugmentRealityToFlyOverSceneView.swift */; };
 		D70BE5792A5624A80022CA02 /* CategoriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70BE5782A5624A80022CA02 /* CategoriesView.swift */; };
@@ -576,6 +579,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				D70789952CD1611E000DF215 /* ApplyDictionaryRendererToGraphicsOverlayView.swift in Copy Source Code Files */,
 				D7F2A0302CD00F400008D981 /* ApplyDictionaryRendererToFeatureLayerView.swift in Copy Source Code Files */,
 				D75E5EF42CC04A0C00252595 /* EditFeaturesUsingFeatureFormsView.swift in Copy Source Code Files */,
 				D7201D072CC6D3D3004BDB7D /* AddVectorTiledLayerFromCustomStyleView.swift in Copy Source Code Files */,
@@ -932,6 +936,8 @@
 		D7054AE82ACCCB6C007235BA /* Animate3DGraphicView.SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animate3DGraphicView.SettingsView.swift; sourceTree = "<group>"; };
 		D7058B0D2B59E44B000A888A /* StylePointWithSceneSymbolView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StylePointWithSceneSymbolView.swift; sourceTree = "<group>"; };
 		D7058FB02ACB423C00A40F14 /* Animate3DGraphicView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Animate3DGraphicView.Model.swift; sourceTree = "<group>"; };
+		D707898E2CD160FD000DF215 /* ApplyDictionaryRendererToGraphicsOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyDictionaryRendererToGraphicsOverlayView.swift; sourceTree = "<group>"; };
+		D70789992CD16324000DF215 /* Mil2525DMessages.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Mil2525DMessages.xml; sourceTree = "<group>"; };
 		D7084FA62AD771AA00EC7F4F /* AugmentRealityToFlyOverSceneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AugmentRealityToFlyOverSceneView.swift; sourceTree = "<group>"; };
 		D70BE5782A5624A80022CA02 /* CategoriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesView.swift; sourceTree = "<group>"; };
 		D710996C2A27D9210065A1C1 /* DensifyAndGeneralizeGeometryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DensifyAndGeneralizeGeometryView.swift; sourceTree = "<group>"; };
@@ -1247,6 +1253,7 @@
 				D7C16D172AC5F6C100689E89 /* Animate 3D graphic */,
 				D77570BC2A29427200F490CD /* Animate images with image overlay */,
 				D7F2A02C2CD00F1C0008D981 /* Apply dictionary renderer to feature layer */,
+				D70789912CD160FD000DF215 /* Apply dictionary renderer to graphics overlay */,
 				955AFAC52C10FD74009C8FE5 /* Apply mosaic rule to rasters */,
 				004A2BA12BED456500C297CE /* Apply scheduled updates to preplanned map area */,
 				D75362CC2A1E862B00D83028 /* Apply unique value renderer */,
@@ -1495,6 +1502,7 @@
 				004A2B962BED454300C297CE /* 740b663bff5e4198b9b6674af93f638a */,
 				D7CE9F9C2AE2F585008F7A5F /* 3424d442ebe54f3cbf34462382d3aebe */,
 				D735717F2CB613100046A433 /* 5028bf3513ff4c38b28822d010a4937c */,
+				D707899A2CD16324000DF215 /* 8776cfc26eed4485a03de6316826384c */,
 				D7C16D232AC5FEA600689E89 /* 12509ffdc684437f8f2656b0129d2c13 */,
 				D7BB3DD12C5D781800FFCD56 /* 43809fd639f242fd8045ecbafd61a579 */,
 				10D321912BDB187400B39B1B /* 85282f2aaa2844d8935cdb8722e22a93 */,
@@ -2037,6 +2045,22 @@
 				D7058B0D2B59E44B000A888A /* StylePointWithSceneSymbolView.swift */,
 			);
 			path = "Style point with scene symbol";
+			sourceTree = "<group>";
+		};
+		D70789912CD160FD000DF215 /* Apply dictionary renderer to graphics overlay */ = {
+			isa = PBXGroup;
+			children = (
+				D707898E2CD160FD000DF215 /* ApplyDictionaryRendererToGraphicsOverlayView.swift */,
+			);
+			path = "Apply dictionary renderer to graphics overlay";
+			sourceTree = "<group>";
+		};
+		D707899A2CD16324000DF215 /* 8776cfc26eed4485a03de6316826384c */ = {
+			isa = PBXGroup;
+			children = (
+				D70789992CD16324000DF215 /* Mil2525DMessages.xml */,
+			);
+			path = 8776cfc26eed4485a03de6316826384c;
 			sourceTree = "<group>";
 		};
 		D7084FA42AD771AA00EC7F4F /* Augment reality to fly over scene */ = {
@@ -3191,6 +3215,7 @@
 					Animate3DGraphic,
 					AnimateImagesWithImageOverlay,
 					ApplyDictionaryRendererToFeatureLayer,
+					ApplyDictionaryRendererToGraphicsOverlay,
 					ApplyScheduledUpdatesToPreplannedMapArea,
 					AugmentRealityToShowTabletopScene,
 					ChangeCameraController,
@@ -3269,6 +3294,7 @@
 				D7C16D252AC5FEA600689E89 /* Snowdon.csv in Resources */,
 				D73F8CF42AB1089900CD39DA /* Restaurant.stylx in Resources */,
 				D7BB3DD22C5D781800FFCD56 /* SaveTheBay.geodatabase in Resources */,
+				D707899B2CD16324000DF215 /* Mil2525DMessages.xml in Resources */,
 				D74C8C022ABA6202007C76B8 /* emoji-mobile.stylx in Resources */,
 				D7CE9FA32AE2F595008F7A5F /* san-diego-eagle-locator in Resources */,
 				D70539102CD012BB00F63F4A /* militaryoverlay.geodatabase in Resources */,
@@ -3464,6 +3490,7 @@
 				1CAB8D4B2A3CEAB0002AA649 /* RunValveIsolationTraceView.Model.swift in Sources */,
 				E070A0A3286F3B6000F2B606 /* DownloadPreplannedMapAreaView.swift in Sources */,
 				D79482D42C35D872006521CD /* CreateDynamicBasemapGalleryView.swift in Sources */,
+				D70789922CD160FD000DF215 /* ApplyDictionaryRendererToGraphicsOverlayView.swift in Sources */,
 				D77570C02A2942F800F490CD /* AnimateImagesWithImageOverlayView.swift in Sources */,
 				D7848EFE2CBD986400F6F546 /* AddElevationSourceFromRasterView.swift in Sources */,
 				D7054AE92ACCCB6C007235BA /* Animate3DGraphicView.SettingsView.swift in Sources */,

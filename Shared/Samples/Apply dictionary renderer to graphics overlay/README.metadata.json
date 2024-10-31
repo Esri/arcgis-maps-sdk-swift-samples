@@ -1,0 +1,31 @@
+{
+    "category": "Visualization",
+    "description": "Create graphics from an XML file with key-value pairs for each graphic and display the military symbols using a MIL-STD-2525D web style in 3D.",
+    "ignore": false,
+    "images": [
+        "apply-dictionary-renderer-to-graphics-overlay.png"
+    ],
+    "keywords": [
+        "defense",
+        "military",
+        "situational awareness",
+        "tactical",
+        "visualization",
+        "DictionaryRenderer",
+        "DictionarySymbolStyle",
+        "GraphicsOverlay"
+    ],
+    "offline_data": [
+        "8776cfc26eed4485a03de6316826384c"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "DictionaryRenderer",
+        "DictionarySymbolStyle",
+        "GraphicsOverlay"
+    ],
+    "snippets": [
+        "ApplyDictionaryRendererToGraphicsOverlayView.swift"
+    ],
+    "title": "Apply dictionary renderer to graphics overlay"
+}
