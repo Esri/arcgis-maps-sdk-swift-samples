@@ -79,8 +79,10 @@ struct ApplyDictionaryRendererToGraphicsOverlayView: View {
         
         if parser.parse() {
             // Creates graphics from the parsed messages.
-            return parser.messages.map { message in
-                let spatialReference = SpatialReference(wkid: .init(message.wkid!)!)
+            return parser.messages.compactMap { message in
+                guard let messageWKID = message.wkid,
+                      let wkid = WKID(messageWKID) else { return nil }
+                let spatialReference = SpatialReference(wkid: wkid)
                 let points = message.controlPoints.map { x, y in
                     Point(x: x, y: y, spatialReference: spatialReference)
                 }
