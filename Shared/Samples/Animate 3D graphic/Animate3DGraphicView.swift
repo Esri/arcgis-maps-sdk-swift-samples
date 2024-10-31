@@ -44,7 +44,7 @@ struct Animate3DGraphicView: View {
                     .frame(width: 170, height: 100)
                     .padding([.leading, .trailing])
                     .background(.ultraThinMaterial)
-                    .cornerRadius(10)
+                    .clipShape(.rect(cornerRadius: 10))
                     .shadow(radius: 3)
                 }
                 .padding()
@@ -65,7 +65,7 @@ struct Animate3DGraphicView: View {
                             }
                         }
                         .frame(width: isShowingFullMap ? nil : 100, height: isShowingFullMap ? nil : 100)
-                        .cornerRadius(10)
+                        .clipShape(.rect(cornerRadius: 10))
                         .shadow(radius: 3)
                     Spacer()
                 }

@@ -99,7 +99,7 @@ struct RunValveIsolationTraceView: View {
                     }
                     .padding()
                     .background(.thinMaterial)
-                    .cornerRadius(10)
+                    .clipShape(.rect(cornerRadius: 10))
                 }
             }
             .alert(

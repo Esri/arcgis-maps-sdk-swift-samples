@@ -59,7 +59,7 @@ struct DisplayDimensionsView: View {
                     }
                     .padding(8)
                     .background(.ultraThinMaterial)
-                    .cornerRadius(10)
+                    .clipShape(.rect(cornerRadius: 10))
                     .disabled(dimensionLayer == nil)
                 }
                 .padding()
