@@ -276,11 +276,9 @@ extension Animate3DGraphicView {
         /// Loads the frames of a mission from a CSV file.
         /// - Parameter filename: The name of the file containing the CSV data.
         mutating func loadFrames(for filename: String) {
-            // Get the path of the file from the bundle using the filename name.
-            guard let path = Bundle.main.path(forResource: filename, ofType: "csv") else { return }
-            
-            // Get the content of the file using the path.
-            guard let content = try? String(contentsOfFile: path) else { return }
+            // Get the content of the file from the bundle using the filename name.
+            guard let path = Bundle.main.url(forResource: filename, withExtension: "csv"),
+                  let content = try? String(contentsOf: path, encoding: .utf8) else { return }
             
             // Split the content by line into an array.
             let lines = content.split(whereSeparator: \.isNewline)
