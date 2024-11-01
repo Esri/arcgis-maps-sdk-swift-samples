@@ -17,6 +17,7 @@ import ArcGISToolkit
 import CoreLocation
 import SwiftUI
 
+@available(macCatalyst, unavailable)
 @MainActor
 struct AugmentRealityToNavigateRouteView: View {
     /// The view model for the map view in the sample.
@@ -96,6 +97,7 @@ struct AugmentRealityToNavigateRouteView: View {
     }
 }
 
+@available(macCatalyst, unavailable)
 private extension AugmentRealityToNavigateRouteView {
     // MARK: Map Model
     
