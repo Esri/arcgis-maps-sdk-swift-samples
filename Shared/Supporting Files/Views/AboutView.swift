@@ -44,18 +44,24 @@ struct AboutView: View {
                     LabeledContent("Version", value: Bundle.main.shortVersion)
                     LabeledContent("SDK Version", value: arcGISVersion)
                 }
-                Section(header: Text("Powered By")) {
+                Section("Powered By") {
                     Link("ArcGIS Maps SDK for Swift Toolkit", destination: .toolkit)
                     Link("ArcGIS Maps SDK for Swift", destination: .developers)
                 }
-                Section(footer: Text("Browse and discuss in the Esri Community.")) {
+                Section {
                     Link("Esri Community", destination: .esriCommunity)
+                } footer: {
+                    Text("Browse and discuss in the Esri Community.")
                 }
-                Section(footer: Text("Log an issue in the GitHub repository.")) {
+                Section {
                     Link("GitHub Repository", destination: .githubRepository)
+                } footer: {
+                    Text("Log an issue in the GitHub repository.")
                 }
-                Section(footer: Text("View details about the API.")) {
+                Section {
                     Link("API Reference", destination: .apiReference)
+                } footer: {
+                    Text("View details about the API.")
                 }
             }
             .navigationTitle("About")

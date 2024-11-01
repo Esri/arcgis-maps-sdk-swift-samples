@@ -57,7 +57,7 @@ struct AddRasterFromServiceView: View {
                     ProgressView("Drawing…")
                         .padding()
                         .background(.ultraThinMaterial)
-                        .cornerRadius(10)
+                        .clipShape(.rect(cornerRadius: 10))
                         .shadow(radius: 50)
                 }
             }

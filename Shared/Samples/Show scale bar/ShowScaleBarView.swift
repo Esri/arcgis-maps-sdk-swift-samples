@@ -78,7 +78,7 @@ struct ShowScaleBarView: View {
                 .padding([.horizontal, .vertical], 10)
                 .background(Color.white)
                 .opacity(0.8)
-                .cornerRadius(8)
+                .clipShape(.rect(cornerRadius: 8))
                 .padding(.vertical, 10 + attributionBarHeight)
                 .padding(10)
             }
