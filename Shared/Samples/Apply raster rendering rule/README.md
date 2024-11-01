@@ -2,7 +2,7 @@
 
 Display a raster on a map and apply different rendering rules to that raster.
 
-![Image of apply raster rendering rule](ApplyRasterRenderingRule.png)
+![Image of Apply raster rendering rule sample](apply-raster-rendering-rule.png)
 
 ## Use case
 
@@ -10,16 +10,16 @@ Raster images whose individual pixels represent elevation values can be rendered
 
 ## How to use the sample
 
-Run the sample and use the drop-down menu at the top to select a rendering rule.
+Open the sample and use the picker to select a rendering rule.
 
 ## How it works
 
-1.  Create an `ImageServiceRaster` using a URL to an online image service.
-2.  After loading the raster, use `imageServiceRaster.getServiceInfo().getRenderingRuleInfos()` to get a list of `RenderingRuleInfo` supported by the service.
-3.  Choose a rendering rule info to apply and use it to create a `RenderingRule`.
-4.  Create a new `ImageServiceRaster` using the same URL.
-5.  Apply the rendering rule to the new raster using `imageServiceRaster.setRenderingRule(renderingRuleInfo)`.
-6.  Create a `RasterLayer` from the raster for display.
+1. Create an `ImageServiceRaster` using a URL to an online image service.
+2. After loading the raster, get its `serviceInfo` to get a list of `RenderingRuleInfo` supported by the service.
+3. Choose a rendering rule info to apply and use it to create a `RenderingRule`.
+4. Create a new `ImageServiceRaster` using the same image service URL.
+5. Apply the rendering rule to the new raster.
+6. Create a `RasterLayer` from the raster for display.
 
 ## Relevant API
 
@@ -29,7 +29,7 @@ Run the sample and use the drop-down menu at the top to select a rendering rule.
 
 ## About the data
 
-This raster image service contains 9 LAS files covering Charlotte, North Carolina's downtown area. The lidar data was collected in 2007. Four Raster Rules are available for selection: None, RFTAspectColor, RFTHillshade, and RFTShadedReliefElevationColorRamp.
+The [CharlotteLAS image service](https://sampleserver6.arcgisonline.com/arcgis/rest/services/CharlotteLAS/ImageServer) contains 9 LAS files covering Charlotte, North Carolina's downtown area. The LiDAR data was collected in 2007. Four raster rules are available for selection: None, RFTAspectColor, RFTHillshade, and RFTShadedReliefElevationColorRamp.
 
 ## Additional information
 
