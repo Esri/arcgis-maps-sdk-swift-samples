@@ -1,0 +1,24 @@
+{
+    "category": "Visualization",
+    "description": "Display a raster on a map and apply different rendering rules to that raster.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "raster",
+        "rendering rules",
+        "visualization",
+        "ImageServiceRaster",
+        "RasterLayer",
+        "RenderingRule"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "ImageServiceRaster",
+        "RasterLayer",
+        "RenderingRule"
+    ],
+    "snippets": [
+        "ApplyRasterRenderingRuleView.swift"
+    ],
+    "title": "Apply raster rendering rule"
+}

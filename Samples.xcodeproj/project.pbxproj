@@ -393,6 +393,8 @@
 		D7705D5B2AFC246A00CC0335 /* FindClosestFacilityToMultiplePointsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7705D552AFC244E00CC0335 /* FindClosestFacilityToMultiplePointsView.swift */; };
 		D7705D642AFC570700CC0335 /* FindClosestFacilityFromPointView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7705D612AFC570700CC0335 /* FindClosestFacilityFromPointView.swift */; };
 		D7705D662AFC575000CC0335 /* FindClosestFacilityFromPointView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7705D612AFC570700CC0335 /* FindClosestFacilityFromPointView.swift */; };
+		D771D0C82CD55211004C13CB /* ApplyRasterRenderingRuleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D771D0C22CD55211004C13CB /* ApplyRasterRenderingRuleView.swift */; };
+		D771D0C92CD5522A004C13CB /* ApplyRasterRenderingRuleView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D771D0C22CD55211004C13CB /* ApplyRasterRenderingRuleView.swift */; };
 		D7749AD62AF08BF50086632F /* FindRouteInTransportNetworkView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7749AD52AF08BF50086632F /* FindRouteInTransportNetworkView.Model.swift */; };
 		D77570C02A2942F800F490CD /* AnimateImagesWithImageOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77570BF2A2942F800F490CD /* AnimateImagesWithImageOverlayView.swift */; };
 		D77570C12A2943D900F490CD /* AnimateImagesWithImageOverlayView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D77570BF2A2942F800F490CD /* AnimateImagesWithImageOverlayView.swift */; };
@@ -581,6 +583,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				D771D0C92CD5522A004C13CB /* ApplyRasterRenderingRuleView.swift in Copy Source Code Files */,
 				D751B4CB2CD3E598005CE750 /* AddKMLLayerWithNetworkLinksView.swift in Copy Source Code Files */,
 				D70789952CD1611E000DF215 /* ApplyDictionaryRendererToGraphicsOverlayView.swift in Copy Source Code Files */,
 				D7F2A0302CD00F400008D981 /* ApplyDictionaryRendererToFeatureLayerView.swift in Copy Source Code Files */,
@@ -1025,6 +1028,7 @@
 		D76EE6062AF9AFE100DA0325 /* FindRouteAroundBarriersView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindRouteAroundBarriersView.Model.swift; sourceTree = "<group>"; };
 		D7705D552AFC244E00CC0335 /* FindClosestFacilityToMultiplePointsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindClosestFacilityToMultiplePointsView.swift; sourceTree = "<group>"; };
 		D7705D612AFC570700CC0335 /* FindClosestFacilityFromPointView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindClosestFacilityFromPointView.swift; sourceTree = "<group>"; };
+		D771D0C22CD55211004C13CB /* ApplyRasterRenderingRuleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyRasterRenderingRuleView.swift; sourceTree = "<group>"; };
 		D7749AD52AF08BF50086632F /* FindRouteInTransportNetworkView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindRouteInTransportNetworkView.Model.swift; sourceTree = "<group>"; };
 		D77570BF2A2942F800F490CD /* AnimateImagesWithImageOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimateImagesWithImageOverlayView.swift; sourceTree = "<group>"; };
 		D77572AD2A295DDD00F490CD /* PacificSouthWest2 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = PacificSouthWest2; sourceTree = "<group>"; };
@@ -1260,6 +1264,7 @@
 				D7F2A02C2CD00F1C0008D981 /* Apply dictionary renderer to feature layer */,
 				D70789912CD160FD000DF215 /* Apply dictionary renderer to graphics overlay */,
 				955AFAC52C10FD74009C8FE5 /* Apply mosaic rule to rasters */,
+				D771D0C52CD55211004C13CB /* Apply raster rendering rule */,
 				004A2BA12BED456500C297CE /* Apply scheduled updates to preplanned map area */,
 				D75362CC2A1E862B00D83028 /* Apply unique value renderer */,
 				1C8EC7422BAE2891001A6929 /* Augment reality to collect data */,
@@ -2585,6 +2590,14 @@
 			path = "Find closest facility from point";
 			sourceTree = "<group>";
 		};
+		D771D0C52CD55211004C13CB /* Apply raster rendering rule */ = {
+			isa = PBXGroup;
+			children = (
+				D771D0C22CD55211004C13CB /* ApplyRasterRenderingRuleView.swift */,
+			);
+			path = "Apply raster rendering rule";
+			sourceTree = "<group>";
+		};
 		D77570BC2A29427200F490CD /* Animate images with image overlay */ = {
 			isa = PBXGroup;
 			children = (
@@ -3430,6 +3443,7 @@
 				1C2538562BABACFD00337307 /* AugmentRealityToNavigateRouteView.swift in Sources */,
 				1C2538572BABACFD00337307 /* AugmentRealityToNavigateRouteView.ARSceneView.swift in Sources */,
 				D76929FA2B4F79540047205E /* OrbitCameraAroundObjectView.swift in Sources */,
+				D771D0C82CD55211004C13CB /* ApplyRasterRenderingRuleView.swift in Sources */,
 				79D84D132A81711A00F45262 /* AddCustomDynamicEntityDataSourceView.swift in Sources */,
 				102B6A372BFD5B55009F763C /* IdentifyFeaturesInWMSLayerView.swift in Sources */,
 				E000E7602869E33D005D87C5 /* ClipGeometryView.swift in Sources */,
