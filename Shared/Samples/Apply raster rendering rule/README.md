@@ -33,7 +33,7 @@ The [CharlotteLAS image service](https://sampleserver6.arcgisonline.com/arcgis/r
 
 ## Additional information
 
-Image service rasters of any type can have rendering rules applied to them; they need not necessarily be elevation rasters. See the list of [raster function objects](https://developers.arcgis.com/documentation/common-data-types/raster-function-objects.htm) and syntax for rendering rules in the *ArcGIS REST API* documentation.
+Image service rasters of any type can have rendering rules applied to them; they need not necessarily be elevation rasters. See the list of [raster function objects](https://developers.arcgis.com/rest/services-reference/enterprise/raster-function-objects/) and syntax for rendering rules in the *ArcGIS REST API* documentation.
 
 ## Tags
 
