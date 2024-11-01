@@ -123,6 +123,7 @@ private let sampleStructs = sampleMetadata
         let portalItemIDs = (sample.offlineData ?? [])
             .map { #"PortalItem.ID("\#($0)")!"# }
         return """
+        \(sample.category == "Augmented Reality" ? "@available(macCatalyst, unavailable)" : "")
         struct \(sample.structName): Sample {
             var name: String { \"\(sample.title)\" }
             var category: String { \"\(sample.category)\" }
@@ -139,15 +140,26 @@ private let sampleStructs = sampleMetadata
 private let entries = sampleMetadata
     .map { sample in "\(sample.structName)()" }
     .joined(separator: ",\n        ")
+
+private let ARFilteredEntries = sampleMetadata
+    .filter { $0.category != "Augmented Reality" }
+    .map { sample in "\(sample.structName)()" }
+    .joined(separator: ",\n        ")
+
 private let arrayRepresentation = """
-    [
-            \(entries)
-        ]
+    {
     #if targetEnvironment(macCatalyst) || targetEnvironment(simulator)
         // Exclude AR samples from Mac Catalyst and Simulator targets
         // as they don't have camera and sensors available.
-        .filter { $0.category != "Augmented Reality" }
+        [
+            \(ARFilteredEntries)
+        ]
+    #else
+        [
+            \(entries)
+        ]
     #endif
+    }()
     """
 
 do {
