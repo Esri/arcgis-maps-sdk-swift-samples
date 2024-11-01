@@ -332,6 +332,8 @@
 		D75101822A2E497F00B8FA48 /* ShowLabelsOnLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D75101802A2E493600B8FA48 /* ShowLabelsOnLayerView.swift */; };
 		D751018E2A2E962D00B8FA48 /* IdentifyLayerFeaturesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D751018D2A2E962D00B8FA48 /* IdentifyLayerFeaturesView.swift */; };
 		D751018F2A2E966C00B8FA48 /* IdentifyLayerFeaturesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D751018D2A2E962D00B8FA48 /* IdentifyLayerFeaturesView.swift */; };
+		D751B4C82CD3E572005CE750 /* AddKMLLayerWithNetworkLinksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D751B4C42CD3E572005CE750 /* AddKMLLayerWithNetworkLinksView.swift */; };
+		D751B4CB2CD3E598005CE750 /* AddKMLLayerWithNetworkLinksView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D751B4C42CD3E572005CE750 /* AddKMLLayerWithNetworkLinksView.swift */; };
 		D752D9402A39154C003EB25E /* ManageOperationalLayersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D752D93F2A39154C003EB25E /* ManageOperationalLayersView.swift */; };
 		D752D9412A39162F003EB25E /* ManageOperationalLayersView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D752D93F2A39154C003EB25E /* ManageOperationalLayersView.swift */; };
 		D752D9462A3A6F80003EB25E /* MonitorChangesToMapLoadStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D752D9452A3A6F7F003EB25E /* MonitorChangesToMapLoadStatusView.swift */; };
@@ -579,6 +581,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				D751B4CB2CD3E598005CE750 /* AddKMLLayerWithNetworkLinksView.swift in Copy Source Code Files */,
 				D70789952CD1611E000DF215 /* ApplyDictionaryRendererToGraphicsOverlayView.swift in Copy Source Code Files */,
 				D7F2A0302CD00F400008D981 /* ApplyDictionaryRendererToFeatureLayerView.swift in Copy Source Code Files */,
 				D75E5EF42CC04A0C00252595 /* EditFeaturesUsingFeatureFormsView.swift in Copy Source Code Files */,
@@ -990,6 +993,7 @@
 		D74F03EF2B609A7D00E83688 /* AddFeaturesWithContingentValuesView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddFeaturesWithContingentValuesView.Model.swift; sourceTree = "<group>"; };
 		D75101802A2E493600B8FA48 /* ShowLabelsOnLayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowLabelsOnLayerView.swift; sourceTree = "<group>"; };
 		D751018D2A2E962D00B8FA48 /* IdentifyLayerFeaturesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentifyLayerFeaturesView.swift; sourceTree = "<group>"; };
+		D751B4C42CD3E572005CE750 /* AddKMLLayerWithNetworkLinksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddKMLLayerWithNetworkLinksView.swift; sourceTree = "<group>"; };
 		D752D93F2A39154C003EB25E /* ManageOperationalLayersView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageOperationalLayersView.swift; sourceTree = "<group>"; };
 		D752D9452A3A6F7F003EB25E /* MonitorChangesToMapLoadStatusView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonitorChangesToMapLoadStatusView.swift; sourceTree = "<group>"; };
 		D752D95E2A3BCE06003EB25E /* DisplayMapFromPortalItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayMapFromPortalItemView.swift; sourceTree = "<group>"; };
@@ -1238,6 +1242,7 @@
 				00D4EF7E2863840D00B9CC30 /* Add feature layers */,
 				D7F8C0342B60564D0072BFA7 /* Add features with contingent values */,
 				D713C6D42CB990600073AA72 /* Add KML layer */,
+				D751B4C72CD3E572005CE750 /* Add KML layer with network links */,
 				D7DFA0E92CBA0242007C31F2 /* Add map image layer */,
 				D7CDD3882CB86F0A00DE9766 /* Add point cloud layer from file */,
 				D7848ED72CBD85A300F6F546 /* Add point scene layer */,
@@ -2376,6 +2381,14 @@
 			path = "Identify layer features";
 			sourceTree = "<group>";
 		};
+		D751B4C72CD3E572005CE750 /* Add KML layer with network links */ = {
+			isa = PBXGroup;
+			children = (
+				D751B4C42CD3E572005CE750 /* AddKMLLayerWithNetworkLinksView.swift */,
+			);
+			path = "Add KML layer with network links";
+			sourceTree = "<group>";
+		};
 		D752D93C2A3914E5003EB25E /* Manage operational layers */ = {
 			isa = PBXGroup;
 			children = (
@@ -3424,6 +3437,7 @@
 				4D2ADC6729C50BD6003B367F /* AddDynamicEntityLayerView.Model.swift in Sources */,
 				E004A6E928493BCE002A1FE6 /* ShowDeviceLocationView.swift in Sources */,
 				1C26ED192A859525009B7721 /* FilterFeaturesInSceneView.swift in Sources */,
+				D751B4C82CD3E572005CE750 /* AddKMLLayerWithNetworkLinksView.swift in Sources */,
 				D75E5EF12CC049D500252595 /* EditFeaturesUsingFeatureFormsView.swift in Sources */,
 				D7352F8E2BD992C40013FFEF /* MonitorChangesToDrawStatusView.swift in Sources */,
 				F111CCC1288B5D5600205358 /* DisplayMapFromMobileMapPackageView.swift in Sources */,
