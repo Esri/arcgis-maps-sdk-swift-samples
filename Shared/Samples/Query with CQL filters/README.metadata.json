@@ -1,0 +1,32 @@
+{
+    "category": "Search and Query",
+    "description": "Query data from an OGC API feature service using CQL filters.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "CQL",
+        "OGC",
+        "OGC API",
+        "browse",
+        "catalog",
+        "common query language",
+        "feature table",
+        "filter",
+        "query",
+        "service",
+        "web",
+        "OGCFeatureCollectionTable",
+        "QueryParameters",
+        "TimeExtent"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "OGCFeatureCollectionTable",
+        "QueryParameters",
+        "TimeExtent"
+    ],
+    "snippets": [
+        "QueryWithCQLFiltersView.swift"
+    ],
+    "title": "Query with CQL filters"
+}
