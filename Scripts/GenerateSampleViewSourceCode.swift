@@ -145,7 +145,7 @@ private let commonSamples = sampleMetadata
 private let iOSSamples = sampleMetadata
     .filter { $0.category == "Augmented Reality" }
     .map { sample in "\(sample.structName)()" }
-    .joined(separator: ",\n        ")
+    .joined(separator: ",\n            ")
 
 private let commonSamplesArrayRepresentation = """
     [
@@ -156,15 +156,15 @@ private let commonSamplesArrayRepresentation = """
 private let iOSSamplesArrayRepresentation = """
     {
     #if !targetEnvironment(macCatalyst) && !targetEnvironment(simulator)
-        // Exclude AR samples from Mac Catalyst and Simulator targets
-        // as they don't have camera and sensors available.
-        [
-            \(iOSSamples)
-        ]
+            // Exclude AR samples from Mac Catalyst and Simulator targets
+            // as they don't have camera and sensors available.
+            [
+                \(iOSSamples)
+            ]
     #else
-        []
+            []
     #endif
-    }()
+        }()
     """
 
 do {
