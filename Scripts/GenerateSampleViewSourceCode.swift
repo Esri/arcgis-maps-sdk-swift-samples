@@ -162,8 +162,7 @@ private let iOSSamplesArrayRepresentation = """
             \(iOSSamples)
         ]
     #else
-        [
-        ]
+        []
     #endif
     }()
     """
