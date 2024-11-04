@@ -148,11 +148,9 @@ private let iOSSamples = sampleMetadata
     .joined(separator: ",\n        ")
 
 private let commonSamplesArrayRepresentation = """
-    {
-        [
+    [
             \(commonSamples)
         ]
-    }()
     """
 
 private let iOSSamplesArrayRepresentation = """
