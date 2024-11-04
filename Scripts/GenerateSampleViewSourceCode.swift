@@ -137,26 +137,34 @@ private let sampleStructs = sampleMetadata
     }
     .joined(separator: "\n")
 
-private let entries = sampleMetadata
-    .map { sample in "\(sample.structName)()" }
-    .joined(separator: ",\n        ")
-
-private let ARFilteredEntries = sampleMetadata
+private let commonSamples = sampleMetadata
     .filter { $0.category != "Augmented Reality" }
     .map { sample in "\(sample.structName)()" }
     .joined(separator: ",\n        ")
 
-private let arrayRepresentation = """
+private let iOSSamples = sampleMetadata
+    .filter { $0.category == "Augmented Reality" }
+    .map { sample in "\(sample.structName)()" }
+    .joined(separator: ",\n        ")
+
+private let commonSamplesArrayRepresentation = """
     {
-    #if targetEnvironment(macCatalyst) || targetEnvironment(simulator)
+        [
+            \(commonSamples)
+        ]
+    }()
+    """
+
+private let iOSSamplesArrayRepresentation = """
+    {
+    #if !targetEnvironment(macCatalyst) && !targetEnvironment(simulator)
         // Exclude AR samples from Mac Catalyst and Simulator targets
         // as they don't have camera and sensors available.
         [
-            \(ARFilteredEntries)
+            \(iOSSamples)
         ]
     #else
         [
-            \(entries)
         ]
     #endif
     }()
@@ -166,7 +174,8 @@ do {
     let templateFile = try String(contentsOf: templateURL, encoding: .utf8)
     // Replaces the empty array code stub, i.e. [], with the array representation.
     let content = templateFile
-        .replacingOccurrences(of: "[/* samples */]", with: arrayRepresentation)
+        .replacingOccurrences(of: "[/* common_samples */]", with: commonSamplesArrayRepresentation)
+        .replacingOccurrences(of: "[/* ios_samples */]", with: iOSSamplesArrayRepresentation)
         .replacingOccurrences(of: "/* structs */", with: sampleStructs)
     try content.write(to: outputFileURL, atomically: true, encoding: .utf8)
 } catch {
