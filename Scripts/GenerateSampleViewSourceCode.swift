@@ -137,12 +137,14 @@ private let sampleStructs = sampleMetadata
     }
     .joined(separator: "\n")
 
+// The set of samples supported on all supported platforms.
 private let commonSamples = sampleMetadata
     .filter { $0.category != "Augmented Reality" }
     .map { sample in "\(sample.structName)()" }
     .joined(separator: ",\n        ")
 
-private let iOSSamples = sampleMetadata
+// The set of samples supported only on iOS.
+private let iOSSpecificSamples = sampleMetadata
     .filter { $0.category == "Augmented Reality" }
     .map { sample in "\(sample.structName)()" }
     .joined(separator: ",\n            ")
@@ -159,7 +161,7 @@ private let iOSSamplesArrayRepresentation = """
             // Exclude AR samples from Mac Catalyst and Simulator targets
             // as they don't have camera and sensors available.
             [
-                \(iOSSamples)
+                \(iOSSpecificSamples)
             ]
     #else
             []
