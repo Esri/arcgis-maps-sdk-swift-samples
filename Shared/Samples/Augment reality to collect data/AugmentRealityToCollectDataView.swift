@@ -201,9 +201,3 @@ private extension AugmentRealityToCollectDataView {
         }
     }
 }
-
-#if !targetEnvironment(macCatalyst)
-#Preview {
-    AugmentRealityToCollectDataView()
-}
-#endif
