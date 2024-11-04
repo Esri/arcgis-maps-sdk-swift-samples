@@ -15,8 +15,11 @@
 import SwiftUI
 
 extension SamplesApp {
-    /// The samples for this app.
-    static let samples: [Sample] = [/* samples */]
+    /// The common samples for this app.
+    static let commonSamples: [Sample] = [/* common_samples */]
+    
+    /// The iOS samples for this app.
+    static let iOSSamples: [Sample] = [/* ios_samples */]
 }
 
 // MARK: Sample Structs
