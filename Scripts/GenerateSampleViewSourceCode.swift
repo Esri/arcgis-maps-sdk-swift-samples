@@ -111,7 +111,6 @@ private let sampleMetadata: [SampleMetadata] = {
                     exit(1)
                 }
             }
-            .sorted { $0.title < $1.title }
     } catch {
         print("error: Decoding Samples: \(error.localizedDescription)")
         exit(1)
