@@ -43,7 +43,7 @@ struct TraceUtilityNetworkView: View {
                     }
                     .padding(6)
                     .background(.thinMaterial)
-                    .cornerRadius(10)
+                    .clipShape(.rect(cornerRadius: 10))
                 }
             }
             .overlay(alignment: .top) {

@@ -58,7 +58,7 @@ struct FindRouteAroundBarriersView: View {
                         ProgressView("Routing...")
                             .padding()
                             .background(.ultraThickMaterial)
-                            .cornerRadius(10)
+                            .clipShape(.rect(cornerRadius: 10))
                             .shadow(radius: 50)
                     }
                 }

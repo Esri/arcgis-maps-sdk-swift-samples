@@ -68,7 +68,7 @@ struct ShowRealisticLightAndShadowsView: View {
     }
     
     /// An overlay showing the date time adjusted by the slider.
-    var dateTimeOverlay: some View {
+    private var dateTimeOverlay: some View {
         Text(dateTimeText)
             .frame(maxWidth: .infinity)
             .padding(.vertical, 6)
@@ -85,7 +85,7 @@ struct ShowRealisticLightAndShadowsView: View {
     }
 }
 
-extension ShowRealisticLightAndShadowsView {
+private extension ShowRealisticLightAndShadowsView {
     /// The model used to store the geo model and other expensive objects
     /// used in this view.
     class Model: ObservableObject {
@@ -115,7 +115,7 @@ extension ShowRealisticLightAndShadowsView {
         /// The range is 0 to 86,340 seconds ((60 seconds * 60 minutes * 24 hours)  - 60 seconds),
         /// which means 12 am to 11:59 pm.
         static var dateSecondValueRange: ClosedRange<Float> { 0...86340 }
-
+        
         /// The number of seconds to represent 12 pm (60 seconds * 60 minutes * 12 hours).
         static let dateSecondsNoon: Float = 43200
     }

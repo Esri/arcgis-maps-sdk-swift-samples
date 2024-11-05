@@ -15,7 +15,6 @@
 import ArcGIS
 import SwiftUI
 
-@MainActor
 struct CreateSymbolStylesFromWebStylesView: View {
     /// The display scale of the environment.
     @Environment(\.displayScale) private var displayScale

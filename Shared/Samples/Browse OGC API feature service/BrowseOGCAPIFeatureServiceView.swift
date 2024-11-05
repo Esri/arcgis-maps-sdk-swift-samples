@@ -21,7 +21,7 @@ struct BrowseOGCAPIFeatureServiceView: View {
     
     /// A Boolean value indicating whether the textfield alert should be presented.
     @State private var textfieldAlertIsPresented = true
-
+    
     /// The data model for the sample.
     @StateObject private var model = Model()
     

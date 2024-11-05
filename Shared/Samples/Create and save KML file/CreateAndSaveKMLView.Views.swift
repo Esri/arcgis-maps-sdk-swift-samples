@@ -76,7 +76,7 @@ extension CreateAndSaveKMLView {
     }
     
     /// The point style menu.
-    var pointStyleMenuContent: some View {
+    private var pointStyleMenuContent: some View {
         VStack {
             Button {
                 model.kmlStyle = KMLStyle(iconURL: URL(string: "http://resources.esri.com/help/900/arcgisexplorer/sdk/doc/bitmaps/148cca9a-87a8-42bd-9da4-5fe427b6fb7b127.png")!)
@@ -130,7 +130,7 @@ extension CreateAndSaveKMLView {
     }
     
     /// The polyline style menu.
-    var polylineStyleMenuContent: some View {
+    private var polylineStyleMenuContent: some View {
         VStack {
             Button {
                 model.kmlStyle = KMLStyle(lineColor: .red)
@@ -145,28 +145,28 @@ extension CreateAndSaveKMLView {
             } label: {
                 Text("Yellow")
             }
-
+            
             Button {
                 model.kmlStyle = KMLStyle(lineColor: .white)
                 model.startGeometryEditor(withType: Polyline.self)
             } label: {
                 Text("White")
             }
-
+            
             Button {
                 model.kmlStyle = KMLStyle(lineColor: .purple)
                 model.startGeometryEditor(withType: Polyline.self)
             } label: {
                 Text("Purple")
             }
-
+            
             Button {
                 model.kmlStyle = KMLStyle(lineColor: .orange)
                 model.startGeometryEditor(withType: Polyline.self)
             } label: {
                 Text("Orange")
             }
-
+            
             Button {
                 model.kmlStyle = KMLStyle(lineColor: .magenta)
                 model.startGeometryEditor(withType: Polyline.self)
@@ -177,7 +177,7 @@ extension CreateAndSaveKMLView {
     }
     
     /// The polygon style menu.
-    var polygonStyleMenuContent: some View {
+    private var polygonStyleMenuContent: some View {
         VStack {
             Button {
                 model.kmlStyle = KMLStyle(fillColor: .red)
@@ -185,35 +185,35 @@ extension CreateAndSaveKMLView {
             } label: {
                 Text("Red")
             }
-
+            
             Button {
                 model.kmlStyle = KMLStyle(fillColor: .yellow)
                 model.startGeometryEditor(withType: Polygon.self)
             } label: {
                 Text("Yellow")
             }
-
+            
             Button {
                 model.kmlStyle = KMLStyle(fillColor: .white)
                 model.startGeometryEditor(withType: Polygon.self)
             } label: {
                 Text("White")
             }
-
+            
             Button {
                 model.kmlStyle = KMLStyle(fillColor: .purple)
                 model.startGeometryEditor(withType: Polygon.self)
             } label: {
                 Text("Purple")
             }
-
+            
             Button {
                 model.kmlStyle = KMLStyle(fillColor: .orange)
                 model.startGeometryEditor(withType: Polygon.self)
             } label: {
                 Text("Orange")
             }
-
+            
             Button {
                 model.kmlStyle = KMLStyle(fillColor: .magenta)
                 model.startGeometryEditor(withType: Polygon.self)

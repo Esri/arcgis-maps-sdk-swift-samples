@@ -99,7 +99,7 @@ struct RunValveIsolationTraceView: View {
                     }
                     .padding()
                     .background(.thinMaterial)
-                    .cornerRadius(10)
+                    .clipShape(.rect(cornerRadius: 10))
                 }
             }
             .alert(
@@ -111,7 +111,7 @@ struct RunValveIsolationTraceView: View {
     }
     
     /// Buttons for each the available terminals on the last added utility element.
-    @ViewBuilder var terminalPickerButtons: some View {
+    @ViewBuilder private var terminalPickerButtons: some View {
         if let lastAddedElement = model.lastAddedElement,
            let terminalConfiguration = lastAddedElement.assetType.terminalConfiguration {
             ForEach(terminalConfiguration.terminals) { terminal in
@@ -124,7 +124,7 @@ struct RunValveIsolationTraceView: View {
         }
     }
     
-    @ViewBuilder var configurationView: some View {
+    @ViewBuilder private var configurationView: some View {
         Form {
             Section {
                 List(model.filterBarrierCategories, id: \.name) { category in
@@ -173,7 +173,7 @@ struct RunValveIsolationTraceView: View {
     }
 }
 
-extension RunValveIsolationTraceView.Model.TracingActivity {
+private extension RunValveIsolationTraceView.Model.TracingActivity {
     /// A human-readable label for the tracing activity.
     var label: String {
         switch self {

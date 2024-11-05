@@ -47,7 +47,7 @@ struct StylePointWithDistanceCompositeSceneSymbolView: View {
                     }
                     .padding()
                     .background(.ultraThinMaterial)
-                    .cornerRadius(10)
+                    .clipShape(.rect(cornerRadius: 10))
                     .shadow(radius: 3)
                 }
                 .padding(.trailing, 8)

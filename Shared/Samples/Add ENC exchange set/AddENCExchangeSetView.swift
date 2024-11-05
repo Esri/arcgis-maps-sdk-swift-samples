@@ -33,7 +33,7 @@ struct AddENCExchangeSetView: View {
                         ProgressView("Loading…")
                             .padding()
                             .background(.ultraThickMaterial)
-                            .cornerRadius(10)
+                            .clipShape(.rect(cornerRadius: 10))
                             .shadow(radius: 50)
                     }
                 }
@@ -152,10 +152,6 @@ private extension URL {
     static let hydrographyDirectory = Bundle.main.url(
         forResource: "S57DataDictionary",
         withExtension: "xml",
-        subdirectory: "hydrography"
+        subdirectory: "hydrography/hydrography"
     )!
-}
-
-#Preview {
-    AddENCExchangeSetView()
 }

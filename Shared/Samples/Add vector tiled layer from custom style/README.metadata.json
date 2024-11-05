@@ -1,0 +1,38 @@
+{
+    "category": "Visualization",
+    "description": "Load an ArcGIS vector tiled layers using custom styles.",
+    "ignore": false,
+    "images": [
+        "add-vector-tiled-layer-from-custom-style-1.png",
+        "add-vector-tiled-layer-from-custom-style-2.png"
+    ],
+    "keywords": [
+        "tiles",
+        "vector",
+        "vector basemap",
+        "vector tile package",
+        "vector tiled layer",
+        "vector tiles",
+        "vtpk",
+        "ArcGISVectorTiledLayer",
+        "ExportVectorTilesTask",
+        "ItemResourceCache",
+        "Map",
+        "VectorTileCache"
+    ],
+    "offline_data": [
+        "f4b742a57af344988b02227e2824ca5f"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "ArcGISVectorTiledLayer",
+        "ExportVectorTilesTask",
+        "ItemResourceCache",
+        "Map",
+        "VectorTileCache"
+    ],
+    "snippets": [
+        "AddVectorTiledLayerFromCustomStyleView.swift"
+    ],
+    "title": "Add vector tiled layer from custom style"
+}

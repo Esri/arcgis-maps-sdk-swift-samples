@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import ArcGIS
-import ExternalAccessory
 import SwiftUI
 
 struct ShowDeviceLocationWithNMEADataSourcesView: View {
@@ -167,7 +166,7 @@ struct ShowDeviceLocationWithNMEADataSourcesView: View {
             }
     }
     
-    func reset() {
+    private func reset() {
         // Reset the status text.
         accuracyStatus = "Accuracy info will be shown here."
         satelliteStatus = "Satellites info will be shown here."
@@ -180,13 +179,13 @@ struct ShowDeviceLocationWithNMEADataSourcesView: View {
         }
     }
     
-    func selectDevice() throws {
+    private func selectDevice() throws {
         if let (accessory, protocolString) = model.firstSupportedAccessoryWithProtocol() {
             // Use the supported accessory directly if it's already connected.
             model.accessoryDidConnect(connectedAccessory: accessory, protocolString: protocolString)
         } else {
             throw AccessoryError.noBluetoothDevices
-        
+            
             // NOTE: The code below shows how to use the built-in Bluetooth picker
             // to pair a device. However there are a couple of issues that
             // prevent the built-in picker from functioning as desired.

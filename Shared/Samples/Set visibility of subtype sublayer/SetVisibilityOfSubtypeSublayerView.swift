@@ -17,7 +17,7 @@ import SwiftUI
 
 struct SetVisibilityOfSubtypeSublayerView: View {
     /// The view model for the sample.
-    @StateObject var model = Model()
+    @StateObject private var model = Model()
     
     /// A Boolean value indicating whether the settings should be presented.
     @State private var isShowingSettings = false

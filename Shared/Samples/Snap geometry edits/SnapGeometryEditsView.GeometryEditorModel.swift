@@ -20,7 +20,12 @@ extension SnapGeometryEditsView {
     @MainActor
     class GeometryEditorModel: ObservableObject {
         /// The geometry editor.
-        let geometryEditor = GeometryEditor()
+        let geometryEditor: GeometryEditor = {
+            let geometryEditor = GeometryEditor()
+            geometryEditor.snapSettings.isEnabled = true
+            geometryEditor.snapSettings.snapsToGeometryGuides = true
+            return geometryEditor
+        }()
         
         /// The graphics overlay used to save geometries to.
         let geometryOverlay: GraphicsOverlay = {

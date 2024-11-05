@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Foundation
-
 extension String {
     /// The key to read and write the names of the favorite samples to the user defaults.
     static var favoriteSampleNames: String { "favoriteSampleNames" }

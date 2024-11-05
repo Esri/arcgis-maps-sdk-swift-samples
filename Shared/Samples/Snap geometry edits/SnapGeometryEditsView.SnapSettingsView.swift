@@ -27,6 +27,12 @@ extension SnapGeometryEditsView {
         /// for the geometry editor.
         @State private var snappingEnabled = false
         
+        /// A Boolean value indicating whether the geometry editor snaps to geometry guides.
+        @State private var snapsToGeometryGuides = false
+        
+        /// A Boolean value indicating whether the geometry editor snaps to features and graphics.
+        @State private var snapsToFeatures = false
+        
         /// An array of snap source names and their source settings.
         @State private var snapSources: [(name: String, sourceSettings: SnapSourceSettings)] = []
         
@@ -40,6 +46,18 @@ extension SnapGeometryEditsView {
                         .onChange(of: snappingEnabled) { newValue in
                             model.geometryEditor.snapSettings.isEnabled = newValue
                         }
+                    
+                    Toggle("Geometry Guides", isOn: $snapsToGeometryGuides)
+                        .onChange(of: snapsToGeometryGuides) { newValue in
+                            model.geometryEditor.snapSettings.snapsToGeometryGuides = newValue
+                        }
+                        .disabled(!snappingEnabled)
+                    
+                    Toggle("Feature Snapping", isOn: $snapsToFeatures)
+                        .onChange(of: snapsToFeatures) { newValue in
+                            model.geometryEditor.snapSettings.snapsToFeatures = newValue
+                        }
+                        .disabled(!snappingEnabled)
                 }
                 
                 Section("Individual Source Snapping") {
@@ -50,6 +68,7 @@ extension SnapGeometryEditsView {
                             }
                     }
                 }
+                .disabled(!snappingEnabled || !snapsToFeatures)
             }
             .navigationTitle("Snap Settings")
             .navigationBarTitleDisplayMode(.inline)
@@ -61,9 +80,9 @@ extension SnapGeometryEditsView {
                 }
             }
             .onAppear {
-                // Enables snapping in the current geometry editor.
-                model.geometryEditor.snapSettings.isEnabled = true
                 snappingEnabled = model.geometryEditor.snapSettings.isEnabled
+                snapsToGeometryGuides = model.geometryEditor.snapSettings.snapsToGeometryGuides
+                snapsToFeatures = model.geometryEditor.snapSettings.snapsToFeatures
                 
                 // Creates an array from snap source layers or graphics overlays
                 // with their name and source settings.

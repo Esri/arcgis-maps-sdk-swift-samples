@@ -126,7 +126,7 @@ private extension LocationDisplay.AutoPanMode {
     /// A human-readable label for each auto-pan mode.
     var label: String {
         switch self {
-        case .off: return "Autopan Off"
+        case .off: return "Auto-Pan Off"
         case .recenter: return "Recenter"
         case .navigation: return "Navigation"
         case .compassNavigation: return "Compass Navigation"

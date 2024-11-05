@@ -15,11 +15,11 @@
 import Foundation
 
 /// An extension allowing an array to be used with the app storage property wrapper.
-extension Array: RawRepresentable where Element == String {
+extension Array<String> {
     /// Creates a new array from a given raw value.
-    /// - Parameter rawValue: The raw value of the array to create.
-    public init(rawValue: String) {
-        if let data = rawValue.data(using: .utf8),
+    /// - Parameter jsonString: The JSON representation of the array to create.
+    init(jsonString: String) {
+        if let data = jsonString.data(using: .utf8),
            let result = try? JSONDecoder().decode([Element].self, from: data) {
             self = result
         } else {
@@ -27,11 +27,10 @@ extension Array: RawRepresentable where Element == String {
         }
     }
     
-    /// The raw value of the array.
-    public var rawValue: String {
-        guard let data = try? JSONEncoder().encode(self),
-              let result = String(data: data, encoding: .utf8)
-        else { return "[]" }
-        return result
+    /// The JSON representation of the array.
+    var jsonString: String {
+        guard let data = try? JSONEncoder().encode(self) else { return "[]" }
+        // swiftlint:disable:next optional_data_string_conversion
+        return String(decoding: data, as: UTF8.self)
     }
 }

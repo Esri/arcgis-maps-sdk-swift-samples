@@ -108,7 +108,7 @@ extension SetVisibilityOfSubtypeSublayerView {
     }
 }
 
-extension SetVisibilityOfSubtypeSublayerView.Model {
+private extension SetVisibilityOfSubtypeSublayerView.Model {
     enum SetupError: LocalizedError {
         case cannotFindSublayer
         

@@ -55,7 +55,7 @@ struct ShowUtilityAssociationsView: View {
             legend
                 .padding()
                 .background(.thinMaterial)
-                .cornerRadius(10)
+                .clipShape(.rect(cornerRadius: 10))
                 .shadow(radius: 3)
                 .padding()
         }

@@ -79,7 +79,7 @@ private extension QueryFeatureTableView {
             )
             return map
         }()
-
+        
         /// The text used in the query.
         @Published var currentQuery = ""
         
@@ -90,7 +90,7 @@ private extension QueryFeatureTableView {
                 id: .daytimePopulation
             )
         )
-
+        
         /// A feature layer created from the service feature table.
         let featureLayer: FeatureLayer
         

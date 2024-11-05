@@ -65,7 +65,7 @@ struct AddCustomDynamicEntityDataSourceView: View {
     }
     
     /// Makes a map with a dynamic entity layer.
-    static func makeMap() -> Map {
+    private static func makeMap() -> Map {
         let map = Map(basemapStyle: .arcGISOceans)
         map.initialViewpoint = Viewpoint(
             latitude: 47.984,
