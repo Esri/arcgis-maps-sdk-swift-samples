@@ -31,11 +31,6 @@ struct SamplesApp: App {
 // MARK: - License
 
 extension SamplesApp {
-    /// The samples for this app.
-    static var samples: [Sample] {
-        return SamplesApp.commonSamples + SamplesApp.iOSSamples
-    }
-    
     /// Licenses the app with an ArcGIS Maps SDK license string.
     /// - Note: An invalid string does not throw an exception, but simply fails to
     /// license the app, falling back to Developer Mode (which will display
