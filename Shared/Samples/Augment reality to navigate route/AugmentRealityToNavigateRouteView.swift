@@ -17,7 +17,6 @@ import CoreLocation
 import SwiftUI
 
 @available(macCatalyst, unavailable)
-@MainActor
 struct AugmentRealityToNavigateRouteView: View {
     /// The view model for the map view in the sample.
     @StateObject private var model = MapModel()
