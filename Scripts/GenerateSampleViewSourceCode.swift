@@ -111,7 +111,6 @@ private let sampleMetadata: [SampleMetadata] = {
                     exit(1)
                 }
             }
-            .sorted { $0.title < $1.title }
     } catch {
         print("error: Decoding Samples: \(error.localizedDescription)")
         exit(1)
@@ -123,6 +122,7 @@ private let sampleStructs = sampleMetadata
         let portalItemIDs = (sample.offlineData ?? [])
             .map { #"PortalItem.ID("\#($0)")!"# }
         return """
+        \(sample.category == "Augmented Reality" ? "@available(macCatalyst, unavailable)" : "")
         struct \(sample.structName): Sample {
             var name: String { \"\(sample.title)\" }
             var category: String { \"\(sample.category)\" }
@@ -136,25 +136,44 @@ private let sampleStructs = sampleMetadata
     }
     .joined(separator: "\n")
 
-private let entries = sampleMetadata
+// The set of samples supported on all supported platforms.
+private let commonSamples = sampleMetadata
+    .filter { $0.category != "Augmented Reality" }
     .map { sample in "\(sample.structName)()" }
     .joined(separator: ",\n        ")
-private let arrayRepresentation = """
+
+// The set of samples supported only on iOS.
+private let iOSSpecificSamples = sampleMetadata
+    .filter { $0.category == "Augmented Reality" }
+    .map { sample in "\(sample.structName)()" }
+    .joined(separator: ",\n            ")
+
+private let commonSamplesArrayRepresentation = """
     [
-            \(entries)
+            \(commonSamples)
         ]
-    #if targetEnvironment(macCatalyst) || targetEnvironment(simulator)
-        // Exclude AR samples from Mac Catalyst and Simulator targets
-        // as they don't have camera and sensors available.
-        .filter { $0.category != "Augmented Reality" }
+    """
+
+private let iOSSamplesArrayRepresentation = """
+    {
+    #if !targetEnvironment(macCatalyst) && !targetEnvironment(simulator)
+            // Exclude AR samples from Mac Catalyst and Simulator targets
+            // as they don't have camera and sensors available.
+            [
+                \(iOSSpecificSamples)
+            ]
+    #else
+            []
     #endif
+        }()
     """
 
 do {
     let templateFile = try String(contentsOf: templateURL, encoding: .utf8)
     // Replaces the empty array code stub, i.e. [], with the array representation.
     let content = templateFile
-        .replacingOccurrences(of: "[/* samples */]", with: arrayRepresentation)
+        .replacingOccurrences(of: "[/* common_samples */]", with: commonSamplesArrayRepresentation)
+        .replacingOccurrences(of: "[/* ios_samples */]", with: iOSSamplesArrayRepresentation)
         .replacingOccurrences(of: "/* structs */", with: sampleStructs)
     try content.write(to: outputFileURL, atomically: true, encoding: .utf8)
 } catch {

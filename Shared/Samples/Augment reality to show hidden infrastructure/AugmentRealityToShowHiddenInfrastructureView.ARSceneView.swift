@@ -16,6 +16,7 @@ import ArcGIS
 import ArcGISToolkit
 import SwiftUI
 
+@available(macCatalyst, unavailable)
 extension AugmentRealityToShowHiddenInfrastructureView {
     /// A world scale scene view displaying pipe graphics from a given model.
     struct ARPipesSceneView: View {
@@ -67,6 +68,7 @@ extension AugmentRealityToShowHiddenInfrastructureView {
     }
 }
 
+@available(macCatalyst, unavailable)
 extension AugmentRealityToShowHiddenInfrastructureView {
     // MARK: Scene Model
     
