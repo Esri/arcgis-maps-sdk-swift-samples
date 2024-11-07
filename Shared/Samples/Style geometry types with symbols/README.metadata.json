@@ -24,7 +24,9 @@
         "SimpleLineSymbol",
         "SimpleMarkerSymbol"
     ],
-    "redirect_from": [],
+    "redirect_from": [
+        "/swift/sample-code/style-point-with-picture-marker-symbols/"
+    ],
     "relevant_apis": [
         "Geometry",
         "Graphic",
