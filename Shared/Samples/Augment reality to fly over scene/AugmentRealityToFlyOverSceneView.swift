@@ -16,6 +16,7 @@ import ArcGIS
 import ArcGISToolkit
 import SwiftUI
 
+@available(macCatalyst, unavailable)
 struct AugmentRealityToFlyOverSceneView: View {
     /// A scene with an imagery basemap, a world elevation source, and a mesh layer of Girona, Spain.
     @State private var scene: ArcGIS.Scene = {
@@ -57,8 +58,4 @@ private extension URL {
     static var worldElevationService: Self {
         .init(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!
     }
-}
-
-#Preview {
-    AugmentRealityToFlyOverSceneView()
 }

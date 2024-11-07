@@ -16,6 +16,7 @@ import ArcGIS
 import ArcGISToolkit
 import SwiftUI
 
+@available(macCatalyst, unavailable)
 struct AugmentRealityToShowTabletopSceneView: View {
     /// The scene used to create the scene view.
     @State private var scene = ArcGIS.Scene()
