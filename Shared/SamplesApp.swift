@@ -38,9 +38,9 @@ extension SamplesApp {
     func license() {
         if let licenseStringLiteral = String.licenseKey,
            let licenseKey = LicenseKey(licenseStringLiteral) {
-            // Sets the license with an extension if one is included. An
-            // advanced editing extension is required to access all the samples,
-            // such as ones with utility network capabilities.
+            // Sets the license with an extension if one is included. Both are
+            // required to access all samples, including utility network
+            // capabilities.
             if let extensionLicenseStringLiteral = String.extensionLicenseKey,
                let extensionLicenseKey = LicenseKey(extensionLicenseStringLiteral) {
                 _ = try? ArcGISEnvironment.setLicense(
