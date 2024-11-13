@@ -168,6 +168,11 @@ private struct EnumerationPicker<T: LabeledEnumeration>: View {
                 Text(style.label)
             }
         }
+#if targetEnvironment(macCatalyst)
+        // Workaround for bug where the picker selection doesn't update when the
+        // binding value changes on Mac Catalyst.
+        .id(selection)
+#endif
     }
 }
 
