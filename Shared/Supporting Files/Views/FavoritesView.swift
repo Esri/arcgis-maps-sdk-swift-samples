@@ -132,6 +132,7 @@ private extension FavoritesView {
                 }
             }
             .searchable(text: $query, placement: .navigationBarDrawer(displayMode: .always))
+            .autocorrectionDisabled()
         }
     }
 }
