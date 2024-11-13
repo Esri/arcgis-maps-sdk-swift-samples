@@ -192,10 +192,3 @@ private extension FileManager {
         )
     }
 }
-
-private extension URL {
-    /// The URL to the local vector tile package file with Dodge City, KS data.
-    static var dodgeCityVectorTilePackage: URL {
-        Bundle.main.url(forResource: "dodge_city", withExtension: "vtpk")!
-    }
-}
