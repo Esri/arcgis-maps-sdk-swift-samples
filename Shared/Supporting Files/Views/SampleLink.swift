@@ -131,11 +131,18 @@ private extension String {
     /// - Parameter substring: The substring to bold.
     /// - Returns: The attributed string with the bolded substring.
     func boldingFirstOccurrence(of substring: String) -> AttributedString {
-        if let range = localizedStandardRange(of: substring.trimmingCharacters(in: .whitespacesAndNewlines)),
-           let boldedString = try? AttributedString(markdown: replacingCharacters(in: range, with: "**\(self[range])**")) {
-            return boldedString
-        } else {
-            return AttributedString(self)
+        var attributedString = AttributedString(self)
+        
+        let trimmedSubstring = substring.trimmingCharacters(in: .whitespacesAndNewlines)
+        if let range = localizedStandardRange(of: trimmedSubstring) {
+            let substring = self[range]
+            
+            if let boldedSubstring = try? AttributedString(markdown: "**\(substring)**"),
+               let attributedRange = attributedString.range(of: substring) {
+                attributedString.replaceSubrange(attributedRange, with: boldedSubstring)
+            }
         }
+        
+        return attributedString
     }
 }
