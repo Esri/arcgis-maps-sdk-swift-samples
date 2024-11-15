@@ -29,7 +29,8 @@ struct QueryFeatureTableView: View {
             MapView(map: model.map)
                 .errorAlert(presentingError: $error)
                 // Makes the search bar.
-                .searchable(text: $searchBarText, prompt: Text("Search state names"))
+                .searchable(text: $searchBarText, prompt: "Search state names")
+                .autocorrectionDisabled()
                 .onSubmit(of: .search) {
                     model.currentQuery = searchBarText
                 }
