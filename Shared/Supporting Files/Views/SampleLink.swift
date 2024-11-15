@@ -61,14 +61,7 @@ private extension SampleLink {
         @State private var isShowingDescription = false
         
         /// The names of the favorite samples loaded from user defaults.
-        @AppStorage(.favoriteSampleNames) private var favoriteNamesString = ""
-        
-        /// A helper property to decode the app storage string to an array of
-        /// sample names.
-        private var favoriteNames: [String] {
-            get { .init(jsonString: favoriteNamesString) }
-            nonmutating set { favoriteNamesString = newValue.jsonString }
-        }
+        @AppFavorites private var favoriteNames
         
         /// A Boolean value indicating whether the sample is a favorite.
         private var sampleIsFavorite: Bool {

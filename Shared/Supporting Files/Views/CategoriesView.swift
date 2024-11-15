@@ -25,15 +25,14 @@ struct CategoriesView: View {
     @State private var destinationIsPresented = false
     
     /// The names of the favorite samples loaded from user defaults.
-    @AppStorage(.favoriteSampleNames) private var favoriteNamesString = ""
+    @AppFavorites private var favoriteNames
     
     /// The list of categories generated from the samples.
     private let sampleCategories = Set(SamplesApp.samples.map(\.category)).sorted()
     
     /// The full list of categories to show.
     private var categories: [String] {
-        let shouldShowFavorites = Array(jsonString: favoriteNamesString).isEmpty
-        return (shouldShowFavorites ? ["All"] : ["All", "Favorites"]) + sampleCategories
+        return (favoriteNames.isEmpty ? ["All"] : ["All", "Favorites"]) + sampleCategories
     }
     
     var body: some View {
