@@ -42,6 +42,13 @@ protocol Sample: Sendable {
 // MARK: Computed Variables
 
 extension Sample {
+    /// The web URL to the sample's Esri Developer page.
+    var esriDeveloperURL: URL {
+        let dashedName = name.replacingOccurrences(of: " ", with: "-").lowercased()
+        return URL(string: "https://developers.arcgis.com/swift/sample-code")!
+            .appendingPathComponent(dashedName)
+    }
+    
     /// The URL to a sample's sub-directory on GitHub main branch.
     var gitHubURL: URL {
         URL(string: "https://github.com/Esri/arcgis-maps-sdk-swift-samples/tree/main/Shared/Samples")!

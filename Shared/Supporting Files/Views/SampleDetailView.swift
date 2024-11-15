@@ -25,10 +25,10 @@ struct SampleDetailView: View {
     @StateObject private var onDemandResource: OnDemandResource
     
     /// A Boolean value indicating whether a sample should use on-demand resources.
-    var usesOnDemandResources: Bool {
+    private var usesOnDemandResources: Bool {
 #if targetEnvironment(macCatalyst)
         // Mac Catalyst isn't supported by `NSBundleResourceRequest`. Instead, Xcode
-        // put the offline data into the app bundle on Mac Catalyst.
+        // puts the offline data into the app bundle on Mac Catalyst.
         return false
 #else
         return sample.hasDependencies
@@ -84,14 +84,12 @@ struct SampleDetailView: View {
         .navigationTitle(sample.name)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItemGroup(placement: .topBarTrailing) {
-#if targetEnvironment(macCatalyst)
-                Link("View on GitHub", destination: sample.gitHubURL)
-#endif
-                Button {
-                    isSampleInfoViewPresented = true
-                } label: {
-                    Image(systemName: "info.circle")
+            ToolbarItem(placement: .topBarTrailing) {
+                Menu("Sample Actions", systemImage: "ellipsis.circle") {
+                    Button("View Info", systemImage: "info.circle") {
+                        isSampleInfoViewPresented = true
+                    }
+                    SampleMenuButtons(sample: sample)
                 }
                 .sheet(isPresented: $isSampleInfoViewPresented) {
                     NavigationStack {
