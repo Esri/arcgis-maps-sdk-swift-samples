@@ -134,13 +134,10 @@ private extension String {
         var attributedString = AttributedString(self)
         
         let trimmedSubstring = substring.trimmingCharacters(in: .whitespacesAndNewlines)
-        if let range = localizedStandardRange(of: trimmedSubstring) {
-            let substring = self[range]
-            
-            if let boldedSubstring = try? AttributedString(markdown: "**\(substring)**"),
-               let attributedRange = attributedString.range(of: substring) {
-                attributedString.replaceSubrange(attributedRange, with: boldedSubstring)
-            }
+        if let range = localizedStandardRange(of: trimmedSubstring),
+           let boldedSubstring = try? AttributedString(markdown: "**\(self[range])**"),
+           let attributedRange = attributedString.range(of: self[range]) {
+            attributedString.replaceSubrange(attributedRange, with: boldedSubstring)
         }
         
         return attributedString
