@@ -24,13 +24,16 @@ struct CategoriesView: View {
     /// A Boolean value indicating whether the navigation destination is showing.
     @State private var destinationIsPresented = false
     
-    /// The list of categories.
-    private let categories: [String] = {
-        var categories = ["All", "Favorites"]
-        let sampleCategories = Set(SamplesApp.samples.map(\.category))
-        categories.append(contentsOf: sampleCategories.sorted())
-        return categories
-    }()
+    /// The names of the favorite samples loaded from user defaults.
+    @AppFavorites private var favoriteNames
+    
+    /// The list of categories generated from the samples.
+    private let sampleCategories = Set(SamplesApp.samples.map(\.category)).sorted()
+    
+    /// The full list of categories to show.
+    private var categories: [String] {
+        return (favoriteNames.isEmpty ? ["All"] : ["All", "Favorites"]) + sampleCategories
+    }
     
     var body: some View {
         ScrollView {
@@ -54,6 +57,7 @@ struct CategoriesView: View {
                             )
                     )
                 }
+                .animation(.default, value: categories)
             }
             .padding()
         }
@@ -140,6 +144,7 @@ private extension CategoriesView {
                 }
             }
             .searchable(text: $query, placement: .navigationBarDrawer(displayMode: .always))
+            .autocorrectionDisabled()
             .scrollDismissesKeyboard(.immediately)
         }
     }

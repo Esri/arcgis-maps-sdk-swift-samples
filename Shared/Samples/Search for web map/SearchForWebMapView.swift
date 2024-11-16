@@ -74,6 +74,7 @@ struct SearchForWebMapView: View {
             placement: .navigationBarDrawer(displayMode: .always),
             prompt: "Web Maps"
         )
+        .autocorrectionDisabled()
         .task(id: query) {
             // Load new results when the query changes.
             resultsAreLoading = true

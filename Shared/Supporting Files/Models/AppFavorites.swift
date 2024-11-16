@@ -12,10 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Foundation
+import SwiftUI
+
+/// A property wrapper for accessing and setting the names of the favorite samples.
+@propertyWrapper
+struct AppFavorites: DynamicProperty {
+    /// The favorite sample names JSON string loaded from user defaults.
+    @AppStorage("favoriteSampleNames") private var favoriteNamesJSON = ""
+    
+    var wrappedValue: [String] {
+        get { .init(jsonString: favoriteNamesJSON) }
+        nonmutating set { favoriteNamesJSON = newValue.jsonString }
+    }
+}
 
 /// An extension allowing an array to be used with the app storage property wrapper.
-extension Array<String> {
+private extension Array<String> {
     /// Creates a new array from a given raw value.
     /// - Parameter jsonString: The JSON representation of the array to create.
     init(jsonString: String) {

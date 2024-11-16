@@ -61,14 +61,7 @@ private extension SampleLink {
         @State private var isShowingDescription = false
         
         /// The names of the favorite samples loaded from user defaults.
-        @AppStorage(.favoriteSampleNames) private var favoriteNamesString = ""
-        
-        /// A helper property to decode the app storage string to an array of
-        /// sample names.
-        private var favoriteNames: [String] {
-            get { .init(jsonString: favoriteNamesString) }
-            nonmutating set { favoriteNamesString = newValue.jsonString }
-        }
+        @AppFavorites private var favoriteNames
         
         /// A Boolean value indicating whether the sample is a favorite.
         private var sampleIsFavorite: Bool {
@@ -131,11 +124,15 @@ private extension String {
     /// - Parameter substring: The substring to bold.
     /// - Returns: The attributed string with the bolded substring.
     func boldingFirstOccurrence(of substring: String) -> AttributedString {
-        if let range = localizedStandardRange(of: substring.trimmingCharacters(in: .whitespacesAndNewlines)),
-           let boldedString = try? AttributedString(markdown: replacingCharacters(in: range, with: "**\(self[range])**")) {
-            return boldedString
-        } else {
-            return AttributedString(self)
+        var attributedString = AttributedString(self)
+        
+        let trimmedSubstring = substring.trimmingCharacters(in: .whitespacesAndNewlines)
+        if let range = localizedStandardRange(of: trimmedSubstring),
+           let boldedSubstring = try? AttributedString(markdown: "**\(self[range])**"),
+           let attributedRange = attributedString.range(of: self[range]) {
+            attributedString.replaceSubrange(attributedRange, with: boldedSubstring)
         }
+        
+        return attributedString
     }
 }
