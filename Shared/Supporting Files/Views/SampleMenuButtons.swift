@@ -36,7 +36,7 @@ struct SampleMenuButtons: View {
         Divider()
         Button {
             if sampleIsFavorite {
-                favoriteNames.removeAll { $0 == sample.name }
+                favoriteNames.removeAll(where: { $0 == sample.name })
             } else {
                 favoriteNames.append(sample.name)
             }
