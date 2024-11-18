@@ -18,7 +18,7 @@ Configure a CQL query by setting the where clause, max features count, and time 
 2. Create a `QueryParameters` object.
 3. Set the parameters' `whereClause` and `maxFeatures` properties.
 4. Create a `TimeExtent` object using `Date` objects for the start time and end time being queried. Set the `timeExtent` property on the parameters.
-5. Populate the feature table using `populateFromService(using:clearCache:outFields:)()` with the custom query parameters created in the previous steps.
+5. Populate the feature table using `populateFromService(using:clearCache:outFields:)` with the custom query parameters created in the previous steps.
 6. Set the map view's viewpoint to view the newly queried features
 
 ## Relevant API
