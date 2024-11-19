@@ -80,7 +80,9 @@ struct ShowServiceAreaView: View {
                         Task {
                             isSolvingServiceArea = true
                             do {
-                                try await model.showServiceArea(timeBreaks: [Double(firstTimeBreak), Double(secondTimeBreak)])
+                                try await model.showServiceArea(
+                                    timeBreaks: [Double(firstTimeBreak), Double(secondTimeBreak)]
+                                )
                             } catch {
                                 self.error = error
                             }
