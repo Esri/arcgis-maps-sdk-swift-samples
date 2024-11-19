@@ -19,8 +19,8 @@ struct BrowseOGCAPIFeatureServiceView: View {
     /// The error shown in the error alert.
     @State private var error: Error?
     
-    /// A Boolean value indicating whether the textfield alert should be presented.
-    @State private var textfieldAlertIsPresented = true
+    /// A Boolean value indicating whether the text field alert should be presented.
+    @State private var textFieldAlertIsPresented = false
     
     /// The data model for the sample.
     @StateObject private var model = Model()
@@ -37,7 +37,7 @@ struct BrowseOGCAPIFeatureServiceView: View {
                 .toolbar {
                     ToolbarItemGroup(placement: .bottomBar) {
                         Button("Open Service") {
-                            textfieldAlertIsPresented = true
+                            textFieldAlertIsPresented = true
                         }
                         
                         Spacer()
@@ -63,8 +63,8 @@ struct BrowseOGCAPIFeatureServiceView: View {
                         }
                     }
                 }
-                .alert("Load OGC API feature service", isPresented: $textfieldAlertIsPresented) {
-                    // Textfield has a default OGC API URL.
+                .alert("Load OGC API feature service", isPresented: $textFieldAlertIsPresented) {
+                    // Text field has a default OGC API URL.
                     TextField("URL", text: $userInput)
                         .keyboardType(.URL)
                         .textContentType(.URL)
@@ -86,11 +86,14 @@ struct BrowseOGCAPIFeatureServiceView: View {
                     }
                     .disabled(userInput.isEmpty)
                     Button("Cancel", role: .cancel) {
-                        // Reset the default value of the textfield.
+                        // Reset the default value of the text field.
                         userInput = URL.daraaService.absoluteString
                     }
                 } message: {
                     Text("Please provide a URL to an OGC API feature service.")
+                }
+                .onAppear {
+                    textFieldAlertIsPresented = true
                 }
                 .errorAlert(presentingError: $error)
         }
