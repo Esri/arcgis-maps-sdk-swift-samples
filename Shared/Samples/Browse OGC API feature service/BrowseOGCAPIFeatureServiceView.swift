@@ -20,7 +20,7 @@ struct BrowseOGCAPIFeatureServiceView: View {
     @State private var error: Error?
     
     /// A Boolean value indicating whether the textfield alert should be presented.
-    @State private var textfieldAlertIsPresented = true
+    @State private var textfieldAlertIsPresented = false
     
     /// The data model for the sample.
     @StateObject private var model = Model()
@@ -91,6 +91,9 @@ struct BrowseOGCAPIFeatureServiceView: View {
                     }
                 } message: {
                     Text("Please provide a URL to an OGC API feature service.")
+                }
+                .onAppear {
+                    textfieldAlertIsPresented = true
                 }
                 .errorAlert(presentingError: $error)
         }
