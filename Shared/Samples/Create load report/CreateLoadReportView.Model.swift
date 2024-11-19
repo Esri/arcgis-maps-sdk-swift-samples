@@ -187,6 +187,8 @@ extension CreateLoadReportView {
         /// - Precondition: `allowsCreateLoadReport`
         func createLoadReport() async {
             precondition(allowsCreateLoadReport)
+            allowsCreateLoadReport = false
+            defer { updateAllowsCreateLoadReport() }
             
             guard let phasesNetworkAttribute,
                   let initialExpression,
