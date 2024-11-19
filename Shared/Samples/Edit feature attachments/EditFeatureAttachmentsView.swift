@@ -163,12 +163,14 @@ private extension EditFeatureAttachmentsView {
 
 private extension EditFeatureAttachmentsView {
     struct AttachmentView: View {
-        // The attachment that is being displayed.
+        /// The attachment that is being displayed.
         let attachment: Attachment
-        // The closure called when the delete button is tapped.
+        /// The closure called when the delete button is tapped.
         let onDelete: ((Attachment) -> Void)
-        // The image in the attachment.
+        /// The image in the attachment.
         @State private var image: Image?
+        /// The image to show if an image cannot be created from the attachment's data.
+        private let warningImage = Image(systemName: "exclamationmark.triangle")
         
         var body: some View {
             HStack {
@@ -181,7 +183,7 @@ private extension EditFeatureAttachmentsView {
                         if let uiImage = UIImage(data: result) {
                             image = Image(uiImage: uiImage)
                         } else {
-                            image = Image(systemName: "exclamationmark.triangle")
+                            image = warningImage
                         }
                     }
                 } label: {
@@ -194,6 +196,7 @@ private extension EditFeatureAttachmentsView {
                         Image(systemName: "arrow.down.circle.fill")
                     }
                 }
+                .disabled(image != nil && image != warningImage)
             }
             .swipeActions {
                 Button("Delete") {
