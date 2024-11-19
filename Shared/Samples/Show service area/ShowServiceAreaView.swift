@@ -30,6 +30,8 @@ struct ShowServiceAreaView: View {
     @State private var secondTimeBreak: Int = 8
     /// A Boolean value indicating whether the time breaks settings are presented.
     @State private var settingsArePresented = false
+    /// A Boolean value indicating whether the service area is being solved.
+    @State private var isSolvingServiceArea = false
     
     /// The data model for the sample.
     @StateObject private var model = Model()
@@ -76,13 +78,16 @@ struct ShowServiceAreaView: View {
                     Spacer()
                     Button("Service Area") {
                         Task {
+                            isSolvingServiceArea = true
                             do {
                                 try await model.showServiceArea(timeBreaks: [Double(firstTimeBreak), Double(secondTimeBreak)])
                             } catch {
                                 self.error = error
                             }
+                            isSolvingServiceArea = false
                         }
                     }
+                    .disabled(isSolvingServiceArea)
                     Spacer()
                     Button("Clear", systemImage: "trash") {
                         model.removeAllGraphics()
