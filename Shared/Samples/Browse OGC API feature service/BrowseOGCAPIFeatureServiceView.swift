@@ -64,8 +64,7 @@ struct BrowseOGCAPIFeatureServiceView: View {
                     }
                 }
                 .alert("Load OGC API feature service", isPresented: $textFieldAlertIsPresented) {
-                    // Text
-                    field has a default OGC API URL.
+                    // Text field has a default OGC API URL.
                     TextField("URL", text: $userInput)
                         .keyboardType(.URL)
                         .textContentType(.URL)
