@@ -55,7 +55,7 @@ struct FindClosestFacilityFromPointView: View {
                                 }
                             }
                         }
-                        .disabled(routingIsDisabled)
+                        .disabled(routingIsDisabled || isRouting)
                         
                         Spacer()
                         

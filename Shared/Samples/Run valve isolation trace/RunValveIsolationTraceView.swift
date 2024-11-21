@@ -82,7 +82,7 @@ struct RunValveIsolationTraceView: View {
                             Task { await mapViewProxy.setViewpointCenter(point, scale: 3_000) }
                         }
                     }
-                    .disabled(!model.resetEnabled)
+                    .disabled(!model.resetEnabled || model.tracingActivity == .runningTrace)
                 }
             }
             .sheet(isPresented: $isConfigurationPresented) {
