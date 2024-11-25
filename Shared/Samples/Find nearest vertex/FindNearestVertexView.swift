@@ -20,10 +20,10 @@ struct FindNearestVertexView: View {
     @StateObject private var model = Model()
     
     /// A location callout placement.
-    @State var calloutPlacement: CalloutPlacement?
+    @State private var calloutPlacement: CalloutPlacement?
     
     /// The tap location.
-    @State var tapLocation: Point!
+    @State private var tapLocation: Point!
     
     var body: some View {
         MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])

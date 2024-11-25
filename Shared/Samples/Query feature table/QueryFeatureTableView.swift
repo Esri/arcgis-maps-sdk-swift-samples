@@ -29,7 +29,8 @@ struct QueryFeatureTableView: View {
             MapView(map: model.map)
                 .errorAlert(presentingError: $error)
                 // Makes the search bar.
-                .searchable(text: $searchBarText, prompt: Text("Search state names"))
+                .searchable(text: $searchBarText, prompt: "Search state names")
+                .autocorrectionDisabled()
                 .onSubmit(of: .search) {
                     model.currentQuery = searchBarText
                 }
@@ -79,7 +80,7 @@ private extension QueryFeatureTableView {
             )
             return map
         }()
-
+        
         /// The text used in the query.
         @Published var currentQuery = ""
         
@@ -90,7 +91,7 @@ private extension QueryFeatureTableView {
                 id: .daytimePopulation
             )
         )
-
+        
         /// A feature layer created from the service feature table.
         let featureLayer: FeatureLayer
         

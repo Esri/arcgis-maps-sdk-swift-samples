@@ -38,18 +38,15 @@ struct SampleLink: View {
                 // of its map when a keyboard is presented in landscape mode.
                 .ignoresSafeArea(.keyboard, edges: .bottom)
         } label: {
-            SampleRow(
-                name: sample.name.boldingFirstOccurrence(of: textToBold),
-                description: sample.description.boldingFirstOccurrence(of: textToBold)
-            )
+            SampleRow(sample, textToBold: textToBold)
         }
     }
 }
 
 private extension SampleLink {
     struct SampleRow: View {
-        /// The name of the sample.
-        private let name: String
+        /// The sample for the row.
+        private let sample: Sample
         
         /// The name of the sample with attributes.
         private let attributedName: AttributedString
@@ -61,17 +58,12 @@ private extension SampleLink {
         @State private var isShowingDescription = false
         
         /// The names of the favorite samples loaded from user defaults.
-        @AppStorage(.favoriteSampleNames) private var favoriteNames: [String] = []
+        @AppFavorites private var favoriteNames
         
-        /// A Boolean value indicating whether the sample is a favorite.
-        private var sampleIsFavorite: Bool {
-            favoriteNames.contains(name)
-        }
-        
-        init(name: AttributedString, description: AttributedString) {
-            self.name = String(name.characters)
-            self.attributedName = name
-            self.attributedDescription = description
+        init(_ sample: Sample, textToBold: String) {
+            self.sample = sample
+            self.attributedName = sample.name.boldingFirstOccurrence(of: textToBold)
+            self.attributedDescription = sample.description.boldingFirstOccurrence(of: textToBold)
         }
         
         var body: some View {
@@ -88,7 +80,7 @@ private extension SampleLink {
                 }
                 Spacer()
                 
-                if sampleIsFavorite {
+                if favoriteNames.contains(sample.name) {
                     Image(systemName: "star.fill")
                         .foregroundStyle(.yellow)
                 }
@@ -103,16 +95,7 @@ private extension SampleLink {
                 }
             }
             .contextMenu {
-                Button {
-                    if sampleIsFavorite {
-                        favoriteNames.removeAll { $0 == name }
-                    } else {
-                        favoriteNames.append(name)
-                    }
-                } label: {
-                    Label(sampleIsFavorite ? "Unfavorite" : "Favorite", systemImage: "star")
-                        .symbolVariant(sampleIsFavorite ? .slash : .none)
-                }
+                SampleMenuButtons(sample: sample)
             }
             .animation(.easeOut(duration: 0.2), value: isShowingDescription)
         }
@@ -124,11 +107,15 @@ private extension String {
     /// - Parameter substring: The substring to bold.
     /// - Returns: The attributed string with the bolded substring.
     func boldingFirstOccurrence(of substring: String) -> AttributedString {
-        if let range = localizedStandardRange(of: substring.trimmingCharacters(in: .whitespacesAndNewlines)),
-           let boldedString = try? AttributedString(markdown: replacingCharacters(in: range, with: "**\(self[range])**")) {
-            return boldedString
-        } else {
-            return AttributedString(self)
+        var attributedString = AttributedString(self)
+        
+        let trimmedSubstring = substring.trimmingCharacters(in: .whitespacesAndNewlines)
+        if let range = localizedStandardRange(of: trimmedSubstring),
+           let boldedSubstring = try? AttributedString(markdown: "**\(self[range])**"),
+           let attributedRange = attributedString.range(of: self[range]) {
+            attributedString.replaceSubrange(attributedRange, with: boldedSubstring)
         }
+        
+        return attributedString
     }
 }

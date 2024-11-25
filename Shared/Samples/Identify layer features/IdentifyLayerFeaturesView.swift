@@ -17,7 +17,7 @@ import SwiftUI
 
 struct IdentifyLayerFeaturesView: View {
     /// A map with a topographic basemap centered on the United States.
-    @State var map: Map = {
+    @State private var map: Map = {
         let map = Map(basemapStyle: .arcGISTopographic)
         map.initialViewpoint = Viewpoint(
             center: Point(x: -10977012.785807, y: 4514257.550369, spatialReference: .webMercator),
@@ -27,10 +27,10 @@ struct IdentifyLayerFeaturesView: View {
     }()
     
     /// The tapped screen point.
-    @State var tapScreenPoint: CGPoint?
+    @State private var tapScreenPoint: CGPoint?
     
     /// The string text for the identify layer results overlay.
-    @State var overlayText = "Tap on the map to identify feature layers."
+    @State private var overlayText = "Tap on the map to identify feature layers."
     
     /// The error shown in the error alert.
     @State private var error: Error?

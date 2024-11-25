@@ -98,7 +98,8 @@ extension AddFeaturesWithContingentValuesView {
                                 get: { selectedBufferSize ?? 0 },
                                 set: { selectedBufferSize = $0 }
                             ),
-                            in: bufferSizeRange ?? 0...0)
+                            in: bufferSizeRange ?? 0...0
+                        )
                         .onChange(of: selectedBufferSize ?? .nan) { newBufferSize in
                             guard newBufferSize.isFinite else { return }
                             

@@ -19,6 +19,9 @@ struct ShowViewshedFromGeoelementInSceneView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
+    /// A timer to trigger waypoint movement animation.
+    let timer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
+    
     var body: some View {
         SceneView(
             scene: model.scene,
@@ -29,7 +32,13 @@ struct ShowViewshedFromGeoelementInSceneView: View {
         .onSingleTapGesture { _, scenePoint in
             // Move the tank to the scene point on a screen tap.
             guard let scenePoint else { return }
-            model.move(toWaypoint: scenePoint)
+            model.waypoint = scenePoint
+        }
+        .onReceive(timer) { _ in
+            // Use a timer to animate the tank moving towards the new waypoint.
+            if model.waypoint != nil {
+                model.animate()
+            }
         }
         .overlay(alignment: .top) {
             // Instruction text.
@@ -37,9 +46,6 @@ struct ShowViewshedFromGeoelementInSceneView: View {
                 .padding(8)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
-        }
-        .onDisappear {
-            model.stopMoving()
         }
     }
 }
@@ -100,16 +106,7 @@ private extension ShowViewshedFromGeoelementInSceneView {
         }()
         
         /// The point for the tank to move toward.
-        private var waypoint: Point? {
-            didSet {
-                if waypoint == nil {
-                    stopMoving()
-                }
-            }
-        }
-        
-        /// The timer for the moving tank animation.
-        private var animationTimer: Timer?
+        var waypoint: Point?
         
         init() {
             // Create camera controller.
@@ -139,24 +136,8 @@ private extension ShowViewshedFromGeoelementInSceneView {
             analysisOverlay.addAnalysis(geoElementViewshed)
         }
         
-        /// Moves the tank to a point.
-        /// - Parameter waypoint: The `Point` to move the tank to.
-        func move(toWaypoint waypoint: Point) {
-            self.waypoint = waypoint
-            
-            // Start a timer to animate the tank moving towards the new waypoint.
-            animationTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
-                self.animate()
-            }
-        }
-        
-        /// Stops moving the tank.
-        func stopMoving() {
-            animationTimer?.invalidate()
-        }
-        
         /// Animates the tank moving from its current point to the waypoint.
-        private func animate() {
+        func animate() {
             // Get point from the current tank position.
             guard let tankLocation = tankGraphic.geometry as? Point,
                   let point = waypoint else { return }

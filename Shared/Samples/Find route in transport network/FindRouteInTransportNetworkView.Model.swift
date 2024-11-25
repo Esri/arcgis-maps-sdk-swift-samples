@@ -13,7 +13,8 @@
 // limitations under the License.
 
 import ArcGIS
-import SwiftUI
+import Combine
+import UIKit
 
 extension FindRouteInTransportNetworkView {
     /// The view model for the sample.
@@ -28,7 +29,7 @@ extension FindRouteInTransportNetworkView {
             let tiledLayer = ArcGISTiledLayer(tileCache: tileCache)
             let tiledBasemap = Basemap(baseLayer: tiledLayer)
             
-            // Create a map with the basemap and center it on San Deigo.
+            // Create a map with the basemap and center it on San Diego.
             let map = Map(basemap: tiledBasemap)
             map.initialViewpoint = Viewpoint(
                 center: Point(x: -13_042_250, y: 3_857_970, spatialReference: .webMercator),

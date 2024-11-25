@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import ArcGIS
-import AVFoundation
+import AVFAudio
 import Combine
 
 extension NavigateRouteWithReroutingView {
@@ -121,8 +121,7 @@ extension NavigateRouteWithReroutingView {
             )
             
             // Set up the data source's locations using a local JSON file.
-            let jsonData = try Data(contentsOf: .sanDiegoTourPath)
-            guard let jsonString = String(data: jsonData, encoding: .utf8) else { return }
+            let jsonString = try String(contentsOf: .sanDiegoTourPath, encoding: .utf8)
             let routePolyline = try Polyline.fromJSON(jsonString)
             simulatedDataSource.setSimulatedLocations(with: routePolyline)
             

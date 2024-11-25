@@ -16,6 +16,7 @@ import ArcGIS
 import ArcGISToolkit
 import SwiftUI
 
+@available(macCatalyst, unavailable)
 struct AugmentRealityToCollectDataView: View {
     /// The view model for this sample.
     @StateObject private var model = Model()
@@ -98,6 +99,7 @@ struct AugmentRealityToCollectDataView: View {
     }
 }
 
+@available(macCatalyst, unavailable)
 private extension AugmentRealityToCollectDataView {
     @MainActor
     class Model: ObservableObject {
@@ -137,8 +139,6 @@ private extension AugmentRealityToCollectDataView {
             graphicsOverlay.sceneProperties.surfacePlacement = .absolute
             return graphicsOverlay
         }()
-        /// The selected tree health for the new feature.
-        @State private var treeHealth: TreeHealth?
         
         init() {
             let featureLayer = FeatureLayer(featureTable: featureTable)
@@ -178,6 +178,7 @@ private extension AugmentRealityToCollectDataView {
     }
 }
 
+@available(macCatalyst, unavailable)
 private extension AugmentRealityToCollectDataView {
     /// The health of a tree.
     enum TreeHealth: Int16, CaseIterable, Equatable {
@@ -197,8 +198,4 @@ private extension AugmentRealityToCollectDataView {
             }
         }
     }
-}
-
-#Preview {
-    AugmentRealityToCollectDataView()
 }

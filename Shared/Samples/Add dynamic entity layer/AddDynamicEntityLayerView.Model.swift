@@ -88,9 +88,9 @@ private extension URL {
     )!
 }
 
-extension ConnectionStatus: CustomStringConvertible {
+extension ConnectionStatus {
     /// A user-friendly string for `ConnectionStatus`.
-    public var description: String {
+    var description: String {
         switch self {
         case .connecting:
             return "Connecting"

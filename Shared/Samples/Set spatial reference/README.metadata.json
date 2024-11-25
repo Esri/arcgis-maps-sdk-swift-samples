@@ -1,0 +1,29 @@
+{
+    "category": "Maps",
+    "description": "Specify a map's spatial reference.",
+    "ignore": false,
+    "images": [
+        "set-spatial-reference.png"
+    ],
+    "keywords": [
+        "WKID",
+        "project",
+        "ArcGISMapImageLayer",
+        "Basemap",
+        "Map",
+        "MapView",
+        "SpatialReference"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "ArcGISMapImageLayer",
+        "Basemap",
+        "Map",
+        "MapView",
+        "SpatialReference"
+    ],
+    "snippets": [
+        "SetSpatialReferenceView.swift"
+    ],
+    "title": "Set spatial reference"
+}

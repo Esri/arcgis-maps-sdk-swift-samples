@@ -29,7 +29,7 @@ extension DownloadPreplannedMapAreaView {
                     Section {
                         Picker("Web Maps (Online)", selection: $model.selectedMap) {
                             Text("Web Map (Online)")
-                                .tag(Model.SelectedMap.onlineWebMap)
+                                .tag(SelectedMap.onlineWebMap)
                         }
                         .labelsHidden()
                         .pickerStyle(.inline)
@@ -86,16 +86,16 @@ extension DownloadPreplannedMapAreaView {
                         .progressViewStyle(.gauge)
                     Text(model.preplannedMapArea.portalItem.title)
                 } else {
-                        switch model.result {
-                        case .success:
-                            EmptyView()
-                        case .failure:
-                            Image(systemName: "exclamationmark.circle")
-                                .foregroundStyle(.red)
-                        case .none:
-                            Image(systemName: "tray.and.arrow.down")
-                                .foregroundStyle(Color.accentColor)
-                        }
+                    switch model.result {
+                    case .success:
+                        EmptyView()
+                    case .failure:
+                        Image(systemName: "exclamationmark.circle")
+                            .foregroundStyle(.red)
+                    case .none:
+                        Image(systemName: "tray.and.arrow.down")
+                            .foregroundStyle(Color.accentColor)
+                    }
                     
                     VStack(alignment: .leading, spacing: 4) {
                         Text(model.preplannedMapArea.portalItem.title)
@@ -109,11 +109,11 @@ extension DownloadPreplannedMapAreaView {
                     }
                 }
             }
-            .tag(Model.SelectedMap.offlineMap(model))
+            .tag(SelectedMap.offlineMap(model))
         }
         
         /// The color of the title for a given result.
-        func titleColor(for result: Result<MobileMapPackage, Error>?) -> Color {
+        private func titleColor(for result: Result<MobileMapPackage, Error>?) -> Color {
             switch model.result {
             case .success:
                 return .primary

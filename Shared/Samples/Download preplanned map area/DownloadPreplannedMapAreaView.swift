@@ -66,7 +66,7 @@ struct DownloadPreplannedMapAreaView: View {
             }
     }
     
-    var mapNameOverlay: some View {
+    private var mapNameOverlay: some View {
         Text(model.currentMap.item?.title ?? "Unknown Map")
             .font(.footnote)
             .frame(maxWidth: .infinity)

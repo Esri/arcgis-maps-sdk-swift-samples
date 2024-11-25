@@ -148,7 +148,7 @@ extension RunValveIsolationTraceView {
                 
                 addGraphic(for: point, traceLocationType: "starting point")
                 startingLocationPoint = point
-                tracingActivity = .none
+                tracingActivity = nil
                 
                 // Get available utility categories.
                 if let definition = utilityNetwork.definition {
@@ -224,9 +224,10 @@ extension RunValveIsolationTraceView {
             } catch {
                 statusText = "Trace failed."
                 traceEnabled = true
+                tracingActivity = nil
                 return
             }
-            tracingActivity = .none
+            tracingActivity = nil
             traceEnabled = true
             resetEnabled = true
         }

@@ -114,7 +114,7 @@ extension ShowDeviceLocationWithNMEADataSourcesView {
             guard let nmeaLocationDataSource else { return }
             locationDisplay.dataSource = nmeaLocationDataSource
             
-            // Set the autopan mode to `.recenter`
+            // Set the auto-pan mode to `.recenter`
             locationDisplay.autoPanMode = .recenter
             
             // Start the data source.

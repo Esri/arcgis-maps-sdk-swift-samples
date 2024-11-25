@@ -100,7 +100,7 @@ struct NavigateRouteWithReroutingView: View {
             guard model.isNavigating, let routeTracker = model.routeTracker else { return }
             
             await withTaskGroup(of: Void.self) { group in
-                group.addTask { @MainActor in
+                group.addTask { @MainActor @Sendable in
                     // Handle new tracking statuses from the route tracker.
                     for await trackingStatus in routeTracker.$trackingStatus {
                         guard let trackingStatus else { continue }
@@ -108,7 +108,7 @@ struct NavigateRouteWithReroutingView: View {
                     }
                 }
                 
-                group.addTask { @MainActor in
+                group.addTask { @MainActor @Sendable in
                     // Speak new voice guidances from the route tracker.
                     for await voiceGuidance in routeTracker.voiceGuidances {
                         model.speakVoiceGuidance(voiceGuidance)

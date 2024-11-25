@@ -46,6 +46,7 @@ struct GeocodeOfflineView: View {
     var body: some View {
         GeocodeMapView(model: model, viewpoint: $viewpoint)
             .searchable(text: $searchText, prompt: "Type in an address")
+            .autocorrectionDisabled()
             .onSubmit(of: .search) {
                 submittedSearchText = searchText
             }

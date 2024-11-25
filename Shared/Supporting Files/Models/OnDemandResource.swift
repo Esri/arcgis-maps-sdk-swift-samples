@@ -88,4 +88,4 @@ final class OnDemandResource: ObservableObject {
     }
 }
 
-extension NSBundleResourceRequest: @unchecked Sendable {}
+extension NSBundleResourceRequest: @unchecked @retroactive Sendable {}

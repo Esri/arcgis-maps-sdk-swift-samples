@@ -293,9 +293,3 @@ private extension PortalItem.ID {
     /// The portal item ID of the Naperville water network web map to be displayed on the map.
     static var napervilleWaterNetwork: Self { Self("acc027394bc84c2fb04d1ed317aac674")! }
 }
-
-#Preview {
-    NavigationStack {
-        GenerateOfflineMapWithLocalBasemapView()
-    }
-}

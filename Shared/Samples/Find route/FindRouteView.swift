@@ -120,10 +120,6 @@ private extension FindRouteView {
         
         /// The graphic for the route.
         private var routeGraphic: Graphic { routeGraphicsOverlay.graphics.first! }
-        /// The graphic for the first stop.
-        private var stopOneGraphic: Graphic { stopGraphicsOverlay.graphics.first! }
-        /// The graphic for the second stop.
-        private var stopTwoGraphic: Graphic { stopGraphicsOverlay.graphics.last! }
         
         init() {
             // Initializes the map

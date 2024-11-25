@@ -39,7 +39,7 @@ struct ShowScaleBarView: View {
     @State private var map: Map = {
         let map = Map(basemapStyle: .arcGISTopographic)
         // Creates an initial viewpoint with a coordinate point
-        // centered on San Franscisco's Golden Gate Bridge.
+        // centered on San Francisco's Golden Gate Bridge.
         map.initialViewpoint = Viewpoint(
             center: Point(x: -13637000, y: 4550000, spatialReference: .webMercator),
             scale: 100_000
@@ -47,7 +47,7 @@ struct ShowScaleBarView: View {
         return map
     }()
     
-    // The `ScalebarSettings` add the shadow to the scale bar.
+    /// The `ScalebarSettings` add the shadow to the scale bar.
     @State private var scaleBarSettings: ScalebarSettings = {
         let settings = ScalebarSettings(
             shadowColor: Color.black,
@@ -78,7 +78,7 @@ struct ShowScaleBarView: View {
                 .padding([.horizontal, .vertical], 10)
                 .background(Color.white)
                 .opacity(0.8)
-                .cornerRadius(8)
+                .clipShape(.rect(cornerRadius: 8))
                 .padding(.vertical, 10 + attributionBarHeight)
                 .padding(10)
             }

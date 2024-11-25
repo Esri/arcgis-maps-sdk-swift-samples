@@ -13,11 +13,10 @@
 // limitations under the License.
 
 import ArcGIS
-import ArcGISToolkit
 import CoreLocation
 import SwiftUI
 
-@MainActor
+@available(macCatalyst, unavailable)
 struct AugmentRealityToNavigateRouteView: View {
     /// The view model for the map view in the sample.
     @StateObject private var model = MapModel()
@@ -36,6 +35,11 @@ struct AugmentRealityToNavigateRouteView: View {
         .locationDisplay(model.locationDisplay)
         .onSingleTapGesture { _, mapPoint in
             tapLocation = mapPoint
+        }
+        .onDisappear {
+            Task {
+                await model.locationDisplay.dataSource.stop()
+            }
         }
         .task(id: tapLocation) {
             guard let tapLocation else { return }
@@ -96,6 +100,7 @@ struct AugmentRealityToNavigateRouteView: View {
     }
 }
 
+@available(macCatalyst, unavailable)
 private extension AugmentRealityToNavigateRouteView {
     // MARK: Map Model
     
@@ -161,13 +166,6 @@ private extension AugmentRealityToNavigateRouteView {
         
         /// The status text displayed to the user.
         @Published var statusText = "Tap to place a start point."
-        
-        deinit {
-            Task {
-                /// Stop the location data source.
-                await locationDisplay.dataSource.stop()
-            }
-        }
         
         /// Performs important tasks including setting up the location display, creating route parameters,
         /// and loading the scene elevation source.

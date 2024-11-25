@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import ArcGIS
 import SwiftUI
 
 struct CreateLoadReportView: View {
@@ -46,7 +45,7 @@ struct CreateLoadReportView: View {
                         }
                         .padding()
                         .background(.ultraThickMaterial)
-                        .cornerRadius(10)
+                        .clipShape(.rect(cornerRadius: 10))
                         .shadow(radius: 50)
                     }
                 }

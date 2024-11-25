@@ -31,9 +31,6 @@ struct ValidateUtilityNetworkTopologyView: View {
     /// A Boolean value indicating whether the edit feature sheet is presented.
     @State private var editSheetIsPresented = false
     
-    /// A Boolean value indicating whether the details of the status message are presented.
-    @State private var statusDetailsArePresented = false
-    
     /// The error shown in the error alert.
     @State private var error: Error?
     
@@ -106,7 +103,7 @@ struct ValidateUtilityNetworkTopologyView: View {
                 ProgressView()
                     .padding()
                     .background(.ultraThickMaterial)
-                    .cornerRadius(10)
+                    .clipShape(.rect(cornerRadius: 10))
                     .shadow(radius: 50)
             }
         }

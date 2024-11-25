@@ -16,6 +16,7 @@ import ArcGIS
 import CoreLocation
 import SwiftUI
 
+@available(macCatalyst, unavailable)
 struct AugmentRealityToShowHiddenInfrastructureView: View {
     /// The view model for the map view in the sample.
     @StateObject private var model = MapModel()
@@ -128,6 +129,7 @@ struct AugmentRealityToShowHiddenInfrastructureView: View {
     }
 }
 
+@available(macCatalyst, unavailable)
 private extension AugmentRealityToShowHiddenInfrastructureView {
     // MARK: Map Model
     
@@ -241,6 +243,7 @@ private extension AugmentRealityToShowHiddenInfrastructureView {
     }
 }
 
+@available(macCatalyst, unavailable)
 private extension View {
     /// Presents an alert that allows the user to enter an elevation offset for a pipe.
     /// - Parameters:

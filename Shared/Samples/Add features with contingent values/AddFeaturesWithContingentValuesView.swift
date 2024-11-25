@@ -29,96 +29,93 @@ struct AddFeaturesWithContingentValuesView: View {
     @State private var error: Error?
     
     var body: some View {
-        ZStack {
-            GeometryReader { geometryProxy in
-                MapViewReader { mapViewProxy in
-                    MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
-                        .onSingleTapGesture { _, mapPoint in
-                            tapLocation = mapPoint
-                        }
-                        .task(id: tapLocation) {
-                            // Add a feature representing a bird's nest when the map is tapped.
-                            guard let tapLocation else { return }
-                            
-                            do {
-                                try await model.addFeature(at: tapLocation)
-                                addFeatureSheetIsPresented = true
-                                
-                                // Create an envelope from the screen's frame.
-                                let viewRect = geometryProxy.frame(in: .local)
-                                guard let viewExtent = mapViewProxy.envelope(
-                                    fromViewRect: viewRect
-                                ) else { return }
-                                
-                                // Update the map's viewpoint with an offsetted tap location
-                                // to center the feature in the top half of the screen.
-                                let yOffset = (viewExtent.height / 2) / 2
-                                let newViewpointCenter = Point(
-                                    x: tapLocation.x,
-                                    y: tapLocation.y - yOffset
-                                )
-                                await mapViewProxy.setViewpointCenter(newViewpointCenter)
-                            } catch {
-                                self.error = error
-                            }
-                        }
-                        .task {
-                            do {
-                                // Load the features from the geodatabase when the sample loads.
-                                try await model.loadFeatures()
-                                
-                                // Zoom to the extent of the added layer.
-                                guard let extent = model.map.operationalLayers.first?.fullExtent
-                                else { return }
-                                await mapViewProxy.setViewpointGeometry(extent, padding: 15)
-                            } catch {
-                                self.error = error
-                            }
-                        }
-                }
-            }
-            
-            VStack {
-                Spacer()
-                
-                // A button that allows the popover to display.
-                Button("") {}
-                    .opacity(0)
-                    .popover(isPresented: $addFeatureSheetIsPresented) {
-                        NavigationStack {
-                            AddFeatureView(model: model)
-                                .navigationTitle("Add Bird Nest")
-                                .navigationBarTitleDisplayMode(.inline)
-                                .toolbar {
-                                    ToolbarItem(placement: .cancellationAction) {
-                                        Button("Cancel", role: .cancel) {
-                                            addFeatureSheetIsPresented = false
-                                        }
-                                    }
-                                    
-                                    ToolbarItem(placement: .confirmationAction) {
-                                        Button("Done") {
-                                            model.feature = nil
-                                            addFeatureSheetIsPresented = false
-                                        }
-                                        .disabled(!model.contingenciesAreValid)
-                                    }
-                                }
-                        }
-                        .presentationDetents([.fraction(0.5)])
-                        .frame(idealWidth: 320, idealHeight: 320)
+        GeometryReader { geometryProxy in
+            MapViewReader { mapViewProxy in
+                MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
+                    .onSingleTapGesture { _, mapPoint in
+                        tapLocation = mapPoint
                     }
-                    .task(id: addFeatureSheetIsPresented) {
-                        // When the sheet closes, remove the feature if it is invalid.
-                        guard !addFeatureSheetIsPresented, model.feature != nil else { return }
+                    .task(id: tapLocation) {
+                        // Add a feature representing a bird's nest when the map is tapped.
+                        guard let tapLocation else { return }
                         
                         do {
-                            try await model.removeFeature()
+                            try await model.addFeature(at: tapLocation)
+                            addFeatureSheetIsPresented = true
+                            
+                            // Create an envelope from the screen's frame.
+                            let viewRect = geometryProxy.frame(in: .local)
+                            guard let viewExtent = mapViewProxy.envelope(
+                                fromViewRect: viewRect
+                            ) else { return }
+                            
+                            // Update the map's viewpoint with an offsetted tap location
+                            // to center the feature in the top half of the screen.
+                            let yOffset = (viewExtent.height / 2) / 2
+                            let newViewpointCenter = Point(
+                                x: tapLocation.x,
+                                y: tapLocation.y - yOffset
+                            )
+                            await mapViewProxy.setViewpointCenter(newViewpointCenter)
+                        } catch {
+                            self.error = error
+                        }
+                    }
+                    .task {
+                        do {
+                            // Load the features from the geodatabase when the sample loads.
+                            try await model.loadFeatures()
+                            
+                            // Zoom to the extent of the added layer.
+                            guard let extent = model.map.operationalLayers.first?.fullExtent
+                            else { return }
+                            await mapViewProxy.setViewpointGeometry(extent, padding: 15)
                         } catch {
                             self.error = error
                         }
                     }
             }
+        }
+        .overlay(alignment: .bottom) {
+            // A workaround that allows the popover to display at the bottom of
+            // the screen on Mac Catalyst.
+            EmptyView()
+                .frame(width: 1, height: 1)
+                .padding()
+                .popover(isPresented: $addFeatureSheetIsPresented, arrowEdge: .bottom) {
+                    NavigationStack {
+                        AddFeatureView(model: model)
+                            .navigationTitle("Add Bird Nest")
+                            .navigationBarTitleDisplayMode(.inline)
+                            .toolbar {
+                                ToolbarItem(placement: .cancellationAction) {
+                                    Button("Cancel", role: .cancel) {
+                                        addFeatureSheetIsPresented = false
+                                    }
+                                }
+                                
+                                ToolbarItem(placement: .confirmationAction) {
+                                    Button("Done") {
+                                        model.feature = nil
+                                        addFeatureSheetIsPresented = false
+                                    }
+                                    .disabled(!model.contingenciesAreValid)
+                                }
+                            }
+                    }
+                    .presentationDetents([.fraction(0.5)])
+                    .frame(idealWidth: 320, idealHeight: 320)
+                }
+                .task(id: addFeatureSheetIsPresented) {
+                    // When the sheet closes, remove the feature if it is invalid.
+                    guard !addFeatureSheetIsPresented, model.feature != nil else { return }
+                    
+                    do {
+                        try await model.removeFeature()
+                    } catch {
+                        self.error = error
+                    }
+                }
         }
         .errorAlert(presentingError: $error)
     }

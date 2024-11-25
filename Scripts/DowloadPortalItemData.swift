@@ -87,7 +87,8 @@ func name(ofFileInArchiveAt url: URL) throws -> String {
     process.waitUntilExit()
     
     let filenameData = outputPipe.fileHandleForReading.readDataToEndOfFile()
-    return String(data: filenameData, encoding: .utf8)!.trimmingCharacters(in: .whitespacesAndNewlines)
+    // swiftlint:disable:next optional_data_string_conversion
+    return String(decoding: filenameData, as: UTF8.self).trimmingCharacters(in: .whitespacesAndNewlines)
 }
 
 /// Counts files in a ZIP archive.
@@ -108,7 +109,8 @@ func count(ofFilesInArchiveAt url: URL) throws -> Int {
     // To extract the count, cut the string at the first whitespace.
     let totalsInfo = outputPipe.fileHandleForReading.readDataToEndOfFile()
     // `UInt8(32)` is space in ASCII.
-    let totalsCount = String(data: totalsInfo.prefix(while: { $0 != 32 }), encoding: .utf8)!
+    // swiftlint:disable:next optional_data_string_conversion
+    let totalsCount = String(decoding: totalsInfo.prefix(while: { $0 != 32 }), as: UTF8.self)
     return Int(totalsCount)!
 }
 

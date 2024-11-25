@@ -44,7 +44,7 @@ struct Animate3DGraphicView: View {
                     .frame(width: 170, height: 100)
                     .padding([.leading, .trailing])
                     .background(.ultraThinMaterial)
-                    .cornerRadius(10)
+                    .clipShape(.rect(cornerRadius: 10))
                     .shadow(radius: 3)
                 }
                 .padding()
@@ -65,7 +65,7 @@ struct Animate3DGraphicView: View {
                             }
                         }
                         .frame(width: isShowingFullMap ? nil : 100, height: isShowingFullMap ? nil : 100)
-                        .cornerRadius(10)
+                        .clipShape(.rect(cornerRadius: 10))
                         .shadow(radius: 3)
                     Spacer()
                 }
@@ -86,6 +86,10 @@ struct Animate3DGraphicView: View {
                 } label: {
                     Image(systemName: model.animation.isPlaying ? "pause.fill" : "play.fill")
                 }
+                .onDisappear {
+                    model.animation.displayLink?.invalidate()
+                }
+                
                 Spacer()
                 
                 SettingsView(label: "Camera") {
@@ -151,7 +155,7 @@ struct Animate3DGraphicView: View {
     }
 }
 
-extension Animate3DGraphicView {
+private extension Animate3DGraphicView {
     /// Creates a binding to a camera controller property based on a given property.
     /// - Parameter property: The property associated with a corresponding camera controller property.
     /// - Returns: A binding to a camera controller property on the model.

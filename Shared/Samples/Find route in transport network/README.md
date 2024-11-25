@@ -31,7 +31,7 @@ Tap near a road to start adding a stop to the route. Tap again to place it on th
 
 ## Offline data
 
-The data used by this sample is available on [ArcGIS Online](https://arcgisruntime.maps.arcgis.com/home/item.html?id=df193653ed39449195af0c9725701dca).
+The data used by this sample is available on [ArcGIS Online](https://www.arcgis.com/home/item.html?id=df193653ed39449195af0c9725701dca).
 
 ## About the data
 

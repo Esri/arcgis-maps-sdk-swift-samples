@@ -41,7 +41,7 @@ struct GroupLayersTogetherView: View {
                 // Add group layers to the scene as operational layers.
                 scene.addOperationalLayers([makeProjectAreaGroupLayer(), makeBuildingsGroupLayer()])
                 
-                // Ensure all group layers' childlayers are loaded.
+                // Ensure all group layers' child layers are loaded.
                 for groupLayer in scene.operationalLayers as! [GroupLayer] {
                     await groupLayer.layers.load()
                 }
@@ -67,7 +67,7 @@ struct GroupLayersTogetherView: View {
     }
     
     /// The list of group layers and their child layers that are currently added to the map.
-    @MainActor private var layersList: some View {
+    private var layersList: some View {
         NavigationStack {
             List {
                 ForEach(scene.operationalLayers as! [GroupLayer], id: \.name) { groupLayer in

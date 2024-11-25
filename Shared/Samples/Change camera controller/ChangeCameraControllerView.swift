@@ -66,13 +66,10 @@ struct ChangeCameraControllerView: View {
         return graphicsOverlay
     }()
     
-    /// A Boolean value indicating whether the settings view should be presented.
-    @State private var isShowingSettings = false
-    
     /// The camera controller kind of the scene view.
     @State private var cameraControllerKind: CameraControllerKind = .globe
     
-    enum CameraControllerKind: CaseIterable {
+    private enum CameraControllerKind: CaseIterable {
         case globe
         case plane
         case crater
@@ -113,7 +110,7 @@ struct ChangeCameraControllerView: View {
     /// Creates a camera controller with the given kind of camera controller.
     /// - Parameter kind: The camera controller kind.
     /// - Returns: A camera controller.
-    func makeCameraController(kind: CameraControllerKind) -> CameraController {
+    private func makeCameraController(kind: CameraControllerKind) -> CameraController {
         switch kind {
         case .crater:
             let targetLocation = Point(

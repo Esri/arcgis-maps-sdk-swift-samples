@@ -14,9 +14,10 @@
 
 import ArcGIS
 import ArcGISToolkit
-import AVFoundation
+import AVFAudio
 import SwiftUI
 
+@available(macCatalyst, unavailable)
 extension AugmentRealityToNavigateRouteView {
     /// A world scale scene view displaying route graphics from a given model.
     struct ARRouteSceneView: View {
@@ -84,6 +85,7 @@ extension AugmentRealityToNavigateRouteView {
     }
 }
 
+@available(macCatalyst, unavailable)
 extension AugmentRealityToNavigateRouteView {
     // MARK: Scene Model
     
