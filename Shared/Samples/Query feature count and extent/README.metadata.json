@@ -1,5 +1,5 @@
 {
-    "category": "Analysis",
+    "category": "Search and Query",
     "description": "Zoom to features matching a query and count the features in the current visible extent.",
     "ignore": false,
     "images": [
