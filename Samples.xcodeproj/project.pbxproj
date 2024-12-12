@@ -850,7 +850,6 @@
 		00B04FB4283EEBA80026C882 /* DisplayOverviewMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayOverviewMapView.swift; sourceTree = "<group>"; };
 		00C94A0C28B53DE1004E42D9 /* raster-file */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "raster-file"; sourceTree = "<group>"; };
 		00CB9137284814A4005C2C5D /* SearchWithGeocodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchWithGeocodeView.swift; sourceTree = "<group>"; };
-		00CCB8A2285AAD7D00BBAB70 /* DowloadPortalItemData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DowloadPortalItemData.swift; sourceTree = "<group>"; };
 		00CCB8A4285BAF8700BBAB70 /* OnDemandResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnDemandResource.swift; sourceTree = "<group>"; };
 		00D4EF7F2863842100B9CC30 /* AddFeatureLayersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFeatureLayersView.swift; sourceTree = "<group>"; };
 		00D4EF8228638BF100B9CC30 /* LA_Trails.geodatabase */ = {isa = PBXFileReference; lastKnownFileType = file; path = LA_Trails.geodatabase; sourceTree = "<group>"; };
@@ -988,6 +987,7 @@
 		D73FC0FC2AD4A18D0067A19B /* CreateMobileGeodatabaseView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateMobileGeodatabaseView.swift; sourceTree = "<group>"; };
 		D73FCFF42B02A3AA0006360D /* FindAddressWithReverseGeocodeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindAddressWithReverseGeocodeView.swift; sourceTree = "<group>"; };
 		D73FCFFE2B02C7630006360D /* FindRouteAroundBarriersView.Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindRouteAroundBarriersView.Views.swift; sourceTree = "<group>"; };
+		D742B6812D0A5FA100BA944F /* DownloadPortalItemData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadPortalItemData.swift; sourceTree = "<group>"; };
 		D742E48F2B04132B00690098 /* DisplayWebSceneFromPortalItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayWebSceneFromPortalItemView.swift; sourceTree = "<group>"; };
 		D744FD162A2112D90084A66C /* CreateConvexHullAroundPointsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateConvexHullAroundPointsView.swift; sourceTree = "<group>"; };
 		D7464F1D2ACE04B3007FEE88 /* IdentifyRasterCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentifyRasterCellView.swift; sourceTree = "<group>"; };
@@ -1187,7 +1187,7 @@
 		003D7C332821EBCC009DDFD2 /* Scripts */ = {
 			isa = PBXGroup;
 			children = (
-				00CCB8A2285AAD7D00BBAB70 /* DowloadPortalItemData.swift */,
+				D742B6812D0A5FA100BA944F /* DownloadPortalItemData.swift */,
 				003D7C352821EBCC009DDFD2 /* GenerateSampleViewSourceCode.swift */,
 				003D7C342821EBCC009DDFD2 /* masquerade */,
 			);
@@ -3424,7 +3424,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "SAMPLES_DIRECTORY=\"${SRCROOT}/Shared/Samples\"\nDOWNLOAD_DIRECTORY=\"${SRCROOT}/Portal Data\"\nxcrun --sdk macosx swift \"${SRCROOT}/Scripts/DowloadPortalItemData.swift\" \"$SAMPLES_DIRECTORY\" \"$DOWNLOAD_DIRECTORY\"\n";
+			shellScript = "SAMPLES_DIRECTORY=\"${SRCROOT}/Shared/Samples\"\nDOWNLOAD_DIRECTORY=\"${SRCROOT}/Portal Data\"\nxcrun --sdk macosx swift \"${SRCROOT}/Scripts/DownloadPortalItemData.swift\" \"$SAMPLES_DIRECTORY\" \"$DOWNLOAD_DIRECTORY\"\n";
 		};
 		00E5402B27F77A5A00CF66D5 /* Lint Sources */ = {
 			isa = PBXShellScriptBuildPhase;
