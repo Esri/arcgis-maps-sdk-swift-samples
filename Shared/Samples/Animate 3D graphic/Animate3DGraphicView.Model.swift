@@ -177,7 +177,7 @@ extension Animate3DGraphicView {
             animation.loadFrames(for: currentMission.label.replacingOccurrences(of: " ", with: ""))
             
             // Create a polyline for the route using the position of each frame.
-            let points = animation.frames.map { $0.position }
+            let points = animation.frames.map(\.position)
             routeGraphic.geometry = Polyline(points: points)
             
             // Set positions to the starting frame of the mission.

@@ -258,7 +258,7 @@ private extension DownloadPreplannedMapAreaView.OfflineMapModel {
         job.start()
         
         // Awaits the output of the job and assigns the result.
-        result = await job.result.map { $0.mobileMapPackage }
+        result = await job.result.map(\.mobileMapPackage)
         
         // Sets the job to nil
         self.job = nil
