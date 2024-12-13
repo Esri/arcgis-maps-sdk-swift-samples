@@ -23,6 +23,20 @@ struct ConfigureElectronicNavigationalChartsView: View {
     }
 }
 
-#Preview {
-    ConfigureElectronicNavigationalChartsView()
+private extension URL {
+    static var exchangeSet: URL {
+        Bundle.main.url(
+            forResource: "CATALOG",
+            withExtension: "031",
+            subdirectory: "ExchangeSetwithoutUpdates/ExchangeSetwithoutUpdates/ENC_ROOT"
+        )!
+    }
+    
+    static var hydrographyDirectory: URL {
+        Bundle.main.url(
+            forResource: "S57DataDictionary",
+            withExtension: "xml",
+            subdirectory: "hydrography/hydrography"
+        )!
+    }
 }
