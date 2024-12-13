@@ -119,7 +119,7 @@ extension StyleSymbolsFromMobileStyleFileView {
         func updateCurrentSymbol() async {
             // Get the keys from the option selections.
             var symbolKeys = ["Face1"]
-            symbolKeys.append(contentsOf: symbolOptionSelections.categoryKeys.map { $0.value })
+            symbolKeys.append(contentsOf: symbolOptionSelections.categoryKeys.map(\.value))
             
             // Get the symbol from symbol style using the keys.
             if let pointSymbol = try? await symbolStyle.symbol(forKeys: symbolKeys) as? MultilayerPointSymbol {
