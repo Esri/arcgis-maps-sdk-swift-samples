@@ -1,0 +1,19 @@
+{
+    "category": "Layers",
+    "description": "",
+    "ignore": false,
+    "images": [
+        "configure-electronic-navigational-charts.png"
+    ],
+    "keywords": [
+    ],
+    "redirect_from": [
+        "/swift/sample-code/add-enc-exchange-set/"
+    ],
+    "relevant_apis": [
+    ],
+    "snippets": [
+        "ConfigureElectronicNavigationalChartsView.swift"
+    ],
+    "title": "Configure electronic navigational charts"
+}
