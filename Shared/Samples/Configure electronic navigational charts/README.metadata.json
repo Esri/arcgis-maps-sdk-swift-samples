@@ -1,0 +1,56 @@
+{
+    "category": "Layers",
+    "description": "Display and configure electronic navigational charts per ENC specification.",
+    "ignore": false,
+    "images": [
+        "configure-electronic-navigational-charts-1.png",
+        "configure-electronic-navigational-charts-2.png"
+    ],
+    "keywords": [
+        "ENC",
+        "IHO",
+        "S-52",
+        "S-57",
+        "hydrography",
+        "identify",
+        "layers",
+        "maritime",
+        "nautical chart",
+        "select",
+        "settings",
+        "symbology",
+        "ENCCell",
+        "ENCDataset",
+        "ENCDisplaySettings",
+        "ENCEnvironmentSettings",
+        "ENCExchangeSet",
+        "ENCLayer",
+        "ENCMarinerSettings",
+        "ENCTextGroupVisibilitySettings",
+        "ENCViewingGroupSettings",
+        "IdentifyLayerResult"
+    ],
+    "offline_data": [
+        "5028bf3513ff4c38b28822d010a4937c",
+        "9d2987a825c646468b3ce7512fb76e2d"
+    ],
+    "redirect_from": [
+        "/swift/sample-code/add-enc-exchange-set/"
+    ],
+    "relevant_apis": [
+        "ENCCell",
+        "ENCDataset",
+        "ENCDisplaySettings",
+        "ENCEnvironmentSettings",
+        "ENCExchangeSet",
+        "ENCLayer",
+        "ENCMarinerSettings",
+        "ENCTextGroupVisibilitySettings",
+        "ENCViewingGroupSettings",
+        "IdentifyLayerResult"
+    ],
+    "snippets": [
+        "ConfigureElectronicNavigationalChartsView.swift"
+    ],
+    "title": "Configure electronic navigational charts"
+}
