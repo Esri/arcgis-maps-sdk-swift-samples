@@ -158,10 +158,9 @@ private extension ConfigureElectronicNavigationalChartsView {
             
             // Creates layers from the exchange set's datasets and adds them to the map.
             let encLayers = exchangeSet.datasets.map { dataset in
-                ENCLayer(cell: .init(dataset: dataset))
+                ENCLayer(cell: ENCCell(dataset: dataset))
             }
             map.addOperationalLayers(encLayers)
-            await encLayers.load()
         }
         
         /// Disables some ENC environment display settings to make the chart less cluttered.
@@ -199,7 +198,7 @@ private struct ENCDisplaySettingsView: View {
     /// The ENC environment mariner display settings for adjusting the app's ENC rendering.
     private let marinerDisplaySettings = ENCEnvironmentSettings.shared.displaySettings.marinerSettings
     
-    /// Some ENC mariner settings types.
+    // Some ENC mariner settings types.
     private typealias ColorScheme = ENCMarinerSettings.ColorScheme
     private typealias AreaSymbolization = ENCMarinerSettings.AreaSymbolizationType
     private typealias PointSymbolization = ENCMarinerSettings.PointSymbolizationType
