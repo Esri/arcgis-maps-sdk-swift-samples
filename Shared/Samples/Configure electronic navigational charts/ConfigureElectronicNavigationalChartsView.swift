@@ -88,6 +88,7 @@ struct ConfigureElectronicNavigationalChartsView: View {
     ///   - proxy: The map view proxy used to identify the screen point.
     private func selectENCFeature(screenPoint: CGPoint, proxy: MapViewProxy) async throws {
         model.encLayer?.clearSelection()
+        calloutPlacement = nil
         
         // Uses the proxy to identify the layers at the screen point.
         let identifyResults = try await proxy.identifyLayers(
