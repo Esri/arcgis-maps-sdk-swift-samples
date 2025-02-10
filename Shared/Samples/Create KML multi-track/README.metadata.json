@@ -1,0 +1,38 @@
+{
+    "category": "Edit and Manage Data",
+    "description": "Create, save, and preview a KML multi-track captured from a location data source.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "KML",
+        "KMZ",
+        "export",
+        "hiking",
+        "multi-track",
+        "record",
+        "track",
+        "KMLDataset",
+        "KMLDocument",
+        "KMLMultiTrack",
+        "KMLPlacemark",
+        "KMLTrack",
+        "KMLTrackElement",
+        "LocationDisplay",
+        "SimulatedLocationDataSource"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "KMLDataset",
+        "KMLDocument",
+        "KMLMultiTrack",
+        "KMLPlacemark",
+        "KMLTrack",
+        "KMLTrackElement",
+        "LocationDisplay",
+        "SimulatedLocationDataSource"
+    ],
+    "snippets": [
+        "CreateKMLMultiTrackView.swift"
+    ],
+    "title": "Create KML multi-track"
+}

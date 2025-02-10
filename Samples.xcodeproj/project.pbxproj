@@ -250,6 +250,8 @@
 		D713C6D72CB990600073AA72 /* AddKMLLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D713C6D12CB990600073AA72 /* AddKMLLayerView.swift */; };
 		D713C6D82CB990800073AA72 /* AddKMLLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D713C6D12CB990600073AA72 /* AddKMLLayerView.swift */; };
 		D713C6F72CB9B9A60073AA72 /* US_State_Capitals.kml in Resources */ = {isa = PBXBuildFile; fileRef = D713C6F52CB9B9A60073AA72 /* US_State_Capitals.kml */; settings = {ASSET_TAGS = (AddKmlLayer, ); }; };
+		D71563E92D5AC2B600D2E948 /* CreateKMLMultiTrackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71563E32D5AC2B600D2E948 /* CreateKMLMultiTrackView.swift */; };
+		D71563EA2D5AC2D500D2E948 /* CreateKMLMultiTrackView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D71563E32D5AC2B600D2E948 /* CreateKMLMultiTrackView.swift */; };
 		D718A1E72B570F7500447087 /* OrbitCameraAroundObjectView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D718A1E62B570F7500447087 /* OrbitCameraAroundObjectView.Model.swift */; };
 		D718A1E82B571C9100447087 /* OrbitCameraAroundObjectView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D718A1E62B570F7500447087 /* OrbitCameraAroundObjectView.Model.swift */; };
 		D718A1ED2B575FD900447087 /* ManageBookmarksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D718A1EA2B575FD900447087 /* ManageBookmarksView.swift */; };
@@ -585,6 +587,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				D71563EA2D5AC2D500D2E948 /* CreateKMLMultiTrackView.swift in Copy Source Code Files */,
 				D74F6C452D0CD54200D4FB15 /* ConfigureElectronicNavigationalChartsView.swift in Copy Source Code Files */,
 				D7A85A092CD5AC0B009DC68A /* QueryWithCQLFiltersView.swift in Copy Source Code Files */,
 				D771D0C92CD5522A004C13CB /* ApplyRasterRenderingRuleView.swift in Copy Source Code Files */,
@@ -953,6 +956,7 @@
 		D71371752BD88ECC00EB2F86 /* MonitorChangesToLayerViewStateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonitorChangesToLayerViewStateView.swift; sourceTree = "<group>"; };
 		D713C6D12CB990600073AA72 /* AddKMLLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddKMLLayerView.swift; sourceTree = "<group>"; };
 		D713C6F52CB9B9A60073AA72 /* US_State_Capitals.kml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = US_State_Capitals.kml; sourceTree = "<group>"; };
+		D71563E32D5AC2B600D2E948 /* CreateKMLMultiTrackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateKMLMultiTrackView.swift; sourceTree = "<group>"; };
 		D718A1E62B570F7500447087 /* OrbitCameraAroundObjectView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrbitCameraAroundObjectView.Model.swift; sourceTree = "<group>"; };
 		D718A1EA2B575FD900447087 /* ManageBookmarksView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageBookmarksView.swift; sourceTree = "<group>"; };
 		D71C5F632AAA7A88006599FD /* CreateSymbolStylesFromWebStylesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateSymbolStylesFromWebStylesView.swift; sourceTree = "<group>"; };
@@ -1290,6 +1294,7 @@
 				D7B3C5C02A43B71E001DA4D8 /* Create convex hull around geometries */,
 				D744FD132A2112360084A66C /* Create convex hull around points */,
 				D79482D32C35D872006521CD /* Create dynamic basemap gallery */,
+				D71563E62D5AC2B600D2E948 /* Create KML multi-track */,
 				1C19B4EA2A578E46001D2506 /* Create load report */,
 				D73FABE82AD4A0370048EC70 /* Create mobile geodatabase */,
 				E004A6EB28495538002A1FE6 /* Create planar and geodetic buffers */,
@@ -2109,6 +2114,14 @@
 				D713C6F52CB9B9A60073AA72 /* US_State_Capitals.kml */,
 			);
 			path = 324e4742820e46cfbe5029ff2c32cb1f;
+			sourceTree = "<group>";
+		};
+		D71563E62D5AC2B600D2E948 /* Create KML multi-track */ = {
+			isa = PBXGroup;
+			children = (
+				D71563E32D5AC2B600D2E948 /* CreateKMLMultiTrackView.swift */,
+			);
+			path = "Create KML multi-track";
 			sourceTree = "<group>";
 		};
 		D718A1E92B575FD900447087 /* Manage bookmarks */ = {
@@ -3508,6 +3521,7 @@
 				00CCB8A5285BAF8700BBAB70 /* OnDemandResource.swift in Sources */,
 				D7635FFE2B9277DC0044AB97 /* ConfigureClustersView.swift in Sources */,
 				1C19B4F32A578E46001D2506 /* CreateLoadReportView.swift in Sources */,
+				D71563E92D5AC2B600D2E948 /* CreateKMLMultiTrackView.swift in Sources */,
 				7900C5F62A83FC3F002D430F /* AddCustomDynamicEntityDataSourceView.Vessel.swift in Sources */,
 				D71099702A2802FA0065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift in Sources */,
 				D7201D042CC6D3B5004BDB7D /* AddVectorTiledLayerFromCustomStyleView.swift in Sources */,
