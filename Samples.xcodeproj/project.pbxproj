@@ -418,6 +418,8 @@
 		D7848F012CBD987B00F6F546 /* AddElevationSourceFromRasterView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7848EFA2CBD986400F6F546 /* AddElevationSourceFromRasterView.swift */; };
 		D78666AD2A2161F100C60110 /* FindNearestVertexView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78666AC2A2161F100C60110 /* FindNearestVertexView.swift */; };
 		D78666AE2A21629200C60110 /* FindNearestVertexView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D78666AC2A2161F100C60110 /* FindNearestVertexView.swift */; };
+		D789AAAD2D66C718007A8E0E /* CreateKMLMultiTrackView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D789AAAC2D66C718007A8E0E /* CreateKMLMultiTrackView.Model.swift */; };
+		D789AAAE2D66C737007A8E0E /* CreateKMLMultiTrackView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D789AAAC2D66C718007A8E0E /* CreateKMLMultiTrackView.Model.swift */; };
 		D78FA4942C3C88880079313E /* CreateDynamicBasemapGalleryView.Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78FA4932C3C88880079313E /* CreateDynamicBasemapGalleryView.Views.swift */; };
 		D78FA4952C3C8E8A0079313E /* CreateDynamicBasemapGalleryView.Views.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D78FA4932C3C88880079313E /* CreateDynamicBasemapGalleryView.Views.swift */; };
 		D79482D42C35D872006521CD /* CreateDynamicBasemapGalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79482D02C35D872006521CD /* CreateDynamicBasemapGalleryView.swift */; };
@@ -587,6 +589,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				D789AAAE2D66C737007A8E0E /* CreateKMLMultiTrackView.Model.swift in Copy Source Code Files */,
 				D71563EA2D5AC2D500D2E948 /* CreateKMLMultiTrackView.swift in Copy Source Code Files */,
 				D74F6C452D0CD54200D4FB15 /* ConfigureElectronicNavigationalChartsView.swift in Copy Source Code Files */,
 				D7A85A092CD5AC0B009DC68A /* QueryWithCQLFiltersView.swift in Copy Source Code Files */,
@@ -1049,6 +1052,7 @@
 		D7848ED42CBD85A300F6F546 /* AddPointSceneLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPointSceneLayerView.swift; sourceTree = "<group>"; };
 		D7848EFA2CBD986400F6F546 /* AddElevationSourceFromRasterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddElevationSourceFromRasterView.swift; sourceTree = "<group>"; };
 		D78666AC2A2161F100C60110 /* FindNearestVertexView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindNearestVertexView.swift; sourceTree = "<group>"; };
+		D789AAAC2D66C718007A8E0E /* CreateKMLMultiTrackView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateKMLMultiTrackView.Model.swift; sourceTree = "<group>"; };
 		D78FA4932C3C88880079313E /* CreateDynamicBasemapGalleryView.Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateDynamicBasemapGalleryView.Views.swift; sourceTree = "<group>"; };
 		D79482D02C35D872006521CD /* CreateDynamicBasemapGalleryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateDynamicBasemapGalleryView.swift; sourceTree = "<group>"; };
 		D79EE76D2A4CEA5D005A52AE /* SetUpLocationDrivenGeotriggersView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetUpLocationDrivenGeotriggersView.Model.swift; sourceTree = "<group>"; };
@@ -2120,6 +2124,7 @@
 			isa = PBXGroup;
 			children = (
 				D71563E32D5AC2B600D2E948 /* CreateKMLMultiTrackView.swift */,
+				D789AAAC2D66C718007A8E0E /* CreateKMLMultiTrackView.Model.swift */,
 			);
 			path = "Create KML multi-track";
 			sourceTree = "<group>";
@@ -3561,6 +3566,7 @@
 				D7497F3C2AC4B4C100167AD2 /* DisplayDimensionsView.swift in Sources */,
 				D7C97B562B75C10C0097CDA1 /* ValidateUtilityNetworkTopologyView.Views.swift in Sources */,
 				D73FCFF72B02A3AA0006360D /* FindAddressWithReverseGeocodeView.swift in Sources */,
+				D789AAAD2D66C718007A8E0E /* CreateKMLMultiTrackView.Model.swift in Sources */,
 				0005580A2817C51E00224BC6 /* SampleDetailView.swift in Sources */,
 				D75F66362B48EABC00434974 /* SearchForWebMapView.swift in Sources */,
 				D7058B102B59E44B000A888A /* StylePointWithSceneSymbolView.swift in Sources */,
