@@ -2,7 +2,9 @@
     "category": "Edit and Manage Data",
     "description": "Create, save, and preview a KML multi-track captured from a location data source.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "create-kml-multi-track.png"
+    ],
     "keywords": [
         "KML",
         "KMZ",
@@ -32,7 +34,8 @@
         "SimulatedLocationDataSource"
     ],
     "snippets": [
-        "CreateKMLMultiTrackView.swift"
+        "CreateKMLMultiTrackView.swift",
+        "CreateKMLMultiTrackView.Model.swift"
     ],
     "title": "Create KML multi-track"
 }
