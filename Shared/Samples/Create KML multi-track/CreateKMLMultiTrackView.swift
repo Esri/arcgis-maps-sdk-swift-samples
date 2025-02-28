@@ -83,14 +83,14 @@ struct CreateKMLMultiTrackView: View {
                             
                             Spacer()
                             
-                            Button(state == .recording ? "Stop Recording" : "Record Track") {
-                                if state == .recording {
-                                    state = .navigating
-                                    model.addTrack()
-                                } else {
-                                    state = .recording
+                            Toggle(
+                                state == .recording ? "Stop Recording" : "Record Track",
+                                isOn: .init {
+                                    state == .recording
+                                } set: { newValue in
+                                    state = newValue ? .recording : .navigating
                                 }
-                            }
+                            )
                             
                             Spacer()
                             
@@ -111,6 +111,8 @@ struct CreateKMLMultiTrackView: View {
                             for await location in model.locationDisplay.$location where location != nil {
                                 model.addTrackElement(at: location!.position)
                             }
+                            
+                            model.addTrack()
                         case .viewingMultiTrack:
                             await model.locationDisplay.dataSource.stop()
                             
