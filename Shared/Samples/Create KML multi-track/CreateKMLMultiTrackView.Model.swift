@@ -79,7 +79,8 @@ extension CreateKMLMultiTrackView {
             trackElementGraphicsOverlay.addGraphic(graphic)
         }
         
-        /// Records a track by convert the `trackElements` to a KML track.
+        /// Records a track by converting the elements in `trackElements` to a
+        /// KML track.
         func addTrack() {
             if trackElements.count > 1,
                let kmlTrack = KMLTrack(elements: trackElements, altitudeMode: .relativeToGround),
@@ -138,7 +139,7 @@ private extension FileManager {
         try! FileManager.default.url(
             for: .itemReplacementDirectory,
             in: .userDomainMask,
-            appropriateFor: FileManager.default.temporaryDirectory,
+            appropriateFor: .temporaryDirectory,
             create: true
         )
     }
