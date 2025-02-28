@@ -71,7 +71,7 @@ extension CreateKMLMultiTrackView {
         
         /// Records a track element.
         /// - Parameter point: The point at which to add the track element.
-        func addTrackElement(atPoint point: Point) {
+        func addTrackElement(at point: Point) {
             let kmlTrackElement = KMLTrackElement(when: .now, coordinate: point, angle: nil)
             trackElements.append(kmlTrackElement)
             

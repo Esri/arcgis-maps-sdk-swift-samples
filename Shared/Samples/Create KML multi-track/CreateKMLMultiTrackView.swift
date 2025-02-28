@@ -29,7 +29,7 @@ struct CreateKMLMultiTrackView: View {
     @State private var multiTrack: KMLMultiTrack?
     
     /// A Boolean value indicating whether the recenter button is enabled.
-    @State private var recenterIsEnabled = false
+    @State private var isRecenterEnabled = false
     
     /// The error shown in the error alert.
     @State private var error: Error?
@@ -62,7 +62,7 @@ struct CreateKMLMultiTrackView: View {
                         Button("Recenter", systemImage: "location.north.circle") {
                             model.locationDisplay.autoPanMode = .navigation
                         }
-                        .disabled(!recenterIsEnabled)
+                        .disabled(!isRecenterEnabled)
                         
                         Spacer()
                         
@@ -96,7 +96,7 @@ struct CreateKMLMultiTrackView: View {
                     switch asyncAction {
                     case .recordTrack:
                         for await location in model.locationDisplay.$location where location != nil {
-                            model.addTrackElement(atPoint: location!.position)
+                            model.addTrackElement(at: location!.position)
                             statusText = "Recording KML track. Elements added: \(model.trackElements.count)"
                         }
                         
@@ -125,7 +125,7 @@ struct CreateKMLMultiTrackView: View {
             .task {
                 // Monitors the auto pan mode to determine if recenter button should be enabled.
                 for await autoPanMode in model.locationDisplay.$autoPanMode {
-                    recenterIsEnabled = autoPanMode != .navigation
+                    isRecenterEnabled = autoPanMode != .navigation
                 }
             }
             .errorAlert(presentingError: $error)
