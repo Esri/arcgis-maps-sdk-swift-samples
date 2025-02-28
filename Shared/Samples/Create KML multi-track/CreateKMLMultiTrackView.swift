@@ -19,12 +19,6 @@ struct CreateKMLMultiTrackView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
-    /// The asynchronous action currently being run.
-    @State private var asyncAction: AsyncAction? = .startNavigation
-    
-    /// The text shown in the status bar. This describes the current state of the sample.
-    @State private var statusText = ""
-    
     /// The KML multi-track loaded from the KMZ file.
     @State private var multiTrack: KMLMultiTrack?
     
@@ -33,6 +27,30 @@ struct CreateKMLMultiTrackView: View {
     
     /// The error shown in the error alert.
     @State private var error: Error?
+    
+    /// Represents the various states of the sample.
+    private enum SampleState {
+        /// The sample is navigating without recording.
+        case navigating
+        /// A KML track is being recorded.
+        case recording
+        /// The KML multi-track is being saved, loaded, and viewed.
+        case viewingMultiTrack
+        /// The sample is being reset.
+        case reseting
+    }
+    
+    /// The current state of the sample.
+    @State private var state = SampleState.navigating
+    
+    /// The text shown in the status bar. This describes the current state of the sample.
+    private var statusText: String {
+        return switch state {
+        case .recording: "Recording KML track. Elements added: \(model.trackElements.count)"
+        case .viewingMultiTrack: "Saved KML multi-track to 'HikingTracks.kmz'."
+        default: "Tap record to capture KML track elements."
+        }
+    }
     
     var body: some View {
         MapViewReader { mapViewProxy in
@@ -49,7 +67,7 @@ struct CreateKMLMultiTrackView: View {
                     ToolbarItemGroup(placement: .bottomBar) {
                         if let multiTrack {
                             Button("Delete", systemImage: "trash", role: .destructive) {
-                                asyncAction = .reset
+                                state = .reseting
                             }
                             
                             Spacer()
@@ -65,63 +83,58 @@ struct CreateKMLMultiTrackView: View {
                             
                             Spacer()
                             
-                            Button(asyncAction == .recordTrack ? "Stop Recording" : "Record Track") {
-                                if asyncAction == .recordTrack {
-                                    asyncAction = nil
+                            Button(state == .recording ? "Stop Recording" : "Record Track") {
+                                if state == .recording {
+                                    state = .navigating
                                     model.addTrack()
                                 } else {
-                                    asyncAction = .recordTrack
+                                    state = .recording
                                 }
                             }
-                            .disabled(asyncAction != nil && asyncAction != .recordTrack)
                             
                             Spacer()
                             
                             Button("Save", systemImage: "square.and.arrow.down") {
-                                asyncAction = .saveKMLMultiTrack
+                                state = .viewingMultiTrack
                             }
-                            .disabled(asyncAction != nil || model.tracks.isEmpty)
+                            .disabled(model.tracks.isEmpty)
                         }
                     }
                 }
-                .task(id: asyncAction) {
-                    // Runs the asynchronous action.
-                    guard let asyncAction else {
-                        return
-                    }
-                    defer { self.asyncAction = nil }
-                    
+                .task(id: state) {
+                    // Runs the asynchronous action associated with the sample state.
                     do {
-                        switch asyncAction {
-                        case .recordTrack:
+                        switch state {
+                        case .navigating:
+                            break
+                        case .recording:
                             for await location in model.locationDisplay.$location where location != nil {
                                 model.addTrackElement(at: location!.position)
-                                statusText = "Recording KML track. Elements added: \(model.trackElements.count)"
                             }
-                            
-                            statusText = "Tap record to capture KML track elements."
-                        case .saveKMLMultiTrack:
+                        case .viewingMultiTrack:
                             await model.locationDisplay.dataSource.stop()
                             
                             try await model.saveKMLMultiTrack()
                             multiTrack = try await model.loadKMLMultiTrack()
-                            
-                            statusText = "Saved KML multi-track to 'HikingTracks.kmz'."
-                        case .reset:
+                        case .reseting:
                             model.reset()
                             multiTrack = nil
-                            await mapViewProxy.setViewpointScale(model.locationDisplay.initialZoomScale)
                             
-                            fallthrough
-                        case .startNavigation:
+                            await mapViewProxy.setViewpointScale(model.locationDisplay.initialZoomScale)
                             try await model.startNavigation()
-                            statusText = "Tap record to capture KML track elements."
                         }
                     } catch {
                         self.error = error
                     }
                 }
                 .task {
+                    // Starts the navigation when the sample opens.
+                    do {
+                        try await model.startNavigation()
+                    } catch {
+                        self.error = error
+                    }
+                    
                     // Monitors the auto pan mode to determine if recenter button should be enabled.
                     for await autoPanMode in model.locationDisplay.$autoPanMode {
                         isRecenterEnabled = autoPanMode != .navigation
@@ -163,14 +176,6 @@ private extension CreateKMLMultiTrackView {
                 await onSelectionChanged(geometry)
             }
         }
-    }
-    
-    /// An asynchronous action associated with the sample.
-    enum AsyncAction {
-        case startNavigation
-        case recordTrack
-        case saveKMLMultiTrack
-        case reset
     }
 }
 

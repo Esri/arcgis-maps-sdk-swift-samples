@@ -35,7 +35,7 @@ extension CreateKMLMultiTrackView {
         private let trackGraphicsOverlay = GraphicsOverlay()
         
         /// The KML track elements for the KML track that is being recorded.
-        private(set) var trackElements: [KMLTrackElement] = []
+        @Published private(set) var trackElements: [KMLTrackElement] = []
         
         /// The recorded KML tracks used to create the KML multi-track.
         @Published private(set) var tracks: [KMLTrack] = []
