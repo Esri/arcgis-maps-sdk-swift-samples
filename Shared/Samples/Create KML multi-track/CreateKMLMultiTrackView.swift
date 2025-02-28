@@ -54,7 +54,9 @@ struct CreateKMLMultiTrackView: View {
                             
                             Spacer()
                             
-                            TrackPicker(multiTrack: multiTrack, mapViewProxy: mapViewProxy)
+                            TrackPicker(tracks: multiTrack.tracks) { geometry in
+                                await mapViewProxy.setViewpointGeometry(geometry.extent, padding: 25)
+                            }
                         } else {
                             Button("Recenter", systemImage: "location.north.circle") {
                                 model.locationDisplay.autoPanMode = .navigation
@@ -134,18 +136,13 @@ private extension CreateKMLMultiTrackView {
     /// A picker for selecting a track from a KML multi-track.
     struct TrackPicker: View {
         /// The KML tracks options shown in the picker.
-        private let tracks: [KMLTrack]
+        let tracks: [KMLTrack]
         
-        /// The proxy for setting map view's viewpoint to the selected track's geometry.
-        private let mapViewProxy: MapViewProxy
+        /// The closure to perform when the selected track has changed.
+        let onSelectionChanged: (Geometry) async -> Void
         
         /// The track selected by the picker.
         @State private var selectedTrack: KMLTrack?
-        
-        init(multiTrack: KMLMultiTrack, mapViewProxy: MapViewProxy) {
-            tracks = multiTrack.tracks
-            self.mapViewProxy = mapViewProxy
-        }
         
         var body: some View {
             Picker("Track", selection: $selectedTrack) {
@@ -163,7 +160,7 @@ private extension CreateKMLMultiTrackView {
                     return
                 }
                 
-                await mapViewProxy.setViewpointGeometry(geometry.extent, padding: 25)
+                await onSelectionChanged(geometry)
             }
         }
     }
