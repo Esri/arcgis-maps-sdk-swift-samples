@@ -25,11 +25,14 @@ extension CreateKMLMultiTrackView {
         /// The map view's location display.
         let locationDisplay = LocationDisplay()
         
+        /// The graphics overlays to display on the map view.
+        let graphicsOverlays: [GraphicsOverlay]
+        
         /// The graphics overlay for the track element graphics.
-        let trackElementGraphicsOverlay = GraphicsOverlay()
+        private let trackElementGraphicsOverlay = GraphicsOverlay()
         
         /// The graphics overlay for the track graphics.
-        let trackGraphicsOverlay = GraphicsOverlay()
+        private let trackGraphicsOverlay = GraphicsOverlay()
         
         /// The KML track elements for the KML track that is being recorded.
         private(set) var trackElements: [KMLTrackElement] = []
@@ -42,12 +45,14 @@ extension CreateKMLMultiTrackView {
             .appending(component: "HikingTracks.kmz")
         
         init() {
-            // Sets up the graphics overlays' renderers.
+            // Sets up the graphics overlays.
             let redCircleSymbol = SimpleMarkerSymbol(style: .circle, color: .red, size: 10)
             trackElementGraphicsOverlay.renderer = SimpleRenderer(symbol: redCircleSymbol)
             
             let blackLineSymbol = SimpleLineSymbol(style: .solid, color: .black, width: 3)
             trackGraphicsOverlay.renderer = SimpleRenderer(symbol: blackLineSymbol)
+            
+            graphicsOverlays = [trackElementGraphicsOverlay, trackGraphicsOverlay]
         }
         
         deinit {

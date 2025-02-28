@@ -36,99 +36,96 @@ struct CreateKMLMultiTrackView: View {
     
     var body: some View {
         MapViewReader { mapViewProxy in
-            MapView(
-                map: model.map,
-                graphicsOverlays: [model.trackElementGraphicsOverlay, model.trackGraphicsOverlay]
-            )
-            .locationDisplay(model.locationDisplay)
-            .overlay(alignment: .top) {
-                Text(statusText)
-                    .multilineTextAlignment(.center)
-                    .frame(maxWidth: .infinity, alignment: .center)
-                    .padding(8)
-                    .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
-            }
-            .toolbar {
-                ToolbarItemGroup(placement: .bottomBar) {
-                    if let multiTrack {
-                        Button("Delete", systemImage: "trash", role: .destructive) {
-                            asyncAction = .reset
-                        }
-                        
-                        Spacer()
-                        
-                        TrackPicker(multiTrack: multiTrack, mapViewProxy: mapViewProxy)
-                    } else {
-                        Button("Recenter", systemImage: "location.north.circle") {
-                            model.locationDisplay.autoPanMode = .navigation
-                        }
-                        .disabled(!isRecenterEnabled)
-                        
-                        Spacer()
-                        
-                        Button(asyncAction == .recordTrack ? "Stop Recording" : "Record Track") {
-                            if asyncAction == .recordTrack {
-                                asyncAction = nil
-                                model.addTrack()
-                            } else {
-                                asyncAction = .recordTrack
+            MapView(map: model.map, graphicsOverlays: model.graphicsOverlays)
+                .locationDisplay(model.locationDisplay)
+                .overlay(alignment: .top) {
+                    Text(statusText)
+                        .multilineTextAlignment(.center)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .padding(8)
+                        .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
+                }
+                .toolbar {
+                    ToolbarItemGroup(placement: .bottomBar) {
+                        if let multiTrack {
+                            Button("Delete", systemImage: "trash", role: .destructive) {
+                                asyncAction = .reset
                             }
+                            
+                            Spacer()
+                            
+                            TrackPicker(multiTrack: multiTrack, mapViewProxy: mapViewProxy)
+                        } else {
+                            Button("Recenter", systemImage: "location.north.circle") {
+                                model.locationDisplay.autoPanMode = .navigation
+                            }
+                            .disabled(!isRecenterEnabled)
+                            
+                            Spacer()
+                            
+                            Button(asyncAction == .recordTrack ? "Stop Recording" : "Record Track") {
+                                if asyncAction == .recordTrack {
+                                    asyncAction = nil
+                                    model.addTrack()
+                                } else {
+                                    asyncAction = .recordTrack
+                                }
+                            }
+                            .disabled(asyncAction != nil && asyncAction != .recordTrack)
+                            
+                            Spacer()
+                            
+                            Button("Save", systemImage: "square.and.arrow.down") {
+                                asyncAction = .saveKMLMultiTrack
+                            }
+                            .disabled(asyncAction != nil || model.tracks.isEmpty)
                         }
-                        .disabled(asyncAction != nil && asyncAction != .recordTrack)
-                        
-                        Spacer()
-                        
-                        Button("Save", systemImage: "square.and.arrow.down") {
-                            asyncAction = .saveKMLMultiTrack
-                        }
-                        .disabled(asyncAction != nil || model.tracks.isEmpty)
                     }
                 }
-            }
-            .task(id: asyncAction) {
-                // Runs the asynchronous action.
-                guard let asyncAction else {
-                    return
-                }
-                defer { self.asyncAction = nil }
-                
-                do {
-                    switch asyncAction {
-                    case .recordTrack:
-                        for await location in model.locationDisplay.$location where location != nil {
-                            model.addTrackElement(at: location!.position)
-                            statusText = "Recording KML track. Elements added: \(model.trackElements.count)"
-                        }
-                        
-                        statusText = "Tap record to capture KML track elements."
-                    case .saveKMLMultiTrack:
-                        await model.locationDisplay.dataSource.stop()
-                        
-                        try await model.saveKMLMultiTrack()
-                        multiTrack = try await model.loadKMLMultiTrack()
-                        
-                        statusText = "Saved KML multi-track to 'HikingTracks.kmz'."
-                    case .reset:
-                        model.reset()
-                        multiTrack = nil
-                        await mapViewProxy.setViewpointScale(model.locationDisplay.initialZoomScale)
-                        
-                        fallthrough
-                    case .startNavigation:
-                        try await model.startNavigation()
-                        statusText = "Tap record to capture KML track elements."
+                .task(id: asyncAction) {
+                    // Runs the asynchronous action.
+                    guard let asyncAction else {
+                        return
                     }
-                } catch {
-                    self.error = error
+                    defer { self.asyncAction = nil }
+                    
+                    do {
+                        switch asyncAction {
+                        case .recordTrack:
+                            for await location in model.locationDisplay.$location where location != nil {
+                                model.addTrackElement(at: location!.position)
+                                statusText = "Recording KML track. Elements added: \(model.trackElements.count)"
+                            }
+                            
+                            statusText = "Tap record to capture KML track elements."
+                        case .saveKMLMultiTrack:
+                            await model.locationDisplay.dataSource.stop()
+                            
+                            try await model.saveKMLMultiTrack()
+                            multiTrack = try await model.loadKMLMultiTrack()
+                            
+                            statusText = "Saved KML multi-track to 'HikingTracks.kmz'."
+                        case .reset:
+                            model.reset()
+                            multiTrack = nil
+                            await mapViewProxy.setViewpointScale(model.locationDisplay.initialZoomScale)
+                            
+                            fallthrough
+                        case .startNavigation:
+                            try await model.startNavigation()
+                            statusText = "Tap record to capture KML track elements."
+                        }
+                    } catch {
+                        self.error = error
+                    }
                 }
-            }
-            .task {
-                // Monitors the auto pan mode to determine if recenter button should be enabled.
-                for await autoPanMode in model.locationDisplay.$autoPanMode {
-                    isRecenterEnabled = autoPanMode != .navigation
+                .task {
+                    // Monitors the auto pan mode to determine if recenter button should be enabled.
+                    for await autoPanMode in model.locationDisplay.$autoPanMode {
+                        isRecenterEnabled = autoPanMode != .navigation
+                    }
                 }
-            }
-            .errorAlert(presentingError: $error)
+                .errorAlert(presentingError: $error)
         }
     }
 }
