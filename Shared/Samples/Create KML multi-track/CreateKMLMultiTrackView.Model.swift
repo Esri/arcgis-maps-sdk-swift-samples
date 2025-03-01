@@ -26,7 +26,9 @@ extension CreateKMLMultiTrackView {
         let locationDisplay = LocationDisplay()
         
         /// The graphics overlays to display on the map view.
-        let graphicsOverlays: [GraphicsOverlay]
+        var graphicsOverlays: [GraphicsOverlay] {
+            return [trackElementGraphicsOverlay, trackGraphicsOverlay]
+        }
         
         /// The graphics overlay for the track element graphics.
         private let trackElementGraphicsOverlay = GraphicsOverlay()
@@ -51,8 +53,6 @@ extension CreateKMLMultiTrackView {
             
             let blackLineSymbol = SimpleLineSymbol(style: .solid, color: .black, width: 3)
             trackGraphicsOverlay.renderer = SimpleRenderer(symbol: blackLineSymbol)
-            
-            graphicsOverlays = [trackElementGraphicsOverlay, trackGraphicsOverlay]
         }
         
         deinit {
