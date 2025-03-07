@@ -27,7 +27,7 @@ extension CreateKMLMultiTrackView {
         
         /// The graphics overlays to display on the map view.
         var graphicsOverlays: [GraphicsOverlay] {
-            [trackElementGraphicsOverlay, trackGraphicsOverlay]
+            return [trackElementGraphicsOverlay, trackGraphicsOverlay]
         }
         
         /// The graphics overlay for the track element graphics.
