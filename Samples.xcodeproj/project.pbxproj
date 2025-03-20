@@ -256,6 +256,8 @@
 		D718A1E82B571C9100447087 /* OrbitCameraAroundObjectView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D718A1E62B570F7500447087 /* OrbitCameraAroundObjectView.Model.swift */; };
 		D718A1ED2B575FD900447087 /* ManageBookmarksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D718A1EA2B575FD900447087 /* ManageBookmarksView.swift */; };
 		D718A1F02B57602000447087 /* ManageBookmarksView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D718A1EA2B575FD900447087 /* ManageBookmarksView.swift */; };
+		D71A9DE22D8CC88D00CA03CB /* SnapGeometryEditsWithUtilityNetworkRulesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71A9DE02D8CC88D00CA03CB /* SnapGeometryEditsWithUtilityNetworkRulesView.swift */; };
+		D71A9DE52D8CC8B500CA03CB /* SnapGeometryEditsWithUtilityNetworkRulesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D71A9DE02D8CC88D00CA03CB /* SnapGeometryEditsWithUtilityNetworkRulesView.swift */; };
 		D71C5F642AAA7A88006599FD /* CreateSymbolStylesFromWebStylesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71C5F632AAA7A88006599FD /* CreateSymbolStylesFromWebStylesView.swift */; };
 		D71C5F652AAA83D2006599FD /* CreateSymbolStylesFromWebStylesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D71C5F632AAA7A88006599FD /* CreateSymbolStylesFromWebStylesView.swift */; };
 		D71C90A22C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71C909C2C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.swift */; };
@@ -589,6 +591,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				D71A9DE52D8CC8B500CA03CB /* SnapGeometryEditsWithUtilityNetworkRulesView.swift in Copy Source Code Files */,
 				D789AAAE2D66C737007A8E0E /* CreateKMLMultiTrackView.Model.swift in Copy Source Code Files */,
 				D71563EA2D5AC2D500D2E948 /* CreateKMLMultiTrackView.swift in Copy Source Code Files */,
 				D74F6C452D0CD54200D4FB15 /* ConfigureElectronicNavigationalChartsView.swift in Copy Source Code Files */,
@@ -962,6 +965,7 @@
 		D71563E32D5AC2B600D2E948 /* CreateKMLMultiTrackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateKMLMultiTrackView.swift; sourceTree = "<group>"; };
 		D718A1E62B570F7500447087 /* OrbitCameraAroundObjectView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrbitCameraAroundObjectView.Model.swift; sourceTree = "<group>"; };
 		D718A1EA2B575FD900447087 /* ManageBookmarksView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageBookmarksView.swift; sourceTree = "<group>"; };
+		D71A9DE02D8CC88D00CA03CB /* SnapGeometryEditsWithUtilityNetworkRulesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapGeometryEditsWithUtilityNetworkRulesView.swift; sourceTree = "<group>"; };
 		D71C5F632AAA7A88006599FD /* CreateSymbolStylesFromWebStylesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateSymbolStylesFromWebStylesView.swift; sourceTree = "<group>"; };
 		D71C909C2C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleGeometryTypesWithSymbolsView.swift; sourceTree = "<group>"; };
 		D71C909D2C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleGeometryTypesWithSymbolsView.Views.swift; sourceTree = "<group>"; };
@@ -1405,6 +1409,7 @@
 				0086F3FC28E3770900974721 /* Show viewshed from point in scene */,
 				95DEB9B72C127A97009BEC35 /* Show viewshed from point on map */,
 				00E7C15A2BBE1BF000B85D69 /* Snap geometry edits */,
+				D71A9DE12D8CC88D00CA03CB /* Snap geometry edits with utility network rules */,
 				D75B584D2AAFB2C20038B3B4 /* Style features with custom dictionary */,
 				D71C909E2C6C249B0018C63E /* Style geometry types with symbols */,
 				E066DD362860AB0B004D3D5B /* Style graphics with renderer */,
@@ -2135,6 +2140,14 @@
 				D718A1EA2B575FD900447087 /* ManageBookmarksView.swift */,
 			);
 			path = "Manage bookmarks";
+			sourceTree = "<group>";
+		};
+		D71A9DE12D8CC88D00CA03CB /* Snap geometry edits with utility network rules */ = {
+			isa = PBXGroup;
+			children = (
+				D71A9DE02D8CC88D00CA03CB /* SnapGeometryEditsWithUtilityNetworkRulesView.swift */,
+			);
+			path = "Snap geometry edits with utility network rules";
 			sourceTree = "<group>";
 		};
 		D71C5F602AAA7854006599FD /* Create symbol styles from web styles */ = {
@@ -3629,6 +3642,7 @@
 				E066DD382860AB28004D3D5B /* StyleGraphicsWithRendererView.swift in Sources */,
 				108EC04129D25B2C000F35D0 /* QueryFeatureTableView.swift in Sources */,
 				D71D516E2B51D7B600B2A2BE /* SearchForWebMapView.Views.swift in Sources */,
+				D71A9DE22D8CC88D00CA03CB /* SnapGeometryEditsWithUtilityNetworkRulesView.swift in Sources */,
 				D7114A0D2BDC6A3300FA68CA /* EditWithBranchVersioningView.Model.swift in Sources */,
 				00B04FB5283EEBA80026C882 /* DisplayOverviewMapView.swift in Sources */,
 				D718A1E72B570F7500447087 /* OrbitCameraAroundObjectView.Model.swift in Sources */,
