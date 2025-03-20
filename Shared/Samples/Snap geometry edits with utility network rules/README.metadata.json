@@ -26,6 +26,9 @@
         "SnapSourceSettings",
         "UtilityNetwork"
     ],
+    "offline_data": [
+        "0fd3a39660d54c12b05d5f81f207dffd"
+    ],
     "redirect_from": [],
     "relevant_apis": [
         "FeatureLayer",

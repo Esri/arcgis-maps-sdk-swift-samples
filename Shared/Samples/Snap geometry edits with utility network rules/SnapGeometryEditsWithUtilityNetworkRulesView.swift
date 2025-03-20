@@ -23,6 +23,9 @@ struct SnapGeometryEditsWithUtilityNetworkRulesView: View {
     }
 }
 
-#Preview {
-    SnapGeometryEditsWithUtilityNetworkRulesView()
+private extension URL {
+    /// The URL to the local geodatabase file containing a data for the Naperville gas utility network.
+    static var napervilleGasUtilitiesGeodatabase: URL {
+        Bundle.main.url(forResource: "NapervilleGasUtilities", withExtension: "geodatabase")!
+    }
 }

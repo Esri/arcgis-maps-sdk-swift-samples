@@ -391,6 +391,7 @@
 		D769C2132A29057200030F61 /* SetUpLocationDrivenGeotriggersView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D769C2112A29019B00030F61 /* SetUpLocationDrivenGeotriggersView.swift */; };
 		D769DF332BEC1A1C0062AE95 /* EditGeodatabaseWithTransactionsView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D769DF322BEC1A1C0062AE95 /* EditGeodatabaseWithTransactionsView.Model.swift */; };
 		D769DF342BEC1A9E0062AE95 /* EditGeodatabaseWithTransactionsView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D769DF322BEC1A1C0062AE95 /* EditGeodatabaseWithTransactionsView.Model.swift */; };
+		D769F7702D8CD71100EA0B0A /* NapervilleGasUtilities.geodatabase in Resources */ = {isa = PBXBuildFile; fileRef = D769F76E2D8CD71100EA0B0A /* NapervilleGasUtilities.geodatabase */; settings = {ASSET_TAGS = (SnapGeometryEditsWithUtilityNetworkRules, ); }; };
 		D76CE8D92BFD7047009A8686 /* SetReferenceScaleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76CE8D52BFD7047009A8686 /* SetReferenceScaleView.swift */; };
 		D76CE8DA2BFD7063009A8686 /* SetReferenceScaleView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D76CE8D52BFD7047009A8686 /* SetReferenceScaleView.swift */; };
 		D76EE6072AF9AFE100DA0325 /* FindRouteAroundBarriersView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76EE6062AF9AFE100DA0325 /* FindRouteAroundBarriersView.Model.swift */; };
@@ -1040,6 +1041,7 @@
 		D76929F52B4F78340047205E /* OrbitCameraAroundObjectView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrbitCameraAroundObjectView.swift; sourceTree = "<group>"; };
 		D769C2112A29019B00030F61 /* SetUpLocationDrivenGeotriggersView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetUpLocationDrivenGeotriggersView.swift; sourceTree = "<group>"; };
 		D769DF322BEC1A1C0062AE95 /* EditGeodatabaseWithTransactionsView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditGeodatabaseWithTransactionsView.Model.swift; sourceTree = "<group>"; };
+		D769F76E2D8CD71100EA0B0A /* NapervilleGasUtilities.geodatabase */ = {isa = PBXFileReference; lastKnownFileType = file; path = NapervilleGasUtilities.geodatabase; sourceTree = "<group>"; };
 		D76CE8D52BFD7047009A8686 /* SetReferenceScaleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetReferenceScaleView.swift; sourceTree = "<group>"; };
 		D76EE6062AF9AFE100DA0325 /* FindRouteAroundBarriersView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindRouteAroundBarriersView.Model.swift; sourceTree = "<group>"; };
 		D7705D552AFC244E00CC0335 /* FindClosestFacilityToMultiplePointsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindClosestFacilityToMultiplePointsView.swift; sourceTree = "<group>"; };
@@ -1511,6 +1513,7 @@
 		00CCB8A6285D059300BBAB70 /* Portal Data */ = {
 			isa = PBXGroup;
 			children = (
+				D769F76F2D8CD71100EA0B0A /* 0fd3a39660d54c12b05d5f81f207dffd */,
 				D74C8C002ABA6202007C76B8 /* 1bd036f221f54a99abc9e46ff3511cbf */,
 				D7781D472B7EB03400E53C51 /* 4caec8c55ea2463982f1af7d9611b8d5 */,
 				D7C16D1D2AC5FE8200689E89 /* 5a9b60cee9ba41e79640a06bcdf8084d */,
@@ -2602,6 +2605,14 @@
 			path = "Set up location-driven geotriggers";
 			sourceTree = "<group>";
 		};
+		D769F76F2D8CD71100EA0B0A /* 0fd3a39660d54c12b05d5f81f207dffd */ = {
+			isa = PBXGroup;
+			children = (
+				D769F76E2D8CD71100EA0B0A /* NapervilleGasUtilities.geodatabase */,
+			);
+			path = 0fd3a39660d54c12b05d5f81f207dffd;
+			sourceTree = "<group>";
+		};
 		D76CE8D62BFD7047009A8686 /* Set reference scale */ = {
 			isa = PBXGroup;
 			children = (
@@ -3306,6 +3317,7 @@
 					ShowDeviceLocationWithNmeaDataSources,
 					ShowMobileMapPackageExpirationDate,
 					ShowViewshedFromGeoelementInScene,
+					SnapGeometryEditsWithUtilityNetworkRules,
 					StyleFeaturesWithCustomDictionary,
 					StylePointWithDistanceCompositeSceneSymbol,
 					StyleSymbolsFromMobileStyleFile,
@@ -3386,6 +3398,7 @@
 				D7E7D09A2AEB3C47003AAD02 /* san_diego_offline_routing in Resources */,
 				F111CCC4288B641900205358 /* Yellowstone.mmpk in Resources */,
 				D705390A2CD0122D00F63F4A /* mil2525d.stylx in Resources */,
+				D769F7702D8CD71100EA0B0A /* NapervilleGasUtilities.geodatabase in Resources */,
 				D77572AE2A295DDE00F490CD /* PacificSouthWest2 in Resources */,
 				D75E5EEC2CC0466900252595 /* esri_test_data.kmz in Resources */,
 				10D321932BDB187400B39B1B /* naperville_imagery.tpkx in Resources */,
