@@ -57,7 +57,6 @@ struct ShowPopupView: View {
                     isPresented: $showPopup
                 ) { [popup] in
                     PopupView(popup: popup!, isPresented: $showPopup)
-                        .showCloseButton(true)
                         .padding()
                 }
         }

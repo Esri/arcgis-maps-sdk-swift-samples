@@ -85,7 +85,6 @@ struct DisplayClustersView: View {
                     isPresented: $showsPopup
                 ) { [popup] in
                     PopupView(popup: popup!, isPresented: $showsPopup)
-                        .showCloseButton(true)
                         .padding([.top, .horizontal])
                     
                     if !geoElements.isEmpty {
