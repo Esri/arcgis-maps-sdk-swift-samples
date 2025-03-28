@@ -2,7 +2,9 @@
     "category": "Utility Networks",
     "description": "Use the Geometry Editor to edit geometries using utility network connectivity rules.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "snap-geometry-edits-with-utility-network-rules.png"
+    ],
     "keywords": [
         "edit",
         "feature",
@@ -46,7 +48,8 @@
         "UtilityNetwork"
     ],
     "snippets": [
-        "SnapGeometryEditsWithUtilityNetworkRulesView.swift"
+        "SnapGeometryEditsWithUtilityNetworkRulesView.swift",
+        "SnapGeometryEditsWithUtilityNetworkRulesView.Model.swift"
     ],
     "title": "Snap geometry edits with utility network rules"
 }
