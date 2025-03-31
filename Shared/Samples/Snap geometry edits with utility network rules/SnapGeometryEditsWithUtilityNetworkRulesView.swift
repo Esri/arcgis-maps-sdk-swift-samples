@@ -96,7 +96,7 @@ struct SnapGeometryEditsWithUtilityNetworkRulesView: View {
                     .multilineTextAlignment(.center)
                     .frame(maxWidth: .infinity, alignment: .center)
                     .padding(8)
-                    .background(.ultraThinMaterial, ignoresSafeAreaEdges: .horizontal)
+                    .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
                 
                 if let selectedElement = model.selectedElement {
                     VStack(alignment: .leading) {
@@ -105,7 +105,7 @@ struct SnapGeometryEditsWithUtilityNetworkRulesView: View {
                     }
                     .fixedSize()
                     .padding()
-                    .background(.ultraThinMaterial)
+                    .background(.thinMaterial)
                     .clipShape(.rect(cornerRadius: 10))
                     .shadow(radius: 3)
                     .padding(8)
