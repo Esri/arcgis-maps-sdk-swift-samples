@@ -12,9 +12,9 @@ A field worker can create new features in a utility network by editing and snapp
 
 To edit a geometry, tap a feature on the map to select it and press the edit button to start the geometry editor.
 
-Tap the "Snap Sources" button to view and enable/disable the snap sources. To interactively snap a vertex to a feature or graphic, ensure that snapping is enabled for the relevant snap source, then drag a vertex to nearby an existing feature or graphic. If the existing feature or graphic has valid utility network connectivity rules for the asset type that is being created or edited, the edit position will be adjusted to coincide with (or snap to) edges and vertices of its geometry. Tap to place the vertex at the snapped location. Snapping will not occur when `SnapRuleBehavior.rulesPreventSnapping` even when the source is enabled.
+Tap the "Snap Sources" button to view and enable/disable the snap sources. To interactively snap a vertex to a feature or graphic, ensure that snapping is enabled for the relevant snap source, then drag a vertex to nearby an existing feature or graphic. If the existing feature or graphic has valid utility network connectivity rules for the asset type that is being created or edited, the edit position will be adjusted to coincide with (or snap to) edges and vertices of its geometry. Tap to place the vertex at the snapped location. Snapping will not occur when `SnapRuleBehavior.rulesPreventSnapping` is `true`, even when the source is enabled.
 
-To discard changes and stop the geometry editor, press the cancel button. To save your edits, press the save button.
+To discard changes and stop the geometry editor, press the Cancel (X) button. To save your edits, press the Save (✔️) button.
 
 ## How it works
 

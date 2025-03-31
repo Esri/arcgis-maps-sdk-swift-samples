@@ -123,10 +123,9 @@ extension SnapGeometryEditsWithUtilityNetworkRulesView {
                 "Excess Flow Valve",
                 "Controllable Tee"
             ]
-            for sublayer in lineLayer.subtypeSublayers + deviceLayer.subtypeSublayers {
-                if !visibleSublayerNames.contains(sublayer.name) {
-                    sublayer.isVisible = false
-                }
+            let sublayers = lineLayer.subtypeSublayers + deviceLayer.subtypeSublayers
+            for sublayer in sublayers where !visibleSublayerNames.contains(sublayer.name) {
+                sublayer.isVisible = false
             }
         }
         
@@ -187,16 +186,18 @@ extension SnapGeometryEditsWithUtilityNetworkRulesView {
             }
             
             // Hides the selected feature on the layer.
-            let featureTable = selectedFeature.table as? ArcGISFeatureTable
-            let featureLayer = featureTable?.layer as? FeatureLayer
-            featureLayer?.setVisible(false, for: selectedFeature)
-            
-            // Gets the selected feature's symbol and uses it to set the tool's style.
-            let symbol = featureTable?.layerInfo?.drawingInfo?.renderer?.symbol(for: selectedFeature)
-            vertexTool.style.vertexSymbol = symbol
-            vertexTool.style.feedbackVertexSymbol = symbol
-            vertexTool.style.selectedVertexSymbol = symbol
-            vertexTool.style.vertexTextSymbol = nil
+            if let featureTable = selectedFeature.table as? ArcGISFeatureTable {
+                if let featureLayer = featureTable.layer as? FeatureLayer {
+                    featureLayer.setVisible(false, for: selectedFeature)
+                }
+                
+                // Gets the selected feature's symbol and uses it to set the tool's style.
+                let symbol = featureTable.layerInfo?.drawingInfo?.renderer?.symbol(for: selectedFeature)
+                vertexTool.style.vertexSymbol = symbol
+                vertexTool.style.feedbackVertexSymbol = symbol
+                vertexTool.style.selectedVertexSymbol = symbol
+                vertexTool.style.vertexTextSymbol = nil
+            }
             
             geometryEditor.tool = vertexTool
             geometryEditor.start(withInitial: geometry)
@@ -234,7 +235,7 @@ extension SnapGeometryEditsWithUtilityNetworkRulesView {
             _ settings: [SnapSourceSettings]
         ) -> [SnapSourceSettings] {
             let sourceNames: Set<String> = [.distributionPipe, .graphics, .pipelineLine, .servicePipe]
-            return settings.reduce(into: [SnapSourceSettings]()) { result, setting in
+            return settings.reduce(into: []) { result, setting in
                 guard sourceNames.contains(setting.source.name) else {
                     return
                 }

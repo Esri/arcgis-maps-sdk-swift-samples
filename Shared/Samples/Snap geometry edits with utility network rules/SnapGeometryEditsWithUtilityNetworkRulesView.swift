@@ -252,9 +252,9 @@ extension SnapSource {
     }
 }
 
-extension SnapRuleBehavior? {
+extension Optional<SnapRuleBehavior> {
     fileprivate static var allCases: [Self] {
-        return [nil, .rulesLimitSnapping, .rulesPreventSnapping]
+        return [.none, .rulesLimitSnapping, .rulesPreventSnapping]
     }
     
     /// The human-readable label for the snap rule behavior.
