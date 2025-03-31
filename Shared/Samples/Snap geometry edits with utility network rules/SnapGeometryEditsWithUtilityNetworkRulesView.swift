@@ -154,84 +154,82 @@ struct SnapGeometryEditsWithUtilityNetworkRulesView: View {
 
 // MARK: - Helper Views
 
-private extension SnapGeometryEditsWithUtilityNetworkRulesView {
-    /// A list for enabling and disabling snap source settings.
-    struct SnapSourcesList: View {
-        /// The snap source settings to show in the list.
-        let settings: [SnapSourceSettings]
-        
-        /// The action to dismiss the view.
-        @Environment(\.dismiss) private var dismiss
-        
-        /// The display scale of this environment.
-        @Environment(\.displayScale) private var displayScale
-        
-        /// The images for the snap rule behavior legend.
-        @State private var ruleBehaviorImages: [SnapRuleBehavior?: Image] = [:]
-        
-        var body: some View {
-            NavigationStack {
-                Form {
-                    Section {
-                        ForEach(Array(settings.enumerated()), id: \.offset) { _, settings in
-                            SnapSourceSettingsToggle(
-                                settings: settings,
-                                image: ruleBehaviorImages[settings.ruleBehavior]
-                            )
-                        }
+/// A list for enabling and disabling snap source settings.
+private struct SnapSourcesList: View {
+    /// The snap source settings to show in the list.
+    let settings: [SnapSourceSettings]
+    
+    /// The action to dismiss the view.
+    @Environment(\.dismiss) private var dismiss
+    
+    /// The display scale of this environment.
+    @Environment(\.displayScale) private var displayScale
+    
+    /// The images for the snap rule behavior legend.
+    @State private var ruleBehaviorImages: [SnapRuleBehavior?: Image] = [:]
+    
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section {
+                    ForEach(Array(settings.enumerated()), id: \.offset) { _, settings in
+                        SnapSourceSettingsToggle(
+                            settings: settings,
+                            image: ruleBehaviorImages[settings.ruleBehavior]
+                        )
                     }
-                    
-                    Section("Legend") {
-                        ForEach(SnapRuleBehavior?.allCases, id: \.self) { behavior in
-                            Label {
-                                Text(behavior.label)
-                            } icon: {
-                                ruleBehaviorImages[behavior]
-                            }
-                            .task(id: displayScale) {
-                                // Creates an image from the rule behavior's symbol.
-                                let swatch = try? await behavior.symbol.makeSwatch(scale: displayScale)
-                                ruleBehaviorImages[behavior] = Image(uiImage: swatch ?? UIImage())
-                            }
+                }
+                
+                Section("Legend") {
+                    ForEach(SnapRuleBehavior?.allCases, id: \.self) { behavior in
+                        Label {
+                            Text(behavior.label)
+                        } icon: {
+                            ruleBehaviorImages[behavior]
+                        }
+                        .task(id: displayScale) {
+                            // Creates an image from the rule behavior's symbol.
+                            let swatch = try? await behavior.symbol.makeSwatch(scale: displayScale)
+                            ruleBehaviorImages[behavior] = Image(uiImage: swatch ?? UIImage())
                         }
                     }
                 }
-                .navigationTitle("Snap Sources")
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .confirmationAction) {
-                        Button("Done") { dismiss() }
-                    }
+            }
+            .navigationTitle("Snap Sources")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") { dismiss() }
                 }
             }
         }
     }
+}
+
+/// A toggle for enabling and disabling a given snap source settings.
+private struct SnapSourceSettingsToggle: View {
+    /// The snap source settings to enable and disable.
+    let settings: SnapSourceSettings
     
-    /// A toggle for enabling and disabling a given snap source settings.
-    struct SnapSourceSettingsToggle: View {
-        /// The snap source settings to enable and disable.
-        let settings: SnapSourceSettings
-        
-        /// The image to use in the toggle's label.
-        let image: Image?
-        
-        /// A Boolean value indicating whether the toggle is enabled.
-        @State private var isEnabled = false
-        
-        var body: some View {
-            Toggle(isOn: $isEnabled) {
-                Label {
-                    Text(settings.source.name)
-                } icon: {
-                    image
-                }
+    /// The image to use in the toggle's label.
+    let image: Image?
+    
+    /// A Boolean value indicating whether the toggle is enabled.
+    @State private var isEnabled = false
+    
+    var body: some View {
+        Toggle(isOn: $isEnabled) {
+            Label {
+                Text(settings.source.name)
+            } icon: {
+                image
             }
-            .onChange(of: isEnabled) { newValue in
-                settings.isEnabled = newValue
-            }
-            .onAppear {
-                isEnabled = settings.isEnabled
-            }
+        }
+        .onChange(of: isEnabled) { newValue in
+            settings.isEnabled = newValue
+        }
+        .onAppear {
+            isEnabled = settings.isEnabled
         }
     }
 }
