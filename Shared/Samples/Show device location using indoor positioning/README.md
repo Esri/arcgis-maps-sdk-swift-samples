@@ -17,7 +17,7 @@ When there are no IPS beacons nearby or other errors occur while initializing th
 ## How it works
 
 1. Load an IPS-aware map. This can be a web map hosted as a portal item in ArcGIS Online, an Enterprise Portal, or a mobile map package (.mmpk) created with ArcGIS Pro.
-2. Create and load an `IndoorPositioningDefinition` (stored with the map), then create an `IndoorsLocationDataSource` from it. See the details about creating the location data source in the "[`Additional information`](#additional-information)" section below.
+2. Create and load an `IndoorPositioningDefinition` (stored with IPS-aware maps), then create an `IndoorsLocationDataSource` from it.
 3. Handle location change events to respond to floor changes or read other metadata for locations.
 4. Assign the `IndoorsLocationDataSource` to the map view's location display.
 5. Enable and disable the map view's location display using `start()` and `stop()`. Device location will appear on the display as a blue dot and update as the user moves throughout the space.
@@ -41,9 +41,6 @@ This sample uses an [IPS-aware web map](https://www.arcgis.com/home/item.html?id
 ## Additional information
 
 * Location and Bluetooth permissions are required for this sample.
-* You could initialize the `IndoorsLocationDataSource` from individual feature tables stored in different data sources, such as map, mobile geodatabase, and feature services. With version 200.5 and higher, you can construct the `IndoorsLocationDataSource` using a single `IndoorPositioningDefinition` available in your IPS-aware map. In short…
-    * If an `IndoorPositioningDefinition` is available in your IPS-aware map, use it to construct `IndoorsLocationDataSource`.
-    * If your map does not have an `IndoorPositioningDefinition`, construct the location data source from individual feature tables as described in [Manually create an indoor location data source](https://developers.arcgis.com/swift/device-location/indoor-positioning/#manually-create-an-indoor-location-data-source) documentation.
 * To learn more about IPS, read the [Indoor positioning](https://developers.arcgis.com/swift/device-location/indoor-positioning/) article on ArcGIS Developer website.
 * To learn more about how to deploy the indoor positioning system, read the [Deploy ArcGIS IPS](https://doc.arcgis.com/en/ips/latest/get-started/introduction-to-the-deployment-of-arcgis-ips.htm) article.
 
