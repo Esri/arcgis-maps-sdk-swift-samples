@@ -19,7 +19,7 @@ import Foundation
 extension ShowDeviceLocationUsingIndoorPositioningView {
     @MainActor
     class Model: ObservableObject {
-        /// An IPS-aware and floor-aware web map for all three floors of 
+        /// An IPS-aware and floor-aware web map for all three floors of
         /// Esri Building L in Redlands.
         let map = Map(item: PortalItem(portal: .arcGISOnline(connection: .anonymous), id: .indoorsMap))
         
@@ -66,71 +66,19 @@ extension ShowDeviceLocationUsingIndoorPositioningView {
         }
         
         /// Sets the indoors location data source on the location display
-        /// depending on whether the map contains an indoor positioning definition.
+        /// using the map's indoor positioning definition.
         private func setUpIndoorsLocationDataSource() async throws {
-            let dataSource: IndoorsLocationDataSource
             if let indoorPositioningDefinition = map.indoorPositioningDefinition {
-                // If an indoor positioning definition exists in the map, uses it
-                // to set the IndoorsLocationDataSource. This is the recommended approach.
+                // Gets indoor positioning definition from the IPS-aware map
+                // and uses it to set the IndoorsLocationDataSource.
                 try await indoorPositioningDefinition.load()
-                dataSource = IndoorsLocationDataSource(definition: indoorPositioningDefinition)
-            } else if let positioningTable = map.tables.first(where: { $0.tableName == "ips_positioning" }) as? ServiceFeatureTable {
-                // Otherwise, creates the IndoorsLocationDataSource using
-                // IPS positioning table information. This is useful for
-                // manually creating an indoors location data source.
-                dataSource = try await makeIndoorsLocationDataSourceFromTables(map: map, positioningTable: positioningTable)
+                let dataSource = IndoorsLocationDataSource(definition: indoorPositioningDefinition)
+                locationDisplay.dataSource = dataSource
             } else {
                 throw SetupError()
             }
-            locationDisplay.dataSource = dataSource
             // Starts the location display.
             try await locationDisplay.dataSource.start()
-        }
-        
-        /// Creates an indoor location data source from the maps tables
-        /// when there is no indoors definition.
-        /// - Parameters:
-        ///   - map: The map which contains the data in accordance with
-        ///   the ArcGIS Indoors Information Model.
-        ///   - positioningTable: The “ips\_positioning” table from
-        ///   an IPS-aware map.
-        /// - Returns: Returns a configured `IndoorsLocationDataSource` created
-        /// from the various tables.
-        private func makeIndoorsLocationDataSourceFromTables(
-            map: Map,
-            positioningTable: ServiceFeatureTable
-        ) async throws -> IndoorsLocationDataSource {
-            let queryParameters = QueryParameters()
-            queryParameters.maxFeatures = 1
-            // Gets the specific version of data that is compatible to the schema.
-            // When use your own map, make sure the query returns the correct data.
-            queryParameters.whereClause = "OBJECTID=2"
-            // Queries a feature in the positioning table to get the positioning ID.
-            let queryResult = try await positioningTable.queryFeatures(using: queryParameters)
-            let feature = queryResult.features().makeIterator().next()!
-            // The ID that identifies a row in the positioning table.
-            // It is possible to initialize ILDS without globalID,
-            // in which case the first row of the positioning table
-            // will be used.
-            let positioningID = feature.attributes[positioningTable.globalIDField] as? UUID
-            // Gets the pathways table (optional for creating the IndoorsLocationDataSource).
-            // The network pathways for routing between locations on the same level.
-            let pathwaysTable = (
-                map.operationalLayers.first(where: { $0.name == "Pathways" }) as! FeatureLayer
-            ).featureTable as! ArcGISFeatureTable
-            // Gets the levels layer (optional for creating the IndoorsLocationDataSource).
-            // The table that contains floor levels.
-            let levelsTable = (
-                map.operationalLayers.first(where: { $0.name == "Levels" }) as! FeatureLayer
-            ).featureTable as! ArcGISFeatureTable
-            // Initialize an IndoorsLocationDataSource with positioning, pathways,
-            // levels tables, and positioning ID.
-            return IndoorsLocationDataSource(
-                positioningTable: positioningTable,
-                pathwaysTable: pathwaysTable,
-                levelsTable: levelsTable,
-                positioningID: positioningID
-            )
         }
         
         /// Updates the location when the location data source is triggered.
