@@ -16,8 +16,14 @@ import ArcGIS
 import SwiftUI
 
 struct SnapGeometryEditsWithUtilityNetworkRulesView: View {
+    /// The display scale of this environment.
+    @Environment(\.displayScale) private var displayScale
+    
     /// The view model for the sample.
     @StateObject private var model = Model()
+    
+    /// The images representing the different snap rule behavior cases.
+    @State private var ruleBehaviorImages: [SnapRuleBehavior?: Image] = [:]
     
     /// The various states of the sample.
     private enum SampleState: Equatable {
@@ -94,7 +100,7 @@ struct SnapGeometryEditsWithUtilityNetworkRulesView: View {
             VStack(alignment: .trailing, spacing: 0) {
                 Text(instructionText)
                     .multilineTextAlignment(.center)
-                    .frame(maxWidth: .infinity, alignment: .center)
+                    .frame(maxWidth: .infinity)
                     .padding(8)
                     .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
                 
@@ -110,6 +116,13 @@ struct SnapGeometryEditsWithUtilityNetworkRulesView: View {
                     .shadow(radius: 3)
                     .padding(8)
                     .transition(.move(edge: .trailing))
+                    
+                    Spacer()
+                    
+                    SnapRuleBehaviorLegend(images: ruleBehaviorImages)
+                        .frame(maxWidth: .infinity)
+                        .padding(8)
+                        .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
                 }
             }
             .animation(.default, value: model.selectedElement == nil)
@@ -129,9 +142,12 @@ struct SnapGeometryEditsWithUtilityNetworkRulesView: View {
                 }
                 .disabled(model.snapSourceSettings.isEmpty)
                 .popover(isPresented: $sourcesListIsPresented) {
-                    SnapSourcesList(settings: model.snapSourceSettings)
-                        .presentationDetents([.fraction(0.5)])
-                        .frame(idealWidth: 320, idealHeight: 390)
+                    SnapSourcesList(
+                        settings: model.snapSourceSettings,
+                        ruleBehaviorImages: ruleBehaviorImages
+                    )
+                    .presentationDetents([.fraction(0.5)])
+                    .frame(idealWidth: 320, idealHeight: 390)
                 }
                 
                 Spacer()
@@ -149,50 +165,56 @@ struct SnapGeometryEditsWithUtilityNetworkRulesView: View {
                 }
             }
         }
+        .task(id: displayScale) {
+            // Creates an image from each rule behavior's symbol.
+            for behavior in SnapRuleBehavior?.allCases {
+                let swatch = try? await behavior.symbol.makeSwatch(scale: displayScale)
+                ruleBehaviorImages[behavior] = swatch.map(Image.init(uiImage:))
+            }
+        }
     }
 }
 
 // MARK: - Helper Views
+
+/// The legend for the different snap rule behavior cases.
+private struct SnapRuleBehaviorLegend: View {
+    /// The images representing the different snap rule behavior cases.
+    let images: [SnapRuleBehavior?: Image]
+    
+    var body: some View {
+        LabeledContent("Snapping") {
+            HStack {
+                ForEach(SnapRuleBehavior?.allCases, id: \.self) { behavior in
+                    Label {
+                        Text(behavior.label)
+                    } icon: {
+                        images[behavior]
+                    }
+                }
+            }
+        }
+        .font(.footnote)
+    }
+}
 
 /// A list for enabling and disabling snap source settings.
 private struct SnapSourcesList: View {
     /// The snap source settings to show in the list.
     let settings: [SnapSourceSettings]
     
+    /// The images representing the different snap rule behavior cases.
+    let ruleBehaviorImages: [SnapRuleBehavior?: Image]
+    
     /// The action to dismiss the view.
     @Environment(\.dismiss) private var dismiss
-    
-    /// The display scale of this environment.
-    @Environment(\.displayScale) private var displayScale
-    
-    /// The images for the snap rule behavior legend.
-    @State private var ruleBehaviorImages: [SnapRuleBehavior?: Image] = [:]
     
     var body: some View {
         NavigationStack {
             Form {
-                Section {
-                    ForEach(Array(settings.enumerated()), id: \.offset) { _, settings in
-                        SnapSourceSettingsToggle(
-                            settings: settings,
-                            image: ruleBehaviorImages[settings.ruleBehavior]
-                        )
-                    }
-                }
-                
-                Section("Legend") {
-                    ForEach(SnapRuleBehavior?.allCases, id: \.self) { behavior in
-                        Label {
-                            Text(behavior.label)
-                        } icon: {
-                            ruleBehaviorImages[behavior]
-                        }
-                        .task(id: displayScale) {
-                            // Creates an image from the rule behavior's symbol.
-                            let swatch = try? await behavior.symbol.makeSwatch(scale: displayScale)
-                            ruleBehaviorImages[behavior] = Image(uiImage: swatch ?? UIImage())
-                        }
-                    }
+                ForEach(Array(settings.enumerated()), id: \.offset) { _, settings in
+                    let image = ruleBehaviorImages[settings.ruleBehavior]
+                    SnapSourceSettingsToggle(settings: settings, image: image)
                 }
             }
             .navigationTitle("Snap Sources")
@@ -255,12 +277,12 @@ extension Optional<SnapRuleBehavior> {
         return [.none, .rulesLimitSnapping, .rulesPreventSnapping]
     }
     
-    /// The human-readable label for the snap rule behavior.
+    /// The legend label for the snap rule behavior.
     fileprivate var label: String {
         switch self {
-        case .rulesLimitSnapping: "Rules Limit Snapping"
-        case .rulesPreventSnapping: "Rules Prevent Snapping"
-        default: "None"
+        case .rulesLimitSnapping: "Limited"
+        case .rulesPreventSnapping: "Prevented"
+        default: "Allowed"
         }
     }
     
