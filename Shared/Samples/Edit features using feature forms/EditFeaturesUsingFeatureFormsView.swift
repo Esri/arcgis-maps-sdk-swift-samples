@@ -37,6 +37,9 @@ struct EditFeaturesUsingFeatureFormsView: View {
     /// A Boolean value indicating whether the discard edits alert is presented.
     @State private var isShowingDiscardEditsAlert = false
     
+    /// A Boolean value indicating whether any edits have been made to the feature form.
+    @State private var hasEdits = false
+    
     /// A Boolean value indicating whether the feature form has any validation errors.
     @State private var hasValidationErrors = false
     
@@ -69,7 +72,7 @@ struct EditFeaturesUsingFeatureFormsView: View {
             MapView(map: map)
                 .onSingleTapGesture { screenPoint, _ in
                     if isShowingFeatureForm {
-                        isShowingDiscardEditsAlert = true
+                        showDiscardEditsAlert()
                     } else {
                         tapPoint = screenPoint
                     }
@@ -109,6 +112,15 @@ struct EditFeaturesUsingFeatureFormsView: View {
                             FeatureFormView(featureForm: featureForm)
                                 .padding(.horizontal)
                                 .task {
+                                    defer { hasEdits = false }
+                                    
+                                    for await hasEdits in featureForm.$hasEdits {
+                                        self.hasEdits = hasEdits
+                                    }
+                                }
+                                .task {
+                                    defer { hasValidationErrors = false }
+                                    
                                     for await validationErrors in featureForm.$validationErrors {
                                         hasValidationErrors = !validationErrors.isEmpty
                                     }
@@ -126,6 +138,7 @@ struct EditFeaturesUsingFeatureFormsView: View {
                     Text("Any changes made within the form will be lost.")
                 }
                 .errorAlert(presentingError: $error)
+                .disabled(isApplyingEdits)
         }
     }
     
@@ -133,7 +146,7 @@ struct EditFeaturesUsingFeatureFormsView: View {
     private var featureFormToolbar: some View {
         HStack {
             Button("Discard Edits", systemImage: "xmark.circle", role: .destructive) {
-                isShowingDiscardEditsAlert = true
+                showDiscardEditsAlert()
             }
             
             Spacer()
@@ -145,7 +158,7 @@ struct EditFeaturesUsingFeatureFormsView: View {
             Button("Done", systemImage: "checkmark") {
                 isApplyingEdits = true
             }
-            .disabled(hasValidationErrors)
+            .disabled(!hasEdits || hasValidationErrors)
             .task(id: isApplyingEdits) {
                 guard isApplyingEdits else { return }
                 defer { isApplyingEdits = false }
@@ -167,6 +180,15 @@ struct EditFeaturesUsingFeatureFormsView: View {
     private func endEditing() {
         isShowingFeatureForm = false
         featureLayer.clearSelection()
+    }
+    
+    /// Shows the discard edits alert if the feature form has edits.
+    private func showDiscardEditsAlert() {
+        if hasEdits {
+            isShowingDiscardEditsAlert = true
+        } else {
+            endEditing()
+        }
     }
     
     /// Applies the edits made in the feature form to the feature service.
