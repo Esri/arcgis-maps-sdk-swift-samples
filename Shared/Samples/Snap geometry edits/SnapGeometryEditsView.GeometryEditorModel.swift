@@ -27,6 +27,16 @@ extension SnapGeometryEditsView {
             return geometryEditor
         }()
         
+        /// The geometry editor tool used to edit geometries for the most optimal
+        /// snapping experience based on the device type.
+        let adaptiveVertexTool: GeometryEditorTool = {
+#if targetEnvironment(macCatalyst)
+            VertexTool()
+#else
+            ReticleVertexTool()
+#endif
+        }()
+        
         /// The graphics overlay used to save geometries to.
         let geometryOverlay: GraphicsOverlay = {
             let overlay = GraphicsOverlay(renderingMode: .dynamic)
@@ -43,13 +53,19 @@ extension SnapGeometryEditsView {
         /// A Boolean value indicating if the scale mode is uniform.
         @Published var isUniformScale = false {
             didSet {
-                configureGeometryEditorTool(geometryEditor.tool, scaleMode: scaleMode)
+                if let vertexTool = adaptiveVertexTool as? VertexTool {
+                    vertexTool.configuration.scaleMode = scaleMode
+                }
             }
         }
         
         /// The scale mode to be set on the geometry editor.
         private var scaleMode: GeometryEditorScaleMode {
             isUniformScale ? .uniform : .stretch
+        }
+        
+        init() {
+            geometryEditor.tool = adaptiveVertexTool
         }
         
         /// Saves the current geometry to the graphics overlay and stops editing.
@@ -94,32 +110,10 @@ extension SnapGeometryEditsView {
             }
         }
         
-        /// Configures the scale mode for the geometry editor tool.
+        /// Starts editing with the specified geometry type.
         /// - Parameters:
-        ///   - tool: The geometry editor tool.
-        ///   - scaleMode: Preserve the original aspect ratio or scale freely.
-        private func configureGeometryEditorTool(_ tool: GeometryEditorTool, scaleMode: GeometryEditorScaleMode) {
-            switch tool {
-            case let tool as FreehandTool:
-                tool.configuration.scaleMode = scaleMode
-            case let tool as ShapeTool:
-                tool.configuration.scaleMode = scaleMode
-            case let tool as VertexTool:
-                tool.configuration.scaleMode = scaleMode
-            case _ as ReticleVertexTool:
-                break
-            default:
-                fatalError("Unexpected tool type")
-            }
-        }
-        
-        /// Starts editing with the specified tool and geometry type.
-        /// - Parameters:
-        ///   - tool: The tool to draw with.
         ///   - geometryType: The type of geometry to draw.
-        func startEditing(with tool: GeometryEditorTool, geometryType: Geometry.Type) {
-            configureGeometryEditorTool(tool, scaleMode: scaleMode)
-            geometryEditor.tool = tool
+        func startEditing(withType geometryType: Geometry.Type) {
             geometryEditor.start(withType: geometryType)
             isStarted = true
         }
