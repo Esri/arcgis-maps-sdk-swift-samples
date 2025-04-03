@@ -173,8 +173,8 @@ private extension ConfigureElectronicNavigationalChartsView {
             textGroupVisibilitySettings.includesNatureOfSeabed = false
             
             let viewingGroupSettings = displaySettings.viewingGroupSettings
-            viewingGroupSettings.includesBuoysBeaconsAidsToNavigation = false
             viewingGroupSettings.includesDepthContours = false
+            viewingGroupSettings.includesLights = false
             viewingGroupSettings.includesSpotSoundings = false
         }
     }
