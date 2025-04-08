@@ -25,8 +25,6 @@ When there are no IPS beacons nearby or other errors occur while initializing th
 
 ## Relevant API
 
-* ArcGISFeatureTable
-* FeatureTable
 * IndoorPositioningDefinition
 * IndoorsLocationDataSource
 * LocationDisplay

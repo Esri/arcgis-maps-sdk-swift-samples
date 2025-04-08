@@ -126,7 +126,7 @@ private extension ShowDeviceLocationUsingIndoorPositioningView.Model {
         var errorDescription: String? {
             .init(
                 localized: "Cannot initialize indoors location data source.",
-                comment: "No indoor positioning definition or positioning table is found."
+                comment: "No indoor positioning definition is found."
             )
         }
     }
