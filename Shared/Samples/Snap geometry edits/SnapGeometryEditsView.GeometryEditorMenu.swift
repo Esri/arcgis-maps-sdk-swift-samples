@@ -27,16 +27,6 @@ extension SnapGeometryEditsView {
         /// The current geometry of the geometry editor.
         @State private var geometry: Geometry?
         
-        /// The geometry editor tool used to edit geometries for the most optimal
-        /// snapping experience based on the device type.
-        private var adaptiveVertexTool: GeometryEditorTool {
-#if targetEnvironment(macCatalyst)
-            VertexTool()
-#else
-            ReticleVertexTool()
-#endif
-        }
-        
         /// A Boolean value indicating if the geometry editor can perform an undo.
         private var canUndo: Bool {
             return model.geometryEditor.canUndo
@@ -96,61 +86,19 @@ extension SnapGeometryEditsView {
         private var mainMenuContent: some View {
             VStack {
                 Button("New Point", systemImage: "smallcircle.filled.circle") {
-                    model.startEditing(with: adaptiveVertexTool, geometryType: Point.self)
+                    model.startEditing(withType: Point.self)
                 }
                 
                 Button("New Line", systemImage: "line.diagonal") {
-                    model.startEditing(with: adaptiveVertexTool, geometryType: Polyline.self)
+                    model.startEditing(withType: Polyline.self)
                 }
                 
                 Button("New Area", systemImage: "skew") {
-                    model.startEditing(with: adaptiveVertexTool, geometryType: Polygon.self)
+                    model.startEditing(withType: Polygon.self)
                 }
                 
                 Button("New Multipoint", systemImage: "hand.point.up.braille") {
-                    model.startEditing(with: adaptiveVertexTool, geometryType: Multipoint.self)
-                }
-                
-                Button("New Freehand Line", systemImage: "scribble") {
-                    model.startEditing(with: FreehandTool(), geometryType: Polyline.self)
-                }
-                
-                Button("New Freehand Area", systemImage: "lasso") {
-                    model.startEditing(with: FreehandTool(), geometryType: Polygon.self)
-                }
-                
-                Menu("Shapes") {
-                    Button("New Line Arrow", systemImage: "arrowshape.right") {
-                        model.startEditing(with: ShapeTool(kind: .arrow), geometryType: Polyline.self)
-                    }
-                    
-                    Button("New Polygon Arrow", systemImage: "arrowshape.right.fill") {
-                        model.startEditing(with: ShapeTool(kind: .arrow), geometryType: Polygon.self)
-                    }
-                    
-                    Button("New Line Rectangle", systemImage: "rectangle") {
-                        model.startEditing(with: ShapeTool(kind: .rectangle), geometryType: Polyline.self)
-                    }
-                    
-                    Button("New Polygon Rectangle", systemImage: "rectangle.fill") {
-                        model.startEditing(with: ShapeTool(kind: .rectangle), geometryType: Polygon.self)
-                    }
-                    
-                    Button("New Line Ellipse", systemImage: "circle") {
-                        model.startEditing(with: ShapeTool(kind: .ellipse), geometryType: Polyline.self)
-                    }
-                    
-                    Button("New Polygon Ellipse", systemImage: "circle.fill") {
-                        model.startEditing(with: ShapeTool(kind: .ellipse), geometryType: Polygon.self)
-                    }
-                    
-                    Button("New Line Triangle", systemImage: "triangle") {
-                        model.startEditing(with: ShapeTool(kind: .triangle), geometryType: Polyline.self)
-                    }
-                    
-                    Button("New Polygon Triangle", systemImage: "triangle.fill") {
-                        model.startEditing(with: ShapeTool(kind: .triangle), geometryType: Polygon.self)
-                    }
+                    model.startEditing(withType: Multipoint.self)
                 }
                 
                 Divider()
@@ -180,7 +128,9 @@ extension SnapGeometryEditsView {
                 }
                 .disabled(deleteButtonIsDisabled)
                 
-                Toggle("Uniform Scale", isOn: $model.isUniformScale)
+                if model.adaptiveVertexTool is VertexTool {
+                    Toggle("Uniform Scale", isOn: $model.isUniformScale)
+                }
                 
                 Button("Clear Current Sketch", systemImage: "trash", role: .destructive) {
                     model.geometryEditor.clearGeometry()

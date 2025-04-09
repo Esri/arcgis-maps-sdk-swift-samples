@@ -173,7 +173,7 @@ extension DensifyAndGeneralizeGeometryView {
             }
             
             // Convert the result points to an array.
-            let points = resultPolyline.parts.flatMap { $0.points }
+            let points = resultPolyline.parts.flatMap(\.points)
             
             // Create a multipoint geometry from the points array.
             let resultMultipoint = Multipoint(points: points)

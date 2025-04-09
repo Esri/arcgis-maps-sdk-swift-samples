@@ -49,7 +49,7 @@ struct SearchWithGeocodeView: View {
     @State private var calloutPlacement: CalloutPlacement?
     
     /// Provides search behavior customization.
-    @ObservedObject private var locatorDataSource = LocatorSearchSource(
+    @StateObject private var locatorDataSource = LocatorSearchSource(
         name: "My Locator",
         maximumResults: 10,
         maximumSuggestions: 5

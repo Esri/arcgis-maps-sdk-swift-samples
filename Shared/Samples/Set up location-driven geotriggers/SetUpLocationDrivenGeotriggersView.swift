@@ -114,7 +114,6 @@ struct SetUpLocationDrivenGeotriggersView: View {
                 isPresented: $isShowingPopup
             ) {
                 PopupView(popup: model.popup!, isPresented: $isShowingPopup)
-                    .showCloseButton(true)
                     .padding()
             }
             .task(id: isShowingPopup) {

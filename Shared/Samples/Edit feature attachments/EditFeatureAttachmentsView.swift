@@ -212,7 +212,7 @@ private extension EditFeatureAttachmentsView {
 
 private extension EditFeatureAttachmentsView {
     struct AddAttachmentView: View {
-        // The closure called when add button is tapped.
+        /// The closure called when add button is tapped.
         let onAdd: (() -> Void)
         
         var body: some View {

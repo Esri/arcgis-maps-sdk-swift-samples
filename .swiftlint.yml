@@ -33,9 +33,10 @@ opt_in_rules:
   - closure_end_indentation
   - closure_spacing
   - collection_alignment
+  - contains_over_filter_count
+  - contains_over_filter_is_empty
   - contains_over_first_not_nil
   - convenience_type
-  - discouraged_direct_init
   - discouraged_optional_boolean
   - empty_count
   - empty_string
@@ -47,7 +48,6 @@ opt_in_rules:
   - function_default_parameter_at_end
   - identical_operands
   - joined_default_parameter
-  - legacy_random
   - let_var_whitespace
   - literal_expression_end_indentation
   - lower_acl_than_parent
@@ -57,9 +57,9 @@ opt_in_rules:
   - multiline_function_chains
   - multiline_parameters
   - operator_usage_whitespace
-  - operator_whitespace
   - overridden_super_call
   - override_in_extension
+  - prefer_key_path
   - prohibited_super_call
   - redundant_nil_coalescing
   - redundant_type_annotation

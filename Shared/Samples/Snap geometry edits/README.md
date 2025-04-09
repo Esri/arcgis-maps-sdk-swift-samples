@@ -57,6 +57,8 @@ Geometry guides are enabled by default when snapping is enabled. These allow for
 
 On supported platforms, haptic feedback on `SnapState.snappedToFeature` and `SnapState.snappedToGeometryGuide` is enabled by default when snapping is enabled. Custom haptic feedback can be configured by setting `SnapSettings.hapticFeedbackIsEnabled` to false and listening to the `GeometryEditor.snapChanges` stream to provide specific feedback depending on the `SnapState`.
 
+When using `SubtypeFeatureLayer` objects as snap sources instead of `FeatureLayer`, child `SubtypeSublayer` objects are included as snap sources in the parent `SnapSourceSettings.childSourceSettings` collection in the same order as the `SubtypeFeatureLayer.subtypeSublayers` collection.
+
 ## Tags
 
 edit, feature, geometry editor, graphics, layers, map, snapping

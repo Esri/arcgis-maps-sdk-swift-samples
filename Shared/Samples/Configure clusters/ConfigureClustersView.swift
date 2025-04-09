@@ -53,7 +53,6 @@ struct ConfigureClustersView: View {
                     isPresented: $showsPopup
                 ) { [popup] in
                     PopupView(popup: popup!, isPresented: $showsPopup)
-                        .showCloseButton(true)
                         .padding()
                 }
                 .toolbar {
