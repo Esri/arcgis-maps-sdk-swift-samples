@@ -34,7 +34,9 @@ struct AddKMLLayerView: View {
                             Text(source.label)
                         }
                     }
-                    .onChange(of: selectedLayerSource, perform: setKMLLayer(forSource:))
+                    .onChange(of: selectedLayerSource) {
+                        setKMLLayer(for: selectedLayerSource)
+                    }
                 }
             }
             .task {
@@ -42,13 +44,13 @@ struct AddKMLLayerView: View {
                 let kmlLayers = [model.urlLayer, model.localFileLayer, model.portalItemLayer]
                 await kmlLayers.load()
                 
-                setKMLLayer(forSource: selectedLayerSource)
+                setKMLLayer(for: selectedLayerSource)
             }
     }
     
     /// Sets a KML layer on the map.
     /// - Parameter source: The source that was used to create the KML layer.
-    private func setKMLLayer(forSource source: KMLLayerSource) {
+    private func setKMLLayer(for source: KMLLayerSource) {
         let kmlLayer = switch source {
         case .url: model.urlLayer
         case .localFile: model.localFileLayer

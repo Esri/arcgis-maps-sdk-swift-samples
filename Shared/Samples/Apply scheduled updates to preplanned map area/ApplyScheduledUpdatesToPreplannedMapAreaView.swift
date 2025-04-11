@@ -40,7 +40,7 @@ struct ApplyScheduledUpdatesToPreplannedMapAreaView: View {
                     self.error = error
                 }
             }
-            .onChange(of: model.updatesInfo == nil) { _ in
+            .onChange(of: model.updatesInfo == nil) {
                 guard let updatesInfo = model.updatesInfo else { return }
                 // Handle the updates info from the offline map sync task.
                 handleUpdatesInfo(updatesInfo)

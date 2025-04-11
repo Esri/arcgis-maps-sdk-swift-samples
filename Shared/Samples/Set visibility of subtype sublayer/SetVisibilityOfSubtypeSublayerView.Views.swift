@@ -32,12 +32,12 @@ extension SetVisibilityOfSubtypeSublayerView {
             Form {
                 Section("Layers") {
                     Toggle("Show Sublayer", isOn: $showsSublayer)
-                        .onChange(of: showsSublayer) { newValue in
-                            model.toggleSublayer(isVisible: newValue)
+                        .onChange(of: showsSublayer) {
+                            model.toggleSublayer(isVisible: showsSublayer)
                         }
                     Toggle("Show Original Renderer", isOn: $showsOriginalRenderer)
-                        .onChange(of: showsOriginalRenderer) { newValue in
-                            model.toggleRenderer(showsOriginalRenderer: newValue)
+                        .onChange(of: showsOriginalRenderer) {
+                            model.toggleRenderer(showsOriginalRenderer: showsOriginalRenderer)
                         }
                 }
                 Section("Sublayer Minimum Scale") {

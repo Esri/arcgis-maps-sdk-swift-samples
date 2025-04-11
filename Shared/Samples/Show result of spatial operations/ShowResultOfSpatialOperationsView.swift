@@ -24,7 +24,7 @@ struct ShowResultOfSpatialOperationsView: View {
     
     var body: some View {
         MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
-            .onChange(of: spatialOperation) { _ in
+            .onChange(of: spatialOperation) {
                 model.performOperation(spatialOperation)
             }
             .toolbar {

@@ -51,10 +51,10 @@ extension AddFeaturesWithContingentValuesView {
                             Text(option?.name ?? "")
                         }
                     }
-                    .onChange(of: selectedStatusName) { newStatusName in
+                    .onChange(of: selectedStatusName) {
                         // Update the feature's status attribute.
                         guard let selectedCodedValue = statusOptions.first(
-                            where: { $0?.name == newStatusName }
+                            where: { $0?.name == selectedStatusName }
                         ) else { return }
                         
                         model.setFeatureAttributeValue(selectedCodedValue?.code, forKey: "Status")
@@ -71,10 +71,10 @@ extension AddFeaturesWithContingentValuesView {
                             Text(option?.codedValue.name ?? "")
                         }
                     }
-                    .onChange(of: selectedProtectionName) { newProtectionName in
+                    .onChange(of: selectedProtectionName) {
                         // Update the feature's protection attribute.
                         guard let selectedContingentValue = protectionOptions.first(
-                            where: { $0?.codedValue.name == newProtectionName }
+                            where: { $0?.codedValue.name == selectedProtectionName }
                         ) else { return }
                         
                         model.setFeatureAttributeValue(
@@ -100,12 +100,15 @@ extension AddFeaturesWithContingentValuesView {
                             ),
                             in: bufferSizeRange ?? 0...0
                         )
-                        .onChange(of: selectedBufferSize ?? .nan) { newBufferSize in
-                            guard newBufferSize.isFinite else { return }
+                        .onChange(of: selectedBufferSize) {
+                            guard let selectedBufferSize,
+                                  selectedBufferSize.isFinite else {
+                                return
+                            }
                             
                             // Update the feature's buffer size attribute.
                             model.setFeatureAttributeValue(
-                                Int32(newBufferSize),
+                                Int32(selectedBufferSize),
                                 forKey: "BufferSize"
                             )
                         }

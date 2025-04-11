@@ -75,13 +75,19 @@ private struct SimpleMarkerSymbolEditor: View {
     
     var body: some View {
         EnumerationPicker("Style", selection: $selectedStyle)
-            .onChange(of: selectedStyle) { symbol.style = $0 }
+            .onChange(of: selectedStyle) {
+                symbol.style = selectedStyle
+            }
         
         ColorPicker("Color", selection: $selectedColor)
-            .onChange(of: selectedColor) { symbol.color = UIColor($0) }
+            .onChange(of: selectedColor) {
+                symbol.color = UIColor(selectedColor)
+            }
         
         Stepper("Size: \(selectedSize)", value: $selectedSize, in: 5...15)
-            .onChange(of: selectedSize) { symbol.size = CGFloat($0) }
+            .onChange(of: selectedSize) {
+                symbol.size = CGFloat(selectedSize)
+            }
             .onAppear {
                 selectedStyle = symbol.style
                 selectedColor = Color(uiColor: symbol.color)
@@ -106,13 +112,19 @@ private struct SimpleLineSymbolEditor: View {
     
     var body: some View {
         EnumerationPicker("Style", selection: $selectedStyle)
-            .onChange(of: selectedStyle) { symbol.style = $0 }
+            .onChange(of: selectedStyle) {
+                symbol.style = selectedStyle
+            }
         
         ColorPicker("Color", selection: $selectedColor)
-            .onChange(of: selectedColor) { symbol.color = UIColor($0) }
+            .onChange(of: selectedColor) {
+                symbol.color = UIColor(selectedColor)
+            }
         
         Stepper("Width: \(selectedWidth)", value: $selectedWidth, in: 1...10)
-            .onChange(of: selectedWidth) { symbol.width = CGFloat($0) }
+            .onChange(of: selectedWidth) {
+                symbol.width = CGFloat(selectedWidth)
+            }
             .onAppear {
                 selectedStyle = symbol.style
                 selectedColor = Color(uiColor: symbol.color)
@@ -134,10 +146,14 @@ private struct SimpleFillSymbolEditor: View {
     
     var body: some View {
         EnumerationPicker("Style", selection: $selectedStyle)
-            .onChange(of: selectedStyle) { symbol.style = $0 }
+            .onChange(of: selectedStyle) {
+                symbol.style = selectedStyle
+            }
         
         ColorPicker("Color", selection: $selectedColor)
-            .onChange(of: selectedColor) { symbol.color = UIColor($0) }
+            .onChange(of: selectedColor) {
+                symbol.color = UIColor(selectedColor)
+            }
         
         Section("Outline") {
             SimpleLineSymbolEditor(symbol: symbol.outline as! SimpleLineSymbol)

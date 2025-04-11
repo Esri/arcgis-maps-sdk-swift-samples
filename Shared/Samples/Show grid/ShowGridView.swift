@@ -181,8 +181,8 @@ private extension ShowGridView {
                                 Text(format.label)
                             }
                         }
-                        .onChange(of: model.labelFormat) { newLabelFormat in
-                            latitudeLongitudeGrid.labelFormat = newLabelFormat
+                        .onChange(of: model.labelFormat) {
+                            latitudeLongitudeGrid.labelFormat = model.labelFormat
                         }
                     } else if let mgrsGrid = model.grid as? MGRSGrid {
                         Picker("Unit", selection: $model.mgrsLabelUnit) {
@@ -190,8 +190,8 @@ private extension ShowGridView {
                                 Text(unit.label)
                             }
                         }
-                        .onChange(of: model.mgrsLabelUnit) { newMGRSLabelUnit in
-                            mgrsGrid.labelUnit = newMGRSLabelUnit
+                        .onChange(of: model.mgrsLabelUnit) {
+                            mgrsGrid.labelUnit = model.mgrsLabelUnit
                         }
                     } else if let usngGrid = model.grid as? USNGGrid {
                         Picker("Unit", selection: $model.usngLabelUnit) {
@@ -199,8 +199,8 @@ private extension ShowGridView {
                                 Text(unit.label)
                             }
                         }
-                        .onChange(of: model.usngLabelUnit) { newUSNGLabelUnit in
-                            usngGrid.labelUnit = newUSNGLabelUnit
+                        .onChange(of: model.usngLabelUnit) {
+                            usngGrid.labelUnit = model.usngLabelUnit
                         }
                     }
                 }

@@ -120,7 +120,7 @@ struct EditGeodatabaseWithTransactionsView: View {
                     
                     Toggle("Requires Transaction", isOn: $transactionIsRequired)
                         .disabled(isInTransaction)
-                        .onChange(of: transactionIsRequired) { transactionIsRequired in
+                        .onChange(of: transactionIsRequired) {
                             statusText = transactionIsRequired
                             ? "Tap Start to begin a transaction."
                             : "Tap on the map to add a feature."

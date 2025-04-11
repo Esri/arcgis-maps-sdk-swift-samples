@@ -45,8 +45,8 @@ extension ConfigureClustersView {
                                 Text("\(radius)")
                             }
                         }
-                        .onChange(of: selectedRadius) { newRadius in
-                            model.radius = Double(newRadius)
+                        .onChange(of: selectedRadius) {
+                            model.radius = Double(selectedRadius)
                         }
                         
                         Picker("Cluster Max Scale", selection: $selectedMaxScale) {
@@ -54,8 +54,8 @@ extension ConfigureClustersView {
                                 Text(("\(scale)"))
                             }
                         }
-                        .onChange(of: selectedMaxScale) { newMaxScale in
-                            model.maxScale = Double(newMaxScale)
+                        .onChange(of: selectedMaxScale) {
+                            model.maxScale = Double(selectedMaxScale)
                         }
                         
                         LabeledContent(

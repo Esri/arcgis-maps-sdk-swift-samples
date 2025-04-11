@@ -39,8 +39,8 @@ struct ShowExtrudedFeaturesView: View {
             }
             .pickerStyle(.segmented)
             .padding()
-            .onChange(of: statisticSelection) { newValue in
-                featureLayer.renderer?.sceneProperties.extrusionExpression = newValue.extrusionExpression
+            .onChange(of: statisticSelection) {
+                featureLayer.renderer?.sceneProperties.extrusionExpression = statisticSelection.extrusionExpression
             }
         }
     }

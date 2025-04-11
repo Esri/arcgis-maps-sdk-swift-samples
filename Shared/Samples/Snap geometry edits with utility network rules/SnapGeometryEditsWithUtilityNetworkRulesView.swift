@@ -247,8 +247,8 @@ private struct SnapSourceSettingsToggle: View {
                 image
             }
         }
-        .onChange(of: isEnabled) { newValue in
-            settings.isEnabled = newValue
+        .onChange(of: isEnabled) {
+            settings.isEnabled = isEnabled
         }
         .onAppear {
             isEnabled = settings.isEnabled

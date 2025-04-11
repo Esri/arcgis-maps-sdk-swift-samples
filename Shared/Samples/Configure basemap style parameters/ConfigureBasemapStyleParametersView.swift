@@ -68,8 +68,8 @@ struct ConfigureBasemapStyleParametersView: View {
         }
         .menuOrder(.fixed)
         .labelStyle(.titleAndIcon)
-        .onChange(of: selectedLanguage) { newLanguage in
-            model.setBasemapLanguage(newLanguage)
+        .onChange(of: selectedLanguage) {
+            model.setBasemapLanguage(selectedLanguage)
         }
     }
 }

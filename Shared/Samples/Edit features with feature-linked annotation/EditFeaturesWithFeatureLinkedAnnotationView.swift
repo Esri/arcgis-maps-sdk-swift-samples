@@ -95,7 +95,7 @@ struct EditFeaturesWithFeatureLinkedAnnotationView: View {
                         .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
                 }
         }
-        .onChange(of: model.selectedFeature == nil) { _ in
+        .onChange(of: model.selectedFeature == nil) {
             if model.selectedFeature?.geometry is Point,
                let featureAddress = model.selectedFeatureAddress {
                 // Presents the alert to update the feature's address if the feature is a point.
