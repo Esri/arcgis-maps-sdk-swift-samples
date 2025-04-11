@@ -42,8 +42,8 @@ extension GroupLayersTogetherView {
                         Picker("Exclusive Layer", selection: $exclusiveLayerSelection) {
                             ForEach(groupLayer.layers, id: \.name) { layer in
                                 Text(formatLayerName(of: layer.name))
-                                    .onChange(of: exclusiveLayerSelection) { newValue in
-                                        layer.isVisible = layer.name == newValue
+                                    .onChange(of: exclusiveLayerSelection) {
+                                        layer.isVisible = layer.name == exclusiveLayerSelection
                                     }
                             }
                         }
@@ -125,8 +125,8 @@ extension GroupLayersTogetherView {
         
         var body: some View {
             Toggle(title, isOn: $isVisible)
-                .onChange(of: isVisible) { newValue in
-                    layer.isVisible = newValue
+                .onChange(of: isVisible) {
+                    layer.isVisible = isVisible
                 }
         }
     }

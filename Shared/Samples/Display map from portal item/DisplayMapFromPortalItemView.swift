@@ -48,7 +48,7 @@ struct DisplayMapFromPortalItemView: View {
                                 Text(mapOption.title).tag(mapOption)
                             }
                         }
-                        .onChange(of: currentMap) { _ in
+                        .onChange(of: currentMap) {
                             map = Map(item: currentMap.portalItem)
                         }
                     }

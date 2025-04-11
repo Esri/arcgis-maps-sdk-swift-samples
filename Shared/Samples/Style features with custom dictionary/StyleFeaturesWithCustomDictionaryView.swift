@@ -34,7 +34,7 @@ struct StyleFeaturesWithCustomDictionaryView: View {
             }
             .pickerStyle(.segmented)
             .padding()
-            .onChange(of: dictionaryStyleSelection) { _ in
+            .onChange(of: dictionaryStyleSelection) {
                 // Update the feature layer with the correct dictionary renderer
                 // on selection change.
                 model.restaurantFeatureLayer.renderer = dictionaryStyleSelection == .web ? model.dictionaryRendererFromWebStyle : model.dictionaryRendererFromStyleFile

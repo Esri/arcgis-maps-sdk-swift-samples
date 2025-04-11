@@ -112,8 +112,8 @@ struct DisplayClustersView: View {
                             showsFeatureReduction ? "Feature Clustering Enabled" : "Feature Clustering Disabled",
                             isOn: $showsFeatureReduction
                         )
-                        .onChange(of: showsFeatureReduction) { isEnabled in
-                            layer?.featureReduction?.isEnabled = isEnabled
+                        .onChange(of: showsFeatureReduction) {
+                            layer?.featureReduction?.isEnabled = showsFeatureReduction
                         }
                     }
                 }

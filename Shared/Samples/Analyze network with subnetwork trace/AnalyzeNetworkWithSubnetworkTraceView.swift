@@ -186,8 +186,8 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
                         .multilineTextAlignment(.trailing)
                         .lineLimit(1)
                 }
-                .onChange(of: inputValue) { value in
-                    selectedValue = value
+                .onChange(of: inputValue) {
+                    selectedValue = inputValue
                 }
                 .disabled(selectedAttribute == nil && selectedComparison == nil)
             }

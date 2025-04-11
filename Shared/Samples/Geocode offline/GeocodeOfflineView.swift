@@ -64,7 +64,7 @@ struct GeocodeOfflineView: View {
                     }
                 }
             }
-            .onChange(of: searchText) { _ in
+            .onChange(of: searchText) {
                 // Reset the marker when the search text changes.
                 model.resetGraphics()
             }

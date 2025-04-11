@@ -68,8 +68,8 @@ struct MonitorChangesToLayerViewStateView: View {
                         layerIsVisible ? "Layer Enabled" : "Layer Disabled",
                         isOn: $layerIsVisible
                     )
-                    .onChange(of: layerIsVisible) { newValue in
-                        featureLayer.isVisible = newValue
+                    .onChange(of: layerIsVisible) {
+                        featureLayer.isVisible = layerIsVisible
                     }
                 }
             }

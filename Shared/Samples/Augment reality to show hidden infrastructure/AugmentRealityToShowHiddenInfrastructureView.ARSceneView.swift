@@ -56,12 +56,12 @@ extension AugmentRealityToShowHiddenInfrastructureView {
         private var settingsMenu: some View {
             Menu("Settings") {
                 Toggle("Shadows", isOn: $shadowsAreVisible)
-                    .onChange(of: shadowsAreVisible) { newValue in
-                        model.shadowGraphicsOverlay.isVisible = newValue
+                    .onChange(of: shadowsAreVisible) {
+                        model.shadowGraphicsOverlay.isVisible = shadowsAreVisible
                     }
                 Toggle("Leaders", isOn: $leadersAreVisible)
-                    .onChange(of: leadersAreVisible) { newValue in
-                        model.leaderGraphicsOverlay.isVisible = newValue
+                    .onChange(of: leadersAreVisible) {
+                        model.leaderGraphicsOverlay.isVisible = leadersAreVisible
                     }
             }
         }

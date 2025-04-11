@@ -50,7 +50,9 @@ struct ShowRealisticLightAndShadowsView: View {
                 Text("PM")
             }
             .frame(maxWidth: 540)
-            .onChange(of: dateSecond, perform: sliderValueChanged(toValue:))
+            .onChange(of: dateSecond) {
+                sliderValueChanged(toValue: dateSecond)
+            }
             .padding(.horizontal)
         }
         .overlay(alignment: .top) {

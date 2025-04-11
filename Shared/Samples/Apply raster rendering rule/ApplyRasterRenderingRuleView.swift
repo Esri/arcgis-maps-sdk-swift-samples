@@ -40,8 +40,8 @@ struct ApplyRasterRenderingRuleView: View {
                             Text(rasterLayer.name)
                         }
                     }
-                    .onChange(of: selectedRenderingRule) { newRule in
-                        if let rasterLayer = rasterLayers.first(where: { $0.name == newRule }) {
+                    .onChange(of: selectedRenderingRule) {
+                        if let rasterLayer = rasterLayers.first(where: { $0.name == selectedRenderingRule }) {
                             setLayer(rasterLayer)
                         }
                     }

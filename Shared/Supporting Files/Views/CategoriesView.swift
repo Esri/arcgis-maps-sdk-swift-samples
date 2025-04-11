@@ -77,15 +77,15 @@ struct CategoriesView: View {
             .listStyle(.insetGrouped)
             .navigationTitle(selectedCategory ?? "")
         }
-        .onChange(of: destinationIsPresented) { _ in
+        .onChange(of: destinationIsPresented) {
             // Resets the selection when the navigation destination is no longer presented.
             guard !destinationIsPresented else { return }
             withAnimation(.easeInOut) {
                 selectedCategory = nil
             }
         }
-        .onChange(of: selectedCategory) { newSelection in
-            destinationIsPresented = newSelection != nil
+        .onChange(of: selectedCategory) {
+            destinationIsPresented = selectedCategory != nil
         }
     }
 }
