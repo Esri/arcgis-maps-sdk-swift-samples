@@ -431,6 +431,8 @@
 		D79482D72C35D8A3006521CD /* CreateDynamicBasemapGalleryView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D79482D02C35D872006521CD /* CreateDynamicBasemapGalleryView.swift */; };
 		D79EE76E2A4CEA5D005A52AE /* SetUpLocationDrivenGeotriggersView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79EE76D2A4CEA5D005A52AE /* SetUpLocationDrivenGeotriggersView.Model.swift */; };
 		D79EE76F2A4CEA7F005A52AE /* SetUpLocationDrivenGeotriggersView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D79EE76D2A4CEA5D005A52AE /* SetUpLocationDrivenGeotriggersView.Model.swift */; };
+		D7A670D52DADB9630060E327 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A670D42DADB9630060E327 /* Bundle.swift */; };
+		D7A670D72DADBC770060E327 /* EnvironmentValues+RequestReviewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A670D62DADBC770060E327 /* EnvironmentValues+RequestReviewModel.swift */; };
 		D7A737E02BABB9FE00B7C7FC /* AugmentRealityToShowHiddenInfrastructureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A737DC2BABB9FE00B7C7FC /* AugmentRealityToShowHiddenInfrastructureView.swift */; };
 		D7A737E32BABBA2200B7C7FC /* AugmentRealityToShowHiddenInfrastructureView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7A737DC2BABB9FE00B7C7FC /* AugmentRealityToShowHiddenInfrastructureView.swift */; };
 		D7A85A082CD5ABF5009DC68A /* QueryWithCQLFiltersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A85A022CD5ABF5009DC68A /* QueryWithCQLFiltersView.swift */; };
@@ -1066,6 +1068,8 @@
 		D78FA4932C3C88880079313E /* CreateDynamicBasemapGalleryView.Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateDynamicBasemapGalleryView.Views.swift; sourceTree = "<group>"; };
 		D79482D02C35D872006521CD /* CreateDynamicBasemapGalleryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateDynamicBasemapGalleryView.swift; sourceTree = "<group>"; };
 		D79EE76D2A4CEA5D005A52AE /* SetUpLocationDrivenGeotriggersView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetUpLocationDrivenGeotriggersView.Model.swift; sourceTree = "<group>"; };
+		D7A670D42DADB9630060E327 /* Bundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bundle.swift; sourceTree = "<group>"; };
+		D7A670D62DADBC770060E327 /* EnvironmentValues+RequestReviewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+RequestReviewModel.swift"; sourceTree = "<group>"; };
 		D7A737DC2BABB9FE00B7C7FC /* AugmentRealityToShowHiddenInfrastructureView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AugmentRealityToShowHiddenInfrastructureView.swift; sourceTree = "<group>"; };
 		D7A85A022CD5ABF5009DC68A /* QueryWithCQLFiltersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryWithCQLFiltersView.swift; sourceTree = "<group>"; };
 		D7ABA2F82A32579C0021822B /* MeasureDistanceInSceneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeasureDistanceInSceneView.swift; sourceTree = "<group>"; };
@@ -1189,6 +1193,8 @@
 		00181B442846AD3900654571 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				D7A670D42DADB9630060E327 /* Bundle.swift */,
+				D7A670D62DADBC770060E327 /* EnvironmentValues+RequestReviewModel.swift */,
 				00181B452846AD7100654571 /* View+ErrorAlert.swift */,
 			);
 			path = Extensions;
@@ -3634,6 +3640,7 @@
 				79302F852A1ED4E30002336A /* CreateAndSaveKMLView.Model.swift in Sources */,
 				D7C3AB4A2B683291008909B9 /* SetFeatureRequestModeView.swift in Sources */,
 				95D2EE0F2C334D1600683D53 /* ShowServiceAreaView.swift in Sources */,
+				D7A670D72DADBC770060E327 /* EnvironmentValues+RequestReviewModel.swift in Sources */,
 				D7058FB12ACB423C00A40F14 /* Animate3DGraphicView.Model.swift in Sources */,
 				D7BEBAC52CBDC0F800F882E7 /* AddElevationSourceFromTilePackageView.swift in Sources */,
 				D77D9C002BB2438200B38A6C /* AugmentRealityToShowHiddenInfrastructureView.ARSceneView.swift in Sources */,
@@ -3684,6 +3691,7 @@
 				D7E440D72A1ECE7D005D74DE /* CreateBuffersAroundPointsView.swift in Sources */,
 				00D4EF802863842100B9CC30 /* AddFeatureLayersView.swift in Sources */,
 				4D126D7E29CA43D200CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.Model.swift in Sources */,
+				D7A670D52DADB9630060E327 /* Bundle.swift in Sources */,
 				4D126D6D29CA1B6000CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift in Sources */,
 				D710996D2A27D9210065A1C1 /* DensifyAndGeneralizeGeometryView.swift in Sources */,
 				88F93CC129C3D59D0006B28E /* CreateAndEditGeometriesView.swift in Sources */,

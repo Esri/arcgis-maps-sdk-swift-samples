@@ -43,6 +43,9 @@ struct AboutView: View {
                 Section {
                     LabeledContent("Version", value: Bundle.main.shortVersion)
                     LabeledContent("SDK Version", value: arcGISVersion)
+#if !targetEnvironment(simulator)
+                    Link("Write Review", destination: .writeReview)
+#endif
                 }
                 Section("Powered By") {
                     Link("ArcGIS Maps SDK for Swift Toolkit", destination: .toolkit)
@@ -84,7 +87,6 @@ private extension Bundle {
     static let arcGIS = Bundle(identifier: "com.esri.ArcGIS") ?? Bundle(identifier: "ArcGIS")!
     
     var name: String { object(forInfoDictionaryKey: "CFBundleName") as? String ?? "" }
-    var shortVersion: String { object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "" }
     var version: String { object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "" }
 }
 
@@ -94,4 +96,5 @@ private extension URL {
     static let githubRepository = URL(string: "https://github.com/Esri/arcgis-maps-sdk-swift-samples")!
     static let toolkit = URL(string: "https://github.com/Esri/arcgis-maps-sdk-swift-toolkit")!
     static let apiReference = URL(string: "https://developers.arcgis.com/swift/api-reference/documentation/arcgis/")!
+    static let writeReview = URL(string: "https://apps.apple.com/app/id1630449018?action=write-review")!
 }

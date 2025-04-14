@@ -18,6 +18,9 @@ struct SampleDetailView: View {
     /// The sample to display in the view.
     private let sample: Sample
     
+    /// The view model for requesting App Store reviews.
+    @Environment(\.requestReviewModel) private var requestReviewModel
+    
     /// A Boolean value that indicates whether to present the sample's information view.
     @State private var isSampleInfoViewPresented = false
     
@@ -33,6 +36,17 @@ struct SampleDetailView: View {
 #else
         return sample.hasDependencies
 #endif
+    }
+    
+    /// The sample's view body.
+    private var sampleBody: some View {
+        sample.makeBody()
+            .onAppear {
+                requestReviewModel.sampleIsShowing = true
+            }
+            .onDisappear {
+                requestReviewModel.sampleIsShowing = false
+            }
     }
     
     init(sample: Sample) {
@@ -69,7 +83,7 @@ struct SampleDetailView: View {
                         }
                         .padding()
                     case .downloaded:
-                        sample.makeBody()
+                        sampleBody
                     }
                 }
                 .task {
@@ -78,7 +92,7 @@ struct SampleDetailView: View {
                 }
             } else {
                 // 'onDemandResource' is not created in this branch.
-                sample.makeBody()
+                sampleBody
             }
         }
         .navigationTitle(sample.name)
