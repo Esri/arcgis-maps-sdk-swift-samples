@@ -28,14 +28,21 @@ final class RequestReviewModel {
     @AppStorage("lastRequestedReviewVersion") var lastRequestedReviewVersion: String?
     
     /// A Boolean value indicating whether an App Store review can be requested.
+    ///
+    /// This is `true` if all the following conditions are met:
+    /// - The project was not compiled using the `Debug` Build Configuration.
+    /// - A sample is not currently showing.
+    /// - A sample has been opened since the app has been launched.
+    /// - There have been at least four total sample launches.
+    /// - A review has not yet been requested for the current bundle version.
     var canRequestReview: Bool {
 #if DEBUG
         false
 #else
         !sampleIsShowing &&
         sampleOpenedSinceLaunch &&
-        lastRequestedReviewVersion != Bundle.main.shortVersion &&
-        sampleOpenCount > 3
+        sampleOpenCount > 3 &&
+        lastRequestedReviewVersion != Bundle.main.shortVersion
 #endif
     }
     
