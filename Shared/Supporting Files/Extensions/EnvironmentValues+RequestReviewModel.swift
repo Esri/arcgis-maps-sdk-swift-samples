@@ -29,7 +29,7 @@ final class RequestReviewModel {
     
     /// A Boolean value indicating whether an App Store review can be requested.
     var canRequestReview: Bool {
-#if DEBUG && !targetEnvironment(simulator)
+#if DEBUG
         false
 #else
         !sampleIsShowing &&

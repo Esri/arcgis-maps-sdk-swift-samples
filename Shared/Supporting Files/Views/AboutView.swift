@@ -43,9 +43,7 @@ struct AboutView: View {
                 Section {
                     LabeledContent("Version", value: Bundle.main.shortVersion)
                     LabeledContent("SDK Version", value: arcGISVersion)
-#if !targetEnvironment(simulator)
                     Link("Write Review", destination: .writeReview)
-#endif
                 }
                 Section("Powered By") {
                     Link("ArcGIS Maps SDK for Swift Toolkit", destination: .toolkit)
