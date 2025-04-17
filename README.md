@@ -4,12 +4,12 @@ This repository contains Swift sample code demonstrating the capabilities of the
 
 ## Features
 
-* Maps - Open, create, interact with and save maps
+* Maps - Open, create, interact with, and save maps
 * Scenes - Visualize 3D environments and symbols
 * Layers - Display vector and raster data in maps and scenes
 * Augmented Reality - View data overlaid on the real world through your device's camera
 * Visualization - Show graphics, popups, callouts, sketches, and style maps with symbols and renderers
-* Edit and Manage Data - Add, delete, and edit features and attachments, and taking data offline
+* Edit and Manage Data - Add, delete, and edit features and attachments, and take data offline
 * Search and Query - Find addresses, places, and points of interest
 * Routing and Logistics - Calculate routes between locations and around barriers
 * Analysis - Perform spatial analysis via geoprocessing tasks and services
@@ -75,7 +75,7 @@ Find a bug or want to request a new feature? Please let us know by [creating an 
 
 ## Licensing
 
-Copyright 2022 - 2024 Esri
+Copyright 2022 - 2025 Esri
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

@@ -18,10 +18,10 @@ struct AboutView: View {
     @Environment(\.dismiss) private var dismiss: DismissAction
     
     private var copyrightText: Text {
-        Text("Copyright © 2022 - 2024 Esri. All Rights Reserved.")
+        Text("Copyright © 2022 - 2025 Esri. All Rights Reserved.")
     }
     
-    let arcGISVersion = Bundle.arcGIS.version.isEmpty
+    private let arcGISVersion = Bundle.arcGIS.version.isEmpty
     ? Bundle.arcGIS.shortVersion
     : "\(Bundle.arcGIS.shortVersion) (\(Bundle.arcGIS.version))"
     
