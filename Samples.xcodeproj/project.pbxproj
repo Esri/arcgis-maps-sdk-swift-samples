@@ -252,6 +252,7 @@
 		D713C6D72CB990600073AA72 /* AddKMLLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D713C6D12CB990600073AA72 /* AddKMLLayerView.swift */; };
 		D713C6D82CB990800073AA72 /* AddKMLLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D713C6D12CB990600073AA72 /* AddKMLLayerView.swift */; };
 		D713C6F72CB9B9A60073AA72 /* US_State_Capitals.kml in Resources */ = {isa = PBXBuildFile; fileRef = D713C6F52CB9B9A60073AA72 /* US_State_Capitals.kml */; settings = {ASSET_TAGS = (AddKmlLayer, ); }; };
+		D7142BC42DB71082004F87B7 /* View+PagePresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7142BC32DB71082004F87B7 /* View+PagePresentation.swift */; };
 		D71563E92D5AC2B600D2E948 /* CreateKMLMultiTrackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71563E32D5AC2B600D2E948 /* CreateKMLMultiTrackView.swift */; };
 		D71563EA2D5AC2D500D2E948 /* CreateKMLMultiTrackView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D71563E32D5AC2B600D2E948 /* CreateKMLMultiTrackView.swift */; };
 		D718A1E72B570F7500447087 /* OrbitCameraAroundObjectView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D718A1E62B570F7500447087 /* OrbitCameraAroundObjectView.Model.swift */; };
@@ -969,6 +970,7 @@
 		D71371752BD88ECC00EB2F86 /* MonitorChangesToLayerViewStateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonitorChangesToLayerViewStateView.swift; sourceTree = "<group>"; };
 		D713C6D12CB990600073AA72 /* AddKMLLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddKMLLayerView.swift; sourceTree = "<group>"; };
 		D713C6F52CB9B9A60073AA72 /* US_State_Capitals.kml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = US_State_Capitals.kml; sourceTree = "<group>"; };
+		D7142BC32DB71082004F87B7 /* View+PagePresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+PagePresentation.swift"; sourceTree = "<group>"; };
 		D71563E32D5AC2B600D2E948 /* CreateKMLMultiTrackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateKMLMultiTrackView.swift; sourceTree = "<group>"; };
 		D718A1E62B570F7500447087 /* OrbitCameraAroundObjectView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrbitCameraAroundObjectView.Model.swift; sourceTree = "<group>"; };
 		D718A1EA2B575FD900447087 /* ManageBookmarksView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageBookmarksView.swift; sourceTree = "<group>"; };
@@ -1196,6 +1198,7 @@
 				D7A670D42DADB9630060E327 /* Bundle.swift */,
 				D7A670D62DADBC770060E327 /* EnvironmentValues+RequestReviewModel.swift */,
 				00181B452846AD7100654571 /* View+ErrorAlert.swift */,
+				D7142BC32DB71082004F87B7 /* View+PagePresentation.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -3561,6 +3564,7 @@
 				E0D04FF228A5390000747989 /* DownloadPreplannedMapAreaView.Model.swift in Sources */,
 				D764B7DF2BE2F89D002E2F92 /* EditGeodatabaseWithTransactionsView.swift in Sources */,
 				00CCB8A5285BAF8700BBAB70 /* OnDemandResource.swift in Sources */,
+				D7142BC42DB71082004F87B7 /* View+PagePresentation.swift in Sources */,
 				D7635FFE2B9277DC0044AB97 /* ConfigureClustersView.swift in Sources */,
 				1C19B4F32A578E46001D2506 /* CreateLoadReportView.swift in Sources */,
 				D71563E92D5AC2B600D2E948 /* CreateKMLMultiTrackView.swift in Sources */,
