@@ -36,7 +36,7 @@ struct AddFeatureCollectionLayerFromPortalItemView: View {
                     if portalItem.kind == .featureCollection {
                         // Creates a feature collection from the item.
                         let featureCollection = FeatureCollection(item: portalItem)
-                        // Create a feature collection layer, referring to the
+                        // Creates a feature collection layer, referring to the
                         // feature collection.
                         let layer = FeatureCollectionLayer(featureCollection: featureCollection)
                         // Adds the feature collection layer to the map's
