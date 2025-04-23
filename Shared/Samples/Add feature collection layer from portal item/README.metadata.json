@@ -1,0 +1,32 @@
+{
+    "category": "Layers",
+    "description": "Create a feature collection layer from a portal item.",
+    "ignore": false,
+    "images": [
+        "add-feature-collection-layer-from-portal-item.png"
+    ],
+    "keywords": [
+        "collection",
+        "feature collection",
+        "feature collection layer",
+        "id",
+        "item",
+        "map notes",
+        "portal",
+        "FeatureCollection",
+        "FeatureCollectionLayer",
+        "Portal",
+        "PortalItem"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "FeatureCollection",
+        "FeatureCollectionLayer",
+        "Portal",
+        "PortalItem"
+    ],
+    "snippets": [
+        "AddFeatureCollectionLayerFromPortalItemView.swift"
+    ],
+    "title": "Add feature collection layer from portal item"
+}
