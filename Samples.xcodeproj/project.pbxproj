@@ -41,9 +41,10 @@
 		0042E24628E50EE4001F33D6 /* ShowViewshedFromPointInSceneView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 0086F3FD28E3770900974721 /* ShowViewshedFromPointInSceneView.swift */; };
 		0042E24728E50EE4001F33D6 /* ShowViewshedFromPointInSceneView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 0042E24228E4BF8F001F33D6 /* ShowViewshedFromPointInSceneView.Model.swift */; };
 		0042E24828E50EE4001F33D6 /* ShowViewshedFromPointInSceneView.ViewshedSettingsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 0042E24428E4F82B001F33D6 /* ShowViewshedFromPointInSceneView.ViewshedSettingsView.swift */; };
-		004421902DB9620200249FEE /* AddFeatureCollectionLayerFromQueryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0044218F2DB961FE00249FEE /* AddFeatureCollectionLayerFromQueryView.swift */; };
 		0044218A2DB9533900249FEE /* AddFeatureCollectionLayerFromPortalItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004421892DB9532D00249FEE /* AddFeatureCollectionLayerFromPortalItemView.swift */; };
 		0044218B2DB9575600249FEE /* AddFeatureCollectionLayerFromPortalItemView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 004421892DB9532D00249FEE /* AddFeatureCollectionLayerFromPortalItemView.swift */; };
+		004421902DB9620200249FEE /* AddFeatureCollectionLayerFromQueryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0044218F2DB961FE00249FEE /* AddFeatureCollectionLayerFromQueryView.swift */; };
+		004421912DB96A7800249FEE /* AddFeatureCollectionLayerFromQueryView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 0044218F2DB961FE00249FEE /* AddFeatureCollectionLayerFromQueryView.swift */; };
 		0044289229C90C0B00160767 /* GetElevationAtPointOnSurfaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0044289129C90C0B00160767 /* GetElevationAtPointOnSurfaceView.swift */; };
 		0044289329C9234300160767 /* GetElevationAtPointOnSurfaceView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 0044289129C90C0B00160767 /* GetElevationAtPointOnSurfaceView.swift */; };
 		0044CDDF2995C39E004618CE /* ShowDeviceLocationHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0044CDDE2995C39E004618CE /* ShowDeviceLocationHistoryView.swift */; };
@@ -599,6 +600,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				004421912DB96A7800249FEE /* AddFeatureCollectionLayerFromQueryView.swift in Copy Source Code Files */,
 				0044218B2DB9575600249FEE /* AddFeatureCollectionLayerFromPortalItemView.swift in Copy Source Code Files */,
 				D703F04E2D9334BD0077E3A8 /* SnapGeometryEditsWithUtilityNetworkRulesView.Model.swift in Copy Source Code Files */,
 				D71A9DE52D8CC8B500CA03CB /* SnapGeometryEditsWithUtilityNetworkRulesView.swift in Copy Source Code Files */,
@@ -851,8 +853,8 @@
 		003D7C352821EBCC009DDFD2 /* GenerateSampleViewSourceCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateSampleViewSourceCode.swift; sourceTree = "<group>"; };
 		0042E24228E4BF8F001F33D6 /* ShowViewshedFromPointInSceneView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowViewshedFromPointInSceneView.Model.swift; sourceTree = "<group>"; };
 		0042E24428E4F82B001F33D6 /* ShowViewshedFromPointInSceneView.ViewshedSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowViewshedFromPointInSceneView.ViewshedSettingsView.swift; sourceTree = "<group>"; };
-		0044218F2DB961FE00249FEE /* AddFeatureCollectionLayerFromQueryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFeatureCollectionLayerFromQueryView.swift; sourceTree = "<group>"; };
 		004421892DB9532D00249FEE /* AddFeatureCollectionLayerFromPortalItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFeatureCollectionLayerFromPortalItemView.swift; sourceTree = "<group>"; };
+		0044218F2DB961FE00249FEE /* AddFeatureCollectionLayerFromQueryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFeatureCollectionLayerFromQueryView.swift; sourceTree = "<group>"; };
 		0044289129C90C0B00160767 /* GetElevationAtPointOnSurfaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetElevationAtPointOnSurfaceView.swift; sourceTree = "<group>"; };
 		0044CDDE2995C39E004618CE /* ShowDeviceLocationHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowDeviceLocationHistoryView.swift; sourceTree = "<group>"; };
 		004A2B9C2BED455B00C297CE /* canyonlands */ = {isa = PBXFileReference; lastKnownFileType = folder; path = canyonlands; sourceTree = "<group>"; };
@@ -1224,20 +1226,20 @@
 			path = Scripts;
 			sourceTree = "<group>";
 		};
-		0044218D2DB961F500249FEE /* Add feature collection layer from query */ = {
-			isa = PBXGroup;
-			children = (
-				0044218F2DB961FE00249FEE /* AddFeatureCollectionLayerFromQueryView.swift */,
-			);
-			path = "Add feature collection layer from query";
-			sourceTree = "<group>";
-		};
 		004421872DB9532400249FEE /* Add feature collection layer from portal item */ = {
 			isa = PBXGroup;
 			children = (
 				004421892DB9532D00249FEE /* AddFeatureCollectionLayerFromPortalItemView.swift */,
 			);
 			path = "Add feature collection layer from portal item";
+			sourceTree = "<group>";
+		};
+		0044218D2DB961F500249FEE /* Add feature collection layer from query */ = {
+			isa = PBXGroup;
+			children = (
+				0044218F2DB961FE00249FEE /* AddFeatureCollectionLayerFromQueryView.swift */,
+			);
+			path = "Add feature collection layer from query";
 			sourceTree = "<group>";
 		};
 		0044288C29C90BD500160767 /* Get elevation at point on surface */ = {
@@ -1291,8 +1293,8 @@
 				4D2ADC3E29C26D05003B367F /* Add dynamic entity layer */,
 				D7848EFD2CBD986400F6F546 /* Add elevation source from raster */,
 				D7BEBAC22CBDC0F800F882E7 /* Add elevation source from tile package */,
-				0044218D2DB961F500249FEE /* Add feature collection layer from query */,
 				004421872DB9532400249FEE /* Add feature collection layer from portal item */,
+				0044218D2DB961F500249FEE /* Add feature collection layer from query */,
 				00D4EF7E2863840D00B9CC30 /* Add feature layers */,
 				D7F8C0342B60564D0072BFA7 /* Add features with contingent values */,
 				D713C6D42CB990600073AA72 /* Add KML layer */,
