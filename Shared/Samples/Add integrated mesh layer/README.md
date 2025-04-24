@@ -14,7 +14,7 @@ After launching the sample, watch the integrated mesh layer load in place. Navig
 
 ## How it works
 
-1. Create an `ArcGISScene`.
+1. Create a `Scene`.
 2. Create an `IntegratedMeshLayer` with the URL to an integrated mesh layer scene service.
 3. Add the layer to the scene's operational layers.
 
