@@ -11,17 +11,17 @@
         "raster",
         "tiled",
         "web map tile service",
-        "WmtsLayer",
-        "WmtsLayerInfo",
-        "WmtsService",
-        "WmtsServiceInfo"
+        "WMTSLayer",
+        "WMTSLayerInfo",
+        "WMTSService",
+        "WMTSServiceInfo"
     ],
     "redirect_from": [],
     "relevant_apis": [
-        "WmtsLayer",
-        "WmtsLayerInfo",
-        "WmtsService",
-        "WmtsServiceInfo"
+        "WMTSLayer",
+        "WMTSLayerInfo",
+        "WMTSService",
+        "WMTSServiceInfo"
     ],
     "snippets": [
         "AddWMTSLayerView.swift"

@@ -15,7 +15,6 @@
 import ArcGIS
 import SwiftUI
 
-@MainActor
 struct AddWMTSLayerView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
@@ -57,23 +56,14 @@ private extension AddWMTSLayerView {
     @MainActor
     final class Model: ObservableObject {
         /// A map with no specified style.
-        private(set) var map = Map()
+        let map = Map()
         
         /// The web map tile service.
         private let service = WMTSService(url: URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/WorldTimeZones/MapServer/WMTS")!)
         
-        /// The service URL.
-        private var serviceURL: URL {
-            service.url
-        }
-        
         /// Loads the web map tile service.
         func loadService() async throws {
-            do {
-                try await service.load()
-            } catch {
-                throw error
-            }
+            try await service.load()
         }
         
         /// Sets a WMTS layer on the map.
@@ -83,12 +73,12 @@ private extension AddWMTSLayerView {
             switch source {
             case .url:
                 // Create a WMTS layer using the service URL and layer ID.
-                let wmtsLayer = WMTSLayer(url: serviceURL, layerID: "WorldTimeZones")
+                let wmtsLayer = WMTSLayer(url: service.url, layerID: "WorldTimeZones")
                 map.addOperationalLayer(wmtsLayer)
             case .wmtsLayerInfo:
                 // Create a WMTS layer using a WMTS layer info.
-                let serviceInfo = service.serviceInfo
-                let layerInfos = serviceInfo!.layerInfos
+                let serviceInfo = service.serviceInfo!
+                let layerInfos = serviceInfo.layerInfos
                 let layerInfo = layerInfos.first!
                 let wmtsLayer = WMTSLayer(layerInfo: layerInfo)
                 map.addOperationalLayer(wmtsLayer)
