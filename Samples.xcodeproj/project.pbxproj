@@ -116,6 +116,8 @@
 		1C2538572BABACFD00337307 /* AugmentRealityToNavigateRouteView.ARSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C2538522BABACB100337307 /* AugmentRealityToNavigateRouteView.ARSceneView.swift */; };
 		1C26ED192A859525009B7721 /* FilterFeaturesInSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C26ED152A859525009B7721 /* FilterFeaturesInSceneView.swift */; };
 		1C26ED202A8BEC63009B7721 /* FilterFeaturesInSceneView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C26ED152A859525009B7721 /* FilterFeaturesInSceneView.swift */; };
+		1C29C9592DBAE50D0074028F /* AddWMTSLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C29C9532DBAE50D0074028F /* AddWMTSLayerView.swift */; };
+		1C29C95A2DBAE5770074028F /* AddWMTSLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C29C9532DBAE50D0074028F /* AddWMTSLayerView.swift */; };
 		1C3B7DC82A5F64FC00907443 /* AnalyzeNetworkWithSubnetworkTraceView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3B7DC32A5F64FC00907443 /* AnalyzeNetworkWithSubnetworkTraceView.Model.swift */; };
 		1C3B7DCB2A5F64FC00907443 /* AnalyzeNetworkWithSubnetworkTraceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3B7DC62A5F64FC00907443 /* AnalyzeNetworkWithSubnetworkTraceView.swift */; };
 		1C3B7DCD2A5F652500907443 /* AnalyzeNetworkWithSubnetworkTraceView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C3B7DC32A5F64FC00907443 /* AnalyzeNetworkWithSubnetworkTraceView.Model.swift */; };
@@ -600,6 +602,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				1C29C95A2DBAE5770074028F /* AddWMTSLayerView.swift in Copy Source Code Files */,
 				004421912DB96A7800249FEE /* AddFeatureCollectionLayerFromQueryView.swift in Copy Source Code Files */,
 				0044218B2DB9575600249FEE /* AddFeatureCollectionLayerFromPortalItemView.swift in Copy Source Code Files */,
 				D703F04E2D9334BD0077E3A8 /* SnapGeometryEditsWithUtilityNetworkRulesView.Model.swift in Copy Source Code Files */,
@@ -902,6 +905,7 @@
 		1C2538522BABACB100337307 /* AugmentRealityToNavigateRouteView.ARSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AugmentRealityToNavigateRouteView.ARSceneView.swift; sourceTree = "<group>"; };
 		1C2538532BABACB100337307 /* AugmentRealityToNavigateRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AugmentRealityToNavigateRouteView.swift; sourceTree = "<group>"; };
 		1C26ED152A859525009B7721 /* FilterFeaturesInSceneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterFeaturesInSceneView.swift; sourceTree = "<group>"; };
+		1C29C9532DBAE50D0074028F /* AddWMTSLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWMTSLayerView.swift; sourceTree = "<group>"; };
 		1C3B7DC32A5F64FC00907443 /* AnalyzeNetworkWithSubnetworkTraceView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyzeNetworkWithSubnetworkTraceView.Model.swift; sourceTree = "<group>"; };
 		1C3B7DC62A5F64FC00907443 /* AnalyzeNetworkWithSubnetworkTraceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyzeNetworkWithSubnetworkTraceView.swift; sourceTree = "<group>"; };
 		1C42E04329D2396B004FC4BE /* ShowPopupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowPopupView.swift; sourceTree = "<group>"; };
@@ -1310,6 +1314,7 @@
 				D7201D032CC6D3B5004BDB7D /* Add vector tiled layer from custom style */,
 				3E54CF202C66AFA400DD2F18 /* Add web tiled layer */,
 				D7E557602A1D743100B9FB09 /* Add WMS layer */,
+				1C29C9622DBAE5D10074028F /* Add WMTS layer */,
 				1C3B7DC22A5F64FC00907443 /* Analyze network with subnetwork trace */,
 				D7C16D172AC5F6C100689E89 /* Animate 3D graphic */,
 				D77570BC2A29427200F490CD /* Animate images with image overlay */,
@@ -1749,6 +1754,14 @@
 				1C26ED152A859525009B7721 /* FilterFeaturesInSceneView.swift */,
 			);
 			path = "Filter features in scene";
+			sourceTree = "<group>";
+		};
+		1C29C9622DBAE5D10074028F /* Add WMTS layer */ = {
+			isa = PBXGroup;
+			children = (
+				1C29C9532DBAE50D0074028F /* AddWMTSLayerView.swift */,
+			);
+			path = "Add WMTS layer";
 			sourceTree = "<group>";
 		};
 		1C3B7DC22A5F64FC00907443 /* Analyze network with subnetwork trace */ = {
@@ -3578,6 +3591,7 @@
 				D7BE7E6F2CC19CC3006DDB0C /* AddTiledLayerView.swift in Sources */,
 				D7705D582AFC244E00CC0335 /* FindClosestFacilityToMultiplePointsView.swift in Sources */,
 				D73FCFFF2B02C7630006360D /* FindRouteAroundBarriersView.Views.swift in Sources */,
+				1C29C9592DBAE50D0074028F /* AddWMTSLayerView.swift in Sources */,
 				3EEDE7CE2C5D73F700510104 /* SetSpatialReferenceView.swift in Sources */,
 				4D126D7229CA1E1800CFB7A7 /* FileNMEASentenceReader.swift in Sources */,
 				001C6DE127FE8A9400D472C2 /* AppSecrets.swift.masque in Sources */,
