@@ -16,7 +16,7 @@ import ArcGIS
 import SwiftUI
 
 struct AddRasterFromGeopackageView: View {
-    /// A map with lgiht gray basemap and a raster layer.
+    /// A map with light gray basemap and a raster layer.
     @State private var map = Map(basemapStyle: .arcGISLightGray)
     
     /// The error shown in the error alert.
