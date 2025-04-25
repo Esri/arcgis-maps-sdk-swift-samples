@@ -1,6 +1,6 @@
 {
     "category": "Layers",
-    "description": "Display a raster contained in a geopackage.",
+    "description": "Display a raster contained in a GeoPackage.",
     "ignore": false,
     "images": [
         "add-raster-from-geopackage.png"

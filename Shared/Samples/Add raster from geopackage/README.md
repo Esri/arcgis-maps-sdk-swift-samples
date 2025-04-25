@@ -1,8 +1,8 @@
 # Add raster from geopackage
 
-Display a raster contained in a geopackage.
+Display a raster contained in a GeoPackage.
 
-![Image of Add raster from geopackage sample](add-raster-from-geopackage.png)
+![Image of Add raster from GeoPackage sample](add-raster-from-geopackage.png)
 
 ## Use case
 
@@ -15,8 +15,8 @@ When the sample starts, a raster will be loaded from a GeoPackage and displayed 
 ## How it works
 
 1. Create and load a `GeoPackage`, specifying the path to the local .gpkg file.
-2. When it is done loading, get the `GeoPackageRaster`s from the geopackage.
-3. Construct a `RasterLayer` with the geopackage raster you want to use.
+2. When it is done loading, get the `GeoPackageRaster`s from the GeoPackage.
+3. Construct a `RasterLayer` with the GeoPackage raster you want to use.
 4. Add the raster layer to the map.
 
 ## Relevant API
