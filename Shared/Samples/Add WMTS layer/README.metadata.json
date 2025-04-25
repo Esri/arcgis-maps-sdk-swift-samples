@@ -6,8 +6,8 @@
         "add-wmts-layer.png"
     ],
     "keywords": [
-        "layer",
         "OGC",
+        "layer",
         "raster",
         "tiled",
         "web map tile service",
@@ -26,5 +26,5 @@
     "snippets": [
         "AddWMTSLayerView.swift"
     ],
-    "title": "Add WMTS Layer"
+    "title": "Add WMTS layer"
 }
