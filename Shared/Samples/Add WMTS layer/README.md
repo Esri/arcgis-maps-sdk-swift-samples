@@ -2,7 +2,7 @@
 
 Display a layer from a Web Map Tile Service.
 
-![Image of Add WMTS Layer sample](add-feature-collection-layer-from-portal-item.png)
+![Image of Add WMTS Layer sample](add-wmts-layer.png)
 
 ## Use case
 
