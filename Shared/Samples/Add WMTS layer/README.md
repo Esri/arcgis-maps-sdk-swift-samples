@@ -1,4 +1,4 @@
-# Add WMTS Layer
+# Add WMTS layer
 
 Display a layer from a Web Map Tile Service.
 
