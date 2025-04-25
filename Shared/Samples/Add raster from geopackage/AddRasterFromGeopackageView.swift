@@ -16,7 +16,7 @@ import ArcGIS
 import SwiftUI
 
 struct AddRasterFromGeopackageView: View {
-    /// A map with light gray basemap and a raster layer.
+    /// A map with a light gray basemap and a raster layer.
     @State private var map = Map(basemapStyle: .arcGISLightGray)
     
     /// The error shown in the error alert.
@@ -31,11 +31,11 @@ struct AddRasterFromGeopackageView: View {
             .errorAlert(presentingError: $error)
             .task {
                 do {
-                    guard let geopackage = GeoPackage(name: "AuroraCO", bundle: .main) else {
+                    guard let geoPackage = GeoPackage(name: "AuroraCO", bundle: .main) else {
                         return
                     }
-                    try await geopackage.load()
-                    let rasterLayers = geopackage.rasters.map(RasterLayer.init(raster:))
+                    try await geoPackage.load()
+                    let rasterLayers = geoPackage.rasters.map(RasterLayer.init(raster:))
                     for layer in rasterLayers {
                         // Makes the layer semi-transparent so it doesn't
                         // obscure the contents beneath it.
@@ -49,8 +49,4 @@ struct AddRasterFromGeopackageView: View {
                 }
             }
     }
-}
-
-#Preview {
-    AddRasterFromGeopackageView()
 }
