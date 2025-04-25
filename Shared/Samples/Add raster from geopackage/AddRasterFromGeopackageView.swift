@@ -35,11 +35,12 @@ struct AddRasterFromGeopackageView: View {
                         return
                     }
                     try await geoPackage.load()
-                    let rasterLayers = geoPackage.rasters.map(RasterLayer.init(raster:))
-                    for layer in rasterLayers {
+                    let rasterLayers = geoPackage.rasters.map {
+                        let layer = RasterLayer(raster: $0)
                         // Makes the layer semi-transparent so it doesn't
                         // obscure the contents beneath it.
                         layer.opacity = 0.5
+                        return layer
                     }
                     viewpoint = Viewpoint(latitude: 39.7294, longitude: -104.8319, scale: 3e5)
                     map.addOperationalLayers(rasterLayers)
