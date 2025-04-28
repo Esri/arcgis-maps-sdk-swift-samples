@@ -1,6 +1,7 @@
 # Add WFS layer
 
 Display a layer from a WFS service, requesting only features for the current extent.
+
 ![Image of Add WFS Layer sample](add-wfs-layer.png)
 
 ## Use case
@@ -13,17 +14,17 @@ Pan and zoom to see features within the current map extent.
 
 ## How it works
 
-1. Create a `WfsFeatureTable` with a URL.
+1. Create a `WFSFeatureTable` with a URL.
 2. Create a `FeatureLayer` from the feature table and add it to the map.
-3. Listen for the `MapView.NavigationCompleted` event to detect when the user has stopped navigating the map.
-4. When the user is finished navigating, use `PopulateFromServiceAsync` to load the table with data for the current visible extent.
+3. Listen for the `MapView.onNavigatingChanged(action:)` event to detect when the user has stopped navigating the map.
+4. When the user is finished navigating, use `WFSFeatureTable.populateFromService(using:clearCache:outFields:)` to load the table with data for the current visible extent.
 
 ## Relevant API
 
 * FeatureLayer
-* MapView.NavigationCompleted
-* WfsFeatureTable
-* WfsFeatureTable.PopulateFromServiceAsync
+* MapView.onNavigatingChanged(action:)
+* WFSFeatureTable
+* WFSFeatureTable.populateFromService(using:clearCache:outFields:)
 
 ## About the data
 

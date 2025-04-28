@@ -6,22 +6,26 @@
         "add-wfs-layer.png"
     ],
     "keywords": [
+        "OGC",
+        "WFS",
         "browse",
         "catalog",
         "feature",
         "interaction cache",
         "layers",
-        "OGC",
         "service",
         "web",
-        "WFS",
         "FeatureLayer",
-        "MapView.NavigationCompleted",
-        "WfsFeatureTable",
-        "WfsFeatureTable.PopulateFromServiceAsync"
+        "MapView.onNavigatingChanged(action:)",
+        "WFSFeatureTable",
+        "WFSFeatureTable.populateFromService(using:clearCache:outFields:)"
     ],
     "redirect_from": [],
     "relevant_apis": [
+        "FeatureLayer",
+        "MapView.onNavigatingChanged(action:)",
+        "WFSFeatureTable",
+        "WFSFeatureTable.populateFromService(using:clearCache:outFields:)"
         "FeatureCollection",
         "FeatureCollectionLayer",
         "Portal",
