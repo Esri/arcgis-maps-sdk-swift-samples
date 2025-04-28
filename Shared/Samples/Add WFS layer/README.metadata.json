@@ -25,11 +25,7 @@
         "FeatureLayer",
         "MapView.onNavigatingChanged(action:)",
         "WFSFeatureTable",
-        "WFSFeatureTable.populateFromService(using:clearCache:outFields:)",
-        "FeatureCollection",
-        "FeatureCollectionLayer",
-        "Portal",
-        "PortalItem"
+        "WFSFeatureTable.populateFromService(using:clearCache:outFields:)"
     ],
     "snippets": [
         "AddWFSLayerView.swift"
