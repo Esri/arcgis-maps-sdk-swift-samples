@@ -25,7 +25,7 @@
         "FeatureLayer",
         "MapView.onNavigatingChanged(action:)",
         "WFSFeatureTable",
-        "WFSFeatureTable.populateFromService(using:clearCache:outFields:)"
+        "WFSFeatureTable.populateFromService(using:clearCache:outFields:)",
         "FeatureCollection",
         "FeatureCollectionLayer",
         "Portal",
