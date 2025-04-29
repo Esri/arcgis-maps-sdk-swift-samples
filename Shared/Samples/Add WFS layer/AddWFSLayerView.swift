@@ -43,6 +43,9 @@ struct AddWFSLayerView: View {
         return featureTable
     }()
     
+    /// A Boolean value indicating whether the map is being navigated.
+    @State private var mapIsNavigating = false
+    
     /// A Boolean value indicating whether the feature table is being populated.
     @State private var isPopulating = true
     
@@ -52,16 +55,7 @@ struct AddWFSLayerView: View {
     var body: some View {
         MapView(map: map)
             .onVisibleAreaChanged { visibleArea = $0 }
-            .onNavigatingChanged { isNavigating in
-                guard !isNavigating else { return }
-                Task {
-                    do {
-                        try await populateFeatures(within: visibleArea)
-                    } catch {
-                        self.error = error
-                    }
-                }
-            }
+            .onNavigatingChanged { mapIsNavigating = $0 }
             .task {
                 do {
                     try await featureTable.load()
@@ -77,6 +71,14 @@ struct AddWFSLayerView: View {
                     try await populateFeatures(within: visibleArea)
                 } catch {
                     // Present an alert for an error loading a layer.
+                    self.error = error
+                }
+            }
+            .task(id: mapIsNavigating) {
+                guard !mapIsNavigating else { return }
+                do {
+                    try await populateFeatures(within: visibleArea)
+                } catch {
                     self.error = error
                 }
             }
