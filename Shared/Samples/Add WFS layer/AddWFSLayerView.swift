@@ -17,23 +17,14 @@ import SwiftUI
 
 @MainActor
 struct AddWFSLayerView: View {
-    /// A map with a topographic basemap centered on downtown Seattle.
-    @State private var map: Map = {
-        let map = Map(basemapStyle: .arcGISTopographic)
-        map.initialViewpoint = Viewpoint(
-            boundingGeometry: Envelope(
-                min: Point(x: -122.341581, y: 47.617207, spatialReference: .wgs84),
-                max: Point(x: -122.332662, y: 47.613758, spatialReference: .wgs84)
-            )
-        )
-        return map
-    }()
+    /// A map with a topographic basemap.
+    @State private var map = Map(basemapStyle: .arcGISTopographic)
     
     /// The visible area on the map.
     @State private var visibleArea: ArcGIS.Polygon?
     
     /// A feature table of building footprints for downtown Seattle.
-    private let featureTable: WFSFeatureTable = {
+    @State private var featureTable: WFSFeatureTable = {
         let featureTable = WFSFeatureTable(url: .downtownSeattle, tableName: "Seattle_Downtown_Features:Buildings")
         // Sets the feature request mode to manual. In this mode, the table must be populated
         // manually. Panning and zooming won't request features automatically.
@@ -43,6 +34,9 @@ struct AddWFSLayerView: View {
         return featureTable
     }()
     
+    /// A Boolean value indicating whether the map view is currently navigating.
+    @State private var mapIsNavigating = false
+    
     /// A Boolean value indicating whether the feature table is being populated.
     @State private var isPopulating = true
     
@@ -50,60 +44,71 @@ struct AddWFSLayerView: View {
     @State private var error: Error?
     
     var body: some View {
-        MapView(map: map)
-            .onVisibleAreaChanged { visibleArea = $0 }
-            .onNavigatingChanged { isNavigating in
-                guard !isNavigating else { return }
-                Task {
+        MapViewReader { mapViewProxy in
+            MapView(map: map)
+                .onVisibleAreaChanged { visibleArea = $0 }
+                .onNavigatingChanged { mapIsNavigating = $0 }
+                .task {
                     do {
-                        try await populateFeatures(within: visibleArea)
+                        try await featureTable.load()
+                        let wfsFeatureLayer = FeatureLayer(featureTable: featureTable)
+                        wfsFeatureLayer.renderer = SimpleRenderer(
+                            symbol: SimpleLineSymbol(
+                                style: .solid,
+                                color: .red,
+                                width: 3
+                            )
+                        )
+                        map.addOperationalLayer(wfsFeatureLayer)
+                        
+                        await mapViewProxy.setViewpoint(
+                            Viewpoint(
+                                boundingGeometry: Envelope(
+                                    xRange: -122.341581 ... -122.332662,
+                                    yRange: 47.613758...47.617207,
+                                    spatialReference: .wgs84
+                                )
+                            )
+                        )
+                    } catch {
+                        // Present an alert for an error loading a layer.
+                        self.error = error
+                    }
+                }
+                .task(id: mapIsNavigating) {
+                    guard !mapIsNavigating else { return }
+                    do {
+                        guard let extent = visibleArea?.extent else { return }
+                        try await populateFeatures(within: extent)
                     } catch {
                         self.error = error
                     }
                 }
-            }
-            .task {
-                do {
-                    try await featureTable.load()
-                    let wfsFeatureLayer = FeatureLayer(featureTable: featureTable)
-                    wfsFeatureLayer.renderer = SimpleRenderer(
-                        symbol: SimpleLineSymbol(
-                            style: .solid,
-                            color: .red,
-                            width: 3
-                        )
-                    )
-                    map.addOperationalLayer(wfsFeatureLayer)
-                    try await populateFeatures(within: visibleArea)
-                } catch {
-                    // Present an alert for an error loading a layer.
-                    self.error = error
-                }
-            }
-            .overlay(alignment: .center) {
-                if isPopulating {
-                    VStack {
-                        Text("Populating")
-                        ProgressView()
-                            .progressViewStyle(.circular)
+                .overlay(alignment: .center) {
+                    if isPopulating {
+                        VStack {
+                            Text("Populating")
+                            ProgressView()
+                                .progressViewStyle(.circular)
+                        }
+                        .padding()
+                        .background(.ultraThickMaterial)
+                        .clipShape(.rect(cornerRadius: 10))
+                        .shadow(radius: 50)
                     }
-                    .padding()
-                    .background(.ultraThickMaterial)
-                    .clipShape(.rect(cornerRadius: 10))
-                    .shadow(radius: 50)
                 }
-            }
-            .errorAlert(presentingError: $error)
+                .errorAlert(presentingError: $error)
+        }
     }
     
     /// Populates the feature table using queried features contained within a given geometry.
     /// - Parameter geometry: The geometry used to filter the results.
-    private func populateFeatures(within geometry: Geometry?) async throws {
+    private func populateFeatures(within geometry: Geometry) async throws {
         isPopulating = true
         defer { isPopulating = false }
         
         let queryParameters = QueryParameters()
-        queryParameters.geometry = visibleArea?.extent
+        queryParameters.geometry = geometry
         queryParameters.spatialRelationship = .intersects
         _ = try await featureTable.populateFromService(
             using: queryParameters,
