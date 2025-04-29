@@ -81,3 +81,7 @@ struct ApplyStyleToWMSLayerView: View {
             .errorAlert(presentingError: $wmsSublayerLoadError)
     }
 }
+
+#Preview {
+    ApplyStyleToWMSLayerView()
+}
