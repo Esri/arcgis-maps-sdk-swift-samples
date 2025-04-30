@@ -89,12 +89,19 @@ struct AddFeatureLayerWithTimeOffsetView: View {
                 ToolbarItem(placement: .bottomBar) {
                     VStack {
                         Slider(value: $sliderValue, in: 0...sliderMaxValue, step: 1)
-                            .padding(.top)
                             .padding(.horizontal)
                             .onChange(of: sliderValue) {
                                 // Calculates a new time extent when the slider value changes.
-                                guard let newStartDate = Calendar.current.date(byAdding: .day, value: Int(sliderValue), to: .august4th2000),
-                                      let newEndDate = Calendar.current.date(byAdding: .day, value: 10, to: newStartDate) else {
+                                guard let newStartDate = Calendar.current.date(
+                                        byAdding: .day,
+                                        value: Int(sliderValue),
+                                        to: .august4th2000
+                                      ),
+                                      let newEndDate = Calendar.current.date(
+                                        byAdding: .day,
+                                        value: 10,
+                                        to: newStartDate
+                                      ) else {
                                     return
                                 }
                                 timeExtent = TimeExtent(startDate: newStartDate, endDate: newEndDate)
