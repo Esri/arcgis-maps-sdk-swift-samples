@@ -119,7 +119,8 @@
 		1C29C9592DBAE50D0074028F /* AddWMTSLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C29C9532DBAE50D0074028F /* AddWMTSLayerView.swift */; };
 		1C29C95A2DBAE5770074028F /* AddWMTSLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C29C9532DBAE50D0074028F /* AddWMTSLayerView.swift */; };
 		1C3891612DC02F1200ADFDDC /* ApplyBlendRendererToHillshadeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3891602DC02F1100ADFDDC /* ApplyBlendRendererToHillshadeView.swift */; };
-		1C3892292DC2EFC700ADFDDC /* Shasta_Elevation in Resources */ = {isa = PBXBuildFile; fileRef = 1C3892282DC2EFC700ADFDDC /* Shasta_Elevation */; settings = {ASSET_TAGS = (ApplyBlendRendererToHillshade, ); }; };
+		1C38922F2DC59DE100ADFDDC /* ApplyBlendRendererToHillshadeView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C38922E2DC59DE000ADFDDC /* ApplyBlendRendererToHillshadeView.Model.swift */; };
+		1C3892312DC59E6000ADFDDC /* ApplyBlendRendererToHillshadeView.SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3892302DC59E5D00ADFDDC /* ApplyBlendRendererToHillshadeView.SettingsView.swift */; };
 		1C3B7DC82A5F64FC00907443 /* AnalyzeNetworkWithSubnetworkTraceView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3B7DC32A5F64FC00907443 /* AnalyzeNetworkWithSubnetworkTraceView.Model.swift */; };
 		1C3B7DCB2A5F64FC00907443 /* AnalyzeNetworkWithSubnetworkTraceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3B7DC62A5F64FC00907443 /* AnalyzeNetworkWithSubnetworkTraceView.swift */; };
 		1C3B7DCD2A5F652500907443 /* AnalyzeNetworkWithSubnetworkTraceView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C3B7DC32A5F64FC00907443 /* AnalyzeNetworkWithSubnetworkTraceView.Model.swift */; };
@@ -909,7 +910,8 @@
 		1C26ED152A859525009B7721 /* FilterFeaturesInSceneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterFeaturesInSceneView.swift; sourceTree = "<group>"; };
 		1C29C9532DBAE50D0074028F /* AddWMTSLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWMTSLayerView.swift; sourceTree = "<group>"; };
 		1C3891602DC02F1100ADFDDC /* ApplyBlendRendererToHillshadeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyBlendRendererToHillshadeView.swift; sourceTree = "<group>"; };
-		1C3892282DC2EFC700ADFDDC /* Shasta_Elevation */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Shasta_Elevation; path = "Portal Data/b051f5c3e01048f3bf11c59b41507896/Shasta_Elevation"; sourceTree = "<group>"; };
+		1C38922E2DC59DE000ADFDDC /* ApplyBlendRendererToHillshadeView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyBlendRendererToHillshadeView.Model.swift; sourceTree = "<group>"; };
+		1C3892302DC59E5D00ADFDDC /* ApplyBlendRendererToHillshadeView.SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyBlendRendererToHillshadeView.SettingsView.swift; sourceTree = "<group>"; };
 		1C3B7DC32A5F64FC00907443 /* AnalyzeNetworkWithSubnetworkTraceView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyzeNetworkWithSubnetworkTraceView.Model.swift; sourceTree = "<group>"; };
 		1C3B7DC62A5F64FC00907443 /* AnalyzeNetworkWithSubnetworkTraceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyzeNetworkWithSubnetworkTraceView.swift; sourceTree = "<group>"; };
 		1C42E04329D2396B004FC4BE /* ShowPopupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowPopupView.swift; sourceTree = "<group>"; };
@@ -1651,7 +1653,6 @@
 		00E5400627F3CCA100CF66D5 = {
 			isa = PBXGroup;
 			children = (
-				1C3892282DC2EFC700ADFDDC /* Shasta_Elevation */,
 				00966EE62811F64D009D3DD7 /* iOS */,
 				0023DE5029D648FA0098243A /* macOS */,
 				00CCB8A6285D059300BBAB70 /* Portal Data */,
@@ -1783,6 +1784,8 @@
 			isa = PBXGroup;
 			children = (
 				1C3891602DC02F1100ADFDDC /* ApplyBlendRendererToHillshadeView.swift */,
+				1C38922E2DC59DE000ADFDDC /* ApplyBlendRendererToHillshadeView.Model.swift */,
+				1C3892302DC59E5D00ADFDDC /* ApplyBlendRendererToHillshadeView.SettingsView.swift */,
 			);
 			path = "Apply blend renderer to hillshade";
 			sourceTree = "<group>";
@@ -3439,7 +3442,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1C3892292DC2EFC700ADFDDC /* Shasta_Elevation in Resources */,
 				D7F8C0412B605E720072BFA7 /* FillmoreTopographicMap.vtpk in Resources */,
 				9537AFD72C220EF0000923C5 /* ExchangeSetwithoutUpdates in Resources */,
 				D7F8C03E2B605AF60072BFA7 /* ContingentValuesBirdNests.geodatabase in Resources */,
@@ -3622,6 +3624,7 @@
 				E004A6E028466279002A1FE6 /* ShowCalloutView.swift in Sources */,
 				E000E763286A0B18005D87C5 /* CutGeometryView.swift in Sources */,
 				D7BE7E6F2CC19CC3006DDB0C /* AddTiledLayerView.swift in Sources */,
+				1C38922F2DC59DE100ADFDDC /* ApplyBlendRendererToHillshadeView.Model.swift in Sources */,
 				D7705D582AFC244E00CC0335 /* FindClosestFacilityToMultiplePointsView.swift in Sources */,
 				D73FCFFF2B02C7630006360D /* FindRouteAroundBarriersView.Views.swift in Sources */,
 				1C29C9592DBAE50D0074028F /* AddWMTSLayerView.swift in Sources */,
@@ -3782,6 +3785,7 @@
 				D7B759B32B1FFBE300017FDD /* FavoritesView.swift in Sources */,
 				D722BD222A420DAD002C2087 /* ShowExtrudedFeaturesView.swift in Sources */,
 				E004A6F6284FA42A002A1FE6 /* SelectFeaturesInFeatureLayerView.swift in Sources */,
+				1C3892312DC59E6000ADFDDC /* ApplyBlendRendererToHillshadeView.SettingsView.swift in Sources */,
 				D77688132B69826B007C3860 /* ListSpatialReferenceTransformationsView.swift in Sources */,
 				D75101812A2E493600B8FA48 /* ShowLabelsOnLayerView.swift in Sources */,
 				1C3B7DCB2A5F64FC00907443 /* AnalyzeNetworkWithSubnetworkTraceView.swift in Sources */,
