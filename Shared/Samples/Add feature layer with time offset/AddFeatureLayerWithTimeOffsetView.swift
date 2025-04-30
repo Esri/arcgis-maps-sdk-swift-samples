@@ -117,7 +117,7 @@ private extension URL {
     )!
 }
 
-extension Date {
+private extension Date {
     static let august4th2000 = Calendar.current.date(from: DateComponents(year: 2000, month: 8, day: 4))!
     static let october22nd2000 = Calendar.current.date(from: DateComponents(year: 2000, month: 10, day: 22))!
 }
