@@ -82,12 +82,8 @@ struct AddWFSLayerView: View {
                 }
             }
             .task(id: populateExtent) {
-                do {
-                    guard let populateExtent else { return }
-                    try await populateFeatures(within: populateExtent)
-                } catch {
-                    self.error = error
-                }
+                guard let populateExtent else { return }
+                await populateFeatures(within: populateExtent)
             }
             .overlay(alignment: .center) {
                 if isPopulating {
@@ -105,20 +101,24 @@ struct AddWFSLayerView: View {
             .errorAlert(presentingError: $error)
     }
     
-    /// Populates the feature table using queried features contained within a given geometry.
-    /// - Parameter geometry: The geometry used to filter the results.
-    private func populateFeatures(within geometry: Geometry) async throws {
+    /// Populates the feature table using queried features contained within a given extent.
+    /// - Parameter extent: The extent used to filter the results.
+    private func populateFeatures(within extent: Envelope) async {
         isPopulating = true
         defer { isPopulating = false }
         
         let queryParameters = QueryParameters()
-        queryParameters.geometry = geometry
+        queryParameters.geometry = extent
         queryParameters.spatialRelationship = .intersects
-        _ = try await featureTable.populateFromService(
-            using: queryParameters,
-            clearCache: false,
-            outFields: []
-        )
+        do {
+            _ = try await featureTable.populateFromService(
+                using: queryParameters,
+                clearCache: false,
+                outFields: []
+            )
+        } catch {
+            self.error = error
+        }
     }
 }
 
