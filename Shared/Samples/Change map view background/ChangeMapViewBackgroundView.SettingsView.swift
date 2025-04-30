@@ -28,11 +28,11 @@ extension ChangeMapViewBackgroundView {
                     ColorPicker("Color", selection: $model.color)
                     ColorPicker("Line Color", selection: $model.lineColor)
                     VStack {
-                        LabeledContent("Line Width", value: model.lineWidth.formatted())
+                        LabeledContent("Line Width", value: model.lineWidth, format: .number)
                         Slider(value: $model.lineWidth, in: model.lineWidthRange, step: 1)
                     }
                     VStack {
-                        LabeledContent("Grid Size", value: model.size.formatted())
+                        LabeledContent("Grid Size", value: model.size, format: .number)
                         Slider(value: $model.size, in: model.sizeRange, step: 1)
                     }
                 }

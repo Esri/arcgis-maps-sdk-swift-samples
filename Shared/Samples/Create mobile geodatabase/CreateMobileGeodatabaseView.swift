@@ -111,7 +111,7 @@ struct CreateMobileGeodatabaseView: View {
                         HStack {
                             Text(String(feature.oid))
                                 .padding(.trailing, 8)
-                            Text(feature.timestamp.formatted(.collectionTimestamp))
+                            Text(feature.timestamp, format: .collectionTimestamp)
                         }
                     }
                 }
