@@ -1,0 +1,28 @@
+{
+    "category": "Layers",
+    "description": "Display a time-enabled feature layer with a time offset.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "change",
+        "range",
+        "time",
+        "time extent",
+        "time offset",
+        "time-aware",
+        "time-enabled",
+        "FeatureLayer",
+        "MapView",
+        "TimeExtent"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "FeatureLayer",
+        "MapView",
+        "TimeExtent"
+    ],
+    "snippets": [
+        "AddFeatureLayerWithTimeOffsetView.swift"
+    ],
+    "title": "Add feature layer with time offset"
+}
