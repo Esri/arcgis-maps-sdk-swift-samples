@@ -43,6 +43,8 @@
 		0042E24828E50EE4001F33D6 /* ShowViewshedFromPointInSceneView.ViewshedSettingsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 0042E24428E4F82B001F33D6 /* ShowViewshedFromPointInSceneView.ViewshedSettingsView.swift */; };
 		0044218A2DB9533900249FEE /* AddFeatureCollectionLayerFromPortalItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004421892DB9532D00249FEE /* AddFeatureCollectionLayerFromPortalItemView.swift */; };
 		0044218B2DB9575600249FEE /* AddFeatureCollectionLayerFromPortalItemView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 004421892DB9532D00249FEE /* AddFeatureCollectionLayerFromPortalItemView.swift */; };
+		004421902DB9620200249FEE /* AddFeatureCollectionLayerFromQueryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0044218F2DB961FE00249FEE /* AddFeatureCollectionLayerFromQueryView.swift */; };
+		004421912DB96A7800249FEE /* AddFeatureCollectionLayerFromQueryView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 0044218F2DB961FE00249FEE /* AddFeatureCollectionLayerFromQueryView.swift */; };
 		0044289229C90C0B00160767 /* GetElevationAtPointOnSurfaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0044289129C90C0B00160767 /* GetElevationAtPointOnSurfaceView.swift */; };
 		0044289329C9234300160767 /* GetElevationAtPointOnSurfaceView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 0044289129C90C0B00160767 /* GetElevationAtPointOnSurfaceView.swift */; };
 		0044CDDF2995C39E004618CE /* ShowDeviceLocationHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0044CDDE2995C39E004618CE /* ShowDeviceLocationHistoryView.swift */; };
@@ -116,6 +118,8 @@
 		1C2538572BABACFD00337307 /* AugmentRealityToNavigateRouteView.ARSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C2538522BABACB100337307 /* AugmentRealityToNavigateRouteView.ARSceneView.swift */; };
 		1C26ED192A859525009B7721 /* FilterFeaturesInSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C26ED152A859525009B7721 /* FilterFeaturesInSceneView.swift */; };
 		1C26ED202A8BEC63009B7721 /* FilterFeaturesInSceneView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C26ED152A859525009B7721 /* FilterFeaturesInSceneView.swift */; };
+		1C29C9592DBAE50D0074028F /* AddWMTSLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C29C9532DBAE50D0074028F /* AddWMTSLayerView.swift */; };
+		1C29C95A2DBAE5770074028F /* AddWMTSLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C29C9532DBAE50D0074028F /* AddWMTSLayerView.swift */; };
 		1C3B7DC82A5F64FC00907443 /* AnalyzeNetworkWithSubnetworkTraceView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3B7DC32A5F64FC00907443 /* AnalyzeNetworkWithSubnetworkTraceView.Model.swift */; };
 		1C3B7DCB2A5F64FC00907443 /* AnalyzeNetworkWithSubnetworkTraceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3B7DC62A5F64FC00907443 /* AnalyzeNetworkWithSubnetworkTraceView.swift */; };
 		1C3B7DCD2A5F652500907443 /* AnalyzeNetworkWithSubnetworkTraceView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C3B7DC32A5F64FC00907443 /* AnalyzeNetworkWithSubnetworkTraceView.Model.swift */; };
@@ -150,6 +154,8 @@
 		3E9F77732C6A60FA0022CAB5 /* QueryFeatureCountAndExtentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9F77722C6A60FA0022CAB5 /* QueryFeatureCountAndExtentView.swift */; };
 		3E9F77742C6A6E670022CAB5 /* QueryFeatureCountAndExtentView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 3E9F77722C6A60FA0022CAB5 /* QueryFeatureCountAndExtentView.swift */; };
 		3EEDE7CE2C5D73F700510104 /* SetSpatialReferenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EEDE7CD2C5D73F700510104 /* SetSpatialReferenceView.swift */; };
+		4C8126DD2DBBCF0B006EF7D2 /* ApplyStyleToWMSLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8126DC2DBBCEFE006EF7D2 /* ApplyStyleToWMSLayerView.swift */; };
+		4C8126E22DBFD9EF006EF7D2 /* ApplyStyleToWMSLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4C8126DC2DBBCEFE006EF7D2 /* ApplyStyleToWMSLayerView.swift */; };
 		4D126D6D29CA1B6000CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D126D6929CA1B6000CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift */; };
 		4D126D7229CA1E1800CFB7A7 /* FileNMEASentenceReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D126D7129CA1E1800CFB7A7 /* FileNMEASentenceReader.swift */; };
 		4D126D7329CA1EFD00CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4D126D6929CA1B6000CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift */; };
@@ -256,6 +262,7 @@
 		D713C6D72CB990600073AA72 /* AddKMLLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D713C6D12CB990600073AA72 /* AddKMLLayerView.swift */; };
 		D713C6D82CB990800073AA72 /* AddKMLLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D713C6D12CB990600073AA72 /* AddKMLLayerView.swift */; };
 		D713C6F72CB9B9A60073AA72 /* US_State_Capitals.kml in Resources */ = {isa = PBXBuildFile; fileRef = D713C6F52CB9B9A60073AA72 /* US_State_Capitals.kml */; settings = {ASSET_TAGS = (AddKmlLayer, ); }; };
+		D7142BC42DB71082004F87B7 /* View+PagePresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7142BC32DB71082004F87B7 /* View+PagePresentation.swift */; };
 		D71563E92D5AC2B600D2E948 /* CreateKMLMultiTrackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71563E32D5AC2B600D2E948 /* CreateKMLMultiTrackView.swift */; };
 		D71563EA2D5AC2D500D2E948 /* CreateKMLMultiTrackView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D71563E32D5AC2B600D2E948 /* CreateKMLMultiTrackView.swift */; };
 		D718A1E72B570F7500447087 /* OrbitCameraAroundObjectView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D718A1E62B570F7500447087 /* OrbitCameraAroundObjectView.Model.swift */; };
@@ -600,8 +607,11 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				1C29C95A2DBAE5770074028F /* AddWMTSLayerView.swift in Copy Source Code Files */,
+				004421912DB96A7800249FEE /* AddFeatureCollectionLayerFromQueryView.swift in Copy Source Code Files */,
 				10CFF5082DC1A3850027F144 /* AddFeatureLayerWithTimeOffsetView.swift in Copy Source Code Files */,
 				0044218B2DB9575600249FEE /* AddFeatureCollectionLayerFromPortalItemView.swift in Copy Source Code Files */,
+				4C8126E22DBFD9EF006EF7D2 /* ApplyStyleToWMSLayerView.swift in Copy Source Code Files */,
 				D703F04E2D9334BD0077E3A8 /* SnapGeometryEditsWithUtilityNetworkRulesView.Model.swift in Copy Source Code Files */,
 				D71A9DE52D8CC8B500CA03CB /* SnapGeometryEditsWithUtilityNetworkRulesView.swift in Copy Source Code Files */,
 				D789AAAE2D66C737007A8E0E /* CreateKMLMultiTrackView.Model.swift in Copy Source Code Files */,
@@ -854,6 +864,7 @@
 		0042E24228E4BF8F001F33D6 /* ShowViewshedFromPointInSceneView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowViewshedFromPointInSceneView.Model.swift; sourceTree = "<group>"; };
 		0042E24428E4F82B001F33D6 /* ShowViewshedFromPointInSceneView.ViewshedSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowViewshedFromPointInSceneView.ViewshedSettingsView.swift; sourceTree = "<group>"; };
 		004421892DB9532D00249FEE /* AddFeatureCollectionLayerFromPortalItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFeatureCollectionLayerFromPortalItemView.swift; sourceTree = "<group>"; };
+		0044218F2DB961FE00249FEE /* AddFeatureCollectionLayerFromQueryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFeatureCollectionLayerFromQueryView.swift; sourceTree = "<group>"; };
 		0044289129C90C0B00160767 /* GetElevationAtPointOnSurfaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetElevationAtPointOnSurfaceView.swift; sourceTree = "<group>"; };
 		0044CDDE2995C39E004618CE /* ShowDeviceLocationHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowDeviceLocationHistoryView.swift; sourceTree = "<group>"; };
 		004A2B9C2BED455B00C297CE /* canyonlands */ = {isa = PBXFileReference; lastKnownFileType = folder; path = canyonlands; sourceTree = "<group>"; };
@@ -902,6 +913,7 @@
 		1C2538522BABACB100337307 /* AugmentRealityToNavigateRouteView.ARSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AugmentRealityToNavigateRouteView.ARSceneView.swift; sourceTree = "<group>"; };
 		1C2538532BABACB100337307 /* AugmentRealityToNavigateRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AugmentRealityToNavigateRouteView.swift; sourceTree = "<group>"; };
 		1C26ED152A859525009B7721 /* FilterFeaturesInSceneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterFeaturesInSceneView.swift; sourceTree = "<group>"; };
+		1C29C9532DBAE50D0074028F /* AddWMTSLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWMTSLayerView.swift; sourceTree = "<group>"; };
 		1C3B7DC32A5F64FC00907443 /* AnalyzeNetworkWithSubnetworkTraceView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyzeNetworkWithSubnetworkTraceView.Model.swift; sourceTree = "<group>"; };
 		1C3B7DC62A5F64FC00907443 /* AnalyzeNetworkWithSubnetworkTraceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyzeNetworkWithSubnetworkTraceView.swift; sourceTree = "<group>"; };
 		1C42E04329D2396B004FC4BE /* ShowPopupView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowPopupView.swift; sourceTree = "<group>"; };
@@ -919,6 +931,7 @@
 		3E720F9C2C619B1700E22A9E /* SetInitialViewpointView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetInitialViewpointView.swift; sourceTree = "<group>"; };
 		3E9F77722C6A60FA0022CAB5 /* QueryFeatureCountAndExtentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryFeatureCountAndExtentView.swift; sourceTree = "<group>"; };
 		3EEDE7CD2C5D73F700510104 /* SetSpatialReferenceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetSpatialReferenceView.swift; sourceTree = "<group>"; };
+		4C8126DC2DBBCEFE006EF7D2 /* ApplyStyleToWMSLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyStyleToWMSLayerView.swift; sourceTree = "<group>"; };
 		4D126D6929CA1B6000CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowDeviceLocationWithNMEADataSourcesView.swift; sourceTree = "<group>"; };
 		4D126D7129CA1E1800CFB7A7 /* FileNMEASentenceReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileNMEASentenceReader.swift; sourceTree = "<group>"; };
 		4D126D7B29CA3E6000CFB7A7 /* Redlands.nmea */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Redlands.nmea; sourceTree = "<group>"; };
@@ -977,6 +990,7 @@
 		D71371752BD88ECC00EB2F86 /* MonitorChangesToLayerViewStateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonitorChangesToLayerViewStateView.swift; sourceTree = "<group>"; };
 		D713C6D12CB990600073AA72 /* AddKMLLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddKMLLayerView.swift; sourceTree = "<group>"; };
 		D713C6F52CB9B9A60073AA72 /* US_State_Capitals.kml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = US_State_Capitals.kml; sourceTree = "<group>"; };
+		D7142BC32DB71082004F87B7 /* View+PagePresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+PagePresentation.swift"; sourceTree = "<group>"; };
 		D71563E32D5AC2B600D2E948 /* CreateKMLMultiTrackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateKMLMultiTrackView.swift; sourceTree = "<group>"; };
 		D718A1E62B570F7500447087 /* OrbitCameraAroundObjectView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrbitCameraAroundObjectView.Model.swift; sourceTree = "<group>"; };
 		D718A1EA2B575FD900447087 /* ManageBookmarksView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageBookmarksView.swift; sourceTree = "<group>"; };
@@ -1204,6 +1218,7 @@
 				D7A670D42DADB9630060E327 /* Bundle.swift */,
 				D7A670D62DADBC770060E327 /* EnvironmentValues+RequestReviewModel.swift */,
 				00181B452846AD7100654571 /* View+ErrorAlert.swift */,
+				D7142BC32DB71082004F87B7 /* View+PagePresentation.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1232,6 +1247,14 @@
 				004421892DB9532D00249FEE /* AddFeatureCollectionLayerFromPortalItemView.swift */,
 			);
 			path = "Add feature collection layer from portal item";
+			sourceTree = "<group>";
+		};
+		0044218D2DB961F500249FEE /* Add feature collection layer from query */ = {
+			isa = PBXGroup;
+			children = (
+				0044218F2DB961FE00249FEE /* AddFeatureCollectionLayerFromQueryView.swift */,
+			);
+			path = "Add feature collection layer from query";
 			sourceTree = "<group>";
 		};
 		0044288C29C90BD500160767 /* Get elevation at point on surface */ = {
@@ -1286,6 +1309,7 @@
 				D7848EFD2CBD986400F6F546 /* Add elevation source from raster */,
 				D7BEBAC22CBDC0F800F882E7 /* Add elevation source from tile package */,
 				004421872DB9532400249FEE /* Add feature collection layer from portal item */,
+				0044218D2DB961F500249FEE /* Add feature collection layer from query */,
 				10CFF4C82DBAAEE10027F144 /* Add feature layer with time offset */,
 				00D4EF7E2863840D00B9CC30 /* Add feature layers */,
 				D7F8C0342B60564D0072BFA7 /* Add features with contingent values */,
@@ -1302,6 +1326,7 @@
 				D7201D032CC6D3B5004BDB7D /* Add vector tiled layer from custom style */,
 				3E54CF202C66AFA400DD2F18 /* Add web tiled layer */,
 				D7E557602A1D743100B9FB09 /* Add WMS layer */,
+				1C29C9622DBAE5D10074028F /* Add WMTS layer */,
 				1C3B7DC22A5F64FC00907443 /* Analyze network with subnetwork trace */,
 				D7C16D172AC5F6C100689E89 /* Animate 3D graphic */,
 				D77570BC2A29427200F490CD /* Animate images with image overlay */,
@@ -1310,6 +1335,7 @@
 				955AFAC52C10FD74009C8FE5 /* Apply mosaic rule to rasters */,
 				D771D0C52CD55211004C13CB /* Apply raster rendering rule */,
 				004A2BA12BED456500C297CE /* Apply scheduled updates to preplanned map area */,
+				4C8126DB2DBBCED7006EF7D2 /* Apply style to WMS layer */,
 				D75362CC2A1E862B00D83028 /* Apply unique value renderer */,
 				1C8EC7422BAE2891001A6929 /* Augment reality to collect data */,
 				D7084FA42AD771AA00EC7F4F /* Augment reality to fly over scene */,
@@ -1751,6 +1777,14 @@
 			path = "Filter features in scene";
 			sourceTree = "<group>";
 		};
+		1C29C9622DBAE5D10074028F /* Add WMTS layer */ = {
+			isa = PBXGroup;
+			children = (
+				1C29C9532DBAE50D0074028F /* AddWMTSLayerView.swift */,
+			);
+			path = "Add WMTS layer";
+			sourceTree = "<group>";
+		};
 		1C3B7DC22A5F64FC00907443 /* Analyze network with subnetwork trace */ = {
 			isa = PBXGroup;
 			children = (
@@ -1865,6 +1899,14 @@
 				3EEDE7CD2C5D73F700510104 /* SetSpatialReferenceView.swift */,
 			);
 			path = "Set spatial reference";
+			sourceTree = "<group>";
+		};
+		4C8126DB2DBBCED7006EF7D2 /* Apply style to WMS layer */ = {
+			isa = PBXGroup;
+			children = (
+				4C8126DC2DBBCEFE006EF7D2 /* ApplyStyleToWMSLayerView.swift */,
+			);
+			path = "Apply style to WMS layer";
 			sourceTree = "<group>";
 		};
 		4D126D6829CA1B6000CFB7A7 /* Show device location with NMEA data sources */ = {
@@ -3578,6 +3620,7 @@
 				D7BE7E6F2CC19CC3006DDB0C /* AddTiledLayerView.swift in Sources */,
 				D7705D582AFC244E00CC0335 /* FindClosestFacilityToMultiplePointsView.swift in Sources */,
 				D73FCFFF2B02C7630006360D /* FindRouteAroundBarriersView.Views.swift in Sources */,
+				1C29C9592DBAE50D0074028F /* AddWMTSLayerView.swift in Sources */,
 				3EEDE7CE2C5D73F700510104 /* SetSpatialReferenceView.swift in Sources */,
 				4D126D7229CA1E1800CFB7A7 /* FileNMEASentenceReader.swift in Sources */,
 				001C6DE127FE8A9400D472C2 /* AppSecrets.swift.masque in Sources */,
@@ -3587,6 +3630,7 @@
 				E0D04FF228A5390000747989 /* DownloadPreplannedMapAreaView.Model.swift in Sources */,
 				D764B7DF2BE2F89D002E2F92 /* EditGeodatabaseWithTransactionsView.swift in Sources */,
 				00CCB8A5285BAF8700BBAB70 /* OnDemandResource.swift in Sources */,
+				D7142BC42DB71082004F87B7 /* View+PagePresentation.swift in Sources */,
 				D7635FFE2B9277DC0044AB97 /* ConfigureClustersView.swift in Sources */,
 				1C19B4F32A578E46001D2506 /* CreateLoadReportView.swift in Sources */,
 				D71563E92D5AC2B600D2E948 /* CreateKMLMultiTrackView.swift in Sources */,
@@ -3663,6 +3707,7 @@
 				4D2ADC5A29C4F612003B367F /* ChangeMapViewBackgroundView.swift in Sources */,
 				95DEB9B62C127A92009BEC35 /* ShowViewshedFromPointOnMapView.swift in Sources */,
 				D7BA38972BFBFC0F009954F5 /* QueryRelatedFeaturesView.swift in Sources */,
+				004421902DB9620200249FEE /* AddFeatureCollectionLayerFromQueryView.swift in Sources */,
 				D7ECF5982AB8BE63003FB2BE /* RenderMultilayerSymbolsView.swift in Sources */,
 				D769C2122A29019B00030F61 /* SetUpLocationDrivenGeotriggersView.swift in Sources */,
 				79302F852A1ED4E30002336A /* CreateAndSaveKMLView.Model.swift in Sources */,
@@ -3778,6 +3823,7 @@
 				00CB9138284814A4005C2C5D /* SearchWithGeocodeView.swift in Sources */,
 				1C43BC7F2A43781200509BF8 /* SetVisibilityOfSubtypeSublayerView.Views.swift in Sources */,
 				D731F3C12AD0D2AC00A8431E /* IdentifyGraphicsView.swift in Sources */,
+				4C8126DD2DBBCF0B006EF7D2 /* ApplyStyleToWMSLayerView.swift in Sources */,
 				00E5401C27F3CCA200CF66D5 /* SamplesApp.swift in Sources */,
 				D73E61962BDAEE6600457932 /* MatchViewpointOfGeoViewsView.swift in Sources */,
 				E066DD4028610F55004D3D5B /* AddSceneLayerFromServiceView.swift in Sources */,
