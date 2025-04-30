@@ -18,36 +18,29 @@ import SwiftUI
 struct AddFeatureLayerWithTimeOffsetView: View {
     /// A map with an oceans basemap and hurricane layers.
     @State private var map: Map = {
-        // Make a new map with an oceans basemap style.
+        // Makes a new map with an oceans basemap style.
         let map = Map(basemapStyle: .arcGISOceans)
         
-        // Make the hurricanes feature layer with no offset.
+        // Makes the hurricanes feature layer with no offset.
         let noOffsetLayer = FeatureLayer(featureTable: ServiceFeatureTable(url: .hurricanesService))
         
-        // Apply a blue dot renderer to distinguish hurricanes without offset.
+        // Applies a blue dot renderer to distinguish hurricanes without offset.
         noOffsetLayer.renderer = SimpleRenderer(symbol: SimpleMarkerSymbol(style: .circle, color: .blue, size: 10))
         
-        // Add the non-offset layer to the map.
-        map.addOperationalLayer(noOffsetLayer)
-        
-        // Make the offset hurricanes feature layer.
+        // Makes the offset hurricanes feature layer.
         let withOffsetLayer = FeatureLayer(featureTable: ServiceFeatureTable(url: .hurricanesService))
         
-        // Apply a red dot renderer to distinguish the hurricanes with an offset.
+        // Applies a red dot renderer to distinguish the hurricanes with an offset.
         withOffsetLayer.renderer = SimpleRenderer(symbol: SimpleMarkerSymbol(style: .circle, color: .red, size: 10))
         
-        // Set the time offset on the layer.
+        // Sets the time offset on the layer.
         withOffsetLayer.timeOffset = TimeValue(duration: 10.0, unit: .days)
         
-        // Add the offset layer to the map.
-        map.addOperationalLayer(withOffsetLayer)
+        // Adds the layers to the map.
+        map.addOperationalLayers([noOffsetLayer, withOffsetLayer])
         
-        // Set the initial viewpoint of the map.
-        map.initialViewpoint = Viewpoint(
-            latitude: 45.0,
-            longitude: -45.0,
-            scale: 9e7
-        )
+        // Sets the initial viewpoint of the map.
+        map.initialViewpoint = Viewpoint(latitude: 45.0, longitude: -45.0, scale: 9e7)
         
         return map
     }()
@@ -63,40 +56,58 @@ struct AddFeatureLayerWithTimeOffsetView: View {
     
     /// The maximum value of the slider.
     private let sliderMaxValue = Double(
-        Calendar.current.dateComponents(
-            [.day],
-            from: Date.august4th2000,
-            to: Date.october22nd2000
-        ).day!
+        Calendar.current.dateComponents([.day], from: Date.august4th2000, to: Date.october22nd2000).day!
     )
     
     /// The format style used to display the extent dates.
     private let dateFormat = Date.FormatStyle(date: .numeric, time: .omitted)
     
     var body: some View {
-        VStack {
-            MapView(map: map, timeExtent: $timeExtent)
-            Text("Red hurricanes offset 10 days")
-                .font(.caption)
-                .fontWeight(.bold)
-                .foregroundColor(.red)
-            Text("Blue hurricanes not offset")
-                .font(.caption)
-                .fontWeight(.bold)
-                .foregroundColor(.blue)
-            Slider(value: $sliderValue, in: 0...sliderMaxValue, step: 1)
-                .padding(.leading)
-                .padding(.trailing)
-            Text("\(timeExtent?.startDate?.formatted(dateFormat) ?? "") - \(timeExtent?.endDate?.formatted(dateFormat) ?? "")")
-        }
-        .onChange(of: sliderValue) {
-            // Calculate a new time extent when the slider value changes.
-            guard let newStartDate = Calendar.current.date(byAdding: .day, value: Int(sliderValue), to: .august4th2000),
-                  let newEndDate = Calendar.current.date(byAdding: .day, value: 10, to: newStartDate) else {
-                return
+        MapView(map: map, timeExtent: $timeExtent)
+            .overlay(alignment: .topTrailing) {
+                VStack(alignment: .leading) {
+                    Text("Hurricane Data Offset:")
+                    LabeledContent {
+                        Text("10 days")
+                    } label: {
+                        Text("Red").foregroundStyle(.red)
+                    }
+                    LabeledContent {
+                        Text("No offset")
+                    } label: {
+                        Text("Blue").foregroundStyle(.blue)
+                    }
+                }
+                .fixedSize()
+                .padding()
+                .background(.thinMaterial)
+                .clipShape(.rect(cornerRadius: 10))
+                .shadow(radius: 50)
+                .padding()
             }
-            timeExtent = TimeExtent(startDate: newStartDate, endDate: newEndDate)
-        }
+            .toolbar {
+                ToolbarItem(placement: .bottomBar) {
+                    VStack {
+                        Slider(value: $sliderValue, in: 0...sliderMaxValue, step: 1)
+                            .padding(.top)
+                            .padding(.horizontal)
+                            .onChange(of: sliderValue) {
+                                // Calculates a new time extent when the slider value changes.
+                                guard let newStartDate = Calendar.current.date(byAdding: .day, value: Int(sliderValue), to: .august4th2000),
+                                      let newEndDate = Calendar.current.date(byAdding: .day, value: 10, to: newStartDate) else {
+                                    return
+                                }
+                                timeExtent = TimeExtent(startDate: newStartDate, endDate: newEndDate)
+                            }
+                        Text(
+                            """
+                            \(timeExtent?.startDate?.formatted(dateFormat) ?? "") - \
+                            \(timeExtent?.endDate?.formatted(dateFormat) ?? "")
+                            """
+                        )
+                    }
+                }
+            }
     }
 }
 
