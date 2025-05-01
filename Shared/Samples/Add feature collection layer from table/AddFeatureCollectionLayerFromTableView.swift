@@ -38,14 +38,9 @@ struct AddFeatureCollectionLayerFromTableView: View {
                     async let pointsTable = pointsCollectionTable()
                     async let linesTable = linesCollectionTable()
                     async let polygonsTable = polygonsCollectionTable()
-                    let featureCollectionLayer = try await FeatureCollectionLayer(
-                        featureCollection: FeatureCollection(
-                            featureCollectionTables: [
-                                pointsTable,
-                                linesTable,
-                                polygonsTable
-                            ]
-                        )
+                    let featureCollectionTables = try await [pointsTable, linesTable, polygonsTable]
+                    let featureCollectionLayer = FeatureCollectionLayer(
+                        featureCollection: FeatureCollection(featureCollectionTables: featureCollectionTables)
                     )
                     map.addOperationalLayer(featureCollectionLayer)
                 } catch {
