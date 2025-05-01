@@ -1,0 +1,34 @@
+{
+    "category": "Layers",
+    "description": "Display a layer from a WFS service, requesting only features for the current extent.",
+    "ignore": false,
+    "images": [
+        "add-wfs-layer.png"
+    ],
+    "keywords": [
+        "OGC",
+        "WFS",
+        "browse",
+        "catalog",
+        "feature",
+        "interaction cache",
+        "layers",
+        "service",
+        "web",
+        "FeatureLayer",
+        "MapView.onNavigatingChanged(action:)",
+        "WFSFeatureTable",
+        "WFSFeatureTable.populateFromService(using:clearCache:outFields:)"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "FeatureLayer",
+        "MapView.onNavigatingChanged(action:)",
+        "WFSFeatureTable",
+        "WFSFeatureTable.populateFromService(using:clearCache:outFields:)"
+    ],
+    "snippets": [
+        "AddWFSLayerView.swift"
+    ],
+    "title": "Add WFS layer"
+}
