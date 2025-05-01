@@ -39,6 +39,7 @@ struct ContentView: View {
                         }
                         .sheet(isPresented: $isAboutViewPresented) {
                             AboutView()
+                                .pagePresentation()
                         }
                     }
                 }

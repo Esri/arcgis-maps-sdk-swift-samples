@@ -146,6 +146,7 @@ struct DownloadVectorTilesToLocalCacheView: View {
                                         }
                                 }
                                 .highPriorityGesture(DragGesture())
+                                .pagePresentation()
                             }
                         }
                     }

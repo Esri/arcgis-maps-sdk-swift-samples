@@ -1,0 +1,30 @@
+{
+    "category": "Layers",
+    "description": "Display a layer from a Web Map Tile Service.",
+    "ignore": false,
+    "images": [
+        "add-wmts-layer.png"
+    ],
+    "keywords": [
+        "OGC",
+        "layer",
+        "raster",
+        "tiled",
+        "web map tile service",
+        "WMTSLayer",
+        "WMTSLayerInfo",
+        "WMTSService",
+        "WMTSServiceInfo"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "WMTSLayer",
+        "WMTSLayerInfo",
+        "WMTSService",
+        "WMTSServiceInfo"
+    ],
+    "snippets": [
+        "AddWMTSLayerView.swift"
+    ],
+    "title": "Add WMTS layer"
+}
