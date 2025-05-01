@@ -35,10 +35,10 @@ struct AddFeatureCollectionLayerFromTableView: View {
             .task {
                 do {
                     // Adds feature collection layer to the map.
-                    let pointsTable = try await pointsCollectionTable()
-                    let linesTable = try await linesCollectionTable()
-                    let polygonsTable = try await polygonsCollectionTable()
-                    let featureCollectionLayer = FeatureCollectionLayer(
+                    async let pointsTable = pointsCollectionTable()
+                    async let linesTable = linesCollectionTable()
+                    async let polygonsTable = polygonsCollectionTable()
+                    let featureCollectionLayer = try await FeatureCollectionLayer(
                         featureCollection: FeatureCollection(
                             featureCollectionTables: [
                                 pointsTable,
