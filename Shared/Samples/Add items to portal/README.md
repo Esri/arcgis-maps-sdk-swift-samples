@@ -17,9 +17,9 @@ Sign into your ArcGIS Online account. After signed in, press the Add Item button
 1. A `Portal` is created with `authenticated` connection. The `Portal` is loaded and the OAuth sign in page is displayed. The user provides credentials.
 2. Once the sign-in process is complete, create a `PortalItem` of type `CSV` is with the add button.
 3. When the portal is successfully loaded, the `PortalUser` object is obtained from the `Portal`.
-5. When the add button is tapped, the item is added via the `PortalUser`'s `add(_:with:to:)` method. The `PortalItem` and the file data are supplied as parameters.
-6. When the portal item has been successfully added, it is loaded in order to retrieve online properties such as the the name and thumbnail of the item.
-7. When the swipe-to-delete button is tapped, the item is passed as a parameter for the portalUser's `delete(_:)` method.
+4. When the add button is tapped, the item is added via the `PortalUser`'s `add(_:with:to:)` method. The `PortalItem` and the file data are supplied as parameters.
+5. When the portal item has been successfully added, it is loaded in order to retrieve online properties such as the the name and thumbnail of the item.
+6. When the swipe-to-delete button is tapped, the item is passed as a parameter for the portalUser's `delete(_:)` method.
 
 ## Relevant API
 
