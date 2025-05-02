@@ -168,6 +168,7 @@ struct AddItemsToPortalView: View {
         try await fetchPortalItems()
     }
     
+    /// Fetches the portal items from a user.
     private func fetchPortalItems() async throws {
         if let portalUser {
             portalItems = try await portalUser.content.items.sorted {
