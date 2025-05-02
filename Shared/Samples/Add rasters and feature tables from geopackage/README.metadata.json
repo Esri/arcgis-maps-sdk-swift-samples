@@ -19,6 +19,9 @@
         "GeoPackageRaster",
         "RasterLayer"
     ],
+    "offline_data": [
+        "68ec42517cdd439e81b036210483e8e7"
+    ],
     "redirect_from": [],
     "relevant_apis": [
         "GeoPackage",
