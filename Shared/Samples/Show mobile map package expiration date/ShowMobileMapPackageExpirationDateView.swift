@@ -44,7 +44,12 @@ struct ShowMobileMapPackageExpirationDateView: View {
             if let expiration = mapPackage.expiration, expiration.isExpired {
                 VStack {
                     Text(expiration.message)
-                    Text("Expiration date: \(expiration.date?.formatted() ?? "N/A")")
+                    let expirationDate = if let date = expiration.date {
+                        Text(date, format: .dateTime)
+                    } else {
+                        Text("N/A")
+                    }
+                    Text("Expiration date: \(expirationDate)")
                         .padding(.top)
                 }
                 .multilineTextAlignment(.center)
