@@ -29,9 +29,9 @@ Choose and adjust the altitude, azimuth, slope type and color ramp type settings
 * Raster
 * RasterLayer
 
-## About the data
+## Offline data
 
-This sample shows a [Shasta Raster](https://www.arcgis.com/home/item.html?id=7c4c679ab06a4df19dc497f577f111bd) and a [Shasta Elevation Raster](https://arcgisruntime.maps.arcgis.com/home/item.html?id=caeef9aa78534760b07158bb8e068462) hosted on ArcGIS Online.
+This sample uses the [Shasta Raster](https://www.arcgis.com/home/item.html?id=7c4c679ab06a4df19dc497f577f111bd) and [Shasta Elevation Raster](https://arcgisruntime.maps.arcgis.com/home/item.html?id=caeef9aa78534760b07158bb8e068462). Both are downloaded from ArcGIS Online automatically.
 
 ## Tags
 
