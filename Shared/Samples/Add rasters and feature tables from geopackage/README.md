@@ -22,6 +22,7 @@ When the sample loads, the feature tables and rasters from the GeoPackage will b
 
 ## Relevant API
 
+* FeatureLayer
 * GeoPackage
 * GeoPackageFeatureTable
 * GeoPackageRaster

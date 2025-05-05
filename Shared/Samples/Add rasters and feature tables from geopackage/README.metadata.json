@@ -14,6 +14,7 @@
         "package",
         "raster",
         "table",
+        "FeatureLayer",
         "GeoPackage",
         "GeoPackageFeatureTable",
         "GeoPackageRaster",
@@ -24,6 +25,7 @@
     ],
     "redirect_from": [],
     "relevant_apis": [
+        "FeatureLayer",
         "GeoPackage",
         "GeoPackageFeatureTable",
         "GeoPackageRaster",
