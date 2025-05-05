@@ -33,7 +33,7 @@ struct AnalyzeHotspotsView: View {
     /// The error thrown by geoprocessing job.
     @State private var analysisError: Error?
     /// A Boolean value indicating whether the geoprocessing job is running.
-    @State private var isAnalyzing: Bool = false
+    @State private var isAnalyzing = false
     /// A Boolean value that indicates whether the analysis sheet is presented.
     @State private var isAnalysisSheetPresented = false
     /// The from date for the analysis.
