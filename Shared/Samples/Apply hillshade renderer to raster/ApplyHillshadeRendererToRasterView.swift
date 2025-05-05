@@ -29,7 +29,7 @@ struct ApplyHillshadeRendererToRasterView: View {
             map = Map(basemapStyle: .arcGISImageryStandard)
             
             // Gets the raster file URL.
-            let rasterFileURL = Bundle.main.url(forResource: "SA_EVI_8Day_03May20", withExtension: "tif", subdirectory: "SA_EVI_8Day_03May20")!
+            let rasterFileURL = Bundle.main.url(forResource: "srtm", withExtension: "tiff", subdirectory: "srtm")!
             
             // Creates a raster with the file URL.
             let raster = Raster(fileURL: rasterFileURL)
@@ -56,6 +56,9 @@ struct ApplyHillshadeRendererToRasterView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
+    /// The error shown in the error alert.
+    @State private var error: Error?
+    
     var body: some View {
         MapViewReader { mapViewProxy in
             // Creates a map view to display the map.
@@ -63,12 +66,16 @@ struct ApplyHillshadeRendererToRasterView: View {
                 .task {
                     // When the view appears, load the raster layer so that
                     // we can zoom to its extent.
-                    try? await model.rasterLayer.load()
-                    if let extent = model.rasterLayer.fullExtent {
-                        await mapViewProxy.setViewpointGeometry(extent)
+                    do {
+                        try await model.rasterLayer.load()
+                        if let extent = model.rasterLayer.fullExtent {
+                            await mapViewProxy.setViewpointGeometry(extent)
+                        }
+                    } catch {
                     }
                 }
         }
+        .errorAlert(presentingError: $error)
     }
 }
 

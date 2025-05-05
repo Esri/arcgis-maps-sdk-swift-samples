@@ -210,6 +210,7 @@
 		883C121929C914E100062FF9 /* DownloadPreplannedMapAreaView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E070A0A2286F3B6000F2B606 /* DownloadPreplannedMapAreaView.swift */; };
 		88E52E6F2DC96C3F00F48409 /* ApplyHillshadeRendererToRasterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E52E6E2DC96C3F00F48409 /* ApplyHillshadeRendererToRasterView.swift */; };
 		88E52E702DC970A800F48409 /* ApplyHillshadeRendererToRasterView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 88E52E6E2DC96C3F00F48409 /* ApplyHillshadeRendererToRasterView.swift */; };
+		88E52E7F2DC97ED700F48409 /* srtm in Resources */ = {isa = PBXBuildFile; fileRef = 88E52E7E2DC97EC700F48409 /* srtm */; settings = {ASSET_TAGS = (ApplyHillshadeRendererToRaster, ); }; };
 		88F93CC129C3D59D0006B28E /* CreateAndEditGeometriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F93CC029C3D59C0006B28E /* CreateAndEditGeometriesView.swift */; };
 		88F93CC229C4D3480006B28E /* CreateAndEditGeometriesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 88F93CC029C3D59C0006B28E /* CreateAndEditGeometriesView.swift */; };
 		9503056E2C46ECB70091B32D /* ShowDeviceLocationUsingIndoorPositioningView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9503056D2C46ECB70091B32D /* ShowDeviceLocationUsingIndoorPositioningView.Model.swift */; };
@@ -343,7 +344,7 @@
 		D744FD182A2113C70084A66C /* CreateConvexHullAroundPointsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D744FD162A2112D90084A66C /* CreateConvexHullAroundPointsView.swift */; };
 		D7464F1E2ACE04B3007FEE88 /* IdentifyRasterCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7464F1D2ACE04B3007FEE88 /* IdentifyRasterCellView.swift */; };
 		D7464F1F2ACE04C2007FEE88 /* IdentifyRasterCellView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7464F1D2ACE04B3007FEE88 /* IdentifyRasterCellView.swift */; };
-		D7464F2B2ACE0965007FEE88 /* SA_EVI_8Day_03May20 in Resources */ = {isa = PBXBuildFile; fileRef = D7464F2A2ACE0964007FEE88 /* SA_EVI_8Day_03May20 */; settings = {ASSET_TAGS = (ApplyHillshadeRendererToRaster, IdentifyRasterCell, ); }; };
+		D7464F2B2ACE0965007FEE88 /* SA_EVI_8Day_03May20 in Resources */ = {isa = PBXBuildFile; fileRef = D7464F2A2ACE0964007FEE88 /* SA_EVI_8Day_03May20 */; settings = {ASSET_TAGS = (IdentifyRasterCell, ); }; };
 		D7497F3C2AC4B4C100167AD2 /* DisplayDimensionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7497F3B2AC4B4C100167AD2 /* DisplayDimensionsView.swift */; };
 		D7497F3D2AC4B4CF00167AD2 /* DisplayDimensionsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7497F3B2AC4B4C100167AD2 /* DisplayDimensionsView.swift */; };
 		D7497F402AC4BA4100167AD2 /* Edinburgh_Pylon_Dimensions.mmpk in Resources */ = {isa = PBXBuildFile; fileRef = D7497F3F2AC4BA4100167AD2 /* Edinburgh_Pylon_Dimensions.mmpk */; settings = {ASSET_TAGS = (DisplayDimensions, ); }; };
@@ -975,6 +976,7 @@
 		79D84D0D2A815C5B00F45262 /* AddCustomDynamicEntityDataSourceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCustomDynamicEntityDataSourceView.swift; sourceTree = "<group>"; };
 		883C121429C9136600062FF9 /* DownloadPreplannedMapAreaView.MapPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadPreplannedMapAreaView.MapPicker.swift; sourceTree = "<group>"; };
 		88E52E6E2DC96C3F00F48409 /* ApplyHillshadeRendererToRasterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyHillshadeRendererToRasterView.swift; sourceTree = "<group>"; };
+		88E52E7E2DC97EC700F48409 /* srtm */ = {isa = PBXFileReference; lastKnownFileType = folder; path = srtm; sourceTree = "<group>"; };
 		88F93CC029C3D59C0006B28E /* CreateAndEditGeometriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAndEditGeometriesView.swift; sourceTree = "<group>"; };
 		9503056D2C46ECB70091B32D /* ShowDeviceLocationUsingIndoorPositioningView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowDeviceLocationUsingIndoorPositioningView.Model.swift; sourceTree = "<group>"; };
 		9537AFD62C220EF0000923C5 /* ExchangeSetwithoutUpdates */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExchangeSetwithoutUpdates; sourceTree = "<group>"; };
@@ -1600,6 +1602,7 @@
 		00CCB8A6285D059300BBAB70 /* Portal Data */ = {
 			isa = PBXGroup;
 			children = (
+				88E52E712DC97BA500F48409 /* ae9739163a76437ea02482e1a807b806 */,
 				D762DA0D2D94C750001052DD /* 0fd3a39660d54c12b05d5f81f207dffd */,
 				D74C8C002ABA6202007C76B8 /* 1bd036f221f54a99abc9e46ff3511cbf */,
 				D7781D472B7EB03400E53C51 /* 4caec8c55ea2463982f1af7d9611b8d5 */,
@@ -2057,6 +2060,14 @@
 				88E52E6E2DC96C3F00F48409 /* ApplyHillshadeRendererToRasterView.swift */,
 			);
 			path = "Apply hillshade renderer to raster";
+			sourceTree = "<group>";
+		};
+		88E52E712DC97BA500F48409 /* ae9739163a76437ea02482e1a807b806 */ = {
+			isa = PBXGroup;
+			children = (
+				88E52E7E2DC97EC700F48409 /* srtm */,
+			);
+			path = ae9739163a76437ea02482e1a807b806;
 			sourceTree = "<group>";
 		};
 		88F93CBE29C3D4E30006B28E /* Create and edit geometries */ = {
@@ -3527,6 +3538,7 @@
 				D74C8C022ABA6202007C76B8 /* emoji-mobile.stylx in Resources */,
 				D7CE9FA32AE2F595008F7A5F /* san-diego-eagle-locator in Resources */,
 				D70539102CD012BB00F63F4A /* militaryoverlay.geodatabase in Resources */,
+				88E52E7F2DC97ED700F48409 /* srtm in Resources */,
 				D76000B72AF19FCA00B3084D /* SanFrancisco.mmpk in Resources */,
 				D762AF652BF6A96100ECE3C7 /* loudoun_anno.geodatabase in Resources */,
 				792222DD2A81AA5D00619FFE /* AIS_MarineCadastre_SelectedVessels_CustomDataSource.jsonl in Resources */,
