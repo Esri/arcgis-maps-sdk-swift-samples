@@ -47,18 +47,29 @@ struct ApplyHillshadeRendererToRasterView: View {
             .errorAlert(presentingError: $error)
             .task {
                 guard map.operationalLayers.isEmpty else { return }
+                // Gets the raster file URL.
+                let rasterFileURL = Bundle.main.url(forResource: "SA_EVI_8Day_03May20", withExtension: "tif", subdirectory: "SA_EVI_8Day_03May20")!
+                // Creates a raster with the file URL.
+                let raster = Raster(fileURL: rasterFileURL)
+                // Creates a raster layer using the raster object.
+                let rasterLayer = RasterLayer(raster: raster)
+                
+                // Apply the hillshade renderer to the raster layer
+                rasterLayer.renderer = HillshadeRenderer(
+                    altitude: 45,
+                    azimuth: 315,
+                    slopeType: nil,
+                    zFactor: 0.000016,
+                    pixelSizeFactor: 1,
+                    pixelSizePower: 1,
+                    outputBitDepth: 8
+                )
+                
                 do {
-                    // Gets the Shasta.tif file URL.
-                    let rasterFileURL = Bundle.main.url(forResource: "SA_EVI_8Day_03May20", withExtension: "tif", subdirectory: "SA_EVI_8Day_03May20")!
-//                    let rasterFileURL = Bundle.main.url(forResource: "Shasta", withExtension: "tif", subdirectory: "raster-file/raster-file")!
-                    // Creates a raster with the file URL.
-                    let raster = Raster(fileURL: rasterFileURL)
-                    // Creates a raster layer using the raster object.
-                    let rasterLayer = RasterLayer(raster: raster)
                     try await rasterLayer.load()
                     // Adds the raster layer to the map's operational layer.
                     map.addOperationalLayer(rasterLayer)
-                    viewpoint = Viewpoint(center: rasterLayer.fullExtent!.center, scale: 8e4)
+                    viewpoint = Viewpoint(boundingGeometry: rasterLayer.fullExtent!)
                 } catch {
                     // Presents an error message if the raster fails to load.
                     self.error = error
