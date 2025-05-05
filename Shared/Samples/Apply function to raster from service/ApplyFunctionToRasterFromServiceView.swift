@@ -33,7 +33,7 @@ struct ApplyFunctionToRasterFromServiceView: View {
             // swiftlint:disable:next force_try
             let function = try! RasterFunction.fromJSON(Model.rasterFunctionJson)
             // Set the arguments on the function.
-            function.arguments?.setRaster(imageServiceRaster, forArgumentNamed: function.arguments!.rasterNames[0])
+            function.arguments!.setRaster(imageServiceRaster, forArgumentNamed: function.arguments!.rasterNames[0])
             // Create a raster layer from the raster function.
             rasterLayer = RasterLayer(raster: Raster(rasterFunction: function))
             // Add the raster layer to the map.

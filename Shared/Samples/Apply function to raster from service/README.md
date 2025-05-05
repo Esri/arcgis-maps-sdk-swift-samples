@@ -2,7 +2,7 @@
 
 Load a raster from a service, then apply a function to it.
 
-![Image of apply function to raster from service](ApplyFunctionToRasterFromService.jpg)
+![Image of Apply function to raster from service sample](apply-function-to-raster-from-service.png)
 
 ## Use case
 
@@ -16,8 +16,8 @@ The raster function is applied automatically when the sample starts and the resu
 
 1. Create the `ImageServiceRaster` referring to the image server URL.
 2. Create the `RasterFunction` from a JSON string.
-3. Get the name of the raster argument to the function with `rasterFunction.Arguments.GetRasterNames().First()`
-4. Set the raster argument with `rasterFunction.SetRaster(rasterName, imageServiceRaster)`.
+3. Get the name of the raster argument to the function with `rasterFunction.arguments!.rasterNames[0]`.
+4. Set the raster argument with `setRaster(_:forArgumentNamed:)`.
 5. Create a new `Raster` referring to the raster function.
 6. Create a `RasterLayer` to visualize the computed raster.
 7. Display the raster.
