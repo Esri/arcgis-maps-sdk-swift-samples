@@ -1325,7 +1325,6 @@
 		0074ABB228174B830037244A /* Samples */ = {
 			isa = PBXGroup;
 			children = (
-				8810FB572DC94A5600874936 /* Apply function to raster from service */,
 				0000FB6D2BBDB17600845921 /* Add 3D tiles layer */,
 				79D84D0C2A815BED00F45262 /* Add custom dynamic entity data source */,
 				4D2ADC3E29C26D05003B367F /* Add dynamic entity layer */,
@@ -1358,6 +1357,7 @@
 				D77570BC2A29427200F490CD /* Animate images with image overlay */,
 				D7F2A02C2CD00F1C0008D981 /* Apply dictionary renderer to feature layer */,
 				D70789912CD160FD000DF215 /* Apply dictionary renderer to graphics overlay */,
+				8810FB572DC94A5600874936 /* Apply function to raster from service */,
 				955AFAC52C10FD74009C8FE5 /* Apply mosaic rule to rasters */,
 				D771D0C52CD55211004C13CB /* Apply raster rendering rule */,
 				004A2BA12BED456500C297CE /* Apply scheduled updates to preplanned map area */,
