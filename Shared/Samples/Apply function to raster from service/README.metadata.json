@@ -1,8 +1,10 @@
 {
-    "category": "",
+    "category": "Layers",
     "description": "Load a raster from a service, then apply a function to it.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "apply-function-to-raster-from-service.png"
+    ],
     "keywords": [
         "function",
         "layer",

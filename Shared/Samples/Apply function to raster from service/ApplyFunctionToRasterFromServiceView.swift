@@ -15,7 +15,7 @@
 import ArcGIS
 import SwiftUI
 
-struct AppApplyFunctionToRasterFromServiceView: View {
+struct ApplyFunctionToRasterFromServiceView: View {
     /// The model used to store the geo model and other expensive objects
     /// used in this view.
     private class Model: ObservableObject {
@@ -36,5 +36,5 @@ struct AppApplyFunctionToRasterFromServiceView: View {
 }
 
 #Preview {
-    AppApplyFunctionToRasterFromServiceView()
+    ApplyFunctionToRasterFromServiceView()
 }
