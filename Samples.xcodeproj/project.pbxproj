@@ -124,6 +124,7 @@
 		1C26ED202A8BEC63009B7721 /* FilterFeaturesInSceneView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C26ED152A859525009B7721 /* FilterFeaturesInSceneView.swift */; };
 		1C293D012DCA7C99000B0822 /* ApplyBlendRendererToHillshadeView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C3891602DC02F1100ADFDDC /* ApplyBlendRendererToHillshadeView.swift */; };
 		1C293D032DCA7C99000B0822 /* ApplyBlendRendererToHillshadeView.SettingsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C3892302DC59E5D00ADFDDC /* ApplyBlendRendererToHillshadeView.SettingsView.swift */; };
+		1C293D072DCC05EE000B0822 /* color.json in Resources */ = {isa = PBXBuildFile; fileRef = 1C293D062DCC05EE000B0822 /* color.json */; settings = {ASSET_TAGS = (ApplyFunctionToRasterFromFile, ); }; };
 		1C29C9592DBAE50D0074028F /* AddWMTSLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C29C9532DBAE50D0074028F /* AddWMTSLayerView.swift */; };
 		1C29C95A2DBAE5770074028F /* AddWMTSLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C29C9532DBAE50D0074028F /* AddWMTSLayerView.swift */; };
 		1C38915D2DBC36C800ADFDDC /* AddWFSLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C38915C2DBC36C700ADFDDC /* AddWFSLayerView.swift */; };
@@ -154,7 +155,9 @@
 		1CAB8D502A3CEB43002AA649 /* RunValveIsolationTraceView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1CAB8D442A3CEAB0002AA649 /* RunValveIsolationTraceView.Model.swift */; };
 		1CAB8D512A3CEB43002AA649 /* RunValveIsolationTraceView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1CAB8D472A3CEAB0002AA649 /* RunValveIsolationTraceView.swift */; };
 		1CAF831F2A20305F000E1E60 /* ShowUtilityAssociationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAF831B2A20305F000E1E60 /* ShowUtilityAssociationsView.swift */; };
-		1CC755E12DC5A6A7004B346F /* Shasta_Elevation in Resources */ = {isa = PBXBuildFile; fileRef = 1CC755E02DC5A6A7004B346F /* Shasta_Elevation */; };
+		1CC755E12DC5A6A7004B346F /* Shasta_Elevation in Resources */ = {isa = PBXBuildFile; fileRef = 1CC755E02DC5A6A7004B346F /* Shasta_Elevation */; settings = {ASSET_TAGS = (ApplyFunctionToRasterFromFile, ); }; };
+		1CC755E42DC95625004B346F /* ApplyFunctionToRasterFromFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC755E22DC95625004B346F /* ApplyFunctionToRasterFromFileView.swift */; };
+		1CC755E52DC95625004B346F /* ApplyFunctionToRasterFromFileView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1CC755E22DC95625004B346F /* ApplyFunctionToRasterFromFileView.swift */; };
 		218F35B829C28F4A00502022 /* AuthenticateWithOAuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218F35B329C28F4A00502022 /* AuthenticateWithOAuthView.swift */; };
 		218F35C229C290BF00502022 /* AuthenticateWithOAuthView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 218F35B329C28F4A00502022 /* AuthenticateWithOAuthView.swift */; };
 		3E30884A2C5D789A00ECEAC5 /* SetSpatialReferenceView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 3EEDE7CD2C5D73F700510104 /* SetSpatialReferenceView.swift */; };
@@ -665,6 +668,7 @@
 				3E30884A2C5D789A00ECEAC5 /* SetSpatialReferenceView.swift in Copy Source Code Files */,
 				3E720F9E2C61A0B700E22A9E /* SetInitialViewpointView.swift in Copy Source Code Files */,
 				D78FA4952C3C8E8A0079313E /* CreateDynamicBasemapGalleryView.Views.swift in Copy Source Code Files */,
+				1CC755E52DC95625004B346F /* ApplyFunctionToRasterFromFileView.swift in Copy Source Code Files */,
 				D79482D72C35D8A3006521CD /* CreateDynamicBasemapGalleryView.swift in Copy Source Code Files */,
 				003B36F92C5042BA00A75F66 /* ShowServiceAreaView.swift in Copy Source Code Files */,
 				95ADF34F2C3CBAE800566FF6 /* EditFeatureAttachmentsView.Model.swift in Copy Source Code Files */,
@@ -937,6 +941,7 @@
 		1C2538522BABACB100337307 /* AugmentRealityToNavigateRouteView.ARSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AugmentRealityToNavigateRouteView.ARSceneView.swift; sourceTree = "<group>"; };
 		1C2538532BABACB100337307 /* AugmentRealityToNavigateRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AugmentRealityToNavigateRouteView.swift; sourceTree = "<group>"; };
 		1C26ED152A859525009B7721 /* FilterFeaturesInSceneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterFeaturesInSceneView.swift; sourceTree = "<group>"; };
+		1C293D062DCC05EE000B0822 /* color.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = color.json; path = "Portal Data/5356dbf91788474493467519e268cf87/color.json"; sourceTree = "<group>"; };
 		1C29C9532DBAE50D0074028F /* AddWMTSLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWMTSLayerView.swift; sourceTree = "<group>"; };
 		1C38915C2DBC36C700ADFDDC /* AddWFSLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWFSLayerView.swift; sourceTree = "<group>"; };
 		1C3891602DC02F1100ADFDDC /* ApplyBlendRendererToHillshadeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyBlendRendererToHillshadeView.swift; sourceTree = "<group>"; };
@@ -954,6 +959,7 @@
 		1CAB8D472A3CEAB0002AA649 /* RunValveIsolationTraceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunValveIsolationTraceView.swift; sourceTree = "<group>"; };
 		1CAF831B2A20305F000E1E60 /* ShowUtilityAssociationsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowUtilityAssociationsView.swift; sourceTree = "<group>"; };
 		1CC755E02DC5A6A7004B346F /* Shasta_Elevation */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Shasta_Elevation; sourceTree = "<group>"; };
+		1CC755E22DC95625004B346F /* ApplyFunctionToRasterFromFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyFunctionToRasterFromFileView.swift; sourceTree = "<group>"; };
 		218F35B329C28F4A00502022 /* AuthenticateWithOAuthView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticateWithOAuthView.swift; sourceTree = "<group>"; };
 		3E54CF212C66AFBE00DD2F18 /* AddWebTiledLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWebTiledLayerView.swift; sourceTree = "<group>"; };
 		3E720F9C2C619B1700E22A9E /* SetInitialViewpointView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetInitialViewpointView.swift; sourceTree = "<group>"; };
@@ -1375,6 +1381,7 @@
 				1C38915F2DC02F0800ADFDDC /* Apply blend renderer to hillshade */,
 				D7F2A02C2CD00F1C0008D981 /* Apply dictionary renderer to feature layer */,
 				D70789912CD160FD000DF215 /* Apply dictionary renderer to graphics overlay */,
+				1CC755E32DC95625004B346F /* Apply function to raster from file */,
 				8810FB572DC94A5600874936 /* Apply function to raster from service */,
 				955AFAC52C10FD74009C8FE5 /* Apply mosaic rule to rasters */,
 				D771D0C52CD55211004C13CB /* Apply raster rendering rule */,
@@ -1937,6 +1944,14 @@
 				1CAF831B2A20305F000E1E60 /* ShowUtilityAssociationsView.swift */,
 			);
 			path = "Show utility associations";
+			sourceTree = "<group>";
+		};
+		1CC755E32DC95625004B346F /* Apply function to raster from file */ = {
+			isa = PBXGroup;
+			children = (
+				1CC755E22DC95625004B346F /* ApplyFunctionToRasterFromFileView.swift */,
+			);
+			path = "Apply function to raster from file";
 			sourceTree = "<group>";
 		};
 		218F35B229C28F4A00502022 /* Authenticate with OAuth */ = {
@@ -3471,6 +3486,7 @@
 					ApplyBlendRendererToHillshade,
 					ApplyDictionaryRendererToFeatureLayer,
 					ApplyDictionaryRendererToGraphicsOverlay,
+					ApplyFunctionToRasterFromFile,
 					ApplyScheduledUpdatesToPreplannedMapArea,
 					AugmentRealityToShowTabletopScene,
 					ChangeCameraController,
@@ -3532,6 +3548,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1C293D072DCC05EE000B0822 /* color.json in Resources */,
 				1CC755E12DC5A6A7004B346F /* Shasta_Elevation in Resources */,
 				D7F8C0412B605E720072BFA7 /* FillmoreTopographicMap.vtpk in Resources */,
 				9537AFD72C220EF0000923C5 /* ExchangeSetwithoutUpdates in Resources */,
@@ -3750,6 +3767,7 @@
 				D7ABA2FF2A32881C0021822B /* ShowViewshedFromGeoelementInSceneView.swift in Sources */,
 				E0FE32E728747778002C6ACA /* BrowseBuildingFloorsView.swift in Sources */,
 				954AEDEE2C01332600265114 /* SelectFeaturesInSceneLayerView.swift in Sources */,
+				1CC755E42DC95625004B346F /* ApplyFunctionToRasterFromFileView.swift in Sources */,
 				D7F8C0432B608F120072BFA7 /* AddFeaturesWithContingentValuesView.AddFeatureView.swift in Sources */,
 				D752D95F2A3BCE06003EB25E /* DisplayMapFromPortalItemView.swift in Sources */,
 				004A2BA22BED456500C297CE /* ApplyScheduledUpdatesToPreplannedMapAreaView.swift in Sources */,
