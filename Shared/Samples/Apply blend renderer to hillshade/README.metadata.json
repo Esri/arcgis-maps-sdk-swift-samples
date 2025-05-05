@@ -30,9 +30,9 @@
         "RasterLayer"
     ],
     "snippets": [
-        "ApplyBlendRendererToHillshadeView.swift",
-        "AddDynamicEntityLayerView.Model",
-        "AddDynamicEntityLayerView.SettingsView"
+        "ApplyBlendRendererToHillshadeView.Model.swift",
+        "ApplyBlendRendererToHillshadeView.SettingsView.swift"
+        "ApplyBlendRendererToHillshadeView.swift"
     ],
     "title": "Apply blend renderer to hillshade"
 }
