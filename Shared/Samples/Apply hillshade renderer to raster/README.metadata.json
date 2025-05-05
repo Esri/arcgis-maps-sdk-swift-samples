@@ -1,0 +1,31 @@
+{
+    "category": "Layers",
+    "description": "Apply a hillshade renderer to a raster.",
+    "ignore": false,
+    "images": [
+        "apply-hillshade-renderer-to-raster.png"
+    ],
+    "keywords": [
+        "altitude",
+        "angle",
+        "azimuth",
+        "raster",
+        "slope",
+        "visualization",
+        "Basemap",
+        "HillshadeRenderer",
+        "Raster",
+        "RasterLayer"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Basemap",
+        "HillshadeRenderer",
+        "Raster",
+        "RasterLayer"
+    ],
+    "snippets": [
+        "ApplyHillshadeRendererToRasterView.swift"
+    ],
+    "title": "Apply hillshade renderer to raster"
+}
