@@ -41,7 +41,7 @@ struct ApplyFunctionToRasterFromServiceView: View {
         }
         
         /// The raster function json string to apply to the image service raster.
-        private static let rasterFunctionJson: String =
+        private static let rasterFunctionJson =
         #"""
         {
           "raster_function_arguments":
