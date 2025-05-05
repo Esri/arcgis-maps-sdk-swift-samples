@@ -8,7 +8,6 @@ Blend a hillshade with a raster by specifying the elevation data. The resulting 
 
 `BlendRenderer` can be used to apply a color ramp to a hillshade to emphasize areas of high or low elevation. A `BlendRenderer` can also be used to add a hillshade effect to aerial or satellite imagery, thereby making changes in elevation more visible.
 
-
 ## How to use the sample
 
 Choose and adjust the altitude, azimuth, slope type and color ramp type settings to update the image.
