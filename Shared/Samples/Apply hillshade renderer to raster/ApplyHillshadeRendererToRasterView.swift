@@ -41,7 +41,7 @@ struct ApplyHillshadeRendererToRasterView: View {
             rasterLayer.renderer = HillshadeRenderer(
                 altitude: 45,
                 azimuth: 315,
-                slopeType: nil,
+                slopeType: .scaled,
                 zFactor: 0.000016,
                 pixelSizeFactor: 1,
                 pixelSizePower: 1,
