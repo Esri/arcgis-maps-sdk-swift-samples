@@ -343,7 +343,7 @@
 		D744FD182A2113C70084A66C /* CreateConvexHullAroundPointsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D744FD162A2112D90084A66C /* CreateConvexHullAroundPointsView.swift */; };
 		D7464F1E2ACE04B3007FEE88 /* IdentifyRasterCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7464F1D2ACE04B3007FEE88 /* IdentifyRasterCellView.swift */; };
 		D7464F1F2ACE04C2007FEE88 /* IdentifyRasterCellView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7464F1D2ACE04B3007FEE88 /* IdentifyRasterCellView.swift */; };
-		D7464F2B2ACE0965007FEE88 /* SA_EVI_8Day_03May20 in Resources */ = {isa = PBXBuildFile; fileRef = D7464F2A2ACE0964007FEE88 /* SA_EVI_8Day_03May20 */; settings = {ASSET_TAGS = (IdentifyRasterCell, ); }; };
+		D7464F2B2ACE0965007FEE88 /* SA_EVI_8Day_03May20 in Resources */ = {isa = PBXBuildFile; fileRef = D7464F2A2ACE0964007FEE88 /* SA_EVI_8Day_03May20 */; settings = {ASSET_TAGS = (ApplyHillshadeRendererToRaster, IdentifyRasterCell, ); }; };
 		D7497F3C2AC4B4C100167AD2 /* DisplayDimensionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7497F3B2AC4B4C100167AD2 /* DisplayDimensionsView.swift */; };
 		D7497F3D2AC4B4CF00167AD2 /* DisplayDimensionsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7497F3B2AC4B4C100167AD2 /* DisplayDimensionsView.swift */; };
 		D7497F402AC4BA4100167AD2 /* Edinburgh_Pylon_Dimensions.mmpk in Resources */ = {isa = PBXBuildFile; fileRef = D7497F3F2AC4BA4100167AD2 /* Edinburgh_Pylon_Dimensions.mmpk */; settings = {ASSET_TAGS = (DisplayDimensions, ); }; };
@@ -3441,6 +3441,7 @@
 					AnimateImagesWithImageOverlay,
 					ApplyDictionaryRendererToFeatureLayer,
 					ApplyDictionaryRendererToGraphicsOverlay,
+					ApplyHillshadeRendererToRaster,
 					ApplyScheduledUpdatesToPreplannedMapArea,
 					AugmentRealityToShowTabletopScene,
 					ChangeCameraController,
