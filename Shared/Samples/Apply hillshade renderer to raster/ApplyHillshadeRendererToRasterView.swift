@@ -80,6 +80,8 @@ struct ApplyHillshadeRendererToRasterView: View {
                         ApplyHillshadeRendererToRasterView.SettingsView(
                             renderer: $model.renderer
                         )
+                        .presentationDetents([.medium])
+                        .frame(idealWidth: 320, idealHeight: 380)
                     }
                 }
             }
