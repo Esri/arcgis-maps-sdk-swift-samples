@@ -31,7 +31,6 @@
     ],
     "snippets": [
         "ApplyBlendRendererToHillshadeView.swift",
-        "ApplyBlendRendererToHillshadeView.Model.swift",
         "ApplyBlendRendererToHillshadeView.SettingsView.swift"
     ],
     "title": "Apply blend renderer to hillshade"
