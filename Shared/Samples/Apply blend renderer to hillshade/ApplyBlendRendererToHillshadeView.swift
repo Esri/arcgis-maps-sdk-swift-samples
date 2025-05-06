@@ -36,6 +36,23 @@ struct ApplyBlendRendererToHillshadeView: View {
     /// A Boolean value indicating whether the settings view should be presented.
     @State private var isShowingSettings = false
     
+    /// The settings for a blend renderer.
+    struct RendererSettings: Equatable {
+        /// The renderer altitude.
+        var altitude = 0.0
+        /// The renderer azimuth.
+        var azimuth = 0.0
+        /// The renderer slope type.
+        var slopeType: HillshadeRenderer.SlopeType?
+        /// The renderer color ramp preset.
+        var colorRampPreset: ColorRamp.Preset?
+        
+        /// The renderer color ramp.
+        var colorRamp: ColorRamp? {
+            colorRampPreset.map { ColorRamp(preset: $0, size: 800) }
+        }
+    }
+    
     /// The renderer settings.
     @State private var rendererSettings = RendererSettings()
     
@@ -68,22 +85,6 @@ struct ApplyBlendRendererToHillshadeView: View {
                     }
                 }
             }
-    }
-    
-    /// The settings for a blend renderer.
-    struct RendererSettings: Equatable {
-        /// The renderer altitude.
-        var altitude = 0.0
-        /// The renderer azimuth.
-        var azimuth = 0.0
-        /// The renderer slope type.
-        var slopeType: HillshadeRenderer.SlopeType?
-        /// The renderer color ramp preset.
-        var colorRampPreset: ColorRamp.Preset?
-        /// The renderer color ramp.
-        var colorRamp: ColorRamp? {
-            colorRampPreset.map { ColorRamp(preset: $0, size: 800) }
-        }
     }
 }
 
