@@ -622,7 +622,6 @@
 			files = (
 				1C293D012DCA7C99000B0822 /* ApplyBlendRendererToHillshadeView.swift in Copy Source Code Files */,
 				1C293D032DCA7C99000B0822 /* ApplyBlendRendererToHillshadeView.SettingsView.swift in Copy Source Code Files */,
-				00FA4E592DBC1786008A34CF /* AddRasterFromGeopackageView.swift in Copy Source Code Files */,
 				00FA4E5F2DC568DF008A34CF /* AddRastersAndFeatureTablesFromGeopackageView.swift in Copy Source Code Files */,
 				0072C7FB2DBAC1A0001502CA /* AddIntegratedMeshLayerView.swift in Copy Source Code Files */,
 				1C38915E2DBC3EDC00ADFDDC /* AddWFSLayerView.swift in Copy Source Code Files */,
@@ -1355,8 +1354,8 @@
 				D7CDD3882CB86F0A00DE9766 /* Add point cloud layer from file */,
 				D7848ED72CBD85A300F6F546 /* Add point scene layer */,
 				F19A316128906F0D003B7EF9 /* Add raster from file */,
-				00FA4E542DBC1383008A34CF /* Add rasters and feature tables from geopackage */,
 				955271622C0E6750009B1ED4 /* Add raster from service */,
+				00FA4E542DBC1383008A34CF /* Add rasters and feature tables from geopackage */,
 				E066DD3E28610F3F004D3D5B /* Add scene layer from service */,
 				D7BE7E6E2CC19CC3006DDB0C /* Add tiled layer */,
 				D7201CD72CC6B710004BDB7D /* Add tiled layer as basemap */,
