@@ -20,51 +20,53 @@ extension ApplyBlendRendererToHillshadeView {
         /// The action to dismiss the view.
         @Environment(\.dismiss) private var dismiss
         
-        /// The view model for the sample.
-        @ObservedObject var model: ApplyBlendRendererToHillshadeView.Model
+        /// A binding to the renderer settings.
+        @Binding var settings: ApplyBlendRendererToHillshadeView.RendererSettings
         
         var body: some View {
             NavigationStack {
                 Form {
-                    Picker("Slope Type", selection: $model.slopeType) {
+                    Picker("Slope Type", selection: $settings.slopeType) {
                         Text("Degree").tag(HillshadeRenderer.SlopeType.degree)
                         Text("Percent Rise").tag(HillshadeRenderer.SlopeType.percentRise)
                         Text("Scaled").tag(HillshadeRenderer.SlopeType.scaled)
+                        Text("None").tag(Optional<HillshadeRenderer.SlopeType>.none)
                     }
                     
-                    Picker("Color Ramp Preset", selection: $model.colorRampPreset) {
+                    Picker("Color Ramp Preset", selection: $settings.colorRampPreset) {
                         Text("DEM Light").tag(ColorRamp.Preset.demLight)
                         Text("Screen Display").tag(ColorRamp.Preset.demScreen)
                         Text("Elevation").tag(ColorRamp.Preset.elevation)
+                        Text("None").tag(Optional<ColorRamp.Preset>.none)
                     }
                     
                     VStack {
                         LabeledContent(
                             "Altitude",
-                            value: model.altitude,
-                            format: .number
+                            value: Measurement<UnitAngle>(value: settings.altitude, unit: .degrees),
+                            format: .measurement(width: .narrow)
                         )
-                        Slider(value: $model.altitude, in: 0...360, step: 1.0) {
+                        Slider(value: $settings.altitude, in: 0...360, step: 1.0) {
                             Text("Altitude")
                         } minimumValueLabel: {
-                            Text("0")
+                            Text(Measurement<UnitAngle>(value: 0, unit: .degrees), format: .measurement(width: .narrow))
                         } maximumValueLabel: {
-                            Text("360")
+                            Text(Measurement<UnitAngle>(value: 360, unit: .degrees), format: .measurement(width: .narrow))
                         }
                     }
                     
                     VStack {
                         LabeledContent(
                             "Azimuth",
-                            value: model.azimuth,
-                            format: .number
+                            value: Measurement<UnitAngle>(value: settings.azimuth, unit: .degrees),
+                            format: .measurement(width: .narrow)
                         )
-                        Slider(value: $model.azimuth, in: 0...360, step: 1.0) {
+                        Slider(value: $settings.azimuth, in: 0...360, step: 1.0) {
                             Text("Azimuth")
                         } minimumValueLabel: {
-                            Text("0")
+                            Text(Measurement<UnitAngle>(value: 0, unit: .degrees), format: .measurement(width: .narrow))
                         } maximumValueLabel: {
-                            Text("360")
+                            Text(Measurement<UnitAngle>(value: 360, unit: .degrees), format: .measurement(width: .narrow))
                         }
                     }
                 }

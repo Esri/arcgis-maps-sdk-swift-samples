@@ -2,7 +2,7 @@
 
 Blend a hillshade with a raster by specifying the elevation data. The resulting raster looks similar to the original raster, but with some terrain shading, giving it a textured look.
 
-![Image of apply blend renderer to hillshade](apply-blend-renderer-to-hillshade.png)
+![Image of apply blend renderer to hillshade sample](apply-blend-renderer-to-hillshade.png)
 
 ## Use case
 
@@ -18,8 +18,8 @@ Choose and adjust the altitude, azimuth, slope type and color ramp type settings
 2. Create a `RasterLayer` object from the raster.
 3. Create a `Basemap` object from the raster layer and set it to the map.
 4. Create another `Raster` object for elevation from a grayscale raster file.
-5. Create a BlendRenderer object, specifying the elevation raster, color ramp, and other properties.
- - If you specify a non-null color ramp, use the elevation raster as the base raster in addition to the elevation raster parameter. That way, the color ramp is used instead of the satellite imagery.
+5. Create a `BlendRenderer` object, specifying the elevation raster, color ramp, and other properties.
+ - If you specify a non-`nil` color ramp, use the elevation raster as the base raster in addition to the elevation raster parameter. That way, the color ramp is used instead of the satellite imagery.
 6. Set the blend renderer to the raster layer.
 
 ## Relevant API

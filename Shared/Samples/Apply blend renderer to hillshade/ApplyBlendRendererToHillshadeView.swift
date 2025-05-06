@@ -16,28 +16,45 @@ import ArcGIS
 import SwiftUI
 
 struct ApplyBlendRendererToHillshadeView: View {
-    /// The view model for the sample.
-    @StateObject private var model = Model()
+    /// A map with a Shasta raster layer.
+    @State private var map: Map = {
+        let raster = Raster(fileURL: .shasta)
+        let rasterLayer = RasterLayer(raster: raster)
+        return Map(basemap: Basemap(baseLayer: rasterLayer))
+    }()
+    
+    /// The raster layer.
+    private var rasterLayer: RasterLayer {
+        map.basemap?.baseLayers[0] as! RasterLayer
+    }
+    
+    /// The elevation raster.
+    private let elevationRaster: Raster = {
+        Raster(fileURL: .shastaElevation)
+    }()
     
     /// A Boolean value indicating whether the settings view should be presented.
     @State private var isShowingSettings = false
     
+    /// The renderer settings.
+    @State private var rendererSettings = RendererSettings()
+    
     var body: some View {
-        MapView(map: model.map)
-            .task {
-                model.applyRendererSettings()
-            }
-            .task(id: model.altitude) {
-                model.applyRendererSettings()
-            }
-            .task(id: model.azimuth) {
-                model.applyRendererSettings()
-            }
-            .task(id: model.colorRampPreset) {
-                model.applyRendererSettings()
-            }
-            .task(id: model.slopeType) {
-                model.applyRendererSettings()
+        MapView(map: map)
+            .onChange(of: rendererSettings, initial: true) {
+                rasterLayer.renderer = BlendRenderer(
+                    elevationRaster: elevationRaster,
+                    outputMinValues: [],
+                    outputMaxValues: [],
+                    sourceMinValues: [],
+                    sourceMaxValues: [],
+                    noDataValues: [],
+                    gammas: [],
+                    colorRamp: rendererSettings.colorRamp,
+                    altitude: rendererSettings.altitude,
+                    azimuth: rendererSettings.azimuth,
+                    slopeType: rendererSettings.slopeType
+                )
             }
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
@@ -45,11 +62,39 @@ struct ApplyBlendRendererToHillshadeView: View {
                         isShowingSettings = true
                     }
                     .popover(isPresented: $isShowingSettings) {
-                        SettingsView(model: model)
+                        SettingsView(settings: $rendererSettings)
                             .presentationDetents([.fraction(0.5)])
                             .frame(idealWidth: 320, idealHeight: 320)
                     }
                 }
             }
+    }
+    
+    /// The settings for a blend renderer.
+    struct RendererSettings: Equatable {
+        /// The renderer altitude.
+        var altitude = 0.0
+        /// The renderer azimuth.
+        var azimuth = 0.0
+        /// The renderer slope type.
+        var slopeType: HillshadeRenderer.SlopeType?
+        /// The renderer color ramp preset.
+        var colorRampPreset: ColorRamp.Preset?
+        /// The renderer color ramp.
+        var colorRamp: ColorRamp? {
+            colorRampPreset.map { ColorRamp(preset: $0, size: 800) }
+        }
+    }
+}
+
+private extension URL {
+    /// The URL to the Shasta data.
+    static var shasta: URL {
+        Bundle.main.url(forResource: "Shasta", withExtension: "tif", subdirectory: "raster-file/raster-file")!
+    }
+    
+    /// The URL to the Shasta elevation data.
+    static var shastaElevation: URL {
+        Bundle.main.url(forResource: "Shasta_Elevation", withExtension: "tif", subdirectory: "Shasta_Elevation")!
     }
 }
