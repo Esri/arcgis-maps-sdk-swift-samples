@@ -41,13 +41,25 @@ extension ApplyHillshadeRendererToRasterView {
 }
 
 #Preview {
+    @Previewable @State var isPresented = false
+    
     VStack {
         Text("Preview")
     }
-    .sheet(isPresented: .constant(true)) {
-//    .popover(isPresented: .constant(true)) {
-        ApplyHillshadeRendererToRasterView.SettingsView(
-            renderer: HillshadeRenderer(altitude: 10, azimuth: 20, slopeType: nil)
-        )
+    .toolbar {
+        ToolbarItem(placement: .bottomBar) {
+            Button("Settings") {
+                isPresented = true
+            }
+            .popover(isPresented: $isPresented, arrowEdge: .bottom) {
+                ApplyHillshadeRendererToRasterView.SettingsView(
+                    renderer: HillshadeRenderer(
+                        altitude: 10,
+                        azimuth: 20,
+                        slopeType: nil
+                    )
+                )
+            }
+        }
     }
 }
