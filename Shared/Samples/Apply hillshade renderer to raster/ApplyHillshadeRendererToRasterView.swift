@@ -21,8 +21,16 @@ struct ApplyHillshadeRendererToRasterView: View {
     class Model: ObservableObject {
         /// The map that will be shown.
         let map: Map
+        
+        /// The raster layer in the map.
+        let rasterLayer: RasterLayer
+        
         /// The raster renderer.
-        var renderer: HillshadeRenderer
+        var renderer: HillshadeRenderer {
+            didSet {
+                rasterLayer.renderer = renderer
+            }
+        }
         
         init() {
             // Gets the raster file URL.
@@ -32,7 +40,7 @@ struct ApplyHillshadeRendererToRasterView: View {
             let raster = Raster(fileURL: rasterFileURL)
             
             // Creates a raster layer using the raster object.
-            let rasterLayer = RasterLayer(raster: raster)
+            rasterLayer = RasterLayer(raster: raster)
             
             // Apply the hillshade renderer to the raster layer.
             renderer = HillshadeRenderer(
@@ -52,19 +60,13 @@ struct ApplyHillshadeRendererToRasterView: View {
     }
     
     /// The view model for the sample.
-    @State private var map = Self.makeMap()
+    @StateObject private var model = Model()
     
     @State private var isSettingsPanelPresented: Bool = false
     
-    var rasterLayer: RasterLayer {
-        map.basemap!.baseLayers[0] as! RasterLayer
-    }
-    
-    @State private var renderer: HillshadeRenderer = .init(altitude: 0, azimuth: 0, slopeType: nil)
-    
     var body: some View {
         // Creates a map view to display the map.
-        MapView(map: map)
+        MapView(map: model.map)
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
                     Button {
@@ -74,40 +76,11 @@ struct ApplyHillshadeRendererToRasterView: View {
                     }
                     .popover(isPresented: $isSettingsPanelPresented, arrowEdge: .bottom) {
                         ApplyHillshadeRendererToRasterView.SettingsView(
-                            renderer: $renderer
+                            renderer: $model.renderer
                         )
                     }
                 }
             }
-            .onChange(of: ObjectIdentifier(renderer)) {
-                rasterLayer.renderer = renderer
-            }
-    }
-    
-    private static func makeMap() -> Map {
-        // Gets the raster file URL.
-        let rasterFileURL = Bundle.main.url(forResource: "srtm", withExtension: "tiff", subdirectory: "srtm")!
-        
-        // Creates a raster with the file URL.
-        let raster = Raster(fileURL: rasterFileURL)
-        
-        // Creates a raster layer using the raster object.
-        let rasterLayer = RasterLayer(raster: raster)
-        
-        // Apply the hillshade renderer to the raster layer.
-        let renderer = HillshadeRenderer(
-            altitude: 45,
-            azimuth: 315,
-            slopeType: nil,
-            zFactor: 0.000016,
-            pixelSizeFactor: 1,
-            pixelSizePower: 1,
-            outputBitDepth: 8
-        )
-        rasterLayer.renderer = renderer
-        
-        // Create our map.
-        return Map(basemap: .init(baseLayer: rasterLayer))
     }
 }
 

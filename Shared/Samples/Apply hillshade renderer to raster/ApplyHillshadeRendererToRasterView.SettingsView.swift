@@ -11,18 +11,14 @@ import SwiftUI
 
 extension ApplyHillshadeRendererToRasterView {
     struct SettingsView: View {
-        var renderer: Binding<HillshadeRenderer>
-        
-        @State private var altitude: Double
-        @State private var azimuth: Double
+        /// The renderer that this view updates.
+        @Binding var renderer: HillshadeRenderer
+        /// The altitude angle of the renderer.
+        @State private var altitude: Double = 0
+        /// The azimuth angle of the renderer.
+        @State private var azimuth: Double = 0
+        /// The slope type of the renderer.
         @State private var slopeType: HillshadeRenderer.SlopeType?
-        
-        init(renderer: Binding<HillshadeRenderer>) {
-            self.renderer = renderer
-            altitude = renderer.wrappedValue.altitude.converted(to: .degrees).value
-            azimuth = renderer.wrappedValue.azimuth.converted(to: .degrees).value
-            slopeType = renderer.wrappedValue.slopeType
-        }
         
         var body: some View {
             Form {
@@ -37,27 +33,37 @@ extension ApplyHillshadeRendererToRasterView {
                 Section {
                     Picker("Slope Type", selection: $slopeType) {
                         Text("None")
-                            .tag(Optional<HillshadeRenderer.SlopeType>.none)
+                            .tag(nil as HillshadeRenderer.SlopeType?)
                         Text("Degree")
-                            .tag(HillshadeRenderer.SlopeType.degree)
+                            .tag(Optional(HillshadeRenderer.SlopeType.degree))
                         Text("Percent Rise")
-                            .tag(HillshadeRenderer.SlopeType.percentRise)
+                            .tag(Optional(HillshadeRenderer.SlopeType.percentRise))
                         Text("Scaled")
-                            .tag(HillshadeRenderer.SlopeType.scaled)
+                            .tag(Optional(HillshadeRenderer.SlopeType.scaled))
                     }
                 }
             }
-            .onChange(of: altitude) { updateRenderer() }
-            .onChange(of: azimuth) { updateRenderer() }
-            .onChange(of: slopeType) { updateRenderer() }
+            .onAppear {
+                altitude = renderer.altitude.converted(to: .degrees).value
+                azimuth = renderer.azimuth.converted(to: .degrees).value
+                slopeType = renderer.slopeType
+            }
+            .onChange(of: altitude) { updateRenderer(previousRenderer: renderer) }
+            .onChange(of: azimuth) { updateRenderer(previousRenderer: renderer) }
+            .onChange(of: slopeType) { updateRenderer(previousRenderer: renderer) }
             .presentationDetents([.medium])
         }
         
-        func updateRenderer() {
-            renderer.wrappedValue = HillshadeRenderer(
+        /// Updates the renderer to the latest state.
+        func updateRenderer(previousRenderer: HillshadeRenderer) {
+            renderer = HillshadeRenderer(
                 altitude: altitude,
                 azimuth: azimuth,
-                slopeType: slopeType
+                slopeType: slopeType,
+                zFactor: previousRenderer.zFactor,
+                pixelSizeFactor: previousRenderer.pixelSizeFactor,
+                pixelSizePower: previousRenderer.pixelSizePower,
+                outputBitDepth: previousRenderer.outputBitDepth
             )
         }
     }
