@@ -91,7 +91,6 @@ extension ApplyHillshadeRendererToRasterView {
             Button("Settings") {
                 isPresented = true
             }
-//            .sheet(isPresented: $isPresented) {
             .popover(isPresented: $isPresented) {
                 ApplyHillshadeRendererToRasterView.SettingsView(
                     renderer: $renderer
