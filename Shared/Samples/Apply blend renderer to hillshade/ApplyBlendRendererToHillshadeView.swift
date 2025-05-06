@@ -29,9 +29,7 @@ struct ApplyBlendRendererToHillshadeView: View {
     }
     
     /// The elevation raster.
-    private let elevationRaster: Raster = {
-        Raster(fileURL: .shastaElevation)
-    }()
+    private let elevationRaster = Raster(fileURL: .shastaElevation)
     
     /// A Boolean value indicating whether the settings view should be presented.
     @State private var isShowingSettings = false

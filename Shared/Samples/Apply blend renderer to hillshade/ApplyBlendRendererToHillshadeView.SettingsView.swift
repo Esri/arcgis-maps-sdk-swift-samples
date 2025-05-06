@@ -46,12 +46,18 @@ extension ApplyBlendRendererToHillshadeView {
                             value: Measurement<UnitAngle>(value: settings.altitude, unit: .degrees),
                             format: .measurement(width: .narrow)
                         )
-                        Slider(value: $settings.altitude, in: 0...360, step: 1.0) {
+                        Slider(value: $settings.altitude, in: 0...360, step: 1) {
                             Text("Altitude")
                         } minimumValueLabel: {
-                            Text(Measurement<UnitAngle>(value: 0, unit: .degrees), format: .measurement(width: .narrow))
+                            Text(
+                                Measurement<UnitAngle>(value: 0, unit: .degrees),
+                                format: .measurement(width: .narrow)
+                            )
                         } maximumValueLabel: {
-                            Text(Measurement<UnitAngle>(value: 360, unit: .degrees), format: .measurement(width: .narrow))
+                            Text(
+                                Measurement<UnitAngle>(value: 360, unit: .degrees),
+                                format: .measurement(width: .narrow)
+                            )
                         }
                     }
                     
@@ -61,12 +67,18 @@ extension ApplyBlendRendererToHillshadeView {
                             value: Measurement<UnitAngle>(value: settings.azimuth, unit: .degrees),
                             format: .measurement(width: .narrow)
                         )
-                        Slider(value: $settings.azimuth, in: 0...360, step: 1.0) {
+                        Slider(value: $settings.azimuth, in: 0...360, step: 1) {
                             Text("Azimuth")
                         } minimumValueLabel: {
-                            Text(Measurement<UnitAngle>(value: 0, unit: .degrees), format: .measurement(width: .narrow))
+                            Text(
+                                Measurement<UnitAngle>(value: 0, unit: .degrees),
+                                format: .measurement(width: .narrow)
+                            )
                         } maximumValueLabel: {
-                            Text(Measurement<UnitAngle>(value: 360, unit: .degrees), format: .measurement(width: .narrow))
+                            Text(
+                                Measurement<UnitAngle>(value: 360, unit: .degrees),
+                                format: .measurement(width: .narrow)
+                            )
                         }
                     }
                 }
