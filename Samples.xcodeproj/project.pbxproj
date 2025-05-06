@@ -620,7 +620,6 @@
 			dstSubfolderSpec = 7;
 			files = (
 				88E52E702DC970A800F48409 /* ApplyHillshadeRendererToRasterView.swift in Copy Source Code Files */,
-				00FA4E592DBC1786008A34CF /* AddRasterFromGeopackageView.swift in Copy Source Code Files */,
 				00FA4E5F2DC568DF008A34CF /* AddRastersAndFeatureTablesFromGeopackageView.swift in Copy Source Code Files */,
 				0072C7FB2DBAC1A0001502CA /* AddIntegratedMeshLayerView.swift in Copy Source Code Files */,
 				1C38915E2DBC3EDC00ADFDDC /* AddWFSLayerView.swift in Copy Source Code Files */,
