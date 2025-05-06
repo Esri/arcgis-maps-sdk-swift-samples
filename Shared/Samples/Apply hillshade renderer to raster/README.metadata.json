@@ -3,7 +3,8 @@
     "description": "Apply a hillshade renderer to a raster.",
     "ignore": false,
     "images": [
-        "apply-hillshade-renderer-to-raster.png"
+        "apply-hillshade-renderer-to-raster.png",
+        "apply-hillshade-renderer-to-raster-settings.png"
     ],
     "keywords": [
         "altitude",
