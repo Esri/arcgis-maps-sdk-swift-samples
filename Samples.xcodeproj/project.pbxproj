@@ -211,6 +211,7 @@
 		88E52E6F2DC96C3F00F48409 /* ApplyHillshadeRendererToRasterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E52E6E2DC96C3F00F48409 /* ApplyHillshadeRendererToRasterView.swift */; };
 		88E52E702DC970A800F48409 /* ApplyHillshadeRendererToRasterView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 88E52E6E2DC96C3F00F48409 /* ApplyHillshadeRendererToRasterView.swift */; };
 		88E52E7F2DC97ED700F48409 /* srtm in Resources */ = {isa = PBXBuildFile; fileRef = 88E52E7E2DC97EC700F48409 /* srtm */; settings = {ASSET_TAGS = (ApplyHillshadeRendererToRaster, ); }; };
+		88E52E812DCA703B00F48409 /* HillshadeRendererSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E52E802DCA703B00F48409 /* HillshadeRendererSettingsView.swift */; };
 		88F93CC129C3D59D0006B28E /* CreateAndEditGeometriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F93CC029C3D59C0006B28E /* CreateAndEditGeometriesView.swift */; };
 		88F93CC229C4D3480006B28E /* CreateAndEditGeometriesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 88F93CC029C3D59C0006B28E /* CreateAndEditGeometriesView.swift */; };
 		9503056E2C46ECB70091B32D /* ShowDeviceLocationUsingIndoorPositioningView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9503056D2C46ECB70091B32D /* ShowDeviceLocationUsingIndoorPositioningView.Model.swift */; };
@@ -977,6 +978,7 @@
 		883C121429C9136600062FF9 /* DownloadPreplannedMapAreaView.MapPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadPreplannedMapAreaView.MapPicker.swift; sourceTree = "<group>"; };
 		88E52E6E2DC96C3F00F48409 /* ApplyHillshadeRendererToRasterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyHillshadeRendererToRasterView.swift; sourceTree = "<group>"; };
 		88E52E7E2DC97EC700F48409 /* srtm */ = {isa = PBXFileReference; lastKnownFileType = folder; path = srtm; sourceTree = "<group>"; };
+		88E52E802DCA703B00F48409 /* HillshadeRendererSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HillshadeRendererSettingsView.swift; sourceTree = "<group>"; };
 		88F93CC029C3D59C0006B28E /* CreateAndEditGeometriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAndEditGeometriesView.swift; sourceTree = "<group>"; };
 		9503056D2C46ECB70091B32D /* ShowDeviceLocationUsingIndoorPositioningView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowDeviceLocationUsingIndoorPositioningView.Model.swift; sourceTree = "<group>"; };
 		9537AFD62C220EF0000923C5 /* ExchangeSetwithoutUpdates */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExchangeSetwithoutUpdates; sourceTree = "<group>"; };
@@ -2058,6 +2060,7 @@
 			isa = PBXGroup;
 			children = (
 				88E52E6E2DC96C3F00F48409 /* ApplyHillshadeRendererToRasterView.swift */,
+				88E52E802DCA703B00F48409 /* HillshadeRendererSettingsView.swift */,
 			);
 			path = "Apply hillshade renderer to raster";
 			sourceTree = "<group>";
@@ -3829,6 +3832,7 @@
 				D7114A0D2BDC6A3300FA68CA /* EditWithBranchVersioningView.Model.swift in Sources */,
 				00B04FB5283EEBA80026C882 /* DisplayOverviewMapView.swift in Sources */,
 				D718A1E72B570F7500447087 /* OrbitCameraAroundObjectView.Model.swift in Sources */,
+				88E52E812DCA703B00F48409 /* HillshadeRendererSettingsView.swift in Sources */,
 				D71C5F642AAA7A88006599FD /* CreateSymbolStylesFromWebStylesView.swift in Sources */,
 				D7CC33FF2A31475C00198EDF /* ShowLineOfSightBetweenPointsView.swift in Sources */,
 				D70BE5792A5624A80022CA02 /* CategoriesView.swift in Sources */,

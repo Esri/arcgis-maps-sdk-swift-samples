@@ -21,8 +21,8 @@ struct ApplyHillshadeRendererToRasterView: View {
     class Model: ObservableObject {
         /// The map that will be shown.
         let map: Map
-        /// The raster layer that will be added to the map.
-        let rasterLayer: RasterLayer
+        /// The raster renderer.
+        let renderer: HillshadeRenderer
         
         init() {
             // Gets the raster file URL.
@@ -32,10 +32,10 @@ struct ApplyHillshadeRendererToRasterView: View {
             let raster = Raster(fileURL: rasterFileURL)
             
             // Creates a raster layer using the raster object.
-            rasterLayer = RasterLayer(raster: raster)
+            let rasterLayer = RasterLayer(raster: raster)
             
             // Apply the hillshade renderer to the raster layer.
-            rasterLayer.renderer = HillshadeRenderer(
+            renderer = HillshadeRenderer(
                 altitude: 45,
                 azimuth: 315,
                 slopeType: nil,
@@ -44,6 +44,7 @@ struct ApplyHillshadeRendererToRasterView: View {
                 pixelSizePower: 1,
                 outputBitDepth: 8
             )
+            rasterLayer.renderer = renderer
             
             // Create our map.
             map = Map(basemap: .init(baseLayer: rasterLayer))
