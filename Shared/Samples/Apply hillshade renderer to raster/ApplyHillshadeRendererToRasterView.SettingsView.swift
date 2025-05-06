@@ -46,6 +46,7 @@ extension ApplyHillshadeRendererToRasterView {
                 }
                 .frame(idealWidth: 320, idealHeight: 380)
                 .onAppear {
+                    // Initialize the state when the view appears.
                     altitude = renderer.altitude.converted(to: .degrees).value
                     azimuth = renderer.azimuth.converted(to: .degrees).value
                     slopeType = renderer.slopeType
