@@ -25,9 +25,6 @@ struct ApplyHillshadeRendererToRasterView: View {
         let rasterLayer: RasterLayer
         
         init() {
-            // Create our map.
-            map = Map(basemapStyle: .arcGISImageryStandard)
-            
             // Gets the raster file URL.
             let rasterFileURL = Bundle.main.url(forResource: "srtm", withExtension: "tiff", subdirectory: "srtm")!
             
@@ -41,41 +38,24 @@ struct ApplyHillshadeRendererToRasterView: View {
             rasterLayer.renderer = HillshadeRenderer(
                 altitude: 45,
                 azimuth: 315,
-                slopeType: .scaled,
+                slopeType: nil,
                 zFactor: 0.000016,
                 pixelSizeFactor: 1,
                 pixelSizePower: 1,
                 outputBitDepth: 8
             )
             
-            // Add the raster layer to the map.
-            map.addOperationalLayer(rasterLayer)
+            // Create our map.
+            map = Map(basemap: .init(baseLayer: rasterLayer))
         }
     }
     
     /// The view model for the sample.
     @StateObject private var model = Model()
     
-    /// The error shown in the error alert.
-    @State private var error: Error?
-    
     var body: some View {
-        MapViewReader { mapViewProxy in
-            // Creates a map view to display the map.
-            MapView(map: model.map)
-                .task {
-                    // When the view appears, load the raster layer so that
-                    // we can zoom to its extent.
-                    do {
-                        try await model.rasterLayer.load()
-                        if let extent = model.rasterLayer.fullExtent {
-                            await mapViewProxy.setViewpointGeometry(extent)
-                        }
-                    } catch {
-                    }
-                }
-        }
-        .errorAlert(presentingError: $error)
+        // Creates a map view to display the map.
+        MapView(map: model.map)
     }
 }
 
