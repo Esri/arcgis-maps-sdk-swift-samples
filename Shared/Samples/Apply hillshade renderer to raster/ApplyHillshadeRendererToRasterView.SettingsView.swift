@@ -21,37 +21,42 @@ extension ApplyHillshadeRendererToRasterView {
         @State private var slopeType: HillshadeRenderer.SlopeType?
         
         var body: some View {
-            Form {
-                Section {
-                    LabeledContent("Altitude", value: altitude, format: .number)
-                    Slider(value: $altitude, in: 0...360, step: 1)
-                }
-                Section {
-                    LabeledContent("Azimuth", value: azimuth, format: .number)
-                    Slider(value: $azimuth, in: 0...360, step: 1)
-                }
-                Section {
-                    Picker("Slope Type", selection: $slopeType) {
-                        Text("None")
-                            .tag(nil as HillshadeRenderer.SlopeType?)
-                        Text("Degree")
-                            .tag(Optional(HillshadeRenderer.SlopeType.degree))
-                        Text("Percent Rise")
-                            .tag(Optional(HillshadeRenderer.SlopeType.percentRise))
-                        Text("Scaled")
-                            .tag(Optional(HillshadeRenderer.SlopeType.scaled))
+            NavigationStack {
+                Form {
+                    Section {
+                        LabeledContent("Altitude", value: altitude, format: .number)
+                        Slider(value: $altitude, in: 0...360, step: 1)
+                    }
+                    Section {
+                        LabeledContent("Azimuth", value: azimuth, format: .number)
+                        Slider(value: $azimuth, in: 0...360, step: 1)
+                    }
+                    Section {
+                        Picker("Slope Type", selection: $slopeType) {
+                            Text("None")
+                                .tag(nil as HillshadeRenderer.SlopeType?)
+                            Text("Degree")
+                                .tag(Optional(HillshadeRenderer.SlopeType.degree))
+                            Text("Percent Rise")
+                                .tag(Optional(HillshadeRenderer.SlopeType.percentRise))
+                            Text("Scaled")
+                                .tag(Optional(HillshadeRenderer.SlopeType.scaled))
+                        }
                     }
                 }
+                .frame(idealWidth: 320, idealHeight: 380)
+                .onAppear {
+                    altitude = renderer.altitude.converted(to: .degrees).value
+                    azimuth = renderer.azimuth.converted(to: .degrees).value
+                    slopeType = renderer.slopeType
+                }
+                .onChange(of: altitude) { updateRenderer(previousRenderer: renderer) }
+                .onChange(of: azimuth) { updateRenderer(previousRenderer: renderer) }
+                .onChange(of: slopeType) { updateRenderer(previousRenderer: renderer) }
+                .presentationDetents([.medium])
+                .navigationTitle("Hillshade Renderer Settings")
+                .navigationBarTitleDisplayMode(.inline)
             }
-            .onAppear {
-                altitude = renderer.altitude.converted(to: .degrees).value
-                azimuth = renderer.azimuth.converted(to: .degrees).value
-                slopeType = renderer.slopeType
-            }
-            .onChange(of: altitude) { updateRenderer(previousRenderer: renderer) }
-            .onChange(of: azimuth) { updateRenderer(previousRenderer: renderer) }
-            .onChange(of: slopeType) { updateRenderer(previousRenderer: renderer) }
-            .presentationDetents([.medium])
         }
         
         /// Updates the renderer to the latest state.
@@ -85,7 +90,8 @@ extension ApplyHillshadeRendererToRasterView {
             Button("Settings") {
                 isPresented = true
             }
-            .popover(isPresented: $isPresented, arrowEdge: .bottom) {
+//            .sheet(isPresented: $isPresented) {
+            .popover(isPresented: $isPresented) {
                 ApplyHillshadeRendererToRasterView.SettingsView(
                     renderer: $renderer
                 )
