@@ -2,11 +2,11 @@
 
 Apply a hillshade renderer to a raster.
 
-![Image of apply hillshade renderer to raster](ApplyHillshadeRendererToRaster.png)
+![Image of Apply hillshade renderer to raster sample](ApplyHillshadeRendererToRaster.png)
 
 ## Use case
 
-An environmental agency may track coastal erosion by comparing images of an area taken over a a longer period of time with hillshade renderers applied.
+An environmental agency may track coastal erosion by comparing images of an area taken over a longer period of time with hillshade renderers applied.
 
 ## How to use the sample
 
