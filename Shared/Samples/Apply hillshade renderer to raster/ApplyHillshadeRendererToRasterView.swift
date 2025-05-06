@@ -23,11 +23,12 @@ struct ApplyHillshadeRendererToRasterView: View {
         let map: Map
         
         /// The raster layer in the map.
-        let rasterLayer: RasterLayer
+        private let rasterLayer: RasterLayer
         
         /// The raster renderer.
         var renderer: HillshadeRenderer {
             didSet {
+                // When the renderer is updated, update the layer accordingly.
                 rasterLayer.renderer = renderer
             }
         }
