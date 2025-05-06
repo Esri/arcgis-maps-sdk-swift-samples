@@ -50,7 +50,6 @@ extension ApplyHillshadeRendererToRasterView {
                         }
                     }
                 }
-                .frame(idealWidth: 320, idealHeight: 380)
                 .onAppear {
                     // Initialize the state when the view appears.
                     altitude = renderer.altitude.converted(to: .degrees).value
@@ -60,7 +59,6 @@ extension ApplyHillshadeRendererToRasterView {
                 .onChange(of: altitude) { updateRenderer(previousRenderer: renderer) }
                 .onChange(of: azimuth) { updateRenderer(previousRenderer: renderer) }
                 .onChange(of: slopeType) { updateRenderer(previousRenderer: renderer) }
-                .presentationDetents([.medium])
                 .navigationTitle("Hillshade Renderer Settings")
                 .navigationBarTitleDisplayMode(.inline)
             }
@@ -77,31 +75,6 @@ extension ApplyHillshadeRendererToRasterView {
                 pixelSizePower: previousRenderer.pixelSizePower,
                 outputBitDepth: previousRenderer.outputBitDepth
             )
-        }
-    }
-}
-
-#Preview {
-    @Previewable @State var isPresented = false
-    @Previewable @State var renderer = HillshadeRenderer(
-        altitude: 10,
-        azimuth: 20,
-        slopeType: nil
-    )
-    
-    VStack {
-        Text("Preview")
-    }
-    .toolbar {
-        ToolbarItem(placement: .bottomBar) {
-            Button("Settings") {
-                isPresented = true
-            }
-            .popover(isPresented: $isPresented) {
-                ApplyHillshadeRendererToRasterView.SettingsView(
-                    renderer: $renderer
-                )
-            }
         }
     }
 }
