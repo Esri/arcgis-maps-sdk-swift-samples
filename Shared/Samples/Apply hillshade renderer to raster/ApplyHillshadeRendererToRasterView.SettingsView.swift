@@ -10,7 +10,7 @@ import ArcGIS
 import SwiftUI
 
 extension ApplyHillshadeRendererToRasterView {
-    struct HillshadeRendererSettingsView: View {
+    struct SettingsView: View {
         let renderer: HillshadeRenderer
         
         @State private var altitude: Double
@@ -46,7 +46,7 @@ extension ApplyHillshadeRendererToRasterView {
     }
     .sheet(isPresented: .constant(true)) {
 //    .popover(isPresented: .constant(true)) {
-        ApplyHillshadeRendererToRasterView.HillshadeRendererSettingsView(
+        ApplyHillshadeRendererToRasterView.SettingsView(
             renderer: HillshadeRenderer(altitude: 10, azimuth: 20, slopeType: nil)
         )
     }

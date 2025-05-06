@@ -28,7 +28,8 @@
         "RasterLayer"
     ],
     "snippets": [
-        "ApplyHillshadeRendererToRasterView.swift"
+        "ApplyHillshadeRendererToRasterView.swift",
+        "ApplyHillshadeRendererToRasterView.SettingsView.swift"
     ],
     "title": "Apply hillshade renderer to raster"
 }
