@@ -16,32 +16,40 @@ import ArcGIS
 import SwiftUI
 
 struct ApplyFunctionToRasterFromServiceView: View {
-    /// The model used to store the geo model and other expensive objects
-    /// used in this view.
-    class Model: ObservableObject {
-        /// The map that will be shown.
-        let map: Map
-        /// The raster layer that will be added to the map.
-        let rasterLayer: RasterLayer
-        
-        init() {
-            // Create our map.
-            map = Map(basemapStyle: .arcGISStreets)
-            // Create an image service raster.
-            let imageServiceRaster = ImageServiceRaster(url: URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/NLCDLandCover2001/ImageServer")!)
-            // Create a raster function from a json string.
-            // swiftlint:disable:next force_try
-            let function = try! RasterFunction.fromJSON(Model.rasterFunctionJson)
-            // Set the arguments on the function.
-            function.arguments!.setRaster(imageServiceRaster, forArgumentNamed: function.arguments!.rasterNames[0])
-            // Create a raster layer from the raster function.
-            rasterLayer = RasterLayer(raster: Raster(rasterFunction: function))
-            // Add the raster layer to the map.
-            map.addOperationalLayer(rasterLayer)
+    /// The map that will be shown.
+    @State private var map = Map(basemapStyle: .arcGISStreets)
+    
+    var body: some View {
+        MapViewReader { mapViewProxy in
+            // Creates a map view to display the map.
+            MapView(map: map)
+                .task {
+                    // Creates an image service raster.
+                    let imageServiceRaster = ImageServiceRaster(
+                        url: URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/NLCDLandCover2001/ImageServer")!
+                    )
+                    // Creates a raster function from a json string.
+                    let function = try! RasterFunction.fromJSON(rasterFunctionJSON) // swiftlint:disable:this force_try
+                    // Sets the arguments on the function.
+                    function.arguments!.setRaster(
+                        imageServiceRaster,
+                        forArgumentNamed: function.arguments!.rasterNames.first!
+                    )
+                    // Creates a raster layer from the raster function.
+                    let rasterLayer = RasterLayer(raster: Raster(rasterFunction: function))
+                    // Adds the raster layer to the map.
+                    map.addOperationalLayer(rasterLayer)
+                    // Loads the raster layer so that we can zoom to its extent.
+                    try? await rasterLayer.load()
+                    if let extent = rasterLayer.fullExtent {
+                        await mapViewProxy.setViewpointGeometry(extent)
+                    }
+                }
         }
-        
-        /// The raster function json string to apply to the image service raster.
-        private static let rasterFunctionJson =
+    }
+    
+    /// The raster function json string to apply to the image service raster.
+    private var rasterFunctionJSON: String {
         #"""
         {
           "raster_function_arguments":
@@ -58,24 +66,6 @@ struct ApplyFunctionToRasterFromServiceView: View {
           "type":"Raster_function_template"
         }
         """#
-    }
-    
-    /// The view model for the sample.
-    @StateObject private var model = Model()
-    
-    var body: some View {
-        MapViewReader { mapViewProxy in
-            // Creates a map view to display the map.
-            MapView(map: model.map)
-                .task {
-                    // When the view appears, load the raster layer so that
-                    // we can zoom to its extent.
-                    try? await model.rasterLayer.load()
-                    if let extent = model.rasterLayer.fullExtent {
-                        await mapViewProxy.setViewpointGeometry(extent)
-                    }
-                }
-        }
     }
 }
 
