@@ -17,8 +17,8 @@ Choose and adjust the settings to update the hillshade renderer on the raster la
 1. Create a `Raster` from a grayscale raster file.
 2. Create a `RasterLayer` from the raster.
 3. Create a `Basemap` from the raster layer and set it to the map.
-4. Create a `HillshadeRenderer`, specifying the slope type and other properties, `new HillshadeRenderer(Altitude, Azimuth, ZFactor, SlopeType, PixelSizeFactor, PixelSizePower, OutputBitDepth)`.
-5. Set the hillshade renderer to be used on the raster layer with `rasterLayer.setRenderer(renderer)`.
+4. Create a `HillshadeRenderer`, specifying the altitude, azimuth, slope type and other properties.
+5. Set the hillshade renderer to be used on the raster layer.
 
 ## Relevant API
 

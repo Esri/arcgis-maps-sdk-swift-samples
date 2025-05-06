@@ -63,6 +63,7 @@ struct ApplyHillshadeRendererToRasterView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
+    /// A boolean value indicating if the settings panel is presented.
     @State private var isSettingsPanelPresented: Bool = false
     
     var body: some View {
