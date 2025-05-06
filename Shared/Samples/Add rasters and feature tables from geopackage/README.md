@@ -14,7 +14,7 @@ When the sample loads, the feature tables and rasters from the GeoPackage will b
 
 ## How it works
 
-1. Open the GeoPackage using, specifying the path to the local .gpkg file.
+1. Open the GeoPackage using the path to the local .gpkg file.
 2. Iterate through available rasters, exposed by the `GeoPackageRaster`s from the GeoPackage.
     * For each raster, create a raster layer then add it to the map.
 3. Iterate through available feature tables, exposed by `GeoPackageFeatureTables`.
