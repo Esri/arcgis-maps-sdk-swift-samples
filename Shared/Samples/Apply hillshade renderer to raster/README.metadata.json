@@ -1,5 +1,5 @@
 {
-    "category": "Layers",
+    "category": "Visualization",
     "description": "Apply a hillshade renderer to a raster.",
     "ignore": false,
     "images": [
