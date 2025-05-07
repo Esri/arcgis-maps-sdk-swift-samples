@@ -10,14 +10,13 @@ A feature layer hosted on ArcGIS Online has a preset renderer and will display i
 
 ## How to use the sample
 
-Use the button in the control panel to change the renderer on the feature layer. The original renderer displays orange circles, the diameters of which are proportional to carbon storage of each tree. When the blue renderer in this sample is applied, it displays the location of the trees simply as blue points.
+Use the button in the control panel to change the renderer on the feature layer. The original renderer displays orange circles, the diameters of which are proportional to carbon storage of each tree. When the simple renderer is applied, it displays the location of the trees simply as points of various colors.
 
 ## How it works
 
-1. Create a `ServiceFeatureTable` from a URL.
-2. Create a `FeatureLayer` from the service feature table.
-3. Create a new renderer (in this case, a `SimpleRenderer`).
-4. Change the feature layer's renderer.
+1. Create a `FeatureLayer` from a portal item.
+2. Create a new renderer (in this case, a `SimpleRenderer`).
+3. Change the feature layer's renderer.
 
 ## Relevant API
 
