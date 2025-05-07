@@ -56,7 +56,8 @@ extension ApplyHillshadeRendererToRasterView {
                     azimuth = renderer.azimuth.converted(to: .degrees).value
                     slopeType = renderer.slopeType
                 }
-                .onChange(of: [altitude, azimuth, slopeType]) { updateRenderer(previousRenderer: renderer) }
+                .onChange(of: [altitude, azimuth]) { updateRenderer(previousRenderer: renderer) }
+                .onChange(of: slopeType) { updateRenderer(previousRenderer: renderer) }
                 .navigationTitle("Hillshade Renderer Settings")
                 .navigationBarTitleDisplayMode(.inline)
             }
