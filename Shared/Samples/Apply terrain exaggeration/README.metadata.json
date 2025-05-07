@@ -2,7 +2,9 @@
     "category": "Scenes",
     "description": "Vertically exaggerate terrain in a scene.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "apply-terrain-exaggeration.png"
+    ],
     "keywords": [
         "3D",
         "DEM",
