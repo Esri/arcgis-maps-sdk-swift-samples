@@ -89,16 +89,24 @@ struct ApplyScenePropertyExpressionsView: View {
             }
         }
         .popover(isPresented: $isSettingsPresented, arrowEdge: .bottom) {
-            // The settings pane to adjust the symbology heading and pitch.
-            Form {
-                Section {
-                    LabeledContent("Heading", value: heading, format: .number)
-                    Slider(value: $heading, in: 0...360, step: 1)
+            NavigationStack {
+                // The settings pane to adjust the symbology heading and pitch.
+                Form {
+                    Section {
+                        LabeledContent("Heading", value: heading, format: .number)
+                        Slider(value: $heading, in: 0...360, step: 1)
+                    }
+                    Section {
+                        LabeledContent("Pitch", value: pitch, format: .number)
+                        Slider(value: $pitch, in: 0...180, step: 1)
+                    }
                 }
-                Section {
-                    LabeledContent("Pitch", value: pitch, format: .number)
-                    Slider(value: $pitch, in: 0...180, step: 1)
+                .toolbar {
+                    ToolbarItem(placement: .confirmationAction) {
+                        Button("Done") { isSettingsPresented = false }
+                    }
                 }
+                .navigationTitle("Expression Settings")
             }
             .presentationDetents([.medium])
             .frame(idealWidth: 320, idealHeight: 380)
