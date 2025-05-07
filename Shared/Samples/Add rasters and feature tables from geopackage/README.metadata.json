@@ -1,21 +1,22 @@
 {
     "category": "Layers",
-    "description": "Display a raster contained in a GeoPackage.",
+    "description": "Add rasters and feature tables from a geopackage to a map.",
     "ignore": false,
     "images": [
-        "add-raster-from-geopackage.png"
+        "add-rasters-and-feature-tables-from-geopackage.png"
     ],
     "keywords": [
         "OGC",
         "container",
-        "data",
-        "image",
-        "import",
+        "geopackage",
         "layer",
+        "map",
         "package",
         "raster",
-        "visualization",
+        "table",
+        "FeatureLayer",
         "GeoPackage",
+        "GeoPackageFeatureTable",
         "GeoPackageRaster",
         "RasterLayer"
     ],
@@ -24,12 +25,14 @@
     ],
     "redirect_from": [],
     "relevant_apis": [
+        "FeatureLayer",
         "GeoPackage",
+        "GeoPackageFeatureTable",
         "GeoPackageRaster",
         "RasterLayer"
     ],
     "snippets": [
-        "AddRasterFromGeopackageView.swift"
+        "AddRastersAndFeatureTablesFromGeopackageView.swift"
     ],
-    "title": "Add raster from geopackage"
+    "title": "Add rasters and feature tables from geopackage"
 }

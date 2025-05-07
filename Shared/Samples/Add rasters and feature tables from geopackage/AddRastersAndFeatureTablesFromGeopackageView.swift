@@ -15,7 +15,7 @@
 import ArcGIS
 import SwiftUI
 
-struct AddRasterFromGeopackageView: View {
+struct AddRastersAndFeatureTablesFromGeopackageView: View {
     /// A map with a light gray basemap and a raster layer.
     @State private var map = Map(basemapStyle: .arcGISLightGray)
     
@@ -35,6 +35,8 @@ struct AddRasterFromGeopackageView: View {
                         return
                     }
                     try await geoPackage.load()
+                    
+                    // Creates raster layers for each raster in the geopackage.
                     let rasterLayers = geoPackage.rasters.map {
                         let layer = RasterLayer(raster: $0)
                         // Makes the layer semi-transparent so it doesn't
@@ -42,8 +44,15 @@ struct AddRasterFromGeopackageView: View {
                         layer.opacity = 0.5
                         return layer
                     }
-                    viewpoint = Viewpoint(latitude: 39.7294, longitude: -104.8319, scale: 3e5)
+                    
+                    // Creates feature layers for each feature table in the geopackage.
+                    let featureLayers = geoPackage.featureTables.map { FeatureLayer(featureTable: $0) }
+                    
+                    // Add the arrays of feature and raster layers to the map.
                     map.addOperationalLayers(rasterLayers)
+                    map.addOperationalLayers(featureLayers)
+                    
+                    viewpoint = Viewpoint(latitude: 39.7294, longitude: -104.8319, scale: 3e5)
                 } catch {
                     // Updates the error and shows an alert if any failure occurs.
                     self.error = error
