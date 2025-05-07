@@ -63,25 +63,21 @@ struct ApplyHillshadeRendererToRasterView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
-    /// A boolean value indicating if the settings panel is presented.
-    @State private var isSettingsPanelPresented: Bool = false
+    /// A Boolean value indicating if the settings panel is presented.
+    @State private var isSettingsPanelPresented = false
     
     var body: some View {
         // Creates a map view to display the map.
         MapView(map: model.map)
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
-                    Button {
+                    Button("Settings") {
                         isSettingsPanelPresented = true
-                    } label: {
-                        Text("Settings")
                     }
-                    .popover(isPresented: $isSettingsPanelPresented, arrowEdge: .bottom) {
-                        ApplyHillshadeRendererToRasterView.SettingsView(
-                            renderer: $model.renderer
-                        )
-                        .presentationDetents([.medium])
-                        .frame(idealWidth: 320, idealHeight: 380)
+                    .popover(isPresented: $isSettingsPanelPresented) {
+                        SettingsView(renderer: .renderer)
+                            .presentationDetents([.medium])
+                            .frame(idealWidth: 320, idealHeight: 380)
                     }
                 }
             }
