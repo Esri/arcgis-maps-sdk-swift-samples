@@ -37,6 +37,7 @@ struct ApplyTerrainExaggerationView: View {
     @State private var elevationExaggeration: Float = 1
     
     var body: some View {
+        // Displays the scene in a scene view.
         SceneView(scene: scene)
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
