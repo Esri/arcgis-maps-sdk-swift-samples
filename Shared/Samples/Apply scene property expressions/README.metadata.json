@@ -14,7 +14,7 @@
         "rotation",
         "scene",
         "symbology",
-        "Graphic.Attributes",
+        "Graphic.attributes",
         "GraphicsOverlay",
         "SceneProperties",
         "SceneProperties.headingExpression",
@@ -24,7 +24,7 @@
     ],
     "redirect_from": [],
     "relevant_apis": [
-        "Graphic.Attributes",
+        "Graphic.attributes",
         "GraphicsOverlay",
         "SceneProperties",
         "SceneProperties.headingExpression",

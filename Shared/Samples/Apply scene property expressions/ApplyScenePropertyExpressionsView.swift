@@ -18,14 +18,14 @@ import SwiftUI
 struct ApplyScenePropertyExpressionsView: View {
     /// The scene that displays in the scene view.
     @State private var scene: ArcGIS.Scene = {
-        let scene = ArcGIS.Scene(basemapStyle: .arcGISImageryStandard)
+        let scene = Scene(basemapStyle: .arcGISImageryStandard)
         
         // Give the scene an initial viewpoint.
         let point = Point(x: 83.9, y: 28.4, z: 1000, spatialReference: .wgs84)
         scene.initialViewpoint = Viewpoint(
-            latitude: point.y,
-            longitude: point.x,
-            scale: 0,
+            latitude: .nan,
+            longitude: .nan,
+            scale: .nan,
             camera: .init(lookingAt: point, distance: 1000, heading: 0, pitch: 50, roll: 0)
         )
         
@@ -107,6 +107,7 @@ struct ApplyScenePropertyExpressionsView: View {
                     }
                 }
                 .navigationTitle("Expression Settings")
+                .navigationBarTitleDisplayMode(.inline)
             }
             .presentationDetents([.medium])
             .frame(idealWidth: 320, idealHeight: 380)
