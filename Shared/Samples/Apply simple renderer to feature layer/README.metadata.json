@@ -10,13 +10,11 @@
         "renderer",
         "visualization",
         "FeatureLayer",
-        "ServiceFeatureTable",
         "SimpleRenderer"
     ],
     "redirect_from": [],
     "relevant_apis": [
         "FeatureLayer",
-        "ServiceFeatureTable",
         "SimpleRenderer"
     ],
     "snippets": [

@@ -21,7 +21,6 @@ Use the button in the control panel to change the renderer on the feature layer.
 ## Relevant API
 
 * FeatureLayer
-* ServiceFeatureTable
 * SimpleRenderer
 
 ## About the data
