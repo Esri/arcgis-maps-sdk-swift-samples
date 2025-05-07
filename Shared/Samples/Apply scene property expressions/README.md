@@ -2,7 +2,7 @@
 
 Update the orientation of a graphic using expressions based on its attributes.
 
-![Image of apply scene property expressions](ApplyScenePropertyExpressions.jpg)
+![Image of apply scene property expressions](apply-scene-property-expressions.jpg)
 
 ## Use case
 
@@ -26,10 +26,10 @@ Adjust the heading and pitch sliders to rotate the cone.
 * Graphic.Attributes
 * GraphicsOverlay
 * SceneProperties
-* SceneProperties.HeadingExpression
-* SceneProperties.PitchExpression
+* SceneProperties.headingExpression
+* SceneProperties.pitchExpression
 * SimpleRenderer
-* SimpleRenderer.SceneProperties
+* SimpleRenderer.sceneProperties
 
 ## Tags
 

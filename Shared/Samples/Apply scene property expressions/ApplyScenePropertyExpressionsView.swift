@@ -89,6 +89,7 @@ struct ApplyScenePropertyExpressionsView: View {
             }
         }
         .popover(isPresented: $isSettingsPresented, arrowEdge: .bottom) {
+            // The settings pane to adjust the symbology heading and pitch.
             Form {
                 Section {
                     LabeledContent("Heading", value: heading, format: .number)
@@ -103,9 +104,11 @@ struct ApplyScenePropertyExpressionsView: View {
             .frame(idealWidth: 320, idealHeight: 380)
         }
         .onAppear {
+            // Sync view state with the graphic attributes on startup.
             heading = coneGraphic.attributes["HEADING"] as? Double ?? 0
             pitch = coneGraphic.attributes["PITCH"] as? Double ?? 0
         }
+        // Sync view state with the graphic attributes on as it changes.
         .onChange(of: heading) { coneGraphic.setAttributeValue(heading, forKey: "HEADING") }
         .onChange(of: pitch) { coneGraphic.setAttributeValue(pitch, forKey: "PITCH") }
     }

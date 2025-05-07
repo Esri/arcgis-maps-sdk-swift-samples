@@ -2,7 +2,9 @@
     "category": "Visualization",
     "description": "Update the orientation of a graphic using expressions based on its attributes.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "apply-scene-property-expressions.png"
+    ],
     "keywords": [
         "3D",
         "expression",
@@ -15,20 +17,20 @@
         "Graphic.Attributes",
         "GraphicsOverlay",
         "SceneProperties",
-        "SceneProperties.HeadingExpression",
-        "SceneProperties.PitchExpression",
+        "SceneProperties.headingExpression",
+        "SceneProperties.pitchExpression",
         "SimpleRenderer",
-        "SimpleRenderer.SceneProperties"
+        "SimpleRenderer.sceneProperties"
     ],
     "redirect_from": [],
     "relevant_apis": [
         "Graphic.Attributes",
         "GraphicsOverlay",
         "SceneProperties",
-        "SceneProperties.HeadingExpression",
-        "SceneProperties.PitchExpression",
+        "SceneProperties.headingExpression",
+        "SceneProperties.pitchExpression",
         "SimpleRenderer",
-        "SimpleRenderer.SceneProperties"
+        "SimpleRenderer.sceneProperties"
     ],
     "snippets": [
         "ApplyScenePropertyExpressionsView.swift"
