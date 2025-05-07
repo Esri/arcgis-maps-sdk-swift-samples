@@ -3471,7 +3471,6 @@
 					ApplyDictionaryRendererToFeatureLayer,
 					ApplyDictionaryRendererToGraphicsOverlay,
 					ApplyHillshadeRendererToRaster,
-					ApplyHillshadeRendererToRasterView,
 					ApplyScheduledUpdatesToPreplannedMapArea,
 					AugmentRealityToShowTabletopScene,
 					ChangeCameraController,
