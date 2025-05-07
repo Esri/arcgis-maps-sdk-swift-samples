@@ -16,7 +16,6 @@ import ArcGIS
 import SwiftUI
 
 struct ApplySimpleRendererToFeatureLayerView: View {
-    /// A map with imagery basemap.
     @State private var map: Map = {
         let map = Map(basemapStyle: .arcGISTopographic)
         let featureLayer = FeatureLayer(
