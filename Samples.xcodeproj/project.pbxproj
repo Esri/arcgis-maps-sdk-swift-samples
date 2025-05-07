@@ -93,7 +93,6 @@
 		00F279D72AF4364700CECAF8 /* AddDynamicEntityLayerView.VehicleCallout.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 00F279D52AF418DC00CECAF8 /* AddDynamicEntityLayerView.VehicleCallout.swift */; };
 		00FA4E572DBC139C008A34CF /* AddRastersAndFeatureTablesFromGeopackageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FA4E562DBC139B008A34CF /* AddRastersAndFeatureTablesFromGeopackageView.swift */; };
 		00FA4E592DBC1786008A34CF /* AddRastersAndFeatureTablesFromGeopackageView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 00FA4E562DBC139B008A34CF /* AddRastersAndFeatureTablesFromGeopackageView.swift */; };
-		00FA4E5F2DC568DF008A34CF /* AddRastersAndFeatureTablesFromGeopackageView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 00FA4E562DBC139B008A34CF /* AddRastersAndFeatureTablesFromGeopackageView.swift */; };
 		00FA4E642DCA72EE008A34CF /* ApplyRGBRendererView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FA4E632DCA72E6008A34CF /* ApplyRGBRendererView.swift */; };
 		00FA4E662DCA738A008A34CF /* ApplyRGBRendererView.SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FA4E652DCA7386008A34CF /* ApplyRGBRendererView.SettingsView.swift */; };
 		00FA4E682DCA87A9008A34CF /* ApplyRGBRendererView.RangeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FA4E672DCA87A5008A34CF /* ApplyRGBRendererView.RangeSlider.swift */; };
@@ -636,7 +635,6 @@
 				1C293D012DCA7C99000B0822 /* ApplyBlendRendererToHillshadeView.swift in Copy Source Code Files */,
 				1C293D032DCA7C99000B0822 /* ApplyBlendRendererToHillshadeView.SettingsView.swift in Copy Source Code Files */,
 				88E52E6C2DC960EA00F48409 /* ApplyFunctionToRasterFromServiceView.swift in Copy Source Code Files */,
-				00FA4E5F2DC568DF008A34CF /* AddRastersAndFeatureTablesFromGeopackageView.swift in Copy Source Code Files */,
 				0072C7FB2DBAC1A0001502CA /* AddIntegratedMeshLayerView.swift in Copy Source Code Files */,
 				1C38915E2DBC3EDC00ADFDDC /* AddWFSLayerView.swift in Copy Source Code Files */,
 				1C29C95A2DBAE5770074028F /* AddWMTSLayerView.swift in Copy Source Code Files */,

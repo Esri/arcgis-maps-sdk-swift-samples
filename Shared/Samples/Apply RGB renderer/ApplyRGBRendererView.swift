@@ -16,21 +16,31 @@ import ArcGIS
 import SwiftUI
 
 struct ApplyRGBRendererView: View {
-    /// An empty map.
-    @State private var map = Map()
+    /// A map with a raster layer.
+    @State private var map: Map = {
+        let raster = Raster(
+            fileURL: Bundle.main.url(
+                forResource: "Shasta",
+                withExtension: "tif",
+                subdirectory: "raster-file/raster-file"
+            )!
+        )
+        return Map(basemap: Basemap(baseLayer: RasterLayer(raster: raster)))
+    }()
     
-    /// The error shown in the error alert.
-    @State private var error: Error?
+    /// The stretch type to apply to the raster layer.
+    @State private var stretchType: StretchType = .histogramEqualization
     
     /// The raster layer to apply RGB renderer.
-    @State private var rasterLayer: RasterLayer?
+    private var rasterLayer: RasterLayer {
+        map.basemap?.baseLayers[0] as! RasterLayer
+    }
     
     /// A Boolean value indicating whether the settings view should be presented.
     @State private var isShowingSettings = false
     
     var body: some View {
         MapView(map: map)
-            .errorAlert(presentingError: $error)
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
                     Button("Stretch Parameter Settings") {
@@ -38,32 +48,11 @@ struct ApplyRGBRendererView: View {
                     }
                     .popover(isPresented: $isShowingSettings) {
                         NavigationStack {
-                            SettingsView(rasterLayer: rasterLayer!)
+                            SettingsView(rasterLayer: rasterLayer, stretchType: $stretchType)
                         }
                         .presentationDetents([.fraction(0.5)])
                         .frame(idealWidth: 320, idealHeight: 360)
                     }
-                    .disabled(rasterLayer == nil)
-                }
-            }
-            .task {
-                do {
-                    let raster = Raster(
-                        fileURL: Bundle.main.url(
-                            forResource: "Shasta",
-                            withExtension: "tif",
-                            subdirectory: "raster-file/raster-file"
-                        )!
-                    )
-                    let rasterLayer = RasterLayer(raster: raster)
-                    self.rasterLayer = rasterLayer
-                    try await rasterLayer.load()
-                    map = Map(basemap: Basemap(baseLayer: rasterLayer))
-                    if let extent = rasterLayer.fullExtent {
-                        map.initialViewpoint = Viewpoint(boundingGeometry: extent)
-                    }
-                } catch {
-                    self.error = error
                 }
             }
     }

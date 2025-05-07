@@ -24,7 +24,7 @@ extension ApplyRGBRendererView {
         let rasterLayer: RasterLayer
         
         /// The stretch type to apply to the raster layer.
-        @State private var stretchType: StretchType = .histogramEqualization
+        @Binding var stretchType: StretchType
         /// The color to use for the minimum values in the min-max stretch.
         @State private var minColor: Color = .black
         /// The color to use for the maximum values in the min-max stretch.
@@ -85,16 +85,18 @@ extension ApplyRGBRendererView {
                                 setStretchParameters(PercentClipStretchParameters(min: minValue, max: maxValue))
                             }
                     case .standardDeviation:
-                        HStack {
+                        Text("Factor: \(standardDeviation, format: .number.precision(.fractionLength(2)))")
+                        Slider(value: $standardDeviation, in: 0.0...16.0, step: 0.01) {
                             Text("Factor")
-                            TextField("The standard deviation", value: $standardDeviation, format: .number, prompt: Text("Value"))
-                                .multilineTextAlignment(.trailing)
-                                .lineLimit(1)
-                                .onChange(of: standardDeviation, initial: true) {
-                                    // It applies a linear stretch between the
-                                    // values defined by the standard deviation.
-                                    setStretchParameters(StandardDeviationStretchParameters(factor: standardDeviation))
-                                }
+                        } minimumValueLabel: {
+                            Text("0")
+                        } maximumValueLabel: {
+                            Text("16")
+                        }
+                        .onChange(of: standardDeviation, initial: true) {
+                            // It applies a linear stretch between the
+                            // values defined by the standard deviation.
+                            setStretchParameters(StandardDeviationStretchParameters(factor: standardDeviation))
                         }
                     }
                 }
@@ -120,7 +122,7 @@ extension ApplyRGBRendererView {
         }
     }
     
-    private enum StretchType: CaseIterable {
+    enum StretchType: CaseIterable {
         case histogramEqualization, minMax, percentClip, standardDeviation
         
         /// The label for the stretch type.
