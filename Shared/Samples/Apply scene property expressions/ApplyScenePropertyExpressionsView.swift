@@ -16,9 +16,11 @@ import ArcGIS
 import SwiftUI
 
 struct ApplyScenePropertyExpressionsView: View {
+    /// The scene that displays in the scene view.
     @State private var scene: ArcGIS.Scene = {
         let scene = ArcGIS.Scene(basemapStyle: .arcGISImageryStandard)
         
+        // Give the scene an initial viewpoint.
         let point = Point(x: 83.9, y: 28.4, z: 1000, spatialReference: .wgs84)
         scene.initialViewpoint = Viewpoint(
             latitude: point.y,
@@ -30,6 +32,7 @@ struct ApplyScenePropertyExpressionsView: View {
         return scene
     }()
     
+    /// The graphics overlay that we will display a cone graphic in.
     @State private var graphicsOverlay = {
         let overlay = GraphicsOverlay()
         overlay.sceneProperties.surfacePlacement = .relative
@@ -48,8 +51,8 @@ struct ApplyScenePropertyExpressionsView: View {
         let graphic = Graphic(
             geometry: Point(x: 83.9, y: 28.42, z: 200, spatialReference: .wgs84),
             attributes: [
-                "HEADING": 0.0,
-                "PITCH": 0.0
+                "HEADING": 180.0,
+                "PITCH": 45.0
             ],
             symbol: symbol
         )
@@ -57,10 +60,16 @@ struct ApplyScenePropertyExpressionsView: View {
         return overlay
     }()
     
+    /// A boolean value indicating if the settings plane is displayed.
     @State private var isSettingsPresented = false
+    
+    /// The heading of the cone.
     @State private var heading = 0.0
+    
+    /// The pitch of the cone.
     @State private var pitch = 0.0
     
+    /// The cone graphic.
     private var coneGraphic: Graphic {
         graphicsOverlay.graphics[0]
     }
@@ -87,7 +96,7 @@ struct ApplyScenePropertyExpressionsView: View {
                 }
                 Section {
                     LabeledContent("Pitch", value: pitch, format: .number)
-                    Slider(value: $pitch, in: -180...180, step: 1)
+                    Slider(value: $pitch, in: 0...180, step: 1)
                 }
             }
             .presentationDetents([.medium])
