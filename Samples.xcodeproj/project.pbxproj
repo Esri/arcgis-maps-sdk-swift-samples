@@ -625,7 +625,6 @@
 			dstSubfolderSpec = 7;
 			files = (
 				0072C7F52DBAB714001502CA /* AddFeatureCollectionLayerFromTableView.swift in Copy Source Code Files */,
-				00FA4E592DBC1786008A34CF /* AddRasterFromGeopackageView.swift in Copy Source Code Files */,
 				1C293D012DCA7C99000B0822 /* ApplyBlendRendererToHillshadeView.swift in Copy Source Code Files */,
 				1C293D032DCA7C99000B0822 /* ApplyBlendRendererToHillshadeView.SettingsView.swift in Copy Source Code Files */,
 				88E52E6C2DC960EA00F48409 /* ApplyFunctionToRasterFromServiceView.swift in Copy Source Code Files */,
