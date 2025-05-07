@@ -20,14 +20,14 @@ struct ApplyBlendRendererToHillshadeView: View {
     @State private var map = Map()
     
     /// The imagery basemap.
-    private var imageryBasemap: Basemap = {
+    private let imageryBasemap: Basemap = {
         let raster = Raster(fileURL: .shasta)
         let rasterLayer = RasterLayer(raster: raster)
         return Basemap(baseLayer: rasterLayer)
     }()
     
     /// The elevation basemap.
-    private var elevationBasemap: Basemap = {
+    private let elevationBasemap: Basemap = {
         let raster = Raster(fileURL: .shastaElevation)
         let rasterLayer = RasterLayer(raster: raster)
         return Basemap(baseLayer: rasterLayer)
