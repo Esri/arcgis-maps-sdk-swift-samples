@@ -16,16 +16,31 @@ import ArcGIS
 import SwiftUI
 
 struct ApplyBlendRendererToHillshadeView: View {
-    /// A map with a Shasta raster layer.
-    @State private var map: Map = {
+    /// A map with no specified style.
+    @State private var map = Map()
+    
+    /// The imagery basemap.
+    private var imageryBasemap: Basemap = {
         let raster = Raster(fileURL: .shasta)
         let rasterLayer = RasterLayer(raster: raster)
-        return Map(basemap: Basemap(baseLayer: rasterLayer))
+        return Basemap(baseLayer: rasterLayer)
     }()
     
-    /// The raster layer.
-    private var rasterLayer: RasterLayer {
-        map.basemap?.baseLayers[0] as! RasterLayer
+    /// The elevation basemap.
+    private var elevationBasemap: Basemap = {
+        let raster = Raster(fileURL: .shastaElevation)
+        let rasterLayer = RasterLayer(raster: raster)
+        return Basemap(baseLayer: rasterLayer)
+    }()
+    
+    /// The imagery basemap raster layer.
+    private var imageryBasemapLayer: RasterLayer {
+        imageryBasemap.baseLayers[0] as! RasterLayer
+    }
+    
+    /// The elevation basemap raster layer.
+    private var elevationBasemapLayer: RasterLayer {
+        elevationBasemap.baseLayers[0] as! RasterLayer
     }
     
     /// The elevation raster.
@@ -49,6 +64,10 @@ struct ApplyBlendRendererToHillshadeView: View {
         var colorRamp: ColorRamp? {
             colorRampPreset.map { ColorRamp(preset: $0, size: 800) }
         }
+        ///  A Boolean value indicating whether the renderer has a color ramp.
+        var hasColorRamp: Bool {
+            colorRamp != nil
+        }
     }
     
     /// The renderer settings.
@@ -57,10 +76,11 @@ struct ApplyBlendRendererToHillshadeView: View {
     var body: some View {
         MapView(map: map)
             .onChange(of: rendererSettings, initial: true) {
+                let rasterLayer = rendererSettings.hasColorRamp ? elevationBasemapLayer : imageryBasemapLayer
                 rasterLayer.renderer = BlendRenderer(
                     elevationRaster: elevationRaster,
-                    outputMinValues: [],
-                    outputMaxValues: [],
+                    outputMinValues: [9],
+                    outputMaxValues: [255],
                     sourceMinValues: [],
                     sourceMaxValues: [],
                     noDataValues: [],
@@ -70,6 +90,7 @@ struct ApplyBlendRendererToHillshadeView: View {
                     azimuth: rendererSettings.azimuth,
                     slopeType: rendererSettings.slopeType
                 )
+                map.basemap = rendererSettings.hasColorRamp ? elevationBasemap : imageryBasemap
             }
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
