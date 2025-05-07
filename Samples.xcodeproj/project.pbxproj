@@ -169,6 +169,9 @@
 		4C8126E22DBFD9EF006EF7D2 /* ApplyStyleToWMSLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4C8126DC2DBBCEFE006EF7D2 /* ApplyStyleToWMSLayerView.swift */; };
 		4C8126E72DC02525006EF7D2 /* AnalyzeHotspotsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8126E62DC02525006EF7D2 /* AnalyzeHotspotsView.swift */; };
 		4C8127302DC58E53006EF7D2 /* AnalyzeHotspotsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4C8126E62DC02525006EF7D2 /* AnalyzeHotspotsView.swift */; };
+		4C81273E2DCA9E31006EF7D2 /* ApplyColormapRendererToRasterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C81273D2DCA9E31006EF7D2 /* ApplyColormapRendererToRasterView.swift */; };
+		4C81275D2DCBB745006EF7D2 /* ShastaBW in Resources */ = {isa = PBXBuildFile; fileRef = 4C81275C2DCBB72C006EF7D2 /* ShastaBW */; settings = {ASSET_TAGS = (ApplyColormapRendererToRaster, ); }; };
+		4C81275E2DCBDD5A006EF7D2 /* ApplyColormapRendererToRasterView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4C81273D2DCA9E31006EF7D2 /* ApplyColormapRendererToRasterView.swift */; };
 		4D126D6D29CA1B6000CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D126D6929CA1B6000CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift */; };
 		4D126D7229CA1E1800CFB7A7 /* FileNMEASentenceReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D126D7129CA1E1800CFB7A7 /* FileNMEASentenceReader.swift */; };
 		4D126D7329CA1EFD00CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4D126D6929CA1B6000CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift */; };
@@ -633,6 +636,7 @@
 				10CFF5082DC1A3850027F144 /* AddFeatureLayerWithTimeOffsetView.swift in Copy Source Code Files */,
 				0044218B2DB9575600249FEE /* AddFeatureCollectionLayerFromPortalItemView.swift in Copy Source Code Files */,
 				4C8127302DC58E53006EF7D2 /* AnalyzeHotspotsView.swift in Copy Source Code Files */,
+				4C81275E2DCBDD5A006EF7D2 /* ApplyColormapRendererToRasterView.swift in Copy Source Code Files */,
 				4C8126E22DBFD9EF006EF7D2 /* ApplyStyleToWMSLayerView.swift in Copy Source Code Files */,
 				D703F04E2D9334BD0077E3A8 /* SnapGeometryEditsWithUtilityNetworkRulesView.Model.swift in Copy Source Code Files */,
 				D71A9DE52D8CC8B500CA03CB /* SnapGeometryEditsWithUtilityNetworkRulesView.swift in Copy Source Code Files */,
@@ -961,6 +965,8 @@
 		3EEDE7CD2C5D73F700510104 /* SetSpatialReferenceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetSpatialReferenceView.swift; sourceTree = "<group>"; };
 		4C8126DC2DBBCEFE006EF7D2 /* ApplyStyleToWMSLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyStyleToWMSLayerView.swift; sourceTree = "<group>"; };
 		4C8126E62DC02525006EF7D2 /* AnalyzeHotspotsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyzeHotspotsView.swift; sourceTree = "<group>"; };
+		4C81273D2DCA9E31006EF7D2 /* ApplyColormapRendererToRasterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyColormapRendererToRasterView.swift; sourceTree = "<group>"; };
+		4C81275C2DCBB72C006EF7D2 /* ShastaBW */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ShastaBW; sourceTree = "<group>"; };
 		4D126D6929CA1B6000CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowDeviceLocationWithNMEADataSourcesView.swift; sourceTree = "<group>"; };
 		4D126D7129CA1E1800CFB7A7 /* FileNMEASentenceReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileNMEASentenceReader.swift; sourceTree = "<group>"; };
 		4D126D7B29CA3E6000CFB7A7 /* Redlands.nmea */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Redlands.nmea; sourceTree = "<group>"; };
@@ -1373,6 +1379,7 @@
 				D7C16D172AC5F6C100689E89 /* Animate 3D graphic */,
 				D77570BC2A29427200F490CD /* Animate images with image overlay */,
 				1C38915F2DC02F0800ADFDDC /* Apply blend renderer to hillshade */,
+				4C81273A2DCA9E03006EF7D2 /* Apply colormap renderer to raster */,
 				D7F2A02C2CD00F1C0008D981 /* Apply dictionary renderer to feature layer */,
 				D70789912CD160FD000DF215 /* Apply dictionary renderer to graphics overlay */,
 				8810FB572DC94A5600874936 /* Apply function to raster from service */,
@@ -1644,6 +1651,7 @@
 				D7F8C03F2B605E720072BFA7 /* b5106355f1634b8996e634c04b6a930a */,
 				D70539042CD0122D00F63F4A /* c78b149a1d52414682c86a5feeb13d30 */,
 				00D4EF8128638BF100B9CC30 /* cb1b20748a9f4d128dad8a87244e3e37 */,
+				4C81274E2DCADC82006EF7D2 /* cc68728b5904403ba637e1f1cd2995ae */,
 				4D126D7629CA3B3F00CFB7A7 /* d5bad9f4fee9483791e405880fb466da */,
 				D77572AC2A295DC100F490CD /* d1453556d91e46dea191c20c398b82cd */,
 				D75E5EEB2CC0466900252595 /* da301cb122874d5497f8a8f6c81eb36e */,
@@ -1993,6 +2001,22 @@
 				4C8126E62DC02525006EF7D2 /* AnalyzeHotspotsView.swift */,
 			);
 			path = "Analyze hotspots";
+			sourceTree = "<group>";
+		};
+		4C81273A2DCA9E03006EF7D2 /* Apply colormap renderer to raster */ = {
+			isa = PBXGroup;
+			children = (
+				4C81273D2DCA9E31006EF7D2 /* ApplyColormapRendererToRasterView.swift */,
+			);
+			path = "Apply colormap renderer to raster";
+			sourceTree = "<group>";
+		};
+		4C81274E2DCADC82006EF7D2 /* cc68728b5904403ba637e1f1cd2995ae */ = {
+			isa = PBXGroup;
+			children = (
+				4C81275C2DCBB72C006EF7D2 /* ShastaBW */,
+			);
+			path = cc68728b5904403ba637e1f1cd2995ae;
 			sourceTree = "<group>";
 		};
 		4D126D6829CA1B6000CFB7A7 /* Show device location with NMEA data sources */ = {
@@ -3469,6 +3493,7 @@
 					Animate3DGraphic,
 					AnimateImagesWithImageOverlay,
 					ApplyBlendRendererToHillshade,
+					ApplyColormapRendererToRaster,
 					ApplyDictionaryRendererToFeatureLayer,
 					ApplyDictionaryRendererToGraphicsOverlay,
 					ApplyScheduledUpdatesToPreplannedMapArea,
@@ -3574,6 +3599,7 @@
 				798C2DA72AFC505600EE7E97 /* PrivacyInfo.xcprivacy in Resources */,
 				D7E7D09A2AEB3C47003AAD02 /* san_diego_offline_routing in Resources */,
 				F111CCC4288B641900205358 /* Yellowstone.mmpk in Resources */,
+				4C81275D2DCBB745006EF7D2 /* ShastaBW in Resources */,
 				D705390A2CD0122D00F63F4A /* mil2525d.stylx in Resources */,
 				D77572AE2A295DDE00F490CD /* PacificSouthWest2 in Resources */,
 				D75E5EEC2CC0466900252595 /* esri_test_data.kmz in Resources */,
@@ -3786,6 +3812,7 @@
 				D7848ED82CBD85A300F6F546 /* AddPointSceneLayerView.swift in Sources */,
 				0074ABCD2817BCC30037244A /* SamplesApp+Samples.swift.tache in Sources */,
 				D79EE76E2A4CEA5D005A52AE /* SetUpLocationDrivenGeotriggersView.Model.swift in Sources */,
+				4C81273E2DCA9E31006EF7D2 /* ApplyColormapRendererToRasterView.swift in Sources */,
 				10CFF4CA2DBAAFAC0027F144 /* AddFeatureLayerWithTimeOffsetView.swift in Sources */,
 				D74F03F02B609A7D00E83688 /* AddFeaturesWithContingentValuesView.Model.swift in Sources */,
 				E004A6F3284E4FEB002A1FE6 /* ShowResultOfSpatialOperationsView.swift in Sources */,
