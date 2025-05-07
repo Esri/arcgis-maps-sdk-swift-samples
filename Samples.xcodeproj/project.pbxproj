@@ -95,6 +95,8 @@
 		00F279D72AF4364700CECAF8 /* AddDynamicEntityLayerView.VehicleCallout.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 00F279D52AF418DC00CECAF8 /* AddDynamicEntityLayerView.VehicleCallout.swift */; };
 		00FA4E572DBC139C008A34CF /* AddRastersAndFeatureTablesFromGeopackageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FA4E562DBC139B008A34CF /* AddRastersAndFeatureTablesFromGeopackageView.swift */; };
 		00FA4E5F2DC568DF008A34CF /* AddRastersAndFeatureTablesFromGeopackageView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 00FA4E562DBC139B008A34CF /* AddRastersAndFeatureTablesFromGeopackageView.swift */; };
+		00FA4E722DCBD7A9008A34CF /* ApplySimpleRendererToFeatureLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FA4E712DCBD7A6008A34CF /* ApplySimpleRendererToFeatureLayerView.swift */; };
+		00FA4E732DCBDA58008A34CF /* ApplySimpleRendererToFeatureLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 00FA4E712DCBD7A6008A34CF /* ApplySimpleRendererToFeatureLayerView.swift */; };
 		102B6A372BFD5B55009F763C /* IdentifyFeaturesInWMSLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 102B6A362BFD5B55009F763C /* IdentifyFeaturesInWMSLayerView.swift */; };
 		104F55C72BF3E30A00204D04 /* GenerateOfflineMapWithCustomParametersView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 10B782042BE55D7E007EAE6C /* GenerateOfflineMapWithCustomParametersView.swift */; };
 		104F55C82BF3E30A00204D04 /* GenerateOfflineMapWithCustomParametersView.CustomParameters.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 10B782072BE5A058007EAE6C /* GenerateOfflineMapWithCustomParametersView.CustomParameters.swift */; };
@@ -633,6 +635,7 @@
 			dstSubfolderSpec = 7;
 			files = (
 				0072C7F52DBAB714001502CA /* AddFeatureCollectionLayerFromTableView.swift in Copy Source Code Files */,
+				00FA4E732DCBDA58008A34CF /* ApplySimpleRendererToFeatureLayerView.swift in Copy Source Code Files */,
 				88C5E0ED2DCBC4170091D271 /* ApplyHillshadeRendererToRasterView.SettingsView.swift in Copy Source Code Files */,
 				88E52E702DC970A800F48409 /* ApplyHillshadeRendererToRasterView.swift in Copy Source Code Files */,
 				1C293D012DCA7C99000B0822 /* ApplyBlendRendererToHillshadeView.swift in Copy Source Code Files */,
@@ -937,6 +940,7 @@
 		00E7C1592BBE1BF000B85D69 /* SnapGeometryEditsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapGeometryEditsView.swift; sourceTree = "<group>"; };
 		00F279D52AF418DC00CECAF8 /* AddDynamicEntityLayerView.VehicleCallout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDynamicEntityLayerView.VehicleCallout.swift; sourceTree = "<group>"; };
 		00FA4E562DBC139B008A34CF /* AddRastersAndFeatureTablesFromGeopackageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRastersAndFeatureTablesFromGeopackageView.swift; sourceTree = "<group>"; };
+		00FA4E712DCBD7A6008A34CF /* ApplySimpleRendererToFeatureLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplySimpleRendererToFeatureLayerView.swift; sourceTree = "<group>"; };
 		102B6A362BFD5B55009F763C /* IdentifyFeaturesInWMSLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentifyFeaturesInWMSLayerView.swift; sourceTree = "<group>"; };
 		108EC04029D25B2C000F35D0 /* QueryFeatureTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueryFeatureTableView.swift; sourceTree = "<group>"; };
 		10B782042BE55D7E007EAE6C /* GenerateOfflineMapWithCustomParametersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateOfflineMapWithCustomParametersView.swift; sourceTree = "<group>"; };
@@ -1410,6 +1414,7 @@
 				955AFAC52C10FD74009C8FE5 /* Apply mosaic rule to rasters */,
 				D771D0C52CD55211004C13CB /* Apply raster rendering rule */,
 				004A2BA12BED456500C297CE /* Apply scheduled updates to preplanned map area */,
+				00FA4E6F2DCBD795008A34CF /* Apply simple renderer to feature layer */,
 				4C8126DB2DBBCED7006EF7D2 /* Apply style to WMS layer */,
 				D75362CC2A1E862B00D83028 /* Apply unique value renderer */,
 				1C8EC7422BAE2891001A6929 /* Augment reality to collect data */,
@@ -1776,6 +1781,14 @@
 				00FA4E562DBC139B008A34CF /* AddRastersAndFeatureTablesFromGeopackageView.swift */,
 			);
 			path = "Add rasters and feature tables from geopackage";
+			sourceTree = "<group>";
+		};
+		00FA4E6F2DCBD795008A34CF /* Apply simple renderer to feature layer */ = {
+			isa = PBXGroup;
+			children = (
+				00FA4E712DCBD7A6008A34CF /* ApplySimpleRendererToFeatureLayerView.swift */,
+			);
+			path = "Apply simple renderer to feature layer";
 			sourceTree = "<group>";
 		};
 		102B6A352BFD5AD1009F763C /* Identify features in WMS layer */ = {
@@ -3884,6 +3897,7 @@
 				004421902DB9620200249FEE /* AddFeatureCollectionLayerFromQueryView.swift in Sources */,
 				D7ECF5982AB8BE63003FB2BE /* RenderMultilayerSymbolsView.swift in Sources */,
 				D769C2122A29019B00030F61 /* SetUpLocationDrivenGeotriggersView.swift in Sources */,
+				00FA4E722DCBD7A9008A34CF /* ApplySimpleRendererToFeatureLayerView.swift in Sources */,
 				79302F852A1ED4E30002336A /* CreateAndSaveKMLView.Model.swift in Sources */,
 				D7C3AB4A2B683291008909B9 /* SetFeatureRequestModeView.swift in Sources */,
 				95D2EE0F2C334D1600683D53 /* ShowServiceAreaView.swift in Sources */,
