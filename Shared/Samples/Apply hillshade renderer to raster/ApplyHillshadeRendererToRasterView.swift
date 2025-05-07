@@ -75,7 +75,7 @@ struct ApplyHillshadeRendererToRasterView: View {
                         isSettingsPanelPresented = true
                     }
                     .popover(isPresented: $isSettingsPanelPresented) {
-                        SettingsView(renderer: .renderer)
+                        SettingsView(renderer: $model.renderer)
                             .presentationDetents([.medium])
                             .frame(idealWidth: 320, idealHeight: 380)
                     }
