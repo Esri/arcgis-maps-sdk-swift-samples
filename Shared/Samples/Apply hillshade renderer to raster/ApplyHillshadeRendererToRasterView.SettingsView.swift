@@ -25,6 +25,8 @@ extension ApplyHillshadeRendererToRasterView {
         @State private var azimuth: Double = 0
         /// The slope type of the renderer.
         @State private var slopeType: HillshadeRenderer.SlopeType?
+        /// The action to dismiss the view.
+        @Environment(\.dismiss) private var dismiss
         
         var body: some View {
             NavigationStack {
@@ -48,6 +50,11 @@ extension ApplyHillshadeRendererToRasterView {
                             Text("Scaled")
                                 .tag(Optional(HillshadeRenderer.SlopeType.scaled))
                         }
+                    }
+                }
+                .toolbar {
+                    ToolbarItem(placement: .confirmationAction) {
+                        Button("Done") { dismiss() }
                     }
                 }
                 .onAppear {
