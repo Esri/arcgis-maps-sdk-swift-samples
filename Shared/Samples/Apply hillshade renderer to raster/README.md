@@ -2,7 +2,7 @@
 
 Apply a hillshade renderer to a raster.
 
-![Image of Apply hillshade renderer to raster sample](ApplyHillshadeRendererToRaster.png)
+![Image of Apply hillshade renderer to raster sample](apply-hillshade-renderer-to-raster.png)
 
 ## Use case
 
