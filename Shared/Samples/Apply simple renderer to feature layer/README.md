@@ -10,7 +10,7 @@ A feature layer hosted on ArcGIS Online has a preset renderer and will display i
 
 ## How to use the sample
 
-Use the button in the control panel to change the renderer on the feature layer. The original renderer displays orange circles, the diameters of which are proportional to carbon storage of each tree. When the simple renderer is applied, it displays the location of the trees simply as points of various colors.
+Use the button in the control panel to change the renderer on the feature layer. The original renderer displays orange circles, the diameters of which are proportional to carbon storage of each tree. When the simple renderer is applied, it displays the location of the trees simply as points with random color.
 
 ## How it works
 
