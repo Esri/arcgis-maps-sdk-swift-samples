@@ -18,7 +18,7 @@ When launched, this sample displays a `FeatureCollectionLayer` with a `Point`, `
     1. Create the schema for each feature collection table by creating an array of `Field`s.
     2. Create a `FeatureCollectionTable` with the fields created.
     3. Create a `SimpleRenderer` from various symbols.
-    4. Create a new point feature using `makeFeature(attributes:geometry:)`.
+    4. Create a new feature using `makeFeature(attributes:geometry:)`.
     5. Add the feature to the `FeatureCollectionTable`.
 2. Create a `FeatureCollection` from the `FeatureCollectionTable`s.
 3. Create a `FeatureCollectionLayer` using the tables.
