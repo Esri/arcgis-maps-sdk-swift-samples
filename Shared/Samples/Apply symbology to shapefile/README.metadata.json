@@ -1,0 +1,35 @@
+{
+    "category": "Visualization",
+    "description": "Display a shapefile with custom symbology.",
+    "ignore": false,
+    "images": [
+        "apply-symbology-to-shapefile.png"
+    ],
+    "keywords": [
+        "package",
+        "shape file",
+        "shapefile",
+        "symbology",
+        "visualization",
+        "FeatureLayer",
+        "ShapefileFeatureTable",
+        "SimpleFillSymbol",
+        "SimpleLineSymbol",
+        "SimpleRenderer"
+    ],
+    "offline_data": [
+        "d98b3e5293834c5f852f13c569930caa"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "FeatureLayer",
+        "ShapefileFeatureTable",
+        "SimpleFillSymbol",
+        "SimpleLineSymbol",
+        "SimpleRenderer"
+    ],
+    "snippets": [
+        "ApplySymbologyToShapefileView.swift"
+    ],
+    "title": "Apply symbology to shapefile"
+}
