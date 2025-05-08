@@ -20,7 +20,7 @@ The sample loads with a predefined simple renderer, which displays a red cross s
 4. Create a `SimpleRenderer`.
 5. Set the simple renderer to the graphics overlay.
 6. Create a number of `Graphic` objects with the points from step 2.
-7.  Add the graphics to the graphics overlay.
+7. Add the graphics to the graphics overlay.
 
 ## Relevant API
 
