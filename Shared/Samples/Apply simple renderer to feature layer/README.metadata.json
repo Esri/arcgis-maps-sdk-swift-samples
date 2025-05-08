@@ -1,0 +1,24 @@
+{
+    "category": "Visualization",
+    "description": "Change the appearance of a feature layer with a renderer.",
+    "ignore": false,
+    "images": [
+        "apply-simple-renderer-to-feature-layer.png"
+    ],
+    "keywords": [
+        "feature layer",
+        "renderer",
+        "visualization",
+        "FeatureLayer",
+        "SimpleRenderer"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "FeatureLayer",
+        "SimpleRenderer"
+    ],
+    "snippets": [
+        "ApplySimpleRendererToFeatureLayerView.swift"
+    ],
+    "title": "Apply simple renderer to feature layer"
+}
