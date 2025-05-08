@@ -35,7 +35,7 @@ struct ApplyHillshadeRendererToRasterView: View {
         
         init() {
             // Gets the raster file URL.
-            let rasterFileURL = Bundle.main.url(forResource: "srtm", withExtension: "tiff")!
+            let rasterFileURL = Bundle.main.url(forResource: "srtm", withExtension: "tiff", subdirectory: "srtm/srtm hillshade raster")!
             
             // Creates a raster with the file URL.
             let raster = Raster(fileURL: rasterFileURL)
