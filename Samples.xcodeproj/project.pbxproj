@@ -306,6 +306,8 @@
 		D71C90A52C6C252F0018C63E /* StyleGeometryTypesWithSymbolsView.Views.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D71C909D2C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.Views.swift */; };
 		D71D516E2B51D7B600B2A2BE /* SearchForWebMapView.Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71D516D2B51D7B600B2A2BE /* SearchForWebMapView.Views.swift */; };
 		D71D516F2B51D87700B2A2BE /* SearchForWebMapView.Views.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D71D516D2B51D7B600B2A2BE /* SearchForWebMapView.Views.swift */; };
+		D71D9B152DC430F800FF2D5A /* ApplyTerrainExaggerationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71D9B0F2DC430F800FF2D5A /* ApplyTerrainExaggerationView.swift */; };
+		D71D9B162DC4311A00FF2D5A /* ApplyTerrainExaggerationView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D71D9B0F2DC430F800FF2D5A /* ApplyTerrainExaggerationView.swift */; };
 		D71FCB8A2AD6277F000E517C /* CreateMobileGeodatabaseView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71FCB892AD6277E000E517C /* CreateMobileGeodatabaseView.Model.swift */; };
 		D71FCB8B2AD628B9000E517C /* CreateMobileGeodatabaseView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D71FCB892AD6277E000E517C /* CreateMobileGeodatabaseView.Model.swift */; };
 		D7201CDA2CC6B710004BDB7D /* AddTiledLayerAsBasemapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7201CD42CC6B710004BDB7D /* AddTiledLayerAsBasemapView.swift */; };
@@ -634,6 +636,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				D71D9B162DC4311A00FF2D5A /* ApplyTerrainExaggerationView.swift in Copy Source Code Files */,
 				0072C7F52DBAB714001502CA /* AddFeatureCollectionLayerFromTableView.swift in Copy Source Code Files */,
 				00FA4E732DCBDA58008A34CF /* ApplySimpleRendererToFeatureLayerView.swift in Copy Source Code Files */,
 				88C5E0ED2DCBC4170091D271 /* ApplyHillshadeRendererToRasterView.SettingsView.swift in Copy Source Code Files */,
@@ -1053,6 +1056,7 @@
 		D71C909C2C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleGeometryTypesWithSymbolsView.swift; sourceTree = "<group>"; };
 		D71C909D2C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleGeometryTypesWithSymbolsView.Views.swift; sourceTree = "<group>"; };
 		D71D516D2B51D7B600B2A2BE /* SearchForWebMapView.Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchForWebMapView.Views.swift; sourceTree = "<group>"; };
+		D71D9B0F2DC430F800FF2D5A /* ApplyTerrainExaggerationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyTerrainExaggerationView.swift; sourceTree = "<group>"; };
 		D71FCB892AD6277E000E517C /* CreateMobileGeodatabaseView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateMobileGeodatabaseView.Model.swift; sourceTree = "<group>"; };
 		D7201CD42CC6B710004BDB7D /* AddTiledLayerAsBasemapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTiledLayerAsBasemapView.swift; sourceTree = "<group>"; };
 		D7201D002CC6D3B5004BDB7D /* AddVectorTiledLayerFromCustomStyleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddVectorTiledLayerFromCustomStyleView.swift; sourceTree = "<group>"; };
@@ -1416,6 +1420,7 @@
 				004A2BA12BED456500C297CE /* Apply scheduled updates to preplanned map area */,
 				00FA4E6F2DCBD795008A34CF /* Apply simple renderer to feature layer */,
 				4C8126DB2DBBCED7006EF7D2 /* Apply style to WMS layer */,
+				D71D9B122DC430F800FF2D5A /* Apply terrain exaggeration */,
 				D75362CC2A1E862B00D83028 /* Apply unique value renderer */,
 				1C8EC7422BAE2891001A6929 /* Augment reality to collect data */,
 				D7084FA42AD771AA00EC7F4F /* Augment reality to fly over scene */,
@@ -2420,6 +2425,14 @@
 				D71C909D2C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.Views.swift */,
 			);
 			path = "Style geometry types with symbols";
+			sourceTree = "<group>";
+		};
+		D71D9B122DC430F800FF2D5A /* Apply terrain exaggeration */ = {
+			isa = PBXGroup;
+			children = (
+				D71D9B0F2DC430F800FF2D5A /* ApplyTerrainExaggerationView.swift */,
+			);
+			path = "Apply terrain exaggeration";
 			sourceTree = "<group>";
 		};
 		D7201CD72CC6B710004BDB7D /* Add tiled layer as basemap */ = {
@@ -3802,6 +3815,7 @@
 				D7705D582AFC244E00CC0335 /* FindClosestFacilityToMultiplePointsView.swift in Sources */,
 				D73FCFFF2B02C7630006360D /* FindRouteAroundBarriersView.Views.swift in Sources */,
 				1C29C9592DBAE50D0074028F /* AddWMTSLayerView.swift in Sources */,
+				D71D9B152DC430F800FF2D5A /* ApplyTerrainExaggerationView.swift in Sources */,
 				3EEDE7CE2C5D73F700510104 /* SetSpatialReferenceView.swift in Sources */,
 				4D126D7229CA1E1800CFB7A7 /* FileNMEASentenceReader.swift in Sources */,
 				001C6DE127FE8A9400D472C2 /* AppSecrets.swift.masque in Sources */,
