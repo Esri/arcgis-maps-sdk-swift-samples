@@ -20,9 +20,27 @@ struct AuthenticateWithIntegratedWindowsAuthenticationView: View {
     /// The authenticator to handle authentication challenges.
     @StateObject private var authenticator = Authenticator()
     
+    @State private var map: Map?
+    
+    @State private var isPortalContentPresented = false
     
     var body: some View {
         VStack {
+            if let map {
+                MapView(map: map)
+            }
+        }
+        .toolbar {
+            ToolbarItem(placement: .bottomBar) {
+                Button("Portal Content") {
+                    isPortalContentPresented = true
+                }
+                .popover(isPresented: $isPortalContentPresented) {
+                    PortalContentView(selection: $map)
+                        .presentationDetents([.medium])
+                        .frame(idealWidth: 320, idealHeight: 380)
+                }
+            }
         }
         .authenticator(authenticator)
         .onAppear {
@@ -71,4 +89,18 @@ struct AuthenticateWithIntegratedWindowsAuthenticationView: View {
 
 #Preview {
     AuthenticateWithIntegratedWindowsAuthenticationView()
+}
+
+extension AuthenticateWithIntegratedWindowsAuthenticationView {
+    struct PortalContentView: View {
+        @State private var portalURLString = ""
+        
+        @Binding var selection: Map?
+        
+        var body: some View {
+            List {
+                TextField("Portal", text: $portalURLString)
+            }
+        }
+    }
 }
