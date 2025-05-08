@@ -10,7 +10,7 @@ Feature layers created from shapefiles do not possess any rendering information,
 
 ## How to use the sample
 
-Click the button to apply a new symbology renderer to the feature layer created from the shapefile.
+Pan and zoom the map to view the custom renderer applied to the feature layer created from the shapefile.
 
 ## How it works
 
