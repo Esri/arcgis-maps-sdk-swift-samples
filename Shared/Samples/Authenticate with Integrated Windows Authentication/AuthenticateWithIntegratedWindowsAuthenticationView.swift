@@ -13,11 +13,59 @@
 // limitations under the License.
 
 import ArcGIS
+import ArcGISToolkit
 import SwiftUI
 
 struct AuthenticateWithIntegratedWindowsAuthenticationView: View {
+    /// The authenticator to handle authentication challenges.
+    @StateObject private var authenticator = Authenticator()
+    
+    
     var body: some View {
-        Text("Hello, World!")
+        VStack {
+        }
+        .authenticator(authenticator)
+        .onAppear {
+            // Setting the challenge handlers here in `onAppear` so user is prompted to enter
+            // credentials every time trying the sample. In real world applications, set challenge
+            // handlers at the start of the application.
+            
+            // Sets authenticator as ArcGIS and Network challenge handlers to handle authentication
+            // challenges.
+            ArcGISEnvironment.authenticationManager.handleChallenges(using: authenticator)
+            
+            // In real world applications, uncomment this code to persist credentials in the
+            // keychain and remove `signOut()` from `onDisappear`.
+            // setupPersistentCredentialStorage()
+        }
+        .onDisappear {
+            // Resetting the challenge handlers and clearing credentials here in `onDisappear`
+            // so user is prompted to enter credentials every time trying the sample. In real
+            // world applications, do these from sign out functionality of the application.
+            
+            // Resets challenge handlers.
+            ArcGISEnvironment.authenticationManager.handleChallenges(using: nil)
+            
+            signOut()
+        }
+    }
+    
+    /// Signs out from the portal by revoking OAuth tokens and clearing credential stores.
+    private func signOut() {
+        Task {
+            await ArcGISEnvironment.authenticationManager.revokeOAuthTokens()
+            await ArcGISEnvironment.authenticationManager.clearCredentialStores()
+        }
+    }
+    
+    /// Sets up new ArcGIS and Network credential stores that will be persisted in the keychain.
+    private func setupPersistentCredentialStorage() {
+        Task {
+            try await ArcGISEnvironment.authenticationManager.setupPersistentCredentialStorage(
+                access: .whenUnlockedThisDeviceOnly,
+                synchronizesWithiCloud: false
+            )
+        }
     }
 }
 
