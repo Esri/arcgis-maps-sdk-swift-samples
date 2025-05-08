@@ -152,7 +152,7 @@ struct AddItemsToPortalView: View {
         )
         imageItem.title = "Blue Marker"
         let imageData = UIImage.blueMarker.pngData()!
-        let parameters = PortalItemContentParameters.data(imageData, filename: "BlueMarker")
+        let parameters = PortalItemContentParameters.data(imageData, filename: "BlueMarker.png")
         try await portalUser!.add(imageItem, with: parameters)
         
         // Refreshes the portal items list after adding the item.
@@ -198,7 +198,7 @@ struct PortalItemView: View {
     let item: PortalItem
     
     /// The size of the thumbnail.
-    private let thumbnailSize = CGFloat(64)
+    private let thumbnailSize: CGFloat = 64
     
     /// The thumbnail image of the map area.
     @State private var thumbnail: UIImage?
