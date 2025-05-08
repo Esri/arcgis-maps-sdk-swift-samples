@@ -18,7 +18,7 @@ import SwiftUI
 struct ApplySymbologyToShapefileView: View {
     /// The map that will contain our shapefile.
     @State private var map = {
-        // Create a map with a topo basemap.
+        // Create a map with a topographic basemap.
         let map = Map(basemapStyle: .arcGISTopographic)
         
         // Set an initial viewpoint.

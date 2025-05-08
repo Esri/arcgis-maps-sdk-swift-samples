@@ -29,9 +29,7 @@ Pan and zoom the map to view the custom renderer applied to the feature layer cr
 
 ## Offline data
 
-Link | Local Location
----------|-------|
-|[Aurora Subdivisions Shapefile](https://www.arcgis.com/home/item.html?id=d98b3e5293834c5f852f13c569930caa)| `<sdcard>`/ArcGIS/Samples/Shapefile/Aurora_CO_shp/Subdivisions.shp |
+This sample uses the [Aurora Subdivisions Shapefile](https://www.arcgis.com/home/item.html?id=d98b3e5293834c5f852f13c569930caa). It is downloaded from ArcGIS Online automatically.
 
 ## About the data
 
