@@ -26,24 +26,24 @@ struct ApplyFunctionToRasterFromFileView: View {
                 spatialReference: SpatialReference(wkid: .init(102100)!)
             )
         )
-        // Create a raster with the file URL.
+        // Creates a raster with the file URL.
         let elevationRaster = Raster(fileURL: .shastaElevation)
         
-        // Create a raster layer from the elevation raster.
+        // Creates a raster layer from the elevation raster.
         let rasterLayer = RasterLayer(raster: elevationRaster)
         rasterLayer.opacity = 0.5
         
-        // Create a raster function.
+        // Creates a raster function.
         let rasterFunction = RasterFunction(fileURL: .colorRasterFunction)
         
-        // Set the number of rasters required which is 2 in this case.
+        // Sets the number of rasters required which is 2 in this case.
         rasterFunction.arguments?.setRaster(elevationRaster, forArgumentNamed: "raster")
         rasterFunction.arguments?.setRaster(elevationRaster, forArgumentNamed: "raster")
         
-        // Create a raster from the raster function.
+        // Creates a raster from the raster function.
         let colorRaster = Raster(rasterFunction: rasterFunction)
         
-        // Create a raster layer from the raster.
+        // Creates a raster layer from the raster.
         let colorRasterLayer = RasterLayer(raster: colorRaster)
         colorRasterLayer.opacity = 0.5
         
