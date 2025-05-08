@@ -227,6 +227,7 @@
 		88FB70392DCC207B00EB76E3 /* ApplySymbologyToShapefileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88FB70382DCC207B00EB76E3 /* ApplySymbologyToShapefileView.swift */; };
 		88FB703C2DCC22E900EB76E3 /* ApplySymbologyToShapefileView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 88FB70382DCC207B00EB76E3 /* ApplySymbologyToShapefileView.swift */; };
 		88FB70D12DCC248400EB76E3 /* Aurora_CO_shp in Resources */ = {isa = PBXBuildFile; fileRef = 88FB70D02DCC247B00EB76E3 /* Aurora_CO_shp */; settings = {ASSET_TAGS = (ApplySymbologyToShapefile, ); }; };
+		88FB70D42DCD10B600EB76E3 /* AuthenticateWithIntegratedWindowsAuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88FB70D32DCD10B600EB76E3 /* AuthenticateWithIntegratedWindowsAuthenticationView.swift */; };
 		9503056E2C46ECB70091B32D /* ShowDeviceLocationUsingIndoorPositioningView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9503056D2C46ECB70091B32D /* ShowDeviceLocationUsingIndoorPositioningView.Model.swift */; };
 		9529D1942C01676200B5C1A3 /* SelectFeaturesInSceneLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 954AEDED2C01332600265114 /* SelectFeaturesInSceneLayerView.swift */; };
 		9537AFD72C220EF0000923C5 /* ExchangeSetwithoutUpdates in Resources */ = {isa = PBXBuildFile; fileRef = 9537AFD62C220EF0000923C5 /* ExchangeSetwithoutUpdates */; settings = {ASSET_TAGS = (ConfigureElectronicNavigationalCharts, ); }; };
@@ -1006,6 +1007,7 @@
 		88F93CC029C3D59C0006B28E /* CreateAndEditGeometriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAndEditGeometriesView.swift; sourceTree = "<group>"; };
 		88FB70382DCC207B00EB76E3 /* ApplySymbologyToShapefileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplySymbologyToShapefileView.swift; sourceTree = "<group>"; };
 		88FB70D02DCC247B00EB76E3 /* Aurora_CO_shp */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Aurora_CO_shp; sourceTree = "<group>"; };
+		88FB70D32DCD10B600EB76E3 /* AuthenticateWithIntegratedWindowsAuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticateWithIntegratedWindowsAuthenticationView.swift; sourceTree = "<group>"; };
 		9503056D2C46ECB70091B32D /* ShowDeviceLocationUsingIndoorPositioningView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowDeviceLocationUsingIndoorPositioningView.Model.swift; sourceTree = "<group>"; };
 		9537AFD62C220EF0000923C5 /* ExchangeSetwithoutUpdates */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExchangeSetwithoutUpdates; sourceTree = "<group>"; };
 		9547085B2C3C719800CA8579 /* EditFeatureAttachmentsView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFeatureAttachmentsView.Model.swift; sourceTree = "<group>"; };
@@ -1409,6 +1411,7 @@
 				1C2538472BABAC7B00337307 /* Augment reality to navigate route */,
 				D7A737DF2BABB9FE00B7C7FC /* Augment reality to show hidden infrastructure */,
 				D72F27292ADA1E4400F906DA /* Augment reality to show tabletop scene */,
+				88FB70D22DCD10A500EB76E3 /* Authenticate with Integrated Windows Authentication */,
 				218F35B229C28F4A00502022 /* Authenticate with OAuth */,
 				E0FE32E528747762002C6ACA /* Browse building floors */,
 				95E980732C26185000CB8912 /* Browse OGC API feature service */,
@@ -2160,6 +2163,14 @@
 				88FB70D02DCC247B00EB76E3 /* Aurora_CO_shp */,
 			);
 			path = d98b3e5293834c5f852f13c569930caa;
+			sourceTree = "<group>";
+		};
+		88FB70D22DCD10A500EB76E3 /* Authenticate with Integrated Windows Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				88FB70D32DCD10B600EB76E3 /* AuthenticateWithIntegratedWindowsAuthenticationView.swift */,
+			);
+			path = "Authenticate with Integrated Windows Authentication";
 			sourceTree = "<group>";
 		};
 		9537AFC82C220ECB000923C5 /* 9d2987a825c646468b3ce7512fb76e2d */ = {
@@ -3918,6 +3929,7 @@
 				D7114A0D2BDC6A3300FA68CA /* EditWithBranchVersioningView.Model.swift in Sources */,
 				00B04FB5283EEBA80026C882 /* DisplayOverviewMapView.swift in Sources */,
 				D718A1E72B570F7500447087 /* OrbitCameraAroundObjectView.Model.swift in Sources */,
+				88FB70D42DCD10B600EB76E3 /* AuthenticateWithIntegratedWindowsAuthenticationView.swift in Sources */,
 				88E52E812DCA703B00F48409 /* ApplyHillshadeRendererToRasterView.SettingsView.swift in Sources */,
 				D71C5F642AAA7A88006599FD /* CreateSymbolStylesFromWebStylesView.swift in Sources */,
 				D7CC33FF2A31475C00198EDF /* ShowLineOfSightBetweenPointsView.swift in Sources */,
