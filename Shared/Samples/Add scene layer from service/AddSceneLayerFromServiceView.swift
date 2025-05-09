@@ -16,35 +16,38 @@ import ArcGIS
 import SwiftUI
 
 struct AddSceneLayerFromServiceView: View {
-    /// A scene with topographic basemap and a 3D buildings layer.
+    /// A scene with an imagery basemap and a 3D buildings layer.
     @State private var scene: ArcGIS.Scene = {
-        // Creates a scene and sets an initial viewpoint.
-        let scene = Scene(basemapStyle: .arcGISTopographic)
-        let point = Point(x: -4.4978, y: 48.3828, z: 62.0133, spatialReference: .wgs84)
-        let camera = Camera(location: point, heading: 41.65, pitch: 71.2, roll: 0)
-        scene.initialViewpoint = Viewpoint(boundingGeometry: point, camera: camera)
+        // Creates a scene layer using a URL to a scene layer service.
+        let sceneLayer = ArcGISSceneLayer(url: .portlandBuildingService)
         
-        // Creates a surface and adds an elevation source.
-        let surface = Surface()
-        surface.addElevationSource(ArcGISTiledElevationSource(url: .worldElevationService))
+        // Creates a scene and adds the scene layer to its operational layers.
+        let scene = Scene(basemapStyle: .arcGISImagery)
+        scene.addOperationalLayer(sceneLayer)
         
-        // Sets the surface to the scene's base surface.
-        scene.baseSurface = surface
+        // Creates an elevation source and adds it to the scene's base surface.
+        let elevationSource = ArcGISTiledElevationSource(url: .worldElevationService)
+        scene.baseSurface.addElevationSource(elevationSource)
         
-        // Adds a scene layer from a URL to the scene's operational layers.
-        scene.addOperationalLayer(ArcGISSceneLayer(url: .brestBuildingService))
+        // Sets the scene's initial viewpoint to center the scene view on the scene layer.
+        let point = Point(x: -122.66949, y: 45.51869, z: 227, spatialReference: .wgs84)
+        let camera = Camera(location: point, heading: 219, pitch: 82, roll: 0)
+        let viewpoint = Viewpoint(latitude: .nan, longitude: .nan, scale: .nan, camera: camera)
+        scene.initialViewpoint = viewpoint
+        
         return scene
     }()
     
     var body: some View {
+        // Displays the scene in a scene view.
         SceneView(scene: scene)
     }
 }
 
 private extension URL {
-    /// The URL of a Brest, France buildings scene service.
-    static var brestBuildingService: URL {
-        URL(string: "https://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/Buildings_Brest/SceneServer/layers/0")!
+    /// The URL of a scene service containing buildings in Portland, OR, USA.
+    static var portlandBuildingService: URL {
+        URL(string: "https://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/Buildings_Portland/SceneServer")!
     }
     
     /// The URL of the Terrain 3D ArcGIS REST Service.
