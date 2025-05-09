@@ -56,7 +56,7 @@ extension ApplyRGBRendererView {
                                         lowerValue = (lowerValue / step).rounded() * step
                                     }
                             )
-
+                        
                         thumbView
                             .position(x: upperX + thumbSize / 2, y: height / 2)
                             .gesture(
