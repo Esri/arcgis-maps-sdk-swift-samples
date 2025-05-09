@@ -34,20 +34,29 @@ struct ApplyScenePropertyExpressionsView: View {
     
     /// The graphics overlay that we will display a cone graphic in.
     @State private var graphicsOverlay = {
+        // Create a graphics overlay to hold our graphic.
         let overlay = GraphicsOverlay()
         overlay.sceneProperties.surfacePlacement = .relative
         
+        // Create a renderer for our graphics overlay and setup the heading
+        // and pitch expressions that will be used to adjust the heading
+        // and pitch of each graphic in the overlay. These expressions will
+        // be calculated based on the corresponding values in the graphic's
+        // attribute dictionary.
         let renderer = SimpleRenderer()
         renderer.sceneProperties.headingExpression = "[HEADING]"
         renderer.sceneProperties.pitchExpression = "[PITCH]"
         overlay.renderer = renderer
         
+        // Create a cone symbol.
         let symbol = SimpleMarkerSceneSymbol.cone(
             color: .red,
             diameter: 100,
             height: 100
         )
         
+        // Create a graphic, setting initial heading and pitch in the
+        // attributes.
         let graphic = Graphic(
             geometry: Point(x: 83.9, y: 28.42, z: 200, spatialReference: .wgs84),
             attributes: [
@@ -56,11 +65,13 @@ struct ApplyScenePropertyExpressionsView: View {
             ],
             symbol: symbol
         )
+        
+        // Add the graphic to the overlay and return the overlay.
         overlay.addGraphic(graphic)
         return overlay
     }()
     
-    /// A boolean value indicating if the settings plane is displayed.
+    /// A Boolean value indicating if the settings plane is displayed.
     @State private var isSettingsPresented = false
     
     /// The heading of the cone.
@@ -81,36 +92,46 @@ struct ApplyScenePropertyExpressionsView: View {
         )
         .toolbar {
             ToolbarItem(placement: .bottomBar) {
-                Button {
+                Button("Settings") {
                     isSettingsPresented = true
-                } label: {
-                    Text("Settings")
+                }
+                .popover(isPresented: $isSettingsPresented) {
+                    NavigationStack {
+                        // The settings pane to adjust the symbology heading and pitch.
+                        Form {
+                            Section {
+                                LabeledContent("Heading", value: heading, format: .number)
+                                Slider(value: $heading, in: 0...360, step: 1) {
+                                    Text("Heading")
+                                } minimumValueLabel: {
+                                    Text("0")
+                                } maximumValueLabel: {
+                                    Text("360")
+                                }
+                            }
+                            Section {
+                                LabeledContent("Pitch", value: pitch, format: .number)
+                                Slider(value: $pitch, in: 0...180, step: 1) {
+                                    Text("Pitch")
+                                } minimumValueLabel: {
+                                    Text("0")
+                                } maximumValueLabel: {
+                                    Text("180")
+                                }
+                            }
+                        }
+                        .toolbar {
+                            ToolbarItem(placement: .confirmationAction) {
+                                Button("Done") { isSettingsPresented = false }
+                            }
+                        }
+                        .navigationTitle("Expression Settings")
+                        .navigationBarTitleDisplayMode(.inline)
+                    }
+                    .presentationDetents([.medium])
+                    .frame(idealWidth: 320, idealHeight: 380)
                 }
             }
-        }
-        .popover(isPresented: $isSettingsPresented, arrowEdge: .bottom) {
-            NavigationStack {
-                // The settings pane to adjust the symbology heading and pitch.
-                Form {
-                    Section {
-                        LabeledContent("Heading", value: heading, format: .number)
-                        Slider(value: $heading, in: 0...360, step: 1)
-                    }
-                    Section {
-                        LabeledContent("Pitch", value: pitch, format: .number)
-                        Slider(value: $pitch, in: 0...180, step: 1)
-                    }
-                }
-                .toolbar {
-                    ToolbarItem(placement: .confirmationAction) {
-                        Button("Done") { isSettingsPresented = false }
-                    }
-                }
-                .navigationTitle("Expression Settings")
-                .navigationBarTitleDisplayMode(.inline)
-            }
-            .presentationDetents([.medium])
-            .frame(idealWidth: 320, idealHeight: 380)
         }
         .onAppear {
             // Sync view state with the graphic attributes on startup.
