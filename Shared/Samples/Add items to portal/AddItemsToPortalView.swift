@@ -22,7 +22,7 @@ struct AddItemsToPortalView: View {
         oAuthUserConfigurations: [.arcgisDotCom]
     )
     
-    /// The API key to temporarily while using OAuth.
+    /// The API key to use temporarily while using OAuth.
     @State private var apiKey: APIKey?
     
     /// A list of portal items when the portal is logged in.
