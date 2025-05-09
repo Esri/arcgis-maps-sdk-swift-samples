@@ -118,6 +118,7 @@ struct AddItemsToPortalView: View {
                     } label: {
                         Label("Delete", systemImage: "trash")
                     }
+                    .tint(.red)
                 }
         }
         .refreshable {
