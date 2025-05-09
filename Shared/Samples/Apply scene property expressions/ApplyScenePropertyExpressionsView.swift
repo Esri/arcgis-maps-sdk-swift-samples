@@ -34,20 +34,29 @@ struct ApplyScenePropertyExpressionsView: View {
     
     /// The graphics overlay that we will display a cone graphic in.
     @State private var graphicsOverlay = {
+        // Create a graphics overlay to hold our graphic.
         let overlay = GraphicsOverlay()
         overlay.sceneProperties.surfacePlacement = .relative
         
+        // Create a renderer for our graphics overlay and setup the heading
+        // and pitch expressions that will be used to adjust the heading
+        // and pitch of each graphic in the overlay. These expressions will
+        // be calculated based on the corresponding values in the graphic's
+        // attribute dictionary.
         let renderer = SimpleRenderer()
         renderer.sceneProperties.headingExpression = "[HEADING]"
         renderer.sceneProperties.pitchExpression = "[PITCH]"
         overlay.renderer = renderer
         
+        // Create a cone symbol.
         let symbol = SimpleMarkerSceneSymbol.cone(
             color: .red,
             diameter: 100,
             height: 100
         )
         
+        // Create a graphic, setting initial heading and pitch in the
+        // attributes.
         let graphic = Graphic(
             geometry: Point(x: 83.9, y: 28.42, z: 200, spatialReference: .wgs84),
             attributes: [
@@ -56,6 +65,8 @@ struct ApplyScenePropertyExpressionsView: View {
             ],
             symbol: symbol
         )
+        
+        // Add the graphic to the overlay and return the overlay.
         overlay.addGraphic(graphic)
         return overlay
     }()
