@@ -1,6 +1,6 @@
 {
     "category": "Layers",
-    "description": "Display an ArcGIS scene layer from a service.",
+    "description": "Display an ArcGIS scene layer from a URL.",
     "ignore": false,
     "images": [
         "add-scene-layer-from-service.png"
@@ -13,14 +13,18 @@
         "scene",
         "service",
         "ArcGISSceneLayer",
+        "ArcGISTiledElevationSource",
         "Scene",
-        "SceneView"
+        "SceneView",
+        "Surface"
     ],
     "redirect_from": [],
     "relevant_apis": [
         "ArcGISSceneLayer",
+        "ArcGISTiledElevationSource",
         "Scene",
-        "SceneView"
+        "SceneView",
+        "Surface"
     ],
     "snippets": [
         "AddSceneLayerFromServiceView.swift"
