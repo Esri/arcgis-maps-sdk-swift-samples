@@ -24,21 +24,16 @@ struct AddItemsToPortalView: View {
     
     /// The API key to use temporarily while using OAuth.
     @State private var apiKey: APIKey?
-    
-    /// A list of portal items when the portal is logged in.
-    @State private var portalItems: [PortalItem] = []
-    
-    /// The portal item to delete when the delete alert is presented.
-    @State private var portalItemToDelete: PortalItem?
-    
-    /// The portal user when the portal is logged in.
-    @State private var portalUser: PortalUser?
-    
-    /// The error shown in the error alert.
-    @State private var error: Error?
-    
     /// A Boolean value indicating whether the delete alert is presented.
     @State private var deleteAlertIsPresented = false
+    /// The error shown in the error alert.
+    @State private var error: Error?
+    /// The portal item to delete when the delete alert is presented.
+    @State private var portalItemToDelete: PortalItem?
+    /// A list of portal items when the portal is logged in.
+    @State private var portalItems: [PortalItem] = []
+    /// The portal user when the portal is logged in.
+    @State private var portalUser: PortalUser?
     
     var body: some View {
         Group {
