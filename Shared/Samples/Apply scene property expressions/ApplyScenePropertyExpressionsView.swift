@@ -71,7 +71,7 @@ struct ApplyScenePropertyExpressionsView: View {
         return overlay
     }()
     
-    /// A boolean value indicating if the settings plane is displayed.
+    /// A Boolean value indicating if the settings plane is displayed.
     @State private var isSettingsPresented = false
     
     /// The heading of the cone.
@@ -92,10 +92,8 @@ struct ApplyScenePropertyExpressionsView: View {
         )
         .toolbar {
             ToolbarItem(placement: .bottomBar) {
-                Button {
+                Button("Settings") {
                     isSettingsPresented = true
-                } label: {
-                    Text("Settings")
                 }
             }
         }
