@@ -1,0 +1,48 @@
+{
+    "category": "Visualization",
+    "description": "Use a stretch renderer to enhance the visual contrast of raster data for analysis.",
+    "ignore": false,
+    "images": [
+        "apply-stretch-renderer.png"
+    ],
+    "keywords": [
+        "analysis",
+        "deviation",
+        "histogram",
+        "imagery",
+        "interpretation",
+        "min-max",
+        "percent clip",
+        "pixel",
+        "raster",
+        "stretch",
+        "symbology",
+        "visualization",
+        "ColorRamp",
+        "MinMaxStretchParameters",
+        "PercentClipStretchParameters",
+        "Raster",
+        "RasterLayer",
+        "StandardDeviationStretchParameters",
+        "StretchParameters",
+        "StretchRenderer"
+    ],
+    "offline_data": [
+        "7c4c679ab06a4df19dc497f577f111bd"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "ColorRamp",
+        "MinMaxStretchParameters",
+        "PercentClipStretchParameters",
+        "Raster",
+        "RasterLayer",
+        "StandardDeviationStretchParameters",
+        "StretchParameters",
+        "StretchRenderer"
+    ],
+    "snippets": [
+        "ApplyStretchRendererView.swift"
+    ],
+    "title": "Apply stretch renderer"
+}
