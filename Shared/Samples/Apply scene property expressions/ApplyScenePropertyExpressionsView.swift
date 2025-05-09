@@ -99,7 +99,7 @@ struct ApplyScenePropertyExpressionsView: View {
                 }
             }
         }
-        .popover(isPresented: $isSettingsPresented, arrowEdge: .bottom) {
+        .popover(isPresented: $isSettingsPresented) {
             NavigationStack {
                 // The settings pane to adjust the symbology heading and pitch.
                 Form {
