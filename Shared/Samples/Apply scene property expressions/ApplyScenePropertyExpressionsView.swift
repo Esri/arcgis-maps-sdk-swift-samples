@@ -95,31 +95,43 @@ struct ApplyScenePropertyExpressionsView: View {
                 Button("Settings") {
                     isSettingsPresented = true
                 }
-            }
-        }
-        .popover(isPresented: $isSettingsPresented) {
-            NavigationStack {
-                // The settings pane to adjust the symbology heading and pitch.
-                Form {
-                    Section {
-                        LabeledContent("Heading", value: heading, format: .number)
-                        Slider(value: $heading, in: 0...360, step: 1)
+                .popover(isPresented: $isSettingsPresented) {
+                    NavigationStack {
+                        // The settings pane to adjust the symbology heading and pitch.
+                        Form {
+                            Section {
+                                LabeledContent("Heading", value: heading, format: .number)
+                                Slider(value: $heading, in: 0...360, step: 1) {
+                                    Text("Heading")
+                                } minimumValueLabel: {
+                                    Text("0")
+                                } maximumValueLabel: {
+                                    Text("360")
+                                }
+                            }
+                            Section {
+                                LabeledContent("Pitch", value: pitch, format: .number)
+                                Slider(value: $pitch, in: 0...180, step: 1) {
+                                    Text("Pitch")
+                                } minimumValueLabel: {
+                                    Text("0")
+                                } maximumValueLabel: {
+                                    Text("180")
+                                }
+                            }
+                        }
+                        .toolbar {
+                            ToolbarItem(placement: .confirmationAction) {
+                                Button("Done") { isSettingsPresented = false }
+                            }
+                        }
+                        .navigationTitle("Expression Settings")
+                        .navigationBarTitleDisplayMode(.inline)
                     }
-                    Section {
-                        LabeledContent("Pitch", value: pitch, format: .number)
-                        Slider(value: $pitch, in: 0...180, step: 1)
-                    }
+                    .presentationDetents([.medium])
+                    .frame(idealWidth: 320, idealHeight: 380)
                 }
-                .toolbar {
-                    ToolbarItem(placement: .confirmationAction) {
-                        Button("Done") { isSettingsPresented = false }
-                    }
-                }
-                .navigationTitle("Expression Settings")
-                .navigationBarTitleDisplayMode(.inline)
             }
-            .presentationDetents([.medium])
-            .frame(idealWidth: 320, idealHeight: 380)
         }
         .onAppear {
             // Sync view state with the graphic attributes on startup.
