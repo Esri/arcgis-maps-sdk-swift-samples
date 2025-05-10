@@ -1,0 +1,33 @@
+{
+    "category": "Visualization",
+    "description": "Display common symbols for all graphics in a graphics overlay with a renderer.",
+    "ignore": false,
+    "images": [
+        "apply-simple-renderer-to-graphics-overlay.png"
+    ],
+    "keywords": [
+        "graphics",
+        "marker",
+        "renderer",
+        "symbol",
+        "symbolize",
+        "symbology",
+        "Graphic",
+        "GraphicsOverlay",
+        "Point",
+        "SimpleMarkerSymbol",
+        "SimpleRenderer"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Graphic",
+        "GraphicsOverlay",
+        "Point",
+        "SimpleMarkerSymbol",
+        "SimpleRenderer"
+    ],
+    "snippets": [
+        "ApplySimpleRendererToGraphicsOverlayView.swift"
+    ],
+    "title": "Apply simple renderer to graphics overlay"
+}
