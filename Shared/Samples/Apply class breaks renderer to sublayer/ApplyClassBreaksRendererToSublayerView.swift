@@ -1,4 +1,4 @@
-// Copyright 2024 Esri
+// Copyright 2025 Esri
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -55,33 +55,18 @@ struct ApplyClassBreaksRendererToSublayerView: View {
                 map.addOperationalLayer(mapImageLayer)
                 await loadMapImageSublayer()
             }
-            .overlay(alignment: .topTrailing) {
-                VStack(alignment: .leading) {
-                    Text("""
-                        Click the 'Change Sublayer Renderer'
-                        button to apply a class breaks
-                        renderer to the counties sublayer.
-                    """)
-                }
-                .fixedSize()
-                .padding()
-                .background(.thinMaterial)
-                .clipShape(.rect(cornerRadius: 10))
-                .shadow(radius: 50)
-                .padding()
-            }
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
-                    Button(applyClassBreaksRenderer ? "Reset" : "Change Sublayer Renderer") {
-                        if applyClassBreaksRenderer {
-                            // Applies the original renderer.
-                            countiesLayer?.renderer = originalRenderer
-                        } else {
-                            // Applies the class breaks renderer.
-                            countiesLayer?.renderer = .populationRenderer
-                        }
-                        applyClassBreaksRenderer.toggle()
-                    }
+                    Toggle("Change Sublayer Renderer", isOn: $applyClassBreaksRenderer)
+                }
+            }
+            .task(id: applyClassBreaksRenderer) {
+                if applyClassBreaksRenderer {
+                    // Applies the class breaks renderer.
+                    countiesLayer?.renderer = .populationRenderer
+                } else {
+                    // Applies the original renderer.
+                    countiesLayer?.renderer = originalRenderer
                 }
             }
             .errorAlert(presentingError: $error)
@@ -111,9 +96,7 @@ struct ApplyClassBreaksRendererToSublayerView: View {
 private extension Renderer {
     /// Creates a class breaks renderer for counties in the US based on their
     /// population in 2007.
-    ///
-    /// - Returns: A `ClassBreaksRenderer` object.
-    static let populationRenderer: ClassBreaksRenderer = {
+    static var populationRenderer: ClassBreaksRenderer {
         // Outline symbol.
         let lineSymbol = SimpleLineSymbol(style: .solid, color: UIColor(white: 0.6, alpha: 1), width: 0.5)
         
@@ -129,10 +112,10 @@ private extension Renderer {
         let classBreak2 = ClassBreak(description: "> 8,560 to 18,109", label: "> 8,560 to 18,109", minValue: 8_561, maxValue: 18_109, symbol: symbol2)
         let classBreak3 = ClassBreak(description: "> 18,109 to 35,501", label: "> 18,109 to 35,501", minValue: 18_110, maxValue: 35_501, symbol: symbol3)
         let classBreak4 = ClassBreak(description: "> 35,501 to 86,100", label: "> 35,501 to 86,100", minValue: 35_502, maxValue: 86_100, symbol: symbol4)
-        let classBreak5 = ClassBreak(description: "> 86,100 to 10,110,975", label: "> 86,100 to 10,110,975", minValue: 86_101, maxValue: 10_110_975, symbol: symbol2)
+        let classBreak5 = ClassBreak(description: "> 86,100 to 10,110,975", label: "> 86,100 to 10,110,975", minValue: 86_101, maxValue: 10_110_975, symbol: symbol5)
         
         return ClassBreaksRenderer(fieldName: "POP2007", classBreaks: [classBreak1, classBreak2, classBreak3, classBreak4, classBreak5])
-    }()
+    }
 }
 
 #Preview {

@@ -10,22 +10,22 @@ A layer showing animal populations contains sublayers for different species. A r
 
 ## How to use the sample
 
-Wait for the map image layer to load. Click the 'Change Sublayer Renderer' button to apply a unique value renderer to see different population ranges in the counties sub-layer data.
+Wait for the map image layer to load. Tap the 'Change Sublayer Renderer' button to apply a unique value renderer to see different population ranges in the counties sub-layer data.
 
 ## How it works
 
 1. Create an `ArcGISMapImageLayer` from its URL.
-2. After it is done loading, get its `SublayerList` with `imageLayer.mapImageSublayers()`.
-3. Get the map image sublayer you want: `mapImageSublayers[2]`.
+2. After it is done loading, get its map image sublayers.
+3. Get the `MapImageSublayer` you want.
 4. Create a `ClassBreaksRenderer` with a collection of `ClassBreak`s for different population ranges.
-5. Set the renderer of the sublayer with `sublayer.renderer = classBreaksRenderer`.
+5. Set class breaks renderer as the renderer of the sublayer.
 
 ## Relevant API
 
 * ArcGISMapImageLayer
 * ArcGISMapImageSubLayer
+* ClassBreak
 * ClassBreaksRenderer
-* ClassBreaksRenderer.ClassBreak
 
 ## About the data
 

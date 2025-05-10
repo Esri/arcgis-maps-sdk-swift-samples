@@ -15,15 +15,15 @@
         "visualization",
         "ArcGISMapImageLayer",
         "ArcGISMapImageSubLayer",
+        "ClassBreak"
         "ClassBreaksRenderer",
-        "ClassBreaksRenderer.ClassBreak"
     ],
     "redirect_from": [],
     "relevant_apis": [
         "ArcGISMapImageLayer",
         "ArcGISMapImageSubLayer",
+        "ClassBreak"
         "ClassBreaksRenderer",
-        "ClassBreaksRenderer.ClassBreak"
     ],
     "snippets": [
         "ApplyClassBreaksRendererToSublayerView.swift"
