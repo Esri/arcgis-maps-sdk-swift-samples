@@ -17,16 +17,16 @@ import SwiftUI
 
 struct ApplyClassBreaksRendererToSublayerView: View {
     /// The map image layer.
-    private let mapImageLayer = ArcGISMapImageLayer(url: URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Census/MapServer")!)
+    @State private var mapImageLayer = ArcGISMapImageLayer(url: URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Census/MapServer")!)
     
     /// The counties sublayer.
-    @State private var countiesLayer: ArcGISMapImageSublayer?
+    @State private var countiesSublayer: ArcGISMapImageSublayer?
     
     /// The original renderer used to symbolize the sublayer.
     @State private var originalRenderer: Renderer?
     
     /// A Boolean value indicating that the class breaks renderer is applied.
-    @State private var applyClassBreaksRenderer = false
+    @State private var classBreaksRendererIsApplied = false
     
     /// The map with a topographic basemap style.
     @State private var map: Map = {
@@ -53,15 +53,29 @@ struct ApplyClassBreaksRendererToSublayerView: View {
             .task {
                 // Adds the map image layer to the map.
                 map.addOperationalLayer(mapImageLayer)
-                await loadMapImageSublayer()
+                do {
+                    // Loads the map image layer.
+                    try await mapImageLayer.load()
+                    // Gets the sublayers.
+                    let mapImageSublayers = mapImageLayer.mapImageSublayers
+                    // Gets the third sublayer.
+                    let sublayer = mapImageSublayers[2]
+                    // Loads the sublayer.
+                    try await sublayer.load()
+                    countiesSublayer = sublayer
+                    originalRenderer = sublayer.renderer
+                } catch {
+                    self.error = error
+                }
             }
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
-                    Toggle("Change Sublayer Renderer", isOn: $applyClassBreaksRenderer)
+                    Toggle("Change Sublayer Renderer", isOn: $classBreaksRendererIsApplied)
+                        .disabled(countiesSublayer == nil)
                 }
             }
-            .onChange(of: applyClassBreaksRenderer) {
-                countiesLayer?.renderer = if applyClassBreaksRenderer {
+            .onChange(of: classBreaksRendererIsApplied) {
+                countiesSublayer?.renderer = if classBreaksRendererIsApplied {
                     // Applies the class breaks renderer.
                     .populationRenderer
                 } else {
@@ -70,26 +84,6 @@ struct ApplyClassBreaksRendererToSublayerView: View {
                 }
             }
             .errorAlert(presentingError: $error)
-    }
-    
-    func loadMapImageSublayer() async {
-        do {
-            // Loads the map image layer.
-            try await mapImageLayer.load()
-            // Gets the sublayers.
-            let mapImageSublayers = mapImageLayer.mapImageSublayers
-            guard mapImageSublayers.count >= 3 else { return }
-            
-            // Gets the third sublayer.
-            let sublayer = mapImageSublayers[2]
-            // Loads the sublayer.
-            try await sublayer.load()
-            // Stores the counties layer and original renderer.
-            countiesLayer = sublayer
-            originalRenderer = sublayer.renderer
-        } catch {
-            self.error = error
-        }
     }
 }
 
