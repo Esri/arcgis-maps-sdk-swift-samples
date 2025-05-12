@@ -25,10 +25,10 @@ struct AuthenticateWithIntegratedWindowsAuthenticationView: View {
             switch model.portalContent {
             case .success(let success):
                 ForEach(success.results, id: \.id?.rawValue) { item in
-                    NavigationLink(item.title) {
-                        MapView(map: Map(item: item))
-                            .navigationTitle(item.title)
+                    Button(item.title) {
+                        model.selectedItem = .init(item: item)
                     }
+                    .buttonStyle(.plain)
                 }
             case .failure:
                 urlEntryView
@@ -45,6 +45,21 @@ struct AuthenticateWithIntegratedWindowsAuthenticationView: View {
                     urlEntryView
                 }
             }
+        }
+        .sheet(item: $model.selectedItem) { selectedItem in
+            NavigationStack {
+                MapView(map: selectedItem.map)
+                    .navigationTitle(selectedItem.item.title)
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbar {
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Button("Done") {
+                                model.selectedItem = nil
+                            }
+                        }
+                    }
+            }
+            .interactiveDismissDisabled()
         }
         .animation(.default, value: model.isConnecting)
         .authenticator(model.authenticator)
@@ -66,6 +81,18 @@ struct AuthenticateWithIntegratedWindowsAuthenticationView: View {
     }
 }
 
+struct SelectedItem: Identifiable {
+    let item: PortalItem
+    
+    var id: ObjectIdentifier {
+        ObjectIdentifier(item)
+    }
+    
+    var map: Map {
+        Map(item: item)
+    }
+}
+
 extension AuthenticateWithIntegratedWindowsAuthenticationView {
     @MainActor
     class Model: ObservableObject {
@@ -81,21 +108,15 @@ extension AuthenticateWithIntegratedWindowsAuthenticationView {
         /// A Boolean value indicating if a portal connection is in progress.
         @Published var isConnecting = false
         
+        @Published var isContentListShowing = false
+        
+        @Published var selectedItem: SelectedItem?
+        
         /// The URL to the portal.
         var portalURL: URL? { URL(string: portalURLString) }
         
         init() {
-            // Setting the challenge handlers here when the model is created so user is prompted to enter
-            // credentials every time trying the sample. In real world applications, set challenge
-            // handlers at the start of the application.
-            
-            // Sets authenticator as ArcGIS and Network challenge handlers to handle authentication
-            // challenges.
-            ArcGISEnvironment.authenticationManager.handleChallenges(using: authenticator)
-            
-            // In real world applications, uncomment this code to persist credentials in the
-            // keychain and remove `signOut()` from `deinit`.
-            // setupPersistentCredentialStorage()
+            setupAuthenticator()
         }
         
         /// Connects to the portal and finds a batch of webmaps.
@@ -110,12 +131,33 @@ extension AuthenticateWithIntegratedWindowsAuthenticationView {
                 try await portal.load()
                 let results = try await portal.findItems(queryParameters: .items(ofKinds: [.webMap]))
                 portalContent = .success(results)
+                isContentListShowing = true
             } catch {
                 portalContent = .failure(error)
             }
         }
         
         deinit {
+            teardownAuthenticator()
+        }
+        
+        /// Sets up the authenticator to handle challenges.
+        private func setupAuthenticator() {
+            // Setting the challenge handlers here when the model is created so user is prompted to enter
+            // credentials every time trying the sample. In real world applications, set challenge
+            // handlers at the start of the application.
+            
+            // Sets authenticator as ArcGIS and Network challenge handlers to handle authentication
+            // challenges.
+            ArcGISEnvironment.authenticationManager.handleChallenges(using: authenticator)
+            
+            // In real world applications, uncomment this code to persist credentials in the
+            // keychain and remove `signOut()` from `deinit`.
+            // setupPersistentCredentialStorage()
+        }
+        
+        /// Stops the authenticator from handling the challenges.
+        nonisolated private func teardownAuthenticator() {
             // Resetting the challenge handlers and clearing credentials here in deinit
             // so user is prompted to enter credentials every time trying the sample.
             
