@@ -39,7 +39,7 @@ Then configure the parameters.
 
 ## Offline data
 
-This sample uses the [Shasta](https://arcgisruntime.maps.arcgis.com/home/item.html?id=7c4c679ab06a4df19dc497f577f111bd) raster. It is downloaded from ArcGIS Online automatically.
+This sample uses the [Shasta](https://www.arcgis.com/home/item.html?id=7c4c679ab06a4df19dc497f577f111bd) raster. It is downloaded from ArcGIS Online automatically.
 
 ## About the data
 
