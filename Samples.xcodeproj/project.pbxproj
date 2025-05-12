@@ -230,6 +230,8 @@
 		883C121729C914E100062FF9 /* DownloadPreplannedMapAreaView.MapPicker.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 883C121429C9136600062FF9 /* DownloadPreplannedMapAreaView.MapPicker.swift */; };
 		883C121829C914E100062FF9 /* DownloadPreplannedMapAreaView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E0D04FF128A5390000747989 /* DownloadPreplannedMapAreaView.Model.swift */; };
 		883C121929C914E100062FF9 /* DownloadPreplannedMapAreaView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E070A0A2286F3B6000F2B606 /* DownloadPreplannedMapAreaView.swift */; };
+		88C5E0EB2DCBC1E20091D271 /* ApplyScenePropertyExpressionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C5E0EA2DCBC1E20091D271 /* ApplyScenePropertyExpressionsView.swift */; };
+		88C5E0EC2DCBC3F30091D271 /* ApplyScenePropertyExpressionsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 88C5E0EA2DCBC1E20091D271 /* ApplyScenePropertyExpressionsView.swift */; };
 		88C5E0ED2DCBC4170091D271 /* ApplyHillshadeRendererToRasterView.SettingsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 88E52E802DCA703B00F48409 /* ApplyHillshadeRendererToRasterView.SettingsView.swift */; };
 		88E52E6C2DC960EA00F48409 /* ApplyFunctionToRasterFromServiceView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 8810FB582DC94A6600874936 /* ApplyFunctionToRasterFromServiceView.swift */; };
 		88E52E6F2DC96C3F00F48409 /* ApplyHillshadeRendererToRasterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E52E6E2DC96C3F00F48409 /* ApplyHillshadeRendererToRasterView.swift */; };
@@ -644,6 +646,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				88C5E0EC2DCBC3F30091D271 /* ApplyScenePropertyExpressionsView.swift in Copy Source Code Files */,
 				00FA4E8D2DCD7536008A34CF /* ApplySimpleRendererToGraphicsOverlayView.swift in Copy Source Code Files */,
 				00FA4E692DCAD4E3008A34CF /* ApplyRGBRendererView.swift in Copy Source Code Files */,
 				00FA4E6A2DCAD4E3008A34CF /* ApplyRGBRendererView.RangeSlider.swift in Copy Source Code Files */,
@@ -1026,6 +1029,7 @@
 		79D84D0D2A815C5B00F45262 /* AddCustomDynamicEntityDataSourceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCustomDynamicEntityDataSourceView.swift; sourceTree = "<group>"; };
 		8810FB582DC94A6600874936 /* ApplyFunctionToRasterFromServiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyFunctionToRasterFromServiceView.swift; sourceTree = "<group>"; };
 		883C121429C9136600062FF9 /* DownloadPreplannedMapAreaView.MapPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadPreplannedMapAreaView.MapPicker.swift; sourceTree = "<group>"; };
+		88C5E0EA2DCBC1E20091D271 /* ApplyScenePropertyExpressionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyScenePropertyExpressionsView.swift; sourceTree = "<group>"; };
 		88E52E6E2DC96C3F00F48409 /* ApplyHillshadeRendererToRasterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyHillshadeRendererToRasterView.swift; sourceTree = "<group>"; };
 		88E52E802DCA703B00F48409 /* ApplyHillshadeRendererToRasterView.SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyHillshadeRendererToRasterView.SettingsView.swift; sourceTree = "<group>"; };
 		88F93CC029C3D59C0006B28E /* CreateAndEditGeometriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAndEditGeometriesView.swift; sourceTree = "<group>"; };
@@ -1433,6 +1437,7 @@
 				88E52E6D2DC969CF00F48409 /* Apply hillshade renderer to raster */,
 				955AFAC52C10FD74009C8FE5 /* Apply mosaic rule to rasters */,
 				D771D0C52CD55211004C13CB /* Apply raster rendering rule */,
+				88C5E0E92DCBC1B20091D271 /* Apply scene property expressions */,
 				00FA4E612DCA72DA008A34CF /* Apply RGB renderer */,
 				004A2BA12BED456500C297CE /* Apply scheduled updates to preplanned map area */,
 				00FA4E6F2DCBD795008A34CF /* Apply simple renderer to feature layer */,
@@ -2197,6 +2202,14 @@
 				8810FB582DC94A6600874936 /* ApplyFunctionToRasterFromServiceView.swift */,
 			);
 			path = "Apply function to raster from service";
+			sourceTree = "<group>";
+		};
+		88C5E0E92DCBC1B20091D271 /* Apply scene property expressions */ = {
+			isa = PBXGroup;
+			children = (
+				88C5E0EA2DCBC1E20091D271 /* ApplyScenePropertyExpressionsView.swift */,
+			);
+			path = "Apply scene property expressions";
 			sourceTree = "<group>";
 		};
 		88E52E6D2DC969CF00F48409 /* Apply hillshade renderer to raster */ = {
@@ -4048,6 +4061,7 @@
 				D7635FFB2B9277DC0044AB97 /* ConfigureClustersView.Model.swift in Sources */,
 				D7EAF35A2A1C023800D822C4 /* SetMinAndMaxScaleView.swift in Sources */,
 				1C19B4F52A578E46001D2506 /* CreateLoadReportView.Model.swift in Sources */,
+				88C5E0EB2DCBC1E20091D271 /* ApplyScenePropertyExpressionsView.swift in Sources */,
 				9547085C2C3C719800CA8579 /* EditFeatureAttachmentsView.Model.swift in Sources */,
 				D71C90A22C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.swift in Sources */,
 				3E54CF222C66AFBE00DD2F18 /* AddWebTiledLayerView.swift in Sources */,
