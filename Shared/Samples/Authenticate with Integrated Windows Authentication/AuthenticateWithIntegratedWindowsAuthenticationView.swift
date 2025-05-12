@@ -18,7 +18,7 @@ import SwiftUI
 
 struct AuthenticateWithIntegratedWindowsAuthenticationView: View {
     /// The authenticator to handle authentication challenges.
-    @StateObject private var authenticator = Authenticator()
+    @StateObject private var authenticator = Authenticator(promptForUntrustedHosts: true)
     
     @State private var map: Map?
     
@@ -94,12 +94,71 @@ struct AuthenticateWithIntegratedWindowsAuthenticationView: View {
 extension AuthenticateWithIntegratedWindowsAuthenticationView {
     struct PortalContentView: View {
         @State private var portalURLString = ""
-        
+        @State private var portalContent: Result<PortalQueryResultSet<PortalItem>, Error>?
+        @State private var isConnecting = false
         @Binding var selection: Map?
         
+        var portalURL: URL? { URL(string: portalURLString) }
+        
         var body: some View {
-            List {
-                TextField("Portal", text: $portalURLString)
+            Form {
+                switch portalContent {
+                case .success(let success):
+                    ForEach(success.results, id: \.id?.rawValue) { item in
+                        Text(item.title)
+                            .onTapGesture {
+                                selection = Map(item: item)
+                            }
+                    }
+                case .failure:
+                    urlEntryView
+                    ContentUnavailableView(
+                        "Error",
+                        systemImage: "exclamationmark.triangle",
+                        description: Text("Error searching specified portal.")
+                    )
+                case nil:
+                    urlEntryView
+                }
+            }
+            .animation(.default, value: isConnecting)
+        }
+        
+        @ViewBuilder private var urlEntryView: some View {
+            Section {
+                HStack {
+                    TextField("Portal", text: $portalURLString)
+                        .onSubmit { Task { await connect() } }
+                        .autocapitalization(.none)
+                        .keyboardType(.URL)
+                    Button {
+                        Task { await connect() }
+                    } label: {
+                        if isConnecting {
+                            ProgressView()
+                        } else {
+                            Text("Connect")
+                        }
+                    }
+                    .disabled(portalURL == nil)
+                    .disabled(isConnecting)
+                }
+            }
+        }
+        
+        private func connect() async {
+            precondition(portalURL != nil)
+            
+            isConnecting = true
+            defer { isConnecting = false }
+            
+            do {
+                let portal = Portal(url: portalURL!)
+                try await portal.load()
+                let results = try await portal.findItems(queryParameters: .items(ofKinds: [.webMap]))
+                portalContent = .success(results)
+            } catch {
+                portalContent = .failure(error)
             }
         }
     }
