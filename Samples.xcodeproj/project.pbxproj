@@ -239,6 +239,9 @@
 		88E52E812DCA703B00F48409 /* ApplyHillshadeRendererToRasterView.SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E52E802DCA703B00F48409 /* ApplyHillshadeRendererToRasterView.SettingsView.swift */; };
 		88F93CC129C3D59D0006B28E /* CreateAndEditGeometriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F93CC029C3D59C0006B28E /* CreateAndEditGeometriesView.swift */; };
 		88F93CC229C4D3480006B28E /* CreateAndEditGeometriesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 88F93CC029C3D59C0006B28E /* CreateAndEditGeometriesView.swift */; };
+		88FB70392DCC207B00EB76E3 /* ApplySymbologyToShapefileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88FB70382DCC207B00EB76E3 /* ApplySymbologyToShapefileView.swift */; };
+		88FB703C2DCC22E900EB76E3 /* ApplySymbologyToShapefileView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 88FB70382DCC207B00EB76E3 /* ApplySymbologyToShapefileView.swift */; };
+		88FB70D12DCC248400EB76E3 /* Aurora_CO_shp in Resources */ = {isa = PBXBuildFile; fileRef = 88FB70D02DCC247B00EB76E3 /* Aurora_CO_shp */; settings = {ASSET_TAGS = (ApplySymbologyToShapefile, ); }; };
 		9503056E2C46ECB70091B32D /* ShowDeviceLocationUsingIndoorPositioningView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9503056D2C46ECB70091B32D /* ShowDeviceLocationUsingIndoorPositioningView.Model.swift */; };
 		9529D1942C01676200B5C1A3 /* SelectFeaturesInSceneLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 954AEDED2C01332600265114 /* SelectFeaturesInSceneLayerView.swift */; };
 		9537AFD72C220EF0000923C5 /* ExchangeSetwithoutUpdates in Resources */ = {isa = PBXBuildFile; fileRef = 9537AFD62C220EF0000923C5 /* ExchangeSetwithoutUpdates */; settings = {ASSET_TAGS = (ConfigureElectronicNavigationalCharts, ); }; };
@@ -646,6 +649,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				88FB703C2DCC22E900EB76E3 /* ApplySymbologyToShapefileView.swift in Copy Source Code Files */,
 				88C5E0EC2DCBC3F30091D271 /* ApplyScenePropertyExpressionsView.swift in Copy Source Code Files */,
 				00FA4E8D2DCD7536008A34CF /* ApplySimpleRendererToGraphicsOverlayView.swift in Copy Source Code Files */,
 				00FA4E692DCAD4E3008A34CF /* ApplyRGBRendererView.swift in Copy Source Code Files */,
@@ -1033,6 +1037,8 @@
 		88E52E6E2DC96C3F00F48409 /* ApplyHillshadeRendererToRasterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyHillshadeRendererToRasterView.swift; sourceTree = "<group>"; };
 		88E52E802DCA703B00F48409 /* ApplyHillshadeRendererToRasterView.SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyHillshadeRendererToRasterView.SettingsView.swift; sourceTree = "<group>"; };
 		88F93CC029C3D59C0006B28E /* CreateAndEditGeometriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAndEditGeometriesView.swift; sourceTree = "<group>"; };
+		88FB70382DCC207B00EB76E3 /* ApplySymbologyToShapefileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplySymbologyToShapefileView.swift; sourceTree = "<group>"; };
+		88FB70D02DCC247B00EB76E3 /* Aurora_CO_shp */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Aurora_CO_shp; sourceTree = "<group>"; };
 		9503056D2C46ECB70091B32D /* ShowDeviceLocationUsingIndoorPositioningView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowDeviceLocationUsingIndoorPositioningView.Model.swift; sourceTree = "<group>"; };
 		9537AFD62C220EF0000923C5 /* ExchangeSetwithoutUpdates */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExchangeSetwithoutUpdates; sourceTree = "<group>"; };
 		9547085B2C3C719800CA8579 /* EditFeatureAttachmentsView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFeatureAttachmentsView.Model.swift; sourceTree = "<group>"; };
@@ -1444,6 +1450,7 @@
 				00FA4E8A2DCD7233008A34CF /* Apply simple renderer to graphics overlay */,
 				4C8126DB2DBBCED7006EF7D2 /* Apply style to WMS layer */,
 				D71D9B122DC430F800FF2D5A /* Apply terrain exaggeration */,
+				88FB70372DCC204800EB76E3 /* Apply symbology to shapefile */,
 				D75362CC2A1E862B00D83028 /* Apply unique value renderer */,
 				1C8EC7422BAE2891001A6929 /* Augment reality to collect data */,
 				D7084FA42AD771AA00EC7F4F /* Augment reality to fly over scene */,
@@ -1712,6 +1719,7 @@
 				00D4EF8128638BF100B9CC30 /* cb1b20748a9f4d128dad8a87244e3e37 */,
 				4C81274E2DCADC82006EF7D2 /* cc68728b5904403ba637e1f1cd2995ae */,
 				4D126D7629CA3B3F00CFB7A7 /* d5bad9f4fee9483791e405880fb466da */,
+				88FB703A2DCC211E00EB76E3 /* d98b3e5293834c5f852f13c569930caa */,
 				D77572AC2A295DC100F490CD /* d1453556d91e46dea191c20c398b82cd */,
 				D75E5EEB2CC0466900252595 /* da301cb122874d5497f8a8f6c81eb36e */,
 				D7E7D0862AEB3C36003AAD02 /* df193653ed39449195af0c9725701dca */,
@@ -2227,6 +2235,22 @@
 				88F93CC029C3D59C0006B28E /* CreateAndEditGeometriesView.swift */,
 			);
 			path = "Create and edit geometries";
+			sourceTree = "<group>";
+		};
+		88FB70372DCC204800EB76E3 /* Apply symbology to shapefile */ = {
+			isa = PBXGroup;
+			children = (
+				88FB70382DCC207B00EB76E3 /* ApplySymbologyToShapefileView.swift */,
+			);
+			path = "Apply symbology to shapefile";
+			sourceTree = "<group>";
+		};
+		88FB703A2DCC211E00EB76E3 /* d98b3e5293834c5f852f13c569930caa */ = {
+			isa = PBXGroup;
+			children = (
+				88FB70D02DCC247B00EB76E3 /* Aurora_CO_shp */,
+			);
+			path = d98b3e5293834c5f852f13c569930caa;
 			sourceTree = "<group>";
 		};
 		9537AFC82C220ECB000923C5 /* 9d2987a825c646468b3ce7512fb76e2d */ = {
@@ -3616,6 +3640,7 @@
 					ApplyHillshadeRendererToRaster,
 					ApplyRgbRenderer,
 					ApplyScheduledUpdatesToPreplannedMapArea,
+					ApplySymbologyToShapefile,
 					AugmentRealityToShowTabletopScene,
 					ChangeCameraController,
 					ConfigureElectronicNavigationalCharts,
@@ -3710,6 +3735,7 @@
 				D701D72C2A37C7F7006FF0C8 /* bradley_low_3ds in Resources */,
 				D7CDD38F2CB872EA00DE9766 /* sandiego-north-balboa-pointcloud.slpk in Resources */,
 				00D4EF9A28638BF100B9CC30 /* AuroraCO.gpkg in Resources */,
+				88FB70D12DCC248400EB76E3 /* Aurora_CO_shp in Resources */,
 				D7C16D282AC5FEB700689E89 /* Hawaii.csv in Resources */,
 				D73571D72CB613220046A433 /* hydrography in Resources */,
 				D7BEBAC92CBDC81200F882E7 /* MontereyElevation.tpkx in Resources */,
@@ -4037,6 +4063,7 @@
 				D7B759B32B1FFBE300017FDD /* FavoritesView.swift in Sources */,
 				D722BD222A420DAD002C2087 /* ShowExtrudedFeaturesView.swift in Sources */,
 				E004A6F6284FA42A002A1FE6 /* SelectFeaturesInFeatureLayerView.swift in Sources */,
+				88FB70392DCC207B00EB76E3 /* ApplySymbologyToShapefileView.swift in Sources */,
 				1C3892312DC59E6000ADFDDC /* ApplyBlendRendererToHillshadeView.SettingsView.swift in Sources */,
 				D77688132B69826B007C3860 /* ListSpatialReferenceTransformationsView.swift in Sources */,
 				00FA4E682DCA87A9008A34CF /* ApplyRGBRendererView.RangeSlider.swift in Sources */,
