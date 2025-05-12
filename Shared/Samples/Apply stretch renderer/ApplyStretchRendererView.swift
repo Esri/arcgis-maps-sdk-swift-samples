@@ -134,7 +134,7 @@ struct ApplyStretchRendererView: View {
                         case .percentClip: "PercentClip"
                         case .standardDeviation: "StdDeviation"
                         }
-                        Text(label).tag(stretchType)
+                        Text(label)
                     }
                 }
             }
