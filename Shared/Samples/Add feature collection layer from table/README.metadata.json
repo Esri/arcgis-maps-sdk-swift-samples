@@ -1,0 +1,33 @@
+{
+    "category": "Layers",
+    "description": "Create a feature collection layer from a feature collection table, and add it to a map.",
+    "ignore": false,
+    "images": [
+        "add-feature-collection-layer-from-table.png"
+    ],
+    "keywords": [
+        "collection",
+        "feature",
+        "layers",
+        "table",
+        "Feature",
+        "FeatureCollection",
+        "FeatureCollectionLayer",
+        "FeatureCollectionTable",
+        "Field",
+        "SimpleRenderer"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Feature",
+        "FeatureCollection",
+        "FeatureCollectionLayer",
+        "FeatureCollectionTable",
+        "Field",
+        "SimpleRenderer"
+    ],
+    "snippets": [
+        "AddFeatureCollectionLayerFromTableView.swift"
+    ],
+    "title": "Add feature collection layer from table"
+}

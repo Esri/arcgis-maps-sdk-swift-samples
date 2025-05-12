@@ -1,0 +1,31 @@
+{
+    "category": "Visualization",
+    "description": "Apply a colormap renderer to a raster.",
+    "ignore": false,
+    "images": [
+        "apply-colormap-renderer-to-raster.png"
+    ],
+    "keywords": [
+        "colormap",
+        "data",
+        "raster",
+        "renderer",
+        "visualization",
+        "ColormapRenderer",
+        "Raster",
+        "RasterLayer"
+    ],
+    "offline_data": [
+        "cc68728b5904403ba637e1f1cd2995ae"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "ColormapRenderer",
+        "Raster",
+        "RasterLayer"
+    ],
+    "snippets": [
+        "ApplyColormapRendererToRasterView.swift"
+    ],
+    "title": "Apply colormap renderer to raster"
+}
