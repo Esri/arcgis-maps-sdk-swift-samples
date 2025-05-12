@@ -127,7 +127,7 @@ struct ApplyStretchRendererView: View {
     var settingsForm: some View {
         Form {
             Section {
-                Picker("Stretch Type", selection: $rendererSettings.stretchType.animation()) {
+                Picker("Stretch Type", selection: $rendererSettings.stretchType) {
                     ForEach(RendererSettings.StretchType.allCases, id: \.self) { stretchType in
                         let label = switch stretchType {
                         case .minMax: "MinMax"
@@ -237,5 +237,6 @@ struct ApplyStretchRendererView: View {
             }
             .multilineTextAlignment(.trailing)
         }
+        .animation(.default, value: rendererSettings.stretchType)
     }
 }
