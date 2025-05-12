@@ -60,7 +60,7 @@ struct ApplyClassBreaksRendererToSublayerView: View {
                     Toggle("Change Sublayer Renderer", isOn: $applyClassBreaksRenderer)
                 }
             }
-            .task(id: applyClassBreaksRenderer) {
+            .onChange(of: applyClassBreaksRenderer) {
                 if applyClassBreaksRenderer {
                     // Applies the class breaks renderer.
                     countiesLayer?.renderer = .populationRenderer
