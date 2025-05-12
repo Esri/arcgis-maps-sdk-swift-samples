@@ -25,7 +25,7 @@ When opened, the sample displays a scene with a terrain surface applied. Pan and
 
 ## Offline data
 
-This sample uses the [MontereyElevation](https://www.arcgis.com/home/item.html?id=98092369c4ae4d549bbbd45dba993ebc) raster. It is downloaded from ArcGIS Online automatically.
+This sample uses the [Monterey Elevation](https://www.arcgis.com/home/item.html?id=98092369c4ae4d549bbbd45dba993ebc) raster. It is downloaded from ArcGIS Online automatically.
 
 ## Additional information
 
