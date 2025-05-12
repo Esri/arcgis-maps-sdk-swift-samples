@@ -17,38 +17,18 @@ import ArcGISToolkit
 import SwiftUI
 
 extension AuthenticateWithIntegratedWindowsAuthenticationView {
+    @MainActor
     class Model: ObservableObject {
+        /// The authenticator to handle authentication challenges.
+        let authenticator = Authenticator(promptForUntrustedHosts: true)
+        @Published var portalURLString = ""
+        @Published var portalContent: Result<PortalQueryResultSet<PortalItem>, Error>?
+        @Published var isConnecting = false
         
-    }
-}
-
-struct AuthenticateWithIntegratedWindowsAuthenticationView: View {
-    /// The authenticator to handle authentication challenges.
-    @StateObject private var authenticator = Authenticator(promptForUntrustedHosts: true)
-    
-//    @State private var map: Map?
-    
-//    @State private var isPortalContentPresented = false
-    
-    var body: some View {
-        VStack {
-            PortalContentView()
-        }
-//        .toolbar {
-//            ToolbarItem(placement: .bottomBar) {
-//                Button("Portal Content") {
-//                    isPortalContentPresented = true
-//                }
-//                .popover(isPresented: $isPortalContentPresented) {
-//                    PortalContentView(selection: $map)
-//                        .presentationDetents([.medium])
-//                        .frame(idealWidth: 320, idealHeight: 380)
-//                }
-//            }
-//        }
-        .authenticator(authenticator)
-        .onAppear {
-            // Setting the challenge handlers here in `onAppear` so user is prompted to enter
+        var portalURL: URL? { URL(string: portalURLString) }
+        
+        init() {
+            // Setting the challenge handlers here when the model is created so user is prompted to enter
             // credentials every time trying the sample. In real world applications, set challenge
             // handlers at the start of the application.
             
@@ -60,96 +40,8 @@ struct AuthenticateWithIntegratedWindowsAuthenticationView: View {
             // keychain and remove `signOut()` from `onDisappear`.
             // setupPersistentCredentialStorage()
         }
-//        .onDisappear {
-//            // Resetting the challenge handlers and clearing credentials here in `onDisappear`
-//            // so user is prompted to enter credentials every time trying the sample. In real
-//            // world applications, do these from sign out functionality of the application.
-//            
-//            // Resets challenge handlers.
-//            ArcGISEnvironment.authenticationManager.handleChallenges(using: nil)
-//            
-//            signOut()
-//        }
-    }
-    
-    /// Signs out from the portal by revoking OAuth tokens and clearing credential stores.
-    private func signOut() {
-        Task {
-            await ArcGISEnvironment.authenticationManager.revokeOAuthTokens()
-            await ArcGISEnvironment.authenticationManager.clearCredentialStores()
-        }
-    }
-    
-    /// Sets up new ArcGIS and Network credential stores that will be persisted in the keychain.
-    private func setupPersistentCredentialStorage() {
-        Task {
-            try await ArcGISEnvironment.authenticationManager.setupPersistentCredentialStorage(
-                access: .whenUnlockedThisDeviceOnly,
-                synchronizesWithiCloud: false
-            )
-        }
-    }
-}
-
-#Preview {
-    AuthenticateWithIntegratedWindowsAuthenticationView()
-}
-
-extension AuthenticateWithIntegratedWindowsAuthenticationView {
-    struct PortalContentView: View {
-        @State private var portalURLString = ""
-        @State private var portalContent: Result<PortalQueryResultSet<PortalItem>, Error>?
-        @State private var isConnecting = false
-        //@Binding var selection: Map?
         
-        var portalURL: URL? { URL(string: portalURLString) }
-        
-        var body: some View {
-            Form {
-                switch portalContent {
-                case .success(let success):
-                    ForEach(success.results, id: \.id?.rawValue) { item in
-                        NavigationLink(item.title) {
-                            MapView(map: Map(item: item))
-                        }
-                    }
-                case .failure:
-                    urlEntryView
-                    ContentUnavailableView(
-                        "Error",
-                        systemImage: "exclamationmark.triangle",
-                        description: Text("Error searching specified portal.")
-                    )
-                case nil:
-                    urlEntryView
-                }
-            }
-            .animation(.default, value: isConnecting)
-        }
-        
-        @ViewBuilder private var urlEntryView: some View {
-            Section {
-                HStack {
-                    TextField("Portal", text: $portalURLString)
-                        .onSubmit { Task { await connect() } }
-                        .autocapitalization(.none)
-                        .keyboardType(.URL)
-                    Button {
-                        Task { await connect() }
-                    } label: {
-                        if isConnecting {
-                            ProgressView()
-                        } else {
-                            Text("Connect")
-                        }
-                    }
-                    .disabled(portalURL == nil)
-                    .disabled(isConnecting)
-                }
-            }
-        }
-        
-        private func connect() async {
+        func connectToPortal() async {
             precondition(portalURL != nil)
             
             isConnecting = true
@@ -164,5 +56,88 @@ extension AuthenticateWithIntegratedWindowsAuthenticationView {
                 portalContent = .failure(error)
             }
         }
+        
+        deinit {
+            // Resetting the challenge handlers and clearing credentials here in deinit
+            // so user is prompted to enter credentials every time trying the sample. In real
+            // world applications, this sign out code may need to run at a different
+            // point in time based on the workflow desired.
+            
+            // Resets challenge handlers.
+            ArcGISEnvironment.authenticationManager.handleChallenges(using: nil)
+            
+            signOut()
+        }
+        
+        /// Signs out from the portal by revoking OAuth tokens and clearing credential stores.
+        nonisolated private func signOut() {
+            Task.detached {
+                await ArcGISEnvironment.authenticationManager.revokeOAuthTokens()
+                await ArcGISEnvironment.authenticationManager.clearCredentialStores()
+            }
+        }
+        
+        /// Sets up new ArcGIS and Network credential stores that will be persisted in the keychain.
+        private func setupPersistentCredentialStorage() {
+            Task {
+                try await ArcGISEnvironment.authenticationManager.setupPersistentCredentialStorage(
+                    access: .whenUnlockedThisDeviceOnly,
+                    synchronizesWithiCloud: false
+                )
+            }
+        }
     }
+}
+
+struct AuthenticateWithIntegratedWindowsAuthenticationView: View {
+    @StateObject private var model = Model()
+    
+    var body: some View {
+        Form {
+            switch model.portalContent {
+            case .success(let success):
+                ForEach(success.results, id: \.id?.rawValue) { item in
+                    NavigationLink(item.title) {
+                        MapView(map: Map(item: item))
+                            .navigationTitle(item.title)
+                    }
+                }
+            case .failure:
+                urlEntryView
+                ContentUnavailableView(
+                    "Error",
+                    systemImage: "exclamationmark.triangle",
+                    description: Text("Error searching specified portal.")
+                )
+            case nil:
+                if model.isConnecting {
+                    ProgressView()
+                        .frame(maxWidth: .infinity)
+                } else {
+                    urlEntryView
+                }
+            }
+        }
+        .animation(.default, value: model.isConnecting)
+        .authenticator(model.authenticator)
+    }
+    
+    @ViewBuilder private var urlEntryView: some View {
+        Section {
+            HStack {
+                TextField("Portal", text: $model.portalURLString)
+                    .onSubmit { Task { await model.connectToPortal() } }
+                    .autocapitalization(.none)
+                    .keyboardType(.URL)
+                Button("Connect") {
+                    Task { await model.connectToPortal() }
+                }
+                .disabled(model.portalURL == nil)
+            }
+        }
+    }
+}
+
+#Preview {
+    AuthenticateWithIntegratedWindowsAuthenticationView()
 }
