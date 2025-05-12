@@ -16,32 +16,36 @@ import ArcGIS
 import ArcGISToolkit
 import SwiftUI
 
+extension AuthenticateWithIntegratedWindowsAuthenticationView {
+    class Model: ObservableObject {
+        
+    }
+}
+
 struct AuthenticateWithIntegratedWindowsAuthenticationView: View {
     /// The authenticator to handle authentication challenges.
     @StateObject private var authenticator = Authenticator(promptForUntrustedHosts: true)
     
-    @State private var map: Map?
+//    @State private var map: Map?
     
-    @State private var isPortalContentPresented = false
+//    @State private var isPortalContentPresented = false
     
     var body: some View {
         VStack {
-            if let map {
-                MapView(map: map)
-            }
+            PortalContentView()
         }
-        .toolbar {
-            ToolbarItem(placement: .bottomBar) {
-                Button("Portal Content") {
-                    isPortalContentPresented = true
-                }
-                .popover(isPresented: $isPortalContentPresented) {
-                    PortalContentView(selection: $map)
-                        .presentationDetents([.medium])
-                        .frame(idealWidth: 320, idealHeight: 380)
-                }
-            }
-        }
+//        .toolbar {
+//            ToolbarItem(placement: .bottomBar) {
+//                Button("Portal Content") {
+//                    isPortalContentPresented = true
+//                }
+//                .popover(isPresented: $isPortalContentPresented) {
+//                    PortalContentView(selection: $map)
+//                        .presentationDetents([.medium])
+//                        .frame(idealWidth: 320, idealHeight: 380)
+//                }
+//            }
+//        }
         .authenticator(authenticator)
         .onAppear {
             // Setting the challenge handlers here in `onAppear` so user is prompted to enter
@@ -56,16 +60,16 @@ struct AuthenticateWithIntegratedWindowsAuthenticationView: View {
             // keychain and remove `signOut()` from `onDisappear`.
             // setupPersistentCredentialStorage()
         }
-        .onDisappear {
-            // Resetting the challenge handlers and clearing credentials here in `onDisappear`
-            // so user is prompted to enter credentials every time trying the sample. In real
-            // world applications, do these from sign out functionality of the application.
-            
-            // Resets challenge handlers.
-            ArcGISEnvironment.authenticationManager.handleChallenges(using: nil)
-            
-            signOut()
-        }
+//        .onDisappear {
+//            // Resetting the challenge handlers and clearing credentials here in `onDisappear`
+//            // so user is prompted to enter credentials every time trying the sample. In real
+//            // world applications, do these from sign out functionality of the application.
+//            
+//            // Resets challenge handlers.
+//            ArcGISEnvironment.authenticationManager.handleChallenges(using: nil)
+//            
+//            signOut()
+//        }
     }
     
     /// Signs out from the portal by revoking OAuth tokens and clearing credential stores.
@@ -96,7 +100,7 @@ extension AuthenticateWithIntegratedWindowsAuthenticationView {
         @State private var portalURLString = ""
         @State private var portalContent: Result<PortalQueryResultSet<PortalItem>, Error>?
         @State private var isConnecting = false
-        @Binding var selection: Map?
+        //@Binding var selection: Map?
         
         var portalURL: URL? { URL(string: portalURLString) }
         
@@ -105,10 +109,9 @@ extension AuthenticateWithIntegratedWindowsAuthenticationView {
                 switch portalContent {
                 case .success(let success):
                     ForEach(success.results, id: \.id?.rawValue) { item in
-                        Text(item.title)
-                            .onTapGesture {
-                                selection = Map(item: item)
-                            }
+                        NavigationLink(item.title) {
+                            MapView(map: Map(item: item))
+                        }
                     }
                 case .failure:
                     urlEntryView
