@@ -61,12 +61,12 @@ struct ApplyClassBreaksRendererToSublayerView: View {
                 }
             }
             .onChange(of: applyClassBreaksRenderer) {
-                if applyClassBreaksRenderer {
+                countiesLayer?.renderer = if applyClassBreaksRenderer {
                     // Applies the class breaks renderer.
-                    countiesLayer?.renderer = .populationRenderer
+                    .populationRenderer
                 } else {
                     // Applies the original renderer.
-                    countiesLayer?.renderer = originalRenderer
+                    originalRenderer
                 }
             }
             .errorAlert(presentingError: $error)
