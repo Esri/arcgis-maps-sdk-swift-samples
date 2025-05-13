@@ -3,21 +3,24 @@
     "description": "Connect to an IWA secured Portal and search for maps.",
     "ignore": false,
     "images": [
-        "authenticate-with-integrated-windows-authentication.png"
+        "authenticate-with-integrated-windows-authentication-1.png",
+        "authenticate-with-integrated-windows-authentication-2.png",
+        "authenticate-with-integrated-windows-authentication-3.png"
     ],
     "keywords": [
         "Portal",
         "Windows",
         "authentication",
         "security",
-        "ArcGISNetworkCredential",
-        "ArcGISPortal",
+        "IWA",
+        "Authenticator",
         "AuthenticationManager"
     ],
     "redirect_from": [],
     "relevant_apis": [
-        "ArcGISNetworkCredential",
-        "ArcGISPortal",
+        "Portal",
+        "ArcGISEnvironment",
+        "Authenticator",
         "AuthenticationManager"
     ],
     "snippets": [
