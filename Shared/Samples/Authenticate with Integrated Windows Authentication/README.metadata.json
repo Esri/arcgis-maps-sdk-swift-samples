@@ -8,13 +8,13 @@
         "authenticate-with-integrated-windows-authentication-3.png"
     ],
     "keywords": [
-        "Portal",
-        "Windows",
         "authentication",
-        "security",
-        "IWA",
         "Authenticator",
-        "AuthenticationManager"
+        "AuthenticationManager",
+        "IWA",
+        "Portal",
+        "security",
+        "Windows"
     ],
     "redirect_from": [],
     "relevant_apis": [
