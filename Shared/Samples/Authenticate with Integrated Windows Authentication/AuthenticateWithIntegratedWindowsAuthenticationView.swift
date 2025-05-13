@@ -79,7 +79,7 @@ struct AuthenticateWithIntegratedWindowsAuthenticationView: View {
     @ViewBuilder private var urlEntryView: some View {
         Section {
             HStack {
-                TextField("Portal", text: $model.portalURLString)
+                TextField("IWA Secured Portal URL", text: $model.portalURLString)
                     .onSubmit { Task { await model.connectToPortal() } }
                     .autocapitalization(.none)
                     .keyboardType(.URL)
