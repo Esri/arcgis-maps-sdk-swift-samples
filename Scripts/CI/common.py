@@ -31,7 +31,9 @@ exception_proper_nouns = {
     'OAuth',
     'OpenStreetMap',
     'SwiftUI',
-    'Web Mercator'
+    'Web Mercator',
+    'Windows',
+    'Authentication'
 }
 
 # A set of category folder names.
