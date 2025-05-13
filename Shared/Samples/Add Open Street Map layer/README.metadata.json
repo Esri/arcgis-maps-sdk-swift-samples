@@ -2,7 +2,9 @@
     "category": "Layers",
     "description": "Add OpenStreetMap as a basemap layer.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "add-open-street-map-layer.png"
+    ],
     "keywords": [
         "OSM",
         "Open Street Map",
