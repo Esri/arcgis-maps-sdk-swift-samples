@@ -29,7 +29,6 @@ exception_proper_nouns = {
     'GeoPackage',
     'OAuth',
     'OpenStreetMap',
-    'Add Open Street Map layer',
     'SwiftUI',
     'Web Mercator'
 }

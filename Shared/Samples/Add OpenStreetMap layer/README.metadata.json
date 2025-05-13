@@ -7,12 +7,9 @@
     ],
     "keywords": [
         "OSM",
-        "Open Street Map",
+        "OpenStreetMap",
         "basemap",
         "layers",
-        "map",
-        "open",
-        "street",
         "Basemap.Style",
         "Map",
         "MapView"
@@ -26,5 +23,5 @@
     "snippets": [
         "AddOpenStreetMapLayerView.swift"
     ],
-    "title": "Add Open Street Map layer"
+    "title": "Add OpenStreetMap layer"
 }

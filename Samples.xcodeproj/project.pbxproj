@@ -1430,7 +1430,7 @@
 				D713C6D42CB990600073AA72 /* Add KML layer */,
 				D751B4C72CD3E572005CE750 /* Add KML layer with network links */,
 				D7DFA0E92CBA0242007C31F2 /* Add map image layer */,
-				88FB70D62DD3DF1C00EB76E3 /* Add Open Street Map layer */,
+				88FB70D62DD3DF1C00EB76E3 /* Add OpenStreetMap layer */,
 				D7CDD3882CB86F0A00DE9766 /* Add point cloud layer from file */,
 				D7848ED72CBD85A300F6F546 /* Add point scene layer */,
 				F19A316128906F0D003B7EF9 /* Add raster from file */,
@@ -2284,12 +2284,12 @@
 			path = d98b3e5293834c5f852f13c569930caa;
 			sourceTree = "<group>";
 		};
-		88FB70D62DD3DF1C00EB76E3 /* Add Open Street Map layer */ = {
+		88FB70D62DD3DF1C00EB76E3 /* Add OpenStreetMap layer */ = {
 			isa = PBXGroup;
 			children = (
 				88FB70D72DD3DF3700EB76E3 /* AddOpenStreetMapLayerView.swift */,
 			);
-			path = "Add Open Street Map layer";
+			path = "Add OpenStreetMap layer";
 			sourceTree = "<group>";
 		};
 		9537AFC82C220ECB000923C5 /* 9d2987a825c646468b3ce7512fb76e2d */ = {

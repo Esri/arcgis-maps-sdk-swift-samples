@@ -1,6 +1,6 @@
-# Add Open Street Map layer
+# Add OpenStreetMap layer
 
-Add OpenStreetMap as a basemap layer.
+Add an OpenStreetMap basemap.
 
 ![Image of add open street map layer](add-open-street-map-layer.png)
 
@@ -33,4 +33,4 @@ Esri now hosts an [OpenStreetMap vector layer on ArcGIS Online](http://www.arcgi
 
 ## Tags
 
-basemap, layers, map, open, Open Street Map, OSM, street
+basemap, layers, map, open, OpenStreetMap, OSM, street
