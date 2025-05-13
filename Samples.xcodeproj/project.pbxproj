@@ -118,6 +118,8 @@
 		10BD9EB52BF51F9000ABDBD5 /* GenerateOfflineMapWithCustomParametersView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 10BD9EB32BF51B4B00ABDBD5 /* GenerateOfflineMapWithCustomParametersView.Model.swift */; };
 		10CFF4CA2DBAAFAC0027F144 /* AddFeatureLayerWithTimeOffsetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10CFF4C92DBAAFAC0027F144 /* AddFeatureLayerWithTimeOffsetView.swift */; };
 		10CFF5082DC1A3850027F144 /* AddFeatureLayerWithTimeOffsetView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 10CFF4C92DBAAFAC0027F144 /* AddFeatureLayerWithTimeOffsetView.swift */; };
+		10CFF50B2DC2EC990027F144 /* ApplyClassBreaksRendererToSublayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10CFF50A2DC2EC990027F144 /* ApplyClassBreaksRendererToSublayerView.swift */; };
+		10CFF54C2DCD4DFA0027F144 /* ApplyClassBreaksRendererToSublayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 10CFF50A2DC2EC990027F144 /* ApplyClassBreaksRendererToSublayerView.swift */; };
 		10D321932BDB187400B39B1B /* naperville_imagery.tpkx in Resources */ = {isa = PBXBuildFile; fileRef = 10D321922BDB187400B39B1B /* naperville_imagery.tpkx */; settings = {ASSET_TAGS = (GenerateOfflineMapWithLocalBasemap, ); }; };
 		10D321962BDB1CB500B39B1B /* GenerateOfflineMapWithLocalBasemapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D321952BDB1CB500B39B1B /* GenerateOfflineMapWithLocalBasemapView.swift */; };
 		10D321972BDC3B4900B39B1B /* GenerateOfflineMapWithLocalBasemapView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 10D321952BDB1CB500B39B1B /* GenerateOfflineMapWithLocalBasemapView.swift */; };
@@ -668,6 +670,7 @@
 				4C8127682DCD4F18006EF7D2 /* ApplyStretchRendererView.swift in Copy Source Code Files */,
 				00FA4E5F2DC568DF008A34CF /* AddRastersAndFeatureTablesFromGeopackageView.swift in Copy Source Code Files */,
 				0072C7FB2DBAC1A0001502CA /* AddIntegratedMeshLayerView.swift in Copy Source Code Files */,
+				10CFF54C2DCD4DFA0027F144 /* ApplyClassBreaksRendererToSublayerView.swift in Copy Source Code Files */,
 				1C38915E2DBC3EDC00ADFDDC /* AddWFSLayerView.swift in Copy Source Code Files */,
 				1C29C95A2DBAE5770074028F /* AddWMTSLayerView.swift in Copy Source Code Files */,
 				004421912DB96A7800249FEE /* AddFeatureCollectionLayerFromQueryView.swift in Copy Source Code Files */,
@@ -977,6 +980,7 @@
 		10B782072BE5A058007EAE6C /* GenerateOfflineMapWithCustomParametersView.CustomParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateOfflineMapWithCustomParametersView.CustomParameters.swift; sourceTree = "<group>"; };
 		10BD9EB32BF51B4B00ABDBD5 /* GenerateOfflineMapWithCustomParametersView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateOfflineMapWithCustomParametersView.Model.swift; sourceTree = "<group>"; };
 		10CFF4C92DBAAFAC0027F144 /* AddFeatureLayerWithTimeOffsetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFeatureLayerWithTimeOffsetView.swift; sourceTree = "<group>"; };
+		10CFF50A2DC2EC990027F144 /* ApplyClassBreaksRendererToSublayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyClassBreaksRendererToSublayerView.swift; sourceTree = "<group>"; };
 		10D321922BDB187400B39B1B /* naperville_imagery.tpkx */ = {isa = PBXFileReference; lastKnownFileType = file; path = naperville_imagery.tpkx; sourceTree = "<group>"; };
 		10D321952BDB1CB500B39B1B /* GenerateOfflineMapWithLocalBasemapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateOfflineMapWithLocalBasemapView.swift; sourceTree = "<group>"; };
 		1C0C1C3429D34DAE005C8B24 /* ChangeViewpointView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeViewpointView.swift; sourceTree = "<group>"; };
@@ -1440,6 +1444,7 @@
 				D7C16D172AC5F6C100689E89 /* Animate 3D graphic */,
 				D77570BC2A29427200F490CD /* Animate images with image overlay */,
 				1C38915F2DC02F0800ADFDDC /* Apply blend renderer to hillshade */,
+				10CFF5092DC2EC3E0027F144 /* Apply class breaks renderer to sublayer */,
 				4C81273A2DCA9E03006EF7D2 /* Apply colormap renderer to raster */,
 				D7F2A02C2CD00F1C0008D981 /* Apply dictionary renderer to feature layer */,
 				D70789912CD160FD000DF215 /* Apply dictionary renderer to graphics overlay */,
@@ -1890,6 +1895,14 @@
 				10CFF4C92DBAAFAC0027F144 /* AddFeatureLayerWithTimeOffsetView.swift */,
 			);
 			path = "Add feature layer with time offset";
+			sourceTree = "<group>";
+		};
+		10CFF5092DC2EC3E0027F144 /* Apply class breaks renderer to sublayer */ = {
+			isa = PBXGroup;
+			children = (
+				10CFF50A2DC2EC990027F144 /* ApplyClassBreaksRendererToSublayerView.swift */,
+			);
+			path = "Apply class breaks renderer to sublayer";
 			sourceTree = "<group>";
 		};
 		10D321912BDB187400B39B1B /* 85282f2aaa2844d8935cdb8722e22a93 */ = {
@@ -4132,6 +4145,7 @@
 				E066DD4028610F55004D3D5B /* AddSceneLayerFromServiceView.swift in Sources */,
 				D7F8C0392B60564D0072BFA7 /* AddFeaturesWithContingentValuesView.swift in Sources */,
 				00F279D62AF418DC00CECAF8 /* AddDynamicEntityLayerView.VehicleCallout.swift in Sources */,
+				10CFF50B2DC2EC990027F144 /* ApplyClassBreaksRendererToSublayerView.swift in Sources */,
 				D7749AD62AF08BF50086632F /* FindRouteInTransportNetworkView.Model.swift in Sources */,
 				D73F06692B5EE73D000B574F /* QueryFeaturesWithArcadeExpressionView.swift in Sources */,
 				D7464F1E2ACE04B3007FEE88 /* IdentifyRasterCellView.swift in Sources */,
