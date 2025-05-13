@@ -18,10 +18,10 @@
     ],
     "redirect_from": [],
     "relevant_apis": [
-        "Portal",
         "ArcGISEnvironment",
         "Authenticator",
-        "AuthenticationManager"
+        "AuthenticationManager",
+        "Portal"
     ],
     "snippets": [
         "AuthenticateWithIntegratedWindowsAuthenticationView.swift"
