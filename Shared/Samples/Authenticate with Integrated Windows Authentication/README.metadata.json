@@ -19,8 +19,8 @@
     "redirect_from": [],
     "relevant_apis": [
         "ArcGISEnvironment",
-        "Authenticator",
         "AuthenticationManager",
+        "Authenticator",
         "Portal"
     ],
     "snippets": [
