@@ -1,6 +1,6 @@
 {
-    "category": "Layers",
-    "description": "Add OpenStreetMap as a basemap layer.",
+    "category": "Maps",
+    "description": "Add an OpenStreetMap basemap.",
     "ignore": false,
     "images": [
         "add-open-street-map-layer.png"
