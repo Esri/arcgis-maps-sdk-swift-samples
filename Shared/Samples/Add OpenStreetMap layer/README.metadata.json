@@ -10,6 +10,9 @@
         "OpenStreetMap",
         "basemap",
         "layers",
+        "map",
+        "open",
+        "street",
         "Basemap.Style",
         "Map",
         "MapView"
