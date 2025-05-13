@@ -13,19 +13,15 @@
         "map",
         "open",
         "street",
-        "Basemap",
-        "Basemap.CreateOpenStreetMap",
+        "Basemap.Style",
         "Map",
-        "MapView",
-        "OpenStreetMapLayer"
+        "MapView"
     ],
     "redirect_from": [],
     "relevant_apis": [
-        "Basemap",
-        "Basemap.CreateOpenStreetMap",
+        "Basemap.Style",
         "Map",
-        "MapView",
-        "OpenStreetMapLayer"
+        "MapView"
     ],
     "snippets": [
         "AddOpenStreetMapLayerView.swift"

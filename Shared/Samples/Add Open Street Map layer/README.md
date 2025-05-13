@@ -2,7 +2,7 @@
 
 Add OpenStreetMap as a basemap layer.
 
-![Image of add open street map layer](AddOpenStreetMapLayer.jpg)
+![Image of add open street map layer](add-open-street-map-layer.png)
 
 ## Use case
 
@@ -10,21 +10,18 @@ Add OpenStreetMap as a basemap layer.
 
 ## How to use the sample
 
-When the sample opens, it will automatically display the map with the OpenStreetMap basemap. Pan and zoom to observe the basemap.
+When the sample opens, it will automatically display the map with the OpenStreetMap standard basemap style. Pan and zoom to observe the basemap.
 
 ## How it works
 
-1. Create a basemap with the static method `Basemap.CreateOpenStreetMap`
-2. Create a map with that basemap.
-3. Show the map in a map view.
+1. Create a map with the OSM basemap style.
+2. Show the map in a map view.
 
 ## Relevant API
 
-* Basemap
-* Basemap.CreateOpenStreetMap
+* Basemap.Style
 * Map
 * MapView
-* OpenStreetMapLayer
 
 ## Additional information
 
