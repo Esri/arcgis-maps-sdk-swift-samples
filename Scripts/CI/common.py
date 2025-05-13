@@ -26,14 +26,12 @@ exception_proper_nouns = {
     'Arcade',
     'ArcGIS Online',
     'ArcGIS Pro',
+    'Authenticate with Integrated Windows Authentication',
     'GeoPackage',
-    'Integrated',
     'OAuth',
     'OpenStreetMap',
     'SwiftUI',
-    'Web Mercator',
-    'Windows',
-    'Authentication'
+    'Web Mercator'
 }
 
 # A set of category folder names.

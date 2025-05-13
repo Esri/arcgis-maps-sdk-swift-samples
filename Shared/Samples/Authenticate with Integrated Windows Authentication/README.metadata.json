@@ -8,13 +8,13 @@
         "authenticate-with-integrated-windows-authentication-3.png"
     ],
     "keywords": [
+        "Windows",
         "authentication",
-        "Authenticator",
-        "AuthenticationManager",
-        "IWA",
-        "Portal",
         "security",
-        "Windows"
+        "ArcGISEnvironment",
+        "AuthenticationManager",
+        "Authenticator",
+        "Portal"
     ],
     "redirect_from": [],
     "relevant_apis": [
