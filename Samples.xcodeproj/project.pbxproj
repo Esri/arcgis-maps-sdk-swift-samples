@@ -139,6 +139,8 @@
 		1C26ED202A8BEC63009B7721 /* FilterFeaturesInSceneView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C26ED152A859525009B7721 /* FilterFeaturesInSceneView.swift */; };
 		1C293D012DCA7C99000B0822 /* ApplyBlendRendererToHillshadeView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C3891602DC02F1100ADFDDC /* ApplyBlendRendererToHillshadeView.swift */; };
 		1C293D032DCA7C99000B0822 /* ApplyBlendRendererToHillshadeView.SettingsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C3892302DC59E5D00ADFDDC /* ApplyBlendRendererToHillshadeView.SettingsView.swift */; };
+		1C293D502DCEA74C000B0822 /* AuthenticateWithTokenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C293D4E2DCEA74C000B0822 /* AuthenticateWithTokenView.swift */; };
+		1C293D512DCEA74C000B0822 /* AuthenticateWithTokenView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C293D4E2DCEA74C000B0822 /* AuthenticateWithTokenView.swift */; };
 		1C29C9592DBAE50D0074028F /* AddWMTSLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C29C9532DBAE50D0074028F /* AddWMTSLayerView.swift */; };
 		1C29C95A2DBAE5770074028F /* AddWMTSLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C29C9532DBAE50D0074028F /* AddWMTSLayerView.swift */; };
 		1C38915D2DBC36C800ADFDDC /* AddWFSLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C38915C2DBC36C700ADFDDC /* AddWFSLayerView.swift */; };
@@ -771,6 +773,7 @@
 				D7F8C03B2B6056790072BFA7 /* AddFeaturesWithContingentValuesView.swift in Copy Source Code Files */,
 				D73F066C2B5EE760000B574F /* QueryFeaturesWithArcadeExpressionView.swift in Copy Source Code Files */,
 				D718A1F02B57602000447087 /* ManageBookmarksView.swift in Copy Source Code Files */,
+				1C293D512DCEA74C000B0822 /* AuthenticateWithTokenView.swift in Copy Source Code Files */,
 				D77BC53C2B59A309007B49B6 /* StylePointWithDistanceCompositeSceneSymbolView.swift in Copy Source Code Files */,
 				D718A1E82B571C9100447087 /* OrbitCameraAroundObjectView.Model.swift in Copy Source Code Files */,
 				D76929FB2B4F795C0047205E /* OrbitCameraAroundObjectView.swift in Copy Source Code Files */,
@@ -990,6 +993,7 @@
 		1C2538522BABACB100337307 /* AugmentRealityToNavigateRouteView.ARSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AugmentRealityToNavigateRouteView.ARSceneView.swift; sourceTree = "<group>"; };
 		1C2538532BABACB100337307 /* AugmentRealityToNavigateRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AugmentRealityToNavigateRouteView.swift; sourceTree = "<group>"; };
 		1C26ED152A859525009B7721 /* FilterFeaturesInSceneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterFeaturesInSceneView.swift; sourceTree = "<group>"; };
+		1C293D4E2DCEA74C000B0822 /* AuthenticateWithTokenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticateWithTokenView.swift; sourceTree = "<group>"; };
 		1C29C9532DBAE50D0074028F /* AddWMTSLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWMTSLayerView.swift; sourceTree = "<group>"; };
 		1C38915C2DBC36C700ADFDDC /* AddWFSLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWFSLayerView.swift; sourceTree = "<group>"; };
 		1C3891602DC02F1100ADFDDC /* ApplyBlendRendererToHillshadeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyBlendRendererToHillshadeView.swift; sourceTree = "<group>"; };
@@ -1412,6 +1416,7 @@
 			isa = PBXGroup;
 			children = (
 				0000FB6D2BBDB17600845921 /* Add 3D tiles layer */,
+				1C293D4F2DCEA74C000B0822 /* Authenticate with token */,
 				79D84D0C2A815BED00F45262 /* Add custom dynamic entity data source */,
 				4D2ADC3E29C26D05003B367F /* Add dynamic entity layer */,
 				D7848EFD2CBD986400F6F546 /* Add elevation source from raster */,
@@ -1954,6 +1959,14 @@
 				1C26ED152A859525009B7721 /* FilterFeaturesInSceneView.swift */,
 			);
 			path = "Filter features in scene";
+			sourceTree = "<group>";
+		};
+		1C293D4F2DCEA74C000B0822 /* Authenticate with token */ = {
+			isa = PBXGroup;
+			children = (
+				1C293D4E2DCEA74C000B0822 /* AuthenticateWithTokenView.swift */,
+			);
+			path = "Authenticate with token";
 			sourceTree = "<group>";
 		};
 		1C29C9622DBAE5D10074028F /* Add WMTS layer */ = {
@@ -3900,6 +3913,7 @@
 				D757D14B2B6C46E50065F78F /* ListSpatialReferenceTransformationsView.Model.swift in Sources */,
 				218F35B829C28F4A00502022 /* AuthenticateWithOAuthView.swift in Sources */,
 				79B7B80A2A1BF8EC00F57C27 /* CreateAndSaveKMLView.swift in Sources */,
+				1C293D502DCEA74C000B0822 /* AuthenticateWithTokenView.swift in Sources */,
 				D7C6420C2B4F47E10042B8F7 /* SearchForWebMapView.Model.swift in Sources */,
 				000D43162B9918420003D3C2 /* ConfigureBasemapStyleParametersView.swift in Sources */,
 				7573E81C29D6134C00BEED9C /* TraceUtilityNetworkView.Enums.swift in Sources */,

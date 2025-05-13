@@ -1,0 +1,35 @@
+{
+    "category": "Cloud and Portal",
+    "description": "Access a web map that is secured with ArcGIS token-based authentication.",
+    "ignore": false,
+    "images": [
+        "authenticate-with-token1.png",
+        "authenticate-with-token2.png",
+    ],
+    "keywords": [
+        "authentication",
+        "cloud",
+        "portal",
+        "remember",
+        "security",
+        "AuthenticationManager",
+        "Authenticator",
+        "Map",
+        "MapView",
+        "Portal",
+        "PortalItem"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "AuthenticationManager",
+        "Authenticator",
+        "Map",
+        "MapView",
+        "Portal",
+        "PortalItem"
+    ],
+    "snippets": [
+        "AuthenticateWithTokenView.swift"
+    ],
+    "title": "Authenticate with token"
+}

@@ -1,0 +1,133 @@
+// Copyright 2025 Esri
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//   https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+import ArcGIS
+import ArcGISToolkit
+import SwiftUI
+
+struct AuthenticateWithTokenView: View {
+    /// The authenticator to handle authentication challenges.
+    @StateObject private var authenticator = Authenticator()
+    
+    /// The loaded map result.
+    @State private var mapLoadResult: Result<Map, Error>?
+    
+    /// Creates the map for this sample.
+    static func makeMap() -> Map {
+        // The portal to authenticate with named user.
+        let portal = Portal(url: .portal, connection: .authenticated)
+        
+        // The portal item to be displayed on the map.
+        let portalItem = PortalItem(
+            portal: portal,
+            id: .trafficMap
+        )
+        
+        // Creates map with portal item.
+        return Map(item: portalItem)
+    }
+    
+    var body: some View {
+        Group {
+            if let mapLoadResult = mapLoadResult {
+                switch mapLoadResult {
+                case .success(let value):
+                    MapView(map: value)
+                case .failure(let error):
+                    Text("Error loading map: \(errorString(for: error))")
+                        .padding()
+                }
+            } else {
+                ProgressView()
+                    .task {
+                        mapLoadResult = await Result { @MainActor in
+                            let map = Self.makeMap()
+                            try await map.load()
+                            try await map.operationalLayers.first?.load()
+                            return map
+                        }
+                    }
+            }
+        }
+        .authenticator(authenticator)
+        .onAppear {
+            // Setting the challenge handlers here in `onAppear` so user is prompted to enter
+            // credentials every time trying the sample. In real world applications, set challenge
+            // handlers at the start of the application.
+            
+            // Sets authenticator as ArcGIS and Network challenge handlers to handle authentication
+            // challenges.
+            ArcGISEnvironment.authenticationManager.handleChallenges(using: authenticator)
+            
+            // In real world applications, uncomment this code to persist credentials in the
+            // keychain and remove `signOut()` from `onDisappear`.
+            // setupPersistentCredentialStorage()
+        }
+        .onDisappear {
+            // Resetting the challenge handlers and clearing credentials here in `onDisappear`
+            // so user is prompted to enter credentials every time trying the sample. In real
+            // world applications, do these from sign out functionality of the application.
+            
+            // Resets challenge handlers.
+            ArcGISEnvironment.authenticationManager.handleChallenges(using: nil)
+            
+            signOut()
+        }
+    }
+    
+    /// The string describing an error.
+    /// - Parameter error: The error.
+    private func errorString(for error: Error) -> String {
+        if error is CancellationError {
+            return "User cancelled error"
+        } else if let error = error as? ArcGISError {
+            return error.details
+        } else {
+            return error.localizedDescription
+        }
+    }
+    
+    /// Signs out from the portal by revoking OAuth tokens and clearing credential stores.
+    private func signOut() {
+        Task {
+            await ArcGISEnvironment.authenticationManager.revokeOAuthTokens()
+            await ArcGISEnvironment.authenticationManager.clearCredentialStores()
+        }
+    }
+    
+    /// Sets up new ArcGIS and Network credential stores that will be persisted in the keychain.
+    private func setupPersistentCredentialStorage() {
+        Task {
+            try await ArcGISEnvironment.authenticationManager.setupPersistentCredentialStorage(
+                access: .whenUnlockedThisDeviceOnly,
+                synchronizesWithiCloud: false
+            )
+        }
+    }
+}
+
+private extension URL {
+    /// The URL of the portal to authenticate.
+    /// - Note: If you want to use your own portal, provide URL here.
+    static let portal = URL(string: "https://www.arcgis.com")!
+}
+
+private extension PortalItem.ID {
+    /// The portal item ID of a web map to be displayed on the map.
+    static var trafficMap: Self { Self("e5039444ef3c48b8a8fdc9227f9be7c1")! }
+}
+
+#Preview {
+    AuthenticateWithTokenView()
+}
