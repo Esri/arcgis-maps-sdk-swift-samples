@@ -24,10 +24,10 @@ Your organization might use Integrated Windows Authentication (IWA) to secure Ar
 
 ## Relevant API
 
-* Portal
 * ArcGISEnvironment
-* Authenticator
 * AuthenticationManager
+* Authenticator
+* Portal
 
 ## About the data
 
