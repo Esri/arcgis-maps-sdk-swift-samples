@@ -27,6 +27,7 @@ exception_proper_nouns = {
     'ArcGIS Online',
     'ArcGIS Pro',
     'GeoPackage',
+    'Integrated',
     'OAuth',
     'OpenStreetMap',
     'SwiftUI',
