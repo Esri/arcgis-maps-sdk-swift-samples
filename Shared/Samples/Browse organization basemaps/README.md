@@ -2,7 +2,7 @@
 
 Connect to portal to give users access to their organization's basemaps.
 
-![Image of browse organization basemaps](browse-organization-basemaps.png)
+![Image of browse organization basemaps](browse-organization-basemaps-1.png)
 
 ## Use case
 

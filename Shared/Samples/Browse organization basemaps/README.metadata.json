@@ -2,7 +2,11 @@
     "category": "Cloud and Portal",
     "description": "Connect to portal to give users access to their organization's basemaps.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "browse-organization-basemaps-1.png",
+        "browse-organization-basemaps-2.png",
+        "browse-organization-basemaps-3.png"
+    ],
     "keywords": [
         "basemap",
         "integration",
