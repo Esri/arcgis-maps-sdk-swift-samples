@@ -1,0 +1,23 @@
+{
+    "category": "Cloud and Portal",
+    "description": "Connect to portal to give users access to their organization's basemaps.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "basemap",
+        "integration",
+        "organization",
+        "portal",
+        "Portal",
+        "Portal.basemaps"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Portal",
+        "Portal.basemaps"
+    ],
+    "snippets": [
+        "BrowseOrganizationBasemapsView.swift"
+    ],
+    "title": "Browse organization basemaps"
+}
