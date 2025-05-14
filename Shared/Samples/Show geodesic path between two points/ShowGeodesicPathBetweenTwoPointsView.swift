@@ -30,7 +30,13 @@ struct ShowGeodesicPathBetweenTwoPointsView: View {
         
         static func complete(start: Point, end: Point) -> Self {
             let line = Polyline(points: [start, end])
-            return complete(start: start, end: end, line: line)
+            let geodesicLine = GeometryEngine.geodeticDensify(
+                line,
+                maxSegmentLength: 1,
+                lengthUnit: .kilometers,
+                curveType: .geodesic
+            ) as! Polyline
+            return complete(start: start, end: end, line: geodesicLine)
         }
     }
     
@@ -40,6 +46,14 @@ struct ShowGeodesicPathBetweenTwoPointsView: View {
             updateLength()
         }
     }
+    
+    private let pointSymbol: Symbol = {
+        SimpleMarkerSymbol(style: .cross, color: .blue, size: 20)
+    }()
+    
+    private let lineSymbol: Symbol = {
+        SimpleLineSymbol(style: .dash, color: .yellow, width: 2)
+    }()
     
     var body: some View {
         MapView(map: map, graphicsOverlays: [overlay])
@@ -59,16 +73,6 @@ struct ShowGeodesicPathBetweenTwoPointsView: View {
             }
     }
     
-    private static func makePointGraphic(at point: Point) -> Graphic {
-        let symbol = SimpleMarkerSymbol(style: .cross, color: .blue, size: 20)
-        return Graphic(geometry: point, symbol: symbol)
-    }
-    
-    private static func makeLineGraphic(for line: Polyline) -> Graphic {
-        let symbol = SimpleLineSymbol(style: .dash, color: .yellow, width: 2)
-        return Graphic(geometry: line, symbol: symbol)
-    }
-    
     private func updateOverlay() {
         overlay.removeAllGraphics()
         
@@ -76,11 +80,11 @@ struct ShowGeodesicPathBetweenTwoPointsView: View {
         case .empty:
             break
         case .startOnly(let start):
-            overlay.addGraphic(Self.makePointGraphic(at: start))
+            overlay.addGraphic(Graphic(geometry: start, symbol: pointSymbol))
         case .complete(let start, let end, let line):
-            overlay.addGraphic(Self.makePointGraphic(at: start))
-            overlay.addGraphic(Self.makePointGraphic(at: end))
-            overlay.addGraphic(Self.makeLineGraphic(for: line))
+            overlay.addGraphic(Graphic(geometry: start, symbol: pointSymbol))
+            overlay.addGraphic(Graphic(geometry: end, symbol: pointSymbol))
+            overlay.addGraphic(Graphic(geometry: line, symbol: lineSymbol))
         }
     }
     
