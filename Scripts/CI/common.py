@@ -26,6 +26,7 @@ exception_proper_nouns = {
     'Arcade',
     'ArcGIS Online',
     'ArcGIS Pro',
+    'Authenticate with Integrated Windows Authentication',
     'GeoPackage',
     'OAuth',
     'OpenStreetMap',
