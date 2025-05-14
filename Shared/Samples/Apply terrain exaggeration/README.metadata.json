@@ -1,0 +1,30 @@
+{
+    "category": "Scenes",
+    "description": "Vertically exaggerate terrain in a scene.",
+    "ignore": false,
+    "images": [
+        "apply-terrain-exaggeration.png"
+    ],
+    "keywords": [
+        "3D",
+        "DEM",
+        "DTM",
+        "elevation",
+        "scene",
+        "surface",
+        "terrain",
+        "ArcGISTiledElevationSource",
+        "Scene",
+        "Surface"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "ArcGISTiledElevationSource",
+        "Scene",
+        "Surface"
+    ],
+    "snippets": [
+        "ApplyTerrainExaggerationView.swift"
+    ],
+    "title": "Apply terrain exaggeration"
+}
