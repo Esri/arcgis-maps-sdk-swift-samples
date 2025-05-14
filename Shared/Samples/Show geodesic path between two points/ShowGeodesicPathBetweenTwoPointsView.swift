@@ -45,12 +45,10 @@ struct ShowGeodesicPathBetweenTwoPointsView: View {
         MapView(map: map, graphicsOverlays: [overlay])
             .onSingleTapGesture { _, mapPoint in
                 switch tapState {
-                case .empty:
+                case .empty, .complete:
                     tapState = .startOnly(start: mapPoint)
                 case .startOnly(let start):
                     tapState = .complete(start: start, end: mapPoint)
-                case .complete:
-                    tapState = .empty
                 }
             }
             .overlay {
