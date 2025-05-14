@@ -23,15 +23,11 @@ struct ApplyFunctionToRasterFromFileView: View {
             boundingGeometry: Envelope(
                 xRange: -13606233.44023646 ... -13591503.517810356,
                 yRange: 4971762.696708013...4982810.138527592,
-                spatialReference: SpatialReference(wkid: .init(102100)!)
+                spatialReference: .webMercator
             )
         )
         // Creates a raster with the file URL.
         let elevationRaster = Raster(fileURL: .shastaElevation)
-        
-        // Creates a raster layer from the elevation raster.
-        let rasterLayer = RasterLayer(raster: elevationRaster)
-        rasterLayer.opacity = 0.5
         
         // Creates a raster function.
         let rasterFunction = RasterFunction(fileURL: .colorRasterFunction)
@@ -41,13 +37,13 @@ struct ApplyFunctionToRasterFromFileView: View {
         rasterFunction.arguments?.setRaster(elevationRaster, forArgumentNamed: "raster")
         
         // Creates a raster from the raster function.
-        let colorRaster = Raster(rasterFunction: rasterFunction)
+        let raster = Raster(rasterFunction: rasterFunction)
         
         // Creates a raster layer from the raster.
-        let colorRasterLayer = RasterLayer(raster: colorRaster)
-        colorRasterLayer.opacity = 0.5
+        let rasterLayer = RasterLayer(raster: raster)
+        rasterLayer.opacity = 0.5
         
-        map.addOperationalLayers([rasterLayer, colorRasterLayer])
+        map.addOperationalLayer(rasterLayer)
         return map
     }()
     
