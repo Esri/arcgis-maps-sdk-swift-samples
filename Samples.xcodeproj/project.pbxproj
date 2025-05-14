@@ -1416,7 +1416,6 @@
 			isa = PBXGroup;
 			children = (
 				0000FB6D2BBDB17600845921 /* Add 3D tiles layer */,
-				1C293D4F2DCEA74C000B0822 /* Authenticate with token */,
 				79D84D0C2A815BED00F45262 /* Add custom dynamic entity data source */,
 				4D2ADC3E29C26D05003B367F /* Add dynamic entity layer */,
 				D7848EFD2CBD986400F6F546 /* Add elevation source from raster */,
@@ -1473,6 +1472,7 @@
 				D7A737DF2BABB9FE00B7C7FC /* Augment reality to show hidden infrastructure */,
 				D72F27292ADA1E4400F906DA /* Augment reality to show tabletop scene */,
 				218F35B229C28F4A00502022 /* Authenticate with OAuth */,
+				1C293D4F2DCEA74C000B0822 /* Authenticate with token */,
 				E0FE32E528747762002C6ACA /* Browse building floors */,
 				95E980732C26185000CB8912 /* Browse OGC API feature service */,
 				1C9B74D229DB54560038B06F /* Change camera controller */,
