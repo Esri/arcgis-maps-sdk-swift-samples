@@ -118,6 +118,19 @@ extension ShowGeodesicPathBetweenTwoPointsView {
                 curveType: .geodesic
             )
             
+            let geodeticDistance = GeometryEngine.geodeticDistance(
+                from: start,
+                to: end,
+                distanceUnit: .meters,
+                azimuthUnit: .degrees,
+                curveType: .geodesic
+            )!
+            
+            print(" ")
+            print("-- length of geodesic line: \(GeometryEngine.length(of: geodesicLine))")
+            print("-- geodesic length of geodesic line: \(geodesicLength)")
+            print("-- geodesic distance: \(geodeticDistance)")
+            
             return complete(
                 start: start,
                 end: end,
