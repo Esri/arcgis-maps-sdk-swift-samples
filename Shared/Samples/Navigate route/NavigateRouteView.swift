@@ -283,7 +283,7 @@ private extension NavigateRouteView {
         
         /// Monitors the asynchronous stream of voice guidances.
         private func trackVoiceGuidance() async {
-            for try await voiceGuidance in routeTracker.voiceGuidances {
+            for await voiceGuidance in routeTracker.voiceGuidances {
                 speechSynthesizer.stopSpeaking(at: .word)
                 speechSynthesizer.speak(AVSpeechUtterance(string: voiceGuidance.text))
             }
