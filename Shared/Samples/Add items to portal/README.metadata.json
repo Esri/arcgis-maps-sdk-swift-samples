@@ -1,0 +1,28 @@
+{
+    "category": "Cloud and Portal",
+    "description": "This sample demonstrates how to add and delete items in a user's portal.",
+    "ignore": false,
+    "images": [
+        "add-items-to-portal.png"
+    ],
+    "keywords": [
+        "add item",
+        "cloud",
+        "portal",
+        "ArcGISEnvironment",
+        "OAuthUserConfiguration",
+        "Portal",
+        "PortalItem"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "ArcGISEnvironment",
+        "OAuthUserConfiguration",
+        "Portal",
+        "PortalItem"
+    ],
+    "snippets": [
+        "AddItemsToPortalView.swift"
+    ],
+    "title": "Add items to portal"
+}
