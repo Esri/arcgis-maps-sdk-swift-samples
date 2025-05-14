@@ -2,7 +2,7 @@
 
 Access secured portals using a certificate.
 
-![Image of authenticate with PKI certificate](AuthenticateWithPkiCertificate.jpg)
+![Image of Authenticate with PKI certificate sample](authenticate-with-pki-certificate-1.png)
 
 ## Use case
 
