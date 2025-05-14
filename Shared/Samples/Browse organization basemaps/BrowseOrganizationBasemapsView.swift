@@ -23,8 +23,14 @@ struct BrowseOrganizationBasemapsView: View {
             switch model.basemaps {
             case .success(let basemaps):
                 ForEach(basemaps, id: \.item?.id?.rawValue) { basemap in
-                    Button(basemap.title) {
+                    Button {
                         model.selectedItem = .init(basemap: basemap)
+                    } label: {
+                        HStack {
+                            Text(basemap.title)
+                            Spacer()
+                        }
+                        .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
                 }
