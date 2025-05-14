@@ -230,6 +230,8 @@
 		79D84D132A81711A00F45262 /* AddCustomDynamicEntityDataSourceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79D84D0D2A815C5B00F45262 /* AddCustomDynamicEntityDataSourceView.swift */; };
 		79D84D152A81718F00F45262 /* AddCustomDynamicEntityDataSourceView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 79D84D0D2A815C5B00F45262 /* AddCustomDynamicEntityDataSourceView.swift */; };
 		8810FB592DC94A7200874936 /* ApplyFunctionToRasterFromServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8810FB582DC94A6600874936 /* ApplyFunctionToRasterFromServiceView.swift */; };
+		88129D7A2DD5035A001599A5 /* ShowGeodesicPathBetweenTwoPointsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88129D792DD5035A001599A5 /* ShowGeodesicPathBetweenTwoPointsView.swift */; };
+		88129D7B2DD50899001599A5 /* ShowGeodesicPathBetweenTwoPointsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 88129D792DD5035A001599A5 /* ShowGeodesicPathBetweenTwoPointsView.swift */; };
 		883C121529C9136600062FF9 /* DownloadPreplannedMapAreaView.MapPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 883C121429C9136600062FF9 /* DownloadPreplannedMapAreaView.MapPicker.swift */; };
 		883C121729C914E100062FF9 /* DownloadPreplannedMapAreaView.MapPicker.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 883C121429C9136600062FF9 /* DownloadPreplannedMapAreaView.MapPicker.swift */; };
 		883C121829C914E100062FF9 /* DownloadPreplannedMapAreaView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E0D04FF128A5390000747989 /* DownloadPreplannedMapAreaView.Model.swift */; };
@@ -655,6 +657,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				88129D7B2DD50899001599A5 /* ShowGeodesicPathBetweenTwoPointsView.swift in Copy Source Code Files */,
 				88FB70D52DD3C2E000EB76E3 /* AuthenticateWithIntegratedWindowsAuthenticationView.swift in Copy Source Code Files */,
 				88FB703C2DCC22E900EB76E3 /* ApplySymbologyToShapefileView.swift in Copy Source Code Files */,
 				88C5E0EC2DCBC3F30091D271 /* ApplyScenePropertyExpressionsView.swift in Copy Source Code Files */,
@@ -1043,6 +1046,7 @@
 		79B7B8092A1BF8EC00F57C27 /* CreateAndSaveKMLView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAndSaveKMLView.swift; sourceTree = "<group>"; };
 		79D84D0D2A815C5B00F45262 /* AddCustomDynamicEntityDataSourceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCustomDynamicEntityDataSourceView.swift; sourceTree = "<group>"; };
 		8810FB582DC94A6600874936 /* ApplyFunctionToRasterFromServiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyFunctionToRasterFromServiceView.swift; sourceTree = "<group>"; };
+		88129D792DD5035A001599A5 /* ShowGeodesicPathBetweenTwoPointsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowGeodesicPathBetweenTwoPointsView.swift; sourceTree = "<group>"; };
 		883C121429C9136600062FF9 /* DownloadPreplannedMapAreaView.MapPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadPreplannedMapAreaView.MapPicker.swift; sourceTree = "<group>"; };
 		88C5E0EA2DCBC1E20091D271 /* ApplyScenePropertyExpressionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyScenePropertyExpressionsView.swift; sourceTree = "<group>"; };
 		88E52E6E2DC96C3F00F48409 /* ApplyHillshadeRendererToRasterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyHillshadeRendererToRasterView.swift; sourceTree = "<group>"; };
@@ -1594,6 +1598,7 @@
 				D7ABA2FB2A3287C10021822B /* Show viewshed from geoelement in scene */,
 				0086F3FC28E3770900974721 /* Show viewshed from point in scene */,
 				95DEB9B72C127A97009BEC35 /* Show viewshed from point on map */,
+				88129D782DD5034B001599A5 /* Show geodesic path between two points */,
 				00E7C15A2BBE1BF000B85D69 /* Snap geometry edits */,
 				D71A9DE12D8CC88D00CA03CB /* Snap geometry edits with utility network rules */,
 				D75B584D2AAFB2C20038B3B4 /* Style features with custom dictionary */,
@@ -2241,6 +2246,14 @@
 				8810FB582DC94A6600874936 /* ApplyFunctionToRasterFromServiceView.swift */,
 			);
 			path = "Apply function to raster from service";
+			sourceTree = "<group>";
+		};
+		88129D782DD5034B001599A5 /* Show geodesic path between two points */ = {
+			isa = PBXGroup;
+			children = (
+				88129D792DD5035A001599A5 /* ShowGeodesicPathBetweenTwoPointsView.swift */,
+			);
+			path = "Show geodesic path between two points";
 			sourceTree = "<group>";
 		};
 		88C5E0E92DCBC1B20091D271 /* Apply scene property expressions */ = {
@@ -3940,6 +3953,7 @@
 				D7084FA92AD771AA00EC7F4F /* AugmentRealityToFlyOverSceneView.swift in Sources */,
 				D75B58512AAFB3030038B3B4 /* StyleFeaturesWithCustomDictionaryView.swift in Sources */,
 				E0D04FF228A5390000747989 /* DownloadPreplannedMapAreaView.Model.swift in Sources */,
+				88129D7A2DD5035A001599A5 /* ShowGeodesicPathBetweenTwoPointsView.swift in Sources */,
 				D764B7DF2BE2F89D002E2F92 /* EditGeodatabaseWithTransactionsView.swift in Sources */,
 				00CCB8A5285BAF8700BBAB70 /* OnDemandResource.swift in Sources */,
 				D7142BC42DB71082004F87B7 /* View+PagePresentation.swift in Sources */,
