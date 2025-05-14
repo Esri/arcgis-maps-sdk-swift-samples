@@ -16,6 +16,7 @@ import ArcGIS
 import SwiftUI
 
 struct BrowseOrganizationBasemapsView: View {
+    /// The view model for the sample.
     @StateObject private var model = Model()
     
     var body: some View {
