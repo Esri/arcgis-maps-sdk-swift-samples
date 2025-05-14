@@ -49,22 +49,15 @@ struct ShowGeodesicPathBetweenTwoPointsView: View {
             .overlay(alignment: .top) {
                 VStack {
                     switch state {
-                    case .empty:
+                    case .empty, .startOnly:
                         Text("Tap on the map to show a geodesic path")
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(.ultraThinMaterial)
-                    case .startOnly:
-                        EmptyView()
                     case .complete(_, _, _, let length):
                         Text(length.formatted())
-                            .padding()
-                            .background(.ultraThinMaterial)
-                            .clipShape(.rect(cornerRadius: 10))
-                            .shadow(radius: 50)
-                            .padding(.top)
                     }
                 }
+                .padding()
+                .frame(maxWidth: .infinity)
+                .background(.ultraThinMaterial)
             }
             .animation(.default, value: state)
     }
