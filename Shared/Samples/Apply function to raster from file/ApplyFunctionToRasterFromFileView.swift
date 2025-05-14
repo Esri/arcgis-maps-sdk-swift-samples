@@ -32,9 +32,12 @@ struct ApplyFunctionToRasterFromFileView: View {
         // Creates a raster function.
         let rasterFunction = RasterFunction(fileURL: .colorRasterFunction)
         
-        // Sets the number of rasters required which is 2 in this case.
-        rasterFunction.arguments?.setRaster(elevationRaster, forArgumentNamed: "raster")
-        rasterFunction.arguments?.setRaster(elevationRaster, forArgumentNamed: "raster")
+        // Sets raster for raster function arguments.
+        if let arguments = rasterFunction.arguments {
+            for name in arguments.rasterNames {
+                arguments.setRaster(elevationRaster, forArgumentNamed: name)
+            }
+        }
         
         // Creates a raster from the raster function.
         let raster = Raster(rasterFunction: rasterFunction)
