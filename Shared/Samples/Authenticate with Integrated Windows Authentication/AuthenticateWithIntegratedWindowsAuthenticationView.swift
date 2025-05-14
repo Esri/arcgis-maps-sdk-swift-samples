@@ -106,7 +106,7 @@ extension AuthenticateWithIntegratedWindowsAuthenticationView {
     @MainActor
     class Model: ObservableObject {
         /// The authenticator to handle authentication challenges.
-        let authenticator = Authenticator(promptForUntrustedHosts: true)
+        let authenticator = Authenticator()
         
         /// The URL string entered by the user.
         @Published var portalURLString = ""
@@ -120,7 +120,7 @@ extension AuthenticateWithIntegratedWindowsAuthenticationView {
         /// The selected item.
         @Published fileprivate var selectedItem: SelectedItem?
         
-        /// The URL to the portal.
+        /// The URL of the portal.
         var portalURL: URL? { URL(string: portalURLString) }
         
         init() {

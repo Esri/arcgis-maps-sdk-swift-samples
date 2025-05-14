@@ -18,7 +18,7 @@ Your organization might use Integrated Windows Authentication (IWA) to secure Ar
 
 ## How it works
 
-1. The `AuthenticationManager` object is configured with a challenge handler that will prompt for a Windows login (username, password, and domain) if a secure resource is encountered.
+1. The `AuthenticationManager` object is configured with a challenge handler that will prompt for a Windows login (username and password) if a secure resource is encountered.
 2. When a search for portal items is performed against an IWA-secured portal, the `Authenticator` creates a `NetworkCredential` from the information entered by the user.
 3. If the user authenticates, the search returns a list of web maps (`PortalItem`) and the user can select one to display as a `Map`.
 
