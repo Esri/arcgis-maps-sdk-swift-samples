@@ -2,7 +2,7 @@
 
 Calculate a geodesic path between two points and measure its distance.
 
-![Image of show geodesic path between two points](ShowGeodesicPathBetweenTwoPoints.png)
+![Image of show geodesic path between two points](show-geodesic-path-between-two-points.png)
 
 ## Use case
 
@@ -14,16 +14,17 @@ Click anywhere on the map. A line graphic will display the geodesic line between
 
 ## How it works
 
-1. Create a `Point` in New York City and display it as a `Graphic`.
-2. Obtain a new point when a click occurs on the `MapView` and add this point as a graphic.
+1. Create a `Point` and display it as a `Graphic` when the `MapView` is tapped.
+2. Obtain a new point when another tap occurs on the `MapView` and add this point as a graphic.
 3. Create a `Polyline` from the two points.
-4. Execute `GeometryEngine::densifyGeodetic` by passing in the created polyline then create a graphic from the returned `Geometry`.
-5. Execute `GeometryEngine::lengthGeodetic` by passing in the two points and display the returned length on the screen.
+4. Execute `GeometryEngine.geodeticDensify(_:maxSegmentLength:lengthUnit:curveType:)` by passing in the created polyline then create a graphic from the returned `Geometry`.
+5. Execute `GeometryEngine.geodeticDistance(from:to:distanceUnit:azimuthUnit:curveType:)` by passing in the two points and display the returned length on the screen.
 
 ## Relevant API
 
-* GeometryEngine::densifyGeodetic
-* GeometryEngine::lengthGeodetic
+* GeometryEngine.geodeticDensify(_:maxSegmentLength:lengthUnit:curveType:)
+* GeometryEngine.geodeticDistance(from:to:distanceUnit:azimuthUnit:curveType:)
+* MapView.onSingleTapGesture(perform:)
 
 ## About the data
 

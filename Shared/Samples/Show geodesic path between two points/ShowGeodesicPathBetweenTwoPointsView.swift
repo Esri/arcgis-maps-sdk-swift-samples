@@ -104,7 +104,6 @@ extension ShowGeodesicPathBetweenTwoPointsView {
         /// Creates a `complete` measurement state with a start and end point,
         /// calculating the line and length.
         static func complete(start: Point, end: Point) -> Self {
-            
             // Create a geodesic line from the start, end points.
             let geodesicLine = GeometryEngine.geodeticDensify(
                 Polyline(points: [start, end]),
