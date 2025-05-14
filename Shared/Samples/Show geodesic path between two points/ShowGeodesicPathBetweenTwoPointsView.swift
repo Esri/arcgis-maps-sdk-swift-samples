@@ -28,7 +28,7 @@ struct ShowGeodesicPathBetweenTwoPointsView: View {
     }()
     
     /// The current measurement state.
-    @State private var state: MeasurementState = .empty {
+    @State private var state: MeasurementState = .notStarted {
         didSet {
             updateGraphicsOverlay()
         }
@@ -48,7 +48,7 @@ struct ShowGeodesicPathBetweenTwoPointsView: View {
         MapView(map: map, graphicsOverlays: [overlay])
             .onSingleTapGesture { _, mapPoint in
                 switch state {
-                case .empty, .complete:
+                case .notStarted, .complete:
                     // If the state is empty or complete, then start a new
                     // path, adding the tap point as the first graphic.
                     state = .startOnly(start: mapPoint)
@@ -61,7 +61,7 @@ struct ShowGeodesicPathBetweenTwoPointsView: View {
             .overlay(alignment: .top) {
                 VStack {
                     switch state {
-                    case .empty, .startOnly:
+                    case .notStarted, .startOnly:
                         Text("Tap on the map to show a geodesic path")
                     case .complete(_, _, _, let length):
                         Text(length.formatted())
@@ -79,7 +79,7 @@ struct ShowGeodesicPathBetweenTwoPointsView: View {
         overlay.removeAllGraphics()
         
         switch state {
-        case .empty:
+        case .notStarted:
             break
         case .startOnly(let start):
             overlay.addGraphic(Graphic(geometry: start, symbol: pointSymbol))
@@ -95,30 +95,26 @@ extension ShowGeodesicPathBetweenTwoPointsView {
     /// A value that represents the measurement state of the view.
     enum MeasurementState: Equatable {
         /// No measurement started.
-        case empty
+        case notStarted
         /// Only have a starting point.
         case startOnly(start: Point)
         /// Completed measurement.
-        case complete(start: Point, end: Point, line: Polyline, length: Measurement<UnitLength>)
+        case complete(start: Point, end: Point, line: Polyline, distance: Measurement<UnitLength>)
         
         /// Creates a `complete` measurement state with a start and end point,
         /// calculating the line and length.
         static func complete(start: Point, end: Point) -> Self {
-            let line = Polyline(points: [start, end])
+            
+            // Create a geodesic line from the start, end points.
             let geodesicLine = GeometryEngine.geodeticDensify(
-                line,
+                Polyline(points: [start, end]),
                 maxSegmentLength: 1,
                 lengthUnit: .kilometers,
                 curveType: .geodesic
             ) as! Polyline
             
-            let geodesicLength = GeometryEngine.geodeticLength(
-                of: geodesicLine,
-                lengthUnit: .meters,
-                curveType: .geodesic
-            )
-            
-            let geodeticDistance = GeometryEngine.geodeticDistance(
+            // Calculate the geodesic distance between the two points.
+            let geodesicDistance = GeometryEngine.geodeticDistance(
                 from: start,
                 to: end,
                 distanceUnit: .meters,
@@ -126,16 +122,11 @@ extension ShowGeodesicPathBetweenTwoPointsView {
                 curveType: .geodesic
             )!
             
-            print(" ")
-            print("-- length of geodesic line: \(GeometryEngine.length(of: geodesicLine))")
-            print("-- geodesic length of geodesic line: \(geodesicLength)")
-            print("-- geodesic distance: \(geodeticDistance)")
-            
             return complete(
                 start: start,
                 end: end,
                 line: geodesicLine,
-                length: .init(value: geodesicLength, unit: .meters)
+                distance: geodesicDistance.distance
             )
         }
     }
