@@ -21,29 +21,10 @@ struct ShowGeodesicPathBetweenTwoPointsView: View {
         let overlay = GraphicsOverlay()
         return overlay
     }()
-    @State private var length: Measurement<UnitLength>?
     
-    enum TapState {
-        case empty
-        case startOnly(start: Point)
-        case complete(start: Point, end: Point, line: Polyline)
-        
-        static func complete(start: Point, end: Point) -> Self {
-            let line = Polyline(points: [start, end])
-            let geodesicLine = GeometryEngine.geodeticDensify(
-                line,
-                maxSegmentLength: 1,
-                lengthUnit: .kilometers,
-                curveType: .geodesic
-            ) as! Polyline
-            return complete(start: start, end: end, line: geodesicLine)
-        }
-    }
-    
-    @State private var tapState: TapState = .empty {
+    @State private var state: MeasurementState = .empty {
         didSet {
-            updateOverlay()
-            updateLength()
+            updateGraphicsOverlay()
         }
     }
     
@@ -58,43 +39,79 @@ struct ShowGeodesicPathBetweenTwoPointsView: View {
     var body: some View {
         MapView(map: map, graphicsOverlays: [overlay])
             .onSingleTapGesture { _, mapPoint in
-                switch tapState {
+                switch state {
                 case .empty, .complete:
-                    tapState = .startOnly(start: mapPoint)
+                    state = .startOnly(start: mapPoint)
                 case .startOnly(let start):
-                    tapState = .complete(start: start, end: mapPoint)
+                    state = .complete(start: start, end: mapPoint)
                 }
             }
-            .overlay {
-                if let length {
-                    Text(length.formatted())
-                        .foregroundStyle(.yellow)
+            .overlay(alignment: .top) {
+                VStack {
+                    switch state {
+                    case .empty:
+                        Text("Tap on the map to show a geodesic path")
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(.ultraThinMaterial)
+                    case .startOnly:
+                        EmptyView()
+                    case .complete(_, _, _, let length):
+                        Text(length.formatted())
+                            .padding()
+                            .background(.ultraThinMaterial)
+                            .clipShape(.rect(cornerRadius: 10))
+                            .shadow(radius: 50)
+                            .padding(.top)
+                    }
                 }
             }
+            .animation(.default, value: state)
     }
     
-    private func updateOverlay() {
+    private func updateGraphicsOverlay() {
         overlay.removeAllGraphics()
         
-        switch tapState {
+        switch state {
         case .empty:
             break
         case .startOnly(let start):
             overlay.addGraphic(Graphic(geometry: start, symbol: pointSymbol))
-        case .complete(let start, let end, let line):
+        case .complete(let start, let end, let line, _):
             overlay.addGraphic(Graphic(geometry: start, symbol: pointSymbol))
             overlay.addGraphic(Graphic(geometry: end, symbol: pointSymbol))
             overlay.addGraphic(Graphic(geometry: line, symbol: lineSymbol))
         }
     }
-    
-    private func updateLength() {
-        switch tapState {
-        case .empty, .startOnly:
-            length = nil
-        case .complete(_, _, let line):
-            let geodeticLength = GeometryEngine.geodeticLength(of: line, lengthUnit: .meters, curveType: .geodesic)
-            length = .init(value: geodeticLength, unit: .meters)
+}
+
+extension ShowGeodesicPathBetweenTwoPointsView {
+    enum MeasurementState: Equatable {
+        case empty
+        case startOnly(start: Point)
+        case complete(start: Point, end: Point, line: Polyline, length: Measurement<UnitLength>)
+        
+        static func complete(start: Point, end: Point) -> Self {
+            let line = Polyline(points: [start, end])
+            let geodesicLine = GeometryEngine.geodeticDensify(
+                line,
+                maxSegmentLength: 1,
+                lengthUnit: .kilometers,
+                curveType: .geodesic
+            ) as! Polyline
+            
+            let geodesicLength = GeometryEngine.geodeticLength(
+                of: geodesicLine,
+                lengthUnit: .meters,
+                curveType: .geodesic
+            )
+            
+            return complete(
+                start: start,
+                end: end,
+                line: geodesicLine,
+                length: .init(value: geodesicLength, unit: .meters)
+            )
         }
     }
 }
