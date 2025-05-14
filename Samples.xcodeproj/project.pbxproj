@@ -172,7 +172,7 @@
 		1CAB8D502A3CEB43002AA649 /* RunValveIsolationTraceView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1CAB8D442A3CEAB0002AA649 /* RunValveIsolationTraceView.Model.swift */; };
 		1CAB8D512A3CEB43002AA649 /* RunValveIsolationTraceView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1CAB8D472A3CEAB0002AA649 /* RunValveIsolationTraceView.swift */; };
 		1CAF831F2A20305F000E1E60 /* ShowUtilityAssociationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAF831B2A20305F000E1E60 /* ShowUtilityAssociationsView.swift */; };
-		1CC755E12DC5A6A7004B346F /* Shasta_Elevation in Resources */ = {isa = PBXBuildFile; fileRef = 1CC755E02DC5A6A7004B346F /* Shasta_Elevation */; settings = {ASSET_TAGS = (ApplyFunctionToRasterFromFile, ); }; };
+		1CC755E12DC5A6A7004B346F /* Shasta_Elevation in Resources */ = {isa = PBXBuildFile; fileRef = 1CC755E02DC5A6A7004B346F /* Shasta_Elevation */; settings = {ASSET_TAGS = (ApplyBlendRendererToHillshade, ApplyFunctionToRasterFromFile, ); }; };
 		1CC755E42DC95625004B346F /* ApplyFunctionToRasterFromFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC755E22DC95625004B346F /* ApplyFunctionToRasterFromFileView.swift */; };
 		1CC755E52DC95625004B346F /* ApplyFunctionToRasterFromFileView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1CC755E22DC95625004B346F /* ApplyFunctionToRasterFromFileView.swift */; };
 		218F35B829C28F4A00502022 /* AuthenticateWithOAuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218F35B329C28F4A00502022 /* AuthenticateWithOAuthView.swift */; };
