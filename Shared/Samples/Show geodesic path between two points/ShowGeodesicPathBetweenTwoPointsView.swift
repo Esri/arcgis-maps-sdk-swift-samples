@@ -21,39 +21,23 @@ struct ShowGeodesicPathBetweenTwoPointsView: View {
         let overlay = GraphicsOverlay()
         return overlay
     }()
+    @State private var length: Measurement<UnitLength>?
     
     enum TapState {
-        case noGraphics
-        case startOnly(Graphic)
-        case both(Graphic, Graphic)
+        case empty
+        case startOnly(start: Point)
+        case complete(start: Point, end: Point, line: Polyline)
+        
+        static func complete(start: Point, end: Point) -> Self {
+            let line = Polyline(points: [start, end])
+            return complete(start: start, end: end, line: line)
+        }
     }
     
-    @State private var tapState: TapState = .noGraphics {
+    @State private var tapState: TapState = .empty {
         didSet {
             updateOverlay()
             updateLength()
-        }
-    }
-    
-    private var graphic1: Graphic? {
-//        overlay.graphics.first
-        switch tapState {
-        case .noGraphics:
-            nil
-        case .startOnly(let graphic):
-            graphic
-        case .both(let graphic, let graphic2):
-            graphic
-        }
-    }
-    
-    private var graphic2: Graphic? {
-//        overlay.graphics.count > 1 ? overlay.graphics[1] : nil
-        switch tapState {
-        case .noGraphics, .startOnly:
-            nil
-        case .both(let graphic, let graphic2):
-            graphic2
         }
     }
     
@@ -61,43 +45,54 @@ struct ShowGeodesicPathBetweenTwoPointsView: View {
         MapView(map: map, graphicsOverlays: [overlay])
             .onSingleTapGesture { _, mapPoint in
                 switch tapState {
-                case .noGraphics:
-                    tapState = .startOnly(Self.makeGraphic(at: mapPoint))
-                case .startOnly(let graphic):
-                    tapState = .both(graphic, Self.makeGraphic(at: mapPoint))
-                case .both(let graphic, let graphic2):
-                    tapState = .noGraphics
+                case .empty:
+                    tapState = .startOnly(start: mapPoint)
+                case .startOnly(let start):
+                    tapState = .complete(start: start, end: mapPoint)
+                case .complete:
+                    tapState = .empty
+                }
+            }
+            .overlay {
+                if let length {
+                    Text(length.formatted())
+                        .foregroundStyle(.yellow)
                 }
             }
     }
     
-    private static func makeGraphic(at point: Point) -> Graphic {
+    private static func makePointGraphic(at point: Point) -> Graphic {
         let symbol = SimpleMarkerSymbol(style: .cross, color: .blue, size: 20)
         return Graphic(geometry: point, symbol: symbol)
+    }
+    
+    private static func makeLineGraphic(for line: Polyline) -> Graphic {
+        let symbol = SimpleLineSymbol(style: .dash, color: .yellow, width: 2)
+        return Graphic(geometry: line, symbol: symbol)
     }
     
     private func updateOverlay() {
         overlay.removeAllGraphics()
         
         switch tapState {
-        case .noGraphics:
+        case .empty:
             break
-        case .startOnly(let graphic):
-            overlay.addGraphic(graphic)
-        case .both(let graphic, let graphic2):
-            overlay.addGraphic(graphic)
-            overlay.addGraphic(graphic2)
+        case .startOnly(let start):
+            overlay.addGraphic(Self.makePointGraphic(at: start))
+        case .complete(let start, let end, let line):
+            overlay.addGraphic(Self.makePointGraphic(at: start))
+            overlay.addGraphic(Self.makePointGraphic(at: end))
+            overlay.addGraphic(Self.makeLineGraphic(for: line))
         }
     }
     
     private func updateLength() {
         switch tapState {
-        case .noGraphics:
-            break
-        case .startOnly(let graphic):
-            break
-        case .both(let graphic, let graphic2):
-            break
+        case .empty, .startOnly:
+            length = nil
+        case .complete(_, _, let line):
+            let geodeticLength = GeometryEngine.geodeticLength(of: line, lengthUnit: .meters, curveType: .geodesic)
+            length = .init(value: geodeticLength, unit: .meters)
         }
     }
 }
