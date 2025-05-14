@@ -22,10 +22,7 @@ struct ShowGeodesicPathBetweenTwoPointsView: View {
     /// The graphics overlay that will be displayed on the map view.
     /// This will hold the graphics that show the start point, end point,
     /// and geodesic path.
-    @State private var overlay = {
-        let overlay = GraphicsOverlay()
-        return overlay
-    }()
+    @State private var overlay = GraphicsOverlay()
     
     /// The current measurement state.
     @State private var state: MeasurementState = .notStarted {
@@ -35,14 +32,10 @@ struct ShowGeodesicPathBetweenTwoPointsView: View {
     }
     
     /// The symbology for point graphics.
-    private let pointSymbol: Symbol = {
-        SimpleMarkerSymbol(style: .cross, color: .blue, size: 20)
-    }()
+    private let pointSymbol: Symbol = SimpleMarkerSymbol(style: .cross, color: .blue, size: 20)
     
     /// The symbology for the line graphic.
-    private let lineSymbol: Symbol = {
-        SimpleLineSymbol(style: .dash, color: .yellow, width: 2)
-    }()
+    private let lineSymbol: Symbol = SimpleLineSymbol(style: .dash, color: .yellow, width: 2)
     
     var body: some View {
         MapView(map: map, graphicsOverlays: [overlay])
