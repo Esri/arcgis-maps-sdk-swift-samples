@@ -17,7 +17,7 @@ import SwiftUI
 
 struct BrowseOrganizationBasemapsView: View {
     /// The view model for the sample.
-    @StateObject private var model = Model()
+    @State private var model = Model()
     
     var body: some View {
         Form {
@@ -104,18 +104,19 @@ private extension Basemap {
 
 extension BrowseOrganizationBasemapsView {
     @MainActor
-    class Model: ObservableObject {
+    @Observable
+    class Model {
         /// The URL string entered by the user.
-        @Published var portalURLString = "https://www.arcgis.com"
+        var portalURLString = "https://www.arcgis.com"
         
         /// The fetched portal content.
-        @Published var basemaps: Result<[Basemap], Error>?
+        var basemaps: Result<[Basemap], Error>?
         
         /// A Boolean value indicating if a portal connection is in progress.
-        @Published var isConnecting = false
+        var isConnecting = false
         
         /// The selected item.
-        @Published fileprivate var selectedItem: SelectedItem?
+        fileprivate var selectedItem: SelectedItem?
         
         /// The URL to the portal.
         var portalURL: URL? { URL(string: portalURLString) }
