@@ -35,6 +35,12 @@ struct ShowServiceAreasForMultipleFacilitiesView: View {
     /// A Boolean value indicating if the service area is being calculated.
     @State private var isCalculatingServiceArea = false
     
+    /// The service area fill symbols.
+    let fillSymbols = { [
+        SimpleFillSymbol(color: .orange.withAlphaComponent(0.5)),
+        SimpleFillSymbol(color: .red.withAlphaComponent(0.5))
+    ] }()
+    
     var body: some View {
         MapViewReader { mapViewProxy in
             MapView(map: map, graphicsOverlays: [graphicsOverlay])
@@ -67,7 +73,7 @@ struct ShowServiceAreasForMultipleFacilitiesView: View {
                         // Create default parameters for the service area task.
                         let serviceAreaParameters = try await serviceAreaTask.makeDefaultParameters()
                         // Set the facilities for which to calculate service area for.
-                        serviceAreaParameters.setFacilities(fromFeaturesIn: facilitiesFeatureTable, queryParameters: .all)
+                        serviceAreaParameters.setFacilities(fromFeaturesIn: facilitiesFeatureTable, queryParameters: .all())
                         // Specify that we want polygons returned, with a high
                         // level of detail.
                         serviceAreaParameters.returnsPolygons = true
@@ -85,10 +91,13 @@ struct ShowServiceAreasForMultipleFacilitiesView: View {
                         // Loop through the service area facilities and add the
                         // results to the graphics overlay.
                         for index in serviceAreaResult.facilities.indices {
-                            let polygons = serviceAreaResult.resultPolygons(forFacilityAtIndex: index)
-                            for polygon in polygons {
-                                let symbol = SimpleFillSymbol(color: .blue.withAlphaComponent(0.35))
-                                graphicsOverlay.addGraphic(Graphic(geometry: polygon.geometry, symbol: symbol))
+                            let resultPolygons = serviceAreaResult.resultPolygons(forFacilityAtIndex: index)
+                            // There can be multiple polygons for each facility.
+                            for (index, polygon) in resultPolygons.enumerated() {
+                                graphicsOverlay
+                                    .addGraphic(
+                                        Graphic(geometry: polygon.geometry, symbol: fillSymbols[index])
+                                    )
                             }
                         }
                     } catch {
@@ -100,11 +109,13 @@ struct ShowServiceAreasForMultipleFacilitiesView: View {
 }
 
 private extension QueryParameters {
-    static let all = {
+    /// Returns a query parameters with the where clause set to "1=1" so
+    /// that all features will be returned.
+    static func all() -> QueryParameters {
         let queryParameters = QueryParameters()
         queryParameters.whereClause = "1=1"
         return queryParameters
-    }()
+    }
 }
 
 #Preview {
