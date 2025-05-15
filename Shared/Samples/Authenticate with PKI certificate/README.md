@@ -12,10 +12,9 @@ PKI (Public Key Infrastructure) is a certificate authentication method to secure
 
 1. Enter the URL to your PKI-secured portal.
 2. Click the connect button to search for web maps stored on the portal.
-3. You will be prompted to browse for a certificate.
-4. If the certificate requires it you will be prompted for a password.
-5. If you authenticate successfully, portal item results will display in the list.
-6. Select a web map item to display it in the map view.
+3. You will be prompted to browse for a certificate and enter a password.
+4. If you authenticate successfully, the portal item results will be displayed in the list.
+5. Select a web map item to display it in the map view.
 
 ## How it works
 
@@ -34,9 +33,9 @@ PKI (Public Key Infrastructure) is a certificate authentication method to secure
 
 ArcGIS Enterprise requires special configuration to enable support for PKI. See [Using Windows Active Directory and PKI to secure access to your portal](https://enterprise.arcgis.com/en/portal/latest/administer/windows/using-windows-active-directory-and-pki-to-secure-access-to-your-portal.htm) and [Use LDAP and PKI to secure access to your portal](https://enterprise.arcgis.com/en/portal/latest/administer/windows/use-ldap-and-pki-to-secure-access-to-your-portal.htm) in *Portal for ArcGIS*.
 
-⚠ **NOTE**: Certificates installed on iOS are not available to user apps. Therefore, your app must take action to install the user's certificate into the app-specific keystore.
+⚠ **NOTE**: Certificates installed on iOS are not available to user apps. Therefore, you will be prompted to browse for a certificate file when accessing PKI secured ArcGIS resources.
 
-⚠ **WARNING**: Certificates sent to an iOS device over email will be opened by the default iOS apps (e.g. Safari) and installed in the device store. Name your certificates with an app-specific file extension and register your app as the handler for that extension. Then, when the user receives a certificate, your app can open that certificate and register it.
+⚠ **NOTE**: Ensure that PKI certificates are accessible on the iOS device or storage drives, allowing you to browse for a certificate file when accessing PKI-secured ArcGIS resources.
 
 ## Tags
 
