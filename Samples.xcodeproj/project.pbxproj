@@ -122,6 +122,8 @@
 		10CFF5082DC1A3850027F144 /* AddFeatureLayerWithTimeOffsetView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 10CFF4C92DBAAFAC0027F144 /* AddFeatureLayerWithTimeOffsetView.swift */; };
 		10CFF50B2DC2EC990027F144 /* ApplyClassBreaksRendererToSublayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10CFF50A2DC2EC990027F144 /* ApplyClassBreaksRendererToSublayerView.swift */; };
 		10CFF54C2DCD4DFA0027F144 /* ApplyClassBreaksRendererToSublayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 10CFF50A2DC2EC990027F144 /* ApplyClassBreaksRendererToSublayerView.swift */; };
+		10CFF54F2DD2AC300027F144 /* AuthenticateWithPKICertificateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10CFF54E2DD2AC300027F144 /* AuthenticateWithPKICertificateView.swift */; };
+		10CFF5502DD4F9C30027F144 /* AuthenticateWithPKICertificateView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 10CFF54E2DD2AC300027F144 /* AuthenticateWithPKICertificateView.swift */; };
 		10D321932BDB187400B39B1B /* naperville_imagery.tpkx in Resources */ = {isa = PBXBuildFile; fileRef = 10D321922BDB187400B39B1B /* naperville_imagery.tpkx */; settings = {ASSET_TAGS = (GenerateOfflineMapWithLocalBasemap, ); }; };
 		10D321962BDB1CB500B39B1B /* GenerateOfflineMapWithLocalBasemapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D321952BDB1CB500B39B1B /* GenerateOfflineMapWithLocalBasemapView.swift */; };
 		10D321972BDC3B4900B39B1B /* GenerateOfflineMapWithLocalBasemapView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 10D321952BDB1CB500B39B1B /* GenerateOfflineMapWithLocalBasemapView.swift */; };
@@ -659,6 +661,7 @@
 			files = (
 				00FA4E522DBC08AA008A34CF /* AddItemsToPortalView.swift in Copy Source Code Files */,
 				88FB70D52DD3C2E000EB76E3 /* AuthenticateWithIntegratedWindowsAuthenticationView.swift in Copy Source Code Files */,
+				10CFF5502DD4F9C30027F144 /* AuthenticateWithPKICertificateView.swift in Copy Source Code Files */,
 				88FB703C2DCC22E900EB76E3 /* ApplySymbologyToShapefileView.swift in Copy Source Code Files */,
 				88C5E0EC2DCBC3F30091D271 /* ApplyScenePropertyExpressionsView.swift in Copy Source Code Files */,
 				00FA4E8D2DCD7536008A34CF /* ApplySimpleRendererToGraphicsOverlayView.swift in Copy Source Code Files */,
@@ -988,6 +991,7 @@
 		10BD9EB32BF51B4B00ABDBD5 /* GenerateOfflineMapWithCustomParametersView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateOfflineMapWithCustomParametersView.Model.swift; sourceTree = "<group>"; };
 		10CFF4C92DBAAFAC0027F144 /* AddFeatureLayerWithTimeOffsetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFeatureLayerWithTimeOffsetView.swift; sourceTree = "<group>"; };
 		10CFF50A2DC2EC990027F144 /* ApplyClassBreaksRendererToSublayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyClassBreaksRendererToSublayerView.swift; sourceTree = "<group>"; };
+		10CFF54E2DD2AC300027F144 /* AuthenticateWithPKICertificateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticateWithPKICertificateView.swift; sourceTree = "<group>"; };
 		10D321922BDB187400B39B1B /* naperville_imagery.tpkx */ = {isa = PBXFileReference; lastKnownFileType = file; path = naperville_imagery.tpkx; sourceTree = "<group>"; };
 		10D321952BDB1CB500B39B1B /* GenerateOfflineMapWithLocalBasemapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateOfflineMapWithLocalBasemapView.swift; sourceTree = "<group>"; };
 		1C0C1C3429D34DAE005C8B24 /* ChangeViewpointView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeViewpointView.swift; sourceTree = "<group>"; };
@@ -1486,6 +1490,7 @@
 				D72F27292ADA1E4400F906DA /* Augment reality to show tabletop scene */,
 				88FB70D22DCD10A500EB76E3 /* Authenticate with Integrated Windows Authentication */,
 				218F35B229C28F4A00502022 /* Authenticate with OAuth */,
+				10CFF54D2DD2ABB20027F144 /* Authenticate with PKI certificate */,
 				E0FE32E528747762002C6ACA /* Browse building floors */,
 				95E980732C26185000CB8912 /* Browse OGC API feature service */,
 				1C9B74D229DB54560038B06F /* Change camera controller */,
@@ -1921,6 +1926,14 @@
 				10CFF50A2DC2EC990027F144 /* ApplyClassBreaksRendererToSublayerView.swift */,
 			);
 			path = "Apply class breaks renderer to sublayer";
+			sourceTree = "<group>";
+		};
+		10CFF54D2DD2ABB20027F144 /* Authenticate with PKI certificate */ = {
+			isa = PBXGroup;
+			children = (
+				10CFF54E2DD2AC300027F144 /* AuthenticateWithPKICertificateView.swift */,
+			);
+			path = "Authenticate with PKI certificate";
 			sourceTree = "<group>";
 		};
 		10D321912BDB187400B39B1B /* 85282f2aaa2844d8935cdb8722e22a93 */ = {
@@ -4169,6 +4182,7 @@
 				D731F3C12AD0D2AC00A8431E /* IdentifyGraphicsView.swift in Sources */,
 				4C8126DD2DBBCF0B006EF7D2 /* ApplyStyleToWMSLayerView.swift in Sources */,
 				00E5401C27F3CCA200CF66D5 /* SamplesApp.swift in Sources */,
+				10CFF54F2DD2AC300027F144 /* AuthenticateWithPKICertificateView.swift in Sources */,
 				D73E61962BDAEE6600457932 /* MatchViewpointOfGeoViewsView.swift in Sources */,
 				E066DD4028610F55004D3D5B /* AddSceneLayerFromServiceView.swift in Sources */,
 				D7F8C0392B60564D0072BFA7 /* AddFeaturesWithContingentValuesView.swift in Sources */,
