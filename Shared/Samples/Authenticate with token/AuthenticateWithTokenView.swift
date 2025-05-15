@@ -89,19 +89,18 @@ struct AuthenticateWithTokenView: View {
     /// The string describing an error.
     /// - Parameter error: The error.
     private func errorString(for error: Error) -> String {
-        if error is CancellationError {
-            return "User cancelled error"
+        return if error is ArcGISChallengeCancellationError {
+            "User cancelled error"
         } else if let error = error as? ArcGISError {
-            return error.details
+            error.details
         } else {
-            return error.localizedDescription
+            error.localizedDescription
         }
     }
     
-    /// Signs out from the portal by revoking OAuth tokens and clearing credential stores.
+    /// Signs out from the portal by clearing credential stores.
     private func signOut() {
         Task {
-            await ArcGISEnvironment.authenticationManager.revokeOAuthTokens()
             await ArcGISEnvironment.authenticationManager.clearCredentialStores()
         }
     }
