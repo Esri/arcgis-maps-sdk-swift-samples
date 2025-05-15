@@ -2,7 +2,9 @@
     "category": "Routing and Logistics",
     "description": "Find the service areas of several facilities from a feature service.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "show-service-areas-for-multiple-facilities.png"
+    ],
     "keywords": [
         "facilities",
         "feature service",
