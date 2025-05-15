@@ -106,7 +106,7 @@ extension BrowseOrganizationBasemapsView {
     @MainActor
     class Model: ObservableObject {
         /// The URL string entered by the user.
-        @Published var portalURLString = ""
+        @Published var portalURLString = "https://www.arcgis.com"
         
         /// The fetched portal content.
         @Published var basemaps: Result<[Basemap], Error>?
