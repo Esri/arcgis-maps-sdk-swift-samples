@@ -62,33 +62,24 @@ struct AuthenticateWithTokenView: View {
         }
         .authenticator(authenticator)
         .onAppear {
-            // Setting the challenge handlers here in `onAppear` so user is prompted to enter
-            // credentials every time trying the sample. In real world applications, set challenge
-            // handlers at the start of the application.
-            
-            // Sets authenticator as ArcGIS and Network challenge handlers to handle authentication
-            // challenges.
-            ArcGISEnvironment.authenticationManager.handleChallenges(using: authenticator)
-            
-            // In real world applications, uncomment this code to persist credentials in the
-            // keychain and remove `signOut()` from `onDisappear`.
-            // setupPersistentCredentialStorage()
+            setupAuthenticator()
         }
         .onDisappear {
-            // Resetting the challenge handlers and clearing credentials here in `onDisappear`
-            // so user is prompted to enter credentials every time trying the sample. In real
-            // world applications, do these from sign out functionality of the application.
-            
-            // Resets challenge handlers.
-            ArcGISEnvironment.authenticationManager.handleChallenges(using: nil)
-            
-            signOut()
+            Task {
+                // Reset the challenge handlers and clear credentials
+                // when the view disappears so that user is prompted to enter
+                // credentials every time the sample is run, and to clean
+                // the environment for other samples.
+                await teardownAuthenticator()
+            }
         }
     }
-    
+}
+
+private extension AuthenticateWithTokenView {
     /// The string describing an error.
     /// - Parameter error: The error.
-    private func errorString(for error: Error) -> String {
+    func errorString(for error: Error) -> String {
         return if error is ArcGISChallengeCancellationError {
             "User cancelled error"
         } else if let error = error as? ArcGISError {
@@ -98,11 +89,32 @@ struct AuthenticateWithTokenView: View {
         }
     }
     
-    /// Signs out from the portal by clearing credential stores.
-    private func signOut() {
-        Task {
-            await ArcGISEnvironment.authenticationManager.clearCredentialStores()
-        }
+    /// Sets up the authenticator to handle challenges.
+    func setupAuthenticator() {
+        // Setting the challenge handlers here when the model is created so user is prompted to enter
+        // credentials every time trying the sample. In real world applications, set challenge
+        // handlers at the start of the application.
+        
+        // Sets authenticator as ArcGIS and Network challenge handlers to handle authentication
+        // challenges.
+        ArcGISEnvironment.authenticationManager.handleChallenges(using: authenticator)
+        
+        // In your application you may want to uncomment this code to persist
+        // credentials in the keychain.
+        // setupPersistentCredentialStorage()
+    }
+    
+    /// Stops the authenticator from handling the challenges and clears credentials.
+    nonisolated func teardownAuthenticator() async {
+        // Resets challenge handlers.
+        ArcGISEnvironment.authenticationManager.handleChallenges(using: nil)
+        
+        // In your application, code may need to run at a different
+        // point in time based on the workflow desired. For example, it
+        // might make sense to remove credentials when the user taps
+        // a "sign out" button.
+        await ArcGISEnvironment.authenticationManager.revokeOAuthTokens()
+        await ArcGISEnvironment.authenticationManager.clearCredentialStores()
     }
     
     /// Sets up new ArcGIS and Network credential stores that will be persisted in the keychain.
