@@ -25,11 +25,7 @@ struct ShowGeodesicPathBetweenTwoPointsView: View {
     @State private var overlay = GraphicsOverlay()
     
     /// The current measurement state.
-    @State private var state: MeasurementState = .notStarted {
-        didSet {
-            updateGraphicsOverlay()
-        }
-    }
+    @State private var state: MeasurementState = .notStarted
     
     /// The symbology for point graphics.
     private let pointSymbol: Symbol = SimpleMarkerSymbol(style: .cross, color: .blue, size: 20)
@@ -64,6 +60,7 @@ struct ShowGeodesicPathBetweenTwoPointsView: View {
                 .frame(maxWidth: .infinity)
                 .background(.ultraThinMaterial)
             }
+            .onChange(of: state) { updateGraphicsOverlay() }
             .animation(.default, value: state)
     }
     
