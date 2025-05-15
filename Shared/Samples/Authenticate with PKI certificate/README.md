@@ -35,7 +35,7 @@ ArcGIS Enterprise requires special configuration to enable support for PKI. See 
 
 ⚠ **NOTE**: Certificates installed on iOS are not available to user apps. Therefore, you will be prompted to browse for a certificate file when accessing PKI secured ArcGIS resources.
 
-⚠ **NOTE**: Ensure that PKI certificates are accessible on the iOS device or storage drives, allowing you to browse for a certificate file when accessing PKI-secured ArcGIS resources.
+⚠ **NOTE**: Ensure that PKI certificates are available on the iOS device or storage drives, allowing you to browse for a certificate file when accessing PKI secured ArcGIS resources.
 
 ## Tags
 
