@@ -16,11 +16,12 @@ Once you launch the app, you will be challenged for an ArcGIS Online login to vi
 ## How it works
 
 1. Create a toolkit component `Authenticator` object.
-2. Create a `Portal`.
-3. Create a `PortalItem` for the protected web map using the Portal and Item ID of the protected map service.
-4. Create a map to display in the MapView using the `PortalItem`.
-5. Set the map to display in the `MapView`.
-6. Set authenticator object as ArcGIS and Network challenge handlers on authentication manager to handle authentication challenges.
+2. Set authenticator object as ArcGIS and Network challenge handlers on authentication manager to handle authentication challenges.
+3. Create a `Portal`.
+4. Create a `PortalItem` for the protected web map using the Portal and Item ID of the protected map service.
+5. Create a map to display in the MapView using the `PortalItem`.
+6. Set the map to display in the `MapView`.
+7. Set the authenticator object on the `MapView` using the `authenticator` view modifier.
 
 ## Relevant API
 
