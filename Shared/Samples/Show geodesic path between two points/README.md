@@ -2,7 +2,7 @@
 
 Calculate a geodesic path between two points and measure its distance.
 
-![Image of show geodesic path between two points](show-geodesic-path-between-two-points.png)
+![Image of show geodesic path between two points sample](show-geodesic-path-between-two-points.png)
 
 ## Use case
 

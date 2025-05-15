@@ -40,24 +40,24 @@ struct ShowGeodesicPathBetweenTwoPointsView: View {
     var body: some View {
         MapView(map: map, graphicsOverlays: [overlay])
             .onSingleTapGesture { _, mapPoint in
-                switch state {
+                state = switch state {
                 case .notStarted, .complete:
                     // If the state is empty or complete, then start a new
                     // path, adding the tap point as the first graphic.
-                    state = .startOnly(start: mapPoint)
+                    .startOnly(start: mapPoint)
                 case .startOnly(let start):
                     // If the state was started, then add the end point
                     // to complete it.
-                    state = .complete(start: start, end: mapPoint)
+                    .complete(start: start, end: mapPoint)
                 }
             }
             .overlay(alignment: .top) {
-                VStack {
+                Group {
                     switch state {
                     case .notStarted, .startOnly:
                         Text("Tap on the map to show a geodesic path")
                     case .complete(_, _, _, let length):
-                        Text(length.formatted())
+                        Text(length, format: .measurement(width: .abbreviated))
                     }
                 }
                 .padding()
