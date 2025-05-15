@@ -89,7 +89,7 @@ struct BrowseOrganizationBasemapsView: View {
 
 /// A value that represents an item selected by the user.
 private struct SelectedItem: Identifiable {
-    /// The basemap was selected.
+    /// The basemap that was selected.
     let basemap: Basemap
     
     var id: ObjectIdentifier {
@@ -120,7 +120,7 @@ extension BrowseOrganizationBasemapsView {
         /// The URL to the portal.
         var portalURL: URL? { URL(string: portalURLString) }
         
-        /// Connects to the portal and finds a batch of webmaps.
+        /// Connects to the portal and finds a batch of web maps.
         func connectToPortal() async {
             precondition(portalURL != nil)
             
