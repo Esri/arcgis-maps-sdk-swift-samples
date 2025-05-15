@@ -18,7 +18,7 @@ import SwiftUI
 struct ShowServiceAreasForMultipleFacilitiesView: View {
     @State private var map = Map(basemapStyle: .arcGISLightGray)
     
-    @State private var serviceAreaTask = ServiceAreaTask(url: URL(string: "https://sampleserver7.arcgisonline.com/server/rest/services/NetworkAnalysis/SanDiego/NAServer/Route")!)
+    @State private var serviceAreaTask = ServiceAreaTask(url: URL(string: "https://sampleserver7.arcgisonline.com/server/rest/services/NetworkAnalysis/SanDiego/NAServer/ServiceArea")!)
     
     @State private var facilitiesFeatureTable = ServiceFeatureTable(url: URL(string: "https://services2.arcgis.com/ZQgQTuoyBrtmoGdP/ArcGIS/rest/services/San_Diego_Facilities/FeatureServer/0")!)
     
@@ -26,48 +26,59 @@ struct ShowServiceAreasForMultipleFacilitiesView: View {
     
     @State private var error: Error?
     
+    @State private var isCalculatingServiceArea = false
+    
     var body: some View {
         MapViewReader { mapViewProxy in
             MapView(map: map, graphicsOverlays: [graphicsOverlay])
+                .overlay {
+                    if isCalculatingServiceArea {
+                        ProgressView("Calculating service area...")
+                            .padding()
+                            .background(.ultraThickMaterial)
+                            .clipShape(.rect(cornerRadius: 10))
+                            .shadow(radius: 50)
+                    }
+                }
                 .task {
+                    isCalculatingServiceArea = true
+                    defer { isCalculatingServiceArea = false }
                     do {
                         let featureLayer = FeatureLayer(featureTable: facilitiesFeatureTable)
                         map.addOperationalLayer(featureLayer)
-                        try? await featureLayer.load()
+                        try await featureLayer.load()
                         if let fullExtent = featureLayer.fullExtent {
                             await mapViewProxy.setViewpointGeometry(fullExtent, padding: 50)
                         }
                         
-                        try await facilitiesFeatureTable.load()
-                        
-                        let queryParameters = QueryParameters()
-                        queryParameters.whereClause = "1=1"
                         let serviceAreaParameters = try await serviceAreaTask.makeDefaultParameters()
-                        serviceAreaParameters.setFacilities(fromFeaturesIn: facilitiesFeatureTable, queryParameters: queryParameters)
+                        serviceAreaParameters.setFacilities(fromFeaturesIn: facilitiesFeatureTable, queryParameters: .all)
                         serviceAreaParameters.returnsPolygons = true
                         serviceAreaParameters.polygonDetail = .high
-                        serviceAreaParameters.removeAllDefaultImpedanceCutoffs()
                         serviceAreaParameters.addDefaultImpedanceCutoffs([1, 3])
                         
-                        print("-- foo")
                         let serviceAreaResult = try await serviceAreaTask.solveServiceArea(using: serviceAreaParameters)
-                        print("-- facs: \(serviceAreaResult.facilities)")
                         for index in serviceAreaResult.facilities.indices {
-                            print("-- index: \(index)")
                             let polygons = serviceAreaResult.resultPolygons(forFacilityAtIndex: index)
                             for polygon in polygons {
-                                print("-- poly: \(polygon.geometry.extent)")
                                 let symbol = SimpleFillSymbol(color: .blue.withAlphaComponent(0.35))
                                 graphicsOverlay.addGraphic(Graphic(geometry: polygon.geometry, symbol: symbol))
                             }
                         }
                     } catch {
-                        print("-- error: \(error)")
                         self.error = error
                     }
                 }
         }
     }
+}
+
+private extension QueryParameters {
+    static let all = {
+        let queryParameters = QueryParameters()
+        queryParameters.whereClause = "1=1"
+        return queryParameters
+    }()
 }
 
 #Preview {
