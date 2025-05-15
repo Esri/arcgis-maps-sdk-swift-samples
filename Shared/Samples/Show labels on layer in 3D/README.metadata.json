@@ -7,6 +7,7 @@
     ],
     "keywords": [
         "3D",
+        "URL",
         "arcade",
         "attribute",
         "buildings",
@@ -15,7 +16,6 @@
         "scene",
         "symbol",
         "text",
-        "URL",
         "visualization",
         "ArcadeLabelExpression",
         "FeatureLayer",
