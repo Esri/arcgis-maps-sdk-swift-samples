@@ -16,7 +16,7 @@ import ArcGIS
 import SwiftUI
 
 struct ShowServiceAreasForMultipleFacilitiesView: View {
-    /// The map that we will display in the map view.
+    /// A map with a light gray basemap style.
     @State private var map = Map(basemapStyle: .arcGISLightGray)
     
     /// The service area task used to calculate the service area.
@@ -59,7 +59,7 @@ struct ShowServiceAreasForMultipleFacilitiesView: View {
                     
                     do {
                         // Create a feature layer to display the facilities.
-                        // And add the facilities feature layer to the map.
+                        // Then add the facilities feature layer to the map.
                         let featureLayer = FeatureLayer(featureTable: facilitiesFeatureTable)
                         map.addOperationalLayer(featureLayer)
                         
