@@ -144,6 +144,8 @@
 		1C293D012DCA7C99000B0822 /* ApplyBlendRendererToHillshadeView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C3891602DC02F1100ADFDDC /* ApplyBlendRendererToHillshadeView.swift */; };
 		1C293D032DCA7C99000B0822 /* ApplyBlendRendererToHillshadeView.SettingsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C3892302DC59E5D00ADFDDC /* ApplyBlendRendererToHillshadeView.SettingsView.swift */; };
 		1C293D4D2DCD91BF000B0822 /* color.json in Resources */ = {isa = PBXBuildFile; fileRef = 1C293D4B2DCD91BF000B0822 /* color.json */; settings = {ASSET_TAGS = (ApplyFunctionToRasterFromFile, ); }; };
+		1C293D572DD53523000B0822 /* ShowLabelsOnLayerIn3DView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C293D552DD53523000B0822 /* ShowLabelsOnLayerIn3DView.swift */; };
+		1C293D582DD53523000B0822 /* ShowLabelsOnLayerIn3DView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C293D552DD53523000B0822 /* ShowLabelsOnLayerIn3DView.swift */; };
 		1C29C9592DBAE50D0074028F /* AddWMTSLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C29C9532DBAE50D0074028F /* AddWMTSLayerView.swift */; };
 		1C29C95A2DBAE5770074028F /* AddWMTSLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C29C9532DBAE50D0074028F /* AddWMTSLayerView.swift */; };
 		1C38915D2DBC36C800ADFDDC /* AddWFSLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C38915C2DBC36C700ADFDDC /* AddWFSLayerView.swift */; };
@@ -747,6 +749,7 @@
 				D762AF622BF6A7D100ECE3C7 /* EditFeaturesWithFeatureLinkedAnnotationView.swift in Copy Source Code Files */,
 				1081B93D2C000E8B00C1BEB1 /* IdentifyFeaturesInWMSLayerView.swift in Copy Source Code Files */,
 				D7D9FCF92BF2CCA300F972A2 /* FilterByDefinitionExpressionOrDisplayFilterView.swift in Copy Source Code Files */,
+				1C293D582DD53523000B0822 /* ShowLabelsOnLayerIn3DView.swift in Copy Source Code Files */,
 				D7044B972BE18D8D000F2C43 /* EditWithBranchVersioningView.Views.swift in Copy Source Code Files */,
 				D7114A0F2BDC6AED00FA68CA /* EditWithBranchVersioningView.Model.swift in Copy Source Code Files */,
 				D73E61A12BDB221B00457932 /* EditWithBranchVersioningView.swift in Copy Source Code Files */,
@@ -1012,6 +1015,7 @@
 		1C2538532BABACB100337307 /* AugmentRealityToNavigateRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AugmentRealityToNavigateRouteView.swift; sourceTree = "<group>"; };
 		1C26ED152A859525009B7721 /* FilterFeaturesInSceneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterFeaturesInSceneView.swift; sourceTree = "<group>"; };
 		1C293D4B2DCD91BF000B0822 /* color.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = color.json; sourceTree = "<group>"; };
+		1C293D552DD53523000B0822 /* ShowLabelsOnLayerIn3DView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowLabelsOnLayerIn3DView.swift; sourceTree = "<group>"; };
 		1C29C9532DBAE50D0074028F /* AddWMTSLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWMTSLayerView.swift; sourceTree = "<group>"; };
 		1C38915C2DBC36C700ADFDDC /* AddWFSLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWFSLayerView.swift; sourceTree = "<group>"; };
 		1C3891602DC02F1100ADFDDC /* ApplyBlendRendererToHillshadeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyBlendRendererToHillshadeView.swift; sourceTree = "<group>"; };
@@ -1616,6 +1620,7 @@
 				88129D782DD5034B001599A5 /* Show geodesic path between two points */,
 				00ABA94B2BF671FC00C0488C /* Show grid */,
 				D751017D2A2E490800B8FA48 /* Show labels on layer */,
+				1C293D562DD53523000B0822 /* Show labels on layer in 3D */,
 				D7CC33FB2A31475C00198EDF /* Show line of sight between points */,
 				D7337C5C2ABD137400A5D865 /* Show mobile map package expiration date */,
 				1C42E04129D2396B004FC4BE /* Show popup */,
@@ -2011,6 +2016,14 @@
 				1C293D4B2DCD91BF000B0822 /* color.json */,
 			);
 			path = 5356dbf91788474493467519e268cf87;
+			sourceTree = "<group>";
+		};
+		1C293D562DD53523000B0822 /* Show labels on layer in 3D */ = {
+			isa = PBXGroup;
+			children = (
+				1C293D552DD53523000B0822 /* ShowLabelsOnLayerIn3DView.swift */,
+			);
+			path = "Show labels on layer in 3D";
 			sourceTree = "<group>";
 		};
 		1C29C9622DBAE5D10074028F /* Add WMTS layer */ = {
@@ -4180,6 +4193,7 @@
 				D7AE861E2AC39DC50049B626 /* DisplayAnnotationView.swift in Sources */,
 				D734FA0C2A183A5B00246D7E /* SetMaxExtentView.swift in Sources */,
 				D704AA5A2AB22C1A00A3BB63 /* GroupLayersTogetherView.swift in Sources */,
+				1C293D572DD53523000B0822 /* ShowLabelsOnLayerIn3DView.swift in Sources */,
 				0072C7F42DBAA65E001502CA /* AddFeatureCollectionLayerFromTableView.swift in Sources */,
 				E004A6DC28465C70002A1FE6 /* DisplaySceneView.swift in Sources */,
 				E066DD35285CF3B3004D3D5B /* FindRouteView.swift in Sources */,

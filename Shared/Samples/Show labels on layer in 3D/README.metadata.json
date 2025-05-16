@@ -1,0 +1,40 @@
+{
+    "category": "Visualization",
+    "description": "Display custom labels in a 3D scene.",
+    "ignore": false,
+    "images": [
+        "show-labels-on-layer-in-3D.png"
+    ],
+    "keywords": [
+        "3D",
+        "URL",
+        "arcade",
+        "attribute",
+        "buildings",
+        "label",
+        "model",
+        "scene",
+        "symbol",
+        "text",
+        "visualization",
+        "ArcadeLabelExpression",
+        "FeatureLayer",
+        "LabelDefinition",
+        "Scene",
+        "SceneView",
+        "TextSymbol"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "ArcadeLabelExpression",
+        "FeatureLayer",
+        "LabelDefinition",
+        "Scene",
+        "SceneView",
+        "TextSymbol"
+    ],
+    "snippets": [
+        "ShowLabelsOnLayerIn3DView.swift"
+    ],
+    "title": "Show labels on layer in 3D"
+}
