@@ -1,0 +1,27 @@
+{
+    "category": "Edit and Manage Data",
+    "description": "Calculate a geodesic path between two points and measure its distance.",
+    "ignore": false,
+    "images": [
+        "show-geodesic-path-between-two-points.png"
+    ],
+    "keywords": [
+        "densify",
+        "distance",
+        "geodesic",
+        "geodetic",
+        "GeometryEngine.geodeticDensify(_:maxSegmentLength:lengthUnit:curveType:)",
+        "GeometryEngine.geodeticDistance(from:to:distanceUnit:azimuthUnit:curveType:)",
+        "MapView.onSingleTapGesture(perform:)"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "GeometryEngine.geodeticDensify(_:maxSegmentLength:lengthUnit:curveType:)",
+        "GeometryEngine.geodeticDistance(from:to:distanceUnit:azimuthUnit:curveType:)",
+        "MapView.onSingleTapGesture(perform:)"
+    ],
+    "snippets": [
+        "ShowGeodesicPathBetweenTwoPointsView.swift"
+    ],
+    "title": "Show geodesic path between two points"
+}

@@ -1,18 +1,17 @@
 {
     "category": "Routing and Logistics",
-    "description": "Find the service area within a network from a given point.",
+    "description": "Find the service areas of several facilities from a feature service.",
     "ignore": false,
     "images": [
-        "show-service-area.png"
+        "show-service-areas-for-multiple-facilities.png"
     ],
     "keywords": [
-        "barriers",
         "facilities",
+        "feature service",
         "impedance",
-        "logistics",
-        "routing",
-        "PolylineBarrier",
-        "ServiceAreaFacility",
+        "network analysis",
+        "service area",
+        "travel time",
         "ServiceAreaParameters",
         "ServiceAreaPolygon",
         "ServiceAreaResult",
@@ -20,15 +19,13 @@
     ],
     "redirect_from": [],
     "relevant_apis": [
-        "PolylineBarrier",
-        "ServiceAreaFacility",
         "ServiceAreaParameters",
         "ServiceAreaPolygon",
         "ServiceAreaResult",
         "ServiceAreaTask"
     ],
     "snippets": [
-        "ShowServiceAreaView.swift"
+        "ShowServiceAreasForMultipleFacilitiesView.swift"
     ],
-    "title": "Show service area"
+    "title": "Show service areas for multiple facilities"
 }
