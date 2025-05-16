@@ -104,32 +104,35 @@ extension BrowseWMSLayersView {
         
         var body: some View {
             List(items) { item in
-                ItemView(item: item)
+                //ItemView(item: item)
+                OutlineGroup(items, children: \.children) { item in
+                    Text(item.label)
+                }
             }
         }
     }
 }
 
-extension BrowseWMSLayersView.WMSLayerListView {
-    struct ItemView: View {
-        let item: WMSLayerItem
-        
-        var body: some View {
-            Group {
-                if item.children.isEmpty {
-                    Text(item.label)
-                } else {
-                    DisclosureGroup(item.label) {
-                        ForEach(item.children) { subItem in
-                            ItemView(item: subItem)
-                        }
-                    }
-                }
-            }
-            .foregroundStyle(item.kind == .display ? .primary : .secondary)
-        }
-    }
-}
+//extension BrowseWMSLayersView.WMSLayerListView {
+//    struct ItemView: View {
+//        let item: WMSLayerItem
+//        
+//        var body: some View {
+//            Group {
+//                if item.children.isEmpty {
+//                    Text(item.label)
+//                } else {
+//                    DisclosureGroup(item.label) {
+//                        ForEach(item.children) { subItem in
+//                            ItemView(item: subItem)
+//                        }
+//                    }
+//                }
+//            }
+//            .foregroundStyle(item.kind == .display ? .primary : .secondary)
+//        }
+//    }
+//}
 
 struct WMSLayerItem: Hashable, Identifiable {
     static func == (lhs: WMSLayerItem, rhs: WMSLayerItem) -> Bool {
@@ -156,7 +159,7 @@ struct WMSLayerItem: Hashable, Identifiable {
 //        !layerInfo.title.isEmpty ? layerInfo.title : layerInfo.name
     }
     
-    var children: [WMSLayerItem] {
+    var children: [WMSLayerItem]? {
         layerInfo.sublayerInfos.map(WMSLayerItem.init(layerInfo:))
     }
     
