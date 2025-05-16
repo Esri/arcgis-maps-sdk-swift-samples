@@ -2279,20 +2279,20 @@
 			path = "Apply function to raster from service";
 			sourceTree = "<group>";
 		};
-		88AF55282DD68753003F146E /* Show service areas for multiple facilities */ = {
-			isa = PBXGroup;
-			children = (
-				88AF55292DD68767003F146E /* ShowServiceAreasForMultipleFacilitiesView.swift */,
-			);
-			path = "Show service areas for multiple facilities";
-			sourceTree = "<group>";
-		};
 		88129D782DD5034B001599A5 /* Show geodesic path between two points */ = {
 			isa = PBXGroup;
 			children = (
 				88129D792DD5035A001599A5 /* ShowGeodesicPathBetweenTwoPointsView.swift */,
 			);
 			path = "Show geodesic path between two points";
+			sourceTree = "<group>";
+		};
+		88AF55282DD68753003F146E /* Show service areas for multiple facilities */ = {
+			isa = PBXGroup;
+			children = (
+				88AF55292DD68767003F146E /* ShowServiceAreasForMultipleFacilitiesView.swift */,
+			);
+			path = "Show service areas for multiple facilities";
 			sourceTree = "<group>";
 		};
 		88C5E0E92DCBC1B20091D271 /* Apply scene property expressions */ = {
