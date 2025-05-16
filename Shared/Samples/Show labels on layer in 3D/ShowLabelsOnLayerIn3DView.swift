@@ -84,5 +84,5 @@ private extension PortalItem.ID {
 }
 
 #Preview {
-    Add3DTilesLayerView()
+    ShowLabelsOnLayerIn3DView()
 }
