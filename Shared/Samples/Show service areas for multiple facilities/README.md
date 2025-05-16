@@ -2,7 +2,7 @@
 
 Find the service areas of several facilities from a feature service.
 
-![Image of show service areas for multiple facilities](show-service-areas-for-multiple-facilities.png)
+![Image of show service areas for multiple facilities sample](show-service-areas-for-multiple-facilities.png)
 
 ## Use case
 
@@ -19,7 +19,7 @@ Upon running, the sample will calculate and display the service area of each fac
 3. Set the parameters `returnsPolygons` property to `true` to return polygons of all service areas.
 4. Define `QueryParameters` that retrieve all features from the facilities `FeatureTable`. Add the facilities to the service area parameters using the query parameters, `serviceAreaParameters.setFacilities(fromFeaturesIn:queryParameters:)`
 5. Get the `ServiceAreaResult` by solving the service area task using the parameters.
-6. For each facility, get any `ServiceAreaPolygons` that were returned, `ServiceAreaResult.resultPolygons(forFacilityAtIndex:`.
+6. For each facility, get any `ServiceAreaPolygons` that were returned, `ServiceAreaResult.resultPolygons(forFacilityAtIndex:)`.
 7. Display each service area polygon as a `Graphic` in a `GraphicsOverlay` on the `MapView`.
 
 ## Relevant API

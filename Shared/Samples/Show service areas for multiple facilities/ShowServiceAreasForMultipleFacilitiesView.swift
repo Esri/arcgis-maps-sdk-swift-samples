@@ -36,10 +36,10 @@ struct ShowServiceAreasForMultipleFacilitiesView: View {
     @State private var isCalculatingServiceArea = false
     
     /// The service area fill symbols.
-    let fillSymbols = { [
+    let fillSymbols = [
         SimpleFillSymbol(color: .orange.withAlphaComponent(0.5)),
         SimpleFillSymbol(color: .red.withAlphaComponent(0.5))
-    ] }()
+    ]
     
     var body: some View {
         MapViewReader { mapViewProxy in
@@ -78,7 +78,7 @@ struct ShowServiceAreasForMultipleFacilitiesView: View {
                         // level of detail.
                         serviceAreaParameters.returnsPolygons = true
                         serviceAreaParameters.polygonDetail = .high
-                        // Set our impedence cutoffs to 1 minute and 3 minutes
+                        // Set our impedance cutoffs to 1 minute and 3 minutes
                         // accordingly.
                         serviceAreaParameters.removeAllDefaultImpedanceCutoffs()
                         serviceAreaParameters.addDefaultImpedanceCutoffs([1, 3])
