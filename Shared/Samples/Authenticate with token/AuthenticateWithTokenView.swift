@@ -20,11 +20,8 @@ struct AuthenticateWithTokenView: View {
     /// The authenticator to handle authentication challenges.
     @StateObject private var authenticator = Authenticator()
     
-    /// The loaded map result.
-    @State private var mapLoadResult: Result<Map, Error>?
-    
-    /// Creates the map for this sample.
-    static func makeMap() -> Map {
+    /// A map with a traffic layer.
+    @State private var map = {
         // The portal to authenticate with named user.
         let portal = Portal(url: .portal, connection: .authenticated)
         
@@ -36,59 +33,36 @@ struct AuthenticateWithTokenView: View {
         
         // Creates map with portal item.
         return Map(item: portalItem)
-    }
+    }()
+    
+    /// The error shown in the error alert.
+    @State private var error: Error?
     
     var body: some View {
-        Group {
-            if let mapLoadResult = mapLoadResult {
-                switch mapLoadResult {
-                case .success(let value):
-                    MapView(map: value)
-                case .failure(let error):
-                    Text("Error loading map: \(errorString(for: error))")
-                        .padding()
+        MapView(map: map)
+            .onLayerViewStateChanged { layer, layerViewState in
+                if layerViewState.status == .error {
+                    error = layer.loadError
                 }
-            } else {
-                ProgressView()
-                    .task {
-                        mapLoadResult = await Result { @MainActor in
-                            let map = Self.makeMap()
-                            try await map.load()
-                            try await map.operationalLayers.first?.load()
-                            return map
-                        }
-                    }
             }
-        }
-        .authenticator(authenticator)
-        .onAppear {
-            setupAuthenticator()
-        }
-        .onDisappear {
-            Task {
-                // Reset the challenge handlers and clear credentials
-                // when the view disappears so that user is prompted to enter
-                // credentials every time the sample is run, and to clean
-                // the environment for other samples.
-                await teardownAuthenticator()
+            .errorAlert(presentingError: $error)
+            .authenticator(authenticator)
+            .onAppear {
+                setupAuthenticator()
             }
-        }
+            .onDisappear {
+                Task {
+                    // Reset the challenge handlers and clear credentials
+                    // when the view disappears so that user is prompted to enter
+                    // credentials every time the sample is run, and to clean
+                    // the environment for other samples.
+                    await teardownAuthenticator()
+                }
+            }
     }
 }
 
 private extension AuthenticateWithTokenView {
-    /// The string describing an error.
-    /// - Parameter error: The error.
-    func errorString(for error: Error) -> String {
-        return if error is ArcGISChallengeCancellationError {
-            "User cancelled error"
-        } else if let error = error as? ArcGISError {
-            error.details
-        } else {
-            error.localizedDescription
-        }
-    }
-    
     /// Sets up the authenticator to handle challenges.
     func setupAuthenticator() {
         // Setting the challenge handlers here when the model is created so user is prompted to enter
