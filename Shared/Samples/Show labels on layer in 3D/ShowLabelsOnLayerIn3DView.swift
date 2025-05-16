@@ -80,7 +80,7 @@ private extension ShowLabelsOnLayerIn3DView {
 
 private extension PortalItem.ID {
     /// The ID to the "New York City infrastructure with 3D labels" web scene portal item on ArcGIS Online.
-    static var newYorkCityInfrastructure: Self { Self("850dfee7d30f4d9da0ebca34a533c169 ")! }
+    static var newYorkCityInfrastructure: Self { Self("850dfee7d30f4d9da0ebca34a533c169")! }
 }
 
 #Preview {
