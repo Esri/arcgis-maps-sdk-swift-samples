@@ -98,9 +98,71 @@ extension BrowseWMSLayersView {
         let layerInfos: [WMSLayerInfo]
         @Binding var selection: WMSLayerInfo?
         
-        var body: some View {
-            Text("")
+        var items: [WMSLayerItem] {
+            layerInfos.map(WMSLayerItem.init(layerInfo:))
         }
+        
+        var body: some View {
+            List(items) { item in
+                ItemView(item: item)
+            }
+        }
+    }
+}
+
+extension BrowseWMSLayersView.WMSLayerListView {
+    struct ItemView: View {
+        let item: WMSLayerItem
+        
+        var body: some View {
+            Group {
+                if item.children.isEmpty {
+                    Text(item.label)
+                } else {
+                    DisclosureGroup(item.label) {
+                        ForEach(item.children) { subItem in
+                            ItemView(item: subItem)
+                        }
+                    }
+                }
+            }
+            .foregroundStyle(item.kind == .display ? .primary : .secondary)
+        }
+    }
+}
+
+struct WMSLayerItem: Hashable, Identifiable {
+    static func == (lhs: WMSLayerItem, rhs: WMSLayerItem) -> Bool {
+        lhs.layerInfo === rhs.layerInfo
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
+    let layerInfo: WMSLayerInfo
+    
+    var kind: Kind {
+        !layerInfo.name.isEmpty ? .display : .container
+    }
+    
+    var id: ObjectIdentifier {
+        ObjectIdentifier(layerInfo)
+    }
+    
+    var label: String {
+        layerInfo.title
+//        layerInfo.name
+//        !layerInfo.title.isEmpty ? layerInfo.title : layerInfo.name
+    }
+    
+    var children: [WMSLayerItem] {
+        layerInfo.sublayerInfos.map(WMSLayerItem.init(layerInfo:))
+    }
+    
+    enum Kind {
+        case container
+        case display
     }
 }
 
