@@ -41,7 +41,7 @@ struct AuthenticateWithTokenView: View {
     var body: some View {
         MapView(map: map)
             .onLayerViewStateChanged { layer, layerViewState in
-                guard layer.name == map.operationalLayers.first?.name else { return }
+                guard layer === map.operationalLayers.first else { return }
                 if layerViewState.status == .error {
                     error = layer.loadError
                 }
