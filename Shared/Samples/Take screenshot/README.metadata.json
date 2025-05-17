@@ -1,0 +1,29 @@
+{
+    "category": "Maps",
+    "description": "Take a screenshot of the map.",
+    "ignore": false,
+    "images": [
+        "take-screenshot.png"
+    ],
+    "keywords": [
+        "capture",
+        "export",
+        "image",
+        "print",
+        "screen capture",
+        "screenshot",
+        "share",
+        "shot",
+        "DrawStatus",
+        "GeoViewProxy.exportImage()"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "DrawStatus",
+        "GeoViewProxy.exportImage()"
+    ],
+    "snippets": [
+        "TakeScreenshotView.swift"
+    ],
+    "title": "Take screenshot"
+}
