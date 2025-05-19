@@ -165,6 +165,7 @@ extension BrowseWMSLayersView {
         /// A Boolean value indicating if the layer is visible.
         var isVisible: Bool = false {
             didSet {
+                // Update the children's `isParentVisible` property.
                 children?.forEach { $0.isParentVisible = isVisible }
             }
         }
