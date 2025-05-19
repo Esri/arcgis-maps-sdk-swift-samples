@@ -85,6 +85,7 @@ struct BrowseWMSLayersView: View {
 }
 
 extension BrowseWMSLayersView {
+    /// A view that displays the layers and sublayers in a hierarchical list.
     struct WMSLayerListView: View {
         /// The models to display in the list.
         @State var models: [WMSLayerModel]
