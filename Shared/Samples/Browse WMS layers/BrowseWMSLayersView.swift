@@ -101,10 +101,14 @@ extension BrowseWMSLayersView {
                             Button {
                                 model.isVisible.toggle()
                             } label: {
-                                Image(systemName: model.isVisible || model.isParentVisible ? "eye" : "eye.slash")
+                                Image(
+                                    systemName: model.isVisible || model.isParentVisible ? "eye" : "eye.slash"
+                                )
                             }
-                            .padding(.trailing)
+                            // Disable the button if the parent is visible because
+                            // the sublayer will always display in that case.
                             .disabled(model.isParentVisible)
+                            .padding(.trailing)
                         }
                     }
                     .font(.subheadline)
