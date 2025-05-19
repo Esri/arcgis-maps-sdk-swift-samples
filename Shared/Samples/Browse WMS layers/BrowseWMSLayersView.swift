@@ -76,7 +76,6 @@ extension BrowseWMSLayersView {
         var body: some View {
             List(items) { item in
                 OutlineGroup(items, children: \.children) { item in
-                    var item = item
                     HStack {
                         Text(item.label)
                         Spacer()
@@ -87,6 +86,7 @@ extension BrowseWMSLayersView {
                         .padding(.trailing)
                     }
                     .font(.subheadline)
+                    //.animation(.default, value: item.isVisible)
                 }
             }
         }
