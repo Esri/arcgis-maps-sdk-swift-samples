@@ -19,10 +19,9 @@ WMS services often contain many layers and sublayers. Presenting the layers and 
 
 1. A `WMSService` is created and loaded.
 2. `WMSService` has a `serviceInfo` property, which is a `WMSServiceInfo`. `WMSService` has a `WMSLayerInfo` object for each layer (excluding sublayers) in the `layerInfos` collection.
-3. A method is called to recursively discover sublayers for each layer. Layers are wrapped in a view model and added to a list.
-    * The view model has a `Select` method which recursively selects or deselects itself and sublayers.
-    * The view model tracks the children and parent of each layer.
-4. Once the layer selection has been updated, another method is called to create a new `WMSLayer` from a list of selected `WMSLayerInfo`.
+3. Models are recursively created for each sublayer.
+    * The model has an `isVisible` property which sets the visibility for the associated sublayer.
+4. Once the layer selection has been updated, a `WMSLayer` with the selected sublayers is created and added to the operational layers of the map.
 
 ## Relevant API
 

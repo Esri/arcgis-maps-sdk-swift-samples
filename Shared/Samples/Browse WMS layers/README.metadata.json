@@ -10,17 +10,17 @@
         "WMS",
         "catalog",
         "web map service",
-        "WmsLayer(List<WmsLayerInfo>)",
-        "WmsLayerInfo",
-        "WmsService",
-        "WmsServiceInfo"
+        "WMSLayer",
+        "WMSLayerInfo",
+        "WMSService",
+        "WMSServiceInfo"
     ],
     "redirect_from": [],
     "relevant_apis": [
-        "WmsLayer(List<WmsLayerInfo>)",
-        "WmsLayerInfo",
-        "WmsService",
-        "WmsServiceInfo"
+        "WMSLayer",
+        "WMSLayerInfo",
+        "WMSService",
+        "WMSServiceInfo"
     ],
     "snippets": [
         "BrowseWMSLayersView.swift"
