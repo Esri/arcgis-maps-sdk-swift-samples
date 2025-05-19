@@ -31,6 +31,17 @@ struct TakeScreenshotView: View {
         return map
     }()
     
+    /// A Boolean value indicating whether the screenshot view is presented.
+    var screenshotViewIsPresented: Binding<Bool> {
+        Binding {
+            imageToExport != nil
+        } set: { newValue in
+            if !newValue {
+                imageToExport = nil
+            }
+        }
+    }
+    
     var body: some View {
         MapViewReader { mapViewProxy in
             MapView(map: map)
@@ -39,13 +50,18 @@ struct TakeScreenshotView: View {
                         currentDrawStatus = drawStatus
                     }
                 }
-                .overlay(alignment: .bottomLeading) {
-                    if imageToExport != nil {
-                        imageExportOverlay
+                .sheet(isPresented: screenshotViewIsPresented) {
+                    NavigationStack {
+                        ShareScreenshotView(
+                            screenshot: Screenshot(
+                                image: Image(uiImage: imageToExport!),
+                                caption: "A screenshot of the map."
+                            )
+                        )
                     }
                 }
                 .toolbar {
-                    ToolbarItemGroup(placement: .bottomBar) {
+                    ToolbarItem(placement: .bottomBar) {
                         if currentDrawStatus == .completed {
                             Button("Take Screenshot") {
                                 Task {
@@ -62,37 +78,11 @@ struct TakeScreenshotView: View {
                 }
         }
     }
-    
-    /// A view to share an image.
-    private var imageExportOverlay: some View {
-        ZStack(alignment: .topTrailing) {
-            PhotoView(
-                photo: Photo(
-                    image: Image(uiImage: imageToExport!),
-                    caption: "A screenshot of the map."
-                )
-            )
-            // An "x" button to close the image export view.
-            Button {
-                self.imageToExport = nil
-            } label: {
-                Image(systemName: "xmark.circle.fill")
-                    .resizable()
-                    .frame(width: 24, height: 24)
-                    .foregroundColor(.secondary)
-            }
-            .padding(4)
-        }
-        .background(.thinMaterial)
-        .clipShape(.rect(cornerRadius: 10))
-        .shadow(radius: 3)
-        .padding()
-    }
 }
 
 private extension TakeScreenshotView {
-    /// A struct that represents a photo with a caption to be shared.
-    struct Photo: Transferable {
+    /// A struct that represents a screenshot with a caption to be shared.
+    struct Screenshot: Transferable {
         static var transferRepresentation: some TransferRepresentation {
             ProxyRepresentation(exporting: \.image)
         }
@@ -102,44 +92,34 @@ private extension TakeScreenshotView {
     }
     
     /// A view that displays an image to be shared.
-    struct PhotoView: View {
-        /// The photo to display.
-        let photo: Photo
-        /// A Boolean value that indicates whether the photo is in fullscreen.
-        @State private var isShowingFullScreen = false
+    struct ShareScreenshotView: View {
+        /// The action to dismiss the sheet.
+        @Environment(\.dismiss) private var dismiss: DismissAction
+        /// The screenshot to display.
+        let screenshot: Screenshot
         
         var body: some View {
-            VStack(spacing: 8) {
-                if isShowingFullScreen {
-                    Text(photo.caption)
-                        .padding()
-                }
-                
-                photo.image
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                
-                if isShowingFullScreen {
-                    // A share link to share the image.
-                    ShareLink(
-                        item: photo,
-                        preview: SharePreview(
-                            photo.caption,
-                            image: photo.image
+            screenshot.image
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .toolbar {
+                    ToolbarItem(placement: .confirmationAction) {
+                        Button("Done") {
+                            dismiss()
+                        }
+                    }
+                    
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        // A share link to share the screenshot image.
+                        ShareLink(
+                            item: screenshot,
+                            preview: SharePreview(
+                                screenshot.caption,
+                                image: screenshot.image
+                            )
                         )
-                    )
-                    .padding()
+                    }
                 }
-            }
-            .onTapGesture {
-                withAnimation(.default.speed(2)) {
-                    isShowingFullScreen.toggle()
-                }
-            }
-            .frame(
-                width: isShowingFullScreen ? nil : 100,
-                height: isShowingFullScreen ? nil : 100
-            )
         }
     }
 }
