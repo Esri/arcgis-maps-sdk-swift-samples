@@ -20,7 +20,7 @@ Some WFS services return coordinates in X,Y order, while others return coordinat
 
 1. Create a `WFSService` object with a URL to a WFS feature service.
 2. Obtain an array of `WFSLayerInfo` object using `WFSServiceInfo.layerInfos`.
-3. When a layer is selected, create a `WFSFeatureTable` instace with the selected `WFSLayerInfo` object.
+3. When a layer is selected, create a `WFSFeatureTable` instance with the selected `WFSLayerInfo` object.
     * Set the axis order if necessary.
 4. Create a feature layer from the feature table.
 5. Add the feature layer to the map.
@@ -36,7 +36,7 @@ Some WFS services return coordinates in X,Y order, while others return coordinat
 
 ## About the data
 
-The sample is configured with a sample WFS service, but you can load other WFS services if desired. The default service shows [Seattle downtown features](https://arcgisruntime.maps.arcgis.com/home/item.html?id=1b81d35c5b0942678140efc29bc25391) hosted on ArcGIS Online.
+The sample is configured with a sample WFS service, but you can load other WFS services if desired. The default service shows [Seattle downtown features](https://www.arcgis.com/home/item.html?id=1b81d35c5b0942678140efc29bc25391) hosted on ArcGIS Online.
 
 ## Tags
 
