@@ -166,6 +166,7 @@
 		1C43BC852A43783900509BF8 /* SetVisibilityOfSubtypeSublayerView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C43BC7C2A43781100509BF8 /* SetVisibilityOfSubtypeSublayerView.Model.swift */; };
 		1C43BC862A43783900509BF8 /* SetVisibilityOfSubtypeSublayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C43BC7E2A43781100509BF8 /* SetVisibilityOfSubtypeSublayerView.swift */; };
 		1C43BC872A43783900509BF8 /* SetVisibilityOfSubtypeSublayerView.Views.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C43BC792A43781100509BF8 /* SetVisibilityOfSubtypeSublayerView.Views.swift */; };
+		1C8438F42DDBD02C005CCBC7 /* GasDeviceAnno.mmpk in Resources */ = {isa = PBXBuildFile; fileRef = 1C8438F32DDBD02C005CCBC7 /* GasDeviceAnno.mmpk */; };
 		1C8EC7472BAE2891001A6929 /* AugmentRealityToCollectDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C8EC7432BAE2891001A6929 /* AugmentRealityToCollectDataView.swift */; };
 		1C8EC74B2BAE28A9001A6929 /* AugmentRealityToCollectDataView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C8EC7432BAE2891001A6929 /* AugmentRealityToCollectDataView.swift */; };
 		1C929F092A27B86800134252 /* ShowUtilityAssociationsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1CAF831B2A20305F000E1E60 /* ShowUtilityAssociationsView.swift */; };
@@ -1030,6 +1031,7 @@
 		1C43BC792A43781100509BF8 /* SetVisibilityOfSubtypeSublayerView.Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetVisibilityOfSubtypeSublayerView.Views.swift; sourceTree = "<group>"; };
 		1C43BC7C2A43781100509BF8 /* SetVisibilityOfSubtypeSublayerView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetVisibilityOfSubtypeSublayerView.Model.swift; sourceTree = "<group>"; };
 		1C43BC7E2A43781100509BF8 /* SetVisibilityOfSubtypeSublayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetVisibilityOfSubtypeSublayerView.swift; sourceTree = "<group>"; };
+		1C8438F32DDBD02C005CCBC7 /* GasDeviceAnno.mmpk */ = {isa = PBXFileReference; lastKnownFileType = file; path = GasDeviceAnno.mmpk; sourceTree = "<group>"; };
 		1C8EC7432BAE2891001A6929 /* AugmentRealityToCollectDataView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AugmentRealityToCollectDataView.swift; sourceTree = "<group>"; };
 		1C9B74C529DB43580038B06F /* ShowRealisticLightAndShadowsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowRealisticLightAndShadowsView.swift; sourceTree = "<group>"; };
 		1C9B74D529DB54560038B06F /* ChangeCameraControllerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeCameraControllerView.swift; sourceTree = "<group>"; };
@@ -1742,6 +1744,7 @@
 		00CCB8A6285D059300BBAB70 /* Portal Data */ = {
 			isa = PBXGroup;
 			children = (
+				1C8438F22DDBCFFC005CCBC7 /* b87307dcfb26411eb2e92e1627cb615b */,
 				1C293D4C2DCD91BF000B0822 /* 5356dbf91788474493467519e268cf87 */,
 				D762DA0D2D94C750001052DD /* 0fd3a39660d54c12b05d5f81f207dffd */,
 				D74C8C002ABA6202007C76B8 /* 1bd036f221f54a99abc9e46ff3511cbf */,
@@ -2097,6 +2100,14 @@
 				1C43BC792A43781100509BF8 /* SetVisibilityOfSubtypeSublayerView.Views.swift */,
 			);
 			path = "Set visibility of subtype sublayer";
+			sourceTree = "<group>";
+		};
+		1C8438F22DDBCFFC005CCBC7 /* b87307dcfb26411eb2e92e1627cb615b */ = {
+			isa = PBXGroup;
+			children = (
+				1C8438F32DDBD02C005CCBC7 /* GasDeviceAnno.mmpk */,
+			);
+			path = b87307dcfb26411eb2e92e1627cb615b;
 			sourceTree = "<group>";
 		};
 		1C8EC7422BAE2891001A6929 /* Augment reality to collect data */ = {
@@ -3844,6 +3855,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1C8438F42DDBD02C005CCBC7 /* GasDeviceAnno.mmpk in Resources */,
 				1CC755E12DC5A6A7004B346F /* Shasta_Elevation in Resources */,
 				D7F8C0412B605E720072BFA7 /* FillmoreTopographicMap.vtpk in Resources */,
 				1C293D4D2DCD91BF000B0822 /* color.json in Resources */,
