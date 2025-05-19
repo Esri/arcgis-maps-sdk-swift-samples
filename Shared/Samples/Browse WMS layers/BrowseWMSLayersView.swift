@@ -32,38 +32,9 @@ struct BrowseWMSLayersView: View {
             MapView(map: map)
                 .task {
                     do {
-                        print("-- loading")
                         try await wmsService.load()
-                        if let info = wmsService.serviceInfo {
-//                            let layer = WMSLayer(layerInfos: info.layerInfos)
-//                            print("-- adding layer, count: \(info.layerInfos.count)")
-//                            map.addOperationalLayer(layer)
-                            
-//                            try await layer.load()
-                            
-//                            if let layerInfo = info.layerInfos.first {
-//                                let layer = WMSLayer(layerInfos: layerInfo.sublayerInfos)
-//                                print("-- adding layer, count: \(layerInfo.sublayerInfos.count)")
-//                                map.addOperationalLayer(layer)
-////                                if let extent = layerInfo.extent {
-////                                    print("-- zooming: \(extent)")
-////                                    await mapViewProxy.setViewpointGeometry(extent, padding: 50)
-////                                }
-//                            }
-                            
-                            layerInfos = info.layerInfos
-                            
-                            
-//                            if let extent = layer.fullExtent {
-//                                print("-- zooming: \(extent)")
-//                                await mapViewProxy.setViewpointGeometry(extent, padding: 50)
-//                            }
-                        }
-                        //                    for info in wmsService.serviceInfo?.layerInfos {
-                        //
-                        //                    }
+                        layerInfos = wmsService.serviceInfo?.layerInfos ?? []
                     } catch {
-                        print("-- error: \(error)")
                         self.error = error
                     }
                 }
@@ -104,68 +75,63 @@ extension BrowseWMSLayersView {
         
         var body: some View {
             List(items) { item in
-                //ItemView(item: item)
                 OutlineGroup(items, children: \.children) { item in
-                    Text(item.label)
+                    var item = item
+                    HStack {
+                        Text(item.label)
+                        Spacer()
+                        Button(item.isVisible ? "Hide" : "Show") {
+                            print("-- tapped!")
+                            item.isVisible.toggle()
+                        }
+                        .padding(.trailing)
+                    }
+                    .font(.subheadline)
                 }
             }
         }
     }
 }
 
-//extension BrowseWMSLayersView.WMSLayerListView {
-//    struct ItemView: View {
-//        let item: WMSLayerItem
-//        
-//        var body: some View {
-//            Group {
-//                if item.children.isEmpty {
-//                    Text(item.label)
-//                } else {
-//                    DisclosureGroup(item.label) {
-//                        ForEach(item.children) { subItem in
-//                            ItemView(item: subItem)
-//                        }
-//                    }
-//                }
-//            }
-//            .foregroundStyle(item.kind == .display ? .primary : .secondary)
-//        }
-//    }
-//}
-
-struct WMSLayerItem: Hashable, Identifiable {
-    static func == (lhs: WMSLayerItem, rhs: WMSLayerItem) -> Bool {
-        lhs.layerInfo === rhs.layerInfo
-    }
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
-    
-    let layerInfo: WMSLayerInfo
-    
-    var kind: Kind {
-        !layerInfo.name.isEmpty ? .display : .container
-    }
-    
-    var id: ObjectIdentifier {
-        ObjectIdentifier(layerInfo)
-    }
-    
-    var label: String {
-        layerInfo.title
-//        layerInfo.name
-//        !layerInfo.title.isEmpty ? layerInfo.title : layerInfo.name
-    }
-    
-    var children: [WMSLayerItem]? {
-        layerInfo.sublayerInfos.map(WMSLayerItem.init(layerInfo:))
-    }
-    
-    enum Kind {
-        case container
-        case display
+extension BrowseWMSLayersView {
+    @Observable
+    final class WMSLayerItem: Hashable, Identifiable {
+        static func == (lhs: WMSLayerItem, rhs: WMSLayerItem) -> Bool {
+            lhs.layerInfo === rhs.layerInfo
+        }
+        
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(id)
+        }
+        
+        let layerInfo: WMSLayerInfo
+        
+        init(layerInfo: WMSLayerInfo) {
+            self.layerInfo = layerInfo
+        }
+        
+        var kind: Kind {
+            !layerInfo.name.isEmpty ? .display : .container
+        }
+        
+        var id: ObjectIdentifier {
+            ObjectIdentifier(layerInfo)
+        }
+        
+        var label: String {
+            layerInfo.title
+        }
+        
+        var children: [WMSLayerItem]? {
+            layerInfo.sublayerInfos.map(WMSLayerItem.init(layerInfo:))
+        }
+        
+        var isVisible: Bool = false
+        
+        enum Kind {
+            case container
+            case display
+        }
     }
 }
 
