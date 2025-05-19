@@ -15,22 +15,34 @@
 import ArcGIS
 import SwiftUI
 
+/// A view that allows you to select visibility of WMS layers.
 struct BrowseWMSLayersView: View {
+    /// The map that we will display the WMS layer on.
     @State private var map = Map(basemapStyle: .arcGISDarkGray)
-    @State private var wmsService = WMSService(url: URL(string: "https://nowcoast.noaa.gov/geoserver/observations/weather_radar/wms?SERVICE=WMS&REQUEST=GetCapabilities")!)
     
+    /// The service we will access to display WMS data.
+    @State private var wmsService = WMSService(
+        url: URL(string: "https://nowcoast.noaa.gov/geoserver/observations/weather_radar/wms?SERVICE=WMS&REQUEST=GetCapabilities")!
+    )
+    
+    /// The error, if any, that occurred.
     @State private var error: Error?
     
+    /// The selected visible layers to display in the `WMSLayer`.
     @State private var selection: [WMSLayerModel] = []
     
+    /// Models that allow us represent WMS layer infos.
     @State private var layerModels: [WMSLayerModel] = []
     
+    /// A Boolean value indicating if the layer visibility list is showing.
     @State private var isListPresented = false
     
     var body: some View {
         MapView(map: map)
             .task {
                 do {
+                    // Load the WMS service, access the layer infos, and turn
+                    // them into models.
                     try await wmsService.load()
                     let layerInfos = wmsService.serviceInfo?.layerInfos ?? []
                     layerModels = layerInfos.map(WMSLayerModel.init(layerInfo:))
@@ -40,7 +52,7 @@ struct BrowseWMSLayersView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
-                    Button("Layer List") {
+                    Button("Layer Visibility") {
                         isListPresented = true
                     }
                     .disabled(layerModels.isEmpty)
@@ -54,7 +66,7 @@ struct BrowseWMSLayersView: View {
                         .toolbar {
                             ToolbarItem(placement: .topBarTrailing) {
                                 Button("Done") {
-                                    isListPresented = false
+                                    isListPresented.toggle()
                                 }
                             }
                         }
@@ -72,32 +84,38 @@ struct BrowseWMSLayersView: View {
 
 extension BrowseWMSLayersView {
     struct WMSLayerListView: View {
+        /// The models to display in the list.
         @State var models: [WMSLayerModel]
+        
+        /// The selected models that represent layer infos that we will display
+        /// in the `WMSLayer` on the map.
         @Binding var selection: [WMSLayerModel]
         
         var body: some View {
-            List(models) { item in
-                OutlineGroup(models, children: \.children) { item in
+            List(models) { model in
+                OutlineGroup(models, children: \.children) { model in
                     HStack {
-                        Text(item.label)
+                        Text(model.layerInfo.title)
                         Spacer()
-                        if item.kind == .display {
+                        if model.kind == .display {
                             Button {
-                                item.isVisible.toggle()
+                                model.isVisible.toggle()
                             } label: {
-                                Image(systemName: item.isVisible ? "eye" : "eye.slash")
+                                Image(systemName: model.isVisible || model.isParentVisible ? "eye" : "eye.slash")
                             }
                             .padding(.trailing)
+                            .disabled(model.isParentVisible)
                         }
                     }
                     .font(.subheadline)
-                    .animation(.default, value: item.isVisible)
-                    .onChange(of: item.isVisible) { updateVisibility() }
+                    .animation(.default, value: model.isVisible)
+                    .onChange(of: model.isVisible) { updateSelection() }
                 }
             }
         }
         
-        private func updateVisibility() {
+        /// Update the selection for given `isVisible`.
+        private func updateSelection() {
             func visibleItems(startingWith model: WMSLayerModel) -> [WMSLayerModel] {
                 // If the starting one is visible, return that only because
                 // child visibility doesn't matter when the parent is visible.
@@ -107,14 +125,41 @@ extension BrowseWMSLayersView {
             }
             
             selection = models.flatMap { visibleItems(startingWith: $0) }
-            print("-- selection: \(selection)")
         }
     }
 }
 
 extension BrowseWMSLayersView {
+    /// The model for a WMS layer info.
     @Observable
     final class WMSLayerModel: Hashable, Identifiable {
+        /// The layer info that this model wraps.
+        let layerInfo: WMSLayerInfo
+        
+        /// Creates a model with a given WMS layer info.
+        init(layerInfo: WMSLayerInfo) {
+            self.layerInfo = layerInfo
+            children = layerInfo.sublayerInfos.map(WMSLayerModel.init(layerInfo:))
+        }
+        
+        /// The kind of layer info.
+        var kind: Kind {
+            !layerInfo.name.isEmpty ? .display : .container
+        }
+        
+        /// The child layer models.
+        let children: [WMSLayerModel]?
+        
+        /// A Boolean value indicating if the parent is visible.
+        var isParentVisible: Bool = false
+        
+        /// A Boolean value indicating if the layer is visible.
+        var isVisible: Bool = false {
+            didSet {
+                children?.forEach { $0.isParentVisible = isVisible }
+            }
+        }
+        
         static func == (lhs: WMSLayerModel, rhs: WMSLayerModel) -> Bool {
             lhs.layerInfo === rhs.layerInfo
         }
@@ -123,34 +168,18 @@ extension BrowseWMSLayersView {
             hasher.combine(id)
         }
         
-        let layerInfo: WMSLayerInfo
-        
-        init(layerInfo: WMSLayerInfo) {
-            self.layerInfo = layerInfo
-            children = layerInfo.sublayerInfos.map(WMSLayerModel.init(layerInfo:))
-        }
-        
-        var kind: Kind {
-            !layerInfo.name.isEmpty ? .display : .container
-        }
-        
         var id: ObjectIdentifier {
             ObjectIdentifier(layerInfo)
         }
-        
-        var label: String {
-            layerInfo.title
-        }
-        
-        let children: [WMSLayerModel]?
-        
-        var isVisible: Bool = false
     }
 }
 
 extension BrowseWMSLayersView.WMSLayerModel {
+    /// The kind of WMS layer info.
     enum Kind {
+        /// A layer info that is just a category for other sublayers.
         case container
+        /// A layer info that can be displayed.
         case display
     }
 }
