@@ -18,8 +18,8 @@ import SwiftUI
 struct TakeScreenshotView: View {
     /// The current draw status of the map.
     @State private var currentDrawStatus: DrawStatus = .inProgress
-    /// The image to export.
-    @State private var imageToExport: UIImage?
+    /// The screenshot to export.
+    @State private var screenshotToExport: Screenshot?
     /// The map with an imagery basemap centered on Hawaii.
     @State private var map: Map = {
         let map = Map(basemapStyle: .arcGISImageryStandard)
@@ -31,17 +31,6 @@ struct TakeScreenshotView: View {
         return map
     }()
     
-    /// A Boolean value indicating whether the screenshot view is presented.
-    var screenshotViewIsPresented: Binding<Bool> {
-        Binding {
-            imageToExport != nil
-        } set: { newValue in
-            if !newValue {
-                imageToExport = nil
-            }
-        }
-    }
-    
     var body: some View {
         MapViewReader { mapViewProxy in
             MapView(map: map)
@@ -50,14 +39,9 @@ struct TakeScreenshotView: View {
                         currentDrawStatus = drawStatus
                     }
                 }
-                .sheet(isPresented: screenshotViewIsPresented) {
+                .sheet(item: $screenshotToExport) { screenshot in
                     NavigationStack {
-                        ShareScreenshotView(
-                            screenshot: Screenshot(
-                                image: Image(uiImage: imageToExport!),
-                                caption: "A screenshot of the map."
-                            )
-                        )
+                        ShareScreenshotView(screenshot: screenshot)
                     }
                 }
                 .toolbar {
@@ -67,7 +51,11 @@ struct TakeScreenshotView: View {
                                 Task {
                                     // The map view proxy is used to export a
                                     // screenshot of the map view.
-                                    imageToExport = try await mapViewProxy.exportImage()
+                                    let image = try await mapViewProxy.exportImage()
+                                    screenshotToExport = Screenshot(
+                                        image: Image(uiImage: image),
+                                        caption: "A screenshot of the map."
+                                    )
                                 }
                             }
                         } else {
@@ -82,11 +70,12 @@ struct TakeScreenshotView: View {
 
 private extension TakeScreenshotView {
     /// A struct that represents a screenshot with a caption to be shared.
-    struct Screenshot: Transferable {
+    struct Screenshot: Transferable, Identifiable {
         static var transferRepresentation: some TransferRepresentation {
             ProxyRepresentation(exporting: \.image)
         }
         
+        let id = UUID()
         let image: Image
         let caption: String
     }
