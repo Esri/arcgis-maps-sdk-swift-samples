@@ -21,9 +21,9 @@ struct BrowseWMSLayersView: View {
     
     @State private var error: Error?
     
-    @State private var selection: WMSLayerInfo?
+    @State private var selection: [WMSLayerItem] = []
     
-    @State private var layerInfos = [WMSLayerInfo]()
+    @State private var layerModels: [WMSLayerItem] = []
     
     @State private var isListPresented = false
     
@@ -33,7 +33,8 @@ struct BrowseWMSLayersView: View {
                 .task {
                     do {
                         try await wmsService.load()
-                        layerInfos = wmsService.serviceInfo?.layerInfos ?? []
+                        let layerInfos = wmsService.serviceInfo?.layerInfos ?? []
+                        layerModels = layerInfos.map(WMSLayerItem.init(layerInfo:))
                     } catch {
                         self.error = error
                     }
@@ -48,7 +49,7 @@ struct BrowseWMSLayersView: View {
         }
         .popover(isPresented: $isListPresented) {
             NavigationStack {
-                WMSLayerListView(layerInfos: layerInfos, selection: $selection)
+                WMSLayerListView(items: layerModels, selection: $selection)
                     .presentationDetents([.medium])
                     .frame(idealWidth: 320, idealHeight: 380)
                     .toolbar {
@@ -60,18 +61,20 @@ struct BrowseWMSLayersView: View {
                     }
             }
         }
+        .onChange(of: selection) {
+            map.removeAllOperationalLayers()
+            guard !selection.isEmpty else { return }
+            let wmsLayer = WMSLayer(layerInfos: selection.map(\.layerInfo))
+            map.addOperationalLayer(wmsLayer)
+        }
         .errorAlert(presentingError: $error)
     }
 }
 
 extension BrowseWMSLayersView {
     struct WMSLayerListView: View {
-        let layerInfos: [WMSLayerInfo]
-        @Binding var selection: WMSLayerInfo?
-        
-        var items: [WMSLayerItem] {
-            layerInfos.map(WMSLayerItem.init(layerInfo:))
-        }
+        @State var items: [WMSLayerItem]
+        @Binding var selection: [WMSLayerItem]
         
         var body: some View {
             List(items) { item in
@@ -79,16 +82,32 @@ extension BrowseWMSLayersView {
                     HStack {
                         Text(item.label)
                         Spacer()
-                        Button(item.isVisible ? "Hide" : "Show") {
-                            print("-- tapped!")
-                            item.isVisible.toggle()
+                        if item.kind == .display {
+                            Button {
+                                item.isVisible.toggle()
+                            } label: {
+                                Image(systemName: item.isVisible ? "eye" : "eye.slash")
+                            }
+                            .padding(.trailing)
                         }
-                        .padding(.trailing)
                     }
                     .font(.subheadline)
-                    //.animation(.default, value: item.isVisible)
+                    .animation(.default, value: item.isVisible)
+                    .onChange(of: item.isVisible) { updateVisibility() }
                 }
             }
+        }
+        
+        private func updateVisibility() {
+            func visibleItems(startingWith item: WMSLayerItem) -> [WMSLayerItem] {
+                let thisOne = item.isVisible ? [item] : []
+                guard let children = item.children else { return thisOne }
+                let visibleChildren = children.flatMap { visibleItems(startingWith: $0) }
+                return thisOne + visibleChildren
+            }
+            
+            selection = items.flatMap { visibleItems(startingWith: $0) }
+            print("-- selection: \(selection)")
         }
     }
 }
@@ -108,6 +127,7 @@ extension BrowseWMSLayersView {
         
         init(layerInfo: WMSLayerInfo) {
             self.layerInfo = layerInfo
+            children = layerInfo.sublayerInfos.map(WMSLayerItem.init(layerInfo:))
         }
         
         var kind: Kind {
@@ -122,16 +142,16 @@ extension BrowseWMSLayersView {
             layerInfo.title
         }
         
-        var children: [WMSLayerItem]? {
-            layerInfo.sublayerInfos.map(WMSLayerItem.init(layerInfo:))
-        }
+        let children: [WMSLayerItem]?
         
         var isVisible: Bool = false
-        
-        enum Kind {
-            case container
-            case display
-        }
+    }
+}
+
+extension BrowseWMSLayersView.WMSLayerItem {
+    enum Kind {
+        case container
+        case display
     }
 }
 
