@@ -1,0 +1,25 @@
+{
+    "category": "",
+    "description": "Create and save a map as a web map item to an ArcGIS portal.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "ArcGIS Online",
+        "ArcGIS Pro",
+        "portal",
+        "publish",
+        "share",
+        "web map",
+        "ArcGISMap",
+        "Portal"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "ArcGISMap",
+        "Portal"
+    ],
+    "snippets": [
+        "CreateAndSaveMapView.swift"
+    ],
+    "title": "Create and save map"
+}

@@ -249,6 +249,8 @@
 		883C121929C914E100062FF9 /* DownloadPreplannedMapAreaView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E070A0A2286F3B6000F2B606 /* DownloadPreplannedMapAreaView.swift */; };
 		88AF552A2DD68767003F146E /* ShowServiceAreasForMultipleFacilitiesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88AF55292DD68767003F146E /* ShowServiceAreasForMultipleFacilitiesView.swift */; };
 		88AF552B2DD687E0003F146E /* ShowServiceAreasForMultipleFacilitiesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 88AF55292DD68767003F146E /* ShowServiceAreasForMultipleFacilitiesView.swift */; };
+		88AF55532DDBFA7B003F146E /* CreateAndSaveMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88AF55522DDBFA7B003F146E /* CreateAndSaveMapView.swift */; };
+		88AF55542DDBFA9C003F146E /* CreateAndSaveMapView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 88AF55522DDBFA7B003F146E /* CreateAndSaveMapView.swift */; };
 		88C5E0EB2DCBC1E20091D271 /* ApplyScenePropertyExpressionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C5E0EA2DCBC1E20091D271 /* ApplyScenePropertyExpressionsView.swift */; };
 		88C5E0EC2DCBC3F30091D271 /* ApplyScenePropertyExpressionsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 88C5E0EA2DCBC1E20091D271 /* ApplyScenePropertyExpressionsView.swift */; };
 		88C5E0ED2DCBC4170091D271 /* ApplyHillshadeRendererToRasterView.SettingsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 88E52E802DCA703B00F48409 /* ApplyHillshadeRendererToRasterView.SettingsView.swift */; };
@@ -670,6 +672,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				88AF55542DDBFA9C003F146E /* CreateAndSaveMapView.swift in Copy Source Code Files */,
 				88AF552B2DD687E0003F146E /* ShowServiceAreasForMultipleFacilitiesView.swift in Copy Source Code Files */,
 				88129D7B2DD50899001599A5 /* ShowGeodesicPathBetweenTwoPointsView.swift in Copy Source Code Files */,
 				00FA4E522DBC08AA008A34CF /* AddItemsToPortalView.swift in Copy Source Code Files */,
@@ -1074,6 +1077,7 @@
 		88129D792DD5035A001599A5 /* ShowGeodesicPathBetweenTwoPointsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowGeodesicPathBetweenTwoPointsView.swift; sourceTree = "<group>"; };
 		883C121429C9136600062FF9 /* DownloadPreplannedMapAreaView.MapPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadPreplannedMapAreaView.MapPicker.swift; sourceTree = "<group>"; };
 		88AF55292DD68767003F146E /* ShowServiceAreasForMultipleFacilitiesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowServiceAreasForMultipleFacilitiesView.swift; sourceTree = "<group>"; };
+		88AF55522DDBFA7B003F146E /* CreateAndSaveMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAndSaveMapView.swift; sourceTree = "<group>"; };
 		88C5E0EA2DCBC1E20091D271 /* ApplyScenePropertyExpressionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyScenePropertyExpressionsView.swift; sourceTree = "<group>"; };
 		88E52E6E2DC96C3F00F48409 /* ApplyHillshadeRendererToRasterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyHillshadeRendererToRasterView.swift; sourceTree = "<group>"; };
 		88E52E802DCA703B00F48409 /* ApplyHillshadeRendererToRasterView.SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyHillshadeRendererToRasterView.SettingsView.swift; sourceTree = "<group>"; };
@@ -1526,6 +1530,7 @@
 				D74F6C412D0CD51B00D4FB15 /* Configure electronic navigational charts */,
 				88F93CBE29C3D4E30006B28E /* Create and edit geometries */,
 				79B7B8082A1BF8B300F57C27 /* Create and save KML file */,
+				88AF55512DDBFA57003F146E /* Create and save map */,
 				D7E440D12A1ECBC2005D74DE /* Create buffers around points */,
 				D7B3C5C02A43B71E001DA4D8 /* Create convex hull around geometries */,
 				D744FD132A2112360084A66C /* Create convex hull around points */,
@@ -2343,6 +2348,14 @@
 				88AF55292DD68767003F146E /* ShowServiceAreasForMultipleFacilitiesView.swift */,
 			);
 			path = "Show service areas for multiple facilities";
+			sourceTree = "<group>";
+		};
+		88AF55512DDBFA57003F146E /* Create and save map */ = {
+			isa = PBXGroup;
+			children = (
+				88AF55522DDBFA7B003F146E /* CreateAndSaveMapView.swift */,
+			);
+			path = "Create and save map";
 			sourceTree = "<group>";
 		};
 		88C5E0E92DCBC1B20091D271 /* Apply scene property expressions */ = {
@@ -4056,6 +4069,7 @@
 				4C8127612DCBED62006EF7D2 /* ApplyStretchRendererView.swift in Sources */,
 				7900C5F62A83FC3F002D430F /* AddCustomDynamicEntityDataSourceView.Vessel.swift in Sources */,
 				D71099702A2802FA0065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift in Sources */,
+				88AF55532DDBFA7B003F146E /* CreateAndSaveMapView.swift in Sources */,
 				D7201D042CC6D3B5004BDB7D /* AddVectorTiledLayerFromCustomStyleView.swift in Sources */,
 				E004A6ED2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift in Sources */,
 				E041ABD7287DB04D0056009B /* SampleInfoView.swift in Sources */,
