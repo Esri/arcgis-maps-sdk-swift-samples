@@ -61,6 +61,8 @@ struct BrowseWMSLayersView: View {
             .popover(isPresented: $isListPresented) {
                 NavigationStack {
                     WMSLayerListView(models: layerModels, selection: $selection)
+                        .navigationBarTitleDisplayMode(.inline)
+                        .navigationTitle("Layer Visibility")
                         .presentationDetents([.medium])
                         .frame(idealWidth: 320, idealHeight: 380)
                         .toolbar {
@@ -105,6 +107,7 @@ extension BrowseWMSLayersView {
                                     systemName: model.isVisible || model.isParentVisible ? "eye" : "eye.slash"
                                 )
                             }
+                            .buttonStyle(.borderless)
                             // Disable the button if the parent is visible because
                             // the sublayer will always display in that case.
                             .disabled(model.isParentVisible)
@@ -116,6 +119,7 @@ extension BrowseWMSLayersView {
                     .onChange(of: model.isVisible) { updateSelection() }
                 }
             }
+            .listStyle(.plain)
         }
         
         /// Update the selection for given `isVisible`.
