@@ -59,8 +59,6 @@ private struct WFSServiceView: View {
     @State private var service: WFSService?
     /// The error if the service failed to load, otherwise `nil`.
     @State private var serviceLoadError: Error?
-    /// A Boolean value indicating whether the service failed to load.
-    @State private var serviceLoadDidFail = false
     
     var body: some View {
         if let serviceInfo = service?.serviceInfo {
@@ -90,13 +88,7 @@ private struct WFSServiceView: View {
                         serviceLoadError = error
                     }
                 }
-                .alert("Error", isPresented: $serviceLoadDidFail, presenting: serviceLoadError) { _ in
-                    Button("OK") {
-                        dismiss()
-                    }
-                } message: { error in
-                    Text(String(reflecting: error))
-                }
+                .errorAlert(presentingError: $serviceLoadError)
         }
     }
 }
