@@ -2,7 +2,7 @@
 
 Connect to a WMS service and show the available layers and sublayers.
 
-![Image of browse WMS layers](browse-wms-layers.png)
+![Image of browse WMS layers sample](browse-wms-layers.png)
 
 ## Use case
 
@@ -31,7 +31,7 @@ WMS services often contain many layers and sublayers. Presenting the layers and 
 
 ## About the data
 
-This sample shows [forecasts guidance warnings](https://nowcoast.noaa.gov/geoserver/observations/weather_radar/wms?SERVICE=WMS&REQUEST=GetCapabilities) from an ArcGIS REST service produced by the US NOAA National Weather Service. The map shows fronts, highs, and lows, as well as areas of forecast precipitation.
+This sample shows [Weather Radar Base Reflectivity Mosaics](https://nowcoast.noaa.gov/geoserver/observations/weather_radar/wms?SERVICE=WMS&REQUEST=GetCapabilities) produced by the US NOAA National Weather Service. The service provides weather radar data from the NWS & OAR Multi-Radar/Multi-Sensor (MRMS) System.
 
 ## Tags
 

@@ -123,7 +123,7 @@ extension BrowseWMSLayersView {
             .listStyle(.plain)
         }
         
-        /// Update the selection for given `isVisible`.
+        /// Updates the selection for given `isVisible`.
         private func updateSelection() {
             func visibleItems(startingWith model: WMSLayerModel) -> [WMSLayerModel] {
                 // If the starting one is visible, return that only because
@@ -141,7 +141,7 @@ extension BrowseWMSLayersView {
 extension BrowseWMSLayersView {
     /// The model for a WMS layer info.
     @Observable
-    final class WMSLayerModel: Hashable, Identifiable {
+    final class WMSLayerModel: Equatable, Identifiable {
         /// The layer info that this model wraps.
         let layerInfo: WMSLayerInfo
         
@@ -153,17 +153,17 @@ extension BrowseWMSLayersView {
         
         /// The kind of layer info.
         var kind: Kind {
-            !layerInfo.name.isEmpty ? .display : .container
+            layerInfo.name.isEmpty ? .container : .display
         }
         
         /// The child layer models.
         let children: [WMSLayerModel]?
         
         /// A Boolean value indicating if the parent is visible.
-        var isParentVisible: Bool = false
+        var isParentVisible = false
         
         /// A Boolean value indicating if the layer is visible.
-        var isVisible: Bool = false {
+        var isVisible = false {
             didSet {
                 // Update the children's `isParentVisible` property.
                 children?.forEach { $0.isParentVisible = isVisible }
@@ -172,14 +172,6 @@ extension BrowseWMSLayersView {
         
         static func == (lhs: WMSLayerModel, rhs: WMSLayerModel) -> Bool {
             lhs.layerInfo === rhs.layerInfo
-        }
-        
-        func hash(into hasher: inout Hasher) {
-            hasher.combine(id)
-        }
-        
-        var id: ObjectIdentifier {
-            ObjectIdentifier(layerInfo)
         }
     }
 }
