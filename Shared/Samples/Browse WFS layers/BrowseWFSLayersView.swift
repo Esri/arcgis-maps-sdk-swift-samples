@@ -24,26 +24,24 @@ struct BrowseWFSLayersView: View {
     @State private var isServiceViewPresented = false
     
     var body: some View {
-        NavigationStack {
-            Form {
-                Section {
-                    TextField(
-                        "WFS Service",
-                        value: $serviceURL,
-                        format: .url,
-                        prompt: Text("WFS Service URL")
-                    )
-                    Button("Load") {
-                        isServiceViewPresented = true
-                    }
-                    .foregroundStyle(.accent)
-                    .containerRelativeFrame(.horizontal)
-                    .multilineTextAlignment(.center)
+        Form {
+            Section {
+                TextField(
+                    "WFS Service",
+                    value: $serviceURL,
+                    format: .url,
+                    prompt: Text("WFS Service URL")
+                )
+                Button("Load") {
+                    isServiceViewPresented = true
                 }
+                .foregroundStyle(.accent)
+                .containerRelativeFrame(.horizontal)
+                .multilineTextAlignment(.center)
             }
-            .navigationDestination(isPresented: $isServiceViewPresented) {
-                WFSServiceView(serviceURL: serviceURL)
-            }
+        }
+        .navigationDestination(isPresented: $isServiceViewPresented) {
+            WFSServiceView(serviceURL: serviceURL)
         }
     }
 }
