@@ -53,25 +53,25 @@ struct BrowseWMSLayersView: View {
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
                     Button("Layer Visibility") {
-                        isListPresented = true
+                        isListPresented.toggle()
                     }
                     .disabled(layerModels.isEmpty)
-                }
-            }
-            .popover(isPresented: $isListPresented) {
-                NavigationStack {
-                    WMSLayerListView(models: layerModels, selection: $selection)
-                        .navigationBarTitleDisplayMode(.inline)
-                        .navigationTitle("Layer Visibility")
-                        .presentationDetents([.medium])
-                        .frame(idealWidth: 320, idealHeight: 380)
-                        .toolbar {
-                            ToolbarItem(placement: .topBarTrailing) {
-                                Button("Done") {
-                                    isListPresented.toggle()
+                    .popover(isPresented: $isListPresented) {
+                        NavigationStack {
+                            WMSLayerListView(models: layerModels, selection: $selection)
+                                .navigationBarTitleDisplayMode(.inline)
+                                .navigationTitle("Layer Visibility")
+                                .presentationDetents([.medium])
+                                .frame(idealWidth: 320, idealHeight: 380)
+                                .toolbar {
+                                    ToolbarItem(placement: .topBarTrailing) {
+                                        Button("Done") {
+                                            isListPresented.toggle()
+                                        }
+                                    }
                                 }
-                            }
                         }
+                    }
                 }
             }
             .onChange(of: selection) {
