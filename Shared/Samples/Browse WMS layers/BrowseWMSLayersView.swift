@@ -153,6 +153,8 @@ extension BrowseWMSLayersView {
         
         /// The kind of layer info.
         var kind: Kind {
+            // If the WMS layer does not have a name but has a title,
+            // it is just a category for other sublayers.
             layerInfo.name.isEmpty ? .container : .display
         }
         
