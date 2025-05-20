@@ -35,7 +35,6 @@ struct BrowseWFSLayersView: View {
                 Button("Load") {
                     isServiceViewPresented = true
                 }
-                .foregroundStyle(.accent)
                 .containerRelativeFrame(.horizontal)
                 .multilineTextAlignment(.center)
             }
