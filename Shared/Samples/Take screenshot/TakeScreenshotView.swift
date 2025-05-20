@@ -46,7 +46,11 @@ struct TakeScreenshotView: View {
                 }
                 .toolbar {
                     ToolbarItem(placement: .bottomBar) {
-                        if currentDrawStatus == .completed {
+                        HStack {
+                            ProgressView()
+                                .progressViewStyle(.circular)
+                                .opacity(currentDrawStatus != .completed ? 1 : 0)
+                            
                             Button("Take Screenshot") {
                                 Task {
                                     // The map view proxy is used to export a
@@ -58,9 +62,7 @@ struct TakeScreenshotView: View {
                                     )
                                 }
                             }
-                        } else {
-                            ProgressView()
-                                .progressViewStyle(.circular)
+                            .disabled(currentDrawStatus != .completed)
                         }
                     }
                 }
