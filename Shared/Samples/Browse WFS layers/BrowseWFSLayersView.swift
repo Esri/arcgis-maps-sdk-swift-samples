@@ -88,6 +88,7 @@ private struct WFSServiceView: View {
                         self.service = service
                     } catch {
                         serviceLoadError = error
+                        serviceLoadDidFail = true
                     }
                 }
                 .alert("Error", isPresented: $serviceLoadDidFail, presenting: serviceLoadError) { _ in
