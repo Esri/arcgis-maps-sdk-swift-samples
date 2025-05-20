@@ -22,7 +22,7 @@ Pan the map and see how new features are loaded from the OGC API feature service
     * Set the `maxFeatures` property to `5_000` (some services have a low default value for maximum features).
 5. Every time the map view navigation completes:
     * Set the parameter's `geometry` to the current extent of the map view.
-    * Call `OGCFeatureCollectionTable.populateFromService(with:clearCache:outfields:completion:)` using the query parameters.
+    * Call `OGCFeatureCollectionTable.populateFromService(using:clearCache:outFields:queryLanguage:)` using the query parameters.
 
 ## Relevant API
 
