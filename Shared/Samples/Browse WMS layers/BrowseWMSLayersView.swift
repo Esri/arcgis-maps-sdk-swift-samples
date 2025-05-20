@@ -148,7 +148,11 @@ extension BrowseWMSLayersView {
         /// Creates a model with a given WMS layer info.
         init(layerInfo: WMSLayerInfo) {
             self.layerInfo = layerInfo
-            children = layerInfo.sublayerInfos.map(WMSLayerModel.init(layerInfo:))
+            if !layerInfo.sublayerInfos.isEmpty {
+                children = layerInfo.sublayerInfos.map(WMSLayerModel.init(layerInfo:))
+            } else {
+                children = nil
+            }
         }
         
         /// The kind of layer info.
