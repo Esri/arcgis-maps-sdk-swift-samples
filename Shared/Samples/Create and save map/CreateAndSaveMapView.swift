@@ -64,16 +64,33 @@ private extension CreateAndSaveMapView {
         @State private var description: String = ""
         // @State private var folder: String = ""
         @State private var basemap: BasemapOption = .topo
-        @State private var operationalData: OperationalDataOption?
+        @State private var operationalData: OperationalDataOption = .none
         
         var body: some View {
             Form {
+                TextField("Title", text: $title)
+                TextField("Tags", text: $tags)
+                    .autocorrectionDisabled()
+                TextField("Description", text: $description)
+                Picker("Basemap", selection: $basemap) {
+                    ForEach(BasemapOption.allCases, id: \.self) { value in
+                        Text(value.label)
+                            .tag(value)
+                    }
+                }
+                Picker("Operational Data", selection: $operationalData) {
+                    ForEach(OperationalDataOption.allCases, id: \.self) { value in
+                        Text(value.label)
+                            .tag(value)
+                    }
+                }
             }
         }
     }
 }
+
 private extension CreateAndSaveMapView.MapOptionsForm {
-    enum BasemapOption {
+    enum BasemapOption: CaseIterable {
         case topo
         case streets
         case night
@@ -88,18 +105,43 @@ private extension CreateAndSaveMapView.MapOptionsForm {
                 .arcGISNavigationNight
             }
         }
+        
+        var label: String {
+            switch self {
+            case .topo:
+                "Topographic"
+            case .streets:
+                "Streets"
+            case .night:
+                "Night Navigation"
+            }
+        }
     }
     
-    enum OperationalDataOption {
+    enum OperationalDataOption: CaseIterable {
+        case none
         case timeZones
         case census
         
-        var url: URL {
+        var url: URL? {
             switch self {
+            case .none:
+                nil
             case .timeZones:
                 URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/WorldTimeZones/MapServer")!
             case .census:
                 URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Census/MapServer")!
+            }
+        }
+        
+        var label: String {
+            switch self {
+            case .none:
+                "None"
+            case .timeZones:
+                "Time Zone"
+            case .census:
+                "Census"
             }
         }
     }
