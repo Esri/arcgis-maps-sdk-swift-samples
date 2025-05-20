@@ -8,7 +8,7 @@ Browse a WFS service for layers and add them to the map.
 
 ## Use case
 
-Services often have multiple layers available for display. For example, a feature service for a city might have layers representing roads, land masses, building footprints, parks, and facilities. A user can choose to only show the road network and parks for a park accessibility analysis.
+Services often have multiple layers available for display. For example, a feature service for a city might have layers representing roads, landmasses, building footprints, parks, and facilities. A user can choose to only show the road network and parks for a park accessibility analysis.
 
 ## How to use the sample
 
@@ -19,7 +19,7 @@ Some WFS services return coordinates in X,Y order, while others return coordinat
 ## How it works
 
 1. Create a `WFSService` object with a URL to a WFS feature service.
-2. Obtain an array of `WFSLayerInfo` object using `WFSServiceInfo.layerInfos`.
+2. Obtain an array of `WFSLayerInfo` objects using `WFSServiceInfo.layerInfos`.
 3. When a layer is selected, create a `WFSFeatureTable` instance with the selected `WFSLayerInfo` object.
     * Set the axis order if necessary.
 4. Create a feature layer from the feature table.
