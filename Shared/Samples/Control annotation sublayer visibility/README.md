@@ -36,6 +36,7 @@ This sample downloads the [GasDeviceAnno](https://arcgisruntime.maps.arcgis.com/
 ## About the data
 
 The scale ranges were set by the map's author using ArcGIS Pro:
+
 * The "Open" annotation sublayer has its maximum scale set to 1:500 and its minimum scale set to 1:2000.
 * The "Closed" annotation sublayer has no minimum or maximum scales set, so will be drawn at all scales.
 
