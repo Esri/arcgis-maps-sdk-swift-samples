@@ -59,6 +59,13 @@ struct CreateAndSaveMapView: View {
 
 private extension CreateAndSaveMapView {
     struct MapOptionsForm: View {
+        @State private var title: String = ""
+        @State private var tags: String = ""
+        @State private var description: String = ""
+        // @State private var folder: String = ""
+        @State private var basemap: BasemapOption = .topo
+        @State private var operationalData: OperationalDataOption?
+        
         var body: some View {
             Form {
             }
@@ -66,7 +73,7 @@ private extension CreateAndSaveMapView {
     }
 }
 private extension CreateAndSaveMapView.MapOptionsForm {
-    enum BasemapOptions {
+    enum BasemapOption {
         case topo
         case streets
         case night
@@ -83,16 +90,16 @@ private extension CreateAndSaveMapView.MapOptionsForm {
         }
     }
     
-    enum OperationalDataOptions {
+    enum OperationalDataOption {
         case timeZones
         case census
         
         var url: URL {
             switch self {
             case .timeZones:
-                "https://sampleserver6.arcgisonline.com/arcgis/rest/services/WorldTimeZones/MapServer"
+                URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/WorldTimeZones/MapServer")!
             case .census:
-                "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Census/MapServer"
+                URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Census/MapServer")!
             }
         }
     }
