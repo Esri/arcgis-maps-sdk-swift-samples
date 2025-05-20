@@ -26,7 +26,7 @@ struct DisplayOGCAPICollectionView: View {
             scale: 20_000
         )
         
-        // Note: the collection ID can be accessed later via
+        // Note: The collection ID can be accessed later via
         // `featureCollectionInfo.collectionID` property of the feature table.
         let table = OGCFeatureCollectionTable(
             url: URL(string: "https://demo.ldproxy.net/daraa")!,
