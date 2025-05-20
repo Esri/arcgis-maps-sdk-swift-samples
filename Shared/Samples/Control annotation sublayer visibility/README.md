@@ -31,7 +31,7 @@ Use the checkboxes to manually set "Open" and "Closed" annotation sublayers visi
 
 ## Offline data
 
-This sample downloads the [GasDeviceAnno](https://arcgisruntime.maps.arcgis.com/home/item.html?id=b87307dcfb26411eb2e92e1627cb615b) mobile map package from *ArcGIS Online* automatically.
+This sample downloads the [GasDeviceAnno](https://www.arcgis.com/home/item.html?id=b87307dcfb26411eb2e92e1627cb615b) mobile map package from *ArcGIS Online* automatically.
 
 ## About the data
 

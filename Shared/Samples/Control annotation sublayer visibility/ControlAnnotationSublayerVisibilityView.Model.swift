@@ -19,11 +19,11 @@ extension ControlAnnotationSublayerVisibilityView {
     /// The view model for this sample.
     @MainActor
     class Model: ObservableObject {
-        /// A map with no specified style.
-        @Published var map = Map()
+        /// A map from the mobile map package.
+        @Published private(set) var map = Map()
         
         /// The mobile map package.
-        @Published private var mobileMapPackage: MobileMapPackage!
+        private var mobileMapPackage: MobileMapPackage!
         
         /// The annotation layer in the map.
         private var annotationLayer: AnnotationLayer {
@@ -41,10 +41,10 @@ extension ControlAnnotationSublayerVisibilityView {
         }
         
         /// A Boolean value indicating whether to show the closed annotation sublayer.
-        @Published var showsClosedSublayer: Bool = true
+        @Published var showsClosedSublayer = true
         
         /// A Boolean value indicating whether to show the open annotation sublayer.
-        @Published var showsOpenSublayer: Bool = true
+        @Published var showsOpenSublayer = true
         
         /// A Boolean value indicating whether the open annotation sublayer is visible at the current extent.
         @Published var visibleAtCurrentExtent = false
@@ -59,16 +59,16 @@ extension ControlAnnotationSublayerVisibilityView {
         var currentScale: Double = .zero {
             didSet {
                 formatCurrentScaleText()
-                guard let minScale, let maxScale else { return }
+                guard minScale != nil && maxScale != nil else { return }
                 visibleAtCurrentExtent = openSublayer.isVisible(atScale: currentScale)
             }
         }
         
         /// The map's current scale value in text.
-        @Published var currentScaleText: String = ""
+        @Published var currentScaleText = ""
         
         /// The min and max scale of the open annotation layer in text.
-        @Published var minMaxScaleText: String = ""
+        @Published var minMaxScaleText = ""
         
         /// Loads a local mobile map package.
         func loadMobileMapPackage() async throws {
