@@ -29,15 +29,37 @@ struct CreateAndSaveMapView: View {
     /// The map that we will save to the portal.
     @State private var map: Map?
     
-    /// The error shown in the error alert.
+    /// The error that occurred, if any, when trying to save the map to the portal.
     @State private var error: Error?
+    
+    /// The result of loading the portal.
+    @State private var portalLoadResult: Result<Void, Error>?
     
     var body: some View {
         VStack {
             if let map {
                 MapView(map: map)
             } else {
-                MapOptionsForm()
+                switch portalLoadResult {
+                case .none:
+                    ProgressView("Loading portal...")
+                case .success(let success):
+                    MapOptionsForm(portal: portal)
+                case .failure:
+                    ContentUnavailableView(
+                        "Error",
+                        systemImage: "exclamationmark.triangle",
+                        description: Text("Portal could not be loaded.")
+                    )
+                }
+            }
+        }
+        .task {
+            do {
+                try await portal.load()
+                portalLoadResult = .success(())
+            } catch {
+                portalLoadResult = .failure(error)
             }
         }
         .errorAlert(presentingError: $error)
@@ -59,6 +81,8 @@ struct CreateAndSaveMapView: View {
 
 private extension CreateAndSaveMapView {
     struct MapOptionsForm: View {
+        let portal: Portal
+        
         @State private var title: String = ""
         @State private var tags: String = ""
         @State private var description: String = ""
@@ -66,25 +90,60 @@ private extension CreateAndSaveMapView {
         @State private var basemap: BasemapOption = .topo
         @State private var operationalData: OperationalDataOption = .none
         
+        @State private var map = Map(basemapStyle: BasemapOption.topo.style)
+        
         var body: some View {
             Form {
-                TextField("Title", text: $title)
-                TextField("Tags", text: $tags)
-                    .autocorrectionDisabled()
-                TextField("Description", text: $description)
-                Picker("Basemap", selection: $basemap) {
-                    ForEach(BasemapOption.allCases, id: \.self) { value in
-                        Text(value.label)
-                            .tag(value)
+                Section("Create Map") {
+                    TextField("Title", text: $title)
+                    TextField("Tags", text: $tags)
+                        .autocorrectionDisabled()
+                    TextField("Description", text: $description)
+                    Picker("Basemap", selection: $basemap) {
+                        ForEach(BasemapOption.allCases, id: \.self) { value in
+                            Text(value.label)
+                                .tag(value)
+                        }
+                    }
+                    Picker("Operational Data", selection: $operationalData) {
+                        ForEach(OperationalDataOption.allCases, id: \.self) { value in
+                            Text(value.label)
+                                .tag(value)
+                        }
                     }
                 }
-                Picker("Operational Data", selection: $operationalData) {
-                    ForEach(OperationalDataOption.allCases, id: \.self) { value in
-                        Text(value.label)
-                            .tag(value)
+                Section {
+                    MapView(map: map)
+                        .frame(height: 300)
+                }
+                Section {
+                    Button("Save to Portal") {
+                        Task { try? await save() }
                     }
+                    .frame(maxWidth: .infinity)
                 }
             }
+            .onChange(of: basemap) { map.basemap = Basemap(style: basemap.style) }
+            .onChange(of: operationalData) {
+                map.removeAllOperationalLayers()
+                if let layer = operationalData.layer {
+                    map.addOperationalLayer(layer)
+                }
+            }
+        }
+        
+        private func save() async throws {
+            try await Map()
+                .save(
+                    to: portal,
+                    title: title,
+                    forceSaveToSupportedVersion: false,
+                    folder: nil,
+                    description: description,
+                    thumbnail: nil,
+                    tags: tags.components(separatedBy: CharacterSet(arrayLiteral: " ", ",")),
+                    extent: nil
+                )
         }
     }
 }
@@ -123,7 +182,7 @@ private extension CreateAndSaveMapView.MapOptionsForm {
         case timeZones
         case census
         
-        var url: URL? {
+        private var url: URL? {
             switch self {
             case .none:
                 nil
@@ -132,6 +191,10 @@ private extension CreateAndSaveMapView.MapOptionsForm {
             case .census:
                 URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Census/MapServer")!
             }
+        }
+        
+        var layer: ArcGISMapImageLayer? {
+            url.map(ArcGISMapImageLayer.init(url:))
         }
         
         var label: String {
