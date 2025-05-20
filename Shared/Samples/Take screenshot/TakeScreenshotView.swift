@@ -19,7 +19,7 @@ struct TakeScreenshotView: View {
     /// The current draw status of the map.
     @State private var currentDrawStatus: DrawStatus = .inProgress
     /// The screenshot to export.
-    @State private var screenshotToExport: Screenshot?
+    @State private var screenshot: Screenshot?
     /// The map with an imagery basemap centered on Hawaii.
     @State private var map: Map = {
         let map = Map(basemapStyle: .arcGISImageryStandard)
@@ -39,7 +39,7 @@ struct TakeScreenshotView: View {
                         currentDrawStatus = drawStatus
                     }
                 }
-                .sheet(item: $screenshotToExport) { screenshot in
+                .sheet(item: $screenshot) { screenshot in
                     NavigationStack {
                         ShareScreenshotView(screenshot: screenshot)
                     }
@@ -52,7 +52,7 @@ struct TakeScreenshotView: View {
                                     // The map view proxy is used to export a
                                     // screenshot of the map view.
                                     let image = try await mapViewProxy.exportImage()
-                                    screenshotToExport = Screenshot(
+                                    screenshot = Screenshot(
                                         image: Image(uiImage: image),
                                         caption: "A screenshot of the map."
                                     )
