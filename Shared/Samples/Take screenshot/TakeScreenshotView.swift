@@ -46,24 +46,24 @@ struct TakeScreenshotView: View {
                 }
                 .toolbar {
                     ToolbarItem(placement: .bottomBar) {
-                        HStack {
-                            ProgressView()
-                                .progressViewStyle(.circular)
-                                .opacity(currentDrawStatus != .completed ? 1 : 0)
-                            
-                            Button("Take Screenshot") {
-                                Task {
-                                    // The map view proxy is used to export a
-                                    // screenshot of the map view.
-                                    let image = try await mapViewProxy.exportImage()
-                                    screenshot = Screenshot(
-                                        image: Image(uiImage: image),
-                                        caption: "A screenshot of the map."
-                                    )
-                                }
+                        Button {
+                            Task {
+                                // The map view proxy is used to export a
+                                // screenshot of the map view.
+                                let image = try await mapViewProxy.exportImage()
+                                screenshot = Screenshot(
+                                    image: Image(uiImage: image),
+                                    caption: "A screenshot of the map."
+                                )
                             }
-                            .disabled(currentDrawStatus != .completed)
+                        } label: {
+                            if currentDrawStatus != .completed {
+                                ProgressView()
+                                    .progressViewStyle(.circular)
+                            }
+                            Text("Take Screenshot")
                         }
+                        .disabled(currentDrawStatus != .completed)
                     }
                 }
         }
