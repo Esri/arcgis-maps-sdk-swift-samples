@@ -20,46 +20,81 @@ struct CreateAndSaveMapView: View {
     /// The authenticator to handle authentication challenges.
     @StateObject private var authenticator = Authenticator()
     
-    /// A map with a traffic layer.
-    @State private var map = {
-        // The portal to authenticate with named user.
-        let portal = Portal(url: .portal, connection: .authenticated)
-        
-        // The portal item to be displayed on the map.
-        let portalItem = PortalItem(
-            portal: portal,
-            id: .trafficMap
-        )
-        
-        // Creates map with portal item.
-        return Map(item: portalItem)
-    }()
+    /// The portal to save the map to.
+    @State private var portal = Portal(
+        url: URL(string: "https://www.arcgis.com")!,
+        connection: .authenticated
+    )
+    
+    /// The map that we will save to the portal.
+    @State private var map: Map?
     
     /// The error shown in the error alert.
     @State private var error: Error?
     
     var body: some View {
-        MapView(map: map)
-            .onLayerViewStateChanged { layer, layerViewState in
-                guard layer === map.operationalLayers.first else { return }
-                if layerViewState.status == .error {
-                    error = layer.loadError
-                }
+        VStack {
+            if let map {
+                MapView(map: map)
+            } else {
+                MapOptionsForm()
             }
-            .errorAlert(presentingError: $error)
-            .authenticator(authenticator)
-            .onAppear {
-                setupAuthenticator()
+        }
+        .errorAlert(presentingError: $error)
+        .authenticator(authenticator)
+        .onAppear {
+            setupAuthenticator()
+        }
+        .onDisappear {
+            Task {
+                // Reset the challenge handlers and clear credentials
+                // when the view disappears so that user is prompted to enter
+                // credentials every time the sample is run, and to clean
+                // the environment for other samples.
+                await teardownAuthenticator()
             }
-            .onDisappear {
-                Task {
-                    // Reset the challenge handlers and clear credentials
-                    // when the view disappears so that user is prompted to enter
-                    // credentials every time the sample is run, and to clean
-                    // the environment for other samples.
-                    await teardownAuthenticator()
-                }
+        }
+    }
+}
+
+private extension CreateAndSaveMapView {
+    struct MapOptionsForm: View {
+        var body: some View {
+            Form {
             }
+        }
+    }
+}
+private extension CreateAndSaveMapView.MapOptionsForm {
+    enum BasemapOptions {
+        case topo
+        case streets
+        case night
+        
+        var style: Basemap.Style {
+            switch self {
+            case .topo:
+                .arcGISTopographic
+            case .streets:
+                .arcGISStreets
+            case .night:
+                .arcGISNavigationNight
+            }
+        }
+    }
+    
+    enum OperationalDataOptions {
+        case timeZones
+        case census
+        
+        var url: URL {
+            switch self {
+            case .timeZones:
+                "https://sampleserver6.arcgisonline.com/arcgis/rest/services/WorldTimeZones/MapServer"
+            case .census:
+                "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Census/MapServer"
+            }
+        }
     }
 }
 
@@ -101,17 +136,6 @@ private extension CreateAndSaveMapView {
             )
         }
     }
-}
-
-private extension URL {
-    /// The URL of the portal to authenticate.
-    /// - Note: If you want to use your own portal, provide URL here.
-    static let portal = URL(string: "https://www.arcgis.com")!
-}
-
-private extension PortalItem.ID {
-    /// The portal item ID of a web map to be displayed on the map.
-    static var trafficMap: Self { Self("e5039444ef3c48b8a8fdc9227f9be7c1")! }
 }
 
 #Preview {
