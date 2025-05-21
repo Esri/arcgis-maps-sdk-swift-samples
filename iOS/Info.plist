@@ -56,6 +56,8 @@
 	<string>Your location is used to show your position on the map on Mac Catalyst.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Your location is used to show your position on the map.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>This app exports map screenshots to the photo library.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

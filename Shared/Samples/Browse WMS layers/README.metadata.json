@@ -1,0 +1,29 @@
+{
+    "category": "Layers",
+    "description": "Connect to a WMS service and show the available layers and sublayers.",
+    "ignore": false,
+    "images": [
+        "browse-wms-layers.png"
+    ],
+    "keywords": [
+        "OGC",
+        "WMS",
+        "catalog",
+        "web map service",
+        "WMSLayer",
+        "WMSLayerInfo",
+        "WMSService",
+        "WMSServiceInfo"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "WMSLayer",
+        "WMSLayerInfo",
+        "WMSService",
+        "WMSServiceInfo"
+    ],
+    "snippets": [
+        "BrowseWMSLayersView.swift"
+    ],
+    "title": "Browse WMS layers"
+}
