@@ -32,24 +32,55 @@ struct CreateAndSaveMapView: View {
     /// The error that occurred, if any, when trying to save the map to the portal.
     @State private var error: Error?
     
-    /// The result of loading the portal.
-    @State private var portalLoadResult: Result<Void, Error>?
+    /// The status of the sample workflow.
+    @State private var status: Status = .loadingPortal
     
     var body: some View {
         VStack {
             if let map {
                 MapView(map: map)
             } else {
-                switch portalLoadResult {
-                case .none:
+                switch status {
+                case .loadingPortal:
                     ProgressView("Loading portal...")
-                case .success(let success):
-                    MapOptionsForm(portal: portal)
-                case .failure:
+                case .failedToLoadPortal:
                     ContentUnavailableView(
                         "Error",
                         systemImage: "exclamationmark.triangle",
                         description: Text("Portal could not be loaded.")
+                    )
+                case .creatingMap, .savingMapToPortal:
+                    SaveMapForm(portal: portal, status: $status)
+                case .failedToSaveMap:
+                    ContentUnavailableView(
+                        "Error",
+                        systemImage: "exclamationmark.triangle",
+                        description: Text("Failed to save map to portal.")
+                    )
+                case .mapSavedSuccessfully:
+                    ContentUnavailableView {
+                        Label("Success", systemImage: "checkmark.circle")
+                    } description: {
+                        Text("Map saved successfully to the portal.")
+                    } actions: {
+                        Button("Delete Map From Portal") {
+                            Task { await deleteFromPortal() }
+                        }
+                        .buttonStyle(.borderedProminent)
+                    }
+                case .deletingMap:
+                    ProgressView("Deleting map...")
+                case .deletedSuccessfully:
+                    ContentUnavailableView(
+                        "Success",
+                        systemImage: "checkmark.circle",
+                        description: Text("Map successfully deleted from the portal.")
+                    )
+                case .failedToDelete:
+                    ContentUnavailableView(
+                        "Error",
+                        systemImage: "exclamationmark.triangle",
+                        description: Text("Failed to delete map from portal.")
                     )
                 }
             }
@@ -57,14 +88,15 @@ struct CreateAndSaveMapView: View {
         .task {
             do {
                 try await portal.load()
-                portalLoadResult = .success(())
+                status = .creatingMap
             } catch {
-                portalLoadResult = .failure(error)
+                status = .failedToLoadPortal
             }
         }
         .errorAlert(presentingError: $error)
         .authenticator(authenticator)
         .onAppear {
+            ArcGISEnvironment.apiKey = nil
             setupAuthenticator()
         }
         .onDisappear {
@@ -77,11 +109,25 @@ struct CreateAndSaveMapView: View {
             }
         }
     }
+    
+    private func deleteFromPortal() async {
+        guard case .mapSavedSuccessfully(let map) = status else {
+            return
+        }
+        do {
+            status = .deletingMap
+            try await portal.user?.delete(map.item! as! PortalItem)
+            status = .deletedSuccessfully
+        } catch {
+            status = .failedToDelete
+        }
+    }
 }
 
 private extension CreateAndSaveMapView {
-    struct MapOptionsForm: View {
+    struct SaveMapForm: View {
         let portal: Portal
+        @Binding var status: Status
         
         @State private var title: String = ""
         @State private var tags: String = ""
@@ -92,8 +138,6 @@ private extension CreateAndSaveMapView {
         
         @State private var map = Map(basemapStyle: BasemapOption.topo.style)
         @State private var extent: Envelope?
-        
-        @State private var saveResult: Result<Void, Error>?
         
         var body: some View {
             MapViewReader { mapViewProxy in
@@ -123,12 +167,22 @@ private extension CreateAndSaveMapView {
                             .frame(height: 300)
                     }
                     Section {
-                        Button("Save to Portal") {
-                            Task { try? await save(mapViewProxy: mapViewProxy) }
+                        Button {
+                            Task { await save(mapViewProxy: mapViewProxy) }
+                        } label: {
+                            if status == .savingMapToPortal {
+                                HStack {
+                                    Text("Saving")
+                                    ProgressView()
+                                }
+                            } else {
+                                Text("Save to Portal")
+                            }
                         }
                         .frame(maxWidth: .infinity)
                     }
                 }
+                .disabled(status == .savingMapToPortal)
                 .onChange(of: basemap) { map.basemap = Basemap(style: basemap.style) }
                 .onChange(of: operationalData) {
                     map.removeAllOperationalLayers()
@@ -139,23 +193,29 @@ private extension CreateAndSaveMapView {
             }
         }
         
-        private func save(mapViewProxy: MapViewProxy) async throws {
-            try await map
-                .save(
-                    to: portal,
-                    title: title,
-                    forceSaveToSupportedVersion: false,
-                    folder: nil,
-                    description: description,
-                    thumbnail: try? await mapViewProxy.exportImage(),
-                    tags: tags.components(separatedBy: ","),
-                    extent: extent
-                )
+        private func save(mapViewProxy: MapViewProxy) async {
+            do {
+                status = .savingMapToPortal
+                try await map
+                    .save(
+                        to: portal,
+                        title: title,
+                        forceSaveToSupportedVersion: false,
+                        folder: nil,
+                        description: description,
+                        thumbnail: try? await mapViewProxy.exportImage(),
+                        tags: tags.components(separatedBy: ","),
+                        extent: extent
+                    )
+                status = .mapSavedSuccessfully(map)
+            } catch {
+                status = .failedToSaveMap
+            }
         }
     }
 }
 
-private extension CreateAndSaveMapView.MapOptionsForm {
+private extension CreateAndSaveMapView.SaveMapForm {
     enum BasemapOption: CaseIterable {
         case topo
         case streets
@@ -214,6 +274,20 @@ private extension CreateAndSaveMapView.MapOptionsForm {
                 "Census"
             }
         }
+    }
+}
+
+private extension CreateAndSaveMapView {
+    enum Status: Equatable {
+        case loadingPortal
+        case failedToLoadPortal
+        case creatingMap
+        case savingMapToPortal
+        case failedToSaveMap
+        case mapSavedSuccessfully(Map)
+        case deletingMap
+        case deletedSuccessfully
+        case failedToDelete
     }
 }
 
