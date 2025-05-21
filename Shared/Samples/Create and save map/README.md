@@ -2,7 +2,7 @@
 
 Create and save a map as a web map item to an ArcGIS portal.
 
-![Image of create and save map](screenshot.png)
+![Image of create and save map](create-and-save-map.png)
 
 ## Use case
 
