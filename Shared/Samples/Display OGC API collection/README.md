@@ -16,7 +16,7 @@ Pan the map and see how new features are loaded from the OGC API feature service
 
 1. Create an `OGCFeatureCollectionTable` object using a URL to an OGC API feature service and a collection ID.
 2. Set the feature table's `featureRequestMode` property to `manualCache`.
-3. Create an `FeatureLayer` using the feature table and add it to the map view.
+3. Create a `FeatureLayer` using the feature table and add it to the map view.
 4. Create a default `QueryParameters` object.
     * Set the parameter's `spatialRelationship` property to `intersects`.
     * Set the `maxFeatures` property to `5_000` (some services have a low default value for maximum features).

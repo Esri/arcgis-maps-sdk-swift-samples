@@ -47,7 +47,7 @@ struct DisplayOGCAPICollectionView: View {
     @State private var visibleExtentQueryParameters: QueryParameters = {
         let queryParameters = QueryParameters()
         queryParameters.spatialRelationship = .intersects
-        // Set a limit of 5000 on the number of returned features per request,
+        // Sets a limit of 5000 on the number of returned features per request,
         // because the default on some services could be as low as 10.
         queryParameters.maxFeatures = 5_000
         return queryParameters
