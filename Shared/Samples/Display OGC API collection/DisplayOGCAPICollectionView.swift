@@ -56,8 +56,6 @@ struct DisplayOGCAPICollectionView: View {
     @State private var isNavigating = false
     /// The error if the populate operation failed, otherwise `nil`.
     @State private var populateError: Error?
-    /// The visible area of the map view.
-    @State private var visibleArea: ArcGIS.Polygon?
     /// The OGC feature collection table.
     private var ogcFeatureTable: OGCFeatureCollectionTable {
         (map.operationalLayers.first as! FeatureLayer).featureTable as! OGCFeatureCollectionTable
@@ -66,13 +64,14 @@ struct DisplayOGCAPICollectionView: View {
     var body: some View {
         MapView(map: map)
             .onNavigatingChanged { isNavigating = $0 }
-            .onVisibleAreaChanged { visibleArea = $0 }
+            .onVisibleAreaChanged {
+                // Sets the query's geometry to the current visible extent.
+                visibleExtentQueryParameters.geometry = $0
+            }
             .task(id: isNavigating) {
                 // Populates features when the map stops panning or zooming.
                 guard !isNavigating else { return }
                 do {
-                    // Sets the query's geometry to the current visible extent.
-                    visibleExtentQueryParameters.geometry = visibleArea
                     // Populates the feature table with the results of a query.
                     try await ogcFeatureTable.populateFromService(
                         using: visibleExtentQueryParameters,
