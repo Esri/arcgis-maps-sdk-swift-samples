@@ -167,7 +167,7 @@ private extension CreateAndSaveMapView {
         @State private var description: String = ""
         
         /// The basemap that the user chose for the new map.
-        @State private var basemap: BasemapOption = .topo
+        @State private var basemap: BasemapOption = .topographic
         
         /// The operational data that the user chooses to display on the map.
         @State private var operationalData: OperationalDataOption = .none
@@ -176,7 +176,7 @@ private extension CreateAndSaveMapView {
         @State private var folder: PortalFolder?
         
         /// The map to save to the portal.
-        @State private var map = Map(basemapStyle: BasemapOption.topo.style)
+        @State private var map = Map(basemapStyle: BasemapOption.topographic.style)
         
         /// The viewpoint of the map view, this will be set as the initial viewpoint
         /// of the map saved to the portal.
@@ -274,14 +274,20 @@ private extension CreateAndSaveMapView {
 }
 
 private extension CreateAndSaveMapView.SaveMapForm {
+    /// The basemap options for our new map.
+    /// These were arbitrarily chosen for the purpose of the sample.
     enum BasemapOption: CaseIterable {
-        case topo
+        /// A topographic map.
+        case topographic
+        /// A streets map.
         case streets
+        /// A night-themed map.
         case night
         
+        /// The corresponding basemap style.
         var style: Basemap.Style {
             switch self {
-            case .topo:
+            case .topographic:
                 .arcGISTopographic
             case .streets:
                 .arcGISStreets
@@ -290,9 +296,10 @@ private extension CreateAndSaveMapView.SaveMapForm {
             }
         }
         
+        /// The label for user interface purposes.
         var label: String {
             switch self {
-            case .topo:
+            case .topographic:
                 "Topographic"
             case .streets:
                 "Streets"
@@ -302,11 +309,17 @@ private extension CreateAndSaveMapView.SaveMapForm {
         }
     }
     
+    /// The operational data options for our new map.
+    /// These were arbitrarily chosen for the purpose of the sample.
     enum OperationalDataOption: CaseIterable {
+        /// No operational data.
         case none
+        /// Operational data for time zones.
         case timeZones
+        /// U.S. census tracts.
         case census
         
+        /// The url of the layer.
         private var url: URL? {
             switch self {
             case .none:
@@ -318,10 +331,12 @@ private extension CreateAndSaveMapView.SaveMapForm {
             }
         }
         
+        /// The map image layer that corresponds to the option.
         var layer: ArcGISMapImageLayer? {
             url.map(ArcGISMapImageLayer.init(url:))
         }
         
+        /// The label for user interface purposes.
         var label: String {
             switch self {
             case .none:
@@ -336,15 +351,25 @@ private extension CreateAndSaveMapView.SaveMapForm {
 }
 
 private extension CreateAndSaveMapView {
+    /// The status of the create and save workflow.
     enum Status: Equatable {
+        /// The portal is loading.
         case loadingPortal
+        /// The portal failed to load.
         case failedToLoadPortal
+        /// The map is being created.
         case creatingMap
+        /// The map is being saved to the portal.
         case savingMapToPortal
+        /// The map failed to save to the portal.
         case failedToSaveMap
+        /// The map was saved successfully to the portal.
         case mapSavedSuccessfully(Map)
+        /// The map is being deleted from the portal.
         case deletingMap
+        /// The map was successfully deleted from the portal.
         case deletedSuccessfully
+        /// The map failed to delete from the portal.
         case failedToDelete
     }
 }
