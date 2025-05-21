@@ -12,12 +12,16 @@
         "publish",
         "share",
         "web map",
-        "ArcGISMap",
+        "ArcGISMapImageLayer",
+        "BasemapStyle",
+        "Map",
         "Portal"
     ],
     "redirect_from": [],
     "relevant_apis": [
-        "ArcGISMap",
+        "ArcGISMapImageLayer",
+        "BasemapStyle",
+        "Map",
         "Portal"
     ],
     "snippets": [

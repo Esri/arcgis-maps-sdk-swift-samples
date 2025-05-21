@@ -6,7 +6,7 @@ Create and save a map as a web map item to an ArcGIS portal.
 
 ## Use case
 
-Maps can be created programmatically in code and then serialized and saved as an ArcGIS portal item. In this case, the portal item is a web map which can be shared with others and opened in various applications and APIs throughout the platform, such as ArcGIS Pro, ArcGIS Online, the JavaScript API, Collector, and Explorer.
+Maps can be created programmatically in code and then serialized and saved as an ArcGIS portal item. In this case, the portal item is a web map which can be shared with others and opened in various applications and APIs throughout the platform, such as ArcGIS Pro, ArcGIS Online, the JavaScript API, and Field Maps.
 
 ## How to use the sample
 
@@ -14,16 +14,19 @@ When you run the sample, you will be challenged for an ArcGIS Online login. Ente
 
 ## How it works
 
-1. Set a `DefaultAuthenticationChallengeHandler` to the app's `AuthenticationManager`.
-2. Create a new `Portal` and load it to invoke the authentication challenge.
-3. Access the `PortalUserContent` with `portal.getUser().fetchContentAsync().get()`, to get the user's list of portal folders with `portalUserContent.getFolders()`.
-4. Create an `ArcGISMap` with a `BasemapStyle` and a few operational layers.
-5. Call `map.saveMapAsAsync()` to save a new `ArcGISMap` with the specified title, tags, and folder to the portal.
+1. Setup the authenticator the manage authentication challenges.
+2. Create a new `Portal` with an authenticated connection and load it.
+3. Log in to the portal.
+4. Access the `PortalUser.Content` with `portal.user.content`, to get the user's list of portal folders.
+5. Create a `Map` with the specified `BasemapStyle` and operational data.
+6. Call `Map.save(to:title:forceSaveToSupportedVersion:folder:description:thumbnail:tags:extent:)` to save the configured `Map` with the specified title, tags, description, and folder to the portal.
 
 ## Relevant API
 
-* ArcGISMap
+* Map
 * Portal
+* BasemapStyle
+* ArcGISMapImageLayer
 
 ## Tags
 
