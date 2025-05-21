@@ -114,6 +114,7 @@ private extension CreateAndSaveMapView {
                 }
                 Section {
                     MapView(map: map)
+                        .highPriorityGesture(DragGesture())
                         .frame(height: 300)
                 }
                 Section {
