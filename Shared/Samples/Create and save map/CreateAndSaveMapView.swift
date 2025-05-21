@@ -137,7 +137,7 @@ private extension CreateAndSaveMapView {
         @State private var operationalData: OperationalDataOption = .none
         
         @State private var map = Map(basemapStyle: BasemapOption.topo.style)
-        @State private var extent: Envelope?
+        @State private var viewpoint: Viewpoint?
         
         var body: some View {
             MapViewReader { mapViewProxy in
@@ -162,7 +162,7 @@ private extension CreateAndSaveMapView {
                     }
                     Section {
                         MapView(map: map)
-                            .onVisibleAreaChanged { extent = $0.extent }
+                            .onViewpointChanged(kind: .centerAndScale) { viewpoint = $0 }
                             .highPriorityGesture(DragGesture())
                             .frame(height: 300)
                     }
@@ -179,6 +179,7 @@ private extension CreateAndSaveMapView {
                                 Text("Save to Portal")
                             }
                         }
+                        .disabled(title.isEmpty)
                         .frame(maxWidth: .infinity)
                     }
                 }
@@ -196,6 +197,7 @@ private extension CreateAndSaveMapView {
         private func save(mapViewProxy: MapViewProxy) async {
             do {
                 status = .savingMapToPortal
+                map.initialViewpoint = viewpoint
                 try await map
                     .save(
                         to: portal,
@@ -204,8 +206,7 @@ private extension CreateAndSaveMapView {
                         folder: nil,
                         description: description,
                         thumbnail: try? await mapViewProxy.exportImage(),
-                        tags: tags.components(separatedBy: ","),
-                        extent: extent
+                        tags: tags.components(separatedBy: ",")
                     )
                 status = .mapSavedSuccessfully(map)
             } catch {
