@@ -18,33 +18,34 @@ import SwiftUI
 extension ControlAnnotationSublayerVisibilityView {
     /// The view model for this sample.
     @MainActor
-    class Model: ObservableObject {
+    @Observable
+    class Model {
         /// A map from the mobile map package.
-        @Published private(set) var map = Map()
+        private(set) var map = Map()
         
         /// The mobile map package.
-        private var mobileMapPackage: MobileMapPackage!
+        @ObservationIgnored private var mobileMapPackage: MobileMapPackage!
         
         /// The annotation layer in the map.
-        private var annotationLayer: AnnotationLayer?
+        @ObservationIgnored private var annotationLayer: AnnotationLayer?
         
         /// The closed annotation sublayer.
-        private var closedSublayer: AnnotationSublayer?
+        @ObservationIgnored private var closedSublayer: AnnotationSublayer?
         
         /// The open annotation sublayer.
-        private var openSublayer: AnnotationSublayer?
+        @ObservationIgnored private var openSublayer: AnnotationSublayer?
         
         /// A Boolean value indicating whether to show the closed annotation sublayer.
-        @Published var showsClosedSublayer = true
+        var showsClosedSublayer = true
         
         /// A Boolean value indicating whether to show the open annotation sublayer.
-        @Published var showsOpenSublayer = true
+        var showsOpenSublayer = true
         
         /// A Boolean value indicating whether the open annotation sublayer is visible at the current extent.
-        @Published var visibleAtCurrentExtent = false
+        var visibleAtCurrentExtent = false
         
         /// The current scale of the map.
-        var currentScale: Double = .zero {
+        @ObservationIgnored var currentScale: Double = .zero {
             didSet {
                 currentScaleText = "1:\(currentScale.formatted(.decimal))"
                 guard let openSublayer else { return }
@@ -53,10 +54,10 @@ extension ControlAnnotationSublayerVisibilityView {
         }
         
         /// The map's current scale value in text.
-        @Published var currentScaleText = ""
+        var currentScaleText = ""
         
         /// The min and max scale of the open annotation layer in text.
-        @Published var minMaxScaleText = ""
+        var minMaxScaleText = ""
         
         /// Loads a local mobile map package.
         func loadMobileMapPackage() async throws {
