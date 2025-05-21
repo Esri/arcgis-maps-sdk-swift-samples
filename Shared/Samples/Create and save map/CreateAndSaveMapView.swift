@@ -16,6 +16,7 @@ import ArcGIS
 import ArcGISToolkit
 import SwiftUI
 
+/// A view that allows a user to create a map and save it to a portal.
 struct CreateAndSaveMapView: View {
     /// The authenticator to handle authentication challenges.
     @StateObject private var authenticator = Authenticator()
@@ -38,6 +39,7 @@ struct CreateAndSaveMapView: View {
     /// The API key to use temporarily while using OAuth.
     @State private var apiKey: APIKey?
     
+    /// The portal user's folders that you can save the map to.
     @State private var folders: [PortalFolder]?
     
     var body: some View {
@@ -91,6 +93,7 @@ struct CreateAndSaveMapView: View {
             }
         }
         .task {
+            // Load the portal and get the folders.
             do {
                 try await portal.load()
                 let content = try await portal.user?.content
@@ -126,6 +129,7 @@ struct CreateAndSaveMapView: View {
         }
     }
     
+    /// Deletes the saved map from the portal.
     private func deleteFromPortal() async {
         guard case .mapSavedSuccessfully(let map) = status else {
             return
@@ -141,20 +145,41 @@ struct CreateAndSaveMapView: View {
 }
 
 private extension CreateAndSaveMapView {
+    /// A form that allows the user fill out properties for a map that they
+    /// want to create and save to a portal.
     struct SaveMapForm: View {
+        /// The portal to save the map to.
         let portal: Portal
+        
+        /// The folders that the user can save the map to.
         let folders: [PortalFolder]
         
+        /// The status of the workflow of creating and saving a map.
         @Binding var status: Status
         
+        /// The title of the new map.
         @State private var title: String = ""
+        
+        /// The tags for the map.
         @State private var tags: String = ""
+        
+        /// A description of the map.
         @State private var description: String = ""
+        
+        /// The basemap that the user chose for the new map.
         @State private var basemap: BasemapOption = .topo
+        
+        /// The operational data that the user chooses to display on the map.
         @State private var operationalData: OperationalDataOption = .none
+        
+        /// The folder that the user chose to save the map to.
         @State private var folder: PortalFolder?
         
+        /// The map to save to the portal.
         @State private var map = Map(basemapStyle: BasemapOption.topo.style)
+        
+        /// The viewpoint of the map view, this will be set as the initial viewpoint
+        /// of the map saved to the portal.
         @State private var viewpoint: Viewpoint?
         
         var body: some View {
@@ -220,10 +245,14 @@ private extension CreateAndSaveMapView {
             }
         }
         
+        /// Saves the map to the portal.
         private func save(mapViewProxy: MapViewProxy) async {
             do {
+                // Set the status appropriately.
                 status = .savingMapToPortal
+                // Set the intial viewpoint of the map.
                 map.initialViewpoint = viewpoint
+                // Try to save the map.
                 try await map
                     .save(
                         to: portal,
@@ -234,8 +263,10 @@ private extension CreateAndSaveMapView {
                         thumbnail: try? await mapViewProxy.exportImage(),
                         tags: tags.components(separatedBy: ",")
                     )
+                // Set the status if successful.
                 status = .mapSavedSuccessfully(map)
             } catch {
+                // Set the status if failed.
                 status = .failedToSaveMap
             }
         }
