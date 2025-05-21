@@ -35,6 +35,11 @@ struct CreateAndSaveMapView: View {
     /// The status of the sample workflow.
     @State private var status: Status = .loadingPortal
     
+    /// The API key to use temporarily while using OAuth.
+    @State private var apiKey: APIKey?
+    
+    @State private var folders: [PortalFolder]?
+    
     var body: some View {
         VStack {
             if let map {
@@ -50,7 +55,7 @@ struct CreateAndSaveMapView: View {
                         description: Text("Portal could not be loaded.")
                     )
                 case .creatingMap, .savingMapToPortal:
-                    SaveMapForm(portal: portal, status: $status)
+                    SaveMapForm(portal: portal, folders: folders ?? [], status: $status)
                 case .failedToSaveMap:
                     ContentUnavailableView(
                         "Error",
@@ -88,6 +93,10 @@ struct CreateAndSaveMapView: View {
         .task {
             do {
                 try await portal.load()
+                let content = try await portal.user?.content
+                if let folders = content?.folders {
+                    self.folders = Array(folders.prefix(10))
+                }
                 status = .creatingMap
             } catch {
                 status = .failedToLoadPortal
@@ -96,7 +105,11 @@ struct CreateAndSaveMapView: View {
         .errorAlert(presentingError: $error)
         .authenticator(authenticator)
         .onAppear {
+            // Temporarily unsets the API key for this sample to use OAuth.
+            apiKey = ArcGISEnvironment.apiKey
             ArcGISEnvironment.apiKey = nil
+            
+            // Setup the authenticator.
             setupAuthenticator()
         }
         .onDisappear {
@@ -107,6 +120,9 @@ struct CreateAndSaveMapView: View {
                 // the environment for other samples.
                 await teardownAuthenticator()
             }
+            
+            // Sets the API key back to the original value.
+            ArcGISEnvironment.apiKey = apiKey
         }
     }
     
@@ -127,14 +143,16 @@ struct CreateAndSaveMapView: View {
 private extension CreateAndSaveMapView {
     struct SaveMapForm: View {
         let portal: Portal
+        let folders: [PortalFolder]
+        
         @Binding var status: Status
         
         @State private var title: String = ""
         @State private var tags: String = ""
         @State private var description: String = ""
-        // @State private var folder: String = ""
         @State private var basemap: BasemapOption = .topo
         @State private var operationalData: OperationalDataOption = .none
+        @State private var folder: PortalFolder?
         
         @State private var map = Map(basemapStyle: BasemapOption.topo.style)
         @State private var viewpoint: Viewpoint?
@@ -147,6 +165,14 @@ private extension CreateAndSaveMapView {
                         TextField("Tags", text: $tags)
                             .autocorrectionDisabled()
                         TextField("Description", text: $description)
+                        Picker("Folder", selection: $folder) {
+                            ForEach(folders, id: \.self) { folder in
+                                Text(folder.title)
+                                    .tag(folder)
+                            }
+                            Text("None")
+                                .tag(Optional<PortalFolder>.none)
+                        }
                         Picker("Basemap", selection: $basemap) {
                             ForEach(BasemapOption.allCases, id: \.self) { value in
                                 Text(value.label)
@@ -203,7 +229,7 @@ private extension CreateAndSaveMapView {
                         to: portal,
                         title: title,
                         forceSaveToSupportedVersion: false,
-                        folder: nil,
+                        folder: folder,
                         description: description,
                         thumbnail: try? await mapViewProxy.exportImage(),
                         tags: tags.components(separatedBy: ",")
