@@ -57,7 +57,7 @@ struct DisplayOGCAPICollectionView: View {
     /// The error if the populate operation failed, otherwise `nil`.
     @State private var populateError: Error?
     /// The visible area of the map view.
-    @State private var visibleArea: Polygon?
+    @State private var visibleArea: ArcGIS.Polygon?
     /// The OGC feature collection table.
     private var ogcFeatureTable: OGCFeatureCollectionTable {
         (map.operationalLayers.first as! FeatureLayer).featureTable as! OGCFeatureCollectionTable
