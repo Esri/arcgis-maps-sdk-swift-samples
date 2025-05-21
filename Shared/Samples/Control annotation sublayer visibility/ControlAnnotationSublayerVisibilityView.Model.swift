@@ -26,19 +26,13 @@ extension ControlAnnotationSublayerVisibilityView {
         private var mobileMapPackage: MobileMapPackage!
         
         /// The annotation layer in the map.
-        private var annotationLayer: AnnotationLayer {
-            map.operationalLayers.first(where: { $0 is AnnotationLayer }) as! AnnotationLayer
-        }
+        private var annotationLayer: AnnotationLayer?
         
         /// The closed annotation sublayer.
-        private var closedSublayer: AnnotationSublayer {
-            annotationLayer.subLayerContents[0] as! AnnotationSublayer
-        }
+        private var closedSublayer: AnnotationSublayer?
         
         /// The open annotation sublayer.
-        private var openSublayer: AnnotationSublayer {
-            annotationLayer.subLayerContents[1] as! AnnotationSublayer
-        }
+        private var openSublayer: AnnotationSublayer?
         
         /// A Boolean value indicating whether to show the closed annotation sublayer.
         @Published var showsClosedSublayer = true
@@ -49,17 +43,11 @@ extension ControlAnnotationSublayerVisibilityView {
         /// A Boolean value indicating whether the open annotation sublayer is visible at the current extent.
         @Published var visibleAtCurrentExtent = false
         
-        /// The min scale of the open annotation sublayer.
-        private var minScale: Double?
-        
-        /// The max scale of the open annotation sublayer.
-        private var maxScale: Double?
-        
         /// The current scale of the map.
         var currentScale: Double = .zero {
             didSet {
-                formatCurrentScaleText()
-                guard minScale != nil && maxScale != nil else { return }
+                currentScaleText = "1:\(currentScale.formatted(.decimal))"
+                guard let openSublayer else { return }
                 visibleAtCurrentExtent = openSublayer.isVisible(atScale: currentScale)
             }
         }
@@ -78,34 +66,31 @@ extension ControlAnnotationSublayerVisibilityView {
             self.map = map
         }
         
+        /// Sets the map's annotation layer and sublayers.
+        func setAnnotationSublayers() {
+            annotationLayer = map.operationalLayers.first(where: { $0 is AnnotationLayer }) as? AnnotationLayer
+            closedSublayer = annotationLayer?.subLayerContents[0] as? AnnotationSublayer
+            openSublayer = annotationLayer?.subLayerContents[1] as? AnnotationSublayer
+            setScaleText()
+        }
+        
         /// Sets the visibility of the closed annotation sublayer.
         /// - Parameter visibility: The visibility of the sublayer.
         func setClosedSublayerVisibility(_ visibility: Bool) {
-            closedSublayer.isVisible = visibility
+            closedSublayer?.isVisible = visibility
         }
         
         /// Sets the visibility of the open annotation sublayer.
         /// - Parameter visibility: The visibility of the sublayer.
         func setOpenSublayerVisibility(_ visibility: Bool) {
-            openSublayer.isVisible = visibility
+            openSublayer?.isVisible = visibility
         }
         
         /// Sets the min and max scale and formats the min-max scale text.
-        func setScaleText() {
-            minScale = openSublayer.minScale
-            maxScale = openSublayer.maxScale
-            
-            formatMinMaxScaleText()
-        }
-        
-        /// Formats the current scale text.
-        private func formatCurrentScaleText() {
-            currentScaleText = "1:\(currentScale.formatted(.decimal))"
-        }
-        
-        /// Formats the min-max scale text.
-        private func formatMinMaxScaleText() {
-            guard let minScale, let maxScale else { return }
+        private func setScaleText() {
+            guard let openSublayer,
+                  let minScale = openSublayer.minScale,
+                  let maxScale = openSublayer.maxScale else { return }
             minMaxScaleText = "Open (1:\(minScale.formatted(.decimal)) - 1:\(maxScale.formatted(.decimal)))"
         }
     }

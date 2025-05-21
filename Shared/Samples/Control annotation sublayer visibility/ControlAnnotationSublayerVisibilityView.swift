@@ -30,7 +30,7 @@ struct ControlAnnotationSublayerVisibilityView: View {
             .onLayerViewStateChanged { layer, layerViewState in
                 guard layer is AnnotationLayer else { return }
                 if layerViewState.status == .active {
-                    model.setScaleText()
+                    model.setAnnotationSublayers()
                 }
             }
             .overlay(alignment: .top) {
