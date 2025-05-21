@@ -23,10 +23,10 @@ When you run the sample, you will be challenged for an ArcGIS Online login. Ente
 
 ## Relevant API
 
+* ArcGISMapImageLayer
+* BasemapStyle
 * Map
 * Portal
-* BasemapStyle
-* ArcGISMapImageLayer
 
 ## Tags
 
