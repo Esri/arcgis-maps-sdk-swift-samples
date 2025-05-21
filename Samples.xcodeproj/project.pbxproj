@@ -172,6 +172,8 @@
 		1C8EC74B2BAE28A9001A6929 /* AugmentRealityToCollectDataView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C8EC7432BAE2891001A6929 /* AugmentRealityToCollectDataView.swift */; };
 		1C929F092A27B86800134252 /* ShowUtilityAssociationsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1CAF831B2A20305F000E1E60 /* ShowUtilityAssociationsView.swift */; };
 		1C965C3929DB9176002F8536 /* ShowRealisticLightAndShadowsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C9B74C529DB43580038B06F /* ShowRealisticLightAndShadowsView.swift */; };
+		1C986DA62DDD46E0005E2E0F /* DisplayRouteLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C986DA42DDD46E0005E2E0F /* DisplayRouteLayerView.swift */; };
+		1C986DA72DDD46E0005E2E0F /* DisplayRouteLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C986DA42DDD46E0005E2E0F /* DisplayRouteLayerView.swift */; };
 		1C9B74C929DB43580038B06F /* ShowRealisticLightAndShadowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9B74C529DB43580038B06F /* ShowRealisticLightAndShadowsView.swift */; };
 		1C9B74D929DB54560038B06F /* ChangeCameraControllerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9B74D529DB54560038B06F /* ChangeCameraControllerView.swift */; };
 		1C9B74DE29DB56860038B06F /* ChangeCameraControllerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C9B74D529DB54560038B06F /* ChangeCameraControllerView.swift */; };
@@ -862,6 +864,7 @@
 				D769C2132A29057200030F61 /* SetUpLocationDrivenGeotriggersView.swift in Copy Source Code Files */,
 				1C19B4F72A578E69001D2506 /* CreateLoadReportView.Model.swift in Copy Source Code Files */,
 				1C19B4F82A578E69001D2506 /* CreateLoadReportView.swift in Copy Source Code Files */,
+				1C986DA72DDD46E0005E2E0F /* DisplayRouteLayerView.swift in Copy Source Code Files */,
 				1C19B4F92A578E69001D2506 /* CreateLoadReportView.Views.swift in Copy Source Code Files */,
 				D752D9412A39162F003EB25E /* ManageOperationalLayersView.swift in Copy Source Code Files */,
 				D77570C12A2943D900F490CD /* AnimateImagesWithImageOverlayView.swift in Copy Source Code Files */,
@@ -1041,6 +1044,7 @@
 		1C43BC7C2A43781100509BF8 /* SetVisibilityOfSubtypeSublayerView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetVisibilityOfSubtypeSublayerView.Model.swift; sourceTree = "<group>"; };
 		1C43BC7E2A43781100509BF8 /* SetVisibilityOfSubtypeSublayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetVisibilityOfSubtypeSublayerView.swift; sourceTree = "<group>"; };
 		1C8EC7432BAE2891001A6929 /* AugmentRealityToCollectDataView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AugmentRealityToCollectDataView.swift; sourceTree = "<group>"; };
+		1C986DA42DDD46E0005E2E0F /* DisplayRouteLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayRouteLayerView.swift; sourceTree = "<group>"; };
 		1C9B74C529DB43580038B06F /* ShowRealisticLightAndShadowsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowRealisticLightAndShadowsView.swift; sourceTree = "<group>"; };
 		1C9B74D529DB54560038B06F /* ChangeCameraControllerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeCameraControllerView.swift; sourceTree = "<group>"; };
 		1CAB8D442A3CEAB0002AA649 /* RunValveIsolationTraceView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunValveIsolationTraceView.Model.swift; sourceTree = "<group>"; };
@@ -1568,6 +1572,7 @@
 				F111CCBD288B548400205358 /* Display map from mobile map package */,
 				D752D95B2A3BCDD4003EB25E /* Display map from portal item */,
 				00B04FB3283EEB830026C882 /* Display overview map */,
+				1C986DA52DDD46E0005E2E0F /* Display route layer */,
 				E004A6D528465C70002A1FE6 /* Display scene */,
 				D7010EBA2B05616900D43F55 /* Display scene from mobile scene package */,
 				D742E48E2B04132B00690098 /* Display web scene from portal item */,
@@ -2136,6 +2141,14 @@
 				004FE87029DF5D8700075217 /* Bristol */,
 			);
 			path = 681d6f7694644709a7c830ec57a2d72b;
+			sourceTree = "<group>";
+		};
+		1C986DA52DDD46E0005E2E0F /* Display route layer */ = {
+			isa = PBXGroup;
+			children = (
+				1C986DA42DDD46E0005E2E0F /* DisplayRouteLayerView.swift */,
+			);
+			path = "Display route layer";
 			sourceTree = "<group>";
 		};
 		1C9B74C429DB43580038B06F /* Show realistic light and shadows */ = {
@@ -4071,6 +4084,7 @@
 				10D321962BDB1CB500B39B1B /* GenerateOfflineMapWithLocalBasemapView.swift in Sources */,
 				D7201CDA2CC6B710004BDB7D /* AddTiledLayerAsBasemapView.swift in Sources */,
 				D73723792AF5ADD800846884 /* FindRouteInMobileMapPackageView.MobileMapView.swift in Sources */,
+				1C986DA62DDD46E0005E2E0F /* DisplayRouteLayerView.swift in Sources */,
 				E004A6E028466279002A1FE6 /* ShowCalloutView.swift in Sources */,
 				E000E763286A0B18005D87C5 /* CutGeometryView.swift in Sources */,
 				D7BE7E6F2CC19CC3006DDB0C /* AddTiledLayerView.swift in Sources */,
