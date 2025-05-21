@@ -91,59 +91,65 @@ private extension CreateAndSaveMapView {
         @State private var operationalData: OperationalDataOption = .none
         
         @State private var map = Map(basemapStyle: BasemapOption.topo.style)
+        @State private var extent: Envelope?
+        
+        @State private var saveResult: Result<Void, Error>?
         
         var body: some View {
-            Form {
-                Section("Create Map") {
-                    TextField("Title", text: $title)
-                    TextField("Tags", text: $tags)
-                        .autocorrectionDisabled()
-                    TextField("Description", text: $description)
-                    Picker("Basemap", selection: $basemap) {
-                        ForEach(BasemapOption.allCases, id: \.self) { value in
-                            Text(value.label)
-                                .tag(value)
+            MapViewReader { mapViewProxy in
+                Form {
+                    Section("Create Map") {
+                        TextField("Title", text: $title)
+                        TextField("Tags", text: $tags)
+                            .autocorrectionDisabled()
+                        TextField("Description", text: $description)
+                        Picker("Basemap", selection: $basemap) {
+                            ForEach(BasemapOption.allCases, id: \.self) { value in
+                                Text(value.label)
+                                    .tag(value)
+                            }
+                        }
+                        Picker("Operational Data", selection: $operationalData) {
+                            ForEach(OperationalDataOption.allCases, id: \.self) { value in
+                                Text(value.label)
+                                    .tag(value)
+                            }
                         }
                     }
-                    Picker("Operational Data", selection: $operationalData) {
-                        ForEach(OperationalDataOption.allCases, id: \.self) { value in
-                            Text(value.label)
-                                .tag(value)
+                    Section {
+                        MapView(map: map)
+                            .onVisibleAreaChanged { extent = $0.extent }
+                            .highPriorityGesture(DragGesture())
+                            .frame(height: 300)
+                    }
+                    Section {
+                        Button("Save to Portal") {
+                            Task { try? await save(mapViewProxy: mapViewProxy) }
                         }
+                        .frame(maxWidth: .infinity)
                     }
                 }
-                Section {
-                    MapView(map: map)
-                        .highPriorityGesture(DragGesture())
-                        .frame(height: 300)
-                }
-                Section {
-                    Button("Save to Portal") {
-                        Task { try? await save() }
+                .onChange(of: basemap) { map.basemap = Basemap(style: basemap.style) }
+                .onChange(of: operationalData) {
+                    map.removeAllOperationalLayers()
+                    if let layer = operationalData.layer {
+                        map.addOperationalLayer(layer)
                     }
-                    .frame(maxWidth: .infinity)
-                }
-            }
-            .onChange(of: basemap) { map.basemap = Basemap(style: basemap.style) }
-            .onChange(of: operationalData) {
-                map.removeAllOperationalLayers()
-                if let layer = operationalData.layer {
-                    map.addOperationalLayer(layer)
                 }
             }
         }
         
-        private func save() async throws {
-            try await Map()
+        private func save(mapViewProxy: MapViewProxy) async throws {
+            try await map
                 .save(
                     to: portal,
                     title: title,
                     forceSaveToSupportedVersion: false,
                     folder: nil,
                     description: description,
-                    thumbnail: nil,
-                    tags: tags.components(separatedBy: CharacterSet(arrayLiteral: " ", ",")),
-                    extent: nil
+                    thumbnail: try? await mapViewProxy.exportImage(),
+                    tags: tags.components(separatedBy: ","),
+                    extent: extent
                 )
         }
     }
