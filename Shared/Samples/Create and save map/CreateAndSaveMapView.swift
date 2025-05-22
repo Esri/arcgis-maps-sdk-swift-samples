@@ -40,7 +40,7 @@ struct CreateAndSaveMapView: View {
     @State private var apiKey: APIKey?
     
     /// The portal user's folders that you can save the map to.
-    @State private var folders: [PortalFolder]?
+    @State private var folders: [PortalFolder] = []
     
     var body: some View {
         VStack {
@@ -201,13 +201,11 @@ private extension CreateAndSaveMapView {
                         Picker("Basemap", selection: $basemap) {
                             ForEach(BasemapOption.allCases, id: \.self) { value in
                                 Text(value.label)
-                                    .tag(value)
                             }
                         }
                         Picker("Operational Data", selection: $operationalData) {
                             ForEach(OperationalDataOption.allCases, id: \.self) { value in
                                 Text(value.label)
-                                    .tag(value)
                             }
                         }
                     }
@@ -250,7 +248,7 @@ private extension CreateAndSaveMapView {
             do {
                 // Set the status appropriately.
                 status = .savingMapToPortal
-                // Set the intial viewpoint of the map.
+                // Set the initial viewpoint of the map.
                 map.initialViewpoint = viewpoint
                 // Try to save the map.
                 try await map
@@ -391,7 +389,7 @@ private extension CreateAndSaveMapView {
     }
     
     /// Stops the authenticator from handling the challenges and clears credentials.
-    nonisolated func teardownAuthenticator() async {
+    func teardownAuthenticator() async {
         // Resets challenge handlers.
         ArcGISEnvironment.authenticationManager.handleChallenges(using: nil)
         
@@ -407,8 +405,7 @@ private extension CreateAndSaveMapView {
     private func setupPersistentCredentialStorage() {
         Task {
             try await ArcGISEnvironment.authenticationManager.setupPersistentCredentialStorage(
-                access: .whenUnlockedThisDeviceOnly,
-                synchronizesWithiCloud: false
+                access: .whenUnlockedThisDeviceOnly
             )
         }
     }
