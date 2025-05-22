@@ -3,7 +3,8 @@
     "description": "Display a route layer and its directions using feature collection.",
     "ignore": false,
     "images": [
-        "display-route-layer.png"
+        "display-route-layer.png",
+        "display-route-layer-directions-list.png"
     ],
     "keywords": [
         "directions",

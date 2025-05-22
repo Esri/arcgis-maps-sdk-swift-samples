@@ -2,7 +2,8 @@
 
 Display a route layer and its directions using feature collection.
 
-![Image of Display route layer sample](display-route-layer.png)
+![Screenshot of Display route layer sample with route layer](display-route-layer.png)
+![Screenshot of Display route layer sample with list of directions](display-route-layer-directions-list.png)
 
 ## Use case
 

@@ -1,4 +1,4 @@
-// Copyright 2024 Esri
+// Copyright 2025 Esri
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -42,7 +42,7 @@ struct DisplayRouteLayerView: View {
         MapView(map: map)
             .task {
                 do {
-                    // Create a portal with a portal item using the item ID for route data in Portland, OR.
+                    // Create a portal item with a portal using the item ID for route data in Portland, OR.
                     let portalItem = PortalItem(
                         portal: .arcGISOnline(connection: .anonymous),
                         id: .portlandRoute
@@ -51,8 +51,8 @@ struct DisplayRouteLayerView: View {
                     // Create a collection of features using the item.
                     let featureCollection = FeatureCollection(item: portalItem)
                     
-                    // Load the feature collection.
-                    try await loadFeatureCollection(featureCollection)
+                    // Set route directions using the feature collection.
+                    try await setRouteDirections(using: featureCollection)
                     
                     // Create a feature collection layer using the feature collection.
                     let featureCollectionLayer = FeatureCollectionLayer(featureCollection: featureCollection)
@@ -93,9 +93,10 @@ struct DisplayRouteLayerView: View {
             .errorAlert(presentingError: $error)
     }
     
-    /// Loads the feature collection.
+    /// Sets the directions for the route using the feature collection's feature table that contains turn by turn directions.
     /// - Parameter featureCollection: The feature collection.
-    func loadFeatureCollection(_ featureCollection: FeatureCollection) async throws {
+    func setRouteDirections(using featureCollection: FeatureCollection) async throws {
+        // Load the feature collection.
         try await featureCollection.load()
         // Make an array of all the feature collection tables.
         let tables = featureCollection.tables
