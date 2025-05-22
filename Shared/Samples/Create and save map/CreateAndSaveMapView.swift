@@ -57,7 +57,7 @@ struct CreateAndSaveMapView: View {
                         description: Text("Portal could not be loaded.")
                     )
                 case .creatingMap, .savingMapToPortal:
-                    SaveMapForm(portal: portal, folders: folders ?? [], status: $status)
+                    SaveMapForm(portal: portal, folders: folders, status: $status)
                 case .failedToSaveMap:
                     ContentUnavailableView(
                         "Error",
