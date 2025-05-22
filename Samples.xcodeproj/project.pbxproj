@@ -16,6 +16,8 @@
 		001C6DE127FE8A9400D472C2 /* AppSecrets.swift.masque in Sources */ = {isa = PBXBuildFile; fileRef = 001C6DD827FE585A00D472C2 /* AppSecrets.swift.masque */; };
 		002056C52DD7F6D30016B8A9 /* TakeScreenshotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002056C42DD7F6CF0016B8A9 /* TakeScreenshotView.swift */; };
 		002056C62DD816B70016B8A9 /* TakeScreenshotView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 002056C42DD7F6CF0016B8A9 /* TakeScreenshotView.swift */; };
+		002056E82DDD404C0016B8A9 /* DisplayOGCAPICollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002056E72DDD40430016B8A9 /* DisplayOGCAPICollectionView.swift */; };
+		002056E92DDD484B0016B8A9 /* DisplayOGCAPICollectionView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 002056E72DDD40430016B8A9 /* DisplayOGCAPICollectionView.swift */; };
 		00273CF42A82AB5900A7A77D /* SamplesSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00273CF32A82AB5900A7A77D /* SamplesSearchView.swift */; };
 		00273CF62A82AB8700A7A77D /* SampleLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00273CF52A82AB8700A7A77D /* SampleLink.swift */; };
 		0039A4E92885C50300592C86 /* AddSceneLayerFromServiceView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E066DD3F28610F55004D3D5B /* AddSceneLayerFromServiceView.swift */; };
@@ -678,6 +680,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				002056E92DDD484B0016B8A9 /* DisplayOGCAPICollectionView.swift in Copy Source Code Files */,
 				88AF55502DD7EABF003F146E /* BrowseWMSLayersView.swift in Copy Source Code Files */,
 				002056C62DD816B70016B8A9 /* TakeScreenshotView.swift in Copy Source Code Files */,
 				1016FB532DDD476B00B87699 /* CreateGeometriesView.swift in Copy Source Code Files */,
@@ -962,6 +965,7 @@
 		00181B452846AD7100654571 /* View+ErrorAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ErrorAlert.swift"; sourceTree = "<group>"; };
 		001C6DD827FE585A00D472C2 /* AppSecrets.swift.masque */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AppSecrets.swift.masque; sourceTree = "<group>"; };
 		002056C42DD7F6CF0016B8A9 /* TakeScreenshotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TakeScreenshotView.swift; sourceTree = "<group>"; };
+		002056E72DDD40430016B8A9 /* DisplayOGCAPICollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayOGCAPICollectionView.swift; sourceTree = "<group>"; };
 		00273CF32A82AB5900A7A77D /* SamplesSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SamplesSearchView.swift; sourceTree = "<group>"; };
 		00273CF52A82AB8700A7A77D /* SampleLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleLink.swift; sourceTree = "<group>"; };
 		003D7C342821EBCC009DDFD2 /* masquerade */ = {isa = PBXFileReference; lastKnownFileType = text; path = masquerade; sourceTree = "<group>"; };
@@ -1373,6 +1377,14 @@
 			path = "Take screenshot";
 			sourceTree = "<group>";
 		};
+		002056E52DDD402A0016B8A9 /* Display OGC API collection */ = {
+			isa = PBXGroup;
+			children = (
+				002056E72DDD40430016B8A9 /* DisplayOGCAPICollectionView.swift */,
+			);
+			path = "Display OGC API collection";
+			sourceTree = "<group>";
+		};
 		0023DE5029D648FA0098243A /* macOS */ = {
 			isa = PBXGroup;
 			children = (
@@ -1572,6 +1584,7 @@
 				0074ABB328174B830037244A /* Display map */,
 				F111CCBD288B548400205358 /* Display map from mobile map package */,
 				D752D95B2A3BCDD4003EB25E /* Display map from portal item */,
+				002056E52DDD402A0016B8A9 /* Display OGC API collection */,
 				00B04FB3283EEB830026C882 /* Display overview map */,
 				E004A6D528465C70002A1FE6 /* Display scene */,
 				D7010EBA2B05616900D43F55 /* Display scene from mobile scene package */,
@@ -4126,6 +4139,7 @@
 				D7ABA2FF2A32881C0021822B /* ShowViewshedFromGeoelementInSceneView.swift in Sources */,
 				E0FE32E728747778002C6ACA /* BrowseBuildingFloorsView.swift in Sources */,
 				954AEDEE2C01332600265114 /* SelectFeaturesInSceneLayerView.swift in Sources */,
+				002056E82DDD404C0016B8A9 /* DisplayOGCAPICollectionView.swift in Sources */,
 				1CC755E42DC95625004B346F /* ApplyFunctionToRasterFromFileView.swift in Sources */,
 				D7F8C0432B608F120072BFA7 /* AddFeaturesWithContingentValuesView.AddFeatureView.swift in Sources */,
 				D752D95F2A3BCE06003EB25E /* DisplayMapFromPortalItemView.swift in Sources */,

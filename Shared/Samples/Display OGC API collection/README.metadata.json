@@ -1,0 +1,29 @@
+{
+    "category": "Layers",
+    "description": "Display an OGC API feature collection and query features while navigating the map view.",
+    "ignore": false,
+    "images": [
+        "display-ogc-api-collection.png"
+    ],
+    "keywords": [
+        "OGC",
+        "OGC API",
+        "feature",
+        "feature layer",
+        "feature table",
+        "service",
+        "table",
+        "web",
+        "OGCFeatureCollectionTable",
+        "QueryParameters"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "OGCFeatureCollectionTable",
+        "QueryParameters"
+    ],
+    "snippets": [
+        "DisplayOGCAPICollectionView.swift"
+    ],
+    "title": "Display OGC API collection"
+}
