@@ -14,7 +14,7 @@ An annotation dataset which marks valves as "Opened" or "Closed", might be set t
 
 Start the sample and take note of the visibility of the annotation. Zoom in and out to see the annotation turn on and off based on scale ranges set on the data.
 
-Use the checkboxes to manually set "Open" and "Closed" annotation sublayers visibility to on or off.
+Use the toggles to manually set "Open" and "Closed" annotation sublayers visibility to on or off.
 
 ## How it works
 

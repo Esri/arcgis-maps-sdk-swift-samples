@@ -17,14 +17,10 @@ import SwiftUI
 
 extension ControlAnnotationSublayerVisibilityView {
     /// The view model for this sample.
-    @MainActor
     @Observable
     class Model {
         /// A map from the mobile map package.
         private(set) var map = Map()
-        
-        /// The mobile map package.
-        @ObservationIgnored private var mobileMapPackage: MobileMapPackage!
         
         /// The annotation layer in the map.
         @ObservationIgnored private var annotationLayer: AnnotationLayer?
@@ -60,8 +56,9 @@ extension ControlAnnotationSublayerVisibilityView {
         var minMaxScaleText = ""
         
         /// Loads a local mobile map package.
+        @MainActor
         func loadMobileMapPackage() async throws {
-            mobileMapPackage = MobileMapPackage(fileURL: .gasDevicePackage)
+            let mobileMapPackage = MobileMapPackage(fileURL: .gasDevicePackage)
             try await mobileMapPackage.load()
             guard let map = mobileMapPackage.maps.first else { return }
             self.map = map
@@ -76,15 +73,15 @@ extension ControlAnnotationSublayerVisibilityView {
         }
         
         /// Sets the visibility of the closed annotation sublayer.
-        /// - Parameter visibility: The visibility of the sublayer.
-        func setClosedSublayerVisibility(_ visibility: Bool) {
-            closedSublayer?.isVisible = visibility
+        /// - Parameter isVisible: The visibility of the sublayer.
+        func setClosedSublayerVisibility(_ isVisible: Bool) {
+            closedSublayer?.isVisible = isVisible
         }
         
         /// Sets the visibility of the open annotation sublayer.
-        /// - Parameter visibility: The visibility of the sublayer.
-        func setOpenSublayerVisibility(_ visibility: Bool) {
-            openSublayer?.isVisible = visibility
+        /// - Parameter isVisible: The visibility of the sublayer.
+        func setOpenSublayerVisibility(_ isVisible: Bool) {
+            openSublayer?.isVisible = isVisible
         }
         
         /// Sets the min and max scale and formats the min-max scale text.
@@ -100,7 +97,7 @@ extension ControlAnnotationSublayerVisibilityView {
 private extension FormatStyle where Self == FloatingPointFormatStyle<Double> {
     /// Formats the double with zero decimals places of precision.
     static var decimal: Self {
-        Self.number.precision(.fractionLength(0))
+        .number.precision(.fractionLength(0))
     }
 }
 
