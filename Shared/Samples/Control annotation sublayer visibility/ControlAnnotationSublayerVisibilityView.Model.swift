@@ -62,10 +62,8 @@ extension ControlAnnotationSublayerVisibilityView {
             try await mobileMapPackage.load()
             guard let map = mobileMapPackage.maps.first else { return }
             self.map = map
-        }
-        
-        /// Sets the map's annotation layer and sublayers.
-        func setAnnotationSublayers() {
+            try await map.load()
+            try await map.operationalLayers.first(where: { $0 is AnnotationLayer })?.load()
             annotationLayer = map.operationalLayers.first(where: { $0 is AnnotationLayer }) as? AnnotationLayer
             closedSublayer = annotationLayer?.subLayerContents[0] as? AnnotationSublayer
             openSublayer = annotationLayer?.subLayerContents[1] as? AnnotationSublayer

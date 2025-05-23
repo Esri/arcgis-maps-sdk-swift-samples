@@ -27,12 +27,6 @@ struct ControlAnnotationSublayerVisibilityView: View {
             .onScaleChanged { scale in
                 model.currentScale = scale
             }
-            .onLayerViewStateChanged { layer, layerViewState in
-                guard layer is AnnotationLayer else { return }
-                if layerViewState.status == .active {
-                    model.setAnnotationSublayers()
-                }
-            }
             .overlay(alignment: .top) {
                 Text("Current scale: \(model.currentScaleText)")
                     .frame(maxWidth: .infinity, alignment: .center)
