@@ -26,11 +26,11 @@ Pan and zoom to view the route displayed by the feature collection layer. Tap th
 
 ## Relevant API
 
-* PortalItem
+* Feature
 * FeatureCollection
 * FeatureCollectionLayer
 * FeatureCollectionTable
-* Feature
+* PortalItem
 
 ## Tags
 
