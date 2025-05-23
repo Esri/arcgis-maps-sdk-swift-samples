@@ -11,18 +11,18 @@
         "feature collection",
         "route layer",
         "Feature",
-        "PortalItem",
         "FeatureCollection",
         "FeatureCollectionLayer",
-        "FeatureCollectionTable"
+        "FeatureCollectionTable",
+        "PortalItem"
     ],
     "redirect_from": [],
     "relevant_apis": [
         "Feature",
-        "PortalItem",
         "FeatureCollection",
         "FeatureCollectionLayer",
-        "FeatureCollectionTable"
+        "FeatureCollectionTable",
+        "PortalItem"
     ],
     "snippets": [
         "DisplayRouteLayerView.swift"
