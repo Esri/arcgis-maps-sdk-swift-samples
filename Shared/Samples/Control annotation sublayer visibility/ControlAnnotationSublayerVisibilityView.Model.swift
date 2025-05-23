@@ -60,13 +60,14 @@ extension ControlAnnotationSublayerVisibilityView {
         func loadMobileMapPackage() async throws {
             let mobileMapPackage = MobileMapPackage(fileURL: .gasDevicePackage)
             try await mobileMapPackage.load()
-            guard let map = mobileMapPackage.maps.first else { return }
+            guard let map = mobileMapPackage.maps.first,
+                  let annotationLayer = map.operationalLayers.lazy.compactMap({ $0 as? AnnotationLayer }).first else {
+                return
+            }
             self.map = map
-            try await map.load()
-            try await map.operationalLayers.first(where: { $0 is AnnotationLayer })?.load()
-            annotationLayer = map.operationalLayers.first(where: { $0 is AnnotationLayer }) as? AnnotationLayer
-            closedSublayer = annotationLayer?.subLayerContents[0] as? AnnotationSublayer
-            openSublayer = annotationLayer?.subLayerContents[1] as? AnnotationSublayer
+            try await annotationLayer.load()
+            closedSublayer = annotationLayer.subLayerContents[0] as? AnnotationSublayer
+            openSublayer = annotationLayer.subLayerContents[1] as? AnnotationSublayer
             setScaleText()
         }
         
