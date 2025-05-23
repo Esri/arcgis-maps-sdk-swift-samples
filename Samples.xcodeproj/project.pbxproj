@@ -172,6 +172,10 @@
 		1C43BC852A43783900509BF8 /* SetVisibilityOfSubtypeSublayerView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C43BC7C2A43781100509BF8 /* SetVisibilityOfSubtypeSublayerView.Model.swift */; };
 		1C43BC862A43783900509BF8 /* SetVisibilityOfSubtypeSublayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C43BC7E2A43781100509BF8 /* SetVisibilityOfSubtypeSublayerView.swift */; };
 		1C43BC872A43783900509BF8 /* SetVisibilityOfSubtypeSublayerView.Views.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C43BC792A43781100509BF8 /* SetVisibilityOfSubtypeSublayerView.Views.swift */; };
+		1C8438F42DDBD02C005CCBC7 /* GasDeviceAnno.mmpk in Resources */ = {isa = PBXBuildFile; fileRef = 1C8438F32DDBD02C005CCBC7 /* GasDeviceAnno.mmpk */; settings = {ASSET_TAGS = (ControlAnnotationSublayerVisibility, ); }; };
+		1C8438F82DDBDE1F005CCBC7 /* ControlAnnotationSublayerVisibilityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C8438F62DDBDE1F005CCBC7 /* ControlAnnotationSublayerVisibilityView.swift */; };
+		1C8438F92DDBDE1F005CCBC7 /* ControlAnnotationSublayerVisibilityView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C8438F62DDBDE1F005CCBC7 /* ControlAnnotationSublayerVisibilityView.swift */; };
+		1C8438FB2DDCFCAA005CCBC7 /* ControlAnnotationSublayerVisibilityView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C8438FA2DDCFCA9005CCBC7 /* ControlAnnotationSublayerVisibilityView.Model.swift */; };
 		1C8EC7472BAE2891001A6929 /* AugmentRealityToCollectDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C8EC7432BAE2891001A6929 /* AugmentRealityToCollectDataView.swift */; };
 		1C8EC74B2BAE28A9001A6929 /* AugmentRealityToCollectDataView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C8EC7432BAE2891001A6929 /* AugmentRealityToCollectDataView.swift */; };
 		1C929F092A27B86800134252 /* ShowUtilityAssociationsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1CAF831B2A20305F000E1E60 /* ShowUtilityAssociationsView.swift */; };
@@ -924,6 +928,7 @@
 				0042E24628E50EE4001F33D6 /* ShowViewshedFromPointInSceneView.swift in Copy Source Code Files */,
 				0042E24728E50EE4001F33D6 /* ShowViewshedFromPointInSceneView.Model.swift in Copy Source Code Files */,
 				0042E24828E50EE4001F33D6 /* ShowViewshedFromPointInSceneView.ViewshedSettingsView.swift in Copy Source Code Files */,
+				1C8438F92DDBDE1F005CCBC7 /* ControlAnnotationSublayerVisibilityView.swift in Copy Source Code Files */,
 				006C835528B40682004AEB7F /* BrowseBuildingFloorsView.swift in Copy Source Code Files */,
 				006C835628B40682004AEB7F /* DisplayMapFromMobileMapPackageView.swift in Copy Source Code Files */,
 				F1E71BFA28A479C70064C33F /* AddRasterFromFileView.swift in Copy Source Code Files */,
@@ -1054,6 +1059,9 @@
 		1C43BC792A43781100509BF8 /* SetVisibilityOfSubtypeSublayerView.Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetVisibilityOfSubtypeSublayerView.Views.swift; sourceTree = "<group>"; };
 		1C43BC7C2A43781100509BF8 /* SetVisibilityOfSubtypeSublayerView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetVisibilityOfSubtypeSublayerView.Model.swift; sourceTree = "<group>"; };
 		1C43BC7E2A43781100509BF8 /* SetVisibilityOfSubtypeSublayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetVisibilityOfSubtypeSublayerView.swift; sourceTree = "<group>"; };
+		1C8438F32DDBD02C005CCBC7 /* GasDeviceAnno.mmpk */ = {isa = PBXFileReference; lastKnownFileType = file; path = GasDeviceAnno.mmpk; sourceTree = "<group>"; };
+		1C8438F62DDBDE1F005CCBC7 /* ControlAnnotationSublayerVisibilityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlAnnotationSublayerVisibilityView.swift; sourceTree = "<group>"; };
+		1C8438FA2DDCFCA9005CCBC7 /* ControlAnnotationSublayerVisibilityView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlAnnotationSublayerVisibilityView.Model.swift; sourceTree = "<group>"; };
 		1C8EC7432BAE2891001A6929 /* AugmentRealityToCollectDataView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AugmentRealityToCollectDataView.swift; sourceTree = "<group>"; };
 		1C986DA42DDD46E0005E2E0F /* DisplayRouteLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayRouteLayerView.swift; sourceTree = "<group>"; };
 		1C9B74C529DB43580038B06F /* ShowRealisticLightAndShadowsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowRealisticLightAndShadowsView.swift; sourceTree = "<group>"; };
@@ -1570,6 +1578,7 @@
 				000D43152B9918420003D3C2 /* Configure basemap style parameters */,
 				D7635FF32B9277DC0044AB97 /* Configure clusters */,
 				D74F6C412D0CD51B00D4FB15 /* Configure electronic navigational charts */,
+				1C8438F72DDBDE1F005CCBC7 /* Control annotation sublayer visibility */,
 				88F93CBE29C3D4E30006B28E /* Create and edit geometries */,
 				79B7B8082A1BF8B300F57C27 /* Create and save KML file */,
 				88AF55512DDBFA57003F146E /* Create and save map */,
@@ -1793,6 +1802,7 @@
 		00CCB8A6285D059300BBAB70 /* Portal Data */ = {
 			isa = PBXGroup;
 			children = (
+				1C8438F22DDBCFFC005CCBC7 /* b87307dcfb26411eb2e92e1627cb615b */,
 				1C293D4C2DCD91BF000B0822 /* 5356dbf91788474493467519e268cf87 */,
 				D762DA0D2D94C750001052DD /* 0fd3a39660d54c12b05d5f81f207dffd */,
 				D74C8C002ABA6202007C76B8 /* 1bd036f221f54a99abc9e46ff3511cbf */,
@@ -2156,6 +2166,23 @@
 				1C43BC792A43781100509BF8 /* SetVisibilityOfSubtypeSublayerView.Views.swift */,
 			);
 			path = "Set visibility of subtype sublayer";
+			sourceTree = "<group>";
+		};
+		1C8438F22DDBCFFC005CCBC7 /* b87307dcfb26411eb2e92e1627cb615b */ = {
+			isa = PBXGroup;
+			children = (
+				1C8438F32DDBD02C005CCBC7 /* GasDeviceAnno.mmpk */,
+			);
+			path = b87307dcfb26411eb2e92e1627cb615b;
+			sourceTree = "<group>";
+		};
+		1C8438F72DDBDE1F005CCBC7 /* Control annotation sublayer visibility */ = {
+			isa = PBXGroup;
+			children = (
+				1C8438F62DDBDE1F005CCBC7 /* ControlAnnotationSublayerVisibilityView.swift */,
+				1C8438FA2DDCFCA9005CCBC7 /* ControlAnnotationSublayerVisibilityView.Model.swift */,
+			);
+			path = "Control annotation sublayer visibility";
 			sourceTree = "<group>";
 		};
 		1C8EC7422BAE2891001A6929 /* Augment reality to collect data */ = {
@@ -3878,6 +3905,7 @@
 					AugmentRealityToShowTabletopScene,
 					ChangeCameraController,
 					ConfigureElectronicNavigationalCharts,
+					ControlAnnotationSublayerVisibility,
 					DisplayDimensions,
 					DisplayMapFromMobileMapPackage,
 					DisplaySceneFromMobileScenePackage,
@@ -3935,6 +3963,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1C8438F42DDBD02C005CCBC7 /* GasDeviceAnno.mmpk in Resources */,
 				1CC755E12DC5A6A7004B346F /* Shasta_Elevation in Resources */,
 				D7F8C0412B605E720072BFA7 /* FillmoreTopographicMap.vtpk in Resources */,
 				1C293D4D2DCD91BF000B0822 /* color.json in Resources */,
@@ -4160,6 +4189,7 @@
 				D71FCB8A2AD6277F000E517C /* CreateMobileGeodatabaseView.Model.swift in Sources */,
 				D752D9462A3A6F80003EB25E /* MonitorChangesToMapLoadStatusView.swift in Sources */,
 				00181B462846AD7100654571 /* View+ErrorAlert.swift in Sources */,
+				1C8438F82DDBDE1F005CCBC7 /* ControlAnnotationSublayerVisibilityView.swift in Sources */,
 				D733CA192BED980D00FBDE4C /* EditAndSyncFeaturesWithFeatureServiceView.swift in Sources */,
 				00273CF62A82AB8700A7A77D /* SampleLink.swift in Sources */,
 				4C8126E72DC02525006EF7D2 /* AnalyzeHotspotsView.swift in Sources */,
@@ -4248,6 +4278,7 @@
 				E041ABC0287CA9F00056009B /* WebView.swift in Sources */,
 				D73E619E2BDB21F400457932 /* EditWithBranchVersioningView.swift in Sources */,
 				D7DFA0EA2CBA0242007C31F2 /* AddMapImageLayerView.swift in Sources */,
+				1C8438FB2DDCFCAA005CCBC7 /* ControlAnnotationSublayerVisibilityView.Model.swift in Sources */,
 				D7705D642AFC570700CC0335 /* FindClosestFacilityFromPointView.swift in Sources */,
 				E088E1572862579D00413100 /* SetSurfacePlacementModeView.swift in Sources */,
 				9579FCEA2C3360BB00FC8A1D /* EditFeatureAttachmentsView.swift in Sources */,
