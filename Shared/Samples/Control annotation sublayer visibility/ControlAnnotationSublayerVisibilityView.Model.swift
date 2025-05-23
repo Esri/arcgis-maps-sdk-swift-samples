@@ -22,9 +22,6 @@ extension ControlAnnotationSublayerVisibilityView {
         /// A map from the mobile map package.
         private(set) var map = Map()
         
-        /// The annotation layer in the map.
-        @ObservationIgnored private var annotationLayer: AnnotationLayer?
-        
         /// The closed annotation sublayer.
         @ObservationIgnored private var closedSublayer: AnnotationSublayer?
         
