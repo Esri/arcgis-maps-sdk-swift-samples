@@ -1,0 +1,33 @@
+{
+    "category": "Analysis",
+    "description": "Connect to a service and list versions of the geodatabase.",
+    "ignore": false,
+    "images": [
+        "list-geodatabase-versions.png"
+    ],
+    "keywords": [
+        "conflict resolution",
+        "data management",
+        "database",
+        "multi-user",
+        "sync",
+        "version",
+        "GeoprocessingFeatures",
+        "GeoprocessingJob",
+        "GeoprocessingParameters",
+        "GeoprocessingResult",
+        "GeoprocessingTask"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "GeoprocessingFeatures",
+        "GeoprocessingJob",
+        "GeoprocessingParameters",
+        "GeoprocessingResult",
+        "GeoprocessingTask"
+    ],
+    "snippets": [
+        "ListGeodatabaseVersionsView.swift"
+    ],
+    "title": "List geodatabase versions"
+}

@@ -59,6 +59,8 @@
 		004FE87129DF5D8700075217 /* Bristol in Resources */ = {isa = PBXBuildFile; fileRef = 004FE87029DF5D8700075217 /* Bristol */; settings = {ASSET_TAGS = (Animate3DGraphic, ChangeCameraController, OrbitCameraAroundObject, StylePointWithDistanceCompositeSceneSymbol, ); }; };
 		006C835528B40682004AEB7F /* BrowseBuildingFloorsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = E0FE32E628747778002C6ACA /* BrowseBuildingFloorsView.swift */; };
 		006C835628B40682004AEB7F /* DisplayMapFromMobileMapPackageView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = F111CCC0288B5D5600205358 /* DisplayMapFromMobileMapPackageView.swift */; };
+		007079212DE0E7E800E06300 /* ListGeodatabaseVersionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 007079202DE0E7E200E06300 /* ListGeodatabaseVersionsView.swift */; };
+		007079222DE104B700E06300 /* ListGeodatabaseVersionsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 007079202DE0E7E200E06300 /* ListGeodatabaseVersionsView.swift */; };
 		0072C7F42DBAA65E001502CA /* AddFeatureCollectionLayerFromTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0072C7F32DBAA65B001502CA /* AddFeatureCollectionLayerFromTableView.swift */; };
 		0072C7F52DBAB714001502CA /* AddFeatureCollectionLayerFromTableView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 0072C7F32DBAA65B001502CA /* AddFeatureCollectionLayerFromTableView.swift */; };
 		0072C7FA2DBABEAC001502CA /* AddIntegratedMeshLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0072C7F92DBABEA9001502CA /* AddIntegratedMeshLayerView.swift */; };
@@ -682,6 +684,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				007079222DE104B700E06300 /* ListGeodatabaseVersionsView.swift in Copy Source Code Files */,
 				88AF55542DDBFA9C003F146E /* CreateAndSaveMapView.swift in Copy Source Code Files */,
 				002056E92DDD484B0016B8A9 /* DisplayOGCAPICollectionView.swift in Copy Source Code Files */,
 				88AF55502DD7EABF003F146E /* BrowseWMSLayersView.swift in Copy Source Code Files */,
@@ -982,6 +985,7 @@
 		004A2B9C2BED455B00C297CE /* canyonlands */ = {isa = PBXFileReference; lastKnownFileType = folder; path = canyonlands; sourceTree = "<group>"; };
 		004A2B9E2BED456500C297CE /* ApplyScheduledUpdatesToPreplannedMapAreaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplyScheduledUpdatesToPreplannedMapAreaView.swift; sourceTree = "<group>"; };
 		004FE87029DF5D8700075217 /* Bristol */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Bristol; sourceTree = "<group>"; };
+		007079202DE0E7E200E06300 /* ListGeodatabaseVersionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListGeodatabaseVersionsView.swift; sourceTree = "<group>"; };
 		0072C7F32DBAA65B001502CA /* AddFeatureCollectionLayerFromTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFeatureCollectionLayerFromTableView.swift; sourceTree = "<group>"; };
 		0072C7F92DBABEA9001502CA /* AddIntegratedMeshLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddIntegratedMeshLayerView.swift; sourceTree = "<group>"; };
 		0072C7FF2DBAF08B001502CA /* AddItemsToPortalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemsToPortalView.swift; sourceTree = "<group>"; };
@@ -1455,6 +1459,14 @@
 			path = "Apply scheduled updates to preplanned map area";
 			sourceTree = "<group>";
 		};
+		0070791E2DE0E7DC00E06300 /* List geodatabase versions */ = {
+			isa = PBXGroup;
+			children = (
+				007079202DE0E7E200E06300 /* ListGeodatabaseVersionsView.swift */,
+			);
+			path = "List geodatabase versions";
+			sourceTree = "<group>";
+		};
 		0072C7F12DBAA64C001502CA /* Add feature collection layer from table */ = {
 			isa = PBXGroup;
 			children = (
@@ -1624,6 +1636,7 @@
 				D751018A2A2E960300B8FA48 /* Identify layer features */,
 				D7464F182ACE0445007FEE88 /* Identify raster cell */,
 				D75E5EE52CC0340100252595 /* List contents of KML file */,
+				0070791E2DE0E7DC00E06300 /* List geodatabase versions */,
 				D776880E2B69826B007C3860 /* List spatial reference transformations */,
 				D718A1E92B575FD900447087 /* Manage bookmarks */,
 				D752D93C2A3914E5003EB25E /* Manage operational layers */,
@@ -4274,6 +4287,7 @@
 				D72F272E2ADA1E4400F906DA /* AugmentRealityToShowTabletopSceneView.swift in Sources */,
 				10B782082BE5A058007EAE6C /* GenerateOfflineMapWithCustomParametersView.CustomParameters.swift in Sources */,
 				D76EE6072AF9AFE100DA0325 /* FindRouteAroundBarriersView.Model.swift in Sources */,
+				007079212DE0E7E800E06300 /* ListGeodatabaseVersionsView.swift in Sources */,
 				0086F40128E3770A00974721 /* ShowViewshedFromPointInSceneView.swift in Sources */,
 				0044289229C90C0B00160767 /* GetElevationAtPointOnSurfaceView.swift in Sources */,
 				00E1D90B2BC0AF97001AEB6A /* SnapGeometryEditsView.SnapSettingsView.swift in Sources */,
