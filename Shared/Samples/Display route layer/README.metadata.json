@@ -1,0 +1,31 @@
+{
+    "category": "Routing and Logistics",
+    "description": "Display a route layer and its directions using feature collection.",
+    "ignore": false,
+    "images": [
+        "display-route-layer-directions-list.png",
+        "display-route-layer.png"
+    ],
+    "keywords": [
+        "directions",
+        "feature collection",
+        "route layer",
+        "Feature",
+        "FeatureCollection",
+        "FeatureCollectionLayer",
+        "FeatureCollectionTable",
+        "PortalItem"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Feature",
+        "FeatureCollection",
+        "FeatureCollectionLayer",
+        "FeatureCollectionTable",
+        "PortalItem"
+    ],
+    "snippets": [
+        "DisplayRouteLayerView.swift"
+    ],
+    "title": "Display route layer"
+}
