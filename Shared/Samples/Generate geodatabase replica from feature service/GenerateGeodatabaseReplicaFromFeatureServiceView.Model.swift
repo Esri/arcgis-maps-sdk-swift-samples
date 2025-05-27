@@ -27,19 +27,19 @@ extension GenerateGeodatabaseReplicaFromFeatureServiceView {
         private(set) var generateGeodatabaseJob: GenerateGeodatabaseJob?
         
         /// A map with a San Fransisco streets basemap.
-        @ObservationIgnored let map: Map = {
+        let map: Map = {
             let tiledLayer = ArcGISTiledLayer(url: .sanFranciscoStreetsTilePackage)
             let basemap = Basemap(baseLayer: tiledLayer)
             return Map(basemap: basemap)
         }()
         
         /// The task for generating and synchronizing the geodatabase with the feature service.
-        @ObservationIgnored private let geodatabaseSyncTask = GeodatabaseSyncTask(
+        private let geodatabaseSyncTask = GeodatabaseSyncTask(
             url: .wildfireSyncFeatureServer
         )
         
         /// A URL to the temporary file containing the geodatabase.
-        @ObservationIgnored private let temporaryGeodatabaseURL = FileManager
+        private let temporaryGeodatabaseURL = FileManager
             .createTemporaryDirectory()
             .appending(component: "WildfireSync.geodatabase")
         
