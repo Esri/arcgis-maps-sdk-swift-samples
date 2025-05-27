@@ -50,9 +50,8 @@ struct ListGeodatabaseVersionsView: View {
         }
         .task {
             do {
-                if let resultFeatures = try await fetchGeodatabaseVersions() {
-                    geodatabaseVersionInfos = makeGeodatabaseVersionInfos(from: resultFeatures)
-                }
+                let resultFeatures = try await fetchGeodatabaseVersions()
+                geodatabaseVersionInfos = makeGeodatabaseVersionInfos(from: resultFeatures)
             } catch {
                 analysisError = error
             }
@@ -61,7 +60,7 @@ struct ListGeodatabaseVersionsView: View {
     }
     
     /// Fetches geodatabase versions using a geoprocessing job.
-    private func fetchGeodatabaseVersions() async throws -> FeatureSet? {
+    private func fetchGeodatabaseVersions() async throws -> FeatureSet {
         // Creates and configures the job's parameters.
         let parameters = try await geoprocessingTask.makeDefaultParameters()
         
@@ -77,10 +76,11 @@ struct ListGeodatabaseVersionsView: View {
                 await geoprocessingJob.cancel()
             }
         }
-        guard let versions = result.outputs["Versions"] as? GeoprocessingFeatures else {
-            return nil
+        guard let versions = result.outputs["Versions"] as? GeoprocessingFeatures,
+              let featureSet = versions.features else {
+            fatalError("Expected geoprocessing results to contain 'Versions' output.")
         }
-        return versions.features
+        return featureSet
     }
     
     /// Converts the features to an array of `GeodatabaseVersionInfo`.
