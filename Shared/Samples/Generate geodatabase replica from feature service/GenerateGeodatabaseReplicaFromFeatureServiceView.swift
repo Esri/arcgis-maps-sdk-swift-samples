@@ -44,7 +44,7 @@ struct GenerateGeodatabaseReplicaFromFeatureServiceView: View {
                         VStack {
                             Text(statusText)
                                 .multilineTextAlignment(.center)
-                                .frame(maxWidth: .infinity, alignment: .center)
+                                .frame(maxWidth: .infinity)
                                 .padding(8)
                                 .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
                             
@@ -111,8 +111,4 @@ struct GenerateGeodatabaseReplicaFromFeatureServiceView: View {
             }
         }
     }
-}
-
-#Preview {
-    GenerateGeodatabaseReplicaFromFeatureServiceView()
 }
