@@ -27,8 +27,8 @@
         "GeodatabaseSyncTask"
     ],
     "snippets": [
-        "GenerateGeodatabaseReplicaFromFeatureServiceView.swift",
-        "GenerateGeodatabaseReplicaFromFeatureServiceView.Model"
+        "GenerateGeodatabaseReplicaFromFeatureServiceView.Model.swift",
+        "GenerateGeodatabaseReplicaFromFeatureServiceView.swift"
     ],
     "title": "Generate geodatabase replica from feature service"
 }
