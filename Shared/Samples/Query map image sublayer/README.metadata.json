@@ -1,0 +1,25 @@
+{
+    "category": "Search and Query",
+    "description": "Find features in a sublayer based on attributes and location.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "query",
+        "search",
+        "ArcGISMapImageLayer",
+        "ArcGISMapImageSublayer",
+        "QueryParameters",
+        "ServiceFeatureTable"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "ArcGISMapImageLayer",
+        "ArcGISMapImageSublayer",
+        "QueryParameters",
+        "ServiceFeatureTable"
+    ],
+    "snippets": [
+        "QueryMapImageSublayerView.swift"
+    ],
+    "title": "Query map image sublayer"
+}
