@@ -19,6 +19,12 @@ struct QueryMapImageSublayerView: View {
     /// The view model for this sample.
     @State private var model = Model()
     
+    /// The current viewpoint of the map view.
+    @State private var viewpoint: Viewpoint? = .westernUSA
+    
+    /// A Boolean value indicating whether the is an ongoing query operation.
+    @State private var isQuerying = false
+    
     /// The minimum population value in the text field.
     @State private var minimumPopulation: Int?
     
@@ -26,26 +32,41 @@ struct QueryMapImageSublayerView: View {
     @State private var error: Error?
     
     var body: some View {
-        MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
+        MapView(map: model.map, viewpoint: viewpoint, graphicsOverlays: [model.graphicsOverlay])
+            .onViewpointChanged(kind: .boundingGeometry) { viewpoint = $0 }
             .overlay(alignment: .top) {
                 LabeledContent("Minimum population") {
                     TextField("1,000,000", value: $minimumPopulation, format: .number)
                         .multilineTextAlignment(.trailing)
-                        .task(id: minimumPopulation) {
-                            // Queries the map image sublayers when `minimumPopulation` changes.
-                            do {
-                                try await model.queryMapImageSublayers(
-                                    minimumPopulation: minimumPopulation
-                                )
-                            } catch {
-                                self.error = error
-                            }
-                        }
                 }
-                .padding(5)
+                .padding(8)
                 .background(Color.primary.colorInvert())
                 .clipShape(.rect(cornerRadius: 5))
+                .shadow(radius: 50)
                 .padding()
+            }
+            .toolbar {
+                ToolbarItem(placement: .bottomBar) {
+                    Button("Query") {
+                        isQuerying = true
+                    }
+                    .disabled(isQuerying || minimumPopulation == nil || viewpoint == nil)
+                    .task(id: isQuerying) {
+                        guard isQuerying, let minimumPopulation, let viewpoint else {
+                            return
+                        }
+                        defer { isQuerying = false }
+                        
+                        do {
+                            try await model.queryMapImageSublayers(
+                                minimumPopulation: minimumPopulation,
+                                geometry: viewpoint.targetGeometry
+                            )
+                        } catch {
+                            self.error = error
+                        }
+                    }
+                }
             }
             .task {
                 // Sets up the sublayers when the sample appears.
@@ -63,18 +84,7 @@ struct QueryMapImageSublayerView: View {
 @MainActor
 private final class Model {
     /// A map with a streets basemap.
-    let map: Map = {
-        let map = Map(basemapStyle: .arcGISStreets)
-        
-        let envelope = Envelope(
-            xRange: -13_933_000 ... -12_071_000,
-            yRange: 3_387_000 ... 6_701_000,
-            spatialReference: .webMercator
-        )
-        map.initialViewpoint = Viewpoint(boundingGeometry: envelope)
-        
-        return map
-    }()
+    let map = Map(basemapStyle: .arcGISStreets)
     
     /// The graphics overlay for the query result graphics.
     let graphicsOverlay = GraphicsOverlay()
@@ -115,17 +125,15 @@ private final class Model {
     /// Queries the map image sublayers and adds graphics for the resulting features.
     /// - Parameter minimumPopulation: The minimum population a feature must
     /// have to be included in the results.
-    func queryMapImageSublayers(minimumPopulation: Int?) async throws {
+    /// - Parameter geometry: The geometry to query within.
+    func queryMapImageSublayers(minimumPopulation: Int, geometry: Geometry) async throws {
         // Removes all the graphics to have a fresh start.
         graphicsOverlay.removeAllGraphics()
-        
-        guard let minimumPopulation else {
-            return
-        }
         
         // Creates parameters to query for features with a population greater than the minimum.
         let queryParameters = QueryParameters()
         queryParameters.whereClause = "POP2000 > \(minimumPopulation)"
+        queryParameters.geometry = geometry
         
         await withThrowingTaskGroup { group in
             for sublayer in mapImageSublayers {
@@ -150,8 +158,20 @@ private final class Model {
     }
 }
 
+private extension Viewpoint {
+    /// A viewpoint centered on the western United States.
+    static var westernUSA: Viewpoint {
+        let envelope = Envelope(
+            xRange: -13_933_000 ... -12_071_000,
+            yRange: 3_387_000 ... 6_701_000,
+            spatialReference: .webMercator
+        )
+        return Viewpoint(boundingGeometry: envelope)
+    }
+}
+
 private extension URL {
-    /// The web URL to a map server containing sample data for the United States.
+    /// The web URL to a "USA" map server containing sample data for the United States.
     static var usaMapService: URL {
         URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer")!
     }
