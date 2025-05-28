@@ -81,21 +81,23 @@ extension GenerateGeodatabaseReplicaFromFeatureServiceView {
             defer {
                 generateGeodatabaseJob = nil
             }
+            guard let generateGeodatabaseJob else { return }
             
             // Generates the geodatabase.
-            generateGeodatabaseJob?.start()
-            geodatabase = try await generateGeodatabaseJob?.output
-            try await geodatabase?.load()
+            generateGeodatabaseJob.start()
+            geodatabase = try await generateGeodatabaseJob.output
+            guard let geodatabase else { return }
+            try await geodatabase.load()
             
             map.removeAllOperationalLayers()
             
             // Adds the geodatabase's tables to the map as feature layers.
-            let featureLayers = geodatabase!.featureTables
+            let featureLayers = geodatabase.featureTables
                 .map(FeatureLayer.init(featureTable:))
             map.addOperationalLayers(featureLayers)
             
             // Unregister geodatabase since we are not editing or syncing features.
-            try await geodatabaseSyncTask.unregisterGeodatabase(geodatabase!)
+            try await geodatabaseSyncTask.unregisterGeodatabase(geodatabase)
         }
         
         /// Cancels the generate geodatabase job.
