@@ -35,4 +35,4 @@ Since the `cities`, `counties`, and `states` tables all have a `POP2000` field, 
 
 ## Tags
 
-search, query
+query, search

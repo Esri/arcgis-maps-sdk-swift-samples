@@ -22,7 +22,7 @@ struct QueryMapImageSublayerView: View {
     /// The current viewpoint of the map view.
     @State private var viewpoint: Viewpoint? = .westernUSA
     
-    /// A Boolean value indicating whether the is an ongoing query operation.
+    /// A Boolean value indicating whether there is an ongoing query operation.
     @State private var isQuerying = false
     
     /// The minimum population value in the text field.
@@ -92,7 +92,8 @@ private final class Model {
     /// The map image sublayers to query.
     private var mapImageSublayers: [ArcGISMapImageSublayer] = []
     
-    /// The sublayer names and corresponding symbol that will be used for their query result graphics.
+    /// The sublayer names and corresponding symbol that will be used for the
+    /// layers' query result graphics.
     private let sublayerGraphicSymbols: [String: Symbol] = {
         let citiesSymbol = SimpleMarkerSymbol(style: .circle, color: .red, size: 16)
         
@@ -171,7 +172,7 @@ private extension Viewpoint {
 }
 
 private extension URL {
-    /// The web URL to a "USA" map server containing sample data for the United States.
+    /// A web URL to a "USA" map server containing sample data for the United States.
     static var usaMapService: URL {
         URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer")!
     }
