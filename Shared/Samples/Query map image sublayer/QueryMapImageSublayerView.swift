@@ -124,9 +124,10 @@ private final class Model {
     }
     
     /// Queries the map image sublayers and adds graphics for the resulting features.
-    /// - Parameter minimumPopulation: The minimum population a feature must
-    /// have to be included in the results.
-    /// - Parameter geometry: The geometry to query within.
+    /// - Parameters:
+    ///   - minimumPopulation: The minimum population a feature must have to be
+    ///   included in the results.
+    ///   - geometry: The geometry to query within.
     func queryMapImageSublayers(minimumPopulation: Int, geometry: Geometry) async throws {
         // Removes all the graphics to have a fresh start.
         graphicsOverlay.removeAllGraphics()
