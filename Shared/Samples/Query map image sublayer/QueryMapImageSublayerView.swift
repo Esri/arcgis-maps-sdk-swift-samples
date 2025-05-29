@@ -140,7 +140,7 @@ private final class Model {
         await withThrowingTaskGroup { group in
             for sublayer in mapImageSublayers {
                 group.addTask { [weak self] in
-                    // Queries the sublayers's table using the parameters.
+                    // Queries the sublayer's table using the parameters.
                     let result = try await sublayer.table!.queryFeatures(using: queryParameters)
                     
                     // Creates a graphic for each feature in the result.
@@ -163,12 +163,13 @@ private final class Model {
 private extension Viewpoint {
     /// A viewpoint centered on the western United States.
     static var westernUSA: Viewpoint {
-        let envelope = Envelope(
-            xRange: -13_933_000 ... -12_071_000,
-            yRange: 3_387_000 ... 6_701_000,
-            spatialReference: .webMercator
+        .init(
+            boundingGeometry: Envelope(
+                xRange: -13_933_000 ... -12_071_000,
+                yRange: 3_387_000 ... 6_701_000,
+                spatialReference: .webMercator
+            )
         )
-        return Viewpoint(boundingGeometry: envelope)
     }
 }
 
