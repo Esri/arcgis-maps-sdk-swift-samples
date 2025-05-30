@@ -104,14 +104,12 @@ private extension ProjectWithChosenTransformationView {
             return map
         }()
         
-        /// A graphics overlay containing a graphic with a circular, red marker symbol.
-        let graphicsOverlay = GraphicsOverlay(graphics: [
-            Graphic(symbol: SimpleMarkerSymbol(color: .red, size: 8))
-        ])
+        /// A graphics overlay for the circular, red marker symbol.
+        let graphicsOverlay = GraphicsOverlay()
         
         /// The graphic with a circular, red marker symbol.
         let pointGraphic = Graphic(symbol: SimpleMarkerSymbol(color: .red, size: 8))
-
+        
         init() {
             graphicsOverlay.addGraphic(pointGraphic)
         }
