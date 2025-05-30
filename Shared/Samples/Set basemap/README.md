@@ -1,6 +1,6 @@
 # Set basemap
 
-Set a map's basemap.
+Change a map's basemap.
 
 ![Image of Set basemap sample](set-basemap.png)
 

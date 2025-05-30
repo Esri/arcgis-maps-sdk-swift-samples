@@ -1,6 +1,6 @@
 {
     "category": "Maps",
-    "description": "Set a map's basemap.",
+    "description": "Change a map's basemap.",
     "ignore": false,
     "images": [
         "set-basemap.png"
