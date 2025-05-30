@@ -32,7 +32,7 @@ This sample uses the transformation identified by WKID 108055 to convert from WG
 
 ## Additional information
 
-See [Coordinate systems and transformations]() in the ArcGIS Maps SDK for .NET guide for more information about geographic coordinate systems, geographic transformations, and projected coordinate systems.
+See [Coordinate systems and transformations](https://pro.arcgis.com/en/pro-app/latest/help/mapping/properties/coordinate-systems-and-projections.htm) in the ArcGIS Maps SDK for .NET guide for more information about geographic coordinate systems, geographic transformations, and projected coordinate systems.
 
 ## Tags
 
