@@ -8,15 +8,15 @@
     "keywords": [
         "basemap",
         "map",
+        "Basemap.Style",
         "BasemapGallery",
-        "BasemapStyle",
         "Map",
         "MapView"
     ],
     "redirect_from": [],
     "relevant_apis": [
+        "Basemap.Style",
         "BasemapGallery",
-        "BasemapStyle",
         "Map",
         "MapView"
     ],
