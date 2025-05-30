@@ -137,7 +137,7 @@ private final class Model {
         queryParameters.whereClause = "POP2000 > \(minimumPopulation)"
         queryParameters.geometry = geometry
         
-        await withThrowingTaskGroup { group in
+        await withThrowingTaskGroup(of: Void.self) { group in
             for sublayer in mapImageSublayers {
                 group.addTask { [weak self] in
                     // Queries the sublayer's table using the parameters.
