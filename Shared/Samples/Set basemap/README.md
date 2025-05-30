@@ -20,8 +20,8 @@ Tap the map button in the toolbar to view a list of the available basemaps. Tap 
 
 ## Relevant API
 
+* Basemap.Style
 * BasemapGallery
-* BasemapStyle
 * Map
 * MapView
 
