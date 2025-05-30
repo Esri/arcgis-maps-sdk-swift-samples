@@ -64,15 +64,13 @@ struct ProjectWithChosenTransformationView: View {
             }
             .callout(placement: $calloutPlacement.animation(.default.speed(2))) { _ in
                 VStack(alignment: .leading) {
-                    Group {
-                        Text("Coordinates")
-                            .fontWeight(.medium)
-                        Text("Original (WGS 84):\n\(originalPoint.xyCoordinates)")
-                        Text("Projected (non-specific):\n\(unspecifiedProjectedPoint.xyCoordinates)")
-                        Text("Projected (WKID: 108055):\n\(specificProjectedPoint.xyCoordinates)")
-                    }
-                    .font(.callout)
+                    Text("Coordinates")
+                        .fontWeight(.medium)
+                    Text("__Original (WGS 84):__\n\(originalPoint.xyCoordinates)")
+                    Text("__Projected (non-specific):__\n\(unspecifiedProjectedPoint.xyCoordinates)")
+                    Text("__Projected (WKID: 108055):__\n\(specificProjectedPoint.xyCoordinates)")
                 }
+                .font(.callout)
                 .padding(6)
             }
             .overlay(alignment: .top) {
@@ -92,14 +90,14 @@ private extension ProjectWithChosenTransformationView {
         let map: Map = {
             let portalItem = PortalItem(
                 portal: .arcGISOnline(connection: .anonymous),
-                id: .worldBasemaps
+                id: .worldBasemap
             )
             let map = Map(item: portalItem)
             
             // The transformation used in this sample is only valid in the following area.
             let extent = Envelope(
-                xRange: 87.76...119.94007,
-                yRange: 41.58...52.1500,
+                xRange: 87.76...119.94,
+                yRange: 41.58...52.15,
                 spatialReference: .wgs84
             )
             map.initialViewpoint = Viewpoint(boundingGeometry: extent)
@@ -112,14 +110,18 @@ private extension ProjectWithChosenTransformationView {
         ])
         
         /// The graphic with a circular, red marker symbol.
-        var pointGraphic: Graphic { graphicsOverlay.graphics.first! }
+        let pointGraphic = Graphic(symbol: SimpleMarkerSymbol(color: .red, size: 8))
+
+        init() {
+            graphicsOverlay.addGraphic(pointGraphic)
+        }
     }
 }
 
 private extension FormatStyle where Self == FloatingPointFormatStyle<Double> {
     /// Formats the double with four decimals places of precision.
     static var decimal: Self {
-        Self.number.precision(.fractionLength(4))
+        number.precision(.fractionLength(4))
     }
 }
 
@@ -131,8 +133,8 @@ private extension Point {
 }
 
 private extension PortalItem.ID {
-    /// The portal item ID of World Basemaps (WGS84).
-    static var worldBasemaps: Self { Self("4c2b44abaa4841d08c938f4bbb548561")! }
+    /// The portal item ID of World Imagery Hybrid Basemap (WGS84).
+    static var worldBasemap: Self { Self("4c2b44abaa4841d08c938f4bbb548561")! }
 }
 
 private extension SpatialReference {

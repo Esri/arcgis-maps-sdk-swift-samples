@@ -26,7 +26,7 @@ Tap a point on the map to see three values: unprojected point, projected with th
 
 ## About the data
 
-To avoid the need to project from mercator coordinates to WGS 84, this sample uses [World Basemaps (WGS84)](https://www.arcgis.com/home/group.html?id=4c790318395940c18a16e8acd721de25#overview) from ArcGIS Online's living atlas.
+To avoid the need to project from Mercator coordinates to WGS 84, this sample uses [World Basemaps (WGS84)](https://www.arcgis.com/home/group.html?id=4c790318395940c18a16e8acd721de25#overview) from ArcGIS Online's living atlas.
 
 This sample uses the transformation identified by WKID 108055 to convert from WGS 84 to MSK 42. It is suitable for use in Mongolia and has an accuracy of 999 meters.
 
