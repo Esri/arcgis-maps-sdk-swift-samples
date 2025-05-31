@@ -2,7 +2,9 @@
     "category": "Search and Query",
     "description": "Query a table to get aggregated statistics back for a specific field.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "query-table-statistics.png"
+    ],
     "keywords": [
         "analysis",
         "average",
@@ -18,7 +20,6 @@
         "statistics",
         "sum",
         "variance",
-        "QueryParameters",
         "ServiceFeatureTable",
         "StatisticDefinition",
         "StatisticRecord",
@@ -28,7 +29,6 @@
     ],
     "redirect_from": [],
     "relevant_apis": [
-        "QueryParameters",
         "ServiceFeatureTable",
         "StatisticDefinition",
         "StatisticRecord",
