@@ -398,6 +398,8 @@
 		D73723792AF5ADD800846884 /* FindRouteInMobileMapPackageView.MobileMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73723782AF5ADD700846884 /* FindRouteInMobileMapPackageView.MobileMapView.swift */; };
 		D737237A2AF5AE1600846884 /* FindRouteInMobileMapPackageView.MobileMapView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D73723782AF5ADD700846884 /* FindRouteInMobileMapPackageView.MobileMapView.swift */; };
 		D737237B2AF5AE1A00846884 /* FindRouteInMobileMapPackageView.Models.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D73723742AF5877500846884 /* FindRouteInMobileMapPackageView.Models.swift */; };
+		D73CCF1F2DE6858000622FEF /* QueryMapImageSublayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73CCF192DE6858000622FEF /* QueryMapImageSublayerView.swift */; };
+		D73CCF202DE685AD00622FEF /* QueryMapImageSublayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D73CCF192DE6858000622FEF /* QueryMapImageSublayerView.swift */; };
 		D73E61962BDAEE6600457932 /* MatchViewpointOfGeoViewsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73E61922BDAEE6600457932 /* MatchViewpointOfGeoViewsView.swift */; };
 		D73E61992BDAEEDD00457932 /* MatchViewpointOfGeoViewsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D73E61922BDAEE6600457932 /* MatchViewpointOfGeoViewsView.swift */; };
 		D73E619E2BDB21F400457932 /* EditWithBranchVersioningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73E619A2BDB21F400457932 /* EditWithBranchVersioningView.swift */; };
@@ -696,6 +698,7 @@
 			dstSubfolderSpec = 7;
 			files = (
 				D7AA5FBD2DE7D23E00556469 /* QueryTableStatisticsView.swift in Copy Source Code Files */,
+				D73CCF202DE685AD00622FEF /* QueryMapImageSublayerView.swift in Copy Source Code Files */,
 				007079222DE104B700E06300 /* ListGeodatabaseVersionsView.swift in Copy Source Code Files */,
 				88AF55542DDBFA9C003F146E /* CreateAndSaveMapView.swift in Copy Source Code Files */,
 				002056E92DDD484B0016B8A9 /* DisplayOGCAPICollectionView.swift in Copy Source Code Files */,
@@ -1194,6 +1197,7 @@
 		D73571D62CB6131E0046A433 /* hydrography */ = {isa = PBXFileReference; lastKnownFileType = folder; path = hydrography; sourceTree = "<group>"; };
 		D73723742AF5877500846884 /* FindRouteInMobileMapPackageView.Models.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindRouteInMobileMapPackageView.Models.swift; sourceTree = "<group>"; };
 		D73723782AF5ADD700846884 /* FindRouteInMobileMapPackageView.MobileMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindRouteInMobileMapPackageView.MobileMapView.swift; sourceTree = "<group>"; };
+		D73CCF192DE6858000622FEF /* QueryMapImageSublayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryMapImageSublayerView.swift; sourceTree = "<group>"; };
 		D73E61922BDAEE6600457932 /* MatchViewpointOfGeoViewsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchViewpointOfGeoViewsView.swift; sourceTree = "<group>"; };
 		D73E619A2BDB21F400457932 /* EditWithBranchVersioningView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditWithBranchVersioningView.swift; sourceTree = "<group>"; };
 		D73F06662B5EE73D000B574F /* QueryFeaturesWithArcadeExpressionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueryFeaturesWithArcadeExpressionView.swift; sourceTree = "<group>"; };
@@ -1678,6 +1682,7 @@
 				3E9F77712C6A609B0022CAB5 /* Query feature count and extent */,
 				108EC03F29D25AE1000F35D0 /* Query feature table */,
 				D73F06652B5EE73D000B574F /* Query features with Arcade expression */,
+				D73CCF1C2DE6858000622FEF /* Query map image sublayer */,
 				D7BA38962BFBFC0F009954F5 /* Query related features */,
 				D7AA5FB92DE7D22200556469 /* Query table statistics */,
 				D7A85A052CD5ABF5009DC68A /* Query with CQL filters */,
@@ -2904,6 +2909,14 @@
 				D73571D62CB6131E0046A433 /* hydrography */,
 			);
 			path = 5028bf3513ff4c38b28822d010a4937c;
+			sourceTree = "<group>";
+		};
+		D73CCF1C2DE6858000622FEF /* Query map image sublayer */ = {
+			isa = PBXGroup;
+			children = (
+				D73CCF192DE6858000622FEF /* QueryMapImageSublayerView.swift */,
+			);
+			path = "Query map image sublayer";
 			sourceTree = "<group>";
 		};
 		D73E61952BDAEE6600457932 /* Match viewpoint of geo views */ = {
@@ -4220,6 +4233,7 @@
 				D7635FFE2B9277DC0044AB97 /* ConfigureClustersView.swift in Sources */,
 				1C19B4F32A578E46001D2506 /* CreateLoadReportView.swift in Sources */,
 				D71563E92D5AC2B600D2E948 /* CreateKMLMultiTrackView.swift in Sources */,
+				D73CCF1F2DE6858000622FEF /* QueryMapImageSublayerView.swift in Sources */,
 				4C8127612DCBED62006EF7D2 /* ApplyStretchRendererView.swift in Sources */,
 				7900C5F62A83FC3F002D430F /* AddCustomDynamicEntityDataSourceView.Vessel.swift in Sources */,
 				D71099702A2802FA0065A1C1 /* DensifyAndGeneralizeGeometryView.SettingsView.swift in Sources */,
