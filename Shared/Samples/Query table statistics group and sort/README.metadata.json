@@ -1,0 +1,41 @@
+{
+    "category": "Search and Query",
+    "description": "Query a feature table for statistics, grouping and sorting by different fields.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "correlation",
+        "data",
+        "fields",
+        "filter",
+        "group",
+        "sort",
+        "statistics",
+        "table",
+        "Field",
+        "OrderBy",
+        "QueryParameters",
+        "ServiceFeatureTable",
+        "StatisticDefinition",
+        "StatisticRecord",
+        "StatisticType",
+        "StatisticsQueryParameters",
+        "StatisticsQueryResult"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Field",
+        "OrderBy",
+        "QueryParameters",
+        "ServiceFeatureTable",
+        "StatisticDefinition",
+        "StatisticRecord",
+        "StatisticType",
+        "StatisticsQueryParameters",
+        "StatisticsQueryResult"
+    ],
+    "snippets": [
+        "QueryTableStatisticsGroupAndSortView.swift"
+    ],
+    "title": "Query table statistics group and sort"
+}

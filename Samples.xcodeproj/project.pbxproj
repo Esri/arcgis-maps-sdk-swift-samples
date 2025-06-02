@@ -530,6 +530,8 @@
 		D78FA4952C3C8E8A0079313E /* CreateDynamicBasemapGalleryView.Views.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D78FA4932C3C88880079313E /* CreateDynamicBasemapGalleryView.Views.swift */; };
 		D79482D42C35D872006521CD /* CreateDynamicBasemapGalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79482D02C35D872006521CD /* CreateDynamicBasemapGalleryView.swift */; };
 		D79482D72C35D8A3006521CD /* CreateDynamicBasemapGalleryView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D79482D02C35D872006521CD /* CreateDynamicBasemapGalleryView.swift */; };
+		D79DD2F72DEE1EE300D82B64 /* QueryTableStatisticsGroupAndSortView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79DD2F32DEE1EE300D82B64 /* QueryTableStatisticsGroupAndSortView.swift */; };
+		D79DD2FA2DEE1F0200D82B64 /* QueryTableStatisticsGroupAndSortView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D79DD2F32DEE1EE300D82B64 /* QueryTableStatisticsGroupAndSortView.swift */; };
 		D79EE76E2A4CEA5D005A52AE /* SetUpLocationDrivenGeotriggersView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79EE76D2A4CEA5D005A52AE /* SetUpLocationDrivenGeotriggersView.Model.swift */; };
 		D79EE76F2A4CEA7F005A52AE /* SetUpLocationDrivenGeotriggersView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D79EE76D2A4CEA5D005A52AE /* SetUpLocationDrivenGeotriggersView.Model.swift */; };
 		D7A670D52DADB9630060E327 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A670D42DADB9630060E327 /* Bundle.swift */; };
@@ -697,6 +699,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				D79DD2FA2DEE1F0200D82B64 /* QueryTableStatisticsGroupAndSortView.swift in Copy Source Code Files */,
 				D73CCF202DE685AD00622FEF /* QueryMapImageSublayerView.swift in Copy Source Code Files */,
 				007079222DE104B700E06300 /* ListGeodatabaseVersionsView.swift in Copy Source Code Files */,
 				88AF55542DDBFA9C003F146E /* CreateAndSaveMapView.swift in Copy Source Code Files */,
@@ -1269,6 +1272,7 @@
 		D789AAAC2D66C718007A8E0E /* CreateKMLMultiTrackView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateKMLMultiTrackView.Model.swift; sourceTree = "<group>"; };
 		D78FA4932C3C88880079313E /* CreateDynamicBasemapGalleryView.Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateDynamicBasemapGalleryView.Views.swift; sourceTree = "<group>"; };
 		D79482D02C35D872006521CD /* CreateDynamicBasemapGalleryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateDynamicBasemapGalleryView.swift; sourceTree = "<group>"; };
+		D79DD2F32DEE1EE300D82B64 /* QueryTableStatisticsGroupAndSortView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryTableStatisticsGroupAndSortView.swift; sourceTree = "<group>"; };
 		D79EE76D2A4CEA5D005A52AE /* SetUpLocationDrivenGeotriggersView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetUpLocationDrivenGeotriggersView.Model.swift; sourceTree = "<group>"; };
 		D7A670D42DADB9630060E327 /* Bundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bundle.swift; sourceTree = "<group>"; };
 		D7A670D62DADBC770060E327 /* EnvironmentValues+RequestReviewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+RequestReviewModel.swift"; sourceTree = "<group>"; };
@@ -1685,6 +1689,7 @@
 				D73F06652B5EE73D000B574F /* Query features with Arcade expression */,
 				D73CCF1C2DE6858000622FEF /* Query map image sublayer */,
 				D7BA38962BFBFC0F009954F5 /* Query related features */,
+				D79DD2F62DEE1EE300D82B64 /* Query table statistics group and sort */,
 				D7A85A052CD5ABF5009DC68A /* Query with CQL filters */,
 				D7ECF5942AB8BDCA003FB2BE /* Render multilayer symbols */,
 				1CAB8D402A3CEAB0002AA649 /* Run valve isolation trace */,
@@ -3371,6 +3376,14 @@
 			path = "Create dynamic basemap gallery";
 			sourceTree = "<group>";
 		};
+		D79DD2F62DEE1EE300D82B64 /* Query table statistics group and sort */ = {
+			isa = PBXGroup;
+			children = (
+				D79DD2F32DEE1EE300D82B64 /* QueryTableStatisticsGroupAndSortView.swift */,
+			);
+			path = "Query table statistics group and sort";
+			sourceTree = "<group>";
+		};
 		D7A737DF2BABB9FE00B7C7FC /* Augment reality to show hidden infrastructure */ = {
 			isa = PBXGroup;
 			children = (
@@ -4251,6 +4264,7 @@
 				1C8438F82DDBDE1F005CCBC7 /* ControlAnnotationSublayerVisibilityView.swift in Sources */,
 				D733CA192BED980D00FBDE4C /* EditAndSyncFeaturesWithFeatureServiceView.swift in Sources */,
 				00273CF62A82AB8700A7A77D /* SampleLink.swift in Sources */,
+				D79DD2F72DEE1EE300D82B64 /* QueryTableStatisticsGroupAndSortView.swift in Sources */,
 				4C8126E72DC02525006EF7D2 /* AnalyzeHotspotsView.swift in Sources */,
 				95A572192C0FDCC9006E8B48 /* ShowScaleBarView.swift in Sources */,
 				D7ABA2FF2A32881C0021822B /* ShowViewshedFromGeoelementInSceneView.swift in Sources */,
