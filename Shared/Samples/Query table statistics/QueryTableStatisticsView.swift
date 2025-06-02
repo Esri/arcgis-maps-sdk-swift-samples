@@ -23,7 +23,7 @@ struct QueryTableStatisticsView: View {
     @State private var viewpoint: Viewpoint?
     
     /// The statistic records resulting from a query.
-    @State private var statisticRecord: [StatisticRecord] = []
+    @State private var statisticRecords: [StatisticRecord] = []
     
     /// A Boolean value indicating whether queries will include cities outside
     /// of the map view's current extent.
@@ -63,7 +63,7 @@ struct QueryTableStatisticsView: View {
                         
                         do {
                             let extent = includesCitiesOutsideExtent ? nil : viewpoint?.targetGeometry
-                            statisticRecord = try await model.queryStatistics(
+                            statisticRecords = try await model.queryStatistics(
                                 within: extent,
                                 includesCitiesUnder5M: includesCitiesUnder5M
                             )
@@ -74,7 +74,7 @@ struct QueryTableStatisticsView: View {
                         }
                     }
                     .sheet(isPresented: $isShowingStatistics) {
-                        StatisticList(records: statisticRecord)
+                        StatisticList(records: statisticRecords)
                             .presentationDetents([.medium, .large])
                     }
                     
