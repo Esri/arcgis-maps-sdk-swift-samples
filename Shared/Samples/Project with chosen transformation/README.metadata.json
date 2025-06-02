@@ -1,0 +1,28 @@
+{
+    "category": "Edit and Manage Data",
+    "description": "Project a point from one coordinate system to another using a specific transformation step.",
+    "ignore": false,
+    "images": [
+        "project-with-chosen-transformation.png"
+    ],
+    "keywords": [
+        "coordinate system",
+        "geographic",
+        "project",
+        "projection",
+        "transform",
+        "transformation",
+        "transformation step",
+        "GeographicTransformation",
+        "GeographicTransformationStep"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "GeographicTransformation",
+        "GeographicTransformationStep"
+    ],
+    "snippets": [
+        "ProjectWithChosenTransformationView.swift"
+    ],
+    "title": "Project with chosen transformation"
+}

@@ -135,6 +135,8 @@
 		10D321932BDB187400B39B1B /* naperville_imagery.tpkx in Resources */ = {isa = PBXBuildFile; fileRef = 10D321922BDB187400B39B1B /* naperville_imagery.tpkx */; settings = {ASSET_TAGS = (GenerateOfflineMapWithLocalBasemap, ); }; };
 		10D321962BDB1CB500B39B1B /* GenerateOfflineMapWithLocalBasemapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D321952BDB1CB500B39B1B /* GenerateOfflineMapWithLocalBasemapView.swift */; };
 		10D321972BDC3B4900B39B1B /* GenerateOfflineMapWithLocalBasemapView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 10D321952BDB1CB500B39B1B /* GenerateOfflineMapWithLocalBasemapView.swift */; };
+		1C012CF32DE7C3040027F570 /* ProjectWithChosenTransformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C012CF12DE7C3030027F570 /* ProjectWithChosenTransformationView.swift */; };
+		1C012CF42DE7C3040027F570 /* ProjectWithChosenTransformationView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C012CF12DE7C3030027F570 /* ProjectWithChosenTransformationView.swift */; };
 		1C0C1C3929D34DAE005C8B24 /* ChangeViewpointView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0C1C3429D34DAE005C8B24 /* ChangeViewpointView.swift */; };
 		1C0C1C3D29D34DDD005C8B24 /* ChangeViewpointView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C0C1C3429D34DAE005C8B24 /* ChangeViewpointView.swift */; };
 		1C17E1C92DDFB6FB00A012CB /* GenerateGeodatabaseReplicaFromFeatureServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C17E1C72DDFB6FB00A012CB /* GenerateGeodatabaseReplicaFromFeatureServiceView.swift */; };
@@ -843,6 +845,7 @@
 				D737237A2AF5AE1600846884 /* FindRouteInMobileMapPackageView.MobileMapView.swift in Copy Source Code Files */,
 				D76000B12AF19C4600B3084D /* FindRouteInMobileMapPackageView.swift in Copy Source Code Files */,
 				D7705D662AFC575000CC0335 /* FindClosestFacilityFromPointView.swift in Copy Source Code Files */,
+				1C012CF42DE7C3040027F570 /* ProjectWithChosenTransformationView.swift in Copy Source Code Files */,
 				D73FD0002B02C9610006360D /* FindRouteAroundBarriersView.Views.swift in Copy Source Code Files */,
 				D76EE6082AF9AFEC00DA0325 /* FindRouteAroundBarriersView.Model.swift in Copy Source Code Files */,
 				D7DDF8562AF47C86004352D9 /* FindRouteAroundBarriersView.swift in Copy Source Code Files */,
@@ -1050,6 +1053,7 @@
 		10CFF54E2DD2AC300027F144 /* AuthenticateWithPKICertificateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticateWithPKICertificateView.swift; sourceTree = "<group>"; };
 		10D321922BDB187400B39B1B /* naperville_imagery.tpkx */ = {isa = PBXFileReference; lastKnownFileType = file; path = naperville_imagery.tpkx; sourceTree = "<group>"; };
 		10D321952BDB1CB500B39B1B /* GenerateOfflineMapWithLocalBasemapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateOfflineMapWithLocalBasemapView.swift; sourceTree = "<group>"; };
+		1C012CF12DE7C3030027F570 /* ProjectWithChosenTransformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectWithChosenTransformationView.swift; sourceTree = "<group>"; };
 		1C0C1C3429D34DAE005C8B24 /* ChangeViewpointView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeViewpointView.swift; sourceTree = "<group>"; };
 		1C17E1C72DDFB6FB00A012CB /* GenerateGeodatabaseReplicaFromFeatureServiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateGeodatabaseReplicaFromFeatureServiceView.swift; sourceTree = "<group>"; };
 		1C17E1CB2DE6456B00A012CB /* GenerateGeodatabaseReplicaFromFeatureServiceView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateGeodatabaseReplicaFromFeatureServiceView.Model.swift; sourceTree = "<group>"; };
@@ -1675,6 +1679,7 @@
 				D76929F32B4F78340047205E /* Orbit camera around object */,
 				D7232EDD2AC1E5410079ABFF /* Play KML tour */,
 				E0EA0B75286638FD00C9621D /* Project geometry */,
+				1C012CF22DE7C3030027F570 /* Project with chosen transformation */,
 				3E9F77712C6A609B0022CAB5 /* Query feature count and extent */,
 				108EC03F29D25AE1000F35D0 /* Query feature table */,
 				D73F06652B5EE73D000B574F /* Query features with Arcade expression */,
@@ -2072,6 +2077,14 @@
 				10D321952BDB1CB500B39B1B /* GenerateOfflineMapWithLocalBasemapView.swift */,
 			);
 			path = "Generate offline map with local basemap";
+			sourceTree = "<group>";
+		};
+		1C012CF22DE7C3030027F570 /* Project with chosen transformation */ = {
+			isa = PBXGroup;
+			children = (
+				1C012CF12DE7C3030027F570 /* ProjectWithChosenTransformationView.swift */,
+			);
+			path = "Project with chosen transformation";
 			sourceTree = "<group>";
 		};
 		1C0C1C3229D34DAE005C8B24 /* Change viewpoint */ = {
@@ -4204,6 +4217,7 @@
 				D7705D582AFC244E00CC0335 /* FindClosestFacilityToMultiplePointsView.swift in Sources */,
 				D73FCFFF2B02C7630006360D /* FindRouteAroundBarriersView.Views.swift in Sources */,
 				1C29C9592DBAE50D0074028F /* AddWMTSLayerView.swift in Sources */,
+				1C012CF32DE7C3040027F570 /* ProjectWithChosenTransformationView.swift in Sources */,
 				D71D9B152DC430F800FF2D5A /* ApplyTerrainExaggerationView.swift in Sources */,
 				3EEDE7CE2C5D73F700510104 /* SetSpatialReferenceView.swift in Sources */,
 				4D126D7229CA1E1800CFB7A7 /* FileNMEASentenceReader.swift in Sources */,
