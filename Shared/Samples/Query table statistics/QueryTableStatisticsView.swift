@@ -173,6 +173,7 @@ private final class Model {
     ///   - includesCitiesUnder5M: A Boolean value indicating whether queries
     ///   will include cities with populations under 5 million.
     /// - Returns: The statistic records resulting from the query.
+    @MainActor
     func queryStatistics(
         within extent: Geometry?,
         includesCitiesUnder5M: Bool
@@ -206,7 +207,7 @@ private extension StatisticDefinition.StatisticType {
 }
 
 private extension URL {
-    /// The web URL to the "Cities" layer on the "SampleWorldCities" map service.
+    /// The URL to the "Cities" layer on the "SampleWorldCities" map service.
     static var sampleWorldCitiesLayer: URL {
         URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/SampleWorldCities/MapServer/0")!
     }
