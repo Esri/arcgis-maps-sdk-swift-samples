@@ -131,7 +131,6 @@ private struct StatisticList: View {
 }
 
 /// The view model for this sample.
-@MainActor
 @Observable
 private final class Model {
     /// A map with a streets basemap.
