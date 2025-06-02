@@ -110,7 +110,7 @@ private struct StatisticList: View {
         NavigationStack {
             List(records, id: \.objectID) { record in
                 Section {
-                    let statistics = Array(record.statistics).sorted(by: { $0.key < $1.key })
+                    let statistics = record.statistics.sorted(by: { $0.key < $1.key })
                     ForEach(statistics, id: \.key) { name, value in
                         LabeledContent(name, value: "\(value)")
                             .textSelection(.enabled)
