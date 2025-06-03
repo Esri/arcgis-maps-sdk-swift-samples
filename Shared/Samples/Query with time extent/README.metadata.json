@@ -1,0 +1,26 @@
+{
+    "category": "Search and Query",
+    "description": "Query data using a time extent.",
+    "ignore": false,
+    "images": [
+        "query-with-time-extent.png"
+    ],
+    "keywords": [
+        "query",
+        "time",
+        "time extent",
+        "QueryParameters",
+        "ServiceFeatureTable.populateFromService(using:clearCache:outFields:)",
+        "TimeExtent"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "QueryParameters",
+        "ServiceFeatureTable.populateFromService(using:clearCache:outFields:)",
+        "TimeExtent"
+    ],
+    "snippets": [
+        "QueryWithTimeExtentView.swift"
+    ],
+    "title": "Query with time extent"
+}

@@ -179,6 +179,8 @@
 		1C43BC852A43783900509BF8 /* SetVisibilityOfSubtypeSublayerView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C43BC7C2A43781100509BF8 /* SetVisibilityOfSubtypeSublayerView.Model.swift */; };
 		1C43BC862A43783900509BF8 /* SetVisibilityOfSubtypeSublayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C43BC7E2A43781100509BF8 /* SetVisibilityOfSubtypeSublayerView.swift */; };
 		1C43BC872A43783900509BF8 /* SetVisibilityOfSubtypeSublayerView.Views.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C43BC792A43781100509BF8 /* SetVisibilityOfSubtypeSublayerView.Views.swift */; };
+		1C7B85DF2DEE47F200B267EA /* QueryWithTimeExtentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7B85DD2DEE47F200B267EA /* QueryWithTimeExtentView.swift */; };
+		1C7B85E02DEE47F200B267EA /* QueryWithTimeExtentView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C7B85DD2DEE47F200B267EA /* QueryWithTimeExtentView.swift */; };
 		1C8438F42DDBD02C005CCBC7 /* GasDeviceAnno.mmpk in Resources */ = {isa = PBXBuildFile; fileRef = 1C8438F32DDBD02C005CCBC7 /* GasDeviceAnno.mmpk */; settings = {ASSET_TAGS = (ControlAnnotationSublayerVisibility, ); }; };
 		1C8438F82DDBDE1F005CCBC7 /* ControlAnnotationSublayerVisibilityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C8438F62DDBDE1F005CCBC7 /* ControlAnnotationSublayerVisibilityView.swift */; };
 		1C8438F92DDBDE1F005CCBC7 /* ControlAnnotationSublayerVisibilityView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C8438F62DDBDE1F005CCBC7 /* ControlAnnotationSublayerVisibilityView.swift */; };
@@ -830,6 +832,7 @@
 				D7F8C03B2B6056790072BFA7 /* AddFeaturesWithContingentValuesView.swift in Copy Source Code Files */,
 				D73F066C2B5EE760000B574F /* QueryFeaturesWithArcadeExpressionView.swift in Copy Source Code Files */,
 				D718A1F02B57602000447087 /* ManageBookmarksView.swift in Copy Source Code Files */,
+				1C7B85E02DEE47F200B267EA /* QueryWithTimeExtentView.swift in Copy Source Code Files */,
 				1C293D512DCEA74C000B0822 /* AuthenticateWithTokenView.swift in Copy Source Code Files */,
 				D77BC53C2B59A309007B49B6 /* StylePointWithDistanceCompositeSceneSymbolView.swift in Copy Source Code Files */,
 				D718A1E82B571C9100447087 /* OrbitCameraAroundObjectView.Model.swift in Copy Source Code Files */,
@@ -1076,6 +1079,7 @@
 		1C43BC792A43781100509BF8 /* SetVisibilityOfSubtypeSublayerView.Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetVisibilityOfSubtypeSublayerView.Views.swift; sourceTree = "<group>"; };
 		1C43BC7C2A43781100509BF8 /* SetVisibilityOfSubtypeSublayerView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetVisibilityOfSubtypeSublayerView.Model.swift; sourceTree = "<group>"; };
 		1C43BC7E2A43781100509BF8 /* SetVisibilityOfSubtypeSublayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetVisibilityOfSubtypeSublayerView.swift; sourceTree = "<group>"; };
+		1C7B85DD2DEE47F200B267EA /* QueryWithTimeExtentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryWithTimeExtentView.swift; sourceTree = "<group>"; };
 		1C8438F32DDBD02C005CCBC7 /* GasDeviceAnno.mmpk */ = {isa = PBXFileReference; lastKnownFileType = file; path = GasDeviceAnno.mmpk; sourceTree = "<group>"; };
 		1C8438F62DDBDE1F005CCBC7 /* ControlAnnotationSublayerVisibilityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlAnnotationSublayerVisibilityView.swift; sourceTree = "<group>"; };
 		1C8438FA2DDCFCA9005CCBC7 /* ControlAnnotationSublayerVisibilityView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlAnnotationSublayerVisibilityView.Model.swift; sourceTree = "<group>"; };
@@ -1686,6 +1690,7 @@
 				D73CCF1C2DE6858000622FEF /* Query map image sublayer */,
 				D7BA38962BFBFC0F009954F5 /* Query related features */,
 				D7A85A052CD5ABF5009DC68A /* Query with CQL filters */,
+				1C7B85DE2DEE47F200B267EA /* Query with time extent */,
 				D7ECF5942AB8BDCA003FB2BE /* Render multilayer symbols */,
 				1CAB8D402A3CEAB0002AA649 /* Run valve isolation trace */,
 				D75F66322B48EABC00434974 /* Search for web map */,
@@ -2213,6 +2218,14 @@
 				1C43BC792A43781100509BF8 /* SetVisibilityOfSubtypeSublayerView.Views.swift */,
 			);
 			path = "Set visibility of subtype sublayer";
+			sourceTree = "<group>";
+		};
+		1C7B85DE2DEE47F200B267EA /* Query with time extent */ = {
+			isa = PBXGroup;
+			children = (
+				1C7B85DD2DEE47F200B267EA /* QueryWithTimeExtentView.swift */,
+			);
+			path = "Query with time extent";
 			sourceTree = "<group>";
 		};
 		1C8438F22DDBCFFC005CCBC7 /* b87307dcfb26411eb2e92e1627cb615b */ = {
@@ -4167,6 +4180,7 @@
 				95F891292C46E9D60010EBED /* ShowDeviceLocationUsingIndoorPositioningView.swift in Sources */,
 				00FA4E8B2DCD7233008A34CF /* ApplySimpleRendererToGraphicsOverlayView.swift in Sources */,
 				1C2538562BABACFD00337307 /* AugmentRealityToNavigateRouteView.swift in Sources */,
+				1C7B85DF2DEE47F200B267EA /* QueryWithTimeExtentView.swift in Sources */,
 				1C2538572BABACFD00337307 /* AugmentRealityToNavigateRouteView.ARSceneView.swift in Sources */,
 				D72FE7082CE6DA1900BBC0FE /* SampleMenuButtons.swift in Sources */,
 				D76929FA2B4F79540047205E /* OrbitCameraAroundObjectView.swift in Sources */,
