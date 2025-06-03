@@ -1,0 +1,43 @@
+{
+    "category": "Search and Query",
+    "description": "Query a table to get aggregated statistics back for a specific field.",
+    "ignore": false,
+    "images": [
+        "query-table-statistics.png"
+    ],
+    "keywords": [
+        "analysis",
+        "average",
+        "bounding geometry",
+        "filter",
+        "intersect",
+        "maximum",
+        "mean",
+        "minimum",
+        "query",
+        "spatial query",
+        "standard deviation",
+        "statistics",
+        "sum",
+        "variance",
+        "ServiceFeatureTable",
+        "StatisticDefinition",
+        "StatisticRecord",
+        "StatisticType",
+        "StatisticsQueryParameters",
+        "StatisticsQueryResult"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "ServiceFeatureTable",
+        "StatisticDefinition",
+        "StatisticRecord",
+        "StatisticType",
+        "StatisticsQueryParameters",
+        "StatisticsQueryResult"
+    ],
+    "snippets": [
+        "QueryTableStatisticsView.swift"
+    ],
+    "title": "Query table statistics"
+}
