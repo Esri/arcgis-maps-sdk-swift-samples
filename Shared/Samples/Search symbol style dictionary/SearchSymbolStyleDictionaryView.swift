@@ -93,7 +93,7 @@ private extension SearchSymbolStyleDictionaryView {
         /// - Returns: An array of symbol style search results.
         @MainActor
         func searchSymbolStyles() async throws -> [SymbolStyleSearchResult] {
-            return try await dictionarySymbolStyle.searchSymbols(using: symbolStyleSearchParameters)
+            try await dictionarySymbolStyle.searchSymbols(using: symbolStyleSearchParameters)
         }
     }
     
