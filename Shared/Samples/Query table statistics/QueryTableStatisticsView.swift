@@ -132,7 +132,7 @@ private struct StatisticList: View {
 
 /// The view model for this sample.
 @Observable
-private final class Model {
+private final class Model: Sendable {
     /// A map with a streets basemap.
     let map: Map = {
         let map = Map(basemapStyle: .arcGISStreets)
@@ -169,7 +169,6 @@ private final class Model {
     ///   - includesCitiesUnder5M: A Boolean value indicating whether queries
     ///   will include cities with populations under 5 million.
     /// - Returns: The statistic records resulting from the query.
-    @MainActor
     func queryStatistics(
         within extent: Geometry?,
         includesCitiesUnder5M: Bool
