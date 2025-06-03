@@ -151,14 +151,11 @@ private final class Model {
     private let serviceFeatureTable = ServiceFeatureTable(url: .sampleWorldCitiesLayer)
     
     /// The parameters to use in the statistics query.
-    private let statisticsQueryParameters: StatisticsQueryParameters = {
+    private let statisticsQueryParameters = StatisticsQueryParameters(
         // Creates a statistic definition for the "POP" field and each of the statistic types.
-        let statisticDefinitions = StatisticDefinition.StatisticType.allCases.map { statisticType in
-            StatisticDefinition(fieldName: "POP", statisticType: statisticType)
-        }
-        
-        return StatisticsQueryParameters(statisticDefinitions: statisticDefinitions)
-    }()
+        statisticDefinitions: StatisticDefinition.StatisticType.allCases
+            .map { .init(fieldName: "POP", statisticType: $0) }
+    )
     
     init() {
         // Adds the table to the map as an operational layer.
@@ -192,10 +189,8 @@ private final class Model {
 }
 
 private extension StatisticRecord {
-    /// The identifier for the statistic record object.
-    var objectID: ObjectIdentifier {
-        ObjectIdentifier(self)
-    }
+    /// The object identifier for this statistic record.
+    var objectID: ObjectIdentifier { .init(self) }
 }
 
 private extension StatisticDefinition.StatisticType {
