@@ -112,9 +112,13 @@ private struct StatisticList: View {
                 Section {
                     let statistics = record.statistics.sorted(by: { $0.key < $1.key })
                     ForEach(statistics, id: \.key) { name, value in
-                        LabeledContent(name, value: "\(value)")
-                            .textSelection(.enabled)
+                        if let integer = value as? Int {
+                            LabeledContent(name, value: integer, format: .number)
+                        } else if let double = value as? Double {
+                            LabeledContent(name, value: double, format: .number)
+                        }
                     }
+                    .textSelection(.enabled)
                 }
             }
             .navigationTitle("Statistics")
