@@ -1,0 +1,41 @@
+{
+    "category": "Visualization",
+    "description": "Find symbols within the mil2525d specification that match a keyword.",
+    "ignore": false,
+    "images": [
+        "search-symbol-style-dictionary.png"
+    ],
+    "keywords": [
+        "CIM",
+        "MIL-STD-2525B",
+        "MIL-STD-2525C",
+        "MIL-STD-2525D",
+        "defense",
+        "look up",
+        "mil2525b",
+        "mil2525c",
+        "mil2525d",
+        "military",
+        "military symbology",
+        "search",
+        "symbology",
+        "Symbol",
+        "SymbolDictionary",
+        "SymbolStyleSearchParameters",
+        "SymbolStyleSearchResult"
+    ],
+    "offline_data": [
+        "c78b149a1d52414682c86a5feeb13d30"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Symbol",
+        "SymbolDictionary",
+        "SymbolStyleSearchParameters",
+        "SymbolStyleSearchResult"
+    ],
+    "snippets": [
+        "SearchSymbolStyleDictionaryView.swift"
+    ],
+    "title": "Search symbol style dictionary"
+}
