@@ -9,8 +9,8 @@
         "atmosphere",
         "horizon",
         "sky",
-        "Scene",
         "AtmosphereEffect",
+        "Scene",
         "SceneView"
     ],
     "redirect_from": [],
