@@ -25,28 +25,6 @@ struct QueryWithTimeExtentView: View {
         
         return map
     }()
-   
-    /// A feature table of Atlantic hurricanes.
-    let featureTable: ServiceFeatureTable = {
-        let featureTable = ServiceFeatureTable(url: .hurricanesService)
-        
-        // Sets the feature request mode to manual (only manual is currently
-        // supported). In this mode, you must manually populate the table -
-        // panning and zooming won't request features automatically.
-        featureTable.featureRequestMode = .manualCache
-        
-        return featureTable
-    }()
-    
-    /// The start date of the query's time extent.
-    static var startDate: Date {
-        Calendar.current.date(from: DateComponents(year: 2000, month: 9, day: 1))!
-    }
-    
-    /// The end date of the query's time extent.
-    static var endDate: Date {
-        Calendar.current.date(from: DateComponents(year: 2000, month: 9, day: 22))!
-    }
     
     /// The error shown in the error alert.
     @State private var error: Error?
@@ -55,22 +33,30 @@ struct QueryWithTimeExtentView: View {
         MapView(map: map)
             .task {
                 do {
+                    let featureTable = ServiceFeatureTable(url: .hurricanesService)
+                    
+                    // Sets the feature request mode to manual (only manual is currently
+                    // supported). In this mode, you must manually populate the table -
+                    // panning and zooming won't request features automatically.
+                    featureTable.featureRequestMode = .manualCache
+                    
                     let layer = FeatureLayer(featureTable: featureTable)
                     
                     map.addOperationalLayer(layer)
                     
-                    try await populateFeatures()
+                    try await populateFeatures(from: featureTable)
                 } catch {
                     self.error = error
                 }
             }
     }
     
-    /// Populates the feature table using queried features.
-    private func populateFeatures() async throws {
+    /// Populates the service feature table using queried features.
+    /// - Parameter featureTable: The service feature table.
+    private func populateFeatures(from featureTable: ServiceFeatureTable) async throws {
         // Creates parameters to query for features within the time extent.
         let queryParameters = QueryParameters()
-        let timeExtent = TimeExtent(startDate: Self.startDate, endDate: Self.endDate)
+        let timeExtent = TimeExtent(startDate: .startDate, endDate: .endDate)
         queryParameters.timeExtent = timeExtent
         
         _ = try await featureTable.populateFromService(
@@ -81,10 +67,15 @@ struct QueryWithTimeExtentView: View {
     }
 }
 
+private extension Date {
+    static let startDate = Calendar.current.date(from: DateComponents(year: 2000, month: 9, day: 1))!
+    static let endDate = Calendar.current.date(from: DateComponents(year: 2000, month: 9, day: 22))!
+}
+
 private extension URL {
-    static let hurricanesService = URL(
-        string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Hurricanes/MapServer/0"
-    )!
+    static var hurricanesService: URL {
+        URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Hurricanes/MapServer/0")!
+    }
 }
 
 #Preview {
