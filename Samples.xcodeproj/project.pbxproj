@@ -611,6 +611,8 @@
 		D7F8C03E2B605AF60072BFA7 /* ContingentValuesBirdNests.geodatabase in Resources */ = {isa = PBXBuildFile; fileRef = D7F8C03D2B605AF60072BFA7 /* ContingentValuesBirdNests.geodatabase */; settings = {ASSET_TAGS = (AddFeaturesWithContingentValues, ); }; };
 		D7F8C0412B605E720072BFA7 /* FillmoreTopographicMap.vtpk in Resources */ = {isa = PBXBuildFile; fileRef = D7F8C0402B605E720072BFA7 /* FillmoreTopographicMap.vtpk */; settings = {ASSET_TAGS = (AddFeaturesWithContingentValues, ); }; };
 		D7F8C0432B608F120072BFA7 /* AddFeaturesWithContingentValuesView.AddFeatureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F8C0422B608F120072BFA7 /* AddFeaturesWithContingentValuesView.AddFeatureView.swift */; };
+		D7F913572DF0F272009CF629 /* QueryTableStatisticsGroupAndSortView.Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F913562DF0F272009CF629 /* QueryTableStatisticsGroupAndSortView.Views.swift */; };
+		D7F913582DF0F286009CF629 /* QueryTableStatisticsGroupAndSortView.Views.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7F913562DF0F272009CF629 /* QueryTableStatisticsGroupAndSortView.Views.swift */; };
 		E000E7602869E33D005D87C5 /* ClipGeometryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E000E75F2869E33D005D87C5 /* ClipGeometryView.swift */; };
 		E000E763286A0B18005D87C5 /* CutGeometryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E000E762286A0B18005D87C5 /* CutGeometryView.swift */; };
 		E004A6C128414332002A1FE6 /* SetViewpointRotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E004A6BD28414332002A1FE6 /* SetViewpointRotationView.swift */; };
@@ -699,6 +701,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				D7F913582DF0F286009CF629 /* QueryTableStatisticsGroupAndSortView.Views.swift in Copy Source Code Files */,
 				D79DD2FA2DEE1F0200D82B64 /* QueryTableStatisticsGroupAndSortView.swift in Copy Source Code Files */,
 				D73CCF202DE685AD00622FEF /* QueryMapImageSublayerView.swift in Copy Source Code Files */,
 				007079222DE104B700E06300 /* ListGeodatabaseVersionsView.swift in Copy Source Code Files */,
@@ -1320,6 +1323,7 @@
 		D7F8C03D2B605AF60072BFA7 /* ContingentValuesBirdNests.geodatabase */ = {isa = PBXFileReference; lastKnownFileType = file; path = ContingentValuesBirdNests.geodatabase; sourceTree = "<group>"; };
 		D7F8C0402B605E720072BFA7 /* FillmoreTopographicMap.vtpk */ = {isa = PBXFileReference; lastKnownFileType = file; path = FillmoreTopographicMap.vtpk; sourceTree = "<group>"; };
 		D7F8C0422B608F120072BFA7 /* AddFeaturesWithContingentValuesView.AddFeatureView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddFeaturesWithContingentValuesView.AddFeatureView.swift; sourceTree = "<group>"; };
+		D7F913562DF0F272009CF629 /* QueryTableStatisticsGroupAndSortView.Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryTableStatisticsGroupAndSortView.Views.swift; sourceTree = "<group>"; };
 		E000E75F2869E33D005D87C5 /* ClipGeometryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipGeometryView.swift; sourceTree = "<group>"; };
 		E000E762286A0B18005D87C5 /* CutGeometryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutGeometryView.swift; sourceTree = "<group>"; };
 		E004A6BD28414332002A1FE6 /* SetViewpointRotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetViewpointRotationView.swift; sourceTree = "<group>"; };
@@ -3380,6 +3384,7 @@
 			isa = PBXGroup;
 			children = (
 				D79DD2F32DEE1EE300D82B64 /* QueryTableStatisticsGroupAndSortView.swift */,
+				D7F913562DF0F272009CF629 /* QueryTableStatisticsGroupAndSortView.Views.swift */,
 			);
 			path = "Query table statistics group and sort";
 			sourceTree = "<group>";
@@ -4447,6 +4452,7 @@
 				9547085C2C3C719800CA8579 /* EditFeatureAttachmentsView.Model.swift in Sources */,
 				D71C90A22C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.swift in Sources */,
 				3E54CF222C66AFBE00DD2F18 /* AddWebTiledLayerView.swift in Sources */,
+				D7F913572DF0F272009CF629 /* QueryTableStatisticsGroupAndSortView.Views.swift in Sources */,
 				0042E24528E4F82C001F33D6 /* ShowViewshedFromPointInSceneView.ViewshedSettingsView.swift in Sources */,
 				D7DDF8532AF47C6C004352D9 /* FindRouteAroundBarriersView.swift in Sources */,
 				1C9B74D929DB54560038B06F /* ChangeCameraControllerView.swift in Sources */,

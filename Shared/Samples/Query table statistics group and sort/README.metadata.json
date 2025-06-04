@@ -35,7 +35,8 @@
         "StatisticsQueryResult"
     ],
     "snippets": [
-        "QueryTableStatisticsGroupAndSortView.swift"
+        "QueryTableStatisticsGroupAndSortView.swift",
+        "QueryTableStatisticsGroupAndSortView.Views.swift"
     ],
     "title": "Query table statistics group and sort"
 }
