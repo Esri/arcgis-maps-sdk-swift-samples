@@ -15,8 +15,8 @@
     ],
     "redirect_from": [],
     "relevant_apis": [
-        "Scene",
         "AtmosphereEffect",
+        "Scene",
         "SceneView"
     ],
     "snippets": [

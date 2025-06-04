@@ -19,8 +19,8 @@ Select one of the three available atmosphere effects. The sky will change to dis
 
 ## Relevant API
 
-* Scene
 * AtmosphereEffect
+* Scene
 * SceneView
 
 ## About the data
