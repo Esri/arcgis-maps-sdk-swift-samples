@@ -29,7 +29,7 @@ There are three atmosphere effect options:
 
 * Realistic - A realistic atmosphere effect is applied over the entire surface.
 * Horizon only - Atmosphere effect applied to the sky (horizon) only.
-* None - No atmosphere effect. The sky is rendered black with a starfield consisting of randomly placed white dots.
+* Off - No atmosphere effect. The sky is rendered black with a starfield consisting of randomly placed white dots.
 
 ## Tags
 

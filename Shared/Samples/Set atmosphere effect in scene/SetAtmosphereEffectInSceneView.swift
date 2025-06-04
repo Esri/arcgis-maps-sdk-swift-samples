@@ -30,12 +30,9 @@ struct SetAtmosphereEffectInSceneView: View {
         )
         scene.initialViewpoint = Viewpoint(boundingGeometry: camera.location, camera: camera)
         
-        // Creates a surface and adds an elevation source.
-        let surface = Surface()
-        surface.addElevationSource(ArcGISTiledElevationSource(url: .worldElevationService))
-        
-        // Sets the surface to the scene's base surface.
-        scene.baseSurface = surface
+        // Creates an elevation source and sets it on the scene's base surface.
+        let elevationSource = ArcGISTiledElevationSource(url: .worldElevationService)
+        scene.baseSurface.addElevationSource(elevationSource)
         
         return scene
     }()
@@ -63,10 +60,10 @@ private extension SceneView.AtmosphereEffect {
     /// A human-readable label for each atmosphere effect.
     var label: String {
         switch self {
-        case .horizonOnly: return "Horizon Only"
-        case .realistic: return "Realistic"
-        case .off: return "Off"
-        @unknown default: return "Unknown"
+        case .horizonOnly: "Horizon Only"
+        case .realistic: "Realistic"
+        case .off: "Off"
+        @unknown default: "Unknown"
         }
     }
 }
