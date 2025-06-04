@@ -1,0 +1,26 @@
+{
+    "category": "Scenes",
+    "description": "Changes the appearance of the atmosphere in a scene.",
+    "ignore": false,
+    "images": [
+        "set-atmosphere-effect-in-scene.png"
+    ],
+    "keywords": [
+        "atmosphere",
+        "horizon",
+        "sky",
+        "Scene",
+        "AtmosphereEffect",
+        "SceneView"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Scene",
+        "AtmosphereEffect",
+        "SceneView"
+    ],
+    "snippets": [
+        "SetAtmosphereEffectInSceneView.swift"
+    ],
+    "title": "Set atmosphere effect in scene"
+}
