@@ -16,7 +16,7 @@ Run the sample, and a subset of records will be displayed on the map.
 
 1. Create a `ServiceFeatureTable` from a URL of a time-enabled service. Time-enabled services will have TimeInfo defined in the service description. This information is specified in ArcMap or ArcGIS Pro prior to publishing the service.
 2. Set the feature table's `featureRequestMode` property to `manualCache`, so that the developer can control how and when the feature table is populated with data.
-3. Create an `FeatureLayer` with the feature table and add it to a map's operational layers to display it.
+3. Create a `FeatureLayer` with the feature table and add it to a map's operational layers to display it.
 4. Create a `TimeExtent` object using `Date` objects for the start time and end time being queried.
 5. Create a default `QueryParameters` object and set the parameter's `timeExtent` property.
 6. Populate the feature table using `ServiceFeatureTable.populateFromService(using:clearCache:outFields:)` with the custom query parameters created in the previous steps.
