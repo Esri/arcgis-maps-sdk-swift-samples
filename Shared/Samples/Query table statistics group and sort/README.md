@@ -2,32 +2,25 @@
 
 Query a feature table for statistics, grouping and sorting by different fields.
 
-![Image of query table statistics group and sort](QueryTableStatisticsGroupAndSort.png)
+![Image of Query table statistics group and sort sample parameters](query-table-statistics-group-and-sort-1.png)
+![Image of Query table statistics group and sort sample statistics](query-table-statistics-group-and-sort-2.png)
 
 ## Use case
 
-You can use statistical queries, grouping and sorting to process large amounts of data saved in feature tables. This is helpful for identifying trends and relationships within the data, which can be used to support further interpretations and decisions. For example, a health agency can use information on medical conditions occurring throughout a country to identify at-risk areas or demographics, and decide on further action and preventive measures.
+You can use statistical queries, grouping, and sorting to process large amounts of data saved in feature tables. This is helpful for identifying trends and relationships within the data, which can be used to support further interpretations and decisions. For example, a health agency can use information on medical conditions occurring throughout a country to identify at-risk areas or demographics, and decide on further action and preventive measures.
 
 ## How to use the sample
 
-The sample will start with some default options selected. You can immediately click the "Get Statistics" button to see the results for these options. There are several ways to customize your queries:
-
-* You can add statistic definitions to the top-left table using the combo boxes and "Add" button. Select a table row and click "Remove" to remove a definition.
-
-* To change the Group-by fields, check the box by the field you want to group by in the bottom-left list view.
-
-* To change the Order-by fields, select a Group-by field (it must be checked) and click the ">>" button to add it to the Order-by table. To remove a field from the Order-by table, select it and click the "<<" button. To change the sort order of the Order-by field, the cells of the "Sort Order" column are combo-boxes that may be either ASCENDING or DESCENDING.
+Select a combination of fields and statistic types to include in the query. Choose one or more fields by which to group the results. For example, selecting "State" will calculate the results by state. Choose one or more fields to order results by. Only those fields selected for grouping are valid choices for ordering results. Tap "Edit" to rearrange and delete the fields and statistic types. Tap the "Query Statistics" button to execute the query. Results will be displayed in a hierarchical view that is grouped and sorted according to the chosen fields. Tap "Reset" to clear the fields and statistic types.
 
 ## How it works
 
 1. Create a `ServiceFeatureTable` using the URL of a feature service and load the table.
-2. Get the feature tables field names list with `featureTable.getFields()`.
-3. Create `StatisticDefinition`s specifying the field to compute statistics on and the `StatisticType` to compute.
-4. Create `StatisticsQueryParameters` passing in the list of statistic definitions.
-5. To have the results grouped by fields, add the field names to the query parameters' `groupByFieldNames` collection.
-6. To have the results ordered by fields, create `OrderBy`s, specifying the field name and `SortOrder`. Pass these `OrderBy`s to the parameters' `orderByFields` collection.
-7. To execute the query, call `featureTable.queryStatisticsAsync(queryParameters)`.
-8. Get the `StatisticQueryResult`. From this, you can get an iterator of `StatisticRecord`s to loop through and display.
+2. Create `StatisticDefinition` objects and use them to create `StatisticsQueryParameters`.
+3. To have the results grouped by fields, add the field names to the query parameters' `groupByFieldNames` array.
+4. To have the results ordered by fields, create `OrderBy` objects, specifying the field name and `SortOrder`. Add these `OrderBy`s to the parameters' `orderByFields` collection.
+5. To execute the query, call `FeatureTable.queryStatistics(using:)`.
+6. From the `StatisticQueryResult, you can use `StatisticsQueryResult.statisticRecords()` to loop through and display the `StatisticRecord` objects.
 
 ## Relevant API
 

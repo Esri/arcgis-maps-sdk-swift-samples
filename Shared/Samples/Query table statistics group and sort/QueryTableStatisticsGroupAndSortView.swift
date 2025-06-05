@@ -105,11 +105,7 @@ struct QueryTableStatisticsGroupAndSortView: View {
                 } header: {
                     Text("Order By Fields")
                 } footer: {
-                    if groupByFields.isEmpty {
-                        Text("Select Group by Fields to add Order By Fields.")
-                            .foregroundStyle(.red)
-                            .padding(.bottom, 1)
-                    }
+                    Text("(Optional)")
                 }
             }
         }

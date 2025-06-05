@@ -2,7 +2,10 @@
     "category": "Search and Query",
     "description": "Query a feature table for statistics, grouping and sorting by different fields.",
     "ignore": false,
-    "images": [],
+    "images": [
+       "query-table-statistics-group-and-sort-1.png",
+       "query-table-statistics-group-and-sort-2.png"
+    ],
     "keywords": [
         "correlation",
         "data",
