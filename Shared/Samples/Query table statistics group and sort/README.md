@@ -20,7 +20,7 @@ Select a combination of fields and statistic types to include in the query. Choo
 3. To have the results grouped by fields, add the field names to the query parameters' `groupByFieldNames` array.
 4. To have the results ordered by fields, create `OrderBy` objects, specifying the field name and `SortOrder`. Add these `OrderBy`s to the parameters' `orderByFields` collection.
 5. To execute the query, call `FeatureTable.queryStatistics(using:)`.
-6. From the `StatisticQueryResult, you can use `StatisticsQueryResult.statisticRecords()` to loop through and display the `StatisticRecord` objects.
+6. From the `StatisticQueryResult`, you can use `StatisticsQueryResult.statisticRecords()` to loop through and display the `StatisticRecord` objects.
 
 ## Relevant API
 
