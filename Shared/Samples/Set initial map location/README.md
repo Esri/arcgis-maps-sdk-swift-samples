@@ -2,7 +2,7 @@
 
 Display a basemap centered at an initial location and scale.
 
-![Image of Set initial map location sample](Set-initial-map-location.png)
+![Image of Set initial map location sample](set-initial-map-location.png)
 
 ## Use case
 
