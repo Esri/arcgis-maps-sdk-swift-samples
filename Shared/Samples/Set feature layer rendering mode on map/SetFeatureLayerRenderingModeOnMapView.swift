@@ -28,11 +28,11 @@ struct SetFeatureLayerRenderingModeOnMapView: View {
     /// A Boolean value indicating whether the map views are currently zooming.
     @State private var isZooming = false
     
-    /// The current viewpoint of the map views.
-    @State private var currentViewpoint: Viewpoint?
+    /// The viewpoint of the map views.
+    @State private var viewpoint: Viewpoint?
     
     init() {
-        // Creates service feature tables using point,polygon, and polyline services
+        // Creates service feature tables using point,polygon, and polyline services.
         let pointTable = ServiceFeatureTable(url: URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Energy/Geology/FeatureServer/0")!)
         let polylineTable = ServiceFeatureTable(url: URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Energy/Geology/FeatureServer/8")!)
         let polygonTable = ServiceFeatureTable(url: URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Energy/Geology/FeatureServer/9")!)
@@ -43,21 +43,21 @@ struct SetFeatureLayerRenderingModeOnMapView: View {
             FeatureLayer(featureTable: polygonTable)
         ]
         
-        // Add layers with dynamic and static rendering
+        // Adds layers with dynamic and static rendering
         // to the respective maps.
         for layer in featureLayers {
-            // Set dynamic rendering.
+            // Sets dynamic rendering.
             layer.renderingMode = .dynamic
             dynamicMap.addOperationalLayer(layer)
             
-            // Set static rendering.
+            // Sets static rendering.
             let staticLayer = layer.clone()
             staticLayer.renderingMode = .static
             staticMap.addOperationalLayer(staticLayer)
         }
         
-        staticMap.initialViewpoint = .zoomedOut
         dynamicMap.initialViewpoint = .zoomedOut
+        staticMap.initialViewpoint = .zoomedOut
     }
     
     var body: some View {
@@ -71,9 +71,9 @@ struct SetFeatureLayerRenderingModeOnMapView: View {
                             .padding(8)
                             .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
                     }
-                    .task(id: currentViewpoint) {
-                        guard let currentViewpoint else { return }
-                        await mapViewProxy.setViewpoint(currentViewpoint, duration: 5)
+                    .task(id: viewpoint) {
+                        guard let viewpoint else { return }
+                        await mapViewProxy.setViewpoint(viewpoint, duration: 5)
                         isZooming = false
                     }
             }
@@ -86,9 +86,9 @@ struct SetFeatureLayerRenderingModeOnMapView: View {
                             .padding(8)
                             .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
                     }
-                    .task(id: currentViewpoint) {
-                        guard let currentViewpoint else { return }
-                        await mapViewProxy.setViewpoint(currentViewpoint, duration: 5)
+                    .task(id: viewpoint) {
+                        guard let viewpoint else { return }
+                        await mapViewProxy.setViewpoint(viewpoint, duration: 5)
                         isZooming = false
                     }
             }
@@ -96,7 +96,7 @@ struct SetFeatureLayerRenderingModeOnMapView: View {
         .onChange(of: isZooming) {
             if isZooming {
                 // Zooming began.
-                currentViewpoint = isZoomedIn ? .zoomedIn : .zoomedOut
+                viewpoint = isZoomedIn ? .zoomedIn : .zoomedOut
             } else {
                 // Zooming ended.
                 isZoomedIn.toggle()
