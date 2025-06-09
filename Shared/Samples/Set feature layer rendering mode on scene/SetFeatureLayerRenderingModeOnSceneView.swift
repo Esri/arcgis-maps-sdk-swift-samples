@@ -12,4 +12,43 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import ArcGIS
+import SwiftUI
 
+struct SetFeatureLayerRenderingModeOnSceneView: View {
+    @State private var dynamicScene: ArcGIS.Scene = {
+        let scene = Scene()
+        return scene
+    }()
+    
+    @State private var staticScene: ArcGIS.Scene = {
+        let scene = Scene()
+        return scene
+    }()
+    
+    @State private var viewpoint: Viewpoint?
+    
+    @State private var zoomedOutCamera = Camera(
+        lookingAt:
+            Point(x: -118.37,
+                  y: 34.46,
+                  spatialReference: .wgs84
+                 ),
+        distance: 42000,
+        heading: 0,
+        pitch: 0,
+        roll: 0
+    )
+    
+    @State private var zoomedInCamera = Camera(
+        lookingAt: Point(x: -118.45,
+                         y: 34.395,
+                         spatialReference: .wgs84),
+        distance: 2500, heading: 90, pitch: 75, roll: 0)
+    
+    @State private var isZoomedIn = true
+    
+    var body: some View {
+        SceneView(scene: dynamicScene)
+    }
+}

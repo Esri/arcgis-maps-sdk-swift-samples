@@ -1,0 +1,31 @@
+{
+    "category": "",
+    "description": "Render features in a scene statically or dynamically by setting the feature layer rendering mode.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "3D",
+        "dynamic",
+        "feature layer",
+        "features",
+        "rendering",
+        "static",
+        "ArcGISScene",
+        "FeatureLayer",
+        "FeatureLayer.RenderingMode",
+        "LoadSettings",
+        "SceneView"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "ArcGISScene",
+        "FeatureLayer",
+        "FeatureLayer.RenderingMode",
+        "LoadSettings",
+        "SceneView"
+    ],
+    "snippets": [
+        "SetFeatureLayerRenderingModeOnSceneView.swift"
+    ],
+    "title": "Set feature layer rendering mode on scene"
+}
