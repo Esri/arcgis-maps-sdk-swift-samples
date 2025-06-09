@@ -67,28 +67,15 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
     
     init() {
         // create service feature tables using point, polygon, and polyline services
-        let pointTable = ServiceFeatureTable(
-            url: URL(
-                string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Energy/Geology/FeatureServer/0"
-            )!
-        )
-        
-        let polylineTable = ServiceFeatureTable(
-            url: URL(
-                string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Energy/Geology/FeatureServer/8"
-            )!
-        )
-        
-        let polygonTable = ServiceFeatureTable(
-            url: URL(
-                string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Energy/Geology/FeatureServer/9"
-            )!
-        )
+        let pointTable = ServiceFeatureTable(url: .pointTable)
+        let polylineTable = ServiceFeatureTable(url: .polylineTable)
+        let polygonTable = ServiceFeatureTable(url: .polygonTable)
         
         for featureTable in [polygonTable, polylineTable, pointTable] {
             let dynamicFeatureLayer = FeatureLayer(featureTable: featureTable)
             dynamicFeatureLayer.renderingMode = .dynamic
             dynamicScene.addOperationalLayer(dynamicFeatureLayer)
+            
             let staticFeatureLayer = dynamicFeatureLayer.clone()
             staticFeatureLayer.renderingMode = .static
             staticScene.addOperationalLayer(staticFeatureLayer)
@@ -104,8 +91,7 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
                         .multilineTextAlignment(.center)
                         .frame(maxWidth: .infinity, alignment: .center)
                         .padding(8)
-                        .background(
-                            .regularMaterial, ignoresSafeAreaEdges: .horizontal)
+                        .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
                 }
                 .task(id: viewpoint) {
                     guard let viewpoint else { return }
@@ -169,6 +155,22 @@ private extension Viewpoint {
             scale: 650000,
             rotation: 90
         )
+    }
+}
+
+
+private extension URL {
+    
+    static var pointTable: URL {
+        URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Energy/Geology/FeatureServer/0")!
+    }
+    
+    static var polylineTable: URL {
+        URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Energy/Geology/FeatureServer/8")!
+    }
+    
+    static var polygonTable: URL {
+        URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Energy/Geology/FeatureServer/9")!
     }
 }
 
