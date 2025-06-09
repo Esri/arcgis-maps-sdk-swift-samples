@@ -37,13 +37,10 @@ extension QueryTableStatisticsGroupAndSortView {
         /// A Boolean value indicating whether the new definition is a duplicate
         /// of one already found in the definitions list.
         private var definitionIsDuplicate: Bool {
-            if let selectedField {
-                definitions.contains(where: {
-                    $0.fieldName == selectedField && $0.statisticType == selectedStatisticType
-                })
-            } else {
-                false
-            }
+            guard let selectedField else { return false }
+            return definitions.contains(where: {
+                $0.fieldName == selectedField && $0.statisticType == selectedStatisticType
+            })
         }
         
         var body: some View {
@@ -265,7 +262,7 @@ private extension StatisticRecord {
             }
         }
         
-        return groupValues.joined(separator: ", ")
+        return groupValues.formatted(.list(type: .and, width: .narrow))
     }
 }
 
