@@ -98,6 +98,8 @@
 		00E7C15D2BBF74D800B85D69 /* SnapGeometryEditsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 00E7C1592BBE1BF000B85D69 /* SnapGeometryEditsView.swift */; };
 		00EB803A2A31506F00AC2B07 /* DisplayContentOfUtilityNetworkContainerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 00A7A1432A2FC58300F035F7 /* DisplayContentOfUtilityNetworkContainerView.swift */; };
 		00EB803B2A31506F00AC2B07 /* DisplayContentOfUtilityNetworkContainerView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 00A7A1492A2FC5B700F035F7 /* DisplayContentOfUtilityNetworkContainerView.Model.swift */; };
+		00F25C312DEF647C002D9A01 /* SearchSymbolStyleDictionaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F25C302DEF6478002D9A01 /* SearchSymbolStyleDictionaryView.swift */; };
+		00F25C322DEF90DF002D9A01 /* SearchSymbolStyleDictionaryView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 00F25C302DEF6478002D9A01 /* SearchSymbolStyleDictionaryView.swift */; };
 		00F279D62AF418DC00CECAF8 /* AddDynamicEntityLayerView.VehicleCallout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00F279D52AF418DC00CECAF8 /* AddDynamicEntityLayerView.VehicleCallout.swift */; };
 		00F279D72AF4364700CECAF8 /* AddDynamicEntityLayerView.VehicleCallout.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 00F279D52AF418DC00CECAF8 /* AddDynamicEntityLayerView.VehicleCallout.swift */; };
 		00FA4E522DBC08AA008A34CF /* AddItemsToPortalView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 0072C7FF2DBAF08B001502CA /* AddItemsToPortalView.swift */; };
@@ -327,7 +329,7 @@
 		D7044B972BE18D8D000F2C43 /* EditWithBranchVersioningView.Views.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7044B952BE18D73000F2C43 /* EditWithBranchVersioningView.Views.swift */; };
 		D704AA5A2AB22C1A00A3BB63 /* GroupLayersTogetherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D704AA592AB22C1A00A3BB63 /* GroupLayersTogetherView.swift */; };
 		D704AA5B2AB22D8400A3BB63 /* GroupLayersTogetherView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D704AA592AB22C1A00A3BB63 /* GroupLayersTogetherView.swift */; };
-		D705390A2CD0122D00F63F4A /* mil2525d.stylx in Resources */ = {isa = PBXBuildFile; fileRef = D70539032CD0122D00F63F4A /* mil2525d.stylx */; settings = {ASSET_TAGS = (ApplyDictionaryRendererToFeatureLayer, ); }; };
+		D705390A2CD0122D00F63F4A /* mil2525d.stylx in Resources */ = {isa = PBXBuildFile; fileRef = D70539032CD0122D00F63F4A /* mil2525d.stylx */; settings = {ASSET_TAGS = (ApplyDictionaryRendererToFeatureLayer, SearchSymbolStyleDictionary, ); }; };
 		D70539102CD012BB00F63F4A /* militaryoverlay.geodatabase in Resources */ = {isa = PBXBuildFile; fileRef = D705390F2CD0127700F63F4A /* militaryoverlay.geodatabase */; settings = {ASSET_TAGS = (ApplyDictionaryRendererToFeatureLayer, ); }; };
 		D7054AE92ACCCB6C007235BA /* Animate3DGraphicView.SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7054AE82ACCCB6C007235BA /* Animate3DGraphicView.SettingsView.swift */; };
 		D7054AEA2ACCCC34007235BA /* Animate3DGraphicView.SettingsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7054AE82ACCCB6C007235BA /* Animate3DGraphicView.SettingsView.swift */; };
@@ -709,6 +711,7 @@
 			files = (
 				D7F913582DF0F286009CF629 /* QueryTableStatisticsGroupAndSortView.Views.swift in Copy Source Code Files */,
 				D79DD2FA2DEE1F0200D82B64 /* QueryTableStatisticsGroupAndSortView.swift in Copy Source Code Files */,
+				00F25C322DEF90DF002D9A01 /* SearchSymbolStyleDictionaryView.swift in Copy Source Code Files */,
 				D7AA5FBD2DE7D23E00556469 /* QueryTableStatisticsView.swift in Copy Source Code Files */,
 				D73CCF202DE685AD00622FEF /* QueryMapImageSublayerView.swift in Copy Source Code Files */,
 				007079222DE104B700E06300 /* ListGeodatabaseVersionsView.swift in Copy Source Code Files */,
@@ -1049,6 +1052,7 @@
 		00E5401327F3CCA200CF66D5 /* ArcGIS Maps SDK Samples.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ArcGIS Maps SDK Samples.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E5402A27F775EA00CF66D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E7C1592BBE1BF000B85D69 /* SnapGeometryEditsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapGeometryEditsView.swift; sourceTree = "<group>"; };
+		00F25C302DEF6478002D9A01 /* SearchSymbolStyleDictionaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSymbolStyleDictionaryView.swift; sourceTree = "<group>"; };
 		00F279D52AF418DC00CECAF8 /* AddDynamicEntityLayerView.VehicleCallout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDynamicEntityLayerView.VehicleCallout.swift; sourceTree = "<group>"; };
 		00FA4E562DBC139B008A34CF /* AddRastersAndFeatureTablesFromGeopackageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRastersAndFeatureTablesFromGeopackageView.swift; sourceTree = "<group>"; };
 		00FA4E632DCA72E6008A34CF /* ApplyRGBRendererView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyRGBRendererView.swift; sourceTree = "<group>"; };
@@ -1712,6 +1716,7 @@
 				D7ECF5942AB8BDCA003FB2BE /* Render multilayer symbols */,
 				1CAB8D402A3CEAB0002AA649 /* Run valve isolation trace */,
 				D75F66322B48EABC00434974 /* Search for web map */,
+				00F25C2E2DEF646C002D9A01 /* Search symbol style dictionary */,
 				00CB913628481475005C2C5D /* Search with geocode */,
 				E004A6F4284FA3C5002A1FE6 /* Select features in feature layer */,
 				954AEDEF2C01332F00265114 /* Select features in scene layer */,
@@ -1985,6 +1990,14 @@
 				00E1D90E2BC0B1E8001AEB6A /* SnapGeometryEditsView.GeometryEditorMenu.swift */,
 			);
 			path = "Snap geometry edits";
+			sourceTree = "<group>";
+		};
+		00F25C2E2DEF646C002D9A01 /* Search symbol style dictionary */ = {
+			isa = PBXGroup;
+			children = (
+				00F25C302DEF6478002D9A01 /* SearchSymbolStyleDictionaryView.swift */,
+			);
+			path = "Search symbol style dictionary";
 			sourceTree = "<group>";
 		};
 		00FA4E542DBC1383008A34CF /* Add rasters and feature tables from geopackage */ = {
@@ -4033,6 +4046,7 @@
 					ListContentsOfKmlFile,
 					NavigateRouteWithRerouting,
 					OrbitCameraAroundObject,
+					SearchSymbolStyleDictionary,
 					ShowDeviceLocationWithNmeaDataSources,
 					ShowMobileMapPackageExpirationDate,
 					ShowViewshedFromGeoelementInScene,
@@ -4338,6 +4352,7 @@
 				0042E24328E4BF8F001F33D6 /* ShowViewshedFromPointInSceneView.Model.swift in Sources */,
 				95F3A52B2C07F09C00885DED /* SetSurfaceNavigationConstraintView.swift in Sources */,
 				00FA4E572DBC139C008A34CF /* AddRastersAndFeatureTablesFromGeopackageView.swift in Sources */,
+				00F25C312DEF647C002D9A01 /* SearchSymbolStyleDictionaryView.swift in Sources */,
 				D7E557682A1D768800B9FB09 /* AddWMSLayerView.swift in Sources */,
 				D7497F3C2AC4B4C100167AD2 /* DisplayDimensionsView.swift in Sources */,
 				D7C97B562B75C10C0097CDA1 /* ValidateUtilityNetworkTopologyView.Views.swift in Sources */,
