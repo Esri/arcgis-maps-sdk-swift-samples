@@ -18,10 +18,10 @@ import SwiftUI
 struct SetInitialMapLocationView: View {
     /// A map with a basemap and an initial viewpoint location.
     @State private var map: Map = {
-        /// Creates a map with an ESRI imagery basemap.
+        // Creates a map with an ESRI imagery basemap.
         let map = Map(basemapStyle: .arcGISImagery)
         
-        /// Centers the map on a latitude and longitude, zoomed to a specific scale.
+        // Centers the map on a latitude and longitude, zoomed to a specific scale.
         map.initialViewpoint = Viewpoint(latitude: -33.867886, longitude: -63.985, scale: 10000)
         
         return map
