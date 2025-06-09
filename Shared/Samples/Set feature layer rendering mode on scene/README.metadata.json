@@ -1,5 +1,5 @@
 {
-    "category": "Scene",
+    "category": "Scenes",
     "description": "Render features in a scene statically or dynamically by setting the feature layer rendering mode.",
     "ignore": false,
     "images": [
