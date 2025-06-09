@@ -196,7 +196,7 @@ extension QueryTableStatisticsGroupAndSortView {
         
         var body: some View {
             List {
-                Section(groupByFields.joined(separator: ", ")) {
+                Section(groupByFields.formatted(.list(type: .and, width: .narrow))) {
                     ForEach(records, id: \.objectID) { record in
                         if !record.statistics.isEmpty || !record.group.isEmpty {
                             let groupDescription = record.groupValuesDescription(
