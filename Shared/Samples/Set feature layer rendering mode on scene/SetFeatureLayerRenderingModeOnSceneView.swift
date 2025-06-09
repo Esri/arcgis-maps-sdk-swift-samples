@@ -16,71 +16,50 @@ import ArcGIS
 import SwiftUI
 
 struct SetFeatureLayerRenderingModeOnSceneView: View {
-    /// The error shown in the error alert.
-    @State private var error: Error?
     
+    // Scene that displays with dynamic rendering.
     @State private var dynamicScene: ArcGIS.Scene = {
         let scene = Scene()
-        var zoomedOutCamera = Camera(
-            lookingAt:
-                Point(
-                    x: -118.37,
-                    y: 34.46,
-                    spatialReference: .wgs84
-                ),
-            distance: 65000,
-            heading: 0,
-            pitch: 0,
-            roll: 0
-        )
-        scene.initialViewpoint = Viewpoint(
-            boundingGeometry: zoomedOutCamera.location,
-            camera: zoomedOutCamera
-        )
+        scene.initialViewpoint = .zoomedOut
         return scene
     }()
     
+    // Scene that displays with static rendering.
     @State private var staticScene: ArcGIS.Scene = {
         let scene = Scene()
-        var zoomedOutCamera = Camera(
-            lookingAt:
-                Point(
-                    x: -118.37,
-                    y: 34.46,
-                    spatialReference: .wgs84
-                ),
-            distance: 65000,
-            heading: 0,
-            pitch: 0,
-            roll: 0
-        )
-        scene.initialViewpoint = Viewpoint(boundingGeometry: zoomedOutCamera.location, camera: zoomedOutCamera)
+        scene.initialViewpoint = .zoomedOut
         return scene
     }()
     
     /// A Boolean value indicating whether the map views are currently zooming.
     @State private var isZooming = false
     
+    /// The viewpoint for the scene.
     @State private var viewpoint: Viewpoint?
     
+    /// A Boolean value indicating whether the scene is fully zoomed in.
     @State private var isZoomedIn = true
     
+    // Creates service feature tables using point, polygon, and polyline services
+    let featureTables: [ServiceFeatureTable] = [
+        ServiceFeatureTable(url: .pointTable),
+        ServiceFeatureTable(url: .polylineTable),
+        ServiceFeatureTable(url: .polygonTable)
+    ]
+    
     init() {
-        // create service feature tables using point, polygon, and polyline services
-        let pointTable = ServiceFeatureTable(url: .pointTable)
-        let polylineTable = ServiceFeatureTable(url: .polylineTable)
-        let polygonTable = ServiceFeatureTable(url: .polygonTable)
-        
-        for featureTable in [polygonTable, polylineTable, pointTable] {
+        // Iterate through the feature tables and use them to setup a feature layers. Set the rendering mode
+        // for either dynamic or static rendering and add the feature layer to the scene.
+        for featureTable in featureTables {
+            // Setup the dynamic scene first.
             let dynamicFeatureLayer = FeatureLayer(featureTable: featureTable)
             dynamicFeatureLayer.renderingMode = .dynamic
             dynamicScene.addOperationalLayer(dynamicFeatureLayer)
-            
+            // Then setup the static scene using a clone dynamic feature layer.
             let staticFeatureLayer = dynamicFeatureLayer.clone()
             staticFeatureLayer.renderingMode = .static
             staticScene.addOperationalLayer(staticFeatureLayer)
         }
-        viewpoint = .zoomedOut
     }
     
     var body: some View {
@@ -94,8 +73,7 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
                         .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
                 }
                 .task(id: viewpoint) {
-                    guard let viewpoint else { return }
-                    staticScene.initialViewpoint = viewpoint
+                    // On viewpoint task completed rendering set isZooming to false so that UI state is updated.
                     isZooming = false
                 }
             SceneView(scene: dynamicScene, viewpoint: viewpoint)
@@ -107,14 +85,13 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
                         .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
                 }
                 .task(id: viewpoint) {
-                    guard let viewpoint else { return }
-                    dynamicScene.initialViewpoint = viewpoint
+                    // On viewpoint task completed rendering set isZooming to false so that UI state is updated.
                     isZooming = false
                 }
         }.onChange(of: isZooming) {
             if isZooming {
                 // Zooming began.
-                viewpoint = isZoomedIn ? .zoomedOut : .zoomedIn
+                viewpoint = isZoomedIn ? .zoomedIn : .zoomedOut
             } else {
                 // Zooming ended.
                 isZoomedIn.toggle()
@@ -134,6 +111,9 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
 }
 
 private extension Viewpoint {
+    
+    // Viewpoint for scene fully zoomed in.
+    
     static var zoomedIn: Viewpoint {
         Viewpoint(
             center: Point(
@@ -145,6 +125,8 @@ private extension Viewpoint {
         )
     }
     
+    // Viewpoint for scene fully zoomed out.
+    
     static var zoomedOut: Viewpoint {
         Viewpoint(
             center: Point(
@@ -152,15 +134,13 @@ private extension Viewpoint {
                 y: 34.46,
                 spatialReference: .wgs84
             ),
-            scale: 650000,
+            scale: 50000,
             rotation: 90
         )
     }
 }
 
-
 private extension URL {
-    
     static var pointTable: URL {
         URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Energy/Geology/FeatureServer/0")!
     }
