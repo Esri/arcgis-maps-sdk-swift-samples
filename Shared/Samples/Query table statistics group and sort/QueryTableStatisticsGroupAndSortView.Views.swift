@@ -46,17 +46,11 @@ extension QueryTableStatisticsGroupAndSortView {
         var body: some View {
             Form {
                 Section {
-                    Picker("Field", selection: $selectedField) {
-                        Text("").tag(nil as String?)
-                        
-                        ForEach(fieldOptions, id: \.self) { field in
-                            Text(field).tag(field)
-                        }
+                    NavigationLink {
+                        FieldPicker(fields: fieldOptions, selection: $selectedField)
+                    } label: {
+                        LabeledContent("Field", value: selectedField ?? "Select")
                     }
-                    .pickerStyle(.navigationLink)
-                    // This is a workaround for an iPadOS 17 bug where the
-                    // picker labels don't show up when using `navigationLink`.
-                    .foregroundStyle(.primary)
                     
                     Picker("Statistic Type", selection: $selectedStatisticType) {
                         ForEach(StatisticDefinition.StatisticType.allCases, id: \.self) { type in
@@ -148,17 +142,11 @@ extension QueryTableStatisticsGroupAndSortView {
         
         var body: some View {
             Form {
-                Picker("Field", selection: $selectedField) {
-                    Text("").tag(nil as String?)
-                    
-                    ForEach(fieldOptions, id: \.self) { field in
-                        Text(field).tag(field)
-                    }
+                NavigationLink {
+                    FieldPicker(fields: fieldOptions, selection: $selectedField)
+                } label: {
+                    LabeledContent("Field", value: selectedField ?? "Select")
                 }
-                .pickerStyle(.navigationLink)
-                // This is a workaround for an iPadOS 17 bug where the
-                // picker labels don't show up when using `navigationLink`.
-                .foregroundStyle(.primary)
                 
                 Toggle("Sort Ascending", isOn: $sortsAscending)
             }
@@ -218,6 +206,26 @@ extension QueryTableStatisticsGroupAndSortView {
                 }
             }
         }
+    }
+}
+
+/// A view for selecting a field name from a given list.
+private struct FieldPicker: View {
+    /// The field name options to select from.
+    let fields: [String]
+    
+    /// A binding to the currently-selected field name.
+    @Binding var selection: String?
+    
+    /// The action to dismiss the view.
+    @Environment(\.dismiss) private var dismiss
+    
+    var body: some View {
+        List(fields, id: \.self, selection: $selection) { field in
+            Text(field)
+        }
+        .navigationTitle("Fields")
+        .onChange(of: selection) { dismiss() }
     }
 }
 
