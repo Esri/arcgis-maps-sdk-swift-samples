@@ -31,7 +31,6 @@ In Static rendering mode, the number of features and graphics has little impact 
 * ArcGISScene
 * FeatureLayer
 * FeatureLayer.RenderingMode
-* LoadSettings
 * SceneView
 
 ## Tags
