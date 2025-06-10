@@ -16,13 +16,13 @@ Use the 'Zoom In / Zoom Out' button to trigger the same zoom animation on both s
 
 ## How it works
 
-1. Create two SceneViews and set an inital viewpoint to zoomed out. 
+1. Create two SceneViews and set an inital viewpoint to zoomed out.
 
 2. Setup the FeatureLayers for the scenes using the three service urls: Point, Polyline and Polygon.
 
-3. Set the rendering mode for the SceneViews to dynamic and static. 
+3. Set the rendering mode for the SceneViews to dynamic and static.
 
-3. Compare the scenes responsiveness depnding on the rendering mode. Zoom in and out to see the difference. 
+4. Compare the scenes responsiveness depnding on the rendering mode. Zoom in and out to see the difference.
 
 In Static rendering mode, the number of features and graphics has little impact on frame render time, meaning it scales well, however points don't stay screen-aligned and point/polyline/polygon objects are only redrawn once map view navigation is complete. In Dynamic rendering mode, large numbers of features or graphics can affect the responsiveness of maps or scenes to user interaction, however points remain screen-aligned and point/polyline/polygon objects are continually redrawn while the SceneView view is navigating. When left to automatic rendering, points are drawn dynamically and polylines and polygons statically.
 
