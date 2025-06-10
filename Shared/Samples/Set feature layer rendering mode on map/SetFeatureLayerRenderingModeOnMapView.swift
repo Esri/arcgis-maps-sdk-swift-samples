@@ -32,7 +32,7 @@ struct SetFeatureLayerRenderingModeOnMapView: View {
     @State private var viewpoint: Viewpoint?
     
     init() {
-        // Creates service feature tables using point,polygon, and polyline services.
+        // Creates service feature tables using point, polygon, and polyline services.
         let pointTable = ServiceFeatureTable(url: URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Energy/Geology/FeatureServer/0")!)
         let polylineTable = ServiceFeatureTable(url: URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Energy/Geology/FeatureServer/8")!)
         let polygonTable = ServiceFeatureTable(url: URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Energy/Geology/FeatureServer/9")!)
