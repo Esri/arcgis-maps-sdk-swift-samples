@@ -22,7 +22,18 @@ struct SetMapImageLayerSublayerVisibilityView: View {
         return map
     }()
     
+    @State private var imageLayer: ArcGISMapImageLayer = {
+        let imageLayer = ArcGISMapImageLayer(url:  URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/SampleWorldCities/MapServer")!)
+        return imageLayer
+    }()
+    
+    init() {
+        map.addOperationalLayer(imageLayer)
+    }
+    
     var body: some View {
-        MapView(map: map)
+        MapViewReader { mapViewProxy in
+            MapView(map: map)
+        }
     }
 }
