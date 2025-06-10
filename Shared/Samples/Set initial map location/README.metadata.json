@@ -20,13 +20,13 @@
         "longitude",
         "scale",
         "zoom level",
-        "BasemapType",
+        "Basemap.Style",
         "Map",
         "MapView"
     ],
     "redirect_from": [],
     "relevant_apis": [
-        "BasemapType",
+        "Basemap.Style",
         "Map",
         "MapView"
     ],
