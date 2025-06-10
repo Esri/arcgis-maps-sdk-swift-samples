@@ -16,7 +16,6 @@ import ArcGIS
 import SwiftUI
 
 struct SetFeatureLayerRenderingModeOnSceneView: View {
-    
     // Scene that displays with dynamic rendering.
     @State private var dynamicScene: ArcGIS.Scene = {
         let scene = Scene()
@@ -72,10 +71,7 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
                         .padding(8)
                         .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
                 }
-                .task(id: viewpoint) {
-                    // On viewpoint task completed rendering set isZooming to false so that UI state is updated.
-                    isZooming = false
-                }
+                .task(id: viewpoint) { isZooming = false }
             SceneView(scene: dynamicScene, viewpoint: viewpoint)
                 .overlay(alignment: .top) {
                     Text("Dynamic")
@@ -84,25 +80,18 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
                         .padding(8)
                         .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
                 }
-                .task(id: viewpoint) {
-                    // On viewpoint task completed rendering set isZooming to false so that UI state is updated.
-                    isZooming = false
-                }
+                .task(id: viewpoint) { isZooming = false }
         }.onChange(of: isZooming) {
-            if isZooming {
-                // Zooming began.
-                viewpoint = isZoomedIn ? .zoomedIn : .zoomedOut
-            } else {
-                // Zooming ended.
+            guard isZooming else {
                 isZoomedIn.toggle()
+                return
             }
+            viewpoint = isZoomedIn ? .zoomedIn : .zoomedOut
         }
         .toolbar {
             ToolbarItem(placement: .bottomBar) {
-                Button {
+                Button(isZoomedIn ? "Zoom Out" : "Zoom In") {
                     isZooming = true
-                } label: {
-                    isZoomedIn ? Text("Zoom Out") : Text("Zoom In")
                 }
                 .disabled(isZooming)
             }
@@ -111,7 +100,6 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
 }
 
 private extension Viewpoint {
-    
     // Viewpoint for scene fully zoomed in.
     
     static var zoomedIn: Viewpoint {
