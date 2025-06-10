@@ -30,7 +30,7 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
         return scene
     }()
     
-    /// A Boolean value indicating whether the map views are currently zooming.
+    /// A Boolean value indicating whether the scene views are currently zooming.
     @State private var isZooming = false
     
     /// The viewpoint for the scene.
