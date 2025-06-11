@@ -14,7 +14,7 @@
         "static",
         "FeatureLayer",
         "FeatureLayer.RenderingMode",
-        "Scene"
+        "Scene",
         "SceneView"
     ],
     "redirect_from": [],
