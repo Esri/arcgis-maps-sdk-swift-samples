@@ -28,7 +28,7 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
         return scene
     }()
     
-    /// The viewpoint for the scene.
+    /// The camera for the scene.
     @State private var camera: Camera? = .zoomedIn
     
     /// A Boolean value indicating whether the scene is fully zoomed in.
