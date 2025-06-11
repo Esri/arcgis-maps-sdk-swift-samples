@@ -28,11 +28,8 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
         return scene
     }()
     
-    /// A Boolean value indicating whether the scene views are currently zooming.
-    @State private var isZooming = false
-    
     /// The viewpoint for the scene.
-    @State private var camera: Camera? = .zoomedInCamera
+    @State private var camera: Camera? = .zoomedIn
     
     /// A Boolean value indicating whether the scene is fully zoomed in.
     @State private var isZoomedIn = true
@@ -69,7 +66,6 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
                         .padding(8)
                         .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
                 }
-                .task(id: camera) { isZooming = false }
             SceneView(scene: dynamicScene, camera: $camera)
                 .overlay(alignment: .top) {
                     Text("Dynamic")
@@ -78,13 +74,12 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
                         .padding(8)
                         .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
                 }
-                .task(id: camera) { isZooming = false }
         }
         .toolbar {
             ToolbarItem(placement: .bottomBar) {
                 Button(isZoomedIn ? "Zoom Out" : "Zoom In") {
                     withAnimation(.easeInOut(duration: 4)) {
-                        camera = isZoomedIn ? .zoomedOutCamera : .zoomedInCamera
+                        camera = isZoomedIn ? .zoomedOut : .zoomedIn
                         isZoomedIn.toggle()
                     }
                 }
@@ -94,7 +89,8 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
 }
 
 private extension Camera {
-    static var zoomedInCamera: Camera {
+    // Camera set to zoom in on scene position at an angle.
+    static var zoomedIn: Camera {
         Camera(
             lookingAt: Point(
                 x: -118.45,
@@ -108,7 +104,8 @@ private extension Camera {
         )
     }
     
-    static var zoomedOutCamera: Camera {
+    // Camera set to zoom out on scene position without angle.
+    static var zoomedOut: Camera {
         Camera(
             lookingAt: Point(
                 x: -118.37,
