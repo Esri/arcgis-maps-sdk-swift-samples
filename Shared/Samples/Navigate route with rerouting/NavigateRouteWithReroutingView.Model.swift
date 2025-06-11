@@ -121,8 +121,8 @@ extension NavigateRouteWithReroutingView {
             )
             
             // Set up the data source's locations using a local JSON file.
-            let jsonString = try String(contentsOf: .sanDiegoTourPath, encoding: .utf8)
-            let routePolyline = try Polyline.fromJSON(jsonString)
+            let json = try Data(contentsOf: .sanDiegoTourPath)
+            let routePolyline = try Polyline.fromJSON(json)
             simulatedDataSource.setSimulatedLocations(with: routePolyline)
             
             try await initializeNavigation()
