@@ -12,19 +12,18 @@ In static rendering mode, features and graphics are rendered only when needed (f
 
 ## How to use the sample
 
-Use the 'Zoom In / Zoom Out' button to trigger the same zoom animation on both static and dynamicly rendered scenes.
+Use the 'Zoom In'/'Zoom Out' button to trigger the zoom animation on both static and dynamic scenes.
 
 ## How it works
 
-1. Create two SceneViews and set an inital viewpoint to zoomed out.
+1. Create a scene with operational layers and set the `renderingMode` for each layer.
+2. The `renderingMode` can be set to `static`, `dynamic`, or `automatic`.
 
-2. Setup the FeatureLayers for the scenes using the three service urls: Point, Polyline and Polygon.
+* In Static rendering mode, the number of features and graphics has little impact on frame render time, meaning it scales well, however points don't stay screen-aligned and point/polyline/polygon objects are only redrawn once map view navigation is complete.
 
-3. Set the rendering mode for the SceneViews to dynamic and static.
+* In Dynamic rendering mode, large numbers of features or graphics can affect the responsiveness of maps or scenes to user interaction, however points remain screen-aligned and point/polyline/polygon objects are continually redrawn while the map view is navigating.
 
-4. Compare the scenes responsiveness depnding on the rendering mode. Zoom in and out to see the difference.
-
-In Static rendering mode, the number of features and graphics has little impact on frame render time, meaning it scales well, however points don't stay screen-aligned and point/polyline/polygon objects are only redrawn once map view navigation is complete. In Dynamic rendering mode, large numbers of features or graphics can affect the responsiveness of maps or scenes to user interaction, however points remain screen-aligned and point/polyline/polygon objects are continually redrawn while the SceneView view is navigating. When left to automatic rendering, points are drawn dynamically and polylines and polygons statically.
+* When left to automatic rendering, points are drawn dynamically and polylines and polygons statically.
 
 ## Relevant API
 
