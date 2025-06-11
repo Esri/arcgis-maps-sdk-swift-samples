@@ -16,9 +16,18 @@ import ArcGIS
 import SwiftUI
 
 struct SetMapImageLayerSublayerVisibilityView: View {
+    /// The tracking status for the loading operation.
+    @State private var isLoading = false
+    
+    /// The error shown in the error alert.
+    @State private var error: Error?
+    
+    /// Holds the reference to the selected sublayer..
+    @State private var sublayerSelection: SublayerSelection = .world
+    
     @State private var map: Map = {
         // Makes a new map with an oceans basemap style.
-        let map = Map(basemapStyle: .arcGISTopographic)
+        let map = Map()
         return map
     }()
     
@@ -27,16 +36,58 @@ struct SetMapImageLayerSublayerVisibilityView: View {
         return imageLayer
     }()
     
+    @State private var sublayers: [ArcGISMapImageSublayer] = []
+    
     init() {
         map.addOperationalLayer(imageLayer)
     }
     
     var body: some View {
         MapViewReader { mapViewProxy in
-            
-//            MapView(map: map).onAppear {
-//                await mapViewProxy.setViewpointCenter(Point(x: -11e6, y: 6e6, spatialReference: .webMercator), scale: 9e7)
-//            }
+            MapView(map: map)
+                .task {
+                    do {
+                        try await imageLayer.load()
+                        await mapViewProxy.setViewpointCenter(Point(x: -11e6, y: 6e6, spatialReference: .webMercator), scale: 9e7)
+                    } catch {
+                        self.error = error
+                    }
+                    for mapLayer in imageLayer.mapImageSublayers {
+                        sublayers.append(mapLayer)
+                    }
+                }
+                .toolbar {
+                    ToolbarItemGroup(placement: .bottomBar) {
+                        Picker("Sublayer", selection: $sublayerSelection) {
+                            ForEach(SublayerSelection.allCases, id: \.self) { rule in
+                                Text(rule.label)
+                            }
+                        }
+                        .task(id: sublayerSelection) {
+                            for (index, sublayer) in sublayers.enumerated() {
+                                if sublayer.name == sublayerSelection.label {
+                                    sublayer.isVisible = true
+                                } else {
+                                    sublayer.isVisible = false
+                                }
+                            }
+                        }
+                        .pickerStyle(.automatic)
+                    }
+                }
+        }.errorAlert(presentingError: $error)
+    }
+}
+
+private enum SublayerSelection: CaseIterable, Equatable {
+    case cities, continent, world
+    
+    /// The string to be displayed for each `RuleSelection` option.
+    var label: String {
+        switch self {
+        case .cities: "Cities"
+        case .continent: "Continent"
+        case .world: "World"
         }
     }
 }
@@ -44,7 +95,7 @@ struct SetMapImageLayerSublayerVisibilityView: View {
 extension URL {
     static var arcGISMapImageLayerSample: URL {
         URL(
-            string:"https://sampleserver6.arcgisonline.com/arcgis/rest/services/SampleWorldCities/MapServer"
+            string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/SampleWorldCities/MapServer"
         )!
     }
 }
