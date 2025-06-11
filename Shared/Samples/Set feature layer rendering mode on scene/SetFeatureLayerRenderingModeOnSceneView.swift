@@ -19,29 +19,20 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
     /// Scene that displays with dynamic rendering.
     @State private var dynamicScene: ArcGIS.Scene = {
         let scene = Scene()
-        scene.initialViewpoint = .zoomedOut
         return scene
     }()
     
     /// Scene that displays with static rendering.
     @State private var staticScene: ArcGIS.Scene = {
         let scene = Scene()
-        scene.initialViewpoint = .zoomedOut
         return scene
     }()
-    
-    @State private var zoomedOutCamera = Camera(lookingAt: Point(x: -118.37, y: 34.46, spatialReference: .wgs84), distance: 42000, heading: 0, pitch: 0, roll: 0)
-    
-    @State private var zoomedInCamera = Camera(lookingAt: Point(x: -118.45, y: 34.395, spatialReference: .wgs84), distance: 2500, heading: 90, pitch: 75, roll: 0)
     
     /// A Boolean value indicating whether the scene views are currently zooming.
     @State private var isZooming = false
     
     /// The viewpoint for the scene.
-    @State private var viewpoint: Viewpoint?
-    
-    /// The viewpoint for the scene.
-    @State private var camera: Camera?
+    @State private var camera: Camera? = .zoomedInCamera
     
     /// A Boolean value indicating whether the scene is fully zoomed in.
     @State private var isZoomedIn = true
@@ -93,7 +84,7 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
             ToolbarItem(placement: .bottomBar) {
                 Button(isZoomedIn ? "Zoom Out" : "Zoom In") {
                     withAnimation(.easeInOut(duration: 4)) {
-                        camera = isZoomedIn ? zoomedInCamera : zoomedOutCamera
+                        camera = isZoomedIn ? .zoomedOutCamera : .zoomedInCamera
                         isZoomedIn.toggle()
                     }
                 }
@@ -102,18 +93,32 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
     }
 }
 
-private extension Viewpoint {
+private extension Camera {
+    static var zoomedInCamera: Camera {
+        Camera(
+            lookingAt: Point(
+                x: -118.45,
+                y: 34.395,
+                spatialReference: .wgs84
+            ),
+            distance: 2500,
+            heading: 90,
+            pitch: 75,
+            roll: 0
+        )
+    }
     
-    /// Viewpoint for scene fully zoomed out.
-    static var zoomedOut: Viewpoint {
-        Viewpoint(
-            center: Point(
+    static var zoomedOutCamera: Camera {
+        Camera(
+            lookingAt: Point(
                 x: -118.37,
                 y: 34.46,
                 spatialReference: .wgs84
             ),
-            scale: 50000,
-            rotation: 90
+            distance: 30000,
+            heading: 0,
+            pitch: 0,
+            roll: 0
         )
     }
 }
