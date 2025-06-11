@@ -482,16 +482,19 @@ private class GeometryEditorModel: ObservableObject {
 private extension Geometry {
     // swiftlint:disable force_try
     static func house() -> Point {
-        let jsonStr = """
+        let json = Data(
+            """
                 {"x":-1067898.59,
                  "y":6998366.62,
                  "spatialReference":{"latestWkid":3857,"wkid":102100}}
-            """
-        return try! Point.fromJSON(jsonStr)
+            """.utf8
+        )
+        return try! Point.fromJSON(json)
     }
     
     static func road1() -> Polyline {
-        let jsonStr = """
+        let json = Data(
+            """
                 {"paths":[[[-1068095.40,6998123.52],[-1068086.16,6998134.60],
                           [-1068083.20,6998160.44],[-1068104.27,6998205.37],
                           [-1068070.63,6998255.22],[-1068014.44,6998291.54],
@@ -499,36 +502,42 @@ private extension Geometry {
                           [-1067907.97,6998396.78],[-1067889.86,6998406.63],
                           [-1067848.08,6998495.26],[-1067832.92,6998521.11]]],
                         "spatialReference":{"latestWkid":3857,"wkid":102100}}
-            """
-        return try! Polyline.fromJSON(jsonStr)
+            """.utf8
+        )
+        return try! Polyline.fromJSON(json)
     }
     
     static func road2() -> Polyline {
-        let jsonStr = """
+        let json = Data(
+            """
                 {"paths":[[[-1067999.28,6998061.97],[-1067994.48,6998086.59],
                         [-1067964.53,6998125.37],[-1067952.70,6998215.84],
                         [-1067923.13,6998347.54],[-1067903.90,6998391.86],
                         [-1067895.40,6998422.02],[-1067891.70,6998460.18],
                         [-1067889.49,6998483.56],[-1067880.98,6998527.26]]],
                     "spatialReference":{"latestWkid":3857,"wkid":102100}}
-            """
-        return try! Polyline.fromJSON(jsonStr)
+            """.utf8
+            )
+        return try! Polyline.fromJSON(json)
     }
     
     static func outbuildings() -> Multipoint {
-        let jsonStr = """
+        let json = Data(
+            """
                 {"points":[[-1067984.26,6998346.28],[-1067966.80,6998244.84],
                           [-1067921.88,6998284.65],[-1067934.36,6998340.74],
                           [-1067917.93,6998373.97],[-1067828.30,6998355.28],
                           [-1067832.25,6998339.70],[-1067823.10,6998336.93],
                           [-1067873.22,6998386.78],[-1067896.72,6998244.49]],
                         "spatialReference":{"latestWkid":3857,"wkid":102100}}
-            """
-        return try! Multipoint.fromJSON(jsonStr)
+            """.utf8
+        )
+        return try! Multipoint.fromJSON(json)
     }
     
     static func boundary() -> ArcGIS.Polygon {
-        let jsonStr = """
+        let json = Data(
+            """
                 {"rings":[[[-1067943.67,6998403.86],[-1067938.17,6998427.60],
                            [-1067898.77,6998415.86],[-1067888.26,6998398.80],
                            [-1067800.85,6998372.93],[-1067799.61,6998342.81],
@@ -542,8 +551,9 @@ private extension Geometry {
                            [-1068043.32,6998299.88],[-1068036.25,6998327.93],
                            [-1068004.43,6998409.28],[-1067943.67,6998403.86]]],
                         "spatialReference":{"latestWkid":3857,"wkid":102100}}
-            """
-        return try! Polygon.fromJSON(jsonStr)
+            """.utf8
+        )
+        return try! Polygon.fromJSON(json)
     }
     // swiftlint:enable force_try
 }
