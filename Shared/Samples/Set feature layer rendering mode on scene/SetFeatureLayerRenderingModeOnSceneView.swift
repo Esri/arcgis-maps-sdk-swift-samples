@@ -30,11 +30,18 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
         return scene
     }()
     
+    @State private var zoomedOutCamera = Camera(lookingAt: Point(x: -118.37, y: 34.46, spatialReference: .wgs84), distance: 42000, heading: 0, pitch: 0, roll: 0)
+    
+    @State private var zoomedInCamera = Camera(lookingAt: Point(x: -118.45, y: 34.395, spatialReference: .wgs84), distance: 2500, heading: 90, pitch: 75, roll: 0)
+    
     /// A Boolean value indicating whether the scene views are currently zooming.
     @State private var isZooming = false
     
     /// The viewpoint for the scene.
     @State private var viewpoint: Viewpoint?
+    
+    /// The viewpoint for the scene.
+    @State private var camera: Camera?
     
     /// A Boolean value indicating whether the scene is fully zoomed in.
     @State private var isZoomedIn = true
@@ -63,7 +70,7 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            SceneView(scene: staticScene, viewpoint: viewpoint)
+            SceneView(scene: staticScene, camera: $camera)
                 .overlay(alignment: .top) {
                     Text("Static")
                         .multilineTextAlignment(.center)
@@ -71,8 +78,8 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
                         .padding(8)
                         .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
                 }
-                .task(id: viewpoint) { isZooming = false }
-            SceneView(scene: dynamicScene, viewpoint: viewpoint)
+                .task(id: camera) { isZooming = false }
+            SceneView(scene: dynamicScene, camera: $camera)
                 .overlay(alignment: .top) {
                     Text("Dynamic")
                         .multilineTextAlignment(.center)
@@ -80,39 +87,22 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
                         .padding(8)
                         .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
                 }
-                .task(id: viewpoint) { isZooming = false }
-        }
-        .onChange(of: isZooming) {
-            guard isZooming else {
-                isZoomedIn.toggle()
-                return
-            }
-            viewpoint = isZoomedIn ? .zoomedIn : .zoomedOut
+                .task(id: camera) { isZooming = false }
         }
         .toolbar {
             ToolbarItem(placement: .bottomBar) {
                 Button(isZoomedIn ? "Zoom Out" : "Zoom In") {
-                    isZooming = true
+                    withAnimation(.easeInOut(duration: 4)) {
+                        camera = isZoomedIn ? zoomedInCamera : zoomedOutCamera
+                        isZoomedIn.toggle()
+                    }
                 }
-                .disabled(isZooming)
             }
         }
     }
 }
 
 private extension Viewpoint {
-    /// Viewpoint for scene fully zoomed in.
-    static var zoomedIn: Viewpoint {
-        Viewpoint(
-            center: Point(
-                x: -118.45,
-                y: 34.395,
-                spatialReference: .wgs84
-            ),
-            scale: 650000,
-            rotation: 0
-        )
-    }
     
     /// Viewpoint for scene fully zoomed out.
     static var zoomedOut: Viewpoint {
