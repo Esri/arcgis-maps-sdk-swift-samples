@@ -3,7 +3,7 @@
     "description": "Render features in a scene statically or dynamically by setting the feature layer rendering mode.",
     "ignore": false,
     "images": [
-        "feature-layer-renderering-scene.png"
+        "set-feature-layer-rendering-mode-on-scene.png"
     ],
     "keywords": [
         "3D",
@@ -19,9 +19,9 @@
     ],
     "redirect_from": [],
     "relevant_apis": [
-        "ArcGISScene",
         "FeatureLayer",
         "FeatureLayer.RenderingMode",
+        "Scene",
         "SceneView"
     ],
     "snippets": [

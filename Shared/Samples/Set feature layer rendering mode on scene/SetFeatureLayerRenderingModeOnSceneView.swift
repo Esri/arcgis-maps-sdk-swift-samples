@@ -16,14 +16,14 @@ import ArcGIS
 import SwiftUI
 
 struct SetFeatureLayerRenderingModeOnSceneView: View {
-    // Scene that displays with dynamic rendering.
+    /// Scene that displays with dynamic rendering.
     @State private var dynamicScene: ArcGIS.Scene = {
         let scene = Scene()
         scene.initialViewpoint = .zoomedOut
         return scene
     }()
     
-    // Scene that displays with static rendering.
+    /// Scene that displays with static rendering.
     @State private var staticScene: ArcGIS.Scene = {
         let scene = Scene()
         scene.initialViewpoint = .zoomedOut
@@ -39,7 +39,7 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
     /// A Boolean value indicating whether the scene is fully zoomed in.
     @State private var isZoomedIn = true
     
-    // Creates service feature tables using point, polygon, and polyline services
+    /// Creates service feature tables using point, polygon, and polyline services
     let featureTables: [ServiceFeatureTable] = [
         ServiceFeatureTable(url: .pointTable),
         ServiceFeatureTable(url: .polylineTable),
@@ -47,8 +47,8 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
     ]
     
     init() {
-        // Iterate through the feature tables and use them to setup a feature layers. Set the rendering mode
-        // for either dynamic or static rendering and add the feature layer to the scene.
+        /// Iterate through the feature tables and use them to setup a feature layers. Set the rendering mode
+        /// for either dynamic or static rendering and add the feature layer to the scene.
         for featureTable in featureTables {
             // Setup the dynamic scene first.
             let dynamicFeatureLayer = FeatureLayer(featureTable: featureTable)
@@ -81,7 +81,8 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
                         .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
                 }
                 .task(id: viewpoint) { isZooming = false }
-        }.onChange(of: isZooming) {
+        }
+        .onChange(of: isZooming) {
             guard isZooming else {
                 isZoomedIn.toggle()
                 return
@@ -100,21 +101,20 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
 }
 
 private extension Viewpoint {
-    // Viewpoint for scene fully zoomed in.
-    
+    /// Viewpoint for scene fully zoomed in.
     static var zoomedIn: Viewpoint {
         Viewpoint(
             center: Point(
                 x: -118.45,
                 y: 34.395,
-                spatialReference: .wgs84),
+                spatialReference: .wgs84
+            ),
             scale: 650000,
             rotation: 0
         )
     }
     
-    // Viewpoint for scene fully zoomed out.
-    
+    /// Viewpoint for scene fully zoomed out.
     static var zoomedOut: Viewpoint {
         Viewpoint(
             center: Point(

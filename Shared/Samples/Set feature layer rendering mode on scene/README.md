@@ -2,7 +2,7 @@
 
 Render features in a scene statically or dynamically by setting the feature layer rendering mode.
 
-![Feature layer rendering mode (scene)](feature-layer-renderering-scene.png)
+![Image of Set feature layer rendering mode on scene sample](set-feature-layer-rendering-mode-on-scene.png)
 
 ## Use case
 
@@ -28,9 +28,9 @@ In Static rendering mode, the number of features and graphics has little impact 
 
 ## Relevant API
 
-* ArcGISScene
 * FeatureLayer
 * FeatureLayer.RenderingMode
+* Scene
 * SceneView
 
 ## Tags
