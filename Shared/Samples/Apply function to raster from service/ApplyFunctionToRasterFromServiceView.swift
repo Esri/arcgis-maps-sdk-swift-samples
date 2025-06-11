@@ -49,23 +49,25 @@ struct ApplyFunctionToRasterFromServiceView: View {
     }
     
     /// The raster function json string to apply to the image service raster.
-    private var rasterFunctionJSON: String {
-        #"""
-        {
-          "raster_function_arguments":
-          {
-            "z_factor":{"double":25.0,"type":"Raster_function_variable"},
-            "slope_type":{"raster_slope_type":"none","type":"Raster_function_variable"},
-            "azimuth":{"double":315,"type":"Raster_function_variable"},
-            "altitude":{"double":45,"type":"Raster_function_variable"},
-            "type":"Raster_function_arguments",
-            "raster":{"name":"raster","is_raster":true,"type":"Raster_function_variable"},
-            "nbits":{"int":8,"type":"Raster_function_variable"}
-          },
-          "raster_function":{"type":"Hillshade_function"},
-          "type":"Raster_function_template"
-        }
-        """#
+    private var rasterFunctionJSON: Data {
+        Data(
+            #"""
+            {
+              "raster_function_arguments":
+              {
+                "z_factor":{"double":25.0,"type":"Raster_function_variable"},
+                "slope_type":{"raster_slope_type":"none","type":"Raster_function_variable"},
+                "azimuth":{"double":315,"type":"Raster_function_variable"},
+                "altitude":{"double":45,"type":"Raster_function_variable"},
+                "type":"Raster_function_arguments",
+                "raster":{"name":"raster","is_raster":true,"type":"Raster_function_variable"},
+                "nbits":{"int":8,"type":"Raster_function_variable"}
+              },
+              "raster_function":{"type":"Hillshade_function"},
+              "type":"Raster_function_template"
+            }
+            """#.utf8
+        )
     }
 }
 
