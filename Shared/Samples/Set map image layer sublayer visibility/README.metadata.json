@@ -1,8 +1,10 @@
 {
-    "category": "",
+    "category": "Layers",
     "description": "Change the visibility of sublayers.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "set-map-image-layer-sublayer-visibility.png"
+    ],
     "keywords": [
         "layer",
         "sublayer",

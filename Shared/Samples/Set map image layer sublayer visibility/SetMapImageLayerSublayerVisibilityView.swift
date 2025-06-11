@@ -18,12 +18,12 @@ import SwiftUI
 struct SetMapImageLayerSublayerVisibilityView: View {
     @State private var map: Map = {
         // Makes a new map with an oceans basemap style.
-        let map = Map(basemapStyle: .arcGISOceans)
+        let map = Map(basemapStyle: .arcGISTopographic)
         return map
     }()
     
     @State private var imageLayer: ArcGISMapImageLayer = {
-        let imageLayer = ArcGISMapImageLayer(url:  URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/SampleWorldCities/MapServer")!)
+        let imageLayer = ArcGISMapImageLayer(url: .arcGISMapImageLayerSample)
         return imageLayer
     }()
     
@@ -33,7 +33,22 @@ struct SetMapImageLayerSublayerVisibilityView: View {
     
     var body: some View {
         MapViewReader { mapViewProxy in
-            MapView(map: map)
+            
+//            MapView(map: map).onAppear {
+//                await mapViewProxy.setViewpointCenter(Point(x: -11e6, y: 6e6, spatialReference: .webMercator), scale: 9e7)
+//            }
         }
     }
+}
+
+extension URL {
+    static var arcGISMapImageLayerSample: URL {
+        URL(
+            string:"https://sampleserver6.arcgisonline.com/arcgis/rest/services/SampleWorldCities/MapServer"
+        )!
+    }
+}
+
+#Preview {
+    SetMapImageLayerSublayerVisibilityView()
 }
