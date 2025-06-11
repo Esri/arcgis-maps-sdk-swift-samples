@@ -469,18 +469,18 @@ private extension URL {
     )!
 }
 
-private extension String {
+private extension Data {
     /// The JSON for a complex point geometry.
-    static let complexPointGeometryJSON = "{\"rings\":[[[-2.89,5],[2.89,5],[5.77,0],[2.89,-5],[-2.89,-5],[-5.77,0],[-2.89,5]]]}"
+    static let complexPointGeometryJSON = Data("{\"rings\":[[[-2.89,5],[2.89,5],[5.77,0],[2.89,-5],[-2.89,-5],[-5.77,0],[-2.89,5]]]}".utf8)
     
     /// The JSON for a diamond geometry.
-    static let diamondGeometryJSON = "{\"rings\":[[[0,2.5],[2.5,0],[0,-2.5],[-2.5,0],[0,2.5]]]}"
+    static let diamondGeometryJSON = Data("{\"rings\":[[[0,2.5],[2.5,0],[0,-2.5],[-2.5,0],[0,2.5]]]}".utf8)
     
     /// The JSON for a triangle geometry.
-    static let triangleGeometryJSON = "{\"rings\":[[[0,5],[5,-5],[-5,-5],[0,5]]]}"
+    static let triangleGeometryJSON = Data("{\"rings\":[[[0,5],[5,-5],[-5,-5],[0,5]]]}".utf8)
     
     /// The JSON for a cross geometry.
-    static let crossGeometryJSON = "{\"paths\":[[[-1,1],[0,0],[1,-1]],[[1,1],[0,0],[-1,-1]]]}"
+    static let crossGeometryJSON = Data("{\"paths\":[[[-1,1],[0,0],[1,-1]],[[1,1],[0,0],[-1,-1]]]}".utf8)
 }
 
 #Preview {
