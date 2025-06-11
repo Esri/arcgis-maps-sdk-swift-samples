@@ -42,14 +42,15 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
     ]
     
     init() {
-        /// Iterate through the feature tables and use them to setup a feature layers. Set the rendering mode
-        /// for either dynamic or static rendering and add the feature layer to the scene.
+        // Iterate through the feature tables and use them to set up feature layers.
+        // Set the rendering mode for either dynamic or static rendering,
+        // and add the feature layers to the scene.
         for featureTable in featureTables {
             // Setup the dynamic scene first.
             let dynamicFeatureLayer = FeatureLayer(featureTable: featureTable)
             dynamicFeatureLayer.renderingMode = .dynamic
             dynamicScene.addOperationalLayer(dynamicFeatureLayer)
-            // Then setup the static scene using a clone dynamic feature layer.
+            // Then set up the static scene using a clone of the dynamic feature layer.
             let staticFeatureLayer = dynamicFeatureLayer.clone()
             staticFeatureLayer.renderingMode = .static
             staticScene.addOperationalLayer(staticFeatureLayer)
