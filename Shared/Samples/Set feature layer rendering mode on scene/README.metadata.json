@@ -12,9 +12,9 @@
         "features",
         "rendering",
         "static",
-        "ArcGISScene",
         "FeatureLayer",
         "FeatureLayer.RenderingMode",
+        "Scene"
         "SceneView"
     ],
     "redirect_from": [],
