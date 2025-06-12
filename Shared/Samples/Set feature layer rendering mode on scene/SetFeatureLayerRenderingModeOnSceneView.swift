@@ -48,8 +48,8 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
             staticFeatureLayer.renderingMode = .static
             staticScene.addOperationalLayer(staticFeatureLayer)
         }
-        staticScene.initialViewpoint = Viewpoint(boundingGeometry: Camera.zoomedOut.location, camera: .zoomedOut)
-        dynamicScene.initialViewpoint = Viewpoint(boundingGeometry: Camera.zoomedOut.location, camera: .zoomedOut)
+        staticScene.initialViewpoint = .zoomedOutViewpoint
+        dynamicScene.initialViewpoint = .zoomedOutViewpoint
     }
     
     var body: some View {
@@ -92,7 +92,7 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
                 isZoomedIn.toggle()
                 return
             }
-            viewpoint = isZoomedIn ? Viewpoint(boundingGeometry: Camera.zoomedIn.location, camera: .zoomedIn) : Viewpoint(boundingGeometry: Camera.zoomedOut.location, camera: .zoomedOut)
+            viewpoint = isZoomedIn ? .zoomedInViewpoint : .zoomedOutViewpoint
         }
         .toolbar {
             ToolbarItem(placement: .bottomBar) {
@@ -105,6 +105,16 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
     }
 }
 
+private extension Viewpoint {
+    /// Viewpoint for scene fully zoomed in.
+    static var zoomedInViewpoint: Viewpoint {
+        return Viewpoint(boundingGeometry: Camera.zoomedIn.location, camera: Camera.zoomedIn)
+    }
+    /// Viewpoint for scene fully zoomed out.
+    static var zoomedOutViewpoint: Viewpoint {
+        return Viewpoint(boundingGeometry: Camera.zoomedOut.location, camera: Camera.zoomedOut)
+    }
+}
 private extension Camera {
     /// Camera set to zoom in on scene position at an angle.
     static var zoomedIn: Camera {
