@@ -110,6 +110,7 @@ private extension Viewpoint {
     static var zoomedInViewpoint: Viewpoint {
         return Viewpoint(boundingGeometry: Camera.zoomedIn.location, camera: Camera.zoomedIn)
     }
+    
     /// Viewpoint for scene fully zoomed out.
     static var zoomedOutViewpoint: Viewpoint {
         return Viewpoint(boundingGeometry: Camera.zoomedOut.location, camera: Camera.zoomedOut)
