@@ -17,29 +17,22 @@ import SwiftUI
 
 struct SetFeatureLayerRenderingModeOnSceneView: View {
     /// Scene that displays with dynamic rendering.
-    @State private var dynamicScene: ArcGIS.Scene = {
-        let scene = Scene()
-        return scene
-    }()
+    @State private var dynamicScene = Scene()
     
     /// Scene that displays with static rendering.
-    @State private var staticScene: ArcGIS.Scene = {
-        let scene = Scene()
-        return scene
-    }()
+    @State private var staticScene = Scene()
     
-    /// The camera for the scene.
-    @State private var camera: Camera? = .zoomedIn
+    /// A Boolean value indicating whether the scene views are currently zooming.
+    @State private var isZooming = false
+    
+    /// The viewpoint for the scene.
+    @State private var viewpoint: Viewpoint?
     
     /// A Boolean value indicating whether the scene is fully zoomed in.
     @State private var isZoomedIn = true
     
-    /// Creates service feature tables using point, polygon, and polyline services
-    let featureTables: [ServiceFeatureTable] = [
-        ServiceFeatureTable(url: .pointTable),
-        ServiceFeatureTable(url: .polylineTable),
-        ServiceFeatureTable(url: .polygonTable)
-    ]
+    /// Creates service feature tables using point, polygon, and polyline services.
+    let featureTables: [ServiceFeatureTable] = [URL.pointTable, .polylineTable, .polygonTable].map(ServiceFeatureTable.init(url:))
     
     init() {
         // Iterate through the feature tables and use them to set up feature layers.
@@ -55,48 +48,70 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
             staticFeatureLayer.renderingMode = .static
             staticScene.addOperationalLayer(staticFeatureLayer)
         }
+        staticScene.initialViewpoint = Viewpoint(boundingGeometry: Camera.zoomedOut.location, camera: .zoomedOut)
+        dynamicScene.initialViewpoint = Viewpoint(boundingGeometry: Camera.zoomedOut.location, camera: .zoomedOut)
     }
     
     var body: some View {
         VStack(spacing: 0) {
-            SceneView(scene: staticScene, camera: $camera)
-                .overlay(alignment: .top) {
-                    Text("Static")
-                        .multilineTextAlignment(.center)
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        .padding(8)
-                        .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
-                }
-            SceneView(scene: dynamicScene, camera: $camera)
-                .overlay(alignment: .top) {
-                    Text("Dynamic")
-                        .multilineTextAlignment(.center)
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        .padding(8)
-                        .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
-                }
+            SceneViewReader { sceneViewProxy in
+                SceneView(scene: staticScene)
+                    .overlay(alignment: .top) {
+                        Text("Static")
+                            .multilineTextAlignment(.center)
+                            .frame(maxWidth: .infinity, alignment: .center)
+                            .padding(8)
+                            .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
+                    }
+                    .task(id: viewpoint) {
+                        if let viewpoint = viewpoint {
+                            await sceneViewProxy.setViewpoint(viewpoint, duration: 0.5)
+                        }
+                        isZooming = false
+                    }
+            }
+            SceneViewReader { sceneViewProxy in
+                SceneView(scene: dynamicScene)
+                    .overlay(alignment: .top) {
+                        Text("Dynamic")
+                            .multilineTextAlignment(.center)
+                            .frame(maxWidth: .infinity, alignment: .center)
+                            .padding(8)
+                            .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
+                    }
+                    .task(id: viewpoint) {
+                        if let viewpoint = viewpoint {
+                            await sceneViewProxy.setViewpoint(viewpoint, duration: 0.5)
+                        }
+                        isZooming = false
+                    }
+            }
+        }
+        .onChange(of: isZooming) {
+            guard isZooming else {
+                isZoomedIn.toggle()
+                return
+            }
+            viewpoint = isZoomedIn ? Viewpoint(boundingGeometry: Camera.zoomedIn.location, camera: .zoomedIn) : Viewpoint(boundingGeometry: Camera.zoomedOut.location, camera: .zoomedOut)
         }
         .toolbar {
             ToolbarItem(placement: .bottomBar) {
                 Button(isZoomedIn ? "Zoom Out" : "Zoom In") {
-                    withAnimation(.easeInOut(duration: 4)) {
-                        camera = isZoomedIn ? .zoomedOut : .zoomedIn
-                        isZoomedIn.toggle()
-                    }
+                    isZooming = true
                 }
+                .disabled(isZooming)
             }
         }
     }
 }
 
 private extension Camera {
-    // Camera set to zoom in on scene position at an angle.
+    /// Camera set to zoom in on scene position at an angle.
     static var zoomedIn: Camera {
         Camera(
             lookingAt: Point(
                 x: -118.45,
-                y: 34.395,
-                spatialReference: .wgs84
+                y: 34.395
             ),
             distance: 2500,
             heading: 90,
@@ -105,13 +120,12 @@ private extension Camera {
         )
     }
     
-    // Camera set to zoom out on scene position without angle.
+    /// Camera set to zoom out on scene position without angle.
     static var zoomedOut: Camera {
         Camera(
             lookingAt: Point(
                 x: -118.37,
-                y: 34.46,
-                spatialReference: .wgs84
+                y: 34.46
             ),
             distance: 30000,
             heading: 0,
