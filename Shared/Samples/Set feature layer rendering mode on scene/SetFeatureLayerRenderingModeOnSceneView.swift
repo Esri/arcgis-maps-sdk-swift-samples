@@ -116,6 +116,7 @@ private extension Viewpoint {
         return Viewpoint(boundingGeometry: Camera.zoomedOut.location, camera: Camera.zoomedOut)
     }
 }
+
 private extension Camera {
     /// Camera set to zoom in on scene position at an angle.
     static var zoomedIn: Camera {
