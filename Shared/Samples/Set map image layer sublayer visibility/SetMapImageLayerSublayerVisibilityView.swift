@@ -64,7 +64,7 @@ struct SetMapImageLayerSublayerVisibilityView: View {
                             }
                         }
                         .task(id: sublayerSelection) {
-                            for (index, sublayer) in sublayers.enumerated() {
+                            for (_, sublayer) in sublayers.enumerated() {
                                 if sublayer.name == sublayerSelection.label {
                                     sublayer.isVisible = true
                                 } else {
