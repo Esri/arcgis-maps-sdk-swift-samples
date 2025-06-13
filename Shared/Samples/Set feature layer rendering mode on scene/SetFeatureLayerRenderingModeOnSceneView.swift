@@ -26,7 +26,7 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
     @State private var isZooming = false
     
     /// The viewpoint for the scene.
-    @State private var viewpoint: Viewpoint?
+    @State private var camera: Camera? = .zoomedOut
     
     /// A Boolean value indicating whether the scene is fully zoomed in.
     @State private var isZoomedIn = true
@@ -62,9 +62,9 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
                             .padding(8)
                             .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
                     }
-                    .task(id: viewpoint) {
-                        if let viewpoint = viewpoint {
-                            await sceneViewProxy.setViewpoint(viewpoint, duration: 2)
+                    .task(id: camera) {
+                        if let camera = camera {
+                            await sceneViewProxy.setViewpointCamera(camera, duration: 2)
                         }
                         isZooming = false
                     }
@@ -79,9 +79,9 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
                             .padding(8)
                             .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
                     }
-                    .task(id: viewpoint) {
-                        if let viewpoint = viewpoint {
-                            await sceneViewProxy.setViewpoint(viewpoint, duration: 2)
+                    .task(id: camera) {
+                        if let camera = camera {
+                            await sceneViewProxy.setViewpointCamera(camera, duration: 2)
                         }
                         isZooming = false
                     }
@@ -92,7 +92,7 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
             ToolbarItem(placement: .bottomBar) {
                 Button(isZoomedIn ? "Zoom In" : "Zoom Out") {
                     isZooming = true
-                    viewpoint = isZoomedIn ? Viewpoint(boundingGeometry: Camera.zoomedIn.location, camera: Camera.zoomedIn) : Viewpoint(boundingGeometry: Camera.zoomedOut.location, camera: Camera.zoomedOut)
+                    camera = isZoomedIn ? Camera.zoomedIn : Camera.zoomedOut
                     isZoomedIn.toggle()
                 }
                 .disabled(isZooming)
