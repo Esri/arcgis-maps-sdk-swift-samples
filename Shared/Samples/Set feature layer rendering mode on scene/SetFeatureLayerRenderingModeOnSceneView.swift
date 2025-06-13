@@ -29,7 +29,7 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
     @State private var camera: Camera = .zoomedOut
     
     /// A Boolean value indicating whether the scene is fully zoomed in.
-    @State private var isZoomedIn = true
+    @State private var isZoomedIn = false
     
     init() {
         // The service feature tables using point, polygon, and polyline services.
@@ -86,9 +86,9 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
         }
         .toolbar {
             ToolbarItem(placement: .bottomBar) {
-                Button(isZoomedIn ? "Zoom In" : "Zoom Out") {
+                Button(isZoomedIn ? "Zoom Out" : "Zoom In") {
                     isZooming = true
-                    camera = isZoomedIn ? .zoomedIn : .zoomedOut
+                    camera = isZoomedIn ? .zoomedOut : .zoomedIn
                     isZoomedIn.toggle()
                 }
                 .disabled(isZooming)
