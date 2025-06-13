@@ -1,0 +1,31 @@
+{
+    "category": "Scenes",
+    "description": "Extrude graphics based on an attribute value.",
+    "ignore": false,
+    "images": [
+        "add-3d-tiles-layer.png"
+    ],
+    "keywords": [
+        "3D",
+        "extrude",
+        "extrusion",
+        "height",
+        "scene",
+        "visualization",
+        "Renderer.SceneProperties",
+        "SceneProperties.ExtrusionMode",
+        "SceneProperties.setExtrusionExpression()",
+        "SimpleRenderer"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Renderer.SceneProperties",
+        "SceneProperties.ExtrusionMode",
+        "SceneProperties.setExtrusionExpression()",
+        "SimpleRenderer"
+    ],
+    "snippets": [
+        "ShowExtrudedGraphicsView.swift"
+    ],
+    "title": "Show extruded graphics"
+}

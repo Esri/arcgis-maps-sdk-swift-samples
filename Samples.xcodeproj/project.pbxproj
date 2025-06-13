@@ -187,6 +187,8 @@
 		1C7B85E42DF0B86F00B267EA /* SetAtmosphereEffectInSceneView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C7B85E12DF0B86F00B267EA /* SetAtmosphereEffectInSceneView.swift */; };
 		1C7B85E72DF37F7700B267EA /* SetFeatureLayerRenderingModeOnMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7B85E52DF37F7700B267EA /* SetFeatureLayerRenderingModeOnMapView.swift */; };
 		1C7B85E82DF37F7700B267EA /* SetFeatureLayerRenderingModeOnMapView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C7B85E52DF37F7700B267EA /* SetFeatureLayerRenderingModeOnMapView.swift */; };
+		1C7B861C2DFB4EAF00B267EA /* ShowExtrudedGraphicsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7B861A2DFB4EAF00B267EA /* ShowExtrudedGraphicsView.swift */; };
+		1C7B861D2DFB4EAF00B267EA /* ShowExtrudedGraphicsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C7B861A2DFB4EAF00B267EA /* ShowExtrudedGraphicsView.swift */; };
 		1C8438F42DDBD02C005CCBC7 /* GasDeviceAnno.mmpk in Resources */ = {isa = PBXBuildFile; fileRef = 1C8438F32DDBD02C005CCBC7 /* GasDeviceAnno.mmpk */; settings = {ASSET_TAGS = (ControlAnnotationSublayerVisibility, ); }; };
 		1C8438F82DDBDE1F005CCBC7 /* ControlAnnotationSublayerVisibilityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C8438F62DDBDE1F005CCBC7 /* ControlAnnotationSublayerVisibilityView.swift */; };
 		1C8438F92DDBDE1F005CCBC7 /* ControlAnnotationSublayerVisibilityView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C8438F62DDBDE1F005CCBC7 /* ControlAnnotationSublayerVisibilityView.swift */; };
@@ -844,6 +846,7 @@
 				D77688152B69828E007C3860 /* ListSpatialReferenceTransformationsView.swift in Copy Source Code Files */,
 				D7C3AB4D2B6832B7008909B9 /* SetFeatureRequestModeView.swift in Copy Source Code Files */,
 				D73FC90C2B6312A5001AC486 /* AddFeaturesWithContingentValuesView.AddFeatureView.swift in Copy Source Code Files */,
+				1C7B861D2DFB4EAF00B267EA /* ShowExtrudedGraphicsView.swift in Copy Source Code Files */,
 				D73FC90B2B6312A0001AC486 /* AddFeaturesWithContingentValuesView.Model.swift in Copy Source Code Files */,
 				D7F8C03B2B6056790072BFA7 /* AddFeaturesWithContingentValuesView.swift in Copy Source Code Files */,
 				D73F066C2B5EE760000B574F /* QueryFeaturesWithArcadeExpressionView.swift in Copy Source Code Files */,
@@ -1101,6 +1104,7 @@
 		1C7B85DD2DEE47F200B267EA /* QueryWithTimeExtentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryWithTimeExtentView.swift; sourceTree = "<group>"; };
 		1C7B85E12DF0B86F00B267EA /* SetAtmosphereEffectInSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetAtmosphereEffectInSceneView.swift; sourceTree = "<group>"; };
 		1C7B85E52DF37F7700B267EA /* SetFeatureLayerRenderingModeOnMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetFeatureLayerRenderingModeOnMapView.swift; sourceTree = "<group>"; };
+		1C7B861A2DFB4EAF00B267EA /* ShowExtrudedGraphicsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowExtrudedGraphicsView.swift; sourceTree = "<group>"; };
 		1C8438F32DDBD02C005CCBC7 /* GasDeviceAnno.mmpk */ = {isa = PBXFileReference; lastKnownFileType = file; path = GasDeviceAnno.mmpk; sourceTree = "<group>"; };
 		1C8438F62DDBDE1F005CCBC7 /* ControlAnnotationSublayerVisibilityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlAnnotationSublayerVisibilityView.swift; sourceTree = "<group>"; };
 		1C8438FA2DDCFCA9005CCBC7 /* ControlAnnotationSublayerVisibilityView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlAnnotationSublayerVisibilityView.Model.swift; sourceTree = "<group>"; };
@@ -1745,6 +1749,7 @@
 				95F8912A2C46E9F00010EBED /* Show device location using indoor positioning */,
 				4D126D6829CA1B6000CFB7A7 /* Show device location with NMEA data sources */,
 				D722BD1E2A420D7E002C2087 /* Show extruded features */,
+				1C7B861B2DFB4EAF00B267EA /* Show extruded graphics */,
 				88129D782DD5034B001599A5 /* Show geodesic path between two points */,
 				00ABA94B2BF671FC00C0488C /* Show grid */,
 				D751017D2A2E490800B8FA48 /* Show labels on layer */,
@@ -2279,6 +2284,14 @@
 				1C7B85E52DF37F7700B267EA /* SetFeatureLayerRenderingModeOnMapView.swift */,
 			);
 			path = "Set feature layer rendering mode on map";
+			sourceTree = "<group>";
+		};
+		1C7B861B2DFB4EAF00B267EA /* Show extruded graphics */ = {
+			isa = PBXGroup;
+			children = (
+				1C7B861A2DFB4EAF00B267EA /* ShowExtrudedGraphicsView.swift */,
+			);
+			path = "Show extruded graphics";
 			sourceTree = "<group>";
 		};
 		1C8438F22DDBCFFC005CCBC7 /* b87307dcfb26411eb2e92e1627cb615b */ = {
@@ -4526,6 +4539,7 @@
 				D7F913572DF0F272009CF629 /* QueryTableStatisticsGroupAndSortView.Views.swift in Sources */,
 				0042E24528E4F82C001F33D6 /* ShowViewshedFromPointInSceneView.ViewshedSettingsView.swift in Sources */,
 				D7DDF8532AF47C6C004352D9 /* FindRouteAroundBarriersView.swift in Sources */,
+				1C7B861C2DFB4EAF00B267EA /* ShowExtrudedGraphicsView.swift in Sources */,
 				1C9B74D929DB54560038B06F /* ChangeCameraControllerView.swift in Sources */,
 				D7BEBAD22CBDFE1C00F882E7 /* DisplayAlternateSymbolsAtDifferentScalesView.swift in Sources */,
 				D76000AE2AF19C2300B3084D /* FindRouteInMobileMapPackageView.swift in Sources */,
