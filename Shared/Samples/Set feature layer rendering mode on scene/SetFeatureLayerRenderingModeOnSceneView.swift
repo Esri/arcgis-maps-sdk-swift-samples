@@ -68,6 +68,7 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
                         }
                         isZooming = false
                     }
+                    .disabled(true)
             }
             SceneViewReader { sceneViewProxy in
                 SceneView(scene: dynamicScene)
@@ -84,6 +85,7 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
                         }
                         isZooming = false
                     }
+                    .disabled(true)
             }
         }
         .toolbar {
