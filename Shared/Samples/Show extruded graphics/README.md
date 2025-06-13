@@ -23,8 +23,8 @@ Run the sample. Note that the graphics are extruded to the level set in their he
 ## Relevant API
 
 * RendererSceneProperties
-* RendererSceneProperties.extrusionExpression
 * RendererSceneProperties.ExtrusionMode
+* RendererSceneProperties.extrusionExpression
 * SimpleRenderer
 
 ## About the data
