@@ -31,7 +31,6 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
     /// A Boolean value indicating whether the scene is fully zoomed in.
     @State private var isZoomedIn = true
     
-    
     init() {
         // The service feature tables using point, polygon, and polyline services.
         let featureTables: [ServiceFeatureTable] = [URL.pointTable, .polylineTable, .polygonTable].map(ServiceFeatureTable.init(url:))
@@ -48,8 +47,8 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
             staticFeatureLayer.renderingMode = .static
             staticScene.addOperationalLayer(staticFeatureLayer)
         }
-        staticScene.initialViewpoint = .zoomedOutViewpoint
-        dynamicScene.initialViewpoint = .zoomedOutViewpoint
+        staticScene.initialViewpoint = Viewpoint(boundingGeometry: Camera.zoomedOut.location, camera: Camera.zoomedOut)
+        dynamicScene.initialViewpoint = Viewpoint(boundingGeometry: Camera.zoomedOut.location, camera: Camera.zoomedOut)
     }
     
     var body: some View {
@@ -87,33 +86,16 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
                     }
             }
         }
-        .onChange(of: isZooming) {
-            guard isZooming else {
-                isZoomedIn.toggle()
-                return
-            }
-            viewpoint = isZoomedIn ? .zoomedInViewpoint : .zoomedOutViewpoint
-        }
         .toolbar {
             ToolbarItem(placement: .bottomBar) {
-                Button(isZoomedIn ? "Zoom Out" : "Zoom In") {
+                Button(isZoomedIn ? "Zoom In" : "Zoom Out") {
                     isZooming = true
+                    viewpoint = isZoomedIn ? Viewpoint(boundingGeometry: Camera.zoomedIn.location, camera: Camera.zoomedIn) : Viewpoint(boundingGeometry: Camera.zoomedOut.location, camera: Camera.zoomedOut)
+                    isZoomedIn.toggle()
                 }
                 .disabled(isZooming)
             }
         }
-    }
-}
-
-private extension Viewpoint {
-    /// Viewpoint for scene fully zoomed in.
-    static var zoomedInViewpoint: Viewpoint {
-        return Viewpoint(boundingGeometry: Camera.zoomedIn.location, camera: Camera.zoomedIn)
-    }
-    
-    /// Viewpoint for scene fully zoomed out.
-    static var zoomedOutViewpoint: Viewpoint {
-        return Viewpoint(boundingGeometry: Camera.zoomedOut.location, camera: Camera.zoomedOut)
     }
 }
 
