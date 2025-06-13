@@ -22,73 +22,85 @@ struct SetMapImageLayerSublayerVisibilityView: View {
     /// The error shown in the error alert.
     @State private var error: Error?
     
-    /// Holds the reference to the selected sublayer..
-    @State private var sublayerSelection: SublayerSelection = .world
-    
     @State private var map: Map = {
-        // Makes a new map with an oceans basemap style.
         let map = Map()
         return map
     }()
     
-    @State private var imageLayer: ArcGISMapImageLayer = {
+    @State private var mapImageLayer: ArcGISMapImageLayer = {
         let imageLayer = ArcGISMapImageLayer(url: .arcGISMapImageLayerSample)
         return imageLayer
     }()
     
-    @State private var sublayers: [ArcGISMapImageSublayer] = []
-    
-    init() {
-        map.addOperationalLayer(imageLayer)
-    }
+    @State private var sublayerOptions: [SublayerOption] = []
     
     var body: some View {
-        MapViewReader { mapViewProxy in
-            MapView(map: map)
-                .task {
-                    do {
-                        try await imageLayer.load()
-                        await mapViewProxy.setViewpointCenter(Point(x: -11e6, y: 6e6, spatialReference: .webMercator), scale: 9e7)
-                    } catch {
-                        self.error = error
-                    }
-                    for mapLayer in imageLayer.mapImageSublayers {
-                        sublayers.append(mapLayer)
+        MapView(map: map)
+            .onDrawStatusChanged { drawStatus in
+                // Updates the the loading state when the map's draw status is completed.
+                withAnimation {
+                    if drawStatus == .completed {
+                        isLoading = false
                     }
                 }
-                .toolbar {
-                    ToolbarItemGroup(placement: .bottomBar) {
-                        Picker("Sublayer", selection: $sublayerSelection) {
-                            ForEach(SublayerSelection.allCases, id: \.self) { rule in
-                                Text(rule.label)
+            }
+            .overlay(alignment: .center) {
+                if isLoading {
+                    ProgressView("Loading...")
+                        .padding()
+                        .background(.ultraThickMaterial)
+                        .clipShape(.rect(cornerRadius: 10))
+                        .shadow(radius: 50)
+                }
+            }
+            .task {
+                // Adds the map image layer to the map.
+                map.addOperationalLayer(mapImageLayer)
+                do {
+                    // Loads the map image layer.
+                    try await mapImageLayer.load()
+                    sublayerOptions = mapImageLayer.mapImageSublayers.enumerated().map { index, mapImageSublayer in
+                        SublayerOption(
+                            name: mapImageSublayer.name,
+                            id: index,
+                            isEnabled: mapImageSublayer.isVisible,
+                            sublayer: mapImageSublayer
+                        )
+                    }
+                } catch {
+                    self.error = error
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .bottomBar) {
+                    Menu {
+                        ForEach($sublayerOptions, id: \.id) { $sublayerOption in
+                            Toggle(isOn: $sublayerOption.isEnabled) {
+                                Text(sublayerOption.name)
+                            }
+                            .onChange(of: sublayerOption.isEnabled) {
+                                sublayerOption.sublayer.isVisible = sublayerOption.isEnabled
                             }
                         }
-                        .task(id: sublayerSelection) {
-                            for (_, sublayer) in sublayers.enumerated() {
-                                if sublayer.name == sublayerSelection.label {
-                                    sublayer.isVisible = true
-                                } else {
-                                    sublayer.isVisible = false
-                                }
-                            }
-                        }
-                        .pickerStyle(.automatic)
+                    } label: {
+                        Text("Sublayers")
                     }
                 }
-        }.errorAlert(presentingError: $error)
+            }
+            .errorAlert(presentingError: $error)
     }
 }
 
-private enum SublayerSelection: CaseIterable, Equatable {
-    case cities, continent, world
-    
-    /// The string to be displayed for each `RuleSelection` option.
-    var label: String {
-        switch self {
-        case .cities: "Cities"
-        case .continent: "Continent"
-        case .world: "World"
-        }
+private struct SublayerOption: Equatable, Identifiable {
+    var name: String
+    let id: Int
+    var isEnabled = true
+    let sublayer: ArcGISMapImageSublayer
+}
+
+extension SublayerOption: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
 }
 
