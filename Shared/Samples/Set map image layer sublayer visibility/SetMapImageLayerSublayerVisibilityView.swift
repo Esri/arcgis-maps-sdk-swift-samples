@@ -35,59 +35,46 @@ struct SetMapImageLayerSublayerVisibilityView: View {
     @State private var sublayerOptions: [SublayerOption] = []
     
     var body: some View {
-        MapView(map: map)
-            .onDrawStatusChanged { drawStatus in
-                // Updates the the loading state when the map's draw status is completed.
-                withAnimation {
-                    if drawStatus == .completed {
-                        isLoading = false
-                    }
-                }
-            }
-            .overlay(alignment: .center) {
-                if isLoading {
-                    ProgressView("Loading...")
-                        .padding()
-                        .background(.ultraThickMaterial)
-                        .clipShape(.rect(cornerRadius: 10))
-                        .shadow(radius: 50)
-                }
-            }
-            .task {
-                // Adds the map image layer to the map.
-                map.addOperationalLayer(mapImageLayer)
-                do {
-                    // Loads the map image layer.
-                    try await mapImageLayer.load()
-                    sublayerOptions = mapImageLayer.mapImageSublayers.enumerated().map { index, mapImageSublayer in
-                        SublayerOption(
-                            name: mapImageSublayer.name,
-                            id: index,
-                            isEnabled: mapImageSublayer.isVisible,
-                            sublayer: mapImageSublayer
-                        )
-                    }
-                } catch {
-                    self.error = error
-                }
-            }
-            .toolbar {
-                ToolbarItem(placement: .bottomBar) {
-                    Menu {
-                        ForEach($sublayerOptions, id: \.id) { $sublayerOption in
-                            Toggle(isOn: $sublayerOption.isEnabled) {
-                                Text(sublayerOption.name)
-                            }
-                            .onChange(of: sublayerOption.isEnabled) {
-                                sublayerOption.sublayer.isVisible = sublayerOption.isEnabled
-                            }
+        MapViewReader { proxy in
+            MapView(map: map)
+                .task {
+                    // Adds the map image layer to the map.
+                    map.addOperationalLayer(mapImageLayer)
+                    do {
+                        // Loads the map image layer.
+                        try await mapImageLayer.load()
+                        sublayerOptions = mapImageLayer.mapImageSublayers.enumerated().map { index, mapImageSublayer in
+                            SublayerOption(
+                                name: mapImageSublayer.name,
+                                id: index,
+                                isEnabled: mapImageSublayer.isVisible,
+                                sublayer: mapImageSublayer
+                            )
                         }
-                    } label: {
-                        Text("Sublayers")
+                        await proxy.setViewpoint(Viewpoint(center: Point(x: -11e6, y: 6e6, spatialReference: .webMercator), scale: 9e7))
+                    } catch {
+                        self.error = error
                     }
                 }
-            }
-            .errorAlert(presentingError: $error)
+                .toolbar {
+                    ToolbarItem(placement: .bottomBar) {
+                        Menu {
+                            ForEach($sublayerOptions, id: \.id) { $sublayerOption in
+                                Toggle(isOn: $sublayerOption.isEnabled) {
+                                    Text(sublayerOption.name)
+                                }
+                                .onChange(of: sublayerOption.isEnabled) {
+                                    sublayerOption.sublayer.isVisible = sublayerOption.isEnabled
+                                }
+                            }
+                        } label: {
+                            Text("Sublayers")
+                        }
+                    }
+                }
+                .errorAlert(presentingError: $error)
+        }
+        
     }
 }
 
