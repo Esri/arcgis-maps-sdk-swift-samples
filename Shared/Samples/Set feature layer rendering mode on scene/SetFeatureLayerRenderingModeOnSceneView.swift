@@ -31,10 +31,10 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
     /// A Boolean value indicating whether the scene is fully zoomed in.
     @State private var isZoomedIn = true
     
-    /// Creates service feature tables using point, polygon, and polyline services.
-    let featureTables: [ServiceFeatureTable] = [URL.pointTable, .polylineTable, .polygonTable].map(ServiceFeatureTable.init(url:))
     
     init() {
+        // The service feature tables using point, polygon, and polyline services.
+        let featureTables: [ServiceFeatureTable] = [URL.pointTable, .polylineTable, .polygonTable].map(ServiceFeatureTable.init(url:))
         // Iterate through the feature tables and use them to set up feature layers.
         // Set the rendering mode for either dynamic or static rendering,
         // and add the feature layers to the scene.
@@ -65,7 +65,7 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
                     }
                     .task(id: viewpoint) {
                         if let viewpoint = viewpoint {
-                            await sceneViewProxy.setViewpoint(viewpoint, duration: 0.5)
+                            await sceneViewProxy.setViewpoint(viewpoint, duration: 2)
                         }
                         isZooming = false
                     }
@@ -81,7 +81,7 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
                     }
                     .task(id: viewpoint) {
                         if let viewpoint = viewpoint {
-                            await sceneViewProxy.setViewpoint(viewpoint, duration: 0.5)
+                            await sceneViewProxy.setViewpoint(viewpoint, duration: 2)
                         }
                         isZooming = false
                     }
@@ -122,8 +122,8 @@ private extension Camera {
     static var zoomedIn: Camera {
         Camera(
             lookingAt: Point(
-                x: -118.45,
-                y: 34.395
+                latitude: 34.395,
+                longitude: -118.45
             ),
             distance: 2500,
             heading: 90,
@@ -136,8 +136,8 @@ private extension Camera {
     static var zoomedOut: Camera {
         Camera(
             lookingAt: Point(
-                x: -118.37,
-                y: 34.46
+                latitude: 34.46,
+                longitude: -118.37
             ),
             distance: 30000,
             heading: 0,
