@@ -24,7 +24,6 @@ Run the sample. Note that the graphics are extruded to the level set in their he
 
 * RendererSceneProperties
 * RendererSceneProperties.ExtrusionMode
-* RendererSceneProperties.extrusionExpression
 * SimpleRenderer
 
 ## About the data
