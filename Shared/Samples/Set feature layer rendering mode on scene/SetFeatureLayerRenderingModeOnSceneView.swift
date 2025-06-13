@@ -88,7 +88,7 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
             ToolbarItem(placement: .bottomBar) {
                 Button(isZoomedIn ? "Zoom In" : "Zoom Out") {
                     isZooming = true
-                    camera = isZoomedIn ? Camera.zoomedIn : Camera.zoomedOut
+                    camera = isZoomedIn ? .zoomedIn : .zoomedOut
                     isZoomedIn.toggle()
                 }
                 .disabled(isZooming)
