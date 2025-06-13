@@ -26,7 +26,7 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
     @State private var isZooming = false
     
     /// The viewpoint for the scene.
-    @State private var camera: Camera? = .zoomedOut
+    @State private var camera: Camera = .zoomedOut
     
     /// A Boolean value indicating whether the scene is fully zoomed in.
     @State private var isZoomedIn = true
@@ -63,9 +63,7 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
                             .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
                     }
                     .task(id: camera) {
-                        if let camera = camera {
-                            await sceneViewProxy.setViewpointCamera(camera, duration: 2)
-                        }
+                        await sceneViewProxy.setViewpointCamera(camera, duration: 2)
                         isZooming = false
                     }
                     .disabled(true)
@@ -80,9 +78,7 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
                             .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
                     }
                     .task(id: camera) {
-                        if let camera = camera {
-                            await sceneViewProxy.setViewpointCamera(camera, duration: 2)
-                        }
+                        await sceneViewProxy.setViewpointCamera(camera, duration: 2)
                         isZooming = false
                     }
                     .disabled(true)
