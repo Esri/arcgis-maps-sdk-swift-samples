@@ -13,15 +13,15 @@
         "scene",
         "visualization",
         "RendererSceneProperties",
-        "RendererSceneProperties.ExtrusionMode",
         "RendererSceneProperties.extrusionExpression",
+        "RendererSceneProperties.ExtrusionMode",
         "SimpleRenderer"
     ],
     "redirect_from": [],
     "relevant_apis": [
         "RendererSceneProperties",
-        "RendererSceneProperties.ExtrusionMode",
         "RendererSceneProperties.extrusionExpression",
+        "RendererSceneProperties.ExtrusionMode",
         "SimpleRenderer"
     ],
     "snippets": [
