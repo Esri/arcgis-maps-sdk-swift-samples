@@ -14,3 +14,17 @@
 
 import ArcGIS
 import SwiftUI
+
+struct ShowGeodesicSectorAndEllipseView: View {
+    
+    @State private var map = Map(basemapStyle: .arcGISImageryStandard)
+    
+    var body: some View {
+        MapView(map: map)
+    }
+    
+}
+
+#Preview {
+    ShowGeodesicSectorAndEllipseView()
+}
