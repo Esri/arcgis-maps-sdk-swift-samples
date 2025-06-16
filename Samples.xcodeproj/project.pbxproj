@@ -299,6 +299,7 @@
 		88FB70D42DCD10B600EB76E3 /* AuthenticateWithIntegratedWindowsAuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88FB70D32DCD10B600EB76E3 /* AuthenticateWithIntegratedWindowsAuthenticationView.swift */; };
 		88FB70D52DD3C2E000EB76E3 /* AuthenticateWithIntegratedWindowsAuthenticationView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 88FB70D32DCD10B600EB76E3 /* AuthenticateWithIntegratedWindowsAuthenticationView.swift */; };
 		9503056E2C46ECB70091B32D /* ShowDeviceLocationUsingIndoorPositioningView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9503056D2C46ECB70091B32D /* ShowDeviceLocationUsingIndoorPositioningView.Model.swift */; };
+		951961AC2E00BC420088B0C2 /* ShowGeodesicSectorAndEllipseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951961AB2E00BC3C0088B0C2 /* ShowGeodesicSectorAndEllipseView.swift */; };
 		9529D1942C01676200B5C1A3 /* SelectFeaturesInSceneLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 954AEDED2C01332600265114 /* SelectFeaturesInSceneLayerView.swift */; };
 		9537AFD72C220EF0000923C5 /* ExchangeSetwithoutUpdates in Resources */ = {isa = PBXBuildFile; fileRef = 9537AFD62C220EF0000923C5 /* ExchangeSetwithoutUpdates */; settings = {ASSET_TAGS = (ConfigureElectronicNavigationalCharts, ); }; };
 		9547085C2C3C719800CA8579 /* EditFeatureAttachmentsView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9547085B2C3C719800CA8579 /* EditFeatureAttachmentsView.Model.swift */; };
@@ -1164,6 +1165,7 @@
 		88FB70D02DCC247B00EB76E3 /* Aurora_CO_shp */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Aurora_CO_shp; sourceTree = "<group>"; };
 		88FB70D32DCD10B600EB76E3 /* AuthenticateWithIntegratedWindowsAuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticateWithIntegratedWindowsAuthenticationView.swift; sourceTree = "<group>"; };
 		9503056D2C46ECB70091B32D /* ShowDeviceLocationUsingIndoorPositioningView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowDeviceLocationUsingIndoorPositioningView.Model.swift; sourceTree = "<group>"; };
+		951961AB2E00BC3C0088B0C2 /* ShowGeodesicSectorAndEllipseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowGeodesicSectorAndEllipseView.swift; sourceTree = "<group>"; };
 		9537AFD62C220EF0000923C5 /* ExchangeSetwithoutUpdates */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExchangeSetwithoutUpdates; sourceTree = "<group>"; };
 		9547085B2C3C719800CA8579 /* EditFeatureAttachmentsView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFeatureAttachmentsView.Model.swift; sourceTree = "<group>"; };
 		954AEDED2C01332600265114 /* SelectFeaturesInSceneLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectFeaturesInSceneLayerView.swift; sourceTree = "<group>"; };
@@ -1751,6 +1753,7 @@
 				4D126D6829CA1B6000CFB7A7 /* Show device location with NMEA data sources */,
 				D722BD1E2A420D7E002C2087 /* Show extruded features */,
 				88129D782DD5034B001599A5 /* Show geodesic path between two points */,
+				951961AD2E00BC760088B0C2 /* Show geodesic sector and ellipse */,
 				00ABA94B2BF671FC00C0488C /* Show grid */,
 				D751017D2A2E490800B8FA48 /* Show labels on layer */,
 				1C293D562DD53523000B0822 /* Show labels on layer in 3D */,
@@ -2636,6 +2639,14 @@
 				88FB70D32DCD10B600EB76E3 /* AuthenticateWithIntegratedWindowsAuthenticationView.swift */,
 			);
 			path = "Authenticate with Integrated Windows Authentication";
+			sourceTree = "<group>";
+		};
+		951961AD2E00BC760088B0C2 /* Show geodesic sector and ellipse */ = {
+			isa = PBXGroup;
+			children = (
+				951961AB2E00BC3C0088B0C2 /* ShowGeodesicSectorAndEllipseView.swift */,
+			);
+			path = "Show geodesic sector and ellipse";
 			sourceTree = "<group>";
 		};
 		9537AFC82C220ECB000923C5 /* 9d2987a825c646468b3ce7512fb76e2d */ = {
@@ -4324,6 +4335,7 @@
 				D77BC5392B59A2D3007B49B6 /* StylePointWithDistanceCompositeSceneSymbolView.swift in Sources */,
 				D7084FA92AD771AA00EC7F4F /* AugmentRealityToFlyOverSceneView.swift in Sources */,
 				D75B58512AAFB3030038B3B4 /* StyleFeaturesWithCustomDictionaryView.swift in Sources */,
+				951961AC2E00BC420088B0C2 /* ShowGeodesicSectorAndEllipseView.swift in Sources */,
 				0072C8002DBAF08D001502CA /* AddItemsToPortalView.swift in Sources */,
 				E0D04FF228A5390000747989 /* DownloadPreplannedMapAreaView.Model.swift in Sources */,
 				88129D7A2DD5035A001599A5 /* ShowGeodesicPathBetweenTwoPointsView.swift in Sources */,
