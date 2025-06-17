@@ -28,7 +28,7 @@ Run the sample. Note that the graphics are extruded to the level set in their he
 
 ## About the data
 
-Data is hard coded in this sample as a demonstration of how to create and set an attribute to a graphic. To extrude graphics based on pre-existing attributes (e.g. from a feature layer) see the FeatureLayerExtrusion sample.
+Data is hard coded in this sample as a demonstration of how to create and set an attribute to a graphic. To extrude graphics based on pre-existing attributes (e.g. from a feature layer) see the "Show extruded features" sample.
 
 ## Tags
 

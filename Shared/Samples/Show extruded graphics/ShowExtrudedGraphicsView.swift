@@ -37,7 +37,7 @@ struct ShowExtrudedGraphicsView: View {
     }()
     
     /// The scene view graphics overlay.
-    private var graphicsOverlay: GraphicsOverlay = {
+    @State private var graphicsOverlay: GraphicsOverlay = {
         // Create a graphics overlay.
         let graphicsOverlay = GraphicsOverlay()
         graphicsOverlay.sceneProperties.surfacePlacement = .drapedBillboarded
