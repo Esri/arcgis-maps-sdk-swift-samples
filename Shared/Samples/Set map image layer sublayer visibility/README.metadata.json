@@ -10,12 +10,12 @@
         "sublayer",
         "visibility",
         "ArcGISMapImageLayer",
-        "SubLayerList"
+        "ArcGISMapImageSublayer"
     ],
     "redirect_from": [],
     "relevant_apis": [
         "ArcGISMapImageLayer",
-        "SubLayerList"
+        "ArcGISMapImageSublayer"
     ],
     "snippets": [
         "SetMapImageLayerSublayerVisibilityView.swift"
