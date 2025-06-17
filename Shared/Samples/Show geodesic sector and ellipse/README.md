@@ -2,7 +2,7 @@
 
 Create and display geodesic sectors and ellipses.
 
-Image of show geodesic sector and ellipse
+![Image of show geodesic sector and ellipse](show-geodesic-sector-and-ellipse.png)
 
 ## Use case
 
