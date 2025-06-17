@@ -16,13 +16,34 @@ import ArcGIS
 import SwiftUI
 
 struct ShowGeodesicSectorAndEllipseView: View {
-    
-    @State private var map = Map(basemapStyle: .arcGISImageryStandard)
+    /// The error shown in the error alert.
+    @State private var error: Error?
+    @State private var model = Model()
     
     var body: some View {
-        MapView(map: map)
+        MapView(map: model.map)
+            .onSingleTapGesture { _, mapPoint in
+                
+            }
+            .errorAlert(presentingError: $error)
     }
     
+}
+
+private extension ShowGeodesicSectorAndEllipseView {
+    /// The model used to store the geo model and other expensive objects
+    /// used in this view.
+    class Model: ObservableObject {
+        @State var map = Map(basemapStyle: .arcGISImageryStandard)
+        @State var sectorParameters : GeodesicSectorParameters? = nil
+        @State var ellipseParameters : GeodesicEllipseParameters? = nil
+        @State var overlay = GraphicsOverlay()
+        
+        init() {
+            //                let geometry = GeometryEngine.geodesicEllipse(parameters: model.ellipseParameters!)
+            //                let overlay = GraphicsOverlay(graphics: [Graphic(geometry: geometry)])
+        }
+    }
 }
 
 #Preview {
