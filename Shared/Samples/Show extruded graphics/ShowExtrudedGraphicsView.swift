@@ -68,19 +68,19 @@ struct ShowExtrudedGraphicsView: View {
         
         let spacing = 0.01
         
-        for column in stride(from: 0.0, to: 6.0, by: 1.0) {
-            for row in stride(from: 0.0, to: 4.0, by: 1.0) {
+        for column in stride(from: 0, to: 6, by: 1.0) {
+            for row in stride(from: 0, to: 4, by: 1.0) {
                 let startingX: Double = x + column * (.squareSize + spacing)
                 let startingY: Double = y + row * (.squareSize + spacing)
                 let startingPoint = Point(x: startingX, y: startingY)
-                let polygon = ShowExtrudedGraphicsView.polygon(for: startingPoint)
+                let polygon = polygon(for: startingPoint)
                 let graphic = extrudedGraphic(for: polygon)
                 graphicsOverlay.addGraphic(graphic)
             }
         }
     }
     
-    /// An extruded graphic created from a given polygon with a randon height.
+    /// An extruded graphic created from a given polygon with a random height.
     /// - Parameter polygon: The polygon.
     /// - Returns: A graphic.
     private func extrudedGraphic(for polygon: ArcGIS.Polygon) -> Graphic {
@@ -94,7 +94,7 @@ struct ShowExtrudedGraphicsView: View {
     /// A square polygon created from a given point.
     /// - Parameter point: The point.
     /// - Returns: A polygon.
-    private static func polygon(for point: Point) -> ArcGIS.Polygon {
+    private func polygon(for point: Point) -> ArcGIS.Polygon {
         let polygon = PolygonBuilder()
         polygon.add(Point(x: point.x, y: point.y))
         polygon.add(Point(x: point.x, y: point.y + .squareSize))
