@@ -19,14 +19,43 @@ struct ShowGeodesicSectorAndEllipseView: View {
     /// The error shown in the error alert.
     @State private var error: Error?
     @State private var model = Model()
+    @State var map = Map(basemapStyle: .arcGISImageryStandard)
+    @State var sectorParameters : GeodesicSectorParameters? = nil
+    @State var ellipseParameters : GeodesicEllipseParameters? = nil
+    var sectorFillSymbol: SimpleFillSymbol?
+    var sectorLineSymbol: SimpleLineSymbol?
+    var sectorMarkerSymbol: SimpleMarkerSymbol?
+    var ellipseGraphic: Graphic?
+    /// A Boolean value indicating whether the settings are presented.
+    @State private var settingsArePresented = false
+    
+    
+    let geometryOverlay: GraphicsOverlay = {
+        let overlay = GraphicsOverlay(renderingMode: .dynamic)
+        overlay.id = "Graphics Overlay"
+        return overlay
+    }()
     
     var body: some View {
-        MapView(map: model.map)
+        MapView(map: map)
             .onSingleTapGesture { _, mapPoint in
+                
+            }
+            .toolbar {
                 
             }
             .errorAlert(presentingError: $error)
     }
+    
+    private func setupSector() {
+//        sectorParameters = GeodesicSectorParameters(axisDirection: 1, maxPointCount: 100, maxSegmentLength: 1000, geometryType: Geometry.Type.lines, center: Point(x: 0, y: 0))
+//        sectorParameters?.axisDirection = 0.5
+//       / sectorParameters?.maxPointCount = 100
+//        sectorParameters?.maxSegmentLength = 1000
+//        sectorParameters?.geometryType = Geometry.Dimension.point
+    }
+    
+
     
 }
 
