@@ -18,7 +18,7 @@ import SwiftUI
 struct ShowGeodesicSectorAndEllipseView: View {
     /// The error shown in the error alert.
     @State private var error: Error?
-    @State private var model = Model()
+//    @State private var model = Model()
     @State var map = Map(basemapStyle: .arcGISImageryStandard)
     @State var sectorParameters : GeodesicSectorParameters? = nil
     @State var ellipseParameters : GeodesicEllipseParameters? = nil
@@ -28,7 +28,9 @@ struct ShowGeodesicSectorAndEllipseView: View {
     var ellipseGraphic: Graphic?
     /// A Boolean value indicating whether the settings are presented.
     @State private var settingsArePresented = false
-    
+    /// The point on the screen the user tapped.
+    @State private var tappedScreenPoint: CGPoint?
+    @State private var tappedMapPoint: Point?
     
     let geometryOverlay: GraphicsOverlay = {
         let overlay = GraphicsOverlay(renderingMode: .dynamic)
@@ -37,14 +39,23 @@ struct ShowGeodesicSectorAndEllipseView: View {
     }()
     
     var body: some View {
-        MapView(map: map)
-            .onSingleTapGesture { _, mapPoint in
-                
-            }
-            .toolbar {
-                
-            }
-            .errorAlert(presentingError: $error)
+        MapViewReader { proxy in
+            MapView(map: map)
+                .onSingleTapGesture { screenPoint, mapPoint in
+                    tappedScreenPoint = screenPoint
+                    tappedMapPoint = mapPoint
+                    print(mapPoint)
+                }
+                .task(id: tappedMapPoint) {
+                    await proxy.setViewpointCenter(tappedMapPoint!)
+                    let geometry = GeometryEngine.geodesicEllipse(parameters: ellipseParameters!)
+                    let overlay = GraphicsOverlay(graphics: [Graphic(geometry: geometry)])
+                }
+                .toolbar {
+                    
+                }
+                .errorAlert(presentingError: $error)
+        }
     }
     
     private func setupSector() {
@@ -54,8 +65,6 @@ struct ShowGeodesicSectorAndEllipseView: View {
 //        sectorParameters?.maxSegmentLength = 1000
 //        sectorParameters?.geometryType = Geometry.Dimension.point
     }
-    
-
     
 }
 
@@ -79,7 +88,7 @@ private extension ShowGeodesicSectorAndEllipseView {
         }()
         
         init() {
-            let geometry = GeometryEngine.geodesicEllipse(parameters: ellipseParameters!)
+//            let geometry = GeometryEngine.geodesicEllipse(parameters: ellipseParameters!)
             //                let overlay = GraphicsOverlay(graphics: [Graphic(geometry: geometry)])
         }
         
