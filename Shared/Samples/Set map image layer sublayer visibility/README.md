@@ -15,7 +15,7 @@ Each sublayer has a check box which can be used to toggle the visibility of the 
 ## How it works
 
 1. Create an `ArcGISMapImageLayer` object with the URL to a map image service.
-2. Get the `SubLayerList` with `mapImageLayer.load()`.
+2. Get an array of `ArcGISMapImageSublayer` after loading the map image layer.
 3. For each layer in the sublayer list, set its visible property to true or false.
 
 ## Relevant API
