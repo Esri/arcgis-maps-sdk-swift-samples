@@ -16,72 +16,74 @@ import ArcGIS
 import SwiftUI
 
 struct SetMapImageLayerSublayerVisibilityView: View {
-    /// The tracking status for the loading operation.
-    @State private var isLoading = false
-    
     /// The error shown in the error alert.
     @State private var error: Error?
     
+    /// A map with no specified style and initial viewpoint.
     @State private var map: Map = {
         let map = Map()
+        map.initialViewpoint = Viewpoint(
+            center: Point(
+                x: -11e6,
+                y: 6e6,
+                spatialReference: .webMercator
+            ),
+            scale: 9e7
+        )
+        
         return map
     }()
     
-    @State private var mapImageLayer: ArcGISMapImageLayer = {
-        let imageLayer = ArcGISMapImageLayer(url: .arcGISMapImageLayerSample)
-        return imageLayer
-    }()
+    /// The map image layer.
+    @State private var mapImageLayer = ArcGISMapImageLayer(url: .arcGISMapImageLayerSample)
     
+    /// The sublayer options to control the visibility.
     @State private var sublayerOptions: [SublayerOption] = []
     
     var body: some View {
-        MapViewReader { proxy in
-            MapView(map: map)
-                .task {
+        MapView(map: map)
+            .task {
+                do {
+                    // Loads the map image layer.
+                    try await mapImageLayer.load()
                     // Adds the map image layer to the map.
                     map.addOperationalLayer(mapImageLayer)
-                    do {
-                        // Loads the map image layer.
-                        try await mapImageLayer.load()
-                        sublayerOptions = mapImageLayer.mapImageSublayers.enumerated().map { index, mapImageSublayer in
-                            SublayerOption(
-                                name: mapImageSublayer.name,
-                                id: index,
-                                isEnabled: mapImageSublayer.isVisible,
-                                sublayer: mapImageSublayer
-                            )
-                        }
-                        await proxy.setViewpoint(Viewpoint(center: Point(x: -11e6, y: 6e6, spatialReference: .webMercator), scale: 9e7))
-                    } catch {
-                        self.error = error
+                    sublayerOptions = mapImageLayer.mapImageSublayers.map { mapImageSublayer in
+                        SublayerOption(
+                            name: mapImageSublayer.name,
+                            id: mapImageSublayer.id,
+                            isVisible: mapImageSublayer.isVisible,
+                            sublayer: mapImageSublayer
+                        )
                     }
+                } catch {
+                    self.error = error
                 }
-                .toolbar {
-                    ToolbarItem(placement: .bottomBar) {
-                        Menu {
-                            ForEach($sublayerOptions, id: \.id) { $sublayerOption in
-                                Toggle(isOn: $sublayerOption.isEnabled) {
-                                    Text(sublayerOption.name)
-                                }
-                                .onChange(of: sublayerOption.isEnabled) {
-                                    sublayerOption.sublayer.isVisible = sublayerOption.isEnabled
-                                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .bottomBar) {
+                    Menu {
+                        ForEach($sublayerOptions, id: \.id) { $sublayerOption in
+                            Toggle(isOn: $sublayerOption.isVisible) {
+                                Text(sublayerOption.name)
                             }
-                        } label: {
-                            Text("Sublayers")
+                            .onChange(of: sublayerOption.isVisible) {
+                                sublayerOption.sublayer.isVisible = sublayerOption.isVisible
+                            }
                         }
+                    } label: {
+                        Text("Sublayers")
                     }
                 }
-                .errorAlert(presentingError: $error)
-        }
-        
+            }
+            .errorAlert(presentingError: $error)
     }
 }
 
 private struct SublayerOption: Equatable, Identifiable {
-    var name: String
+    let name: String
     let id: Int
-    var isEnabled = true
+    var isVisible = true
     let sublayer: ArcGISMapImageSublayer
 }
 
