@@ -15,7 +15,7 @@
 import ArcGIS
 import SwiftUI
 
-struct SetMapImageSublayerVisibilityView: View {
+struct SetMapImageLayerSublayerVisibilityView: View {
     /// The error shown in the error alert.
     @State private var error: Error?
     
