@@ -37,11 +37,40 @@ private extension ShowGeodesicSectorAndEllipseView {
         @State var map = Map(basemapStyle: .arcGISImageryStandard)
         @State var sectorParameters : GeodesicSectorParameters? = nil
         @State var ellipseParameters : GeodesicEllipseParameters? = nil
-        @State var overlay = GraphicsOverlay()
+        var sectorFillSymbol: SimpleFillSymbol?
+        var sectorLineSymbol: SimpleLineSymbol?
+        var sectorMarkerSymbol: SimpleMarkerSymbol?
+        var ellipseGraphic: Graphic?
+        
+        
+        let geometryOverlay: GraphicsOverlay = {
+            let overlay = GraphicsOverlay(renderingMode: .dynamic)
+            overlay.id = "Graphics Overlay"
+            return overlay
+        }()
         
         init() {
-            //                let geometry = GeometryEngine.geodesicEllipse(parameters: model.ellipseParameters!)
+            let geometry = GeometryEngine.geodesicEllipse(parameters: ellipseParameters!)
             //                let overlay = GraphicsOverlay(graphics: [Graphic(geometry: geometry)])
+        }
+        
+        /// Returns the symbology for graphics saved to the graphics overlay.
+        /// - Parameter geometry: The geometry of the graphic to be saved.
+        /// - Returns: Either a marker or fill symbol depending on the type of provided geometry.
+        private func symbol(for geometry: Geometry) -> Symbol {
+            switch geometry {
+            case is Point, is Multipoint:
+                return SimpleMarkerSymbol(style: .circle, color: .blue, size: 20)
+            case is Polyline:
+                return SimpleLineSymbol(color: .blue, width: 2)
+            case is ArcGIS.Polygon:
+                return SimpleFillSymbol(
+                    color: .gray.withAlphaComponent(0.5),
+                    outline: SimpleLineSymbol(color: .blue, width: 2)
+                )
+            default:
+                fatalError("Unexpected geometry type")
+            }
         }
     }
 }
