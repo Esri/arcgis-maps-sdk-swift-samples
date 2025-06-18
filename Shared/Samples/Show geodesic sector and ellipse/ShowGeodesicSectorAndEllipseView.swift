@@ -17,16 +17,19 @@ import SwiftUI
 
 struct ShowGeodesicSectorAndEllipseView: View {
     @StateObject private var model = Model()
-    @State private var tapPoint: Point?
-    @State private var semiAxis1Length: Double = 10
-    @State private var semiAxis2Length: Double = 10
-    @State private var axisDirection: Double = 10
-    @State private var maxSegmentLength: Double = 10
-    @State private var sectorAngle: Double = 10
-    @State private var startDirection: Double = 10
-    @State private var maxPointCount: Double = 10
     
-    //geometryType
+    @State private var tapPoint: Point?
+    
+    @State var semiAxis1Length: Double = 10
+    @State var semiAxis2Length: Double = 10
+    @State var axisDirection: Double = 10
+    @State var maxSegmentLength: Double = 10
+    @State var sectorAngle: Double = 10
+    @State var startDirection: Double = 10
+    @State var maxPointCount: Double = 10
+    @State var isPresented: Bool = false
+    @State var geometryTypes: [String] = ["Polygon", "Polyline", "Point"]
+    @State private var selectedGeometryType: GeometryType = .polygon
     
     var body: some View {
         MapViewReader { proxy in
@@ -37,12 +40,23 @@ struct ShowGeodesicSectorAndEllipseView: View {
                 .task(id: tapPoint) {
                     if let tapPoint {
                         await proxy.setViewpoint(Viewpoint(center: tapPoint, scale: 1e8))
-                        model.updateSector(tapPoint: tapPoint)
+                        model.set(tapPoint: tapPoint)
+                        //updateSector(tapPoint: tapPoint)
                     }
                 }
                 .toolbar {
                     ToolbarItemGroup(placement: .bottomBar) {
-                        Button("Angle") { }
+                        Button("Angle") {
+                            isPresented.toggle()
+                        }.popover(isPresented: $isPresented) {
+                            Form {
+                                Picker("Information Mode", selection: $selectedGeometryType) {
+                                    ForEach(GeometryType.allCases, id: \.self) { mode in
+                                        Text(mode.label)
+                                    }
+                                }
+                            }.presentationDetents([.medium])
+                        }
                         Spacer()
                         Button("Axis") { }
                     }
@@ -53,6 +67,20 @@ struct ShowGeodesicSectorAndEllipseView: View {
 
 
 private extension ShowGeodesicSectorAndEllipseView {
+    
+    enum GeometryType: CaseIterable {
+        case point, polyline, polygon
+        
+        /// A human-readable label for the geometry type.
+        var label: String {
+            switch self {
+            case .point: "Point"
+            case .polyline: "Polyline"
+            case .polygon: "Polygon"
+            }
+        }
+    }
+    
     @MainActor
     class Model: ObservableObject {
         var map = Map(basemapStyle: .arcGISTopographic)
@@ -66,6 +94,24 @@ private extension ShowGeodesicSectorAndEllipseView {
         
         var sectorGraphic: Graphic!
         
+        func set(tapPoint: Point) {
+            let parameters = GeodesicEllipseParameters<ArcGIS.Polygon>(
+                axisDirection: -45,
+                center: tapPoint,
+                linearUnit: .kilometers,
+                maxPointCount: 100,
+                maxSegmentLength: 20,
+                semiAxis1Length: 200,
+                semiAxis2Length: 400
+            )
+            
+            var ellipseLineSymbol = SimpleLineSymbol(style: .dash, color: .red, width: 2)
+            let ellipseGeometry = GeometryEngine.geodesicEllipse(parameters: parameters)
+            ellipseGraphic = Graphic(geometry: ellipseGeometry)
+            graphicOverlay = GraphicsOverlay(graphics: [Graphic(geometry: ellipseGeometry)])
+            graphicOverlay.renderer = SimpleRenderer(symbol: ellipseLineSymbol)
+        }
+        
         func updateSector(tapPoint: Point) {
             var sectorParams = GeodesicSectorParameters<ArcGIS.Polygon>()
             sectorParams.center = tapPoint
@@ -78,28 +124,12 @@ private extension ShowGeodesicSectorAndEllipseView {
             sectorParams.startDirection = 0
             
             var sectorGeometry = GeometryEngine.geodesicSector(parameters: sectorParams)
+            
             sectorGraphic = Graphic(geometry: sectorGeometry, symbol: sectorLineSymbol)
             graphicOverlay.addGraphic(sectorGraphic)
-            
-            let symbol = SimpleFillSymbol(style: .solid, color: .green)
-            // Creates the parameters for the ellipse.
-            let parameters = GeodesicEllipseParameters<ArcGIS.Polygon>(
-                axisDirection: -45,
-                center: tapPoint,
-                linearUnit: .kilometers,
-                maxPointCount: 100,
-                maxSegmentLength: 20,
-                semiAxis1Length: 200,
-                semiAxis2Length: 400
-            )
-            // Creates the geometry for the ellipse from the parameters.
-            let ellipseGeometry = GeometryEngine.geodesicEllipse(parameters: parameters)
-            // Creates a graphics overlay containing a graphic with the ellipse geometry.
-            graphicOverlay = GraphicsOverlay(graphics: [Graphic(geometry: ellipseGeometry)])
-            // Creates and assigns a simple renderer to the graphics overlay.
-            graphicOverlay.renderer = SimpleRenderer(symbol: symbol)
         }
     }
+    /// The types of the geometries supported by this sample.
 }
 
 #Preview {
