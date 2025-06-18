@@ -1,0 +1,35 @@
+{
+    "category": "Edit and Manage Data",
+    "description": "Create simple geometry types.",
+    "ignore": false,
+    "images": [
+        "create-geometries.png"
+    ],
+    "keywords": [
+        "area",
+        "boundary",
+        "line",
+        "marker",
+        "path",
+        "shape",
+        "Envelope",
+        "Multipoint",
+        "Point",
+        "PointCollection",
+        "Polygon",
+        "Polyline"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Envelope",
+        "Multipoint",
+        "Point",
+        "PointCollection",
+        "Polygon",
+        "Polyline"
+    ],
+    "snippets": [
+        "CreateGeometriesView.swift"
+    ],
+    "title": "Create geometries"
+}

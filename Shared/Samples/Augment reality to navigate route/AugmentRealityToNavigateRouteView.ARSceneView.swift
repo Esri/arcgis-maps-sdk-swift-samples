@@ -237,7 +237,7 @@ extension AugmentRealityToNavigateRouteView {
         /// Monitors the asynchronous stream of voice guidances.
         private func trackVoiceGuidance() async {
             guard let routeTracker else { return }
-            for try await voiceGuidance in routeTracker.voiceGuidances {
+            for await voiceGuidance in routeTracker.voiceGuidances {
                 speechSynthesizer.stopSpeaking(at: .word)
                 speechSynthesizer.speak(AVSpeechUtterance(string: voiceGuidance.text))
             }
