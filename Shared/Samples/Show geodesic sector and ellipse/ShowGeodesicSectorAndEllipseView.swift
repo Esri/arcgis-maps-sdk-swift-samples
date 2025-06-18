@@ -50,87 +50,75 @@ struct ShowGeodesicSectorAndEllipseView: View {
                             isPresented.toggle()
                         }.popover(isPresented: $isPresented) {
                             Form {
-                                Section(
-                                    header: Text("Axis Direction")
-                                ) {
-                                    Slider(value: $startDirection, in: 0...10) {
-                                        Text("Slider")
+                                Section {
+                                    Slider(value: $axisDirection, in: 0...10) {
                                     } minimumValueLabel: {
-                                        Text("0").font(.title2).fontWeight(.thin)
+                                        Text("Axis Direction: ").font(.caption)
                                     } maximumValueLabel: {
-                                        Text("10").font(.title2).fontWeight(.thin)
+                                        Text(" \(String(format: "%.2f", axisDirection))").font(.caption)
                                     }
-                                }
-                                Section(
-                                    header: Text("Max Point Count")
-                                ) {
+                                    
                                     Stepper(
-                                        "Point Count:\(maxPointCount)",
+                                        "Max Point Count: \(String(format: "%.2f", maxPointCount))",
                                         value: $maxPointCount,
                                         in: 0...10
-                                    )
-                                }
-                                Section(
-                                    header: Text("Max Segment Length")
-                                ) {
+                                    ).font(.caption)
+                                    
                                     Slider(value: $maxSegmentLength, in: 0...10) {
-                                        Text("Slider")
                                     } minimumValueLabel: {
-                                        Text("0").font(.title2).fontWeight(.thin)
+                                        Text("Max Segment Length: ").font(.caption)
                                     } maximumValueLabel: {
-                                        Text("10").font(.title2).fontWeight(.thin)
+                                        Text("\(String(format: "%.2f", maxSegmentLength))").font(.caption)
                                     }
-                                }
-                                Section {
-                                    Picker("Geometry Type", selection: $selectedGeometryType) {
+                                    
+                                    Menu {
                                         ForEach(GeometryType.allCases, id: \.self) { mode in
-                                            Text(mode.label)
+                                            Button {
+                                                selectedGeometryType = mode
+                                            } label: {
+                                                Text(mode.label)
+                                                    .font(.caption)
+                                                    .foregroundColor(.black)
+                                            }
                                         }
+                                    } label: {
+                                        HStack {
+                                            Text("Geometry Type: ")
+                                                .foregroundColor(.black)
+                                            Spacer()
+                                            Text(selectedGeometryType.label)
+                                                .fontWeight(.bold)
+                                                .foregroundColor(.gray)
+                                            VStack {
+                                                Image(systemName: "chevron.up")
+                                                    .font(.caption2).fontWeight(.medium)
+                                                Image(systemName: "chevron.down")
+                                                    .font(.caption2).fontWeight(.medium)
+                                            }
+                                            .foregroundColor(.gray)
+                                        }
+                                        .font(.caption)
                                     }
-                                }
-                                Section(
-                                    header: Text("Sector Angle")
-                                ) {
-                                    Slider(value: $startDirection, in: 0...10) {
-                                        Text("Slider")
+                                    
+                                    Slider(value: $sectorAngle, in: 0...10) {
                                     } minimumValueLabel: {
-                                        Text("0").font(.title2).fontWeight(.thin)
+                                        Text("Sector Angle: ").font(.caption)
                                     } maximumValueLabel: {
-                                        Text("10").font(.title2).fontWeight(.thin)
+                                        Text("\(String(format: "%.2f", sectorAngle))").font(.caption)
                                     }
-                                }
-                                Section(
-                                    header: Text("Semi Axis 1 Length")
-                                ) {
-                                    Slider(value: $startDirection, in: 0...10) {
-                                        Text("Slider")
+                                    
+                                    Slider(value: $semiAxis1Length, in: 0...10) {
                                     } minimumValueLabel: {
-                                        Text("0").font(.title2).fontWeight(.thin)
+                                        Text("Semi Axis 1 Length: ").font(.caption)
                                     } maximumValueLabel: {
-                                        Text("10").font(.title2).fontWeight(.thin)
+                                        Text("\(String(format: "%.2f", semiAxis1Length))").font(.caption)
                                     }
-                                }
-                                
-                                Section(
-                                    header: Text("Semi Axis 2 Length")
-                                ) {
-                                    Slider(value: $startDirection, in: 0...10) {
-                                        Text("Slider")
+                                    
+                                    Slider(value: $semiAxis2Length, in: 0...10) {
                                     } minimumValueLabel: {
-                                        Text("0").font(.title2).fontWeight(.thin)
+                                        Text("Semi Axis 2 Length: ").font(.caption)
                                     } maximumValueLabel: {
-                                        Text("10").font(.title2).fontWeight(.thin)
-                                    }
-                                }
-                                Section(
-                                    header: Text("Semi Axis 2 Length")
-                                ) {
-                                    Slider(value: $startDirection, in: 0...10) {
-                                        Text("Slider")
-                                    } minimumValueLabel: {
-                                        Text("0").font(.title2).fontWeight(.thin)
-                                    } maximumValueLabel: {
-                                        Text("10").font(.title2).fontWeight(.thin)
+                                        Text("\(String(format: "%.2f", semiAxis2Length))").font(.caption)
                                     }
                                 }
                             }.presentationDetents([.medium])
@@ -143,9 +131,7 @@ struct ShowGeodesicSectorAndEllipseView: View {
     }
 }
 
-
 private extension ShowGeodesicSectorAndEllipseView {
-    
     enum GeometryType: CaseIterable {
         case point, polyline, polygon
         
@@ -183,7 +169,7 @@ private extension ShowGeodesicSectorAndEllipseView {
                 semiAxis2Length: 400
             )
             
-            var ellipseLineSymbol = SimpleLineSymbol(style: .dash, color: .red, width: 2)
+            let ellipseLineSymbol = SimpleLineSymbol(style: .dash, color: .red, width: 2)
             let ellipseGeometry = GeometryEngine.geodesicEllipse(parameters: parameters)
             ellipseGraphic = Graphic(geometry: ellipseGeometry)
             graphicOverlay = GraphicsOverlay(graphics: [Graphic(geometry: ellipseGeometry)])
@@ -201,7 +187,7 @@ private extension ShowGeodesicSectorAndEllipseView {
             sectorParams.semiAxis2Length = 400
             sectorParams.startDirection = 0
             
-            var sectorGeometry = GeometryEngine.geodesicSector(parameters: sectorParams)
+            let sectorGeometry = GeometryEngine.geodesicSector(parameters: sectorParams)
             
             sectorGraphic = Graphic(geometry: sectorGeometry, symbol: sectorLineSymbol)
             graphicOverlay.addGraphic(sectorGraphic)
