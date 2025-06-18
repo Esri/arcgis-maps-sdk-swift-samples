@@ -16,7 +16,7 @@ import ArcGIS
 import SwiftUI
 
 struct AddOpenStreetMapLayerView: View {
-    @State private var map = Map(basemapStyle: .osmStandard)
+    @State private var map = Map(basemapStyle: .openOSMStyle)
     
     var body: some View {
         MapView(map: map)
