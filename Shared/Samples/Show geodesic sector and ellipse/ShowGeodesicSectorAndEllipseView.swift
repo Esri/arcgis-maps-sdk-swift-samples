@@ -41,7 +41,7 @@ struct ShowGeodesicSectorAndEllipseView: View {
                     if let tapPoint {
                         await proxy.setViewpoint(Viewpoint(center: tapPoint, scale: 1e8))
                         model.set(tapPoint: tapPoint)
-                        //updateSector(tapPoint: tapPoint)
+                        model.updateSector(tapPoint: tapPoint)
                     }
                 }
                 .toolbar {
@@ -50,9 +50,87 @@ struct ShowGeodesicSectorAndEllipseView: View {
                             isPresented.toggle()
                         }.popover(isPresented: $isPresented) {
                             Form {
-                                Picker("Information Mode", selection: $selectedGeometryType) {
-                                    ForEach(GeometryType.allCases, id: \.self) { mode in
-                                        Text(mode.label)
+                                Section(
+                                    header: Text("Axis Direction")
+                                ) {
+                                    Slider(value: $startDirection, in: 0...10) {
+                                        Text("Slider")
+                                    } minimumValueLabel: {
+                                        Text("0").font(.title2).fontWeight(.thin)
+                                    } maximumValueLabel: {
+                                        Text("10").font(.title2).fontWeight(.thin)
+                                    }
+                                }
+                                Section(
+                                    header: Text("Max Point Count")
+                                ) {
+                                    Stepper(
+                                        "Point Count:\(maxPointCount)",
+                                        value: $maxPointCount,
+                                        in: 0...10
+                                    )
+                                }
+                                Section(
+                                    header: Text("Max Segment Length")
+                                ) {
+                                    Slider(value: $maxSegmentLength, in: 0...10) {
+                                        Text("Slider")
+                                    } minimumValueLabel: {
+                                        Text("0").font(.title2).fontWeight(.thin)
+                                    } maximumValueLabel: {
+                                        Text("10").font(.title2).fontWeight(.thin)
+                                    }
+                                }
+                                Section {
+                                    Picker("Geometry Type", selection: $selectedGeometryType) {
+                                        ForEach(GeometryType.allCases, id: \.self) { mode in
+                                            Text(mode.label)
+                                        }
+                                    }
+                                }
+                                Section(
+                                    header: Text("Sector Angle")
+                                ) {
+                                    Slider(value: $startDirection, in: 0...10) {
+                                        Text("Slider")
+                                    } minimumValueLabel: {
+                                        Text("0").font(.title2).fontWeight(.thin)
+                                    } maximumValueLabel: {
+                                        Text("10").font(.title2).fontWeight(.thin)
+                                    }
+                                }
+                                Section(
+                                    header: Text("Semi Axis 1 Length")
+                                ) {
+                                    Slider(value: $startDirection, in: 0...10) {
+                                        Text("Slider")
+                                    } minimumValueLabel: {
+                                        Text("0").font(.title2).fontWeight(.thin)
+                                    } maximumValueLabel: {
+                                        Text("10").font(.title2).fontWeight(.thin)
+                                    }
+                                }
+                                
+                                Section(
+                                    header: Text("Semi Axis 2 Length")
+                                ) {
+                                    Slider(value: $startDirection, in: 0...10) {
+                                        Text("Slider")
+                                    } minimumValueLabel: {
+                                        Text("0").font(.title2).fontWeight(.thin)
+                                    } maximumValueLabel: {
+                                        Text("10").font(.title2).fontWeight(.thin)
+                                    }
+                                }
+                                Section(
+                                    header: Text("Semi Axis 2 Length")
+                                ) {
+                                    Slider(value: $startDirection, in: 0...10) {
+                                        Text("Slider")
+                                    } minimumValueLabel: {
+                                        Text("0").font(.title2).fontWeight(.thin)
+                                    } maximumValueLabel: {
+                                        Text("10").font(.title2).fontWeight(.thin)
                                     }
                                 }
                             }.presentationDetents([.medium])
