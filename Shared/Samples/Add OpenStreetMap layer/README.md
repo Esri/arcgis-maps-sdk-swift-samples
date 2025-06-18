@@ -2,7 +2,7 @@
 
 Add an OpenStreetMap basemap.
 
-![Image of add open street map layer](add-open-street-map-layer.png)
+![Image of Add open street map layer sample](add-open-street-map-layer.png)
 
 ## Use case
 
