@@ -16,99 +16,62 @@ import ArcGIS
 import SwiftUI
 
 struct ShowGeodesicSectorAndEllipseView: View {
-    /// The error shown in the error alert.
-    @State private var error: Error?
-//    @State private var model = Model()
-    @State var map = Map(basemapStyle: .arcGISImageryStandard)
-    @State var sectorParameters : GeodesicSectorParameters? = nil
-    @State var ellipseParameters : GeodesicEllipseParameters? = nil
-    var sectorFillSymbol: SimpleFillSymbol?
-    var sectorLineSymbol: SimpleLineSymbol?
-    var sectorMarkerSymbol: SimpleMarkerSymbol?
-    var ellipseGraphic: Graphic?
-    /// A Boolean value indicating whether the settings are presented.
-    @State private var settingsArePresented = false
-    /// The point on the screen the user tapped.
-    @State private var tappedScreenPoint: CGPoint?
-    @State private var tappedMapPoint: Point?
-    
-    let geometryOverlay: GraphicsOverlay = {
-        let overlay = GraphicsOverlay(renderingMode: .dynamic)
-        overlay.id = "Graphics Overlay"
-        return overlay
-    }()
+    @StateObject private var model = Model()
+    @State private var tapPoint: Point?
     
     var body: some View {
         MapViewReader { proxy in
-            MapView(map: map)
-                .onSingleTapGesture { screenPoint, mapPoint in
-                    tappedScreenPoint = screenPoint
-                    tappedMapPoint = mapPoint
-                    print(mapPoint)
+            MapView(map: model.map, graphicsOverlays: [model.graphicOverlay])
+                .onSingleTapGesture { _, tapPoint in
+                    self.tapPoint = tapPoint
                 }
-                .task(id: tappedMapPoint) {
-                    await proxy.setViewpointCenter(tappedMapPoint!)
-                    let geometry = GeometryEngine.geodesicEllipse(parameters: ellipseParameters!)
-                    let overlay = GraphicsOverlay(graphics: [Graphic(geometry: geometry)])
+                .task(id: tapPoint) {
+                    if let tapPoint {
+                        await proxy.setViewpoint(Viewpoint(center: tapPoint, scale: 1e8))
+                        model.updateSector(tapPoint: tapPoint)
+                    }
                 }
-                .toolbar {
-                    
-                }
-                .errorAlert(presentingError: $error)
         }
     }
-    
-    private func setupSector() {
-//        sectorParameters = GeodesicSectorParameters(axisDirection: 1, maxPointCount: 100, maxSegmentLength: 1000, geometryType: Geometry.Type.lines, center: Point(x: 0, y: 0))
-//        sectorParameters?.axisDirection = 0.5
-//       / sectorParameters?.maxPointCount = 100
-//        sectorParameters?.maxSegmentLength = 1000
-//        sectorParameters?.geometryType = Geometry.Dimension.point
-    }
-    
 }
 
 private extension ShowGeodesicSectorAndEllipseView {
-    /// The model used to store the geo model and other expensive objects
-    /// used in this view.
+    @MainActor
     class Model: ObservableObject {
-        @State var map = Map(basemapStyle: .arcGISImageryStandard)
-        @State var sectorParameters : GeodesicSectorParameters? = nil
-        @State var ellipseParameters : GeodesicEllipseParameters? = nil
-        var sectorFillSymbol: SimpleFillSymbol?
-        var sectorLineSymbol: SimpleLineSymbol?
-        var sectorMarkerSymbol: SimpleMarkerSymbol?
-        var ellipseGraphic: Graphic?
+        var graphicOverlay = GraphicsOverlay()
+        var map = Map(basemapStyle: .arcGISTopographic)
+        var sectorFillSymbol = SimpleFillSymbol(style: .solid, color: .green)
+        var sectorLineSymbol = SimpleLineSymbol(style: .solid, color: .green, width: 3)
+        var sectorMarkerSymbol = SimpleMarkerSymbol(style: .circle, color: .green, size: 3)
         
         
-        let geometryOverlay: GraphicsOverlay = {
-            let overlay = GraphicsOverlay(renderingMode: .dynamic)
-            overlay.id = "Graphics Overlay"
-            return overlay
+        var ellipseGraphic: Graphic = {
+            var ellipseGraphic = Graphic()
+            var ellipseLineSymbol = SimpleLineSymbol(style: .dot, color: .red, width: 2)
+            ellipseGraphic.symbol = ellipseLineSymbol
+            return ellipseGraphic
         }()
         
-        init() {
-//            let geometry = GeometryEngine.geodesicEllipse(parameters: ellipseParameters!)
-            //                let overlay = GraphicsOverlay(graphics: [Graphic(geometry: geometry)])
-        }
         
-        /// Returns the symbology for graphics saved to the graphics overlay.
-        /// - Parameter geometry: The geometry of the graphic to be saved.
-        /// - Returns: Either a marker or fill symbol depending on the type of provided geometry.
-        private func symbol(for geometry: Geometry) -> Symbol {
-            switch geometry {
-            case is Point, is Multipoint:
-                return SimpleMarkerSymbol(style: .circle, color: .blue, size: 20)
-            case is Polyline:
-                return SimpleLineSymbol(color: .blue, width: 2)
-            case is ArcGIS.Polygon:
-                return SimpleFillSymbol(
-                    color: .gray.withAlphaComponent(0.5),
-                    outline: SimpleLineSymbol(color: .blue, width: 2)
-                )
-            default:
-                fatalError("Unexpected geometry type")
-            }
+        
+        func updateSector(tapPoint: Point) {
+            let symbol = SimpleFillSymbol(style: .solid, color: .green)
+            // Creates the parameters for the ellipse.
+            let parameters = GeodesicEllipseParameters<ArcGIS.Polygon>(
+                axisDirection: -45,
+                center: tapPoint,
+                linearUnit: .kilometers,
+                maxPointCount: 100,
+                maxSegmentLength: 20,
+                semiAxis1Length: 200,
+                semiAxis2Length: 400
+            )
+            // Creates the geometry for the ellipse from the parameters.
+            let geometry = GeometryEngine.geodesicEllipse(parameters: parameters)
+            // Creates a graphics overlay containing a graphic with the ellipse geometry.
+            graphicOverlay = GraphicsOverlay(graphics: [Graphic(geometry: geometry)])
+            // Creates and assigns a simple renderer to the graphics overlay.
+            graphicOverlay.renderer = SimpleRenderer(symbol: symbol)
         }
     }
 }
