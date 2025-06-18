@@ -300,6 +300,8 @@
 		88FB70D12DCC248400EB76E3 /* Aurora_CO_shp in Resources */ = {isa = PBXBuildFile; fileRef = 88FB70D02DCC247B00EB76E3 /* Aurora_CO_shp */; settings = {ASSET_TAGS = (ApplySymbologyToShapefile, ); }; };
 		88FB70D42DCD10B600EB76E3 /* AuthenticateWithIntegratedWindowsAuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88FB70D32DCD10B600EB76E3 /* AuthenticateWithIntegratedWindowsAuthenticationView.swift */; };
 		88FB70D52DD3C2E000EB76E3 /* AuthenticateWithIntegratedWindowsAuthenticationView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 88FB70D32DCD10B600EB76E3 /* AuthenticateWithIntegratedWindowsAuthenticationView.swift */; };
+		88FB70D82DD3DF3700EB76E3 /* AddOpenStreetMapLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88FB70D72DD3DF3700EB76E3 /* AddOpenStreetMapLayerView.swift */; };
+		88FB70D92DD3DFA800EB76E3 /* AddOpenStreetMapLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 88FB70D72DD3DF3700EB76E3 /* AddOpenStreetMapLayerView.swift */; };
 		9501BBEF2DF39DAB0054F4BD /* SetFeatureLayerRenderingModeOnSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9501BBEE2DF39DA50054F4BD /* SetFeatureLayerRenderingModeOnSceneView.swift */; };
 		9503056E2C46ECB70091B32D /* ShowDeviceLocationUsingIndoorPositioningView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9503056D2C46ECB70091B32D /* ShowDeviceLocationUsingIndoorPositioningView.Model.swift */; };
 		951961AE2E00BD430088B0C2 /* SetMapImageLayerSublayerVisibilityView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 95813E382DF88FD000342CBF /* SetMapImageLayerSublayerVisibilityView.swift */; };
@@ -719,6 +721,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				88FB70D92DD3DFA800EB76E3 /* AddOpenStreetMapLayerView.swift in Copy Source Code Files */,
 				951961AE2E00BD430088B0C2 /* SetMapImageLayerSublayerVisibilityView.swift in Copy Source Code Files */,
 				9525404E2DF904BA004090B9 /* SetFeatureLayerRenderingModeOnSceneView.swift in Copy Source Code Files */,
 				D7F913582DF0F286009CF629 /* QueryTableStatisticsGroupAndSortView.Views.swift in Copy Source Code Files */,
@@ -1173,6 +1176,7 @@
 		88FB70382DCC207B00EB76E3 /* ApplySymbologyToShapefileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplySymbologyToShapefileView.swift; sourceTree = "<group>"; };
 		88FB70D02DCC247B00EB76E3 /* Aurora_CO_shp */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Aurora_CO_shp; sourceTree = "<group>"; };
 		88FB70D32DCD10B600EB76E3 /* AuthenticateWithIntegratedWindowsAuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticateWithIntegratedWindowsAuthenticationView.swift; sourceTree = "<group>"; };
+		88FB70D72DD3DF3700EB76E3 /* AddOpenStreetMapLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddOpenStreetMapLayerView.swift; sourceTree = "<group>"; };
 		9501BBEE2DF39DA50054F4BD /* SetFeatureLayerRenderingModeOnSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetFeatureLayerRenderingModeOnSceneView.swift; sourceTree = "<group>"; };
 		9503056D2C46ECB70091B32D /* ShowDeviceLocationUsingIndoorPositioningView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowDeviceLocationUsingIndoorPositioningView.Model.swift; sourceTree = "<group>"; };
 		9537AFD62C220EF0000923C5 /* ExchangeSetwithoutUpdates */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExchangeSetwithoutUpdates; sourceTree = "<group>"; };
@@ -1591,6 +1595,7 @@
 				D713C6D42CB990600073AA72 /* Add KML layer */,
 				D751B4C72CD3E572005CE750 /* Add KML layer with network links */,
 				D7DFA0E92CBA0242007C31F2 /* Add map image layer */,
+				88FB70D62DD3DF1C00EB76E3 /* Add OpenStreetMap layer */,
 				D7CDD3882CB86F0A00DE9766 /* Add point cloud layer from file */,
 				D7848ED72CBD85A300F6F546 /* Add point scene layer */,
 				F19A316128906F0D003B7EF9 /* Add raster from file */,
@@ -2659,6 +2664,14 @@
 				88FB70D32DCD10B600EB76E3 /* AuthenticateWithIntegratedWindowsAuthenticationView.swift */,
 			);
 			path = "Authenticate with Integrated Windows Authentication";
+			sourceTree = "<group>";
+		};
+		88FB70D62DD3DF1C00EB76E3 /* Add OpenStreetMap layer */ = {
+			isa = PBXGroup;
+			children = (
+				88FB70D72DD3DF3700EB76E3 /* AddOpenStreetMapLayerView.swift */,
+			);
+			path = "Add OpenStreetMap layer";
 			sourceTree = "<group>";
 		};
 		9501BBF02DF39DBE0054F4BD /* Set feature layer rendering mode on scene */ = {
@@ -4387,6 +4400,7 @@
 				D71FCB8A2AD6277F000E517C /* CreateMobileGeodatabaseView.Model.swift in Sources */,
 				D752D9462A3A6F80003EB25E /* MonitorChangesToMapLoadStatusView.swift in Sources */,
 				00181B462846AD7100654571 /* View+ErrorAlert.swift in Sources */,
+				88FB70D82DD3DF3700EB76E3 /* AddOpenStreetMapLayerView.swift in Sources */,
 				1C8438F82DDBDE1F005CCBC7 /* ControlAnnotationSublayerVisibilityView.swift in Sources */,
 				D733CA192BED980D00FBDE4C /* EditAndSyncFeaturesWithFeatureServiceView.swift in Sources */,
 				00273CF62A82AB8700A7A77D /* SampleLink.swift in Sources */,
