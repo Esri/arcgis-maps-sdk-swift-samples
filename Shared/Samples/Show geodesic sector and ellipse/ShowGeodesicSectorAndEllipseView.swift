@@ -30,6 +30,7 @@ struct ShowGeodesicSectorAndEllipseView: View {
                 .task(id: tapPoint) {
                     if let tapPoint {
                         await proxy.setViewpoint(Viewpoint(center: tapPoint, scale: 1e8))
+                        
                         model.set(tapPoint: tapPoint)
                         model.updateSector(tapPoint: tapPoint)
                     }
@@ -57,34 +58,9 @@ struct ShowGeodesicSectorAndEllipseView: View {
                                         model.updateSector(tapPoint: tapPoint)
                                     }
                                     
-                                    Menu {
-                                        ForEach(GeometryType.allCases, id: \.self) { mode in
-                                            Button {
-                                                model.selectedGeometryType = mode
-                                            } label: {
-                                                Text(mode.label)
-                                                    .font(.caption)
-                                                    .foregroundColor(.black)
-                                            }
-                                        }
-                                    } label: {
-                                        HStack {
-                                            Text("Geometry Type: ")
-                                                .foregroundColor(.black)
-                                            Spacer()
-                                            Text(model.selectedGeometryType.label)
-                                                .fontWeight(.bold)
-                                                .foregroundColor(.gray)
-                                            VStack {
-                                                Image(systemName: "chevron.up")
-                                                    .font(.caption2).fontWeight(.medium)
-                                                Image(systemName: "chevron.down")
-                                                    .font(.caption2).fontWeight(.medium)
-                                            }
-                                            .foregroundColor(.gray)
-                                        }
-                                        .font(.caption)
-                                    }
+                                    GeometryTypeMenu(
+                                        selected: $model.selectedGeometryType
+                                    )
                                     
                                     ParameterSlider(label: "Sector Angle:", value: $model.sectorAngle, range: 0...10, tapPoint: tapPoint) {
                                         model.updateSector(tapPoint: tapPoint)
@@ -110,7 +86,6 @@ private extension ShowGeodesicSectorAndEllipseView {
     enum GeometryType: CaseIterable {
         case point, polyline, polygon
         
-        /// A human-readable label for the geometry type.
         var label: String {
             switch self {
             case .point: "Point"
@@ -154,6 +129,7 @@ private extension ShowGeodesicSectorAndEllipseView {
             
             let ellipseLineSymbol = SimpleLineSymbol(style: .dash, color: .red, width: 2)
             let ellipseGeometry = GeometryEngine.geodesicEllipse(parameters: parameters)
+            
             ellipseGraphic = Graphic(geometry: ellipseGeometry)
             graphicOverlay = GraphicsOverlay(graphics: [Graphic(geometry: ellipseGeometry)])
             graphicOverlay.renderer = SimpleRenderer(symbol: ellipseLineSymbol)
@@ -161,6 +137,7 @@ private extension ShowGeodesicSectorAndEllipseView {
         
         func updateSector(tapPoint: Point?) {
             guard let tapPoint = tapPoint else { return }
+            
             var sectorParams = GeodesicSectorParameters<ArcGIS.Polygon>()
             sectorParams.center = tapPoint
             sectorParams.axisDirection = axisDirection
@@ -170,29 +147,81 @@ private extension ShowGeodesicSectorAndEllipseView {
             sectorParams.semiAxis1Length = semiAxis1Length
             sectorParams.semiAxis2Length = semiAxis2Length
             sectorParams.startDirection = startDirection
+            
             let sectorGeometry = GeometryEngine.geodesicSector(parameters: sectorParams)
             sectorGraphic = Graphic(geometry: sectorGeometry, symbol: sectorLineSymbol)
             graphicOverlay.addGraphic(sectorGraphic)
+            
+            let parameters = GeodesicEllipseParameters<ArcGIS.Polygon>(
+                axisDirection: axisDirection,
+                center: tapPoint,
+                linearUnit: .kilometers,
+                maxPointCount: maxPointCount,
+                maxSegmentLength: maxSegmentLength,
+                semiAxis1Length: semiAxis1Length,
+                semiAxis2Length: semiAxis2Length
+            )
+            
+            let ellipseLineSymbol = SimpleLineSymbol(style: .dash, color: .red, width: 2)
+            let ellipseGeometry = GeometryEngine.geodesicEllipse(parameters: parameters)
+            ellipseGraphic = Graphic(geometry: ellipseGeometry, symbol: ellipseLineSymbol)
+            graphicOverlay.addGraphic(ellipseGraphic)
+            
         }
     }
-}
-
-struct ParameterSlider: View {
-    let label: String
-    @Binding var value: Double
-    let range: ClosedRange<Double>
-    var tapPoint: Point?
-    let onUpdate: () -> Void
     
-    var body: some View {
-        Slider(value: $value, in: range) {
-        } minimumValueLabel: {
-            Text(label).font(.caption)
-        } maximumValueLabel: {
-            Text("\(String(format: "%.2f", value))").font(.caption)
+    struct ParameterSlider: View {
+        let label: String
+        @Binding var value: Double
+        let range: ClosedRange<Double>
+        var tapPoint: Point?
+        let onUpdate: () -> Void
+        
+        var body: some View {
+            Slider(value: $value, in: range) {
+            } minimumValueLabel: {
+                Text(label).font(.caption)
+            } maximumValueLabel: {
+                Text("\(String(format: "%.2f", value))").font(.caption)
+            }
+            .onChange(of: value) {
+                onUpdate()
+            }
         }
-        .onChange(of: value) {
-            onUpdate()
+    }
+    
+    struct GeometryTypeMenu: View {
+        @Binding var selected: GeometryType
+        
+        var body: some View {
+            Menu {
+                ForEach(GeometryType.allCases, id: \.self) { mode in
+                    Button {
+                        selected = mode
+                    } label: {
+                        Text(mode.label)
+                            .font(.caption)
+                            .foregroundColor(.black)
+                    }
+                }
+            } label: {
+                HStack {
+                    Text("Geometry Type: ")
+                        .foregroundColor(.black)
+                    Spacer()
+                    Text(selected.label)
+                        .fontWeight(.bold)
+                        .foregroundColor(.gray)
+                    VStack {
+                        Image(systemName: "chevron.up")
+                            .font(.caption2).fontWeight(.medium)
+                        Image(systemName: "chevron.down")
+                            .font(.caption2).fontWeight(.medium)
+                    }
+                    .foregroundColor(.gray)
+                }
+                .font(.caption)
+            }
         }
     }
 }
