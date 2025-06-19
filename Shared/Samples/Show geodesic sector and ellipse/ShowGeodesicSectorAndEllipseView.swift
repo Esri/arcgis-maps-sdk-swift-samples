@@ -19,17 +19,7 @@ struct ShowGeodesicSectorAndEllipseView: View {
     @StateObject private var model = Model()
     
     @State private var tapPoint: Point?
-    
-    @State var semiAxis1Length: Double = 10
-    @State var semiAxis2Length: Double = 10
-    @State var axisDirection: Double = 10
-    @State var maxSegmentLength: Double = 10
-    @State var sectorAngle: Double = 10
-    @State var startDirection: Double = 10
-    @State var maxPointCount: Double = 10
     @State var isPresented: Bool = false
-    @State var geometryTypes: [String] = ["Polygon", "Polyline", "Point"]
-    @State private var selectedGeometryType: GeometryType = .polygon
     
     var body: some View {
         MapViewReader { proxy in
@@ -51,30 +41,42 @@ struct ShowGeodesicSectorAndEllipseView: View {
                         }.popover(isPresented: $isPresented) {
                             Form {
                                 Section {
-                                    Slider(value: $axisDirection, in: 0...10) {
+                                    Slider(value: $model.axisDirection, in: 0...10) {
                                     } minimumValueLabel: {
                                         Text("Axis Direction: ").font(.caption)
                                     } maximumValueLabel: {
-                                        Text(" \(String(format: "%.2f", axisDirection))").font(.caption)
+                                        Text(" \(String(format: "%.2f", model.axisDirection))").font(.caption)
+                                    }.onChange(of: model.axisDirection) {
+                                        if let tapPoint {
+                                            model.updateSector(tapPoint: tapPoint)
+                                        }
                                     }
                                     
                                     Stepper(
-                                        "Max Point Count: \(String(format: "%.2f", maxPointCount))",
-                                        value: $maxPointCount,
+                                        "Max Point Count: \(String(format: "%.2f", model.maxPointCount))",
+                                        value: $model.maxPointCount,
                                         in: 0...10
-                                    ).font(.caption)
+                                    ).font(.caption).onChange(of: model.maxPointCount) {
+                                        if let tapPoint {
+                                            model.updateSector(tapPoint: tapPoint)
+                                        }
+                                    }
                                     
-                                    Slider(value: $maxSegmentLength, in: 0...10) {
+                                    Slider(value: $model.maxSegmentLength, in: 0...10) {
                                     } minimumValueLabel: {
                                         Text("Max Segment Length: ").font(.caption)
                                     } maximumValueLabel: {
-                                        Text("\(String(format: "%.2f", maxSegmentLength))").font(.caption)
+                                        Text("\(String(format: "%.2f", model.maxSegmentLength))").font(.caption)
+                                    }.onChange(of: model.maxSegmentLength) {
+                                        if let tapPoint {
+                                            model.updateSector(tapPoint: tapPoint)
+                                        }
                                     }
                                     
                                     Menu {
                                         ForEach(GeometryType.allCases, id: \.self) { mode in
                                             Button {
-                                                selectedGeometryType = mode
+                                                model.selectedGeometryType = mode
                                             } label: {
                                                 Text(mode.label)
                                                     .font(.caption)
@@ -86,7 +88,7 @@ struct ShowGeodesicSectorAndEllipseView: View {
                                             Text("Geometry Type: ")
                                                 .foregroundColor(.black)
                                             Spacer()
-                                            Text(selectedGeometryType.label)
+                                            Text(model.selectedGeometryType.label)
                                                 .fontWeight(.bold)
                                                 .foregroundColor(.gray)
                                             VStack {
@@ -100,25 +102,37 @@ struct ShowGeodesicSectorAndEllipseView: View {
                                         .font(.caption)
                                     }
                                     
-                                    Slider(value: $sectorAngle, in: 0...10) {
+                                    Slider(value: $model.sectorAngle, in: 0...10) {
                                     } minimumValueLabel: {
                                         Text("Sector Angle: ").font(.caption)
                                     } maximumValueLabel: {
-                                        Text("\(String(format: "%.2f", sectorAngle))").font(.caption)
+                                        Text("\(String(format: "%.2f", model.sectorAngle))").font(.caption)
+                                    }.onChange(of: model.sectorAngle) {
+                                        if let tapPoint {
+                                            self.model.updateSector(tapPoint: tapPoint)
+                                        }
                                     }
                                     
-                                    Slider(value: $semiAxis1Length, in: 0...10) {
+                                    Slider(value: $model.semiAxis1Length, in: 0...10) {
                                     } minimumValueLabel: {
                                         Text("Semi Axis 1 Length: ").font(.caption)
                                     } maximumValueLabel: {
-                                        Text("\(String(format: "%.2f", semiAxis1Length))").font(.caption)
+                                        Text("\(String(format: "%.2f", model.semiAxis1Length))").font(.caption)
+                                    }.onChange(of: model.semiAxis1Length) {
+                                        if let tapPoint {
+                                            self.model.updateSector(tapPoint: tapPoint)
+                                        }
                                     }
                                     
-                                    Slider(value: $semiAxis2Length, in: 0...10) {
+                                    Slider(value: $model.semiAxis2Length, in: 0...10) {
                                     } minimumValueLabel: {
                                         Text("Semi Axis 2 Length: ").font(.caption)
                                     } maximumValueLabel: {
-                                        Text("\(String(format: "%.2f", semiAxis2Length))").font(.caption)
+                                        Text("\(String(format: "%.2f", model.semiAxis2Length))").font(.caption)
+                                    }.onChange(of: model.semiAxis2Length) {
+                                        if let tapPoint {
+                                            self.model.updateSector(tapPoint: tapPoint)
+                                        }
                                     }
                                 }
                             }.presentationDetents([.medium])
@@ -155,8 +169,16 @@ private extension ShowGeodesicSectorAndEllipseView {
         var sectorMarkerSymbol = SimpleMarkerSymbol(style: .circle, color: .green, size: 3)
         
         var ellipseGraphic: Graphic!
-        
         var sectorGraphic: Graphic!
+        
+        @Published var axisDirection: Double = 0
+        @Published var maxSegmentLength: Double = 10
+        @Published var sectorAngle: Double = 10
+        @Published var maxPointCount: Double = 10
+        @Published var semiAxis1Length: Double = 10
+        @Published var semiAxis2Length: Double = 10
+        @Published var selectedGeometryType: GeometryType = .polygon
+        @Published var startDirection: Double = 10
         
         func set(tapPoint: Point) {
             let parameters = GeodesicEllipseParameters<ArcGIS.Polygon>(
@@ -186,14 +208,11 @@ private extension ShowGeodesicSectorAndEllipseView {
             sectorParams.semiAxis1Length = 200
             sectorParams.semiAxis2Length = 400
             sectorParams.startDirection = 0
-            
             let sectorGeometry = GeometryEngine.geodesicSector(parameters: sectorParams)
-            
             sectorGraphic = Graphic(geometry: sectorGeometry, symbol: sectorLineSymbol)
             graphicOverlay.addGraphic(sectorGraphic)
         }
     }
-    /// The types of the geometries supported by this sample.
 }
 
 #Preview {
