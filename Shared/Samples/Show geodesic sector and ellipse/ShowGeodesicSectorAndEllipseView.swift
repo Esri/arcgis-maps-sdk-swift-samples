@@ -174,7 +174,7 @@ private extension ShowGeodesicSectorAndEllipseView {
         @Published var axisDirection: Double = 0
         @Published var maxSegmentLength: Double = 10
         @Published var sectorAngle: Double = 10
-        @Published var maxPointCount: Double = 10
+        @Published var maxPointCount: Int = 10
         @Published var semiAxis1Length: Double = 10
         @Published var semiAxis2Length: Double = 10
         @Published var selectedGeometryType: GeometryType = .polygon
@@ -201,13 +201,13 @@ private extension ShowGeodesicSectorAndEllipseView {
         func updateSector(tapPoint: Point) {
             var sectorParams = GeodesicSectorParameters<ArcGIS.Polygon>()
             sectorParams.center = tapPoint
-            sectorParams.axisDirection = 45
-            sectorParams.maxPointCount = 100
-            sectorParams.maxSegmentLength = 20
-            sectorParams.sectorAngle = 90
-            sectorParams.semiAxis1Length = 200
-            sectorParams.semiAxis2Length = 400
-            sectorParams.startDirection = 0
+            sectorParams.axisDirection = axisDirection
+            sectorParams.maxPointCount = maxPointCount
+            sectorParams.maxSegmentLength = maxSegmentLength
+            sectorParams.sectorAngle = sectorAngle
+            sectorParams.semiAxis1Length = semiAxis1Length
+            sectorParams.semiAxis2Length = semiAxis2Length
+            sectorParams.startDirection = startDirection
             let sectorGeometry = GeometryEngine.geodesicSector(parameters: sectorParams)
             sectorGraphic = Graphic(geometry: sectorGeometry, symbol: sectorLineSymbol)
             graphicOverlay.addGraphic(sectorGraphic)
