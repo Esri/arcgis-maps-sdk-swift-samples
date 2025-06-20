@@ -37,7 +37,6 @@ struct ShowGeodesicSectorAndEllipseView: View {
                             center: tapPoint, scale: 1e7
                         )
                     )
-                    
                     model.updateSector(tapPoint: tapPoint)
                 }
             }
@@ -120,16 +119,17 @@ private extension ShowGeodesicSectorAndEllipseView {
     @MainActor
     class Model: ObservableObject {
         var map = Map(basemapStyle: .arcGISTopographic)
+        
         var ellipseGraphicOverlay = GraphicsOverlay()
         var sectorGraphicOverlay = GraphicsOverlay()
         
-        var sectorLineSymbol = SimpleLineSymbol(style: .solid, color: .blue, width: 2)
-        var sectorMarkerSymbol = SimpleMarkerSymbol(style: .circle, color: .green, size: 2)
-        let ellipseLineSymbol = SimpleLineSymbol(style: .dash, color: .red, width: 2)
-        var sectorFillSymbol = SimpleFillSymbol(style: .solid, color: .green)
+        private let sectorLineSymbol = SimpleLineSymbol(style: .solid, color: .green, width: 2)
+        private let sectorMarkerSymbol = SimpleMarkerSymbol(style: .circle, color: .green, size: 2)
+        private let ellipseLineSymbol = SimpleLineSymbol(style: .dash, color: .red, width: 2)
+        private let sectorFillSymbol = SimpleFillSymbol(style: .solid, color: .green)
         
-        var ellipseGraphic: Graphic!
-        var sectorGraphic: Graphic!
+        private var ellipseGraphic: Graphic!
+        private var sectorGraphic: Graphic!
         
         @Published var axisDirection: Double = 45
         @Published var maxSegmentLength: Double = 1
@@ -142,10 +142,8 @@ private extension ShowGeodesicSectorAndEllipseView {
         
         func updateSector(tapPoint: Point?) {
             guard let tapPoint = tapPoint else { return }
-            
             ellipseGraphicOverlay.removeAllGraphics()
             sectorGraphicOverlay.removeAllGraphics()
-            
             setupSector(tapPoint: tapPoint, geometryType: selectedGeometryType)
             updateEllipse(tapPoint: tapPoint)
         }
@@ -204,7 +202,6 @@ private extension ShowGeodesicSectorAndEllipseView {
                 semiAxis1Length: semiAxis1Length,
                 semiAxis2Length: semiAxis2Length
             )
-            
             let ellipseGeometry = GeometryEngine.geodesicEllipse(parameters: parameters)
             ellipseGraphic = Graphic(geometry: ellipseGeometry, symbol: ellipseLineSymbol)
             ellipseGraphicOverlay.addGraphic(ellipseGraphic)
