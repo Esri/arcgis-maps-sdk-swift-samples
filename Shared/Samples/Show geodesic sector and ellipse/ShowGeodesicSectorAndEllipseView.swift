@@ -19,65 +19,88 @@ struct ShowGeodesicSectorAndEllipseView: View {
     @StateObject private var model = Model()
     
     @State private var tapPoint: Point?
-    @State var isPresented: Bool = false
+    @State private var isPresented: Bool = false
     
     var body: some View {
         MapViewReader { proxy in
-            MapView(map: model.map, graphicsOverlays: [model.graphicOverlay])
-                .onSingleTapGesture { _, tapPoint in
-                    self.tapPoint = tapPoint
+            MapView(
+                map: model.map,
+                graphicsOverlays: [model.graphicOverlay]
+            )
+            .onSingleTapGesture { _, tapPoint in
+                self.tapPoint = tapPoint
+            }
+            .task(id: tapPoint) {
+                if let tapPoint {
+                    await proxy.setViewpoint(
+                        Viewpoint(center: tapPoint, scale: 1e8)
+                    )
+                    
+                    model.set(tapPoint: tapPoint)
+                    model.updateSector(tapPoint: tapPoint)
                 }
-                .task(id: tapPoint) {
-                    if let tapPoint {
-                        await proxy.setViewpoint(Viewpoint(center: tapPoint, scale: 1e8))
-                        
-                        model.set(tapPoint: tapPoint)
-                        model.updateSector(tapPoint: tapPoint)
+            }
+            .toolbar {
+                ToolbarItemGroup(placement: .bottomBar) {
+                    Button("Geodesic Sector & Ellipse") {
+                        isPresented.toggle()
                     }
-                }
-                .toolbar {
-                    ToolbarItemGroup(placement: .bottomBar) {
-                        Button("Geodesic Sector & Ellipse") {
-                            isPresented.toggle()
-                        }.popover(isPresented: $isPresented) {
-                            Form {
-                                Section {
-                                    ParameterSlider(label: "Axis Direction:", value: $model.axisDirection, range: 0...10, tapPoint: tapPoint) {
-                                        model.updateSector(tapPoint: tapPoint)
-                                    }
-                                    
-                                    Stepper(
-                                        "Max Point Count: \(String(format: "%.2f", model.maxPointCount))",
-                                        value: $model.maxPointCount,
-                                        in: 0...10
-                                    ).font(.caption).onChange(of: model.maxPointCount) {
-                                        model.updateSector(tapPoint: tapPoint)
-                                    }
-                                    
-                                    ParameterSlider(label: "Max Segment Length:", value: $model.maxSegmentLength, range: 0...10, tapPoint: tapPoint) {
-                                        model.updateSector(tapPoint: tapPoint)
-                                    }
-                                    
-                                    GeometryTypeMenu(
-                                        selected: $model.selectedGeometryType
-                                    )
-                                    
-                                    ParameterSlider(label: "Sector Angle:", value: $model.sectorAngle, range: 0...10, tapPoint: tapPoint) {
-                                        model.updateSector(tapPoint: tapPoint)
-                                    }
-                                    
-                                    ParameterSlider(label: "Semi Axis 1 Length:", value: $model.semiAxis1Length, range: 0...10, tapPoint: tapPoint) {
-                                        model.updateSector(tapPoint: tapPoint)
-                                    }
-                                    
-                                    ParameterSlider(label: "Semi Axis 2 Length:", value: $model.semiAxis2Length, range: 0...10, tapPoint: tapPoint) {
-                                        model.updateSector(tapPoint: tapPoint)
-                                    }
+                    .popover(isPresented: $isPresented) {
+                        Form {
+                            Section {
+                                ParameterSlider(
+                                    label: "Axis Direction:", value: $model.axisDirection, range: 0...10, tapPoint: tapPoint
+                                ) {
+                                    model.updateSector(tapPoint: tapPoint)
                                 }
-                            }.presentationDetents([.medium])
+                                
+                                Stepper(
+                                    "Max Point Count: \(String(format: "%.2f", model.maxPointCount))",
+                                    value: $model.maxPointCount,
+                                    in: 0...10
+                                )
+                                .font(.caption)
+                                .onChange(of: model.maxPointCount) {
+                                    model.updateSector(tapPoint: tapPoint)
+                                }
+                                
+                                ParameterSlider(
+                                    label: "Max Segment Length:", value: $model.maxSegmentLength, range: 0...10, tapPoint: tapPoint
+                                ) {
+                                    model.updateSector(tapPoint: tapPoint)
+                                }
+                                
+                                GeometryTypeMenu(
+                                    selected: $model.selectedGeometryType
+                                )
+                                .onChange(of: model.selectedGeometryType
+                                ) {
+                                    model.updateSector(tapPoint: tapPoint)
+                                }
+                                
+                                ParameterSlider(
+                                    label: "Sector Angle:", value: $model.sectorAngle, range: 0...10, tapPoint: tapPoint
+                                ) {
+                                    model.updateSector(tapPoint: tapPoint)
+                                }
+                                
+                                ParameterSlider(
+                                    label: "Semi Axis 1 Length:", value: $model.semiAxis1Length, range: 0...10, tapPoint: tapPoint
+                                ) {
+                                    model.updateSector(tapPoint: tapPoint)
+                                }
+                                
+                                ParameterSlider(
+                                    label: "Semi Axis 2 Length:", value: $model.semiAxis2Length, range: 0...10, tapPoint: tapPoint
+                                ) {
+                                    model.updateSector(tapPoint: tapPoint)
+                                }
+                            }
                         }
+                        .presentationDetents([.medium])
                     }
                 }
+            }
         }
     }
 }
@@ -166,7 +189,6 @@ private extension ShowGeodesicSectorAndEllipseView {
             let ellipseGeometry = GeometryEngine.geodesicEllipse(parameters: parameters)
             ellipseGraphic = Graphic(geometry: ellipseGeometry, symbol: ellipseLineSymbol)
             graphicOverlay.addGraphic(ellipseGraphic)
-            
         }
     }
     
@@ -180,9 +202,11 @@ private extension ShowGeodesicSectorAndEllipseView {
         var body: some View {
             Slider(value: $value, in: range) {
             } minimumValueLabel: {
-                Text(label).font(.caption)
+                Text(label)
+                    .font(.caption)
             } maximumValueLabel: {
-                Text("\(String(format: "%.2f", value))").font(.caption)
+                Text("\(String(format: "%.2f", value))")
+                    .font(.caption)
             }
             .onChange(of: value) {
                 onUpdate()
@@ -214,9 +238,11 @@ private extension ShowGeodesicSectorAndEllipseView {
                         .foregroundColor(.gray)
                     VStack {
                         Image(systemName: "chevron.up")
-                            .font(.caption2).fontWeight(.medium)
+                            .font(.caption2)
+                            .fontWeight(.medium)
                         Image(systemName: "chevron.down")
-                            .font(.caption2).fontWeight(.medium)
+                            .font(.caption2)
+                            .fontWeight(.medium)
                     }
                     .foregroundColor(.gray)
                 }
