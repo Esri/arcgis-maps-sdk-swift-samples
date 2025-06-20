@@ -38,7 +38,7 @@ struct ShowGeodesicSectorAndEllipseView: View {
                         )
                     )
                     
-                    model.set(tapPoint: tapPoint)
+                    model.updateSector(tapPoint: tapPoint)
                 }
             }
             .toolbar {
@@ -140,77 +140,58 @@ private extension ShowGeodesicSectorAndEllipseView {
         @Published var selectedGeometryType: GeometryType = .polygon
         @Published var startDirection: Double = 45
         
-        func set(tapPoint: Point) {
-            updateSector(tapPoint: tapPoint)
-        }
-        
         func updateSector(tapPoint: Point?) {
             guard let tapPoint = tapPoint else { return }
+            
             ellipseGraphicOverlay.removeAllGraphics()
             sectorGraphicOverlay.removeAllGraphics()
-            switch selectedGeometryType {
-            case .point:
-                setupPoint(tapPoint: tapPoint)
-            case .polyline:
-                setupPolyline(tapPoint: tapPoint)
-            case .polygon:
-                setupPolygon(tapPoint: tapPoint)
-            }
+            
+            setupSector(tapPoint: tapPoint, geometryType: selectedGeometryType)
             updateEllipse(tapPoint: tapPoint)
         }
         
-        func setupPolygon(tapPoint: Point) {
-            var sectorParams = GeodesicSectorParameters<ArcGIS.Polygon>()
-            sectorParams.center = tapPoint
-            sectorParams.axisDirection = axisDirection
-            sectorParams.maxPointCount = maxPointCount
-            sectorParams.maxSegmentLength = maxSegmentLength
-            sectorParams.sectorAngle = sectorAngle
-            sectorParams.semiAxis1Length = semiAxis1Length
-            sectorParams.semiAxis2Length = semiAxis2Length
-            sectorParams.startDirection = startDirection
-            sectorParams.linearUnit = .miles
-            let sectorGeometry = GeometryEngine.geodesicSector(parameters: sectorParams)
-            sectorGraphic = Graphic(geometry: sectorGeometry, symbol: sectorFillSymbol)
-            sectorGraphicOverlay.renderer = SimpleRenderer(symbol: sectorFillSymbol)
+        private func setupSector(tapPoint: Point, geometryType: GeometryType) {
+            switch geometryType {
+            case .point:
+                var params = GeodesicSectorParameters<Multipoint>()
+                fillSectorParams(&params, center: tapPoint)
+                let geometry = GeometryEngine.geodesicSector(parameters: params)
+                addSectorGraphic(geometry: geometry, symbol: sectorMarkerSymbol)
+                
+            case .polyline:
+                var params = GeodesicSectorParameters<Polyline>()
+                fillSectorParams(&params, center: tapPoint)
+                let geometry = GeometryEngine.geodesicSector(parameters: params)
+                addSectorGraphic(geometry: geometry, symbol: sectorLineSymbol)
+                
+            case .polygon:
+                var params = GeodesicSectorParameters<Polygon>()
+                fillSectorParams(&params, center: tapPoint)
+                let geometry = GeometryEngine.geodesicSector(parameters: params)
+                addSectorGraphic(geometry: geometry, symbol: sectorFillSymbol)
+            }
+        }
+        
+        private func fillSectorParams<T>(_ params: inout GeodesicSectorParameters<T>, center: Point) {
+            params.center = center
+            params.axisDirection = axisDirection
+            params.maxPointCount = maxPointCount
+            params.maxSegmentLength = maxSegmentLength
+            params.sectorAngle = sectorAngle
+            params.semiAxis1Length = semiAxis1Length
+            params.semiAxis2Length = semiAxis2Length
+            params.startDirection = startDirection
+            params.linearUnit = .miles
+        }
+        
+        private func addSectorGraphic(geometry: Geometry?, symbol: Symbol) {
+            guard let geometry = geometry else { return }
+            sectorGraphic = Graphic(geometry: geometry, symbol: symbol)
+            sectorGraphicOverlay.renderer = SimpleRenderer(symbol: symbol)
             sectorGraphicOverlay.addGraphic(sectorGraphic)
         }
         
-        func setupPolyline(tapPoint: Point) {
-            var sectorParams = GeodesicSectorParameters<ArcGIS.Polyline>()
-            sectorParams.center = tapPoint
-            sectorParams.axisDirection = axisDirection
-            sectorParams.maxPointCount = maxPointCount
-            sectorParams.maxSegmentLength = maxSegmentLength
-            sectorParams.sectorAngle = sectorAngle
-            sectorParams.semiAxis1Length = semiAxis1Length
-            sectorParams.semiAxis2Length = semiAxis2Length
-            sectorParams.startDirection = startDirection
-            sectorParams.linearUnit = .miles
-            let sectorGeometry = GeometryEngine.geodesicSector(parameters: sectorParams)
-            sectorGraphic = Graphic(geometry: sectorGeometry, symbol: sectorLineSymbol)
-            sectorGraphicOverlay.renderer = SimpleRenderer(symbol: sectorLineSymbol)
-            sectorGraphicOverlay.addGraphic(sectorGraphic)
-        }
-        
-        func setupPoint(tapPoint: Point) {
-            var sectorParams = GeodesicSectorParameters<ArcGIS.Multipoint>()
-            sectorParams.center = tapPoint
-            sectorParams.axisDirection = axisDirection
-            sectorParams.maxPointCount = maxPointCount
-            sectorParams.maxSegmentLength = maxSegmentLength
-            sectorParams.sectorAngle = sectorAngle
-            sectorParams.semiAxis1Length = semiAxis1Length
-            sectorParams.semiAxis2Length = semiAxis2Length
-            sectorParams.startDirection = startDirection
-            sectorParams.linearUnit = .miles
-            let sectorGeometry = GeometryEngine.geodesicSector(parameters: sectorParams)
-            sectorGraphic = Graphic(geometry: sectorGeometry, symbol: sectorMarkerSymbol)
-            sectorGraphicOverlay.renderer = SimpleRenderer(symbol: sectorMarkerSymbol)
-            sectorGraphicOverlay.addGraphic(sectorGraphic)
-        }
-        
-        func updateEllipse(tapPoint: Point?) {
+        private func updateEllipse(tapPoint: Point?) {
             guard let tapPoint = tapPoint else {
                 return
             }
