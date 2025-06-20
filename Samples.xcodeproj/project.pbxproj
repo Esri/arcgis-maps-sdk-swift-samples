@@ -189,6 +189,8 @@
 		1C7B85E42DF0B86F00B267EA /* SetAtmosphereEffectInSceneView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C7B85E12DF0B86F00B267EA /* SetAtmosphereEffectInSceneView.swift */; };
 		1C7B85E72DF37F7700B267EA /* SetFeatureLayerRenderingModeOnMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7B85E52DF37F7700B267EA /* SetFeatureLayerRenderingModeOnMapView.swift */; };
 		1C7B85E82DF37F7700B267EA /* SetFeatureLayerRenderingModeOnMapView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C7B85E52DF37F7700B267EA /* SetFeatureLayerRenderingModeOnMapView.swift */; };
+		1C7B861C2DFB4EAF00B267EA /* ShowExtrudedGraphicsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7B861A2DFB4EAF00B267EA /* ShowExtrudedGraphicsView.swift */; };
+		1C7B861D2DFB4EAF00B267EA /* ShowExtrudedGraphicsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C7B861A2DFB4EAF00B267EA /* ShowExtrudedGraphicsView.swift */; };
 		1C8438F42DDBD02C005CCBC7 /* GasDeviceAnno.mmpk in Resources */ = {isa = PBXBuildFile; fileRef = 1C8438F32DDBD02C005CCBC7 /* GasDeviceAnno.mmpk */; settings = {ASSET_TAGS = (ControlAnnotationSublayerVisibility, ); }; };
 		1C8438F82DDBDE1F005CCBC7 /* ControlAnnotationSublayerVisibilityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C8438F62DDBDE1F005CCBC7 /* ControlAnnotationSublayerVisibilityView.swift */; };
 		1C8438F92DDBDE1F005CCBC7 /* ControlAnnotationSublayerVisibilityView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C8438F62DDBDE1F005CCBC7 /* ControlAnnotationSublayerVisibilityView.swift */; };
@@ -298,8 +300,13 @@
 		88FB70D12DCC248400EB76E3 /* Aurora_CO_shp in Resources */ = {isa = PBXBuildFile; fileRef = 88FB70D02DCC247B00EB76E3 /* Aurora_CO_shp */; settings = {ASSET_TAGS = (ApplySymbologyToShapefile, ); }; };
 		88FB70D42DCD10B600EB76E3 /* AuthenticateWithIntegratedWindowsAuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88FB70D32DCD10B600EB76E3 /* AuthenticateWithIntegratedWindowsAuthenticationView.swift */; };
 		88FB70D52DD3C2E000EB76E3 /* AuthenticateWithIntegratedWindowsAuthenticationView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 88FB70D32DCD10B600EB76E3 /* AuthenticateWithIntegratedWindowsAuthenticationView.swift */; };
+		88FB70D82DD3DF3700EB76E3 /* AddOpenStreetMapLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88FB70D72DD3DF3700EB76E3 /* AddOpenStreetMapLayerView.swift */; };
+		88FB70D92DD3DFA800EB76E3 /* AddOpenStreetMapLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 88FB70D72DD3DF3700EB76E3 /* AddOpenStreetMapLayerView.swift */; };
+		9501BBEF2DF39DAB0054F4BD /* SetFeatureLayerRenderingModeOnSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9501BBEE2DF39DA50054F4BD /* SetFeatureLayerRenderingModeOnSceneView.swift */; };
 		9503056E2C46ECB70091B32D /* ShowDeviceLocationUsingIndoorPositioningView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9503056D2C46ECB70091B32D /* ShowDeviceLocationUsingIndoorPositioningView.Model.swift */; };
 		951961AC2E00BC420088B0C2 /* ShowGeodesicSectorAndEllipseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951961AB2E00BC3C0088B0C2 /* ShowGeodesicSectorAndEllipseView.swift */; };
+		951961AE2E00BD430088B0C2 /* SetMapImageLayerSublayerVisibilityView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 95813E382DF88FD000342CBF /* SetMapImageLayerSublayerVisibilityView.swift */; };
+		9525404E2DF904BA004090B9 /* SetFeatureLayerRenderingModeOnSceneView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 9501BBEE2DF39DA50054F4BD /* SetFeatureLayerRenderingModeOnSceneView.swift */; };
 		9529D1942C01676200B5C1A3 /* SelectFeaturesInSceneLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 954AEDED2C01332600265114 /* SelectFeaturesInSceneLayerView.swift */; };
 		9537AFD72C220EF0000923C5 /* ExchangeSetwithoutUpdates in Resources */ = {isa = PBXBuildFile; fileRef = 9537AFD62C220EF0000923C5 /* ExchangeSetwithoutUpdates */; settings = {ASSET_TAGS = (ConfigureElectronicNavigationalCharts, ); }; };
 		9547085C2C3C719800CA8579 /* EditFeatureAttachmentsView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9547085B2C3C719800CA8579 /* EditFeatureAttachmentsView.Model.swift */; };
@@ -309,6 +316,7 @@
 		955AFAC62C110B8A009C8FE5 /* ApplyMosaicRuleToRastersView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 955AFAC32C10FD6F009C8FE5 /* ApplyMosaicRuleToRastersView.swift */; };
 		9579FCEA2C3360BB00FC8A1D /* EditFeatureAttachmentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9579FCE92C3360BB00FC8A1D /* EditFeatureAttachmentsView.swift */; };
 		9579FCEC2C33616B00FC8A1D /* EditFeatureAttachmentsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 9579FCE92C3360BB00FC8A1D /* EditFeatureAttachmentsView.swift */; };
+		95813E392DF88FD300342CBF /* SetMapImageLayerSublayerVisibilityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95813E382DF88FD000342CBF /* SetMapImageLayerSublayerVisibilityView.swift */; };
 		95A3773C2C0F93770044D1CC /* AddRasterFromServiceView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 955271602C0E6749009B1ED4 /* AddRasterFromServiceView.swift */; };
 		95A572192C0FDCC9006E8B48 /* ShowScaleBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A572182C0FDCC9006E8B48 /* ShowScaleBarView.swift */; };
 		95A5721B2C0FDD34006E8B48 /* ShowScaleBarView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 95A572182C0FDCC9006E8B48 /* ShowScaleBarView.swift */; };
@@ -714,6 +722,9 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				88FB70D92DD3DFA800EB76E3 /* AddOpenStreetMapLayerView.swift in Copy Source Code Files */,
+				951961AE2E00BD430088B0C2 /* SetMapImageLayerSublayerVisibilityView.swift in Copy Source Code Files */,
+				9525404E2DF904BA004090B9 /* SetFeatureLayerRenderingModeOnSceneView.swift in Copy Source Code Files */,
 				D7F913582DF0F286009CF629 /* QueryTableStatisticsGroupAndSortView.Views.swift in Copy Source Code Files */,
 				D79DD2FA2DEE1F0200D82B64 /* QueryTableStatisticsGroupAndSortView.swift in Copy Source Code Files */,
 				00F25C322DEF90DF002D9A01 /* SearchSymbolStyleDictionaryView.swift in Copy Source Code Files */,
@@ -848,6 +859,7 @@
 				D77688152B69828E007C3860 /* ListSpatialReferenceTransformationsView.swift in Copy Source Code Files */,
 				D7C3AB4D2B6832B7008909B9 /* SetFeatureRequestModeView.swift in Copy Source Code Files */,
 				D73FC90C2B6312A5001AC486 /* AddFeaturesWithContingentValuesView.AddFeatureView.swift in Copy Source Code Files */,
+				1C7B861D2DFB4EAF00B267EA /* ShowExtrudedGraphicsView.swift in Copy Source Code Files */,
 				D73FC90B2B6312A0001AC486 /* AddFeaturesWithContingentValuesView.Model.swift in Copy Source Code Files */,
 				D7F8C03B2B6056790072BFA7 /* AddFeaturesWithContingentValuesView.swift in Copy Source Code Files */,
 				D73F066C2B5EE760000B574F /* QueryFeaturesWithArcadeExpressionView.swift in Copy Source Code Files */,
@@ -1106,6 +1118,7 @@
 		1C7B85DD2DEE47F200B267EA /* QueryWithTimeExtentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryWithTimeExtentView.swift; sourceTree = "<group>"; };
 		1C7B85E12DF0B86F00B267EA /* SetAtmosphereEffectInSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetAtmosphereEffectInSceneView.swift; sourceTree = "<group>"; };
 		1C7B85E52DF37F7700B267EA /* SetFeatureLayerRenderingModeOnMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetFeatureLayerRenderingModeOnMapView.swift; sourceTree = "<group>"; };
+		1C7B861A2DFB4EAF00B267EA /* ShowExtrudedGraphicsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowExtrudedGraphicsView.swift; sourceTree = "<group>"; };
 		1C8438F32DDBD02C005CCBC7 /* GasDeviceAnno.mmpk */ = {isa = PBXFileReference; lastKnownFileType = file; path = GasDeviceAnno.mmpk; sourceTree = "<group>"; };
 		1C8438F62DDBDE1F005CCBC7 /* ControlAnnotationSublayerVisibilityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlAnnotationSublayerVisibilityView.swift; sourceTree = "<group>"; };
 		1C8438FA2DDCFCA9005CCBC7 /* ControlAnnotationSublayerVisibilityView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlAnnotationSublayerVisibilityView.Model.swift; sourceTree = "<group>"; };
@@ -1164,6 +1177,8 @@
 		88FB70382DCC207B00EB76E3 /* ApplySymbologyToShapefileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplySymbologyToShapefileView.swift; sourceTree = "<group>"; };
 		88FB70D02DCC247B00EB76E3 /* Aurora_CO_shp */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Aurora_CO_shp; sourceTree = "<group>"; };
 		88FB70D32DCD10B600EB76E3 /* AuthenticateWithIntegratedWindowsAuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticateWithIntegratedWindowsAuthenticationView.swift; sourceTree = "<group>"; };
+		88FB70D72DD3DF3700EB76E3 /* AddOpenStreetMapLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddOpenStreetMapLayerView.swift; sourceTree = "<group>"; };
+		9501BBEE2DF39DA50054F4BD /* SetFeatureLayerRenderingModeOnSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetFeatureLayerRenderingModeOnSceneView.swift; sourceTree = "<group>"; };
 		9503056D2C46ECB70091B32D /* ShowDeviceLocationUsingIndoorPositioningView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowDeviceLocationUsingIndoorPositioningView.Model.swift; sourceTree = "<group>"; };
 		951961AB2E00BC3C0088B0C2 /* ShowGeodesicSectorAndEllipseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowGeodesicSectorAndEllipseView.swift; sourceTree = "<group>"; };
 		9537AFD62C220EF0000923C5 /* ExchangeSetwithoutUpdates */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExchangeSetwithoutUpdates; sourceTree = "<group>"; };
@@ -1172,6 +1187,7 @@
 		955271602C0E6749009B1ED4 /* AddRasterFromServiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRasterFromServiceView.swift; sourceTree = "<group>"; };
 		955AFAC32C10FD6F009C8FE5 /* ApplyMosaicRuleToRastersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyMosaicRuleToRastersView.swift; sourceTree = "<group>"; };
 		9579FCE92C3360BB00FC8A1D /* EditFeatureAttachmentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFeatureAttachmentsView.swift; sourceTree = "<group>"; };
+		95813E382DF88FD000342CBF /* SetMapImageLayerSublayerVisibilityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetMapImageLayerSublayerVisibilityView.swift; sourceTree = "<group>"; };
 		95A572182C0FDCC9006E8B48 /* ShowScaleBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowScaleBarView.swift; sourceTree = "<group>"; };
 		95D2EE0E2C334D1600683D53 /* ShowServiceAreaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowServiceAreaView.swift; sourceTree = "<group>"; };
 		95DEB9B52C127A92009BEC35 /* ShowViewshedFromPointOnMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowViewshedFromPointOnMapView.swift; sourceTree = "<group>"; };
@@ -1581,6 +1597,7 @@
 				D713C6D42CB990600073AA72 /* Add KML layer */,
 				D751B4C72CD3E572005CE750 /* Add KML layer with network links */,
 				D7DFA0E92CBA0242007C31F2 /* Add map image layer */,
+				88FB70D62DD3DF1C00EB76E3 /* Add OpenStreetMap layer */,
 				D7CDD3882CB86F0A00DE9766 /* Add point cloud layer from file */,
 				D7848ED72CBD85A300F6F546 /* Add point scene layer */,
 				F19A316128906F0D003B7EF9 /* Add raster from file */,
@@ -1733,9 +1750,11 @@
 				1C7B85E22DF0B86F00B267EA /* Set atmosphere effect in scene */,
 				00B042E3282EDC690072E1B4 /* Set basemap */,
 				1C7B85E62DF37F7700B267EA /* Set feature layer rendering mode on map */,
+				9501BBF02DF39DBE0054F4BD /* Set feature layer rendering mode on scene */,
 				D7C3AB462B683291008909B9 /* Set feature request mode */,
 				104321082DF263A300D390EB /* Set initial map location */,
 				3E720F9B2C619ACD00E22A9E /* Set initial viewpoint */,
+				95813E3A2DF890CF00342CBF /* Set map image layer sublayer visibility */,
 				D734FA072A183A5A00246D7E /* Set max extent */,
 				D7EAF34F2A1C011000D822C4 /* Set min and max scale */,
 				D76CE8D62BFD7047009A8686 /* Set reference scale */,
@@ -1752,6 +1771,7 @@
 				95F8912A2C46E9F00010EBED /* Show device location using indoor positioning */,
 				4D126D6829CA1B6000CFB7A7 /* Show device location with NMEA data sources */,
 				D722BD1E2A420D7E002C2087 /* Show extruded features */,
+				1C7B861B2DFB4EAF00B267EA /* Show extruded graphics */,
 				88129D782DD5034B001599A5 /* Show geodesic path between two points */,
 				951961AD2E00BC760088B0C2 /* Show geodesic sector and ellipse */,
 				00ABA94B2BF671FC00C0488C /* Show grid */,
@@ -2297,6 +2317,14 @@
 			path = "Set feature layer rendering mode on map";
 			sourceTree = "<group>";
 		};
+		1C7B861B2DFB4EAF00B267EA /* Show extruded graphics */ = {
+			isa = PBXGroup;
+			children = (
+				1C7B861A2DFB4EAF00B267EA /* ShowExtrudedGraphicsView.swift */,
+			);
+			path = "Show extruded graphics";
+			sourceTree = "<group>";
+		};
 		1C8438F22DDBCFFC005CCBC7 /* b87307dcfb26411eb2e92e1627cb615b */ = {
 			isa = PBXGroup;
 			children = (
@@ -2647,6 +2675,22 @@
 				951961AB2E00BC3C0088B0C2 /* ShowGeodesicSectorAndEllipseView.swift */,
 			);
 			path = "Show geodesic sector and ellipse";
+     sourceTree = "<group>";
+		};
+		88FB70D62DD3DF1C00EB76E3 /* Add OpenStreetMap layer */ = {
+			isa = PBXGroup;
+			children = (
+				88FB70D72DD3DF3700EB76E3 /* AddOpenStreetMapLayerView.swift */,
+			);
+			path = "Add OpenStreetMap layer";
+			sourceTree = "<group>";
+		};
+		9501BBF02DF39DBE0054F4BD /* Set feature layer rendering mode on scene */ = {
+			isa = PBXGroup;
+			children = (
+				9501BBEE2DF39DA50054F4BD /* SetFeatureLayerRenderingModeOnSceneView.swift */,
+			);
+			path = "Set feature layer rendering mode on scene";
 			sourceTree = "<group>";
 		};
 		9537AFC82C220ECB000923C5 /* 9d2987a825c646468b3ce7512fb76e2d */ = {
@@ -2688,6 +2732,14 @@
 				9547085B2C3C719800CA8579 /* EditFeatureAttachmentsView.Model.swift */,
 			);
 			path = "Edit feature attachments";
+			sourceTree = "<group>";
+		};
+		95813E3A2DF890CF00342CBF /* Set map image layer sublayer visibility */ = {
+			isa = PBXGroup;
+			children = (
+				95813E382DF88FD000342CBF /* SetMapImageLayerSublayerVisibilityView.swift */,
+			);
+			path = "Set map image layer sublayer visibility";
 			sourceTree = "<group>";
 		};
 		95A5721A2C0FDCCE006E8B48 /* Show scale bar */ = {
@@ -4360,6 +4412,7 @@
 				D71FCB8A2AD6277F000E517C /* CreateMobileGeodatabaseView.Model.swift in Sources */,
 				D752D9462A3A6F80003EB25E /* MonitorChangesToMapLoadStatusView.swift in Sources */,
 				00181B462846AD7100654571 /* View+ErrorAlert.swift in Sources */,
+				88FB70D82DD3DF3700EB76E3 /* AddOpenStreetMapLayerView.swift in Sources */,
 				1C8438F82DDBDE1F005CCBC7 /* ControlAnnotationSublayerVisibilityView.swift in Sources */,
 				D733CA192BED980D00FBDE4C /* EditAndSyncFeaturesWithFeatureServiceView.swift in Sources */,
 				00273CF62A82AB8700A7A77D /* SampleLink.swift in Sources */,
@@ -4400,6 +4453,7 @@
 				1C38915D2DBC36C800ADFDDC /* AddWFSLayerView.swift in Sources */,
 				D789AAAD2D66C718007A8E0E /* CreateKMLMultiTrackView.Model.swift in Sources */,
 				0005580A2817C51E00224BC6 /* SampleDetailView.swift in Sources */,
+				9501BBEF2DF39DAB0054F4BD /* SetFeatureLayerRenderingModeOnSceneView.swift in Sources */,
 				00FA4E642DCA72EE008A34CF /* ApplyRGBRendererView.swift in Sources */,
 				D75F66362B48EABC00434974 /* SearchForWebMapView.swift in Sources */,
 				D7058B102B59E44B000A888A /* StylePointWithSceneSymbolView.swift in Sources */,
@@ -4502,6 +4556,7 @@
 				D7E440D72A1ECE7D005D74DE /* CreateBuffersAroundPointsView.swift in Sources */,
 				00D4EF802863842100B9CC30 /* AddFeatureLayersView.swift in Sources */,
 				88AF552A2DD68767003F146E /* ShowServiceAreasForMultipleFacilitiesView.swift in Sources */,
+				95813E392DF88FD300342CBF /* SetMapImageLayerSublayerVisibilityView.swift in Sources */,
 				4D126D7E29CA43D200CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.Model.swift in Sources */,
 				D7A670D52DADB9630060E327 /* Bundle.swift in Sources */,
 				4D126D6D29CA1B6000CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift in Sources */,
@@ -4552,6 +4607,7 @@
 				D7F913572DF0F272009CF629 /* QueryTableStatisticsGroupAndSortView.Views.swift in Sources */,
 				0042E24528E4F82C001F33D6 /* ShowViewshedFromPointInSceneView.ViewshedSettingsView.swift in Sources */,
 				D7DDF8532AF47C6C004352D9 /* FindRouteAroundBarriersView.swift in Sources */,
+				1C7B861C2DFB4EAF00B267EA /* ShowExtrudedGraphicsView.swift in Sources */,
 				1C9B74D929DB54560038B06F /* ChangeCameraControllerView.swift in Sources */,
 				D7BEBAD22CBDFE1C00F882E7 /* DisplayAlternateSymbolsAtDifferentScalesView.swift in Sources */,
 				D76000AE2AF19C2300B3084D /* FindRouteInMobileMapPackageView.swift in Sources */,

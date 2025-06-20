@@ -1,0 +1,24 @@
+{
+    "category": "Layers",
+    "description": "Change the visibility of sublayers.",
+    "ignore": false,
+    "images": [
+        "set-map-image-layer-sublayer-visibility.png"
+    ],
+    "keywords": [
+        "layer",
+        "sublayer",
+        "visibility",
+        "ArcGISMapImageLayer",
+        "ArcGISMapImageSublayer"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "ArcGISMapImageLayer",
+        "ArcGISMapImageSublayer"
+    ],
+    "snippets": [
+        "SetMapImageLayerSublayerVisibilityView.swift"
+    ],
+    "title": "Set map image layer sublayer visibility"
+}
