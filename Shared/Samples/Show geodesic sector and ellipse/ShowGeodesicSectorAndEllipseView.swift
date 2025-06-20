@@ -25,7 +25,7 @@ struct ShowGeodesicSectorAndEllipseView: View {
         MapViewReader { proxy in
             MapView(
                 map: model.map,
-                graphicsOverlays: [model.graphicOverlay]
+                graphicsOverlays: [model.ellipseGraphicOverlay, model.sectorGraphicOverlay]
             )
             .onSingleTapGesture { _, tapPoint in
                 self.tapPoint = tapPoint
@@ -33,11 +33,12 @@ struct ShowGeodesicSectorAndEllipseView: View {
             .task(id: tapPoint) {
                 if let tapPoint {
                     await proxy.setViewpoint(
-                        Viewpoint(center: tapPoint, scale: 1e8)
+                        Viewpoint(
+                            center: tapPoint, scale: 1e7
+                        )
                     )
                     
                     model.set(tapPoint: tapPoint)
-                    model.updateSector(tapPoint: tapPoint)
                 }
             }
             .toolbar {
@@ -49,23 +50,21 @@ struct ShowGeodesicSectorAndEllipseView: View {
                         Form {
                             Section {
                                 ParameterSlider(
-                                    label: "Axis Direction:", value: $model.axisDirection, range: 0...10, tapPoint: tapPoint
+                                    label: "Axis Direction:", value: $model.axisDirection, range: 0...360, tapPoint: tapPoint
                                 ) {
                                     model.updateSector(tapPoint: tapPoint)
                                 }
                                 
-                                Stepper(
-                                    "Max Point Count: \(String(format: "%.2f", model.maxPointCount))",
-                                    value: $model.maxPointCount,
-                                    in: 0...10
-                                )
+                                Stepper(value: $model.maxPointCount, in: 0...1000, step: 1) {
+                                    Text("Max Point Count:  \(String(format: "%d", model.maxPointCount))")
+                                }
                                 .font(.caption)
                                 .onChange(of: model.maxPointCount) {
                                     model.updateSector(tapPoint: tapPoint)
                                 }
                                 
                                 ParameterSlider(
-                                    label: "Max Segment Length:", value: $model.maxSegmentLength, range: 0...10, tapPoint: tapPoint
+                                    label: "Max Segment Length:", value: $model.maxSegmentLength, range: 1...1000, tapPoint: tapPoint
                                 ) {
                                     model.updateSector(tapPoint: tapPoint)
                                 }
@@ -79,19 +78,19 @@ struct ShowGeodesicSectorAndEllipseView: View {
                                 }
                                 
                                 ParameterSlider(
-                                    label: "Sector Angle:", value: $model.sectorAngle, range: 0...10, tapPoint: tapPoint
+                                    label: "Sector Angle:", value: $model.sectorAngle, range: 0...360, tapPoint: tapPoint
                                 ) {
                                     model.updateSector(tapPoint: tapPoint)
                                 }
                                 
                                 ParameterSlider(
-                                    label: "Semi Axis 1 Length:", value: $model.semiAxis1Length, range: 0...10, tapPoint: tapPoint
+                                    label: "Semi Axis 1 Length:", value: $model.semiAxis1Length, range: 0...1000, tapPoint: tapPoint
                                 ) {
                                     model.updateSector(tapPoint: tapPoint)
                                 }
                                 
                                 ParameterSlider(
-                                    label: "Semi Axis 2 Length:", value: $model.semiAxis2Length, range: 0...10, tapPoint: tapPoint
+                                    label: "Semi Axis 2 Length:", value: $model.semiAxis2Length, range: 0...1000, tapPoint: tapPoint
                                 ) {
                                     model.updateSector(tapPoint: tapPoint)
                                 }
@@ -121,46 +120,46 @@ private extension ShowGeodesicSectorAndEllipseView {
     @MainActor
     class Model: ObservableObject {
         var map = Map(basemapStyle: .arcGISTopographic)
-        var graphicOverlay = GraphicsOverlay()
+        var ellipseGraphicOverlay = GraphicsOverlay()
+        var sectorGraphicOverlay = GraphicsOverlay()
         
+        var sectorLineSymbol = SimpleLineSymbol(style: .solid, color: .blue, width: 2)
+        var sectorMarkerSymbol = SimpleMarkerSymbol(style: .circle, color: .green, size: 2)
+        let ellipseLineSymbol = SimpleLineSymbol(style: .dash, color: .red, width: 2)
         var sectorFillSymbol = SimpleFillSymbol(style: .solid, color: .green)
-        var sectorLineSymbol = SimpleLineSymbol(style: .solid, color: .green, width: 3)
-        var sectorMarkerSymbol = SimpleMarkerSymbol(style: .circle, color: .green, size: 3)
         
         var ellipseGraphic: Graphic!
         var sectorGraphic: Graphic!
         
-        @Published var axisDirection: Double = 0
-        @Published var maxSegmentLength: Double = 10
-        @Published var sectorAngle: Double = 10
-        @Published var maxPointCount: Int = 10
-        @Published var semiAxis1Length: Double = 10
-        @Published var semiAxis2Length: Double = 10
+        @Published var axisDirection: Double = 45
+        @Published var maxSegmentLength: Double = 1
+        @Published var sectorAngle: Double = 90
+        @Published var maxPointCount: Int = 2000
+        @Published var semiAxis1Length: Double = 200
+        @Published var semiAxis2Length: Double = 100
         @Published var selectedGeometryType: GeometryType = .polygon
-        @Published var startDirection: Double = 10
+        @Published var startDirection: Double = 45
         
         func set(tapPoint: Point) {
-            let parameters = GeodesicEllipseParameters<ArcGIS.Polygon>(
-                axisDirection: -45,
-                center: tapPoint,
-                linearUnit: .kilometers,
-                maxPointCount: 100,
-                maxSegmentLength: 20,
-                semiAxis1Length: 200,
-                semiAxis2Length: 400
-            )
-            
-            let ellipseLineSymbol = SimpleLineSymbol(style: .dash, color: .red, width: 2)
-            let ellipseGeometry = GeometryEngine.geodesicEllipse(parameters: parameters)
-            
-            ellipseGraphic = Graphic(geometry: ellipseGeometry)
-            graphicOverlay = GraphicsOverlay(graphics: [Graphic(geometry: ellipseGeometry)])
-            graphicOverlay.renderer = SimpleRenderer(symbol: ellipseLineSymbol)
+            updateSector(tapPoint: tapPoint)
         }
         
         func updateSector(tapPoint: Point?) {
             guard let tapPoint = tapPoint else { return }
-            
+            ellipseGraphicOverlay.removeAllGraphics()
+            sectorGraphicOverlay.removeAllGraphics()
+            switch selectedGeometryType {
+            case .point:
+                setupPoint(tapPoint: tapPoint)
+            case .polyline:
+                setupPolyline(tapPoint: tapPoint)
+            case .polygon:
+                setupPolygon(tapPoint: tapPoint)
+            }
+            updateEllipse(tapPoint: tapPoint)
+        }
+        
+        func setupPolygon(tapPoint: Point) {
             var sectorParams = GeodesicSectorParameters<ArcGIS.Polygon>()
             sectorParams.center = tapPoint
             sectorParams.axisDirection = axisDirection
@@ -170,25 +169,64 @@ private extension ShowGeodesicSectorAndEllipseView {
             sectorParams.semiAxis1Length = semiAxis1Length
             sectorParams.semiAxis2Length = semiAxis2Length
             sectorParams.startDirection = startDirection
-            
+            sectorParams.linearUnit = .miles
+            let sectorGeometry = GeometryEngine.geodesicSector(parameters: sectorParams)
+            sectorGraphic = Graphic(geometry: sectorGeometry, symbol: sectorFillSymbol)
+            sectorGraphicOverlay.renderer = SimpleRenderer(symbol: sectorFillSymbol)
+            sectorGraphicOverlay.addGraphic(sectorGraphic)
+        }
+        
+        func setupPolyline(tapPoint: Point) {
+            var sectorParams = GeodesicSectorParameters<ArcGIS.Polyline>()
+            sectorParams.center = tapPoint
+            sectorParams.axisDirection = axisDirection
+            sectorParams.maxPointCount = maxPointCount
+            sectorParams.maxSegmentLength = maxSegmentLength
+            sectorParams.sectorAngle = sectorAngle
+            sectorParams.semiAxis1Length = semiAxis1Length
+            sectorParams.semiAxis2Length = semiAxis2Length
+            sectorParams.startDirection = startDirection
+            sectorParams.linearUnit = .miles
             let sectorGeometry = GeometryEngine.geodesicSector(parameters: sectorParams)
             sectorGraphic = Graphic(geometry: sectorGeometry, symbol: sectorLineSymbol)
-            graphicOverlay.addGraphic(sectorGraphic)
-            
+            sectorGraphicOverlay.renderer = SimpleRenderer(symbol: sectorLineSymbol)
+            sectorGraphicOverlay.addGraphic(sectorGraphic)
+        }
+        
+        func setupPoint(tapPoint: Point) {
+            var sectorParams = GeodesicSectorParameters<ArcGIS.Multipoint>()
+            sectorParams.center = tapPoint
+            sectorParams.axisDirection = axisDirection
+            sectorParams.maxPointCount = maxPointCount
+            sectorParams.maxSegmentLength = maxSegmentLength
+            sectorParams.sectorAngle = sectorAngle
+            sectorParams.semiAxis1Length = semiAxis1Length
+            sectorParams.semiAxis2Length = semiAxis2Length
+            sectorParams.startDirection = startDirection
+            sectorParams.linearUnit = .miles
+            let sectorGeometry = GeometryEngine.geodesicSector(parameters: sectorParams)
+            sectorGraphic = Graphic(geometry: sectorGeometry, symbol: sectorMarkerSymbol)
+            sectorGraphicOverlay.renderer = SimpleRenderer(symbol: sectorMarkerSymbol)
+            sectorGraphicOverlay.addGraphic(sectorGraphic)
+        }
+        
+        func updateEllipse(tapPoint: Point?) {
+            guard let tapPoint = tapPoint else {
+                return
+            }
             let parameters = GeodesicEllipseParameters<ArcGIS.Polygon>(
                 axisDirection: axisDirection,
                 center: tapPoint,
-                linearUnit: .kilometers,
+                linearUnit: .miles,
                 maxPointCount: maxPointCount,
                 maxSegmentLength: maxSegmentLength,
                 semiAxis1Length: semiAxis1Length,
                 semiAxis2Length: semiAxis2Length
             )
             
-            let ellipseLineSymbol = SimpleLineSymbol(style: .dash, color: .red, width: 2)
             let ellipseGeometry = GeometryEngine.geodesicEllipse(parameters: parameters)
             ellipseGraphic = Graphic(geometry: ellipseGeometry, symbol: ellipseLineSymbol)
-            graphicOverlay.addGraphic(ellipseGraphic)
+            ellipseGraphicOverlay.addGraphic(ellipseGraphic)
         }
     }
     
