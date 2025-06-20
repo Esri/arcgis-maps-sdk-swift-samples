@@ -331,6 +331,7 @@
 		95F3A52B2C07F09C00885DED /* SetSurfaceNavigationConstraintView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F3A52A2C07F09C00885DED /* SetSurfaceNavigationConstraintView.swift */; };
 		95F3A52D2C07F28700885DED /* SetSurfaceNavigationConstraintView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 95F3A52A2C07F09C00885DED /* SetSurfaceNavigationConstraintView.swift */; };
 		95F891292C46E9D60010EBED /* ShowDeviceLocationUsingIndoorPositioningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F891282C46E9D60010EBED /* ShowDeviceLocationUsingIndoorPositioningView.swift */; };
+		95FFEB442E06211B00543993 /* ShowGeodesicSectorAndEllipseView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 951961AB2E00BC3C0088B0C2 /* ShowGeodesicSectorAndEllipseView.swift */; };
 		D70082EB2ACF900100E0C3C2 /* IdentifyKMLFeaturesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70082EA2ACF900100E0C3C2 /* IdentifyKMLFeaturesView.swift */; };
 		D70082EC2ACF901600E0C3C2 /* IdentifyKMLFeaturesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D70082EA2ACF900100E0C3C2 /* IdentifyKMLFeaturesView.swift */; };
 		D7010EBF2B05616900D43F55 /* DisplaySceneFromMobileScenePackageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7010EBC2B05616900D43F55 /* DisplaySceneFromMobileScenePackageView.swift */; };
@@ -722,6 +723,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				95FFEB442E06211B00543993 /* ShowGeodesicSectorAndEllipseView.swift in Copy Source Code Files */,
 				88FB70D92DD3DFA800EB76E3 /* AddOpenStreetMapLayerView.swift in Copy Source Code Files */,
 				951961AE2E00BD430088B0C2 /* SetMapImageLayerSublayerVisibilityView.swift in Copy Source Code Files */,
 				9525404E2DF904BA004090B9 /* SetFeatureLayerRenderingModeOnSceneView.swift in Copy Source Code Files */,
@@ -2669,14 +2671,6 @@
 			path = "Authenticate with Integrated Windows Authentication";
 			sourceTree = "<group>";
 		};
-		951961AD2E00BC760088B0C2 /* Show geodesic sector and ellipse */ = {
-			isa = PBXGroup;
-			children = (
-				951961AB2E00BC3C0088B0C2 /* ShowGeodesicSectorAndEllipseView.swift */,
-			);
-			path = "Show geodesic sector and ellipse";
-     sourceTree = "<group>";
-		};
 		88FB70D62DD3DF1C00EB76E3 /* Add OpenStreetMap layer */ = {
 			isa = PBXGroup;
 			children = (
@@ -2691,6 +2685,14 @@
 				9501BBEE2DF39DA50054F4BD /* SetFeatureLayerRenderingModeOnSceneView.swift */,
 			);
 			path = "Set feature layer rendering mode on scene";
+			sourceTree = "<group>";
+		};
+		951961AD2E00BC760088B0C2 /* Show geodesic sector and ellipse */ = {
+			isa = PBXGroup;
+			children = (
+				951961AB2E00BC3C0088B0C2 /* ShowGeodesicSectorAndEllipseView.swift */,
+			);
+			path = "Show geodesic sector and ellipse";
 			sourceTree = "<group>";
 		};
 		9537AFC82C220ECB000923C5 /* 9d2987a825c646468b3ce7512fb76e2d */ = {
