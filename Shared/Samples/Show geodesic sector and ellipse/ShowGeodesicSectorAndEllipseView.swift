@@ -43,7 +43,7 @@ struct ShowGeodesicSectorAndEllipseView: View {
             .toolbar {
                 // The menu which holds the options that change the ellipse and sector.
                 ToolbarItemGroup(placement: .bottomBar) {
-                    Button("Geodesic Sector & Ellipse") {
+                    Button("Geodesic Sector & Ellipse Settings") {
                         isPresented.toggle()
                     }
                     .popover(isPresented: $isPresented) {
