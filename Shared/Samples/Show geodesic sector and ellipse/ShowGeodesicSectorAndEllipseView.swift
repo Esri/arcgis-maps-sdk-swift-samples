@@ -18,7 +18,10 @@ import SwiftUI
 struct ShowGeodesicSectorAndEllipseView: View {
     /// The data model that helps determine the view. It is an objerved object.
     @StateObject private var model = Model()
+    
+    /// The map point selected by the user when tapping on the map.
     @State private var tapPoint: Point?
+    
     /// Manages the presentation state of the menu.
     @State private var isPresented: Bool = false
     
@@ -106,6 +109,8 @@ private extension ShowGeodesicSectorAndEllipseView {
         }
     }
     
+    /// A view model that encapsulates logic and state for rendering a geodesic sector and ellipse.
+    /// Handles user-configured parameters and updates overlays when those parameters change.
     @MainActor
     class Model: ObservableObject {
         /// The map that will be displayed in the map view.
@@ -127,7 +132,7 @@ private extension ShowGeodesicSectorAndEllipseView {
         private var ellipseGraphic: Graphic!
         private var sectorGraphic: Graphic!
         
-        /// Data that is modified in the view's menu and updates the UI.
+        /// The direction (in degrees) of the ellipse's major axis.
         @Published var axisDirection: Double = 45
         @Published var maxSegmentLength: Double = 1
         @Published var sectorAngle: Double = 90
@@ -148,16 +153,19 @@ private extension ShowGeodesicSectorAndEllipseView {
         private func setupSector(tapPoint: Point, geometryType: GeometryType) {
             switch geometryType {
             case .point:
+                // Generate sector as a multipoint (symbols)
                 var params = GeodesicSectorParameters<Multipoint>()
                 fillSectorParams(&params, center: tapPoint)
                 let geometry = GeometryEngine.geodesicSector(parameters: params)
                 addSectorGraphic(geometry: geometry, symbol: sectorMarkerSymbol)
             case .polyline:
+                // Generate sector as a polyline (outlined arc)
                 var params = GeodesicSectorParameters<Polyline>()
                 fillSectorParams(&params, center: tapPoint)
                 let geometry = GeometryEngine.geodesicSector(parameters: params)
                 addSectorGraphic(geometry: geometry, symbol: sectorLineSymbol)
             case .polygon:
+                // Generate sector as a filled polygon
                 var params = GeodesicSectorParameters<Polygon>()
                 fillSectorParams(&params, center: tapPoint)
                 let geometry = GeometryEngine.geodesicSector(parameters: params)
@@ -165,8 +173,9 @@ private extension ShowGeodesicSectorAndEllipseView {
             }
         }
         
-        /// Method for configuring GeodesicSectorParameters with a generic type. Object is passed
-        /// through function and directly modified via inout parameters.
+        /// Populates a `GeodesicSectorParameters<T>` instance with current user-defined values.
+        /// - Parameter params: A reference to the parameter struct that will be filled.
+        /// - Parameter center: The center point for the sector/ellipse.
         private func fillSectorParams<T>(_ params: inout GeodesicSectorParameters<T>, center: Point) {
             params.center = center
             params.axisDirection = axisDirection
@@ -179,7 +188,7 @@ private extension ShowGeodesicSectorAndEllipseView {
             params.linearUnit = .miles
         }
         
-        /// Helper function that creates the sector graphic and then sets the render on the overlay.
+        /// Adds a sector graphic to the overlay and applies the appropriate renderer.
         private func addSectorGraphic(geometry: Geometry?, symbol: Symbol) {
             guard let geometry = geometry else { return }
             sectorGraphic = Graphic(geometry: geometry, symbol: symbol)
@@ -187,7 +196,7 @@ private extension ShowGeodesicSectorAndEllipseView {
             sectorGraphicOverlay.addGraphic(sectorGraphic)
         }
         
-        /// Created and configures the ellipse graphic and adds it to the view.
+        /// Generates and adds a geodesic ellipse graphic based on the current settings and tap point.
         private func updateEllipse(tapPoint: Point?) {
             guard let tapPoint = tapPoint else {
                 return
@@ -207,6 +216,8 @@ private extension ShowGeodesicSectorAndEllipseView {
         }
     }
     
+    /// A reusable UI component for adjusting a numeric parameter using a slider.
+    /// Updates the sector/ellipse dynamically when changed.
     struct ParameterSlider: View {
         let label: String
         @Binding var value: Double
@@ -229,7 +240,7 @@ private extension ShowGeodesicSectorAndEllipseView {
         }
     }
     
-    /// Component view within the menu that displays and updates the geometry type.
+    /// A menu component that allows the user to choose between point, polyline, or polygon geometry types for the sector.
     struct GeometryTypeMenu: View {
         @Binding var selected: GeometryType
         
