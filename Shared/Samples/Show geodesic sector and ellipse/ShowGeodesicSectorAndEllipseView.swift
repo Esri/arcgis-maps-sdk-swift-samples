@@ -160,6 +160,8 @@ private extension ShowGeodesicSectorAndEllipseView {
             }
         }
         
+        /// Method for configuring GeodesicSectorParameters with a generic type. Object is passed through function and directly modified via inout
+        /// parameters.
         private func fillSectorParams<T>(_ params: inout GeodesicSectorParameters<T>, center: Point) {
             params.center = center
             params.axisDirection = axisDirection
@@ -172,12 +174,14 @@ private extension ShowGeodesicSectorAndEllipseView {
             params.linearUnit = .miles
         }
         
+        /// Helper function that creates the sector graphic and then sets the render on the overlay. 
         private func addSectorGraphic(geometry: Geometry?, symbol: Symbol) {
             guard let geometry = geometry else { return }
             sectorGraphic = Graphic(geometry: geometry, symbol: symbol)
             sectorGraphicOverlay.renderer = SimpleRenderer(symbol: symbol)
             sectorGraphicOverlay.addGraphic(sectorGraphic)
         }
+        
         
         private func updateEllipse(tapPoint: Point?) {
             guard let tapPoint = tapPoint else {
