@@ -211,7 +211,7 @@ private extension ShowGeodesicSectorAndEllipseView {
                 Text(label)
                     .font(.caption)
             } maximumValueLabel: {
-                Text("\(String(format: "%.2f", value))")
+                Text("\(String(format: "%.0f", value))")
                     .font(.caption)
             }
             .onChange(of: value) {
