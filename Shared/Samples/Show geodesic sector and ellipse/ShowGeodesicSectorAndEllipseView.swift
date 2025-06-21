@@ -16,8 +16,8 @@ import ArcGIS
 import SwiftUI
 
 struct ShowGeodesicSectorAndEllipseView: View {
+    /// The data model that helps determine the view. It is an objerved object.
     @StateObject private var model = Model()
-    
     @State private var tapPoint: Point?
     @State private var isPresented: Bool = false
     
@@ -41,6 +41,7 @@ struct ShowGeodesicSectorAndEllipseView: View {
                 }
             }
             .toolbar {
+                // The menu which holds the options that change the ellipse and sector.
                 ToolbarItemGroup(placement: .bottomBar) {
                     Button("Geodesic Sector & Ellipse") {
                         isPresented.toggle()
@@ -48,12 +49,9 @@ struct ShowGeodesicSectorAndEllipseView: View {
                     .popover(isPresented: $isPresented) {
                         Form {
                             Section {
-                                ParameterSlider(
-                                    label: "Axis Direction:", value: $model.axisDirection, range: 0...360, tapPoint: tapPoint
-                                ) {
+                                ParameterSlider(label: "Axis Direction:", value: $model.axisDirection, range: 0...360, tapPoint: tapPoint) {
                                     model.updateSector(tapPoint: tapPoint)
                                 }
-                                
                                 Stepper(value: $model.maxPointCount, in: 0...1000, step: 1) {
                                     Text("Max Point Count:  \(String(format: "%d", model.maxPointCount))")
                                 }
@@ -61,36 +59,23 @@ struct ShowGeodesicSectorAndEllipseView: View {
                                 .onChange(of: model.maxPointCount) {
                                     model.updateSector(tapPoint: tapPoint)
                                 }
-                                
                                 ParameterSlider(
-                                    label: "Max Segment Length:", value: $model.maxSegmentLength, range: 1...1000, tapPoint: tapPoint
-                                ) {
+                                    label: "Max Segment Length:", value: $model.maxSegmentLength, range: 1...1000, tapPoint: tapPoint) {
                                     model.updateSector(tapPoint: tapPoint)
                                 }
-                                
                                 GeometryTypeMenu(
                                     selected: $model.selectedGeometryType
                                 )
-                                .onChange(of: model.selectedGeometryType
-                                ) {
+                                .onChange(of: model.selectedGeometryType) {
                                     model.updateSector(tapPoint: tapPoint)
                                 }
-                                
-                                ParameterSlider(
-                                    label: "Sector Angle:", value: $model.sectorAngle, range: 0...360, tapPoint: tapPoint
-                                ) {
+                                ParameterSlider(label: "Sector Angle:", value: $model.sectorAngle, range: 0...360, tapPoint: tapPoint) {
                                     model.updateSector(tapPoint: tapPoint)
                                 }
-                                
-                                ParameterSlider(
-                                    label: "Semi Axis 1 Length:", value: $model.semiAxis1Length, range: 0...1000, tapPoint: tapPoint
-                                ) {
+                                ParameterSlider(label: "Semi Axis 1 Length:", value: $model.semiAxis1Length, range: 0...1000, tapPoint: tapPoint) {
                                     model.updateSector(tapPoint: tapPoint)
                                 }
-                                
-                                ParameterSlider(
-                                    label: "Semi Axis 2 Length:", value: $model.semiAxis2Length, range: 0...1000, tapPoint: tapPoint
-                                ) {
+                                ParameterSlider(label: "Semi Axis 2 Length:", value: $model.semiAxis2Length, range: 0...1000, tapPoint: tapPoint) {
                                     model.updateSector(tapPoint: tapPoint)
                                 }
                             }
@@ -118,9 +103,14 @@ private extension ShowGeodesicSectorAndEllipseView {
     
     @MainActor
     class Model: ObservableObject {
+        /// The map that will be displayed in the map view.
         var map = Map(basemapStyle: .arcGISTopographic)
         
+        /// The graphics overlay that will be displayed on the map view.
+        /// This will hold the graphics that show the ellipse path.
         var ellipseGraphicOverlay = GraphicsOverlay()
+        /// The graphics overlay that will be displayed on the map view.
+        /// This will display a highlighted section of the ellipse path.
         var sectorGraphicOverlay = GraphicsOverlay()
         
         private let sectorLineSymbol = SimpleLineSymbol(style: .solid, color: .green, width: 2)
