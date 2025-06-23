@@ -56,7 +56,12 @@ struct ShowGeodesicSectorAndEllipseView: View {
                     .popover(isPresented: $isPresented) {
                         Form {
                             Section {
-                                ParameterSlider(label: "Axis Direction:", value: $model.axisDirection, range: 0...360, tapPoint: tapPoint) {
+                                ParameterSlider(
+                                    label: "Axis Direction:",
+                                    value: $model.axisDirection,
+                                    range: 0...360,
+                                    tapPoint: tapPoint
+                                ) {
                                     model.updateSector(tapPoint: tapPoint)
                                 }
                                 Stepper(value: $model.maxPointCount, in: 0...1000, step: 1) {
@@ -67,7 +72,11 @@ struct ShowGeodesicSectorAndEllipseView: View {
                                     model.updateSector(tapPoint: tapPoint)
                                 }
                                 ParameterSlider(
-                                    label: "Max Segment Length:", value: $model.maxSegmentLength, range: 1...1000, tapPoint: tapPoint) {
+                                    label: "Max Segment Length:",
+                                    value: $model.maxSegmentLength,
+                                    range: 1...1000, tapPoint:
+                                        tapPoint
+                                ) {
                                     model.updateSector(tapPoint: tapPoint)
                                 }
                                 GeometryTypeMenu(
@@ -76,13 +85,28 @@ struct ShowGeodesicSectorAndEllipseView: View {
                                 .onChange(of: model.selectedGeometryType) {
                                     model.updateSector(tapPoint: tapPoint)
                                 }
-                                ParameterSlider(label: "Sector Angle:", value: $model.sectorAngle, range: 0...360, tapPoint: tapPoint) {
+                                ParameterSlider(
+                                    label: "Sector Angle:",
+                                    value: $model.sectorAngle,
+                                    range: 0...360,
+                                    tapPoint: tapPoint
+                                ) {
                                     model.updateSector(tapPoint: tapPoint)
                                 }
-                                ParameterSlider(label: "Semi Axis 1 Length:", value: $model.semiAxis1Length, range: 0...1000, tapPoint: tapPoint) {
+                                ParameterSlider(
+                                    label: "Semi Axis 1 Length:",
+                                    value: $model.semiAxis1Length,
+                                    range: 0...1000,
+                                    tapPoint: tapPoint
+                                ) {
                                     model.updateSector(tapPoint: tapPoint)
                                 }
-                                ParameterSlider(label: "Semi Axis 2 Length:", value: $model.semiAxis2Length, range: 0...1000, tapPoint: tapPoint) {
+                                ParameterSlider(
+                                    label: "Semi Axis 2 Length:",
+                                    value: $model.semiAxis2Length,
+                                    range: 0...1000,
+                                    tapPoint: tapPoint
+                                ) {
                                     model.updateSector(tapPoint: tapPoint)
                                 }
                             }
