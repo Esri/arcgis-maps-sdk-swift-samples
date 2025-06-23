@@ -74,8 +74,8 @@ struct ShowGeodesicSectorAndEllipseView: View {
                                 ParameterSlider(
                                     label: "Max Segment Length:",
                                     value: $model.maxSegmentLength,
-                                    range: 1...1000, tapPoint:
-                                        tapPoint
+                                    range: 1...1000,
+                                    tapPoint: tapPoint
                                 ) {
                                     model.updateSector(tapPoint: tapPoint)
                                 }
