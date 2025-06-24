@@ -244,26 +244,29 @@ private extension ShowGeodesicSectorAndEllipseView {
         let onUpdate: () -> Void
         
         var body: some View {
-            let format = FloatingPointFormatStyle<Double>()
-                .precision(.fractionLength(0))
-            LabeledContent(
-                label,
-                value: value,
-                format: format
-            ).font(.caption)
-            Slider(value: $value, in: range) {
-                Text(label)
-                    .font(.caption)
-            } minimumValueLabel: {
-                Text(range.lowerBound, format: format)
-                    .font(.caption)
-            } maximumValueLabel: {
-                Text(range.upperBound, format: format)
-                    .font(.caption)
-            }
-            .listRowSeparator(.hidden, edges: .top)
-            .onChange(of: value) {
-                onUpdate()
+            VStack(alignment: .leading, spacing: 4) {
+                let format = FloatingPointFormatStyle<Double>()
+                    .precision(.fractionLength(0))
+                LabeledContent(
+                    label,
+                    value: value,
+                    format: format
+                )
+                .font(.caption)
+                Slider(value: $value, in: range) {
+                    Text(label)
+                        .font(.caption)
+                } minimumValueLabel: {
+                    Text(range.lowerBound, format: format)
+                        .font(.caption)
+                } maximumValueLabel: {
+                    Text(range.upperBound, format: format)
+                        .font(.caption)
+                }
+                .listRowSeparator(.hidden, edges: [.top])
+                .onChange(of: value) {
+                    onUpdate()
+                }
             }
         }
     }
