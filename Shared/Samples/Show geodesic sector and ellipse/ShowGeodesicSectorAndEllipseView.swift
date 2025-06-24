@@ -29,29 +29,23 @@ struct ShowGeodesicSectorAndEllipseView: View {
         MapViewReader { proxy in
             MapView(
                 map: model.map,
-                graphicsOverlays: [
-                    model.ellipseGraphicOverlay,
-                    model.sectorGraphicOverlay
-                ]
+                graphicsOverlays: [model.ellipseGraphicOverlay, model.sectorGraphicOverlay]
             )
             .onSingleTapGesture { _, tapPoint in
                 self.tapPoint = tapPoint
             }
             .task(id: tapPoint) {
-                if let tapPoint {
-                    await proxy.setViewpoint(
-                        Viewpoint(
-                            center: tapPoint, scale: 1e7
-                        )
-                    )
-                    model.updateSector(tapPoint: tapPoint)
-                }
+                guard let tapPoint else { return }
+                await proxy.setViewpoint(
+                    Viewpoint(center: tapPoint, scale: 1e7)
+                )
+                model.updateSector(tapPoint: tapPoint)
             }
             .toolbar {
                 // The menu which holds the options that change the ellipse and sector.
                 ToolbarItemGroup(placement: .bottomBar) {
-                    Button("Geodesic Sector & Ellipse Settings") {
-                        isPresented.toggle()
+                    Button("Settings") {
+                        isPresented = true
                     }
                     .popover(isPresented: $isPresented) {
                         Form {
@@ -138,15 +132,15 @@ private extension ShowGeodesicSectorAndEllipseView {
     @MainActor
     class Model: ObservableObject {
         /// The map that will be displayed in the map view.
-        var map = Map(basemapStyle: .arcGISTopographic)
+        let map = Map(basemapStyle: .arcGISTopographic)
         
         /// The graphics overlay that will be displayed on the map view.
         /// This will hold the graphics that show the ellipse path.
-        var ellipseGraphicOverlay = GraphicsOverlay()
+        let ellipseGraphicOverlay = GraphicsOverlay()
         
         /// The graphics overlay that will be displayed on the map view.
         /// This will display a highlighted section of the ellipse path.
-        var sectorGraphicOverlay = GraphicsOverlay()
+        let sectorGraphicOverlay = GraphicsOverlay()
         
         private let sectorLineSymbol = SimpleLineSymbol(style: .solid, color: .green, width: 2)
         private let sectorMarkerSymbol = SimpleMarkerSymbol(style: .circle, color: .green, size: 2)
@@ -250,16 +244,14 @@ private extension ShowGeodesicSectorAndEllipseView {
         let onUpdate: () -> Void
         
         var body: some View {
+            let format = FloatingPointFormatStyle<Double>()
+                .precision(.fractionLength(0))
             Slider(value: $value, in: range) {
-            } minimumValueLabel: {
                 Text(label)
-                    .font(.caption)
+            } minimumValueLabel: {
+                Text(range.lowerBound, format: format)
             } maximumValueLabel: {
-                Text("\(String(format: "%.0f", value))")
-                    .font(.caption)
-            }
-            .onChange(of: value) {
-                onUpdate()
+                Text(range.upperBound, format: format)
             }
         }
     }
