@@ -258,6 +258,7 @@ private extension ShowGeodesicSectorAndEllipseView {
             VStack(alignment: .leading, spacing: 4) {
                 let format = FloatingPointFormatStyle<Double>()
                     .precision(.fractionLength(0))
+                    .grouping(.never)
                 LabeledContent(
                     label,
                     value: value,
