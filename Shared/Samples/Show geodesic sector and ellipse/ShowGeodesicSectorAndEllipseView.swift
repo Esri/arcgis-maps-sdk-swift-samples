@@ -52,8 +52,7 @@ struct ShowGeodesicSectorAndEllipseView: View {
                             ParameterSlider(
                                 label: "Axis Direction:",
                                 value: $model.axisDirection,
-                                range: 0...360,
-                                tapPoint: tapPoint
+                                range: 0...360
                             )
                             .onChange(of: model.axisDirection) {
                                 guard let center = tapPoint else { return }
@@ -74,8 +73,7 @@ struct ShowGeodesicSectorAndEllipseView: View {
                             ParameterSlider(
                                 label: "Max Segment Length:",
                                 value: $model.maxSegmentLength,
-                                range: 1...1000,
-                                tapPoint: tapPoint
+                                range: 1...1000
                             )
                             .onChange(of: model.maxSegmentLength) {
                                 guard let center = tapPoint else { return }
@@ -91,8 +89,7 @@ struct ShowGeodesicSectorAndEllipseView: View {
                             ParameterSlider(
                                 label: "Sector Angle:",
                                 value: $model.sectorAngle,
-                                range: 0...360,
-                                tapPoint: tapPoint
+                                range: 0...360
                             )
                             .onChange(of: model.sectorAngle) {
                                 guard let center = tapPoint else { return }
@@ -101,8 +98,7 @@ struct ShowGeodesicSectorAndEllipseView: View {
                             ParameterSlider(
                                 label: "Semi Axis 1 Length:",
                                 value: $model.semiAxis1Length,
-                                range: 0...1000,
-                                tapPoint: tapPoint
+                                range: 0...1000
                             )
                             .onChange(of: model.semiAxis1Length) {
                                 guard let center = tapPoint else { return }
@@ -111,8 +107,7 @@ struct ShowGeodesicSectorAndEllipseView: View {
                             ParameterSlider(
                                 label: "Semi Axis 2 Length:",
                                 value: $model.semiAxis2Length,
-                                range: 0...1000,
-                                tapPoint: tapPoint
+                                range: 0...1000
                             )
                             .onChange(of: model.semiAxis2Length) {
                                 guard let center = tapPoint else { return }
@@ -252,7 +247,6 @@ private extension ShowGeodesicSectorAndEllipseView {
         let label: String
         @Binding var value: Double
         let range: ClosedRange<Double>
-        var tapPoint: Point?
         
         var body: some View {
             VStack(alignment: .leading, spacing: 4) {
