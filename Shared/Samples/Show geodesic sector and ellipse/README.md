@@ -16,12 +16,12 @@ The geodesic sector and ellipse will display with default parameters at the star
 
 To create a geodesic sector and ellipse:
 
-1. Create GeodesicSectorParameters and GeodesicEllipseParameters using one of the constructors with default values or using each setter individually.
-2. Set the center, axisDirection, semiAxis1Length, and the semiAxis2Length properties to change the general ellipse position, shape, and orientation.
-3. Set the sectorAngle and startDirection angles to change the sector's shape and orientation.
-4. Set the maxPointCount and maxSegmentLength properties to control the complexity of the geometries and the approximation of the ellipse curve.
-5. Specify the geometryType to either POLYGON, POLYLINE, or MULTIPOINT to change the result geometry type.
-6. Pass the parameters to the related static methods: GeometryEngine.ellipseGeodesic(geodesicEllipseParameters) and GeometryEngine.sectorGeodesic(geodesicSectorParameters). The returned value will be a Geometry of the type specified by the geometryType parameter.
+1. Create`GeodesicSectorParameters` and `GeodesicEllipseParameters` values.
+2. Use `center`, `axisDirection`, `semiAxis1Length`, and `semiAxis2Length` to set the general ellipse position, shape, and orientation.
+3. Use `sectorAngle` and `startDirection` to set the sector's shape and orientation.
+4. Use `maxPointCount` and `maxSegmentLength` to control the complexity of the geometries and the approximation of the ellipse curve.
+5. Use `geometryType` to change the result geometry type.
+6. Pass the parameters to the related static methods: `GeometryEngine.geodesicEllipse(parameters:)` and `GeometryEngine.geodesicSector(parameters:)`. The returned geometry type is that of the parameters.
 
 ## Relevant API
 
@@ -32,7 +32,7 @@ GeometryType
 
 ## Additional information
 
-To create a circle instead of an ellipse, simply set semiAxis2Length to 0.0 and semiAxis1Length to the desired radius of the circle. This eliminates the need to update both parameters to the same value.
+To create a circle instead of an ellipse, simply set `semiAxis2Length` to `0` and `semiAxis1Length` to the desired radius of the circle. This eliminates the need to update both parameters to the same value.
 
 ## Tags
 

@@ -262,7 +262,6 @@ private extension ShowGeodesicSectorAndEllipseView {
                     .font(.caption)
             }
             .listRowSeparator(.hidden, edges: .top)
-            
             .onChange(of: value) {
                 onUpdate()
             }
