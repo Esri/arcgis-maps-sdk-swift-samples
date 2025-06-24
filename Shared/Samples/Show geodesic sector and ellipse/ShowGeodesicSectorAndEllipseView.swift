@@ -35,11 +35,11 @@ struct ShowGeodesicSectorAndEllipseView: View {
                 self.tapPoint = tapPoint
             }
             .task(id: tapPoint) {
-                guard let tapPoint else { return }
+                guard let center = tapPoint else { return }
                 await proxy.setViewpoint(
-                    Viewpoint(center: tapPoint, scale: 1e7)
+                    Viewpoint(center: center, scale: 1e7)
                 )
-                model.updateSector(tapPoint: tapPoint)
+                model.updateSector(center: center)
             }
             .toolbar {
                 // The menu which holds the options that change the ellipse and sector.
@@ -56,7 +56,8 @@ struct ShowGeodesicSectorAndEllipseView: View {
                                 tapPoint: tapPoint
                             )
                             .onChange(of: model.axisDirection) {
-                                model.updateSector(tapPoint: tapPoint)
+                                guard let center = tapPoint else { return }
+                                model.updateSector(center: center)
                             }
                             Stepper(
                                 value: $model.maxPointCount,
@@ -67,7 +68,8 @@ struct ShowGeodesicSectorAndEllipseView: View {
                             }
                             .font(.caption)
                             .onChange(of: model.maxPointCount) {
-                                model.updateSector(tapPoint: tapPoint)
+                                guard let center = tapPoint else { return }
+                                model.updateSector(center: center)
                             }
                             ParameterSlider(
                                 label: "Max Segment Length:",
@@ -76,13 +78,15 @@ struct ShowGeodesicSectorAndEllipseView: View {
                                 tapPoint: tapPoint
                             )
                             .onChange(of: model.maxSegmentLength) {
-                                model.updateSector(tapPoint: tapPoint)
+                                guard let center = tapPoint else { return }
+                                model.updateSector(center: center)
                             }
                             GeometryTypeMenu(
                                 selected: $model.selectedGeometryType
                             )
                             .onChange(of: model.selectedGeometryType) {
-                                model.updateSector(tapPoint: tapPoint)
+                                guard let center = tapPoint else { return }
+                                model.updateSector(center: center)
                             }
                             ParameterSlider(
                                 label: "Sector Angle:",
@@ -91,7 +95,8 @@ struct ShowGeodesicSectorAndEllipseView: View {
                                 tapPoint: tapPoint
                             )
                             .onChange(of: model.sectorAngle) {
-                                model.updateSector(tapPoint: tapPoint)
+                                guard let center = tapPoint else { return }
+                                model.updateSector(center: center)
                             }
                             ParameterSlider(
                                 label: "Semi Axis 1 Length:",
@@ -100,7 +105,8 @@ struct ShowGeodesicSectorAndEllipseView: View {
                                 tapPoint: tapPoint
                             )
                             .onChange(of: model.semiAxis1Length) {
-                                model.updateSector(tapPoint: tapPoint)
+                                guard let center = tapPoint else { return }
+                                model.updateSector(center: center)
                             }
                             ParameterSlider(
                                 label: "Semi Axis 2 Length:",
@@ -109,7 +115,8 @@ struct ShowGeodesicSectorAndEllipseView: View {
                                 tapPoint: tapPoint
                             )
                             .onChange(of: model.semiAxis2Length) {
-                                model.updateSector(tapPoint: tapPoint)
+                                guard let center = tapPoint else { return }
+                                model.updateSector(center: center)
                             }
                         }
                         .presentationDetents([.medium])
@@ -167,32 +174,31 @@ private extension ShowGeodesicSectorAndEllipseView {
         @Published var selectedGeometryType: GeometryType = .polygon
         @Published var startDirection: Double = 45
         
-        func updateSector(tapPoint: Point?) {
-            guard let tapPoint = tapPoint else { return }
+        func updateSector(center: Point) {
             ellipseGraphicOverlay.removeAllGraphics()
             sectorGraphicOverlay.removeAllGraphics()
-            setupSector(tapPoint: tapPoint, geometryType: selectedGeometryType)
-            updateEllipse(tapPoint: tapPoint)
+            setupSector(center: center, geometryType: selectedGeometryType)
+            updateEllipse(center: center)
         }
         
-        private func setupSector(tapPoint: Point, geometryType: GeometryType) {
+        private func setupSector(center: Point, geometryType: GeometryType) {
             switch geometryType {
             case .point:
                 // Generate sector as a multipoint (symbols)
                 var params = GeodesicSectorParameters<Multipoint>()
-                fillSectorParams(&params, center: tapPoint)
+                fillSectorParams(&params, center: center)
                 let geometry = GeometryEngine.geodesicSector(parameters: params)
                 addSectorGraphic(geometry: geometry, symbol: sectorMarkerSymbol)
             case .polyline:
                 // Generate sector as a polyline (outlined arc)
                 var params = GeodesicSectorParameters<Polyline>()
-                fillSectorParams(&params, center: tapPoint)
+                fillSectorParams(&params, center: center)
                 let geometry = GeometryEngine.geodesicSector(parameters: params)
                 addSectorGraphic(geometry: geometry, symbol: sectorLineSymbol)
             case .polygon:
                 // Generate sector as a filled polygon
                 var params = GeodesicSectorParameters<Polygon>()
-                fillSectorParams(&params, center: tapPoint)
+                fillSectorParams(&params, center: center)
                 let geometry = GeometryEngine.geodesicSector(parameters: params)
                 addSectorGraphic(geometry: geometry, symbol: sectorFillSymbol)
             }
@@ -222,13 +228,10 @@ private extension ShowGeodesicSectorAndEllipseView {
         }
         
         /// Generates and adds a geodesic ellipse graphic based on the current settings and tap point.
-        private func updateEllipse(tapPoint: Point?) {
-            guard let tapPoint = tapPoint else {
-                return
-            }
+        private func updateEllipse(center: Point) {
             let parameters = GeodesicEllipseParameters<ArcGIS.Polygon>(
                 axisDirection: axisDirection,
-                center: tapPoint,
+                center: center,
                 linearUnit: .miles,
                 maxPointCount: maxPointCount,
                 maxSegmentLength: maxSegmentLength,
