@@ -187,20 +187,23 @@ private extension ShowGeodesicSectorAndEllipseView {
                 // Generate sector as a multipoint (symbols)
                 var params = GeodesicSectorParameters<Multipoint>()
                 fillSectorParams(&params, center: center)
-                let geometry = GeometryEngine.geodesicSector(parameters: params)
-                addSectorGraphic(geometry: geometry, symbol: sectorMarkerSymbol)
+                if let geometry = GeometryEngine.geodesicSector(parameters: params) {
+                    addSectorGraphic(geometry: geometry, symbol: sectorMarkerSymbol)
+                }
             case .polyline:
                 // Generate sector as a polyline (outlined arc)
                 var params = GeodesicSectorParameters<Polyline>()
                 fillSectorParams(&params, center: center)
-                let geometry = GeometryEngine.geodesicSector(parameters: params)
-                addSectorGraphic(geometry: geometry, symbol: sectorLineSymbol)
+                if let geometry = GeometryEngine.geodesicSector(parameters: params) {
+                    addSectorGraphic(geometry: geometry, symbol: sectorLineSymbol)
+                }
             case .polygon:
                 // Generate sector as a filled polygon
                 var params = GeodesicSectorParameters<Polygon>()
                 fillSectorParams(&params, center: center)
-                let geometry = GeometryEngine.geodesicSector(parameters: params)
-                addSectorGraphic(geometry: geometry, symbol: sectorFillSymbol)
+                if let geometry = GeometryEngine.geodesicSector(parameters: params) {
+                    addSectorGraphic(geometry: geometry, symbol: sectorFillSymbol)
+                }
             }
         }
         
@@ -220,8 +223,7 @@ private extension ShowGeodesicSectorAndEllipseView {
         }
         
         /// Adds a sector graphic to the overlay and applies the appropriate renderer.
-        private func addSectorGraphic(geometry: Geometry?, symbol: Symbol) {
-            guard let geometry = geometry else { return }
+        private func addSectorGraphic(geometry: Geometry, symbol: Symbol) {
             sectorGraphic = Graphic(geometry: geometry, symbol: symbol)
             sectorGraphicOverlay.renderer = SimpleRenderer(symbol: symbol)
             sectorGraphicOverlay.addGraphic(sectorGraphic)
