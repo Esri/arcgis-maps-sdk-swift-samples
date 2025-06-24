@@ -19,9 +19,6 @@ struct ShowGeodesicSectorAndEllipseView: View {
     /// The data model that helps determine the view.
     @StateObject private var model = Model()
     
-    /// The map point selected by the user when tapping on the map.
-    @State private var tapPoint: Point?
-    
     /// Manages the presentation state of the menu.
     @State private var isPresented: Bool = false
     
@@ -32,14 +29,13 @@ struct ShowGeodesicSectorAndEllipseView: View {
                 graphicsOverlays: [model.ellipseGraphicOverlay, model.sectorGraphicOverlay]
             )
             .onSingleTapGesture { _, tapPoint in
-                self.tapPoint = tapPoint
+                model.centerPoint = tapPoint
             }
-            .task(id: tapPoint) {
-                guard let center = tapPoint else { return }
+            .task(id: model.centerPoint) {
+                guard let centerPoint = model.centerPoint else { return }
                 await proxy.setViewpoint(
-                    Viewpoint(center: center, scale: 1e7)
+                    Viewpoint(center: centerPoint, scale: 1e7)
                 )
-                model.updateSector(center: center)
             }
             .toolbar {
                 // The menu which holds the options that change the ellipse and sector.
@@ -47,6 +43,7 @@ struct ShowGeodesicSectorAndEllipseView: View {
                     Button("Settings") {
                         isPresented = true
                     }
+                    .disabled(model.centerPoint == nil)
                     .popover(isPresented: $isPresented) {
                         Form {
                             ParameterSlider(
@@ -55,9 +52,9 @@ struct ShowGeodesicSectorAndEllipseView: View {
                                 range: 0...360
                             )
                             .onChange(of: model.axisDirection) {
-                                guard let center = tapPoint else { return }
-                                model.updateSector(center: center)
+                                model.refreshSector()
                             }
+                            
                             Stepper(
                                 value: $model.maxPointCount,
                                 in: 0...1000,
@@ -67,51 +64,50 @@ struct ShowGeodesicSectorAndEllipseView: View {
                             }
                             .font(.caption)
                             .onChange(of: model.maxPointCount) {
-                                guard let center = tapPoint else { return }
-                                model.updateSector(center: center)
+                                model.refreshSector()
                             }
+                            
                             ParameterSlider(
                                 label: "Max Segment Length:",
                                 value: $model.maxSegmentLength,
                                 range: 1...1000
                             )
                             .onChange(of: model.maxSegmentLength) {
-                                guard let center = tapPoint else { return }
-                                model.updateSector(center: center)
+                                model.refreshSector()
                             }
+                            
                             GeometryTypeMenu(
                                 selected: $model.selectedGeometryType
                             )
                             .onChange(of: model.selectedGeometryType) {
-                                guard let center = tapPoint else { return }
-                                model.updateSector(center: center)
+                                model.refreshSector()
                             }
+                            
                             ParameterSlider(
                                 label: "Sector Angle:",
                                 value: $model.sectorAngle,
                                 range: 0...360
                             )
                             .onChange(of: model.sectorAngle) {
-                                guard let center = tapPoint else { return }
-                                model.updateSector(center: center)
+                                model.refreshSector()
                             }
+                            
                             ParameterSlider(
                                 label: "Semi Axis 1 Length:",
                                 value: $model.semiAxis1Length,
                                 range: 0...1000
                             )
                             .onChange(of: model.semiAxis1Length) {
-                                guard let center = tapPoint else { return }
-                                model.updateSector(center: center)
+                                model.refreshSector()
                             }
+                            
                             ParameterSlider(
                                 label: "Semi Axis 2 Length:",
                                 value: $model.semiAxis2Length,
                                 range: 0...1000
                             )
                             .onChange(of: model.semiAxis2Length) {
-                                guard let center = tapPoint else { return }
-                                model.updateSector(center: center)
+                                model.refreshSector()
                             }
                         }
                         .presentationDetents([.medium])
@@ -143,6 +139,14 @@ private extension ShowGeodesicSectorAndEllipseView {
         /// The map that will be displayed in the map view.
         let map = Map(basemapStyle: .arcGISTopographic)
         
+        /// The map point selected by the user when tapping on the map.
+        @Published var centerPoint: Point? {
+            didSet {
+                guard let center = centerPoint else { return }
+                updateSector(center: center)
+            }
+        }
+        
         /// The graphics overlay that will be displayed on the map view.
         /// This will hold the graphics that show the ellipse path.
         let ellipseGraphicOverlay = GraphicsOverlay()
@@ -169,11 +173,16 @@ private extension ShowGeodesicSectorAndEllipseView {
         @Published var selectedGeometryType: GeometryType = .polygon
         @Published var startDirection: Double = 45
         
-        func updateSector(center: Point) {
+        func refreshSector() {
+            guard let center = centerPoint else { return }
+            updateSector(center: center)
+        }
+        
+        private func updateSector(center: Point) {
             ellipseGraphicOverlay.removeAllGraphics()
             sectorGraphicOverlay.removeAllGraphics()
-            setupSector(center: center, geometryType: selectedGeometryType)
             updateEllipse(center: center)
+            setupSector(center: center, geometryType: selectedGeometryType)
         }
         
         private func setupSector(center: Point, geometryType: GeometryType) {
