@@ -16,8 +16,61 @@ import ArcGIS
 import SwiftUI
 
 struct ManageFeaturesView: View {
+    /// A map with a streets basemap and a feature layer.
+    @State private var model = Model()
+    
     var body: some View {
-        Text("Hello, World!")
+        VStack {
+            switch model.data {
+            case .success(let data):
+                MapView(map: data.map)
+            case .failure:
+                ContentUnavailableView("Error", systemImage: "exclamationmark.triangle", description: Text("Failed to load sample data."))
+            case .none:
+                ProgressView()
+            }
+        }
+        .task { await model.loadData() }
+    }
+}
+
+extension ManageFeaturesView {
+    struct Data {
+        let map: Map
+        let geodatabase: ServiceGeodatabase
+        let featureTable: ServiceFeatureTable
+    }
+}
+
+extension ManageFeaturesView {
+    @Observable
+    @MainActor
+    final class Model {
+        var data: Result<Data, Error>?
+        
+        func loadData() async {
+            let map = Map(basemapStyle: .arcGISStreets)
+            map.initialViewpoint = Viewpoint(
+                center: Point(x: -10_800_000, y: 4_500_000, spatialReference: .webMercator),
+                scale: 3e7
+            )
+            
+            let geodatabase = ServiceGeodatabase(
+                url: URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/DamageAssessment/FeatureServer/0")!
+            )
+            
+            do {
+                try await geodatabase.load()
+                let featureTable = geodatabase.table(withLayerID: 0)!
+                let layer = FeatureLayer(featureTable: featureTable)
+                map.addOperationalLayer(layer)
+                data = .success(
+                    Data(map: map, geodatabase: geodatabase, featureTable: featureTable)
+                )
+            } catch {
+                data = .failure(error)
+            }
+        }
     }
 }
 

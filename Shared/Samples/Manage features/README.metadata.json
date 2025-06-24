@@ -1,8 +1,10 @@
 {
-    "category": "",
+    "category": "Edit and Manage Data",
     "description": "Create, update, and delete features to manage a feature layer.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "manage-features.png"
+    ],
     "keywords": [
         "amend",
         "attribute",
