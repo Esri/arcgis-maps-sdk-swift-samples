@@ -16,7 +16,7 @@ import ArcGIS
 import SwiftUI
 
 struct ShowGeodesicSectorAndEllipseView: View {
-    /// The data model that helps determine the view. It is an objerved object.
+    /// The data model that helps determine the view.
     @StateObject private var model = Model()
     
     /// The map point selected by the user when tapping on the map.
