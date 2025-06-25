@@ -26,7 +26,7 @@ struct ShowGeodesicSectorAndEllipseView: View {
         MapViewReader { proxy in
             MapView(
                 map: model.map,
-                graphicsOverlays: [model.ellipseGraphicOverlay, model.sectorGraphicOverlay]
+                graphicsOverlays: model.graphicOverlays
             )
             .onSingleTapGesture { _, tapPoint in
                 model.centerPoint = tapPoint
@@ -147,13 +147,17 @@ private extension ShowGeodesicSectorAndEllipseView {
             }
         }
         
+        var graphicOverlays: [GraphicsOverlay] {
+            return [ellipseGraphicOverlay, sectorGraphicOverlay]
+        }
+        
         /// The graphics overlay that will be displayed on the map view.
         /// This will hold the graphics that show the ellipse path.
-        let ellipseGraphicOverlay = GraphicsOverlay()
+        private let ellipseGraphicOverlay = GraphicsOverlay()
         
         /// The graphics overlay that will be displayed on the map view.
         /// This will display a highlighted section of the ellipse path.
-        let sectorGraphicOverlay = GraphicsOverlay()
+        private let sectorGraphicOverlay = GraphicsOverlay()
         
         private let sectorLineSymbol = SimpleLineSymbol(style: .solid, color: .green, width: 2)
         private let sectorMarkerSymbol = SimpleMarkerSymbol(style: .circle, color: .green, size: 2)
@@ -165,12 +169,19 @@ private extension ShowGeodesicSectorAndEllipseView {
         
         /// The direction (in degrees) of the ellipse's major axis.
         @Published var axisDirection: Double = 45
+        /// Controls the complexity of the geometries and the approximation of the ellipse curve.
         @Published var maxSegmentLength: Double = 1
+        /// Changes the sectors shape.
         @Published var sectorAngle: Double = 90
-        @Published var maxPointCount: Int = 2000
+        /// Controls the complexity of the geometries and the approximation of the ellipse curve.
+        @Published var maxPointCount: Int = 1000
+        /// Changes the length of ellipse shape on one axis.
         @Published var semiAxis1Length: Double = 200
+        /// Changes the length of ellipse shape on one axis.
         @Published var semiAxis2Length: Double = 100
+        /// Changes the geometry type which the sector is rendered.
         @Published var selectedGeometryType: GeometryType = .polygon
+        /// Changes the direction of the sector.
         @Published var startDirection: Double = 45
         
         func refreshSector() {
