@@ -199,7 +199,7 @@ private extension ShowGeodesicSectorAndEllipseView {
         private func setupSector(center: Point, geometryType: GeometryType) {
             switch geometryType {
             case .point:
-                // Generate sector as a multipoint (symbols)
+                // Generate sector as a multipoint (symbols).
                 var params = GeodesicSectorParameters<Multipoint>()
                 fillSectorParams(&params, center: center)
                 if let geometry = GeometryEngine.geodesicSector(parameters: params) {
