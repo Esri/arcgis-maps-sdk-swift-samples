@@ -206,7 +206,7 @@ private extension ShowGeodesicSectorAndEllipseView {
                     addSectorGraphic(geometry: geometry, symbol: sectorMarkerSymbol)
                 }
             case .polyline:
-                // Generate sector as a polyline (outlined arc)
+                // Generate sector as a polyline (outlined arc).
                 var params = GeodesicSectorParameters<Polyline>()
                 fillSectorParams(&params, center: center)
                 if let geometry = GeometryEngine.geodesicSector(parameters: params) {
