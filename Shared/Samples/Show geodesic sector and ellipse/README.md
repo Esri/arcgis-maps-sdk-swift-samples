@@ -28,7 +28,6 @@ To create a geodesic sector and ellipse:
 GeodesicEllipseParameters
 GeodesicSectorParameters
 GeometryEngine
-GeometryType
 
 ## Additional information
 
