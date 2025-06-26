@@ -12,15 +12,13 @@
         "sector",
         "GeodesicEllipseParameters",
         "GeodesicSectorParameters",
-        "GeometryEngine",
-        "GeometryType"
+        "GeometryEngine"
     ],
     "redirect_from": [],
     "relevant_apis": [
         "GeodesicEllipseParameters",
         "GeodesicSectorParameters",
-        "GeometryEngine",
-        "GeometryType"
+        "GeometryEngine"
     ],
     "snippets": [
         "ShowGeodesicSectorAndEllipseView.swift"
