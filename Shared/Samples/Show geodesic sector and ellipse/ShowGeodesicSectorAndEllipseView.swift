@@ -23,7 +23,7 @@ struct ShowGeodesicSectorAndEllipseView: View {
     @State private var isPresented: Bool = false
     
     var body: some View {
-        MapViewReader { mapViewProxy in
+        MapViewReader { mapView in
             MapView(
                 map: model.map,
                 graphicsOverlays: model.graphicOverlays
@@ -32,9 +32,9 @@ struct ShowGeodesicSectorAndEllipseView: View {
                 model.center = tapPoint
             }
             .task(id: model.center) {
-                guard let centerPoint = model.center else { return }
-                await mapViewProxy.setViewpoint(
-                    Viewpoint(center: centerPoint, scale: 1e7)
+                guard let center = model.center else { return }
+                await mapView.setViewpoint(
+                    Viewpoint(center: center, scale: 1e7)
                 )
             }
             .toolbar {
@@ -58,7 +58,7 @@ struct ShowGeodesicSectorAndEllipseView: View {
                             
                             Slider(
                                 value: $model.axisDirection,
-                                in: 0...360,
+                                in: 0...365,
                                 label: {
                                     Text("Axis Direction")
                                 },
@@ -66,7 +66,7 @@ struct ShowGeodesicSectorAndEllipseView: View {
                                     Text("0")
                                 },
                                 maximumValueLabel: {
-                                    Text("360")
+                                    Text("365")
                                 }
                             ).onChange(of: model.axisDirection) {
                                 model.refreshSector()
@@ -108,7 +108,7 @@ struct ShowGeodesicSectorAndEllipseView: View {
                             
                             Slider(
                                 value: $model.maxSegmentLength,
-                                in: 1...1000,
+                                in: 1...1_000,
                                 label: {
                                     Text("Max Segment Length")
                                 },
@@ -140,7 +140,7 @@ struct ShowGeodesicSectorAndEllipseView: View {
                             
                             Slider(
                                 value: $model.sectorAngle,
-                                in: 0...360,
+                                in: 0...365,
                                 label: {
                                     Text("Sector Angle")
                                 },
@@ -148,7 +148,7 @@ struct ShowGeodesicSectorAndEllipseView: View {
                                     Text("0")
                                 },
                                 maximumValueLabel: {
-                                    Text("360")
+                                    Text("365")
                                 }
                             ).onChange(of: model.sectorAngle) {
                                 model.refreshSector()
@@ -166,7 +166,7 @@ struct ShowGeodesicSectorAndEllipseView: View {
                             
                             Slider(
                                 value: $model.semiAxis1Length,
-                                in: 0...360,
+                                in: 0...1_000,
                                 label: {
                                     Text("Semi Axis 1 Length")
                                 },
@@ -191,7 +191,7 @@ struct ShowGeodesicSectorAndEllipseView: View {
                             )
                             Slider(
                                 value: $model.semiAxis2Length,
-                                in: 0...360,
+                                in: 0...1_000,
                                 label: {
                                     Text("Semi Axis 2 Length")
                                 },
