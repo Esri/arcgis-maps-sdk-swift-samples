@@ -241,7 +241,7 @@ private extension ShowGeodesicSectorAndEllipseView {
         /// The map point selected by the user when tapping on the map.
         @Published var center: Point? {
             didSet {
-                guard let center = center else { return }
+                guard let center else { return }
                 updateSector(center: center)
             }
         }
