@@ -213,6 +213,9 @@ struct ShowGeodesicSectorAndEllipseView: View {
                                 edges: [.top]
                             )
                         }
+                        Button("Close") {
+                            isPresented = false
+                        }
                         .presentationDetents([.medium])
                     }
                 }
