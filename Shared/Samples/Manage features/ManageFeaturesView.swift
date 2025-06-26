@@ -53,7 +53,14 @@ struct ManageFeaturesView: View {
                         if let geoElement = placement.geoElement {
                             Text("element!")
                         } else {
-                            Text("location!")
+                            HStack {
+                                Text("Add new feature here")
+                                Button {
+                                    createFeature()
+                                } label: {
+                                    Image(systemName: "plus.circle")
+                                }
+                            }
                         }
                     }
                     .padding()
@@ -78,13 +85,7 @@ struct ManageFeaturesView: View {
     
     @ViewBuilder var overlayContent: some View {
         VStack {
-            Picker("Choose an Action", selection: $model.action) {
-                ForEach(Action.allCases, id: \.self) { action in
-                    Text(action.label)
-                        .tag(action)
-                }
-            }
-            Text(model.action.instructions)
+            Text("Tap the map to create a new feature, or an existing feature for more options.")
         }
         .padding()
         .frame(maxWidth: .infinity)
