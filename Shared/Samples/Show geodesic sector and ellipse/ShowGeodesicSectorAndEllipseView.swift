@@ -23,17 +23,17 @@ struct ShowGeodesicSectorAndEllipseView: View {
     @State private var isPresented: Bool = false
     
     var body: some View {
-        MapViewReader { proxy in
+        MapViewReader { mapViewProxy in
             MapView(
                 map: model.map,
                 graphicsOverlays: model.graphicOverlays
             )
             .onSingleTapGesture { _, tapPoint in
-                model.centerPoint = tapPoint
+                model.center = tapPoint
             }
-            .task(id: model.centerPoint) {
-                guard let centerPoint = model.centerPoint else { return }
-                await proxy.setViewpoint(
+            .task(id: model.center) {
+                guard let centerPoint = model.center else { return }
+                await mapViewProxy.setViewpoint(
                     Viewpoint(center: centerPoint, scale: 1e7)
                 )
             }
@@ -43,72 +43,171 @@ struct ShowGeodesicSectorAndEllipseView: View {
                     Button("Settings") {
                         isPresented = true
                     }
-                    .disabled(model.centerPoint == nil)
+                    .disabled(model.center == nil)
                     .popover(isPresented: $isPresented) {
                         Form {
-                            ParameterSlider(
-                                label: "Axis Direction:",
-                                value: $model.axisDirection,
-                                range: 0...360
+                            let format = FloatingPointFormatStyle<Double>()
+                                .precision(.fractionLength(0))
+                                .grouping(.never)
+                            
+                            LabeledContent(
+                                "Axis Direction",
+                                value: model.axisDirection,
+                                format: format
                             )
-                            .onChange(of: model.axisDirection) {
+                            
+                            Slider(
+                                value: $model.axisDirection,
+                                in: 0...360,
+                                label: {
+                                    Text("Axis Direction")
+                                },
+                                minimumValueLabel: {
+                                    Text("0")
+                                },
+                                maximumValueLabel: {
+                                    Text("360")
+                                }
+                            ).onChange(of: model.axisDirection) {
                                 model.refreshSector()
                             }
+                            .listRowSeparator(
+                                .hidden,
+                                edges: [.top]
+                            )
                             
-                            Stepper(
-                                value: $model.maxPointCount,
+                            LabeledContent(
+                                "Max Point Count",
+                                value: Double(model.maxPointCount),
+                                format: format
+                            )
+                            
+                            Slider(
+                                value: Binding(
+                                    get: {
+                                        Double(model.maxPointCount)
+                                    },
+                                    set: {
+                                        model.maxPointCount = Int($0)
+                                        model.refreshSector()
+                                    }
+                                ),
                                 in: 0...1000,
                                 step: 1
-                            ) {
-                                Text("Max Point Count:  \(String(format: "%d", model.maxPointCount))")
-                            }
-                            .font(.caption)
-                            .onChange(of: model.maxPointCount) {
-                                model.refreshSector()
-                            }
+                            )
+                            .listRowSeparator(
+                                .hidden,
+                                edges: [.top]
+                            )
                             
-                            ParameterSlider(
-                                label: "Max Segment Length:",
+                            LabeledContent(
+                                "Max Segment Length",
+                                value: model.maxSegmentLength,
+                                format: format
+                            )
+                            
+                            Slider(
                                 value: $model.maxSegmentLength,
-                                range: 1...1000
-                            )
-                            .onChange(of: model.maxSegmentLength) {
+                                in: 1...1000,
+                                label: {
+                                    Text("Max Segment Length")
+                                },
+                                minimumValueLabel: {
+                                    Text("1")
+                                },
+                                maximumValueLabel: {
+                                    Text("1000")
+                                }
+                            ).onChange(of: model.maxSegmentLength) {
+                                model.refreshSector()
+                            }
+                            .listRowSeparator(.hidden, edges: [.top])
+                            
+                            Picker("Geometry Type", selection: $model.geometryType) {
+                                ForEach(GeometryType.allCases, id: \.self) { geometryType in
+                                    Text(geometryType.label)
+                                }
+                            }
+                            .onChange(of: model.geometryType) {
                                 model.refreshSector()
                             }
                             
-                            GeometryTypeMenu(
-                                selected: $model.selectedGeometryType
+                            LabeledContent(
+                                "Sector Angle",
+                                value: model.sectorAngle,
+                                format: format
                             )
-                            .onChange(of: model.selectedGeometryType) {
-                                model.refreshSector()
-                            }
                             
-                            ParameterSlider(
-                                label: "Sector Angle:",
+                            Slider(
                                 value: $model.sectorAngle,
-                                range: 0...360
-                            )
-                            .onChange(of: model.sectorAngle) {
+                                in: 0...360,
+                                label: {
+                                    Text("Sector Angle")
+                                },
+                                minimumValueLabel: {
+                                    Text("0")
+                                },
+                                maximumValueLabel: {
+                                    Text("360")
+                                }
+                            ).onChange(of: model.sectorAngle) {
                                 model.refreshSector()
                             }
+                            .listRowSeparator(
+                                .hidden,
+                                edges: [.top]
+                            )
                             
-                            ParameterSlider(
-                                label: "Semi Axis 1 Length:",
+                            LabeledContent(
+                                "Semi Axis 1 Length",
+                                value: model.semiAxis1Length,
+                                format: format
+                            )
+                            
+                            Slider(
                                 value: $model.semiAxis1Length,
-                                range: 0...1000
-                            )
-                            .onChange(of: model.semiAxis1Length) {
+                                in: 0...360,
+                                label: {
+                                    Text("Semi Axis 1 Length")
+                                },
+                                minimumValueLabel: {
+                                    Text("0")
+                                },
+                                maximumValueLabel: {
+                                    Text("1000")
+                                }
+                            ).onChange(of: model.semiAxis1Length) {
                                 model.refreshSector()
                             }
+                            .listRowSeparator(
+                                .hidden,
+                                edges: [.top]
+                            )
                             
-                            ParameterSlider(
-                                label: "Semi Axis 2 Length:",
-                                value: $model.semiAxis2Length,
-                                range: 0...1000
+                            LabeledContent(
+                                "Semi Axis 2 Length",
+                                value: model.semiAxis2Length,
+                                format: format
                             )
-                            .onChange(of: model.semiAxis2Length) {
+                            Slider(
+                                value: $model.semiAxis2Length,
+                                in: 0...360,
+                                label: {
+                                    Text("Semi Axis 2 Length")
+                                },
+                                minimumValueLabel: {
+                                    Text("0")
+                                },
+                                maximumValueLabel: {
+                                    Text("1000")
+                                }
+                            ).onChange(of: model.semiAxis2Length) {
                                 model.refreshSector()
                             }
+                            .listRowSeparator(
+                                .hidden,
+                                edges: [.top]
+                            )
                         }
                         .presentationDetents([.medium])
                     }
@@ -140,9 +239,9 @@ private extension ShowGeodesicSectorAndEllipseView {
         let map = Map(basemapStyle: .arcGISTopographic)
         
         /// The map point selected by the user when tapping on the map.
-        @Published var centerPoint: Point? {
+        @Published var center: Point? {
             didSet {
-                guard let center = centerPoint else { return }
+                guard let center = center else { return }
                 updateSector(center: center)
             }
         }
@@ -159,14 +258,6 @@ private extension ShowGeodesicSectorAndEllipseView {
         /// This will display a highlighted section of the ellipse path.
         private let sectorGraphicOverlay = GraphicsOverlay()
         
-        private let sectorLineSymbol = SimpleLineSymbol(style: .solid, color: .green, width: 2)
-        private let sectorMarkerSymbol = SimpleMarkerSymbol(style: .circle, color: .green, size: 2)
-        private let ellipseLineSymbol = SimpleLineSymbol(style: .dash, color: .red, width: 2)
-        private let sectorFillSymbol = SimpleFillSymbol(style: .solid, color: .green)
-        
-        private var ellipseGraphic: Graphic!
-        private var sectorGraphic: Graphic!
-        
         /// The direction (in degrees) of the ellipse's major axis.
         @Published var axisDirection: Double = 45
         /// Controls the complexity of the geometries and the approximation of the ellipse curve.
@@ -180,12 +271,12 @@ private extension ShowGeodesicSectorAndEllipseView {
         /// Changes the length of ellipse shape on one axis.
         @Published var semiAxis2Length: Double = 100
         /// Changes the geometry type which the sector is rendered.
-        @Published var selectedGeometryType: GeometryType = .polygon
+        @Published var geometryType: GeometryType = .polygon
         /// Changes the direction of the sector.
         @Published var startDirection: Double = 45
         
         func refreshSector() {
-            guard let center = centerPoint else { return }
+            guard let center = center else { return }
             updateSector(center: center)
         }
         
@@ -193,53 +284,73 @@ private extension ShowGeodesicSectorAndEllipseView {
             ellipseGraphicOverlay.removeAllGraphics()
             sectorGraphicOverlay.removeAllGraphics()
             updateEllipse(center: center)
-            setupSector(center: center, geometryType: selectedGeometryType)
+            setupSector(center: center, geometryType: geometryType)
         }
         
         private func setupSector(center: Point, geometryType: GeometryType) {
             switch geometryType {
             case .point:
-                // Generate sector as a multipoint (symbols)
-                var params = GeodesicSectorParameters<Multipoint>()
-                fillSectorParams(&params, center: center)
-                if let geometry = GeometryEngine.geodesicSector(parameters: params) {
-                    addSectorGraphic(geometry: geometry, symbol: sectorMarkerSymbol)
+                // Generate sector as a multipoint (symbols).
+                var parameters = GeodesicSectorParameters<Multipoint>()
+                fillSectorParams(&parameters, center: center)
+                if let geometry = GeometryEngine.geodesicSector(parameters: parameters) {
+                    addSectorGraphic(
+                        geometry: geometry,
+                        symbol: SimpleMarkerSymbol(
+                            style: .circle,
+                            color: .green,
+                            size: 2
+                        )
+                    )
                 }
             case .polyline:
-                // Generate sector as a polyline (outlined arc)
-                var params = GeodesicSectorParameters<Polyline>()
-                fillSectorParams(&params, center: center)
-                if let geometry = GeometryEngine.geodesicSector(parameters: params) {
-                    addSectorGraphic(geometry: geometry, symbol: sectorLineSymbol)
+                // Generate sector as a polyline (outlined arc).
+                var parameters = GeodesicSectorParameters<Polyline>()
+                fillSectorParams(&parameters, center: center)
+                if let geometry = GeometryEngine.geodesicSector(parameters: parameters) {
+                    addSectorGraphic(
+                        geometry: geometry,
+                        symbol: SimpleLineSymbol(
+                            style: .solid,
+                            color: .green,
+                            width: 2
+                        )
+                    )
                 }
             case .polygon:
-                // Generate sector as a filled polygon
-                var params = GeodesicSectorParameters<Polygon>()
-                fillSectorParams(&params, center: center)
-                if let geometry = GeometryEngine.geodesicSector(parameters: params) {
-                    addSectorGraphic(geometry: geometry, symbol: sectorFillSymbol)
+                // Generate sector as a filled polygon.
+                var parameters = GeodesicSectorParameters<ArcGIS.Polygon>()
+                fillSectorParams(&parameters, center: center)
+                if let geometry = GeometryEngine.geodesicSector(parameters: parameters) {
+                    addSectorGraphic(
+                        geometry: geometry,
+                        symbol: SimpleFillSymbol(
+                            style: .solid,
+                            color: .green
+                        )
+                    )
                 }
             }
         }
         
         /// Populates a `GeodesicSectorParameters<T>` instance with current user-defined values.
-        /// - Parameter params: A reference to the parameter struct that will be filled.
+        /// - Parameter parameters: A reference to the parameter struct that will be filled.
         /// - Parameter center: The center point for the sector/ellipse.
-        private func fillSectorParams<T>(_ params: inout GeodesicSectorParameters<T>, center: Point) {
-            params.center = center
-            params.axisDirection = axisDirection
-            params.maxPointCount = maxPointCount
-            params.maxSegmentLength = maxSegmentLength
-            params.sectorAngle = sectorAngle
-            params.semiAxis1Length = semiAxis1Length
-            params.semiAxis2Length = semiAxis2Length
-            params.startDirection = startDirection
-            params.linearUnit = .miles
+        private func fillSectorParams<T>(_ parameters: inout GeodesicSectorParameters<T>, center: Point) {
+            parameters.center = center
+            parameters.axisDirection = axisDirection
+            parameters.maxPointCount = maxPointCount
+            parameters.maxSegmentLength = maxSegmentLength
+            parameters.sectorAngle = sectorAngle
+            parameters.semiAxis1Length = semiAxis1Length
+            parameters.semiAxis2Length = semiAxis2Length
+            parameters.startDirection = startDirection
+            parameters.linearUnit = .miles
         }
         
         /// Adds a sector graphic to the overlay and applies the appropriate renderer.
         private func addSectorGraphic(geometry: Geometry, symbol: Symbol) {
-            sectorGraphic = Graphic(geometry: geometry, symbol: symbol)
+            let sectorGraphic = Graphic(geometry: geometry, symbol: symbol)
             sectorGraphicOverlay.renderer = SimpleRenderer(symbol: symbol)
             sectorGraphicOverlay.addGraphic(sectorGraphic)
         }
@@ -256,79 +367,15 @@ private extension ShowGeodesicSectorAndEllipseView {
                 semiAxis2Length: semiAxis2Length
             )
             let ellipseGeometry = GeometryEngine.geodesicEllipse(parameters: parameters)
-            ellipseGraphic = Graphic(geometry: ellipseGeometry, symbol: ellipseLineSymbol)
-            ellipseGraphicOverlay.addGraphic(ellipseGraphic)
-        }
-    }
-    
-    /// A reusable UI component for adjusting a numeric parameter using a slider.
-    /// Updates the sector/ellipse dynamically when changed.
-    struct ParameterSlider: View {
-        let label: String
-        @Binding var value: Double
-        let range: ClosedRange<Double>
-        
-        var body: some View {
-            VStack(alignment: .leading, spacing: 4) {
-                let format = FloatingPointFormatStyle<Double>()
-                    .precision(.fractionLength(0))
-                    .grouping(.never)
-                LabeledContent(
-                    label,
-                    value: value,
-                    format: format
+            let graphic = Graphic(
+                geometry: ellipseGeometry,
+                symbol: SimpleLineSymbol(
+                    style: .dash,
+                    color: .red,
+                    width: 2
                 )
-                .font(.caption)
-                Slider(value: $value, in: range) {
-                    Text(label)
-                        .font(.caption)
-                } minimumValueLabel: {
-                    Text(range.lowerBound, format: format)
-                        .font(.caption)
-                } maximumValueLabel: {
-                    Text(range.upperBound, format: format)
-                        .font(.caption)
-                }
-                .listRowSeparator(.hidden, edges: [.top])
-            }
-        }
-    }
-    
-    /// A menu component that allows the user to choose between point, polyline, or polygon geometry types for the sector.
-    struct GeometryTypeMenu: View {
-        @Binding var selected: GeometryType
-        
-        var body: some View {
-            Menu {
-                ForEach(GeometryType.allCases, id: \.self) { mode in
-                    Button {
-                        selected = mode
-                    } label: {
-                        Text(mode.label)
-                            .font(.caption)
-                            .foregroundColor(.black)
-                    }
-                }
-            } label: {
-                HStack {
-                    Text("Geometry Type: ")
-                        .foregroundColor(.black)
-                    Spacer()
-                    Text(selected.label)
-                        .fontWeight(.bold)
-                        .foregroundColor(.gray)
-                    VStack {
-                        Image(systemName: "chevron.up")
-                            .font(.caption2)
-                            .fontWeight(.medium)
-                        Image(systemName: "chevron.down")
-                            .font(.caption2)
-                            .fontWeight(.medium)
-                    }
-                    .foregroundColor(.gray)
-                }
-                .font(.caption)
-            }
+            )
+            ellipseGraphicOverlay.addGraphic(graphic)
         }
     }
 }
