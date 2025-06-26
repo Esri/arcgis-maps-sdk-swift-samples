@@ -23,21 +23,7 @@ struct ManageFeaturesView: View {
         VStack {
             switch model.data {
             case .success(let data):
-                MapView(map: data.map)
-                    .overlay(alignment: .top) {
-                        VStack {
-                            Picker("Choose an Action", selection: $model.action) {
-                                ForEach(Action.allCases, id: \.self) { action in
-                                    Text(action.label)
-                                        .tag(action)
-                                }
-                            }
-                            Text(model.action.instructions)
-                        }
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(.ultraThinMaterial)
-                    }
+                mapView(data.map)
             case .failure:
                 ContentUnavailableView("Error", systemImage: "exclamationmark.triangle", description: Text("Failed to load sample data."))
             case .none:
@@ -46,6 +32,43 @@ struct ManageFeaturesView: View {
         }
         .animation(.default, value: model.action)
         .task { await model.loadData() }
+    }
+    
+    @ViewBuilder
+    func mapView(_ map: Map) -> some View {
+        MapViewReader { mapView in
+            MapView(map: map)
+                .onSingleTapGesture { _, tapLocation in
+                    switch model.action {
+                    case .create:
+                        createFeature()
+                    case .delete:
+                        break
+                    case .updateAttribute:
+                        break
+                    case .updateGeometry:
+                        break
+                    }
+                }
+                .overlay(alignment: .top) {
+                    VStack {
+                        Picker("Choose an Action", selection: $model.action) {
+                            ForEach(Action.allCases, id: \.self) { action in
+                                Text(action.label)
+                                    .tag(action)
+                            }
+                        }
+                        Text(model.action.instructions)
+                    }
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(.ultraThinMaterial)
+                }
+        }
+    }
+    
+    func createFeature() {
+        
     }
 }
 
