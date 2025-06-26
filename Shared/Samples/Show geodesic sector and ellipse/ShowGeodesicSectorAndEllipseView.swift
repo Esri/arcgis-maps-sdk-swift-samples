@@ -355,7 +355,7 @@ private extension ShowGeodesicSectorAndEllipseView {
             sectorGraphicOverlay.addGraphic(sectorGraphic)
         }
         
-        /// Generates and adds a geodesic ellipse graphic based on the current settings and tap point.
+        /// Generates and adds a geodesic ellipse graphic based on the current settings and center point.
         private func updateEllipse(center: Point) {
             let parameters = GeodesicEllipseParameters<ArcGIS.Polygon>(
                 axisDirection: axisDirection,
