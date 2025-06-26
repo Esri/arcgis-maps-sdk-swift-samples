@@ -19,11 +19,15 @@ struct ManageFeaturesView: View {
     /// A map with a streets basemap and a feature layer.
     @State private var model = Model()
     
+    @State private var tapLocation: CGPoint?
+    
+    @State private var calloutPlacement: CalloutPlacement?
+    
     var body: some View {
         VStack {
             switch model.data {
             case .success(let data):
-                mapView(data.map)
+                mapView(data)
             case .failure:
                 ContentUnavailableView("Error", systemImage: "exclamationmark.triangle", description: Text("Failed to load sample data."))
             case .none:
@@ -31,44 +35,63 @@ struct ManageFeaturesView: View {
             }
         }
         .animation(.default, value: model.action)
+        .animation(.default, value: calloutPlacement)
         .task { await model.loadData() }
     }
     
     @ViewBuilder
-    func mapView(_ map: Map) -> some View {
+    func mapView(_ data: Data) -> some View {
         MapViewReader { mapView in
-            MapView(map: map)
-                .onSingleTapGesture { _, tapLocation in
-                    switch model.action {
-                    case .create:
-                        createFeature()
-                    case .delete:
-                        break
-                    case .updateAttribute:
-                        break
-                    case .updateGeometry:
-                        break
-                    }
+            MapView(map: data.map)
+                .onSingleTapGesture { tapLocation, _ in
+                    self.tapLocation = tapLocation
+                    data.featureLayer.clearSelection()
+                    calloutPlacement = nil
                 }
-                .overlay(alignment: .top) {
-                    VStack {
-                        Picker("Choose an Action", selection: $model.action) {
-                            ForEach(Action.allCases, id: \.self) { action in
-                                Text(action.label)
-                                    .tag(action)
-                            }
+                .callout(placement: $calloutPlacement) { placement in
+                    Group {
+                        if let geoElement = placement.geoElement {
+                            Text("element!")
+                        } else {
+                            Text("location!")
                         }
-                        Text(model.action.instructions)
                     }
                     .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(.ultraThinMaterial)
+                }
+                .overlay(alignment: .top) {
+                    overlayContent
+                }
+                .task(id: tapLocation) {
+                    guard let tapLocation else { return }
+                    if let identifyResult = try? await mapView.identify(on: data.featureLayer, screenPoint: tapLocation, tolerance: 12),
+                       let geoElement = identifyResult.geoElements.first,
+                       let feature = geoElement as? Feature {
+                        print("-- result: \(geoElement)")
+                        calloutPlacement = .geoElement(geoElement)
+                        data.featureLayer.selectFeature(feature)
+                    } else if let mapPoint = mapView.location(fromScreenPoint: tapLocation) {
+                        calloutPlacement = .location(mapPoint)
+                    }
                 }
         }
     }
     
+    @ViewBuilder var overlayContent: some View {
+        VStack {
+            Picker("Choose an Action", selection: $model.action) {
+                ForEach(Action.allCases, id: \.self) { action in
+                    Text(action.label)
+                        .tag(action)
+                }
+            }
+            Text(model.action.instructions)
+        }
+        .padding()
+        .frame(maxWidth: .infinity)
+        .background(.ultraThinMaterial)
+    }
+    
     func createFeature() {
-        
     }
 }
 
@@ -77,6 +100,7 @@ extension ManageFeaturesView {
         let map: Map
         let geodatabase: ServiceGeodatabase
         let featureTable: ServiceFeatureTable
+        let featureLayer: FeatureLayer
     }
     
     enum Action: CaseIterable {
@@ -137,7 +161,7 @@ extension ManageFeaturesView {
                 let layer = FeatureLayer(featureTable: featureTable)
                 map.addOperationalLayer(layer)
                 data = .success(
-                    Data(map: map, geodatabase: geodatabase, featureTable: featureTable)
+                    Data(map: map, geodatabase: geodatabase, featureTable: featureTable, featureLayer: layer)
                 )
             } catch {
                 data = .failure(error)
