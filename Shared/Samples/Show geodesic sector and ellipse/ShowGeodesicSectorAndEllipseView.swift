@@ -44,7 +44,7 @@ struct ShowGeodesicSectorAndEllipseView: View {
                         isPresented = true
                     }
                     .disabled(model.center == nil)
-                    .popover(isPresented: $isPresented) {
+                    .sheet(isPresented: $isPresented) {
                         Form {
                             let format = FloatingPointFormatStyle<Double>()
                                 .precision(.fractionLength(0))
