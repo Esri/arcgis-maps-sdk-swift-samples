@@ -24,12 +24,27 @@ struct ManageFeaturesView: View {
             switch model.data {
             case .success(let data):
                 MapView(map: data.map)
+                    .overlay(alignment: .top) {
+                        VStack {
+                            Picker("Choose an Action", selection: $model.action) {
+                                ForEach(Action.allCases, id: \.self) { action in
+                                    Text(action.label)
+                                        .tag(action)
+                                }
+                            }
+                            Text(model.action.instructions)
+                        }
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(.ultraThinMaterial)
+                    }
             case .failure:
                 ContentUnavailableView("Error", systemImage: "exclamationmark.triangle", description: Text("Failed to load sample data."))
             case .none:
                 ProgressView()
             }
         }
+        .animation(.default, value: model.action)
         .task { await model.loadData() }
     }
 }
@@ -40,6 +55,39 @@ extension ManageFeaturesView {
         let geodatabase: ServiceGeodatabase
         let featureTable: ServiceFeatureTable
     }
+    
+    enum Action: CaseIterable {
+        case create
+        case delete
+        case updateAttribute
+        case updateGeometry
+        
+        var label: String {
+            switch self {
+            case .create:
+                "Create Feature"
+            case .delete:
+                "Delete Feature"
+            case .updateAttribute:
+                "Update Attribute"
+            case .updateGeometry:
+                "Update Geometry"
+            }
+        }
+        
+        var instructions: String {
+            switch self {
+            case .create:
+                "Tap the map to create a new feature."
+            case .delete:
+                "Tap on a feature to delete it."
+            case .updateAttribute:
+                "Tap something to update..."
+            case .updateGeometry:
+                "Tap something to update geometry..."
+            }
+        }
+    }
 }
 
 extension ManageFeaturesView {
@@ -47,6 +95,7 @@ extension ManageFeaturesView {
     @MainActor
     final class Model {
         var data: Result<Data, Error>?
+        var action: Action = .create
         
         func loadData() async {
             let map = Map(basemapStyle: .arcGISStreets)
