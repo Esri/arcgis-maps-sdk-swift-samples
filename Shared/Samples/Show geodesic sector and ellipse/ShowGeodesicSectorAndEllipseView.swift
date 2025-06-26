@@ -68,7 +68,8 @@ struct ShowGeodesicSectorAndEllipseView: View {
                                 maximumValueLabel: {
                                     Text("365")
                                 }
-                            ).onChange(of: model.axisDirection) {
+                            )
+                            .onChange(of: model.axisDirection) {
                                 model.refreshSector()
                             }
                             .listRowSeparator(
@@ -83,18 +84,13 @@ struct ShowGeodesicSectorAndEllipseView: View {
                             )
                             
                             Slider(
-                                value: Binding(
-                                    get: {
-                                        Double(model.maxPointCount)
-                                    },
-                                    set: {
-                                        model.maxPointCount = Int($0)
-                                        model.refreshSector()
-                                    }
-                                ),
+                                value: $model.maxPointCount,
                                 in: 1...1_000,
                                 step: 1
                             )
+                            .onChange(of: model.maxPointCount) {
+                                model.refreshSector()
+                            }
                             .listRowSeparator(
                                 .hidden,
                                 edges: [.top]
@@ -118,10 +114,14 @@ struct ShowGeodesicSectorAndEllipseView: View {
                                 maximumValueLabel: {
                                     Text("1000")
                                 }
-                            ).onChange(of: model.maxSegmentLength) {
+                            )
+                            .onChange(of: model.maxSegmentLength) {
                                 model.refreshSector()
                             }
-                            .listRowSeparator(.hidden, edges: [.top])
+                            .listRowSeparator(
+                                .hidden,
+                                edges: [.top]
+                            )
                             
                             Picker("Geometry Type", selection: $model.geometryType) {
                                 ForEach(GeometryType.allCases, id: \.self) { geometryType in
@@ -150,7 +150,8 @@ struct ShowGeodesicSectorAndEllipseView: View {
                                 maximumValueLabel: {
                                     Text("365")
                                 }
-                            ).onChange(of: model.sectorAngle) {
+                            )
+                            .onChange(of: model.sectorAngle) {
                                 model.refreshSector()
                             }
                             .listRowSeparator(
@@ -176,7 +177,8 @@ struct ShowGeodesicSectorAndEllipseView: View {
                                 maximumValueLabel: {
                                     Text("1000")
                                 }
-                            ).onChange(of: model.semiAxis1Length) {
+                            )
+                            .onChange(of: model.semiAxis1Length) {
                                 model.refreshSector()
                             }
                             .listRowSeparator(
@@ -201,7 +203,8 @@ struct ShowGeodesicSectorAndEllipseView: View {
                                 maximumValueLabel: {
                                     Text("1000")
                                 }
-                            ).onChange(of: model.semiAxis2Length) {
+                            )
+                            .onChange(of: model.semiAxis2Length) {
                                 model.refreshSector()
                             }
                             .listRowSeparator(
@@ -265,7 +268,7 @@ private extension ShowGeodesicSectorAndEllipseView {
         /// Changes the sectors shape.
         @Published var sectorAngle: Double = 90
         /// Controls the complexity of the geometries and the approximation of the ellipse curve.
-        @Published var maxPointCount: Int = 1_000
+        @Published var maxPointCount: Double = 1_000
         /// Changes the length of ellipse shape on one axis.
         @Published var semiAxis1Length: Double = 200
         /// Changes the length of ellipse shape on one axis.
@@ -276,7 +279,7 @@ private extension ShowGeodesicSectorAndEllipseView {
         @Published var startDirection: Double = 45
         
         func refreshSector() {
-            guard let center = center else { return }
+            guard let center else { return }
             updateSector(center: center)
         }
         
@@ -292,7 +295,7 @@ private extension ShowGeodesicSectorAndEllipseView {
             case .point:
                 // Generate sector as a multipoint (symbols).
                 var parameters = GeodesicSectorParameters<Multipoint>()
-                fillSectorParams(&parameters, center: center)
+                fillSectorParameters(&parameters, center: center)
                 if let geometry = GeometryEngine.geodesicSector(parameters: parameters) {
                     addSectorGraphic(
                         geometry: geometry,
@@ -306,7 +309,7 @@ private extension ShowGeodesicSectorAndEllipseView {
             case .polyline:
                 // Generate sector as a polyline (outlined arc).
                 var parameters = GeodesicSectorParameters<Polyline>()
-                fillSectorParams(&parameters, center: center)
+                fillSectorParameters(&parameters, center: center)
                 if let geometry = GeometryEngine.geodesicSector(parameters: parameters) {
                     addSectorGraphic(
                         geometry: geometry,
@@ -320,7 +323,7 @@ private extension ShowGeodesicSectorAndEllipseView {
             case .polygon:
                 // Generate sector as a filled polygon.
                 var parameters = GeodesicSectorParameters<ArcGIS.Polygon>()
-                fillSectorParams(&parameters, center: center)
+                fillSectorParameters(&parameters, center: center)
                 if let geometry = GeometryEngine.geodesicSector(parameters: parameters) {
                     addSectorGraphic(
                         geometry: geometry,
@@ -336,10 +339,10 @@ private extension ShowGeodesicSectorAndEllipseView {
         /// Populates a `GeodesicSectorParameters<T>` instance with current user-defined values.
         /// - Parameter parameters: A reference to the parameter struct that will be filled.
         /// - Parameter center: The center point for the sector/ellipse.
-        private func fillSectorParams<T>(_ parameters: inout GeodesicSectorParameters<T>, center: Point) {
+        private func fillSectorParameters<T>(_ parameters: inout GeodesicSectorParameters<T>, center: Point) {
             parameters.center = center
             parameters.axisDirection = axisDirection
-            parameters.maxPointCount = maxPointCount
+            parameters.maxPointCount = Int(maxPointCount)
             parameters.maxSegmentLength = maxSegmentLength
             parameters.sectorAngle = sectorAngle
             parameters.semiAxis1Length = semiAxis1Length
@@ -361,7 +364,7 @@ private extension ShowGeodesicSectorAndEllipseView {
                 axisDirection: axisDirection,
                 center: center,
                 linearUnit: .miles,
-                maxPointCount: maxPointCount,
+                maxPointCount: Int(maxPointCount),
                 maxSegmentLength: maxSegmentLength,
                 semiAxis1Length: semiAxis1Length,
                 semiAxis2Length: semiAxis2Length
