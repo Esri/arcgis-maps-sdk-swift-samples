@@ -92,7 +92,7 @@ struct ShowGeodesicSectorAndEllipseView: View {
                                         model.refreshSector()
                                     }
                                 ),
-                                in: 0...1000,
+                                in: 0...1_000,
                                 step: 1
                             )
                             .listRowSeparator(
@@ -265,7 +265,7 @@ private extension ShowGeodesicSectorAndEllipseView {
         /// Changes the sectors shape.
         @Published var sectorAngle: Double = 90
         /// Controls the complexity of the geometries and the approximation of the ellipse curve.
-        @Published var maxPointCount: Int = 1000
+        @Published var maxPointCount: Int = 1_000
         /// Changes the length of ellipse shape on one axis.
         @Published var semiAxis1Length: Double = 200
         /// Changes the length of ellipse shape on one axis.
