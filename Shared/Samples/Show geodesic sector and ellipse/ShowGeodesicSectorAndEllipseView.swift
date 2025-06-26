@@ -191,6 +191,7 @@ struct ShowGeodesicSectorAndEllipseView: View {
                                 value: model.semiAxis2Length,
                                 format: format
                             )
+                            
                             Slider(
                                 value: $model.semiAxis2Length,
                                 in: 0...1_000,
