@@ -92,7 +92,7 @@ struct ShowGeodesicSectorAndEllipseView: View {
                                         model.refreshSector()
                                     }
                                 ),
-                                in: 0...1_000,
+                                in: 1...1_000,
                                 step: 1
                             )
                             .listRowSeparator(
