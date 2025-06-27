@@ -28,6 +28,9 @@ struct ManageFeaturesView: View {
     /// The placement of the callout.
     @State private var calloutPlacement: CalloutPlacement?
     
+    /// The current viewpoint of the map view.
+    @State private var currentViewpoint: Viewpoint?
+    
     var body: some View {
         VStack {
             switch data {
@@ -88,6 +91,9 @@ struct ManageFeaturesView: View {
                         addNewFeatureCalloutContent(table: data.featureTable, point: tapMapPoint)
                     }
                 }
+                .onViewpointChanged(kind: .centerAndScale) { viewpoint in
+                    currentViewpoint = viewpoint
+                }
                 .overlay(alignment: .top) {
                     instructionsOverlay
                 }
@@ -145,9 +151,12 @@ struct ManageFeaturesView: View {
                     Text("Update Attribute")
                 }
                 Button {
+                    // Hide callout, leave feature selected.
+                    calloutPlacement = nil
                     Task {
-                        clearSelection()
                         try await updateGeometry(for: feature, table: table)
+                        // Update callout location after moving feature.
+                        calloutPlacement = .geoElement(feature)
                     }
                 } label: {
                     Text("Update Geometry")
@@ -206,7 +215,8 @@ struct ManageFeaturesView: View {
     
     /// Updates the geometry of a feature and applies edits to the service.
     func updateGeometry(for feature: Feature, table: ServiceFeatureTable) async throws {
-        // TODO: ...
+        guard let currentViewpoint else { return }
+        feature.geometry = currentViewpoint.targetGeometry
         try await table.update(feature)
         _ = try await table.serviceGeodatabase?.applyEdits()
     }
