@@ -45,183 +45,11 @@ struct ShowGeodesicSectorAndEllipseView: View {
                     }
                     .disabled(model.center == nil)
                     .sheet(isPresented: $isPresented) {
-                        Form {
-                            let format = FloatingPointFormatStyle<Double>()
-                                .precision(.fractionLength(0))
-                                .grouping(.never)
-                            
-                            let directionFormat = Measurement<UnitAngle>.FormatStyle(
-                                width: .narrow,
-                                numberFormatStyle: .number.precision(.fractionLength(0))
-                            )
-                            
-                            LabeledContent(
-                                "Axis Direction",
-                                value: model.axisDirection,
-                                format: directionFormat
-                            )
-                            let axisDirectionRange = 0.0...360.0
-                            Slider(
-                                value: $model.axisDirection.value,
-                                in: axisDirectionRange
-                            ) {
-                                Text("Axis Direction")
-                            } minimumValueLabel: {
-                                Text(
-                                    Measurement<UnitAngle>(
-                                        value: axisDirectionRange.lowerBound,
-                                        unit: .degrees
-                                    ),
-                                    format: directionFormat
-                                )
-                            } maximumValueLabel: {
-                                Text(
-                                    Measurement<UnitAngle>(
-                                        value: axisDirectionRange.upperBound,
-                                        unit: .degrees
-                                    ),
-                                    format: directionFormat
-                                )
-                            }
-                            .onChange(of: model.axisDirection) {
-                                model.refreshSector()
-                            }
-                            .listRowSeparator(.hidden, edges: .top)
-                            
-                            LabeledContent(
-                                "Max Point Count",
-                                value: model.maxPointCount,
-                                format: format
-                            )
-                            
-                            Slider(
-                                value: $model.maxPointCount,
-                                in: 1...1_000,
-                                step: 1
-                            )
-                            .onChange(of: model.maxPointCount) {
-                                model.refreshSector()
-                            }
-                            .listRowSeparator(.hidden, edges: .top)
-                            
-                            LabeledContent(
-                                "Max Segment Length",
-                                value: model.maxSegmentLength,
-                                format: format
-                            )
-                            
-                            Slider(
-                                value: $model.maxSegmentLength,
-                                in: 1...1_000,
-                                label: {
-                                    Text("Max Segment Length")
-                                },
-                                minimumValueLabel: {
-                                    Text("1")
-                                },
-                                maximumValueLabel: {
-                                    Text("1000")
-                                }
-                            )
-                            .onChange(of: model.maxSegmentLength) {
-                                model.refreshSector()
-                            }
-                            .listRowSeparator(.hidden, edges: .top)
-                            
-                            Picker("Geometry Type", selection: $model.geometryType) {
-                                ForEach(GeometryType.allCases, id: \.self) { geometryType in
-                                    Text(geometryType.label)
-                                }
-                            }
-                            .onChange(of: model.geometryType) {
-                                model.refreshSector()
-                            }
-                            
-                            LabeledContent(
-                                "Sector Angle",
-                                value: model.sectorAngle,
-                                format: directionFormat
-                            )
-                            let sectorAngleRange = 0.0...360.0
-                            Slider(
-                                value: $model.sectorAngle.value,
-                                in: sectorAngleRange
-                            ) {
-                                Text("Sector Angle")
-                            } minimumValueLabel: {
-                                Text(
-                                    Measurement<UnitAngle>(
-                                        value: sectorAngleRange.lowerBound,
-                                        unit: .degrees
-                                    ),
-                                    format: directionFormat
-                                )
-                            } maximumValueLabel: {
-                                Text(
-                                    Measurement<UnitAngle>(
-                                        value: sectorAngleRange.upperBound,
-                                        unit: .degrees
-                                    ),
-                                    format: directionFormat
-                                )
-                            }
-                            .onChange(of: model.sectorAngle) {
-                                model.refreshSector()
-                            }
-                            .listRowSeparator(.hidden, edges: .top)
-                            
-                            LabeledContent(
-                                "Semi Axis 1 Length",
-                                value: model.semiAxis1Length,
-                                format: format
-                            )
-                            
-                            Slider(
-                                value: $model.semiAxis1Length,
-                                in: 0...1_000,
-                                label: {
-                                    Text("Semi Axis 1 Length")
-                                },
-                                minimumValueLabel: {
-                                    Text("0")
-                                },
-                                maximumValueLabel: {
-                                    Text("1000")
-                                }
-                            )
-                            .onChange(of: model.semiAxis1Length) {
-                                model.refreshSector()
-                            }
-                            .listRowSeparator(.hidden, edges: [.top])
-                            
-                            LabeledContent(
-                                "Semi Axis 2 Length",
-                                value: model.semiAxis2Length,
-                                format: format
-                            )
-                            
-                            Slider(
-                                value: $model.semiAxis2Length,
-                                in: 0...1_000,
-                                label: {
-                                    Text("Semi Axis 2 Length")
-                                },
-                                minimumValueLabel: {
-                                    Text("0")
-                                },
-                                maximumValueLabel: {
-                                    Text("1000")
-                                }
-                            )
-                            .onChange(of: model.semiAxis2Length) {
-                                model.refreshSector()
-                            }
-                            .listRowSeparator(.hidden, edges: [.top])
-                        }
+                        SectorSettingsView(model: model)
+                            .presentationDetents([.medium])
                         Button("Close") {
                             isPresented = false
                         }
-                        .presentationDetents([.medium])
                     }
                 }
             }
@@ -231,15 +59,13 @@ struct ShowGeodesicSectorAndEllipseView: View {
 
 private extension ShowGeodesicSectorAndEllipseView {
     /// Custom data type so that Geometry options can be displayed in the menu.
-    enum GeometryType: CaseIterable {
+    enum GeometryType: String, CaseIterable, Identifiable {
         case point, polyline, polygon
         
+        var id: String { rawValue }
+        
         var label: String {
-            switch self {
-            case .point: "Point"
-            case .polyline: "Polyline"
-            case .polygon: "Polygon"
-            }
+            rawValue.capitalized
         }
     }
     
@@ -271,21 +97,53 @@ private extension ShowGeodesicSectorAndEllipseView {
         private let sectorGraphicOverlay = GraphicsOverlay()
         
         /// The direction (in degrees) of the ellipse's major axis.
-        @Published var axisDirection = Measurement<UnitAngle>(value: 45, unit: .degrees)
+        @Published var axisDirection = Measurement<UnitAngle>(value: 45, unit: .degrees) {
+            didSet {
+                refreshSector()
+            }
+        }
         /// Controls the complexity of the geometries and the approximation of the ellipse curve.
-        @Published var maxSegmentLength: Double = 1
+        @Published var maxSegmentLength: Double = 1 {
+            didSet {
+                refreshSector()
+            }
+        }
         /// Changes the sectors shape.
-        @Published var sectorAngle = Measurement<UnitAngle>(value: 90, unit: .degrees)
+        @Published var sectorAngle = Measurement<UnitAngle>(value: 90, unit: .degrees) {
+            didSet {
+                refreshSector()
+            }
+        }
         /// Controls the complexity of the geometries and the approximation of the ellipse curve.
-        @Published var maxPointCount: Double = 1_000
+        @Published var maxPointCount: Double = 1_000 {
+            didSet {
+                refreshSector()
+            }
+        }
         /// Changes the length of ellipse shape on one axis.
-        @Published var semiAxis1Length: Double = 200
+        @Published var semiAxis1Length: Double = 200 {
+            didSet {
+                refreshSector()
+            }
+        }
         /// Changes the length of ellipse shape on one axis.
-        @Published var semiAxis2Length: Double = 100
+        @Published var semiAxis2Length: Double = 100 {
+            didSet {
+                refreshSector()
+            }
+        }
         /// Changes the geometry type which the sector is rendered.
-        @Published var geometryType: GeometryType = .polygon
+        @Published var geometryType: GeometryType = .polygon {
+            didSet {
+                refreshSector()
+            }
+        }
         /// Changes the direction of the sector.
-        @Published var startDirection: Double = 45
+        @Published var startDirection: Double = 45 {
+            didSet {
+                refreshSector()
+            }
+        }
         
         func refreshSector() {
             guard let center else { return }
@@ -364,6 +222,165 @@ private extension ShowGeodesicSectorAndEllipseView {
             let symbol = SimpleLineSymbol(style: .dash, color: .red, width: 2)
             let graphic = Graphic(geometry: geometry, symbol: symbol)
             ellipseGraphicOverlay.addGraphic(graphic)
+        }
+    }
+    
+    struct SectorSettingsView: View {
+        @ObservedObject var model: ShowGeodesicSectorAndEllipseView.Model
+        @Environment(\.dismiss) var dismiss
+        
+        var body: some View {
+            Form {
+                let format = FloatingPointFormatStyle<Double>()
+                    .precision(.fractionLength(0))
+                    .grouping(.never)
+                
+                let directionFormat = Measurement<UnitAngle>.FormatStyle(
+                    width: .narrow,
+                    numberFormatStyle: .number.precision(.fractionLength(0))
+                )
+                
+                LabeledContent(
+                    "Axis Direction",
+                    value: model.axisDirection,
+                    format: directionFormat
+                )
+                let axisDirectionRange = 0.0...360.0
+                Slider(
+                    value: $model.axisDirection.value,
+                    in: axisDirectionRange
+                ) {
+                    Text("Axis Direction")
+                } minimumValueLabel: {
+                    Text(
+                        Measurement<UnitAngle>(
+                            value: axisDirectionRange.lowerBound,
+                            unit: .degrees
+                        ),
+                        format: directionFormat
+                    )
+                } maximumValueLabel: {
+                    Text(
+                        Measurement<UnitAngle>(
+                            value: axisDirectionRange.upperBound,
+                            unit: .degrees
+                        ),
+                        format: directionFormat
+                    )
+                }
+                .listRowSeparator(.hidden, edges: .top)
+                
+                LabeledContent(
+                    "Max Point Count",
+                    value: model.maxPointCount,
+                    format: format
+                )
+                
+                Slider(
+                    value: $model.maxPointCount,
+                    in: 1...1_000,
+                    step: 1
+                )
+                .listRowSeparator(.hidden, edges: .top)
+                
+                LabeledContent(
+                    "Max Segment Length",
+                    value: model.maxSegmentLength,
+                    format: format
+                )
+                
+                Slider(
+                    value: $model.maxSegmentLength,
+                    in: 1...1_000,
+                    label: {
+                        Text("Max Segment Length")
+                    },
+                    minimumValueLabel: {
+                        Text("1")
+                    },
+                    maximumValueLabel: {
+                        Text("1000")
+                    }
+                )
+                .listRowSeparator(.hidden, edges: .top)
+                
+                Picker("Geometry Type", selection: $model.geometryType) {
+                    ForEach(GeometryType.allCases, id: \.self) { geometryType in
+                        Text(geometryType.label)
+                    }
+                }
+                LabeledContent(
+                    "Sector Angle",
+                    value: model.sectorAngle,
+                    format: directionFormat
+                )
+                let sectorAngleRange = 0.0...360.0
+                Slider(
+                    value: $model.sectorAngle.value,
+                    in: sectorAngleRange
+                ) {
+                    Text("Sector Angle")
+                } minimumValueLabel: {
+                    Text(
+                        Measurement<UnitAngle>(
+                            value: sectorAngleRange.lowerBound,
+                            unit: .degrees
+                        ),
+                        format: directionFormat
+                    )
+                } maximumValueLabel: {
+                    Text(
+                        Measurement<UnitAngle>(
+                            value: sectorAngleRange.upperBound,
+                            unit: .degrees
+                        ),
+                        format: directionFormat
+                    )
+                }
+                .listRowSeparator(.hidden, edges: .top)
+                
+                LabeledContent(
+                    "Semi Axis 1 Length",
+                    value: model.semiAxis1Length,
+                    format: format
+                )
+                
+                Slider(
+                    value: $model.semiAxis1Length,
+                    in: 0...1_000,
+                    label: {
+                        Text("Semi Axis 1 Length")
+                    },
+                    minimumValueLabel: {
+                        Text("0")
+                    },
+                    maximumValueLabel: {
+                        Text("1000")
+                    }
+                )
+                .listRowSeparator(.hidden, edges: [.top])
+                
+                LabeledContent(
+                    "Semi Axis 2 Length",
+                    value: model.semiAxis2Length,
+                    format: format
+                )
+                
+                Slider(
+                    value: $model.semiAxis2Length,
+                    in: 0...1_000,
+                    label: {
+                        Text("Semi Axis 2 Length")
+                    },
+                    minimumValueLabel: {
+                        Text("0")
+                    },
+                    maximumValueLabel: {
+                        Text("1000")
+                    }
+                )
+                .listRowSeparator(.hidden, edges: [.top])
+            }
         }
     }
 }
