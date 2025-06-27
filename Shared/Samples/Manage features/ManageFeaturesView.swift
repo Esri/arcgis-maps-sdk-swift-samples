@@ -16,27 +16,59 @@ import ArcGIS
 import SwiftUI
 
 struct ManageFeaturesView: View {
-    /// A map with a streets basemap and a feature layer.
-    @State private var model = Model()
+    /// The data for the view.
+    @State private var data: Result<Data, Error>?
     
+    /// The screen location that the user tapped.
     @State private var tapLocation: CGPoint?
+    
+    /// The map location that the user tapped.
     @State private var tapMapPoint: Point?
     
+    /// The placement of the callout.
     @State private var calloutPlacement: CalloutPlacement?
     
     var body: some View {
         VStack {
-            switch model.data {
+            switch data {
             case .success(let data):
+                // Show map view if data loads.
                 mapView(data)
             case .failure:
+                // Show content unavailable if data does not load.
                 ContentUnavailableView("Error", systemImage: "exclamationmark.triangle", description: Text("Failed to load sample data."))
             case .none:
+                // Show progress view during loading.
                 ProgressView()
             }
         }
         .animation(.default, value: calloutPlacement)
-        .task { await model.loadData() }
+        .task { await loadData() }
+    }
+    
+    /// Loads the data for this view.
+    private func loadData() async {
+        let map = Map(basemapStyle: .arcGISStreets)
+        map.initialViewpoint = Viewpoint(
+            center: Point(x: -10_800_000, y: 4_500_000, spatialReference: .webMercator),
+            scale: 3e7
+        )
+        
+        let geodatabase = ServiceGeodatabase(
+            url: URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/DamageAssessment/FeatureServer/0")!
+        )
+        
+        do {
+            try await geodatabase.load()
+            let featureTable = geodatabase.table(withLayerID: 0)!
+            let layer = FeatureLayer(featureTable: featureTable)
+            map.addOperationalLayer(layer)
+            data = .success(
+                Data(map: map, geodatabase: geodatabase, featureTable: featureTable, featureLayer: layer)
+            )
+        } catch {
+            data = .failure(error)
+        }
     }
     
     @ViewBuilder
@@ -44,6 +76,7 @@ struct ManageFeaturesView: View {
         MapViewReader { mapView in
             MapView(map: data.map)
                 .onSingleTapGesture { tapLocation, tapMapPoint in
+                    // Store state and clear selection on tap.
                     self.tapLocation = tapLocation
                     self.tapMapPoint = tapMapPoint
                     clearSelection()
@@ -52,34 +85,38 @@ struct ManageFeaturesView: View {
                     if let feature = placement.geoElement as? Feature {
                         featureCalloutContent(feature: feature, table: data.featureTable)
                     } else if let tapMapPoint {
-                        newFeatureCalloutContent(table: data.featureTable, point: tapMapPoint)
+                        addNewFeatureCalloutContent(table: data.featureTable, point: tapMapPoint)
                     }
                 }
                 .overlay(alignment: .top) {
-                    overlayContent
+                    instructionsOverlay
                 }
                 .task(id: tapLocation) {
+                    // Identify when we get a tap location.
                     guard let tapLocation, let tapMapPoint else { return }
                     if let identifyResult = try? await mapView.identify(on: data.featureLayer, screenPoint: tapLocation, tolerance: 12),
                        let geoElement = identifyResult.geoElements.first,
                        let feature = geoElement as? Feature {
+                        // Place a callout for a feature.
                         calloutPlacement = .geoElement(geoElement)
                         data.featureLayer.selectFeature(feature)
                     } else {
+                        // Place a callout for adding a new feature.
                         calloutPlacement = .location(tapMapPoint)
                     }
                 }
         }
     }
     
+    /// A callout that allows the user to add a new feature.
     @ViewBuilder
-    func newFeatureCalloutContent(table: ServiceFeatureTable, point: Point) -> some View {
+    func addNewFeatureCalloutContent(table: ServiceFeatureTable, point: Point) -> some View {
         HStack {
             Text("Add New Feature")
             Button {
                 clearSelection()
                 Task {
-                    try await createFeature(table: table, point: point)
+                    try await createFeature(point: point, table: table)
                 }
             } label: {
                 Image(systemName: "plus.circle")
@@ -88,6 +125,7 @@ struct ManageFeaturesView: View {
         .padding()
     }
     
+    /// A callout that allows a user to modify or delete an existing feature.
     @ViewBuilder
     func featureCalloutContent(feature: Feature, table: ServiceFeatureTable) -> some View {
         HStack {
@@ -130,7 +168,8 @@ struct ManageFeaturesView: View {
         .padding()
     }
     
-    @ViewBuilder var overlayContent: some View {
+    /// Overlay with instructions for the user.
+    @ViewBuilder var instructionsOverlay: some View {
         Text("Tap the map to create a new feature, or an existing feature for more options.")
             .multilineTextAlignment(.center)
             .padding()
@@ -138,14 +177,16 @@ struct ManageFeaturesView: View {
             .background(.ultraThinMaterial)
     }
     
+    /// Clears the selection on the feature layer and hides the callout.
     func clearSelection() {
-        if case .success(let data) = model.data {
+        if case .success(let data) = data {
             data.featureLayer.clearSelection()
         }
         calloutPlacement = nil
     }
     
-    func createFeature(table: ServiceFeatureTable, point: Point) async throws {
+    /// Creates a new feature at a specified location and applies edits to the service.
+    func createFeature(point: Point, table: ServiceFeatureTable) async throws {
         let feature = table.makeFeature(
             attributes: [
                 Feature.damageTypeFieldName: DamageKind.inaccessible.value
@@ -156,18 +197,21 @@ struct ManageFeaturesView: View {
         _ = try await table.serviceGeodatabase?.applyEdits()
     }
     
+    /// Updates the attributes of a feature and applies edits to the service.
     func updateAttribute(for feature: Feature, table: ServiceFeatureTable) async throws {
         feature.damageKind = feature.damageKind?.next ?? .inaccessible
         try await table.update(feature)
         _ = try await table.serviceGeodatabase?.applyEdits()
     }
     
+    /// Updates the geometry of a feature and applies edits to the service.
     func updateGeometry(for feature: Feature, table: ServiceFeatureTable) async throws {
         // TODO: ...
         try await table.update(feature)
         _ = try await table.serviceGeodatabase?.applyEdits()
     }
     
+    /// Deletes a feature from the table and applies edits to the service.
     func delete(feature: Feature, table: ServiceFeatureTable) async throws {
         try await table.delete(feature)
         _ = try await table.serviceGeodatabase?.applyEdits()
@@ -178,6 +222,7 @@ extension Feature {
     static let damageTypeFieldName = "typdamage"
     static let objectIDFieldName = "objectid"
     
+    /// An ID string for the feature.
     var id: String {
         if let objectID = attributeValue(forKey: "objectid") {
             return "\(objectID)"
@@ -186,25 +231,35 @@ extension Feature {
         }
     }
     
+    /// The damage assessment of the feature.
     var damageKind: ManageFeaturesView.DamageKind? {
         get {
+            // Return the attribute value as a DamageKind.
             ManageFeaturesView.DamageKind(
                 attributeValue(forKey: Self.damageTypeFieldName) as? String ?? ""
             )
         } set {
+            // Set the attribute value on the feature by converting the
+            // DamageKind to a String value.
             setAttributeValue(newValue?.value, forKey: Self.damageTypeFieldName)
         }
     }
 }
 
 extension ManageFeaturesView {
+    /// Data value for the sample.
     struct Data {
+        /// The map that will be displayed.
         let map: Map
+        /// The service geodatabase.
         let geodatabase: ServiceGeodatabase
+        /// The service feature table.
         let featureTable: ServiceFeatureTable
+        /// The feature layer.
         let featureLayer: FeatureLayer
     }
     
+    /// A value that describes the damage assessment value for a feature.
     enum DamageKind: CaseIterable {
         case inaccessible
         case affected
@@ -212,6 +267,7 @@ extension ManageFeaturesView {
         case major
         case destroyed
         
+        /// Initializes a DamageKind with a String value.
         init?(_ value: String) {
             for `case` in Self.allCases {
                 if value == `case`.value {
@@ -222,6 +278,8 @@ extension ManageFeaturesView {
             return nil
         }
         
+        /// The string value of the damage kind.
+        /// This is the value that will be set or get from the feature attributes.
         var value: String {
             switch self {
             case .inaccessible:
@@ -237,6 +295,7 @@ extension ManageFeaturesView {
             }
         }
         
+        /// The next damage kind to set on a feature.
         var next: ManageFeaturesView.DamageKind {
             switch self {
             case .inaccessible:
@@ -249,38 +308,6 @@ extension ManageFeaturesView {
                 .destroyed
             case .destroyed:
                 .inaccessible
-            }
-        }
-    }
-}
-
-extension ManageFeaturesView {
-    @Observable
-    @MainActor
-    final class Model {
-        var data: Result<Data, Error>?
-        
-        func loadData() async {
-            let map = Map(basemapStyle: .arcGISStreets)
-            map.initialViewpoint = Viewpoint(
-                center: Point(x: -10_800_000, y: 4_500_000, spatialReference: .webMercator),
-                scale: 3e7
-            )
-            
-            let geodatabase = ServiceGeodatabase(
-                url: URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/DamageAssessment/FeatureServer/0")!
-            )
-            
-            do {
-                try await geodatabase.load()
-                let featureTable = geodatabase.table(withLayerID: 0)!
-                let layer = FeatureLayer(featureTable: featureTable)
-                map.addOperationalLayer(layer)
-                data = .success(
-                    Data(map: map, geodatabase: geodatabase, featureTable: featureTable, featureLayer: layer)
-                )
-            } catch {
-                data = .failure(error)
             }
         }
     }
