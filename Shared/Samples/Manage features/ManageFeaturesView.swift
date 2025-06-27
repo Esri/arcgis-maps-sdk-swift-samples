@@ -282,7 +282,10 @@ struct ManageFeaturesView: View {
 }
 
 extension Feature {
+    /// The name of the damage type field.
     static let damageTypeFieldName = "typdamage"
+    
+    /// The name of the object ID field.
     static let objectIDFieldName = "objectid"
     
     /// An ID string for the feature.
