@@ -24,7 +24,7 @@ extension RunValveIsolationTraceView {
         let map = Map(basemapStyle: .arcGISStreetsNight)
         
         /// The utility network for this sample.
-        private let utilityNetwork = UtilityNetwork(url: .featureServiceURL)
+        private let utilityNetwork: UtilityNetwork
         
         /// The service geodatabase used to create the feature layer.
         private let serviceGeodatabase = ServiceGeodatabase(url: .featureServiceURL)
@@ -94,6 +94,7 @@ extension RunValveIsolationTraceView {
         }()
         
         init() {
+            utilityNetwork = UtilityNetwork(serviceGeodatabase: serviceGeodatabase)
             map.addUtilityNetwork(utilityNetwork)
         }
         

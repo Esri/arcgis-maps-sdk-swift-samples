@@ -108,7 +108,7 @@ private extension ShowUtilityAssociationsView {
         let map = Map(basemapStyle: .arcGISTopographic)
         
         /// The utility network for this sample.
-        private let network = UtilityNetwork(url: .utilityNetwork)
+        private let network = UtilityNetwork(serviceGeodatabase: .napervilleGeodatabase)
         
         /// A container for associations results.
         let associationsOverlay = makeAssociationsOverlay()
@@ -258,6 +258,13 @@ private extension URL {
     /// The utility network for this sample.
     static var utilityNetwork: URL {
         URL(string: "https://sampleserver7.arcgisonline.com/server/rest/services/UtilityNetwork/NapervilleElectric/FeatureServer")!
+    }
+}
+
+private extension ServiceGeodatabase {
+    /// The Naperville, Illinois electric utility network service geodatabase.
+    static var napervilleGeodatabase: ServiceGeodatabase {
+        .init(url: .utilityNetwork)
     }
 }
 

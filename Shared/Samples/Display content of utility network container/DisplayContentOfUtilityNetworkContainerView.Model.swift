@@ -70,7 +70,7 @@ extension DisplayContentOfUtilityNetworkContainerView {
             ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = ChallengeHandler()
             
             // Creates the utility network.
-            network = UtilityNetwork(url: .featureService, map: map)
+            network = UtilityNetwork(serviceGeodatabase: .napervilleGeodatabase)
         }
         
         deinit {
@@ -252,6 +252,13 @@ private extension URL {
     /// The portal containing the data for this sample.
     static var samplePortal: URL {
         sampleServer7.appendingPathComponent("portal")
+    }
+}
+
+private extension ServiceGeodatabase {
+    /// The Naperville, Illinois electric utility network service geodatabase.
+    static var napervilleGeodatabase: ServiceGeodatabase {
+        .init(url: .featureService)
     }
 }
 
