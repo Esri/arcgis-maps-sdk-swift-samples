@@ -51,6 +51,7 @@ struct ManageFeaturesView: View {
                 ProgressView()
             }
         }
+        .animation(.default, value: status)
         .animation(.default, value: calloutPlacement)
         .task { await loadData() }
     }
