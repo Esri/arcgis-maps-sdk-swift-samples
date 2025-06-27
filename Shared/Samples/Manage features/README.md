@@ -22,8 +22,8 @@ Pick an operation, then tap on the map to perform the operation at that location
     - Delete feature: delete the selected `Feature` from the `FeatureTable`.
     - Update attribute: update the attribute of the selected `Feature`.
     - Update geometry: update the geometry of the selected `Feature`.
-6. Update the `FeatureTable` locally.
-7. Update the `ServiceGeodatabase` of the `ServiceFeatureTable` by calling `applyEdits()`. 
+5. Update the `FeatureTable` locally.
+6. Update the `ServiceGeodatabase` of the `ServiceFeatureTable` by calling `applyEdits()`. 
     - This pushes the changes to the server.
 
 ## Relevant API
