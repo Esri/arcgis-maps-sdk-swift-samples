@@ -190,6 +190,7 @@ struct ManageFeaturesView: View {
                 Image(systemName: "ellipsis")
                     .padding(.leading)
             }
+            .fixedSize()
         }
         .padding()
     }
