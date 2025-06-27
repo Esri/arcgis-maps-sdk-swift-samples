@@ -257,6 +257,7 @@ struct ManageFeaturesView: View {
     }
     
     /// Updates the geometry of a feature and applies edits to the service.
+    /// This moves the feature to the center of the map.
     func updateGeometry(for feature: Feature, table: ServiceFeatureTable) async throws {
         guard let currentViewpoint else { return }
         do {
