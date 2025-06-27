@@ -333,7 +333,7 @@ private extension ShowGeodesicSectorAndEllipseView {
         private func fillSectorParameters<T>(_ parameters: inout GeodesicSectorParameters<T>) {
             parameters.center = center
             parameters.axisDirection = axisDirection.value
-            parameters.maxPointCount = Int(maxPointCount)
+            parameters.maxPointCount = Int(maxPointCount.rounded())
             parameters.maxSegmentLength = maxSegmentLength
             parameters.sectorAngle = sectorAngle.value
             parameters.semiAxis1Length = semiAxis1Length
@@ -355,7 +355,7 @@ private extension ShowGeodesicSectorAndEllipseView {
                 axisDirection: axisDirection.value,
                 center: center,
                 linearUnit: .miles,
-                maxPointCount: Int(maxPointCount),
+                maxPointCount: Int(maxPointCount.rounded()),
                 maxSegmentLength: maxSegmentLength,
                 semiAxis1Length: semiAxis1Length,
                 semiAxis2Length: semiAxis2Length
