@@ -145,7 +145,7 @@ private extension ShowGeodesicSectorAndEllipseView {
             }
         }
         
-        func refreshSector() {
+        private func refreshSector() {
             guard let center else { return }
             updateSector()
         }
