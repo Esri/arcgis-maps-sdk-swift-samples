@@ -94,7 +94,11 @@ private extension ShowGeodesicSectorAndEllipseView {
         
         /// The graphics overlay that will be displayed on the map view.
         /// This will display a highlighted section of the ellipse path.
-        private let sectorGraphicOverlay = GraphicsOverlay()
+        private let sectorGraphicOverlay: GraphicsOverlay = {
+            let overlay = GraphicsOverlay()
+            overlay.renderer = SimpleRenderer(symbol: SimpleFillSymbol(style: .solid, color: .green))
+            return overlay
+        }()
         
         /// The direction (in degrees) of the ellipse's major axis.
         @Published var axisDirection = Measurement<UnitAngle>(value: 45, unit: .degrees) {
@@ -203,7 +207,6 @@ private extension ShowGeodesicSectorAndEllipseView {
         /// Adds a sector graphic to the overlay and applies the appropriate renderer.
         private func addSectorGraphic(geometry: Geometry, symbol: Symbol) {
             let sectorGraphic = Graphic(geometry: geometry, symbol: symbol)
-            sectorGraphicOverlay.renderer = SimpleRenderer(symbol: symbol)
             sectorGraphicOverlay.addGraphic(sectorGraphic)
         }
         
@@ -228,21 +231,23 @@ private extension ShowGeodesicSectorAndEllipseView {
     struct SectorSettingsView: View {
         @ObservedObject var model: ShowGeodesicSectorAndEllipseView.Model
         
+        private var numberFormat: FloatingPointFormatStyle<Double> {
+            .init().precision(.fractionLength(0)).grouping(.never)
+        }
+        
+        private var angleFormat: Measurement<UnitAngle>.FormatStyle {
+            .init(
+                width: .narrow,
+                numberFormatStyle: .number.precision(.fractionLength(0))
+            )
+        }
+        
         var body: some View {
             Form {
-                let format = FloatingPointFormatStyle<Double>()
-                    .precision(.fractionLength(0))
-                    .grouping(.never)
-                
-                let directionFormat = Measurement<UnitAngle>.FormatStyle(
-                    width: .narrow,
-                    numberFormatStyle: .number.precision(.fractionLength(0))
-                )
-                
                 LabeledContent(
                     "Axis Direction",
                     value: model.axisDirection,
-                    format: directionFormat
+                    format: angleFormat
                 )
                 let axisDirectionRange = 0.0...360.0
                 Slider(
@@ -256,7 +261,7 @@ private extension ShowGeodesicSectorAndEllipseView {
                             value: axisDirectionRange.lowerBound,
                             unit: .degrees
                         ),
-                        format: directionFormat
+                        format: angleFormat
                     )
                 } maximumValueLabel: {
                     Text(
@@ -264,7 +269,7 @@ private extension ShowGeodesicSectorAndEllipseView {
                             value: axisDirectionRange.upperBound,
                             unit: .degrees
                         ),
-                        format: directionFormat
+                        format: angleFormat
                     )
                 }
                 .listRowSeparator(.hidden, edges: .top)
@@ -272,7 +277,7 @@ private extension ShowGeodesicSectorAndEllipseView {
                 LabeledContent(
                     "Max Point Count",
                     value: model.maxPointCount,
-                    format: format
+                    format: numberFormat
                 )
                 
                 Slider(
@@ -285,7 +290,7 @@ private extension ShowGeodesicSectorAndEllipseView {
                 LabeledContent(
                     "Max Segment Length",
                     value: model.maxSegmentLength,
-                    format: format
+                    format: numberFormat
                 )
                 
                 Slider(
@@ -311,7 +316,7 @@ private extension ShowGeodesicSectorAndEllipseView {
                 LabeledContent(
                     "Sector Angle",
                     value: model.sectorAngle,
-                    format: directionFormat
+                    format: angleFormat
                 )
                 let sectorAngleRange = 0.0...360.0
                 Slider(
@@ -325,7 +330,7 @@ private extension ShowGeodesicSectorAndEllipseView {
                             value: sectorAngleRange.lowerBound,
                             unit: .degrees
                         ),
-                        format: directionFormat
+                        format: angleFormat
                     )
                 } maximumValueLabel: {
                     Text(
@@ -333,7 +338,7 @@ private extension ShowGeodesicSectorAndEllipseView {
                             value: sectorAngleRange.upperBound,
                             unit: .degrees
                         ),
-                        format: directionFormat
+                        format: angleFormat
                     )
                 }
                 .listRowSeparator(.hidden, edges: .top)
@@ -341,7 +346,7 @@ private extension ShowGeodesicSectorAndEllipseView {
                 LabeledContent(
                     "Semi Axis 1 Length",
                     value: model.semiAxis1Length,
-                    format: format
+                    format: numberFormat
                 )
                 
                 Slider(
@@ -362,7 +367,7 @@ private extension ShowGeodesicSectorAndEllipseView {
                 LabeledContent(
                     "Semi Axis 2 Length",
                     value: model.semiAxis2Length,
-                    format: format
+                    format: numberFormat
                 )
                 
                 Slider(
