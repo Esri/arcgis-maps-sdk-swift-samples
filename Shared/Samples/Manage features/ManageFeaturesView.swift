@@ -258,7 +258,9 @@ extension ManageFeaturesView {
         /// The feature layer.
         let featureLayer: FeatureLayer
     }
-    
+}
+
+extension ManageFeaturesView {
     /// A value that describes the damage assessment value for a feature.
     enum DamageKind: CaseIterable {
         case inaccessible
