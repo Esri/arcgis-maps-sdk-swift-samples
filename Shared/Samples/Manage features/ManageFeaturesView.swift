@@ -148,7 +148,7 @@ struct ManageFeaturesView: View {
                         try await updateAttribute(for: feature, table: table)
                     }
                 } label: {
-                    Text("Update Attribute")
+                    Text("Change Feature Type")
                 }
                 Button {
                     // Hide callout, leave feature selected.
@@ -159,7 +159,7 @@ struct ManageFeaturesView: View {
                         calloutPlacement = .geoElement(feature)
                     }
                 } label: {
-                    Text("Update Geometry")
+                    Text("Move Feature")
                 }
                 Button {
                     Task {
@@ -198,7 +198,8 @@ struct ManageFeaturesView: View {
     func createFeature(point: Point, table: ServiceFeatureTable) async throws {
         let feature = table.makeFeature(
             attributes: [
-                Feature.damageTypeFieldName: DamageKind.inaccessible.value
+                Feature.damageTypeFieldName: DamageKind.inaccessible.value,
+                "primcause": "Earthquake"
             ],
             geometry: point
         )
