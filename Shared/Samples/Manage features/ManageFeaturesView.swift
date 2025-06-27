@@ -99,7 +99,12 @@ struct ManageFeaturesView: View {
                         addNewFeatureCalloutContent(table: data.featureTable, point: tapMapPoint)
                     }
                 }
+                .onNavigatingChanged { _ in
+                    // Reset status when user moves the map.
+                    status = ""
+                }
                 .onViewpointChanged(kind: .centerAndScale) { viewpoint in
+                    // Track current viewpoint.
                     currentViewpoint = viewpoint
                 }
                 .overlay(alignment: .top) {
