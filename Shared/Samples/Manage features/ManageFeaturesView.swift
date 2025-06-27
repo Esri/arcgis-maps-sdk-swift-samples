@@ -31,6 +31,12 @@ struct ManageFeaturesView: View {
     /// The current viewpoint of the map view.
     @State private var currentViewpoint: Viewpoint?
     
+    /// The result of the latest action.
+    @State private var status: String = ""
+    
+    /// The height of the attribution bar.
+    @State private var attributionHeight: CGFloat = 0
+    
     var body: some View {
         VStack {
             switch data {
@@ -78,6 +84,7 @@ struct ManageFeaturesView: View {
     func mapView(_ data: Data) -> some View {
         MapViewReader { mapView in
             MapView(map: data.map)
+                .onAttributionBarHeightChanged { attributionHeight = $0 }
                 .onSingleTapGesture { tapLocation, tapMapPoint in
                     // Store state and clear selection on tap.
                     self.tapLocation = tapLocation
@@ -96,6 +103,10 @@ struct ManageFeaturesView: View {
                 }
                 .overlay(alignment: .top) {
                     instructionsOverlay
+                }
+                .overlay(alignment: .bottom) {
+                    statusOverlay
+                        .padding(.bottom, attributionHeight)
                 }
                 .task(id: tapLocation) {
                     // Identify when we get a tap location.
@@ -118,7 +129,7 @@ struct ManageFeaturesView: View {
     @ViewBuilder
     func addNewFeatureCalloutContent(table: ServiceFeatureTable, point: Point) -> some View {
         HStack {
-            Text("Add New Feature")
+            Text("Create Feature")
             Button {
                 clearSelection()
                 Task {
@@ -148,7 +159,7 @@ struct ManageFeaturesView: View {
                         try await updateAttribute(for: feature, table: table)
                     }
                 } label: {
-                    Text("Change Feature Type")
+                    Text("Update Attribute")
                 }
                 Button {
                     // Hide callout, leave feature selected.
@@ -159,7 +170,7 @@ struct ManageFeaturesView: View {
                         calloutPlacement = .geoElement(feature)
                     }
                 } label: {
-                    Text("Move Feature")
+                    Text("Update Geometry")
                 }
                 Button {
                     Task {
@@ -186,12 +197,26 @@ struct ManageFeaturesView: View {
             .background(.ultraThinMaterial)
     }
     
-    /// Clears the selection on the feature layer and hides the callout.
+    /// Overlay with latest status.
+    @ViewBuilder var statusOverlay: some View {
+        if !status.isEmpty {
+            Text(status)
+                .font(.subheadline)
+                .multilineTextAlignment(.center)
+                .padding()
+                .frame(maxWidth: .infinity)
+                .background(.ultraThinMaterial)
+        }
+    }
+    
+    /// Clears the selection on the feature layer, hides the callout, and
+    /// resets the status.
     func clearSelection() {
         if case .success(let data) = data {
             data.featureLayer.clearSelection()
         }
         calloutPlacement = nil
+        status = ""
     }
     
     /// Creates a new feature at a specified location and applies edits to the service.
@@ -203,29 +228,49 @@ struct ManageFeaturesView: View {
             ],
             geometry: point
         )
-        try await table.add(feature)
-        _ = try await table.serviceGeodatabase?.applyEdits()
+        do {
+            try await table.add(feature)
+            _ = try await table.serviceGeodatabase?.applyEdits()
+            status = "Create feature succeeded."
+        } catch {
+            status = "Error creating feature."
+        }
     }
     
     /// Updates the attributes of a feature and applies edits to the service.
     func updateAttribute(for feature: Feature, table: ServiceFeatureTable) async throws {
-        feature.damageKind = feature.damageKind?.next ?? .inaccessible
-        try await table.update(feature)
-        _ = try await table.serviceGeodatabase?.applyEdits()
+        do {
+            feature.damageKind = feature.damageKind?.next ?? .inaccessible
+            try await table.update(feature)
+            _ = try await table.serviceGeodatabase?.applyEdits()
+            status = "Update attribute succeeded."
+        } catch {
+            status = "Error updating attribute."
+        }
     }
     
     /// Updates the geometry of a feature and applies edits to the service.
     func updateGeometry(for feature: Feature, table: ServiceFeatureTable) async throws {
         guard let currentViewpoint else { return }
-        feature.geometry = currentViewpoint.targetGeometry
-        try await table.update(feature)
-        _ = try await table.serviceGeodatabase?.applyEdits()
+        do {
+            feature.geometry = currentViewpoint.targetGeometry
+            try await table.update(feature)
+            _ = try await table.serviceGeodatabase?.applyEdits()
+            status = "Update geometry succeeded."
+        } catch {
+            status = "Error updating geometry."
+        }
     }
     
     /// Deletes a feature from the table and applies edits to the service.
     func delete(feature: Feature, table: ServiceFeatureTable) async throws {
-        try await table.delete(feature)
-        _ = try await table.serviceGeodatabase?.applyEdits()
+        do {
+            try await table.delete(feature)
+            _ = try await table.serviceGeodatabase?.applyEdits()
+            status = "Delete feature succeeded."
+        } catch {
+            status = "Error deleting feature."
+        }
     }
 }
 
