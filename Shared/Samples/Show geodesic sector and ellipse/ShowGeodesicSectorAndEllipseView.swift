@@ -254,7 +254,7 @@ private extension ShowGeodesicSectorAndEllipseView {
         @Published var center: Point? {
             didSet {
                 guard let center else { return }
-                updateSector(center: center)
+                updateSector()
             }
         }
         
@@ -289,22 +289,22 @@ private extension ShowGeodesicSectorAndEllipseView {
         
         func refreshSector() {
             guard let center else { return }
-            updateSector(center: center)
+            updateSector()
         }
         
-        private func updateSector(center: Point) {
+        private func updateSector() {
             ellipseGraphicOverlay.removeAllGraphics()
             sectorGraphicOverlay.removeAllGraphics()
-            updateEllipse(center: center)
-            setupSector(center: center, geometryType: geometryType)
+            updateEllipse()
+            setupSector()
         }
         
-        private func setupSector(center: Point, geometryType: GeometryType) {
+        private func setupSector() {
             switch geometryType {
             case .point:
                 // Generate sector as a multipoint (symbols).
                 var parameters = GeodesicSectorParameters<Multipoint>()
-                fillSectorParameters(&parameters, center: center)
+                fillSectorParameters(&parameters)
                 if let geometry = GeometryEngine.geodesicSector(parameters: parameters) {
                     let symbol = SimpleMarkerSymbol(style: .circle, color: .green, size: 2)
                     addSectorGraphic(geometry: geometry, symbol: symbol)
@@ -312,7 +312,7 @@ private extension ShowGeodesicSectorAndEllipseView {
             case .polyline:
                 // Generate sector as a polyline (outlined arc).
                 var parameters = GeodesicSectorParameters<Polyline>()
-                fillSectorParameters(&parameters, center: center)
+                fillSectorParameters(&parameters)
                 if let geometry = GeometryEngine.geodesicSector(parameters: parameters) {
                     let symbol = SimpleLineSymbol(style: .solid, color: .green, width: 2)
                     addSectorGraphic(geometry: geometry, symbol: symbol)
@@ -320,7 +320,7 @@ private extension ShowGeodesicSectorAndEllipseView {
             case .polygon:
                 // Generate sector as a filled polygon.
                 var parameters = GeodesicSectorParameters<ArcGIS.Polygon>()
-                fillSectorParameters(&parameters, center: center)
+                fillSectorParameters(&parameters)
                 if let geometry = GeometryEngine.geodesicSector(parameters: parameters) {
                     let symbol = SimpleFillSymbol(style: .solid, color: .green)
                     addSectorGraphic(geometry: geometry, symbol: symbol)
@@ -330,8 +330,7 @@ private extension ShowGeodesicSectorAndEllipseView {
         
         /// Populates a geodesic sector parameters value with current user-defined values.
         /// - Parameter parameters: A reference to the parameter struct that will be filled.
-        /// - Parameter center: The center point for the sector/ellipse.
-        private func fillSectorParameters<T>(_ parameters: inout GeodesicSectorParameters<T>, center: Point) {
+        private func fillSectorParameters<T>(_ parameters: inout GeodesicSectorParameters<T>) {
             parameters.center = center
             parameters.axisDirection = axisDirection.value
             parameters.maxPointCount = Int(maxPointCount)
@@ -351,7 +350,7 @@ private extension ShowGeodesicSectorAndEllipseView {
         }
         
         /// Generates and adds a geodesic ellipse graphic based on the current settings and center point.
-        private func updateEllipse(center: Point) {
+        private func updateEllipse() {
             let parameters = GeodesicEllipseParameters<ArcGIS.Polygon>(
                 axisDirection: axisDirection.value,
                 center: center,
