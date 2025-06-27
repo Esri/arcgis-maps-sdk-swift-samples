@@ -54,7 +54,7 @@ struct ManageFeaturesView: View {
                             Text("element!")
                         } else {
                             HStack {
-                                Text("Add new feature here")
+                                Text("Add New Feature")
                                 Button {
                                     createFeature()
                                 } label: {
@@ -86,6 +86,7 @@ struct ManageFeaturesView: View {
     @ViewBuilder var overlayContent: some View {
         VStack {
             Text("Tap the map to create a new feature, or an existing feature for more options.")
+                .multilineTextAlignment(.center)
         }
         .padding()
         .frame(maxWidth: .infinity)
