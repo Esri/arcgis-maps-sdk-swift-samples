@@ -227,7 +227,6 @@ private extension ShowGeodesicSectorAndEllipseView {
     
     struct SectorSettingsView: View {
         @ObservedObject var model: ShowGeodesicSectorAndEllipseView.Model
-        @Environment(\.dismiss) var dismiss
         
         var body: some View {
             Form {
