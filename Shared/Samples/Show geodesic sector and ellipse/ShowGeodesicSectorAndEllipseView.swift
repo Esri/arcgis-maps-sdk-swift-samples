@@ -50,25 +50,39 @@ struct ShowGeodesicSectorAndEllipseView: View {
                                 .precision(.fractionLength(0))
                                 .grouping(.never)
                             
+                            let directionFormat = Measurement<UnitAngle>.FormatStyle(
+                                width: .narrow,
+                                numberFormatStyle: .number.precision(.fractionLength(0))
+                            )
+                            
                             LabeledContent(
                                 "Axis Direction",
                                 value: model.axisDirection,
-                                format: format
+                                format: directionFormat
                             )
-                            
+                            let axisDirectionRange = 0.0...360.0
                             Slider(
-                                value: $model.axisDirection,
-                                in: 0...365,
-                                label: {
-                                    Text("Axis Direction")
-                                },
-                                minimumValueLabel: {
-                                    Text("0")
-                                },
-                                maximumValueLabel: {
-                                    Text("365")
-                                }
-                            )
+                                value: $model.axisDirection.value,
+                                in: axisDirectionRange
+                            ) {
+                                Text("Axis Direction")
+                            } minimumValueLabel: {
+                                Text(
+                                    Measurement<UnitAngle>(
+                                        value: axisDirectionRange.lowerBound,
+                                        unit: .degrees
+                                    ),
+                                    format: directionFormat
+                                )
+                            } maximumValueLabel: {
+                                Text(
+                                    Measurement<UnitAngle>(
+                                        value: axisDirectionRange.upperBound,
+                                        unit: .degrees
+                                    ),
+                                    format: directionFormat
+                                )
+                            }
                             .onChange(of: model.axisDirection) {
                                 model.refreshSector()
                             }
@@ -126,29 +140,35 @@ struct ShowGeodesicSectorAndEllipseView: View {
                             LabeledContent(
                                 "Sector Angle",
                                 value: model.sectorAngle,
-                                format: format
+                                format: directionFormat
                             )
-                            
+                            let sectorAngleRange = 0.0...360.0
                             Slider(
-                                value: $model.sectorAngle,
-                                in: 0...365,
-                                label: {
-                                    Text("Sector Angle")
-                                },
-                                minimumValueLabel: {
-                                    Text("0")
-                                },
-                                maximumValueLabel: {
-                                    Text("365")
-                                }
-                            )
+                                value: $model.sectorAngle.value,
+                                in: sectorAngleRange
+                            ) {
+                                Text("Sector Angle")
+                            } minimumValueLabel: {
+                                Text(
+                                    Measurement<UnitAngle>(
+                                        value: sectorAngleRange.lowerBound,
+                                        unit: .degrees
+                                    ),
+                                    format: directionFormat
+                                )
+                            } maximumValueLabel: {
+                                Text(
+                                    Measurement<UnitAngle>(
+                                        value: sectorAngleRange.upperBound,
+                                        unit: .degrees
+                                    ),
+                                    format: directionFormat
+                                )
+                            }
                             .onChange(of: model.sectorAngle) {
                                 model.refreshSector()
                             }
-                            .listRowSeparator(
-                                .hidden,
-                                edges: [.top]
-                            )
+                            .listRowSeparator(.hidden, edges: .top)
                             
                             LabeledContent(
                                 "Semi Axis 1 Length",
@@ -172,10 +192,7 @@ struct ShowGeodesicSectorAndEllipseView: View {
                             .onChange(of: model.semiAxis1Length) {
                                 model.refreshSector()
                             }
-                            .listRowSeparator(
-                                .hidden,
-                                edges: [.top]
-                            )
+                            .listRowSeparator(.hidden, edges: [.top])
                             
                             LabeledContent(
                                 "Semi Axis 2 Length",
@@ -199,10 +216,7 @@ struct ShowGeodesicSectorAndEllipseView: View {
                             .onChange(of: model.semiAxis2Length) {
                                 model.refreshSector()
                             }
-                            .listRowSeparator(
-                                .hidden,
-                                edges: [.top]
-                            )
+                            .listRowSeparator(.hidden, edges: [.top])
                         }
                         Button("Close") {
                             isPresented = false
@@ -257,11 +271,11 @@ private extension ShowGeodesicSectorAndEllipseView {
         private let sectorGraphicOverlay = GraphicsOverlay()
         
         /// The direction (in degrees) of the ellipse's major axis.
-        @Published var axisDirection: Double = 45
+        @Published var axisDirection = Measurement<UnitAngle>(value: 45, unit: .degrees)
         /// Controls the complexity of the geometries and the approximation of the ellipse curve.
         @Published var maxSegmentLength: Double = 1
         /// Changes the sectors shape.
-        @Published var sectorAngle: Double = 90
+        @Published var sectorAngle = Measurement<UnitAngle>(value: 90, unit: .degrees)
         /// Controls the complexity of the geometries and the approximation of the ellipse curve.
         @Published var maxPointCount: Double = 1_000
         /// Changes the length of ellipse shape on one axis.
@@ -319,10 +333,10 @@ private extension ShowGeodesicSectorAndEllipseView {
         /// - Parameter center: The center point for the sector/ellipse.
         private func fillSectorParameters<T>(_ parameters: inout GeodesicSectorParameters<T>, center: Point) {
             parameters.center = center
-            parameters.axisDirection = axisDirection
+            parameters.axisDirection = axisDirection.value
             parameters.maxPointCount = Int(maxPointCount)
             parameters.maxSegmentLength = maxSegmentLength
-            parameters.sectorAngle = sectorAngle
+            parameters.sectorAngle = sectorAngle.value
             parameters.semiAxis1Length = semiAxis1Length
             parameters.semiAxis2Length = semiAxis2Length
             parameters.startDirection = startDirection
@@ -339,7 +353,7 @@ private extension ShowGeodesicSectorAndEllipseView {
         /// Generates and adds a geodesic ellipse graphic based on the current settings and center point.
         private func updateEllipse(center: Point) {
             let parameters = GeodesicEllipseParameters<ArcGIS.Polygon>(
-                axisDirection: axisDirection,
+                axisDirection: axisDirection.value,
                 center: center,
                 linearUnit: .miles,
                 maxPointCount: Int(maxPointCount),
