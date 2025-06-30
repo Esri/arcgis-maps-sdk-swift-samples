@@ -2,22 +2,24 @@
     "category": "Maps",
     "description": "Tap and hold on a map to show a magnifier.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "show-magnifier.png"
+    ],
     "keywords": [
         "magnify",
         "map",
         "zoom",
-        "ArcGISMap",
+        "Map",
         "MapView",
-        "MapView.setAllowMagnifierToPanMap()",
-        "MapView.setMagnifierEnabled()"
+        "MapView.magnifierDisabled(_:)",
+        "MapView.magnifierEdgePanningDisabled(_:)"
     ],
     "redirect_from": [],
     "relevant_apis": [
-        "ArcGISMap",
+        "Map",
         "MapView",
-        "MapView.setAllowMagnifierToPanMap()",
-        "MapView.setMagnifierEnabled()"
+        "MapView.magnifierDisabled(_:)",
+        "MapView.magnifierEdgePanningDisabled(_:)"
     ],
     "snippets": [
         "ShowMagnifierView.swift"

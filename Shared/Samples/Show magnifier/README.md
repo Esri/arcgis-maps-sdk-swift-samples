@@ -25,10 +25,6 @@ Tap and hold on the map to show a magnifier, then drag across the map to move th
 * MapView.magnifierDisabled(_:)
 * MapView.magnifierEdgePanningDisabled(_:)
 
-## Additional information
-
-This sample only works on a device with a touch screen. The magnifier will not appear via a mouse click.
-
 ## Tags
 
 magnify, map, zoom
