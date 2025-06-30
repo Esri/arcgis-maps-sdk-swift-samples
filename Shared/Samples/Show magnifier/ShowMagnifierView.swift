@@ -26,6 +26,8 @@ struct ShowMagnifierView: View {
         MapView(map: map)
             // Enable/disable magnifier.
             .magnifierDisabled(!magnifierIsEnabled)
+            // Enable/disable panning as the magnifier approaches a map edge.
+            .magnifierEdgePanningDisabled(false)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     // Button to toggle whether the magnifier is enabled.
