@@ -247,6 +247,7 @@ extension ManageFeaturesView {
         }
         
         /// Updates the attributes of a feature and applies edits to the service.
+        /// - Parameter feature: The feature to update.
         func updateAttribute(for feature: Feature) async {
             guard case .success(let data) = data else { return }
             let table = data.featureTable
@@ -263,6 +264,9 @@ extension ManageFeaturesView {
         
         /// Updates the geometry of a feature and applies edits to the service.
         /// This moves the feature to the center of the map.
+        /// - Parameters:
+        ///   - feature: The feature to update.
+        ///   - geometry: The new geometry.
         func updateGeometry(for feature: Feature, geometry: Geometry?) async {
             guard case .success(let data) = data else { return }
             let table = data.featureTable
@@ -278,6 +282,7 @@ extension ManageFeaturesView {
         }
         
         /// Deletes a feature from the table and applies edits to the service.
+        /// - Parameter feature: The feature to delete.
         func delete(feature: Feature) async {
             guard case .success(let data) = data else { return }
             let table = data.featureTable
@@ -355,8 +360,4 @@ extension Feature {
             setAttributeValue(newValue?.rawValue, forKey: Self.damageTypeFieldName)
         }
     }
-}
-
-#Preview {
-    ManageFeaturesView()
 }
