@@ -34,9 +34,6 @@ struct ManageFeaturesView: View {
     /// The result of the latest action.
     @State private var status = ""
     
-    /// The height of the attribution bar.
-    @State private var attributionHeight: CGFloat = 0
-    
     var body: some View {
         VStack {
             switch data {
@@ -85,7 +82,6 @@ struct ManageFeaturesView: View {
     func mapView(_ data: Data) -> some View {
         MapViewReader { mapView in
             MapView(map: data.map)
-                .onAttributionBarHeightChanged { attributionHeight = $0 }
                 .onSingleTapGesture { tapLocation, tapMapPoint in
                     // Store state and clear selection on tap.
                     self.tapLocation = tapLocation
@@ -109,10 +105,6 @@ struct ManageFeaturesView: View {
                 }
                 .overlay(alignment: .top) {
                     instructionsOverlay
-                }
-                .overlay(alignment: .bottom) {
-                    statusOverlay
-                        .padding(.bottom, attributionHeight)
                 }
                 .task(id: tapLocation) {
                     // Identify when we get a tap location.
@@ -192,23 +184,19 @@ struct ManageFeaturesView: View {
     
     /// Overlay with instructions for the user.
     @ViewBuilder var instructionsOverlay: some View {
-        Text("Tap the map to create a new feature, or an existing feature for more options.")
-            .multilineTextAlignment(.center)
-            .padding()
-            .frame(maxWidth: .infinity)
-            .background(.ultraThinMaterial)
-    }
-    
-    /// Overlay with latest status.
-    @ViewBuilder var statusOverlay: some View {
-        if !status.isEmpty {
-            Text(status)
-                .font(.subheadline)
+        VStack {
+            Text("Tap the map to create a new feature, or an existing feature for more options.")
                 .multilineTextAlignment(.center)
-                .padding()
-                .frame(maxWidth: .infinity)
-                .background(.ultraThinMaterial)
+            if !status.isEmpty {
+                Text(status)
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+            }
         }
+        .padding()
+        .frame(maxWidth: .infinity)
+        .background(.ultraThinMaterial)
     }
     
     /// Clears the selection on the feature layer, hides the callout, and
