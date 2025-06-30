@@ -32,7 +32,7 @@ struct ManageFeaturesView: View {
     @State private var currentViewpoint: Viewpoint?
     
     /// The result of the latest action.
-    @State private var status: String = ""
+    @State private var status = ""
     
     /// The height of the attribution bar.
     @State private var attributionHeight: CGFloat = 0
@@ -134,15 +134,10 @@ struct ManageFeaturesView: View {
     /// A callout that allows the user to add a new feature.
     @ViewBuilder
     func addNewFeatureCalloutContent(table: ServiceFeatureTable, point: Point) -> some View {
-        HStack {
-            Text("Create Feature")
-            Button {
-                clearSelection()
-                Task {
-                    try await createFeature(point: point, table: table)
-                }
-            } label: {
-                Image(systemName: "plus.circle")
+        Button("Create Feature", systemImage: "plus.circle") {
+            clearSelection()
+            Task {
+                await createFeature(point: point, table: table)
             }
         }
         .padding()
@@ -162,7 +157,7 @@ struct ManageFeaturesView: View {
                 Button {
                     Task {
                         clearSelection()
-                        try await updateAttribute(for: feature, table: table)
+                        await updateAttribute(for: feature, table: table)
                     }
                 } label: {
                     Text("Update Attribute")
@@ -171,7 +166,7 @@ struct ManageFeaturesView: View {
                     // Hide callout, leave feature selected.
                     calloutPlacement = nil
                     Task {
-                        try await updateGeometry(for: feature, table: table)
+                        await updateGeometry(for: feature, table: table)
                         // Update callout location after moving feature.
                         calloutPlacement = .geoElement(feature)
                     }
@@ -181,7 +176,7 @@ struct ManageFeaturesView: View {
                 Button {
                     Task {
                         clearSelection()
-                        try await delete(feature: feature, table: table)
+                        await delete(feature: feature, table: table)
                     }
                 } label: {
                     Text("Delete Feature")
@@ -227,7 +222,7 @@ struct ManageFeaturesView: View {
     }
     
     /// Creates a new feature at a specified location and applies edits to the service.
-    func createFeature(point: Point, table: ServiceFeatureTable) async throws {
+    func createFeature(point: Point, table: ServiceFeatureTable) async {
         let feature = table.makeFeature(
             attributes: [
                 Feature.damageTypeFieldName: DamageKind.inaccessible.value,
@@ -245,7 +240,7 @@ struct ManageFeaturesView: View {
     }
     
     /// Updates the attributes of a feature and applies edits to the service.
-    func updateAttribute(for feature: Feature, table: ServiceFeatureTable) async throws {
+    func updateAttribute(for feature: Feature, table: ServiceFeatureTable) async {
         do {
             feature.damageKind = feature.damageKind?.next ?? .inaccessible
             try await table.update(feature)
@@ -258,7 +253,7 @@ struct ManageFeaturesView: View {
     
     /// Updates the geometry of a feature and applies edits to the service.
     /// This moves the feature to the center of the map.
-    func updateGeometry(for feature: Feature, table: ServiceFeatureTable) async throws {
+    func updateGeometry(for feature: Feature, table: ServiceFeatureTable) async {
         guard let currentViewpoint else { return }
         do {
             feature.geometry = currentViewpoint.targetGeometry
@@ -271,7 +266,7 @@ struct ManageFeaturesView: View {
     }
     
     /// Deletes a feature from the table and applies edits to the service.
-    func delete(feature: Feature, table: ServiceFeatureTable) async throws {
+    func delete(feature: Feature, table: ServiceFeatureTable) async {
         do {
             try await table.delete(feature)
             _ = try await table.serviceGeodatabase?.applyEdits()
@@ -365,19 +360,11 @@ extension ManageFeaturesView {
         }
         
         /// The next damage kind to set on a feature.
-        var next: ManageFeaturesView.DamageKind {
-            switch self {
-            case .inaccessible:
-                .affected
-            case .affected:
-                .minor
-            case .minor:
-                .major
-            case .major:
-                .destroyed
-            case .destroyed:
-                .inaccessible
-            }
+        var next: Self {
+            let allCases = Self.allCases
+            let index = allCases.firstIndex(of: self)!
+            let nextIndex = allCases.index(after: index)
+            return allCases[nextIndex == allCases.count ? 0 : nextIndex]
         }
     }
 }

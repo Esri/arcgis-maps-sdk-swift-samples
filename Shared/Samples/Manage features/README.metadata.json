@@ -34,7 +34,6 @@
     "redirect_from": [],
     "relevant_apis": [
         "Feature",
-        "FeatureEditResult",
         "FeatureLayer",
         "ServiceFeatureTable",
         "ServiceGeodatabase"

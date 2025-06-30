@@ -29,7 +29,6 @@ Pick an operation, then tap on the map to perform the operation at that location
 ## Relevant API
 
 * Feature
-* FeatureEditResult
 * FeatureLayer
 * ServiceFeatureTable
 * ServiceGeodatabase
