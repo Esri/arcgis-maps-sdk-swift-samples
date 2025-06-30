@@ -59,13 +59,15 @@ struct ShowGeodesicSectorAndEllipseView: View {
 
 private extension ShowGeodesicSectorAndEllipseView {
     /// Custom data type so that Geometry options can be displayed in the menu.
-    enum GeometryType: String, CaseIterable, Identifiable {
+    enum GeometryType: CaseIterable {
         case point, polyline, polygon
         
-        var id: String { rawValue }
-        
         var label: String {
-            rawValue.capitalized
+            switch self {
+            case .point: "Point"
+            case .polyline: "Polyline"
+            case .polygon: "Polygon"
+            }
         }
     }
     
