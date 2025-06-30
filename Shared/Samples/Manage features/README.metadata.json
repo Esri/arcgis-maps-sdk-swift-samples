@@ -26,7 +26,6 @@
         "updating",
         "value",
         "Feature",
-        "FeatureEditResult",
         "FeatureLayer",
         "ServiceFeatureTable",
         "ServiceGeodatabase"
