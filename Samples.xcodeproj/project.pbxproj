@@ -1579,6 +1579,7 @@
 		0074ABB228174B830037244A /* Samples */ = {
 			isa = PBXGroup;
 			children = (
+				9520B24B2E13520400B3BEF9 /* Show line of sight between geoelements */,
 				0000FB6D2BBDB17600845921 /* Add 3D tiles layer */,
 				79D84D0C2A815BED00F45262 /* Add custom dynamic entity data source */,
 				4D2ADC3E29C26D05003B367F /* Add dynamic entity layer */,
@@ -1891,6 +1892,7 @@
 		00CCB8A6285D059300BBAB70 /* Portal Data */ = {
 			isa = PBXGroup;
 			children = (
+				9520B26A2E13555800B3BEF9 /* 3af5cfec0fd24dac8d88aea679027cb9 */,
 				1C8438F22DDBCFFC005CCBC7 /* b87307dcfb26411eb2e92e1627cb615b */,
 				1C293D4C2DCD91BF000B0822 /* 5356dbf91788474493467519e268cf87 */,
 				D762DA0D2D94C750001052DD /* 0fd3a39660d54c12b05d5f81f207dffd */,
@@ -2680,6 +2682,22 @@
 				9501BBEE2DF39DA50054F4BD /* SetFeatureLayerRenderingModeOnSceneView.swift */,
 			);
 			path = "Set feature layer rendering mode on scene";
+			sourceTree = "<group>";
+		};
+		9520B24B2E13520400B3BEF9 /* Show line of sight between geoelements */ = {
+			isa = PBXGroup;
+			children = (
+				9520B2492E13517400B3BEF9 /* ShowLineOfSightBetweenGeoelementsView.swift */,
+			);
+			path = "Show line of sight between geoelements";
+			sourceTree = "<group>";
+		};
+		9520B26A2E13555800B3BEF9 /* 3af5cfec0fd24dac8d88aea679027cb9 */ = {
+			isa = PBXGroup;
+			children = (
+				9520B2802E13564C00B3BEF9 /* Dolmus3ds */,
+			);
+			path = 3af5cfec0fd24dac8d88aea679027cb9;
 			sourceTree = "<group>";
 		};
 		9537AFC82C220ECB000923C5 /* 9d2987a825c646468b3ce7512fb76e2d */ = {
@@ -4126,6 +4144,7 @@
 					OrbitCameraAroundObject,
 					SearchSymbolStyleDictionary,
 					ShowDeviceLocationWithNmeaDataSources,
+					ShowLineOfSightBetweenGeoelements,
 					ShowMobileMapPackageExpirationDate,
 					ShowViewshedFromGeoelementInScene,
 					SnapGeometryEditsWithUtilityNetworkRules,
@@ -4611,6 +4630,7 @@
 				D718A1ED2B575FD900447087 /* ManageBookmarksView.swift in Sources */,
 				D73723762AF5877500846884 /* FindRouteInMobileMapPackageView.Models.swift in Sources */,
 				D74ECD0D2BEEAE2F007C0FA6 /* EditAndSyncFeaturesWithFeatureServiceView.Model.swift in Sources */,
+				9520B24A2E13517800B3BEF9 /* ShowLineOfSightBetweenGeoelementsView.swift in Sources */,
 				00CB9138284814A4005C2C5D /* SearchWithGeocodeView.swift in Sources */,
 				1C43BC7F2A43781200509BF8 /* SetVisibilityOfSubtypeSublayerView.Views.swift in Sources */,
 				D731F3C12AD0D2AC00A8431E /* IdentifyGraphicsView.swift in Sources */,
