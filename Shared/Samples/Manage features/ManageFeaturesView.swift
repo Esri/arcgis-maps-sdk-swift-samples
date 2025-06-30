@@ -141,7 +141,7 @@ struct ManageFeaturesView: View {
         HStack {
             VStack(alignment: .leading) {
                 Text("ID: \(feature.id)")
-                Text("Damage: \(feature.damageKind?.value ?? "Unknown")")
+                Text("Damage: \(feature.damageKind?.rawValue ?? "Unknown")")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
             }
@@ -184,7 +184,7 @@ struct ManageFeaturesView: View {
     
     /// Overlay with instructions for the user.
     @ViewBuilder var instructionsOverlay: some View {
-        VStack {
+        VStack(spacing: 8) {
             Text("Tap the map to create a new feature, or an existing feature for more options.")
                 .multilineTextAlignment(.center)
             if !status.isEmpty {
@@ -213,7 +213,7 @@ struct ManageFeaturesView: View {
     func createFeature(point: Point, table: ServiceFeatureTable) async {
         let feature = table.makeFeature(
             attributes: [
-                Feature.damageTypeFieldName: DamageKind.inaccessible.value,
+                Feature.damageTypeFieldName: DamageKind.inaccessible.rawValue,
                 "primcause": "Earthquake"
             ],
             geometry: point
@@ -286,12 +286,12 @@ extension Feature {
         get {
             // Return the attribute value as a DamageKind.
             ManageFeaturesView.DamageKind(
-                attributeValue(forKey: Self.damageTypeFieldName) as? String ?? ""
+                rawValue: attributeValue(forKey: Self.damageTypeFieldName) as? String ?? ""
             )
         } set {
             // Set the attribute value on the feature by converting the
             // DamageKind to a String value.
-            setAttributeValue(newValue?.value, forKey: Self.damageTypeFieldName)
+            setAttributeValue(newValue?.rawValue, forKey: Self.damageTypeFieldName)
         }
     }
 }
@@ -312,40 +312,12 @@ extension ManageFeaturesView {
 
 extension ManageFeaturesView {
     /// A value that describes the damage assessment value for a feature.
-    enum DamageKind: CaseIterable {
-        case inaccessible
-        case affected
-        case minor
-        case major
-        case destroyed
-        
-        /// Initializes a DamageKind with a String value.
-        init?(_ value: String) {
-            for `case` in Self.allCases {
-                if value == `case`.value {
-                    self = `case`
-                    return
-                }
-            }
-            return nil
-        }
-        
-        /// The string value of the damage kind.
-        /// This is the value that will be set or get from the feature attributes.
-        var value: String {
-            switch self {
-            case .inaccessible:
-                "Inaccessible"
-            case .affected:
-                "Affected"
-            case .minor:
-                "Minor"
-            case .major:
-                "Major"
-            case .destroyed:
-                "Destroyed"
-            }
-        }
+    enum DamageKind: String, CaseIterable {
+        case inaccessible = "Inaccessible"
+        case affected = "Affected"
+        case minor = "Minor"
+        case major = "Major"
+        case destroyed = "Destroyed"
         
         /// The next damage kind to set on a feature.
         var next: Self {
