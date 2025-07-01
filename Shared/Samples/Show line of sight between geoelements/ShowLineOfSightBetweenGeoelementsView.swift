@@ -16,49 +16,65 @@ import ArcGIS
 import SwiftUI
 
 struct ShowLineOfSightBetweenGeoelementsView: View {
-    @State private var scene = Scene(basemapStyle: .arcGISImagery)
-    
-    @State private var point = Point(
-        x: -73.984988,
-        y: 40.748131,
-        spatialReference: .wgs84
-    )
-    
-    @State private var lineOfSight: GeoElementLineOfSight?
-    
-    @State private var analysisOverlay = AnalysisOverlay()
-    
-    @State private var elevation = Surface()
-    
-    @State private var buildingLayer = ArcGISSceneLayer(url: .buildingsService)
-    
-    @State private var graphicsOverlay = GraphicsOverlay()
-    
-    @State private var taxiGraphic: Graphic?
-    
-    @State var observerGraphic: Graphic?
-    
-    init() {
-        scene.baseSurface.addElevationSource(ArcGISTiledElevationSource(url: .elevationService))
-        scene.addOperationalLayer(buildingLayer)
-        graphicsOverlay.sceneProperties = .init(surfacePlacement: .relative)
-            }
+    @State private var model = Model()
     
     var body: some View {
         SceneView(
-            scene: scene,
-            graphicsOverlays: [graphicsOverlay],
-            analysisOverlays: [analysisOverlay]
+            scene: model.scene,
+            graphicsOverlays: [model.graphicsOverlay],
+            analysisOverlays: [model.analysisOverlay]
         )
         .onAppear {
-            scene.initialViewpoint = Viewpoint(center: point, scale: 1600)
+            model.scene.initialViewpoint = Viewpoint(center: model.point, scale: 1600)
         }
         .task {
-            var symbol = SimpleMarkerSceneSymbol(style: .sphere, color: .red, height: 5, width: 5, depth: 5, anchorPosition: .bottom)
+           await model.setupScene()
+        }
+    }
+}
+
+private extension ShowLineOfSightBetweenGeoelementsView {
+    @MainActor
+    @Observable
+    class Model {
+        var error: Error?
+        var scene = Scene(basemapStyle: .arcGISImagery)
+        var graphicsOverlay = GraphicsOverlay()
+        var analysisOverlay = AnalysisOverlay()
+        var lineOfSight: GeoElementLineOfSight?
+        var elevation = Surface()
+        var taxiGraphic: Graphic?
+        
+        var observerGraphic: Graphic?
+        var buildingLayer = ArcGISSceneLayer(url: .buildingsService)
+        
+        var point = Point(
+            x: -73.984988,
+            y: 40.748131,
+            spatialReference: .wgs84
+        )
+        
+        init() {
+            scene.baseSurface.addElevationSource(
+                ArcGISTiledElevationSource(url: .elevationService)
+            )
+            scene.addOperationalLayer(buildingLayer)
+            graphicsOverlay.sceneProperties = .init(surfacePlacement: .relative)
+        }
+        
+         func setupScene() async {
+            var symbol = SimpleMarkerSceneSymbol(
+                style: .sphere,
+                color: .red,
+                height: 5,
+                width: 5,
+                depth: 5,
+                anchorPosition: .bottom
+            )
             var graphic = Graphic(geometry: point, symbol: symbol)
             observerGraphic = graphic
             graphicsOverlay.addGraphic(graphic)
-
+            
             let sceneSymbol = ModelSceneSymbol(url: .taxi)
             do {
                 try await sceneSymbol.load()
@@ -71,7 +87,7 @@ struct ShowLineOfSightBetweenGeoelementsView: View {
                     ),
                     symbol: sceneSymbol
                 )
-                graphicsOverlay.addGraphic(taxiGraphic!)
+               graphicsOverlay.addGraphic(taxiGraphic!)
                 if let observer = observerGraphic, let taxi = taxiGraphic {
                     lineOfSight = GeoElementLineOfSight(observer: observer, target: taxi)
                     lineOfSight?.targetOffsetZ = 2
@@ -80,7 +96,7 @@ struct ShowLineOfSightBetweenGeoelementsView: View {
                     }
                 }
             } catch {
-                print(error)
+                self.error = error
             }
         }
     }
