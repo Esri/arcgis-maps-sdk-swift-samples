@@ -248,10 +248,7 @@ private extension Item {
     static func napervilleElectricNetwork() -> PortalItem {
         PortalItem(
             // Sample server 7 authentication required.
-            portal: Portal(
-                url: .samplePortal,
-                connection: .authenticated
-            ),
+            portal: Portal(url: .samplePortal, connection: .authenticated),
             id: .init("be0e4637620a453584118107931f718b")!
         )
     }
