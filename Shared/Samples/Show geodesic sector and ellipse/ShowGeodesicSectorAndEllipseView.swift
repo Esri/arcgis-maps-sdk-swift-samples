@@ -238,10 +238,7 @@ private extension ShowGeodesicSectorAndEllipseView {
         }
         
         private var angleFormat: Measurement<UnitAngle>.FormatStyle {
-            .init(
-                width: .narrow,
-                numberFormatStyle: .number.precision(.fractionLength(0))
-            )
+            .init(width: .narrow, numberFormatStyle: numberFormat)
         }
         
         var body: some View {
@@ -282,11 +279,18 @@ private extension ShowGeodesicSectorAndEllipseView {
                     format: numberFormat
                 )
                 
+                let maxPointCountRange = 1.0...1_000.0
                 Slider(
                     value: $model.maxPointCount,
-                    in: 1...1_000,
+                    in: maxPointCountRange,
                     step: 1
-                )
+                ) {
+                    Text("Max Point Count")
+                } minimumValueLabel: {
+                    Text(maxPointCountRange.lowerBound, format: numberFormat)
+                } maximumValueLabel: {
+                    Text(maxPointCountRange.lowerBound, format: numberFormat)
+                }
                 .listRowSeparator(.hidden, edges: .top)
                 
                 LabeledContent(
@@ -295,19 +299,17 @@ private extension ShowGeodesicSectorAndEllipseView {
                     format: numberFormat
                 )
                 
+                let maxSegmentLengthRange = 1.0...1_000.0
                 Slider(
                     value: $model.maxSegmentLength,
-                    in: 1...1_000,
-                    label: {
-                        Text("Max Segment Length")
-                    },
-                    minimumValueLabel: {
-                        Text("1")
-                    },
-                    maximumValueLabel: {
-                        Text("1000")
-                    }
-                )
+                    in: maxSegmentLengthRange
+                ) {
+                    Text("Max Segment Length")
+                } minimumValueLabel: {
+                    Text(maxSegmentLengthRange.lowerBound, format: numberFormat)
+                } maximumValueLabel: {
+                    Text(maxSegmentLengthRange.upperBound, format: numberFormat)
+                }
                 .listRowSeparator(.hidden, edges: .top)
                 
                 Picker("Geometry Type", selection: $model.geometryType) {
@@ -351,19 +353,17 @@ private extension ShowGeodesicSectorAndEllipseView {
                     format: numberFormat
                 )
                 
+                let semiAxis1LengthRange = 0.0...1_0000.0
                 Slider(
                     value: $model.semiAxis1Length,
-                    in: 0...1_000,
-                    label: {
-                        Text("Semi Axis 1 Length")
-                    },
-                    minimumValueLabel: {
-                        Text("0")
-                    },
-                    maximumValueLabel: {
-                        Text("1000")
-                    }
-                )
+                    in: semiAxis1LengthRange,
+                ) {
+                    Text("Semi Axis 1 Length")
+                } minimumValueLabel: {
+                    Text(semiAxis1LengthRange.lowerBound, format: numberFormat)
+                } maximumValueLabel: {
+                    Text(semiAxis1LengthRange.upperBound, format: numberFormat)
+                }
                 .listRowSeparator(.hidden, edges: [.top])
                 
                 LabeledContent(
@@ -372,19 +372,17 @@ private extension ShowGeodesicSectorAndEllipseView {
                     format: numberFormat
                 )
                 
+                let semiAxis2LengthRange = 0.0...1_000.0
                 Slider(
                     value: $model.semiAxis2Length,
-                    in: 0...1_000,
-                    label: {
-                        Text("Semi Axis 2 Length")
-                    },
-                    minimumValueLabel: {
-                        Text("0")
-                    },
-                    maximumValueLabel: {
-                        Text("1000")
-                    }
-                )
+                    in: semiAxis2LengthRange,
+                ) {
+                    Text("Semi Axis 2 Length")
+                } minimumValueLabel: {
+                    Text(semiAxis2LengthRange.lowerBound, format: numberFormat)
+                } maximumValueLabel: {
+                    Text(semiAxis2LengthRange.upperBound, format: numberFormat)
+                }
                 .listRowSeparator(.hidden, edges: [.top])
             }
         }
