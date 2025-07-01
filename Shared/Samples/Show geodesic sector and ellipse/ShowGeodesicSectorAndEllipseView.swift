@@ -366,7 +366,7 @@ private extension ShowGeodesicSectorAndEllipseView {
                 let semiAxis1LengthRange = 0.0...1_0000.0
                 Slider(
                     value: $model.semiAxis1Length,
-                    in: semiAxis1LengthRange,
+                    in: semiAxis1LengthRange
                 ) {
                     Text("Semi Axis 1 Length")
                 } minimumValueLabel: {
@@ -385,7 +385,7 @@ private extension ShowGeodesicSectorAndEllipseView {
                 let semiAxis2LengthRange = 0.0...1_000.0
                 Slider(
                     value: $model.semiAxis2Length,
-                    in: semiAxis2LengthRange,
+                    in: semiAxis2LengthRange
                 ) {
                     Text("Semi Axis 2 Length")
                 } minimumValueLabel: {
