@@ -23,7 +23,7 @@ extension CreateLoadReportView {
     class Model: ObservableObject {
         // MARK: Properties
         /// An electric utility network in Naperville, Illinois.
-        private let utilityNetwork = UtilityNetwork(serviceGeodatabase: .napervilleGeodatabase)
+        private let utilityNetwork = UtilityNetwork(serviceGeodatabase: .naperville())
         
         /// The initial conditional expression.
         private var initialExpression: UtilityTraceConditionalExpression?
@@ -369,7 +369,7 @@ private extension URL {
 
 private extension ServiceGeodatabase {
     /// The Naperville, Illinois electric utility network service geodatabase.
-    static var napervilleGeodatabase: ServiceGeodatabase {
+    static func naperville() -> ServiceGeodatabase {
         .init(url: .utilityNetwork)
     }
 }

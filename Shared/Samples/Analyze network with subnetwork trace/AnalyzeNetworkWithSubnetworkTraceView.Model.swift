@@ -21,7 +21,7 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
     @MainActor
     class Model: ObservableObject {
         /// An electric utility network in Naperville, Illinois.
-        private let utilityNetwork = UtilityNetwork(serviceGeodatabase: .napervilleGeodatabase)
+        private let utilityNetwork = UtilityNetwork(serviceGeodatabase: .naperville())
         
         /// An array of condition expressions.
         private var traceConditionalExpressions: [UtilityTraceConditionalExpression] = []
@@ -402,7 +402,7 @@ private extension URL {
 
 private extension ServiceGeodatabase {
     /// The Naperville, Illinois electric utility network service geodatabase.
-    static var napervilleGeodatabase: ServiceGeodatabase {
+    static func naperville() -> ServiceGeodatabase {
         .init(url: .featureServiceURL)
     }
 }
