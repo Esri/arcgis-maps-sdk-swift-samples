@@ -106,7 +106,7 @@ private extension ShowUtilityAssociationsView {
         // MARK: Properties
         
         /// The map with the utility network.
-        let map = Map(item: PortalItem.napervilleElectricNetwork())
+        let map = Map(item: .napervilleElectricNetwork())
         
         /// The utility network for this sample.
         private var network: UtilityNetwork {
@@ -225,7 +225,7 @@ private extension Symbol {
     }
 }
 
-private extension PortalItem {
+private extension Item {
     /// A web map portal item for the Naperville Electric Map.
     static func napervilleElectricNetwork() -> PortalItem {
         PortalItem(

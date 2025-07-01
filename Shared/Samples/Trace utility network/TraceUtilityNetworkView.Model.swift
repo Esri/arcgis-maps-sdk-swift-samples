@@ -43,7 +43,7 @@ extension TraceUtilityNetworkView {
         
         /// The map contains the utility network and operational layers on which trace results will
         /// be selected.
-        let map = Map(item: PortalItem.napervilleElectricNetwork())
+        let map = Map(item: .napervilleElectricNetwork())
         
         /// The utility tier for this sample.
         private var mediumVoltageRadial: UtilityTier? {
@@ -245,7 +245,7 @@ extension TraceUtilityNetworkView {
     }
 }
 
-private extension PortalItem {
+private extension Item {
     /// A web map portal item for the Naperville Electric Map.
     static func napervilleElectricNetwork() -> PortalItem {
         PortalItem(

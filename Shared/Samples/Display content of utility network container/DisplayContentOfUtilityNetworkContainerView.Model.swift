@@ -29,7 +29,7 @@ extension DisplayContentOfUtilityNetworkContainerView {
         @Published private(set) var legendItems: [LegendItem] = []
         
         /// The Naperville Electric Containers web map.
-        let map = Map(item: PortalItem.napervilleElectricalNetwork())
+        let map = Map(item: .napervilleElectricalNetwork())
         
         /// The graphics overlay to display utility network graphics.
         let graphicsOverlay = GraphicsOverlay()
@@ -228,7 +228,7 @@ extension DisplayContentOfUtilityNetworkContainerView {
     }
 }
 
-private extension PortalItem {
+private extension Item {
     /// A web map portal item for the Naperville Electric subtype group layers
     /// with containers.
     static func napervilleElectricalNetwork() -> PortalItem {
