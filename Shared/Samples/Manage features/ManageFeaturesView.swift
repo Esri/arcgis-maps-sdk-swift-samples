@@ -33,20 +33,18 @@ struct ManageFeaturesView: View {
     
     var body: some View {
         Group {
-            switch model.data {
-            case .success(let data):
-                // Show map view if data loads.
-                mapView(data)
-            case .failure:
+            if model.isLoading {
+                // Show progress view during loading.
+                ProgressView()
+            } else if let map = model.map, let table = model.featureTable, let layer = model.featureLayer {
+                mapView(map, featureTable: table, featureLayer: layer)
+            } else if let error = model.error {
                 // Show content unavailable if data does not load.
                 ContentUnavailableView(
                     "Error",
                     systemImage: "exclamationmark.triangle",
                     description: Text("Failed to load sample data.")
                 )
-            case .none:
-                // Show progress view during loading.
-                ProgressView()
             }
         }
         .animation(.default, value: model.status)
@@ -55,9 +53,9 @@ struct ManageFeaturesView: View {
     }
     
     @ViewBuilder
-    func mapView(_ data: Data) -> some View {
+    func mapView(_ map: Map, featureTable: ServiceFeatureTable, featureLayer: FeatureLayer) -> some View {
         MapViewReader { mapView in
-            MapView(map: data.map)
+            MapView(map: map)
                 .onSingleTapGesture { tapLocation, tapMapPoint in
                     // Store state and clear selection on tap.
                     self.tapLocation = tapLocation
@@ -66,9 +64,9 @@ struct ManageFeaturesView: View {
                 }
                 .callout(placement: $calloutPlacement) { placement in
                     if let feature = placement.geoElement as? Feature {
-                        featureCalloutContent(feature: feature, table: data.featureTable)
+                        featureCalloutContent(feature: feature, table: featureTable)
                     } else if let tapMapPoint {
-                        addNewFeatureCalloutContent(table: data.featureTable, point: tapMapPoint)
+                        addNewFeatureCalloutContent(table: featureTable, point: tapMapPoint)
                     }
                 }
                 .onNavigatingChanged { _ in
@@ -85,12 +83,12 @@ struct ManageFeaturesView: View {
                 .task(id: tapLocation) {
                     // Identify when we get a tap location.
                     guard let tapLocation, let tapMapPoint else { return }
-                    if let identifyResult = try? await mapView.identify(on: data.featureLayer, screenPoint: tapLocation, tolerance: 12),
+                    if let identifyResult = try? await mapView.identify(on: featureLayer, screenPoint: tapLocation, tolerance: 12),
                        let geoElement = identifyResult.geoElements.first,
                        let feature = geoElement as? Feature {
                         // Place a callout for a feature.
                         calloutPlacement = .geoElement(geoElement)
-                        data.featureLayer.selectFeature(feature)
+                        featureLayer.selectFeature(feature)
                     } else {
                         // Place a callout for adding a new feature.
                         calloutPlacement = .location(tapMapPoint)
@@ -181,9 +179,7 @@ struct ManageFeaturesView: View {
     /// Clears the selection on the feature layer, hides the callout, and
     /// resets the status.
     func clearSelection() {
-        if case .success(let data) = model.data {
-            data.featureLayer.clearSelection()
-        }
+        model.featureLayer?.clearSelection()
         calloutPlacement = nil
         model.clearStatus()
     }
@@ -196,6 +192,19 @@ extension ManageFeaturesView {
         /// The data used within the view that this model is associated with.
         private(set) var data: Result<Data, Error>?
         
+        private(set) var isLoading = false
+        
+        private(set) var error: Error? = nil
+        
+        /// The map that will be displayed.
+        private(set) var map: Map?
+        /// The service geodatabase.
+        private(set) var geodatabase: ServiceGeodatabase?
+        /// The service feature table.
+        private(set) var featureTable: ServiceFeatureTable?
+        /// The feature layer.
+        private(set) var featureLayer: FeatureLayer?
+        
         /// The result of the latest action.
         private(set) var status = ""
         
@@ -205,6 +214,9 @@ extension ManageFeaturesView {
         
         /// Loads the data for this view.
         func loadData() async {
+            isLoading = true
+            defer { isLoading = false }
+            
             let map = Map(basemapStyle: .arcGISStreets)
             map.initialViewpoint = Viewpoint(
                 center: Point(x: -10_800_000, y: 4_500_000, spatialReference: .webMercator),
@@ -220,11 +232,13 @@ extension ManageFeaturesView {
                 let featureTable = geodatabase.table(withLayerID: 0)!
                 let layer = FeatureLayer(featureTable: featureTable)
                 map.addOperationalLayer(layer)
-                data = .success(
-                    Data(map: map, geodatabase: geodatabase, featureTable: featureTable, featureLayer: layer)
-                )
+                
+                self.map = map
+                self.geodatabase = geodatabase
+                self.featureTable = featureTable
+                self.featureLayer = featureLayer
             } catch {
-                data = .failure(error)
+                self.error = error
             }
         }
         
@@ -232,10 +246,9 @@ extension ManageFeaturesView {
         /// - Parameters:
         ///   - point: The geometry for the feature you are creating.
         func createFeature(point: Point) async {
-            guard case .success(let data) = data else { return }
-            let table = data.featureTable
+            guard let featureTable else { return }
             
-            let feature = table.makeFeature(
+            let feature = featureTable.makeFeature(
                 attributes: [
                     Feature.damageTypeFieldName: DamageKind.inaccessible.rawValue,
                     "primcause": "Earthquake"
@@ -243,8 +256,8 @@ extension ManageFeaturesView {
                 geometry: point
             )
             do {
-                try await table.add(feature)
-                _ = try await table.serviceGeodatabase?.applyEdits()
+                try await featureTable.add(feature)
+                _ = try await featureTable.serviceGeodatabase?.applyEdits()
                 status = "Create feature succeeded."
             } catch {
                 status = "Error creating feature."
@@ -254,13 +267,12 @@ extension ManageFeaturesView {
         /// Updates the attributes of a feature and applies edits to the service.
         /// - Parameter feature: The feature to update.
         func updateAttribute(for feature: Feature) async {
-            guard case .success(let data) = data else { return }
-            let table = data.featureTable
+            guard let featureTable else { return }
             
             do {
                 feature.damageKind = feature.damageKind?.next ?? .inaccessible
-                try await table.update(feature)
-                _ = try await table.serviceGeodatabase?.applyEdits()
+                try await featureTable.update(feature)
+                _ = try await featureTable.serviceGeodatabase?.applyEdits()
                 status = "Update attribute succeeded."
             } catch {
                 status = "Error updating attribute."
@@ -273,13 +285,12 @@ extension ManageFeaturesView {
         ///   - feature: The feature to update.
         ///   - geometry: The new geometry.
         func updateGeometry(for feature: Feature, geometry: Geometry?) async {
-            guard case .success(let data) = data else { return }
-            let table = data.featureTable
+            guard let featureTable else { return }
             
             do {
                 feature.geometry = geometry
-                try await table.update(feature)
-                _ = try await table.serviceGeodatabase?.applyEdits()
+                try await featureTable.update(feature)
+                _ = try await featureTable.serviceGeodatabase?.applyEdits()
                 status = "Update geometry succeeded."
             } catch {
                 status = "Error updating geometry."
@@ -289,31 +300,16 @@ extension ManageFeaturesView {
         /// Deletes a feature from the table and applies edits to the service.
         /// - Parameter feature: The feature to delete.
         func delete(feature: Feature) async {
-            guard case .success(let data) = data else { return }
-            let table = data.featureTable
+            guard let featureTable else { return }
             
             do {
-                try await table.delete(feature)
-                _ = try await table.serviceGeodatabase?.applyEdits()
+                try await featureTable.delete(feature)
+                _ = try await featureTable.serviceGeodatabase?.applyEdits()
                 status = "Delete feature succeeded."
             } catch {
                 status = "Error deleting feature."
             }
         }
-    }
-}
-
-extension ManageFeaturesView {
-    /// Data value for the sample.
-    struct Data {
-        /// The map that will be displayed.
-        let map: Map
-        /// The service geodatabase.
-        let geodatabase: ServiceGeodatabase
-        /// The service feature table.
-        let featureTable: ServiceFeatureTable
-        /// The feature layer.
-        let featureLayer: FeatureLayer
     }
 }
 
