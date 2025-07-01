@@ -17,7 +17,7 @@ import SwiftUI
 
 struct ShowGeodesicSectorAndEllipseView: View {
     /// The data model that helps determine the view.
-    @StateObject private var model = Model()
+    @State private var model = Model()
     
     /// Manages the presentation state of the menu.
     @State private var isPresented: Bool = false
@@ -85,13 +85,13 @@ private extension ShowGeodesicSectorAndEllipseView {
     
     /// A view model that encapsulates logic and state for rendering a geodesic sector and ellipse.
     /// Handles user-configured parameters and updates overlays when those parameters change.
-    @MainActor
+    @Observable
     class Model: ObservableObject {
         /// The map that will be displayed in the map view.
         let map = Map(basemapStyle: .arcGISTopographic)
         
         /// The map point selected by the user when tapping on the map.
-        @Published var center: Point? {
+        var center: Point? {
             didSet {
                 updateSector()
             }
@@ -114,49 +114,49 @@ private extension ShowGeodesicSectorAndEllipseView {
         }()
         
         /// The direction (in degrees) of the ellipse's major axis.
-        @Published var axisDirection = Measurement<UnitAngle>(value: 45, unit: .degrees) {
+        var axisDirection = Measurement<UnitAngle>(value: 45, unit: .degrees) {
             didSet {
                 refreshSector()
             }
         }
         /// Controls the complexity of the geometries and the approximation of the ellipse curve.
-        @Published var maxSegmentLength: Double = 1 {
+        var maxSegmentLength: Double = 1 {
             didSet {
                 refreshSector()
             }
         }
         /// Changes the sectors shape.
-        @Published var sectorAngle = Measurement<UnitAngle>(value: 90, unit: .degrees) {
+        var sectorAngle = Measurement<UnitAngle>(value: 90, unit: .degrees) {
             didSet {
                 refreshSector()
             }
         }
         /// Controls the complexity of the geometries and the approximation of the ellipse curve.
-        @Published var maxPointCount: Double = 1_000 {
+        var maxPointCount: Double = 1_000 {
             didSet {
                 refreshSector()
             }
         }
         /// Changes the length of ellipse shape on one axis.
-        @Published var semiAxis1Length: Double = 200 {
+        var semiAxis1Length: Double = 200 {
             didSet {
                 refreshSector()
             }
         }
         /// Changes the length of ellipse shape on one axis.
-        @Published var semiAxis2Length: Double = 100 {
+        var semiAxis2Length: Double = 100 {
             didSet {
                 refreshSector()
             }
         }
         /// Changes the geometry type which the sector is rendered.
-        @Published var geometryType: GeometryType = .polygon {
+        var geometryType: GeometryType = .polygon {
             didSet {
                 refreshSector()
             }
         }
         /// Changes the direction of the sector.
-        @Published var startDirection: Double = 45 {
+        var startDirection: Double = 45 {
             didSet {
                 refreshSector()
             }
@@ -241,7 +241,7 @@ private extension ShowGeodesicSectorAndEllipseView {
     }
     
     struct SectorSettingsView: View {
-        @ObservedObject var model: ShowGeodesicSectorAndEllipseView.Model
+        @State var model: ShowGeodesicSectorAndEllipseView.Model
         
         private var numberFormat: FloatingPointFormatStyle<Double> {
             .init().precision(.fractionLength(0)).grouping(.never)
