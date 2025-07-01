@@ -32,19 +32,21 @@ struct ManageFeaturesView: View {
     @State private var currentViewpoint: Viewpoint?
     
     var body: some View {
-        Group {
+        VStack {
             if model.isLoading {
                 // Show progress view during loading.
                 ProgressView()
             } else if let map = model.map, let table = model.featureTable, let layer = model.featureLayer {
                 mapView(map, featureTable: table, featureLayer: layer)
-            } else if let error = model.error {
+            } else if model.error != nil {
                 // Show content unavailable if data does not load.
                 ContentUnavailableView(
                     "Error",
                     systemImage: "exclamationmark.triangle",
                     description: Text("Failed to load sample data.")
                 )
+            } else {
+                Text("Invalid state")
             }
         }
         .animation(.default, value: model.status)
@@ -189,12 +191,9 @@ extension ManageFeaturesView {
     @MainActor
     @Observable
     final class Model {
-        /// The data used within the view that this model is associated with.
-        private(set) var data: Result<Data, Error>?
-        
         private(set) var isLoading = false
         
-        private(set) var error: Error? = nil
+        private(set) var error: Error?
         
         /// The map that will be displayed.
         private(set) var map: Map?
@@ -236,7 +235,7 @@ extension ManageFeaturesView {
                 self.map = map
                 self.geodatabase = geodatabase
                 self.featureTable = featureTable
-                self.featureLayer = featureLayer
+                self.featureLayer = layer
             } catch {
                 self.error = error
             }
