@@ -16,7 +16,7 @@ import ArcGIS
 import SwiftUI
 
 struct ManageFeaturesView: View {
-    /// The data used within the view that this model is associated with.
+    /// The data for the view.
     @State private var data: Result<Data, Error>?
     
     /// The result of the latest action.
