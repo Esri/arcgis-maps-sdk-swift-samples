@@ -24,12 +24,10 @@ struct ShowLineOfSightBetweenGeoelementsView: View {
             graphicsOverlays: [model.graphicsOverlay],
             analysisOverlays: [model.analysisOverlay]
         )
-        .onAppear {
-            model.scene.initialViewpoint = Viewpoint(center: model.point, scale: 1600)
-        }
         .task {
-           await model.setupScene()
+            await model.addGraphics()
         }
+        .errorAlert(presentingError: $model.error)
     }
 }
 
@@ -37,17 +35,38 @@ private extension ShowLineOfSightBetweenGeoelementsView {
     @MainActor
     @Observable
     class Model {
+        var points: [Point] = [
+            Point(x: -73.984513, y: 40.748469, spatialReference: .wgs84),
+            Point(x: -73.985068, y: 40.747786, spatialReference: .wgs84),
+            Point(x: -73.983452, y: 40.747091, spatialReference: .wgs84),
+            Point(x: -73.982961, y: 40.747762, spatialReference: .wgs84)
+        ]
+        
+        var frameIndex: Int = 0
+        let frameMax: Int = 120
+        var pointIndex: Int = 0
         var error: Error?
-        var scene = Scene(basemapStyle: .arcGISImagery)
+        let scene: ArcGIS.Scene = {
+            // Creates a scene and set an initial viewpoint.
+            let scene = Scene(basemapStyle: .arcGISImagery)
+            let point = Point(x: -73.984988, y: 40.748131, spatialReference: .wgs84)
+            scene.initialViewpoint = Viewpoint(center: point, scale: 1600)
+            // Add base surface from elevation service.
+            let elevationSource = ArcGISTiledElevationSource(url: .elevationService)
+            let surface = Surface()
+            surface.addElevationSource(elevationSource)
+            scene.baseSurface = surface
+            var buildingLayer = ArcGISSceneLayer(url: .buildingsService)
+            scene.addOperationalLayer(buildingLayer)
+            return scene
+        }()
         var graphicsOverlay = GraphicsOverlay()
         var analysisOverlay = AnalysisOverlay()
         var lineOfSight: GeoElementLineOfSight?
-        var elevation = Surface()
         var taxiGraphic: Graphic?
-        
+        nonisolated(unsafe)
+        var displayLink = CADisplayLink()
         var observerGraphic: Graphic?
-        var buildingLayer = ArcGISSceneLayer(url: .buildingsService)
-        
         var point = Point(
             x: -73.984988,
             y: 40.748131,
@@ -55,15 +74,16 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         )
         
         init() {
-            scene.baseSurface.addElevationSource(
-                ArcGISTiledElevationSource(url: .elevationService)
-            )
-            scene.addOperationalLayer(buildingLayer)
             graphicsOverlay.sceneProperties = .init(surfacePlacement: .relative)
+            displayLink = makeDisplayLink()
         }
         
-         func setupScene() async {
-            var symbol = SimpleMarkerSceneSymbol(
+        deinit {
+            displayLink.invalidate()
+        }
+        
+        func addGraphics() async {
+            let symbol = SimpleMarkerSceneSymbol(
                 style: .sphere,
                 color: .red,
                 height: 5,
@@ -71,9 +91,10 @@ private extension ShowLineOfSightBetweenGeoelementsView {
                 depth: 5,
                 anchorPosition: .bottom
             )
-            var graphic = Graphic(geometry: point, symbol: symbol)
-            observerGraphic = graphic
-            graphicsOverlay.addGraphic(graphic)
+            observerGraphic = Graphic(geometry: point, symbol: symbol)
+            if let observerGraphic = observerGraphic {
+                graphicsOverlay.addGraphic(observerGraphic)
+            }
             
             let sceneSymbol = ModelSceneSymbol(url: .taxi)
             do {
@@ -87,7 +108,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
                     ),
                     symbol: sceneSymbol
                 )
-               graphicsOverlay.addGraphic(taxiGraphic!)
+                graphicsOverlay.addGraphic(taxiGraphic!)
                 if let observer = observerGraphic, let taxi = taxiGraphic {
                     lineOfSight = GeoElementLineOfSight(observer: observer, target: taxi)
                     lineOfSight?.targetOffsetZ = 2
@@ -95,9 +116,59 @@ private extension ShowLineOfSightBetweenGeoelementsView {
                         analysisOverlay.addAnalysis(lineOfSight)
                     }
                 }
+                displayLink.isPaused = false
             } catch {
                 self.error = error
             }
+        }
+        
+        /// Creates a display link timer for the image overlay animation.
+        /// - Returns: A new `CADisplayLink` object.
+        private func makeDisplayLink() -> CADisplayLink {
+            // Create new display link.
+            let newDisplayLink = CADisplayLink(target: self, selector: #selector(animateTaxi))
+            // Set the default frame rate to 60 fps.
+            newDisplayLink.preferredFramesPerSecond = 60
+            newDisplayLink.isPaused = true
+            // Add to main thread common mode run loop, so it is not effected by UI events.
+            newDisplayLink.add(to: .main, forMode: .common)
+            return newDisplayLink
+        }
+        
+        @objc
+        private func animateTaxi() {
+            guard let taxiGraphic = taxiGraphic else { return }
+            // Increment the frame counter
+            frameIndex += 1
+            // Reset frame counter when segment is completed
+            if frameIndex == frameMax {
+                frameIndex = 0
+                pointIndex += 1
+                if pointIndex == points.count {
+                    pointIndex = 0
+                }
+            }
+            let starting = points[pointIndex]
+            let ending = points[(pointIndex + 1) % points.count]
+            let progress = Double(frameIndex) / Double(frameMax)
+            // Interpolate between points
+            let intermediatePoint = interpolatedPoint(from: starting, to: ending, progress: progress)
+            taxiGraphic.geometry = intermediatePoint
+            if let distance = GeometryEngine.geodeticDistance(
+                from: starting,
+                to: ending,
+                distanceUnit: .meters,
+                azimuthUnit: .degrees,
+                curveType: .geodesic
+            ) {
+                (taxiGraphic.symbol as? ModelSceneSymbol)?.heading = Float(distance.azimuth1.value)
+            }
+        }
+        
+        private func interpolatedPoint(from: Point, to: Point, progress: Double) -> Point {
+            let x = from.x + (to.x - from.x) * progress
+            let y = from.y + (to.y - from.y) * progress
+            return Point(x: x, y: y, spatialReference: .wgs84)
         }
     }
 }
