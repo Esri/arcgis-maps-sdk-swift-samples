@@ -26,21 +26,6 @@ extension TraceUtilityNetworkView {
             network.definition?.domainNetwork(named: "ElectricDistribution")
         }
         
-        /// The URLs of the relevant feature layers for this sample.
-        ///
-        /// The feature layers allow us to modify the visual rendering style of different elements in
-        /// the network.
-        ///
-        /// - Note: The electric distribution line feature layer (ID 3) is placed on the map first,
-        /// followed by the electric distribution device feature layer (ID 0) so that the junction
-        /// based features in the latter feature layer are easier to select.
-        private var featureLayerURLs: [URL] {
-            return [
-                .featureService.appendingPathComponent("3"),
-                .featureService.appendingPathComponent("0")
-            ]
-        }
-        
         /// The textual hint shown to the user.
         @Published var hint: String?
         
@@ -58,11 +43,7 @@ extension TraceUtilityNetworkView {
         
         /// The map contains the utility network and operational layers on which trace results will
         /// be selected.
-        let map = {
-            let map = Map(item: PortalItem.napervilleElectricalNetwork)
-            map.basemap = Basemap(style: .arcGISStreetsNight)
-            return map
-        }()
+        let map = Map(item: PortalItem.napervilleElectricNetwork())
         
         /// The utility tier for this sample.
         private var mediumVoltageRadial: UtilityTier? {
@@ -105,6 +86,17 @@ extension TraceUtilityNetworkView {
         }()
         
         // MARK: Methods
+        
+        init() {
+            // Updates the URL session challenge handler to use the
+            // specified credentials and tokens for any challenges.
+            ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = ChallengeHandler()
+        }
+        
+        deinit {
+            // Resets the URL session challenge handler to use default handling.
+            ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = nil
+        }
         
         /// Adds the provided utility element to the parameters of the pending trace and a corresponding
         /// starting location or barrier graphic to the map.
@@ -193,28 +185,11 @@ extension TraceUtilityNetworkView {
         /// Performs important tasks including adding credentials, loading and adding operational layers.
         func setup() async {
             do {
-                try await ArcGISEnvironment.authenticationManager.arcGISCredentialStore.add(.publicSample)
                 try await map.load()
                 try await network.load()
             } catch {
                 updateUserHint(withMessage: "An error occurred while loading the network.")
                 return
-            }
-            
-            // Clears all sublayers then add the layers relevant for the demo.
-            map.removeAllOperationalLayers()
-            
-            featureLayerURLs.forEach { url in
-                let table = ServiceFeatureTable(url: url)
-                let layer = FeatureLayer(featureTable: table)
-                if table.serviceLayerID == 3 {
-                    layer.renderer = UniqueValueRenderer(
-                        fieldNames: ["ASSETGROUP"],
-                        uniqueValues: [.lowVoltage, .mediumVoltage],
-                        defaultSymbol: SimpleLineSymbol()
-                    )
-                }
-                map.addOperationalLayer(layer)
             }
         }
         
@@ -270,27 +245,30 @@ extension TraceUtilityNetworkView {
     }
 }
 
-private extension ArcGISCredential {
-    /// The public credentials for the data in this sample.
-    /// - Note: Never hardcode login information in a production application. This is done solely
-    /// for the sake of the sample.
-    static var publicSample: ArcGISCredential {
-        get async throws {
-            try await TokenCredential.credential(
-                for: .samplePortal,
-                username: "viewer01",
-                password: "I68VGU^nMurF"
-            )
-        }
+private extension PortalItem {
+    /// A web map portal item for the Naperville Electric Map.
+    static func napervilleElectricNetwork() -> PortalItem {
+        PortalItem(
+            // Sample server 7 authentication required.
+            portal: Portal(
+                url: .samplePortal,
+                connection: .authenticated
+            ),
+            id: .init("be0e4637620a453584118107931f718b")!
+        )
     }
 }
 
-private extension PortalItem {
-    /// A portal item for the electrical network in this sample.
-    static var napervilleElectricalNetwork: PortalItem {
-        .init(
-            portal: .arcGISOnline(connection: .authenticated),
-            id: .init("471eb0bf37074b1fbb972b1da70fb310")!
+/// The authentication model used to handle challenges and credentials.
+private struct ChallengeHandler: ArcGISAuthenticationChallengeHandler {
+    func handleArcGISAuthenticationChallenge(
+        _ challenge: ArcGISAuthenticationChallenge
+    ) async throws -> ArcGISAuthenticationChallenge.Disposition {
+        // NOTE: Never hardcode login information in a production application.
+        // This is done solely for the sake of the sample.
+        return .continueWithCredential(
+            // Credentials for sample server 7 services.
+            try await TokenCredential.credential(for: challenge, username: "viewer01", password: "I68VGU^nMurF")
         )
     }
 }
@@ -307,42 +285,10 @@ private extension SimpleMarkerSymbol {
     }
 }
 
-private extension UniqueValue {
-    /// The rendering style for low voltage lines in the utility network.
-    static var lowVoltage: UniqueValue {
-        .init(
-            label: "Low voltage",
-            symbol: SimpleLineSymbol(style: .dash, color: .darkCyan, width: 3),
-            values: [3]
-        )
-    }
-    
-    /// The rendering style for medium voltage lines in the utility network.
-    static var mediumVoltage: UniqueValue {
-        .init(
-            label: "Medium voltage",
-            symbol: SimpleLineSymbol(style: .solid, color: .darkCyan, width: 3),
-            values: [5]
-        )
-    }
-}
-
-private extension UIColor {
-    /// A custom color for electrical lines in the utility network.
-    static var darkCyan: UIColor {
-        .init(red: 0, green: 0.55, blue: 0.55, alpha: 1)
-    }
-}
-
 private extension URL {
     /// The server containing the data for this sample.
     static var sampleServer7: URL {
         URL(string: "https://sampleserver7.arcgisonline.com")!
-    }
-    
-    /// The feature service containing the data for this sample.
-    static var featureService: URL {
-        sampleServer7.appendingPathComponent("server/rest/services/UtilityNetwork/NapervilleElectric/FeatureServer")
     }
     
     /// The portal containing the data for this sample.

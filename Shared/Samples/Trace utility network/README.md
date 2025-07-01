@@ -16,7 +16,7 @@ Tap "Start a new trace" to select the type of trace using the confirmation dialo
 
 1. Create a `MapView` with a `Map` that contains one more utility networks.
 2. Add a `GraphicsOverlay` to hold symbology that distinguishes starting locations from barriers.
-3. Add relevant `FeatureLayer`(s) to the map as operation layers, optionally applying custom styling.
+3. Get and load the first `UtilityNetwork` from the web map.
 4. Allow users to choose a trace type from the set of `UtilityTraceParameters.TraceType`(s).
 5. Create `UtilityTraceParameters` with the selected trace type.
 6. Set the `UtilityTraceConfiguration` with the utility tier's `defaultTraceConfiguration` property.
