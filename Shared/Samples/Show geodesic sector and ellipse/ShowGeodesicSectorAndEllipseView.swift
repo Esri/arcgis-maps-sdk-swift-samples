@@ -22,6 +22,7 @@ struct ShowGeodesicSectorAndEllipseView: View {
     /// Manages the presentation state of the menu.
     @State private var isPresented: Bool = false
     
+    /// The menu which holds the options that change the ellipse and sector.
     private var settingsSheet: some View {
         NavigationStack {
             SectorSettingsView(model: $model)
@@ -54,7 +55,6 @@ struct ShowGeodesicSectorAndEllipseView: View {
                 )
             }
             .toolbar {
-                // The menu which holds the options that change the ellipse and sector.
                 ToolbarItemGroup(placement: .bottomBar) {
                     Button("Settings") {
                         isPresented = true
