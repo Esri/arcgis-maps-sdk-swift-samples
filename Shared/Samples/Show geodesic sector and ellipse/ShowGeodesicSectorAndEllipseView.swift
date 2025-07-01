@@ -22,6 +22,24 @@ struct ShowGeodesicSectorAndEllipseView: View {
     /// Manages the presentation state of the menu.
     @State private var isPresented: Bool = false
     
+    @Environment(\.dismiss) private var dismiss
+    
+    private var settingsSheet: some View {
+        NavigationStack {
+            SectorSettingsView(model: model)
+            .presentationDetents([.medium])
+            .navigationTitle("Settings")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Dismiss") {
+                        dismiss()
+                    }
+                }
+            }
+        }
+    }
+    
     var body: some View {
         MapViewReader { mapView in
             MapView(
@@ -45,11 +63,7 @@ struct ShowGeodesicSectorAndEllipseView: View {
                     }
                     .disabled(model.center == nil)
                     .sheet(isPresented: $isPresented) {
-                        SectorSettingsView(model: model)
-                            .presentationDetents([.medium])
-                        Button("Close") {
-                            isPresented = false
-                        }
+                        settingsSheet
                     }
                 }
             }
