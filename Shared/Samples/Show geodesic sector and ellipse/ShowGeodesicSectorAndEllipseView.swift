@@ -22,21 +22,19 @@ struct ShowGeodesicSectorAndEllipseView: View {
     /// Manages the presentation state of the menu.
     @State private var isPresented: Bool = false
     
-    @Environment(\.dismiss) private var dismiss
-    
     private var settingsSheet: some View {
         NavigationStack {
             SectorSettingsView(model: model)
-            .presentationDetents([.medium])
-            .navigationTitle("Settings")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Dismiss") {
-                        dismiss()
+                .presentationDetents([.medium])
+                .navigationTitle("Settings")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .confirmationAction) {
+                        Button("Dismiss") {
+                            isPresented = false
+                        }
                     }
                 }
-            }
         }
     }
     
@@ -95,7 +93,6 @@ private extension ShowGeodesicSectorAndEllipseView {
         /// The map point selected by the user when tapping on the map.
         @Published var center: Point? {
             didSet {
-                guard let center else { return }
                 updateSector()
             }
         }
@@ -166,7 +163,6 @@ private extension ShowGeodesicSectorAndEllipseView {
         }
         
         private func refreshSector() {
-            guard let center else { return }
             updateSector()
         }
         
