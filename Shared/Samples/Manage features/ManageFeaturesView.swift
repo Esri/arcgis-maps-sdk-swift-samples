@@ -167,7 +167,7 @@ struct ManageFeaturesView: View {
     /// Overlay with instructions for the user.
     @ViewBuilder var instructionsOverlay: some View {
         VStack(spacing: 8) {
-            Text("Tap the map to create a new feature, or an existing feature for more options.")
+            Text("Tap the map to create a new feature, or tap an existing feature for more options.")
                 .multilineTextAlignment(.center)
             if !status.isEmpty {
                 Text(status)
