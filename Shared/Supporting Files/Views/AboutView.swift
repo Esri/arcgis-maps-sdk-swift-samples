@@ -79,10 +79,11 @@ struct AboutView: View {
 }
 
 private extension Bundle {
-    // The local package bundle ID is "ArcGIS"; the binary is "com.esri.ArcGIS".
-    // By default, the project assumes the dependencies come from GitHub. If they
-    // are not found, then for sure we are developing using local packages.
-    static let arcGIS = Bundle(identifier: "com.esri.ArcGIS") ?? Bundle(identifier: "ArcGIS")!
+    // The local package bundle ID is "arcgis.ArcGIS"; the binary is
+    // "com.esri.ArcGIS".
+    // By default, the project assumes the dependencies come from GitHub. If
+    // they are not found, then for sure we are developing using local packages.
+    static let arcGIS = Bundle(identifier: "com.esri.ArcGIS") ?? Bundle(identifier: "arcgis.ArcGIS")!
     
     var name: String { object(forInfoDictionaryKey: "CFBundleName") as? String ?? "" }
     var version: String { object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "" }
