@@ -33,19 +33,55 @@ struct ShowLineOfSightBetweenGeoelementsView: View {
     @State private var buildingLayer = ArcGISSceneLayer(url: .buildingsService)
     
     @State private var graphicsOverlay = GraphicsOverlay()
-
+    
+    @State private var taxiGraphic: Graphic?
+    
+    @State var observerGraphic: Graphic?
+    
     init() {
         scene.baseSurface.addElevationSource(ArcGISTiledElevationSource(url: .elevationService))
         scene.addOperationalLayer(buildingLayer)
         graphicsOverlay.sceneProperties = .init(surfacePlacement: .relative)
-        var symbol = SimpleMarkerSceneSymbol(style: .sphere, color: .red, height: 10, width: 10, depth: 10, anchorPosition: .bottom)
-        var graphic = Graphic(geometry: point, symbol: symbol)
-        graphicsOverlay.addGraphic(graphic)
-    }
-
+            }
+    
     var body: some View {
-        SceneView(scene: scene, graphicsOverlays: [graphicsOverlay], analysisOverlays: [analysisOverlay]).onAppear {
+        SceneView(
+            scene: scene,
+            graphicsOverlays: [graphicsOverlay],
+            analysisOverlays: [analysisOverlay]
+        )
+        .onAppear {
             scene.initialViewpoint = Viewpoint(center: point, scale: 1600)
+        }
+        .task {
+            var symbol = SimpleMarkerSceneSymbol(style: .sphere, color: .red, height: 5, width: 5, depth: 5, anchorPosition: .bottom)
+            var graphic = Graphic(geometry: point, symbol: symbol)
+            observerGraphic = graphic
+            graphicsOverlay.addGraphic(graphic)
+
+            let sceneSymbol = ModelSceneSymbol(url: .taxi)
+            do {
+                try await sceneSymbol.load()
+                sceneSymbol.anchorPosition = .bottom
+                taxiGraphic = Graphic(
+                    geometry: Point(
+                        x: -73.984513,
+                        y: 40.748469,
+                        spatialReference: .wgs84
+                    ),
+                    symbol: sceneSymbol
+                )
+                graphicsOverlay.addGraphic(taxiGraphic!)
+                if let observer = observerGraphic, let taxi = taxiGraphic {
+                    lineOfSight = GeoElementLineOfSight(observer: observer, target: taxi)
+                    lineOfSight?.targetOffsetZ = 2
+                    if let lineOfSight = lineOfSight {
+                        analysisOverlay.addAnalysis(lineOfSight)
+                    }
+                }
+            } catch {
+                print(error)
+            }
         }
     }
 }
@@ -59,6 +95,11 @@ extension URL {
     // URL of the building service - provides builiding models
     static var buildingsService: URL {
         URL(string: "https://tiles.arcgis.com/tiles/z2tnIkrLQ2BRzr6P/arcgis/rest/services/Buildings_NewYork_v18/SceneServer/layers/0")!
+    }
+    
+    /// A URL to the local Bristol 3D model files.
+    static var taxi: URL {
+        Bundle.main.url(forResource: "dolmus", withExtension: "3ds", subdirectory: "Dolmus3ds")!
     }
 }
 #Preview {
