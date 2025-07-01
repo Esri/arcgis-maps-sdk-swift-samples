@@ -42,7 +42,3 @@ struct ShowMagnifierView: View {
             }
     }
 }
-
-#Preview {
-    AddTiledLayerView()
-}
