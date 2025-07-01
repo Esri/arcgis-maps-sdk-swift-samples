@@ -42,3 +42,7 @@ struct ShowMagnifierView: View {
             }
     }
 }
+
+#Preview {
+    ShowMagnifierView()
+}
