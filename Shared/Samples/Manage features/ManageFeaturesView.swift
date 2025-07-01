@@ -119,7 +119,7 @@ struct ManageFeaturesView: View {
     func featureCalloutContent(feature: Feature, table: ServiceFeatureTable) -> some View {
         HStack {
             VStack(alignment: .leading) {
-                Text("ID: \(feature.id)")
+                Text("ID: \(feature.attributeValue(forKey: table.objectIDField) ?? "Unknown")")
                 Text("Damage: \(feature.damageKind?.rawValue ?? "Unknown")")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
@@ -333,18 +333,6 @@ extension ManageFeaturesView {
 extension Feature {
     /// The name of the damage type field.
     static let damageTypeFieldName = "typdamage"
-    
-    /// The name of the object ID field.
-    static let objectIDFieldName = "objectid"
-    
-    /// An ID string for the feature.
-    var id: String {
-        if let objectID = attributeValue(forKey: "objectid") {
-            return "\(objectID)"
-        } else {
-            return "Unknown"
-        }
-    }
     
     /// The damage assessment of the feature.
     var damageKind: ManageFeaturesView.DamageKind? {
