@@ -16,14 +16,15 @@ import ArcGIS
 import SwiftUI
 
 struct ShowLineOfSightBetweenGeoelementsView: View {
-    let map = Map(basemapStyle: .arcGISStreets)
+    @State private var scene = Scene(basemapStyle: .arcGISImagery)
+    
+    @State private var lineOfSight: LineOfSight?
+    
+    @State private var analysisOverlay = AnalysisOverlay()
     
     var body: some View {
-        VStack {
-            
-        }
+        SceneView(scene: scene)
     }
-    
 }
 
 #Preview {

@@ -1,8 +1,10 @@
 {
-    "category": "",
+    "category": "Analysis",
     "description": "Show a line of sight between two moving objects.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "show-line-of-sight-between-geoelements.png"
+    ],
     "keywords": [
         "3D",
         "line of sight",
