@@ -16,6 +16,7 @@ import ArcGIS
 import SwiftUI
 
 struct ManageFeaturesView: View {
+    /// The model for this view.
     @State private var model = Model()
     
     /// The screen location that the user tapped.
@@ -38,7 +39,11 @@ struct ManageFeaturesView: View {
                 mapView(data)
             case .failure:
                 // Show content unavailable if data does not load.
-                ContentUnavailableView("Error", systemImage: "exclamationmark.triangle", description: Text("Failed to load sample data."))
+                ContentUnavailableView(
+                    "Error",
+                    systemImage: "exclamationmark.triangle",
+                    description: Text("Failed to load sample data.")
+                )
             case .none:
                 // Show progress view during loading.
                 ProgressView()
@@ -188,7 +193,7 @@ extension ManageFeaturesView {
     @MainActor
     @Observable
     final class Model {
-        /// The data for the view.
+        /// The data used within the view that this model is associated with.
         private(set) var data: Result<Data, Error>?
         
         /// The result of the latest action.
