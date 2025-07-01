@@ -55,9 +55,7 @@ extension DisplayContentOfUtilityNetworkContainerView {
         }()
         
         /// The utility network for this sample.
-        private var network: UtilityNetwork {
-            map.utilityNetworks.first!
-        }
+        private var network: UtilityNetwork { map.utilityNetworks.first! }
         
         // MARK: Methods
         

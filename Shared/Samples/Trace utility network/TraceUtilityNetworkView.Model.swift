@@ -51,9 +51,7 @@ extension TraceUtilityNetworkView {
         }
         
         /// The utility network for this sample.
-        private var network: UtilityNetwork {
-            map.utilityNetworks.first!
-        }
+        private var network: UtilityNetwork { map.utilityNetworks.first! }
         
         /// The parameters for the pending trace.
         ///

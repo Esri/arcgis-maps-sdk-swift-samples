@@ -109,9 +109,7 @@ private extension ShowUtilityAssociationsView {
         let map = Map(item: .napervilleElectricNetwork())
         
         /// The utility network for this sample.
-        private var network: UtilityNetwork {
-            map.utilityNetworks.first!
-        }
+        private var network: UtilityNetwork { map.utilityNetworks.first! }
         
         /// A container for associations results.
         let associationsOverlay = makeAssociationsOverlay()
