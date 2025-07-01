@@ -32,7 +32,7 @@ struct ManageFeaturesView: View {
     @State private var currentViewpoint: Viewpoint?
     
     var body: some View {
-        VStack {
+        Group {
             switch model.data {
             case .success(let data):
                 // Show map view if data loads.
