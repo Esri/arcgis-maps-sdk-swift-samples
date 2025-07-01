@@ -35,16 +35,16 @@ private extension ShowLineOfSightBetweenGeoelementsView {
     @MainActor
     @Observable
     class Model {
-        var points: [Point] = [
+        private var points: [Point] = [
             Point(x: -73.984513, y: 40.748469, spatialReference: .wgs84),
             Point(x: -73.985068, y: 40.747786, spatialReference: .wgs84),
             Point(x: -73.983452, y: 40.747091, spatialReference: .wgs84),
             Point(x: -73.982961, y: 40.747762, spatialReference: .wgs84)
         ]
         
-        var frameIndex: Int = 0
-        let frameMax: Int = 120
-        var pointIndex: Int = 0
+        private var frameIndex: Int = 0
+        private let frameMax: Int = 120
+        private var pointIndex: Int = 0
         var error: Error?
         let scene: ArcGIS.Scene = {
             // Creates a scene and set an initial viewpoint.
@@ -62,11 +62,10 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         }()
         var graphicsOverlay = GraphicsOverlay()
         var analysisOverlay = AnalysisOverlay()
-        var lineOfSight: GeoElementLineOfSight?
-        var taxiGraphic: Graphic?
-        nonisolated(unsafe)
-        var displayLink = CADisplayLink()
-        var observerGraphic: Graphic?
+        private var lineOfSight: GeoElementLineOfSight?
+        private var taxiGraphic: Graphic?
+        nonisolated(unsafe) private var displayLink = CADisplayLink()
+        private var observerGraphic: Graphic?
         var point = Point(
             x: -73.984988,
             y: 40.748131,
