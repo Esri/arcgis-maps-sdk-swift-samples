@@ -31,15 +31,21 @@ struct ShowLineOfSightBetweenGeoelementsView: View {
     @State private var elevation = Surface()
     
     @State private var buildingLayer = ArcGISSceneLayer(url: .buildingsService)
+    
+    @State private var graphicsOverlay = GraphicsOverlay()
 
     init() {
         scene.baseSurface.addElevationSource(ArcGISTiledElevationSource(url: .elevationService))
         scene.addOperationalLayer(buildingLayer)
+        graphicsOverlay.sceneProperties = .init(surfacePlacement: .relative)
+        var symbol = SimpleMarkerSceneSymbol(style: .sphere, color: .red, height: 10, width: 10, depth: 10, anchorPosition: .bottom)
+        var graphic = Graphic(geometry: point, symbol: symbol)
+        graphicsOverlay.addGraphic(graphic)
     }
 
     var body: some View {
-        SceneView(scene: scene).onAppear {
-            
+        SceneView(scene: scene, graphicsOverlays: [graphicsOverlay], analysisOverlays: [analysisOverlay]).onAppear {
+            scene.initialViewpoint = Viewpoint(center: point, scale: 1600)
         }
     }
 }
