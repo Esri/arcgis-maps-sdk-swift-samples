@@ -55,14 +55,16 @@ extension DisplayContentOfUtilityNetworkContainerView {
         }()
         
         /// The utility network for this sample.
-        private var network: UtilityNetwork!
+        private var network: UtilityNetwork {
+            map.utilityNetworks.first!
+        }
         
         // MARK: Methods
         
         /// Loads the utility network.
         func loadUtilityNetwork() async throws {
             // Gets and loads the first utility network from the web map.
-            network = map.utilityNetworks.first!
+            try await map.load()
             try await network.load()
         }
         
