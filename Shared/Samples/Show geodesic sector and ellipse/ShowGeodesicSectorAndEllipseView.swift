@@ -24,7 +24,7 @@ struct ShowGeodesicSectorAndEllipseView: View {
     
     private var settingsSheet: some View {
         NavigationStack {
-            SectorSettingsView(model: model)
+            SectorSettingsView(model: $model)
                 .presentationDetents([.medium])
                 .navigationTitle("Settings")
                 .navigationBarTitleDisplayMode(.inline)
@@ -86,7 +86,7 @@ private extension ShowGeodesicSectorAndEllipseView {
     /// A view model that encapsulates logic and state for rendering a geodesic sector and ellipse.
     /// Handles user-configured parameters and updates overlays when those parameters change.
     @Observable
-    class Model: ObservableObject {
+    class Model {
         /// The map that will be displayed in the map view.
         let map = Map(basemapStyle: .arcGISTopographic)
         
@@ -241,7 +241,7 @@ private extension ShowGeodesicSectorAndEllipseView {
     }
     
     struct SectorSettingsView: View {
-        @State var model: ShowGeodesicSectorAndEllipseView.Model
+        @Binding var model: ShowGeodesicSectorAndEllipseView.Model
         
         private var numberFormat: FloatingPointFormatStyle<Double> {
             .init().precision(.fractionLength(0)).grouping(.never)
