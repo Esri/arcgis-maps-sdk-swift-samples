@@ -1,0 +1,44 @@
+{
+    "category": "Edit and Manage Data",
+    "description": "Create, update, and delete features to manage a feature layer.",
+    "ignore": false,
+    "images": [
+        "manage-features.png"
+    ],
+    "keywords": [
+        "amend",
+        "attribute",
+        "create",
+        "delete",
+        "deletion",
+        "details",
+        "edit",
+        "editing",
+        "feature",
+        "feature layer",
+        "feature table",
+        "geodatabase",
+        "information",
+        "moving",
+        "online service",
+        "service",
+        "update",
+        "updating",
+        "value",
+        "Feature",
+        "FeatureLayer",
+        "ServiceFeatureTable",
+        "ServiceGeodatabase"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Feature",
+        "FeatureLayer",
+        "ServiceFeatureTable",
+        "ServiceGeodatabase"
+    ],
+    "snippets": [
+        "ManageFeaturesView.swift"
+    ],
+    "title": "Manage features"
+}
