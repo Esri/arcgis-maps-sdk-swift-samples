@@ -1,0 +1,28 @@
+{
+    "category": "Maps",
+    "description": "Tap and hold on a map to show a magnifier.",
+    "ignore": false,
+    "images": [
+        "show-magnifier.png"
+    ],
+    "keywords": [
+        "magnify",
+        "map",
+        "zoom",
+        "Map",
+        "MapView",
+        "MapView.magnifierDisabled(_:)",
+        "MapView.magnifierEdgePanningDisabled(_:)"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Map",
+        "MapView",
+        "MapView.magnifierDisabled(_:)",
+        "MapView.magnifierEdgePanningDisabled(_:)"
+    ],
+    "snippets": [
+        "ShowMagnifierView.swift"
+    ],
+    "title": "Show magnifier"
+}
