@@ -116,54 +116,50 @@ private extension ShowGeodesicSectorAndEllipseView {
         /// The direction (in degrees) of the ellipse's major axis.
         var axisDirection = Measurement<UnitAngle>(value: 45, unit: .degrees) {
             didSet {
-                refreshSector()
+                updateSector()
             }
         }
         /// Controls the complexity of the geometries and the approximation of the ellipse curve.
         var maxSegmentLength: Double = 1 {
             didSet {
-                refreshSector()
+                updateSector()
             }
         }
         /// Changes the sectors shape.
         var sectorAngle = Measurement<UnitAngle>(value: 90, unit: .degrees) {
             didSet {
-                refreshSector()
+                updateSector()
             }
         }
         /// Controls the complexity of the geometries and the approximation of the ellipse curve.
         var maxPointCount: Double = 1_000 {
             didSet {
-                refreshSector()
+                updateSector()
             }
         }
         /// Changes the length of ellipse shape on one axis.
         var semiAxis1Length: Double = 200 {
             didSet {
-                refreshSector()
+                updateSector()
             }
         }
         /// Changes the length of ellipse shape on one axis.
         var semiAxis2Length: Double = 100 {
             didSet {
-                refreshSector()
+                updateSector()
             }
         }
         /// Changes the geometry type which the sector is rendered.
         var geometryType: GeometryType = .polygon {
             didSet {
-                refreshSector()
+                updateSector()
             }
         }
         /// Changes the direction of the sector.
         var startDirection: Double = 45 {
             didSet {
-                refreshSector()
+                updateSector()
             }
-        }
-        
-        private func refreshSector() {
-            updateSector()
         }
         
         private func updateSector() {
@@ -244,7 +240,7 @@ private extension ShowGeodesicSectorAndEllipseView {
         @Binding var model: ShowGeodesicSectorAndEllipseView.Model
         
         private var numberFormat: FloatingPointFormatStyle<Double> {
-            .init().precision(.fractionLength(0)).grouping(.never)
+            .init().precision(.fractionLength(0))
         }
         
         private var angleFormat: Measurement<UnitAngle>.FormatStyle {
@@ -299,7 +295,7 @@ private extension ShowGeodesicSectorAndEllipseView {
                 } minimumValueLabel: {
                     Text(maxPointCountRange.lowerBound, format: numberFormat)
                 } maximumValueLabel: {
-                    Text(maxPointCountRange.lowerBound, format: numberFormat)
+                    Text(maxPointCountRange.upperBound, format: numberFormat)
                 }
                 .listRowSeparator(.hidden, edges: .top)
                 
