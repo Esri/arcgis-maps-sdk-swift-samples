@@ -163,13 +163,12 @@ private extension ShowGeodesicSectorAndEllipseView {
         }
         
         private func updateSector() {
-            ellipseGraphicOverlay.removeAllGraphics()
-            sectorGraphicOverlay.removeAllGraphics()
             updateEllipse()
             setupSector()
         }
         
         private func setupSector() {
+            sectorGraphicOverlay.removeAllGraphics()
             switch geometryType {
             case .point:
                 // Generate sector as a multipoint (symbols).
@@ -220,6 +219,7 @@ private extension ShowGeodesicSectorAndEllipseView {
         
         /// Generates and adds a geodesic ellipse graphic based on the current settings and center point.
         private func updateEllipse() {
+            ellipseGraphicOverlay.removeAllGraphics()
             let parameters = GeodesicEllipseParameters<ArcGIS.Polygon>(
                 axisDirection: axisDirection.value,
                 center: center,
