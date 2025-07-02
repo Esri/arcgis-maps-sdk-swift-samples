@@ -22,23 +22,6 @@ struct ShowGeodesicSectorAndEllipseView: View {
     /// Manages the presentation state of the menu.
     @State private var isPresented = false
     
-    /// The menu which holds the options that change the ellipse and sector.
-    private var settingsSheet: some View {
-        NavigationStack {
-            SectorSettingsView(model: $model)
-                .presentationDetents([.medium])
-                .navigationTitle("Settings")
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .confirmationAction) {
-                        Button("Dismiss") {
-                            isPresented = false
-                        }
-                    }
-                }
-        }
-    }
-    
     var body: some View {
         MapViewReader { mapView in
             MapView(
@@ -65,6 +48,23 @@ struct ShowGeodesicSectorAndEllipseView: View {
                     }
                 }
             }
+        }
+    }
+    
+    /// The menu which holds the options that change the ellipse and sector.
+    private var settingsSheet: some View {
+        NavigationStack {
+            SectorSettingsView(model: $model)
+                .presentationDetents([.medium])
+                .navigationTitle("Settings")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .confirmationAction) {
+                        Button("Done") {
+                            isPresented = false
+                        }
+                    }
+                }
         }
     }
 }
@@ -254,7 +254,9 @@ private extension ShowGeodesicSectorAndEllipseView {
                     value: model.axisDirection,
                     format: angleFormat
                 )
+                
                 let axisDirectionRange = 0.0...360.0
+                
                 Slider(
                     value: $model.axisDirection.value,
                     in: axisDirectionRange
@@ -286,6 +288,7 @@ private extension ShowGeodesicSectorAndEllipseView {
                 )
                 
                 let maxPointCountRange = 1.0...1_000.0
+                
                 Slider(
                     value: $model.maxPointCount,
                     in: maxPointCountRange,
@@ -306,6 +309,7 @@ private extension ShowGeodesicSectorAndEllipseView {
                 )
                 
                 let maxSegmentLengthRange = 1.0...1_000.0
+                
                 Slider(
                     value: $model.maxSegmentLength,
                     in: maxSegmentLengthRange
@@ -323,12 +327,15 @@ private extension ShowGeodesicSectorAndEllipseView {
                         Text(geometryType.label)
                     }
                 }
+                
                 LabeledContent(
                     "Sector Angle",
                     value: model.sectorAngle,
                     format: angleFormat
                 )
+                
                 let sectorAngleRange = 0.0...360.0
+                
                 Slider(
                     value: $model.sectorAngle.value,
                     in: sectorAngleRange
@@ -360,6 +367,7 @@ private extension ShowGeodesicSectorAndEllipseView {
                 )
                 
                 let semiAxis1LengthRange = 0.0...1_0000.0
+                
                 Slider(
                     value: $model.semiAxis1Length,
                     in: semiAxis1LengthRange
@@ -379,6 +387,7 @@ private extension ShowGeodesicSectorAndEllipseView {
                 )
                 
                 let semiAxis2LengthRange = 0.0...1_000.0
+                
                 Slider(
                     value: $model.semiAxis2Length,
                     in: semiAxis2LengthRange
