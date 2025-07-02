@@ -27,7 +27,7 @@ struct ShowLineOfSightBetweenGeoelementsView: View {
         .overlay(alignment: .top) {
             HStack {
                 Text("Visibility: ")
-                Text("Status")
+                Text("Unknown")
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 6)
@@ -50,7 +50,6 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             Point(x: -73.983452, y: 40.747091, spatialReference: .wgs84),
             Point(x: -73.982961, y: 40.747762, spatialReference: .wgs84)
         ]
-        var visible: Bool = false
         private var frameIndex: Int = 0
         private let frameMax: Int = 120
         private var pointIndex: Int = 0
@@ -183,6 +182,17 @@ private extension ShowLineOfSightBetweenGeoelementsView {
                 curveType: .geodesic
             ) {
                 (taxiGraphic.symbol as? ModelSceneSymbol)?.heading = Float(distance.azimuth1.value)
+            }
+            guard let lineOfSight else { return }
+            switch lineOfSight.targetVisibility {
+            case .obstructed:
+                print("obstructed")
+            case .visible:
+                print("visible")
+            case .unknown:
+                print("unknown")
+            @unknown default:
+                print("error")
             }
         }
         
