@@ -2735,7 +2735,8 @@
 				95B0969F2E136365006AFA8F /* Dolmus3ds */,
 			);
 			path = 3af5cfec0fd24dac8d88aea679027cb9;
-    };
+			sourceTree = "<group>";
+		};
 		951961AD2E00BC760088B0C2 /* Show geodesic sector and ellipse */ = {
 			isa = PBXGroup;
 			children = (
