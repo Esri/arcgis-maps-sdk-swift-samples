@@ -41,7 +41,6 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             Point(x: -73.983452, y: 40.747091, spatialReference: .wgs84),
             Point(x: -73.982961, y: 40.747762, spatialReference: .wgs84)
         ]
-        
         private var frameIndex: Int = 0
         private let frameMax: Int = 120
         private var pointIndex: Int = 0
@@ -49,7 +48,11 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         let scene: ArcGIS.Scene = {
             // Creates a scene and set an initial viewpoint.
             let scene = Scene(basemapStyle: .arcGISImagery)
-            let point = Point(x: -73.984988, y: 40.748131, spatialReference: .wgs84)
+            let point = Point(
+                x: -73.984988,
+                y: 40.748131,
+                spatialReference: .wgs84
+            )
             scene.initialViewpoint = Viewpoint(center: point, scale: 1600)
             // Add base surface from elevation service.
             let elevationSource = ArcGISTiledElevationSource(url: .elevationService)
@@ -64,9 +67,9 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         var analysisOverlay = AnalysisOverlay()
         private var lineOfSight: GeoElementLineOfSight?
         private var taxiGraphic: Graphic?
-        nonisolated(unsafe) private var displayLink = CADisplayLink()
+        nonisolated(unsafe) private var displayLink: CADisplayLink!
         private var observerGraphic: Graphic?
-        var point = Point(
+        private var point = Point(
             x: -73.984988,
             y: 40.748131,
             spatialReference: .wgs84
@@ -107,8 +110,8 @@ private extension ShowLineOfSightBetweenGeoelementsView {
                     ),
                     symbol: sceneSymbol
                 )
-                graphicsOverlay.addGraphic(taxiGraphic!)
                 if let observer = observerGraphic, let taxi = taxiGraphic {
+                    graphicsOverlay.addGraphic(taxi)
                     lineOfSight = GeoElementLineOfSight(observer: observer, target: taxi)
                     lineOfSight?.targetOffsetZ = 2
                     if let lineOfSight = lineOfSight {
@@ -125,7 +128,10 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         /// - Returns: A new `CADisplayLink` object.
         private func makeDisplayLink() -> CADisplayLink {
             // Create new display link.
-            let newDisplayLink = CADisplayLink(target: self, selector: #selector(animateTaxi))
+            let newDisplayLink = CADisplayLink(
+                target: self,
+                selector: #selector(animateTaxi)
+            )
             // Set the default frame rate to 60 fps.
             newDisplayLink.preferredFramesPerSecond = 60
             newDisplayLink.isPaused = true
@@ -183,7 +189,7 @@ extension URL {
         URL(string: "https://tiles.arcgis.com/tiles/z2tnIkrLQ2BRzr6P/arcgis/rest/services/Buildings_NewYork_v18/SceneServer/layers/0")!
     }
     
-    /// A URL to the local Bristol 3D model files.
+    /// A URL to the loca taxi model files.
     static var taxi: URL {
         Bundle.main.url(forResource: "dolmus", withExtension: "3ds", subdirectory: "Dolmus3ds")!
     }
