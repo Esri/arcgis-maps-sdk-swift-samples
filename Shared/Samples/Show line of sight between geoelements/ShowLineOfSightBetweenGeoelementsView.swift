@@ -24,6 +24,15 @@ struct ShowLineOfSightBetweenGeoelementsView: View {
             graphicsOverlays: [model.graphicsOverlay],
             analysisOverlays: [model.analysisOverlay]
         )
+        .overlay(alignment: .top) {
+            HStack {
+                Text("Visibility: ")
+                Text("Status")
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 6)
+            .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
+        }
         .task {
             await model.addGraphics()
         }
@@ -41,6 +50,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             Point(x: -73.983452, y: 40.747091, spatialReference: .wgs84),
             Point(x: -73.982961, y: 40.747762, spatialReference: .wgs84)
         ]
+        var visible: Bool = false
         private var frameIndex: Int = 0
         private let frameMax: Int = 120
         private var pointIndex: Int = 0
@@ -90,7 +100,10 @@ private extension ShowLineOfSightBetweenGeoelementsView {
                 depth: 5,
                 anchorPosition: .bottom
             )
-            observerGraphic = Graphic(geometry: point, symbol: symbol)
+            observerGraphic = Graphic(
+                geometry: point,
+                symbol: symbol
+            )
             if let observerGraphic = observerGraphic {
                 graphicsOverlay.addGraphic(observerGraphic)
             }
@@ -108,7 +121,10 @@ private extension ShowLineOfSightBetweenGeoelementsView {
                 )
                 if let observer = observerGraphic, let taxi = taxiGraphic {
                     graphicsOverlay.addGraphic(taxi)
-                    lineOfSight = GeoElementLineOfSight(observer: observer, target: taxi)
+                    lineOfSight = GeoElementLineOfSight(
+                        observer: observer,
+                        target: taxi
+                    )
                     lineOfSight?.targetOffsetZ = 2
                     if let lineOfSight = lineOfSight {
                         analysisOverlay.addAnalysis(lineOfSight)
@@ -153,7 +169,11 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             let ending = points[(pointIndex + 1) % points.count]
             let progress = Double(frameIndex) / Double(frameMax)
             // Interpolate between points
-            let intermediatePoint = interpolatedPoint(from: starting, to: ending, progress: progress)
+            let intermediatePoint = interpolatedPoint(
+                from: starting,
+                to: ending,
+                progress: progress
+            )
             taxiGraphic.geometry = intermediatePoint
             if let distance = GeometryEngine.geodeticDistance(
                 from: starting,
