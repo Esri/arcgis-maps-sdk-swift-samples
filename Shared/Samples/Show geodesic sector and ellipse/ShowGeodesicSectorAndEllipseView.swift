@@ -40,9 +40,9 @@ struct ShowGeodesicSectorAndEllipseView: View {
             .overlay(alignment: .top) {
                 if model.center == nil {
                     Text("Tap map to create a geodesic sector.")
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 6)
-                    .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 6)
+                        .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
                 }
             }
             .toolbar {
