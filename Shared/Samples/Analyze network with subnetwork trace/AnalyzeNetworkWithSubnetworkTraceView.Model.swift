@@ -20,8 +20,8 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
     /// The view model for this sample.
     @MainActor
     class Model: ObservableObject {
-        /// A feature service for an electric utility network in Naperville, Illinois.
-        private let utilityNetwork = UtilityNetwork(url: .featureServiceURL)
+        /// An electric utility network in Naperville, Illinois.
+        private let utilityNetwork = UtilityNetwork(serviceGeodatabase: .naperville())
         
         /// An array of condition expressions.
         private var traceConditionalExpressions: [UtilityTraceConditionalExpression] = []
@@ -397,6 +397,13 @@ private extension URL {
     /// The URL to the feature service for running the isolation trace.
     static var featureServiceURL: URL {
         URL(string: "https://sampleserver7.arcgisonline.com/server/rest/services/UtilityNetwork/NapervilleElectric/FeatureServer")!
+    }
+}
+
+private extension ServiceGeodatabase {
+    /// The Naperville, Illinois electric utility network service geodatabase.
+    static func naperville() -> ServiceGeodatabase {
+        .init(url: .featureServiceURL)
     }
 }
 

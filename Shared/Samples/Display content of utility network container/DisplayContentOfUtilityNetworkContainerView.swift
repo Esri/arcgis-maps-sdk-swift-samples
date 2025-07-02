@@ -82,7 +82,7 @@ struct DisplayContentOfUtilityNetworkContainerView: View {
                     }
                 }
                 .task {
-                    // Loads the utility network.
+                    // Loads the utility network from the web map.
                     do {
                         try await model.loadUtilityNetwork()
                         model.statusMessage = "Tap on a container to see its content."

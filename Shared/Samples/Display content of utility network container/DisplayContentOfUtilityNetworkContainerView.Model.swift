@@ -55,12 +55,14 @@ extension DisplayContentOfUtilityNetworkContainerView {
         }()
         
         /// The utility network for this sample.
-        private let network: UtilityNetwork
+        private var network: UtilityNetwork { map.utilityNetworks.first! }
         
         // MARK: Methods
         
         /// Loads the utility network.
         func loadUtilityNetwork() async throws {
+            // Gets and loads the first utility network from the web map.
+            try await map.load()
             try await network.load()
         }
         
@@ -68,9 +70,6 @@ extension DisplayContentOfUtilityNetworkContainerView {
             // Updates the URL session challenge handler to use the
             // specified credentials and tokens for any challenges.
             ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = ChallengeHandler()
-            
-            // Creates the utility network.
-            network = UtilityNetwork(url: .featureService, map: map)
         }
         
         deinit {
@@ -228,12 +227,13 @@ extension DisplayContentOfUtilityNetworkContainerView {
 }
 
 private extension Item {
-    /// A web map portal item for the Naperville Electric Containers.
+    /// A web map portal item for the Naperville Electric subtype group layers
+    /// with containers.
     static func napervilleElectricalNetwork() -> PortalItem {
         PortalItem(
             // Sample server 7 authentication required.
             portal: Portal(url: .samplePortal, connection: .authenticated),
-            id: .init("813eda749a9444e4a9d833a4db19e1c8")!
+            id: .init("0e38e82729f942a19e937b31bfac1b8d")!
         )
     }
 }
