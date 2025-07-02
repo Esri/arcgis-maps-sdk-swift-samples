@@ -34,8 +34,8 @@ struct ShowLineOfSightBetweenGeoelementsView: View {
 private extension ShowLineOfSightBetweenGeoelementsView {
     @MainActor
     @Observable
-    class Model {
-        private var points: [Point] = [
+    final class Model {
+        private let points: [Point] = [
             Point(x: -73.984513, y: 40.748469, spatialReference: .wgs84),
             Point(x: -73.985068, y: 40.747786, spatialReference: .wgs84),
             Point(x: -73.983452, y: 40.747091, spatialReference: .wgs84),
@@ -74,17 +74,14 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             y: 40.748131,
             spatialReference: .wgs84
         )
-        
-        init() {
-            graphicsOverlay.sceneProperties = .init(surfacePlacement: .relative)
-            displayLink = makeDisplayLink()
-        }
-        
+
         deinit {
             displayLink.invalidate()
         }
         
         func addGraphics() async {
+            graphicsOverlay.sceneProperties = .init(surfacePlacement: .relative)
+            displayLink = makeDisplayLink()
             let symbol = SimpleMarkerSceneSymbol(
                 style: .sphere,
                 color: .red,
@@ -97,7 +94,6 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             if let observerGraphic = observerGraphic {
                 graphicsOverlay.addGraphic(observerGraphic)
             }
-            
             let sceneSymbol = ModelSceneSymbol(url: .taxi)
             do {
                 try await sceneSymbol.load()
