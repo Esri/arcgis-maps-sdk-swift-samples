@@ -37,6 +37,16 @@ struct ShowGeodesicSectorAndEllipseView: View {
                     Viewpoint(center: center, scale: 1e7)
                 )
             }
+            .overlay(alignment: .top) {
+                if model.center == nil {
+                    HStack {
+                        Text("Tap map to create a geodesic sector.")
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 6)
+                    .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
+                }
+            }
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
                     Button("Settings") {
@@ -107,7 +117,7 @@ private extension ShowGeodesicSectorAndEllipseView {
         
         /// The graphics overlay that will be displayed on the map view.
         /// This will display a highlighted section of the ellipse path.
-        private let sectorGraphicOverlay: GraphicsOverlay = {
+        private let sectorGraphicOverlay = {
             let overlay = GraphicsOverlay()
             overlay.renderer = SimpleRenderer(symbol: SimpleFillSymbol(style: .solid, color: .green))
             return overlay
@@ -132,19 +142,19 @@ private extension ShowGeodesicSectorAndEllipseView {
             }
         }
         /// Controls the complexity of the geometries and the approximation of the ellipse curve.
-        var maxPointCount: Double = 1_000 {
+        var maxPointCount = 1_000.0 {
             didSet {
                 updateSector()
             }
         }
         /// Changes the length of ellipse shape on one axis.
-        var semiAxis1Length: Double = 200 {
+        var semiAxis1Length = 200.0 {
             didSet {
                 updateSector()
             }
         }
         /// Changes the length of ellipse shape on one axis.
-        var semiAxis2Length: Double = 100 {
+        var semiAxis2Length = 100.0 {
             didSet {
                 updateSector()
             }
@@ -156,7 +166,7 @@ private extension ShowGeodesicSectorAndEllipseView {
             }
         }
         /// Changes the direction of the sector.
-        var startDirection: Double = 45 {
+        var startDirection = 45.0 {
             didSet {
                 updateSector()
             }
