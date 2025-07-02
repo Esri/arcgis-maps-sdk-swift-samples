@@ -37,6 +37,7 @@ struct ShowUtilityAssociationsView: View {
     var body: some View {
         MapView(
             map: model.map,
+            viewpoint: viewpoint,
             graphicsOverlays: [model.associationsOverlay]
         )
         .onScaleChanged {
@@ -105,10 +106,10 @@ private extension ShowUtilityAssociationsView {
         // MARK: Properties
         
         /// The map with the utility network.
-        let map = Map(basemapStyle: .arcGISTopographic)
+        let map = Map(item: .napervilleElectricNetwork())
         
         /// The utility network for this sample.
-        private let network = UtilityNetwork(url: .utilityNetwork)
+        private var network: UtilityNetwork { map.utilityNetworks.first! }
         
         /// A container for associations results.
         let associationsOverlay = makeAssociationsOverlay()
@@ -125,39 +126,22 @@ private extension ShowUtilityAssociationsView {
         private var maxScale: Double { 2_000 }
         
         init() {
-            map.initialViewpoint = .initialViewpoint
-            map.addUtilityNetwork(network)
+            // Updates the URL session challenge handler to use the
+            // specified credentials and tokens for any challenges.
+            ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = ChallengeHandler()
         }
         
         deinit {
-            ArcGISEnvironment.authenticationManager.arcGISCredentialStore.removeAll()
+            // Resets the URL session challenge handler to use default handling.
+            ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = nil
         }
         
         // MARK: Methods
         
-        /// Performs important tasks including adding credentials, loading and adding operational layers.
+        /// Loads the map and the utility network.
         func setup() async throws {
-            try await ArcGISEnvironment.authenticationManager.arcGISCredentialStore.add(.publicSample)
+            try await map.load()
             try await network.load()
-            addLayers()
-        }
-        
-        private func addLayers() {
-            // Get all the edges and junctions in the network.
-            guard let networkSources = network.definition?.networkSources else { return }
-            let sourcesByType = Dictionary(grouping: networkSources, by: \.kind)
-            
-            // Add all edges that are not subnet lines to the map.
-            let edgeLayers = sourcesByType[.edge, default: []]
-                .filter { $0.usageKind != .subnetLine }
-                .map { FeatureLayer(featureTable: $0.featureTable) }
-            
-            map.addOperationalLayers(edgeLayers)
-            
-            // Add all the junctions to the map.
-            let junctionLayers = sourcesByType[.junction, default: []]
-                .map { FeatureLayer(featureTable: $0.featureTable) }
-            map.addOperationalLayers(junctionLayers)
         }
         
         static func makeAssociationsOverlay() -> GraphicsOverlay {
@@ -227,21 +211,6 @@ private extension ShowUtilityAssociationsView {
     }
 }
 
-private extension ArcGISCredential {
-    /// The public credentials for the data in this sample.
-    /// - Note: Never hardcode login information in a production application. This is done solely
-    /// for the sake of the sample.
-    static var publicSample: ArcGISCredential {
-        get async throws {
-            try await TokenCredential.credential(
-                for: .utilityNetwork,
-                username: "viewer01",
-                password: "I68VGU^nMurF"
-            )
-        }
-    }
-}
-
 private extension Symbol {
     /// A green dot.
     static var attachment: LineSymbol {
@@ -254,10 +223,31 @@ private extension Symbol {
     }
 }
 
-private extension URL {
-    /// The utility network for this sample.
-    static var utilityNetwork: URL {
-        URL(string: "https://sampleserver7.arcgisonline.com/server/rest/services/UtilityNetwork/NapervilleElectric/FeatureServer")!
+private extension Item {
+    /// A web map portal item for the Naperville Electric Map.
+    static func napervilleElectricNetwork() -> PortalItem {
+        PortalItem(
+            // Sample server 7 authentication required.
+            portal: Portal(
+                url: URL(string: "https://sampleserver7.arcgisonline.com/portal")!,
+                connection: .authenticated
+            ),
+            id: .init("be0e4637620a453584118107931f718b")!
+        )
+    }
+}
+
+/// The authentication model used to handle challenges and credentials.
+private struct ChallengeHandler: ArcGISAuthenticationChallengeHandler {
+    func handleArcGISAuthenticationChallenge(
+        _ challenge: ArcGISAuthenticationChallenge
+    ) async throws -> ArcGISAuthenticationChallenge.Disposition {
+        // NOTE: Never hardcode login information in a production application.
+        // This is done solely for the sake of the sample.
+        return .continueWithCredential(
+            // Credentials for sample server 7 services.
+            try await TokenCredential.credential(for: challenge, username: "viewer01", password: "I68VGU^nMurF")
+        )
     }
 }
 

@@ -22,8 +22,8 @@ extension CreateLoadReportView {
     @MainActor
     class Model: ObservableObject {
         // MARK: Properties
-        /// The utility network for this sample.
-        private let utilityNetwork = UtilityNetwork(url: .utilityNetwork)
+        /// An electric utility network in Naperville, Illinois.
+        private let utilityNetwork = UtilityNetwork(serviceGeodatabase: .naperville())
         
         /// The initial conditional expression.
         private var initialExpression: UtilityTraceConditionalExpression?
@@ -364,5 +364,12 @@ private extension URL {
     /// The utility network for this sample.
     static var utilityNetwork: URL {
         URL(string: "https://sampleserver7.arcgisonline.com/server/rest/services/UtilityNetwork/NapervilleElectric/FeatureServer")!
+    }
+}
+
+private extension ServiceGeodatabase {
+    /// The Naperville, Illinois electric utility network service geodatabase.
+    static func naperville() -> ServiceGeodatabase {
+        .init(url: .utilityNetwork)
     }
 }
