@@ -20,7 +20,7 @@ struct ShowGeodesicSectorAndEllipseView: View {
     @State private var model = Model()
     
     /// Manages the presentation state of the menu.
-    @State private var isPresented: Bool = false
+    @State private var isPresented = false
     
     /// The menu which holds the options that change the ellipse and sector.
     private var settingsSheet: some View {
@@ -86,7 +86,7 @@ private extension ShowGeodesicSectorAndEllipseView {
     /// A view model that encapsulates logic and state for rendering a geodesic sector and ellipse.
     /// Handles user-configured parameters and updates overlays when those parameters change.
     @Observable
-    class Model {
+    final class Model {
         /// The map that will be displayed in the map view.
         let map = Map(basemapStyle: .arcGISTopographic)
         
@@ -120,7 +120,7 @@ private extension ShowGeodesicSectorAndEllipseView {
             }
         }
         /// Controls the complexity of the geometries and the approximation of the ellipse curve.
-        var maxSegmentLength: Double = 1 {
+        var maxSegmentLength = 1.0 {
             didSet {
                 updateSector()
             }
