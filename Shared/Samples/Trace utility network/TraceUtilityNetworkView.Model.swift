@@ -189,6 +189,15 @@ extension TraceUtilityNetworkView {
                 updateUserHint(withMessage: "An error occurred while loading the network.")
                 return
             }
+            
+            if let table = network.serviceGeodatabase?.table(withLayerID: 3),
+               let layer = table.layer as? FeatureLayer {
+                layer.renderer = UniqueValueRenderer(
+                    fieldNames: ["ASSETGROUP"],
+                    uniqueValues: [.lowVoltage, .mediumVoltage],
+                    defaultSymbol: SimpleLineSymbol()
+                )
+            }
         }
         
         /// Runs a trace with the pending trace configuration and selects features in the map that
@@ -279,6 +288,33 @@ private extension SimpleMarkerSymbol {
         .init(style: .cross, color: .green, size: 20)
     }
 }
+    
+    private extension UniqueValue {
+        /// The rendering style for low voltage lines in the utility network.
+        static var lowVoltage: UniqueValue {
+            .init(
+                label: "Low voltage",
+                symbol: SimpleLineSymbol(style: .dash, color: .darkCyan, width: 3),
+                values: [3]
+            )
+        }
+        
+        /// The rendering style for medium voltage lines in the utility network.
+        static var mediumVoltage: UniqueValue {
+            .init(
+                label: "Medium voltage",
+                symbol: SimpleLineSymbol(style: .solid, color: .darkCyan, width: 3),
+                values: [5]
+            )
+        }
+    }
+    
+    private extension UIColor {
+        /// A custom color for electrical lines in the utility network.
+        static var darkCyan: UIColor {
+            .init(red: 0, green: 0.55, blue: 0.55, alpha: 1)
+        }
+    }
 
 private extension URL {
     /// The server containing the data for this sample.

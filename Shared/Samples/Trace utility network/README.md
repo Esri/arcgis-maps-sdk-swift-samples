@@ -14,22 +14,23 @@ Tap "Start a new trace" to select the type of trace using the confirmation dialo
 
 ## How it works
 
-1. Create a `MapView` with a `Map` that contains one more utility networks.
+1. Create a `MapView` with a `Map` that contains utility networks.
 2. Add a `GraphicsOverlay` to hold symbology that distinguishes starting locations from barriers.
 3. Get and load the first `UtilityNetwork` from the web map.
-4. Allow users to choose a trace type from the set of `UtilityTraceParameters.TraceType`(s).
-5. Create `UtilityTraceParameters` with the selected trace type.
-6. Set the `UtilityTraceConfiguration` with the utility tier's `defaultTraceConfiguration` property.
-7. Use the `onSingleTapGesture` modifier to listen for tap events on the map view.
-8. Identify tapped features on the map and add a `Graphic` that represents its purpose (starting point or barrier) at the tapped location.
-9. Create a `UtilityElement` for the identified feature.
-10. Determine the type of the identified feature using `UtilityNetworkSource.sourceType`.
-11. If the type is `junction`, display a terminal picker when more than one terminal is found.
-12. If the type is `edge`, compute how far along the edge the user tapped using `GeometryEngine.polyline(_:fractionalLengthClosestTo:tolerance:)`.
-13. Add any created `UtilityElement`(s) to the collection of starting locations or barriers in the `UtilityTraceParameters`.
-14. Run `UtilityNetwork.trace(using:)` using the `UtilityTraceParameters`.
-15. Group the `UtilityElementTraceResult.elements` by their `networkSource.name`.
-16. For every `FeatureLayer` in this map with trace result elements, select features by converting `UtilityElement`(s) to `ArcGISFeature`(s) using `UtilityNetwork.features(for:)`.
+4. Get the `ServiceGeodatabase` from the utility network and fetch the line `FeatureLayer` from the `ServiceGeodatabase`'s tables for customized renderer.
+5. Allow users to choose a trace type from the set of `UtilityTraceParameters.TraceType`(s).
+6. Create `UtilityTraceParameters` with the selected trace type.
+7. Set the `UtilityTraceConfiguration` with the utility tier's `defaultTraceConfiguration` property.
+8. Use the `onSingleTapGesture` modifier to listen for tap events on the map view.
+9. Identify tapped features on the map and add a `Graphic` that represents its purpose (starting point or barrier) at the tapped location.
+10. Create a `UtilityElement` for the identified feature.
+11. Determine the type of the identified feature using `UtilityNetworkSource.sourceType`.
+12. If the type is `junction`, display a terminal picker when more than one terminal is found.
+13. If the type is `edge`, compute how far along the edge the user tapped using `GeometryEngine.polyline(_:fractionalLengthClosestTo:tolerance:)`.
+14. Add any created `UtilityElement`(s) to the collection of starting locations or barriers in the `UtilityTraceParameters`.
+15. Run `UtilityNetwork.trace(using:)` using the `UtilityTraceParameters`.
+16. Group the `UtilityElementTraceResult.elements` by their `networkSource.name`.
+17. For every `FeatureLayer` in this map with trace result elements, select features by converting `UtilityElement`(s) to `ArcGISFeature`(s) using `UtilityNetwork.features(for:)`.
 
 ## Relevant API
 
