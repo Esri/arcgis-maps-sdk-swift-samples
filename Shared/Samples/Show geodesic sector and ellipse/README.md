@@ -1,0 +1,38 @@
+# Show geodesic sector and ellipse
+
+Create and display geodesic sectors and ellipses.
+
+![Image of show geodesic sector and ellipse](show-geodesic-sector-and-ellipse.png)
+
+## Use case
+
+Geodesic sectors and ellipses can be used in a wide range of analyses ranging from projectile landing zones to antenna coverage. For example, given the strength and direction of a cellular tower's signal, you could generate cell coverage geometries to identify areas without sufficient connectivity.
+
+## How to use the sample
+
+The geodesic sector and ellipse will display with default parameters at the start. Click anywhere on the map to change the center of the geometries. Adjust any of the controls to see how they affect the sector and ellipse on the fly.
+
+## How it works
+
+To create a geodesic sector and ellipse:
+
+1. Create`GeodesicSectorParameters` and `GeodesicEllipseParameters` values.
+2. Use `center`, `axisDirection`, `semiAxis1Length`, and `semiAxis2Length` to set the general ellipse position, shape, and orientation.
+3. Use `sectorAngle` and `startDirection` to set the sector's shape and orientation.
+4. Use `maxPointCount` and `maxSegmentLength` to control the complexity of the geometries and the approximation of the ellipse curve.
+5. Use `geometryType` to change the result geometry type.
+6. Pass the parameters to the related static methods: `GeometryEngine.geodesicEllipse(parameters:)` and `GeometryEngine.geodesicSector(parameters:)`. The returned geometry type is that of the parameters.
+
+## Relevant API
+
+GeodesicEllipseParameters
+GeodesicSectorParameters
+GeometryEngine
+
+## Additional information
+
+To create a circle instead of an ellipse, simply set `semiAxis2Length` to `0` and `semiAxis1Length` to the desired radius of the circle. This eliminates the need to update both parameters to the same value.
+
+## Tags
+
+ellipse, geodesic, geometry, sector
