@@ -26,8 +26,8 @@ struct ShowLineOfSightBetweenGeoelementsView: View {
         )
         .overlay(alignment: .top) {
             HStack {
-                Text("Visibility: ")
-                Text("Unknown")
+                Text("Visibility:")
+                Text(model.visibilityStatus)
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 6)
@@ -78,6 +78,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         private var taxiGraphic: Graphic?
         nonisolated(unsafe) private var displayLink: CADisplayLink!
         private var observerGraphic: Graphic?
+        var visibilityStatus = ""
         private var point = Point(
             x: -73.984988,
             y: 40.748131,
@@ -186,11 +187,11 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             guard let lineOfSight else { return }
             switch lineOfSight.targetVisibility {
             case .obstructed:
-                print("obstructed")
+                visibilityStatus = "obstructed"
             case .visible:
-                print("visible")
+                visibilityStatus = "visible"
             case .unknown:
-                print("unknown")
+                visibilityStatus = "unknown"
             @unknown default:
                 print("error")
             }
@@ -220,6 +221,7 @@ extension URL {
         Bundle.main.url(forResource: "dolmus", withExtension: "3ds", subdirectory: "Dolmus3ds")!
     }
 }
+
 #Preview {
     ShowLineOfSightBetweenGeoelementsView()
 }
