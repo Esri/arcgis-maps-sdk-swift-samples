@@ -167,8 +167,8 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             spatialReference: .wgs84
         )
         
-        /// Returns a red spherical 3D marker symbol.
-        /// This is used in the 3D scene views (e.g., ArcGIS SceneView) to represent the location of the observer.
+        /// Returns a red spherical marker symbol.
+        /// This is used in the scene views to represent the location of the observer.
         private var observerSymbol: SimpleMarkerSceneSymbol {
             SimpleMarkerSceneSymbol(
                 style: .sphere,
