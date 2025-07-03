@@ -310,7 +310,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         /// - Parameters:
         ///   - from: Start point.
         ///   - to: End point.
-        ///   - progress: A value between 0 and 1 representing interpolation progress.
+        ///   - progress: A value representing interpolation progress.
         private func interpolatedPoint(from: Point, to: Point, progress: Double) -> Point {
             let x = from.x + (to.x - from.x) * progress
             let y = from.y + (to.y - from.y) * progress
@@ -318,7 +318,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         }
         
         /// Updates the Z (height) value of the observer's point geometry.
-        /// - Parameter height: The new observer height in meters.
+        /// - Parameter height: The new observer height.
         private func changeObserverHeight(_ height: Double) {
             guard let observer = observerGraphic,
                   let geometry = observer.geometry as? Point else { return }
