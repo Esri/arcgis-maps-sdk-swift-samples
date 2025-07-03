@@ -60,6 +60,7 @@ struct ShowLineOfSightBetweenGeoelementsView: View {
                 var numberFormat: FloatingPointFormatStyle<Double> {
                     .init().precision(.fractionLength(0))
                 }
+                
                 LabeledContent(
                     "Height",
                     value: model.height,
@@ -121,13 +122,27 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             scene.addOperationalLayer(buildingLayer)
             return scene
         }()
-        var graphicsOverlay = GraphicsOverlay()
+        var graphicsOverlay = GraphicsOverlay() {
+            didSet {
+                let renderer = SimpleRenderer()
+                renderer.sceneProperties.headingExpression = ("[HEADING]")
+                graphicsOverlay.renderer = renderer
+            }
+        }
         var analysisOverlay = AnalysisOverlay()
         private var lineOfSight: GeoElementLineOfSight?
         private var taxiGraphic: Graphic?
         private var displayLink: CADisplayLink!
         private var observerGraphic: Graphic?
         var visibilityStatus = ""
+        let symbol = SimpleMarkerSceneSymbol(
+            style: .sphere,
+            color: .red,
+            height: 5,
+            width: 5,
+            depth: 5,
+            anchorPosition: .bottom
+        )
         private var point = Point(
             x: -73.984988,
             y: 40.748131,
@@ -136,28 +151,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         
         func addGraphics() async {
             graphicsOverlay.sceneProperties = .init(surfacePlacement: .relative)
-            let renderer = SimpleRenderer()
-            renderer.sceneProperties.headingExpression = ("[HEADING]")
-            graphicsOverlay.renderer = SimpleRenderer()
-            
             displayLink = makeDisplayLink()
-            let symbol = SimpleMarkerSceneSymbol(
-                style: .sphere,
-                color: .red,
-                height: 5,
-                width: 5,
-                depth: 5,
-                anchorPosition: .bottom
-            )
-            observerGraphic = Graphic(
-                geometry: point,
-                symbol: symbol
-            )
-            if let observerGraphic = observerGraphic {
-                graphicsOverlay.addGraphic(observerGraphic)
-            }
-            let camera = Camera(lookingAt: observerGraphic!.geometry! as! Point, distance: 700.0, heading: -30.0, pitch: 45.0, roll: 0.0)
-            scene.initialViewpoint = Viewpoint(boundingGeometry: observerGraphic!.geometry! as! Point, camera: camera)
             let sceneSymbol = ModelSceneSymbol(url: .taxi)
             do {
                 try await sceneSymbol.load()
@@ -170,7 +164,23 @@ private extension ShowLineOfSightBetweenGeoelementsView {
                     ),
                     symbol: sceneSymbol
                 )
+                observerGraphic = Graphic(
+                    geometry: point,
+                    symbol: symbol
+                )
                 if let observer = observerGraphic, let taxi = taxiGraphic {
+                    graphicsOverlay.addGraphic(observer)
+                    let camera = Camera(
+                        lookingAt: observer.geometry! as! Point,
+                        distance: 700.0,
+                        heading: -30.0,
+                        pitch: 45.0,
+                        roll: 0.0
+                    )
+                    scene.initialViewpoint = Viewpoint(
+                        boundingGeometry: observer.geometry! as! Point,
+                        camera: camera
+                    )
                     graphicsOverlay.addGraphic(taxi)
                     lineOfSight = GeoElementLineOfSight(
                         observer: observer,
@@ -239,10 +249,13 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             switch lineOfSight.targetVisibility {
             case .obstructed:
                 visibilityStatus = "obstructed"
+                taxiGraphic.isSelected = false
             case .visible:
                 visibilityStatus = "visible"
+                taxiGraphic.isVisible = true
             case .unknown:
                 visibilityStatus = "unknown"
+                taxiGraphic.isSelected = false
             @unknown default:
                 print("error")
             }
