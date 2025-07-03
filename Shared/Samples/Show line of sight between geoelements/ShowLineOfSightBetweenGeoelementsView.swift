@@ -168,32 +168,38 @@ private extension ShowLineOfSightBetweenGeoelementsView {
                     geometry: point,
                     symbol: symbol
                 )
-                if let observer = observerGraphic, let taxi = taxiGraphic {
-                    graphicsOverlay.addGraphic(observer)
+                addGraphicsToOverlays()
+                displayLink.isPaused = false
+            } catch {
+                self.error = error
+            }
+        }
+        
+        private func addGraphicsToOverlays() {
+            if let observer = observerGraphic, let taxi = taxiGraphic {
+                graphicsOverlay.addGraphic(observer)
+                if let observerPoint = observer.geometry as? Point {
                     let camera = Camera(
-                        lookingAt: observer.geometry! as! Point,
+                        lookingAt: observerPoint,
                         distance: 700.0,
                         heading: -30.0,
                         pitch: 45.0,
                         roll: 0.0
                     )
                     scene.initialViewpoint = Viewpoint(
-                        boundingGeometry: observer.geometry! as! Point,
+                        boundingGeometry: observerPoint,
                         camera: camera
                     )
-                    graphicsOverlay.addGraphic(taxi)
-                    lineOfSight = GeoElementLineOfSight(
-                        observer: observer,
-                        target: taxi
-                    )
-                    lineOfSight?.targetOffsetZ = 2
-                    if let lineOfSight = lineOfSight {
-                        analysisOverlay.addAnalysis(lineOfSight)
-                    }
                 }
-                displayLink.isPaused = false
-            } catch {
-                self.error = error
+                graphicsOverlay.addGraphic(taxi)
+                lineOfSight = GeoElementLineOfSight(
+                    observer: observer,
+                    target: taxi
+                )
+                lineOfSight?.targetOffsetZ = 2
+                if let lineOfSight = lineOfSight {
+                    analysisOverlay.addAnalysis(lineOfSight)
+                }
             }
         }
         
