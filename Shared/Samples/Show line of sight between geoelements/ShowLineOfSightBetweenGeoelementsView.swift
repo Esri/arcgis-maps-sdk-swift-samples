@@ -56,7 +56,7 @@ struct ShowLineOfSightBetweenGeoelementsView: View {
     private var settingsSheet: some View {
         NavigationStack {
             Form {
-                let heightRange = 1.0...70.0
+                let heightRange = 20.0...50.0
                 
                 var numberFormat: FloatingPointFormatStyle<Double> {
                     .init().precision(.fractionLength(0))
@@ -109,7 +109,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             Point(x: -73.982961, y: 40.747762, spatialReference: .wgs84)
         ]
         /// Height of the observer in meters. Updates the observer graphic when changed.
-        var height = 1.0 {
+        var height = 20.0 {
             didSet {
                 changeObserverHeight(height)
             }
