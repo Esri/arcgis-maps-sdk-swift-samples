@@ -20,6 +20,7 @@ extension EnvironmentValues {
 }
 
 /// A view model for requesting App Store reviews.
+@MainActor
 final class RequestReviewModel {
     /// The number of times a sample has been opened by the user.
     @AppStorage("sampleOpenCount") private var sampleOpenCount = 0
