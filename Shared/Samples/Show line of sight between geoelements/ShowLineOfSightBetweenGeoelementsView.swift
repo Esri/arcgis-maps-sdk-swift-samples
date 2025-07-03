@@ -60,17 +60,14 @@ struct ShowLineOfSightBetweenGeoelementsView: View {
         NavigationStack {
             Form {
                 let heightRange = 20.0...70.0
-                
                 var numberFormat: FloatingPointFormatStyle<Double> {
                     .init().precision(.fractionLength(0))
                 }
-                
                 LabeledContent(
                     "Observer Height",
                     value: model.height,
                     format: numberFormat
                 )
-                
                 Slider(
                     value: $model.height,
                     in: heightRange,
@@ -111,6 +108,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             Point(x: -73.983452, y: 40.747091, spatialReference: .wgs84),
             Point(x: -73.982961, y: 40.747762, spatialReference: .wgs84)
         ]
+        
         /// Height of the observer in meters. Updates the observer graphic when changed.
         var height = 20.0 {
             didSet {
@@ -123,6 +121,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         private var pointIndex: Int = 0
         
         var error: Error?
+        
         /// The 3D scene containing basemap, elevation, and building layers.
         let scene: ArcGIS.Scene = {
             // Creates a scene and set an initial viewpoint.
@@ -136,6 +135,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             scene.addOperationalLayer(buildingLayer)
             return scene
         }()
+        
         /// Graphics overlay used to render the observer and target symbols.
         var graphicsOverlay = GraphicsOverlay() {
             didSet {
@@ -144,6 +144,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
                 graphicsOverlay.renderer = renderer
             }
         }
+        
         /// Overlay used to display the line of sight analysis visualization.
         var analysisOverlay = AnalysisOverlay()
         
@@ -166,6 +167,8 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             spatialReference: .wgs84
         )
         
+        /// Returns a red spherical 3D marker symbol.
+        /// This is used in the 3D scene views (e.g., ArcGIS SceneView) to represent the location of the observer.
         private var observerSymbol: SimpleMarkerSceneSymbol {
             SimpleMarkerSceneSymbol(
                 style: .sphere,
@@ -209,6 +212,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
                 self.error = error
             }
         }
+        
         /// Adds the observer, target, and analysis objects to their respective overlays.
         private func addGraphicsToOverlays() {
             if let observer = observerGraphic, let taxi = taxiGraphic {
@@ -241,6 +245,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             return newDisplayLink
         }
         
+        /// Used for deallocating `displayLink` on view disappear.
         func stopAnimating() {
             displayLink.invalidate()
             displayLink = nil
