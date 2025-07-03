@@ -57,6 +57,7 @@ struct ShowLineOfSightBetweenGeoelementsView: View {
         NavigationStack {
             Form {
                 let heightRange = 1.0...70.0
+                
                 var numberFormat: FloatingPointFormatStyle<Double> {
                     .init().precision(.fractionLength(0))
                 }
@@ -98,12 +99,14 @@ private extension ShowLineOfSightBetweenGeoelementsView {
     @MainActor
     @Observable
     final class Model {
+        
         private let points: [Point] = [
             Point(x: -73.984513, y: 40.748469, spatialReference: .wgs84),
             Point(x: -73.985068, y: 40.747786, spatialReference: .wgs84),
             Point(x: -73.983452, y: 40.747091, spatialReference: .wgs84),
             Point(x: -73.982961, y: 40.747762, spatialReference: .wgs84)
         ]
+        
         var height = 1.0 {
             didSet {
                 changeObserverHeight(height)
