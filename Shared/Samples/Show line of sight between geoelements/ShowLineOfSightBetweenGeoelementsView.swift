@@ -27,6 +27,9 @@ struct ShowLineOfSightBetweenGeoelementsView: View {
             graphicsOverlays: [model.graphicsOverlay],
             analysisOverlays: [model.analysisOverlay]
         )
+        .onDisappear {
+            model.stopAnimating()
+        }
         .overlay(alignment: .top) {
             HStack {
                 Text("Visibility:")
@@ -56,7 +59,7 @@ struct ShowLineOfSightBetweenGeoelementsView: View {
     private var settingsSheet: some View {
         NavigationStack {
             Form {
-                let heightRange = 20.0...50.0
+                let heightRange = 20.0...70.0
                 
                 var numberFormat: FloatingPointFormatStyle<Double> {
                     .init().precision(.fractionLength(0))
@@ -174,6 +177,8 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             )
         }
         
+        
+        
         func addGraphics() async {
             graphicsOverlay.sceneProperties = .init(surfacePlacement: .relative)
             displayLink = makeDisplayLink()
@@ -236,6 +241,11 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             // Add to main thread common mode run loop, so it is not effected by UI events.
             newDisplayLink.add(to: .main, forMode: .common)
             return newDisplayLink
+        }
+        
+        func stopAnimating() {
+            displayLink.invalidate()
+            displayLink = nil
         }
         
         /// Animates the target graphic between a set of points in a loop,
