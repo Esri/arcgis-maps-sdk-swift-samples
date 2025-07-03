@@ -62,7 +62,7 @@ struct ShowLineOfSightBetweenGeoelementsView: View {
                 }
                 
                 LabeledContent(
-                    "Height",
+                    "Observer Height",
                     value: model.height,
                     format: numberFormat
                 )
@@ -72,7 +72,7 @@ struct ShowLineOfSightBetweenGeoelementsView: View {
                     in: heightRange,
                     step: 1
                 ) {
-                    Text("Height")
+                    Text("Observer Height")
                 } minimumValueLabel: {
                     Text(heightRange.lowerBound, format: numberFormat)
                 } maximumValueLabel: {
@@ -104,11 +104,12 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             Point(x: -73.983452, y: 40.747091, spatialReference: .wgs84),
             Point(x: -73.982961, y: 40.747762, spatialReference: .wgs84)
         ]
-        var height = 70.0 {
+        var height = 1.0 {
             didSet {
                 changeObserverHeight(height)
             }
         }
+        
         private var frameIndex: Int = 0
         private let frameMax: Int = 120
         private var pointIndex: Int = 0
@@ -151,6 +152,12 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             spatialReference: .wgs84
         )
         
+        private let taxiPoint = Point(
+            x: -73.984513,
+            y: 40.748469,
+            spatialReference: .wgs84
+        )
+        
         private var observerSymbol: SimpleMarkerSceneSymbol {
             SimpleMarkerSceneSymbol(
                 style: .sphere,
@@ -170,11 +177,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
                 try await sceneSymbol.load()
                 sceneSymbol.anchorPosition = .bottom
                 taxiGraphic = Graphic(
-                    geometry: Point(
-                        x: -73.984513,
-                        y: 40.748469,
-                        spatialReference: .wgs84
-                    ),
+                    geometry: taxiPoint,
                     symbol: sceneSymbol
                 )
                 let camera = Camera(
@@ -291,7 +294,6 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         private func changeObserverHeight(_ height: Double) {
             guard let observer = observerGraphic,
                   let geometry = observer.geometry as? Point else { return }
-            
             // Create a new point with the updated Z (height) value.
             let updatedPoint = Point(
                 x: geometry.x,
