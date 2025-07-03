@@ -177,8 +177,6 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             )
         }
         
-        
-        
         func addGraphics() async {
             graphicsOverlay.sceneProperties = .init(surfacePlacement: .relative)
             displayLink = makeDisplayLink()
