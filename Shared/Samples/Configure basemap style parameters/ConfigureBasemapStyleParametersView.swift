@@ -20,8 +20,6 @@ struct ConfigureBasemapStyleParametersView: View {
     @StateObject private var model = Model()
     
     /// The selected basemap style language strategy.
-    /// Sets the language strategy to global to use English, local to use the
-    /// local language, or a locale to use a specific language.
     @State private var selectedLanguage: BasemapStyleLanguage = .strategic(.local)
     
     var body: some View {
