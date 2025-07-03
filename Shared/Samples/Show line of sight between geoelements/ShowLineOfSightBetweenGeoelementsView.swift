@@ -56,7 +56,7 @@ struct ShowLineOfSightBetweenGeoelementsView: View {
     private var settingsSheet: some View {
         NavigationStack {
             Form {
-                let heightRange = 1.0...1_000.0
+                let heightRange = 1.0...70.0
                 var numberFormat: FloatingPointFormatStyle<Double> {
                     .init().precision(.fractionLength(0))
                 }
@@ -104,12 +104,17 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             Point(x: -73.983452, y: 40.747091, spatialReference: .wgs84),
             Point(x: -73.982961, y: 40.747762, spatialReference: .wgs84)
         ]
-        /// Controls the complexity of the geometries and the approximation of the ellipse curve.
-        var height = 1_000.0
+        var height = 70.0 {
+            didSet {
+                changeObserverHeight(height)
+            }
+        }
         private var frameIndex: Int = 0
         private let frameMax: Int = 120
         private var pointIndex: Int = 0
+        
         var error: Error?
+        
         let scene: ArcGIS.Scene = {
             // Creates a scene and set an initial viewpoint.
             let scene = Scene(basemapStyle: .arcGISImagery)
@@ -122,6 +127,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             scene.addOperationalLayer(buildingLayer)
             return scene
         }()
+        
         var graphicsOverlay = GraphicsOverlay() {
             didSet {
                 let renderer = SimpleRenderer()
@@ -129,25 +135,32 @@ private extension ShowLineOfSightBetweenGeoelementsView {
                 graphicsOverlay.renderer = renderer
             }
         }
+        
         var analysisOverlay = AnalysisOverlay()
+        
         private var lineOfSight: GeoElementLineOfSight?
         private var taxiGraphic: Graphic?
         private var displayLink: CADisplayLink!
         private var observerGraphic: Graphic?
+        
         var visibilityStatus = ""
-        let symbol = SimpleMarkerSceneSymbol(
-            style: .sphere,
-            color: .red,
-            height: 5,
-            width: 5,
-            depth: 5,
-            anchorPosition: .bottom
-        )
-        private var point = Point(
+        
+        private let observerPoint = Point(
             x: -73.984988,
             y: 40.748131,
             spatialReference: .wgs84
         )
+        
+        private var observerSymbol: SimpleMarkerSceneSymbol {
+            SimpleMarkerSceneSymbol(
+                style: .sphere,
+                color: .red,
+                height: 5,
+                width: 5,
+                depth: 5,
+                anchorPosition: .bottom
+            )
+        }
         
         func addGraphics() async {
             graphicsOverlay.sceneProperties = .init(surfacePlacement: .relative)
@@ -164,9 +177,20 @@ private extension ShowLineOfSightBetweenGeoelementsView {
                     ),
                     symbol: sceneSymbol
                 )
+                let camera = Camera(
+                    lookingAt: observerPoint,
+                    distance: 700.0,
+                    heading: -30.0,
+                    pitch: 45.0,
+                    roll: 0.0
+                )
+                scene.initialViewpoint = Viewpoint(
+                    boundingGeometry: observerPoint,
+                    camera: camera
+                )
                 observerGraphic = Graphic(
-                    geometry: point,
-                    symbol: symbol
+                    geometry: observerPoint,
+                    symbol: observerSymbol
                 )
                 addGraphicsToOverlays()
                 displayLink.isPaused = false
@@ -178,19 +202,6 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         private func addGraphicsToOverlays() {
             if let observer = observerGraphic, let taxi = taxiGraphic {
                 graphicsOverlay.addGraphic(observer)
-                if let observerPoint = observer.geometry as? Point {
-                    let camera = Camera(
-                        lookingAt: observerPoint,
-                        distance: 700.0,
-                        heading: -30.0,
-                        pitch: 45.0,
-                        roll: 0.0
-                    )
-                    scene.initialViewpoint = Viewpoint(
-                        boundingGeometry: observerPoint,
-                        camera: camera
-                    )
-                }
                 graphicsOverlay.addGraphic(taxi)
                 lineOfSight = GeoElementLineOfSight(
                     observer: observer,
@@ -251,19 +262,23 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             ) {
                 (taxiGraphic.symbol as? ModelSceneSymbol)?.heading = Float(distance.azimuth1.value)
             }
+            setVisibilityStatus()
+        }
+        
+        private func setVisibilityStatus() {
             guard let lineOfSight else { return }
             switch lineOfSight.targetVisibility {
             case .obstructed:
-                visibilityStatus = "obstructed"
-                taxiGraphic.isSelected = false
+                visibilityStatus = "Obstructed"
+                taxiGraphic?.isSelected = false
             case .visible:
-                visibilityStatus = "visible"
-                taxiGraphic.isVisible = true
+                visibilityStatus = "Visible"
+                taxiGraphic?.isVisible = true
             case .unknown:
-                visibilityStatus = "unknown"
-                taxiGraphic.isSelected = false
+                visibilityStatus = "Unknown"
+                taxiGraphic?.isSelected = false
             @unknown default:
-                print("error")
+                visibilityStatus = "Unknown Status"
             }
         }
         
@@ -271,6 +286,22 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             let x = from.x + (to.x - from.x) * progress
             let y = from.y + (to.y - from.y) * progress
             return Point(x: x, y: y, spatialReference: .wgs84)
+        }
+        
+        private func changeObserverHeight(_ height: Double) {
+            guard let observer = observerGraphic,
+                  let geometry = observer.geometry as? Point else { return }
+            
+            // Create a new point with the updated Z (height) value.
+            let updatedPoint = Point(
+                x: geometry.x,
+                y: geometry.y,
+                z: height,
+                spatialReference: geometry.spatialReference
+            )
+            
+            // Update the observer's geometry.
+            observer.geometry = updatedPoint
         }
     }
 }
