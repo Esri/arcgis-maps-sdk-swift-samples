@@ -18,6 +18,9 @@ import SwiftUI
 struct ShowLineOfSightBetweenGeoelementsView: View {
     @State private var model = Model()
     
+    /// Manages the presentation state of the menu.
+    @State private var isPresented = false
+    
     var body: some View {
         SceneView(
             scene: model.scene,
@@ -36,7 +39,57 @@ struct ShowLineOfSightBetweenGeoelementsView: View {
         .task {
             await model.addGraphics()
         }
+        .toolbar {
+            ToolbarItemGroup(placement: .bottomBar) {
+                Button("Settings") {
+                    isPresented = true
+                }
+                .sheet(isPresented: $isPresented) {
+                    settingsSheet
+                }
+            }
+        }
         .errorAlert(presentingError: $model.error)
+    }
+    
+    /// The menu.
+    private var settingsSheet: some View {
+        NavigationStack {
+            Form {
+                let heightRange = 1.0...1_000.0
+                var numberFormat: FloatingPointFormatStyle<Double> {
+                    .init().precision(.fractionLength(0))
+                }
+                LabeledContent(
+                    "Height",
+                    value: model.height,
+                    format: numberFormat
+                )
+                
+                Slider(
+                    value: $model.height,
+                    in: heightRange,
+                    step: 1
+                ) {
+                    Text("Height")
+                } minimumValueLabel: {
+                    Text(heightRange.lowerBound, format: numberFormat)
+                } maximumValueLabel: {
+                    Text(heightRange.upperBound, format: numberFormat)
+                }
+                .listRowSeparator(.hidden, edges: .top)
+            }
+            .presentationDetents([.fraction(0.25)])
+            .navigationTitle("Settings")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") {
+                        isPresented = false
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -50,6 +103,8 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             Point(x: -73.983452, y: 40.747091, spatialReference: .wgs84),
             Point(x: -73.982961, y: 40.747762, spatialReference: .wgs84)
         ]
+        /// Controls the complexity of the geometries and the approximation of the ellipse curve.
+        var height = 1_000.0
         private var frameIndex: Int = 0
         private let frameMax: Int = 120
         private var pointIndex: Int = 0
@@ -57,12 +112,6 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         let scene: ArcGIS.Scene = {
             // Creates a scene and set an initial viewpoint.
             let scene = Scene(basemapStyle: .arcGISImagery)
-            let point = Point(
-                x: -73.984988,
-                y: 40.748131,
-                spatialReference: .wgs84
-            )
-            scene.initialViewpoint = Viewpoint(center: point, scale: 1600)
             // Add base surface from elevation service.
             let elevationSource = ArcGISTiledElevationSource(url: .elevationService)
             let surface = Surface()
@@ -76,7 +125,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         var analysisOverlay = AnalysisOverlay()
         private var lineOfSight: GeoElementLineOfSight?
         private var taxiGraphic: Graphic?
-        nonisolated(unsafe) private var displayLink: CADisplayLink!
+        private var displayLink: CADisplayLink!
         private var observerGraphic: Graphic?
         var visibilityStatus = ""
         private var point = Point(
@@ -84,13 +133,13 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             y: 40.748131,
             spatialReference: .wgs84
         )
-
-        deinit {
-            displayLink.invalidate()
-        }
         
         func addGraphics() async {
             graphicsOverlay.sceneProperties = .init(surfacePlacement: .relative)
+            let renderer = SimpleRenderer()
+            renderer.sceneProperties.headingExpression = ("[HEADING]")
+            graphicsOverlay.renderer = SimpleRenderer()
+            
             displayLink = makeDisplayLink()
             let symbol = SimpleMarkerSceneSymbol(
                 style: .sphere,
@@ -107,6 +156,8 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             if let observerGraphic = observerGraphic {
                 graphicsOverlay.addGraphic(observerGraphic)
             }
+            let camera = Camera(lookingAt: observerGraphic!.geometry! as! Point, distance: 700.0, heading: -30.0, pitch: 45.0, roll: 0.0)
+            scene.initialViewpoint = Viewpoint(boundingGeometry: observerGraphic!.geometry! as! Point, camera: camera)
             let sceneSymbol = ModelSceneSymbol(url: .taxi)
             do {
                 try await sceneSymbol.load()
