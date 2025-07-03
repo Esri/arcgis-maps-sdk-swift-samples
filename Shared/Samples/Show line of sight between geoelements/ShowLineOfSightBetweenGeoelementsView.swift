@@ -18,7 +18,7 @@ import SwiftUI
 struct ShowLineOfSightBetweenGeoelementsView: View {
     @State private var model = Model()
     
-    /// Manages the presentation state of the menu.
+    /// Controls the visibility of the settings sheet.
     @State private var isPresented = false
     
     var body: some View {
@@ -52,7 +52,7 @@ struct ShowLineOfSightBetweenGeoelementsView: View {
         .errorAlert(presentingError: $model.error)
     }
     
-    /// The menu.
+    /// The settings configuration sheet for adjusting the observer's height.
     private var settingsSheet: some View {
         NavigationStack {
             Form {
@@ -96,17 +96,19 @@ struct ShowLineOfSightBetweenGeoelementsView: View {
 }
 
 private extension ShowLineOfSightBetweenGeoelementsView {
+    /// View model responsible for setting up the 3D scene, graphics, animation,
+    /// and performing line of sight analysis between moving and static geoelements.
     @MainActor
     @Observable
     final class Model {
-        
+        /// Set of predefined waypoints for animating the taxi's movement.
         private let points: [Point] = [
             Point(x: -73.984513, y: 40.748469, spatialReference: .wgs84),
             Point(x: -73.985068, y: 40.747786, spatialReference: .wgs84),
             Point(x: -73.983452, y: 40.747091, spatialReference: .wgs84),
             Point(x: -73.982961, y: 40.747762, spatialReference: .wgs84)
         ]
-        
+        /// Height of the observer in meters. Updates the observer graphic when changed.
         var height = 1.0 {
             didSet {
                 changeObserverHeight(height)
@@ -118,7 +120,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         private var pointIndex: Int = 0
         
         var error: Error?
-        
+        /// The 3D scene containing basemap, elevation, and building layers.
         let scene: ArcGIS.Scene = {
             // Creates a scene and set an initial viewpoint.
             let scene = Scene(basemapStyle: .arcGISImagery)
@@ -131,7 +133,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             scene.addOperationalLayer(buildingLayer)
             return scene
         }()
-        
+        /// Graphics overlay used to render the observer and target symbols.
         var graphicsOverlay = GraphicsOverlay() {
             didSet {
                 let renderer = SimpleRenderer()
@@ -139,7 +141,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
                 graphicsOverlay.renderer = renderer
             }
         }
-        
+        /// Overlay used to display the line of sight analysis visualization.
         var analysisOverlay = AnalysisOverlay()
         
         private var lineOfSight: GeoElementLineOfSight?
@@ -204,7 +206,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
                 self.error = error
             }
         }
-        
+        /// Adds the observer, target, and analysis objects to their respective overlays.
         private func addGraphicsToOverlays() {
             if let observer = observerGraphic, let taxi = taxiGraphic {
                 graphicsOverlay.addGraphic(observer)
@@ -236,6 +238,8 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             return newDisplayLink
         }
         
+        /// Animates the target graphic between a set of points in a loop,
+        /// updating the heading and visibility analysis on each frame.
         @objc
         private func animateTaxi() {
             guard let taxiGraphic = taxiGraphic else { return }
@@ -271,6 +275,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             setVisibilityStatus()
         }
         
+        /// Updates the UI visibility status based on the result of the line of sight analysis.
         private func setVisibilityStatus() {
             guard let lineOfSight else { return }
             switch lineOfSight.targetVisibility {
@@ -288,12 +293,19 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             }
         }
         
+        /// Returns a point interpolated between two coordinates based on a progress ratio.
+        /// - Parameters:
+        ///   - from: Start point.
+        ///   - to: End point.
+        ///   - progress: A value between 0 and 1 representing interpolation progress.
         private func interpolatedPoint(from: Point, to: Point, progress: Double) -> Point {
             let x = from.x + (to.x - from.x) * progress
             let y = from.y + (to.y - from.y) * progress
             return Point(x: x, y: y, spatialReference: .wgs84)
         }
         
+        /// Updates the Z (height) value of the observer's point geometry.
+        /// - Parameter height: The new observer height in meters.
         private func changeObserverHeight(_ height: Double) {
             guard let observer = observerGraphic,
                   let geometry = observer.geometry as? Point else { return }
