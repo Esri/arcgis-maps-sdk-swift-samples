@@ -119,7 +119,8 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         private let frameMax = 120
         private var pointIndex = 0
         
-        var error: Error?
+        /// The error shown in the error alert.
+        @State private var error: Error?
         
         /// The 3D scene containing basemap, elevation, and building layers.
         let scene: ArcGIS.Scene = {
@@ -127,9 +128,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             let scene = Scene(basemapStyle: .arcGISImagery)
             // Add base surface from elevation service.
             let elevationSource = ArcGISTiledElevationSource(url: .elevationService)
-            let surface = Surface()
-            surface.addElevationSource(elevationSource)
-            scene.baseSurface = surface
+            scene.baseSurface.addElevationSource(elevationSource)
             var buildingLayer = ArcGISSceneLayer(url: .buildingsService)
             scene.addOperationalLayer(buildingLayer)
             return scene
@@ -299,12 +298,12 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         
         /// Returns a point interpolated between two coordinates based on a progress ratio.
         /// - Parameters:
-        ///   - from: Start point.
-        ///   - to: End point.
+        ///   - startPoint: The start point.
+        ///   - endPoint:The end point.
         ///   - progress: A value representing interpolation progress.
-        private func interpolatedPoint(from: Point, to: Point, progress: Double) -> Point {
-            let x = from.x + (to.x - from.x) * progress
-            let y = from.y + (to.y - from.y) * progress
+        private func interpolatedPoint(from startPoint: Point, to endPoint: Point, progress: Double) -> Point {
+            let x = startPoint.x + (endPoint.x - startPoint.x) * progress
+            let y = startPoint.y + (endPoint.y - startPoint.y) * progress
             return Point(x: x, y: y, spatialReference: .wgs84)
         }
         
@@ -328,12 +327,12 @@ private extension ShowLineOfSightBetweenGeoelementsView {
 }
 
 extension URL {
-    // URL of the elevation service - provides elevation component of the scene
+    /// The URL of the Terrain 3D ArcGIS REST Service.
     static var elevationService: URL {
         URL(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!
     }
     
-    // URL of the building service - provides builiding models
+    /// The URL of a New York City buildings scene service.
     static var buildingsService: URL {
         URL(string: "https://tiles.arcgis.com/tiles/z2tnIkrLQ2BRzr6P/arcgis/rest/services/Buildings_NewYork_v18/SceneServer/layers/0")!
     }
