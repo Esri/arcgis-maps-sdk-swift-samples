@@ -120,7 +120,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         private var pointIndex = 0
         
         /// The error shown in the error alert.
-        @State private var error: Error?
+        var error: Error?
         
         /// The 3D scene containing basemap, elevation, and building layers.
         let scene: ArcGIS.Scene = {
@@ -131,6 +131,21 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             scene.baseSurface.addElevationSource(elevationSource)
             var buildingLayer = ArcGISSceneLayer(url: .buildingsService)
             scene.addOperationalLayer(buildingLayer)
+            let observerPoint = Point(
+                latitude: 40.748131,
+                longitude: -73.984988
+            )
+            let camera = Camera(
+                lookingAt: observerPoint,
+                distance: 700.0,
+                heading: -30.0,
+                pitch: 45.0,
+                roll: 0.0
+            )
+            scene.initialViewpoint = Viewpoint(
+                boundingGeometry: observerPoint,
+                camera: camera
+            )
             return scene
         }()
         
@@ -173,17 +188,6 @@ private extension ShowLineOfSightBetweenGeoelementsView {
                 taxiGraphic = Graphic(
                     geometry: taxiPoint,
                     symbol: sceneSymbol
-                )
-                let camera = Camera(
-                    lookingAt: observerPoint,
-                    distance: 700.0,
-                    heading: -30.0,
-                    pitch: 45.0,
-                    roll: 0.0
-                )
-                scene.initialViewpoint = Viewpoint(
-                    boundingGeometry: observerPoint,
-                    camera: camera
                 )
                 observerGraphic = Graphic(
                     geometry: observerPoint,
