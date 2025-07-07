@@ -16,9 +16,36 @@ import ArcGIS
 import SwiftUI
 
 struct ShowPortalUserInfoView: View {
+    /// The error shown in the error alert.
+    @State private var error: Error?
     @State private var map = Map()
     var body: some View {
         MapView(map: map)
+            .errorAlert(presentingError: $error)
+            .onAppear {
+                // Updates the URL session challenge handler to use the
+                // specified credentials and tokens for any challenges.
+                ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = ChallengeHandler()
+            }
+            .onDisappear {
+                // Resets the URL session challenge handler to use default handling.
+                ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = nil
+            }
+    }
+}
+
+private extension ShowPortalUserInfoView {
+    /// The authentication model used to handle challenges and credentials.
+    private struct ChallengeHandler: ArcGISAuthenticationChallengeHandler {
+        func handleArcGISAuthenticationChallenge(
+            _ challenge: ArcGISAuthenticationChallenge
+        ) async throws -> ArcGISAuthenticationChallenge.Disposition {
+            // NOTE: Never hardcode login information in a production application.
+            // This is done solely for the sake of the sample.
+            return .continueWithCredential(
+                try await TokenCredential.credential(for: challenge, username: "username", password: "password")
+            )
+        }
     }
 }
 
