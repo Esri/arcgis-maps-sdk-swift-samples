@@ -102,7 +102,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
     @Observable
     final class Model {
         /// Set of predefined waypoints for animating the taxi's movement.
-        private let points: [Point] = [
+        private let points = [
             Point(x: -73.984513, y: 40.748469, spatialReference: .wgs84),
             Point(x: -73.985068, y: 40.747786, spatialReference: .wgs84),
             Point(x: -73.983452, y: 40.747091, spatialReference: .wgs84),
@@ -116,9 +116,9 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             }
         }
         
-        private var frameIndex: Int = 0
-        private let frameMax: Int = 120
-        private var pointIndex: Int = 0
+        private var frameIndex = 0
+        private let frameMax = 120
+        private var pointIndex = 0
         
         var error: Error?
         
