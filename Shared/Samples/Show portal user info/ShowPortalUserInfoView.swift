@@ -24,12 +24,8 @@ struct ShowPortalUserInfoView: View {
             PortalDetailsView(
                 url: $model.portalURLString,
                 onSetUrl: { model.portalURLString = $0 },
-                onSignOut: {
-                    Task { await model.signOut() }
-                },
-                onLoadPortal: {
-                    Task { await model.connectToPortal() }
-                }
+                onSignOut: { Task { await model.signOut() } },
+                onLoadPortal: { Task { await model.connectToPortal() } }
             )
             
             InfoScreen(
@@ -54,7 +50,6 @@ struct ShowPortalUserInfoView: View {
         
         var body: some View {
             VStack(alignment: .center, spacing: 16) {
-                // URL TextField
                 TextField("Portal URL", text: $url, onCommit: {
                     onLoadPortal()
                     isTextFieldFocused = false
@@ -67,23 +62,19 @@ struct ShowPortalUserInfoView: View {
                 .padding(.horizontal)
                 
                 HStack {
-                    Button(action: {
+                    Button("Sign out", action: {
                         onSignOut()
                         isTextFieldFocused = false
-                    }) {
-                        Text("Sign out")
-                            .frame(maxWidth: .infinity)
-                    }
+                    })
+                    .frame(maxWidth: .infinity)
                     .buttonStyle(.borderedProminent)
                     .tint(.orange)
                     
-                    Button(action: {
+                    Button("Load portal", action: {
                         onLoadPortal()
                         isTextFieldFocused = false
-                    }) {
-                        Text("Load portal")
-                            .frame(maxWidth: .infinity)
-                    }
+                    })
+                    .frame(maxWidth: .infinity)
                     .buttonStyle(.borderedProminent)
                     .tint(.blue)
                 }
@@ -106,8 +97,7 @@ struct ShowPortalUserInfoView: View {
             ScrollView {
                 VStack(spacing: 16) {
                     if isLoading {
-                        ProgressView()
-                            .padding()
+                        ProgressView().padding()
                     } else {
                         Text(infoText)
                             .multilineTextAlignment(.center)
@@ -148,8 +138,7 @@ struct ShowPortalUserInfoView: View {
         
         var body: some View {
             HStack {
-                Text(label)
-                    .fontWeight(.bold)
+                Text(label).fontWeight(.bold)
                 Text(value)
                 Spacer()
             }
@@ -161,31 +150,17 @@ struct ShowPortalUserInfoView: View {
 extension ShowPortalUserInfoView {
     @MainActor
     class PortalUserInfoModel: ObservableObject {
-        /// The authenticator used to handle authentication challenges.
         let authenticator = Authenticator()
         
-        /// The portal URL string.
         @Published var portalURLString: String = ""
-        
-        /// Display info or errors to the user.
         @Published var infoText: String = "Enter a portal URL to begin."
-        
-        /// Whether a connection is in progress.
         @Published var isLoading: Bool = false
-        
-        /// The loaded portal user, if any.
         @Published var user: PortalUser?
-        
-        /// The portal name.
         @Published var portalName: String = ""
-        
-        /// The last error, if any.
         @Published var error: Error?
         
-        /// The actual Portal object, if needed elsewhere.
         private var portal: Portal?
         
-        /// Computed property for URL.
         var portalURL: URL? {
             URL(string: portalURLString)
         }
@@ -194,7 +169,6 @@ extension ShowPortalUserInfoView {
             setupAuthenticator()
         }
         
-        /// Connects to the portal and loads basic info.
         func connectToPortal() async {
             guard let portalURL else {
                 infoText = "Invalid portal URL."
@@ -207,7 +181,6 @@ extension ShowPortalUserInfoView {
             do {
                 let portal = Portal(url: portalURL)
                 try await portal.load()
-                dump(portal)
                 self.portal = portal
                 self.user = portal.user
                 self.portalName = portal.info?.portalName ?? "Unknown"
@@ -222,23 +195,22 @@ extension ShowPortalUserInfoView {
             }
         }
         
-        /// Sign out and clear stored credentials.
         func signOut() async {
             await ArcGISEnvironment.authenticationManager.revokeOAuthTokens()
             await ArcGISEnvironment.authenticationManager.clearCredentialStores()
             ArcGISEnvironment.authenticationManager.handleChallenges(using: nil)
             
-            self.user = nil
-            self.portalName = ""
-            self.infoText = "Signed out."
+            user = nil
+            portalName = ""
+            infoText = "Signed out."
         }
         
-        /// Setup challenge handler for authentication.
         private func setupAuthenticator() {
             ArcGISEnvironment.authenticationManager.handleChallenges(using: authenticator)
         }
     }
 }
+
 #Preview {
     ShowPortalUserInfoView()
 }
