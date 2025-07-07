@@ -151,10 +151,9 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         private var taxiGraphic: Graphic?
         private var displayLink: CADisplayLink!
         private var observerGraphic: Graphic?
-        private var currentPoint: Point!
-        private var nextPoint: Point!
+        
         var visibilityStatus = ""
-        private var pointsIterator: CircularIterator<Point>!
+        
         private let observerPoint = Point(
             latitude: 40.748131,
             longitude: -73.984988
@@ -199,7 +198,6 @@ private extension ShowLineOfSightBetweenGeoelementsView {
                     )
                 )
                 addGraphicsToOverlays()
-                pointsIterator = CircularIterator(elements: points)
                 displayLink.isPaused = false
             } catch {
                 self.error = error
@@ -249,42 +247,35 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         @objc
         private func animateTaxi() {
             guard let taxiGraphic = taxiGraphic else { return }
-            
-            // Initialize points on first call
-            if currentPoint == nil || nextPoint == nil {
-                currentPoint = pointsIterator.next()
-                nextPoint = pointsIterator.next()
-            }
-            
             // Increment the frame counter
             frameIndex += 1
-            
             // Reset frame counter when segment is completed
             if frameIndex == frameMax {
                 frameIndex = 0
-                currentPoint = nextPoint
-                nextPoint = pointsIterator.next()
+                pointIndex += 1
+                if pointIndex == points.count {
+                    pointIndex = 0
+                }
             }
-            
+            let starting = points[pointIndex]
+            let ending = points[(pointIndex + 1) % points.count]
             let progress = Double(frameIndex) / Double(frameMax)
             // Interpolate between points
             let intermediatePoint = interpolatedPoint(
-                from: currentPoint,
-                to: nextPoint,
+                from: starting,
+                to: ending,
                 progress: progress
             )
             taxiGraphic.geometry = intermediatePoint
-            
             if let distance = GeometryEngine.geodeticDistance(
-                from: currentPoint,
-                to: nextPoint,
+                from: starting,
+                to: ending,
                 distanceUnit: .meters,
                 azimuthUnit: .degrees,
                 curveType: .geodesic
             ) {
                 (taxiGraphic.symbol as? ModelSceneSymbol)?.heading = Float(distance.azimuth1.value)
             }
-            
             setVisibilityStatus()
         }
         
@@ -332,26 +323,6 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             
             // Update the observer's geometry.
             observer.geometry = updatedPoint
-        }
-    }
-    
-    /// A generic circular iterator.
-    private struct CircularIterator<Element>: IteratorProtocol {
-        let elements: [Element]
-        private var elementIterator: Array<Element>.Iterator
-        
-        init(elements: [Element]) {
-            self.elements = elements
-            elementIterator = elements.makeIterator()
-        }
-        
-        mutating func next() -> Element? {
-            if let next = elementIterator.next() {
-                return next
-            } else {
-                elementIterator = elements.makeIterator()
-                return elementIterator.next()
-            }
         }
     }
 }
