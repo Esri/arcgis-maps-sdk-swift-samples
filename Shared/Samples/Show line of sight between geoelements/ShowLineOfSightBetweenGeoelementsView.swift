@@ -104,10 +104,10 @@ private extension ShowLineOfSightBetweenGeoelementsView {
     final class Model {
         /// Set of predefined waypoints for animating the taxi's movement.
         private let points = [
-            Point(x: -73.984513, y: 40.748469, spatialReference: .wgs84),
-            Point(x: -73.985068, y: 40.747786, spatialReference: .wgs84),
-            Point(x: -73.983452, y: 40.747091, spatialReference: .wgs84),
-            Point(x: -73.982961, y: 40.747762, spatialReference: .wgs84)
+            Point(latitude: 40.748469, longitude: -73.984513),
+            Point(latitude: 40.747786, longitude: -73.985068),
+            Point(latitude: 40.747091, longitude: -73.983452),
+            Point(latitude: 40.747762, longitude: -73.982961)
         ]
         
         /// Height of the observer in meters. Updates the observer graphic when changed.
