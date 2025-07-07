@@ -1,0 +1,39 @@
+{
+    "category": "",
+    "description": "Retrieve a user's details via a Portal.",
+    "ignore": false,
+    "images": [
+        "show-portal-user-info.png"
+    ],
+    "keywords": [
+        "account",
+        "avatar",
+        "bio",
+        "cloud and portal",
+        "email",
+        "login",
+        "picture",
+        "profile",
+        "user",
+        "username",
+        "AuthenticationManager",
+        "AuthenticationView",
+        "Credential",
+        "DefaultAuthenticationChallengeHandler",
+        "PortalInfo",
+        "PortalUser"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "AuthenticationManager",
+        "AuthenticationView",
+        "Credential",
+        "DefaultAuthenticationChallengeHandler",
+        "PortalInfo",
+        "PortalUser"
+    ],
+    "snippets": [
+        "ShowPortalUserInfoView.swift"
+    ],
+    "title": "Show portal user info"
+}
