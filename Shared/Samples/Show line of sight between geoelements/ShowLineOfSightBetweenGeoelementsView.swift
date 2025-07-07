@@ -61,9 +61,7 @@ struct ShowLineOfSightBetweenGeoelementsView: View {
         NavigationStack {
             Form {
                 let heightRange = 20.0...70.0
-                var numberFormat: FloatingPointFormatStyle<Double> {
-                    .init().precision(.fractionLength(0))
-                }
+                let numberFormat = FloatingPointFormatStyle<Double>.number.precision(.fractionLength(0))
                 LabeledContent(
                     "Observer Height",
                     value: model.height,
@@ -141,7 +139,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         let graphicsOverlay: GraphicsOverlay = {
             let overlay = GraphicsOverlay()
             let renderer = SimpleRenderer()
-            renderer.sceneProperties.headingExpression = ("[HEADING]")
+            renderer.sceneProperties.headingExpression = "[HEADING]"
             overlay.renderer = renderer
             return overlay
         }()
@@ -346,12 +344,8 @@ extension URL {
         URL(string: "https://tiles.arcgis.com/tiles/z2tnIkrLQ2BRzr6P/arcgis/rest/services/Buildings_NewYork_v18/SceneServer/layers/0")!
     }
     
-    /// A URL to the loca taxi model files.
+    /// A URL to the taxi model file.
     static var taxi: URL {
         Bundle.main.url(forResource: "dolmus", withExtension: "3ds", subdirectory: "Dolmus3ds")!
     }
-}
-
-#Preview {
-    ShowLineOfSightBetweenGeoelementsView()
 }

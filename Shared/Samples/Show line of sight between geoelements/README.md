@@ -12,9 +12,7 @@ A `GeoElementLineOfSight` is therefore useful in cases where visibility between 
 
 ## How to use the sample
 
-A line of sight will display between a point on the Empire State Building (observer) and a taxi (target).
-The taxi will drive around a block and the line of sight should automatically update.
-The taxi will be highlighted when it is visible. You can change the observer height with the slider to see how it affects the target's visibility.
+A line of sight will display between a point on the Empire State Building (observer) and a taxi (target). The taxi will drive around a block and the line of sight should automatically update. The taxi will be highlighted when it is visible. You can change the observer height with the slider to see how it affects the target's visibility.
 
 ## How it works
 
@@ -30,7 +28,7 @@ The taxi will be highlighted when it is visible. You can change the observer hei
 
 ## Offline data
 
-This sample uses the [Taxi](https://www.arcgis.com/home/item.html?id= 3af5cfec0fd24dac8d88aea679027cb9) CAD Drawing. It is downloaded from ArcGIS Online automatically.
+This sample uses the [Taxi](https://www.arcgis.com/home/item.html?id=3af5cfec0fd24dac8d88aea679027cb9) CAD Drawing. It is downloaded from ArcGIS Online automatically.
 
 ## Tags
 
