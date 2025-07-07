@@ -164,19 +164,6 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             longitude: -73.984513
         )
         
-        /// Returns a red spherical marker symbol.
-        /// This is used in the scene views to represent the location of the observer.
-        private var observerSymbol: SimpleMarkerSceneSymbol {
-            SimpleMarkerSceneSymbol(
-                style: .sphere,
-                color: .red,
-                height: 5,
-                width: 5,
-                depth: 5,
-                anchorPosition: .bottom
-            )
-        }
-        
         func addGraphics() async {
             graphicsOverlay.sceneProperties = .init(surfacePlacement: .relative)
             displayLink = makeDisplayLink()
@@ -201,7 +188,14 @@ private extension ShowLineOfSightBetweenGeoelementsView {
                 )
                 observerGraphic = Graphic(
                     geometry: observerPoint,
-                    symbol: observerSymbol
+                    symbol: SimpleMarkerSceneSymbol(
+                        style: .sphere,
+                        color: .red,
+                        height: 5,
+                        width: 5,
+                        depth: 5,
+                        anchorPosition: .bottom
+                    )
                 )
                 addGraphicsToOverlays()
                 displayLink.isPaused = false
