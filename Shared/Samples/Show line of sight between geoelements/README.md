@@ -2,7 +2,7 @@
 
 Show a line of sight between two moving objects.
 
-![Image of Show line of sight between geoelements](show-line-of-sight-between-geoelements.png)
+![Image of Show line of sight between geoelements sample](show-line-of-sight-between-geoelements.png)
 
 ## Use case
 
