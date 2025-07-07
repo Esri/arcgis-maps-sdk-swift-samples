@@ -16,9 +16,10 @@ import ArcGIS
 import SwiftUI
 
 struct ShowLineOfSightBetweenGeoelementsView: View {
+    /// The view model for the sample.
     @State private var model = Model()
     
-    /// Controls the visibility of the settings sheet.
+    /// A Boolean value indicating whether the settings sheet is presented.
     @State private var isPresented = false
     
     var body: some View {
@@ -137,16 +138,16 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         }()
         
         /// Graphics overlay used to render the observer and target symbols.
-        var graphicsOverlay = GraphicsOverlay() {
-            didSet {
-                let renderer = SimpleRenderer()
-                renderer.sceneProperties.headingExpression = ("[HEADING]")
-                graphicsOverlay.renderer = renderer
-            }
-        }
+        let graphicsOverlay: GraphicsOverlay = {
+            let overlay = GraphicsOverlay()
+            let renderer = SimpleRenderer()
+            renderer.sceneProperties.headingExpression = ("[HEADING]")
+            overlay.renderer = renderer
+            return overlay
+        }()
         
         /// Overlay used to display the line of sight analysis visualization.
-        var analysisOverlay = AnalysisOverlay()
+        let analysisOverlay = AnalysisOverlay()
         
         private var lineOfSight: GeoElementLineOfSight?
         private var taxiGraphic: Graphic?
@@ -156,15 +157,13 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         var visibilityStatus = ""
         
         private let observerPoint = Point(
-            x: -73.984988,
-            y: 40.748131,
-            spatialReference: .wgs84
+            latitude: 40.748131,
+            longitude: -73.984988
         )
         
         private let taxiPoint = Point(
-            x: -73.984513,
-            y: 40.748469,
-            spatialReference: .wgs84
+            latitude: 40.748469,
+            longitude: -73.984513
         )
         
         /// Returns a red spherical marker symbol.
