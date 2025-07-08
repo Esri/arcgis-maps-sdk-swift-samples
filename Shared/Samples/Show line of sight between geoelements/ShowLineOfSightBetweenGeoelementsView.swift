@@ -133,7 +133,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             // Add base surface from elevation service.
             let elevationSource = ArcGISTiledElevationSource(url: .elevationService)
             scene.baseSurface.addElevationSource(elevationSource)
-            var buildingLayer = ArcGISSceneLayer(url: .buildingsService)
+            let buildingLayer = ArcGISSceneLayer(url: .buildingsService)
             scene.addOperationalLayer(buildingLayer)
             let camera = Camera(
                 lookingAt: .observerPoint,
@@ -152,6 +152,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         /// Graphics overlay used to render the observer and target symbols.
         let graphicsOverlay: GraphicsOverlay = {
             let overlay = GraphicsOverlay()
+            overlay.sceneProperties.surfacePlacement = .relative
             let renderer = SimpleRenderer()
             renderer.sceneProperties.headingExpression = "[HEADING]"
             overlay.renderer = renderer
@@ -161,10 +162,22 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         /// Overlay used to display the line of sight analysis visualization.
         let analysisOverlay = AnalysisOverlay()
         
-        private var lineOfSight: GeoElementLineOfSight?
+        /// A line of sight analysis between the observer and the taxi graphic.
+        private let lineOfSight: GeoElementLineOfSight
         private var taxiGraphic: Graphic?
         private var displayLink: CADisplayLink!
-        private var observerGraphic: Graphic?
+        /// A graphic representing the observer's location in the scene.
+        private let observerGraphic = Graphic(
+            geometry: .observerPoint,
+            symbol: SimpleMarkerSceneSymbol(
+                style: .sphere,
+                color: .red,
+                height: 5,
+                width: 5,
+                depth: 5,
+                anchorPosition: .bottom
+            )
+        )
         
         var visibilityStatus = ""
         
@@ -174,7 +187,6 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         )
         
         func addGraphics() async throws {
-            graphicsOverlay.sceneProperties = .init(surfacePlacement: .relative)
             displayLink = makeDisplayLink()
             let sceneSymbol = ModelSceneSymbol(url: .taxi)
             try await sceneSymbol.load()
@@ -322,10 +334,13 @@ private extension ShowLineOfSightBetweenGeoelementsView {
 }
 
 private extension Geometry {
-    static let observerPoint = Point(
-        latitude: 40.748131,
-        longitude: -73.984988
-    )
+    /// A point representing the observer's location in New York City.
+    static var observerPoint: Point {
+        Point(
+            latitude: 40.748131,
+            longitude: -73.984988
+        )
+    }
 }
 
 extension URL {
