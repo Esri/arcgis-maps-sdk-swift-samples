@@ -161,12 +161,8 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         private let taxiGraphic: Graphic = {
             let sceneSymbol = ModelSceneSymbol(url: .taxi)
             sceneSymbol.anchorPosition = .bottom
-            let taxiPoint = Point(
-                latitude: 40.748469,
-                longitude: -73.984513
-            )
             let graphic = Graphic(
-                geometry: taxiPoint,
+                geometry: .taxiPoint,
                 symbol: sceneSymbol
             )
             return graphic
@@ -188,11 +184,6 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         private var displayLink: CADisplayLink!
         
         var visibilityStatus = ""
-        
-        private let taxiPoint = Point(
-            latitude: 40.748469,
-            longitude: -73.984513
-        )
         
         init() {
             graphicsOverlay.addGraphics([observerGraphic, taxiGraphic])
@@ -315,6 +306,13 @@ private extension Geometry {
         Point(
             latitude: 40.748131,
             longitude: -73.984988
+        )
+    }
+    /// Initial position of taxi graphic.
+    static var taxiPoint: Point {
+        Point(
+            latitude: 40.748469,
+            longitude: -73.984513
         )
     }
 }
