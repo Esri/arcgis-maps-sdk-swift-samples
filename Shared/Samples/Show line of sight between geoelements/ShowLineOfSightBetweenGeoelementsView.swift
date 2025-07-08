@@ -308,7 +308,7 @@ private extension Geometry {
             longitude: -73.984988
         )
     }
-    /// A point respresenting the initial position of taxi in New York City.
+    /// A point respresenting the initial position of the taxi in New York City.
     static var taxiPoint: Point {
         Point(
             latitude: 40.748469,
