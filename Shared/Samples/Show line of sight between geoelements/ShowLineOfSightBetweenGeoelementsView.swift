@@ -202,7 +202,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         }
         
         /// Sets up and starts the animation for the taxi graphic. It initializes the `displayLink` property
-        /// that allows your app to synchronize its drawing to the refresh rate of the display. It calls the `animateTaxiGraphic()`
+        /// that allows the sample to synchronize its drawing to the refresh rate of the display. It calls the `animateTaxiGraphic()`
         /// method on every screen refresh ensuring smooth animation of the taxi as it moves along the waypoints.
         func setupAnimation() {
             displayLink = makeDisplayLink()
