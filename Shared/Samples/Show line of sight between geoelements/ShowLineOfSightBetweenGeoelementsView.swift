@@ -224,7 +224,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             return newDisplayLink
         }
         
-        /// Stops animating....
+        /// Invalidates `displayLink` and sets it to nil. By doing this, you are stopping the animation.
         func stopAnimating() {
             //  Deallocate `displayLink`.
             displayLink.invalidate()
