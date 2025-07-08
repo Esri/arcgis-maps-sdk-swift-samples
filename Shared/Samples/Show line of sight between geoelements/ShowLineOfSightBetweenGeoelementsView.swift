@@ -22,6 +22,9 @@ struct ShowLineOfSightBetweenGeoelementsView: View {
     /// A Boolean value indicating whether the settings sheet is presented.
     @State private var isPresented = false
     
+    /// The error shown in the error alert.
+    @State private var error: Error?
+    
     var body: some View {
         SceneView(
             scene: model.scene,
@@ -41,7 +44,11 @@ struct ShowLineOfSightBetweenGeoelementsView: View {
             .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
         }
         .task {
-            await model.addGraphics()
+            do {
+                try await model.addGraphics()
+            } catch {
+                self.error = error
+            }
         }
         .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
@@ -53,7 +60,7 @@ struct ShowLineOfSightBetweenGeoelementsView: View {
                 }
             }
         }
-        .errorAlert(presentingError: $model.error)
+        .errorAlert(presentingError: $error)
     }
     
     /// The settings configuration sheet for adjusting the observer's height.
@@ -120,7 +127,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         private var pointIndex = 0
         
         /// The error shown in the error alert.
-        var error: Error?
+    
         
         /// The 3D scene containing basemap, elevation, and building layers.
         let scene: ArcGIS.Scene = {
@@ -169,33 +176,29 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             longitude: -73.984513
         )
         
-        func addGraphics() async {
+        func addGraphics() async throws {
             graphicsOverlay.sceneProperties = .init(surfacePlacement: .relative)
             displayLink = makeDisplayLink()
             let sceneSymbol = ModelSceneSymbol(url: .taxi)
-            do {
-                try await sceneSymbol.load()
-                sceneSymbol.anchorPosition = .bottom
-                taxiGraphic = Graphic(
-                    geometry: taxiPoint,
-                    symbol: sceneSymbol
+            try await sceneSymbol.load()
+            sceneSymbol.anchorPosition = .bottom
+            taxiGraphic = Graphic(
+                geometry: taxiPoint,
+                symbol: sceneSymbol
+            )
+            observerGraphic = Graphic(
+                geometry: Point.observerPoint,
+                symbol: SimpleMarkerSceneSymbol(
+                    style: .sphere,
+                    color: .red,
+                    height: 5,
+                    width: 5,
+                    depth: 5,
+                    anchorPosition: .bottom
                 )
-                observerGraphic = Graphic(
-                    geometry: Point.observerPoint,
-                    symbol: SimpleMarkerSceneSymbol(
-                        style: .sphere,
-                        color: .red,
-                        height: 5,
-                        width: 5,
-                        depth: 5,
-                        anchorPosition: .bottom
-                    )
-                )
-                addGraphicsToOverlays()
-                displayLink.isPaused = false
-            } catch {
-                self.error = error
-            }
+            )
+            addGraphicsToOverlays()
+            displayLink.isPaused = false
         }
         
         /// Adds the observer, target, and analysis objects to their respective overlays.
