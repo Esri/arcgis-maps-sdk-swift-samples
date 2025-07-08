@@ -72,7 +72,7 @@ struct EditFeaturesUsingFeatureFormsView: View {
             MapView(map: map)
                 .onSingleTapGesture { screenPoint, _ in
                     if isShowingFeatureForm {
-                        showDiscardEditsAlert()
+                        endEditing()
                     } else {
                         tapPoint = screenPoint
                     }
@@ -105,76 +105,49 @@ struct EditFeaturesUsingFeatureFormsView: View {
                 }
                 .sheet(isPresented: $isShowingFeatureForm) {
                     if let featureForm {
-                        VStack {
-                            featureFormToolbar
-                            
-                            // Displays the feature form using the toolkit component.
-                            FeatureFormView(root: featureForm, isPresented: $isShowingFeatureForm)
-                                .padding(.horizontal)
-                                .task {
-                                    defer { hasEdits = false }
-                                    
-                                    for await hasEdits in featureForm.$hasEdits {
-                                        self.hasEdits = hasEdits
-                                    }
+                        // Displays the feature form using the toolkit component.
+                        FeatureFormView(root: featureForm, isPresented: $isShowingFeatureForm)
+                            .onFormEditingEvent { event in
+                                switch event {
+                                case .discardedEdits:
+                                    endEditing()
+                                case .savedEdits:
+                                    isApplyingEdits = true
+                                @unknown default:
+                                    fatalError("Unknown form editing event: \(event)")
                                 }
-                                .task {
-                                    defer { hasValidationErrors = false }
-                                    
-                                    for await validationErrors in featureForm.$validationErrors {
-                                        hasValidationErrors = !validationErrors.isEmpty
-                                    }
+                            }
+                            .task {
+                                defer { hasEdits = false }
+                                
+                                for await hasEdits in featureForm.$hasEdits {
+                                    self.hasEdits = hasEdits
                                 }
-                        }
-                        .presentationDetents([.medium, .large])
+                            }
+                            .task {
+                                defer { hasValidationErrors = false }
+                                
+                                for await validationErrors in featureForm.$validationErrors {
+                                    hasValidationErrors = !validationErrors.isEmpty
+                                }
+                            }
+                            .task(id: isApplyingEdits) {
+                                guard isApplyingEdits else { return }
+                                defer { isApplyingEdits = false }
+                                
+                                do {
+                                    try await applyEdits()
+                                    endEditing()
+                                } catch {
+                                    self.error = error
+                                }
+                            }
+                            .presentationDetents([.medium, .large])
                     }
-                }
-                .alert("Discard Edits", isPresented: $isShowingDiscardEditsAlert) {
-                    Button("Cancel", role: .cancel) {}
-                    Button("Discard", role: .destructive) {
-                        featureForm?.discardEdits()
-                        endEditing()
-                    }
-                } message: {
-                    Text("Any changes made within the form will be lost.")
                 }
                 .errorAlert(presentingError: $error)
                 .disabled(isApplyingEdits)
         }
-    }
-    
-    /// The toolbar for the feature form panel.
-    private var featureFormToolbar: some View {
-        HStack {
-            Button("Discard Edits", systemImage: "xmark.circle", role: .destructive) {
-                showDiscardEditsAlert()
-            }
-            
-            Spacer()
-            
-            Text("Edit Feature")
-            
-            Spacer()
-            
-            Button("Done", systemImage: "checkmark") {
-                isApplyingEdits = true
-            }
-            .disabled(!hasEdits || hasValidationErrors)
-            .task(id: isApplyingEdits) {
-                guard isApplyingEdits else { return }
-                defer { isApplyingEdits = false }
-                
-                do {
-                    try await applyEdits()
-                    endEditing()
-                } catch {
-                    self.error = error
-                }
-            }
-        }
-        .fontWeight(.medium)
-        .labelStyle(.iconOnly)
-        .padding()
     }
     
     /// Closes the feature form panel and resets the feature selection.
@@ -183,23 +156,10 @@ struct EditFeaturesUsingFeatureFormsView: View {
         featureLayer.clearSelection()
     }
     
-    /// Shows the discard edits alert if the feature form has edits.
-    private func showDiscardEditsAlert() {
-        if hasEdits {
-            isShowingDiscardEditsAlert = true
-        } else {
-            endEditing()
-        }
-    }
-    
     /// Applies the edits made in the feature form to the feature service.
     private func applyEdits() async throws {
-        guard let featureForm else { return }
-        
-        // Saves the feature form edits to the database.
-        try await featureForm.finishEditing()
-        
-        guard let serviceFeatureTable = featureForm.feature.table as? ServiceFeatureTable else {
+        guard let featureForm,
+              let serviceFeatureTable = featureForm.feature.table as? ServiceFeatureTable else {
             return
         }
         
