@@ -186,9 +186,11 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             )
         )
         
+        /// `CADisplayLink` is used to control the timing for the animation of the taxi.
         private var displayLink: CADisplayLink!
         
-        /// The status of the taxi's visibility from the point of view of the observer. Updates as the taxi travels around the block and toggles between `Visible` and `Obstructed`.
+        /// The string of the status of the taxi's visibility from the point of view of the observer. The status updates as the taxi travels around the block and toggles between `Visible` and `Obstructed`.
+        /// This is displayed to the user at the top of scene. `Unknown` status should not occur with this sample.
         var visibilityStatus = ""
         
         init() {
