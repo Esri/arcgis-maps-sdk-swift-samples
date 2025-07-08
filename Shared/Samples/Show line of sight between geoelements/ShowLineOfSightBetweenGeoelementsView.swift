@@ -99,7 +99,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
     @MainActor
     @Observable
     final class Model {
-        /// Set of predefined waypoints for animating the taxi's movement.
+        /// A set of predefined waypoints for animating the taxi's movement.
         private let points = [
             Point(latitude: 40.748469, longitude: -73.984513),
             Point(latitude: 40.747786, longitude: -73.985068),
@@ -107,7 +107,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             Point(latitude: 40.747762, longitude: -73.982961)
         ]
         
-        /// Height of the observer in meters. Updates the observer graphic when changed.
+        /// The height of the observer in meters. Updates the observer graphic when changed.
         var height = 20.0 {
             didSet {
                 changeObserverHeight(height)
@@ -141,7 +141,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             return scene
         }()
         
-        /// Graphics overlay used to render the observer and target symbols.
+        /// The graphics overlay used to render the observer and target symbols.
         let graphicsOverlay: GraphicsOverlay = {
             let overlay = GraphicsOverlay()
             overlay.sceneProperties.surfacePlacement = .relative
@@ -151,7 +151,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             return overlay
         }()
         
-        /// Overlay used to display the line of sight analysis visualization.
+        /// An analysis overlay used to display the line of sight analysis visualization.
         let analysisOverlay = AnalysisOverlay()
         
         /// A line of sight analysis between the observer and the taxi graphic.
@@ -213,8 +213,9 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             return newDisplayLink
         }
         
-        /// Used for deallocating `displayLink` on view disappear.
+        /// Stops animating....
         func stopAnimating() {
+            //  Deallocate `displayLink`.
             displayLink.invalidate()
             displayLink = nil
         }
@@ -222,7 +223,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         /// Animates the target graphic between a set of points in a loop,
         /// updating the heading and visibility analysis on each frame.
         @objc
-        private func animateTaxi() {
+        private func animateTaxiGraphic() {
             // Increment the frame counter
             frameIndex += 1
             // Reset frame counter when segment is completed
@@ -236,7 +237,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             let starting = points[pointIndex]
             let ending = points[(pointIndex + 1) % points.count]
             let progress = Double(frameIndex) / Double(frameMax)
-            // Interpolate between points
+            // Interpolate between points.
             let intermediatePoint = interpolatedPoint(
                 from: starting,
                 to: ending,
