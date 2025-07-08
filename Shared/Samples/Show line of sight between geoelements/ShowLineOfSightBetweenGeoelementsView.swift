@@ -126,7 +126,6 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         private let frameMax = 120
         private var pointIndex = 0
     
-        
         /// The 3D scene containing basemap, elevation, and building layers.
         let scene: ArcGIS.Scene = {
             // Creates a scene and set an initial viewpoint.
