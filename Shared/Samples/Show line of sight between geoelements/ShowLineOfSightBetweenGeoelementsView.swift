@@ -188,6 +188,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         
         private var displayLink: CADisplayLink!
         
+        /// The status of the taxi's visibility from the point of view of the observer. Updates as the taxi travels around the block and toggles between `Visible` and `Obstructed`.
         var visibilityStatus = ""
         
         init() {
