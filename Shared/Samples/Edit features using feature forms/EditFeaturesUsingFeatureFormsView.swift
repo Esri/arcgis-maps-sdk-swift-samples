@@ -103,13 +103,13 @@ struct EditFeaturesUsingFeatureFormsView: View {
                         .padding(8)
                         .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
                 }
-                .floatingPanel(isPresented: $isShowingFeatureForm) { [featureForm] in
+                .sheet(isPresented: $isShowingFeatureForm) {
                     if let featureForm {
                         VStack {
                             featureFormToolbar
                             
                             // Displays the feature form using the toolkit component.
-                            FeatureFormView(featureForm: featureForm)
+                            FeatureFormView(root: featureForm, isPresented: $isShowingFeatureForm)
                                 .padding(.horizontal)
                                 .task {
                                     defer { hasEdits = false }
