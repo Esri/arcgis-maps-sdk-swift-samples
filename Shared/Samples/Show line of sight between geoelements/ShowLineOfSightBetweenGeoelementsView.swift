@@ -192,6 +192,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             analysisOverlay.addAnalysis(lineOfSight)
         }
         
+        /// Creates the `CADisplayLink` that controls the animation timing and unpauses it (which triggers the animation to start.)
         func setupAnimation() {
             displayLink = makeDisplayLink()
             displayLink.isPaused = false
@@ -203,11 +204,10 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             // Create new display link.
             let newDisplayLink = CADisplayLink(
                 target: self,
-                selector: #selector(animateTaxi)
+                selector: #selector(animateTaxiGraphic)
             )
             // Set the default frame rate to 60 fps.
             newDisplayLink.preferredFramesPerSecond = 60
-            newDisplayLink.isPaused = true
             // Add to main thread common mode run loop, so it is not effected by UI events.
             newDisplayLink.add(to: .main, forMode: .common)
             return newDisplayLink
