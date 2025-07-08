@@ -120,7 +120,8 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         private var pointIndex = 0
         
         /// The error shown in the error alert.
-        var error: Error?
+        /// The error shown in the error alert.
+        @State private var error: Error?
         
         /// The 3D scene containing basemap, elevation, and building layers.
         let scene: ArcGIS.Scene = {
@@ -132,14 +133,14 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             var buildingLayer = ArcGISSceneLayer(url: .buildingsService)
             scene.addOperationalLayer(buildingLayer)
             let camera = Camera(
-                lookingAt: Point.observerPoint,
+                lookingAt: .observerPoint,
                 distance: 700.0,
                 heading: -30.0,
                 pitch: 45.0,
                 roll: 0.0
             )
             scene.initialViewpoint = Viewpoint(
-                boundingGeometry: Point.observerPoint,
+                boundingGeometry: .observerPoint,
                 camera: camera
             )
             return scene
@@ -321,7 +322,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
     }
 }
 
-private extension Point {
+private extension Geometry {
     static let observerPoint = Point(
         latitude: 40.748131,
         longitude: -73.984988
