@@ -22,9 +22,6 @@ struct ShowLineOfSightBetweenGeoelementsView: View {
     /// A Boolean value indicating whether the settings sheet is presented.
     @State private var isPresented = false
     
-    /// The error shown in the error alert.
-    @State private var error: Error?
-    
     var body: some View {
         SceneView(
             scene: model.scene,
@@ -44,11 +41,7 @@ struct ShowLineOfSightBetweenGeoelementsView: View {
             .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
         }
         .task {
-            do {
-                try await model.addGraphics()
-            } catch {
-                self.error = error
-            }
+            model.setupAnimation()
         }
         .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
@@ -60,7 +53,6 @@ struct ShowLineOfSightBetweenGeoelementsView: View {
                 }
             }
         }
-        .errorAlert(presentingError: $error)
     }
     
     /// The settings configuration sheet for adjusting the observer's height.
@@ -125,7 +117,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         private var frameIndex = 0
         private let frameMax = 120
         private var pointIndex = 0
-    
+        
         /// The 3D scene containing basemap, elevation, and building layers.
         let scene: ArcGIS.Scene = {
             // Creates a scene and set an initial viewpoint.
@@ -164,8 +156,22 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         
         /// A line of sight analysis between the observer and the taxi graphic.
         private let lineOfSight: GeoElementLineOfSight
-        private var taxiGraphic: Graphic?
-        private var displayLink: CADisplayLink!
+        
+        /// A graphic representing the taxi model that will be animated.
+        private let taxiGraphic: Graphic = {
+            let sceneSymbol = ModelSceneSymbol(url: .taxi)
+            sceneSymbol.anchorPosition = .bottom
+            let taxiPoint = Point(
+                latitude: 40.748469,
+                longitude: -73.984513
+            )
+            let graphic = Graphic(
+                geometry: taxiPoint,
+                symbol: sceneSymbol
+            )
+            return graphic
+        }()
+        
         /// A graphic representing the observer's location in the scene.
         private let observerGraphic = Graphic(
             geometry: .observerPoint,
@@ -179,6 +185,8 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             )
         )
         
+        private var displayLink: CADisplayLink!
+        
         var visibilityStatus = ""
         
         private let taxiPoint = Point(
@@ -186,44 +194,16 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             longitude: -73.984513
         )
         
-        func addGraphics() async throws {
-            displayLink = makeDisplayLink()
-            let sceneSymbol = ModelSceneSymbol(url: .taxi)
-            try await sceneSymbol.load()
-            sceneSymbol.anchorPosition = .bottom
-            taxiGraphic = Graphic(
-                geometry: taxiPoint,
-                symbol: sceneSymbol
-            )
-            observerGraphic = Graphic(
-                geometry: Point.observerPoint,
-                symbol: SimpleMarkerSceneSymbol(
-                    style: .sphere,
-                    color: .red,
-                    height: 5,
-                    width: 5,
-                    depth: 5,
-                    anchorPosition: .bottom
-                )
-            )
-            addGraphicsToOverlays()
-            displayLink.isPaused = false
+        init() {
+            graphicsOverlay.addGraphics([observerGraphic, taxiGraphic])
+            lineOfSight = GeoElementLineOfSight(observer: observerGraphic, target: taxiGraphic)
+            lineOfSight.targetOffsetZ = 2
+            analysisOverlay.addAnalysis(lineOfSight)
         }
         
-        /// Adds the observer, target, and analysis objects to their respective overlays.
-        private func addGraphicsToOverlays() {
-            if let observer = observerGraphic, let taxi = taxiGraphic {
-                graphicsOverlay.addGraphic(observer)
-                graphicsOverlay.addGraphic(taxi)
-                lineOfSight = GeoElementLineOfSight(
-                    observer: observer,
-                    target: taxi
-                )
-                lineOfSight?.targetOffsetZ = 2
-                if let lineOfSight = lineOfSight {
-                    analysisOverlay.addAnalysis(lineOfSight)
-                }
-            }
+        func setupAnimation() {
+            displayLink = makeDisplayLink()
+            displayLink.isPaused = false
         }
         
         /// Creates a display link timer for the image overlay animation.
@@ -252,7 +232,6 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         /// updating the heading and visibility analysis on each frame.
         @objc
         private func animateTaxi() {
-            guard let taxiGraphic = taxiGraphic else { return }
             // Increment the frame counter
             frameIndex += 1
             // Reset frame counter when segment is completed
@@ -287,17 +266,16 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         
         /// Updates the UI visibility status based on the result of the line of sight analysis.
         private func setVisibilityStatus() {
-            guard let lineOfSight else { return }
             switch lineOfSight.targetVisibility {
             case .obstructed:
                 visibilityStatus = "Obstructed"
-                taxiGraphic?.isSelected = false
+                taxiGraphic.isSelected = false
             case .visible:
                 visibilityStatus = "Visible"
-                taxiGraphic?.isVisible = true
+                taxiGraphic.isVisible = true
             case .unknown:
                 visibilityStatus = "Unknown"
-                taxiGraphic?.isSelected = false
+                taxiGraphic.isSelected = false
             @unknown default:
                 visibilityStatus = "Unknown Status"
             }
@@ -317,8 +295,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         /// Updates the Z (height) value of the observer's point geometry.
         /// - Parameter height: The new observer height.
         private func changeObserverHeight(_ height: Double) {
-            guard let observer = observerGraphic,
-                  let geometry = observer.geometry as? Point else { return }
+            guard let geometry = observerGraphic.geometry as? Point else { return }
             // Create a new point with the updated Z (height) value.
             let updatedPoint = Point(
                 x: geometry.x,
@@ -326,9 +303,8 @@ private extension ShowLineOfSightBetweenGeoelementsView {
                 z: height,
                 spatialReference: geometry.spatialReference
             )
-            
             // Update the observer's geometry.
-            observer.geometry = updatedPoint
+            observerGraphic.geometry = updatedPoint
         }
     }
 }
