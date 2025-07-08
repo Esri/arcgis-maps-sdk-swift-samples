@@ -120,8 +120,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         private var pointIndex = 0
         
         /// The error shown in the error alert.
-        /// The error shown in the error alert.
-        @State private var error: Error?
+        var error: Error?
         
         /// The 3D scene containing basemap, elevation, and building layers.
         let scene: ArcGIS.Scene = {
