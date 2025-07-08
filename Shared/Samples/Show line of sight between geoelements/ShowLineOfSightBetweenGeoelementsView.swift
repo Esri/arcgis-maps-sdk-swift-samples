@@ -125,8 +125,6 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         private var frameIndex = 0
         private let frameMax = 120
         private var pointIndex = 0
-        
-        /// The error shown in the error alert.
     
         
         /// The 3D scene containing basemap, elevation, and building layers.
