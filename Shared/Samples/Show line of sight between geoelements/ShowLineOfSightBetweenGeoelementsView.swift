@@ -114,8 +114,13 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             }
         }
         
+        /// The current frame number in the animation sequence for the taxi's movement.
         private var frameIndex = 0
+        
+        /// The total number of animation frames to complete a segment between two waypoints.
         private let frameMax = 120
+        
+        /// The index of the current start point in the `points` array used for animating the taxi's path.
         private var pointIndex = 0
         
         /// The 3D scene containing basemap, elevation, and building layers.
