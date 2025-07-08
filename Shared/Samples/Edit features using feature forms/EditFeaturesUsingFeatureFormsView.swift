@@ -126,6 +126,7 @@ struct EditFeaturesUsingFeatureFormsView: View {
                                     }
                                 }
                         }
+                        .presentationDetents([.medium, .large])
                     }
                 }
                 .alert("Discard Edits", isPresented: $isShowingDiscardEditsAlert) {
