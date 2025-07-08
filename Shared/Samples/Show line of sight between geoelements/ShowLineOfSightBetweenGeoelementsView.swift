@@ -186,11 +186,12 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             )
         )
         
-        /// `CADisplayLink` is used to control the timing for the animation of the taxi.
+        /// `CADisplayLink` isa  timer object that allows your app to synchronize its drawing to the refresh rate of the display.
+        ///  It is used to control the timing for the animation of the taxi.
         private var displayLink: CADisplayLink!
         
         /// The string of the status of the taxi's visibility from the point of view of the observer. The status updates as the taxi travels around the block and toggles between `Visible` and `Obstructed`.
-        /// This is displayed to the user at the top of scene. `Unknown` status should not occur with this sample.
+        /// This is displayed to the user at the top of scene. `Unknown` status should not display with this sample.
         var visibilityStatus = ""
         
         init() {
@@ -200,7 +201,9 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             analysisOverlay.addAnalysis(lineOfSight)
         }
         
-        /// Creates the `CADisplayLink` that controls the animation timing and unpauses it (which triggers the animation to start.)
+        /// Sets up and starts the animation for the taxi graphic. It initializes a `CADisplayLink`, which is a timer object
+        /// that allows your app to synchronize its drawing to the refresh rate of the display. It calls the `animateTaxiGraphic()`
+        /// method on every screen refresh ensuring smooth animation of the taxi as it moves along the waypoints.
         func setupAnimation() {
             displayLink = makeDisplayLink()
             displayLink.isPaused = false
