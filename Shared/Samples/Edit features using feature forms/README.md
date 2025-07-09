@@ -22,7 +22,7 @@ Tap a feature on the map to open a sheet displaying the feature form. Select for
 5. Optionally, you can add the  `validationErrors(_:)` modifier to the `FeatureForm` toolkit component to determine the visibility of validation errors.
 6. Once edits are added to the form fields, check if the validation errors list is empty using `featureForm.validationErrors` to verify that there are no errors.
 7. To commit edits on the service geodatabase:
-    1. Call `featureForm.finishEditing()` to save edits to the database.
+    1. When the "Save" button is tapped, `FeatureFormView` calls `featureForm.finishEditing()` to save edits to the database.
     2. Retrieve the backing service feature table's geodatabase using `serviceFeatureTable.serviceGeodatabase`.
     3. Verify the service geodatabase can commit changes back to the service using `serviceGeodatabase.serviceInfo.canUseServiceGeodatabaseApplyEdits`.
     4. If apply edits are allowed, call `serviceGeodatabase.applyEdits()` to apply local edits to the online service.
