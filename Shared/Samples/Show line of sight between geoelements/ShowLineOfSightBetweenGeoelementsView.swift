@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import ArcGIS
+import Observation
 import SwiftUI
 
 struct ShowLineOfSightBetweenGeoelementsView: View {
