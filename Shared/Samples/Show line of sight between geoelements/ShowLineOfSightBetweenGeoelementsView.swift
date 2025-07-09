@@ -264,12 +264,13 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             }
             targetVisibility = lineOfSight.targetVisibility
         }
-        //
+        
         /// Returns a point interpolated between two coordinates based on a progress ratio.
         /// - Parameters:
         ///   - startPoint: The start point.
-        ///   - endPoint:The end point.
+        ///   - endPoint: The end point.
         ///   - progress: A value representing interpolation progress.
+        /// - Returns: An interpolated point based on the progress value.
         private func interpolatedPoint(from startPoint: Point, to endPoint: Point, progress: Double) -> Point {
             let x = startPoint.x + (endPoint.x - startPoint.x) * progress
             let y = startPoint.y + (endPoint.y - startPoint.y) * progress
@@ -313,7 +314,7 @@ private extension Geometry {
             longitude: -73.984988
         )
     }
-    /// A point respresenting the initial position of the taxi in New York City.
+    /// A point representing the initial position of the taxi in New York City.
     static var taxiPoint: Point {
         Point(
             latitude: 40.748469,
@@ -333,7 +334,7 @@ extension URL {
         URL(string: "https://tiles.arcgis.com/tiles/z2tnIkrLQ2BRzr6P/arcgis/rest/services/Buildings_NewYork_v18/SceneServer/layers/0")!
     }
     
-    /// A URL to the taxi model file.
+    /// The URL to the taxi model file.
     static var taxi: URL {
         Bundle.main.url(forResource: "dolmus", withExtension: "3ds", subdirectory: "Dolmus3ds")!
     }
