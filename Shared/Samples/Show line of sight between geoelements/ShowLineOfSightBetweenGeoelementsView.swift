@@ -128,7 +128,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         
         /// The 3D scene containing basemap, elevation, and building layers.
         let scene: ArcGIS.Scene = {
-            // Creates a scene and set an initial viewpoint.
+            // Create a scene and set an initial viewpoint.
             let scene = Scene(basemapStyle: .arcGISImagery)
             // Add base surface from elevation service.
             let elevationSource = ArcGISTiledElevationSource(url: .elevationService)
