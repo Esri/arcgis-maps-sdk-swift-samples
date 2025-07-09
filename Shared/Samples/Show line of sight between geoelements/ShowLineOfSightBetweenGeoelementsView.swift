@@ -60,12 +60,9 @@ struct ShowLineOfSightBetweenGeoelementsView: View {
         NavigationStack {
             Form {
                 let heightRange = 20.0...70.0
-                let numberFormat = FloatingPointFormatStyle<Double>.number.precision(.fractionLength(0))
-                
                 LabeledContent(
                     "Observer Height",
-                    value: model.height,
-                    format: numberFormat
+                    value: Measurement(value: model.height, unit: UnitLength.meters).formatted()
                 )
                 Slider(
                     value: $model.height,
@@ -74,9 +71,9 @@ struct ShowLineOfSightBetweenGeoelementsView: View {
                 ) {
                     Text("Observer Height")
                 } minimumValueLabel: {
-                    Text(heightRange.lowerBound, format: numberFormat)
+                    Text(Measurement(value: heightRange.lowerBound, unit: UnitLength.meters).formatted())
                 } maximumValueLabel: {
-                    Text(heightRange.upperBound, format: numberFormat)
+                    Text(Measurement(value: heightRange.upperBound, unit: UnitLength.meters).formatted())
                 }
                 .listRowSeparator(.hidden, edges: .top)
             }
