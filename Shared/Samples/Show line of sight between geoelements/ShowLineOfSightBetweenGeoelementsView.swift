@@ -28,6 +28,9 @@ struct ShowLineOfSightBetweenGeoelementsView: View {
             graphicsOverlays: [model.graphicsOverlay],
             analysisOverlays: [model.analysisOverlay]
         )
+        .onAppear {
+            model.setupAnimation()
+        }
         .onDisappear {
             model.stopAnimating()
         }
@@ -39,9 +42,6 @@ struct ShowLineOfSightBetweenGeoelementsView: View {
             .frame(maxWidth: .infinity)
             .padding(.vertical, 6)
             .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
-        }
-        .task {
-            model.setupAnimation()
         }
         .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
@@ -61,6 +61,7 @@ struct ShowLineOfSightBetweenGeoelementsView: View {
             Form {
                 let heightRange = 20.0...70.0
                 let numberFormat = FloatingPointFormatStyle<Double>.number.precision(.fractionLength(0))
+                
                 LabeledContent(
                     "Observer Height",
                     value: model.height,
@@ -100,7 +101,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
     @Observable
     final class Model {
         /// A set of predefined waypoints for animating the taxi's movement.
-        private let points = [
+        @ObservationIgnored private let points = [
             Point(latitude: 40.748469, longitude: -73.984513),
             Point(latitude: 40.747786, longitude: -73.985068),
             Point(latitude: 40.747091, longitude: -73.983452),
@@ -110,18 +111,20 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         /// The height of the observer in meters. Updates the observer graphic when changed.
         var height = 20.0 {
             didSet {
-                changeObserverHeight(height)
+                /// Updates the height value of the observer's point geometry.
+                guard let geometry = observerGraphic.geometry as? Point else { return }
+                observerGraphic.geometry = GeometryEngine.makeGeometry(from: geometry, z: height)
             }
         }
         
         /// The current frame number in the animation sequence for the taxi's movement.
-        private var frameIndex = 0
+        @ObservationIgnored private var frameIndex = 0
         
         /// The total number of animation frames to complete a segment between two waypoints.
-        private let frameMax = 120
+        @ObservationIgnored private let frameMax = 120
         
         /// The index of the current start point in the `points` array used for animating the taxi's path.
-        private var pointIndex = 0
+        @ObservationIgnored private var pointIndex = 0
         
         /// The 3D scene containing basemap, elevation, and building layers.
         let scene: ArcGIS.Scene = {
@@ -150,9 +153,6 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         let graphicsOverlay: GraphicsOverlay = {
             let overlay = GraphicsOverlay()
             overlay.sceneProperties.surfacePlacement = .relative
-            let renderer = SimpleRenderer()
-            renderer.sceneProperties.headingExpression = "[HEADING]"
-            overlay.renderer = renderer
             return overlay
         }()
         
@@ -160,10 +160,10 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         let analysisOverlay = AnalysisOverlay()
         
         /// A line of sight analysis between the observer and the taxi graphic.
-        private let lineOfSight: GeoElementLineOfSight
+        @ObservationIgnored private let lineOfSight: GeoElementLineOfSight
         
         /// A graphic representing the taxi model that will be animated.
-        private let taxiGraphic: Graphic = {
+        @ObservationIgnored private let taxiGraphic: Graphic = {
             let sceneSymbol = ModelSceneSymbol(url: .taxi)
             sceneSymbol.anchorPosition = .bottom
             let graphic = Graphic(
@@ -174,7 +174,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         }()
         
         /// A graphic representing the observer's location in the scene.
-        private let observerGraphic = Graphic(
+        @ObservationIgnored private let observerGraphic = Graphic(
             geometry: .observerPoint,
             symbol: SimpleMarkerSceneSymbol(
                 style: .sphere,
@@ -188,7 +188,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         
         /// `CADisplayLink` is a timer object that allows your app to synchronize its drawing to the refresh rate of the display.
         /// It is used to control the timing for the animation of the taxi.
-        private var displayLink: CADisplayLink!
+        @ObservationIgnored private var displayLink: CADisplayLink!
         
         /// The target visibility of the taxi graphic from the point of view of the observer.
         var targetVisibility: GeoElementLineOfSight.TargetVisibility = .unknown
@@ -275,21 +275,6 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             let x = startPoint.x + (endPoint.x - startPoint.x) * progress
             let y = startPoint.y + (endPoint.y - startPoint.y) * progress
             return Point(x: x, y: y, spatialReference: .wgs84)
-        }
-        
-        /// Updates the Z (height) value of the observer's point geometry.
-        /// - Parameter height: The new observer height.
-        private func changeObserverHeight(_ height: Double) {
-            guard let geometry = observerGraphic.geometry as? Point else { return }
-            // Create a new point with the updated Z (height) value.
-            let updatedPoint = Point(
-                x: geometry.x,
-                y: geometry.y,
-                z: height,
-                spatialReference: geometry.spatialReference
-            )
-            // Update the observer's geometry.
-            observerGraphic.geometry = updatedPoint
         }
     }
 }
