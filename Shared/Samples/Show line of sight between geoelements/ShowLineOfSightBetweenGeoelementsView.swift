@@ -98,7 +98,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
     @Observable
     final class Model {
         /// A set of predefined waypoints for animating the taxi's movement.
-        @ObservationIgnored private let points = [
+        private let points = [
             Point(latitude: 40.748469, longitude: -73.984513),
             Point(latitude: 40.747786, longitude: -73.985068),
             Point(latitude: 40.747091, longitude: -73.983452),
@@ -118,7 +118,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         @ObservationIgnored private var frameIndex = 0
         
         /// The total number of animation frames to complete a segment between two waypoints.
-        @ObservationIgnored private let frameMax = 120
+        private let frameMax = 120
         
         /// The index of the current start point in the `points` array used for animating the taxi's path.
         @ObservationIgnored private var pointIndex = 0
@@ -157,10 +157,10 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         let analysisOverlay = AnalysisOverlay()
         
         /// A line of sight analysis between the observer and the taxi graphic.
-        @ObservationIgnored private let lineOfSight: GeoElementLineOfSight
+        private let lineOfSight: GeoElementLineOfSight
         
         /// A graphic representing the taxi model that will be animated.
-        @ObservationIgnored private let taxiGraphic: Graphic = {
+        private let taxiGraphic: Graphic = {
             let sceneSymbol = ModelSceneSymbol(url: .taxi)
             sceneSymbol.anchorPosition = .bottom
             let graphic = Graphic(
@@ -171,7 +171,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         }()
         
         /// A graphic representing the observer's location in the scene.
-        @ObservationIgnored private let observerGraphic = Graphic(
+        private let observerGraphic = Graphic(
             geometry: .observerPoint,
             symbol: SimpleMarkerSceneSymbol(
                 style: .sphere,
