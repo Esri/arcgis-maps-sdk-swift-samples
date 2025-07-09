@@ -34,7 +34,7 @@ struct ShowLineOfSightBetweenGeoelementsView: View {
         .overlay(alignment: .top) {
             HStack {
                 Text("Visibility:")
-                Text(model.visibilityStatus)
+                Text(model.targetVisibility.label)
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 6)
@@ -190,10 +190,17 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         /// It is used to control the timing for the animation of the taxi.
         private var displayLink: CADisplayLink!
         
-        /// The string of the status of the taxi's visibility from the point of view of the observer. The status updates as the taxi travels around the block and toggles between `Visible` and `Obstructed`.
-        /// This is displayed to the user at the top of scene. `Unknown` status should not display with this sample.
-        var visibilityStatus = ""
+        /// The target visibility of the taxi graphic from the point of view of the observer.
+        var targetVisibility: GeoElementLineOfSight.TargetVisibility = .unknown {
+            didSet {
+                taxiGraphic.isVisible = targetVisibility == .visible
+            }
+        }
         
+        //        /// The string of the status of the taxi's visibility from the point of view of the observer. The status updates as the taxi travels around the block and toggles between `Visible` and `Obstructed`.
+        //        /// This is displayed to the user at the top of scene. `Unknown` status should not display with this sample.
+        //        var visibilityStatus = ""
+        //
         init() {
             graphicsOverlay.addGraphics([observerGraphic, taxiGraphic])
             lineOfSight = GeoElementLineOfSight(observer: observerGraphic, target: taxiGraphic)
@@ -263,26 +270,9 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             ) {
                 (taxiGraphic.symbol as? ModelSceneSymbol)?.heading = Float(distance.azimuth1.value)
             }
-            setVisibilityStatus()
+            targetVisibility = lineOfSight.targetVisibility
         }
-        
-        /// Updates the UI visibility status based on the result of the line of sight analysis.
-        private func setVisibilityStatus() {
-            switch lineOfSight.targetVisibility {
-            case .obstructed:
-                visibilityStatus = "Obstructed"
-                taxiGraphic.isSelected = false
-            case .visible:
-                visibilityStatus = "Visible"
-                taxiGraphic.isVisible = true
-            case .unknown:
-                visibilityStatus = "Unknown"
-                taxiGraphic.isSelected = false
-            @unknown default:
-                visibilityStatus = "Unknown Status"
-            }
-        }
-        
+        //
         /// Returns a point interpolated between two coordinates based on a progress ratio.
         /// - Parameters:
         ///   - startPoint: The start point.
@@ -307,6 +297,18 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             )
             // Update the observer's geometry.
             observerGraphic.geometry = updatedPoint
+        }
+    }
+}
+
+private extension GeoElementLineOfSight.TargetVisibility {
+    /// A human-readable label for each target visibility.
+    var label: String {
+        switch self {
+        case .visible: "Visible"
+        case .obstructed: "Obstructed"
+        case .unknown: "Unknown"
+        @unknown default: "Unknown"
         }
     }
 }
