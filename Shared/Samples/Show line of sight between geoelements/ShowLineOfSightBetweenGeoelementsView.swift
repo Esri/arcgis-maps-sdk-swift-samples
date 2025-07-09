@@ -224,7 +224,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             return newDisplayLink
         }
         
-        /// Invalidates `displayLink` and sets it to nil. By doing this, you are stopping the animation.
+        /// Stops animating the taxi graphic.
         func stopAnimating() {
             displayLink.invalidate()
             displayLink = nil
