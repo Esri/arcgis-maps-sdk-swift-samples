@@ -191,11 +191,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         private var displayLink: CADisplayLink!
         
         /// The target visibility of the taxi graphic from the point of view of the observer.
-        var targetVisibility: GeoElementLineOfSight.TargetVisibility = .unknown {
-            didSet {
-                taxiGraphic.isVisible = targetVisibility == .visible
-            }
-        }
+        var targetVisibility: GeoElementLineOfSight.TargetVisibility = .unknown
         
         init() {
             graphicsOverlay.addGraphics([observerGraphic, taxiGraphic])
