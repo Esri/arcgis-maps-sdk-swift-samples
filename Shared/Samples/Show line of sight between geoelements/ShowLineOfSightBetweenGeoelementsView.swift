@@ -197,10 +197,6 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             }
         }
         
-        //        /// The string of the status of the taxi's visibility from the point of view of the observer. The status updates as the taxi travels around the block and toggles between `Visible` and `Obstructed`.
-        //        /// This is displayed to the user at the top of scene. `Unknown` status should not display with this sample.
-        //        var visibilityStatus = ""
-        //
         init() {
             graphicsOverlay.addGraphics([observerGraphic, taxiGraphic])
             lineOfSight = GeoElementLineOfSight(observer: observerGraphic, target: taxiGraphic)
