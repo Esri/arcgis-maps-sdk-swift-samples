@@ -72,7 +72,7 @@ struct EditFeaturesUsingFeatureFormsView: View {
             MapView(map: map)
                 .onSingleTapGesture { screenPoint, _ in
                     if isShowingFeatureForm {
-                        endEditing()
+                        isShowingFeatureForm = false
                     } else {
                         tapPoint = screenPoint
                     }
@@ -103,6 +103,10 @@ struct EditFeaturesUsingFeatureFormsView: View {
                         .padding(8)
                         .background(.regularMaterial, ignoresSafeAreaEdges: .horizontal)
                 }
+                .onChange(of: isShowingFeatureForm) {
+                    guard !isShowingFeatureForm else { return }
+                    featureLayer.clearSelection()
+                }
                 .sheet(isPresented: $isShowingFeatureForm) {
                     if let featureForm {
                         // Displays the feature form using the toolkit component.
@@ -110,7 +114,7 @@ struct EditFeaturesUsingFeatureFormsView: View {
                             .onFormEditingEvent { event in
                                 switch event {
                                 case .discardedEdits:
-                                    endEditing()
+                                    isShowingFeatureForm = false
                                 case .savedEdits:
                                     isApplyingEdits = true
                                 @unknown default:
@@ -137,7 +141,7 @@ struct EditFeaturesUsingFeatureFormsView: View {
                                 
                                 do {
                                     try await applyEdits()
-                                    endEditing()
+                                    isShowingFeatureForm = false
                                 } catch {
                                     self.error = error
                                 }
@@ -150,16 +154,9 @@ struct EditFeaturesUsingFeatureFormsView: View {
         }
     }
     
-    /// Closes the feature form panel and resets the feature selection.
-    private func endEditing() {
-        isShowingFeatureForm = false
-        featureLayer.clearSelection()
-    }
-    
     /// Applies the edits made in the feature form to the feature service.
     private func applyEdits() async throws {
-        guard let featureForm,
-              let serviceFeatureTable = featureForm.feature.table as? ServiceFeatureTable else {
+        guard let serviceFeatureTable = featureForm?.feature.table as? ServiceFeatureTable else {
             return
         }
         
