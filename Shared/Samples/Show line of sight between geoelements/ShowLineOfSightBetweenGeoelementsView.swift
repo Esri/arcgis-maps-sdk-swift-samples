@@ -186,8 +186,8 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             )
         )
         
-        /// `CADisplayLink` isa  timer object that allows your app to synchronize its drawing to the refresh rate of the display.
-        ///  It is used to control the timing for the animation of the taxi.
+        /// `CADisplayLink` is a timer object that allows your app to synchronize its drawing to the refresh rate of the display.
+        /// It is used to control the timing for the animation of the taxi.
         private var displayLink: CADisplayLink!
         
         /// The string of the status of the taxi's visibility from the point of view of the observer. The status updates as the taxi travels around the block and toggles between `Visible` and `Obstructed`.
@@ -226,7 +226,6 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         
         /// Invalidates `displayLink` and sets it to nil. By doing this, you are stopping the animation.
         func stopAnimating() {
-            //  Deallocate `displayLink`.
             displayLink.invalidate()
             displayLink = nil
         }
