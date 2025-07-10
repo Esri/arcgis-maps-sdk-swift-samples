@@ -184,7 +184,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
             )
         )
         
-        /// `CADisplayLink` is a timer object that allows your app to synchronize its drawing to the refresh rate of the display.
+        /// The `CADisplayLink` is a timer object that allows your app to synchronize its drawing to the refresh rate of the display.
         /// It is used to control the timing for the animation of the taxi.
         @ObservationIgnored private var displayLink: CADisplayLink!
         
