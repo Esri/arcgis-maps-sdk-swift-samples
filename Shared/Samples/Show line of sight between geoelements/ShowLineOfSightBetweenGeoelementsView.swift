@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import ArcGIS
-import Observation
 import SwiftUI
 
 struct ShowLineOfSightBetweenGeoelementsView: View {
@@ -63,7 +62,8 @@ struct ShowLineOfSightBetweenGeoelementsView: View {
                 let heightRange = 20.0...70.0
                 LabeledContent(
                     "Observer Height",
-                    value: Measurement(value: model.height, unit: UnitLength.meters).formatted()
+                    value: Measurement(value: model.height, unit: UnitLength.meters),
+                    format: .measurement(width: .abbreviated)
                 )
                 Slider(
                     value: $model.height,
