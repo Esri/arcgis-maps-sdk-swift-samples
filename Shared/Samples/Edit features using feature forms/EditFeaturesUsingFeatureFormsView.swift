@@ -34,9 +34,6 @@ struct EditFeaturesUsingFeatureFormsView: View {
     /// A Boolean value indicating whether the feature form panel is presented.
     @State private var isShowingFeatureForm = false
     
-    /// A Boolean value indicating whether the discard edits alert is presented.
-    @State private var isShowingDiscardEditsAlert = false
-    
     /// A Boolean value indicating whether the feature form edits are being applied.
     @State private var isApplyingEdits = false
     
