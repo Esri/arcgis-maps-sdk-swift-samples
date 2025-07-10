@@ -72,9 +72,21 @@ struct ShowLineOfSightBetweenGeoelementsView: View {
                 ) {
                     Text("Observer Height")
                 } minimumValueLabel: {
-                    Text(Measurement(value: heightRange.lowerBound, unit: UnitLength.meters).formatted())
+                    Text(
+                        Measurement(
+                            value: heightRange.lowerBound,
+                            unit: UnitLength.meters
+                        ),
+                        format: .measurement(width: .abbreviated)
+                    )
                 } maximumValueLabel: {
-                    Text(Measurement(value: heightRange.upperBound, unit: UnitLength.meters).formatted())
+                    Text(
+                        Measurement(
+                            value: heightRange.upperBound,
+                            unit: UnitLength.meters
+                        ),
+                        format: .measurement(width: .abbreviated)
+                    )
                 }
                 .listRowSeparator(.hidden, edges: .top)
             }
