@@ -37,9 +37,6 @@ struct EditFeaturesUsingFeatureFormsView: View {
     /// A Boolean value indicating whether the discard edits alert is presented.
     @State private var isShowingDiscardEditsAlert = false
     
-    /// A Boolean value indicating whether any edits have been made to the feature form.
-    @State private var hasEdits = false
-    
     /// A Boolean value indicating whether the feature form has any validation errors.
     @State private var hasValidationErrors = false
     
@@ -119,13 +116,6 @@ struct EditFeaturesUsingFeatureFormsView: View {
                                     isApplyingEdits = true
                                 @unknown default:
                                     fatalError("Unknown form editing event: \(event)")
-                                }
-                            }
-                            .task {
-                                defer { hasEdits = false }
-                                
-                                for await hasEdits in featureForm.$hasEdits {
-                                    self.hasEdits = hasEdits
                                 }
                             }
                             .task {
