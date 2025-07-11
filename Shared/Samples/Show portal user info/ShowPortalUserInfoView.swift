@@ -23,13 +23,7 @@ struct ShowPortalUserInfoView: View {
     
     var body: some View {
         InfoScreen(
-            infoText: "Default",
-            username: "User",
-            email: "Email",
-            creationDate: "Creation Date",
-            portalName: "Portal Name",
-            userThumbnail: UIImage(systemName: "person.crop.circle.fill")!,
-            isLoading: false
+            model: $model,
         )
         .onAppear {
             model.setAuthenticator()
@@ -72,9 +66,20 @@ private extension ShowPortalUserInfoView {
         /// The portal user when the portal is logged in.
         var portalUser: PortalUser?
         
+        var userData: UserData
+        
         init() {
             self.authenticator = Authenticator(
                 oAuthUserConfigurations: [.arcgisDotCom]
+            )
+            userData = UserData(
+                infoText: "Default",
+                username: "Username",
+                email: "Email",
+                creationDate: "Date",
+                portalName: "Portal Name",
+                userThumbnail: UIImage(systemName: "person.crop.circle.fill")!,
+                isLoading: true
             )
         }
         
@@ -110,7 +115,7 @@ private extension ShowPortalUserInfoView {
         }
     }
     
-    struct InfoScreen: View {
+    struct UserData {
         var infoText: String
         var username: String
         var email: String
@@ -118,32 +123,36 @@ private extension ShowPortalUserInfoView {
         var portalName: String
         var userThumbnail: UIImage
         var isLoading: Bool
+    }
+    
+    struct InfoScreen: View {
+        @Binding var model: ShowPortalUserInfoView.Model
         
         var body: some View {
             ScrollView {
                 VStack(spacing: 16) {
-                    if isLoading {
+                    if model.userData.isLoading {
                         ProgressView().padding()
                     } else {
-                        Text(infoText)
+                        Text(model.userData.infoText)
                             .multilineTextAlignment(.center)
                             .padding()
                     }
                     Divider()
-                    Image(uiImage: userThumbnail)
+                    Image(uiImage: model.userData.userThumbnail)
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                         .frame(width: 150, height: 150)
                         .clipShape(Circle())
                         .clipped()
                     Divider()
-                    InfoRow(label: "Username:", value: username)
+                    InfoRow(label: "Username:", value: model.userData.username)
                     Divider()
-                    InfoRow(label: "E-mail:", value: email)
+                    InfoRow(label: "E-mail:", value: model.userData.email)
                     Divider()
-                    InfoRow(label: "Member Since:", value: creationDate)
+                    InfoRow(label: "Member Since:", value: model.userData.creationDate)
                     Divider()
-                    InfoRow(label: "Portal Name:", value: portalName)
+                    InfoRow(label: "Portal Name:", value: model.userData.portalName)
                     Divider()
                 }
                 .padding()
