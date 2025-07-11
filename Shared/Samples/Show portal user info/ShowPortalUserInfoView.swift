@@ -22,26 +22,32 @@ struct ShowPortalUserInfoView: View {
     @State private var error: Error?
     
     var body: some View {
-        Text("Hello, World!")
-            .onAppear {
-                model.setAuthenticator()
+        InfoScreen(
+            infoText: "Default",
+            username: "User",
+            email: "Email",
+            creationDate: "Creation Date",
+            portalName: "Portal Name",
+            userThumbnail: UIImage(systemName: "person.crop.circle.fill")!,
+            isLoading: false
+        )
+        .onAppear {
+            model.setAuthenticator()
+        }
+        .onDisappear {
+            Task {
+                await model.clearAuthenticator()
             }
-            .onDisappear {
-                Task {
-                    await model.clearAuthenticator()
-                }
+        }
+        .authenticator(model.authenticator)
+        .task {
+            // Loads the portal user when the view appears.
+            do {
+                try await model.loadPortalUser()
+            } catch {
+                self.error = error
             }
-            .authenticator(model.authenticator)
-            .task {
-                // Loads the portal user when the view appears.
-                do {
-                    let portal = Portal.arcGISOnline(connection: .authenticated)
-                    try await portal.load()
-                    model.portalUser = portal.user
-                } catch {
-                    self.error = error
-                }
-            }
+        }
     }
     
     /// Sets up new ArcGIS and Network credential stores that will be persisted in the keychain.
@@ -95,6 +101,67 @@ private extension ShowPortalUserInfoView {
         private func signOut() async {
             await ArcGISEnvironment.authenticationManager.revokeOAuthTokens()
             await ArcGISEnvironment.authenticationManager.clearCredentialStores()
+        }
+        
+        func loadPortalUser() async throws {
+            let portal = Portal.arcGISOnline(connection: .authenticated)
+            try await portal.load()
+            portalUser = portal.user
+        }
+    }
+    
+    struct InfoScreen: View {
+        var infoText: String
+        var username: String
+        var email: String
+        var creationDate: String
+        var portalName: String
+        var userThumbnail: UIImage
+        var isLoading: Bool
+        
+        var body: some View {
+            ScrollView {
+                VStack(spacing: 16) {
+                    if isLoading {
+                        ProgressView().padding()
+                    } else {
+                        Text(infoText)
+                            .multilineTextAlignment(.center)
+                            .padding()
+                    }
+                    Divider()
+                    Image(uiImage: userThumbnail)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 150, height: 150)
+                        .clipShape(Circle())
+                        .clipped()
+                    Divider()
+                    InfoRow(label: "Username:", value: username)
+                    Divider()
+                    InfoRow(label: "E-mail:", value: email)
+                    Divider()
+                    InfoRow(label: "Member Since:", value: creationDate)
+                    Divider()
+                    InfoRow(label: "Portal Name:", value: portalName)
+                    Divider()
+                }
+                .padding()
+            }
+        }
+    }
+    
+    struct InfoRow: View {
+        var label: String
+        var value: String
+        
+        var body: some View {
+            HStack {
+                Text(label).fontWeight(.bold)
+                Text(value)
+                Spacer()
+            }
+            .padding(.horizontal)
         }
     }
 }
