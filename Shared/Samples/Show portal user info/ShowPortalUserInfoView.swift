@@ -23,26 +23,51 @@ struct ShowPortalUserInfoView: View {
     @State private var error: Error?
     
     var body: some View {
-        InfoScreen(
-            model: $model,
-        )
-        .onAppear {
-            model.setAuthenticator()
-        }
-        .onDisappear {
-            Task {
-                await model.clearAuthenticator()
+        if model.userData.isLoading {
+            PortalDetailsView(
+                url: $model.portalURLString,
+                onSetUrl: {
+                    model.portalURLString = $0
+                },
+                onSignOut: {
+                    Task {
+                        await model.signOut()
+                    }
+                },
+                onLoadPortal: {
+                    Task {
+                        do {
+                            try await model.loadPortalUser()
+                        } catch {
+                            self.error = error
+                        }
+                    }
+                }
+            )
+            .onAppear {
+                model.setAuthenticator()
             }
-        }
-        .authenticator(model.authenticator)
-        .task {
-            // Loads the portal user when the view appears.
-            do {
-                try await model.loadPortalUser()
-            } catch {
-                self.error = error
+            .onDisappear {
+                Task {
+                    await model.clearAuthenticator()
+                }
             }
+            .authenticator(model.authenticator)
+            .task {
+                // Loads the portal user when the view appears.
+                do {
+                    try await model.loadPortalUser()
+                } catch {
+                    self.error = error
+                }
+            }
+            .errorAlert(presentingError: $error)
+        } else {
+            InfoScreen(
+                model: $model,
+            )
         }
+        
     }
 }
 
@@ -58,7 +83,7 @@ private extension ShowPortalUserInfoView {
         var portalItems: [PortalItem] = []
         /// The portal user when the portal is logged in.
         var portalUser: PortalUser?
-        
+        var portalURLString: String = "https://www.arcgis.com"
         var userData: UserData
         
         init() {
@@ -98,7 +123,7 @@ private extension ShowPortalUserInfoView {
         }
         
         /// Signs out from the portal by revoking OAuth tokens and clearing credential stores.
-        private func signOut() async {
+        func signOut() async {
             await ArcGISEnvironment.authenticationManager.revokeOAuthTokens()
             await ArcGISEnvironment.authenticationManager.clearCredentialStores()
         }
@@ -126,6 +151,50 @@ private extension ShowPortalUserInfoView {
         var portalName: String
         var userThumbnail: UIImage
         var isLoading: Bool
+    }
+    
+    struct PortalDetailsView: View {
+        @Binding var url: String
+        var onSetUrl: (String) -> Void
+        var onSignOut: () -> Void
+        var onLoadPortal: () -> Void
+        
+        @FocusState private var isTextFieldFocused: Bool
+        
+        var body: some View {
+            VStack(alignment: .center, spacing: 16) {
+                TextField("Portal URL", text: $url, onCommit: {
+                    onLoadPortal()
+                    isTextFieldFocused = false
+                })
+                .textInputAutocapitalization(.never)
+                .keyboardType(.URL)
+                .submitLabel(.go)
+                .focused($isTextFieldFocused)
+                .textFieldStyle(.roundedBorder)
+                .padding(.horizontal)
+                
+                HStack {
+                    Button("Sign out", action: {
+                        onSignOut()
+                        isTextFieldFocused = false
+                    })
+                    .frame(maxWidth: .infinity)
+                    .buttonStyle(.borderedProminent)
+                    .tint(.orange)
+                    
+                    Button("Load portal", action: {
+                        onLoadPortal()
+                        isTextFieldFocused = false
+                    })
+                    .frame(maxWidth: .infinity)
+                    .buttonStyle(.borderedProminent)
+                    .tint(.blue)
+                }
+                .padding(.horizontal)
+            }
+            .padding()
+        }
     }
     
     struct InfoScreen: View {
