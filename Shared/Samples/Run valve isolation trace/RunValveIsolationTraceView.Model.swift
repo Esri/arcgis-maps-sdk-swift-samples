@@ -105,7 +105,7 @@ extension RunValveIsolationTraceView {
             ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = nil
         }
         
-        /// Performs important tasks including adding credentials, loading and adding operational layers.
+        /// Loads the map and utility network.
         func setup() async {
             do {
                 // Load the map to get the utility network.
