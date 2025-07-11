@@ -46,7 +46,9 @@ struct ShowPortalUserInfoView: View {
     @ViewBuilder var portalDetails: some View {
         PortalDetailsView(
             url: $model.portalURLString,
-            onSetUrl: { model.portalURLString = $0 },
+            onSetUrl: {
+                model.portalURLString = $0
+            },
             onSignOut: {
                 Task {
                     await model.signOut()
@@ -163,10 +165,14 @@ private extension ShowPortalUserInfoView {
         
         var body: some View {
             VStack(alignment: .center, spacing: 16) {
-                TextField("Portal URL", text: $url, onCommit: {
-                    onLoadPortal()
-                    isTextFieldFocused = false
-                })
+                TextField(
+                    "Portal URL",
+                    text: $url,
+                    onCommit: {
+                        onLoadPortal()
+                        isTextFieldFocused = false
+                    }
+                )
                 .textInputAutocapitalization(.never)
                 .keyboardType(.URL)
                 .submitLabel(.go)
@@ -175,21 +181,20 @@ private extension ShowPortalUserInfoView {
                 .padding(.horizontal)
                 
                 HStack {
-                    Button("Sign out", action: {
+                    Button("Sign out") {
                         onSignOut()
                         isTextFieldFocused = false
-                    })
+                    }
                     .frame(maxWidth: .infinity)
                     .buttonStyle(.borderedProminent)
-                    .tint(.orange)
-                    
-                    Button("Load portal", action: {
+                    .tint(.purple)
+                    Button("Load portal") {
                         onLoadPortal()
                         isTextFieldFocused = false
-                    })
+                    }
                     .frame(maxWidth: .infinity)
                     .buttonStyle(.borderedProminent)
-                    .tint(.blue)
+                    .tint(.purple)
                 }
                 .padding(.horizontal)
             }
@@ -211,7 +216,8 @@ private extension ShowPortalUserInfoView {
         var body: some View {
             VStack(spacing: 16) {
                 if model.userData.isLoading {
-                    ProgressView().padding()
+                    ProgressView()
+                        .padding()
                 } else {
                     Text(model.userData.infoText)
                         .multilineTextAlignment(.center)
