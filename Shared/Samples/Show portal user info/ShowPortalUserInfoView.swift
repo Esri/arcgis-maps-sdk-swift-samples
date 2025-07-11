@@ -25,11 +25,15 @@ struct ShowPortalUserInfoView: View {
     @State private var error: Error?
     
     var body: some View {
-        VStack {
+        VStack(spacing: 16) {
             portalDetails
             Group {
                 if model.userData.isLoading {
-                    Text("Loading...")
+                    ContentUnavailableView(
+                        "Portal User Information",
+                        systemImage: "exclamationmark.triangle",
+                        description: Text("Your portal user information will be displayed here.")
+                    )
                 } else {
                     InfoScreen(model: $model)
                 }
@@ -55,6 +59,7 @@ struct ShowPortalUserInfoView: View {
             onSignOut: {
                 Task {
                     await model.signOut()
+                    model.userData.isLoading = true
                 }
             },
             onLoadPortal: {
@@ -115,7 +120,7 @@ private extension ShowPortalUserInfoView {
                 creationDate: "Date",
                 portalName: "Portal Name",
                 userThumbnail: .defaultUserImage,
-                isLoading: false
+                isLoading: true
             )
         }
         
@@ -244,7 +249,6 @@ private extension ShowPortalUserInfoView {
                     .frame(width: 150, height: 150)
                     .clipShape(Circle())
                     .clipped()
-                Divider()
                 ForEach(userDetails, id: \.0) { label, value in
                     Divider()
                     LabeledContent(
