@@ -25,11 +25,14 @@ struct ShowPortalUserInfoView: View {
     @State private var error: Error?
     
     var body: some View {
-        Group {
-            if model.userData.isLoading {
-                portalDetails
-            } else {
-                InfoScreen(model: $model)
+        VStack {
+            portalDetails
+            Group {
+                if model.userData.isLoading {
+                   Text("Loading...")
+                } else {
+                    InfoScreen(model: $model)
+                }
             }
         }
         .errorAlert(presentingError: $error)
@@ -98,10 +101,8 @@ private extension ShowPortalUserInfoView {
                 email: "Email",
                 creationDate: "Date",
                 portalName: "Portal Name",
-                userThumbnail: UIImage(
-                    systemName: "person.crop.circle.fill"
-                )!,
-                isLoading: true
+                userThumbnail: .defaultUserImage,
+                isLoading: false
             )
         }
         
@@ -233,7 +234,10 @@ private extension ShowPortalUserInfoView {
                 Divider()
                 ForEach(userDetails, id: \.0) { label, value in
                     Divider()
-                    LabeledContent(label, value: value)
+                    LabeledContent(
+                        label,
+                        value: value
+                    )
                 }
                 Divider()
             }
@@ -251,6 +255,9 @@ private extension OAuthUserConfiguration {
     )
 }
 
+private extension UIImage {
+    static let defaultUserImage = UIImage(systemName: "person.circle")!
+}
 private extension URL {
     /// The URL of the portal to authenticate.
     /// - Note: If you want to use your own portal, provide URL here.
