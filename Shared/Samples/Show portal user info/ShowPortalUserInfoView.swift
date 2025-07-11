@@ -18,55 +18,30 @@ import SwiftUI
 
 struct ShowPortalUserInfoView: View {
     @State private var model = Model()
-    /// The authenticator to handle authentication challenges.
-    @State private var authenticator = Authenticator(
-        oAuthUserConfigurations: [.arcgisDotCom]
-    )
     /// The error shown in the error alert.
     @State private var error: Error?
-    /// The API key to use temporarily while using OAuth.
-    @State private var apiKey: APIKey?
-    /// A list of portal items when the portal is logged in.
-    @State private var portalItems: [PortalItem] = []
-    /// The portal user when the portal is logged in.
-    @State private var portalUser: PortalUser?
     
     var body: some View {
         Text("Hello, World!")
             .onAppear {
-                // Sets authenticator as ArcGIS and Network challenge handlers to
-                // handle authentication challenges.
-                ArcGISEnvironment.authenticationManager.handleChallenges(using: authenticator)
-                // Temporarily unsets the API key for this sample to use OAuth.
-                apiKey = ArcGISEnvironment.apiKey
-                ArcGISEnvironment.apiKey = nil
+                model.setAuthenticator()
             }
             .onDisappear {
-                // Resets challenge handlers.
-                ArcGISEnvironment.authenticationManager.handleChallenges(using: nil)
-                // Sets the API key back to the original value.
-                ArcGISEnvironment.apiKey = apiKey
                 Task {
-                    await signOut()
+                    await model.clearAuthenticator()
                 }
             }
-            .authenticator(authenticator)
+            .authenticator(model.authenticator)
             .task {
                 // Loads the portal user when the view appears.
                 do {
                     let portal = Portal.arcGISOnline(connection: .authenticated)
                     try await portal.load()
-                    portalUser = portal.user
+                    model.portalUser = portal.user
                 } catch {
                     self.error = error
                 }
             }
-    }
-    
-    /// Signs out from the portal by revoking OAuth tokens and clearing credential stores.
-    private func signOut() async {
-        await ArcGISEnvironment.authenticationManager.revokeOAuthTokens()
-        await ArcGISEnvironment.authenticationManager.clearCredentialStores()
     }
     
     /// Sets up new ArcGIS and Network credential stores that will be persisted in the keychain.
@@ -79,9 +54,48 @@ struct ShowPortalUserInfoView: View {
 }
 
 private extension ShowPortalUserInfoView {
+    @MainActor
     @Observable
     class Model {
+        /// The authenticator to handle authentication challenges.
+        var authenticator: Authenticator
+        /// The API key to use temporarily while using OAuth.
+        var apiKey: APIKey?
+        /// A list of portal items when the portal is logged in.
+        var portalItems: [PortalItem] = []
+        /// The portal user when the portal is logged in.
+        var portalUser: PortalUser?
         
+        init() {
+            self.authenticator = Authenticator(
+                oAuthUserConfigurations: [.arcgisDotCom]
+            )
+        }
+        
+        func setAuthenticator() {
+            // Sets authenticator as ArcGIS and Network challenge handlers to
+            // handle authentication challenges.
+            ArcGISEnvironment.authenticationManager.handleChallenges(using: authenticator)
+            // Temporarily unsets the API key for this sample to use OAuth.
+            apiKey = ArcGISEnvironment.apiKey
+            ArcGISEnvironment.apiKey = nil
+        }
+        
+        func clearAuthenticator() async {
+            // Resets challenge handlers.
+            ArcGISEnvironment.authenticationManager.handleChallenges(using: nil)
+            // Sets the API key back to the original value.
+            ArcGISEnvironment.apiKey = apiKey
+            Task {
+                await signOut()
+            }
+        }
+        
+        /// Signs out from the portal by revoking OAuth tokens and clearing credential stores.
+        private func signOut() async {
+            await ArcGISEnvironment.authenticationManager.revokeOAuthTokens()
+            await ArcGISEnvironment.authenticationManager.clearCredentialStores()
+        }
     }
 }
 
