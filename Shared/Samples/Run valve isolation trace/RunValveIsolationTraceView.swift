@@ -68,7 +68,6 @@ struct RunValveIsolationTraceView: View {
                         isConfigurationPresented.toggle()
                     }
                     .disabled(model.tracingActivity == .runningTrace ||
-                              model.tracingActivity == .loadingServiceGeodatabase ||
                               model.tracingActivity == .loadingNetwork)
                     Spacer()
                     Button("Trace") {
@@ -177,7 +176,6 @@ private extension RunValveIsolationTraceView.Model.TracingActivity {
     /// A human-readable label for the tracing activity.
     var label: String {
         switch self {
-        case .loadingServiceGeodatabase: return "Loading service geodatabase…"
         case .loadingNetwork: return "Loading utility network…"
         case .startingLocation: return "Getting starting location feature…"
         case .runningTrace: return "Running isolation trace…"
