@@ -17,6 +17,7 @@ import ArcGISToolkit
 import SwiftUI
 
 struct ShowPortalUserInfoView: View {
+    /// The data model that helps determine the view.
     @State private var model = Model()
     /// The error shown in the error alert.
     @State private var error: Error?
@@ -42,14 +43,6 @@ struct ShowPortalUserInfoView: View {
                 self.error = error
             }
         }
-    }
-    
-    /// Sets up new ArcGIS and Network credential stores that will be persisted in the keychain.
-    private func setupPersistentCredentialStorage() async throws {
-        try await ArcGISEnvironment.authenticationManager.setupPersistentCredentialStorage(
-            access: .whenUnlockedThisDeviceOnly,
-            synchronizesWithiCloud: false
-        )
     }
 }
 
@@ -78,7 +71,9 @@ private extension ShowPortalUserInfoView {
                 email: "Email",
                 creationDate: "Date",
                 portalName: "Portal Name",
-                userThumbnail: UIImage(systemName: "person.crop.circle.fill")!,
+                userThumbnail: UIImage(
+                    systemName: "person.crop.circle.fill"
+                )!,
                 isLoading: true
             )
         }
@@ -113,6 +108,14 @@ private extension ShowPortalUserInfoView {
             try await portal.load()
             portalUser = portal.user
         }
+        
+        /// Sets up new ArcGIS and Network credential stores that will be persisted in the keychain.
+        func setupPersistentCredentialStorage() async throws {
+            try await ArcGISEnvironment.authenticationManager.setupPersistentCredentialStorage(
+                access: .whenUnlockedThisDeviceOnly,
+                synchronizesWithiCloud: false
+            )
+        }
     }
     
     struct UserData {
@@ -129,48 +132,44 @@ private extension ShowPortalUserInfoView {
         @Binding var model: ShowPortalUserInfoView.Model
         
         var body: some View {
-            ScrollView {
-                VStack(spacing: 16) {
-                    if model.userData.isLoading {
-                        ProgressView().padding()
-                    } else {
-                        Text(model.userData.infoText)
-                            .multilineTextAlignment(.center)
-                            .padding()
-                    }
-                    Divider()
-                    Image(uiImage: model.userData.userThumbnail)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 150, height: 150)
-                        .clipShape(Circle())
-                        .clipped()
-                    Divider()
-                    InfoRow(label: "Username:", value: model.userData.username)
-                    Divider()
-                    InfoRow(label: "E-mail:", value: model.userData.email)
-                    Divider()
-                    InfoRow(label: "Member Since:", value: model.userData.creationDate)
-                    Divider()
-                    InfoRow(label: "Portal Name:", value: model.userData.portalName)
-                    Divider()
+            VStack(spacing: 16) {
+                if model.userData.isLoading {
+                    ProgressView().padding()
+                } else {
+                    Text(model.userData.infoText)
+                        .multilineTextAlignment(.center)
+                        .padding()
                 }
-                .padding()
+                Divider()
+                Image(uiImage: model.userData.userThumbnail)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 150, height: 150)
+                    .clipShape(Circle())
+                    .clipped()
+                Divider()
+                LabeledContent(
+                    "Username:",
+                    value: model.userData.username
+                )
+                Divider()
+                LabeledContent(
+                    "E-mail:",
+                    value: model.userData.email
+                )
+                Divider()
+                LabeledContent(
+                    "Member Since:",
+                    value: model.userData.creationDate
+                )
+                Divider()
+                LabeledContent(
+                    "Portal Name",
+                    value: model.userData.portalName
+                )
+                Divider()
             }
-        }
-    }
-    
-    struct InfoRow: View {
-        var label: String
-        var value: String
-        
-        var body: some View {
-            HStack {
-                Text(label).fontWeight(.bold)
-                Text(value)
-                Spacer()
-            }
-            .padding(.horizontal)
+            .padding()
         }
     }
 }
