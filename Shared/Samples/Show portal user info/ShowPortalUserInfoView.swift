@@ -29,7 +29,7 @@ struct ShowPortalUserInfoView: View {
             portalDetails
             Group {
                 if model.userData.isLoading {
-                   Text("Loading...")
+                    Text("Loading...")
                 } else {
                     InfoScreen(model: $model)
                 }
@@ -87,7 +87,20 @@ private extension ShowPortalUserInfoView {
         /// A list of portal items when the portal is logged in.
         var portalItems: [PortalItem] = []
         /// The portal user when the portal is logged in.
-        var portalUser: PortalUser?
+        var portalUser: PortalUser? {
+            didSet {
+                userData = UserData(
+                    infoText: portalUser?.description ?? "",
+                    username: portalUser?.username ?? "",
+                    email: portalUser?.email ?? "",
+                    creationDate: portalUser?.creationDate?.formatted() ?? "",
+                    portalName: portalUser?.portal?.info?.portalName ?? "",
+                    userThumbnail: portalUser?.thumbnail?.image ?? .defaultUserImage,
+                    isLoading: false
+                )
+            }
+        }
+        
         var portalURLString: String = "https://www.arcgis.com"
         var userData: UserData
         
@@ -158,6 +171,7 @@ private extension ShowPortalUserInfoView {
     
     struct PortalDetailsView: View {
         @Binding var url: String
+        
         var onSetUrl: (String) -> Void
         var onSignOut: () -> Void
         var onLoadPortal: () -> Void
@@ -205,14 +219,13 @@ private extension ShowPortalUserInfoView {
     
     struct InfoScreen: View {
         @Binding var model: ShowPortalUserInfoView.Model
-        private var userDetails: UserDetails {
-            [
-                ("Username:", model.userData.username),
-                ("E-mail:", model.userData.email),
-                ("Member Since:", model.userData.creationDate),
-                ("Portal Name", model.userData.portalName)
-            ]
-        }
+        
+        private var userDetails: UserDetails { [
+            ("Username:", model.userData.username),
+            ("E-mail:", model.userData.email),
+            ("Member Since:", model.userData.creationDate),
+            ("Portal Name", model.userData.portalName)
+        ] }
         
         var body: some View {
             VStack(spacing: 16) {
@@ -258,6 +271,7 @@ private extension OAuthUserConfiguration {
 private extension UIImage {
     static let defaultUserImage = UIImage(systemName: "person.circle")!
 }
+
 private extension URL {
     /// The URL of the portal to authenticate.
     /// - Note: If you want to use your own portal, provide URL here.
