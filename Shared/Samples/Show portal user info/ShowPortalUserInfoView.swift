@@ -16,6 +16,8 @@ import ArcGIS
 import ArcGISToolkit
 import SwiftUI
 
+typealias UserDetails = [(String, String)]
+
 struct ShowPortalUserInfoView: View {
     /// The data model that helps determine the view.
     @State private var model = Model()
@@ -23,51 +25,49 @@ struct ShowPortalUserInfoView: View {
     @State private var error: Error?
     
     var body: some View {
-        if model.userData.isLoading {
-            PortalDetailsView(
-                url: $model.portalURLString,
-                onSetUrl: {
-                    model.portalURLString = $0
-                },
-                onSignOut: {
-                    Task {
-                        await model.signOut()
-                    }
-                },
-                onLoadPortal: {
-                    Task {
-                        do {
-                            try await model.loadPortalUser()
-                        } catch {
-                            self.error = error
-                        }
-                    }
-                }
-            )
-            .onAppear {
-                model.setAuthenticator()
+        Group {
+            if model.userData.isLoading {
+                portalDetails
+            } else {
+                InfoScreen(model: $model)
             }
-            .onDisappear {
-                Task {
-                    await model.clearAuthenticator()
-                }
-            }
-            .authenticator(model.authenticator)
-            .task {
-                // Loads the portal user when the view appears.
-                do {
-                    try await model.loadPortalUser()
-                } catch {
-                    self.error = error
-                }
-            }
-            .errorAlert(presentingError: $error)
-        } else {
-            InfoScreen(
-                model: $model,
-            )
         }
-        
+        .errorAlert(presentingError: $error)
+    }
+    
+    func loadUser() async {
+        do {
+            try await model.loadPortalUser()
+        } catch {
+            self.error = error
+        }
+    }
+    
+    @ViewBuilder var portalDetails: some View {
+        PortalDetailsView(
+            url: $model.portalURLString,
+            onSetUrl: { model.portalURLString = $0 },
+            onSignOut: {
+                Task {
+                    await model.signOut()
+                }
+            },
+            onLoadPortal: {
+                Task {
+                    await loadUser()
+                }
+            }
+        )
+        .onAppear(perform: model.setAuthenticator)
+        .onDisappear {
+            Task {
+                await model.clearAuthenticator()
+            }
+        }
+        .authenticator(model.authenticator)
+        .task {
+            await loadUser()
+        }
     }
 }
 
@@ -199,6 +199,14 @@ private extension ShowPortalUserInfoView {
     
     struct InfoScreen: View {
         @Binding var model: ShowPortalUserInfoView.Model
+        private var userDetails: UserDetails {
+            [
+                ("Username:", model.userData.username),
+                ("E-mail:", model.userData.email),
+                ("Member Since:", model.userData.creationDate),
+                ("Portal Name", model.userData.portalName)
+            ]
+        }
         
         var body: some View {
             VStack(spacing: 16) {
@@ -217,25 +225,10 @@ private extension ShowPortalUserInfoView {
                     .clipShape(Circle())
                     .clipped()
                 Divider()
-                LabeledContent(
-                    "Username:",
-                    value: model.userData.username
-                )
-                Divider()
-                LabeledContent(
-                    "E-mail:",
-                    value: model.userData.email
-                )
-                Divider()
-                LabeledContent(
-                    "Member Since:",
-                    value: model.userData.creationDate
-                )
-                Divider()
-                LabeledContent(
-                    "Portal Name",
-                    value: model.userData.portalName
-                )
+                ForEach(userDetails, id: \.0) { label, value in
+                    Divider()
+                    LabeledContent(label, value: value)
+                }
                 Divider()
             }
             .padding()
