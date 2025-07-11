@@ -17,198 +17,98 @@ import ArcGISToolkit
 import SwiftUI
 
 struct ShowPortalUserInfoView: View {
-    @StateObject private var model = PortalUserInfoModel()
+    @State private var model = Model()
+    /// The authenticator to handle authentication challenges.
+    @State private var authenticator = Authenticator(
+        oAuthUserConfigurations: [.arcgisDotCom]
+    )
+    /// The error shown in the error alert.
+    @State private var error: Error?
+    /// The API key to use temporarily while using OAuth.
+    @State private var apiKey: APIKey?
+    /// A list of portal items when the portal is logged in.
+    @State private var portalItems: [PortalItem] = []
+    /// The portal user when the portal is logged in.
+    @State private var portalUser: PortalUser?
     
     var body: some View {
-        VStack {
-            PortalDetailsView(
-                url: $model.portalURLString,
-                onSetUrl: { model.portalURLString = $0 },
-                onSignOut: { Task { await model.signOut() } },
-                onLoadPortal: { Task { await model.connectToPortal() } }
-            )
-            
-            InfoScreen(
-                infoText: model.infoText,
-                username: model.user?.username ?? "N/A",
-                email: model.user?.email ?? "N/A",
-                creationDate: model.user?.creationDate?.formatted() ?? "Unknown",
-                portalName: model.portalName,
-                userThumbnail: model.user?.thumbnail?.image ?? UIImage(systemName: "person.crop.circle.fill")!,
-                isLoading: model.isLoading
-            )
-        }
-    }
-    
-    struct PortalDetailsView: View {
-        @Binding var url: String
-        var onSetUrl: (String) -> Void
-        var onSignOut: () -> Void
-        var onLoadPortal: () -> Void
-        
-        @FocusState private var isTextFieldFocused: Bool
-        
-        var body: some View {
-            VStack(alignment: .center, spacing: 16) {
-                TextField("Portal URL", text: $url, onCommit: {
-                    onLoadPortal()
-                    isTextFieldFocused = false
-                })
-                .textInputAutocapitalization(.never)
-                .keyboardType(.URL)
-                .submitLabel(.go)
-                .focused($isTextFieldFocused)
-                .textFieldStyle(.roundedBorder)
-                .padding(.horizontal)
-                
-                HStack {
-                    Button("Sign out", action: {
-                        onSignOut()
-                        isTextFieldFocused = false
-                    })
-                    .frame(maxWidth: .infinity)
-                    .buttonStyle(.borderedProminent)
-                    .tint(.orange)
-                    
-                    Button("Load portal", action: {
-                        onLoadPortal()
-                        isTextFieldFocused = false
-                    })
-                    .frame(maxWidth: .infinity)
-                    .buttonStyle(.borderedProminent)
-                    .tint(.blue)
+        Text("Hello, World!")
+            .onAppear {
+                // Sets authenticator as ArcGIS and Network challenge handlers to
+                // handle authentication challenges.
+                ArcGISEnvironment.authenticationManager.handleChallenges(using: authenticator)
+                // Temporarily unsets the API key for this sample to use OAuth.
+                apiKey = ArcGISEnvironment.apiKey
+                ArcGISEnvironment.apiKey = nil
+            }
+            .onDisappear {
+                // Resets challenge handlers.
+                ArcGISEnvironment.authenticationManager.handleChallenges(using: nil)
+                // Sets the API key back to the original value.
+                ArcGISEnvironment.apiKey = apiKey
+                Task {
+                    await signOut()
                 }
-                .padding(.horizontal)
             }
-            .padding()
-        }
-    }
-    
-    struct InfoScreen: View {
-        var infoText: String
-        var username: String
-        var email: String
-        var creationDate: String
-        var portalName: String
-        var userThumbnail: UIImage
-        var isLoading: Bool
-        
-        var body: some View {
-            ScrollView {
-                VStack(spacing: 16) {
-                    if isLoading {
-                        ProgressView().padding()
-                    } else {
-                        Text(infoText)
-                            .multilineTextAlignment(.center)
-                            .padding()
-                    }
-                    
-                    Divider()
-                    
-                    Image(uiImage: userThumbnail)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 150, height: 150)
-                        .clipShape(Circle())
-                        .clipped()
-                    
-                    Divider()
-                    
-                    InfoRow(label: "Username:", value: username)
-                    Divider()
-                    
-                    InfoRow(label: "E-mail:", value: email)
-                    Divider()
-                    
-                    InfoRow(label: "Member Since:", value: creationDate)
-                    Divider()
-                    
-                    InfoRow(label: "Portal Name:", value: portalName)
-                    Divider()
+            .authenticator(authenticator)
+            .task {
+                // Loads the portal user when the view appears.
+                do {
+                    let portal = Portal.arcGISOnline(connection: .authenticated)
+                    try await portal.load()
+                    portalUser = portal.user
+                } catch {
+                    self.error = error
                 }
-                .padding()
             }
-        }
     }
     
-    struct InfoRow: View {
-        var label: String
-        var value: String
-        
-        var body: some View {
-            HStack {
-                Text(label).fontWeight(.bold)
-                Text(value)
-                Spacer()
-            }
-            .padding(.horizontal)
-        }
+    /// Signs out from the portal by revoking OAuth tokens and clearing credential stores.
+    private func signOut() async {
+        await ArcGISEnvironment.authenticationManager.revokeOAuthTokens()
+        await ArcGISEnvironment.authenticationManager.clearCredentialStores()
+    }
+    
+    /// Sets up new ArcGIS and Network credential stores that will be persisted in the keychain.
+    private func setupPersistentCredentialStorage() async throws {
+        try await ArcGISEnvironment.authenticationManager.setupPersistentCredentialStorage(
+            access: .whenUnlockedThisDeviceOnly,
+            synchronizesWithiCloud: false
+        )
     }
 }
 
-extension ShowPortalUserInfoView {
-    @MainActor
-    class PortalUserInfoModel: ObservableObject {
-        let authenticator = Authenticator()
+private extension ShowPortalUserInfoView {
+    @Observable
+    class Model {
         
-        @Published var portalURLString: String = ""
-        @Published var infoText: String = "Enter a portal URL to begin."
-        @Published var isLoading: Bool = false
-        @Published var user: PortalUser?
-        @Published var portalName: String = ""
-        @Published var error: Error?
-        
-        private var portal: Portal?
-        
-        var portalURL: URL? {
-            URL(string: portalURLString)
-        }
-        
-        init() {
-            setupAuthenticator()
-        }
-        
-        func connectToPortal() async {
-            guard let portalURL else {
-                infoText = "Invalid portal URL."
-                return
-            }
-            
-            isLoading = true
-            defer { isLoading = false }
-            
-            do {
-                let portal = Portal(url: portalURL)
-                try await portal.load()
-                self.portal = portal
-                self.user = portal.user
-                self.portalName = portal.info?.portalName ?? "Unknown"
-                self.infoText = "Portal loaded successfully."
-                self.error = nil
-            } catch {
-                self.portal = nil
-                self.user = nil
-                self.portalName = ""
-                self.infoText = "Failed to load portal: \(error.localizedDescription)"
-                self.error = error
-            }
-        }
-        
-        func signOut() async {
-            await ArcGISEnvironment.authenticationManager.revokeOAuthTokens()
-            await ArcGISEnvironment.authenticationManager.clearCredentialStores()
-            ArcGISEnvironment.authenticationManager.handleChallenges(using: nil)
-            
-            user = nil
-            portalName = ""
-            infoText = "Signed out."
-        }
-        
-        private func setupAuthenticator() {
-            ArcGISEnvironment.authenticationManager.handleChallenges(using: authenticator)
-        }
     }
+}
+
+private extension OAuthUserConfiguration {
+    /// The configuration of the application registered on ArcGIS Online.
+    static let arcgisDotCom = OAuthUserConfiguration(
+        portalURL: .portal,
+        clientID: .clientID,
+        redirectURL: .redirectURL
+    )
+}
+
+private extension URL {
+    /// The URL of the portal to authenticate.
+    /// - Note: If you want to use your own portal, provide URL here.
+    static let portal = URL(string: "https://www.arcgis.com")!
+    
+    /// The URL for redirecting after a successful authorization.
+    /// - Note: You must have the same redirect URL used here registered with your client ID.
+    /// The scheme of the redirect URL is also specified in the Info.plist file.
+    static let redirectURL = URL(string: "my-ags-app://auth")!
+}
+
+private extension String {
+    /// A unique identifier associated with an application registered with the portal.
+    /// - Note: This identifier is for a public application created by the ArcGIS Maps SDK team.
+    static let clientID = "lgAdHkYZYlwwfAhC"
 }
 
 #Preview {
