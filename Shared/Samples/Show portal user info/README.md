@@ -2,7 +2,7 @@
 
 Retrieve a user's details via a Portal.
 
-![Image of show portal user info](ShowPortalUserInfo.png)
+![Image of show portal user info sample](show-portal-user-info.png)
 
 ## Use case
 
