@@ -42,7 +42,7 @@ struct ShowPortalUserInfoView: View {
         .errorAlert(presentingError: $error)
     }
     
-    func loadUser() async {
+    private func loadUser() async {
         do {
             try await model.loadPortalUser()
         } catch {
@@ -152,9 +152,7 @@ private extension ShowPortalUserInfoView {
         
         func loadPortalUser() async throws {
             userData.isLoading = true
-            
             let portal: Portal
-            
             // Support custom portal URLs
             if portalURLString != "https://www.arcgis.com",
                let customURL = URL(string: portalURLString) {
@@ -162,7 +160,6 @@ private extension ShowPortalUserInfoView {
             } else {
                 portal = Portal.arcGISOnline(connection: .authenticated)
             }
-            
             try await portal.load()
             portalUser = portal.user
         }
