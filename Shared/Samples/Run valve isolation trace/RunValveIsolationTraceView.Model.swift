@@ -20,17 +20,18 @@ extension RunValveIsolationTraceView {
     /// The view model for this sample.
     @MainActor
     class Model: ObservableObject {
-        /// A map with a 'night time' street map style.
-        let map = Map(basemapStyle: .arcGISStreetsNight)
+        /// A web map with a utility network used to run the isolation trace.
+        let map = Map(item: PortalItem.napervilleGasNetwork())
         
         /// The utility network for this sample.
-        private let utilityNetwork = UtilityNetwork(url: .featureServiceURL)
+        private var utilityNetwork: UtilityNetwork {
+            map.utilityNetworks.first!
+        }
         
-        /// The service geodatabase used to create the feature layer.
-        private let serviceGeodatabase = ServiceGeodatabase(url: .featureServiceURL)
-        
-        /// The service geodatabase feature layers.
-        private var layers: [FeatureLayer] = []
+        /// The feature layers of the web map.
+        private var layers: [FeatureLayer] {
+            map.operationalLayers.compactMap { $0 as? FeatureLayer }
+        }
         
         /// The last element that was added to the list of filter barriers.
         ///
@@ -40,7 +41,7 @@ extension RunValveIsolationTraceView {
         @Published private(set) var lastAddedElement: UtilityElement?
         
         /// The current tracing related activity.
-        @Published private(set) var tracingActivity: TracingActivity? = .loadingServiceGeodatabase
+        @Published private(set) var tracingActivity: TracingActivity? = .loadingNetwork
         
         /// The base trace parameters.
         private let traceParameters = UtilityTraceParameters(traceType: .isolation, startingLocations: [])
@@ -67,7 +68,7 @@ extension RunValveIsolationTraceView {
         @Published var terminalSelectorIsOpen = false
         
         /// The status text to display to the user.
-        @Published var statusText: String = "Loading Utility Network…"
+        @Published private(set) var statusText = "Loading Utility Network…"
         
         /// The filter barrier identifier.
         private static let filterBarrierIdentifier = "filter barrier"
@@ -94,37 +95,24 @@ extension RunValveIsolationTraceView {
         }()
         
         init() {
-            map.addUtilityNetwork(utilityNetwork)
+            // Updates the URL session challenge handler to use the
+            // specified credentials and tokens for any challenges.
+            ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = ChallengeHandler()
         }
         
         deinit {
-            ArcGISEnvironment.authenticationManager.arcGISCredentialStore.removeAll()
+            // Resets the URL session challenge handler to use default handling.
+            ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = nil
         }
         
-        /// Performs important tasks including adding credentials, loading and adding operational layers.
+        /// Loads the map and utility network.
         func setup() async {
             do {
-                try await ArcGISEnvironment.authenticationManager.arcGISCredentialStore.add(.publicSample)
-                try await loadServiceGeodatabase()
+                // Load the map to get the utility network.
+                try await map.load()
                 try await loadUtilityNetwork()
             } catch {
                 statusText = error.localizedDescription
-            }
-        }
-        
-        /// Loads the service geodatabase and initialize the layers.
-        private func loadServiceGeodatabase() async throws {
-            tracingActivity = .loadingServiceGeodatabase
-            defer { tracingActivity = nil }
-            try await serviceGeodatabase.load()
-            
-            // The gas device layer and gas line layer are created from the service geodatabase.
-            if let gasDeviceLayerTable = serviceGeodatabase.table(withLayerID: 0),
-               let gasLineLayerTable = serviceGeodatabase.table(withLayerID: 3) {
-                let layers = [gasLineLayerTable, gasDeviceLayerTable].map(FeatureLayer.init)
-                // Add the utility network feature layers to the map for display.
-                map.addOperationalLayers(layers)
-                self.layers = layers
             }
         }
         
@@ -246,9 +234,9 @@ extension RunValveIsolationTraceView {
             }
             do {
                 for (networkName, elements) in groups {
-                    guard let layer = map.operationalLayers.first(
-                        where: { ($0 as? FeatureLayer)?.featureTable?.tableName == networkName }
-                    ) as? FeatureLayer else { continue }
+                    guard let layer = layers.first(
+                        where: { $0.featureTable?.tableName == networkName }
+                    ) else { continue }
                     let features = try await utilityNetwork.features(for: elements)
                     layer.selectFeatures(features)
                 }
@@ -361,31 +349,36 @@ extension RunValveIsolationTraceView {
 extension RunValveIsolationTraceView.Model {
     /// The different states of a utility network trace.
     enum TracingActivity: CaseIterable {
-        case loadingServiceGeodatabase,
-             loadingNetwork,
+        case loadingNetwork,
              startingLocation,
              runningTrace
     }
 }
 
-private extension ArcGISCredential {
-    /// The public credentials for the data in this sample.
-    /// - Note: Never hardcode login information in a production application. This is done solely
-    /// for the sake of the sample.
-    static var publicSample: ArcGISCredential {
-        get async throws {
-            try await TokenCredential.credential(
-                for: .featureServiceURL,
-                username: "viewer01",
-                password: "I68VGU^nMurF"
-            )
-        }
+/// The authentication model used to handle challenges and credentials.
+private struct ChallengeHandler: ArcGISAuthenticationChallengeHandler {
+    func handleArcGISAuthenticationChallenge(
+        _ challenge: ArcGISAuthenticationChallenge
+    ) async throws -> ArcGISAuthenticationChallenge.Disposition {
+        // NOTE: Never hardcode login information in a production application.
+        // This is done solely for the sake of the sample.
+        return .continueWithCredential(
+            // Credentials for sample server 7 services.
+            try await TokenCredential.credential(for: challenge, username: "viewer01", password: "I68VGU^nMurF")
+        )
     }
 }
 
-private extension URL {
-    /// The URL to the feature service for running the isolation trace.
-    static var featureServiceURL: URL {
-        URL(string: "https://sampleserver7.arcgisonline.com/server/rest/services/UtilityNetwork/NapervilleGas/FeatureServer")!
+private extension PortalItem {
+    /// A web map portal item for the Naperville Gas Device and Line layers.
+    static func napervilleGasNetwork() -> PortalItem {
+        PortalItem(
+            // Sample server 7 authentication required.
+            portal: Portal(
+                url: URL(string: "https://sampleserver7.arcgisonline.com/portal")!,
+                connection: .authenticated
+            ),
+            id: .init("f439b4724bb54ac088a2c21eaf70da7b")!
+        )
     }
 }

@@ -2,7 +2,7 @@
 
 Change the visibility of sublayers.
 
-![Image of set map image layer sublayer visibility](SetMapImageLayerSublayerVisibility.jpg)
+![Image of set map image layer sublayer visibility sample](set-map-image-layer-sublayer-visibility.png)
 
 ## Use case
 
