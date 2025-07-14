@@ -53,6 +53,7 @@ struct ShowPortalUserInfoView: View {
     @ViewBuilder var portalDetails: some View {
         PortalDetailsView(
             url: $model.portalURLString,
+            model: $model,
             onSetUrl: {
                 model.portalURLString = $0
             },
@@ -86,9 +87,9 @@ private extension ShowPortalUserInfoView {
     @Observable
     class Model {
         /// The authenticator to handle authentication challenges.
-        var authenticator: Authenticator
+        @ObservationIgnored var authenticator: Authenticator
         /// The API key to use temporarily while using OAuth.
-        var apiKey: APIKey?
+        @ObservationIgnored var apiKey: APIKey?
         /// A list of portal items when the portal is logged in.
         var portalItems: [PortalItem] = []
         /// The portal user when the portal is logged in.
@@ -105,7 +106,7 @@ private extension ShowPortalUserInfoView {
                 )
             }
         }
-        
+        /// This string contains the URL for the portal to connect to.
         var portalURLString: String = "https://www.arcgis.com"
         var userData: UserData
         
@@ -133,14 +134,14 @@ private extension ShowPortalUserInfoView {
             ArcGISEnvironment.apiKey = nil
         }
         
+        /// This function cleans up the authenticator and restores the original state.
         func clearAuthenticator() async {
-            // Resets challenge handlers.
+            // This removes our custom challenge handler.
             ArcGISEnvironment.authenticationManager.handleChallenges(using: nil)
-            // Sets the API key back to the original value.
+            // This restores the original API key.
             ArcGISEnvironment.apiKey = apiKey
-            Task {
-                await signOut()
-            }
+            // This signs out to clean up any remaining session.
+            await signOut()
         }
         
         /// Signs out from the portal by revoking OAuth tokens and clearing credential stores.
@@ -150,7 +151,18 @@ private extension ShowPortalUserInfoView {
         }
         
         func loadPortalUser() async throws {
-            let portal = Portal.arcGISOnline(connection: .authenticated)
+            userData.isLoading = true
+            
+            let portal: Portal
+            
+            // Support custom portal URLs
+            if portalURLString != "https://www.arcgis.com",
+               let customURL = URL(string: portalURLString) {
+                portal = Portal(url: customURL, connection: .authenticated)
+            } else {
+                portal = Portal.arcGISOnline(connection: .authenticated)
+            }
+            
             try await portal.load()
             portalUser = portal.user
         }
@@ -176,6 +188,7 @@ private extension ShowPortalUserInfoView {
     
     struct PortalDetailsView: View {
         @Binding var url: String
+        @Binding var model: ShowPortalUserInfoView.Model
         
         var onSetUrl: (String) -> Void
         var onSignOut: () -> Void
@@ -201,7 +214,7 @@ private extension ShowPortalUserInfoView {
                 .padding(.horizontal)
                 
                 HStack {
-                    Button("Sign out") {
+                    Button(model.userData.isLoading ? "Sign In" : "Sign Out") {
                         onSignOut()
                         isTextFieldFocused = false
                     }
