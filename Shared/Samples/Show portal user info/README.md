@@ -18,17 +18,17 @@ When prompted, enter your ArcGIS Online credentials.
 2. When the app launches, the portal is loaded, which triggers an authentication challenge.
 3. An `AuthenticationView` listens to the challenge and displays a login screen to allow user credentials to be entered.
 4. If the portal is successfully loaded, the `portalUser` property is used to populate a series of fields including:
-   - `fullName`
-   - `username`
-   - `email`
-   - `description`
-   - `access`
+  - `fullName`
+  - `username`
+  - `email`
+  - `description`
+  - `access`
 5. Similarly, the `portalInfo` property is used to populate:
-    - `organizationName`
-    - `organizationDescription`
-    - `thumbnailUrl`
-    - `canSearchPublic`
-    - `canSharePublic`
+  - `organizationName`
+  - `organizationDescription`
+  - `thumbnailUrl`
+  - `canSearchPublic`
+  - `canSharePublic`
 
 ## Relevant API
 
