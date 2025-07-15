@@ -47,13 +47,10 @@ struct ConfigureClustersView: View {
                         showsPopup = popup != nil
                     }
                 }
-                .floatingPanel(
-                    selectedDetent: .constant(.half),
-                    horizontalAlignment: .leading,
-                    isPresented: $showsPopup
-                ) { [popup] in
-                    PopupView(popup: popup!, isPresented: $showsPopup)
-                        .padding()
+                .popover(isPresented: $showsPopup, attachmentAnchor: .point(.bottom)) { [popup] in
+                    PopupView(root: popup!, isPresented: $showsPopup)
+                        .presentationDetents([.fraction(0.5)])
+                        .frame(idealWidth: 320, idealHeight: 300)
                 }
                 .toolbar {
                     ToolbarItem(placement: .bottomBar) {
