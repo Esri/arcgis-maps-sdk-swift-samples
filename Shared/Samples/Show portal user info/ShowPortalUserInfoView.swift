@@ -46,6 +46,7 @@ struct ShowPortalUserInfoView: View {
         do {
             try await model.loadPortalUser()
         } catch {
+            model.userData.isLoading = true
             self.error = error
         }
     }
@@ -59,8 +60,8 @@ struct ShowPortalUserInfoView: View {
             },
             onSignOut: {
                 Task {
-                    await model.signOut()
                     model.userData.isLoading = true
+                    await model.signOut()
                 }
             },
             onLoadPortal: {
@@ -223,8 +224,12 @@ private extension ShowPortalUserInfoView {
                 
                 HStack {
                     Button(model.userData.isLoading ? "Sign In" : "Sign Out") {
-                        onSignOut()
-                        isTextFieldFocused = false
+                        if model.userData.isLoading {
+                            onLoadPortal()
+                        } else {
+                            onSignOut()
+                            isTextFieldFocused = false
+                        }
                     }
                     .frame(maxWidth: .infinity)
                     .buttonStyle(.borderedProminent)
