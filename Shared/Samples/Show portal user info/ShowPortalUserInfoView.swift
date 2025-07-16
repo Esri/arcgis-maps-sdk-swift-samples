@@ -150,17 +150,26 @@ private extension ShowPortalUserInfoView {
             await ArcGISEnvironment.authenticationManager.clearCredentialStores()
         }
         
+        /// This function loads portal user information from the specified URL.
         func loadPortalUser() async throws {
             userData.isLoading = true
+            // This ensures loading state is cleared even if an error occurs.
+            defer { userData.isLoading = false }
+            
+            // This determines which portal to connect to.
             let portal: Portal
-            // Support custom portal URLs
             if portalURLString != "https://www.arcgis.com",
                let customURL = URL(string: portalURLString) {
+                // This uses custom portal URL with authentication.
                 portal = Portal(url: customURL, connection: .authenticated)
             } else {
+                // This uses the default ArcGIS Online portal.
                 portal = Portal.arcGISOnline(connection: .authenticated)
             }
+            
+            // This loads portal information and authenticates user.
             try await portal.load()
+            // This stores the authenticated user.
             portalUser = portal.user
         }
         
