@@ -174,14 +174,6 @@ private extension ShowPortalUserInfoView {
             // This stores the authenticated user.
             portalUser = portal.user
         }
-        
-        /// Sets up new ArcGIS and Network credential stores that will be persisted in the keychain.
-        func setupPersistentCredentialStorage() async throws {
-            try await ArcGISEnvironment.authenticationManager.setupPersistentCredentialStorage(
-                access: .whenUnlockedThisDeviceOnly,
-                synchronizesWithiCloud: false
-            )
-        }
     }
     
     struct UserData {
