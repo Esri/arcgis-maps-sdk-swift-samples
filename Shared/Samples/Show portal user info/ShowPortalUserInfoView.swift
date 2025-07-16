@@ -169,8 +169,10 @@ private extension ShowPortalUserInfoView {
             
             // This loads portal information and authenticates user.
             try await portal.load()
+            try await portal.user?.thumbnail?.load()
             // This stores the authenticated user.
             portalUser = portal.user
+            
         }
         
         /// Sets up new ArcGIS and Network credential stores that will be persisted in the keychain.
