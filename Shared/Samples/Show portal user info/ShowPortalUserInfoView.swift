@@ -229,6 +229,7 @@ private extension ShowPortalUserInfoView {
                     Button("Load portal") {
                         onLoadPortal()
                         isTextFieldFocused = false
+                        print("load portal")
                     }
                     .frame(maxWidth: .infinity)
                     .buttonStyle(.borderedProminent)
