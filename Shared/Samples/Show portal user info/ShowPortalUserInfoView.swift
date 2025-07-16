@@ -96,11 +96,17 @@ private extension ShowPortalUserInfoView {
         /// The portal user when the portal is logged in.
         var portalUser: PortalUser? {
             didSet {
+                let formatter = DateFormatter()
+                formatter.dateStyle = .long
+                formatter.timeStyle = .none
+
+                let creationDateString = portalUser?.creationDate.map { formatter.string(from: $0) } ?? ""
+                
                 userData = UserData(
                     infoText: portalUser?.description ?? "",
                     username: portalUser?.username ?? "",
                     email: portalUser?.email ?? "",
-                    creationDate: portalUser?.creationDate?.formatted() ?? "",
+                    creationDate: creationDateString,
                     portalName: portalUser?.portal?.info?.portalName ?? "",
                     userThumbnail: portalUser?.thumbnail?.image ?? .defaultUserImage,
                     isLoading: false
@@ -115,6 +121,7 @@ private extension ShowPortalUserInfoView {
             self.authenticator = Authenticator(
                 oAuthUserConfigurations: [.arcgisDotCom]
             )
+          
             userData = UserData(
                 infoText: "Default",
                 username: "Username",
