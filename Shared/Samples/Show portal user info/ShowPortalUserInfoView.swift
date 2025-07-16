@@ -173,7 +173,6 @@ private extension ShowPortalUserInfoView {
             try await portal.user?.thumbnail?.load()
             // This stores the authenticated user.
             portalUser = portal.user
-            
         }
         
         /// Sets up new ArcGIS and Network credential stores that will be persisted in the keychain.
@@ -226,6 +225,7 @@ private extension ShowPortalUserInfoView {
                     Button(model.userData.isLoading ? "Sign In" : "Sign Out") {
                         if model.userData.isLoading {
                             onLoadPortal()
+                            isTextFieldFocused = false
                         } else {
                             onSignOut()
                             isTextFieldFocused = false
@@ -274,7 +274,6 @@ private extension ShowPortalUserInfoView {
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 150, height: 150)
                     .clipShape(Circle())
-                    .clipped()
                 ForEach(userDetails, id: \.0) { label, value in
                     Divider()
                     LabeledContent(
