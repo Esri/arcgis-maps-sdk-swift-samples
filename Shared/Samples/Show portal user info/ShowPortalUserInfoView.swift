@@ -28,7 +28,7 @@ struct ShowPortalUserInfoView: View {
         VStack(spacing: 16) {
             portalDetails
             Group {
-                if model.userData.isLoading {
+                if model.isLoading {
                     ContentUnavailableView(
                         "Portal User Information",
                         systemImage: "exclamationmark.triangle",
@@ -46,7 +46,7 @@ struct ShowPortalUserInfoView: View {
         do {
             try await model.loadPortalUser()
         } catch {
-            model.userData.isLoading = true
+            model.isLoading = true
             self.error = error
         }
     }
@@ -60,7 +60,7 @@ struct ShowPortalUserInfoView: View {
             },
             onSignOut: {
                 Task {
-                    model.userData.isLoading = true
+                    model.isLoading = true
                     await model.signOut()
                 }
             },
@@ -106,15 +106,14 @@ private extension ShowPortalUserInfoView {
                     email: portalUser?.email ?? "",
                     creationDate: creationDateString,
                     portalName: portalUser?.portal?.info?.portalName ?? "",
-                    userThumbnail: portalUser?.thumbnail?.image ?? .defaultUserImage,
-                    accessDetails: portalUser?.access?.description ?? "",
-                    isLoading: false
+                    userThumbnail: portalUser?.thumbnail?.image ?? .defaultUserImage
                 )
             }
         }
         /// This string contains the URL for the portal to connect to.
         var portalURLString: String = "https://www.arcgis.com"
         var userData: UserData
+        var isLoading: Bool = true
         
         init() {
             self.authenticator = Authenticator(
@@ -127,9 +126,7 @@ private extension ShowPortalUserInfoView {
                 email: "Email",
                 creationDate: "Date",
                 portalName: "Portal Name",
-                userThumbnail: .defaultUserImage,
-                accessDetails: "Access Details",
-                isLoading: true
+                userThumbnail: .defaultUserImage
             )
         }
         
@@ -163,17 +160,16 @@ private extension ShowPortalUserInfoView {
                 email: "",
                 creationDate: "",
                 portalName: "",
-                userThumbnail: .defaultUserImage,
-                accessDetails: "",
-                isLoading: true
+                userThumbnail: .defaultUserImage
             )
+            isLoading = true
         }
         
         /// This function loads portal user information from the specified URL.
         func loadPortalUser() async throws {
-            userData.isLoading = true
+            isLoading = true
             // This ensures loading state is cleared even if an error occurs.
-            defer { userData.isLoading = false }
+            defer { isLoading = false }
             
             // This determines which portal to connect to.
             let portal: Portal
@@ -201,8 +197,6 @@ private extension ShowPortalUserInfoView {
         var creationDate: String
         var portalName: String
         var userThumbnail: UIImage
-        var accessDetails: String
-        var isLoading: Bool
     }
     
     struct PortalDetailsView: View {
@@ -233,14 +227,13 @@ private extension ShowPortalUserInfoView {
                 .padding(.horizontal)
                 
                 HStack {
-                    Button(model.userData.isLoading ? "Sign In" : "Sign Out") {
-                        if model.userData.isLoading {
+                    Button(model.isLoading ? "Sign In" : "Sign Out") {
+                        if model.isLoading {
                             onLoadPortal()
-                            isTextFieldFocused = false
                         } else {
                             onSignOut()
-                            isTextFieldFocused = false
                         }
+                        isTextFieldFocused = false
                     }
                     .frame(maxWidth: .infinity)
                     .buttonStyle(.borderedProminent)
@@ -266,13 +259,12 @@ private extension ShowPortalUserInfoView {
             ("Username:", model.userData.username),
             ("E-mail:", model.userData.email),
             ("Member Since:", model.userData.creationDate),
-            ("Portal Name", model.userData.portalName),
-            ("Access", model.userData.accessDetails)
+            ("Portal Name", model.userData.portalName)
         ] }
         
         var body: some View {
             VStack(spacing: 16) {
-                if model.userData.isLoading {
+                if model.isLoading {
                     ProgressView()
                         .padding()
                 } else {
