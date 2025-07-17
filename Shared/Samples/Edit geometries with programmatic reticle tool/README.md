@@ -29,7 +29,7 @@ Use the buttons in the settings view to undo or redo changes made to the geometr
 3. Create a `ProgrammaticReticleTool` and set the geometry editor tool.
 4. Add event handlers to listen to GeometryEditor.HoveredElementChanged and GeometryEditorPickedUpElementChanged.
  - These events can be used to determine the effect a button press will have and set the button text accordingly.
- 5. Use the `onSingleTapGesture` modifier to listen for tap events on the map view when the geometry editor is active to select and navigate to tapped vertices and mid-vertices.
+5. Use the `onSingleTapGesture` modifier to listen for tap events on the map view when the geometry editor is active to select and navigate to tapped vertices and mid-vertices.
  - To retrieve the tapped element and update the viewpoint:
   - Use `MapViewProxy.identifyGeometryEditor(screenPoint:tolerance)` to identify geometry editor elements at the location of the tap.
   - Access the first element from the `IdentifyGeometryEditorResult` as `result.elements.first`.
