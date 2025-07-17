@@ -93,13 +93,14 @@ private extension ShowPortalUserInfoView {
         @ObservationIgnored var apiKey: APIKey?
         /// A list of portal items when the portal is logged in.
         var portalItems: [PortalItem] = []
+        var portalDetails: PortalInfo?
         /// The portal user when the portal is logged in.
         var portalUser: PortalUser? {
             didSet {
                 let formatter = DateFormatter()
                 formatter.dateStyle = .long
                 formatter.timeStyle = .none
-
+                
                 let creationDateString = portalUser?.creationDate.map { formatter.string(from: $0) } ?? ""
                 
                 userData = UserData(
@@ -109,6 +110,7 @@ private extension ShowPortalUserInfoView {
                     creationDate: creationDateString,
                     portalName: portalUser?.portal?.info?.portalName ?? "",
                     userThumbnail: portalUser?.thumbnail?.image ?? .defaultUserImage,
+                    accessDetails: portalUser?.access?.description ?? "",
                     isLoading: false
                 )
             }
@@ -121,7 +123,7 @@ private extension ShowPortalUserInfoView {
             self.authenticator = Authenticator(
                 oAuthUserConfigurations: [.arcgisDotCom]
             )
-          
+            
             userData = UserData(
                 infoText: "Default",
                 username: "Username",
@@ -129,6 +131,7 @@ private extension ShowPortalUserInfoView {
                 creationDate: "Date",
                 portalName: "Portal Name",
                 userThumbnail: .defaultUserImage,
+                accessDetails: "Access Details",
                 isLoading: true
             )
         }
@@ -156,6 +159,18 @@ private extension ShowPortalUserInfoView {
         func signOut() async {
             await ArcGISEnvironment.authenticationManager.revokeOAuthTokens()
             await ArcGISEnvironment.authenticationManager.clearCredentialStores()
+            portalUser = nil
+            portalDetails = nil
+            userData = UserData(
+                infoText: "",
+                username: "",
+                email: "",
+                creationDate: "",
+                portalName: "",
+                userThumbnail: .defaultUserImage,
+                accessDetails: "",
+                isLoading: true
+            )
         }
         
         /// This function loads portal user information from the specified URL.
@@ -180,6 +195,7 @@ private extension ShowPortalUserInfoView {
             try await portal.user?.thumbnail?.load()
             // This stores the authenticated user.
             portalUser = portal.user
+            portalDetails = portal.info
         }
     }
     
@@ -190,6 +206,7 @@ private extension ShowPortalUserInfoView {
         var creationDate: String
         var portalName: String
         var userThumbnail: UIImage
+        var accessDetails: String
         var isLoading: Bool
     }
     
@@ -254,7 +271,8 @@ private extension ShowPortalUserInfoView {
             ("Username:", model.userData.username),
             ("E-mail:", model.userData.email),
             ("Member Since:", model.userData.creationDate),
-            ("Portal Name", model.userData.portalName)
+            ("Portal Name", model.userData.portalName),
+            ("Access", model.userData.accessDetails)
         ] }
         
         var body: some View {
