@@ -17,6 +17,7 @@
         "user",
         "username",
         "OAuthUserConfiguration",
+        "Portal",
         "PortalInfo",
         "PortalUser"
     ],
