@@ -188,10 +188,6 @@ private struct GeometryEditorMenu: View {
                             model.updateReticleState()
                         }
                     }
-                    .task(id: model.allowsVertexCreation) {
-                        model.reticleTool.vertexCreationPreviewIsEnabled = model.allowsVertexCreation
-                        model.reticleTool.style.growEffect?.appliesToMidVertices = model.allowsVertexCreation
-                    }
             }
         } label: {
             Label("Geometry Editor", systemImage: "pencil.tip.crop.circle")
@@ -244,6 +240,10 @@ private extension GeometryEditorMenu {
     var editMenuContent: some View {
         VStack {
             Toggle("Allow vertex creation", isOn: $model.allowsVertexCreation)
+                .onChange(of: model.allowsVertexCreation) {
+                    model.reticleTool.vertexCreationPreviewIsEnabled = model.allowsVertexCreation
+                    model.reticleTool.style.growEffect?.appliesToMidVertices = model.allowsVertexCreation
+                }
             
             Button {
                 if model.geometryEditor.pickedUpElement != nil {
