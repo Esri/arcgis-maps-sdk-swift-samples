@@ -45,7 +45,11 @@ private extension ShowShapefileMetadataView {
         func loadFeatureLayer() async throws {
             // Create a shapefile feature table.
             let featureTable = ShapefileFeatureTable(
-                fileURL: Bundle.main.url(forResource: "Subdivisions", withExtension: "shp", subdirectory: "Aurora_CO_shp")!
+                fileURL: Bundle.main.url(
+                    forResource: "TrailBikeNetwork",
+                    withExtension: "shp",
+                    subdirectory: "Aurora_CO_shp"
+                )!
             )
             let featureLayer = FeatureLayer(featureTable: featureTable)
             let image = featureTable.info?.thumbnail
