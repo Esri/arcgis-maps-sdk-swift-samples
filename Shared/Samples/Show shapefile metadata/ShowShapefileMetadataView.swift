@@ -16,11 +16,37 @@ import ArcGIS
 import SwiftUI
 
 struct ShowShapefileMetadataView: View {
+    // Create a map with a topographic basemap.
+    @State private var map = Map(basemapStyle: .arcGISTopographic)
+    /// The error that occurred, if any, when trying to save the map to the portal.
+    @State private var error: Error?
     
     var body: some View {
-        Text("Shapfile metadata")
+        MapViewReader { mapView in
+            MapView(map: map)
+                .onAppear {
+                    Task {
+                        // Create a shapefile feature table.
+                        let featureTable = ShapefileFeatureTable(
+                            fileURL: Bundle.main.url(forResource: "Subdivisions", withExtension: "shp", subdirectory: "Aurora_CO_shp")!
+                        )
+                        let featureLayer = FeatureLayer(featureTable: featureTable)
+                        do {
+                            var image = featureTable.info?.thumbnail
+                            try await featureLayer.featureTable?.load()
+                        } catch {
+                            self.error = error
+                        }
+                    }
+                }
+        }
     }
 }
+
+private extension ShowShapefileMetadataView {
+    
+}
+
 
 #Preview {
     ShowShapefileMetadataView()
