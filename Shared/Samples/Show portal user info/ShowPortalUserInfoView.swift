@@ -51,7 +51,7 @@ struct ShowPortalUserInfoView: View {
         }
     }
     
-    @ViewBuilder var portalDetails: some View {
+    @ViewBuilder private var portalDetails: some View {
         PortalDetailsView(
             url: $model.portalURLString,
             model: $model,
