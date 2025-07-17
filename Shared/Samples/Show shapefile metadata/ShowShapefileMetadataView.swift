@@ -23,15 +23,14 @@ struct ShowShapefileMetadataView: View {
     var body: some View {
         MapViewReader { mapView in
             MapView(map: model.map)
-                .onAppear {
-                    Task {
-                        do {
-                            try await model.loadFeatureLayer()
-                        } catch {
-                            self.error = error
-                        }
+                .task {
+                    do {
+                        try await model.loadFeatureLayer()
+                    } catch {
+                        self.error = error
                     }
                 }
+                .errorAlert(presentingError: $error)
         }
     }
 }
