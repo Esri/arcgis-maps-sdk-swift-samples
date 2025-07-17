@@ -16,24 +16,17 @@ import ArcGIS
 import SwiftUI
 
 struct ShowShapefileMetadataView: View {
-    // Create a map with a topographic basemap.
-    @State private var map = Map(basemapStyle: .arcGISTopographic)
+    @State private var model = Model()
     /// The error that occurred, if any, when trying to save the map to the portal.
     @State private var error: Error?
     
     var body: some View {
         MapViewReader { mapView in
-            MapView(map: map)
+            MapView(map: model.map)
                 .onAppear {
                     Task {
-                        // Create a shapefile feature table.
-                        let featureTable = ShapefileFeatureTable(
-                            fileURL: Bundle.main.url(forResource: "Subdivisions", withExtension: "shp", subdirectory: "Aurora_CO_shp")!
-                        )
-                        let featureLayer = FeatureLayer(featureTable: featureTable)
                         do {
-                            var image = featureTable.info?.thumbnail
-                            try await featureLayer.featureTable?.load()
+                            try await model.loadFeatureLayer()
                         } catch {
                             self.error = error
                         }
@@ -44,9 +37,23 @@ struct ShowShapefileMetadataView: View {
 }
 
 private extension ShowShapefileMetadataView {
-    
+    @MainActor
+    @Observable
+    class Model {
+        // Create a map with a topographic basemap.
+        var map = Map(basemapStyle: .arcGISTopographic)
+        
+        func loadFeatureLayer() async throws {
+            // Create a shapefile feature table.
+            let featureTable = ShapefileFeatureTable(
+                fileURL: Bundle.main.url(forResource: "Subdivisions", withExtension: "shp", subdirectory: "Aurora_CO_shp")!
+            )
+            let featureLayer = FeatureLayer(featureTable: featureTable)
+            let image = featureTable.info?.thumbnail
+            try await featureLayer.featureTable?.load()
+        }
+    }
 }
-
 
 #Preview {
     ShowShapefileMetadataView()
