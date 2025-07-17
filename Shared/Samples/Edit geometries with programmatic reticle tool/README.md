@@ -60,9 +60,9 @@ Use the buttons in the settings view to undo or redo changes made to the geometr
 
 The sample demonstrates a number of workflows which can be altered depending on desired app functionality:
 
- - picking up a hovered element combines selection and pick up, this can be separated into two steps to require selection before pick up.
+- picking up a hovered element combines selection and pick up, this can be separated into two steps to require selection before pick up.
 
- - tapping a vertex or mid-vertex selects it and updates the viewpoint to its position. This could be changed to not update the viewpoint or also pick up the element.
+- tapping a vertex or mid-vertex selects it and updates the viewpoint to its position. This could be changed to not update the viewpoint or also pick up the element.
 
 With the hovered and picked up element changed events and the programmatic APIs on the ProgrammaticReticleTool a broad range of editing experiences can be implemented.
 
