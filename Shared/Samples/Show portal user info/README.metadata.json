@@ -16,19 +16,14 @@
         "profile",
         "user",
         "username",
-        "AuthenticationManager",
-        "AuthenticationView",
-        "Credential",
-        "DefaultAuthenticationChallengeHandler",
+        "OAuthUserConfiguration",
         "PortalInfo",
         "PortalUser"
     ],
     "redirect_from": [],
     "relevant_apis": [
-        "AuthenticationManager",
-        "AuthenticationView",
-        "Credential",
-        "DefaultAuthenticationChallengeHandler",
+        "OAuthUserConfiguration",
+        "Portal",
         "PortalInfo",
         "PortalUser"
     ],
