@@ -91,11 +91,8 @@ private extension ShowPortalUserInfoView {
         @ObservationIgnored var authenticator: Authenticator
         /// The API key to use temporarily while using OAuth.
         @ObservationIgnored var apiKey: APIKey?
-        /// A list of portal items when the portal is logged in.
-        var portalItems: [PortalItem] = []
-        var portalDetails: PortalInfo?
         /// The portal user when the portal is logged in.
-        var portalUser: PortalUser? {
+        private var portalUser: PortalUser? {
             didSet {
                 let formatter = DateFormatter()
                 formatter.dateStyle = .long
@@ -160,7 +157,6 @@ private extension ShowPortalUserInfoView {
             await ArcGISEnvironment.authenticationManager.revokeOAuthTokens()
             await ArcGISEnvironment.authenticationManager.clearCredentialStores()
             portalUser = nil
-            portalDetails = nil
             userData = UserData(
                 infoText: "",
                 username: "",
@@ -195,7 +191,6 @@ private extension ShowPortalUserInfoView {
             try await portal.user?.thumbnail?.load()
             // This stores the authenticated user.
             portalUser = portal.user
-            portalDetails = portal.info
         }
     }
     
