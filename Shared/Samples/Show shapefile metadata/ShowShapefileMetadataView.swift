@@ -20,17 +20,28 @@ struct ShowShapefileMetadataView: View {
     /// The error that occurred, if any, when trying to save the map to the portal.
     @State private var error: Error?
     
+    @State private var showMetadata: Bool = false
+    
     var body: some View {
         MapViewReader { mapView in
-            MapView(map: model.map)
-                .task {
+            ZStack {
+                MapView(map: model.map)
+                if showMetadata {
+                    MetadataView(model: $model)
+                }
+            }
+            .onAppear {
+                Task {
                     do {
                         try await model.loadFeatureLayer()
+                        MetadataView(model: $model)
+                        self.showMetadata = true
                     } catch {
                         self.error = error
                     }
                 }
-                .errorAlert(presentingError: $error)
+            }
+            .errorAlert(presentingError: $error)
         }
     }
 }
@@ -42,6 +53,10 @@ private extension ShowShapefileMetadataView {
         // Create a map with a topographic basemap.
         var map = Map(basemapStyle: .arcGISTopographic)
         
+        var shapefileInfo: ShapefileInfo?
+        var thumbnailImage: UIImage?
+        var showMetadata = false
+        
         func loadFeatureLayer() async throws {
             // Create a shapefile feature table.
             let featureTable = ShapefileFeatureTable(
@@ -52,8 +67,26 @@ private extension ShowShapefileMetadataView {
                 )!
             )
             let featureLayer = FeatureLayer(featureTable: featureTable)
-            let image = featureTable.info?.thumbnail
             try await featureLayer.featureTable?.load()
+            thumbnailImage = featureTable.info?.thumbnail
+        }
+    }
+    
+    struct MetadataView: View {
+        @Binding var model: ShowShapefileMetadataView.Model
+        
+        var body: some View {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Description: \(model.shapefileInfo?.description ?? "")")
+                Text("Copyright: \(model.shapefileInfo?.copyrightText ?? "")")
+                if let image =  model.thumbnailImage {
+                    Image(uiImage: image)
+                }
+            }
+            .padding()
+            .background(Color(.secondarySystemBackground))
+            .cornerRadius(8)
+            .padding(.horizontal)
         }
     }
 }
