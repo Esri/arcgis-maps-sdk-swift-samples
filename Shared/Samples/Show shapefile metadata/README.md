@@ -14,9 +14,9 @@ Open the sample to automatically view the shapefile’s metadata.
 
 ## How It Works
 
-1. Load the shapefile using the `ShapefileFeatureTable` with the assets URL.  
-2. Access the shapefile metadata through the `info` property of the feature table.  
-3. Retrieve and display the thumbnail image from `fileInfo.thumbnail`.  
+1. Load the shapefile using the `ShapefileFeatureTable` with the assets URL.
+2. Access the shapefile metadata through the `info` property of the feature table.
+3. Retrieve and display the thumbnail image from `fileInfo.thumbnail`.
 4. Display the shapefile's `summary`, `credits`, and `tags` from the metadata.
 
 ## Relevant API
