@@ -2,7 +2,7 @@
 
 Analyze the viewshed for a camera showing the visible and obstructed areas from an observer's vantage point.
 
-![Image of show viewshed from camera in scene](show-viewshed-from-camera-in-scene.png)
+![Image of show viewshed from camera in scene sample](show-viewshed-from-camera-in-scene.png)
 
 ## Use case
 
