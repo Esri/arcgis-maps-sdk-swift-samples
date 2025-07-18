@@ -90,7 +90,7 @@ struct ShowLineOfSightBetweenGeoelementsView: View {
                 }
                 .listRowSeparator(.hidden, edges: .top)
             }
-            .presentationDetents([.fraction(0.30)])
+            .presentationDetents([.fraction(0.25)])
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
