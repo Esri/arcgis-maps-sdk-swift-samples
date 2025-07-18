@@ -4,15 +4,15 @@ Read a shapefile and display its metadata.
 
 ![Image of show shapefile metadata sample](show-shapefile-metadata.png)
 
-## Use Case
+## Use case
 
 Display metadata for the shapefile currently being viewed—such as tags, credits, and a summary.
 
-## How to Use the Sample
+## How to use the sample
 
 Open the sample to automatically view the shapefile’s metadata.
 
-## How It Works
+## How it works
 
 1. Load the shapefile using the `ShapefileFeatureTable` with the assets URL.
 2. Access the shapefile metadata through the `info` property of the feature table.
