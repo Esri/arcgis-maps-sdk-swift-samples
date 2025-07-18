@@ -34,8 +34,10 @@ struct ShowShapefileMetadataView: View {
                 Task {
                     do {
                         try await model.loadFeatureLayer()
-                        MetadataView(model: $model)
-                        self.showMetadata = true
+                        self.showMetadata = false
+                        if let fullExtent = model.featureLayer?.fullExtent {
+                            try await mapView.setViewpointGeometry(fullExtent, padding: 50)
+                        }
                     } catch {
                         self.error = error
                     }
@@ -52,7 +54,7 @@ private extension ShowShapefileMetadataView {
     class Model {
         // Create a map with a topographic basemap.
         var map = Map(basemapStyle: .arcGISTopographic)
-        
+        var featureLayer: FeatureLayer?
         var shapefileInfo: ShapefileInfo?
         var thumbnailImage: UIImage?
         var showMetadata = false
@@ -66,8 +68,9 @@ private extension ShowShapefileMetadataView {
                     subdirectory: "Aurora_CO_shp"
                 )!
             )
-            let featureLayer = FeatureLayer(featureTable: featureTable)
-            try await featureLayer.featureTable?.load()
+            featureLayer = FeatureLayer(featureTable: featureTable)
+            try await featureLayer!.featureTable?.load()
+            shapefileInfo = featureTable.info
             thumbnailImage = featureTable.info?.thumbnail
         }
     }
@@ -79,7 +82,8 @@ private extension ShowShapefileMetadataView {
             VStack(alignment: .leading, spacing: 8) {
                 Text("Description: \(model.shapefileInfo?.description ?? "")")
                 Text("Copyright: \(model.shapefileInfo?.copyrightText ?? "")")
-                if let image =  model.thumbnailImage {
+                Text("Summary: \(model.shapefileInfo?.summary ?? "")")
+                if let image = model.thumbnailImage {
                     Image(uiImage: image)
                 }
             }
