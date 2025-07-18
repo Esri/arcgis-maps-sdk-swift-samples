@@ -63,7 +63,6 @@ private extension ShowShapefileMetadataView {
         var featureLayer: FeatureLayer?
         var shapefileInfo: ShapefileInfo?
         var thumbnailImage: UIImage?
-        var showMetadata = false
         
         func loadFeatureLayer() async throws {
             // Create a shapefile feature table.
@@ -95,6 +94,7 @@ private extension ShowShapefileMetadataView {
                     Image(uiImage: image)
                 }
                 Text("Tags: \(model.shapefileInfo?.tags.joined(separator: ", ") ?? "None")")
+                    .font(.caption2)
             }
             .padding()
             .background(Color(.secondarySystemBackground))
