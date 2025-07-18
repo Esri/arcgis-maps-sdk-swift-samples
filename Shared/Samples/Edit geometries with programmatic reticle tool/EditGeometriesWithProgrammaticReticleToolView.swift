@@ -482,7 +482,13 @@ private class GeometryEditorModel {
         } else if let hoveredElement = geometryEditor.hoveredElement {
             if allowsVertexCreation {
                 // Verticies and mid-vertices can be picked up.
-                reticleState = hoveredElement is GeometryEditorVertex ? .hoveringVertex : .hoveringMidVertex
+                if hoveredElement is GeometryEditorVertex {
+                    reticleState = .hoveringVertex
+                } else if hoveredElement is GeometryEditorMidVertex {
+                    reticleState = .hoveringMidVertex
+                } else {
+                    reticleState = .default
+                }
             } else {
                 // Only verticies can be picked up, mid-vertices cannot be picked up.
                 if hoveredElement is GeometryEditorVertex {
