@@ -23,11 +23,19 @@ struct ShowViewshedFromCameraInSceneView: View {
     @State private var isPresented = false
     
     var body: some View {
-        SceneView(scene: model.scene, camera: $model.lastCamera)
-            .onAppear {
-                model.height = 20.0
-            }
-            .navigationTitle("Show Viewshed from Camera")
+        SceneView(
+            scene: model.scene,
+            camera: $model.lastCamera,
+            graphicsOverlays: [model.graphicsOverlay],
+            analysisOverlays: [model.analysisOverlay]
+        )
+        .onAppear {
+            model.height = 150.0
+        }
+        .onTapGesture {
+            model.height += 10
+        }
+        .navigationTitle("Show Viewshed from Camera")
     }
 }
 
@@ -42,10 +50,16 @@ private extension ShowViewshedFromCameraInSceneView {
         }
         
         private var viewshed: LocationViewshed?
+        
         var lastCamera: Camera?
         
         let analysisOverlay: AnalysisOverlay = {
             let overlay = AnalysisOverlay()
+            return overlay
+        }()
+        
+        let graphicsOverlay: GraphicsOverlay = {
+            let overlay = GraphicsOverlay()
             return overlay
         }()
         
@@ -55,6 +69,24 @@ private extension ShowViewshedFromCameraInSceneView {
             scene.baseSurface.addElevationSource(elevation)
             let meshLayer = IntegratedMeshLayer(url: .gironaMeshService)
             scene.addOperationalLayer(meshLayer)
+            let gironaPoint = Point(x: 2.8214, y: 41.9794, z: 0, spatialReference: .wgs84)
+            // Camera 150m above ground looking down at 45 degrees pitch
+            let initialCamera = Camera(
+                location: Point(x: 2.8214, y: 41.9794, z: 300, spatialReference: .wgs84),
+                heading: 0,
+                pitch: 45,
+                roll: 0
+            )
+            let viewpoint = Viewpoint(
+                boundingGeometry: Point(
+                    x: 2.8214,
+                    y: 41.9794,
+                    z: 150,
+                    spatialReference: .wgs84
+                ),
+                camera: initialCamera
+            )
+            scene.initialViewpoint = viewpoint
             return scene
         }()
         
@@ -79,8 +111,24 @@ private extension ShowViewshedFromCameraInSceneView {
                 roll: camera.roll
             )
             let newViewshed = LocationViewshed(camera: elevatedCamera, minDistance: 1.0, maxDistance: 1000.0)
+            
+            // Set colors: visible area green, obstructed area red
+            Viewshed.visibleColor = UIColor.green.withAlphaComponent(0.5)
+            Viewshed.obstructedColor = UIColor.red.withAlphaComponent(0.5)
             analysisOverlay.addAnalysis(newViewshed)
             self.viewshed = newViewshed
+            
+            // Clear previous graphics
+            graphicsOverlay.removeAllGraphics()
+            
+            // Create a simple marker symbol
+            let markerSymbol = SimpleMarkerSymbol(style: .circle, color: .blue, size: 12)
+            
+            // Create a graphic at the elevated point
+            let graphic = Graphic(geometry: elevatedPoint, symbol: markerSymbol)
+            
+            // Add the graphic to the graphics overlay
+            graphicsOverlay.addGraphic(graphic)
         }
         
         private func updateViewshedFromLastCamera() {
