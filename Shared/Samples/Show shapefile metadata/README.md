@@ -27,7 +27,7 @@ The shapefile's metadata will be displayed when you open the sample.
 * ShapefileInfo.credits
 * ShapefileInfo.summary
 * ShapefileInfo.tags
-* ShapefileInfo.thumnail
+* ShapefileInfo.thumbnail
 
 ## Offline data
 
