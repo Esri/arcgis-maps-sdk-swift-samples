@@ -14,7 +14,7 @@ The shapefile's metadata will be displayed when you open the sample.
 
 ## How it works
 
-1. Load the assets url the `ShapefileFeatureTable`.
+1. Load the assets url in the `ShapefileFeatureTable`.
 2. Get the `ShapefileInfo` from the feature table's `info` property.
 3. Get the image from `fileInfo.thumbnail` and display it.
 4. Display the `summary`, `credits`, and `tags` properties from the shapefile info.
