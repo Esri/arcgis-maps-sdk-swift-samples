@@ -34,12 +34,18 @@ struct ShowShapefileMetadataView: View {
                 Task {
                     do {
                         try await model.loadFeatureLayer()
-                        self.showMetadata = false
                         if let fullExtent = model.featureLayer?.fullExtent {
                             try await mapView.setViewpointGeometry(fullExtent, padding: 50)
                         }
                     } catch {
                         self.error = error
+                    }
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .bottomBar) {
+                    Button(showMetadata ? "Hide Metadata" : "Show Metadata") {
+                        self.showMetadata.toggle()
                     }
                 }
             }
@@ -70,6 +76,7 @@ private extension ShowShapefileMetadataView {
             )
             featureLayer = FeatureLayer(featureTable: featureTable)
             try await featureLayer!.featureTable?.load()
+            map.addOperationalLayer(featureLayer!)
             shapefileInfo = featureTable.info
             thumbnailImage = featureTable.info?.thumbnail
         }
@@ -79,13 +86,15 @@ private extension ShowShapefileMetadataView {
         @Binding var model: ShowShapefileMetadataView.Model
         
         var body: some View {
-            VStack(alignment: .leading, spacing: 8) {
-                Text("Description: \(model.shapefileInfo?.description ?? "")")
-                Text("Copyright: \(model.shapefileInfo?.copyrightText ?? "")")
-                Text("Summary: \(model.shapefileInfo?.summary ?? "")")
+            VStack(alignment: .center, spacing: 16) {
+                Text("\(model.shapefileInfo?.credits ?? "")")
+                    .fontWeight(.bold)
+                Text("\(model.shapefileInfo?.summary ?? "")")
+                    .font(.caption)
                 if let image = model.thumbnailImage {
                     Image(uiImage: image)
                 }
+                Text("Tags: \(model.shapefileInfo?.tags.joined(separator: ", ") ?? "None")")
             }
             .padding()
             .background(Color(.secondarySystemBackground))
