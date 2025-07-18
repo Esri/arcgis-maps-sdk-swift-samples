@@ -120,7 +120,6 @@ extension BrowseWMSLayersView {
                     .onChange(of: model.isVisible) { updateSelection() }
                 }
             }
-            .listStyle(.plain)
         }
         
         /// Updates the selection for given `isVisible`.
