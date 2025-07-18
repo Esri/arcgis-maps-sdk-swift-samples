@@ -17,24 +17,22 @@
         "tags",
         "visualization",
         "ShapefileFeatureTable",
-        "ShapefileFeatureTable.Info",
-        "ShapefileFeatureTable.OpenAsync",
+        "ShapefileFeatureTable.info",
         "ShapefileInfo",
-        "ShapefileInfo.Credits",
-        "ShapefileInfo.Summary",
-        "ShapefileInfo.Tags",
-        "ShapefileInfo.Thumbnail"
+        "ShapefileInfo.credits",
+        "ShapefileInfo.summary",
+        "ShapefileInfo.tags",
+        "ShapefileInfo.thumbnail"
     ],
     "redirect_from": [],
     "relevant_apis": [
         "ShapefileFeatureTable",
-        "ShapefileFeatureTable.Info",
-        "ShapefileFeatureTable.OpenAsync",
+        "ShapefileFeatureTable.info",
         "ShapefileInfo",
-        "ShapefileInfo.Credits",
-        "ShapefileInfo.Summary",
-        "ShapefileInfo.Tags",
-        "ShapefileInfo.Thumbnail"
+        "ShapefileInfo.credits",
+        "ShapefileInfo.summary",
+        "ShapefileInfo.tags",
+        "ShapefileInfo.thumbnail"
     ],
     "offline_data": [
         "d98b3e5293834c5f852f13c569930caa"

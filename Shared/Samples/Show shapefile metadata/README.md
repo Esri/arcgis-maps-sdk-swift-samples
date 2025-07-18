@@ -14,21 +14,20 @@ The shapefile's metadata will be displayed when you open the sample.
 
 ## How it works
 
-1. Call `ShapefileFeatureTable.OpenAsync("path_to_shapefile")` to create the `ShapefileFeatureTable`.
-2. Get the `ShapefileInfo` from the feature table's `Info` property.
-3. Get the image from `fileInfo.Thumbnail` and display it.
-4. Display the `Summary`, `Credits`, and `Tags` properties from the shapefile info.
+1. Load the assets url the `ShapefileFeatureTable`.
+2. Get the `ShapefileInfo` from the feature table's `info` property.
+3. Get the image from `fileInfo.thumbnail` and display it.
+4. Display the `summary`, `credits`, and `tags` properties from the shapefile info.
 
 ## Relevant API
 
 * ShapefileFeatureTable
-* ShapefileFeatureTable.Info
-* ShapefileFeatureTable.OpenAsync
+* ShapefileFeatureTable.info
 * ShapefileInfo
-* ShapefileInfo.Credits
-* ShapefileInfo.Summary
-* ShapefileInfo.Tags
-* ShapefileInfo.Thumbnail
+* ShapefileInfo.credits
+* ShapefileInfo.summary
+* ShapefileInfo.tags
+* ShapefileInfo.thumnail
 
 ## Offline data
 
