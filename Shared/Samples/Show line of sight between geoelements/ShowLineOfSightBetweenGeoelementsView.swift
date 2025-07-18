@@ -48,7 +48,7 @@ struct ShowLineOfSightBetweenGeoelementsView: View {
                 Button("Settings") {
                     isPresented = true
                 }
-                .sheet(isPresented: $isPresented) {
+                .popover(isPresented: $isPresented) {
                     settingsSheet
                 }
             }
@@ -101,6 +101,7 @@ struct ShowLineOfSightBetweenGeoelementsView: View {
                 }
             }
         }
+        .frame(idealWidth: 320, idealHeight: 380)
     }
 }
 

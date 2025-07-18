@@ -56,13 +56,12 @@ struct BrowseWMSLayersView: View {
                         isListPresented.toggle()
                     }
                     .disabled(layerModels.isEmpty)
-                    .sheet(isPresented: $isListPresented) {
+                    .popover(isPresented: $isListPresented) {
                         NavigationStack {
                             WMSLayerListView(models: layerModels, selection: $selection)
                                 .navigationBarTitleDisplayMode(.inline)
                                 .navigationTitle("Layer Visibility")
                                 .presentationDetents([.medium])
-                                .frame(idealWidth: 320, idealHeight: 380)
                                 .toolbar {
                                     ToolbarItem(placement: .topBarTrailing) {
                                         Button("Done") {
@@ -71,6 +70,7 @@ struct BrowseWMSLayersView: View {
                                     }
                                 }
                         }
+                        .frame(idealWidth: 320, idealHeight: 380)
                     }
                 }
             }
