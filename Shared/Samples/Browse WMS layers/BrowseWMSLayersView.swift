@@ -56,7 +56,7 @@ struct BrowseWMSLayersView: View {
                         isListPresented.toggle()
                     }
                     .disabled(layerModels.isEmpty)
-                    .popover(isPresented: $isListPresented) {
+                    .sheet(isPresented: $isListPresented) {
                         NavigationStack {
                             WMSLayerListView(models: layerModels, selection: $selection)
                                 .navigationBarTitleDisplayMode(.inline)
