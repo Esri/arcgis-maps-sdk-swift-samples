@@ -25,50 +25,47 @@ struct ShowShapefileMetadataView: View {
     
     var body: some View {
         MapViewReader { mapView in
-            ZStack {
-                MapView(map: model.map)
-            }
-            .onAppear {
-                Task {
-                    do {
-                        // Attempt to asynchronously load the feature layer from the model.
-                        try await model.loadShapefile()
-                        
-                        // If the feature layer has a full extent, use it to set the map's viewpoint.
-                        if let fullExtent = model.featureLayer?.fullExtent {
-                            await mapView.setViewpointGeometry(fullExtent, padding: 50)
+            MapView(map: model.map)
+                .onAppear {
+                    Task {
+                        do {
+                            // Attempt to asynchronously load the feature layer from the model.
+                            try await model.loadShapefile()
+                            // If the feature layer has a full extent, use it to set the map's viewpoint.
+                            if let fullExtent = model.featureLayer?.fullExtent {
+                                await mapView.setViewpointGeometry(fullExtent, padding: 50)
+                            }
+                        } catch {
+                            self.error = error
                         }
-                    } catch {
-                        self.error = error
                     }
                 }
-            }
-            .toolbar {
-                ToolbarItem(placement: .bottomBar) {
-                    Button("Show Shapefile Metadata") {
-                        self.showMetadata.toggle()
-                    }
-                    .popover(isPresented: $showMetadata) {
-                        if showMetadata {
-                            NavigationStack {
-                                MetadataPanel(model: $model)
-                                    .navigationTitle("Shapefile Metadata")
-                                    .navigationBarTitleDisplayMode(.inline)
-                                    .toolbar {
-                                        ToolbarItem(placement: .confirmationAction) {
-                                            Button("Done") {
-                                                showMetadata = false
+                .toolbar {
+                    ToolbarItem(placement: .bottomBar) {
+                        Button("Show Shapefile Metadata") {
+                            self.showMetadata.toggle()
+                        }
+                        .popover(isPresented: $showMetadata) {
+                            if showMetadata {
+                                NavigationStack {
+                                    MetadataPanel(model: $model)
+                                        .navigationTitle("Shapefile Metadata")
+                                        .navigationBarTitleDisplayMode(.inline)
+                                        .toolbar {
+                                            ToolbarItem(placement: .confirmationAction) {
+                                                Button("Done") {
+                                                    showMetadata = false
+                                                }
                                             }
                                         }
-                                    }
+                                }
+                                .presentationDetents([.fraction(0.55)])
+                                .frame(idealWidth: 320, idealHeight: 380)
                             }
-                            .presentationDetents([.fraction(0.55)])
-                            .frame(idealWidth: 320, idealHeight: 380)
                         }
                     }
                 }
-            }
-            .errorAlert(presentingError: $error)
+                .errorAlert(presentingError: $error)
         }
     }
 }
@@ -116,7 +113,7 @@ private extension ShowShapefileMetadataView {
                 if let summary = model.shapefileInfo?.summary {
                     Text(summary)
                         .font(.caption)
-                        .multilineTextAlignment(.center)
+                        .multilineTextAlignment(.leading)
                 }
                 
                 if let image = model.thumbnailImage {
