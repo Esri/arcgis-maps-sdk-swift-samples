@@ -40,7 +40,7 @@ struct ShowShapefileMetadataView: View {
                         // If the feature layer has a full extent, use it to set the map's viewpoint
                         if let fullExtent = model.featureLayer?.fullExtent {
                             // Set the map view to display the full extent of the feature layer with padding
-                            try await mapView.setViewpointGeometry(fullExtent, padding: 50)
+                            await mapView.setViewpointGeometry(fullExtent, padding: 50)
                         }
                     } catch {
                         self.error = error
@@ -63,12 +63,16 @@ private extension ShowShapefileMetadataView {
     @MainActor
     @Observable
     class Model {
-        // Create a map with a topographic basemap.
-        var map = Map(basemapStyle: .arcGISTopographic)
-        var featureLayer: FeatureLayer!
+        /// Create a map with a topographic basemap.
+        @ObservationIgnored var map = Map(basemapStyle: .arcGISTopographic)
+        /// Declare a FeatureLayer to display the shapefile features on the map.
+        @ObservationIgnored var featureLayer: FeatureLayer!
+        /// Holds metadata information about the shapefile, such as name, description, etc.
         var shapefileInfo: ShapefileInfo?
+        /// Holds the thumbnail image associated with the shapefile, if available.
         var thumbnailImage: UIImage?
         
+        /// Asynchronous function to load the feature layer from the shapefile.
         func loadFeatureLayer() async throws {
             // Create a shapefile feature table using the "TrailBikeNetwork.shp" file
             // located in the "Aurora_CO_shp" subdirectory of the main bundle.
@@ -81,9 +85,9 @@ private extension ShowShapefileMetadataView {
             )
             // Initialize a FeatureLayer using the shapefile feature table.
             featureLayer = FeatureLayer(featureTable: featureTable)
-            // Asynchronously load the feature table to prepare it for display and interaction.
+            // Load the feature table asynchronously to prepare it for display and interaction.
             try await featureLayer.featureTable?.load()
-            // Add the loaded feature layer to the map's operational layers so it becomes visible.
+            // Add the loaded feature layer to the map's operational layers so it becomes visible on the map.
             map.addOperationalLayer(featureLayer!)
             // Store metadata information about the shapefile (such as name, description, etc.).
             shapefileInfo = featureTable.info
@@ -93,6 +97,7 @@ private extension ShowShapefileMetadataView {
     }
     
     struct MetadataView: View {
+        // Binding to the model to reflect changes in the UI.
         @Binding var model: ShowShapefileMetadataView.Model
         
         var body: some View {
