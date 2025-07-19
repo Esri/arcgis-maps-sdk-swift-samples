@@ -40,44 +40,51 @@ struct ShowPortalUserInfoView: View {
         .errorAlert(presentingError: $error)
     }
     
+    /// Asynchronously loads the portal user information.
     private func loadUser() async {
         do {
             try await model.loadPortalUser()
         } catch {
+            // If an error occurs, mark loading as true (to reset)
+            // and store the error to present an alert.
             model.isLoading = true
             self.error = error
         }
     }
     
+    /// A composed view for handling portal login, logout, and URL input.
     @ViewBuilder private var portalDetails: some View {
         PortalDetailsView(
             url: $model.portalURLString,
             model: $model,
+            // Update the model when the portal URL is changed by the user.
             onSetUrl: {
                 model.portalURLString = $0
             },
+            // Sign out the user and reset state.
             onSignOut: {
                 Task {
                     model.isLoading = true
                     await model.signOut()
                 }
             },
+            // Load the user's portal data when sign in is triggered.
             onLoadPortal: {
                 Task {
                     await loadUser()
                 }
             }
         )
+        // Set up the authenticator when the view appears.
         .onAppear(perform: model.setAuthenticator)
+        // Clean up authenticator and credentials when the view disappears.
         .onDisappear {
             Task {
                 await model.clearAuthenticator()
             }
         }
+        // Attach the authenticator to the view for handling authentication challenges.
         .authenticator(model.authenticator)
-        .task {
-            await loadUser()
-        }
     }
 }
 
@@ -89,9 +96,12 @@ private extension ShowPortalUserInfoView {
         @ObservationIgnored var authenticator: Authenticator
         /// The API key to use temporarily while using OAuth.
         @ObservationIgnored private var apiKey: APIKey?
-        /// This string contains the URL for the portal to connect to.
+        /// The URL string of the portal to connect to.
+        /// Defaults to the main ArcGIS Online portal.
         var portalURLString: String = "https://www.arcgis.com"
+        /// Stores the current user's data such as username, email, etc.
         var userData: UserData
+        /// Indicates whether the model is currently loading data.
         var isLoading: Bool = true
         
         init() {
