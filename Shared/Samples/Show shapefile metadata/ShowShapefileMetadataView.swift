@@ -46,27 +46,29 @@ struct ShowShapefileMetadataView: View {
                             self.showMetadata.toggle()
                         }
                         .popover(isPresented: $showMetadata) {
-                            if showMetadata {
-                                NavigationStack {
-                                    MetadataPanel(model: $model)
-                                        .navigationTitle("Shapefile Metadata")
-                                        .navigationBarTitleDisplayMode(.inline)
-                                        .toolbar {
-                                            ToolbarItem(placement: .confirmationAction) {
-                                                Button("Done") {
-                                                    showMetadata = false
-                                                }
-                                            }
-                                        }
-                                }
-                                .presentationDetents([.fraction(0.55)])
-                                .frame(idealWidth: 320, idealHeight: 380)
-                            }
+                            metadataPopover
                         }
                     }
                 }
                 .errorAlert(presentingError: $error)
         }
+    }
+    
+    @ViewBuilder var metadataPopover: some View {
+        NavigationStack {
+            MetadataPanel(model: $model)
+                .navigationTitle("Shapefile Metadata")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .confirmationAction) {
+                        Button("Done") {
+                            showMetadata = false
+                        }
+                    }
+                }
+        }
+        .presentationDetents([.fraction(0.55)])
+        .frame(idealWidth: 320, idealHeight: 380)
     }
 }
 
