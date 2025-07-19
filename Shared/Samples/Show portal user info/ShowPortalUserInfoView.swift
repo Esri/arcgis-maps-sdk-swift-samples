@@ -195,15 +195,20 @@ private extension ShowPortalUserInfoView {
             )
         }
     }
-    
+    /// A view that manages the portal URL input, sign-in/sign-out actions, and portal loading.
     struct PortalDetailsView: View {
+        /// Binding to the portal URL string.
         @Binding var url: String
+        /// Binding to the user info model containing user state and data.
         @Binding var model: ShowPortalUserInfoView.Model
-        
+        /// Closure called when the portal URL is set or changed.
         var onSetUrl: (String) -> Void
+        /// Closure called when the user signs out.
         var onSignOut: () -> Void
+        /// Closure called to load the portal user info.
         var onLoadPortal: () -> Void
         
+        /// State to track whether the text field is currently focused.
         @FocusState private var isTextFieldFocused: Bool
         
         var body: some View {
@@ -212,24 +217,31 @@ private extension ShowPortalUserInfoView {
                     "Portal URL",
                     text: $url,
                     onCommit: {
+                        // When the user finishes editing, load the portal and dismiss keyboard focus.
                         onLoadPortal()
                         isTextFieldFocused = false
                     }
                 )
+                // Prevent automatic capitalization.
                 .textInputAutocapitalization(.never)
+                // Use URL keyboard layout.
                 .keyboardType(.URL)
+                // Show "Go" button on the keyboard.
                 .submitLabel(.go)
+                // Bind focus state to `isTextFieldFocused`.
                 .focused($isTextFieldFocused)
                 .textFieldStyle(.roundedBorder)
                 .padding(.horizontal)
                 
                 HStack {
+                    // Button to sign in or sign out, depending on the loading state.
                     Button(model.isLoading ? "Sign In" : "Sign Out") {
                         if model.isLoading {
                             onLoadPortal()
                         } else {
                             onSignOut()
                         }
+                        // Dismiss the keyboard focus after button press.
                         isTextFieldFocused = false
                     }
                     .frame(maxWidth: .infinity)
@@ -249,9 +261,11 @@ private extension ShowPortalUserInfoView {
         }
     }
     
+    /// A view that displays detailed information about the portal user.
     struct InfoScreen: View {
+        /// A binding to the model providing user data and loading state.
         @Binding var model: ShowPortalUserInfoView.Model
-        
+        /// An array of key-value pairs representing user details to display.
         private var userDetails: [(String, String)] { [
             ("Username:", model.userData.username),
             ("E-mail:", model.userData.email),
@@ -262,19 +276,23 @@ private extension ShowPortalUserInfoView {
         var body: some View {
             VStack(spacing: 16) {
                 if model.isLoading {
+                    // Show a progress indicator while loading user data.
                     ProgressView()
                         .padding()
                 } else {
+                    // Display additional user information text when data is loaded.
                     Text(model.userData.infoText)
                         .multilineTextAlignment(.center)
                         .padding()
                 }
                 Divider()
+                // Show the user's thumbnail image as a circular avatar.
                 Image(uiImage: model.userData.userThumbnail)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 150, height: 150)
                     .clipShape(Circle())
+                // Iterate over user details and display each with a label and value.
                 ForEach(userDetails, id: \.0) { label, value in
                     Divider()
                     LabeledContent(
