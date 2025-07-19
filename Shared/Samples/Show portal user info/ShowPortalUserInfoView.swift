@@ -16,8 +16,6 @@ import ArcGIS
 import ArcGISToolkit
 import SwiftUI
 
-typealias UserDetails = [(String, String)]
-
 struct ShowPortalUserInfoView: View {
     /// The data model that helps determine the view.
     @State private var model = Model()
@@ -91,25 +89,6 @@ private extension ShowPortalUserInfoView {
         @ObservationIgnored var authenticator: Authenticator
         /// The API key to use temporarily while using OAuth.
         @ObservationIgnored var apiKey: APIKey?
-        /// The portal user when the portal is logged in.
-        private var portalUser: PortalUser? {
-            didSet {
-                let formatter = DateFormatter()
-                formatter.dateStyle = .long
-                formatter.timeStyle = .none
-                
-                let creationDateString = portalUser?.creationDate.map { formatter.string(from: $0) } ?? ""
-                
-                userData = UserData(
-                    infoText: portalUser?.description ?? "",
-                    username: portalUser?.username ?? "",
-                    email: portalUser?.email ?? "",
-                    creationDate: creationDateString,
-                    portalName: portalUser?.portal?.info?.portalName ?? "",
-                    userThumbnail: portalUser?.thumbnail?.image ?? .defaultUserImage
-                )
-            }
-        }
         /// This string contains the URL for the portal to connect to.
         var portalURLString: String = "https://www.arcgis.com"
         var userData: UserData
@@ -119,15 +98,7 @@ private extension ShowPortalUserInfoView {
             self.authenticator = Authenticator(
                 oAuthUserConfigurations: [.arcgisDotCom]
             )
-            
-            userData = UserData(
-                infoText: "Default",
-                username: "Username",
-                email: "Email",
-                creationDate: "Date",
-                portalName: "Portal Name",
-                userThumbnail: .defaultUserImage
-            )
+            userData = .placeholder
         }
         
         func setAuthenticator() {
@@ -153,15 +124,7 @@ private extension ShowPortalUserInfoView {
         func signOut() async {
             await ArcGISEnvironment.authenticationManager.revokeOAuthTokens()
             await ArcGISEnvironment.authenticationManager.clearCredentialStores()
-            portalUser = nil
-            userData = UserData(
-                infoText: "",
-                username: "",
-                email: "",
-                creationDate: "",
-                portalName: "",
-                userThumbnail: .defaultUserImage
-            )
+            userData = .placeholder
             isLoading = true
         }
         
@@ -186,7 +149,20 @@ private extension ShowPortalUserInfoView {
             try await portal.load()
             try await portal.user?.thumbnail?.load()
             // This stores the authenticated user.
-            portalUser = portal.user
+            let formatter = DateFormatter()
+            formatter.dateStyle = .long
+            formatter.timeStyle = .none
+            
+            let creationDateString = portal.user?.creationDate.map { formatter.string(from: $0) } ?? ""
+            
+            userData = UserData(
+                infoText: portal.user?.description ?? "",
+                username: portal.user?.username ?? "",
+                email: portal.user?.email ?? "",
+                creationDate: creationDateString,
+                portalName: portal.user?.portal?.info?.portalName ?? "",
+                userThumbnail: portal.user?.thumbnail?.image ?? .defaultUserImage
+            )
         }
     }
     
@@ -197,6 +173,17 @@ private extension ShowPortalUserInfoView {
         var creationDate: String
         var portalName: String
         var userThumbnail: UIImage
+        
+        static var placeholder: UserData {
+            UserData(
+                infoText: "",
+                username: "",
+                email: "",
+                creationDate: "",
+                portalName: "",
+                userThumbnail: .defaultUserImage
+            )
+        }
     }
     
     struct PortalDetailsView: View {
@@ -255,7 +242,7 @@ private extension ShowPortalUserInfoView {
     struct InfoScreen: View {
         @Binding var model: ShowPortalUserInfoView.Model
         
-        private var userDetails: UserDetails { [
+        private var userDetails: [(String, String)] { [
             ("Username:", model.userData.username),
             ("E-mail:", model.userData.email),
             ("Member Since:", model.userData.creationDate),
@@ -302,6 +289,7 @@ private extension OAuthUserConfiguration {
 }
 
 private extension UIImage {
+    /// Default placeholder image.
     static let defaultUserImage = UIImage(systemName: "person.circle")!
 }
 
