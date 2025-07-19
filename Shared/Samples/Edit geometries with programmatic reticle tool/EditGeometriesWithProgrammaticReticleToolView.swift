@@ -29,6 +29,9 @@ struct EditGeometriesWithProgrammaticReticleToolView: View {
     /// The screen point to perform an identify operation.
     @State private var identifyScreenPoint: CGPoint?
     
+    /// The error shown in the error alert.
+    @State private var error: Error?
+    
     var body: some View {
         VStack {
             MapViewReader { mapViewProxy in
@@ -39,90 +42,14 @@ struct EditGeometriesWithProgrammaticReticleToolView: View {
                     }
                     .task(id: identifyScreenPoint) {
                         guard let identifyScreenPoint else { return }
-                        Task {
-                            // If the geometry editor is started, identify the geometry editor result at the tapped position.
+                        do {
                             if model.isStarted {
-                                // Identify the geometry editor result at the tapped position.
-                                guard let identifyResult = try? await mapViewProxy.identifyGeometryEditor(
-                                    screenPoint: identifyScreenPoint,
-                                    tolerance: 10
-                                ),
-                                      let element = identifyResult.elements.first else { return }
-                                
-                                // If the element is a vertex or mid-vertex, set the viewpoint to its position and select it.
-                                if let vertex = element as? GeometryEditorVertex {
-                                    await mapViewProxy.setViewpoint(
-                                        Viewpoint(
-                                            center: element.extent.center,
-                                            scale: Viewpoint.ireland.targetScale
-                                        ),
-                                        duration: 0.3
-                                    )
-                                    model.geometryEditor.selectVertexAt(
-                                        partIndex: vertex.partIndex,
-                                        vertexIndex: vertex.vertexIndex
-                                    )
-                                } else if let midVertex = element as? GeometryEditorMidVertex, model.allowsVertexCreation {
-                                    await mapViewProxy.setViewpoint(
-                                        Viewpoint(
-                                            center: element.extent.center,
-                                            scale: Viewpoint.ireland.targetScale
-                                        ),
-                                        duration: 0.3
-                                    )
-                                    model.geometryEditor.selectMidVertexAt(
-                                        partIndex: midVertex.partIndex,
-                                        segmentIndex: midVertex.segmentIndex
-                                    )
-                                }
-                            }
-                            
-                            // Identify graphics in the graphics overlay using the tapped position.
-                            let results = try await mapViewProxy.identifyGraphicsOverlays(
-                                screenPoint: identifyScreenPoint,
-                                tolerance: 10
-                            )
-                            
-                            guard let selectedGraphic = results.first?.graphics.first,
-                                  let geometry = selectedGraphic.geometry else { return }
-                            
-                            model.startEditing(with: selectedGraphic)
-                            
-                            // If vertex creation is allowed, set the viewpoint to the center of the selected graphic's geometry.
-                            // Otherwise, set the viewpoint to the end point of the first part of the geometry.
-                            if model.allowsVertexCreation {
-                                await mapViewProxy.setViewpoint(
-                                    Viewpoint(
-                                        center: geometry.extent.center,
-                                        scale: Viewpoint.ireland.targetScale
-                                    ),
-                                    duration: 0.03
-                                )
+                                try await editGeometryEditorElement(screenPoint: identifyScreenPoint, mapViewProxy: mapViewProxy)
                             } else {
-                                var center: Point?
-                                let geometry = model.selectedGraphic?.geometry
-                                switch geometry {
-                                case is Polygon:
-                                    center = (geometry as! ArcGIS.Polygon).parts[0].endPoint
-                                case is Polyline:
-                                    center = (geometry as! Polyline).parts[0].endPoint
-                                case is Multipoint:
-                                    center = (geometry as! Multipoint).points.last
-                                case is Point:
-                                    center = (geometry as! Point)
-                                default:
-                                    return
-                                }
-                                guard let center else { return }
-                                
-                                await mapViewProxy.setViewpoint(
-                                    Viewpoint(
-                                        center: center,
-                                        scale: Viewpoint.ireland.targetScale
-                                    ),
-                                    duration: 0.03
-                                )
+                                try await startEditingGraphic(screenPoint: identifyScreenPoint, mapViewProxy: mapViewProxy)
                             }
+                        } catch {
+                            self.error = error
                         }
                     }
             }
@@ -141,6 +68,104 @@ struct EditGeometriesWithProgrammaticReticleToolView: View {
                 }
                 .disabled(!model.geometryEditor.isStarted)
             }
+        }
+        .errorAlert(presentingError: $error)
+    }
+    
+    /// Selects the geometry editor element identified at the tap location to edit.
+    /// - Parameters:
+    ///   - screenPoint: The screen coordinate of the geo view at which to identify.
+    ///   - mapViewProxy: The map view proxy used to identify the screen point.
+    private func editGeometryEditorElement(screenPoint: CGPoint, mapViewProxy: MapViewProxy) async throws {
+        // Identify the geometry editor result at the tapped position.
+        guard let identifyResult = try? await mapViewProxy.identifyGeometryEditor(
+            screenPoint: screenPoint,
+            tolerance: 10
+        ),
+              let element = identifyResult.elements.first else { return }
+        
+        // If the element is a vertex or mid-vertex, set the viewpoint to its position and select it.
+        switch element {
+        case let vertex as GeometryEditorVertex:
+            await mapViewProxy.setViewpoint(
+                Viewpoint(
+                    center: element.extent.center,
+                    scale: Viewpoint.ireland.targetScale
+                ),
+                duration: 0.3
+            )
+            model.geometryEditor.selectVertexAt(
+                partIndex: vertex.partIndex,
+                vertexIndex: vertex.vertexIndex
+            )
+        case let midVertex as GeometryEditorMidVertex:
+            guard model.allowsVertexCreation else { return }
+            
+            await mapViewProxy.setViewpoint(
+                Viewpoint(
+                    center: element.extent.center,
+                    scale: Viewpoint.ireland.targetScale
+                ),
+                duration: 0.3
+            )
+            model.geometryEditor.selectMidVertexAt(
+                partIndex: midVertex.partIndex,
+                segmentIndex: midVertex.segmentIndex
+            )
+        default:
+            break
+        }
+    }
+    
+    /// Starts editing the graphic identified at the tap location.
+    /// - Parameters:
+    ///   - screenPoint: The screen coordinate of the geo view at which to identify.
+    ///   - mapViewProxy: The map view proxy used to identify the screen point.
+    private func startEditingGraphic(screenPoint: CGPoint, mapViewProxy: MapViewProxy) async throws {
+        // Identify graphics in the graphics overlay using the tapped position.
+        let results = try await mapViewProxy.identifyGraphicsOverlays(
+            screenPoint: screenPoint,
+            tolerance: 10
+        )
+        
+        guard let selectedGraphic = results.first?.graphics.first,
+              let geometry = selectedGraphic.geometry else { return }
+        
+        model.startEditing(with: selectedGraphic)
+        
+        // If vertex creation is allowed, set the viewpoint to the center of the selected graphic's geometry.
+        // Otherwise, set the viewpoint to the end point of the first part of the geometry.
+        if model.allowsVertexCreation {
+            await mapViewProxy.setViewpoint(
+                Viewpoint(
+                    center: geometry.extent.center,
+                    scale: Viewpoint.ireland.targetScale
+                ),
+                duration: 0.03
+            )
+        } else {
+            let center: Point?
+            switch model.selectedGraphic?.geometry {
+            case let polygon as Polygon:
+                center = polygon.parts[0].endPoint
+            case let polyline as Polyline:
+                center = polyline.parts[0].endPoint
+            case let multipoint as Multipoint:
+                center = multipoint.points.last
+            case let point as Point:
+                center = point
+            default:
+                return
+            }
+            guard let center else { return }
+            
+            await mapViewProxy.setViewpoint(
+                Viewpoint(
+                    center: center,
+                    scale: Viewpoint.ireland.targetScale
+                ),
+                duration: 0.03
+            )
         }
     }
 }
@@ -240,10 +265,6 @@ private extension GeometryEditorMenu {
     var editMenuContent: some View {
         VStack {
             Toggle("Allow vertex creation", isOn: $model.allowsVertexCreation)
-                .onChange(of: model.allowsVertexCreation) {
-                    model.reticleTool.vertexCreationPreviewIsEnabled = model.allowsVertexCreation
-                    model.reticleTool.style.growEffect?.appliesToMidVertices = model.allowsVertexCreation
-                }
             
             Button {
                 if model.geometryEditor.pickedUpElement != nil {
@@ -331,26 +352,24 @@ private extension GeometryEditorMenu {
 @Observable
 private class GeometryEditorModel {
     /// The geometry editor.
-    @ObservationIgnored let geometryEditor = GeometryEditor()
-    
+    let geometryEditor = GeometryEditor()
     /// The programmatic reticle tool.
-    @ObservationIgnored let reticleTool = ProgrammaticReticleTool()
-    
+    private let reticleTool = ProgrammaticReticleTool()
     /// The graphics overlay used to save geometries to.
-    @ObservationIgnored let geometryOverlay = GraphicsOverlay(renderingMode: .dynamic)
-    
+    let geometryOverlay = GraphicsOverlay(renderingMode: .dynamic)
     /// The selected graphic to edit.
     @ObservationIgnored var selectedGraphic: Graphic?
-    
     /// A Boolean value indicating if the initial graphics and saved sketches can be cleared.
-    private(set) var canClearGraphics = false
-    
+    private(set) var canClearGraphics = true
     /// A Boolean value indicating if the geometry editor has started.
     private(set) var isStarted = false
-    
     /// A Boolean value indicating if vertex creation is allowed.
-    var allowsVertexCreation = true
-    
+    var allowsVertexCreation = true {
+        didSet {
+            reticleTool.vertexCreationPreviewIsEnabled = allowsVertexCreation
+            reticleTool.style.growEffect?.appliesToMidVertices = allowsVertexCreation
+        }
+    }
     /// The reticle state used to determine the current action of the programmatic reticle tool.
     enum ReticleState {
         case `default`, pickedUp, hoveringVertex, hoveringMidVertex
@@ -358,24 +377,20 @@ private class GeometryEditorModel {
         /// A human-readable label of the property.
         var label: String {
             switch self {
-            case .`default`: return "Insert Point"
-            case .pickedUp: return "Drop Point"
-            case .hoveringVertex: return "Pick up point"
-            case .hoveringMidVertex: return "Pick up point"
+            case .default: "Insert Point"
+            case .pickedUp: "Drop Point"
+            case .hoveringVertex: "Pick up point"
+            case .hoveringMidVertex: "Pick up point"
             }
         }
     }
-    
     /// The programmatic reticle state.
     var reticleState: ReticleState = .default
     
     init() {
-        let pinkneysGreenGraphic = Graphic(geometry: .pinkneysGreen(), symbol: .polygon)
-        
-        let beechLodgBoundaryGraphic = Graphic(geometry: .beechLodgeBoundary(), symbol: .polyline)
-        
-        let treeMarkers = Graphic(geometry: .treeMarkers(), symbol: .multipoint)
-        
+        let pinkneysGreenGraphic = Graphic(geometry: .pinkneysGreen, symbol: .polygon())
+        let beechLodgBoundaryGraphic = Graphic(geometry: .beechLodgeBoundary, symbol: .polyline())
+        let treeMarkers = Graphic(geometry: .treeMarkers, symbol: .multipoint())
         geometryOverlay.addGraphics([
             pinkneysGreenGraphic,
             beechLodgBoundaryGraphic,
@@ -383,8 +398,6 @@ private class GeometryEditorModel {
         ])
         
         geometryEditor.tool = reticleTool
-        
-        canClearGraphics = true
     }
     
     /// Saves the current geometry to the graphics overlay and stops editing.
@@ -405,11 +418,10 @@ private class GeometryEditorModel {
     
     /// Updates the selected graphic with the current geometry.
     private func updateGraphic() {
-        guard let selectedGraphic else { return }
+        guard let selectedGraphic = selectedGraphic.take() else { return }
         selectedGraphic.geometry = geometryEditor.stop()
         isStarted = false
         selectedGraphic.isVisible = true
-        self.selectedGraphic = nil
     }
     
     /// Adds a new graphic for the current geometry to the graphics overlay.
@@ -429,8 +441,7 @@ private class GeometryEditorModel {
     }
     
     /// Starts editing with the specified tool and geometry type.
-    /// - Parameters:
-    ///   - geometryType: The type of geometry to draw.
+    /// - Parameter geometryType: The type of geometry to draw.
     func startEditing(withType geometryType: Geometry.Type) {
         geometryEditor.start(withType: geometryType)
         isStarted = true
@@ -452,8 +463,9 @@ private class GeometryEditorModel {
     func stop() {
         geometryEditor.stop()
         isStarted = false
-        selectedGraphic?.isVisible = true
-        selectedGraphic = nil
+        if let selectedGraphic = selectedGraphic.take() {
+            selectedGraphic.isVisible = true
+        }
         reticleState = .default
     }
     
@@ -462,16 +474,11 @@ private class GeometryEditorModel {
     /// - Returns: Either a marker or fill symbol depending on the type of provided geometry.
     private func symbol(for geometry: Geometry) -> Symbol {
         switch geometry {
-        case is Point:
-            return .point
-        case is Multipoint:
-            return .multipoint
-        case is Polyline:
-            return .polyline
-        case is ArcGIS.Polygon:
-            return .polygon
-        default:
-            fatalError("Unexpected geometry type")
+        case is Point: .point()
+        case is Multipoint: .multipoint()
+        case is Polyline: .polyline()
+        case is ArcGIS.Polygon: .polygon()
+        default: fatalError("Unexpected geometry type")
         }
     }
     
@@ -516,21 +523,21 @@ private class GeometryEditorModel {
 
 private extension Geometry {
     // swiftlint:disable force_try
-    static func pinkneysGreen() -> ArcGIS.Polygon {
+    static var pinkneysGreen: Geometry {
         let json = Data(
             """
-                {"rings":[[[-84843.262719916485,6713749.9329888355],[-85833.376589175183,6714679.7122141244],
-                           [-85406.822347959576,6715063.9827222107],[-85184.329997390232,6715219.6195847588],
-                           [-85092.653857582554,6715119.5391713539],[-85090.446872787768,6714792.7656492386],
-                           [-84915.369168906298,6714297.8798246197],[-84854.295522911285,6714080.907587287],
-                           [-84843.262719916485,6713749.9329888355]]],
-                        "spatialReference":{"wkid":102100,"latestWkid":3857}}
+            {"rings":[[[-84843.262719916485,6713749.9329888355],[-85833.376589175183,6714679.7122141244],
+                        [-85406.822347959576,6715063.9827222107],[-85184.329997390232,6715219.6195847588],
+                        [-85092.653857582554,6715119.5391713539],[-85090.446872787768,6714792.7656492386],
+                        [-84915.369168906298,6714297.8798246197],[-84854.295522911285,6714080.907587287],
+                        [-84843.262719916485,6713749.9329888355]]],
+                    "spatialReference":{"wkid":102100,"latestWkid":3857}}
             """.utf8
         )
         return try! Polygon.fromJSON(json)
     }
     
-    static func beechLodgeBoundary() -> Polyline {
+    static var beechLodgeBoundary: Geometry {
         let json = Data(
             """
             {"paths":[[[-87090.652708065536,6714158.9244240439],[-87247.362370337316,6714232.880689906],
@@ -542,14 +549,14 @@ private extension Geometry {
         return try! Polyline.fromJSON(json)
     }
     
-    static func treeMarkers() -> Multipoint {
+    static var treeMarkers: Geometry {
         let json = Data(
             """
-                {"points":[[-86750.751150056443,6713749.4529355941],[-86879.381793060631,6713437.3335486846],
-                           [-87596.503104619667,6714381.7342108283],[-87553.257569537804,6714402.0910389507],
-                           [-86831.019903597829,6714398.4128562529],[-86854.105933315877,6714396.1957954112],
-                           [-86800.624094892439,6713992.3374453448]],
-                        "spatialReference":{"wkid":102100,"latestWkid":3857}}"
+            {"points":[[-86750.751150056443,6713749.4529355941],[-86879.381793060631,6713437.3335486846],
+                        [-87596.503104619667,6714381.7342108283],[-87553.257569537804,6714402.0910389507],
+                        [-86831.019903597829,6714398.4128562529],[-86854.105933315877,6714396.1957954112],
+                        [-86800.624094892439,6713992.3374453448]],
+                    "spatialReference":{"wkid":102100,"latestWkid":3857}}"
             """.utf8
         )
         return try! Multipoint.fromJSON(json)
@@ -558,7 +565,7 @@ private extension Geometry {
 }
 
 private extension Symbol {
-    static var point: SimpleMarkerSymbol {
+    static func point() -> Symbol {
         SimpleMarkerSymbol(
             style: .square,
             color: .red,
@@ -566,7 +573,7 @@ private extension Symbol {
         )
     }
     
-    static var multipoint: SimpleMarkerSymbol {
+    static func multipoint() -> Symbol {
         SimpleMarkerSymbol(
             style: .circle,
             color: .yellow,
@@ -574,14 +581,14 @@ private extension Symbol {
         )
     }
     
-    static var polyline: SimpleLineSymbol {
+    static func polyline() -> Symbol {
         SimpleLineSymbol(
             color: .blue,
             width: 2
         )
     }
     
-    static var polygon: SimpleFillSymbol {
+    static func polygon() -> Symbol {
         SimpleFillSymbol(
             style: .solid,
             color: .red.withAlphaComponent(0.3),

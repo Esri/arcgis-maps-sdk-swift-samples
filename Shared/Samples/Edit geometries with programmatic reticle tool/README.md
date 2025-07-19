@@ -64,7 +64,7 @@ The sample demonstrates a number of workflows which can be altered depending on 
 
 * tapping a vertex or mid-vertex selects it and updates the viewpoint to its position. This could be changed to not update the viewpoint or also pick up the element.
 
-With the hovered and picked up element changed events and the programmatic APIs on the ProgrammaticReticleTool a broad range of editing experiences can be implemented.
+With the hovered and picked up element changed events and the programmatic APIs on the `ProgrammaticReticleTool`, a broad range of editing experiences can be implemented.
 
 ## Tags
 
