@@ -88,7 +88,7 @@ private extension ShowPortalUserInfoView {
         /// The authenticator to handle authentication challenges.
         @ObservationIgnored var authenticator: Authenticator
         /// The API key to use temporarily while using OAuth.
-        @ObservationIgnored var apiKey: APIKey?
+        @ObservationIgnored private var apiKey: APIKey?
         /// This string contains the URL for the portal to connect to.
         var portalURLString: String = "https://www.arcgis.com"
         var userData: UserData
