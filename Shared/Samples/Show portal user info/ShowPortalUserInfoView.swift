@@ -158,13 +158,17 @@ private extension ShowPortalUserInfoView {
             // This loads portal information and authenticates user.
             try await portal.load()
             try await portal.user?.thumbnail?.load()
-            // This stores the authenticated user.
             let formatter = DateFormatter()
+            // Set the date style to long (e.g., January 1, 2024).
             formatter.dateStyle = .long
+            // Do not include the time in the formatted string.
             formatter.timeStyle = .none
             
+            // Convert the user's creation date to a formatted string using the formatter.
+            // If creationDate is nil, return an empty string.
             let creationDateString = portal.user?.creationDate.map { formatter.string(from: $0) } ?? ""
             
+            // Portal user data in displayable model.
             userData = UserData(
                 infoText: portal.user?.description ?? "",
                 username: portal.user?.username ?? "",
@@ -184,6 +188,7 @@ private extension ShowPortalUserInfoView {
         var portalName: String
         var userThumbnail: UIImage
         
+        /// Default sets empty user details for clearing out previous users.
         static var placeholder: UserData {
             UserData(
                 infoText: "",
