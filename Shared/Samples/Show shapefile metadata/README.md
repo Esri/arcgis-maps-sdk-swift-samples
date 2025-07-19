@@ -31,7 +31,7 @@ Open the sample to automatically view the shapefile’s metadata.
 
 ## Offline data
 
-[Aurora Colorado Shapefiles](https://www.arcgis.com/home/item.html?id=d98b3e5293834c5f852f13c569930caa) is available as an item hosted on ArcGIS Online].
+[Aurora Colorado Shapefiles](https://www.arcgis.com/home/item.html?id=d98b3e5293834c5f852f13c569930caa) is available as an item hosted on ArcGIS Online.
 
 ## About the data
 
