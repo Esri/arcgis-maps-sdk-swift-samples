@@ -24,14 +24,17 @@ struct ShowPortalUserInfoView: View {
     
     var body: some View {
         VStack(spacing: 16) {
+            // Shows field for custom portal urls as well as Sign In / Out and Load Portal functions.
             portalDetails
             Group {
+                // If in loading state, show that user profile will display when it is complete.
                 if model.isLoading {
                     ContentUnavailableView(
                         "Portal User Information",
                         systemImage: "exclamationmark.triangle",
                         description: Text("Your portal user information will be displayed here.")
                     )
+                    // Otherwise show the user information that was loaded.
                 } else {
                     InfoScreen(model: $model)
                 }
