@@ -18,7 +18,7 @@ import SwiftUI
 struct ShowShapefileMetadataView: View {
     /// Model which contains the logic for loading and setting the data.
     @State private var model = Model()
-    /// The error that occurred, if any, when trying to save the map to the portal.
+    /// The error that occurred, if any, when trying to load the shapefile or display its metadata.
     @State private var error: Error?
     /// Boolean value represent the state of the metadata popup view.
     @State private var showMetadata: Bool = false
