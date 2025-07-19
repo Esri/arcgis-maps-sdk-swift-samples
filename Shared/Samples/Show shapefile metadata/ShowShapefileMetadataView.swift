@@ -27,19 +27,15 @@ struct ShowShapefileMetadataView: View {
         MapViewReader { mapView in
             ZStack {
                 MapView(map: model.map)
-                if showMetadata {
-                    MetadataView(model: $model)
-                }
             }
             .onAppear {
                 Task {
                     do {
                         // Attempt to asynchronously load the feature layer from the model.
-                        try await model.loadFeatureLayer()
+                        try await model.loadShapefile()
                         
                         // If the feature layer has a full extent, use it to set the map's viewpoint.
                         if let fullExtent = model.featureLayer?.fullExtent {
-                            // Set the map view to display the full extent of the feature layer with padding.
                             await mapView.setViewpointGeometry(fullExtent, padding: 50)
                         }
                     } catch {
@@ -49,8 +45,26 @@ struct ShowShapefileMetadataView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
-                    Button(showMetadata ? "Hide Metadata" : "Show Metadata") {
+                    Button("Show Shapefile Metadata") {
                         self.showMetadata.toggle()
+                    }
+                    .popover(isPresented: $showMetadata) {
+                        if showMetadata {
+                            NavigationStack {
+                                MetadataPanel(model: $model)
+                                    .navigationTitle("Shapefile Metadata")
+                                    .navigationBarTitleDisplayMode(.inline)
+                                    .toolbar {
+                                        ToolbarItem(placement: .confirmationAction) {
+                                            Button("Done") {
+                                                showMetadata = false
+                                            }
+                                        }
+                                    }
+                            }
+                            .presentationDetents([.fraction(0.55)])
+                            .frame(idealWidth: 320, idealHeight: 380)
+                        }
                     }
                 }
             }
@@ -65,58 +79,73 @@ private extension ShowShapefileMetadataView {
     class Model {
         /// Create a map with a topographic basemap.
         @ObservationIgnored var map = Map(basemapStyle: .arcGISTopographic)
+        
         /// Declare a FeatureLayer to display the shapefile features on the map.
         @ObservationIgnored var featureLayer: FeatureLayer!
+        
         /// Holds metadata information about the shapefile, such as name, description, etc.
         var shapefileInfo: ShapefileInfo?
+        
         /// Holds the thumbnail image associated with the shapefile, if available.
         var thumbnailImage: UIImage?
         
         /// Asynchronous function to load the feature layer from the shapefile.
-        func loadFeatureLayer() async throws {
-            // Create a shapefile feature table using the "TrailBikeNetwork.shp" file
-            // located in the "Aurora_CO_shp" subdirectory of the main bundle.
-            let featureTable = ShapefileFeatureTable(
-                fileURL: Bundle.main.url(
-                    forResource: "TrailBikeNetwork",
-                    withExtension: "shp",
-                    subdirectory: "Aurora_CO_shp"
-                )!
-            )
-            // Initialize a FeatureLayer using the shapefile feature table.
-            featureLayer = FeatureLayer(featureTable: featureTable)
-            // Load the feature table asynchronously to prepare it for display and interaction.
-            try await featureLayer.featureTable?.load()
-            // Add the loaded feature layer to the map's operational layers so it becomes visible on the map.
-            map.addOperationalLayer(featureLayer!)
-            // Store metadata information about the shapefile (such as name, description, etc.).
+        func loadShapefile() async throws {
+            let featureTable = ShapefileFeatureTable(fileURL: .auroraShapefile)
+            let layer = FeatureLayer(featureTable: featureTable)
+            
+            try await layer.featureTable?.load()
+            
+            map.addOperationalLayer(layer)
+            featureLayer = layer
             shapefileInfo = featureTable.info
-            // Store the thumbnail image associated with the shapefile (if available).
             thumbnailImage = featureTable.info?.thumbnail
         }
     }
     
-    struct MetadataView: View {
-        // Binding to the model to reflect changes in the UI.
+    struct MetadataPanel: View {
+        /// Binding to the model to reflect changes in the UI.
         @Binding var model: ShowShapefileMetadataView.Model
         
         var body: some View {
             VStack(alignment: .center, spacing: 16) {
-                Text("\(model.shapefileInfo?.credits ?? "")")
-                    .fontWeight(.bold)
-                Text("\(model.shapefileInfo?.summary ?? "")")
-                    .font(.caption)
+                if let credits = model.shapefileInfo?.credits {
+                    Text(credits).bold()
+                }
+                
+                if let summary = model.shapefileInfo?.summary {
+                    Text(summary)
+                        .font(.caption)
+                        .multilineTextAlignment(.center)
+                }
+                
                 if let image = model.thumbnailImage {
                     Image(uiImage: image)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxHeight: 150)
                 }
-                Text("Tags: \(model.shapefileInfo?.tags.joined(separator: ", ") ?? "None")")
-                    .font(.caption2)
+                
+                if let tags = model.shapefileInfo?.tags {
+                    Text("Tags: \(tags.joined(separator: ", "))")
+                        .font(.caption2)
+                        .foregroundColor(.secondary)
+                }
             }
             .padding()
-            .background(Color(.secondarySystemBackground))
             .cornerRadius(8)
             .padding(.horizontal)
         }
+    }
+}
+
+private extension URL {
+    static var auroraShapefile: URL {
+        Bundle.main.url(
+            forResource: "TrailBikeNetwork",
+            withExtension: "shp",
+            subdirectory: "Aurora_CO_shp"
+        )!
     }
 }
 
