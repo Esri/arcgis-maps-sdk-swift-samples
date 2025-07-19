@@ -34,12 +34,12 @@ struct ShowShapefileMetadataView: View {
             .onAppear {
                 Task {
                     do {
-                        // Attempt to asynchronously load the feature layer from the model
+                        // Attempt to asynchronously load the feature layer from the model.
                         try await model.loadFeatureLayer()
                         
-                        // If the feature layer has a full extent, use it to set the map's viewpoint
+                        // If the feature layer has a full extent, use it to set the map's viewpoint.
                         if let fullExtent = model.featureLayer?.fullExtent {
-                            // Set the map view to display the full extent of the feature layer with padding
+                            // Set the map view to display the full extent of the feature layer with padding.
                             await mapView.setViewpointGeometry(fullExtent, padding: 50)
                         }
                     } catch {
