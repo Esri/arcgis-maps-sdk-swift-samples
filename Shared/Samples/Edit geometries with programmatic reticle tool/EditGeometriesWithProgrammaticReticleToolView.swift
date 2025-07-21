@@ -78,11 +78,11 @@ struct EditGeometriesWithProgrammaticReticleToolView: View {
     ///   - mapViewProxy: The map view proxy used to identify the screen point.
     private func editGeometryEditorElement(screenPoint: CGPoint, mapViewProxy: MapViewProxy) async throws {
         // Identify the geometry editor result at the tapped position.
-        guard let identifyResult = try? await mapViewProxy.identifyGeometryEditor(
+        let identifyResult = try await mapViewProxy.identifyGeometryEditor(
             screenPoint: screenPoint,
             tolerance: 10
-        ),
-              let element = identifyResult.elements.first else { return }
+        )
+        guard let element = identifyResult.elements.first else { return }
         
         // If the element is a vertex or mid-vertex, set the viewpoint to its position and select it.
         switch element {
@@ -127,7 +127,6 @@ struct EditGeometriesWithProgrammaticReticleToolView: View {
             screenPoint: screenPoint,
             tolerance: 10
         )
-        
         guard let selectedGraphic = results.first?.graphics.first,
               let geometry = selectedGraphic.geometry else { return }
         
@@ -389,11 +388,11 @@ private class GeometryEditorModel {
     
     init() {
         let pinkneysGreenGraphic = Graphic(geometry: .pinkneysGreen, symbol: .polygon())
-        let beechLodgBoundaryGraphic = Graphic(geometry: .beechLodgeBoundary, symbol: .polyline())
+        let beechLodgeBoundaryGraphic = Graphic(geometry: .beechLodgeBoundary, symbol: .polyline())
         let treeMarkers = Graphic(geometry: .treeMarkers, symbol: .multipoint())
         geometryOverlay.addGraphics([
             pinkneysGreenGraphic,
-            beechLodgBoundaryGraphic,
+            beechLodgeBoundaryGraphic,
             treeMarkers
         ])
         
@@ -484,28 +483,30 @@ private class GeometryEditorModel {
     
     /// Updates the reticle state based on the picked up and hovered elements.
     func updateReticleState() {
-        if geometryEditor.pickedUpElement != nil {
-            reticleState = .pickedUp
+        reticleState = if geometryEditor.pickedUpElement != nil {
+            .pickedUp
         } else if let hoveredElement = geometryEditor.hoveredElement {
             if allowsVertexCreation {
-                // Verticies and mid-vertices can be picked up.
-                if hoveredElement is GeometryEditorVertex {
-                    reticleState = .hoveringVertex
-                } else if hoveredElement is GeometryEditorMidVertex {
-                    reticleState = .hoveringMidVertex
-                } else {
-                    reticleState = .default
+                // Vertices and mid-vertices can be picked up.
+                switch hoveredElement {
+                case is GeometryEditorVertex:
+                        .hoveringVertex
+                case is GeometryEditorMidVertex:
+                        .hoveringMidVertex
+                default:
+                        .default
                 }
             } else {
-                // Only verticies can be picked up, mid-vertices cannot be picked up.
-                if hoveredElement is GeometryEditorVertex {
-                    reticleState = .hoveringVertex
-                } else {
-                    reticleState = .default
+                // Only vertices can be picked up, mid-vertices cannot be picked up.
+                switch hoveredElement {
+                case is GeometryEditorVertex:
+                        .hoveringVertex
+                default:
+                        .default
                 }
             }
         } else {
-            reticleState = .default
+            .default
         }
     }
     
