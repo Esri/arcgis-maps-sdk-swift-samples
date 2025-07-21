@@ -31,10 +31,7 @@ struct SampleLink: View {
     }
     
     var body: some View {
-        NavigationLink {
-            SampleDetailView(sample: sample)
-                .id(sample.name)
-        } label: {
+        NavigationLink(value: sample.name) {
             SampleRow(sample, textToBold: textToBold)
         }
     }

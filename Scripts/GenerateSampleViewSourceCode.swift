@@ -43,6 +43,9 @@ private struct SampleMetadata: Decodable {
     let keywords: [String]
     /// The relevant APIs of the sample.
     let relevantApis: [String]
+    /// A Boolean value indicating whether a sample has an action that needs to
+    /// be performed when its view disappears.
+    let hasTeardown: Bool? // swiftlint:disable:this discouraged_optional_boolean
 }
 
 extension SampleMetadata {
@@ -130,6 +133,7 @@ private let sampleStructs = sampleMetadata
             var snippets: [String] { \(sample.snippets) }
             var tags: Set<String> { \(sample.tags) }
             \(portalItemIDs.isEmpty ? "" : "var hasDependencies: Bool { true }\n")
+            var hasTeardown: Bool { \(sample.hasTeardown ?? false) }
             func makeBody() -> AnyView { .init(\(sample.viewName)()) }
         }
         """

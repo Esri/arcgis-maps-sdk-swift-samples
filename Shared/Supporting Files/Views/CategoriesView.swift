@@ -35,6 +35,9 @@ struct CategoriesView: View {
         return (favoriteNames.isEmpty ? ["All"] : ["All", "Favorites"]) + sampleCategories
     }
     
+    /// The name of the sample that currently needs torn down.
+    @State private var sampleNeedingTearDown: String?
+    
     var body: some View {
         ScrollView {
             LazyVGrid(columns: [GridItem(), GridItem()]) {
@@ -76,6 +79,25 @@ struct CategoriesView: View {
             }
             .listStyle(.insetGrouped)
             .navigationTitle(selectedCategory ?? "")
+            .navigationDestination(for: String.self) { sampleName in
+                let sample = SamplesApp.samples.first(where: { $0.name == sampleName })!
+                
+                if sample.hasTeardown {
+                    if sampleNeedingTearDown != nil, sampleNeedingTearDown != sampleName {
+                        ProgressView("Loading sample…")
+                    } else {
+                        SampleDetailView(sample: sample)
+                            .onAppear {
+                                sampleNeedingTearDown = sampleName
+                            }
+                            .environment(\.onTearDownCompleted) {
+                                sampleNeedingTearDown = nil
+                            }
+                    }
+                } else {
+                    SampleDetailView(sample: sample)
+                }
+            }
         }
         .onChange(of: destinationIsPresented) {
             // Resets the selection when the navigation destination is no longer presented.
@@ -148,4 +170,12 @@ private extension CategoriesView {
             .scrollDismissesKeyboard(.immediately)
         }
     }
+}
+
+extension EnvironmentValues {
+    /// The action to run when a sample is done tearing down.
+    ///
+    /// - Note: Failure to call this in a ``Sample/hasTeardown`` sample will
+    /// block other teardown samples from appearing.
+    @Entry var onTearDownCompleted: () -> Void = {}
 }
