@@ -27,11 +27,11 @@ struct ShowPortalUserInfoView: View {
             // Shows field for custom portal urls as well as Sign In / Out and Load Portal functions.
             portalDetails
             Group {
-                // If in loading state, show that user profile will display when it is complete.
+                // If loading, show that the user profile will display when complete.
                 if model.isLoading {
                     ContentUnavailableView(
                         "Portal User Information",
-                        systemImage: "exclamationmark.triangle",
+                        systemImage: "person.crop.circle.dashed",
                         description: Text("Your portal user information will be displayed here.")
                     )
                     // Otherwise show the user information that was loaded.
@@ -123,7 +123,7 @@ private extension ShowPortalUserInfoView {
             ArcGISEnvironment.apiKey = nil
         }
         
-        /// This function cleans up the authenticator and restores the original state.
+        /// Removes the authenticator and restores the original state.
         func clearAuthenticator() async {
             // This removes our custom challenge handler.
             ArcGISEnvironment.authenticationManager.handleChallenges(using: nil)
@@ -141,7 +141,7 @@ private extension ShowPortalUserInfoView {
             isLoading = true
         }
         
-        /// This function loads portal user information from the specified URL.
+        /// Loads portal user information from the specified URL.
         func loadPortalUser() async throws {
             isLoading = true
             // This ensures loading state is cleared even if an error occurs.
