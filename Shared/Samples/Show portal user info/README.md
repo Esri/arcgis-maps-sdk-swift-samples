@@ -6,7 +6,7 @@ Retrieve a user's details via a Portal.
 
 ## Use case
 
-This portal information can be used to provide a customized UI experience for the user. For example, you can show a thumbnail of the user in the application to indicate that they are currently logged in.
+Portal information can be used to build a user interface. For example, the portal user's thubmnail can be shown to indicate that they are currently logged in.
 
 ## How to use the sample
 
