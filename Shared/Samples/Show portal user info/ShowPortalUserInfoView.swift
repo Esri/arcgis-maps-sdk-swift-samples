@@ -65,7 +65,6 @@ struct ShowPortalUserInfoView: View {
             // Sign out the user and reset state.
             onSignOut: {
                 Task {
-                    model.isLoading = true
                     await model.signOut()
                 }
             },
@@ -103,8 +102,8 @@ private extension ShowPortalUserInfoView {
         var portalURLString: String = "https://www.arcgis.com"
         /// Stores the current user's data such as username, email, etc.
         var userData: PortalUser?
-        /// Stores the information related to user's portal. 
-        var portalInfo : PortalInfo?
+        /// Stores the information related to user's portal.
+        var portalInfo: PortalInfo?
         /// Indicates whether the model is currently loading data.
         var isLoading: Bool = true
         
