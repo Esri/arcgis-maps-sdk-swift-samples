@@ -52,22 +52,22 @@ struct ShowPortalUserInfoView: View {
                     systemImage: "person.crop.circle.dashed",
                     description: Text("Your portal user information will be displayed here.")
                 )
-            // Otherwise show the user information that was loaded.
+                // Otherwise show the user information that was loaded.
             } else {
                 InfoScreen(model: $model)
             }
             Spacer()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             // Set up the authenticator when the view appears.
-            .onAppear(perform: model.setAuthenticator)
+                .onAppear(perform: model.setAuthenticator)
             // Clean up authenticator and credentials when the view disappears.
-            .onDisappear {
-                Task {
-                    await model.clearAuthenticator()
+                .onDisappear {
+                    Task {
+                        await model.clearAuthenticator()
+                    }
                 }
-            }
             // Attach the authenticator to the view for handling authentication challenges.
-            .authenticator(model.authenticator)
+                .authenticator(model.authenticator)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .errorAlert(presentingError: $error)
@@ -259,9 +259,10 @@ private extension ShowPortalUserInfoView {
                         }
                     }
                     .listStyle(.plain)
+                    .frame(minHeight: 300)
                 }
             }
-            .padding()
+            .frame(maxHeight: .infinity)
         }
     }
 }
