@@ -27,7 +27,7 @@ struct ShowPortalUserInfoView: View {
             // Shows field for custom portal urls as well as Sign In / Out and Load Portal functions.
             portalDetails
             // If loading, show that the user profile will display when complete.
-            if model.isLoading {
+            if model.portalUser == nil {
                 ContentUnavailableView(
                     "Portal User Information",
                     systemImage: "person.crop.circle.dashed",
@@ -37,7 +37,9 @@ struct ShowPortalUserInfoView: View {
             } else {
                 InfoScreen(model: $model)
             }
+            Spacer()
         }
+        .frame(maxWidth: .infinity, minHeight: 0, maxHeight: 700)
         .errorAlert(presentingError: $error)
     }
     
@@ -75,7 +77,6 @@ struct ShowPortalUserInfoView: View {
                 }
             }
         )
-        .frame(maxWidth: 400)
         // Set up the authenticator when the view appears.
         .onAppear(perform: model.setAuthenticator)
         // Clean up authenticator and credentials when the view disappears.
@@ -105,7 +106,7 @@ private extension ShowPortalUserInfoView {
         /// Stores the information related to user's portal.
         var portalInfo: PortalInfo?
         /// Indicates whether the model is currently loading data.
-        var isLoading: Bool = true
+        var isLoading: Bool = false
         
         init() {
             self.authenticator = Authenticator(
@@ -138,7 +139,7 @@ private extension ShowPortalUserInfoView {
             await ArcGISEnvironment.authenticationManager.clearCredentialStores()
             portalUser = nil
             portalInfo = nil
-            isLoading = true
+            isLoading = false
         }
         
         /// Loads portal user information from the specified URL.
@@ -183,7 +184,7 @@ private extension ShowPortalUserInfoView {
         @FocusState private var isTextFieldFocused: Bool
         
         var body: some View {
-            VStack(alignment: .center, spacing: 16) {
+            VStack {
                 TextField(
                     "Portal URL",
                     text: $url,
@@ -206,8 +207,8 @@ private extension ShowPortalUserInfoView {
                 
                 HStack {
                     // Button to sign in or sign out, depending on the loading state.
-                    Button(model.isLoading ? "Sign In" : "Sign Out") {
-                        if model.isLoading {
+                    Button(model.portalUser == nil ? "Sign In" : "Sign Out") {
+                        if model.portalUser == nil {
                             onLoadPortal()
                         } else {
                             onSignOut()
@@ -215,6 +216,7 @@ private extension ShowPortalUserInfoView {
                         // Dismiss the keyboard focus after button press.
                         isTextFieldFocused = false
                     }
+//                    .disabled(model.isLoading)
                     .frame(maxWidth: .infinity)
                     .buttonStyle(.borderedProminent)
                     .tint(.purple)
@@ -231,7 +233,7 @@ private extension ShowPortalUserInfoView {
         @Binding var model: ShowPortalUserInfoView.Model
         
         var body: some View {
-            VStack(spacing: 16) {
+            VStack {
                 if model.isLoading {
                     // Show a progress indicator while loading user data.
                     ProgressView()
