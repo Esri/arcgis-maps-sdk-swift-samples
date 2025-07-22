@@ -52,7 +52,7 @@ struct ShowPortalUserInfoView: View {
                     systemImage: "person.crop.circle.dashed",
                     description: Text("Your portal user information will be displayed here.")
                 )
-                // Otherwise show the user information that was loaded.
+            // Otherwise show the user information that was loaded.
             } else {
                 InfoScreen(model: $model)
             }
