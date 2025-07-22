@@ -157,7 +157,7 @@ private extension ShowPortalUserInfoView {
             try await portal.load()
             try await portal.user?.thumbnail?.load()
             portalUser = portal.user
-            portalInfo = portal.user?.portal?.info
+            portalInfo = portal.info
         }
     }
     
