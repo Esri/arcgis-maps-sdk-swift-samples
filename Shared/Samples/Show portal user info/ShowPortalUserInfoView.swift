@@ -101,7 +101,7 @@ private extension ShowPortalUserInfoView {
         /// Defaults to the main ArcGIS Online portal.
         var portalURLString: String = "https://www.arcgis.com"
         /// Stores the current user's data such as username, email, etc.
-        var userData: PortalUser?
+        var portalUser: PortalUser?
         /// Stores the information related to user's portal.
         var portalInfo: PortalInfo?
         /// Indicates whether the model is currently loading data.
@@ -136,7 +136,7 @@ private extension ShowPortalUserInfoView {
         func signOut() async {
             await ArcGISEnvironment.authenticationManager.revokeOAuthTokens()
             await ArcGISEnvironment.authenticationManager.clearCredentialStores()
-            userData = nil
+            portalUser = nil
             portalInfo = nil
             isLoading = true
         }
@@ -161,7 +161,7 @@ private extension ShowPortalUserInfoView {
             // This loads portal information and authenticates user.
             try await portal.load()
             try await portal.user?.thumbnail?.load()
-            userData = portal.user
+            portalUser = portal.user
             portalInfo = portal.user?.portal?.info
         }
     }
@@ -238,23 +238,23 @@ private extension ShowPortalUserInfoView {
                         .padding()
                 } else {
                     // Display additional user information text when data is loaded.
-                    Text(model.userData?.description ?? "No user data available.")
+                    Text(model.portalUser?.description ?? "No user data available.")
                         .multilineTextAlignment(.center)
                         .padding()
                 }
                 Divider()
                 // Show the user's thumbnail image as a circular avatar.
-                Image(uiImage: model.userData?.thumbnail?.image ?? .defaultUserImage)
+                Image(uiImage: model.portalUser?.thumbnail?.image ?? .defaultUserImage)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 150, height: 150)
                     .clipShape(Circle())
-                if let userData = model.userData {
-                    LabeledContent("Username", value: userData.username)
+                if let portalUser = model.portalUser {
+                    LabeledContent("Username", value: portalUser.username)
                     Divider()
-                    LabeledContent("E-mail", value: userData.email)
+                    LabeledContent("E-mail", value: portalUser.email)
                     Divider()
-                    if let creationDate = userData.creationDate {
+                    if let creationDate = portalUser.creationDate {
                         LabeledContent("Member Since", value: creationDate, format: .dateTime.day().month().year())
                         Divider()
                     }
