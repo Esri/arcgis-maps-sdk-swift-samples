@@ -182,6 +182,7 @@ struct AddItemsToPortalView: View {
     private func signOut() async {
         await ArcGISEnvironment.authenticationManager.revokeOAuthTokens()
         await ArcGISEnvironment.authenticationManager.clearCredentialStores()
+        
         onTearDownCompleted()
     }
     

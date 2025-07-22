@@ -61,6 +61,8 @@ struct AddFeatureLayersView: View {
             .onDisappear {
                 // Resets the URL session challenge handler to use default handling.
                 ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = nil
+                ArcGISEnvironment.authenticationManager.arcGISCredentialStore.removeAll()
+                
                 onTearDownCompleted()
             }
     }

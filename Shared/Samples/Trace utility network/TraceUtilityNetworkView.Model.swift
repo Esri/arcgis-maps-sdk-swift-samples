@@ -95,6 +95,7 @@ extension TraceUtilityNetworkView {
         func tearDown() {
             // Resets the URL session challenge handler to use default handling.
             ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = nil
+            ArcGISEnvironment.authenticationManager.arcGISCredentialStore.removeAll()
         }
         
         /// Adds the provided utility element to the parameters of the pending trace and a corresponding
