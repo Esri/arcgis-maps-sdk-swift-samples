@@ -103,6 +103,8 @@ private extension ShowPortalUserInfoView {
         var portalURLString: String = "https://www.arcgis.com"
         /// Stores the current user's data such as username, email, etc.
         var userData: PortalUser?
+        /// Stores the information related to user's portal. 
+        var portalInfo : PortalInfo?
         /// Indicates whether the model is currently loading data.
         var isLoading: Bool = true
         
@@ -136,6 +138,7 @@ private extension ShowPortalUserInfoView {
             await ArcGISEnvironment.authenticationManager.revokeOAuthTokens()
             await ArcGISEnvironment.authenticationManager.clearCredentialStores()
             userData = nil
+            portalInfo = nil
             isLoading = true
         }
         
@@ -160,6 +163,7 @@ private extension ShowPortalUserInfoView {
             try await portal.load()
             try await portal.user?.thumbnail?.load()
             userData = portal.user
+            portalInfo = portal.user?.portal?.info
         }
     }
     
@@ -255,7 +259,7 @@ private extension ShowPortalUserInfoView {
                         LabeledContent("Member Since", value: creationDate, format: .dateTime.day().month().year())
                         Divider()
                     }
-                    if let portalInfo = userData.portal?.info {
+                    if let portalInfo = model.portalInfo {
                         LabeledContent("Portal Name", value: portalInfo.portalName)
                     }
                 }
