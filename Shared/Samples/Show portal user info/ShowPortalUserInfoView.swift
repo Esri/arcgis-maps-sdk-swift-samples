@@ -25,7 +25,26 @@ struct ShowPortalUserInfoView: View {
     var body: some View {
         VStack {
             // Shows field for custom portal urls as well as Sign In / Out and Load Portal functions.
-            portalDetails
+            PortalDetailsView(
+                url: $model.portalURLString,
+                model: $model,
+                // Update the model when the portal URL is changed by the user.
+                onSetUrl: {
+                    model.portalURLString = $0
+                },
+                // Sign out the user and reset state.
+                onSignOut: {
+                    Task {
+                        await model.signOut()
+                    }
+                },
+                // Load the user's portal data when sign in is triggered.
+                onLoadPortal: {
+                    Task {
+                        await loadUser()
+                    }
+                }
+            )
             // If loading, show that the user profile will display when complete.
             if model.portalUser == nil {
                 ContentUnavailableView(
@@ -38,6 +57,16 @@ struct ShowPortalUserInfoView: View {
                 InfoScreen(model: $model)
             }
             Spacer()
+            // Set up the authenticator when the view appears.
+            .onAppear(perform: model.setAuthenticator)
+            // Clean up authenticator and credentials when the view disappears.
+            .onDisappear {
+                Task {
+                    await model.clearAuthenticator()
+                }
+            }
+            // Attach the authenticator to the view for handling authentication challenges.
+            .authenticator(model.authenticator)
         }
         .frame(maxWidth: .infinity, minHeight: 0, maxHeight: 700)
         .errorAlert(presentingError: $error)
@@ -52,40 +81,6 @@ struct ShowPortalUserInfoView: View {
             // and store the error to present an alert.
             self.error = error
         }
-    }
-    
-    /// A composed view for handling portal login, logout, and URL input.
-    @ViewBuilder private var portalDetails: some View {
-        PortalDetailsView(
-            url: $model.portalURLString,
-            model: $model,
-            // Update the model when the portal URL is changed by the user.
-            onSetUrl: {
-                model.portalURLString = $0
-            },
-            // Sign out the user and reset state.
-            onSignOut: {
-                Task {
-                    await model.signOut()
-                }
-            },
-            // Load the user's portal data when sign in is triggered.
-            onLoadPortal: {
-                Task {
-                    await loadUser()
-                }
-            }
-        )
-        // Set up the authenticator when the view appears.
-        .onAppear(perform: model.setAuthenticator)
-        // Clean up authenticator and credentials when the view disappears.
-        .onDisappear {
-            Task {
-                await model.clearAuthenticator()
-            }
-        }
-        // Attach the authenticator to the view for handling authentication challenges.
-        .authenticator(model.authenticator)
     }
 }
 
