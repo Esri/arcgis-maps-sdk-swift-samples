@@ -215,13 +215,6 @@ private extension ShowPortalUserInfoView {
                     .frame(maxWidth: .infinity)
                     .buttonStyle(.borderedProminent)
                     .tint(.purple)
-                    Button("Load portal") {
-                        onLoadPortal()
-                        isTextFieldFocused = false
-                    }
-                    .frame(maxWidth: .infinity)
-                    .buttonStyle(.borderedProminent)
-                    .tint(.purple)
                 }
                 .padding(.horizontal)
             }
