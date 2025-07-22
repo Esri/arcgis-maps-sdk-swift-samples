@@ -20,7 +20,7 @@ Enter your ArcGIS Online credentials for the specified URL.
 4. If the portal is successfully loaded, the info screen below will display the portal info, otherwise it will display the loading error.
 5. Upon successful login, get a `PortalUser` using `portal.user`. Get user attributes using:
    * `portalUser.portalName`
-   * `portalUser.fullName`
+   * `portalUser.username`
    * `portalUser.email`
    * `portalUser.creationDate`
    * `portalUser.thumbnail.image`
