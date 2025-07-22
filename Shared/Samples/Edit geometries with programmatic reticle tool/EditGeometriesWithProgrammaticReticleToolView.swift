@@ -22,19 +22,16 @@ struct EditGeometriesWithProgrammaticReticleToolView: View {
         map.initialViewpoint = .ireland
         return map
     }()
-    
     /// The view model for this sample.
     @State private var model = GeometryEditorModel()
-    
     /// The screen point to perform an identify operation.
     @State private var identifyScreenPoint: CGPoint?
-    
     /// The error shown in the error alert.
     @State private var error: Error?
     
     var body: some View {
         VStack {
-            MapViewReader { mapViewProxy in
+            MapViewReader { mapView in
                 MapView(map: map, graphicsOverlays: [model.geometryOverlay])
                     .geometryEditor(model.geometryEditor)
                     .onSingleTapGesture { screenPoint, _ in
@@ -44,9 +41,15 @@ struct EditGeometriesWithProgrammaticReticleToolView: View {
                         guard let identifyScreenPoint else { return }
                         do {
                             if model.isStarted {
-                                try await editGeometryEditorElement(screenPoint: identifyScreenPoint, mapViewProxy: mapViewProxy)
+                                try await selectGeometryEditorElement(
+                                    at: identifyScreenPoint,
+                                    mapView: mapView
+                                )
                             } else {
-                                try await startEditingGraphic(screenPoint: identifyScreenPoint, mapViewProxy: mapViewProxy)
+                                try await startEditingGraphic(
+                                    at: identifyScreenPoint,
+                                    mapView: mapView
+                                )
                             }
                         } catch {
                             self.error = error
@@ -55,16 +58,12 @@ struct EditGeometriesWithProgrammaticReticleToolView: View {
             }
         }
         .toolbar {
-            ToolbarItem(placement: .primaryAction) {
+            ToolbarItem(placement: .topBarTrailing) {
                 GeometryEditorMenu(model: model)
             }
-        }
-        .toolbar {
             ToolbarItem(placement: .bottomBar) {
-                Button {
+                Button(model.reticleState.label) {
                     model.handleReticleState()
-                } label: {
-                    Text(model.reticleState.label)
                 }
                 .disabled(!model.geometryEditor.isStarted)
             }
@@ -74,12 +73,12 @@ struct EditGeometriesWithProgrammaticReticleToolView: View {
     
     /// Selects the geometry editor element identified at the tap location to edit.
     /// - Parameters:
-    ///   - screenPoint: The screen coordinate of the geo view at which to identify.
-    ///   - mapViewProxy: The map view proxy used to identify the screen point.
-    private func editGeometryEditorElement(screenPoint: CGPoint, mapViewProxy: MapViewProxy) async throws {
+    ///   - point: The screen coordinate of the geo view at which to identify.
+    ///   - mapView: The map view proxy used to identify the screen point.
+    private func selectGeometryEditorElement(at point: CGPoint, mapView: MapViewProxy) async throws {
         // Identify the geometry editor result at the tapped position.
-        let identifyResult = try await mapViewProxy.identifyGeometryEditor(
-            screenPoint: screenPoint,
+        let identifyResult = try await mapView.identifyGeometryEditor(
+            screenPoint: point,
             tolerance: 10
         )
         guard let element = identifyResult.elements.first else { return }
@@ -87,7 +86,7 @@ struct EditGeometriesWithProgrammaticReticleToolView: View {
         // If the element is a vertex or mid-vertex, set the viewpoint to its position and select it.
         switch element {
         case let vertex as GeometryEditorVertex:
-            await mapViewProxy.setViewpoint(
+            await mapView.setViewpoint(
                 Viewpoint(
                     center: element.extent.center,
                     scale: Viewpoint.ireland.targetScale
@@ -98,10 +97,8 @@ struct EditGeometriesWithProgrammaticReticleToolView: View {
                 partIndex: vertex.partIndex,
                 vertexIndex: vertex.vertexIndex
             )
-        case let midVertex as GeometryEditorMidVertex:
-            guard model.allowsVertexCreation else { return }
-            
-            await mapViewProxy.setViewpoint(
+        case let midVertex as GeometryEditorMidVertex where model.allowsVertexCreation:
+            await mapView.setViewpoint(
                 Viewpoint(
                     center: element.extent.center,
                     scale: Viewpoint.ireland.targetScale
@@ -119,23 +116,25 @@ struct EditGeometriesWithProgrammaticReticleToolView: View {
     
     /// Starts editing the graphic identified at the tap location.
     /// - Parameters:
-    ///   - screenPoint: The screen coordinate of the geo view at which to identify.
-    ///   - mapViewProxy: The map view proxy used to identify the screen point.
-    private func startEditingGraphic(screenPoint: CGPoint, mapViewProxy: MapViewProxy) async throws {
+    ///   - point: The screen coordinate of the geo view at which to identify.
+    ///   - mapView: The map view proxy used to identify the screen point.
+    private func startEditingGraphic(at point: CGPoint, mapView: MapViewProxy) async throws {
         // Identify graphics in the graphics overlay using the tapped position.
-        let results = try await mapViewProxy.identifyGraphicsOverlays(
-            screenPoint: screenPoint,
+        let results = try await mapView.identifyGraphicsOverlays(
+            screenPoint: point,
             tolerance: 10
         )
         guard let selectedGraphic = results.first?.graphics.first,
-              let geometry = selectedGraphic.geometry else { return }
+              let geometry = selectedGraphic.geometry else {
+            return
+        }
         
         model.startEditing(with: selectedGraphic)
         
         // If vertex creation is allowed, set the viewpoint to the center of the selected graphic's geometry.
         // Otherwise, set the viewpoint to the end point of the first part of the geometry.
         if model.allowsVertexCreation {
-            await mapViewProxy.setViewpoint(
+            await mapView.setViewpoint(
                 Viewpoint(
                     center: geometry.extent.center,
                     scale: Viewpoint.ireland.targetScale
@@ -143,22 +142,21 @@ struct EditGeometriesWithProgrammaticReticleToolView: View {
                 duration: 0.03
             )
         } else {
-            let center: Point?
-            switch model.selectedGraphic?.geometry {
+            let center: Point? = switch model.selectedGraphic?.geometry {
             case let polygon as Polygon:
-                center = polygon.parts[0].endPoint
+                polygon.parts[0].endPoint
             case let polyline as Polyline:
-                center = polyline.parts[0].endPoint
+                polyline.parts[0].endPoint
             case let multipoint as Multipoint:
-                center = multipoint.points.last
+                multipoint.points.last
             case let point as Point:
-                center = point
+                point
             default:
-                return
+                nil
             }
             guard let center else { return }
             
-            await mapViewProxy.setViewpoint(
+            await mapView.setViewpoint(
                 Viewpoint(
                     center: center,
                     scale: Viewpoint.ireland.targetScale
@@ -172,7 +170,7 @@ struct EditGeometriesWithProgrammaticReticleToolView: View {
 /// A view that provides a menu for geometry editor functionality.
 private struct GeometryEditorMenu: View {
     /// The model for the menu.
-    @State var model: GeometryEditorModel
+    @Bindable var model: GeometryEditorModel
     
     /// The currently selected element.
     @State private var selectedElement: GeometryEditorElement?
@@ -181,7 +179,7 @@ private struct GeometryEditorMenu: View {
     @State private var geometry: Geometry?
     
     var body: some View {
-        Menu {
+        Menu("Geometry Editor", systemImage: "pencil.line") {
             if !model.isStarted {
                 // If the geometry editor is not started, show the main menu.
                 mainMenuContent
@@ -213,104 +211,98 @@ private struct GeometryEditorMenu: View {
                         }
                     }
             }
-        } label: {
-            Label("Geometry Editor", systemImage: "pencil.tip.crop.circle")
         }
     }
 }
 
 private extension GeometryEditorMenu {
     /// The content of the main menu.
-    var mainMenuContent: some View {
-        VStack {
-            Menu("Programmatic Reticle Tool") {
-                Button {
-                    model.startEditing(withType: Point.self)
-                } label: {
-                    Label("New Point", systemImage: "smallcircle.filled.circle")
-                }
-                
-                Button {
-                    model.startEditing(withType: Polyline.self)
-                } label: {
-                    Label("New Line", systemImage: "line.diagonal")
-                }
-                
-                Button {
-                    model.startEditing(withType: Polygon.self)
-                } label: {
-                    Label("New Area", systemImage: "skew")
-                }
-                
-                Button {
-                    model.startEditing(withType: Multipoint.self)
-                } label: {
-                    Label("New Multipoint", systemImage: "hand.point.up.braille")
-                }
-            }
-            
-            Divider()
-            
-            Button(role: .destructive) {
-                model.deleteAllGeometries()
+    @ViewBuilder var mainMenuContent: some View {
+        Menu("Programmatic Reticle Tool") {
+            Button {
+                model.startEditing(withType: Point.self)
             } label: {
-                Label("Delete All Geometries", systemImage: "trash")
+                Label("New Point", systemImage: "smallcircle.filled.circle")
             }
-            .disabled(!model.canClearGraphics)
+            
+            Button {
+                model.startEditing(withType: Polyline.self)
+            } label: {
+                Label("New Line", systemImage: "line.diagonal")
+            }
+            
+            Button {
+                model.startEditing(withType: Polygon.self)
+            } label: {
+                Label("New Area", systemImage: "skew")
+            }
+            
+            Button {
+                model.startEditing(withType: Multipoint.self)
+            } label: {
+                Label("New Multipoint", systemImage: "hand.point.up.braille")
+            }
         }
+        
+        Divider()
+        
+        Button(role: .destructive) {
+            model.deleteAllGeometries()
+        } label: {
+            Label("Delete All Geometries", systemImage: "trash")
+        }
+        .disabled(!model.canClearGraphics)
     }
     
     /// The content of the editing menu.
-    var editMenuContent: some View {
-        VStack {
-            Toggle("Allow vertex creation", isOn: $model.allowsVertexCreation)
-            
-            Button {
-                if model.geometryEditor.pickedUpElement != nil {
-                    model.geometryEditor.cancelCurrentAction()
-                } else {
-                    model.geometryEditor.undo()
-                }
-            } label: {
-                Label("Undo", systemImage: "arrow.uturn.backward")
+    @ViewBuilder var editMenuContent: some View {
+        Toggle("Allow vertex creation", isOn: $model.allowsVertexCreation)
+        
+        Button {
+            if model.geometryEditor.pickedUpElement != nil {
+                model.geometryEditor.cancelCurrentAction()
+            } else {
+                model.geometryEditor.undo()
             }
-            .disabled(!canUndo)
-            
-            Button {
-                model.geometryEditor.redo()
-            } label: {
-                Label("Redo", systemImage: "arrow.uturn.forward")
-            }
-            .disabled(!canRedo)
-            
-            Button {
-                model.geometryEditor.deleteSelectedElement()
-            } label: {
-                Label("Delete Selected Element", systemImage: "xmark.square.fill")
-            }
-            .disabled(deleteButtonIsDisabled)
-            
-            Button(role: .destructive) {
-                model.geometryEditor.clearGeometry()
-            } label: {
-                Label("Clear Current Sketch", systemImage: "trash")
-            }
-            .disabled(!canClearCurrentSketch)
-            
-            Divider()
-            
-            Button {
-                model.save()
-            } label: {
-                Label("Save Sketch", systemImage: "square.and.arrow.down")
-            }
-            .disabled(!canSave)
-            
-            Button {
-                model.stop()
-            } label: {
-                Label("Cancel Sketch", systemImage: "xmark")
-            }
+        } label: {
+            Label("Undo", systemImage: "arrow.uturn.backward")
+        }
+        .disabled(!model.geometryEditor.canUndo)
+        
+        Button {
+            model.geometryEditor.redo()
+        } label: {
+            Label("Redo", systemImage: "arrow.uturn.forward")
+        }
+        .disabled(!model.geometryEditor.canRedo)
+        
+        Button {
+            model.geometryEditor.deleteSelectedElement()
+        } label: {
+            Label("Delete Selected Element", systemImage: "xmark.square.fill")
+        }
+        .disabled(deleteButtonIsDisabled)
+        
+        Button(role: .destructive) {
+            model.geometryEditor.clearGeometry()
+        } label: {
+            Label("Clear Current Sketch", systemImage: "trash")
+        }
+        .disabled(!canClearCurrentSketch)
+        
+        Divider()
+        
+        Button {
+            model.save()
+        } label: {
+            Label("Save Sketch", systemImage: "square.and.arrow.down")
+        }
+        .disabled(!canSave)
+        
+        Button {
+            model.stop()
+        } label: {
+            Label("Cancel Sketch", systemImage: "xmark")
         }
     }
 }
@@ -323,16 +315,6 @@ private extension GeometryEditorMenu {
     var deleteButtonIsDisabled: Bool {
         guard let selectedElement else { return true }
         return !selectedElement.canBeDeleted
-    }
-    
-    /// A Boolean value indicating if the geometry editor can perform an undo.
-    var canUndo: Bool {
-        return model.geometryEditor.canUndo
-    }
-    
-    /// A Boolean value indicating if the geometry editor can perform a redo.
-    var canRedo: Bool {
-        return model.geometryEditor.canRedo
     }
     
     /// A Boolean value indicating if the geometry can be saved to a graphics overlay.
@@ -472,7 +454,7 @@ private class GeometryEditorModel {
     /// - Parameter geometry: The geometry of the graphic to be saved.
     /// - Returns: Either a marker or fill symbol depending on the type of provided geometry.
     private func symbol(for geometry: Geometry) -> Symbol {
-        switch geometry {
+        return switch geometry {
         case is Point: .point()
         case is Multipoint: .multipoint()
         case is Polyline: .polyline()
