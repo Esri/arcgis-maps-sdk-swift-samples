@@ -23,21 +23,19 @@ struct ShowPortalUserInfoView: View {
     @State private var error: Error?
     
     var body: some View {
-        VStack(spacing: 16) {
+        VStack {
             // Shows field for custom portal urls as well as Sign In / Out and Load Portal functions.
             portalDetails
-            Group {
-                // If loading, show that the user profile will display when complete.
-                if model.isLoading {
-                    ContentUnavailableView(
-                        "Portal User Information",
-                        systemImage: "person.crop.circle.dashed",
-                        description: Text("Your portal user information will be displayed here.")
-                    )
-                    // Otherwise show the user information that was loaded.
-                } else {
-                    InfoScreen(model: $model)
-                }
+            // If loading, show that the user profile will display when complete.
+            if model.isLoading {
+                ContentUnavailableView(
+                    "Portal User Information",
+                    systemImage: "person.crop.circle.dashed",
+                    description: Text("Your portal user information will be displayed here.")
+                )
+                // Otherwise show the user information that was loaded.
+            } else {
+                InfoScreen(model: $model)
             }
         }
         .errorAlert(presentingError: $error)
@@ -161,25 +159,28 @@ private extension ShowPortalUserInfoView {
             // This loads portal information and authenticates user.
             try await portal.load()
             try await portal.user?.thumbnail?.load()
-            let formatter = DateFormatter()
-            // Set the date style to long (e.g., January 1, 2024).
-            formatter.dateStyle = .long
-            // Do not include the time in the formatted string.
-            formatter.timeStyle = .none
             
-            // Convert the user's creation date to a formatted string using the formatter.
-            // If creationDate is nil, return an empty string.
-            let creationDateString = portal.user?.creationDate.map { formatter.string(from: $0) } ?? ""
-            
-            // Portal user data in displayable model.
-            userData = UserData(
-                infoText: portal.user?.description ?? "",
-                username: portal.user?.username ?? "",
-                email: portal.user?.email ?? "",
-                creationDate: creationDateString,
-                portalName: portal.user?.portal?.info?.portalName ?? "",
-                userThumbnail: portal.user?.thumbnail?.image ?? .defaultUserImage
-            )
+            if let portalUser = portal.user {
+                // Convert the user's creation date to a formatted string using the formatter.
+                let formatter = DateFormatter()
+                // Set the date style to long (e.g., January 1, 2024).
+                formatter.dateStyle = .long
+                // Do not include the time in the formatted string.
+                formatter.timeStyle = .none
+
+                // If creationDate is nil, return an empty string.
+                let creationDateString = portalUser.creationDate.map { formatter.string(from: $0) } ?? ""
+                
+                // Portal user data in displayable model.
+                userData = UserData(
+                    infoText: portalUser.description,
+                    username: portalUser.username,
+                    email: portalUser.email,
+                    creationDate: creationDateString,
+                    portalName: portalUser.portal?.info?.portalName ?? "",
+                    userThumbnail: portalUser.thumbnail?.image ?? .defaultUserImage
+                )
+            }
         }
     }
     
