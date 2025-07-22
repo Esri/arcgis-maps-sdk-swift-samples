@@ -159,7 +159,6 @@ private extension ShowPortalUserInfoView {
             // This loads portal information and authenticates user.
             try await portal.load()
             try await portal.user?.thumbnail?.load()
-            
             userData = portal.user
         }
     }
@@ -263,7 +262,9 @@ private extension ShowPortalUserInfoView {
                         LabeledContent("Member Since", value: creationDate, format: .dateTime.day().month().year())
                         Divider()
                     }
-                    LabeledContent("Portal Name", value: userData.portal?.info?.portalName ?? "N/A")
+                    if let portalInfo = userData.portal?.info {
+                        LabeledContent("Portal Name", value: portalInfo.portalName)
+                    }
                 }
             }
             .padding()
