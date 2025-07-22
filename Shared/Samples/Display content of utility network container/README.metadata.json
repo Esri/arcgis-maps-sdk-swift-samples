@@ -1,6 +1,7 @@
 {
     "category": "Utility Networks",
     "description": "A utility network container allows a dense collection of features to be represented by a single feature, which can be used to reduce map clutter.",
+    "has_teardown" : true,
     "ignore": false,
     "images": [
         "display-content-utility-network.png"
