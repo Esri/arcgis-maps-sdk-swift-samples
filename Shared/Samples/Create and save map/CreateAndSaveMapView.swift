@@ -42,6 +42,11 @@ struct CreateAndSaveMapView: View {
     /// The portal user's folders that you can save the map to.
     @State private var folders: [PortalFolder] = []
     
+    /// The action to run when the sample's teardown has completed.
+    ///
+    /// This is needed to prevent the authentication in this sample from interfering with other samples.
+    @Environment(\.onTearDownCompleted) private var onTearDownCompleted
+    
     var body: some View {
         VStack {
             if let map {
@@ -122,10 +127,12 @@ struct CreateAndSaveMapView: View {
                 // credentials every time the sample is run, and to clean
                 // the environment for other samples.
                 await teardownAuthenticator()
+                
+                // Sets the API key back to the original value.
+                ArcGISEnvironment.apiKey = apiKey
+                
+                onTearDownCompleted()
             }
-            
-            // Sets the API key back to the original value.
-            ArcGISEnvironment.apiKey = apiKey
         }
     }
     

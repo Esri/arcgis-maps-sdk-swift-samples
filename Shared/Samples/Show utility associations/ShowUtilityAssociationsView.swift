@@ -34,6 +34,11 @@ struct ShowUtilityAssociationsView: View {
     /// The display scale of this environment.
     @Environment(\.displayScale) private var displayScale
     
+    /// The action to run when the sample's teardown has completed.
+    ///
+    /// This is needed to prevent the authentication in this sample from interfering with other samples.
+    @Environment(\.onTearDownCompleted) private var onTearDownCompleted
+    
     var body: some View {
         MapView(
             map: model.map,
@@ -62,6 +67,7 @@ struct ShowUtilityAssociationsView: View {
         }
         .onDisappear {
             model.tearDown()
+            onTearDownCompleted()
         }
     }
 }

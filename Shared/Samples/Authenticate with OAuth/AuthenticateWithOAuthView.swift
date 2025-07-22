@@ -37,6 +37,11 @@ struct AuthenticateWithOAuthView: View {
         return Map(item: portalItem)
     }()
     
+    /// The action to run when the sample's teardown has completed.
+    ///
+    /// This is needed to prevent the authentication in this sample from interfering with other samples.
+    @Environment(\.onTearDownCompleted) private var onTearDownCompleted
+    
     var body: some View {
         MapView(map: map)
             .authenticator(authenticator)
@@ -70,6 +75,8 @@ struct AuthenticateWithOAuthView: View {
         Task {
             await ArcGISEnvironment.authenticationManager.revokeOAuthTokens()
             await ArcGISEnvironment.authenticationManager.clearCredentialStores()
+            
+            onTearDownCompleted()
         }
     }
     

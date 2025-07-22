@@ -46,6 +46,11 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
     /// The error shown in the error alert.
     @State private var error: Error?
     
+    /// The action to run when the sample's teardown has completed.
+    ///
+    /// This is needed to prevent the authentication in this sample from interfering with other samples.
+    @Environment(\.onTearDownCompleted) private var onTearDownCompleted
+    
     var body: some View {
         if !model.isSetUp {
             loadingView
@@ -93,6 +98,7 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
             }
             .onDisappear {
                 model.tearDown()
+                onTearDownCompleted()
             }
         }
     }

@@ -43,6 +43,11 @@ struct DisplayContentOfUtilityNetworkContainerView: View {
     /// The current viewpoint of the map view.
     @State private var viewpoint = Viewpoint(latitude: 41.80, longitude: -88.16, scale: 4e3)
     
+    /// The action to run when the sample's teardown has completed.
+    ///
+    /// This is needed to prevent the authentication in this sample from interfering with other samples.
+    @Environment(\.onTearDownCompleted) private var onTearDownCompleted
+    
     var body: some View {
         MapViewReader { proxy in
             MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
@@ -126,6 +131,7 @@ struct DisplayContentOfUtilityNetworkContainerView: View {
                 }
                 .onDisappear {
                     model.tearDown()
+                    onTearDownCompleted()
                 }
         }
     }

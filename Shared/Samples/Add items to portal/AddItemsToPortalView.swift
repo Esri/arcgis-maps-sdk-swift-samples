@@ -35,6 +35,11 @@ struct AddItemsToPortalView: View {
     /// The portal user when the portal is logged in.
     @State private var portalUser: PortalUser?
     
+    /// The action to run when the sample's teardown has completed.
+    /// 
+    /// This is needed to prevent the authentication in this sample from interfering with other samples.
+    @Environment(\.onTearDownCompleted) private var onTearDownCompleted
+    
     var body: some View {
         Group {
             if portalItems.isEmpty {
@@ -177,6 +182,7 @@ struct AddItemsToPortalView: View {
     private func signOut() async {
         await ArcGISEnvironment.authenticationManager.revokeOAuthTokens()
         await ArcGISEnvironment.authenticationManager.clearCredentialStores()
+        onTearDownCompleted()
     }
     
     /// Sets up new ArcGIS and Network credential stores that will be persisted in the keychain.
