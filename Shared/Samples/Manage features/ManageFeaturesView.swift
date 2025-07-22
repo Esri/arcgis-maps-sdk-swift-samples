@@ -156,12 +156,13 @@ struct ManageFeaturesView: View {
                     Text("Delete Feature")
                 }
             } label: {
-                Image(systemName: "ellipsis")
-                    .padding(.leading)
+                Label("Edit Feature", systemImage: "ellipsis")
+                    .padding()
+                    .contentShape(.rect)
+                    .labelStyle(.iconOnly)
             }
-            .fixedSize()
         }
-        .padding()
+        .padding([.leading, .vertical])
     }
     
     /// Overlay with instructions for the user.
