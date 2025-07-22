@@ -57,6 +57,7 @@ struct ShowPortalUserInfoView: View {
                 InfoScreen(model: $model)
             }
             Spacer()
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             // Set up the authenticator when the view appears.
             .onAppear(perform: model.setAuthenticator)
             // Clean up authenticator and credentials when the view disappears.
@@ -68,7 +69,7 @@ struct ShowPortalUserInfoView: View {
             // Attach the authenticator to the view for handling authentication challenges.
             .authenticator(model.authenticator)
         }
-        .frame(maxWidth: .infinity, minHeight: 0, maxHeight: 700)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .errorAlert(presentingError: $error)
     }
     
