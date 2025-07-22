@@ -250,18 +250,19 @@ private extension ShowPortalUserInfoView {
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 150, height: 150)
                     .clipShape(Circle())
+                
                 if let portalUser = model.portalUser {
-                    LabeledContent("Username", value: portalUser.username)
-                    Divider()
-                    LabeledContent("E-mail", value: portalUser.email)
-                    Divider()
-                    if let creationDate = portalUser.creationDate {
-                        LabeledContent("Member Since", value: creationDate, format: .dateTime.day().month().year())
-                        Divider()
+                    List {
+                        LabeledContent("Username", value: portalUser.username)
+                        LabeledContent("E-mail", value: portalUser.email)
+                        if let creationDate = portalUser.creationDate {
+                            LabeledContent("Member Since", value: creationDate, format: .dateTime.day().month().year())
+                        }
+                        if let portalInfo = model.portalInfo {
+                            LabeledContent("Portal Name", value: portalInfo.portalName)
+                        }
                     }
-                    if let portalInfo = model.portalInfo {
-                        LabeledContent("Portal Name", value: portalInfo.portalName)
-                    }
+                    .listStyle(.plain)
                 }
             }
             .padding()
