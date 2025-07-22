@@ -76,6 +76,7 @@ struct ShowPortalUserInfoView: View {
                 }
             }
         )
+        .frame(maxWidth: 400)
         // Set up the authenticator when the view appears.
         .onAppear(perform: model.setAuthenticator)
         // Clean up authenticator and credentials when the view disappears.
@@ -163,26 +164,6 @@ private extension ShowPortalUserInfoView {
         }
     }
     
-    struct UserData {
-        var infoText: String
-        var username: String
-        var email: String
-        var creationDate: String
-        var portalName: String
-        var userThumbnail: UIImage
-        
-        /// Default sets empty user details for clearing out previous users.
-        static var placeholder: UserData {
-            UserData(
-                infoText: "",
-                username: "",
-                email: "",
-                creationDate: "",
-                portalName: "",
-                userThumbnail: .defaultUserImage
-            )
-        }
-    }
     /// A view that manages the portal URL input, sign-in/sign-out actions, and portal loading.
     struct PortalDetailsView: View {
         /// Binding to the portal URL string.
