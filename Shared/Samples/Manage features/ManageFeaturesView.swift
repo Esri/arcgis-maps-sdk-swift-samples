@@ -62,10 +62,12 @@ struct ManageFeaturesView: View {
         MapViewReader { mapView in
             MapView(map: data.map)
                 .onSingleTapGesture { tapLocation, tapMapPoint in
-                    // Store state and clear selection on tap.
-                    self.tapLocation = tapLocation
-                    self.tapMapPoint = tapMapPoint
-                    clearSelection()
+                    if calloutPlacement == nil {
+                        self.tapLocation = tapLocation
+                        self.tapMapPoint = tapMapPoint
+                    } else {
+                        clearSelection()
+                    }
                 }
                 .callout(placement: $calloutPlacement) { placement in
                     if let feature = placement.geoElement as? Feature {
