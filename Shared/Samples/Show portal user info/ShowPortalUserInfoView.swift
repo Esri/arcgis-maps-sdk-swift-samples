@@ -50,7 +50,6 @@ struct ShowPortalUserInfoView: View {
         } catch {
             // If an error occurs, mark loading as true (to reset)
             // and store the error to present an alert.
-            model.isLoading = true
             self.error = error
         }
     }
@@ -216,7 +215,7 @@ private extension ShowPortalUserInfoView {
                         // Dismiss the keyboard focus after button press.
                         isTextFieldFocused = false
                     }
-//                    .disabled(model.isLoading)
+                    .disabled(model.isLoading)
                     .frame(maxWidth: .infinity)
                     .buttonStyle(.borderedProminent)
                     .tint(.purple)
