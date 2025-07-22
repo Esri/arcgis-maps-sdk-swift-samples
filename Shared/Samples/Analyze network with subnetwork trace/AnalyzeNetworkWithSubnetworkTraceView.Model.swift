@@ -62,10 +62,6 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
         /// A Boolean value indicating if the sample has been setup.
         @Published private(set) var isSetUp = false
         
-        deinit {
-            ArcGISEnvironment.authenticationManager.arcGISCredentialStore.removeAll()
-        }
-        
         // MARK: Methods
         
         /// Performs important tasks including adding credentials, loading utility network and setting trace parameters.
@@ -76,6 +72,11 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
             } catch {
                 throw error
             }
+        }
+        
+        /// Cleans up the model's setup.
+        func tearDown() {
+            ArcGISEnvironment.authenticationManager.arcGISCredentialStore.removeAll()
         }
         
         /// Loads the utility network and sets the trace parameters and other information

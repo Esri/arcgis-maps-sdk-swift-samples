@@ -144,6 +144,9 @@ struct EditWithBranchVersioningView: View {
             }
         }
         .errorAlert(presentingError: $error)
+        .onDisappear {
+            model.tearDown()
+        }
     }
     
     /// The button for editing the damage type of the selected feature.

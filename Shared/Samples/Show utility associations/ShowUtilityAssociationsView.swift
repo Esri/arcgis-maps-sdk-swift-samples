@@ -60,6 +60,9 @@ struct ShowUtilityAssociationsView: View {
                 .shadow(radius: 3)
                 .padding()
         }
+        .onDisappear {
+            model.tearDown()
+        }
     }
 }
 
@@ -131,17 +134,18 @@ private extension ShowUtilityAssociationsView {
             ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = ChallengeHandler()
         }
         
-        deinit {
-            // Resets the URL session challenge handler to use default handling.
-            ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = nil
-        }
-        
         // MARK: Methods
         
         /// Loads the map and the utility network.
         func setup() async throws {
             try await map.load()
             try await network.load()
+        }
+        
+        /// Cleans up the model's setup.
+        func tearDown() {
+            // Resets the URL session challenge handler to use default handling.
+            ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = nil
         }
         
         static func makeAssociationsOverlay() -> GraphicsOverlay {

@@ -124,6 +124,9 @@ struct DisplayContentOfUtilityNetworkContainerView: View {
                         isShowingContainer = true
                     }
                 }
+                .onDisappear {
+                    model.tearDown()
+                }
         }
     }
     

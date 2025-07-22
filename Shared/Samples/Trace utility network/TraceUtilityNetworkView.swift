@@ -31,7 +31,7 @@ struct TraceUtilityNetworkView: View {
             }
             .selectionColor(.yellow)
             .onDisappear {
-                ArcGISEnvironment.authenticationManager.arcGISCredentialStore.removeAll()
+                model.tearDown()
             }
             .overlay(alignment: .center) {
                 if model.tracingActivity == .traceRunning,

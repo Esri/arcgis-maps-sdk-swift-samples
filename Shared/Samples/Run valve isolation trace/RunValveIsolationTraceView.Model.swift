@@ -100,11 +100,6 @@ extension RunValveIsolationTraceView {
             ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = ChallengeHandler()
         }
         
-        deinit {
-            // Resets the URL session challenge handler to use default handling.
-            ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = nil
-        }
-        
         /// Loads the map and utility network.
         func setup() async {
             do {
@@ -114,6 +109,12 @@ extension RunValveIsolationTraceView {
             } catch {
                 statusText = error.localizedDescription
             }
+        }
+        
+        /// Cleans up the model's setup.
+        func tearDown() {
+            // Resets the URL session challenge handler to use default handling.
+            ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = nil
         }
         
         /// Loads the utility network.

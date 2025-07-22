@@ -50,6 +50,9 @@ struct CreateLoadReportView: View {
                     }
                 }
             }
+            .onDisappear {
+                model.tearDown()
+            }
     }
 }
 

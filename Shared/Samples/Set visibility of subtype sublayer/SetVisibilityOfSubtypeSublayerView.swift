@@ -61,6 +61,9 @@ struct SetVisibilityOfSubtypeSublayerView: View {
                 }
             }
             .errorAlert(presentingError: $error)
+            .onDisappear {
+                model.tearDown()
+            }
     }
 }
 

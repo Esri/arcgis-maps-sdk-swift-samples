@@ -91,6 +91,9 @@ struct AnalyzeNetworkWithSubnetworkTraceView: View {
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) { toolbarItems }
             }
+            .onDisappear {
+                model.tearDown()
+            }
         }
     }
     
