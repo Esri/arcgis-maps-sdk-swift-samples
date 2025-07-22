@@ -101,7 +101,7 @@ private extension ShowPortalUserInfoView {
         /// Defaults to the main ArcGIS Online portal.
         var portalURLString: String = "https://www.arcgis.com"
         /// Stores the current user's data such as username, email, etc.
-        var userData: UserData
+        var userData: PortalUser?
         /// Indicates whether the model is currently loading data.
         var isLoading: Bool = true
         
@@ -109,7 +109,6 @@ private extension ShowPortalUserInfoView {
             self.authenticator = Authenticator(
                 oAuthUserConfigurations: [.arcgisDotCom]
             )
-            userData = .placeholder
         }
         
         func setAuthenticator() {
@@ -135,7 +134,7 @@ private extension ShowPortalUserInfoView {
         func signOut() async {
             await ArcGISEnvironment.authenticationManager.revokeOAuthTokens()
             await ArcGISEnvironment.authenticationManager.clearCredentialStores()
-            userData = .placeholder
+            userData = nil
             isLoading = true
         }
         
@@ -160,27 +159,7 @@ private extension ShowPortalUserInfoView {
             try await portal.load()
             try await portal.user?.thumbnail?.load()
             
-            if let portalUser = portal.user {
-                // Convert the user's creation date to a formatted string using the formatter.
-                let formatter = DateFormatter()
-                // Set the date style to long (e.g., January 1, 2024).
-                formatter.dateStyle = .long
-                // Do not include the time in the formatted string.
-                formatter.timeStyle = .none
-
-                // If creationDate is nil, return an empty string.
-                let creationDateString = portalUser.creationDate.map { formatter.string(from: $0) } ?? ""
-                
-                // Portal user data in displayable model.
-                userData = UserData(
-                    infoText: portalUser.description,
-                    username: portalUser.username,
-                    email: portalUser.email,
-                    creationDate: creationDateString,
-                    portalName: portalUser.portal?.info?.portalName ?? "",
-                    userThumbnail: portalUser.thumbnail?.image ?? .defaultUserImage
-                )
-            }
+            userData = portal.user
         }
     }
     
@@ -274,13 +253,6 @@ private extension ShowPortalUserInfoView {
     struct InfoScreen: View {
         /// A binding to the model providing user data and loading state.
         @Binding var model: ShowPortalUserInfoView.Model
-        /// An array of key-value pairs representing user details to display.
-        private var userDetails: [(String, String)] { [
-            ("Username:", model.userData.username),
-            ("E-mail:", model.userData.email),
-            ("Member Since:", model.userData.creationDate),
-            ("Portal Name", model.userData.portalName)
-        ] }
         
         var body: some View {
             VStack(spacing: 16) {
@@ -290,26 +262,28 @@ private extension ShowPortalUserInfoView {
                         .padding()
                 } else {
                     // Display additional user information text when data is loaded.
-                    Text(model.userData.infoText)
+                    Text(model.userData?.description ?? "No user data available.")
                         .multilineTextAlignment(.center)
                         .padding()
                 }
                 Divider()
                 // Show the user's thumbnail image as a circular avatar.
-                Image(uiImage: model.userData.userThumbnail)
+                Image(uiImage: model.userData?.thumbnail?.image ?? .defaultUserImage)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 150, height: 150)
                     .clipShape(Circle())
-                // Iterate over user details and display each with a label and value.
-                ForEach(userDetails, id: \.0) { label, value in
+                if let userData = model.userData {
+                    LabeledContent("Username", value: userData.username)
                     Divider()
-                    LabeledContent(
-                        label,
-                        value: value
-                    )
+                    LabeledContent("E-mail", value: userData.email)
+                    Divider()
+                    if let creationDate = userData.creationDate {
+                        LabeledContent("Member Since", value: creationDate, format: .dateTime.day().month().year())
+                        Divider()
+                    }
+                    LabeledContent("Portal Name", value: userData.portal?.info?.portalName ?? "N/A")
                 }
-                Divider()
             }
             .padding()
         }
