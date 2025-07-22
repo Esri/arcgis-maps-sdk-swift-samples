@@ -57,19 +57,18 @@ struct ShowPortalUserInfoView: View {
                 InfoScreen(model: $model)
             }
             Spacer()
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-            // Set up the authenticator when the view appears.
-                .onAppear(perform: model.setAuthenticator)
-            // Clean up authenticator and credentials when the view disappears.
-                .onDisappear {
-                    Task {
-                        await model.clearAuthenticator()
-                    }
-                }
-            // Attach the authenticator to the view for handling authentication challenges.
-                .authenticator(model.authenticator)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .frame(maxHeight: .infinity)
+        // Set up the authenticator when the view appears.
+        .onAppear(perform: model.setAuthenticator)
+        // Clean up authenticator and credentials when the view disappears.
+        .onDisappear {
+            Task {
+                await model.clearAuthenticator()
+            }
+        }
+        // Attach the authenticator to the view for handling authentication challenges.
+        .authenticator(model.authenticator)
         .errorAlert(presentingError: $error)
     }
     
@@ -212,7 +211,6 @@ private extension ShowPortalUserInfoView {
                         isTextFieldFocused = false
                     }
                     .disabled(model.isLoading)
-                    .frame(maxWidth: .infinity)
                     .buttonStyle(.borderedProminent)
                     .tint(.purple)
                 }
@@ -262,7 +260,6 @@ private extension ShowPortalUserInfoView {
                     .frame(minHeight: 300)
                 }
             }
-            .frame(maxHeight: .infinity)
         }
     }
 }
