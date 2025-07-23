@@ -48,7 +48,7 @@ struct ShowShapefileMetadataView: View {
                 .toolbar {
                     ToolbarItem(placement: .bottomBar) {
                         Button("Show Shapefile Metadata") {
-                            self.showMetadata.toggle()
+                            showMetadata.toggle()
                         }
                         .popover(isPresented: $showMetadata) {
                             metadataPopover
@@ -114,7 +114,8 @@ private extension ShowShapefileMetadataView {
         var body: some View {
             VStack(alignment: .center, spacing: 16) {
                 if let credits = model.shapefileInfo?.credits {
-                    Text(credits).bold()
+                    Text(credits)
+                        .bold()
                 }
                 
                 if let summary = model.shapefileInfo?.summary {
