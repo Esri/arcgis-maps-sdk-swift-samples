@@ -24,7 +24,7 @@ struct ShowPortalUserInfoView: View {
     
     var body: some View {
         VStack {
-            // Shows field for custom portal urls as well as Sign In / Out and Load Portal functions.
+            // Shows field for custom portal urls as well as Sign In / Out.
             PortalDetailsView(
                 url: $model.portalURLString,
                 model: $model,
@@ -32,7 +32,7 @@ struct ShowPortalUserInfoView: View {
                 onSetUrl: {
                     model.portalURLString = $0
                 },
-                // Sign out the user and reset state.
+                // Sign out the user.
                 onSignOut: {
                     Task {
                         await model.signOut()
