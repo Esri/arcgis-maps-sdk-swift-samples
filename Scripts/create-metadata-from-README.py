@@ -49,6 +49,9 @@ class MetadataCreator(Metadata):
         data["relevant_apis"] = self.relevant_apis
         data["snippets"] = self.snippets
         data["title"] = self.title
+        if self.has_teardown:
+            # Only write offline_data when it is not empty.
+            data["has_teardown"] = self.has_teardown
         if self.offline_data:
             # Only write offline_data when it is not empty.
             data["offline_data"] = self.offline_data
