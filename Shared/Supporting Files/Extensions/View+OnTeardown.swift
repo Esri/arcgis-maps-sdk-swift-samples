@@ -44,14 +44,14 @@ extension View {
     }
 }
 
-/// A type of action to perform.
-private enum Action {
-    case action(() -> Void)
-    case actionAsync(() async -> Void)
-}
-
 /// A view modifier that runs a teardown action when the view disappears.
 private struct OnTeardown: ViewModifier {
+    /// A type of action to perform.
+    enum Action {
+        case action(() -> Void)
+        case actionAsync(() async -> Void)
+    }
+    
     /// The teardown action to perform.
     let action: Action
     
