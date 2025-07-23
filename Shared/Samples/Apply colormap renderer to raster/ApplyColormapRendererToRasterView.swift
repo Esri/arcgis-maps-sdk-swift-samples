@@ -19,7 +19,7 @@ struct ApplyColormapRendererToRasterView: View {
     /// Creates the raster layer used by this sample.
     static func makeRasterLayer() -> RasterLayer {
         // Creates a raster and raster layer.
-        let raster = Raster(name: "ShastaBW", extension: "tif", bundle: nil)!
+        let raster = Raster(name: "ShastaBW/ShastaBW", extension: "tif", bundle: nil)!
         let rasterLayer = RasterLayer(raster: raster)
         
         // Creates a colormap renderer and assigns it to the raster layer.
