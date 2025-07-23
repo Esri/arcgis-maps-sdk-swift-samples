@@ -199,21 +199,19 @@ private extension ShowPortalUserInfoView {
                 .textFieldStyle(.roundedBorder)
                 .padding(.horizontal)
                 
-                HStack {
-                    // Button to sign in or sign out, depending on the loading state.
-                    Button(model.portalUser == nil ? "Sign In" : "Sign Out") {
-                        if model.portalUser == nil {
-                            onLoadPortal()
-                        } else {
-                            onSignOut()
-                        }
-                        // Dismiss the keyboard focus after button press.
-                        isTextFieldFocused = false
+                // Button to sign in or sign out, depending on the loading state.
+                Button(model.portalUser == nil ? "Sign In" : "Sign Out") {
+                    if model.portalUser == nil {
+                        onLoadPortal()
+                    } else {
+                        onSignOut()
                     }
-                    .disabled(model.isLoading)
-                    .buttonStyle(.borderedProminent)
-                    .tint(.purple)
+                    // Dismiss the keyboard focus after button press.
+                    isTextFieldFocused = false
                 }
+                .disabled(model.isLoading)
+                .buttonStyle(.borderedProminent)
+                .tint(.purple)
                 .padding(.horizontal)
             }
             .padding()
