@@ -32,14 +32,13 @@ struct ShowViewshedFromCameraInSceneView: View {
             )
             .onAppear {
                 model.setInitialViewshed()
-                model.updateViewshedFromLastCamera()
-            }
-            .onTapGesture {
-                model.height += 10
             }
             Button("Set new camera viewpoint") {
                 model.updateViewshedFromLastCamera()
             }
+            .buttonStyle(.borderedProminent)
+            .tint(.purple)
+            .padding(.horizontal)
         }
         .navigationTitle("Show Viewshed from Camera")
     }
@@ -49,11 +48,7 @@ private extension ShowViewshedFromCameraInSceneView {
     @MainActor
     @Observable
     final class Model {
-        var height: Double = 20.0 {
-            didSet {
-                updateViewshedFromLastCamera()
-            }
-        }
+        var height: Double = 20.0
         
         private var viewshed: LocationViewshed?
         
@@ -86,67 +81,55 @@ private extension ShowViewshedFromCameraInSceneView {
             scene.baseSurface.addElevationSource(elevation)
             let meshLayer = IntegratedMeshLayer(url: .gironaMeshService)
             scene.addOperationalLayer(meshLayer)
-            
             return scene
         }()
         
         init() {
             let viewpoint = Viewpoint(
-                boundingGeometry: Point(
-                    x: 2.8214,
-                    y: 41.9794,
-                    z: 500,
-                    spatialReference: .wgs84
-                ),
-                camera: lastCamera ?? .initialCamera
+                center: lastCamera?.location ?? .initPoint,
+                scale: 50000,
+                camera: lastCamera
             )
             scene.initialViewpoint = viewpoint
-            setInitialViewshed()
         }
         
         func updateViewshed(from camera: Camera) {
-            lastCamera = camera
-            // Remove previous viewshed cleanly
+            // Remove old viewshed
             if let viewshed = viewshed {
                 analysisOverlay.removeAnalysis(viewshed)
             }
             
-            let location = camera.location
             let elevatedPoint = Point(
-                x: location.x,
-                y: location.y,
-                z: height,
-                spatialReference: location.spatialReference
+                x: camera.location.x,
+                y: camera.location.y,
+                z: 300,
+                spatialReference: camera.location.spatialReference
             )
+            
             let elevatedCamera = Camera(
                 location: elevatedPoint,
                 heading: camera.heading,
                 pitch: camera.pitch,
                 roll: camera.roll
             )
+            
             let newViewshed = LocationViewshed(
                 camera: elevatedCamera,
                 minDistance: 1.0,
                 maxDistance: 1000.0
             )
             
-            // Set colors: visible area green, obstructed area red
             Viewshed.visibleColor = UIColor.green.withAlphaComponent(0.5)
             Viewshed.obstructedColor = UIColor.red.withAlphaComponent(0.5)
+            
             analysisOverlay.addAnalysis(newViewshed)
             self.viewshed = newViewshed
             
-            // Clear previous graphics
             graphicsOverlay.removeAllGraphics()
-            
-            // Create a simple marker symbol
             let markerSymbol = SimpleMarkerSymbol(style: .circle, color: .blue, size: 12)
-            
-            // Create a graphic at the elevated point
             let graphic = Graphic(geometry: elevatedPoint, symbol: markerSymbol)
-            
-            // Add the graphic to the graphics overlay
             graphicsOverlay.addGraphic(graphic)
+            lastCamera = elevatedCamera
         }
         
         func updateViewshedFromLastCamera() {
@@ -156,34 +139,21 @@ private extension ShowViewshedFromCameraInSceneView {
         
         func setInitialViewshed() {
             guard let camera = lastCamera else { return }
-            let newViewshed = LocationViewshed(
+            let initialViewshed = LocationViewshed(
                 camera: camera,
                 minDistance: 1.0,
                 maxDistance: 1000.0
             )
-            let location = camera.location
-            let elevatedPoint = Point(
-                x: location.x,
-                y: location.y,
-                z: 500,
-                spatialReference: location.spatialReference
-            )
-            // Set colors: visible area green, obstructed area red
+            
             Viewshed.visibleColor = UIColor.green.withAlphaComponent(0.5)
             Viewshed.obstructedColor = UIColor.red.withAlphaComponent(0.5)
-            analysisOverlay.addAnalysis(newViewshed)
-            self.viewshed = newViewshed
             
-            // Clear previous graphics
+            analysisOverlay.addAnalysis(initialViewshed)
+            self.viewshed = initialViewshed
+            
             graphicsOverlay.removeAllGraphics()
-            
-            // Create a simple marker symbol
             let markerSymbol = SimpleMarkerSymbol(style: .circle, color: .blue, size: 12)
-            
-            // Create a graphic at the elevated point
-            let graphic = Graphic(geometry: elevatedPoint, symbol: markerSymbol)
-            
-            // Add the graphic to the graphics overlay
+            let graphic = Graphic(geometry: camera.location, symbol: markerSymbol)
             graphicsOverlay.addGraphic(graphic)
         }
     }
@@ -205,14 +175,15 @@ private extension Camera {
     }
 }
 
-private extension Point {
-    static var initialPoint: Point {
+extension Point {
+    static var initPoint: Point {
         Point(
             latitude: 41.9794,
             longitude: 2.8214
         )
     }
 }
+
 private extension URL {
     static var elevation: URL {
         URL(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!
