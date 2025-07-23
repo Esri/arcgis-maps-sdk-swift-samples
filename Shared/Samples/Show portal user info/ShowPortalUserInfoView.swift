@@ -45,7 +45,7 @@ struct ShowPortalUserInfoView: View {
                     }
                 }
             )
-            // If loading, show that the user profile will display when complete.
+            // If there is no current user, show that the user profile will display here when complete.
             if model.portalUser == nil {
                 ContentUnavailableView(
                     "Portal User Information",
@@ -77,7 +77,7 @@ struct ShowPortalUserInfoView: View {
         do {
             try await model.loadPortalUser()
         } catch {
-            // If an error occurs store the error to present an alert.
+            // If an error occurs, store the error to present an alert.
             self.error = error
         }
     }
