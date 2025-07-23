@@ -52,13 +52,13 @@ def run_check(path: str) -> None:
     # The special rule not to compare the redirect_from.
     checker.redirect_from = json_data['redirect_from']
 
-    # The special rule not to compare offline_data.
-    if 'offline_data' in json_data:
-        checker.offline_data = json_data['offline_data']
-
     # The special rule not to compare has_teardown.
     if 'has_teardown' in json_data:
         checker.has_teardown = json_data['has_teardown']
+
+    # The special rule not to compare offline_data.
+    if 'offline_data' in json_data:
+        checker.offline_data = json_data['offline_data']
 
     # The special rule to be lenient on shortened description.
     # If the original json has a shortened/special char purged description,
