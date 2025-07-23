@@ -51,13 +51,9 @@ struct ShowPopupView: View {
                     self.popup = identifyResult.first?.popups.first
                     self.showPopup = self.popup != nil
                 }
-                .floatingPanel(
-                    selectedDetent: .constant(.full),
-                    horizontalAlignment: .leading,
-                    isPresented: $showPopup
-                ) { [popup] in
-                    PopupView(popup: popup!, isPresented: $showPopup)
-                        .padding()
+                .popover(isPresented: $showPopup, attachmentAnchor: .point(.top)) { [popup] in
+                    PopupView(root: popup!, isPresented: $showPopup)
+                        .frame(idealWidth: 320, idealHeight: 600)
                 }
         }
     }

@@ -56,7 +56,6 @@ struct DisplayClustersView: View {
                     identifyScreenPoint = screenPoint
                 }
                 .task(id: identifyScreenPoint) {
-                    layer?.clearSelection()
                     geoElements.removeAll()
                     
                     guard let identifyScreenPoint,
@@ -79,32 +78,11 @@ struct DisplayClustersView: View {
                         layer.selectFeature(feature)
                     }
                 }
-                .floatingPanel(
-                    selectedDetent: .constant(.half),
-                    horizontalAlignment: .leading,
-                    isPresented: $showsPopup
-                ) { [popup] in
-                    PopupView(popup: popup!, isPresented: $showsPopup)
-                        .padding([.top, .horizontal])
-                    
-                    if !geoElements.isEmpty {
-                        List {
-                            Section {
-                                ForEach(Array(geoElements.enumerated()),
-                                        id: \.offset
-                                ) { offset, geoElement in
-                                    let name = geoElement.attributes["name"] as? String
-                                    Text(name ?? "Geoelement: \(offset)")
-                                }
-                            } header: {
-                                Text("Geoelements")
-                                    .font(.title3)
-                                    .bold()
-                                    .foregroundStyle(.primary)
-                            }
-                        }
-                        .listStyle(.inset)
-                    }
+                .popover(isPresented: $showsPopup, attachmentAnchor: .point(.bottom)) { [popup] in
+                    ClusterDetailView(popup: popup!, geoElements: geoElements)
+                        .presentationDetents([.fraction(0.5)])
+                        .frame(idealWidth: 320, idealHeight: 380)
+                        .onDisappear(perform: layer?.clearSelection)
                 }
                 .toolbar {
                     ToolbarItem(placement: .bottomBar) {
@@ -127,6 +105,60 @@ struct DisplayClustersView: View {
                     }
                 }
                 .errorAlert(presentingError: $error)
+        }
+    }
+}
+
+/// A  view that displays the details of a cluster.
+private struct ClusterDetailView: View {
+    /// The cluster's popup to display.
+    let popup: Popup
+    
+    /// The cluster's geoelements to display.
+    let geoElements: [GeoElement]
+    
+    /// The action to dismiss the view.
+    @Environment(\.dismiss) private var dismiss
+    
+    /// A Boolean value indicating whether the popup is currently being shown in the view.
+    @State private var popupIsSelectedTab = true
+    
+    var body: some View {
+        NavigationStack {
+            Group {
+                if popupIsSelectedTab {
+                    PopupView(root: popup)
+                } else {
+                    List(Array(geoElements.enumerated()), id: \.offset) { offset, geoElement in
+                        let name = geoElement.attributes["name"] as? String
+                        Text(name ?? "Geoelement: \(offset)")
+                    }
+                    .listStyle(.inset)
+                    .navigationTitle("Geoelements")
+                    .navigationBarTitleDisplayMode(.inline)
+                    .overlay {
+                        if geoElements.isEmpty {
+                            ContentUnavailableView(
+                                "No Geoelements",
+                                systemImage: "list.bullet",
+                                description: Text("There are no aggregate geoelements for this cluster.")
+                            )
+                        }
+                    }
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") { dismiss() }
+                }
+                ToolbarItem(placement: .bottomBar) {
+                    Picker("Tab", selection: $popupIsSelectedTab) {
+                        Text("Popup").tag(true)
+                        Text("Geoelements").tag(false)
+                    }
+                    .pickerStyle(.segmented)
+                }
+            }
         }
     }
 }
