@@ -54,7 +54,8 @@ struct AddFeatureLayersView: View {
                 ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = ChallengeHandler()
             }
             .onTeardown {
-                // Resets the URL session challenge handler to use default handling.
+                // Resets the URL session challenge handler to use default handling
+                // and removes all credentials.
                 ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = nil
                 ArcGISEnvironment.authenticationManager.arcGISCredentialStore.removeAll()
             }

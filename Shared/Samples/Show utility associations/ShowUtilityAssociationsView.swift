@@ -144,7 +144,8 @@ private extension ShowUtilityAssociationsView {
         
         /// Cleans up the model's setup.
         func tearDown() {
-            // Resets the URL session challenge handler to use default handling.
+            // Resets the URL session challenge handler to use default handling
+            // and removes all credentials.
             ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = nil
             ArcGISEnvironment.authenticationManager.arcGISCredentialStore.removeAll()
         }
