@@ -1,7 +1,7 @@
 {
     "category": "Utility Networks",
     "description": "Run a filtered trace to locate operable features that will isolate an area from the flow of network resources.",
-    "has_teardown" : true,
+    "has_teardown": true,
     "ignore": false,
     "images": [
         "run-valve-isolation-trace-1.png",

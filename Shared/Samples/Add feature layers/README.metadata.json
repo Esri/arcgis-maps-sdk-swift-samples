@@ -1,7 +1,7 @@
 {
     "category": "Layers",
     "description": "Display feature layers from various data sources.",
-    "has_teardown" : true,
+    "has_teardown": true,
     "ignore": false,
     "images": [
         "add-feature-layers.png"

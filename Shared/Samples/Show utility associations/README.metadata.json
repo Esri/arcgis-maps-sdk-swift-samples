@@ -1,7 +1,7 @@
 {
     "category": "Utility Networks",
     "description": "Create graphics for utility associations in a utility network.",
-    "has_teardown" : true,
+    "has_teardown": true,
     "ignore": false,
     "images": [
         "show-utility-associations.png"

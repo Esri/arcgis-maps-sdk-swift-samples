@@ -1,7 +1,7 @@
 {
     "category": "Edit and Manage Data",
     "description": "Create, query, and edit a specific server version using a service geodatabase.",
-    "has_teardown" : true,
+    "has_teardown": true,
     "ignore": false,
     "images": [
         "edit-with-branch-versioning-1.png",

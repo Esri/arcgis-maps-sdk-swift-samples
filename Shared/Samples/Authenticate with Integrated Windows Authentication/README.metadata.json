@@ -1,7 +1,7 @@
 {
     "category": "Cloud and Portal",
     "description": "Connect to an IWA secured Portal and search for maps.",
-    "has_teardown" : true,
+    "has_teardown": true,
     "ignore": false,
     "images": [
         "authenticate-with-integrated-windows-authentication-1.png",

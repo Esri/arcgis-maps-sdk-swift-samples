@@ -1,7 +1,7 @@
 {
     "category": "Layers",
     "description": "Display a composite layer of all the subtype values in a feature class.",
-    "has_teardown" : true,
+    "has_teardown": true,
     "ignore": false,
     "images": [
         "set-visibility-of-subtype-sublayer.png"
