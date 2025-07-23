@@ -157,6 +157,7 @@ struct ManageFeaturesView: View {
                     .contentShape(.rect)
                     .labelStyle(.iconOnly)
             }
+            .fixedSize()
             .confirmationDialog("Update Attribute", isPresented: $isShowingUpdateAttributeDialog) {
                 ForEach(DamageKind.allCases, id: \.self) { damageKind in
                     Button(damageKind.rawValue) {
