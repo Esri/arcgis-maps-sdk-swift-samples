@@ -52,7 +52,7 @@ struct ShowPortalUserInfoView: View {
                     systemImage: "person.crop.circle.dashed",
                     description: Text("Your portal user information will be displayed here.")
                 )
-            // Otherwise show the user information that was loaded.
+                // Otherwise show the user information that was loaded.
             } else {
                 InfoScreen(model: $model)
             }
@@ -77,8 +77,7 @@ struct ShowPortalUserInfoView: View {
         do {
             try await model.loadPortalUser()
         } catch {
-            // If an error occurs, mark loading as true (to reset)
-            // and store the error to present an alert.
+            // If an error occurs store the error to present an alert.
             self.error = error
         }
     }
@@ -199,7 +198,7 @@ private extension ShowPortalUserInfoView {
                 .textFieldStyle(.roundedBorder)
                 .padding(.horizontal)
                 
-                // Button to sign in or sign out, depending on the loading state.
+                // Button to sign in or sign out, depending on whether a user has been set.
                 Button(model.portalUser == nil ? "Sign In" : "Sign Out") {
                     if model.portalUser == nil {
                         onLoadPortal()
