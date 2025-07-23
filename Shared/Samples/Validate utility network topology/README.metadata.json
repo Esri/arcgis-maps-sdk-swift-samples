@@ -1,6 +1,7 @@
 {
     "category": "Utility Networks",
     "description": "Demonstrates the workflow of getting the network state and validating the topology of a utility network.",
+    "has_teardown": true,
     "ignore": false,
     "images": [
         "validate-utility-network-topology.png"

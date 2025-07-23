@@ -134,6 +134,9 @@ struct ValidateUtilityNetworkTopologyView: View {
             }
         }
         .errorAlert(presentingError: $error)
+        .onTeardown {
+            model.tearDown()
+        }
     }
 }
 
