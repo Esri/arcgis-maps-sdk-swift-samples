@@ -23,18 +23,23 @@ struct ShowViewshedFromCameraInSceneView: View {
     @State private var isPresented = false
     
     var body: some View {
-        SceneView(
-            scene: model.scene,
-            camera: $model.lastCamera,
-            graphicsOverlays: [model.graphicsOverlay],
-            analysisOverlays: [model.analysisOverlay]
-        )
-        .onAppear {
-            model.setInitialViewshed()
-            model.updateViewshedFromLastCamera()
-        }
-        .onTapGesture {
-            model.height += 10
+        ZStack {
+            SceneView(
+                scene: model.scene,
+                camera: $model.lastCamera,
+                graphicsOverlays: [model.graphicsOverlay],
+                analysisOverlays: [model.analysisOverlay]
+            )
+            .onAppear {
+                model.setInitialViewshed()
+                model.updateViewshedFromLastCamera()
+            }
+            .onTapGesture {
+                model.height += 10
+            }
+            Button("Set new camera viewpoint") {
+                model.updateViewshedFromLastCamera()
+            }
         }
         .navigationTitle("Show Viewshed from Camera")
     }
@@ -54,7 +59,12 @@ private extension ShowViewshedFromCameraInSceneView {
         
         // Camera 150m above ground looking down at 45 degrees pitch
         var lastCamera: Camera? = Camera(
-            location: .initialPoint,
+            location: Point(
+                x: 2.8214,
+                y: 41.9794,
+                z: 500,
+                spatialReference: .wgs84
+            ),
             heading: 0,
             pitch: 45,
             roll: 0
@@ -85,7 +95,7 @@ private extension ShowViewshedFromCameraInSceneView {
                 boundingGeometry: Point(
                     x: 2.8214,
                     y: 41.9794,
-                    z: 300,
+                    z: 500,
                     spatialReference: .wgs84
                 ),
                 camera: lastCamera ?? .initialCamera
@@ -183,8 +193,10 @@ private extension Camera {
     static var initialCamera: Camera {
         Camera(
             location: Point(
-                latitude: 41.9794,
-                longitude: 2.8214
+                x: 2.8214,
+                y: 41.9794,
+                z: 300,
+                spatialReference: .wgs84
             ),
             heading: 0,
             pitch: 45,
