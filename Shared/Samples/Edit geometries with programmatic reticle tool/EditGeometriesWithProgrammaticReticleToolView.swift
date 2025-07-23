@@ -463,10 +463,8 @@ private class GeometryEditorModel {
 private extension Geometry {
     var lastPoint: Point? {
         switch self {
-        case let polygon as Polygon:
-            polygon.parts[0].endPoint
-        case let polyline as Polyline:
-            polyline.parts[0].endPoint
+        case let multipart as any Multipart:
+            multipart.parts[0].endPoint
         case let multipoint as Multipoint:
             multipoint.points.last
         case let point as Point:
