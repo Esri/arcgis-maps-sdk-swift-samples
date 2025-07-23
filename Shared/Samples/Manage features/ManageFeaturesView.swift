@@ -34,6 +34,9 @@ struct ManageFeaturesView: View {
     /// The current viewpoint of the map view.
     @State private var currentViewpoint: Viewpoint?
     
+    /// A Boolean value indicating whether the update attribute dialog is displayed.
+    @State private var isShowingUpdateAttributeDialog = false
+    
     var body: some View {
         Group {
             switch data {
@@ -127,15 +130,10 @@ struct ManageFeaturesView: View {
                     .foregroundStyle(.secondary)
             }
             Menu {
-                Button {
-                    Task {
-                        clearSelection()
-                        await updateAttribute(for: feature)
-                    }
-                } label: {
-                    Text("Update Attribute")
+                Button("Update Attribute") {
+                    isShowingUpdateAttributeDialog = true
                 }
-                Button {
+                Button("Update Geometry") {
                     // Hide callout, leave feature selected.
                     calloutPlacement = nil
                     Task {
@@ -146,22 +144,32 @@ struct ManageFeaturesView: View {
                         // Update callout location after moving feature.
                         calloutPlacement = .geoElement(feature)
                     }
-                } label: {
-                    Text("Update Geometry")
                 }
-                Button {
+                Button("Delete Feature") {
                     Task {
                         clearSelection()
                         await delete(feature: feature)
                     }
-                } label: {
-                    Text("Delete Feature")
                 }
             } label: {
                 Label("Edit Feature", systemImage: "ellipsis")
                     .padding()
                     .contentShape(.rect)
                     .labelStyle(.iconOnly)
+            }
+            .confirmationDialog("Update Attribute", isPresented: $isShowingUpdateAttributeDialog) {
+                ForEach(DamageKind.allCases, id: \.self) { damageKind in
+                    Button(damageKind.rawValue) {
+                        isShowingUpdateAttributeDialog = false
+                        clearSelection()
+                        
+                        Task {
+                            await updateAttribute(for: feature, damageKind: damageKind)
+                        }
+                    }
+                }
+            } message: {
+                Text("Choose a damage kind for the feature.")
             }
         }
         .padding([.leading, .vertical])
@@ -250,13 +258,15 @@ extension ManageFeaturesView {
     }
     
     /// Updates the attributes of a feature and applies edits to the service.
-    /// - Parameter feature: The feature to update.
-    func updateAttribute(for feature: Feature) async {
+    /// - Parameters:
+    ///   - feature: The feature to update.
+    ///   - damageKind: The kind used to set the feature's damage assessment attribute.
+    func updateAttribute(for feature: Feature, damageKind: DamageKind) async {
         guard case .success(let data) = data else { return }
         let table = data.featureTable
         
         do {
-            feature.damageKind = feature.damageKind?.next ?? .inaccessible
+            feature.damageKind = damageKind
             try await table.update(feature)
             _ = try await table.serviceGeodatabase?.applyEdits()
             status = "Update attribute succeeded."
@@ -322,14 +332,6 @@ extension ManageFeaturesView {
         case minor = "Minor"
         case major = "Major"
         case destroyed = "Destroyed"
-        
-        /// The next damage kind to set on a feature.
-        var next: Self {
-            let allCases = Self.allCases
-            let index = allCases.firstIndex(of: self)!
-            let nextIndex = allCases.index(after: index)
-            return allCases[nextIndex == allCases.count ? 0 : nextIndex]
-        }
     }
 }
 
