@@ -219,37 +219,24 @@ private extension GeometryEditorMenu {
     /// The content of the main menu.
     @ViewBuilder var mainMenuContent: some View {
         Menu("Programmatic Reticle Tool") {
-            Button {
+            Button("New Point", systemImage: "smallcircle.filled.circle") {
                 model.startEditing(withType: Point.self)
-            } label: {
-                Label("New Point", systemImage: "smallcircle.filled.circle")
             }
-            
-            Button {
+            Button("New Line", systemImage: "line.diagonal") {
                 model.startEditing(withType: Polyline.self)
-            } label: {
-                Label("New Line", systemImage: "line.diagonal")
             }
-            
-            Button {
+            Button("New Area", systemImage: "skew") {
                 model.startEditing(withType: Polygon.self)
-            } label: {
-                Label("New Area", systemImage: "skew")
             }
-            
-            Button {
+            Button("New Multipoint", systemImage: "hand.point.up.braille") {
                 model.startEditing(withType: Multipoint.self)
-            } label: {
-                Label("New Multipoint", systemImage: "hand.point.up.braille")
             }
         }
         
         Divider()
         
-        Button(role: .destructive) {
+        Button("Delete All Geometries", systemImage: "trash", role: .destructive) {
             model.deleteAllGeometries()
-        } label: {
-            Label("Delete All Geometries", systemImage: "trash")
         }
         .disabled(!model.canClearGraphics)
     }
@@ -258,51 +245,39 @@ private extension GeometryEditorMenu {
     @ViewBuilder var editMenuContent: some View {
         Toggle("Allow vertex creation", isOn: $model.allowsVertexCreation)
         
-        Button {
+        Button("Undo", systemImage: "arrow.uturn.backward") {
             if model.geometryEditor.pickedUpElement != nil {
                 model.geometryEditor.cancelCurrentAction()
             } else {
                 model.geometryEditor.undo()
             }
-        } label: {
-            Label("Undo", systemImage: "arrow.uturn.backward")
         }
         .disabled(!model.geometryEditor.canUndo)
         
-        Button {
+        Button("Redo", systemImage: "arrow.uturn.forward") {
             model.geometryEditor.redo()
-        } label: {
-            Label("Redo", systemImage: "arrow.uturn.forward")
         }
         .disabled(!model.geometryEditor.canRedo)
         
-        Button {
+        Button("Delete Selected Element", systemImage: "xmark.square.fill") {
             model.geometryEditor.deleteSelectedElement()
-        } label: {
-            Label("Delete Selected Element", systemImage: "xmark.square.fill")
         }
         .disabled(deleteButtonIsDisabled)
         
-        Button(role: .destructive) {
+        Button("Clear Current Sketch", systemImage: "trash", role: .destructive) {
             model.geometryEditor.clearGeometry()
-        } label: {
-            Label("Clear Current Sketch", systemImage: "trash")
         }
         .disabled(!canClearCurrentSketch)
         
         Divider()
         
-        Button {
+        Button("Save Sketch", systemImage: "square.and.arrow.down") {
             model.save()
-        } label: {
-            Label("Save Sketch", systemImage: "square.and.arrow.down")
         }
         .disabled(!canSave)
         
-        Button {
+        Button("Cancel Sketch", systemImage: "xmark") {
             model.stop()
-        } label: {
-            Label("Cancel Sketch", systemImage: "xmark")
         }
     }
 }
@@ -351,6 +326,7 @@ private class GeometryEditorModel {
             reticleTool.style.growEffect?.appliesToMidVertices = allowsVertexCreation
         }
     }
+    
     /// The reticle state used to determine the current action of the programmatic reticle tool.
     enum ReticleState {
         case `default`, pickedUp, hoveringVertex, hoveringMidVertex
@@ -365,6 +341,7 @@ private class GeometryEditorModel {
             }
         }
     }
+    
     /// The programmatic reticle state.
     var reticleState: ReticleState = .default
     
