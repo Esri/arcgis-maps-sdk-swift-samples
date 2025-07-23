@@ -20,8 +20,8 @@ struct ShowViewshedFromCameraInSceneView: View {
     @State private var model = Model()
     
     /// A Boolean value indicating whether the settings sheet is presented.
-    @State private var isPresented = false
-    
+    //    @State private var isPresented = false
+    //
     var body: some View {
         ZStack {
             SceneView(
@@ -33,14 +33,18 @@ struct ShowViewshedFromCameraInSceneView: View {
             .onAppear {
                 model.setInitialViewshed()
             }
-            Button("Set new camera viewpoint") {
-                model.updateViewshedFromLastCamera()
-            }
-            .buttonStyle(.borderedProminent)
-            .tint(.purple)
-            .padding(.horizontal)
         }
         .navigationTitle("Show Viewshed from Camera")
+        .toolbar {
+            ToolbarItem(placement: .bottomBar) {
+                Button("Viewshed from here") {
+                    model.updateViewshedFromLastCamera()
+                }
+                .buttonStyle(.borderedProminent)
+                .tint(.purple)
+                .padding(.horizontal)
+            }
+        }
     }
 }
 
@@ -48,22 +52,10 @@ private extension ShowViewshedFromCameraInSceneView {
     @MainActor
     @Observable
     final class Model {
-        var height: Double = 20.0
-        
         private var viewshed: LocationViewshed?
         
         // Camera 150m above ground looking down at 45 degrees pitch
-        var lastCamera: Camera? = Camera(
-            location: Point(
-                x: 2.8214,
-                y: 41.9794,
-                z: 500,
-                spatialReference: .wgs84
-            ),
-            heading: 0,
-            pitch: 45,
-            roll: 0
-        )
+        var lastCamera: Camera? = .initialCamera
         
         let analysisOverlay: AnalysisOverlay = {
             let overlay = AnalysisOverlay()
@@ -139,6 +131,7 @@ private extension ShowViewshedFromCameraInSceneView {
         
         func setInitialViewshed() {
             guard let camera = lastCamera else { return }
+            
             let initialViewshed = LocationViewshed(
                 camera: camera,
                 minDistance: 1.0,
@@ -164,12 +157,12 @@ private extension Camera {
         Camera(
             location: Point(
                 x: 2.8214,
-                y: 41.9794,
-                z: 300,
+                y: 41.985,
+                z: 124.987,
                 spatialReference: .wgs84
             ),
-            heading: 0,
-            pitch: 45,
+            heading: 332.131,
+            pitch: 82.4732,
             roll: 0
         )
     }
