@@ -15,23 +15,45 @@
 import SwiftUI
 
 extension View {
+    /// Adds a teardown action to perform when this view disappears.
+    ///
+    /// Other ``Sample/hasTeardown`` samples will be blocked from appearing
+    /// until the action has completed. This prevents race conditions between
+    /// samples that access shared state, such as `ArcGISEnvironment`.
+    ///
+    /// - Important: Failure to call this in a ``Sample/hasTeardown`` sample
+    /// will block other teardown samples from appearing.
+    ///
+    /// - Parameter action: The action to perform.
+    func onTeardown(perform action: @escaping () -> Void) -> some View {
+        modifier(OnTeardown(action: .action(action)))
+    }
+    
     /// Adds an asynchronous teardown action to perform when this view disappears.
     ///
     /// Other ``Sample/hasTeardown`` samples will be blocked from appearing
     /// until the action has completed. This prevents race conditions between
     /// samples that access shared state, such as `ArcGISEnvironment`.
-    /// - Parameter action: The action to perform.
+    ///
     /// - Important: Failure to call this in a ``Sample/hasTeardown`` sample
     /// will block other teardown samples from appearing.
+    ///
+    /// - Parameter action: The asynchronous action to perform.
     func onTeardown(perform action: @escaping () async -> Void) -> some View {
-        modifier(OnTeardown(action: action))
+        modifier(OnTeardown(action: .actionAsync(action)))
     }
 }
 
-/// A view modifier that runs an asynchronous teardown action when the view disappears.
+/// A type of action to perform.
+private enum Action {
+    case action(() -> Void)
+    case actionAsync(() async -> Void)
+}
+
+/// A view modifier that runs a teardown action when the view disappears.
 private struct OnTeardown: ViewModifier {
     /// The teardown action to perform.
-    let action: () async -> Void
+    let action: Action
     
     /// The action to run when the teardown action has completed.
     @Environment(\.finishTeardown) private var finishTeardown
@@ -39,9 +61,15 @@ private struct OnTeardown: ViewModifier {
     func body(content: Content) -> some View {
         content
             .onDisappear {
-                Task {
-                    await action()
+                switch action {
+                case .action(let action):
+                    action()
                     finishTeardown()
+                case .actionAsync(let action):
+                    Task {
+                        await action()
+                        finishTeardown()
+                    }
                 }
             }
     }
