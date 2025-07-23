@@ -34,20 +34,22 @@ private struct OnTeardown: ViewModifier {
     let action: () async -> Void
     
     /// The action to run when the teardown action has completed.
-    @Environment(\.onTearDownCompleted) private var onTearDownCompleted
+    @Environment(\.finishTeardown) private var finishTeardown
     
     func body(content: Content) -> some View {
         content
             .onDisappear {
                 Task {
                     await action()
-                    onTearDownCompleted()
+                    finishTeardown()
                 }
             }
     }
 }
 
 extension EnvironmentValues {
-    /// The action to run when a view is done tearing down.
-    @Entry var onTearDownCompleted: () -> Void = {}
+    /// The action to run when a sample is done tearing down.
+    ///
+    /// Calling this allows a blocked ``Sample/hasTeardown`` sample to appear.
+    @Entry var finishTeardown: () -> Void = {}
 }

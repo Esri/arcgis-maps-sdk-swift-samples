@@ -90,7 +90,8 @@ struct CategoriesView: View {
                             .onAppear {
                                 sampleNeedingTearDown = sampleName
                             }
-                            .environment(\.onTearDownCompleted) {
+                            .environment(\.finishTeardown) {
+                                // Allows the next teardown sample to appear.
                                 sampleNeedingTearDown = nil
                             }
                     }
@@ -171,4 +172,3 @@ private extension CategoriesView {
         }
     }
 }
-
