@@ -133,19 +133,7 @@ struct EditGeometriesWithProgrammaticReticleToolView: View {
                 duration: 0.03
             )
         } else {
-            let center: Point? = switch model.selectedGraphic?.geometry {
-            case let polygon as Polygon:
-                polygon.parts[0].endPoint
-            case let polyline as Polyline:
-                polyline.parts[0].endPoint
-            case let multipoint as Multipoint:
-                multipoint.points.last
-            case let point as Point:
-                point
-            default:
-                nil
-            }
-            guard let center else { return }
+            guard let center = model.selectedGraphic?.geometry?.lastPoint else { return }
             
             await mapView.setViewpoint(
                 Viewpoint(
@@ -473,6 +461,21 @@ private class GeometryEditorModel {
 }
 
 private extension Geometry {
+    var lastPoint: Point? {
+        switch self {
+        case let polygon as Polygon:
+            polygon.parts[0].endPoint
+        case let polyline as Polyline:
+            polyline.parts[0].endPoint
+        case let multipoint as Multipoint:
+            multipoint.points.last
+        case let point as Point:
+            point
+        default:
+            nil
+        }
+    }
+    
     // swiftlint:disable force_try
     static var pinkneysGreen: Geometry {
         let json = Data(
