@@ -1,6 +1,7 @@
 {
     "category": "Maps",
     "description": "Display a map with an imagery basemap.",
+    "has_teardown": true,
     "ignore": false,
     "images": [
         "display-map.png"
