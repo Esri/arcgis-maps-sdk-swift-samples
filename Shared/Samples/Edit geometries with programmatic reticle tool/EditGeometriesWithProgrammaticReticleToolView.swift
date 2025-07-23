@@ -464,7 +464,7 @@ private extension Geometry {
     var lastPoint: Point? {
         switch self {
         case let multipart as any Multipart:
-            multipart.parts[0].endPoint
+            multipart.parts.last?.endPoint
         case let multipoint as Multipoint:
             multipoint.points.last
         case let point as Point:
