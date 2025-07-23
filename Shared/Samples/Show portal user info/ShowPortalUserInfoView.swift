@@ -58,7 +58,11 @@ struct ShowPortalUserInfoView: View {
             }
             Spacer()
         }
+        #if targetEnvironment(macCatalyst)
+        .frame(maxWidth: 540)
+        #endif
         .frame(maxHeight: .infinity)
+        .padding(.horizontal)
         // Set up the authenticator when the view appears.
         .onAppear(perform: model.setAuthenticator)
         // Clean up authenticator and credentials when the view disappears.
@@ -196,7 +200,6 @@ private extension ShowPortalUserInfoView {
                 // Bind focus state to `isTextFieldFocused`.
                 .focused($isTextFieldFocused)
                 .textFieldStyle(.roundedBorder)
-                .padding(.horizontal)
                 
                 // Button to sign in or sign out, depending on whether a user has been set.
                 Button(model.portalUser == nil ? "Sign In" : "Sign Out") {
@@ -211,9 +214,8 @@ private extension ShowPortalUserInfoView {
                 .disabled(model.isLoading)
                 .buttonStyle(.borderedProminent)
                 .tint(.purple)
-                .padding(.horizontal)
             }
-            .padding()
+            .padding(.vertical)
         }
     }
     
@@ -257,7 +259,6 @@ private extension ShowPortalUserInfoView {
                     .frame(minHeight: 300)
                 }
             }
-            .frame(maxWidth: 600)
         }
     }
 }
