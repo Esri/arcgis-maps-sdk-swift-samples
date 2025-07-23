@@ -54,12 +54,7 @@ private extension ShowViewshedFromCameraInSceneView {
         
         // Camera 150m above ground looking down at 45 degrees pitch
         var lastCamera: Camera? = Camera(
-            location: Point(
-                x: 2.8214,
-                y: 41.9794,
-                z: 300,
-                spatialReference: .wgs84
-            ),
+            location: .initialPoint,
             heading: 0,
             pitch: 45,
             roll: 0
@@ -188,10 +183,8 @@ private extension Camera {
     static var initialCamera: Camera {
         Camera(
             location: Point(
-                x: 2.8214,
-                y: 41.9794,
-                z: 300,
-                spatialReference: .wgs84
+                latitude: 41.9794,
+                longitude: 2.8214
             ),
             heading: 0,
             pitch: 45,
@@ -200,6 +193,14 @@ private extension Camera {
     }
 }
 
+private extension Point {
+    static var initialPoint: Point {
+        Point(
+            latitude: 41.9794,
+            longitude: 2.8214
+        )
+    }
+}
 private extension URL {
     static var elevation: URL {
         URL(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!
