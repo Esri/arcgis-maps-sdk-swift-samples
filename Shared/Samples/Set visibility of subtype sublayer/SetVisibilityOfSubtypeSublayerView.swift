@@ -25,11 +25,6 @@ struct SetVisibilityOfSubtypeSublayerView: View {
     /// The error shown in the error alert.
     @State private var error: Error?
     
-    /// The action to run when the sample's teardown has completed.
-    ///
-    /// This is needed to prevent the authentication in this sample from interfering with other samples.
-    @Environment(\.onTearDownCompleted) private var onTearDownCompleted
-    
     var body: some View {
         MapView(map: model.map)
             .onScaleChanged { scale in
@@ -66,9 +61,8 @@ struct SetVisibilityOfSubtypeSublayerView: View {
                 }
             }
             .errorAlert(presentingError: $error)
-            .onDisappear {
+            .onTeardown {
                 model.tearDown()
-                onTearDownCompleted()
             }
     }
 }

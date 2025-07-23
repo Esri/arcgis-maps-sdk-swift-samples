@@ -18,11 +18,6 @@ struct CreateLoadReportView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
-    /// The action to run when the sample's teardown has completed.
-    ///
-    /// This is needed to prevent the authentication in this sample from interfering with other samples.
-    @Environment(\.onTearDownCompleted) private var onTearDownCompleted
-    
     var body: some View {
         LoadReportView(model: model)
             .task {
@@ -55,9 +50,8 @@ struct CreateLoadReportView: View {
                     }
                 }
             }
-            .onDisappear {
+            .onTeardown {
                 model.tearDown()
-                onTearDownCompleted()
             }
     }
 }

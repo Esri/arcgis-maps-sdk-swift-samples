@@ -29,11 +29,6 @@ struct RunValveIsolationTraceView: View {
     /// trace results when used in conjunction with an isolation trace.
     @State private var includeIsolatedFeatures = true
     
-    /// The action to run when the sample's teardown has completed.
-    ///
-    /// This is needed to prevent the authentication in this sample from interfering with other samples.
-    @Environment(\.onTearDownCompleted) private var onTearDownCompleted
-    
     var body: some View {
         MapViewReader { mapViewProxy in
             MapView(
@@ -111,9 +106,8 @@ struct RunValveIsolationTraceView: View {
                 isPresented: $model.terminalSelectorIsOpen,
                 actions: { terminalPickerButtons }
             )
-            .onDisappear {
+            .onTeardown {
                 model.tearDown()
-                onTearDownCompleted()
             }
         }
     }

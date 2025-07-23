@@ -172,10 +172,3 @@ private extension CategoriesView {
     }
 }
 
-extension EnvironmentValues {
-    /// The action to run when a sample is done tearing down.
-    ///
-    /// - Note: Failure to call this in a ``Sample/hasTeardown`` sample will
-    /// block other teardown samples from appearing.
-    @Entry var onTearDownCompleted: () -> Void = {}
-}

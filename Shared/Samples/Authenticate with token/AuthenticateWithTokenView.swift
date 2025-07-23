@@ -38,11 +38,6 @@ struct AuthenticateWithTokenView: View {
     /// The error shown in the error alert.
     @State private var error: Error?
     
-    /// The action to run when the sample's teardown has completed.
-    ///
-    /// This is needed to prevent the authentication in this sample from interfering with other samples.
-    @Environment(\.onTearDownCompleted) private var onTearDownCompleted
-    
     var body: some View {
         MapView(map: map)
             .onLayerViewStateChanged { layer, layerViewState in
@@ -56,15 +51,12 @@ struct AuthenticateWithTokenView: View {
             .onAppear {
                 setupAuthenticator()
             }
-            .onDisappear {
-                Task {
-                    // Reset the challenge handlers and clear credentials
-                    // when the view disappears so that user is prompted to enter
-                    // credentials every time the sample is run, and to clean
-                    // the environment for other samples.
-                    await teardownAuthenticator()
-                    onTearDownCompleted()
-                }
+            .onTeardown {
+                // Reset the challenge handlers and clear credentials
+                // when the view disappears so that user is prompted to enter
+                // credentials every time the sample is run, and to clean
+                // the environment for other samples.
+                await teardownAuthenticator()
             }
     }
 }

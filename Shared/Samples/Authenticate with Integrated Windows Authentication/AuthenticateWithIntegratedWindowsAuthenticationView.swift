@@ -20,11 +20,6 @@ struct AuthenticateWithIntegratedWindowsAuthenticationView: View {
     /// The model that backs this view.
     @StateObject private var model = Model()
     
-    /// The action to run when the sample's teardown has completed.
-    ///
-    /// This is needed to prevent the authentication in this sample from interfering with other samples.
-    @Environment(\.onTearDownCompleted) private var onTearDownCompleted
-    
     var body: some View {
         Form {
             switch model.portalContent {
@@ -51,15 +46,12 @@ struct AuthenticateWithIntegratedWindowsAuthenticationView: View {
                 }
             }
         }
-        .onDisappear {
-            Task {
-                // Reset the challenge handlers and clear credentials
-                // when the view disappears so that user is prompted to enter
-                // credentials every time the sample is run, and to clean
-                // the environment for other samples.
-                await model.teardownAuthenticator()
-                onTearDownCompleted()
-            }
+        .onTeardown {
+            // Reset the challenge handlers and clear credentials
+            // when the view disappears so that user is prompted to enter
+            // credentials every time the sample is run, and to clean
+            // the environment for other samples.
+            await model.teardownAuthenticator()
         }
         .sheet(item: $model.selectedItem) { selectedItem in
             NavigationStack {

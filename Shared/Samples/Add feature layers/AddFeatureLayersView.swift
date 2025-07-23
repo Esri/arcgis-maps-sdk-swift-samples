@@ -25,11 +25,6 @@ struct AddFeatureLayersView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
-    /// The action to run when the sample's teardown has completed.
-    ///
-    /// This is needed to prevent the authentication in this sample from interfering with other samples.
-    @Environment(\.onTearDownCompleted) private var onTearDownCompleted
-    
     var body: some View {
         MapView(map: model.map, viewpoint: viewpoint)
             .onViewpointChanged(kind: .centerAndScale) { viewpoint = $0 }
@@ -58,12 +53,10 @@ struct AddFeatureLayersView: View {
                 // specified credentials and tokens for any challenges.
                 ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = ChallengeHandler()
             }
-            .onDisappear {
+            .onTeardown {
                 // Resets the URL session challenge handler to use default handling.
                 ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = nil
                 ArcGISEnvironment.authenticationManager.arcGISCredentialStore.removeAll()
-                
-                onTearDownCompleted()
             }
     }
 }

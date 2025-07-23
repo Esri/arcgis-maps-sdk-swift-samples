@@ -19,11 +19,6 @@ struct TraceUtilityNetworkView: View {
     /// The view model for the sample.
     @StateObject var model = Model()
     
-    /// The action to run when the sample's teardown has completed.
-    ///
-    /// This is needed to prevent the authentication in this sample from interfering with other samples.
-    @Environment(\.onTearDownCompleted) private var onTearDownCompleted
-    
     var body: some View {
         MapViewReader { mapViewProxy in
             MapView(
@@ -35,9 +30,8 @@ struct TraceUtilityNetworkView: View {
                 model.lastSingleTap = (screenPoint, mapPoint)
             }
             .selectionColor(.yellow)
-            .onDisappear {
+            .onTeardown {
                 model.tearDown()
-                onTearDownCompleted()
             }
             .overlay(alignment: .center) {
                 if model.tracingActivity == .traceRunning,
