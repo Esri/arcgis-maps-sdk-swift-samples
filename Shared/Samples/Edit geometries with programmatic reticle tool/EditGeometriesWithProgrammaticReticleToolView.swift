@@ -26,8 +26,6 @@ struct EditGeometriesWithProgrammaticReticleToolView: View {
     @State private var model = GeometryEditorModel()
     /// The screen point to perform an identify operation.
     @State private var identifyScreenPoint: CGPoint?
-    /// The error shown in the error alert.
-    @State private var error: Error?
     
     var body: some View {
         VStack {
@@ -39,20 +37,16 @@ struct EditGeometriesWithProgrammaticReticleToolView: View {
                     }
                     .task(id: identifyScreenPoint) {
                         guard let identifyScreenPoint else { return }
-                        do {
-                            if model.isStarted {
-                                try await selectGeometryEditorElement(
-                                    at: identifyScreenPoint,
-                                    mapView: mapView
-                                )
-                            } else {
-                                try await startEditingGraphic(
-                                    at: identifyScreenPoint,
-                                    mapView: mapView
-                                )
-                            }
-                        } catch {
-                            self.error = error
+                        if model.isStarted {
+                            await selectGeometryEditorElement(
+                                at: identifyScreenPoint,
+                                mapView: mapView
+                            )
+                        } else {
+                            await startEditingGraphic(
+                                at: identifyScreenPoint,
+                                mapView: mapView
+                            )
                         }
                     }
             }
@@ -68,20 +62,19 @@ struct EditGeometriesWithProgrammaticReticleToolView: View {
                 .disabled(!model.geometryEditor.isStarted)
             }
         }
-        .errorAlert(presentingError: $error)
     }
     
     /// Selects the geometry editor element identified at the tap location to edit.
     /// - Parameters:
     ///   - point: The screen coordinate of the geo view at which to identify.
     ///   - mapView: The map view proxy used to identify the screen point.
-    private func selectGeometryEditorElement(at point: CGPoint, mapView: MapViewProxy) async throws {
+    private func selectGeometryEditorElement(at point: CGPoint, mapView: MapViewProxy) async {
         // Identify the geometry editor result at the tapped position.
-        let identifyResult = try await mapView.identifyGeometryEditor(
+        let identifyResult = try? await mapView.identifyGeometryEditor(
             screenPoint: point,
             tolerance: 10
         )
-        guard let element = identifyResult.elements.first else { return }
+        guard let element = identifyResult?.elements.first else { return }
         
         // If the element is a vertex or mid-vertex, set the viewpoint to its position and select it.
         switch element {
@@ -90,8 +83,7 @@ struct EditGeometriesWithProgrammaticReticleToolView: View {
                 Viewpoint(
                     center: element.extent.center,
                     scale: Viewpoint.ireland.targetScale
-                ),
-                duration: 0.3
+                )
             )
             model.geometryEditor.selectVertexAt(
                 partIndex: vertex.partIndex,
@@ -102,8 +94,7 @@ struct EditGeometriesWithProgrammaticReticleToolView: View {
                 Viewpoint(
                     center: element.extent.center,
                     scale: Viewpoint.ireland.targetScale
-                ),
-                duration: 0.3
+                )
             )
             model.geometryEditor.selectMidVertexAt(
                 partIndex: midVertex.partIndex,
@@ -118,13 +109,13 @@ struct EditGeometriesWithProgrammaticReticleToolView: View {
     /// - Parameters:
     ///   - point: The screen coordinate of the geo view at which to identify.
     ///   - mapView: The map view proxy used to identify the screen point.
-    private func startEditingGraphic(at point: CGPoint, mapView: MapViewProxy) async throws {
+    private func startEditingGraphic(at point: CGPoint, mapView: MapViewProxy) async {
         // Identify graphics in the graphics overlay using the tapped position.
-        let results = try await mapView.identifyGraphicsOverlays(
+        let results = try? await mapView.identifyGraphicsOverlays(
             screenPoint: point,
             tolerance: 10
         )
-        guard let selectedGraphic = results.first?.graphics.first,
+        guard let selectedGraphic = results?.first?.graphics.first,
               let geometry = selectedGraphic.geometry else {
             return
         }
@@ -346,9 +337,9 @@ private class GeometryEditorModel {
     var reticleState: ReticleState = .default
     
     init() {
-        let pinkneysGreenGraphic = Graphic(geometry: .pinkneysGreen, symbol: .polygon())
-        let beechLodgeBoundaryGraphic = Graphic(geometry: .beechLodgeBoundary, symbol: .polyline())
-        let treeMarkers = Graphic(geometry: .treeMarkers, symbol: .multipoint())
+        let pinkneysGreenGraphic = Graphic(geometry: .pinkneysGreen, symbol: .redArea())
+        let beechLodgeBoundaryGraphic = Graphic(geometry: .beechLodgeBoundary, symbol: .blueLine())
+        let treeMarkers = Graphic(geometry: .treeMarkers, symbol: .yellowCircle())
         geometryOverlay.addGraphics([
             pinkneysGreenGraphic,
             beechLodgeBoundaryGraphic,
@@ -432,10 +423,10 @@ private class GeometryEditorModel {
     /// - Returns: Either a marker or fill symbol depending on the type of provided geometry.
     private func symbol(for geometry: Geometry) -> Symbol {
         return switch geometry {
-        case is Point: .point()
-        case is Multipoint: .multipoint()
-        case is Polyline: .polyline()
-        case is ArcGIS.Polygon: .polygon()
+        case is Point: .redSquare()
+        case is Multipoint: .yellowCircle()
+        case is Polyline: .blueLine()
+        case is ArcGIS.Polygon: .redArea()
         default: fatalError("Unexpected geometry type")
         }
     }
@@ -525,7 +516,7 @@ private extension Geometry {
 }
 
 private extension Symbol {
-    static func point() -> Symbol {
+    static func redSquare() -> Symbol {
         SimpleMarkerSymbol(
             style: .square,
             color: .red,
@@ -533,7 +524,7 @@ private extension Symbol {
         )
     }
     
-    static func multipoint() -> Symbol {
+    static func yellowCircle() -> Symbol {
         SimpleMarkerSymbol(
             style: .circle,
             color: .yellow,
@@ -541,14 +532,14 @@ private extension Symbol {
         )
     }
     
-    static func polyline() -> Symbol {
+    static func blueLine() -> Symbol {
         SimpleLineSymbol(
             color: .blue,
             width: 2
         )
     }
     
-    static func polygon() -> Symbol {
+    static func redArea() -> Symbol {
         SimpleFillSymbol(
             style: .solid,
             color: .red.withAlphaComponent(0.3),
@@ -572,5 +563,7 @@ private extension Viewpoint {
 }
 
 #Preview {
-    EditGeometriesWithProgrammaticReticleToolView()
+    NavigationStack {
+        EditGeometriesWithProgrammaticReticleToolView()
+    }
 }
