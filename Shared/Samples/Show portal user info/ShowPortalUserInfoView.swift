@@ -257,6 +257,7 @@ private extension ShowPortalUserInfoView {
                     .frame(minHeight: 300)
                 }
             }
+            .frame(maxWidth: 600)
         }
     }
 }
