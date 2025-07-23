@@ -106,6 +106,9 @@ struct RunValveIsolationTraceView: View {
                 isPresented: $model.terminalSelectorIsOpen,
                 actions: { terminalPickerButtons }
             )
+            .onTeardown {
+                model.tearDown()
+            }
         }
     }
     

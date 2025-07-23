@@ -32,7 +32,7 @@ This sample uses the [US State Capitals](https://www.arcgis.com/home/item.html?i
 
 This sample displays three different KML files:
 
-* From URL: This is a map of the significant weather outlook produced by NOAA/NWS. It uses KML network links to always show the latest data.
+* From URL: This is a map of the convective outlook produced by NOAA/NWS Storm Prediction Center. It uses KML network links to always show the latest data.
 * From local file: This is a map of U.S. state capitals. It doesn't define an icon, so the default pushpin is used for the points.
 * From portal item: This is a map of U.S. states.
 
