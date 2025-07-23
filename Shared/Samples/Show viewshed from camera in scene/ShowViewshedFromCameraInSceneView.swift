@@ -82,7 +82,7 @@ private extension ShowViewshedFromCameraInSceneView {
             let elevatedPoint = Point(
                 x: camera.location.x,
                 y: camera.location.y,
-                z: camera.location.z,
+                z: camera.location.z ?? 0.0 + 200.0,
                 spatialReference: camera.location.spatialReference
             )
             
