@@ -58,9 +58,9 @@ struct ShowPortalUserInfoView: View {
             }
             Spacer()
         }
-        #if targetEnvironment(macCatalyst)
+#if targetEnvironment(macCatalyst)
         .frame(maxWidth: 540)
-        #endif
+#endif
         .frame(maxHeight: .infinity)
         .padding(.horizontal)
         // Set up the authenticator when the view appears.
