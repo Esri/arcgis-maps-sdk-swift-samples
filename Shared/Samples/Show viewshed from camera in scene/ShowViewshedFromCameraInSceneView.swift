@@ -19,26 +19,20 @@ struct ShowViewshedFromCameraInSceneView: View {
     /// The view model for the sample.
     @State private var model = Model()
     
-    /// A Boolean value indicating whether the settings sheet is presented.
-    //    @State private var isPresented = false
-    //
     var body: some View {
-        ZStack {
-            SceneView(
-                scene: model.scene,
-                camera: $model.lastCamera,
-                graphicsOverlays: [model.graphicsOverlay],
-                analysisOverlays: [model.analysisOverlay]
-            )
-            .onAppear {
-                model.setInitialViewshed()
-            }
+        SceneView(
+            scene: model.scene,
+            camera: $model.currentCamera,
+            graphicsOverlays: [model.graphicsOverlay],
+            analysisOverlays: [model.analysisOverlay]
+        )
+        .onAppear {
+            model.setInitialViewshed()
         }
-        .navigationTitle("Show Viewshed from Camera")
         .toolbar {
             ToolbarItem(placement: .bottomBar) {
                 Button("Viewshed from here") {
-                    model.updateViewshedFromLastCamera()
+                    model.updateViewshedFromCurrentCamera()
                 }
                 .buttonStyle(.borderedProminent)
                 .tint(.purple)
@@ -53,44 +47,38 @@ private extension ShowViewshedFromCameraInSceneView {
     @Observable
     final class Model {
         private var viewshed: LocationViewshed?
+        var currentCamera: Camera? = .initialCamera
         
-        // Camera 150m above ground looking down at 45 degrees pitch
-        var lastCamera: Camera? = .initialCamera
-        
-        let analysisOverlay: AnalysisOverlay = {
-            let overlay = AnalysisOverlay()
-            return overlay
-        }()
-        
-        let graphicsOverlay: GraphicsOverlay = {
-            let overlay = GraphicsOverlay()
-            return overlay
-        }()
+        let analysisOverlay: AnalysisOverlay = AnalysisOverlay()
+        let graphicsOverlay: GraphicsOverlay = GraphicsOverlay()
         
         let scene: ArcGIS.Scene = {
             let scene = Scene(basemapStyle: .arcGISImagery)
-            let elevation = ArcGISTiledElevationSource(url: .elevationService)
-            scene.baseSurface.addElevationSource(elevation)
-            let meshLayer = IntegratedMeshLayer(url: .gironaMeshService)
-            scene.addOperationalLayer(meshLayer)
+            scene.baseSurface.addElevationSource(
+                ArcGISTiledElevationSource(url: .elevation)
+            )
+            scene.addOperationalLayer(
+                IntegratedMeshLayer(url: .gironaMeshService)
+            )
             return scene
         }()
         
         init() {
             let viewpoint = Viewpoint(
-                center: lastCamera?.location ?? .initPoint,
+                center: currentCamera?.location ?? .initPoint,
                 scale: 50000,
-                camera: lastCamera
+                camera: currentCamera
             )
             scene.initialViewpoint = viewpoint
         }
         
-        func updateViewshed(from camera: Camera) {
-            // Remove old viewshed
-            if let viewshed = viewshed {
-                analysisOverlay.removeAnalysis(viewshed)
-            }
-            
+        func setInitialViewshed() {
+            guard let camera = currentCamera else { return }
+            applyViewshed(using: camera)
+        }
+        
+        func updateViewshedFromCurrentCamera() {
+            guard let camera = currentCamera else { return }
             let elevatedPoint = Point(
                 x: camera.location.x,
                 y: camera.location.y,
@@ -105,34 +93,17 @@ private extension ShowViewshedFromCameraInSceneView {
                 roll: camera.roll
             )
             
+            applyViewshed(using: elevatedCamera)
+            currentCamera = elevatedCamera
+        }
+        
+        private func applyViewshed(using camera: Camera) {
+            // Remove old
+            if let old = viewshed {
+                analysisOverlay.removeAnalysis(old)
+            }
+            
             let newViewshed = LocationViewshed(
-                camera: elevatedCamera,
-                minDistance: 1.0,
-                maxDistance: 1000.0
-            )
-            
-            Viewshed.visibleColor = UIColor.green.withAlphaComponent(0.5)
-            Viewshed.obstructedColor = UIColor.red.withAlphaComponent(0.5)
-            
-            analysisOverlay.addAnalysis(newViewshed)
-            self.viewshed = newViewshed
-            
-            graphicsOverlay.removeAllGraphics()
-            let markerSymbol = SimpleMarkerSymbol(style: .circle, color: .blue, size: 12)
-            let graphic = Graphic(geometry: elevatedPoint, symbol: markerSymbol)
-            graphicsOverlay.addGraphic(graphic)
-            lastCamera = elevatedCamera
-        }
-        
-        func updateViewshedFromLastCamera() {
-            guard let camera = lastCamera else { return }
-            updateViewshed(from: camera)
-        }
-        
-        func setInitialViewshed() {
-            guard let camera = lastCamera else { return }
-            
-            let initialViewshed = LocationViewshed(
                 camera: camera,
                 minDistance: 1.0,
                 maxDistance: 1000.0
@@ -141,9 +112,10 @@ private extension ShowViewshedFromCameraInSceneView {
             Viewshed.visibleColor = UIColor.green.withAlphaComponent(0.5)
             Viewshed.obstructedColor = UIColor.red.withAlphaComponent(0.5)
             
-            analysisOverlay.addAnalysis(initialViewshed)
-            self.viewshed = initialViewshed
+            analysisOverlay.addAnalysis(newViewshed)
+            viewshed = newViewshed
             
+            // Add marker
             graphicsOverlay.removeAllGraphics()
             let markerSymbol = SimpleMarkerSymbol(style: .circle, color: .blue, size: 12)
             let graphic = Graphic(geometry: camera.location, symbol: markerSymbol)
