@@ -18,7 +18,7 @@ struct ShowWFSLayerWithXMLQueryView: View {
                     do {
                         try await model.loadData()
                         if let extent = model.statesTable.extent,
-                            !model.hasSetInitialViewpoint {
+                           !model.hasSetInitialViewpoint {
                             model.hasSetInitialViewpoint = true
                             await mapView.setViewpoint(
                                 Viewpoint(boundingGeometry: extent),
@@ -53,24 +53,31 @@ private extension ShowWFSLayerWithXMLQueryView {
     @MainActor
     @Observable
     class Model {
+        /// Map with the Topographic basemap style
         var map = Map(basemapStyle: .arcGISTopographic)
-        
+        /// Flag to track if the initial viewpoint has been set.
         var hasSetInitialViewpoint = false
-        
+        /// Create a WFS (Web Feature Service) feature table using a specified URL and table name.
         var statesTable = WFSFeatureTable(
-            url: .wfsUrl,
-            tableName: .seattleTreesDowntown
+            url: .wfsUrl, // The URL to the WFS service
+            tableName: .seattleTreesDowntown // The name of the table within the service
         )
         
+        /// Flag to indicate whether data is currently being loaded.
         var isLoading = false
         
+        // Asynchronous function to load data from the WFS service
         func loadData() async throws {
             isLoading = true
+            // Set the axis order to not swap X and Y (used for coordinate systems.)
             statesTable.axisOrder = .noSwap
+            // Use manual cache mode so data must be explicitly loaded from the service.
             statesTable.featureRequestMode = .manualCache
             try await statesTable.load()
+            // Create a feature layer from the table and add it to the map.
             let layer = FeatureLayer(featureTable: statesTable)
             map.addOperationalLayer(layer)
+            // Populate the feature table with data from the WFS service using an XML query.
             _ = try await statesTable.populateFromService(
                 usingXMLRequest: xmlQuery,
                 clearCache: true
