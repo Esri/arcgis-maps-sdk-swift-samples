@@ -20,7 +20,7 @@ struct ShowShapefileMetadataView: View {
     @State private var model = Model()
     /// The error that occurred, if any, when trying to load the shapefile or display its metadata.
     @State private var error: Error?
-    /// Boolean value represent the state of the metadata popup view.
+    /// A Boolean value specifying whether the metadata view should be shown
     @State private var showMetadata: Bool = false
     
     var body: some View {
@@ -113,17 +113,13 @@ private extension ShowShapefileMetadataView {
         
         var body: some View {
             VStack(alignment: .center, spacing: 16) {
-                if let credits = model.shapefileInfo?.credits {
-                    Text(credits)
+                if let info = model.shapefileInfo {
+                    Text(info.credits)
                         .bold()
-                }
-                
-                if let summary = model.shapefileInfo?.summary {
-                    Text(summary)
+                    Text(info.summary)
                         .font(.caption)
                         .multilineTextAlignment(.leading)
                 }
-                
                 if let image = model.thumbnailImage {
                     Image(uiImage: image)
                         .resizable()
