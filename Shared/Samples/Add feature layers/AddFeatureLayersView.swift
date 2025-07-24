@@ -53,9 +53,11 @@ struct AddFeatureLayersView: View {
                 // specified credentials and tokens for any challenges.
                 ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = ChallengeHandler()
             }
-            .onDisappear {
-                // Resets the URL session challenge handler to use default handling.
+            .onTeardown {
+                // Resets the URL session challenge handler to use default handling
+                // and removes all credentials.
                 ArcGISEnvironment.authenticationManager.arcGISAuthenticationChallengeHandler = nil
+                ArcGISEnvironment.authenticationManager.arcGISCredentialStore.removeAll()
             }
     }
 }

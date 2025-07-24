@@ -62,7 +62,6 @@ struct BrowseWMSLayersView: View {
                                 .navigationBarTitleDisplayMode(.inline)
                                 .navigationTitle("Layer Visibility")
                                 .presentationDetents([.medium])
-                                .frame(idealWidth: 320, idealHeight: 380)
                                 .toolbar {
                                     ToolbarItem(placement: .topBarTrailing) {
                                         Button("Done") {
@@ -71,6 +70,7 @@ struct BrowseWMSLayersView: View {
                                     }
                                 }
                         }
+                        .frame(idealWidth: 320, idealHeight: 380)
                     }
                 }
             }
@@ -120,7 +120,6 @@ extension BrowseWMSLayersView {
                     .onChange(of: model.isVisible) { updateSelection() }
                 }
             }
-            .listStyle(.plain)
         }
         
         /// Updates the selection for given `isVisible`.

@@ -19,7 +19,7 @@ import SwiftUI
 struct AuthenticateWithPKICertificateView: View {
     /// The model that backs this view.
      @StateObject private var model = Model()
-
+    
      var body: some View {
          Form {
              switch model.portalContent {
@@ -46,14 +46,12 @@ struct AuthenticateWithPKICertificateView: View {
                  }
              }
          }
-         .onDisappear {
-             Task {
-                 // Reset the challenge handlers and clear credentials
-                 // when the view disappears so that user is prompted to enter
-                 // credentials every time the sample is run, and to clean
-                 // the environment for other samples.
-                 await model.teardownAuthenticator()
-             }
+         .onTeardown {
+             // Reset the challenge handlers and clear credentials
+             // when the view disappears so that user is prompted to enter
+             // credentials every time the sample is run, and to clean
+             // the environment for other samples.
+             await model.teardownAuthenticator()
          }
          .sheet(item: $model.selectedItem) { selectedItem in
              NavigationStack {

@@ -1,6 +1,7 @@
 {
     "category": "Cloud and Portal",
     "description": "Access secured portals using a certificate.",
+    "has_teardown": true,
     "ignore": false,
     "images": [
         "authenticate-with-pki-certificate-1.png",

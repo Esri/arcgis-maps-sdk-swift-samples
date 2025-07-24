@@ -98,23 +98,16 @@ struct SetUpLocationDrivenGeotriggersView: View {
                         isShowingPopup = true
                     }
                     .disabled(!model.hasCurrentSection)
-                    .opacity(isShowingPopup ? 0 : 1)
                     
                     Button("Point of Interest") {
                         model.setPOIPopup()
                         isShowingPopup = true
                     }
                     .disabled(!model.hasPointOfInterest)
-                    .opacity(isShowingPopup ? 0 : 1)
                 }
             }
-            .floatingPanel(
-                selectedDetent: .constant(.full),
-                horizontalAlignment: .leading,
-                isPresented: $isShowingPopup
-            ) {
-                PopupView(popup: model.popup!, isPresented: $isShowingPopup)
-                    .padding()
+            .sheet(isPresented: $isShowingPopup) {
+                PopupView(root: model.popup!, isPresented: $isShowingPopup)
             }
             .task(id: isShowingPopup) {
                 if isShowingPopup {

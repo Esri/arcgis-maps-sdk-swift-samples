@@ -115,14 +115,12 @@ struct CreateAndSaveMapView: View {
             // Setup the authenticator.
             setupAuthenticator()
         }
-        .onDisappear {
-            Task {
-                // Reset the challenge handlers and clear credentials
-                // when the view disappears so that user is prompted to enter
-                // credentials every time the sample is run, and to clean
-                // the environment for other samples.
-                await teardownAuthenticator()
-            }
+        .onTeardown {
+            // Reset the challenge handlers and clear credentials
+            // when the view disappears so that user is prompted to enter
+            // credentials every time the sample is run, and to clean
+            // the environment for other samples.
+            await teardownAuthenticator()
             
             // Sets the API key back to the original value.
             ArcGISEnvironment.apiKey = apiKey

@@ -76,7 +76,7 @@ private extension AddKMLLayerView {
         
         /// A KML layer created from a web URL.
         let urlLayer: KMLLayer = {
-            let url = URL(string: "https://www.wpc.ncep.noaa.gov/kml/noaa_chart/WPC_Day1_SigWx.kml")!
+            let url = URL(string: "https://www.spc.noaa.gov/products/outlook/SPC_outlooks.kml")!
             let kmlDataset = KMLDataset(url: url)
             return KMLLayer(dataset: kmlDataset)
         }()
