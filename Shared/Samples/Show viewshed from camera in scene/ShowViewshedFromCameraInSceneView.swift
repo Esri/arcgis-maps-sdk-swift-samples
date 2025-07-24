@@ -49,7 +49,6 @@ struct ShowViewshedFromCameraInSceneView: View {
 }
 
 private extension ShowViewshedFromCameraInSceneView {
-    /// View model to manage the scene, camera, and viewshed analysis.
     @MainActor
     @Observable
     final class Model {
