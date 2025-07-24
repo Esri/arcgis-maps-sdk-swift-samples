@@ -14,6 +14,7 @@
 
 import ArcGIS
 import SwiftUI
+import Observation
 
 struct ShowViewshedFromCameraInSceneView: View {
     /// The view model for the sample.
@@ -31,15 +32,19 @@ struct ShowViewshedFromCameraInSceneView: View {
         }
         .toolbar {
             ToolbarItem(placement: .bottomBar) {
-                Button("Viewshed from here") {
-                    // Update viewshed based on current camera location when button is tapped.
-                    model.updateViewshedFromCurrentCamera()
-                }
-                .buttonStyle(.borderedProminent)
-                .tint(.purple)
-                .padding(.horizontal)
+                viewshedButton
             }
         }
+    }
+    
+    private var viewshedButton: some View {
+        Button("Viewshed from here") {
+            // Update viewshed based on current camera location when button is tapped.
+            model.updateViewshedFromCurrentCamera()
+        }
+        .buttonStyle(.borderedProminent)
+        .tint(.purple)
+        .padding(.horizontal)
     }
 }
 
@@ -48,12 +53,11 @@ private extension ShowViewshedFromCameraInSceneView {
     @MainActor
     @Observable
     final class Model {
-        private var viewshed: LocationViewshed?
-        
         var currentCamera: Camera? = .initialCamera
-        
+        /// An analysis overlay used to display the viewshed analysis visualization.
         let analysisOverlay = AnalysisOverlay()
-        
+        /// The viewshed which is updated by the camera.
+        @ObservationIgnored private var viewshed: LocationViewshed?
         /// 3D Scene setup with imagery basemap, elevation, and mesh layer.
         let scene: ArcGIS.Scene = {
             let scene = Scene(basemapStyle: .arcGISImagery)
@@ -78,7 +82,7 @@ private extension ShowViewshedFromCameraInSceneView {
             viewshed?.update(from: camera)
         }
         
-        /// Applies the viewshed to the scene and places a visual marker.
+        /// Applies the viewshed to the scene and sets the UI for analysis.
         private func setupViewshed(using camera: Camera) {
             // Create and configure the new viewshed.
             let newViewshed = LocationViewshed(
