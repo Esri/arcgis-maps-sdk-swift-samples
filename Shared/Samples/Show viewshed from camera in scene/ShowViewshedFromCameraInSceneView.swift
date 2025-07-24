@@ -23,15 +23,16 @@ struct ShowViewshedFromCameraInSceneView: View {
         SceneView(
             scene: model.scene,
             camera: $model.currentCamera,
-            graphicsOverlays: [model.graphicsOverlay],
             analysisOverlays: [model.analysisOverlay]
         )
         .onAppear {
+            // Set up the initial viewshed when the view appears.
             model.setInitialViewshed()
         }
         .toolbar {
             ToolbarItem(placement: .bottomBar) {
                 Button("Viewshed from here") {
+                    // Update viewshed based on current camera location when button is tapped.
                     model.updateViewshedFromCurrentCamera()
                 }
                 .buttonStyle(.borderedProminent)
@@ -43,15 +44,17 @@ struct ShowViewshedFromCameraInSceneView: View {
 }
 
 private extension ShowViewshedFromCameraInSceneView {
+    /// View model to manage the scene, camera, and viewshed analysis.
     @MainActor
     @Observable
     final class Model {
         private var viewshed: LocationViewshed?
+        
         var currentCamera: Camera? = .initialCamera
         
-        let analysisOverlay: AnalysisOverlay = AnalysisOverlay()
-        let graphicsOverlay: GraphicsOverlay = GraphicsOverlay()
+        let analysisOverlay = AnalysisOverlay()
         
+        /// 3D Scene setup with imagery basemap, elevation, and mesh layer.
         let scene: ArcGIS.Scene = {
             let scene = Scene(basemapStyle: .arcGISImagery)
             scene.baseSurface.addElevationSource(
@@ -63,63 +66,32 @@ private extension ShowViewshedFromCameraInSceneView {
             return scene
         }()
         
-        init() {
-            let viewpoint = Viewpoint(
-                center: currentCamera?.location ?? .initPoint,
-                scale: 50000,
-                camera: currentCamera
-            )
-            scene.initialViewpoint = viewpoint
-        }
-        
+        /// Applies a viewshed at the initial camera position.
         func setInitialViewshed() {
             guard let camera = currentCamera else { return }
-            applyViewshed(using: camera)
+            setupViewshed(using: camera)
         }
         
+        /// Updates the viewshed using the current camera position with added elevation.
         func updateViewshedFromCurrentCamera() {
             guard let camera = currentCamera else { return }
-            let elevatedPoint = Point(
-                x: camera.location.x,
-                y: camera.location.y,
-                z: camera.location.z ?? 0.0 + 200.0,
-                spatialReference: camera.location.spatialReference
-            )
-            
-            let elevatedCamera = Camera(
-                location: elevatedPoint,
-                heading: camera.heading,
-                pitch: camera.pitch,
-                roll: camera.roll
-            )
-            
-            applyViewshed(using: elevatedCamera)
-            currentCamera = elevatedCamera
+            viewshed?.update(from: camera)
         }
         
-        private func applyViewshed(using camera: Camera) {
-            // Remove old
-            if let old = viewshed {
-                analysisOverlay.removeAnalysis(old)
-            }
-            
+        /// Applies the viewshed to the scene and places a visual marker.
+        private func setupViewshed(using camera: Camera) {
+            // Create and configure the new viewshed.
             let newViewshed = LocationViewshed(
                 camera: camera,
                 minDistance: 1.0,
                 maxDistance: 1000.0
             )
-            
+            // Set visual appearance of the viewshed.
             Viewshed.visibleColor = UIColor.green.withAlphaComponent(0.5)
             Viewshed.obstructedColor = UIColor.red.withAlphaComponent(0.5)
-            
+            // Add the new viewshed to the overlay.
             analysisOverlay.addAnalysis(newViewshed)
             viewshed = newViewshed
-            
-            // Add marker
-            graphicsOverlay.removeAllGraphics()
-            let markerSymbol = SimpleMarkerSymbol(style: .circle, color: .blue, size: 12)
-            let graphic = Graphic(geometry: camera.location, symbol: markerSymbol)
-            graphicsOverlay.addGraphic(graphic)
         }
     }
 }
@@ -130,21 +102,12 @@ private extension Camera {
             location: Point(
                 x: 2.8214,
                 y: 41.985,
-                z: 124.987,
+                z: 200.0,
                 spatialReference: .wgs84
             ),
             heading: 332.131,
             pitch: 82.4732,
             roll: 0
-        )
-    }
-}
-
-extension Point {
-    static var initPoint: Point {
-        Point(
-            latitude: 41.9794,
-            longitude: 2.8214
         )
     }
 }
