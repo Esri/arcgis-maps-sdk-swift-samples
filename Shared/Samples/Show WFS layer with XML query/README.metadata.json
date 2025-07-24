@@ -1,0 +1,32 @@
+{
+    "category": "",
+    "description": "Load a WFS feature table using an XML query.",
+    "ignore": false,
+    "images": [
+        "show-wfs-layer-with-xml-query.png"
+    ],
+    "keywords": [
+        "OGC",
+        "WFS",
+        "XML",
+        "feature",
+        "query",
+        "service",
+        "web",
+        "FeatureLayer",
+        "WfsFeatureTable",
+        "WfsFeatureTable.AxisOrder",
+        "WfsFeatureTable.PopulateFromServiceAsync"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "FeatureLayer",
+        "WfsFeatureTable",
+        "WfsFeatureTable.AxisOrder",
+        "WfsFeatureTable.PopulateFromServiceAsync"
+    ],
+    "snippets": [
+        "ShowWfsLayerWithXmlQueryView.swift"
+    ],
+    "title": "Show WFS layer with XML query"
+}
