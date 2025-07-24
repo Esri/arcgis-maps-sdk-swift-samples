@@ -75,7 +75,7 @@ private extension ShowViewshedFromCameraInSceneView {
             setupViewshed(using: camera)
         }
         
-        /// Updates the viewshed using the current camera position with added elevation.
+        /// Updates the viewshed using the current camera position.
         func updateViewshedFromCurrentCamera() {
             guard let camera = currentCamera else { return }
             viewshed?.update(from: camera)
