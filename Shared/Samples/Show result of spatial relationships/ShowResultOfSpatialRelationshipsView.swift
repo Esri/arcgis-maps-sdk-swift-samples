@@ -273,12 +273,6 @@ private extension Graphic {
     }
 }
 
-#if DEBUG
-private extension ShowResultOfSpatialRelationshipsView.Model {
-    typealias Relationship = ShowResultOfSpatialRelationshipsView.Relationship
-}
-
 #Preview {
     ShowResultOfSpatialRelationshipsView()
 }
-#endif
