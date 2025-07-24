@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import ArcGIS
 import SwiftUI
 
 struct AboutView: View {
@@ -24,6 +25,8 @@ struct AboutView: View {
     private let arcGISVersion = Bundle.arcGIS.version.isEmpty
     ? Bundle.arcGIS.shortVersion
     : "\(Bundle.arcGIS.shortVersion) (\(Bundle.arcGIS.version))"
+    
+    @State private var apiKey = ""
     
     var body: some View {
         NavigationStack {
@@ -64,6 +67,9 @@ struct AboutView: View {
                 } footer: {
                     Text("View details about the API.")
                 }
+#if DEBUG
+                debugSection
+#endif
             }
             .navigationTitle("About")
             .navigationBarTitleDisplayMode(.inline)
@@ -96,4 +102,28 @@ private extension URL {
     static let toolkit = URL(string: "https://github.com/Esri/arcgis-maps-sdk-swift-toolkit")!
     static let apiReference = URL(string: "https://developers.arcgis.com/swift/api-reference/documentation/arcgis/")!
     static let writeReview = URL(string: "https://apps.apple.com/app/id1630449018?action=write-review")!
+}
+
+extension AboutView {
+    /// A section for debugging purposes.
+    var debugSection: some View {
+        Section {
+            TextField("Enter API Key Here", text: $apiKey, axis: .vertical)
+                .textInputAutocapitalization(.never)
+                .autocorrectionDisabled()
+                .textEditorStyle(.plain)
+            Button("Submit") {
+                if let apiKey = APIKey(apiKey) {
+                    ArcGISEnvironment.apiKey = apiKey
+                } else {
+                    fatalError("Invalid API Key")
+                }
+            }
+            Button("Reset") {
+                ArcGISEnvironment.apiKey = .iOS
+            }
+        } footer: {
+            Text("The section above is for testing purposes only.")
+        }
+    }
 }
