@@ -65,10 +65,6 @@ extension ValidateUtilityNetworkTopologyView {
         /// A Boolean value indicating whether there is a selection that can be cleared.
         @Published private(set) var canClearSelection = false
         
-        deinit {
-            ArcGISEnvironment.authenticationManager.arcGISCredentialStore.removeAll()
-        }
-        
         // MARK: Methods
         
         /// Gets the current state of the utility network and updates the status with the results.
@@ -243,6 +239,11 @@ extension ValidateUtilityNetworkTopologyView {
             Tap 'Get State' to check if validating is necessary or if tracing is available.
             Tap 'Trace' to run a trace.
             """
+        }
+        
+        /// Cleans up the model's setup.
+        func tearDown() {
+            ArcGISEnvironment.authenticationManager.arcGISCredentialStore.removeAll()
         }
         
         /// Sets up and loads the web map.

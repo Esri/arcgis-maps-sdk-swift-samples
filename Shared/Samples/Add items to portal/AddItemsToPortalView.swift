@@ -92,7 +92,7 @@ struct AddItemsToPortalView: View {
             apiKey = ArcGISEnvironment.apiKey
             ArcGISEnvironment.apiKey = nil
         }
-        .onDisappear {
+        .onTeardown {
             // Resetting the challenge handlers and clearing credentials here in
             // `onDisappear` so user is prompted to enter credentials every time
             // trying the sample. In real world applications, do these from
@@ -103,7 +103,7 @@ struct AddItemsToPortalView: View {
             
             // Sets the API key back to the original value.
             ArcGISEnvironment.apiKey = apiKey
-            Task { await signOut() }
+            await signOut()
         }
     }
     

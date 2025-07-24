@@ -30,8 +30,8 @@ struct TraceUtilityNetworkView: View {
                 model.lastSingleTap = (screenPoint, mapPoint)
             }
             .selectionColor(.yellow)
-            .onDisappear {
-                ArcGISEnvironment.authenticationManager.arcGISCredentialStore.removeAll()
+            .onTeardown {
+                model.tearDown()
             }
             .overlay(alignment: .center) {
                 if model.tracingActivity == .traceRunning,

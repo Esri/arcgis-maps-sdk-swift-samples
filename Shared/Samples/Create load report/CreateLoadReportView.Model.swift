@@ -287,7 +287,8 @@ extension CreateLoadReportView {
             }
         }
         
-        deinit {
+        /// Cleans up the model's setup.
+        func tearDown() {
             ArcGISEnvironment.authenticationManager.arcGISCredentialStore.removeAll()
         }
     }

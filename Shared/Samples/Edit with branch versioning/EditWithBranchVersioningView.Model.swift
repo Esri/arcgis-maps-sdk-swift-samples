@@ -65,6 +65,11 @@ extension EditWithBranchVersioningView {
             map.addOperationalLayer(featureLayer)
         }
         
+        /// Cleans up the model's setup.
+        func tearDown() {
+            ArcGISEnvironment.authenticationManager.arcGISCredentialStore.removeAll()
+        }
+        
         /// Creates a new version in the service using given parameters.
         /// - Parameter parameters: The properties of the new version.
         /// - Returns: The name of the created version.
