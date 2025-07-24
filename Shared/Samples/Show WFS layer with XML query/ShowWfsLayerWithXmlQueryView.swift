@@ -11,25 +11,19 @@ struct ShowWfsLayerWithXmlQueryView: View {
             MapView(map: model.map)
                 .overlay(alignment: .center) {
                     if model.isLoading {
-                        ProgressView(
-                            """
-                            Loading query
-                            data...
-                            """
-                        )
-                        .padding()
-                        .background(.ultraThinMaterial)
-                        .clipShape(.rect(cornerRadius: 10))
-                        .shadow(radius: 50)
-                        .multilineTextAlignment(.center)
+                        loadingView
                     }
                 }
                 .task {
                     do {
                         try await model.loadData()
-                        if let extent = model.statesTable.extent, !model.hasSetInitialViewpoint {
+                        if let extent = model.statesTable.extent,
+                            !model.hasSetInitialViewpoint {
                             model.hasSetInitialViewpoint = true
-                            await mapView.setViewpoint(Viewpoint(boundingGeometry: extent), duration: 2.0)
+                            await mapView.setViewpoint(
+                                Viewpoint(boundingGeometry: extent),
+                                duration: 2.0
+                            )
                         }
                         model.isLoading = false
                     } catch {
@@ -38,6 +32,20 @@ struct ShowWfsLayerWithXmlQueryView: View {
                 }
                 .errorAlert(presentingError: $error)
         }
+    }
+    
+    var loadingView: some View {
+        ProgressView(
+            """
+            Loading query
+            data...
+            """
+        )
+        .padding()
+        .background(.ultraThinMaterial)
+        .clipShape(.rect(cornerRadius: 10))
+        .shadow(radius: 50)
+        .multilineTextAlignment(.center)
     }
 }
 
