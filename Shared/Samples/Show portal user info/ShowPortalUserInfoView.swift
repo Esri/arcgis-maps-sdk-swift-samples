@@ -95,13 +95,13 @@ private extension ShowPortalUserInfoView {
         @ObservationIgnored private var apiKey: APIKey?
         /// The URL string of the portal to connect to.
         /// Defaults to the main ArcGIS Online portal.
-        var portalURLString: String = "https://www.arcgis.com"
+        var portalURLString = "https://www.arcgis.com"
         /// Stores the information related to user's portal.
         var portalInfo: PortalInfo?
         /// Stores the current user's data such as username, email, etc.
         var portalUser: PortalUser?
         /// Indicates whether the model is currently loading data.
-        var isLoading: Bool = false
+        var isLoading = false
         
         init() {
             self.authenticator = Authenticator(

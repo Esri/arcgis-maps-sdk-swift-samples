@@ -1,7 +1,7 @@
 {
     "category": "Cloud and Portal",
     "description": "Retrieve a user's details via a Portal.",
-    "has_teardown" : true,
+    "has_teardown": true,
     "ignore": false,
     "images": [
         "show-portal-user-info.png"
