@@ -66,10 +66,8 @@ struct ShowPortalUserInfoView: View {
         // Set up the authenticator when the view appears.
         .onAppear(perform: model.setAuthenticator)
         // Clean up authenticator and credentials when the view disappears.
-        .onDisappear {
-            Task {
-                await model.clearAuthenticator()
-            }
+        .onTeardown {
+            await model.clearAuthenticator()
         }
         // Attach the authenticator to the view for handling authentication challenges.
         .authenticator(model.authenticator)
