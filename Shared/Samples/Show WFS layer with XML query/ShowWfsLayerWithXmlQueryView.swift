@@ -1,26 +1,74 @@
-// Copyright 2025 Esri
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//   https://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 import ArcGIS
 import SwiftUI
 
 struct ShowWfsLayerWithXmlQueryView: View {
-    /// Manages the presentation state of the menu.
-    @State private var isPresented = false
+    
+    @State private var map = Map(basemapStyle: .arcGISTopographic)
+    
+    @State private var hasSetInitialViewpoint = false
+    @State private var error: Error?
+    @State private var statesTable = WFSFeatureTable(
+        url: URL(string: "https://dservices2.arcgis.com/ZQgQTuoyBrtmoGdP/arcgis/services/Seattle_Downtown_Features/WFSServer?service=wfs&request=getcapabilities")!,
+        tableName: "Seattle_Downtown_Features:Trees"
+    )
+    
+    @State private var isLoading = false
     
     var body: some View {
-        Text("ShowWfsLayerWithXmlQueryView")
+        MapViewReader { mapView in
+            MapView(map: map)
+                .overlay(alignment: .center) {
+                    if isLoading {
+                        ProgressView(
+                            """
+                            Loading query
+                            data...
+                            """
+                        )
+                        .padding()
+                        .background(.ultraThinMaterial)
+                        .clipShape(.rect(cornerRadius: 10))
+                        .shadow(radius: 50)
+                        .multilineTextAlignment(.center)
+                    }
+                }
+                .task {
+                    isLoading = true
+                    statesTable.axisOrder = .noSwap
+                    statesTable.featureRequestMode = .manualCache
+                    do {
+                        try await statesTable.load()
+                        let layer = FeatureLayer(featureTable: statesTable)
+                        map.addOperationalLayer(layer)
+                        let xmlQuery = """
+                        <wfs:GetFeature service="WFS" version="2.0.0" outputFormat="application/gml+xml; version=3.2"
+                          xmlns:Seattle_Downtown_Features="https://dservices2.arcgis.com/ZQgQTuoyBrtmoGdP/arcgis/services/Seattle_Downtown_Features/WFSServer"
+                          xmlns:wfs="http://www.opengis.net/wfs/2.0"
+                          xmlns:fes="http://www.opengis.net/fes/2.0"
+                          xmlns:gml="http://www.opengis.net/gml/3.2">
+                          <wfs:Query typeNames="Seattle_Downtown_Features:Trees">
+                            <fes:Filter>
+                              <fes:PropertyIsEqualTo>
+                                <fes:ValueReference>Seattle_Downtown_Features:SCIENTIFIC</fes:ValueReference>
+                                <fes:Literal>Tilia cordata</fes:Literal>
+                              </fes:PropertyIsEqualTo>
+                            </fes:Filter>
+                          </wfs:Query>
+                        </wfs:GetFeature>
+                        """
+                        _ = try await statesTable.populateFromService(usingXMLRequest: xmlQuery, clearCache: true)
+                        if let extent = statesTable.extent, !hasSetInitialViewpoint {
+                            hasSetInitialViewpoint = true
+                            await mapView.setViewpoint(Viewpoint(boundingGeometry: extent), duration: 2.0)
+                        }
+                        isLoading = false
+                    } catch {
+                        isLoading = false
+                        self.error = error
+                    }
+                }
+                .errorAlert(presentingError: $error)
+        }
     }
 }
 
