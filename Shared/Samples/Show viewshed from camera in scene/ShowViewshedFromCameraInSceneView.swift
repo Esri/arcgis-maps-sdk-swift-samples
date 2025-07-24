@@ -101,6 +101,9 @@ private extension ShowViewshedFromCameraInSceneView {
 }
 
 private extension Camera {
+    
+    /// Camera that is 200m above ground facing north over
+    /// Girona, Spain, looking slightly downward at the landscape..
     static var initialCamera: Camera {
         Camera(
             location: Point(
@@ -117,10 +120,11 @@ private extension Camera {
 }
 
 private extension URL {
+    /// The URL of the Terrain 3D ArcGIS REST Service.
     static var elevation: URL {
         URL(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!
     }
-    
+    /// Mesh for Girona, Spain for the scene.
     static var gironaMeshService: URL {
         URL(string: "https://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/Girona_3D/SceneServer")!
     }
