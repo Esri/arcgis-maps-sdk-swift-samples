@@ -101,8 +101,8 @@ private extension ShowViewshedFromCameraInSceneView {
 
 private extension Camera {
     
-    /// Camera that is 200m above ground facing north over
-    /// Girona, Spain, looking slightly downward at the landscape..
+    /// Camera that is 200m above ground over Girona, Spain,
+    /// looking slightly downward at the landscape.
     static var initialCamera: Camera {
         Camera(
             location: Point(
