@@ -1,7 +1,7 @@
 import ArcGIS
 import SwiftUI
 
-struct ShowWfsLayerWithXmlQueryView: View {
+struct ShowWFSLayerWithXMLQueryView: View {
     @State private var model = Model()
     
     @State private var error: Error?
@@ -49,7 +49,7 @@ struct ShowWfsLayerWithXmlQueryView: View {
     }
 }
 
-private extension ShowWfsLayerWithXmlQueryView {
+private extension ShowWFSLayerWithXMLQueryView {
     @MainActor
     @Observable
     class Model {
@@ -80,10 +80,10 @@ private extension ShowWfsLayerWithXmlQueryView {
 }
 
 #Preview {
-    ShowWfsLayerWithXmlQueryView()
+    ShowWFSLayerWithXMLQueryView()
 }
 
-extension ShowWfsLayerWithXmlQueryView {
+extension ShowWFSLayerWithXMLQueryView {
     static let xmlQuery = """
         <wfs:GetFeature service="WFS" version="2.0.0" outputFormat="application/gml+xml; version=3.2"
           xmlns:Seattle_Downtown_Features="https://dservices2.arcgis.com/ZQgQTuoyBrtmoGdP/arcgis/services/Seattle_Downtown_Features/WFSServer"
