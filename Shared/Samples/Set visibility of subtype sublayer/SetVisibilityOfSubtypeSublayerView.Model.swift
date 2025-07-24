@@ -65,10 +65,6 @@ extension SetVisibilityOfSubtypeSublayerView {
             subtypeFeatureLayer.scalesSymbols = false
         }
         
-        deinit {
-            ArcGISEnvironment.authenticationManager.arcGISCredentialStore.removeAll()
-        }
-        
         /// Performs important tasks including adding credentials, loading and adding operational layers.
         func setup() async throws {
             try await ArcGISEnvironment.authenticationManager.arcGISCredentialStore.add(.publicSample)
@@ -81,6 +77,11 @@ extension SetVisibilityOfSubtypeSublayerView {
             originalRenderer = subtypeSublayer.renderer
             subtypeSublayer.addLabelDefinition(labelDefinition)
             self.subtypeSublayer = subtypeSublayer
+        }
+        
+        /// Cleans up the model's setup.
+        func tearDown() {
+            ArcGISEnvironment.authenticationManager.arcGISCredentialStore.removeAll()
         }
         
         func toggleSublayer(isVisible: Bool) {
