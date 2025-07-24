@@ -2,13 +2,16 @@ import ArcGIS
 import SwiftUI
 
 struct ShowWFSLayerWithXMLQueryView: View {
+    /// The view model for the sample.
     @State private var model = Model()
-    
+    /// The error shown in the error alert.
     @State private var error: Error?
     
     var body: some View {
         MapViewReader { mapView in
             MapView(map: model.map)
+            // Overlay with loading view in the center if data
+            // is currently being loaded.
                 .overlay(alignment: .center) {
                     if model.isLoading {
                         loadingView
@@ -16,20 +19,30 @@ struct ShowWFSLayerWithXMLQueryView: View {
                 }
                 .task {
                     do {
+                        // Load the WFS data via the model
                         try await model.loadData()
+                        
+                        // If the table has a spatial extent and the initial
+                        // viewpoint hasn't been set yet
                         if let extent = model.statesTable.extent,
                            !model.hasSetInitialViewpoint {
+                            // Mark that the initial viewpoint has been set
                             model.hasSetInitialViewpoint = true
+                            // Animate the map to the extent of the data over 2 seconds
                             await mapView.setViewpoint(
                                 Viewpoint(boundingGeometry: extent),
                                 duration: 2.0
                             )
                         }
+                        
+                        // Mark that loading has completed.
                         model.isLoading = false
                     } catch {
+                        // If an error occurs during loading, capture it to trigger an alert.
                         self.error = error
                     }
                 }
+            // Display an alert if there is an error during data loading
                 .errorAlert(presentingError: $error)
         }
     }
@@ -55,8 +68,10 @@ private extension ShowWFSLayerWithXMLQueryView {
     class Model {
         /// Map with the Topographic basemap style
         var map = Map(basemapStyle: .arcGISTopographic)
+        
         /// Flag to track if the initial viewpoint has been set.
         var hasSetInitialViewpoint = false
+        
         /// Create a WFS (Web Feature Service) feature table using a specified URL and table name.
         var statesTable = WFSFeatureTable(
             url: .wfsUrl, // The URL to the WFS service
@@ -66,7 +81,7 @@ private extension ShowWFSLayerWithXMLQueryView {
         /// Flag to indicate whether data is currently being loaded.
         var isLoading = false
         
-        // Asynchronous function to load data from the WFS service
+        /// Asynchronous function to load data from the WFS service
         func loadData() async throws {
             isLoading = true
             // Set the axis order to not swap X and Y (used for coordinate systems.)
@@ -91,6 +106,8 @@ private extension ShowWFSLayerWithXMLQueryView {
 }
 
 extension ShowWFSLayerWithXMLQueryView {
+    /// XML query to request features from the WFS service
+    /// This specific query fetches only tree features where the "SCIENTIFIC" field equals "Tilia cordata"
     static let xmlQuery = """
         <wfs:GetFeature service="WFS" version="2.0.0" outputFormat="application/gml+xml; version=3.2"
           xmlns:Seattle_Downtown_Features="https://dservices2.arcgis.com/ZQgQTuoyBrtmoGdP/arcgis/services/Seattle_Downtown_Features/WFSServer"
@@ -110,12 +127,14 @@ extension ShowWFSLayerWithXMLQueryView {
 }
 
 private extension URL {
+    /// Static property to return the full URL for the WFS GetCapabilities request
     static var wfsUrl: URL {
         URL(string: "https://dservices2.arcgis.com/ZQgQTuoyBrtmoGdP/arcgis/services/Seattle_Downtown_Features/WFSServer?service=wfs&request=getcapabilities")!
     }
 }
 
 extension String {
+    /// This string matches the `typeNames` used in the XML query to identify the layer to query.
     static var seattleTreesDowntown: String {
         "Seattle_Downtown_Features:Trees"
     }
