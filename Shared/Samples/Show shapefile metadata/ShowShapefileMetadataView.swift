@@ -85,7 +85,7 @@ private extension ShowShapefileMetadataView {
         @ObservationIgnored var map = Map(basemapStyle: .arcGISTopographic)
         
         /// Declare a FeatureLayer to display the shapefile features on the map.
-        @ObservationIgnored var featureLayer: FeatureLayer!
+        @ObservationIgnored var featureLayer: FeatureLayer?
         
         /// Holds metadata information about the shapefile, such as name, description, etc.
         var shapefileInfo: ShapefileInfo?
