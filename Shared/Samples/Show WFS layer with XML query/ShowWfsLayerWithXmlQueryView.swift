@@ -50,8 +50,8 @@ private extension ShowWfsLayerWithXmlQueryView {
         var hasSetInitialViewpoint = false
         
         var statesTable = WFSFeatureTable(
-            url: URL(string: "https://dservices2.arcgis.com/ZQgQTuoyBrtmoGdP/arcgis/services/Seattle_Downtown_Features/WFSServer?service=wfs&request=getcapabilities")!,
-            tableName: "Seattle_Downtown_Features:Trees"
+            url: .wfsUrl,
+            tableName: .seattleTreesDowntown
         )
         
         var isLoading = false
@@ -60,26 +60,9 @@ private extension ShowWfsLayerWithXmlQueryView {
             isLoading = true
             statesTable.axisOrder = .noSwap
             statesTable.featureRequestMode = .manualCache
-            
             try await statesTable.load()
             let layer = FeatureLayer(featureTable: statesTable)
             map.addOperationalLayer(layer)
-            let xmlQuery = """
-                <wfs:GetFeature service="WFS" version="2.0.0" outputFormat="application/gml+xml; version=3.2"
-                  xmlns:Seattle_Downtown_Features="https://dservices2.arcgis.com/ZQgQTuoyBrtmoGdP/arcgis/services/Seattle_Downtown_Features/WFSServer"
-                  xmlns:wfs="http://www.opengis.net/wfs/2.0"
-                  xmlns:fes="http://www.opengis.net/fes/2.0"
-                  xmlns:gml="http://www.opengis.net/gml/3.2">
-                  <wfs:Query typeNames="Seattle_Downtown_Features:Trees">
-                    <fes:Filter>
-                      <fes:PropertyIsEqualTo>
-                        <fes:ValueReference>Seattle_Downtown_Features:SCIENTIFIC</fes:ValueReference>
-                        <fes:Literal>Tilia cordata</fes:Literal>
-                      </fes:PropertyIsEqualTo>
-                    </fes:Filter>
-                  </wfs:Query>
-                </wfs:GetFeature>
-                """
             _ = try await statesTable.populateFromService(usingXMLRequest: xmlQuery, clearCache: true)
         }
     }
@@ -87,4 +70,35 @@ private extension ShowWfsLayerWithXmlQueryView {
 
 #Preview {
     ShowWfsLayerWithXmlQueryView()
+}
+
+extension ShowWfsLayerWithXmlQueryView {
+    static let xmlQuery = """
+        <wfs:GetFeature service="WFS" version="2.0.0" outputFormat="application/gml+xml; version=3.2"
+          xmlns:Seattle_Downtown_Features="https://dservices2.arcgis.com/ZQgQTuoyBrtmoGdP/arcgis/services/Seattle_Downtown_Features/WFSServer"
+          xmlns:wfs="http://www.opengis.net/wfs/2.0"
+          xmlns:fes="http://www.opengis.net/fes/2.0"
+          xmlns:gml="http://www.opengis.net/gml/3.2">
+          <wfs:Query typeNames="Seattle_Downtown_Features:Trees">
+            <fes:Filter>
+              <fes:PropertyIsEqualTo>
+                <fes:ValueReference>Seattle_Downtown_Features:SCIENTIFIC</fes:ValueReference>
+                <fes:Literal>Tilia cordata</fes:Literal>
+              </fes:PropertyIsEqualTo>
+            </fes:Filter>
+          </wfs:Query>
+        </wfs:GetFeature>
+        """
+}
+
+private extension URL {
+    static var wfsUrl: URL {
+        URL(string: "https://dservices2.arcgis.com/ZQgQTuoyBrtmoGdP/arcgis/services/Seattle_Downtown_Features/WFSServer?service=wfs&request=getcapabilities")!
+    }
+}
+
+extension String {
+    static var seattleTreesDowntown: String {
+        "Seattle_Downtown_Features:Trees"
+    }
 }
