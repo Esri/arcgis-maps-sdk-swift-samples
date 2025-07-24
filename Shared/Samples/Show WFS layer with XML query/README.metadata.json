@@ -14,16 +14,16 @@
         "service",
         "web",
         "FeatureLayer",
-        "WfsFeatureTable",
-        "WfsFeatureTable.AxisOrder",
-        "WfsFeatureTable.PopulateFromServiceAsync"
+        "WFSFeatureTable",
+        "WFSFeatureTable.axisOrder",
+        "WFSFeatureTable.populateFromService"
     ],
     "redirect_from": [],
     "relevant_apis": [
         "FeatureLayer",
-        "WfsFeatureTable",
-        "WfsFeatureTable.AxisOrder",
-        "WfsFeatureTable.PopulateFromServiceAsync"
+        "WFSFeatureTable",
+        "WFSFeatureTable.axisOrder",
+        "WFSFeatureTable.populateFromService"
     ],
     "snippets": [
         "ShowWFSLayerWithXMLQueryView.swift"
