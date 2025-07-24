@@ -129,8 +129,7 @@ struct EditGeometriesWithProgrammaticReticleToolView: View {
                 Viewpoint(
                     center: geometry.extent.center,
                     scale: Viewpoint.ireland.targetScale
-                ),
-                duration: 0.03
+                )
             )
         } else {
             guard let center = model.selectedGraphic?.geometry?.lastPoint else { return }
@@ -139,8 +138,7 @@ struct EditGeometriesWithProgrammaticReticleToolView: View {
                 Viewpoint(
                     center: center,
                     scale: Viewpoint.ireland.targetScale
-                ),
-                duration: 0.03
+                )
             )
         }
     }
