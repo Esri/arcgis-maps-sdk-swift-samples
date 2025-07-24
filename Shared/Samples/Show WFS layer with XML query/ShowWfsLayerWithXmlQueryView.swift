@@ -71,7 +71,10 @@ private extension ShowWfsLayerWithXmlQueryView {
             try await statesTable.load()
             let layer = FeatureLayer(featureTable: statesTable)
             map.addOperationalLayer(layer)
-            _ = try await statesTable.populateFromService(usingXMLRequest: xmlQuery, clearCache: true)
+            _ = try await statesTable.populateFromService(
+                usingXMLRequest: xmlQuery,
+                clearCache: true
+            )
         }
     }
 }
