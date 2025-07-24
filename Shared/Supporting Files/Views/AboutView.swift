@@ -26,6 +26,9 @@ struct AboutView: View {
     ? Bundle.arcGIS.shortVersion
     : "\(Bundle.arcGIS.shortVersion) (\(Bundle.arcGIS.version))"
     
+    /// A Boolean value indicating whether the API key alert is presented.
+    @State private var isAPIKeyAlertPresented = false
+    /// The API key entered in the alert.
     @State private var apiKey = ""
     
     var body: some View {
@@ -108,19 +111,22 @@ extension AboutView {
     /// A section for debugging purposes.
     var debugSection: some View {
         Section {
-            TextField("Enter API Key Here", text: $apiKey, axis: .vertical)
-                .textInputAutocapitalization(.never)
-                .autocorrectionDisabled()
-                .textEditorStyle(.plain)
-            Button("Submit") {
-                if let apiKey = APIKey(apiKey) {
-                    ArcGISEnvironment.apiKey = apiKey
-                } else {
-                    fatalError("Invalid API Key")
-                }
+            Button("Enter API Key") {
+                isAPIKeyAlertPresented = true
             }
-            Button("Reset") {
-                ArcGISEnvironment.apiKey = .iOS
+            .alert("Enter API Key", isPresented: $isAPIKeyAlertPresented) {
+                TextField("Enter API Key Here", text: $apiKey, axis: .vertical)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+                    .textEditorStyle(.plain)
+                Button("Cancel", role: .cancel) {}
+                Button("Submit") {
+                    ArcGISEnvironment.apiKey = APIKey(apiKey)!
+                }
+                .disabled(apiKey.isEmpty)
+                Button("Reset") {
+                    ArcGISEnvironment.apiKey = .iOS
+                }
             }
         } footer: {
             Text("The section above is for testing purposes only.")
