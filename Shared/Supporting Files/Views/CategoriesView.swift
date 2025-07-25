@@ -97,8 +97,12 @@ struct CategoriesView: View {
                             }
                     }
                 } else {
-                    SampleDetailView(sample: sample)
-                        .id(sampleName)
+                    if sampleNeedingTearDown != nil {
+                        ProgressView("Loading sample…")
+                    } else {
+                        SampleDetailView(sample: sample)
+                            .id(sampleName)
+                    }
                 }
             }
         }
