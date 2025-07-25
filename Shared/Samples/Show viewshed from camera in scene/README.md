@@ -34,4 +34,4 @@ The scene shows an integrated mesh layer of [Girona, Spain](https://www.arcgis.c
 
 ## Tags
 
-3D, integrated mesh, Scene, viewshed, visibility analysis
+3D, integrated mesh, viewshed, visibility analysis

@@ -9,14 +9,7 @@
         "3D",
         "integrated mesh",
         "viewshed",
-        "visibility analysis",
-        "AnalysisOverlay",
-        "ArcGISTiledElevationSource",
-        "Camera",
-        "IntegratedMeshLayer",
-        "LocationViewshed",
-        "Scene",
-        "SceneView"
+        "visibility analysis"
     ],
     "redirect_from": [],
     "relevant_apis": [
