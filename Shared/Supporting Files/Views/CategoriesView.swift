@@ -87,6 +87,7 @@ struct CategoriesView: View {
                         ProgressView("Loading sample…")
                     } else {
                         SampleDetailView(sample: sample)
+                            .id(sampleName)
                             .onAppear {
                                 sampleNeedingTearDown = sampleName
                             }
@@ -97,6 +98,7 @@ struct CategoriesView: View {
                     }
                 } else {
                     SampleDetailView(sample: sample)
+                        .id(sampleName)
                 }
             }
         }
