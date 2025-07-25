@@ -22,7 +22,7 @@ struct ShowViewshedFromCameraInSceneView: View {
     var body: some View {
         SceneView(
             scene: model.scene,
-            camera: $model.currentCamera,
+            camera: $model.camera,
             analysisOverlays: [model.analysisOverlay]
         )
         .onAppear {
@@ -39,11 +39,8 @@ struct ShowViewshedFromCameraInSceneView: View {
     private var viewshedButton: some View {
         Button("Viewshed from here") {
             // Update viewshed based on current camera location when button is tapped.
-            model.updateViewshedFromCurrentCamera()
+            model.updateViewshed()
         }
-        .buttonStyle(.borderedProminent)
-        .tint(.purple)
-        .padding(.horizontal)
     }
 }
 
@@ -51,11 +48,15 @@ private extension ShowViewshedFromCameraInSceneView {
     @MainActor
     @Observable
     final class Model {
-        var currentCamera: Camera? = .initialCamera
+        ///  A camera for the scene that determines where the viewshed is set from.
+        var camera: Camera? = .initial
+        
         /// An analysis overlay used to display the viewshed analysis visualization.
         let analysisOverlay = AnalysisOverlay()
+        
         /// The viewshed which is updated by the camera.
         @ObservationIgnored private var viewshed: LocationViewshed?
+        
         /// A 3D Scene setup with imagery basemap, elevation, and mesh layer.
         let scene: ArcGIS.Scene = {
             let scene = Scene(basemapStyle: .arcGISImagery)
@@ -70,30 +71,30 @@ private extension ShowViewshedFromCameraInSceneView {
         
         /// Applies a viewshed at the initial camera position.
         func setInitialViewshed() {
-            guard let camera = currentCamera else { return }
+            guard let camera else { return }
             setupViewshed(using: camera)
+            
+            /// Applies the viewshed to the scene and sets the UI for analysis.
+            func setupViewshed(using camera: Camera) {
+                // Create and configure the new viewshed.
+                let newViewshed = LocationViewshed(
+                    camera: camera,
+                    minDistance: 1.0,
+                    maxDistance: 1_000.0
+                )
+                // Set visual appearance of the viewshed.
+                Viewshed.visibleColor = .green.withAlphaComponent(0.5)
+                Viewshed.obstructedColor = .red.withAlphaComponent(0.5)
+                // Add the new viewshed to the overlay.
+                analysisOverlay.addAnalysis(newViewshed)
+                viewshed = newViewshed
+            }
         }
         
         /// Updates the viewshed using the current camera position.
         func updateViewshed() {
-            guard let camera = currentCamera, let viewshed else { return }
+            guard let camera, let viewshed else { return }
             viewshed.update(from: camera)
-        }
-        
-        /// Applies the viewshed to the scene and sets the UI for analysis.
-        private func setupViewshed(using camera: Camera) {
-            // Create and configure the new viewshed.
-            let newViewshed = LocationViewshed(
-                camera: camera,
-                minDistance: 1.0,
-                maxDistance: 1_000.0
-            )
-            // Set visual appearance of the viewshed.
-            Viewshed.visibleColor = .green.withAlphaComponent(0.5)
-            Viewshed.obstructedColor = .red.withAlphaComponent(0.5)
-            // Add the new viewshed to the overlay.
-            analysisOverlay.addAnalysis(newViewshed)
-            viewshed = newViewshed
         }
     }
 }
