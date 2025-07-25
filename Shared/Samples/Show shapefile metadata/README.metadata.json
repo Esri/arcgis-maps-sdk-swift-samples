@@ -1,0 +1,44 @@
+{
+    "category": "Visualization",
+    "description": "Read a shapefile and display its metadata.",
+    "ignore": false,
+    "images": [
+        "show-shapefile-metadata.png"
+    ],
+    "keywords": [
+        "credits",
+        "description",
+        "metadata",
+        "package",
+        "shape file",
+        "shapefile",
+        "summary",
+        "symbology",
+        "tags",
+        "visualization",
+        "ShapefileFeatureTable",
+        "ShapefileFeatureTable.info",
+        "ShapefileInfo",
+        "ShapefileInfo.credits",
+        "ShapefileInfo.summary",
+        "ShapefileInfo.tags",
+        "ShapefileInfo.thumbnail"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "ShapefileFeatureTable",
+        "ShapefileFeatureTable.info",
+        "ShapefileInfo",
+        "ShapefileInfo.credits",
+        "ShapefileInfo.summary",
+        "ShapefileInfo.tags",
+        "ShapefileInfo.thumbnail"
+    ],
+    "offline_data": [
+        "d98b3e5293834c5f852f13c569930caa"
+    ],
+    "snippets": [
+        "ShowShapefileMetadataView.swift"
+    ],
+    "title": "Show shapefile metadata"
+}
