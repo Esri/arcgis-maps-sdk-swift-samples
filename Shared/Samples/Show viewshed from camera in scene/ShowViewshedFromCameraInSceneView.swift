@@ -61,10 +61,14 @@ private extension ShowViewshedFromCameraInSceneView {
         let scene: ArcGIS.Scene = {
             let scene = Scene(basemapStyle: .arcGISImagery)
             scene.baseSurface.addElevationSource(
-                ArcGISTiledElevationSource(url: .elevation)
+                ArcGISTiledElevationSource(
+                    url: URL(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!
+                )
             )
             scene.addOperationalLayer(
-                IntegratedMeshLayer(url: .gironaMeshService)
+                IntegratedMeshLayer(
+                    url: URL(string: "https://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/Girona_3D/SceneServer")!
+                )
             )
             return scene
         }()
@@ -114,16 +118,5 @@ private extension Camera {
             pitch: 82.4732,
             roll: 0
         )
-    }
-}
-
-private extension URL {
-    /// The URL of the Terrain 3D ArcGIS REST Service.
-    static var elevation: URL {
-        URL(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!
-    }
-    /// A URL of the mesh for Girona, Spain.
-    static var gironaMeshService: URL {
-        URL(string: "https://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/Girona_3D/SceneServer")!
     }
 }
