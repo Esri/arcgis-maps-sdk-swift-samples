@@ -14,7 +14,6 @@
 
 import ArcGIS
 import SwiftUI
-import Observation
 
 struct ShowViewshedFromCameraInSceneView: View {
     /// The view model for the sample.
@@ -57,7 +56,7 @@ private extension ShowViewshedFromCameraInSceneView {
         let analysisOverlay = AnalysisOverlay()
         /// The viewshed which is updated by the camera.
         @ObservationIgnored private var viewshed: LocationViewshed?
-        /// 3D Scene setup with imagery basemap, elevation, and mesh layer.
+        /// A 3D Scene setup with imagery basemap, elevation, and mesh layer.
         let scene: ArcGIS.Scene = {
             let scene = Scene(basemapStyle: .arcGISImagery)
             scene.baseSurface.addElevationSource(
@@ -76,9 +75,9 @@ private extension ShowViewshedFromCameraInSceneView {
         }
         
         /// Updates the viewshed using the current camera position.
-        func updateViewshedFromCurrentCamera() {
-            guard let camera = currentCamera else { return }
-            viewshed?.update(from: camera)
+        func updateViewshed() {
+            guard let camera = currentCamera, let viewshed else { return }
+            viewshed.update(from: camera)
         }
         
         /// Applies the viewshed to the scene and sets the UI for analysis.
@@ -87,11 +86,11 @@ private extension ShowViewshedFromCameraInSceneView {
             let newViewshed = LocationViewshed(
                 camera: camera,
                 minDistance: 1.0,
-                maxDistance: 1000.0
+                maxDistance: 1_000.0
             )
             // Set visual appearance of the viewshed.
-            Viewshed.visibleColor = UIColor.green.withAlphaComponent(0.5)
-            Viewshed.obstructedColor = UIColor.red.withAlphaComponent(0.5)
+            Viewshed.visibleColor = .green.withAlphaComponent(0.5)
+            Viewshed.obstructedColor = .red.withAlphaComponent(0.5)
             // Add the new viewshed to the overlay.
             analysisOverlay.addAnalysis(newViewshed)
             viewshed = newViewshed
@@ -100,10 +99,9 @@ private extension ShowViewshedFromCameraInSceneView {
 }
 
 private extension Camera {
-    
     /// Camera that is 200m above ground over Girona, Spain,
     /// looking slightly downward at the landscape.
-    static var initialCamera: Camera {
+    static var initial: Camera {
         Camera(
             location: Point(
                 x: 2.8214,
@@ -123,7 +121,7 @@ private extension URL {
     static var elevation: URL {
         URL(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!
     }
-    /// Mesh for Girona, Spain for the scene.
+    /// A URL of the mesh for Girona, Spain.
     static var gironaMeshService: URL {
         URL(string: "https://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/Girona_3D/SceneServer")!
     }
