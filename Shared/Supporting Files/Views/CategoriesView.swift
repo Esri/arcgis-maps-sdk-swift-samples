@@ -36,7 +36,7 @@ struct CategoriesView: View {
     }
     
     /// The name of the sample that currently needs torn down.
-    @State private var sampleNeedingTearDown: String?
+    @State private var sampleNeedingTeardown: String?
     
     var body: some View {
         ScrollView {
@@ -83,21 +83,21 @@ struct CategoriesView: View {
                 let sample = SamplesApp.samples.first(where: { $0.name == sampleName })!
                 
                 if sample.hasTeardown {
-                    if sampleNeedingTearDown != nil, sampleNeedingTearDown != sampleName {
-                        ProgressView("Loading sample…")
+                    if sampleNeedingTeardown != nil, sampleNeedingTeardown != sampleName {
+                        ProgressView("Loading sample")
                     } else {
                         SampleDetailView(sample: sample)
                             .id(sampleName)
                             .onAppear {
-                                sampleNeedingTearDown = sampleName
+                                sampleNeedingTeardown = sampleName
                             }
                             .environment(\.finishTeardown) {
                                 // Allows the next teardown sample to appear.
-                                sampleNeedingTearDown = nil
+                                sampleNeedingTeardown = nil
                             }
                     }
                 } else {
-                    if sampleNeedingTearDown != nil {
+                    if sampleNeedingTeardown != nil {
                         ProgressView("Loading sample…")
                     } else {
                         SampleDetailView(sample: sample)
