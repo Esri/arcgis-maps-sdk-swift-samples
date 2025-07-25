@@ -2758,6 +2758,7 @@
 				951896D22E2AE5E400144F9B /* ShowViewshedFromCameraInSceneView.swift */,
 			);
 			path = "Show viewshed from camera in scene";
+			sourceTree = "<group>";
 		};
 		951896BF2E29B21900144F9B /* Show shapefile metadata */ = {
 			isa = PBXGroup;
