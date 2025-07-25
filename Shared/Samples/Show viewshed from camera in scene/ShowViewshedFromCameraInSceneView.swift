@@ -16,98 +16,34 @@ import ArcGIS
 import SwiftUI
 
 struct ShowViewshedFromCameraInSceneView: View {
-    /// The view model for the sample.
-    @State private var model = Model()
+    /// A camera for the scene that determines where the viewshed is set from.
+    @State private var camera: Camera?
     
-    var body: some View {
-        SceneView(
-            scene: model.scene,
-            camera: $model.camera,
-            analysisOverlays: [model.analysisOverlay]
+    /// The viewshed which is updated by the camera.
+    @State private var viewshed: LocationViewshed
+    
+    /// A 3D Scene setup with imagery basemap, elevation, and mesh layer.
+    @State private var scene: ArcGIS.Scene = {
+        let scene = Scene(basemapStyle: .arcGISImagery)
+        scene.baseSurface.addElevationSource(
+            ArcGISTiledElevationSource(
+                url: URL(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!
+            )
         )
-        .onAppear {
-            // Set up the initial viewshed when the view appears.
-            model.setInitialViewshed()
-        }
-        .toolbar {
-            ToolbarItem(placement: .bottomBar) {
-                viewshedButton
-            }
-        }
-    }
+        scene.addOperationalLayer(
+            IntegratedMeshLayer(
+                url: URL(string: "https://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/Girona_3D/SceneServer")!
+            )
+        )
+        return scene
+    }()
     
-    private var viewshedButton: some View {
-        Button("Viewshed from here") {
-            // Update viewshed based on current camera location when button is tapped.
-            model.updateViewshed()
-        }
-    }
-}
-
-private extension ShowViewshedFromCameraInSceneView {
-    @MainActor
-    @Observable
-    final class Model {
-        ///  A camera for the scene that determines where the viewshed is set from.
-        var camera: Camera? = .initial
-        
-        /// An analysis overlay used to display the viewshed analysis visualization.
-        let analysisOverlay = AnalysisOverlay()
-        
-        /// The viewshed which is updated by the camera.
-        @ObservationIgnored private var viewshed: LocationViewshed?
-        
-        /// A 3D Scene setup with imagery basemap, elevation, and mesh layer.
-        let scene: ArcGIS.Scene = {
-            let scene = Scene(basemapStyle: .arcGISImagery)
-            scene.baseSurface.addElevationSource(
-                ArcGISTiledElevationSource(
-                    url: URL(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!
-                )
-            )
-            scene.addOperationalLayer(
-                IntegratedMeshLayer(
-                    url: URL(string: "https://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/Girona_3D/SceneServer")!
-                )
-            )
-            return scene
-        }()
-        
-        /// Applies a viewshed at the initial camera position.
-        func setInitialViewshed() {
-            guard let camera else { return }
-            setupViewshed(using: camera)
-            
-            /// Applies the viewshed to the scene and sets the UI for analysis.
-            func setupViewshed(using camera: Camera) {
-                // Create and configure the new viewshed.
-                let newViewshed = LocationViewshed(
-                    camera: camera,
-                    minDistance: 1.0,
-                    maxDistance: 1_000.0
-                )
-                // Set visual appearance of the viewshed.
-                Viewshed.visibleColor = .green.withAlphaComponent(0.5)
-                Viewshed.obstructedColor = .red.withAlphaComponent(0.5)
-                // Add the new viewshed to the overlay.
-                analysisOverlay.addAnalysis(newViewshed)
-                viewshed = newViewshed
-            }
-        }
-        
-        /// Updates the viewshed using the current camera position.
-        func updateViewshed() {
-            guard let camera, let viewshed else { return }
-            viewshed.update(from: camera)
-        }
-    }
-}
-
-private extension Camera {
-    /// Camera that is 200m above ground over Girona, Spain,
-    /// looking slightly downward at the landscape.
-    static var initial: Camera {
-        Camera(
+    /// An analysis overlay used to display the viewshed analysis visualization.
+    /// The viewshed which is updated by the camera.
+    @State private var analysisOverlay = AnalysisOverlay()
+    
+    init() {
+        let camera = Camera(
             location: Point(
                 x: 2.8214,
                 y: 41.985,
@@ -118,5 +54,37 @@ private extension Camera {
             pitch: 82.4732,
             roll: 0
         )
+        self.camera = camera
+        
+        self.viewshed = LocationViewshed(
+            camera: camera,
+            minDistance: 1.0,
+            maxDistance: 1_000.0
+        )
+        
+        // Set visual appearance of the viewshed.
+        Viewshed.visibleColor = .green.withAlphaComponent(0.5)
+        Viewshed.obstructedColor = .red.withAlphaComponent(0.5)
+        
+        // Add the new viewshed to the overlay.
+        analysisOverlay.addAnalysis(viewshed)
+    }
+    
+    var body: some View {
+        SceneView(
+            scene: scene,
+            camera: $camera,
+            analysisOverlays: [analysisOverlay]
+        )
+        .toolbar {
+            ToolbarItem(placement: .bottomBar) {
+                Button("Viewshed from here") {
+                    guard let camera else { return }
+                    
+                    // Update viewshed based on current camera location when button is tapped.
+                    viewshed.update(from: camera)
+                }
+            }
+        }
     }
 }
