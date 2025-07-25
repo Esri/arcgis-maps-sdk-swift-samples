@@ -6,7 +6,7 @@ Retrieve a user's details via a Portal.
 
 ## Use case
 
-Portal information can be used to build a user interface. For example, the portal user's thubmnail can be shown to indicate that they are currently logged in.
+Portal information can be used to build a user interface. For example, the portal user's thumbmnail can be shown to indicate that they are currently logged in.
 
 ## How to use the sample
 
@@ -14,7 +14,7 @@ Enter your ArcGIS Online credentials for the specified URL.
 
 ## How it works
 
-1. Present the user with an editable text field for enterting a portal URL.
+1. Present the user with an editable text field for entering a portal URL.
 2. Create and load a portal with the URL.
 3. If the portal is secured, it may potentially issue an authentication challenge.
 4. Display the desired portal info once loading has successfully completed. Otherwise, if loading failed, display the error.
