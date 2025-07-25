@@ -7,26 +7,25 @@
     ],
     "keywords": [
         "3D",
-        "Scene",
-        "integrated mesh",
-        "viewshed",
-        "visibility analysis",
         "AnalysisOverlay",
-        "ArcGISScene",
         "ArcGISTiledElevationSource",
         "Camera",
         "IntegratedMeshLayer",
+        "integrated mesh",
         "LocationViewshed",
-        "SceneView"
+        "Scene",
+        "SceneView",
+        "viewshed",
+        "visibility analysis"
     ],
     "redirect_from": [],
     "relevant_apis": [
         "AnalysisOverlay",
-        "ArcGISScene",
         "ArcGISTiledElevationSource",
         "Camera",
         "IntegratedMeshLayer",
         "LocationViewshed",
+        "Scene",
         "SceneView"
     ],
     "snippets": [
