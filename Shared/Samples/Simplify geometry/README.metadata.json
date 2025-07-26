@@ -1,0 +1,26 @@
+{
+    "category": "",
+    "description": "Simplify a polygon with a self-intersecting geometry.",
+    "ignore": false,
+    "images": [
+        "simplify-geometry.png"
+    ],
+    "keywords": [
+        "geometry",
+        "polygon",
+        "simplify",
+        "spatial operations",
+        "topology",
+        "Geometry",
+        "GeometryEngine"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Geometry",
+        "GeometryEngine"
+    ],
+    "snippets": [
+        "SimplifyGeometryView.swift"
+    ],
+    "title": "Simplify geometry"
+}
