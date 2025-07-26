@@ -16,8 +16,26 @@ import ArcGIS
 import SwiftUI
 
 struct SimplifyGeometryView: View {
+    @State private var map = Map(basemapStyle: .arcGISTopographic)
     
     var body: some View {
-        Text("SimplifyGeometryView")
+        MapViewReader { mapView in
+            MapView(map: map)
+                .onAppear {
+                    Task {
+                        await mapView.setViewpoint(
+                            Viewpoint(
+                                latitude: 0,
+                                longitude: 0,
+                                scale: 1_000_000
+                            )
+                        )
+                    }
+                }
+        }
     }
+}
+
+#Preview {
+    SimplifyGeometryView()
 }
