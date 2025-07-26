@@ -51,7 +51,7 @@ struct ShowWFSLayerWithXMLQueryView: View {
         ProgressView(
             """
             Loading query
-            data...
+            data
             """
         )
         .padding()
