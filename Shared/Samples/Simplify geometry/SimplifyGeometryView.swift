@@ -17,6 +17,14 @@ import SwiftUI
 
 struct SimplifyGeometryView: View {
     @State private var map = Map(basemapStyle: .arcGISTopographic)
+    /// The screen point to perform an identify operation.
+    @State private var identifyScreenPoint: CGPoint?
+    /// The geometry editor.
+    let geometryEditor = GeometryEditor()
+    /// The programmatic reticle tool.
+    private let reticleTool = ProgrammaticReticleTool()
+    /// The graphics overlay used to save geometries to.
+    let geometryOverlay = GraphicsOverlay(renderingMode: .dynamic)
     
     var body: some View {
         MapViewReader { mapView in
