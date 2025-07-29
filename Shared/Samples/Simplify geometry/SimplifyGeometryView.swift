@@ -16,30 +16,117 @@ import ArcGIS
 import SwiftUI
 
 struct SimplifyGeometryView: View {
-    @State private var map = Map(basemapStyle: .arcGISTopographic)
-    /// The screen point to perform an identify operation.
-    @State private var identifyScreenPoint: CGPoint?
-    /// The geometry editor.
-    let geometryEditor = GeometryEditor()
-    /// The programmatic reticle tool.
-    private let reticleTool = ProgrammaticReticleTool()
-    /// The graphics overlay used to save geometries to.
-    let geometryOverlay = GraphicsOverlay(renderingMode: .dynamic)
+    @State private var map = Map(basemapStyle: .arcGISLightGray)
+    @State private var simplifyDisabled = true
+    @State private var resetDisabled = true
+    // Overlays
+    @State private var originalOverlay = GraphicsOverlay()
+    @State private var resultOverlay = GraphicsOverlay()
+    // The polygon to simplify
+    @State private var polygonGraphic: Graphic?
+    
+    let lineSymbol = SimpleLineSymbol(style: .solid, color: .black, width: 1)
     
     var body: some View {
-        MapViewReader { mapView in
-            MapView(map: map)
-                .onAppear {
-                    Task {
-                        await mapView.setViewpoint(
-                            Viewpoint(
-                                latitude: 0,
-                                longitude: 0,
-                                scale: 1_000_000
+        ZStack(alignment: .topLeading) {
+            MapViewReader { mapView in
+                MapView(map: map, graphicsOverlays: [originalOverlay, resultOverlay])
+                    .onAppear {
+                        simplifyDisabled = false
+                        createPolygon()
+                        if let polygon = polygonGraphic {
+                            originalOverlay.addGraphic(polygon)
+                        }
+                        Task {
+                            await mapView.setViewpointCenter(
+                                Point(
+                                    x: -13500,
+                                    y: 6710327,
+                                    spatialReference: .webMercator
+                                ),
+                                scale: 25000
                             )
-                        )
+                        }
                     }
+            }
+            .navigationTitle("About")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    VStack(spacing: 6) {
+                        Button("Simplify") {
+                            simplifyGeometry()
+                        }
+                        .disabled(simplifyDisabled)
+                        
+                        Button("Reset") {
+                            resultOverlay.removeAllGraphics()
+                            simplifyDisabled = false
+                            resetDisabled = true
+                        }
+                        .disabled(resetDisabled)
+                    }
+                    .padding()
+                    .background(Color.black.opacity(0.3))
+                    .cornerRadius(8)
+                    .frame(maxWidth: 110)
+                    .padding(.top, 10)
+                    .padding(.leading, 10)
                 }
+            }
+        }
+    }
+    
+    func createPolygon() {
+        let part1: MutablePart = MutablePart(
+            points: [
+                Point(x: -13020, y: 6710130),
+                Point(x: -14160, y: 6710130),
+                Point(x: -14160, y: 6709300),
+                Point(x: -13020, y: 6709300),
+                Point(x: -13020, y: 6710130)
+            ],
+            spatialReference: .webMercator
+        )
+        let part2: MutablePart = MutablePart(
+            points: [
+                Point(x: -12160, y: 6710730),
+                Point(x: -13160, y: 6710730),
+                Point(x: -13160, y: 6709100),
+                Point(x: -12160, y: 6709100),
+                Point(x: -12160, y: 6710730)
+            ],
+            spatialReference: .webMercator
+        )
+        let part3: MutablePart = MutablePart(
+            points: [
+                Point(x: -12560, y: 6710030),
+                Point(x: -13520, y: 6710030),
+                Point(x: -13520, y: 6709000),
+                Point(x: -12560, y: 6709000),
+                Point(x: -12560, y: 6710030)
+            ],
+            spatialReference: .webMercator
+        )
+        let polygonBuilder = PolygonBuilder(spatialReference: .webMercator)
+        polygonBuilder.parts.append(part1)
+        polygonBuilder.parts.append(part2)
+        polygonBuilder.parts.append(part3)
+        let polygon = polygonBuilder.toGeometry()
+        let fillSymbol = SimpleFillSymbol(style: .solid, color: .clear, outline: lineSymbol)
+        polygonGraphic = Graphic(geometry: polygon, symbol: fillSymbol)
+    }
+    
+    func simplifyGeometry() {
+        guard let original = polygonGraphic?.geometry else { return }
+        if !GeometryEngine.isSimple(original) {
+            if let simplified = GeometryEngine.simplify(original) {
+                let redSymbol = SimpleFillSymbol(style: .solid, color: .red, outline: lineSymbol)
+                let resultGraphic = Graphic(geometry: simplified, symbol: redSymbol)
+                resultOverlay.addGraphic(resultGraphic)
+                simplifyDisabled = true
+                resetDisabled = false
+            }
         }
     }
 }
