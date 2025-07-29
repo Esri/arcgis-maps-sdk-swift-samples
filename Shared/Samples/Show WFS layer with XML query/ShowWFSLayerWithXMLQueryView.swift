@@ -19,7 +19,7 @@ struct ShowWFSLayerWithXMLQueryView: View {
     /// The error shown in the error alert.
     @State private var error: Error?
     
-    /// Map with the Topographic basemap style
+    /// Map with the Topographic basemap style.
     @State private var map = Map(basemapStyle: .arcGISTopographic)
     
     /// Flag to track if the initial viewpoint has been set.
@@ -27,8 +27,8 @@ struct ShowWFSLayerWithXMLQueryView: View {
     
     /// Create a WFS (Web Feature Service) feature table using a specified URL and table name.
     @State private var statesTable = WFSFeatureTable(
-        url: .wfsUrl, // The URL to the WFS service
-        tableName: .seattleTreesDowntown // The name of the table within the service
+        url: .wfsUrl, // The URL to the WFS service.
+        tableName: .seattleTreesDowntown // The name of the table within the service.
     )
     
     /// Flag to indicate whether data is currently being loaded.
