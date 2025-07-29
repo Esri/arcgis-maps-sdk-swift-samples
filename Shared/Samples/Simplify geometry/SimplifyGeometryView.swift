@@ -18,12 +18,11 @@ import SwiftUI
 struct SimplifyGeometryView: View {
     @State private var map = Map(basemapStyle: .arcGISLightGray)
     @State private var simplifyDisabled = true
-    @State private var resetDisabled = true
     @State private var originalOverlay = GraphicsOverlay()
     @State private var resultOverlay = GraphicsOverlay()
     @State private var polygonGraphic: Graphic?
     
-    let lineSymbol = SimpleLineSymbol(style: .solid, color: .black, width: 1)
+    private let lineSymbol = SimpleLineSymbol(style: .solid, color: .black, width: 1)
     
     var body: some View {
         MapViewReader { mapView in
@@ -58,15 +57,13 @@ struct SimplifyGeometryView: View {
                 Button("Reset") {
                     resultOverlay.removeAllGraphics()
                     simplifyDisabled = false
-                    resetDisabled = true
                 }
-                .disabled(resetDisabled)
+                .disabled(!simplifyDisabled)
             }
         }
-        
     }
     
-    func createPolygon() {
+    private func createPolygon() {
         let part1 = MutablePart(
             points: [
                 Point(x: -13020, y: 6710130),
@@ -106,7 +103,7 @@ struct SimplifyGeometryView: View {
         polygonGraphic = Graphic(geometry: polygon, symbol: fillSymbol)
     }
     
-    func simplifyGeometry() {
+    private func simplifyGeometry() {
         guard let original = polygonGraphic?.geometry else { return }
         if !GeometryEngine.isSimple(original) {
             if let simplified = GeometryEngine.simplify(original) {
@@ -114,7 +111,6 @@ struct SimplifyGeometryView: View {
                 let resultGraphic = Graphic(geometry: simplified, symbol: redSymbol)
                 resultOverlay.addGraphic(resultGraphic)
                 simplifyDisabled = true
-                resetDisabled = false
             }
         }
     }
