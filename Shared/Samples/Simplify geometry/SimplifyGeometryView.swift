@@ -49,7 +49,7 @@ struct SimplifyGeometryView: View {
                 Button("Simplify", role: .cancel) {
                     simplifyGeometry()
                 }
-                .disabled(!isSimplified)
+                .disabled(isSimplified)
             }
             
             ToolbarItem(placement: .bottomBar) {
@@ -57,7 +57,7 @@ struct SimplifyGeometryView: View {
                     resultOverlay.removeAllGraphics()
                     isSimplified = false
                 }
-                .disabled(isSimplified)
+                .disabled(!isSimplified)
             }
         }
     }
