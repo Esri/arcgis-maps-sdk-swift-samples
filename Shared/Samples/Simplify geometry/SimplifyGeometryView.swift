@@ -17,7 +17,7 @@ import SwiftUI
 
 struct SimplifyGeometryView: View {
     @State private var map = Map(basemapStyle: .arcGISLightGray)
-    @State private var simplifyDisabled = true
+    @State private var isSimplified = false
     @State private var originalOverlay = GraphicsOverlay()
     @State private var resultOverlay = GraphicsOverlay()
     @State private var polygonGraphic: Graphic?
@@ -28,7 +28,6 @@ struct SimplifyGeometryView: View {
         MapViewReader { mapView in
             MapView(map: map, graphicsOverlays: [originalOverlay, resultOverlay])
                 .onAppear {
-                    simplifyDisabled = false
                     createPolygon()
                     if let polygon = polygonGraphic {
                         originalOverlay.addGraphic(polygon)
@@ -50,15 +49,15 @@ struct SimplifyGeometryView: View {
                 Button("Simplify", role: .cancel) {
                     simplifyGeometry()
                 }
-                .disabled(simplifyDisabled)
+                .disabled(!isSimplified)
             }
             
             ToolbarItem(placement: .bottomBar) {
                 Button("Reset") {
                     resultOverlay.removeAllGraphics()
-                    simplifyDisabled = false
+                    isSimplified = false
                 }
-                .disabled(!simplifyDisabled)
+                .disabled(isSimplified)
             }
         }
     }
@@ -110,7 +109,7 @@ struct SimplifyGeometryView: View {
                 let redSymbol = SimpleFillSymbol(style: .solid, color: .red, outline: lineSymbol)
                 let resultGraphic = Graphic(geometry: simplified, symbol: redSymbol)
                 resultOverlay.addGraphic(resultGraphic)
-                simplifyDisabled = true
+                isSimplified = true
             }
         }
     }
