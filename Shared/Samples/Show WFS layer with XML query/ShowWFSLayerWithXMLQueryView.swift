@@ -16,49 +16,77 @@ import ArcGIS
 import SwiftUI
 
 struct ShowWFSLayerWithXMLQueryView: View {
-    /// The view model for the sample.
-    @State private var model = Model()
     /// The error shown in the error alert.
     @State private var error: Error?
     
+    /// Map with the Topographic basemap style
+    @State private var map = Map(basemapStyle: .arcGISTopographic)
+    
+    /// Flag to track if the initial viewpoint has been set.
+    @State private var hasSetInitialViewpoint = false
+    
+    /// Create a WFS (Web Feature Service) feature table using a specified URL and table name.
+    @State private var statesTable = WFSFeatureTable(
+        url: .wfsUrl, // The URL to the WFS service
+        tableName: .seattleTreesDowntown // The name of the table within the service
+    )
+    
+    /// Flag to indicate whether data is currently being loaded.
+    @State private var isLoading = false
+    
     var body: some View {
         MapViewReader { mapView in
-            MapView(map: model.map)
+            MapView(map: map)
             // Overlay with loading view in the center if data
             // is currently being loaded.
                 .overlay(alignment: .center) {
-                    if model.isLoading {
+                    if isLoading {
                         loadingView
                     }
                 }
                 .task {
                     do {
-                        // Load the WFS data via the model
-                        try await model.loadData()
-                        
-                        // If the table has a spatial extent and the initial
-                        // viewpoint hasn't been set yet
-                        if let extent = model.statesTable.extent,
-                           !model.hasSetInitialViewpoint {
-                            // Mark that the initial viewpoint has been set
-                            model.hasSetInitialViewpoint = true
-                            // Animate the map to the extent of the data over 2 seconds
+                        // Load the WFS data.
+                        try await loadData()
+                        if let extent = statesTable.extent,
+                           !hasSetInitialViewpoint {
+                            // Mark that the initial viewpoint has been set.
+                            hasSetInitialViewpoint = true
+                            // Animate the map to the extent of the data over 1 second.
                             await mapView.setViewpoint(
                                 Viewpoint(boundingGeometry: extent),
-                                duration: 2.0
+                                duration: 1.0
                             )
                         }
                         
                         // Mark that loading has completed.
-                        model.isLoading = false
+                        isLoading = false
                     } catch {
                         // If an error occurs during loading, capture it to trigger an alert.
                         self.error = error
                     }
                 }
-            // Display an alert if there is an error during data loading
+            // Display an alert if there is an error during data loading.
                 .errorAlert(presentingError: $error)
         }
+    }
+    
+    /// Asynchronous function to load data from the WFS service
+    func loadData() async throws {
+        isLoading = true
+        // Set the axis order to not swap X and Y (used for coordinate systems.)
+        statesTable.axisOrder = .noSwap
+        // Use manual cache mode so data must be explicitly loaded from the service.
+        statesTable.featureRequestMode = .manualCache
+        try await statesTable.load()
+        // Create a feature layer from the table and add it to the map.
+        let layer = FeatureLayer(featureTable: statesTable)
+        map.addOperationalLayer(layer)
+        // Populate the feature table with data from the WFS service using an XML query.
+        _ = try await statesTable.populateFromService(
+            usingXMLRequest: .xmlQuery,
+            clearCache: true
+        )
     }
     
     var loadingView: some View {
@@ -76,50 +104,23 @@ struct ShowWFSLayerWithXMLQueryView: View {
     }
 }
 
-private extension ShowWFSLayerWithXMLQueryView {
-    @MainActor
-    @Observable
-    class Model {
-        /// Map with the Topographic basemap style
-        var map = Map(basemapStyle: .arcGISTopographic)
-        
-        /// Flag to track if the initial viewpoint has been set.
-        var hasSetInitialViewpoint = false
-        
-        /// Create a WFS (Web Feature Service) feature table using a specified URL and table name.
-        var statesTable = WFSFeatureTable(
-            url: .wfsUrl, // The URL to the WFS service
-            tableName: .seattleTreesDowntown // The name of the table within the service
-        )
-        
-        /// Flag to indicate whether data is currently being loaded.
-        var isLoading = false
-        
-        /// Asynchronous function to load data from the WFS service
-        func loadData() async throws {
-            isLoading = true
-            // Set the axis order to not swap X and Y (used for coordinate systems.)
-            statesTable.axisOrder = .noSwap
-            // Use manual cache mode so data must be explicitly loaded from the service.
-            statesTable.featureRequestMode = .manualCache
-            try await statesTable.load()
-            // Create a feature layer from the table and add it to the map.
-            let layer = FeatureLayer(featureTable: statesTable)
-            map.addOperationalLayer(layer)
-            // Populate the feature table with data from the WFS service using an XML query.
-            _ = try await statesTable.populateFromService(
-                usingXMLRequest: xmlQuery,
-                clearCache: true
-            )
-        }
-    }
-}
-
 #Preview {
     ShowWFSLayerWithXMLQueryView()
 }
 
-extension ShowWFSLayerWithXMLQueryView {
+private extension URL {
+    /// Static property to return the full URL for the WFS GetCapabilities request
+    static var wfsUrl: URL {
+        URL(string: "https://dservices2.arcgis.com/ZQgQTuoyBrtmoGdP/arcgis/services/Seattle_Downtown_Features/WFSServer?service=wfs&request=getcapabilities")!
+    }
+}
+
+extension String {
+    /// This string matches the `typeNames` used in the XML query to identify the layer to query.
+    static var seattleTreesDowntown: String {
+        "Seattle_Downtown_Features:Trees"
+    }
+    
     /// XML query to request features from the WFS service
     /// This specific query fetches only tree features where the "SCIENTIFIC" field equals "Tilia cordata"
     static let xmlQuery = """
@@ -138,18 +139,4 @@ extension ShowWFSLayerWithXMLQueryView {
           </wfs:Query>
         </wfs:GetFeature>
         """
-}
-
-private extension URL {
-    /// Static property to return the full URL for the WFS GetCapabilities request
-    static var wfsUrl: URL {
-        URL(string: "https://dservices2.arcgis.com/ZQgQTuoyBrtmoGdP/arcgis/services/Seattle_Downtown_Features/WFSServer?service=wfs&request=getcapabilities")!
-    }
-}
-
-extension String {
-    /// This string matches the `typeNames` used in the XML query to identify the layer to query.
-    static var seattleTreesDowntown: String {
-        "Seattle_Downtown_Features:Trees"
-    }
 }
