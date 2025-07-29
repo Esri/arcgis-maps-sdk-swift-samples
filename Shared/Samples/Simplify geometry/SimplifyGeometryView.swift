@@ -19,66 +19,55 @@ struct SimplifyGeometryView: View {
     @State private var map = Map(basemapStyle: .arcGISLightGray)
     @State private var simplifyDisabled = true
     @State private var resetDisabled = true
-    // Overlays
     @State private var originalOverlay = GraphicsOverlay()
     @State private var resultOverlay = GraphicsOverlay()
-    // The polygon to simplify
     @State private var polygonGraphic: Graphic?
     
     let lineSymbol = SimpleLineSymbol(style: .solid, color: .black, width: 1)
     
     var body: some View {
-        ZStack(alignment: .topLeading) {
-            MapViewReader { mapView in
-                MapView(map: map, graphicsOverlays: [originalOverlay, resultOverlay])
-                    .onAppear {
-                        simplifyDisabled = false
-                        createPolygon()
-                        if let polygon = polygonGraphic {
-                            originalOverlay.addGraphic(polygon)
-                        }
-                        Task {
-                            await mapView.setViewpointCenter(
-                                Point(
-                                    x: -13500,
-                                    y: 6710327,
-                                    spatialReference: .webMercator
-                                ),
-                                scale: 25000
-                            )
-                        }
+        MapViewReader { mapView in
+            MapView(map: map, graphicsOverlays: [originalOverlay, resultOverlay])
+                .onAppear {
+                    simplifyDisabled = false
+                    createPolygon()
+                    if let polygon = polygonGraphic {
+                        originalOverlay.addGraphic(polygon)
                     }
-            }
-            .navigationTitle("About")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    VStack(spacing: 6) {
-                        Button("Simplify") {
-                            simplifyGeometry()
-                        }
-                        .disabled(simplifyDisabled)
-                        
-                        Button("Reset") {
-                            resultOverlay.removeAllGraphics()
-                            simplifyDisabled = false
-                            resetDisabled = true
-                        }
-                        .disabled(resetDisabled)
+                    Task {
+                        await mapView.setViewpointCenter(
+                            Point(
+                                x: -13500,
+                                y: 6710327,
+                                spatialReference: .webMercator
+                            ),
+                            scale: 25000
+                        )
                     }
-                    .padding()
-                    .background(Color.black.opacity(0.3))
-                    .cornerRadius(8)
-                    .frame(maxWidth: 110)
-                    .padding(.top, 10)
-                    .padding(.leading, 10)
                 }
+        }
+        .toolbar {
+            ToolbarItem(placement: .bottomBar) {
+                Button("Simplify", role: .cancel) {
+                    simplifyGeometry()
+                }
+                .disabled(simplifyDisabled)
+            }
+            
+            ToolbarItem(placement: .bottomBar) {
+                Button("Reset") {
+                    resultOverlay.removeAllGraphics()
+                    simplifyDisabled = false
+                    resetDisabled = true
+                }
+                .disabled(resetDisabled)
             }
         }
+        
     }
     
     func createPolygon() {
-        let part1: MutablePart = MutablePart(
+        let part1 = MutablePart(
             points: [
                 Point(x: -13020, y: 6710130),
                 Point(x: -14160, y: 6710130),
@@ -88,7 +77,7 @@ struct SimplifyGeometryView: View {
             ],
             spatialReference: .webMercator
         )
-        let part2: MutablePart = MutablePart(
+        let part2 = MutablePart(
             points: [
                 Point(x: -12160, y: 6710730),
                 Point(x: -13160, y: 6710730),
@@ -98,7 +87,7 @@ struct SimplifyGeometryView: View {
             ],
             spatialReference: .webMercator
         )
-        let part3: MutablePart = MutablePart(
+        let part3 = MutablePart(
             points: [
                 Point(x: -12560, y: 6710030),
                 Point(x: -13520, y: 6710030),
