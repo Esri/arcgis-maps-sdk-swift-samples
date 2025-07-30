@@ -17,22 +17,28 @@ import SwiftUI
 
 struct SimplifyGeometryView: View {
     @State private var map = Map(basemapStyle: .arcGISLightGray)
+    /// Property to track whether geometry has been simplified.
     @State private var isSimplified = false
+    /// Graphic overlay for the original polygon.
     @State private var originalOverlay = GraphicsOverlay()
+    /// Graphic overlay for the simplified geometry.
     @State private var resultOverlay = GraphicsOverlay()
     @State private var polygonGraphic: Graphic?
-    
+    /// A basic black line symbol used for polygon outlines.
     private let lineSymbol = SimpleLineSymbol(style: .solid, color: .black, width: 1)
     
     var body: some View {
         MapViewReader { mapView in
             MapView(map: map, graphicsOverlays: [originalOverlay, resultOverlay])
                 .onAppear {
+                    // Create the polygon geometry when view appears.
                     createPolygon()
+                    // Add the original polygon to the overlay if it exists.
                     if let polygon = polygonGraphic {
                         originalOverlay.addGraphic(polygon)
                     }
                     Task {
+                        // Center the map on London.
                         await mapView.setViewpointCenter(
                             Point(
                                 x: -13500,
@@ -54,6 +60,7 @@ struct SimplifyGeometryView: View {
             
             ToolbarItem(placement: .bottomBar) {
                 Button("Reset") {
+                    // Clear the simplified overlay and reset state.
                     resultOverlay.removeAllGraphics()
                     isSimplified = false
                 }
@@ -93,10 +100,12 @@ struct SimplifyGeometryView: View {
             ],
             spatialReference: .webMercator
         )
+        // Build the full polygon from all parts.
         let polygonBuilder = PolygonBuilder(spatialReference: .webMercator)
         polygonBuilder.parts.append(part1)
         polygonBuilder.parts.append(part2)
         polygonBuilder.parts.append(part3)
+        // Convert to a geometry and wrap it in a graphic with transparent fill.
         let polygon = polygonBuilder.toGeometry()
         let fillSymbol = SimpleFillSymbol(style: .solid, color: .clear, outline: lineSymbol)
         polygonGraphic = Graphic(geometry: polygon, symbol: fillSymbol)
@@ -104,11 +113,15 @@ struct SimplifyGeometryView: View {
     
     private func simplifyGeometry() {
         guard let original = polygonGraphic?.geometry else { return }
+        // Check if the geometry is already simple.
         if !GeometryEngine.isSimple(original) {
             if let simplified = GeometryEngine.simplify(original) {
+                // Define a red-filled symbol for the simplified result.
                 let redSymbol = SimpleFillSymbol(style: .solid, color: .red, outline: lineSymbol)
+                // Create a graphic from the simplified geometry and add it to the result overlay.
                 let resultGraphic = Graphic(geometry: simplified, symbol: redSymbol)
                 resultOverlay.addGraphic(resultGraphic)
+                // Set simplified state to true. 
                 isSimplified = true
             }
         }
