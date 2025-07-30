@@ -26,7 +26,7 @@ struct ShowWFSLayerWithXMLQueryView: View {
     @State private var hasSetInitialViewpoint = false
     
     /// Create a WFS (Web Feature Service) feature table using a specified URL and table name.
-    @State private var statesTable = WFSFeatureTable(
+    @State private var seattleTreesTable = WFSFeatureTable(
         url: .wfsUrl, // The URL to the WFS service.
         tableName: .seattleTreesDowntown // The name of the table within the service.
     )
@@ -48,7 +48,7 @@ struct ShowWFSLayerWithXMLQueryView: View {
                     do {
                         // Load the WFS data.
                         try await loadData()
-                        if let extent = statesTable.extent,
+                        if let extent = seattleTreesTable.extent,
                            !hasSetInitialViewpoint {
                             // Mark that the initial viewpoint has been set.
                             hasSetInitialViewpoint = true
@@ -75,15 +75,15 @@ struct ShowWFSLayerWithXMLQueryView: View {
     func loadData() async throws {
         isLoading = true
         // Set the axis order to not swap X and Y (used for coordinate systems.)
-        statesTable.axisOrder = .noSwap
+        seattleTreesTable.axisOrder = .noSwap
         // Use manual cache mode so data must be explicitly loaded from the service.
-        statesTable.featureRequestMode = .manualCache
-        try await statesTable.load()
+        seattleTreesTable.featureRequestMode = .manualCache
+        try await seattleTreesTable.load()
         // Create a feature layer from the table and add it to the map.
-        let layer = FeatureLayer(featureTable: statesTable)
+        let layer = FeatureLayer(featureTable: seattleTreesTable)
         map.addOperationalLayer(layer)
         // Populate the feature table with data from the WFS service using an XML query.
-        _ = try await statesTable.populateFromService(
+        _ = try await seattleTreesTable.populateFromService(
             usingXMLRequest: .xmlQuery,
             clearCache: true
         )
