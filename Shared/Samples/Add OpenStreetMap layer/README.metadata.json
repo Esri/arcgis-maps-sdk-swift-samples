@@ -1,0 +1,30 @@
+{
+    "category": "Maps",
+    "description": "Add an OpenStreetMap basemap.",
+    "ignore": false,
+    "images": [
+        "add-open-street-map-layer.png"
+    ],
+    "keywords": [
+        "OSM",
+        "OpenStreetMap",
+        "basemap",
+        "layers",
+        "map",
+        "open",
+        "street",
+        "Basemap.Style",
+        "Map",
+        "MapView"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Basemap.Style",
+        "Map",
+        "MapView"
+    ],
+    "snippets": [
+        "AddOpenStreetMapLayerView.swift"
+    ],
+    "title": "Add OpenStreetMap layer"
+}

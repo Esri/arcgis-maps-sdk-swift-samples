@@ -12,9 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import StoreKit
 import SwiftUI
 
 struct ContentView: View {
+    /// The action to request an App Store review.
+    @Environment(\.requestReview) private var requestReview
+    
+    /// The view model for requesting App Store reviews.
+    @Environment(\.requestReviewModel) private var requestReviewModel
+    
     /// The visibility of the leading columns in the navigation split view.
     @State private var columnVisibility: NavigationSplitViewVisibility = .all
     
@@ -32,7 +39,21 @@ struct ContentView: View {
                         }
                         .sheet(isPresented: $isAboutViewPresented) {
                             AboutView()
+                                .pagePresentation()
                         }
+                    }
+                }
+                .task {
+                    // Requests an App Store review.
+                    guard requestReviewModel.canRequestReview else {
+                        return
+                    }
+                    
+                    try? await Task.sleep(for: .seconds(2))
+                    
+                    if !requestReviewModel.sampleIsShowing, !Task.isCancelled {
+                        requestReview()
+                        requestReviewModel.lastRequestedReviewVersion = Bundle.main.shortVersion
                     }
                 }
         } content: {
@@ -42,5 +63,6 @@ struct ContentView: View {
                 Text("No Sample Selected")
             }
         }
+        .environment(\.requestReviewModel, requestReviewModel)
     }
 }

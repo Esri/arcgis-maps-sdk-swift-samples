@@ -43,19 +43,19 @@ extension SnapGeometryEditsView {
             Form {
                 Section("Geometry Editor Snapping") {
                     Toggle("Snapping", isOn: $snappingEnabled)
-                        .onChange(of: snappingEnabled) { newValue in
-                            model.geometryEditor.snapSettings.isEnabled = newValue
+                        .onChange(of: snappingEnabled) {
+                            model.geometryEditor.snapSettings.isEnabled = snappingEnabled
                         }
                     
                     Toggle("Geometry Guides", isOn: $snapsToGeometryGuides)
-                        .onChange(of: snapsToGeometryGuides) { newValue in
-                            model.geometryEditor.snapSettings.snapsToGeometryGuides = newValue
+                        .onChange(of: snapsToGeometryGuides) {
+                            model.geometryEditor.snapSettings.snapsToGeometryGuides = snapsToGeometryGuides
                         }
                         .disabled(!snappingEnabled)
                     
                     Toggle("Feature Snapping", isOn: $snapsToFeatures)
-                        .onChange(of: snapsToFeatures) { newValue in
-                            model.geometryEditor.snapSettings.snapsToFeatures = newValue
+                        .onChange(of: snapsToFeatures) {
+                            model.geometryEditor.snapSettings.snapsToFeatures = snapsToFeatures
                         }
                         .disabled(!snappingEnabled)
                 }
@@ -63,8 +63,8 @@ extension SnapGeometryEditsView {
                 Section("Individual Source Snapping") {
                     ForEach(0 ..< snapSources.count, id: \.self) { index in
                         Toggle(snapSources[index].name, isOn: $snapSourceEnabledStates[index])
-                            .onChange(of: snapSourceEnabledStates[index]) { newValue in
-                                snapSources[index].sourceSettings.isEnabled = newValue
+                            .onChange(of: snapSourceEnabledStates[index]) {
+                                snapSources[index].sourceSettings.isEnabled = snapSourceEnabledStates[index]
                             }
                     }
                 }

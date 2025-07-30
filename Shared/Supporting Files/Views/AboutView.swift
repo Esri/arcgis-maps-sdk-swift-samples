@@ -18,10 +18,10 @@ struct AboutView: View {
     @Environment(\.dismiss) private var dismiss: DismissAction
     
     private var copyrightText: Text {
-        Text("Copyright © 2022 - 2024 Esri. All Rights Reserved.")
+        Text("Copyright © 2022 - 2025 Esri. All Rights Reserved.")
     }
     
-    let arcGISVersion = Bundle.arcGIS.version.isEmpty
+    private let arcGISVersion = Bundle.arcGIS.version.isEmpty
     ? Bundle.arcGIS.shortVersion
     : "\(Bundle.arcGIS.shortVersion) (\(Bundle.arcGIS.version))"
     
@@ -43,6 +43,7 @@ struct AboutView: View {
                 Section {
                     LabeledContent("Version", value: Bundle.main.shortVersion)
                     LabeledContent("SDK Version", value: arcGISVersion)
+                    Link("Write Review", destination: .writeReview)
                 }
                 Section("Powered By") {
                     Link("ArcGIS Maps SDK for Swift Toolkit", destination: .toolkit)
@@ -78,13 +79,13 @@ struct AboutView: View {
 }
 
 private extension Bundle {
-    // The local package bundle ID is "ArcGIS"; the binary is "com.esri.ArcGIS".
-    // By default, the project assumes the dependencies come from GitHub. If they
-    // are not found, then for sure we are developing using local packages.
-    static let arcGIS = Bundle(identifier: "com.esri.ArcGIS") ?? Bundle(identifier: "ArcGIS")!
+    // The local package bundle ID is "arcgis.ArcGIS"; the binary is
+    // "com.esri.ArcGIS".
+    // By default, the project assumes the dependencies come from GitHub. If
+    // they are not found, then for sure we are developing using local packages.
+    static let arcGIS = Bundle(identifier: "com.esri.ArcGIS") ?? Bundle(identifier: "arcgis.ArcGIS")!
     
     var name: String { object(forInfoDictionaryKey: "CFBundleName") as? String ?? "" }
-    var shortVersion: String { object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "" }
     var version: String { object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "" }
 }
 
@@ -94,4 +95,5 @@ private extension URL {
     static let githubRepository = URL(string: "https://github.com/Esri/arcgis-maps-sdk-swift-samples")!
     static let toolkit = URL(string: "https://github.com/Esri/arcgis-maps-sdk-swift-toolkit")!
     static let apiReference = URL(string: "https://developers.arcgis.com/swift/api-reference/documentation/arcgis/")!
+    static let writeReview = URL(string: "https://apps.apple.com/app/id1630449018?action=write-review")!
 }

@@ -1,0 +1,29 @@
+{
+    "category": "Scenes",
+    "description": "Extrude graphics based on an attribute value.",
+    "ignore": false,
+    "images": [
+        "show-extruded-graphics.png"
+    ],
+    "keywords": [
+        "3D",
+        "extrude",
+        "extrusion",
+        "height",
+        "scene",
+        "visualization",
+        "RendererSceneProperties",
+        "RendererSceneProperties.ExtrusionMode",
+        "SimpleRenderer"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "RendererSceneProperties",
+        "RendererSceneProperties.ExtrusionMode",
+        "SimpleRenderer"
+    ],
+    "snippets": [
+        "ShowExtrudedGraphicsView.swift"
+    ],
+    "title": "Show extruded graphics"
+}

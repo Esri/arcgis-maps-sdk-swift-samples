@@ -21,8 +21,6 @@
         "navigation",
         "site",
         "transmitter",
-        "ArcGISFeatureTable",
-        "FeatureTable",
         "IndoorPositioningDefinition",
         "IndoorsLocationDataSource",
         "LocationDisplay",
@@ -32,8 +30,6 @@
     ],
     "redirect_from": [],
     "relevant_apis": [
-        "ArcGISFeatureTable",
-        "FeatureTable",
         "IndoorPositioningDefinition",
         "IndoorsLocationDataSource",
         "LocationDisplay",

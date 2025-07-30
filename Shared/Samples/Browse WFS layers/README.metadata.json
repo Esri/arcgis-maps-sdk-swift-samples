@@ -1,0 +1,39 @@
+{
+    "category": "Layers",
+    "description": "Browse a WFS service for layers and add them to the map.",
+    "ignore": false,
+    "images": [
+        "browse-wfs-layers-1.png",
+        "browse-wfs-layers-2.png",
+        "browse-wfs-layers-3.png"
+    ],
+    "keywords": [
+        "OGC",
+        "WFS",
+        "browse",
+        "catalog",
+        "feature",
+        "layers",
+        "service",
+        "web",
+        "FeatureLayer",
+        "WFSFeatureTable",
+        "WFSFeatureTable.OGCAxisOrder",
+        "WFSLayerInfo",
+        "WFSService",
+        "WFSServiceInfo"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "FeatureLayer",
+        "WFSFeatureTable",
+        "WFSFeatureTable.OGCAxisOrder",
+        "WFSLayerInfo",
+        "WFSService",
+        "WFSServiceInfo"
+    ],
+    "snippets": [
+        "BrowseWFSLayersView.swift"
+    ],
+    "title": "Browse WFS layers"
+}

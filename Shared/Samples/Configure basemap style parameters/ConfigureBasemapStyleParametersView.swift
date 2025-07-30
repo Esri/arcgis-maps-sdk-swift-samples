@@ -20,7 +20,7 @@ struct ConfigureBasemapStyleParametersView: View {
     @StateObject private var model = Model()
     
     /// The selected basemap style language strategy.
-    @State private var selectedLanguage: BasemapStyleLanguage = .strategic(.global)
+    @State private var selectedLanguage: BasemapStyleLanguage = .strategic(.local)
     
     var body: some View {
         MapView(map: model.map)
@@ -68,8 +68,8 @@ struct ConfigureBasemapStyleParametersView: View {
         }
         .menuOrder(.fixed)
         .labelStyle(.titleAndIcon)
-        .onChange(of: selectedLanguage) { newLanguage in
-            model.setBasemapLanguage(newLanguage)
+        .onChange(of: selectedLanguage, initial: true) {
+            model.setBasemapLanguage(selectedLanguage)
         }
     }
 }
@@ -78,19 +78,16 @@ private extension ConfigureBasemapStyleParametersView {
     /// The model used to store the geo model and other expensive objects
     /// used in this view.
     class Model: ObservableObject {
-        /// A map with OpenStreetMap light gray basemap.
+        /// A an empty map with an initial viewpoint.
         let map: Map = {
-            let map = Map(
-                basemap: Basemap(
-                    // An OpenStreetMap basemap style is used to support localization.
-                    style: .osmLightGray,
-                    // Set the language strategy to global to use English.
-                    parameters: BasemapStyleParameters(language: .strategic(.global))
-                )
+            let map = Map()
+            // Start with a viewpoint around Bulgaria, Greece, and Turkey.
+            // They use three different alphabets: Cyrillic, Greek, and Latin,
+            // respectively. The scale is set to Metropolitan Area level.
+            map.initialViewpoint = Viewpoint(
+                center: Point(x: 2_640_000, y: 4_570_000),
+                scale: 288895.277144
             )
-            // Start with a viewpoint over Bulgaria, Greece, and Turkey.
-            // They use three different alphabets: Cyrillic, Greek, and Latin, respectively.
-            map.initialViewpoint = Viewpoint(center: Point(x: 3_000_000, y: 4_500_000), scale: 1e7)
             return map
         }()
         
@@ -105,7 +102,7 @@ private extension ConfigureBasemapStyleParametersView {
         /// - Parameter language: The language setting for the basemap.
         func setBasemapLanguage(_ language: BasemapStyleLanguage) {
             let parameters = BasemapStyleParameters(language: language)
-            map.basemap = Basemap(style: .osmLightGray, parameters: parameters)
+            map.basemap = Basemap(style: .arcGISLightGray, parameters: parameters)
         }
     }
 }

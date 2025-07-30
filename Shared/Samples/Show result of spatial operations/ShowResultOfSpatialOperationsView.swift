@@ -24,7 +24,7 @@ struct ShowResultOfSpatialOperationsView: View {
     
     var body: some View {
         MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
-            .onChange(of: spatialOperation) { _ in
+            .onChange(of: spatialOperation) {
                 model.performOperation(spatialOperation)
             }
             .toolbar {
@@ -168,14 +168,8 @@ private extension Geometry {
     }
 }
 
-#if DEBUG
-private extension ShowResultOfSpatialOperationsView.Model {
-    typealias SpatialOperation = ShowResultOfSpatialOperationsView.SpatialOperation
-}
-
 #Preview {
     NavigationStack {
         ShowResultOfSpatialOperationsView()
     }
 }
-#endif

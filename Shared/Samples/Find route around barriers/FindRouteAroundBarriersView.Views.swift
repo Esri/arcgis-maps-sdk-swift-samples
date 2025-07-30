@@ -40,19 +40,19 @@ extension FindRouteAroundBarriersView {
         var body: some View {
             List {
                 Toggle("Find Best Sequence", isOn: $routingFindsBestSequence)
-                    .onChange(of: routingFindsBestSequence) { newValue in
-                        routeParameters.findsBestSequence = newValue
+                    .onChange(of: routingFindsBestSequence) {
+                        routeParameters.findsBestSequence = routingFindsBestSequence
                     }
                 
                 Section {
                     Toggle("Preserve First Stop", isOn: $routePreservesFirstStop)
-                        .onChange(of: routePreservesFirstStop) { newValue in
-                            routeParameters.preservesFirstStop = newValue
+                        .onChange(of: routePreservesFirstStop) {
+                            routeParameters.preservesFirstStop = routePreservesFirstStop
                         }
                     
                     Toggle("Preserve Last Stop", isOn: $routePreservesLastStop)
-                        .onChange(of: routePreservesLastStop) { newValue in
-                            routeParameters.preservesLastStop = newValue
+                        .onChange(of: routePreservesLastStop) {
+                            routeParameters.preservesLastStop = routePreservesLastStop
                         }
                 }
                 .disabled(!routingFindsBestSequence)

@@ -46,15 +46,15 @@ struct SetMaxExtentView: View {
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
                     Toggle(maxExtentIsSet ? "Max Extent Enabled" : "Max Extent Disabled", isOn: $maxExtentIsSet)
-                        .onChange(of: maxExtentIsSet) { newValue in
-                            if newValue {
-                                // Set the map's max extent to limit the map view to a certain
-                                // visible area.
-                                map.maxExtent = .coloradoExtent
+                        .onChange(of: maxExtentIsSet) {
+                            map.maxExtent = if maxExtentIsSet {
+                                // Set the map's max extent to limit the map
+                                // view to a certain visible area.
+                                .coloradoExtent
                             } else {
-                                // Set the map's max extent to nil so it doesn't limit panning or
-                                // zooming.
-                                map.maxExtent = nil
+                                // Set the map's max extent to nil so it doesn't
+                                // limit panning or zooming.
+                                nil
                             }
                         }
                 }

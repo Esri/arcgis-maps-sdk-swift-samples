@@ -14,7 +14,7 @@ Choose phases to be included in the report. Tap "Run" to initiate a downstream t
 
 ## How it works
 
-1. Create and load a `UtilityNetwork` with a feature service URL, then get an asset type, tier, network attributes, and category by their names.
+1. Create and load a `UtilityNetwork` with a `ServiceGeodatabase` from a feature service URL, then get an asset type, tier, network attributes, and category by their names.
 2. Create a `UtilityElement` from the asset type to use as the starting location for the trace.
 3. Get a base condition by calling the utility tier's `makeDefaultTraceConfiguration` method.
 4. Create `UtilityTraceParameters` passing in `downstream` trace type and the default starting location. Set its `traceConfiguration` property with the trace configuration above, and set `includesBarriers` to `false`.

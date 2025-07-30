@@ -1,0 +1,32 @@
+{
+    "category": "Cloud and Portal",
+    "description": "Create and save a map as a web map item to an ArcGIS portal.",
+    "has_teardown": true,
+    "ignore": false,
+    "images": [
+        "create-and-save-map.png"
+    ],
+    "keywords": [
+        "ArcGIS Online",
+        "ArcGIS Pro",
+        "portal",
+        "publish",
+        "share",
+        "web map",
+        "ArcGISMapImageLayer",
+        "BasemapStyle",
+        "Map",
+        "Portal"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "ArcGISMapImageLayer",
+        "BasemapStyle",
+        "Map",
+        "Portal"
+    ],
+    "snippets": [
+        "CreateAndSaveMapView.swift"
+    ],
+    "title": "Create and save map"
+}

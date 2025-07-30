@@ -35,6 +35,9 @@ struct CategoriesView: View {
         return (favoriteNames.isEmpty ? ["All"] : ["All", "Favorites"]) + sampleCategories
     }
     
+    /// The name of the sample that currently needs torn down.
+    @State private var sampleNeedingTeardown: String?
+    
     var body: some View {
         ScrollView {
             LazyVGrid(columns: [GridItem(), GridItem()]) {
@@ -76,16 +79,36 @@ struct CategoriesView: View {
             }
             .listStyle(.insetGrouped)
             .navigationTitle(selectedCategory ?? "")
+            .navigationDestination(for: String.self) { sampleName in
+                let sample = SamplesApp.samples.first(where: { $0.name == sampleName })!
+                
+                if sampleNeedingTeardown != nil && sampleNeedingTeardown != sampleName {
+                    ProgressView("Loading sample")
+                } else if sample.hasTeardown {
+                    SampleDetailView(sample: sample)
+                        .id(sampleName)
+                        .onAppear {
+                            sampleNeedingTeardown = sampleName
+                        }
+                        .environment(\.finishTeardown) {
+                            // Allows the next teardown sample to appear.
+                            sampleNeedingTeardown = nil
+                        }
+                } else {
+                    SampleDetailView(sample: sample)
+                        .id(sampleName)
+                }
+            }
         }
-        .onChange(of: destinationIsPresented) { _ in
+        .onChange(of: destinationIsPresented) {
             // Resets the selection when the navigation destination is no longer presented.
             guard !destinationIsPresented else { return }
             withAnimation(.easeInOut) {
                 selectedCategory = nil
             }
         }
-        .onChange(of: selectedCategory) { newSelection in
-            destinationIsPresented = newSelection != nil
+        .onChange(of: selectedCategory) {
+            destinationIsPresented = selectedCategory != nil
         }
     }
 }

@@ -75,9 +75,9 @@ struct FilterByDefinitionExpressionOrDisplayFilterView: View {
                     }
                 }
                 .pickerStyle(.segmented)
-                .onChange(of: selectedFilterMode) { newFilterMode in
+                .onChange(of: selectedFilterMode) {
                     // Filters the feature layer based on the new filter mode.
-                    model.filterFeatureLayer(mode: newFilterMode)
+                    model.filterFeatureLayer(mode: selectedFilterMode)
                 }
             }
         }

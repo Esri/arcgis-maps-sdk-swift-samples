@@ -212,7 +212,7 @@ private struct ENCDisplaySettingsView: View {
                     Text("Dusk").tag(ColorScheme.dusk)
                     Text("Night").tag(ColorScheme.night)
                 }
-                .onChange(of: colorScheme) { colorScheme in
+                .onChange(of: colorScheme) {
                     marinerDisplaySettings.colorScheme = colorScheme
                 }
                 
@@ -220,7 +220,7 @@ private struct ENCDisplaySettingsView: View {
                     Text("Plain").tag(AreaSymbolization.plain)
                     Text("Symbolized").tag(AreaSymbolization.symbolized)
                 }
-                .onChange(of: areaSymbolization) { areaSymbolization in
+                .onChange(of: areaSymbolization) {
                     marinerDisplaySettings.areaSymbolizationType = areaSymbolization
                 }
                 
@@ -228,7 +228,7 @@ private struct ENCDisplaySettingsView: View {
                     Text("Paper Chart").tag(PointSymbolization.paperChart)
                     Text("Simplified").tag(PointSymbolization.simplified)
                 }
-                .onChange(of: pointSymbolization) { pointSymbolization  in
+                .onChange(of: pointSymbolization) {
                     marinerDisplaySettings.pointSymbolizationType = pointSymbolization
                 }
             }

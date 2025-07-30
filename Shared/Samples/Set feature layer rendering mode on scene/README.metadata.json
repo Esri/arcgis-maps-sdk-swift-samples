@@ -1,0 +1,31 @@
+{
+    "category": "Visualization",
+    "description": "Render features in a scene statically or dynamically by setting the feature layer rendering mode.",
+    "ignore": false,
+    "images": [
+        "set-feature-layer-rendering-mode-on-scene.png"
+    ],
+    "keywords": [
+        "3D",
+        "dynamic",
+        "feature layer",
+        "features",
+        "rendering",
+        "static",
+        "FeatureLayer",
+        "FeatureLayer.RenderingMode",
+        "Scene",
+        "SceneView"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "FeatureLayer",
+        "FeatureLayer.RenderingMode",
+        "Scene",
+        "SceneView"
+    ],
+    "snippets": [
+        "SetFeatureLayerRenderingModeOnSceneView.swift"
+    ],
+    "title": "Set feature layer rendering mode on scene"
+}

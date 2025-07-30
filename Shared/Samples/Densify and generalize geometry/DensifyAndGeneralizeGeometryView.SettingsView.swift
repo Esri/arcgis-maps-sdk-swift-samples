@@ -27,7 +27,7 @@ extension DensifyAndGeneralizeGeometryView {
                 // Generalize toggle and slider.
                 Section {
                     Toggle("Generalize", isOn: $model.shouldGeneralize)
-                        .onChange(of: model.shouldGeneralize) { _ in
+                        .onChange(of: model.shouldGeneralize) {
                             model.updateGraphics()
                         }
                     VStack {
@@ -37,7 +37,7 @@ extension DensifyAndGeneralizeGeometryView {
                             format: .number.precision(.fractionLength(0))
                         )
                         Slider(value: $model.maxDeviation, in: 1...250)
-                            .onChange(of: model.maxDeviation) { _ in
+                            .onChange(of: model.maxDeviation) {
                                 model.updateGraphics()
                             }
                     }
@@ -45,7 +45,7 @@ extension DensifyAndGeneralizeGeometryView {
                 // Densify toggle and slider.
                 Section {
                     Toggle("Densify", isOn: $model.shouldDensify)
-                        .onChange(of: model.shouldDensify) { _ in
+                        .onChange(of: model.shouldDensify) {
                             model.updateGraphics()
                         }
                     VStack {
@@ -55,7 +55,7 @@ extension DensifyAndGeneralizeGeometryView {
                             format: .number.precision(.fractionLength(0))
                         )
                         Slider(value: $model.maxSegmentLength, in: 50...500)
-                            .onChange(of: model.maxSegmentLength) { _ in
+                            .onChange(of: model.maxSegmentLength) {
                                 model.updateGraphics()
                             }
                     }

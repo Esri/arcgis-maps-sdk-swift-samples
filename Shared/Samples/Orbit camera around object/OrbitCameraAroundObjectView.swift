@@ -111,8 +111,8 @@ private extension OrbitCameraAroundObjectView {
                         LabeledContent("Camera Heading", value: cameraHeading, format: .degrees)
                         
                         Slider(value: $cameraHeading.value, in: -45...45)
-                            .onChange(of: cameraHeading.value) { newValue in
-                                model.cameraController.cameraHeadingOffset = newValue
+                            .onChange(of: cameraHeading.value) {
+                                model.cameraController.cameraHeadingOffset = cameraHeading.value
                             }
                     }
                     
@@ -120,16 +120,16 @@ private extension OrbitCameraAroundObjectView {
                         LabeledContent("Plane Pitch", value: planePitch, format: .degrees)
                         
                         Slider(value: $planePitch.value, in: -90...90)
-                            .onChange(of: planePitch.value) { newValue in
-                                model.planeGraphic.setAttributeValue(newValue, forKey: "PITCH")
+                            .onChange(of: planePitch.value) {
+                                model.planeGraphic.setAttributeValue(planePitch.value, forKey: "PITCH")
                             }
                     }
                     
                     Toggle("Allow Camera Distance Interaction", isOn: $cameraDistanceIsInteractive)
                         .toggleStyle(.switch)
                         .disabled(model.cameraController.autoPitchIsEnabled)
-                        .onChange(of: cameraDistanceIsInteractive) { newValue in
-                            model.cameraController.cameraDistanceIsInteractive = newValue
+                        .onChange(of: cameraDistanceIsInteractive) {
+                            model.cameraController.cameraDistanceIsInteractive = cameraDistanceIsInteractive
                         }
                 }
                 .navigationTitle("Settings")

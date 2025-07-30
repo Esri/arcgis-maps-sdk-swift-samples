@@ -64,7 +64,7 @@ extension AddDynamicEntityLayerView {
                 VStack(spacing: 6) {
                     Image(systemName: "arrow.up.circle")
                         .rotationEffect(.degrees(heading))
-                    Text(Measurement<UnitAngle>(value: heading, unit: .degrees).formatted())
+                    Text(Measurement<UnitAngle>(value: heading, unit: .degrees), format: .measurement(width: .abbreviated))
                         .font(.caption2)
                 }
             }

@@ -20,8 +20,8 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
     /// The view model for this sample.
     @MainActor
     class Model: ObservableObject {
-        /// A feature service for an electric utility network in Naperville, Illinois.
-        private let utilityNetwork = UtilityNetwork(url: .featureServiceURL)
+        /// An electric utility network in Naperville, Illinois.
+        private let utilityNetwork = UtilityNetwork(serviceGeodatabase: .naperville())
         
         /// An array of condition expressions.
         private var traceConditionalExpressions: [UtilityTraceConditionalExpression] = []
@@ -62,10 +62,6 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
         /// A Boolean value indicating if the sample has been setup.
         @Published private(set) var isSetUp = false
         
-        deinit {
-            ArcGISEnvironment.authenticationManager.arcGISCredentialStore.removeAll()
-        }
-        
         // MARK: Methods
         
         /// Performs important tasks including adding credentials, loading utility network and setting trace parameters.
@@ -76,6 +72,11 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
             } catch {
                 throw error
             }
+        }
+        
+        /// Cleans up the model's setup.
+        func tearDown() {
+            ArcGISEnvironment.authenticationManager.arcGISCredentialStore.removeAll()
         }
         
         /// Loads the utility network and sets the trace parameters and other information
@@ -397,6 +398,13 @@ private extension URL {
     /// The URL to the feature service for running the isolation trace.
     static var featureServiceURL: URL {
         URL(string: "https://sampleserver7.arcgisonline.com/server/rest/services/UtilityNetwork/NapervilleElectric/FeatureServer")!
+    }
+}
+
+private extension ServiceGeodatabase {
+    /// The Naperville, Illinois electric utility network service geodatabase.
+    static func naperville() -> ServiceGeodatabase {
+        .init(url: .featureServiceURL)
     }
 }
 

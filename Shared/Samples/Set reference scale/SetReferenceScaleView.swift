@@ -89,7 +89,9 @@ private extension SetReferenceScaleView {
                                 Text("1:\(option, format: .number.rounded(increment: 1))")
                             }
                         }
-                        .onChange(of: selectedReferenceScale) { map.referenceScale = $0 }
+                        .onChange(of: selectedReferenceScale) {
+                            map.referenceScale = selectedReferenceScale
+                        }
                         
                         NavigationLink("Layers") {
                             List(map.operationalLayers as! [FeatureLayer], id: \.id) { layer in
@@ -143,7 +145,9 @@ private extension SetReferenceScaleView {
         
         var body: some View {
             Toggle(layer.name, isOn: $layerScalesSymbol)
-                .onChange(of: layerScalesSymbol) { layer.scalesSymbols = $0 }
+                .onChange(of: layerScalesSymbol) {
+                    layer.scalesSymbols = layerScalesSymbol
+                }
                 .onAppear { layerScalesSymbol = layer.scalesSymbols }
         }
     }

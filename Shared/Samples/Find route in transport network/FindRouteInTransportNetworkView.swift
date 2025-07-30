@@ -61,8 +61,8 @@ struct FindRouteInTransportNetworkView: View {
                     Text("Shortest").tag(TravelModeOption.shortest)
                 }
                 .pickerStyle(.segmented)
-                .onChange(of: travelModeSelection) { newMode in
-                    model.updateTravelMode(to: newMode)
+                .onChange(of: travelModeSelection) {
+                    model.updateTravelMode(to: travelModeSelection)
                 }
                 
                 Spacer()

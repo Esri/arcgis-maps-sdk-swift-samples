@@ -97,7 +97,7 @@ struct MeasureDistanceInSceneView: View {
             }
             .pickerStyle(.segmented)
             .padding()
-            .onChange(of: unitSystemSelection) { _ in
+            .onChange(of: unitSystemSelection) {
                 model.locationDistanceMeasurement.unitSystem = unitSystemSelection
             }
         }

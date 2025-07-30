@@ -72,8 +72,8 @@ struct ListSpatialReferenceTransformationsView: View {
                     .tag(true)
             }
             .pickerStyle(.inline)
-            .onChange(of: filterByMapExtent) { newValue in
-                model.updateTransformationsList(withExtent: newValue ? visibleArea?.extent : nil)
+            .onChange(of: filterByMapExtent) {
+                model.updateTransformationsList(withExtent: filterByMapExtent ? visibleArea?.extent : nil)
             }
             
             Link(destination: .projectionEngineDataDownloads) {

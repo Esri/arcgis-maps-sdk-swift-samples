@@ -117,7 +117,7 @@ extension ValidateUtilityNetworkTopologyView {
                 }
             }
             .multilineTextAlignment(.center)
-            .onChange(of: text) { _ in
+            .onChange(of: text) {
                 // Start with the full text showing to notify the user of the change.
                 messageIsPresented = !message.isEmpty
             }

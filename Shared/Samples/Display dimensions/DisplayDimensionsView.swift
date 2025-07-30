@@ -45,16 +45,16 @@ struct DisplayDimensionsView: View {
                     Spacer()
                     Group {
                         Toggle("Dimension Layer", isOn: $dimensionLayerIsVisible)
-                            .onChange(of: dimensionLayerIsVisible) { newValue in
-                                dimensionLayer?.isVisible = newValue
+                            .onChange(of: dimensionLayerIsVisible) {
+                                dimensionLayer?.isVisible = dimensionLayerIsVisible
                             }
                         
                         Toggle(
                             "Definition Expression:\nDimensions >= 450m",
                             isOn: $definitionExpressionIsSet
                         )
-                        .onChange(of: definitionExpressionIsSet) { newValue in
-                            dimensionLayer?.definitionExpression = newValue ? "DIMLENGTH >= 450" : ""
+                        .onChange(of: definitionExpressionIsSet) {
+                            dimensionLayer?.definitionExpression = definitionExpressionIsSet ? "DIMLENGTH >= 450" : ""
                         }
                     }
                     .padding(8)

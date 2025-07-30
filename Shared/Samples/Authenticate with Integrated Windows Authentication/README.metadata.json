@@ -1,0 +1,31 @@
+{
+    "category": "Cloud and Portal",
+    "description": "Connect to an IWA secured Portal and search for maps.",
+    "has_teardown": true,
+    "ignore": false,
+    "images": [
+        "authenticate-with-integrated-windows-authentication-1.png",
+        "authenticate-with-integrated-windows-authentication-2.png",
+        "authenticate-with-integrated-windows-authentication-3.png"
+    ],
+    "keywords": [
+        "Windows",
+        "authentication",
+        "security",
+        "ArcGISEnvironment",
+        "AuthenticationManager",
+        "Authenticator",
+        "Portal"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "ArcGISEnvironment",
+        "AuthenticationManager",
+        "Authenticator",
+        "Portal"
+    ],
+    "snippets": [
+        "AuthenticateWithIntegratedWindowsAuthenticationView.swift"
+    ],
+    "title": "Authenticate with Integrated Windows Authentication"
+}

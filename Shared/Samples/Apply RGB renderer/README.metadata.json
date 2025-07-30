@@ -1,0 +1,44 @@
+{
+    "category": "Visualization",
+    "description": "Apply an RGB renderer to a raster layer to enhance feature visibility.",
+    "ignore": false,
+    "images": [
+        "apply-rgb-renderer.png"
+    ],
+    "keywords": [
+        "analysis",
+        "color",
+        "composite",
+        "imagery",
+        "multiband",
+        "multispectral",
+        "pan-sharpen",
+        "photograph",
+        "raster",
+        "spectrum",
+        "stretch",
+        "visualization",
+        "Basemap",
+        "RGBRenderer",
+        "Raster",
+        "RasterLayer",
+        "StretchParameters"
+    ],
+    "offline_data": [
+        "7c4c679ab06a4df19dc497f577f111bd"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "Basemap",
+        "RGBRenderer",
+        "Raster",
+        "RasterLayer",
+        "StretchParameters"
+    ],
+    "snippets": [
+        "ApplyRGBRendererView.swift",
+        "ApplyRGBRendererView.RangeSlider.swift",
+        "ApplyRGBRendererView.SettingsView.swift"
+    ],
+    "title": "Apply RGB renderer"
+}

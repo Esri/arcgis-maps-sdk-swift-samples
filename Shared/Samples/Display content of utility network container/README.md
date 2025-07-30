@@ -14,9 +14,9 @@ Tap a container feature to show all features inside the container. The container
 
 ## How it works
 
-1. Load a web map that includes ArcGIS Pro [Subtype Group Layers](https://pro.arcgis.com/en/pro-app/help/mapping/layer-properties/subtype-layers.htm) with only container features visible (i.e. fuse bank, switch bank, transformer bank, hand hole, and junction box).
+1. Create and load a web map that includes ArcGIS Pro [Subtype Group Layers](https://pro.arcgis.com/en/pro-app/help/mapping/layer-properties/subtype-layers.htm) with only container features visible (i.e. fuse bank, switch bank, transformer bank, hand hole, and junction box).
 2. Create a `MapView` and add the `onSingleTapGesture(perform:)` modifier to detect tap events.
-3. Create and load a `UtilityNetwork`.
+3. Get and load the first `UtilityNetwork` from the web map.
 4. Add a `GraphicsOverlay` for displaying a container view.
 5. Identify the tapped feature and create an `UtilityElement` from it.
 6. Get the associations for this element using `UtilityNetwork.associations(for:ofKind:)`.
@@ -38,7 +38,7 @@ Tap a container feature to show all features inside the container. The container
 
 ## About the data
 
-The [Naperville electric network feature service](https://sampleserver7.arcgisonline.com/server/rest/services/UtilityNetwork/NapervilleElectric/FeatureServer), hosted on ArcGIS Online, contains a utility network used to find associations shown in this sample. The [Naperville Electric Containers](https://sampleserver7.arcgisonline.com/portal/home/item.html?id=813eda749a9444e4a9d833a4db19e1c8) web map portal item, uses the same feature service endpoint, but displays only container features.
+The [Naperville Electric SubtypeGroupLayers with Containers](https://sampleserver7.arcgisonline.com/portal/home/item.html?id=0e38e82729f942a19e937b31bfac1b8d) web map contains a utility network used to find associations shown in this sample. Authentication is required and handled within the sample code.
 
 ## Tags
 

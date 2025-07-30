@@ -1,0 +1,36 @@
+{
+    "category": "Cloud and Portal",
+    "description": "Access secured portals using a certificate.",
+    "has_teardown": true,
+    "ignore": false,
+    "images": [
+        "authenticate-with-pki-certificate-1.png",
+        "authenticate-with-pki-certificate-2.png",
+        "authenticate-with-pki-certificate-3.png"
+    ],
+    "keywords": [
+        "PKI",
+        "X509",
+        "authentication",
+        "certificate",
+        "login",
+        "passwordless",
+        "smartcard",
+        "store",
+        "ArcGISEnvironment",
+        "AuthenticationManager",
+        "Authenticator",
+        "Portal"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "ArcGISEnvironment",
+        "AuthenticationManager",
+        "Authenticator",
+        "Portal"
+    ],
+    "snippets": [
+        "AuthenticateWithPKICertificateView.swift"
+    ],
+    "title": "Authenticate with PKI certificate"
+}

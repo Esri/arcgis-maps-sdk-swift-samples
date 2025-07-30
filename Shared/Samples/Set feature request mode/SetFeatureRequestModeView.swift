@@ -70,9 +70,9 @@ struct SetFeatureRequestModeView: View {
                                     Text(mode.label)
                                 }
                             }
-                            .onChange(of: selectedFeatureRequestMode) { newMode in
+                            .onChange(of: selectedFeatureRequestMode) {
                                 // Update the feature table's feature request mode.
-                                model.featureTable.featureRequestMode = newMode
+                                model.featureTable.featureRequestMode = selectedFeatureRequestMode
                                 message = "\(model.featureTable.featureRequestMode.label) enabled."
                             }
                         }

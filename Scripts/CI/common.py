@@ -26,6 +26,7 @@ exception_proper_nouns = {
     'Arcade',
     'ArcGIS Online',
     'ArcGIS Pro',
+    'Authenticate with Integrated Windows Authentication',
     'GeoPackage',
     'OAuth',
     'OpenStreetMap',
@@ -274,6 +275,7 @@ class Metadata:
 
         # A list of ArcGIS Portal Item IDs.
         self.offline_data = []      # Default to empty list.
+        self.has_teardown = False   # Only applies to samples that require async tear down (e.g., authentication).
 
         self.folder_path = folder_path
         self.folder_name = get_folder_name_from_path(folder_path)
@@ -371,6 +373,9 @@ class Metadata:
         data["relevant_apis"] = self.relevant_apis
         data["snippets"] = self.snippets
         data["title"] = self.title
+        if self.has_teardown:
+            # Only write has_teardown when it is True.
+            data["has_teardown"] = self.has_teardown
         if self.offline_data:
             # Only write offline_data when it is not empty.
             data["offline_data"] = self.offline_data

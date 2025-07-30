@@ -33,7 +33,7 @@ struct DisplayOverviewMapView: View {
     /// The current viewpoint of the map view.
     @State private var viewpoint = Viewpoint(
         center: Point(x: -123.12052, y: 49.28299, spatialReference: .wgs84),
-        scale: 1e5
+        scale: 5e4
     )
     
     /// The visible area marked with a red rectangle on the overview map.
@@ -55,7 +55,7 @@ struct DisplayOverviewMapView: View {
 }
 
 private extension PortalItem.ID {
-    static var northAmericaTouristAttractions: Self { Self("97ceed5cfc984b4399e23888f6252856")! }
+    static var northAmericaTouristAttractions: Self { Self("addaa517dde346d1898c614fa91fd032")! }
 }
 
 #Preview {

@@ -61,17 +61,9 @@ struct SamplesSearchView: View {
             }
         }
         .overlay {
-            // Once iOS 17.0 is the minimum supported platform,
-            // this can be replaced with `ContentUnavailableView.search(text:)`.
-            VStack {
-                Text("No Results for \"\(query)\"")
-                    .font(.title2)
-                    .bold()
-                Text("Check the spelling or try a new search.")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+            if !hasMatches {
+                ContentUnavailableView.search(text: query)
             }
-            .opacity(hasMatches ? 0 : 1)
         }
     }
 }

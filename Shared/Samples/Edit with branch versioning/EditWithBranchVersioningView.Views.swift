@@ -42,9 +42,9 @@ extension EditWithBranchVersioningView {
                     TextField("Name", text: $versionName)
                         .autocorrectionDisabled()
                         .textInputAutocapitalization(.never)
-                        .onChange(of: versionName) { newVersionName in
+                        .onChange(of: versionName) {
                             // Ensures the inputted version name only contains valid characters.
-                            self.versionName = newVersionName.replacing(/[.;'"]/, with: "")
+                            self.versionName = versionName.replacing(/[.;'"]/, with: "")
                         }
                     
                     TextField("Description", text: $versionDescription )

@@ -54,6 +54,7 @@ struct FavoritesView: View {
                 }
                 .sheet(isPresented: $addFavoriteSheetIsShowing) {
                     AddFavoriteView()
+                        .pagePresentation()
                 }
             }
         }

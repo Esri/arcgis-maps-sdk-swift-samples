@@ -135,8 +135,8 @@ private extension QueryWithCQLFiltersView {
                     LabeledContent("Max Features") {
                         TextField("1000", value: $maxFeatures, format: .number)
                             .multilineTextAlignment(.trailing)
-                            .onChange(of: maxFeatures) { newValue in
-                                maxFeatures = newValue == 0 ? 1 : abs(newValue)
+                            .onChange(of: maxFeatures) {
+                                maxFeatures = maxFeatures == 0 ? 1 : abs(maxFeatures)
                             }
                     }
                     

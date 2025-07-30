@@ -1,0 +1,36 @@
+{
+    "category": "Cloud and Portal",
+    "description": "Retrieve a user's details via a Portal.",
+    "has_teardown": true,
+    "ignore": false,
+    "images": [
+        "show-portal-user-info.png"
+    ],
+    "keywords": [
+        "account",
+        "avatar",
+        "bio",
+        "cloud and portal",
+        "email",
+        "login",
+        "picture",
+        "profile",
+        "user",
+        "username",
+        "OAuthUserConfiguration",
+        "Portal",
+        "PortalInfo",
+        "PortalUser"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "OAuthUserConfiguration",
+        "Portal",
+        "PortalInfo",
+        "PortalUser"
+    ],
+    "snippets": [
+        "ShowPortalUserInfoView.swift"
+    ],
+    "title": "Show portal user info"
+}

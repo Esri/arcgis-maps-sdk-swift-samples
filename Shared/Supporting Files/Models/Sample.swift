@@ -34,6 +34,10 @@ protocol Sample: Sendable {
     /// A Boolean value that indicates whether a sample has offline data dependencies.
     var hasDependencies: Bool { get }
     
+    /// A Boolean value indicating whether a sample has an action that needs to
+    /// be performed when its view disappears.
+    var hasTeardown: Bool { get }
+    
     /// Creates the view for the sample.
     @MainActor
     func makeBody() -> AnyView

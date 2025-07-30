@@ -1,0 +1,27 @@
+{
+    "category": "Layers",
+    "description": "Change the style of a Web Map Service (WMS) layer.",
+    "ignore": false,
+    "images": [
+        "apply-style-to-wms-layer.png"
+    ],
+    "keywords": [
+        "WMS",
+        "imagery",
+        "styles",
+        "visualization",
+        "WMSLayer",
+        "WMSSublayer",
+        "WMSSublayerInfo"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "WMSLayer",
+        "WMSSublayer",
+        "WMSSublayerInfo"
+    ],
+    "snippets": [
+        "ApplyStyleToWMSLayerView.swift"
+    ],
+    "title": "Apply style to WMS layer"
+}
