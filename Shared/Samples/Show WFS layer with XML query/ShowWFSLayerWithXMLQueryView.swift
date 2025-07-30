@@ -22,9 +22,6 @@ struct ShowWFSLayerWithXMLQueryView: View {
     /// Map with the Topographic basemap style.
     @State private var map = Map(basemapStyle: .arcGISTopographic)
     
-    /// Flag to track if the initial viewpoint has been set.
-    @State private var hasSetInitialViewpoint = false
-    
     /// Create a WFS (Web Feature Service) feature table using a specified URL and table name.
     @State private var seattleTreesTable = WFSFeatureTable(
         url: .wfsUrl, // The URL to the WFS service.
@@ -48,19 +45,13 @@ struct ShowWFSLayerWithXMLQueryView: View {
                     do {
                         // Load the WFS data.
                         try await loadData()
-                        if let extent = seattleTreesTable.extent,
-                           !hasSetInitialViewpoint {
-                            // Mark that the initial viewpoint has been set.
-                            hasSetInitialViewpoint = true
+                        if let extent = seattleTreesTable.extent, !isLoading {
                             // Animate the map to the extent of the data over 1 second.
                             await mapView.setViewpoint(
                                 Viewpoint(boundingGeometry: extent),
                                 duration: 1.0
                             )
                         }
-                        
-                        // Mark that loading has completed.
-                        isLoading = false
                     } catch {
                         // If an error occurs during loading, capture it to trigger an alert.
                         self.error = error
@@ -87,6 +78,8 @@ struct ShowWFSLayerWithXMLQueryView: View {
             usingXMLRequest: .xmlQuery,
             clearCache: true
         )
+        // Mark that loading has completed.
+        isLoading = false
     }
     
     var loadingView: some View {
@@ -109,7 +102,7 @@ struct ShowWFSLayerWithXMLQueryView: View {
 }
 
 private extension URL {
-    /// Static property to return the full URL for the WFS GetCapabilities request
+    /// Static property to return the full URL for the WFS GetCapabilities request.
     static var wfsUrl: URL {
         URL(string: "https://dservices2.arcgis.com/ZQgQTuoyBrtmoGdP/arcgis/services/Seattle_Downtown_Features/WFSServer?service=wfs&request=getcapabilities")!
     }
