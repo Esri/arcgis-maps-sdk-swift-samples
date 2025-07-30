@@ -34,7 +34,7 @@ extension FindRouteInMobileMapPackageView {
         @State private var resetDisabled = true
         
         /// The error shown in the error alert.
-        @State private var error: Error?
+        @State private var error: (any Error)?
         
         init(map: Map, locatorTask: LocatorTask) {
             let model = Model(map: map, locatorTask: locatorTask)

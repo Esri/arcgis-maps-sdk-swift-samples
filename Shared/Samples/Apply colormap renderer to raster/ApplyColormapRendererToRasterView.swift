@@ -40,7 +40,7 @@ struct ApplyColormapRendererToRasterView: View {
     /// The map displayed by the map view.
     @State private var map = makeMap()
     /// The error if the raster layer load operation failed, otherwise `nil`.
-    @State private var rasterLayerLoadError: Error?
+    @State private var rasterLayerLoadError: (any Error)?
     
     /// The raster layer from the map.
     var rasterLayer: RasterLayer { map.operationalLayers.first as! RasterLayer }

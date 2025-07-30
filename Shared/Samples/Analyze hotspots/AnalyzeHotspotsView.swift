@@ -31,7 +31,7 @@ struct AnalyzeHotspotsView: View {
         url: URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/911CallsHotspot/GPServer/911%20Calls%20Hotspot")!
     )
     /// The error thrown by geoprocessing job.
-    @State private var analysisError: Error?
+    @State private var analysisError: (any Error)?
     /// A Boolean value indicating whether the geoprocessing job is running.
     @State private var isAnalyzing = false
     /// A Boolean value that indicates whether the analysis sheet is presented.

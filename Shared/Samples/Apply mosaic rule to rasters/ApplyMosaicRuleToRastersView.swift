@@ -20,7 +20,7 @@ struct ApplyMosaicRuleToRastersView: View {
     @State private var isLoading = false
     
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     /// The data model for the sample.
     @StateObject private var model = Model()

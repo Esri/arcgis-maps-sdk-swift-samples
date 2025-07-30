@@ -17,7 +17,7 @@ import SwiftUI
 
 struct BrowseOGCAPIFeatureServiceView: View {
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     /// A Boolean value indicating whether the text field alert should be presented.
     @State private var textFieldAlertIsPresented = false

@@ -23,7 +23,7 @@ struct DisplayMapFromMobileMapPackageView: View {
     @State private var mobileMapPackage: MobileMapPackage!
     
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     /// Loads a local mobile map package.
     private func loadMobileMapPackage() async throws {

@@ -26,7 +26,7 @@ struct CreateKMLMultiTrackView: View {
     @State private var isRecenterEnabled = false
     
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     /// Represents the various states of the sample.
     private enum SampleState {
