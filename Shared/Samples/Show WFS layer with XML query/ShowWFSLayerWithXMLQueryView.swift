@@ -17,25 +17,23 @@ import SwiftUI
 
 struct ShowWFSLayerWithXMLQueryView: View {
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     /// Map with the Topographic basemap style.
     @State private var map = Map(basemapStyle: .arcGISTopographic)
     
-    /// Create a WFS (Web Feature Service) feature table using a specified URL and table name.
+    /// A WFS (Web Feature Service) feature table using a specified URL and table name.
     @State private var seattleTreesTable = WFSFeatureTable(
-        url: .wfsUrl, // The URL to the WFS service.
-        tableName: .seattleTreesDowntown // The name of the table within the service.
+        url: .wfsUrl,
+        tableName: .seattleTreesDowntown
     )
     
-    /// Flag to indicate whether data is currently being loaded.
+    /// A Boolean value indicating whether the XML query is being loaded.
     @State private var isLoading = false
     
     var body: some View {
         MapViewReader { mapView in
             MapView(map: map)
-            // Overlay with loading view in the center if data
-            // is currently being loaded.
                 .overlay(alignment: .center) {
                     if isLoading {
                         loadingView
@@ -57,19 +55,18 @@ struct ShowWFSLayerWithXMLQueryView: View {
                         self.error = error
                     }
                 }
-            // Display an alert if there is an error during data loading.
                 .errorAlert(presentingError: $error)
         }
     }
     
-    /// Asynchronous function to load data from the WFS service
+    /// Load data from the WFS service.
     func loadData() async throws {
         isLoading = true
-        // Set the axis order to not swap X and Y (used for coordinate systems.)
+        // Some WFS services return coordinates in (x,y) order, while others use (y,x) order.
+        // Set the axis order to not swap x and y.
         seattleTreesTable.axisOrder = .noSwap
         // Use manual cache mode so data must be explicitly loaded from the service.
         seattleTreesTable.featureRequestMode = .manualCache
-        try await seattleTreesTable.load()
         // Create a feature layer from the table and add it to the map.
         let layer = FeatureLayer(featureTable: seattleTreesTable)
         map.addOperationalLayer(layer)
@@ -102,7 +99,7 @@ struct ShowWFSLayerWithXMLQueryView: View {
 }
 
 private extension URL {
-    /// Static property to return the full URL for the WFS GetCapabilities request.
+    /// A URL for the Seattle Downtown Features WFS GetCapabilities endpoint.
     static var wfsUrl: URL {
         URL(string: "https://dservices2.arcgis.com/ZQgQTuoyBrtmoGdP/arcgis/services/Seattle_Downtown_Features/WFSServer?service=wfs&request=getcapabilities")!
     }
