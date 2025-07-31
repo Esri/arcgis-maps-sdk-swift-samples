@@ -312,10 +312,10 @@
 		88FB70D92DD3DFA800EB76E3 /* AddOpenStreetMapLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 88FB70D72DD3DF3700EB76E3 /* AddOpenStreetMapLayerView.swift */; };
 		9501BBEF2DF39DAB0054F4BD /* SetFeatureLayerRenderingModeOnSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9501BBEE2DF39DA50054F4BD /* SetFeatureLayerRenderingModeOnSceneView.swift */; };
 		9503056E2C46ECB70091B32D /* ShowDeviceLocationUsingIndoorPositioningView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9503056D2C46ECB70091B32D /* ShowDeviceLocationUsingIndoorPositioningView.Model.swift */; };
-		951896D32E2AE5E800144F9B /* ShowViewshedFromCameraInSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951896D22E2AE5E400144F9B /* ShowViewshedFromCameraInSceneView.swift */; };
-		951896D62E2AEB7700144F9B /* ShowViewshedFromCameraInSceneView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 951896D22E2AE5E400144F9B /* ShowViewshedFromCameraInSceneView.swift */; };
 		951896BB2E29B15A00144F9B /* ShowShapefileMetadataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951896BA2E29B15600144F9B /* ShowShapefileMetadataView.swift */; };
 		951896BD2E29B20500144F9B /* ShowShapefileMetadataView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 951896BA2E29B15600144F9B /* ShowShapefileMetadataView.swift */; };
+		951896D32E2AE5E800144F9B /* ShowViewshedFromCameraInSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951896D22E2AE5E400144F9B /* ShowViewshedFromCameraInSceneView.swift */; };
+		951896D62E2AEB7700144F9B /* ShowViewshedFromCameraInSceneView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 951896D22E2AE5E400144F9B /* ShowViewshedFromCameraInSceneView.swift */; };
 		951961AC2E00BC420088B0C2 /* ShowGeodesicSectorAndEllipseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951961AB2E00BC3C0088B0C2 /* ShowGeodesicSectorAndEllipseView.swift */; };
 		951961AE2E00BD430088B0C2 /* SetMapImageLayerSublayerVisibilityView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 95813E382DF88FD000342CBF /* SetMapImageLayerSublayerVisibilityView.swift */; };
 		9520B2B52E135AD800B3BEF9 /* ShowLineOfSightBetweenGeoelementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9520B2B42E135AD800B3BEF9 /* ShowLineOfSightBetweenGeoelementsView.swift */; };
@@ -1212,8 +1212,8 @@
 		88FB70D72DD3DF3700EB76E3 /* AddOpenStreetMapLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddOpenStreetMapLayerView.swift; sourceTree = "<group>"; };
 		9501BBEE2DF39DA50054F4BD /* SetFeatureLayerRenderingModeOnSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetFeatureLayerRenderingModeOnSceneView.swift; sourceTree = "<group>"; };
 		9503056D2C46ECB70091B32D /* ShowDeviceLocationUsingIndoorPositioningView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowDeviceLocationUsingIndoorPositioningView.Model.swift; sourceTree = "<group>"; };
-		951896D22E2AE5E400144F9B /* ShowViewshedFromCameraInSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowViewshedFromCameraInSceneView.swift; sourceTree = "<group>"; };
 		951896BA2E29B15600144F9B /* ShowShapefileMetadataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowShapefileMetadataView.swift; sourceTree = "<group>"; };
+		951896D22E2AE5E400144F9B /* ShowViewshedFromCameraInSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowViewshedFromCameraInSceneView.swift; sourceTree = "<group>"; };
 		951961AB2E00BC3C0088B0C2 /* ShowGeodesicSectorAndEllipseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowGeodesicSectorAndEllipseView.swift; sourceTree = "<group>"; };
 		9520B2B42E135AD800B3BEF9 /* ShowLineOfSightBetweenGeoelementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowLineOfSightBetweenGeoelementsView.swift; sourceTree = "<group>"; };
 		9537AFD62C220EF0000923C5 /* ExchangeSetwithoutUpdates */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExchangeSetwithoutUpdates; sourceTree = "<group>"; };
@@ -2756,20 +2756,20 @@
 			path = "Set feature layer rendering mode on scene";
 			sourceTree = "<group>";
 		};
-		951896D52E2AE68600144F9B /* Show viewshed from camera in scene */ = {
-			isa = PBXGroup;
-			children = (
-				951896D22E2AE5E400144F9B /* ShowViewshedFromCameraInSceneView.swift */,
-			);
-			path = "Show viewshed from camera in scene";
-			sourceTree = "<group>";
-		};
 		951896BF2E29B21900144F9B /* Show shapefile metadata */ = {
 			isa = PBXGroup;
 			children = (
 				951896BA2E29B15600144F9B /* ShowShapefileMetadataView.swift */,
 			);
 			path = "Show shapefile metadata";
+			sourceTree = "<group>";
+		};
+		951896D52E2AE68600144F9B /* Show viewshed from camera in scene */ = {
+			isa = PBXGroup;
+			children = (
+				951896D22E2AE5E400144F9B /* ShowViewshedFromCameraInSceneView.swift */,
+			);
+			path = "Show viewshed from camera in scene";
 			sourceTree = "<group>";
 		};
 		951961AD2E00BC760088B0C2 /* Show geodesic sector and ellipse */ = {
