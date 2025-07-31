@@ -22,7 +22,7 @@ struct AugmentRealityToShowTabletopSceneView: View {
     @State private var scene = ArcGIS.Scene()
     
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     /// The location point of the scene that will be anchored on a physical surface.
     private let anchorPoint = Point(

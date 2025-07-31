@@ -17,7 +17,7 @@ import SwiftUI
 
 struct AddFeatureLayersView: View {
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     /// The current viewpoint of the map view.
     @State private var viewpoint: Viewpoint?

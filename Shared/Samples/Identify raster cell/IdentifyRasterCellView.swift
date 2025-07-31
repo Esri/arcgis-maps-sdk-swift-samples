@@ -77,7 +77,7 @@ private extension IdentifyRasterCellView {
         @Published var calloutShouldOffset = false
         
         /// The error shown in the error alert.
-        @Published var error: Error?
+        @Published var error: (any Error)?
         
         /// Creates a callout displaying the data of a raster cell at a given screen point.
         /// - Parameters:

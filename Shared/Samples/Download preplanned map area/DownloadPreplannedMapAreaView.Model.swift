@@ -45,7 +45,7 @@ extension DownloadPreplannedMapAreaView {
         private let temporaryDirectory: URL
         
         /// The offline map information.
-        @Published private(set) var offlineMapModels: Result<[OfflineMapModel], Error>?
+        @Published private(set) var offlineMapModels: Result<[OfflineMapModel], any Error>?
         
         /// All the offline map models or an empty array in the case of an error.
         private var allOfflineMapModels: [OfflineMapModel] {
@@ -181,7 +181,7 @@ extension DownloadPreplannedMapAreaView {
         @Published private(set) var job: DownloadPreplannedOfflineMapJob?
         
         /// The result of the download job.
-        @Published private(set) var result: Result<MobileMapPackage, Error>?
+        @Published private(set) var result: Result<MobileMapPackage, any Error>?
         
         init?(preplannedMapArea: PreplannedMapArea, offlineMapTask: OfflineMapTask, temporaryDirectory: URL) {
             self.preplannedMapArea = preplannedMapArea

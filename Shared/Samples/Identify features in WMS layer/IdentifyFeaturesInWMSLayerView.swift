@@ -40,7 +40,7 @@ struct IdentifyFeaturesInWMSLayerView: View {
     private let overlayText = "Tap on the map to identify features in the WMS layer."
     
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     init() {
         map.addOperationalLayer(waterInfoLayer)

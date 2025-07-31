@@ -17,7 +17,7 @@ import SwiftUI
 
 struct EditFeatureAttachmentsView: View {
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     /// The data model for the sample.
     @StateObject private var model = Model()
     /// The location that the user tapped on the screen.
@@ -85,7 +85,7 @@ struct EditFeatureAttachmentsView: View {
 private extension EditFeatureAttachmentsView {
     struct AttachmentSheetView: View {
         /// The error shown in the error alert.
-        @State private var error: Error?
+        @State private var error: (any Error)?
         /// The data model for the sample.
         @ObservedObject var model: Model
         /// The action to dismiss the sheet.

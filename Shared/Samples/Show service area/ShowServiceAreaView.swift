@@ -23,7 +23,7 @@ struct ShowServiceAreaView: View {
     /// Used to track whether to add facilities or barriers to the map.
     @State private var selectedGraphicType: GraphicType = .facility
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     /// First time break property set in first stepper.
     @State private var firstTimeBreak: Int = 3
     /// Second time break property set in second stepper.

@@ -55,7 +55,7 @@ private struct WFSServiceView: View {
     /// The loaded WFS service.
     @State private var service: WFSService?
     /// The error if the service failed to load, otherwise `nil`.
-    @State private var serviceLoadError: Error?
+    @State private var serviceLoadError: (any Error)?
     /// A Boolean value indicating whether the service failed to load.
     @State private var serviceLoadDidFail = false
     
@@ -109,7 +109,7 @@ private struct WFSServiceLayerView: View {
     /// The area of the map to display.
     @State private var viewpoint: Viewpoint?
     /// The error if the populate operation failed, otherwise `nil`.
-    @State private var populateError: Error?
+    @State private var populateError: (any Error)?
     /// A Boolean value indicating whether a query operation is in progress.
     @State private var isQuerying = false
     /// A Boolean value indicating whether the axis order should be swapped.

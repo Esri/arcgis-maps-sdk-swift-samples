@@ -19,7 +19,7 @@ struct ApplyColormapRendererToRasterView: View {
     /// Creates the raster layer used by this sample.
     static func makeRasterLayer() -> RasterLayer {
         // Creates a raster and raster layer.
-        let raster = Raster(name: "ShastaBW", extension: "tif", bundle: nil)!
+        let raster = Raster(name: "ShastaBW/ShastaBW", extension: "tif", bundle: nil)!
         let rasterLayer = RasterLayer(raster: raster)
         
         // Creates a colormap renderer and assigns it to the raster layer.
@@ -40,7 +40,7 @@ struct ApplyColormapRendererToRasterView: View {
     /// The map displayed by the map view.
     @State private var map = makeMap()
     /// The error if the raster layer load operation failed, otherwise `nil`.
-    @State private var rasterLayerLoadError: Error?
+    @State private var rasterLayerLoadError: (any Error)?
     
     /// The raster layer from the map.
     var rasterLayer: RasterLayer { map.operationalLayers.first as! RasterLayer }

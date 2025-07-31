@@ -29,7 +29,7 @@ struct ApplyRasterRenderingRuleView: View {
     @State private var viewpoint: Viewpoint?
     
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     var body: some View {
         MapView(map: map, viewpoint: viewpoint)

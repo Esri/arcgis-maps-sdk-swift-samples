@@ -17,7 +17,7 @@ import SwiftUI
 
 struct FindRouteView: View {
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     /// A Boolean value indicating whether to show the directions.
     @State private var isShowingDirections = false

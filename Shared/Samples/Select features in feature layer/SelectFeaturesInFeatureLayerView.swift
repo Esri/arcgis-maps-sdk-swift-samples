@@ -23,7 +23,7 @@ struct SelectFeaturesInFeatureLayerView: View {
     @State private var identifyPoint: CGPoint?
     
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     /// The view model for the sample.
     @StateObject private var model = Model()

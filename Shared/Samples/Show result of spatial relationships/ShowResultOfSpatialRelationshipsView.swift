@@ -17,7 +17,7 @@ import SwiftUI
 
 struct ShowResultOfSpatialRelationshipsView: View {
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     /// The point indicating where to identify a graphic.
     @State private var identifyPoint: CGPoint?

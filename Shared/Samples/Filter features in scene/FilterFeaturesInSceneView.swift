@@ -20,7 +20,7 @@ struct FilterFeaturesInSceneView: View {
     @StateObject private var model = Model()
     
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     var body: some View {
         SceneView(scene: model.scene, graphicsOverlays: [model.graphicsOverlay])

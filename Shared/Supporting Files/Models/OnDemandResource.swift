@@ -39,7 +39,7 @@ final class OnDemandResource: ObservableObject {
     @Published private(set) var requestState: RequestState = .notStarted
     
     /// The error occurred in downloading resources.
-    @Published private(set) var error: Error?
+    @Published private(set) var error: (any Error)?
     
     /// The on-demand resource request.
     private let request: NSBundleResourceRequest

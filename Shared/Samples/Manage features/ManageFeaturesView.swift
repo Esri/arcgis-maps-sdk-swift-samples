@@ -17,7 +17,7 @@ import SwiftUI
 
 struct ManageFeaturesView: View {
     /// The data for the view.
-    @State private var data: Result<Data, Error>?
+    @State private var data: Result<Data, any Error>?
     
     /// The result of the latest action.
     @State private var status = ""

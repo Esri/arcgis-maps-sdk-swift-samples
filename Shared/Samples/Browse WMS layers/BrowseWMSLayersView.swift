@@ -26,7 +26,7 @@ struct BrowseWMSLayersView: View {
     )
     
     /// The error, if any, that occurred.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     /// The selected visible layers to display in the `WMSLayer`.
     @State private var selection: [WMSLayerModel] = []

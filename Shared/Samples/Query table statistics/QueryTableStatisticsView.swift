@@ -43,7 +43,7 @@ struct QueryTableStatisticsView: View {
     @State private var isShowingStatistics = false
     
     /// An error thrown from a query.
-    @State private var queryError: Error?
+    @State private var queryError: (any Error)?
     
     var body: some View {
         MapView(map: model.map, viewpoint: viewpoint)
