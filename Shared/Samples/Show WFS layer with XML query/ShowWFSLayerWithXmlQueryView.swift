@@ -24,7 +24,7 @@ struct ShowWFSLayerWithXMLQueryView: View {
     
     /// A WFS (Web Feature Service) feature table using a specified URL and table name.
     @State private var seattleTreesTable = WFSFeatureTable(
-        url: .wfsUrl,
+        url: .seattleDowntownFeatures,
         tableName: .seattleTreesDowntown
     )
     
@@ -94,18 +94,14 @@ struct ShowWFSLayerWithXMLQueryView: View {
     }
 }
 
-#Preview {
-    ShowWFSLayerWithXMLQueryView()
-}
-
 private extension URL {
     /// A URL for the Seattle Downtown Features WFS GetCapabilities endpoint.
-    static var wfsUrl: URL {
+    static var seattleDowntownFeatures: URL {
         URL(string: "https://dservices2.arcgis.com/ZQgQTuoyBrtmoGdP/arcgis/services/Seattle_Downtown_Features/WFSServer?service=wfs&request=getcapabilities")!
     }
 }
 
-extension String {
+private extension String {
     /// This string matches the `typeNames` used in the XML query to identify the layer to query.
     static var seattleTreesDowntown: String {
         "Seattle_Downtown_Features:Trees"
@@ -113,7 +109,7 @@ extension String {
     
     /// XML query to request features from the WFS service
     /// This specific query fetches only tree features where the "SCIENTIFIC" field equals "Tilia cordata"
-    static let xmlQuery = """
+    @MainActor static var xmlQuery = """
         <wfs:GetFeature service="WFS" version="2.0.0" outputFormat="application/gml+xml; version=3.2"
           xmlns:Seattle_Downtown_Features="https://dservices2.arcgis.com/ZQgQTuoyBrtmoGdP/arcgis/services/Seattle_Downtown_Features/WFSServer"
           xmlns:wfs="http://www.opengis.net/wfs/2.0"
@@ -129,4 +125,8 @@ extension String {
           </wfs:Query>
         </wfs:GetFeature>
         """
+}
+
+#Preview {
+    ShowWFSLayerWithXMLQueryView()
 }
