@@ -59,7 +59,7 @@ struct ShowWFSLayerWithXMLQueryView: View {
         }
     }
     
-    /// Load data from the WFS service.
+    /// Loads data from the WFS service.
     func loadData() async throws {
         isLoading = true
         // Some WFS services return coordinates in (x,y) order, while others use (y,x) order.
@@ -107,9 +107,10 @@ private extension String {
         "Seattle_Downtown_Features:Trees"
     }
     
-    /// XML query to request features from the WFS service
-    /// This specific query fetches only tree features where the "SCIENTIFIC" field equals "Tilia cordata"
-    @MainActor static var xmlQuery = """
+    /// XML query to request features from the WFS service.
+    /// This specific query fetches only tree features where the "SCIENTIFIC" field equals "Tilia cordata".
+    static var xmlQuery: String {
+        """
         <wfs:GetFeature service="WFS" version="2.0.0" outputFormat="application/gml+xml; version=3.2"
           xmlns:Seattle_Downtown_Features="https://dservices2.arcgis.com/ZQgQTuoyBrtmoGdP/arcgis/services/Seattle_Downtown_Features/WFSServer"
           xmlns:wfs="http://www.opengis.net/wfs/2.0"
@@ -125,6 +126,7 @@ private extension String {
           </wfs:Query>
         </wfs:GetFeature>
         """
+    }
 }
 
 #Preview {
