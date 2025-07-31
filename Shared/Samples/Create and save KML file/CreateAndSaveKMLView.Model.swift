@@ -61,7 +61,7 @@ extension CreateAndSaveKMLView {
         @Published var fileExporterButtonIsDisabled = true
         
         /// The error shown in the error alert.
-        @Published var error: Error?
+        @Published var error: (any Error)?
         
         /// Creates the model for this view.
         init() {

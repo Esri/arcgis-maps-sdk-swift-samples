@@ -56,7 +56,7 @@ extension CreateLoadReportView {
         @Published private(set) var statusText: String?
         
         /// An error that occurred during setup.
-        private(set) var setupError: Error? {
+        private(set) var setupError: (any Error)? {
             didSet {
                 updateAllowsCreateLoadReport()
                 error = setupError
@@ -64,7 +64,7 @@ extension CreateLoadReportView {
         }
         
         /// The error shown in the error alert.
-        @Published var error: Error?
+        @Published var error: (any Error)?
         
         // MARK: Methods
         

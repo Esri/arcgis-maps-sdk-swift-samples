@@ -45,7 +45,7 @@ struct QueryTableStatisticsGroupAndSortView: View {
     @State private var presentedSheetView: SheetView?
     
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     /// A Boolean value indicating whether edits have been made to the from.
     private var formHasEdits: Bool {

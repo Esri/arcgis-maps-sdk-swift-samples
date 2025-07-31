@@ -26,7 +26,7 @@ struct QueryFeatureCountAndExtentView: View {
     @State private var showFeatureCountBar = false
     
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     /// The current viewpoint of the map.
     @State private var viewpoint: Viewpoint?

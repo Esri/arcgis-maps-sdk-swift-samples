@@ -17,7 +17,7 @@ import SwiftUI
 
 struct ListGeodatabaseVersionsView: View {
     /// The analysis error shown in the error alert.
-    @State private var analysisError: Error?
+    @State private var analysisError: (any Error)?
     /// The task used to perform geoprocessing jobs.
     @State private var geoprocessingTask = GeoprocessingTask(
         url: URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/GDBVersions/GPServer/ListVersions")!

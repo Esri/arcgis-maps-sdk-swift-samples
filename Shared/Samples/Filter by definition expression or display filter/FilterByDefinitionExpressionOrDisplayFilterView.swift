@@ -23,7 +23,7 @@ struct FilterByDefinitionExpressionOrDisplayFilterView: View {
     @State private var drawStatus: DrawStatus?
     
     /// The result of counting the features in the current extent of the map view.
-    @State private var featureCountResult: Result<Int, Error>?
+    @State private var featureCountResult: Result<Int, any Error>?
     
     /// The filtering mode selected in the picker.
     @State private var selectedFilterMode: FilterMode = .none

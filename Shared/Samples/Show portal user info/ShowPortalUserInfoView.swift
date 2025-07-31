@@ -20,7 +20,7 @@ struct ShowPortalUserInfoView: View {
     /// The data model that helps determine the view.
     @State private var model = Model()
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     var body: some View {
         VStack {

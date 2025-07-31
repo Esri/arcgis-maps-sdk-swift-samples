@@ -70,7 +70,7 @@ private extension ListContentsOfKMLFileView {
         @Published private(set) var nodeViewpoints: [String: Viewpoint] = [:]
         
         /// The error shown in the error alert.
-        @Published var error: Error?
+        @Published var error: (any Error)?
         
         /// A scene for displaying the KML data.
         let scene: ArcGIS.Scene = {

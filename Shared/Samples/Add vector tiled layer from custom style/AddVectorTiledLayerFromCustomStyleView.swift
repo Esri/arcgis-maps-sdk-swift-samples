@@ -26,7 +26,7 @@ struct AddVectorTiledLayerFromCustomStyleView: View {
     @State private var selectedStyleLabel = "Default"
     
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     var body: some View {
         MapView(map: model.map, viewpoint: viewpoint)
