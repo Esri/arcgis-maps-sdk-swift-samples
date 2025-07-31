@@ -1,0 +1,40 @@
+{
+    "category": "Search and Query",
+    "description": "Find dynamic entities from a data source that match a query.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "data",
+        "dynamic",
+        "entity",
+        "live",
+        "query",
+        "real-time",
+        "search",
+        "stream",
+        "track",
+        "DynamicEntity",
+        "DynamicEntityChangedInfo",
+        "DynamicEntityDataSource",
+        "DynamicEntityLayer",
+        "DynamicEntityObservation",
+        "DynamicEntityObservationInfo",
+        "DynamicEntityQueryParameters",
+        "DynamicEntityQueryResult"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "DynamicEntity",
+        "DynamicEntityChangedInfo",
+        "DynamicEntityDataSource",
+        "DynamicEntityLayer",
+        "DynamicEntityObservation",
+        "DynamicEntityObservationInfo",
+        "DynamicEntityQueryParameters",
+        "DynamicEntityQueryResult"
+    ],
+    "snippets": [
+        "QueryDynamicEntitiesView.swift"
+    ],
+    "title": "Query dynamic entities"
+}
