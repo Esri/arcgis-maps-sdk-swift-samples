@@ -2,7 +2,7 @@
 
 Simplify a polygon with a self-intersecting geometry.
 
-![Image of simplify geometry sample](simplify-geometry.png)
+![Image of Simplify geometry sample](simplify-geometry.png)
 
 ## Use case
 
@@ -14,8 +14,8 @@ Click the 'Simplify' button to simplify the geometry. Click 'Reset' to reset to 
 
 ## How it works
 
-1. Check if the polygon geometry needs to be simplified using `GeometryEngine.isSimple(Geometry)`.
-2. Simplify the polygon's geometry using `GeometryEngine.simplify(Geometry)`.
+1. Check if the polygon geometry needs to be simplified using `GeometryEngine.isSimple(_:)`.
+2. Simplify the polygon's geometry using `GeometryEngine.simplify(_:)`.
 
 ## Relevant API
 

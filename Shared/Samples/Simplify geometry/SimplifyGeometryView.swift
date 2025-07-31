@@ -30,35 +30,31 @@ struct SimplifyGeometryView: View {
     var body: some View {
         MapViewReader { mapView in
             MapView(map: map, graphicsOverlays: [originalOverlay, resultOverlay])
-                .onAppear {
+                .task {
                     // Create the polygon geometry when view appears.
                     createPolygon()
                     // Add the original polygon to the overlay if it exists.
                     if let polygon = polygonGraphic {
                         originalOverlay.addGraphic(polygon)
                     }
-                    Task {
-                        // Center the map on London.
-                        await mapView.setViewpointCenter(
-                            Point(
-                                x: -13500,
-                                y: 6710327,
-                                spatialReference: .webMercator
-                            ),
-                            scale: 25000
-                        )
-                    }
-                }
+                    // Center the map on London.
+                    await mapView.setViewpointCenter(
+                        Point(
+                            x: -13500,
+                            y: 6710327,
+                            spatialReference: .webMercator
+                        ),
+                        scale: 25000
+                    )
+                }        
         }
         .toolbar {
-            ToolbarItem(placement: .bottomBar) {
+            ToolbarItemGroup(placement: .bottomBar) {
                 Button("Simplify", role: .cancel) {
                     simplifyGeometry()
                 }
                 .disabled(isSimplified)
-            }
-            
-            ToolbarItem(placement: .bottomBar) {
+                
                 Button("Reset") {
                     // Clear the simplified overlay and reset state.
                     resultOverlay.removeAllGraphics()
