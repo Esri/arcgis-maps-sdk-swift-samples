@@ -2,7 +2,9 @@
     "category": "Search and Query",
     "description": "Find dynamic entities from a data source that match a query.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "query-dynamic-entities.png"
+    ],
     "keywords": [
         "data",
         "dynamic",
@@ -37,7 +39,8 @@
         "DynamicEntityQueryResult"
     ],
     "snippets": [
-        "QueryDynamicEntitiesView.swift"
+        "QueryDynamicEntitiesView.swift",
+        "QueryDynamicEntitiesView.Model.swift"
     ],
     "title": "Query dynamic entities"
 }

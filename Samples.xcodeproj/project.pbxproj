@@ -394,6 +394,8 @@
 		D718A1F02B57602000447087 /* ManageBookmarksView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D718A1EA2B575FD900447087 /* ManageBookmarksView.swift */; };
 		D71A9DE22D8CC88D00CA03CB /* SnapGeometryEditsWithUtilityNetworkRulesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71A9DE02D8CC88D00CA03CB /* SnapGeometryEditsWithUtilityNetworkRulesView.swift */; };
 		D71A9DE52D8CC8B500CA03CB /* SnapGeometryEditsWithUtilityNetworkRulesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D71A9DE02D8CC88D00CA03CB /* SnapGeometryEditsWithUtilityNetworkRulesView.swift */; };
+		D71C01592E3C299D00E87E3D /* QueryDynamicEntitiesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71C01542E3C299D00E87E3D /* QueryDynamicEntitiesView.swift */; };
+		D71C015A2E3C299D00E87E3D /* QueryDynamicEntitiesView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71C01552E3C299D00E87E3D /* QueryDynamicEntitiesView.Model.swift */; };
 		D71C01602E3C2A6200E87E3D /* phx_air_traffic.json in Resources */ = {isa = PBXBuildFile; fileRef = D71C015E2E3C2A6200E87E3D /* phx_air_traffic.json */; settings = {ASSET_TAGS = (QueryDynamicEntities, ); }; };
 		D71C5F642AAA7A88006599FD /* CreateSymbolStylesFromWebStylesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71C5F632AAA7A88006599FD /* CreateSymbolStylesFromWebStylesView.swift */; };
 		D71C5F652AAA83D2006599FD /* CreateSymbolStylesFromWebStylesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D71C5F632AAA7A88006599FD /* CreateSymbolStylesFromWebStylesView.swift */; };
@@ -1258,6 +1260,8 @@
 		D718A1E62B570F7500447087 /* OrbitCameraAroundObjectView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrbitCameraAroundObjectView.Model.swift; sourceTree = "<group>"; };
 		D718A1EA2B575FD900447087 /* ManageBookmarksView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageBookmarksView.swift; sourceTree = "<group>"; };
 		D71A9DE02D8CC88D00CA03CB /* SnapGeometryEditsWithUtilityNetworkRulesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapGeometryEditsWithUtilityNetworkRulesView.swift; sourceTree = "<group>"; };
+		D71C01542E3C299D00E87E3D /* QueryDynamicEntitiesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryDynamicEntitiesView.swift; sourceTree = "<group>"; };
+		D71C01552E3C299D00E87E3D /* QueryDynamicEntitiesView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryDynamicEntitiesView.Model.swift; sourceTree = "<group>"; };
 		D71C015E2E3C2A6200E87E3D /* phx_air_traffic.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = phx_air_traffic.json; sourceTree = "<group>"; };
 		D71C5F632AAA7A88006599FD /* CreateSymbolStylesFromWebStylesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateSymbolStylesFromWebStylesView.swift; sourceTree = "<group>"; };
 		D71C909C2C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleGeometryTypesWithSymbolsView.swift; sourceTree = "<group>"; };
@@ -1774,6 +1778,7 @@
 				D7232EDD2AC1E5410079ABFF /* Play KML tour */,
 				E0EA0B75286638FD00C9621D /* Project geometry */,
 				1C012CF22DE7C3030027F570 /* Project with chosen transformation */,
+				D71C01582E3C299D00E87E3D /* Query dynamic entities */,
 				3E9F77712C6A609B0022CAB5 /* Query feature count and extent */,
 				108EC03F29D25AE1000F35D0 /* Query feature table */,
 				D73F06652B5EE73D000B574F /* Query features with Arcade expression */,
@@ -3043,6 +3048,15 @@
 				D703F04C2D9334AC0077E3A8 /* SnapGeometryEditsWithUtilityNetworkRulesView.Model.swift */,
 			);
 			path = "Snap geometry edits with utility network rules";
+			sourceTree = "<group>";
+		};
+		D71C01582E3C299D00E87E3D /* Query dynamic entities */ = {
+			isa = PBXGroup;
+			children = (
+				D71C01542E3C299D00E87E3D /* QueryDynamicEntitiesView.swift */,
+				D71C01552E3C299D00E87E3D /* QueryDynamicEntitiesView.Model.swift */,
+			);
+			path = "Query dynamic entities";
 			sourceTree = "<group>";
 		};
 		D71C015F2E3C2A6200E87E3D /* c78e297e99ad4572a48cdcd0b54bed30 */ = {
@@ -4744,6 +4758,8 @@
 				1C7B861C2DFB4EAF00B267EA /* ShowExtrudedGraphicsView.swift in Sources */,
 				1C9B74D929DB54560038B06F /* ChangeCameraControllerView.swift in Sources */,
 				D7BEBAD22CBDFE1C00F882E7 /* DisplayAlternateSymbolsAtDifferentScalesView.swift in Sources */,
+				D71C01592E3C299D00E87E3D /* QueryDynamicEntitiesView.swift in Sources */,
+				D71C015A2E3C299D00E87E3D /* QueryDynamicEntitiesView.Model.swift in Sources */,
 				D76000AE2AF19C2300B3084D /* FindRouteInMobileMapPackageView.swift in Sources */,
 				00273CF42A82AB5900A7A77D /* SamplesSearchView.swift in Sources */,
 				D78666AD2A2161F100C60110 /* FindNearestVertexView.swift in Sources */,
