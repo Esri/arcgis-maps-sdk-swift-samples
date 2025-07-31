@@ -394,6 +394,7 @@
 		D718A1F02B57602000447087 /* ManageBookmarksView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D718A1EA2B575FD900447087 /* ManageBookmarksView.swift */; };
 		D71A9DE22D8CC88D00CA03CB /* SnapGeometryEditsWithUtilityNetworkRulesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71A9DE02D8CC88D00CA03CB /* SnapGeometryEditsWithUtilityNetworkRulesView.swift */; };
 		D71A9DE52D8CC8B500CA03CB /* SnapGeometryEditsWithUtilityNetworkRulesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D71A9DE02D8CC88D00CA03CB /* SnapGeometryEditsWithUtilityNetworkRulesView.swift */; };
+		D71C01602E3C2A6200E87E3D /* phx_air_traffic.json in Resources */ = {isa = PBXBuildFile; fileRef = D71C015E2E3C2A6200E87E3D /* phx_air_traffic.json */; settings = {ASSET_TAGS = (QueryDynamicEntities, ); }; };
 		D71C5F642AAA7A88006599FD /* CreateSymbolStylesFromWebStylesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71C5F632AAA7A88006599FD /* CreateSymbolStylesFromWebStylesView.swift */; };
 		D71C5F652AAA83D2006599FD /* CreateSymbolStylesFromWebStylesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D71C5F632AAA7A88006599FD /* CreateSymbolStylesFromWebStylesView.swift */; };
 		D71C90A22C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71C909C2C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.swift */; };
@@ -1257,6 +1258,7 @@
 		D718A1E62B570F7500447087 /* OrbitCameraAroundObjectView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrbitCameraAroundObjectView.Model.swift; sourceTree = "<group>"; };
 		D718A1EA2B575FD900447087 /* ManageBookmarksView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageBookmarksView.swift; sourceTree = "<group>"; };
 		D71A9DE02D8CC88D00CA03CB /* SnapGeometryEditsWithUtilityNetworkRulesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapGeometryEditsWithUtilityNetworkRulesView.swift; sourceTree = "<group>"; };
+		D71C015E2E3C2A6200E87E3D /* phx_air_traffic.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = phx_air_traffic.json; sourceTree = "<group>"; };
 		D71C5F632AAA7A88006599FD /* CreateSymbolStylesFromWebStylesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateSymbolStylesFromWebStylesView.swift; sourceTree = "<group>"; };
 		D71C909C2C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleGeometryTypesWithSymbolsView.swift; sourceTree = "<group>"; };
 		D71C909D2C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleGeometryTypesWithSymbolsView.Views.swift; sourceTree = "<group>"; };
@@ -1977,6 +1979,7 @@
 				1C38921E2DC1749700ADFDDC /* b051f5c3e01048f3bf11c59b41507896 */,
 				D7F8C03F2B605E720072BFA7 /* b5106355f1634b8996e634c04b6a930a */,
 				D70539042CD0122D00F63F4A /* c78b149a1d52414682c86a5feeb13d30 */,
+				D71C015F2E3C2A6200E87E3D /* c78e297e99ad4572a48cdcd0b54bed30 */,
 				00D4EF8128638BF100B9CC30 /* cb1b20748a9f4d128dad8a87244e3e37 */,
 				4C81274E2DCADC82006EF7D2 /* cc68728b5904403ba637e1f1cd2995ae */,
 				4D126D7629CA3B3F00CFB7A7 /* d5bad9f4fee9483791e405880fb466da */,
@@ -3040,6 +3043,14 @@
 				D703F04C2D9334AC0077E3A8 /* SnapGeometryEditsWithUtilityNetworkRulesView.Model.swift */,
 			);
 			path = "Snap geometry edits with utility network rules";
+			sourceTree = "<group>";
+		};
+		D71C015F2E3C2A6200E87E3D /* c78e297e99ad4572a48cdcd0b54bed30 */ = {
+			isa = PBXGroup;
+			children = (
+				D71C015E2E3C2A6200E87E3D /* phx_air_traffic.json */,
+			);
+			path = c78e297e99ad4572a48cdcd0b54bed30;
 			sourceTree = "<group>";
 		};
 		D71C5F602AAA7854006599FD /* Create symbol styles from web styles */ = {
@@ -4246,6 +4257,7 @@
 					ListContentsOfKmlFile,
 					NavigateRouteWithRerouting,
 					OrbitCameraAroundObject,
+					QueryDynamicEntities,
 					SearchSymbolStyleDictionary,
 					ShowDeviceLocationWithNmeaDataSources,
 					ShowLineOfSightBetweenGeoelements,
@@ -4296,6 +4308,7 @@
 				1C8438F42DDBD02C005CCBC7 /* GasDeviceAnno.mmpk in Resources */,
 				1CC755E12DC5A6A7004B346F /* Shasta_Elevation in Resources */,
 				D7F8C0412B605E720072BFA7 /* FillmoreTopographicMap.vtpk in Resources */,
+				D71C01602E3C2A6200E87E3D /* phx_air_traffic.json in Resources */,
 				1C293D4D2DCD91BF000B0822 /* color.json in Resources */,
 				9537AFD72C220EF0000923C5 /* ExchangeSetwithoutUpdates in Resources */,
 				D7F8C03E2B605AF60072BFA7 /* ContingentValuesBirdNests.geodatabase in Resources */,
