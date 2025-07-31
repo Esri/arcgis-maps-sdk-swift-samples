@@ -27,7 +27,7 @@ struct AugmentRealityToCollectDataView: View {
     /// A Boolean value indicating whether the tree health action sheet is presented.
     @State private var treeHealthSheetIsPresented = false
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     var body: some View {
         VStack(spacing: 0) {

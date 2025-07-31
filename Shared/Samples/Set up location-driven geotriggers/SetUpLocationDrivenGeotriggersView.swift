@@ -21,7 +21,7 @@ struct SetUpLocationDrivenGeotriggersView: View {
     @StateObject private var model = Model()
     
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     /// A Boolean value indicating whether to show the popup.
     @State private var isShowingPopup = false

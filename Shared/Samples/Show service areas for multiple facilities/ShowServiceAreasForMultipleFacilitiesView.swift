@@ -30,7 +30,7 @@ struct ShowServiceAreasForMultipleFacilitiesView: View {
     @State private var graphicsOverlay = GraphicsOverlay()
     
     /// The error that occurred during calculating the service area.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     /// A Boolean value indicating if the service area is being calculated.
     @State private var isCalculatingServiceArea = false

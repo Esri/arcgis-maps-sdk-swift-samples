@@ -17,7 +17,7 @@ import SwiftUI
 
 struct AddRasterFromServiceView: View {
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     /// The current draw status of the map.
     @State private var currentDrawStatus: DrawStatus = .inProgress

@@ -17,7 +17,7 @@ import SwiftUI
 
 struct SearchSymbolStyleDictionaryView: View {
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     /// The view model for the sample.
     @State private var model = Model()
     /// The search results from the symbol style search.
@@ -104,7 +104,7 @@ private extension SearchSymbolStyleDictionaryView {
         /// The search result to create a swatch.
         let searchResult: SymbolStyleSearchResult
         /// The result of creating the swatch image.
-        @State private var result: Result<UIImage, Error>?
+        @State private var result: Result<UIImage, any Error>?
         
         var body: some View {
             Group {

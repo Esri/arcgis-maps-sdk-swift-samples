@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import ArcGIS
-import SwiftUI
+import Foundation
 
 extension GenerateGeodatabaseReplicaFromFeatureServiceView {
     /// The view model for the sample.

@@ -26,7 +26,7 @@ struct GenerateOfflineMapWithLocalBasemapView: View {
     @State private var isCancellingJob = false
     
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     /// The title to show in the confirmation dialog.
     private let basemapChoiceTitle: String = {
