@@ -63,58 +63,54 @@ struct AddFeatureLayerWithTimeOffsetView: View {
     private let dateFormat = Date.FormatStyle(date: .numeric, time: .omitted)
     
     var body: some View {
-        MapView(map: map, timeExtent: $timeExtent)
-            .overlay(alignment: .topTrailing) {
-                VStack(alignment: .leading) {
-                    Text("Hurricane Data Offset:")
-                    LabeledContent {
-                        Text("10 days")
-                    } label: {
-                        Text("Red").foregroundStyle(.red)
+        VStack {
+            MapView(map: map, timeExtent: .constant(timeExtent))
+                .overlay(alignment: .topTrailing) {
+                    VStack(alignment: .leading) {
+                        Text("Hurricane Data Offset:")
+                        LabeledContent {
+                            Text("10 days")
+                        } label: {
+                            Text("Red").foregroundStyle(.red)
+                        }
+                        LabeledContent {
+                            Text("No offset")
+                        } label: {
+                            Text("Blue").foregroundStyle(.blue)
+                        }
                     }
-                    LabeledContent {
-                        Text("No offset")
-                    } label: {
-                        Text("Blue").foregroundStyle(.blue)
-                    }
+                    .fixedSize()
+                    .padding()
+                    .background(.thinMaterial)
+                    .clipShape(.rect(cornerRadius: 10))
+                    .shadow(radius: 50)
+                    .padding()
                 }
-                .fixedSize()
-                .padding()
-                .background(.thinMaterial)
-                .clipShape(.rect(cornerRadius: 10))
-                .shadow(radius: 50)
-                .padding()
-            }
-            .toolbar {
-                ToolbarItem(placement: .bottomBar) {
-                    VStack {
-                        Slider(value: $sliderValue, in: 0...sliderMaxValue, step: 1)
-                            .padding(.horizontal)
-                            .onChange(of: sliderValue) {
-                                // Calculates a new time extent when the slider value changes.
-                                guard let newStartDate = Calendar.current.date(
-                                        byAdding: .day,
-                                        value: Int(sliderValue),
-                                        to: .august4th2000
-                                      ),
-                                      let newEndDate = Calendar.current.date(
-                                        byAdding: .day,
-                                        value: 10,
-                                        to: newStartDate
-                                      ) else {
-                                    return
-                                }
-                                timeExtent = TimeExtent(startDate: newStartDate, endDate: newEndDate)
-                            }
-                        Text(
-                            """
-                            \(timeExtent?.startDate?.formatted(dateFormat) ?? "") - \
-                            \(timeExtent?.endDate?.formatted(dateFormat) ?? "")
-                            """
-                        )
+            Slider(value: $sliderValue, in: 0...sliderMaxValue, step: 1)
+                .padding(.horizontal)
+                .onChange(of: sliderValue) {
+                    // Calculates a new time extent when the slider value changes.
+                    guard let newStartDate = Calendar.current.date(
+                        byAdding: .day,
+                        value: Int(sliderValue),
+                        to: .august4th2000
+                    ),
+                          let newEndDate = Calendar.current.date(
+                            byAdding: .day,
+                            value: 10,
+                            to: newStartDate
+                          ) else {
+                        return
                     }
+                    timeExtent = TimeExtent(startDate: newStartDate, endDate: newEndDate)
                 }
-            }
+            Text(
+                """
+                \(timeExtent?.startDate?.formatted(dateFormat) ?? "") - \
+                \(timeExtent?.endDate?.formatted(dateFormat) ?? "")
+                """
+            )
+        }
     }
 }
 
