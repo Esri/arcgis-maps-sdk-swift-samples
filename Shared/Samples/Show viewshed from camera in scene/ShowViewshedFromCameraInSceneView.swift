@@ -39,7 +39,6 @@ struct ShowViewshedFromCameraInSceneView: View {
     }()
     
     /// An analysis overlay used to display the viewshed analysis visualization.
-    /// The viewshed which is updated by the camera.
     @State private var analysisOverlay = AnalysisOverlay()
     
     init() {
@@ -78,7 +77,7 @@ struct ShowViewshedFromCameraInSceneView: View {
         )
         .toolbar {
             ToolbarItem(placement: .bottomBar) {
-                Button("Viewshed from here") {
+                Button("Viewshed From Here") {
                     guard let camera else { return }
                     
                     // Update viewshed based on current camera location when button is tapped.
