@@ -23,6 +23,7 @@ struct SimplifyGeometryView: View {
     @State private var originalOverlay = GraphicsOverlay()
     /// Graphic overlay for the simplified geometry.
     @State private var resultOverlay = GraphicsOverlay()
+    /// The original polygon graphic holding the geometry that needs simplification.
     @State private var polygonGraphic: Graphic?
     /// A basic black line symbol used for polygon outlines.
     private let lineSymbol = SimpleLineSymbol(style: .solid, color: .black, width: 1)
