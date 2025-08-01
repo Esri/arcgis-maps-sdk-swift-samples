@@ -41,15 +41,38 @@ struct ShowWFSLayerWithXMLQueryView: View {
                 }
                 .task {
                     do {
-                        // Load the WFS data.
-                        try await loadData()
-                        if let extent = seattleTreesTable.extent, !isLoading {
-                            // Animate the map to the extent of the data over 1 second.
+                        isLoading = true
+                        // A WFS (Web Feature Service) feature table for trees
+                        // in the Seattle Downtown area.
+                        let seattleTreesTable = WFSFeatureTable(
+                            url: .seattleDowntownFeatures,
+                            tableName: .seattleTreesDowntown
+                        )
+                        // Some WFS services return coordinates in (x,y) order,
+                        // while others use (y,x) order.
+                        // Set the axis order to not swap x and y.
+                        seattleTreesTable.axisOrder = .noSwap
+                        // Use manual cache mode so data must be explicitly
+                        // loaded from the service.
+                        seattleTreesTable.featureRequestMode = .manualCache
+                        // Create a feature layer from the table.
+                        let layer = FeatureLayer(featureTable: seattleTreesTable)
+                        map.addOperationalLayer(layer)
+                        // Populate the feature table with data from the WFS service using an XML query.
+                        _ = try await seattleTreesTable.populateFromService(
+                            usingXMLRequest: .xmlQuery,
+                            clearCache: true
+                        )
+                        // Set the viewpoint to the extent of the data.
+                        if let extent = seattleTreesTable.extent {
+                            // Animate the map to the extent over 1 second.
                             await mapView.setViewpoint(
                                 Viewpoint(boundingGeometry: extent),
                                 duration: 1.0
                             )
                         }
+                        // Mark that loading has completed.
+                        isLoading = false
                     } catch {
                         // If an error occurs during loading, capture it to trigger an alert.
                         self.error = error
@@ -57,26 +80,6 @@ struct ShowWFSLayerWithXMLQueryView: View {
                 }
                 .errorAlert(presentingError: $error)
         }
-    }
-    
-    /// Loads data from the WFS service.
-    func loadData() async throws {
-        isLoading = true
-        // Some WFS services return coordinates in (x,y) order, while others use (y,x) order.
-        // Set the axis order to not swap x and y.
-        seattleTreesTable.axisOrder = .noSwap
-        // Use manual cache mode so data must be explicitly loaded from the service.
-        seattleTreesTable.featureRequestMode = .manualCache
-        // Create a feature layer from the table and add it to the map.
-        let layer = FeatureLayer(featureTable: seattleTreesTable)
-        map.addOperationalLayer(layer)
-        // Populate the feature table with data from the WFS service using an XML query.
-        _ = try await seattleTreesTable.populateFromService(
-            usingXMLRequest: .xmlQuery,
-            clearCache: true
-        )
-        // Mark that loading has completed.
-        isLoading = false
     }
     
     var loadingView: some View {
