@@ -46,7 +46,7 @@ struct AddFeatureLayerWithTimeOffsetView: View {
     }()
     
     /// The time extent of the map view.
-    @State private var timeExtent: TimeExtent? = TimeExtent(
+    @State private var timeExtent = TimeExtent(
         startDate: .august4th2000,
         endDate: Calendar.current.date(byAdding: .day, value: 10, to: .august4th2000)
     )
@@ -106,8 +106,8 @@ struct AddFeatureLayerWithTimeOffsetView: View {
                 }
             Text(
                 """
-                \(timeExtent?.startDate?.formatted(dateFormat) ?? "") - \
-                \(timeExtent?.endDate?.formatted(dateFormat) ?? "")
+                \(timeExtent.startDate!, format: dateFormat) - \
+                \(timeExtent.endDate!, format: dateFormat)
                 """
             )
         }
