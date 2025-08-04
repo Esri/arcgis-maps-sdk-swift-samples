@@ -28,7 +28,7 @@ struct ApplyStyleToWMSLayerView: View {
     /// A WMS layer with multiple styles.
     @State private var wmsSublayer: WMSSublayer?
     /// The error thrown by the WMS sublayer load operation.
-    @State private var wmsSublayerLoadError: Error?
+    @State private var wmsSublayerLoadError: (any Error)?
     
     /// The styles of the WMS layer.
     @State private var styles: [String] = []

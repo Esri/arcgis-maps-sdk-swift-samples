@@ -110,7 +110,7 @@ extension AuthenticateWithIntegratedWindowsAuthenticationView {
         @Published var portalURLString = ""
         
         /// The fetched portal content.
-        @Published var portalContent: Result<PortalQueryResultSet<PortalItem>, Error>?
+        @Published var portalContent: Result<PortalQueryResultSet<PortalItem>, any Error>?
         
         /// A Boolean value indicating if a portal connection is in progress.
         @Published var isConnecting = false

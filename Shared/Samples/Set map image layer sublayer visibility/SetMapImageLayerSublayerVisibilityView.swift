@@ -17,7 +17,7 @@ import SwiftUI
 
 struct SetMapImageLayerSublayerVisibilityView: View {
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     /// A map with no specified style and initial viewpoint.
     @State private var map: Map = {

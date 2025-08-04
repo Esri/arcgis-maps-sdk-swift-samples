@@ -27,7 +27,7 @@ struct AddItemsToPortalView: View {
     /// A Boolean value indicating whether the delete alert is presented.
     @State private var deleteAlertIsPresented = false
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     /// The portal item to delete when the delete alert is presented.
     @State private var portalItemToDelete: PortalItem?
     /// A list of portal items when the portal is logged in.

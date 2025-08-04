@@ -19,7 +19,7 @@ struct QueryFeatureTableView: View {
     @StateObject private var model = Model()
     
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     /// The text in the search bar.
     @State private var searchBarText = ""

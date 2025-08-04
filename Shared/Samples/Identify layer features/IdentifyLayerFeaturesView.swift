@@ -33,7 +33,7 @@ struct IdentifyLayerFeaturesView: View {
     @State private var overlayText = "Tap on the map to identify feature layers."
     
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     var body: some View {
         ZStack {
