@@ -43,23 +43,13 @@ struct UpdateRelatedFeaturesView: View {
                         parksLayer.clearSelection()
                         calloutPlacement = nil
                         do {
-                            let identifyResult = try await mapView.identify(
-                                on: parksLayer,
-                                screenPoint: screenPoint,
-                                tolerance: 5
-                            )
+                            let identifyResult = try await mapView.identify(on: parksLayer, screenPoint: screenPoint, tolerance: 5)
                             if let identifiedFeature = identifyResult.geoElements.first as? ArcGISFeature {
                                 parksLayer.selectFeature(identifiedFeature)
                                 selectedFeature = identifiedFeature
-                               
-                                await queryRelatedFeatures(
-                                    for: identifiedFeature,
-                                    tappedScreenPoint: screenPoint
-                                )
-                                await mapView.setViewpointCenter(mapPoint)
                                 calloutPlacement = .geoElement(identifiedFeature)
-                            } else {
-                                calloutPlacement = nil
+                                await queryRelatedFeatures(for: identifiedFeature, tappedScreenPoint: screenPoint)
+                                await mapView.setViewpointCenter(mapPoint)
                             }
                         } catch {
                             self.error = error
@@ -141,6 +131,7 @@ struct UpdateRelatedFeaturesView: View {
                         let attributes = relatedArcGISFeature.attributes
                         self.attributeValue = attributes[.annualVisitorsKey] as? String ?? ""
                         calloutPlacement = .location(self.mapPoint!)
+                        self.selectedVisitorValue = self.attributeValue
                     }
                 }
             }
@@ -158,7 +149,8 @@ struct UpdateRelatedFeaturesView: View {
             try await self.preservesTable?.update(feature)
             if let geodatabase = preservesTable?.serviceGeodatabase {
                 let editResults = try await geodatabase.applyEdits()
-                if let first = editResults.first, first.editResults[0].didCompleteWithErrors == false {
+                if let first = editResults.first,
+                    first.editResults[0].didCompleteWithErrors == false {
                     parksFeatureLayer?.clearSelection()
                     calloutPlacement = .location(self.mapPoint!)
                 }
