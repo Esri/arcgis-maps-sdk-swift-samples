@@ -57,7 +57,7 @@ struct SetKMLGroundOverlayPropertiesView: View {
                             Text("Opacity")
                             Text(opacity, format: .percent.precision(.fractionLength(0)))
                         }
-                        .onChange(of: [opacity]) {
+                        .onChange(of: opacity) {
                             // Change the color of the overlay according to the slider's value.
                             let alpha = CGFloat(opacity)
                             overlay.color = UIColor.black.withAlphaComponent(alpha)
