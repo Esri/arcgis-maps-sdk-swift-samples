@@ -20,62 +20,70 @@ struct UpdateRelatedFeaturesView: View {
     @State private var map = Map(basemapStyle: .arcGISTopographic)
     @State private var parksFeatureLayer: FeatureLayer?
     @State private var parksFeatureTable: ServiceFeatureTable?
+    @State private var preservesTable: ServiceFeatureTable?
     @State private var selectedFeature: ArcGISFeature?
     @State private var calloutPlacement: CalloutPlacement?
+    @State private var screenPoint: CGPoint?
+    @State private var mapPoint: Point?
+    @State private var attributeValue: String = ""
+    @State private var parkName: String = ""
+    @State private var visitorOptions = ["<1,000", "1,000–10,000", "10,000–100,000", "100,000+"]
+    @State private var selectedVisitorValue: String = ""
+    @State private var error: Error?
     
     var body: some View {
         MapViewReader { mapView in
             MapView(map: map)
                 .onSingleTapGesture { screenPoint, mapPoint in
+                    self.screenPoint = screenPoint
+                    self.mapPoint = mapPoint
                     Task {
-                        guard
-                            let parksLayer = parksFeatureLayer,
-                            let parksTable = parksFeatureTable
-                        else { return }
-                        
-                        // Clear previous selection and callout
+                        guard let parksLayer = parksFeatureLayer else { return }
                         parksLayer.clearSelection()
                         calloutPlacement = nil
-                        
                         do {
                             let identifyResult = try await mapView.identify(on: parksLayer, screenPoint: screenPoint, tolerance: 5)
-                            
                             if let identifiedFeature = identifyResult.geoElements.first as? ArcGISFeature {
-                                // Select the feature on the layer
                                 parksLayer.selectFeature(identifiedFeature)
                                 selectedFeature = identifiedFeature
-                                
-                                // Show callout at feature location
                                 calloutPlacement = .geoElement(identifiedFeature)
-                                
-                                // Query related features (your existing method)
-                                await queryRelatedFeatures(for: identifiedFeature, parksTable: parksTable)
+                                await queryRelatedFeatures(for: identifiedFeature, tappedScreenPoint: screenPoint)
+                                await mapView.setViewpointCenter(mapPoint)
                             } else {
-                                // No feature found, hide callout
                                 calloutPlacement = nil
                             }
                         } catch {
-                            print("Error identifying features: \(error.localizedDescription)")
+                            self.error = error
                         }
                     }
                 }
-                .callout(placement: $calloutPlacement) { placement in
-                    if let feature = selectedFeature,
-                       let parkName = feature.attributes["UNIT_NAME"] as? String {
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text("Preserve: \(parkName)")
-                                .font(.headline)
-                            
+                .callout(placement: $calloutPlacement) { _ in
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Preserve: \(parkName)")
+                            .font(.headline)
+                        Picker("Annual Visitors", selection: $selectedVisitorValue) {
+                            ForEach(visitorOptions, id: \.self) { option in
+                                Text(option).tag(option)
+                            }
                         }
-                        .padding()
+                        .pickerStyle(.menu)
+                        .onChange(of: selectedVisitorValue) { newValue in
+                            if let feature = self.selectedFeature,
+                               newValue != attributeValue {
+                                Task {
+                                    await updateRelatedFeature(feature: feature, newValue: newValue)
+                                }
+                            }
+                        }
                     }
+                    .padding()
                 }
                 .task {
                     do {
                         let geodatabase = ServiceGeodatabase(url: .alaskaParksFeatureService)
                         try await geodatabase.load()
                         
-                        let preservesTable = geodatabase.table(withLayerID: 0)
+                        preservesTable = geodatabase.table(withLayerID: 0)
                         parksFeatureTable = geodatabase.table(withLayerID: 1)
                         
                         if let preservesTable = preservesTable {
@@ -89,25 +97,47 @@ struct UpdateRelatedFeaturesView: View {
                         }
                         await mapView.setViewpoint(Viewpoint(latitude: 65.399121, longitude: -151.521682, scale: 50000000))
                     } catch {
-                        print("Error loading geodatabase: \(error.localizedDescription)")
+                        self.error = error
                     }
                 }
         }
     }
     
-    func queryRelatedFeatures(for feature: ArcGISFeature, parksTable: ServiceFeatureTable) async {
+    func queryRelatedFeatures(for feature: ArcGISFeature, tappedScreenPoint: CGPoint) async {
+        guard let parksTable = parksFeatureTable else { return }
         do {
             let relatedResults = try await parksTable.queryRelatedFeatures(to: feature)
-            for relatedResult in relatedResults {
-                for geoElement in relatedResult.features() {
-                    if let relatedFeature = geoElement as? ArcGISFeature {
-                        print("Related feature: \(relatedFeature.attributes)")
-                        
+            for result in relatedResults {
+                for relatedFeature in result.features() {
+                    if let relatedArcGISFeature = relatedFeature as? ArcGISFeature {
+                        self.selectedFeature = relatedArcGISFeature
+                        let attributes = relatedArcGISFeature.attributes
+                        self.parkName = attributes["UNIT_NAME"] as? String ?? "Unknown"
+                        self.attributeValue = attributes["ANNUAL_VISITORS"] as? String ?? ""
+                        calloutPlacement = .location(self.mapPoint!)
                     }
                 }
             }
         } catch {
-            print("Error querying related features: \(error.localizedDescription)")
+            self.error = error
+        }
+    }
+    
+    func updateRelatedFeature(feature: ArcGISFeature, newValue: String) async {
+        do {
+            try await feature.load()
+            feature.setAttributeValue(newValue, forKey: "ANNUAL_VISITORS")
+            attributeValue = newValue
+            try await self.preservesTable?.update(feature)
+            if let geodatabase = preservesTable?.serviceGeodatabase {
+                let editResults = try await geodatabase.applyEdits()
+                if let first = editResults.first {
+                    first.editResults.forEach { print($0.didCompleteWithErrors) }
+                    parksFeatureLayer?.clearSelection()
+                }
+            }
+        } catch {
+            self.error = error
         }
     }
 }
