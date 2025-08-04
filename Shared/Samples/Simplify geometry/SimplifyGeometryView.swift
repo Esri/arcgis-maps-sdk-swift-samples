@@ -20,7 +20,7 @@ struct SimplifyGeometryView: View {
     /// Property to track whether geometry has been simplified.
     @State private var isSimplified = false
     /// Graphic overlay for the original polygon.
-    @State private var originalOverlay = GraphicsOverlay()
+    @State private var originalOverlay = GraphicsOverlay(graphics: [makePolygonGraphic()])
     /// Graphic overlay for the simplified geometry.
     @State private var resultOverlay = GraphicsOverlay()
     /// The polygon graphic geometry.
@@ -43,7 +43,7 @@ struct SimplifyGeometryView: View {
                         ),
                         scale: 25000
                     )
-                }        
+                }
         }
         .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
@@ -62,7 +62,23 @@ struct SimplifyGeometryView: View {
         }
     }
     
-    private func createPolygon() {
+    private func simplifyGeometry() {
+        guard let original = originalOverlay.graphics.first?.geometry else { return }
+        // Check if the geometry is already simple.
+        if !GeometryEngine.isSimple(original) {
+            if let simplified = GeometryEngine.simplify(original) {
+                // Define a red-filled symbol for the simplified result.
+                let redSymbol = SimpleFillSymbol(style: .solid, color: .red, outline: lineSymbol)
+                // Create a graphic from the simplified geometry and add it to the result overlay.
+                let resultGraphic = Graphic(geometry: simplified, symbol: redSymbol)
+                resultOverlay.addGraphic(resultGraphic)
+                // Set simplified state to true.
+                isSimplified = true
+            }
+        }
+    }
+    
+    private static func makePolygonGraphic() -> Graphic {
         let part1 = MutablePart(
             points: [
                 Point(x: -13020, y: 6710130),
@@ -100,24 +116,14 @@ struct SimplifyGeometryView: View {
         polygonBuilder.parts.append(part3)
         // Convert to a geometry and wrap it in a graphic with transparent fill.
         let polygon = polygonBuilder.toGeometry()
-        let fillSymbol = SimpleFillSymbol(style: .solid, color: .clear, outline: lineSymbol)
-        polygonGraphic = Graphic(geometry: polygon, symbol: fillSymbol)
+        let fillSymbol = SimpleFillSymbol(style: .solid, color: .clear, outline: .lineSymbol)
+        return Graphic(geometry: polygon, symbol: fillSymbol)
     }
-    
-    private func simplifyGeometry() {
-        guard let original = polygonGraphic?.geometry else { return }
-        // Check if the geometry is already simple.
-        if !GeometryEngine.isSimple(original) {
-            if let simplified = GeometryEngine.simplify(original) {
-                // Define a red-filled symbol for the simplified result.
-                let redSymbol = SimpleFillSymbol(style: .solid, color: .red, outline: lineSymbol)
-                // Create a graphic from the simplified geometry and add it to the result overlay.
-                let resultGraphic = Graphic(geometry: simplified, symbol: redSymbol)
-                resultOverlay.addGraphic(resultGraphic)
-                // Set simplified state to true. 
-                isSimplified = true
-            }
-        }
+}
+
+private extension Symbol {
+    static var lineSymbol: LineSymbol {
+        SimpleLineSymbol(style: .solid, color: .black, width: 1)
     }
 }
 
