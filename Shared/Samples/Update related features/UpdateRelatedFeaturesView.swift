@@ -27,9 +27,10 @@ struct UpdateRelatedFeaturesView: View {
     @State private var mapPoint: Point?
     @State private var attributeValue: String = ""
     @State private var parkName: String = ""
-    @State private var visitorOptions = ["<1,000", "1,000–10,000", "10,000–100,000", "100,000+"]
-    @State private var selectedVisitorValue: String = "<1,000"
+    @State private var visitorOptions = ["0-1,000", "1,000–10,000", "10,000–100,000", "100,000+"]
+    @State private var selectedVisitorValue: String = "0-1,000"
     @State private var error: Error?
+    @State private var isLoading = false
     
     var body: some View {
         MapViewReader { mapView in
@@ -42,12 +43,19 @@ struct UpdateRelatedFeaturesView: View {
                         parksLayer.clearSelection()
                         calloutPlacement = nil
                         do {
-                            let identifyResult = try await mapView.identify(on: parksLayer, screenPoint: screenPoint, tolerance: 5)
+                            let identifyResult = try await mapView.identify(
+                                on: parksLayer,
+                                screenPoint: screenPoint,
+                                tolerance: 5
+                            )
                             if let identifiedFeature = identifyResult.geoElements.first as? ArcGISFeature {
                                 parksLayer.selectFeature(identifiedFeature)
                                 selectedFeature = identifiedFeature
                                 calloutPlacement = .geoElement(identifiedFeature)
-                                await queryRelatedFeatures(for: identifiedFeature, tappedScreenPoint: screenPoint)
+                                await queryRelatedFeatures(
+                                    for: identifiedFeature,
+                                    tappedScreenPoint: screenPoint
+                                )
                                 await mapView.setViewpointCenter(mapPoint)
                             } else {
                                 calloutPlacement = nil
@@ -59,7 +67,7 @@ struct UpdateRelatedFeaturesView: View {
                 }
                 .callout(placement: $calloutPlacement) { _ in
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("Preserve: \(parkName)")
+                        Text("Park: \(parkName)")
                             .font(.headline)
                         Picker("Annual Visitors", selection: $selectedVisitorValue) {
                             ForEach(visitorOptions, id: \.self) { option in
@@ -67,18 +75,23 @@ struct UpdateRelatedFeaturesView: View {
                             }
                         }
                         .pickerStyle(.menu)
-                        .onChange(of: selectedVisitorValue) { newValue in
+                        .onChange(of: selectedVisitorValue) {
                             if let feature = self.selectedFeature,
-                               newValue != attributeValue {
+                               selectedVisitorValue != attributeValue {
                                 Task {
-                                    await updateRelatedFeature(feature: feature, newValue: newValue)
+                                    await updateRelatedFeature(
+                                        feature: feature,
+                                        newValue: selectedVisitorValue
+                                    )
                                 }
                             }
                         }
                     }
                     .padding()
                 }
+            
                 .task {
+                    isLoading = true
                     do {
                         let geodatabase = ServiceGeodatabase(url: .alaskaParksFeatureService)
                         try await geodatabase.load()
@@ -93,11 +106,20 @@ struct UpdateRelatedFeaturesView: View {
                             parksFeatureLayer = parksLayer
                             map.addOperationalLayer(parksLayer)
                         }
-                        await mapView.setViewpoint(Viewpoint(latitude: 65.399121, longitude: -151.521682, scale: 50000000))
+                        await mapView.setViewpoint(
+                            Viewpoint(latitude: 65.399121, longitude: -151.521682, scale: 50000000)
+                        )
                     } catch {
                         self.error = error
                     }
+                    isLoading = false
                 }
+                .overlay(alignment: .center) {
+                    if isLoading {
+                        loadingView
+                    }
+                }
+                .errorAlert(presentingError: $error)
         }
     }
     
@@ -110,8 +132,8 @@ struct UpdateRelatedFeaturesView: View {
                     if let relatedArcGISFeature = relatedFeature as? ArcGISFeature {
                         self.selectedFeature = relatedArcGISFeature
                         let attributes = relatedArcGISFeature.attributes
-                        self.parkName = attributes["UNIT_NAME"] as? String ?? "Unknown"
-                        self.attributeValue = attributes["ANNUAL_VISITORS"] as? String ?? ""
+                        self.parkName = attributes[.unitKey] as? String ?? "Unknown"
+                        self.attributeValue = attributes[.annualVisitorsKey] as? String ?? ""
                         calloutPlacement = .location(self.mapPoint!)
                     }
                 }
@@ -122,21 +144,46 @@ struct UpdateRelatedFeaturesView: View {
     }
     
     func updateRelatedFeature(feature: ArcGISFeature, newValue: String) async {
+        isLoading = true
         do {
             try await feature.load()
-            feature.setAttributeValue(newValue, forKey: "ANNUAL_VISITORS")
+            feature.setAttributeValue(newValue, forKey: .annualVisitorsKey)
             attributeValue = newValue
             try await self.preservesTable?.update(feature)
             if let geodatabase = preservesTable?.serviceGeodatabase {
                 let editResults = try await geodatabase.applyEdits()
-                if let first = editResults.first {
-                    first.editResults.forEach { print($0.didCompleteWithErrors) }
+                if let first = editResults.first, first.editResults[0].didCompleteWithErrors == false {
                     parksFeatureLayer?.clearSelection()
+                    calloutPlacement = .location(self.mapPoint!)
                 }
             }
         } catch {
             self.error = error
         }
+        isLoading = false
+    }
+    
+    var loadingView: some View {
+        ProgressView(
+               """
+               Fetching data
+               """
+        )
+        .padding()
+        .background(.ultraThinMaterial)
+        .clipShape(.rect(cornerRadius: 10))
+        .shadow(radius: 50)
+        .multilineTextAlignment(.center)
+    }
+}
+
+extension String {
+    static var annualVisitorsKey: String {
+        "ANNUAL_VISITORS"
+    }
+    
+    static var unitKey: String {
+        "UNIT_NAME"
     }
 }
 
