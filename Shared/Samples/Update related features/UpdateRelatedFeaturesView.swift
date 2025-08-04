@@ -27,7 +27,7 @@ struct UpdateRelatedFeaturesView: View {
     @State private var mapPoint: Point?
     @State private var attributeValue: String = ""
     @State private var parkName: String = ""
-    @State private var visitorOptions = ["0-1,000", "1,000–10,000", "10,000–50,000", "50,000-100,000", "100,000+"]
+    @State private var visitorOptions = ["0-1,000", "1,000–10,000", "10,000-50,000", "50,000-100,000", "100,000+"]
     @State private var selectedVisitorValue: String = "0-1,000"
     @State private var error: Error?
     @State private var isLoading = false
@@ -58,7 +58,7 @@ struct UpdateRelatedFeaturesView: View {
                 }
                 .callout(placement: $calloutPlacement) { _ in
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("Park: \(parkName)")
+                        Text("\(parkName)")
                             .font(.headline)
                         if !attributeValue.isEmpty {
                             Text("Annual Visitors:")
@@ -128,8 +128,10 @@ struct UpdateRelatedFeaturesView: View {
                 self.attributeValue = ""
                 for relatedFeature in relatedResult.features() {
                     if let relatedArcGISFeature = relatedFeature as? ArcGISFeature {
+                        self.selectedFeature = relatedArcGISFeature
                         let attributes = relatedArcGISFeature.attributes
                         self.attributeValue = attributes[.annualVisitorsKey] as? String ?? ""
+                        self.parkName = attributes[.unitKey] as? String ?? "Unknown"
                         calloutPlacement = .location(self.mapPoint!)
                         self.selectedVisitorValue = self.attributeValue
                     }
