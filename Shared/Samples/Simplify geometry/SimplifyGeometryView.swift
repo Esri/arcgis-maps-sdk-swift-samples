@@ -62,6 +62,8 @@ struct SimplifyGeometryView: View {
         }
     }
     
+    
+    /// Checks to see whether the polygon geometry has been simplified, if not, simplifies the geometry and then displays it in filled red. 
     private func simplifyGeometry() {
         guard let original = originalOverlay.graphics.first?.geometry else { return }
         // Check if the geometry is already simple.
