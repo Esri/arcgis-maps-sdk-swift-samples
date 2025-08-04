@@ -16,6 +16,7 @@ import ArcGIS
 import SwiftUI
 
 struct SimplifyGeometryView: View {
+    /// A map with a light gray basemap style.
     @State private var map = Map(basemapStyle: .arcGISLightGray)
     /// Property to track whether geometry has been simplified.
     @State private var isSimplified = false
@@ -27,8 +28,6 @@ struct SimplifyGeometryView: View {
     private var graphicGeometry: Geometry? {
         originalOverlay.graphics.first?.geometry
     }
-    /// A basic black line symbol used for polygon outlines.
-    private let lineSymbol = SimpleLineSymbol(style: .solid, color: .black, width: 1)
     
     var body: some View {
         MapViewReader { mapView in
@@ -62,12 +61,10 @@ struct SimplifyGeometryView: View {
         }
     }
     
-    
     /// Checks to see whether the polygon geometry has been simplified, if not, simplifies the geometry and then displays it in filled red. 
     private func simplifyGeometry() {
-        guard let original = originalOverlay.graphics.first?.geometry else { return }
-        // Check if the geometry is already simple.
-        if !GeometryEngine.isSimple(original) {
+        guard let original = originalOverlay.graphics.first?.geometry,
+        !GeometryEngine.isSimple(original) else { return }
             if let simplified = GeometryEngine.simplify(original) {
                 // Define a red-filled symbol for the simplified result.
                 let redSymbol = SimpleFillSymbol(style: .solid, color: .red, outline: lineSymbol)
