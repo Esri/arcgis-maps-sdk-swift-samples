@@ -28,7 +28,7 @@ struct UpdateRelatedFeaturesView: View {
     @State private var attributeValue: String = ""
     @State private var parkName: String = ""
     @State private var visitorOptions = ["<1,000", "1,000–10,000", "10,000–100,000", "100,000+"]
-    @State private var selectedVisitorValue: String = ""
+    @State private var selectedVisitorValue: String = "<1,000"
     @State private var error: Error?
     
     var body: some View {
@@ -82,10 +82,8 @@ struct UpdateRelatedFeaturesView: View {
                     do {
                         let geodatabase = ServiceGeodatabase(url: .alaskaParksFeatureService)
                         try await geodatabase.load()
-                        
                         preservesTable = geodatabase.table(withLayerID: 0)
                         parksFeatureTable = geodatabase.table(withLayerID: 1)
-                        
                         if let preservesTable = preservesTable {
                             let preservesLayer = FeatureLayer(featureTable: preservesTable)
                             map.addOperationalLayer(preservesLayer)
