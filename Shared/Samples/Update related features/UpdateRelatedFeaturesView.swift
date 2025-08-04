@@ -89,17 +89,18 @@ struct UpdateRelatedFeaturesView: View {
                     do {
                         let geodatabase = ServiceGeodatabase(url: .alaskaParksFeatureService)
                         try await geodatabase.load()
-                        preservesTable = geodatabase.table(withLayerID: 0)
                         parksFeatureTable = geodatabase.table(withLayerID: 1)
-                        if let preservesTable = preservesTable {
-                            let preservesLayer = FeatureLayer(featureTable: preservesTable)
-                            map.addOperationalLayer(preservesLayer)
-                        }
                         if let parksTable = parksFeatureTable {
                             let parksLayer = FeatureLayer(featureTable: parksTable)
                             parksFeatureLayer = parksLayer
                             map.addOperationalLayer(parksLayer)
                         }
+                        preservesTable = geodatabase.table(withLayerID: 0)
+                        if let preservesTable = preservesTable {
+                            let preservesLayer = FeatureLayer(featureTable: preservesTable)
+                            map.addOperationalLayer(preservesLayer)
+                        }
+                       
                         await mapView.setViewpoint(
                             Viewpoint(latitude: 65.399121, longitude: -151.521682, scale: 50000000)
                         )
