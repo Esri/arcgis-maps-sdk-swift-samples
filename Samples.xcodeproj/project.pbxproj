@@ -125,6 +125,8 @@
 		1043210B2DF34D4A00D390EB /* SetInitialMapLocationView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 104321092DF2640900D390EB /* SetInitialMapLocationView.swift */; };
 		104F55C72BF3E30A00204D04 /* GenerateOfflineMapWithCustomParametersView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 10B782042BE55D7E007EAE6C /* GenerateOfflineMapWithCustomParametersView.swift */; };
 		104F55C82BF3E30A00204D04 /* GenerateOfflineMapWithCustomParametersView.CustomParameters.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 10B782072BE5A058007EAE6C /* GenerateOfflineMapWithCustomParametersView.CustomParameters.swift */; };
+		1062C6C82E3D81E400B2D7FC /* SetKMLGroundOverlayPropertiesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 108001702E3C3BAD00D57887 /* SetKMLGroundOverlayPropertiesView.swift */; };
+		108001722E3C3BAD00D57887 /* SetKMLGroundOverlayPropertiesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108001702E3C3BAD00D57887 /* SetKMLGroundOverlayPropertiesView.swift */; };
 		1081B93D2C000E8B00C1BEB1 /* IdentifyFeaturesInWMSLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 102B6A362BFD5B55009F763C /* IdentifyFeaturesInWMSLayerView.swift */; };
 		108EC04129D25B2C000F35D0 /* QueryFeatureTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108EC04029D25B2C000F35D0 /* QueryFeatureTableView.swift */; };
 		108EC04229D25B55000F35D0 /* QueryFeatureTableView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 108EC04029D25B2C000F35D0 /* QueryFeatureTableView.swift */; };
@@ -741,6 +743,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				1062C6C82E3D81E400B2D7FC /* SetKMLGroundOverlayPropertiesView.swift in Copy Source Code Files */,
 				951896D62E2AEB7700144F9B /* ShowViewshedFromCameraInSceneView.swift in Copy Source Code Files */,
 				000B75712E33F67600C4B257 /* GenerateGeodatabaseReplicaFromFeatureServiceView.Model.swift in Copy Source Code Files */,
 				1C17E1CA2DDFB6FB00A012CB /* GenerateGeodatabaseReplicaFromFeatureServiceView.swift in Copy Source Code Files */,
@@ -1112,6 +1115,7 @@
 		1016FB512DDCE7CC00B87699 /* CreateGeometriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGeometriesView.swift; sourceTree = "<group>"; };
 		102B6A362BFD5B55009F763C /* IdentifyFeaturesInWMSLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentifyFeaturesInWMSLayerView.swift; sourceTree = "<group>"; };
 		104321092DF2640900D390EB /* SetInitialMapLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetInitialMapLocationView.swift; sourceTree = "<group>"; };
+		108001702E3C3BAD00D57887 /* SetKMLGroundOverlayPropertiesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetKMLGroundOverlayPropertiesView.swift; sourceTree = "<group>"; };
 		108EC04029D25B2C000F35D0 /* QueryFeatureTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueryFeatureTableView.swift; sourceTree = "<group>"; };
 		10B782042BE55D7E007EAE6C /* GenerateOfflineMapWithCustomParametersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateOfflineMapWithCustomParametersView.swift; sourceTree = "<group>"; };
 		10B782072BE5A058007EAE6C /* GenerateOfflineMapWithCustomParametersView.CustomParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateOfflineMapWithCustomParametersView.CustomParameters.swift; sourceTree = "<group>"; };
@@ -1795,6 +1799,7 @@
 				D7C3AB462B683291008909B9 /* Set feature request mode */,
 				104321082DF263A300D390EB /* Set initial map location */,
 				3E720F9B2C619ACD00E22A9E /* Set initial viewpoint */,
+				108001712E3C3BAD00D57887 /* Set KML ground overlay properties */,
 				95813E3A2DF890CF00342CBF /* Set map image layer sublayer visibility */,
 				D734FA072A183A5A00246D7E /* Set max extent */,
 				D7EAF34F2A1C011000D822C4 /* Set min and max scale */,
@@ -2144,6 +2149,14 @@
 				104321092DF2640900D390EB /* SetInitialMapLocationView.swift */,
 			);
 			path = "Set initial map location";
+			sourceTree = "<group>";
+		};
+		108001712E3C3BAD00D57887 /* Set KML ground overlay properties */ = {
+			isa = PBXGroup;
+			children = (
+				108001702E3C3BAD00D57887 /* SetKMLGroundOverlayPropertiesView.swift */,
+			);
+			path = "Set KML ground overlay properties";
 			sourceTree = "<group>";
 		};
 		108EC03F29D25AE1000F35D0 /* Query feature table */ = {
@@ -4727,6 +4740,7 @@
 				3E54CF222C66AFBE00DD2F18 /* AddWebTiledLayerView.swift in Sources */,
 				D7F913572DF0F272009CF629 /* QueryTableStatisticsGroupAndSortView.Views.swift in Sources */,
 				0042E24528E4F82C001F33D6 /* ShowViewshedFromPointInSceneView.ViewshedSettingsView.swift in Sources */,
+				108001722E3C3BAD00D57887 /* SetKMLGroundOverlayPropertiesView.swift in Sources */,
 				D7DDF8532AF47C6C004352D9 /* FindRouteAroundBarriersView.swift in Sources */,
 				1C7B861C2DFB4EAF00B267EA /* ShowExtrudedGraphicsView.swift in Sources */,
 				1C9B74D929DB54560038B06F /* ChangeCameraControllerView.swift in Sources */,
@@ -4890,6 +4904,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
 				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/iOS/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
