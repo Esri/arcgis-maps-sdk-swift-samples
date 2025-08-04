@@ -35,7 +35,7 @@ struct SnapGeometryEditsView: View {
     @StateObject private var model = GeometryEditorModel()
     
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     /// A Boolean value indicating whether all the snap sources on the map view are loaded.
     @State private var snapSourcesAreLoaded = false

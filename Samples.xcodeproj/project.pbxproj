@@ -314,6 +314,8 @@
 		9503056E2C46ECB70091B32D /* ShowDeviceLocationUsingIndoorPositioningView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9503056D2C46ECB70091B32D /* ShowDeviceLocationUsingIndoorPositioningView.Model.swift */; };
 		951896BB2E29B15A00144F9B /* ShowShapefileMetadataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951896BA2E29B15600144F9B /* ShowShapefileMetadataView.swift */; };
 		951896BD2E29B20500144F9B /* ShowShapefileMetadataView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 951896BA2E29B15600144F9B /* ShowShapefileMetadataView.swift */; };
+		951896D32E2AE5E800144F9B /* ShowViewshedFromCameraInSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951896D22E2AE5E400144F9B /* ShowViewshedFromCameraInSceneView.swift */; };
+		951896D62E2AEB7700144F9B /* ShowViewshedFromCameraInSceneView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 951896D22E2AE5E400144F9B /* ShowViewshedFromCameraInSceneView.swift */; };
 		951961AC2E00BC420088B0C2 /* ShowGeodesicSectorAndEllipseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951961AB2E00BC3C0088B0C2 /* ShowGeodesicSectorAndEllipseView.swift */; };
 		951961AE2E00BD430088B0C2 /* SetMapImageLayerSublayerVisibilityView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 95813E382DF88FD000342CBF /* SetMapImageLayerSublayerVisibilityView.swift */; };
 		9520B2B52E135AD800B3BEF9 /* ShowLineOfSightBetweenGeoelementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9520B2B42E135AD800B3BEF9 /* ShowLineOfSightBetweenGeoelementsView.swift */; };
@@ -348,6 +350,8 @@
 		95F3A52B2C07F09C00885DED /* SetSurfaceNavigationConstraintView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F3A52A2C07F09C00885DED /* SetSurfaceNavigationConstraintView.swift */; };
 		95F3A52D2C07F28700885DED /* SetSurfaceNavigationConstraintView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 95F3A52A2C07F09C00885DED /* SetSurfaceNavigationConstraintView.swift */; };
 		95F891292C46E9D60010EBED /* ShowDeviceLocationUsingIndoorPositioningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95F891282C46E9D60010EBED /* ShowDeviceLocationUsingIndoorPositioningView.swift */; };
+		95FEAE552E3BF42A00727ABA /* ShowWFSLayerWithXMLQueryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 957B25D32E31BE23007E88F9 /* ShowWFSLayerWithXMLQueryView.swift */; };
+		95FEAE562E3BF43200727ABA /* ShowWFSLayerWithXMLQueryView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 957B25D32E31BE23007E88F9 /* ShowWFSLayerWithXMLQueryView.swift */; };
 		95FFEB442E06211B00543993 /* ShowGeodesicSectorAndEllipseView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 951961AB2E00BC3C0088B0C2 /* ShowGeodesicSectorAndEllipseView.swift */; };
 		D70082EB2ACF900100E0C3C2 /* IdentifyKMLFeaturesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70082EA2ACF900100E0C3C2 /* IdentifyKMLFeaturesView.swift */; };
 		D70082EC2ACF901600E0C3C2 /* IdentifyKMLFeaturesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D70082EA2ACF900100E0C3C2 /* IdentifyKMLFeaturesView.swift */; };
@@ -742,6 +746,8 @@
 			dstSubfolderSpec = 7;
 			files = (
 				9563324E2E3950B00091C877 /* UpdateRelatedFeaturesView.swift in Copy Source Code Files */,
+				95FEAE562E3BF43200727ABA /* ShowWFSLayerWithXMLQueryView.swift in Copy Source Code Files */,
+				951896D62E2AEB7700144F9B /* ShowViewshedFromCameraInSceneView.swift in Copy Source Code Files */,
 				000B75712E33F67600C4B257 /* GenerateGeodatabaseReplicaFromFeatureServiceView.Model.swift in Copy Source Code Files */,
 				1C17E1CA2DDFB6FB00A012CB /* GenerateGeodatabaseReplicaFromFeatureServiceView.swift in Copy Source Code Files */,
 				000B75702E33F67600C4B257 /* ControlAnnotationSublayerVisibilityView.Model.swift in Copy Source Code Files */,
@@ -1213,6 +1219,7 @@
 		9501BBEE2DF39DA50054F4BD /* SetFeatureLayerRenderingModeOnSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetFeatureLayerRenderingModeOnSceneView.swift; sourceTree = "<group>"; };
 		9503056D2C46ECB70091B32D /* ShowDeviceLocationUsingIndoorPositioningView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowDeviceLocationUsingIndoorPositioningView.Model.swift; sourceTree = "<group>"; };
 		951896BA2E29B15600144F9B /* ShowShapefileMetadataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowShapefileMetadataView.swift; sourceTree = "<group>"; };
+		951896D22E2AE5E400144F9B /* ShowViewshedFromCameraInSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowViewshedFromCameraInSceneView.swift; sourceTree = "<group>"; };
 		951961AB2E00BC3C0088B0C2 /* ShowGeodesicSectorAndEllipseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowGeodesicSectorAndEllipseView.swift; sourceTree = "<group>"; };
 		9520B2B42E135AD800B3BEF9 /* ShowLineOfSightBetweenGeoelementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowLineOfSightBetweenGeoelementsView.swift; sourceTree = "<group>"; };
 		9537AFD62C220EF0000923C5 /* ExchangeSetwithoutUpdates */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExchangeSetwithoutUpdates; sourceTree = "<group>"; };
@@ -1222,6 +1229,7 @@
 		955AFAC32C10FD6F009C8FE5 /* ApplyMosaicRuleToRastersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyMosaicRuleToRastersView.swift; sourceTree = "<group>"; };
 		9563324B2E39507E0091C877 /* UpdateRelatedFeaturesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateRelatedFeaturesView.swift; sourceTree = "<group>"; };
 		9579FCE92C3360BB00FC8A1D /* EditFeatureAttachmentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFeatureAttachmentsView.swift; sourceTree = "<group>"; };
+		957B25D32E31BE23007E88F9 /* ShowWFSLayerWithXMLQueryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowWFSLayerWithXMLQueryView.swift; sourceTree = "<group>"; };
 		95813E382DF88FD000342CBF /* SetMapImageLayerSublayerVisibilityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetMapImageLayerSublayerVisibilityView.swift; sourceTree = "<group>"; };
 		95A572182C0FDCC9006E8B48 /* ShowScaleBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowScaleBarView.swift; sourceTree = "<group>"; };
 		95A86A5A2E1C50BF000BF570 /* ShowPortalUserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowPortalUserInfoView.swift; sourceTree = "<group>"; };
@@ -1832,9 +1840,11 @@
 				88AF55282DD68753003F146E /* Show service areas for multiple facilities */,
 				951896BF2E29B21900144F9B /* Show shapefile metadata */,
 				1CAF831A2A20305F000E1E60 /* Show utility associations */,
+				951896D52E2AE68600144F9B /* Show viewshed from camera in scene */,
 				D7ABA2FB2A3287C10021822B /* Show viewshed from geoelement in scene */,
 				0086F3FC28E3770900974721 /* Show viewshed from point in scene */,
 				95DEB9B72C127A97009BEC35 /* Show viewshed from point on map */,
+				957B25D52E31BE37007E88F9 /* Show WFS layer with XML query */,
 				00E7C15A2BBE1BF000B85D69 /* Snap geometry edits */,
 				D71A9DE12D8CC88D00CA03CB /* Snap geometry edits with utility network rules */,
 				D75B584D2AAFB2C20038B3B4 /* Style features with custom dictionary */,
@@ -2764,6 +2774,14 @@
 			path = "Show shapefile metadata";
 			sourceTree = "<group>";
 		};
+		951896D52E2AE68600144F9B /* Show viewshed from camera in scene */ = {
+			isa = PBXGroup;
+			children = (
+				951896D22E2AE5E400144F9B /* ShowViewshedFromCameraInSceneView.swift */,
+			);
+			path = "Show viewshed from camera in scene";
+			sourceTree = "<group>";
+		};
 		951961AD2E00BC760088B0C2 /* Show geodesic sector and ellipse */ = {
 			isa = PBXGroup;
 			children = (
@@ -2835,6 +2853,14 @@
 				9547085B2C3C719800CA8579 /* EditFeatureAttachmentsView.Model.swift */,
 			);
 			path = "Edit feature attachments";
+			sourceTree = "<group>";
+		};
+		957B25D52E31BE37007E88F9 /* Show WFS layer with XML query */ = {
+			isa = PBXGroup;
+			children = (
+				957B25D32E31BE23007E88F9 /* ShowWFSLayerWithXMLQueryView.swift */,
+			);
+			path = "Show WFS layer with XML query";
 			sourceTree = "<group>";
 		};
 		95813E3A2DF890CF00342CBF /* Set map image layer sublayer visibility */ = {
@@ -4438,6 +4464,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				95FEAE552E3BF42A00727ABA /* ShowWFSLayerWithXMLQueryView.swift in Sources */,
 				95F891292C46E9D60010EBED /* ShowDeviceLocationUsingIndoorPositioningView.swift in Sources */,
 				00FA4E8B2DCD7233008A34CF /* ApplySimpleRendererToGraphicsOverlayView.swift in Sources */,
 				1C2538562BABACFD00337307 /* AugmentRealityToNavigateRouteView.swift in Sources */,
@@ -4463,6 +4490,7 @@
 				1043210A2DF2640900D390EB /* SetInitialMapLocationView.swift in Sources */,
 				D7337C5A2ABCFDB100A5D865 /* StyleSymbolsFromMobileStyleFileView.SymbolOptionsListView.swift in Sources */,
 				00E1D90F2BC0B1E8001AEB6A /* SnapGeometryEditsView.GeometryEditorMenu.swift in Sources */,
+				951896D32E2AE5E800144F9B /* ShowViewshedFromCameraInSceneView.swift in Sources */,
 				1C43BC842A43781200509BF8 /* SetVisibilityOfSubtypeSublayerView.swift in Sources */,
 				1016FB522DDCE7CC00B87699 /* CreateGeometriesView.swift in Sources */,
 				00A7A1462A2FC58300F035F7 /* DisplayContentOfUtilityNetworkContainerView.swift in Sources */,

@@ -262,7 +262,6 @@ extension SubtypeSublayer: Renderable {}
 
 private extension String {
     static let distributionPipe = "Distribution Pipe"
-    static let excessFlowValve = "Excess Flow Valve"
     static let graphics = "Graphics"
     static let pipelineLine = "PipelineLine"
     static let servicePipe = "Service Pipe"

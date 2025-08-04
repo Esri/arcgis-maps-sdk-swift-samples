@@ -19,7 +19,7 @@ struct ShowShapefileMetadataView: View {
     /// Model which contains the logic for loading and setting the data.
     @State private var model = Model()
     /// The error that occurred, if any, when trying to load the shapefile or display its metadata.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     /// A Boolean value specifying whether the metadata view should be shown
     @State private var showMetadata: Bool = false
     

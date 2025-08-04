@@ -17,7 +17,7 @@ import SwiftUI
 
 struct ShowViewshedFromPointOnMapView: View {
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     /// The point on the map where the user tapped.
     @State private var tapLocation: Point?

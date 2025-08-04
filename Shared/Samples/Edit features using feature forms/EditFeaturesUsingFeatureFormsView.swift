@@ -38,7 +38,7 @@ struct EditFeaturesUsingFeatureFormsView: View {
     @State private var isApplyingEdits = false
     
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     /// The text explaining the next step in the sample's workflow.
     private var instructionText: String {

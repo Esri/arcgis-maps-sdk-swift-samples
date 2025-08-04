@@ -40,7 +40,7 @@ struct PlayKMLTourView: View {
     @State private var tourStatus: KMLTour.Status = .notInitialized
     
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     /// A Boolean value that indicates whether to disable the tour buttons.
     private var tourDisabled: Bool {
