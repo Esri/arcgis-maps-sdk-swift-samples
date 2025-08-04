@@ -78,6 +78,7 @@ struct SimplifyGeometryView: View {
         }
     }
     
+    /// Create polygon geometry that can be simplified.
     private static func makePolygonGraphic() -> Graphic {
         let part1 = MutablePart(
             points: [
