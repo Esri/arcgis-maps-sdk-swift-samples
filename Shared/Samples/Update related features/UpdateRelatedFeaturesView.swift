@@ -131,7 +131,6 @@ struct UpdateRelatedFeaturesView: View {
         guard let parksTable = parksFeatureTable else { return }
         do {
             let relatedResultsQuery = try await parksTable.queryRelatedFeatures(to: feature)
-
             for relatedResult in relatedResultsQuery {
                 self.selectedFeature = relatedResult.feature
                 let attributes = selectedFeature!.attributes
