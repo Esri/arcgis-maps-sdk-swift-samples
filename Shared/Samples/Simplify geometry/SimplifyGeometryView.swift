@@ -23,8 +23,10 @@ struct SimplifyGeometryView: View {
     @State private var originalOverlay = GraphicsOverlay()
     /// Graphic overlay for the simplified geometry.
     @State private var resultOverlay = GraphicsOverlay()
-    /// The original polygon graphic holding the geometry that needs simplification.
-    @State private var polygonGraphic: Graphic?
+    /// The polygon graphic geometry.
+    private var graphicGeometry: Geometry? {
+        originalOverlay.graphics.first?.geometry
+    }
     /// A basic black line symbol used for polygon outlines.
     private let lineSymbol = SimpleLineSymbol(style: .solid, color: .black, width: 1)
     
@@ -32,16 +34,10 @@ struct SimplifyGeometryView: View {
         MapViewReader { mapView in
             MapView(map: map, graphicsOverlays: [originalOverlay, resultOverlay])
                 .task {
-                    // Create the polygon geometry when view appears.
-                    createPolygon()
-                    // Add the original polygon to the overlay if it exists.
-                    if let polygon = polygonGraphic {
-                        originalOverlay.addGraphic(polygon)
-                    }
                     // Center the map on London.
                     await mapView.setViewpointCenter(
                         Point(
-                            x: -13500,
+                            x: -13150,
                             y: 6710327,
                             spatialReference: .webMercator
                         ),
