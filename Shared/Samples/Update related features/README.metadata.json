@@ -1,0 +1,29 @@
+{
+    "category": "Edit and Manage Data",
+    "description": "Update related features in an online feature service.",
+    "ignore": false,
+    "images": [
+        "update-related-features.png"
+    ],
+    "keywords": [
+        "editing",
+        "features",
+        "service",
+        "updating",
+        "ArcGISFeature",
+        "RelatedFeatureQueryResult",
+        "RelatedQueryParameters",
+        "ServiceFeatureTable"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "ArcGISFeature",
+        "RelatedFeatureQueryResult",
+        "RelatedQueryParameters",
+        "ServiceFeatureTable"
+    ],
+    "snippets": [
+        "UpdateRelatedFeaturesView.swift"
+    ],
+    "title": "Update related features"
+}

@@ -16,25 +16,33 @@ import ArcGIS
 import SwiftUI
 
 struct UpdateRelatedFeaturesView: View {
-    var map = Map(basemapStyle: .arcGISTopographic)
+    @State private var map = Map(basemapStyle: .arcGISTopographic)
+    @State private var error: Error?
     
     var body: some View {
-        MapView(map: map)
-            .task {
-                let geodatabase = ServiceGeodatabase(url: .alaskaParksFeatureService)
-                do {
-                    try await geodatabase.load()
-                    let table1 = geodatabase.table(withLayerID: 0)
-                    let table2 = geodatabase.table(withLayerID: 1)
-                } catch {
-                    print(error)
+        MapViewReader { mapView in
+            MapView(map: map)
+                .task {
+                    let geodatabase = ServiceGeodatabase(url: .alaskaParksFeatureService)
+                    do {
+                        try await geodatabase.load()
+                        let preservesTable = geodatabase.table(withLayerID: 0)
+                        let parksTable = geodatabase.table(withLayerID: 1)
+                        let preservesLayer = FeatureLayer(featureTable: preservesTable!)
+                        let parksLayer = FeatureLayer(featureTable: parksTable!)
+                        map.addOperationalLayer(preservesLayer)
+                        map.addOperationalLayer(parksLayer)
+                        await mapView.setViewpoint(Viewpoint(latitude: 65.399121, longitude: -151.521682, scale: 50000000))
+                    } catch {
+                        self.error = error
+                    }
                 }
-            }
+        }
     }
 }
 
 extension URL {
     static var alaskaParksFeatureService: URL {
-        URL(string:" https://services2.arcgis.com/ZQgQTuoyBrtmoGdP/ArcGIS/rest/services/AlaskaNationalParksPreserves_Update/FeatureServer")!
+        URL(string: "https://services2.arcgis.com/ZQgQTuoyBrtmoGdP/ArcGIS/rest/services/AlaskaNationalParksPreserves_Update/FeatureServer")!
     }
 }
