@@ -27,7 +27,7 @@ struct UpdateRelatedFeaturesView: View {
     @State private var mapPoint: Point?
     @State private var attributeValue: String = ""
     @State private var parkName: String = ""
-    @State private var visitorOptions = ["0-1,000", "1,000–10,000", "10,000–100,000", "100,000+"]
+    @State private var visitorOptions = ["0-1,000", "1,000–10,000", "10,000–50,000", "50,000-100,000", "100,000+"]
     @State private var selectedVisitorValue: String = "0-1,000"
     @State private var error: Error?
     @State private var isLoading = false
@@ -51,12 +51,13 @@ struct UpdateRelatedFeaturesView: View {
                             if let identifiedFeature = identifyResult.geoElements.first as? ArcGISFeature {
                                 parksLayer.selectFeature(identifiedFeature)
                                 selectedFeature = identifiedFeature
-                                calloutPlacement = .geoElement(identifiedFeature)
+                               
                                 await queryRelatedFeatures(
                                     for: identifiedFeature,
                                     tappedScreenPoint: screenPoint
                                 )
                                 await mapView.setViewpointCenter(mapPoint)
+                                calloutPlacement = .geoElement(identifiedFeature)
                             } else {
                                 calloutPlacement = nil
                             }
@@ -75,13 +76,13 @@ struct UpdateRelatedFeaturesView: View {
                             }
                         }
                         .pickerStyle(.menu)
-                        .onChange(of: selectedVisitorValue) {
+                        .onChange(of: selectedVisitorValue) { newValue in
                             if let feature = self.selectedFeature,
-                               selectedVisitorValue != attributeValue {
+                               newValue != attributeValue {
                                 Task {
                                     await updateRelatedFeature(
                                         feature: feature,
-                                        newValue: selectedVisitorValue
+                                        newValue: newValue
                                     )
                                 }
                             }
@@ -166,7 +167,8 @@ struct UpdateRelatedFeaturesView: View {
     var loadingView: some View {
         ProgressView(
                """
-               Fetching data
+               Loading
+               data
                """
         )
         .padding()
