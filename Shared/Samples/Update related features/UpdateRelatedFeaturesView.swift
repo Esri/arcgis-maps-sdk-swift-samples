@@ -16,9 +16,25 @@ import ArcGIS
 import SwiftUI
 
 struct UpdateRelatedFeaturesView: View {
-    var map = Map(basemapStyle: .arcGISDarkGrayBase)
+    var map = Map(basemapStyle: .arcGISTopographic)
     
     var body: some View {
         MapView(map: map)
+            .task {
+                let geodatabase = ServiceGeodatabase(url: .alaskaParksFeatureService)
+                do {
+                    try await geodatabase.load()
+                    let table1 = geodatabase.table(withLayerID: 0)
+                    let table2 = geodatabase.table(withLayerID: 1)
+                } catch {
+                    print(error)
+                }
+            }
+    }
+}
+
+extension URL {
+    static var alaskaParksFeatureService: URL {
+        URL(string:" https://services2.arcgis.com/ZQgQTuoyBrtmoGdP/ArcGIS/rest/services/AlaskaNationalParksPreserves_Update/FeatureServer")!
     }
 }
