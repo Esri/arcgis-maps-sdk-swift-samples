@@ -70,20 +70,23 @@ struct UpdateRelatedFeaturesView: View {
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Park: \(parkName)")
                             .font(.headline)
-                        Picker("Annual Visitors", selection: $selectedVisitorValue) {
-                            ForEach(visitorOptions, id: \.self) { option in
-                                Text(option).tag(option)
+                        if !attributeValue.isEmpty {
+                            Text("Annual Visitors:")
+                            Picker("Annual Visitors", selection: $selectedVisitorValue) {
+                                ForEach(visitorOptions, id: \.self) { option in
+                                    Text(option).tag(option)
+                                }
                             }
-                        }
-                        .pickerStyle(.menu)
-                        .onChange(of: selectedVisitorValue) { newValue in
-                            if let feature = self.selectedFeature,
-                               newValue != attributeValue {
-                                Task {
-                                    await updateRelatedFeature(
-                                        feature: feature,
-                                        newValue: newValue
-                                    )
+                            .pickerStyle(.menu)
+                            .onChange(of: selectedVisitorValue) { newValue in
+                                if let feature = self.selectedFeature,
+                                   newValue != attributeValue {
+                                    Task {
+                                        await updateRelatedFeature(
+                                            feature: feature,
+                                            newValue: newValue
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -127,13 +130,16 @@ struct UpdateRelatedFeaturesView: View {
     func queryRelatedFeatures(for feature: ArcGISFeature, tappedScreenPoint: CGPoint) async {
         guard let parksTable = parksFeatureTable else { return }
         do {
-            let relatedResults = try await parksTable.queryRelatedFeatures(to: feature)
-            for result in relatedResults {
-                for relatedFeature in result.features() {
+            let relatedResultsQuery = try await parksTable.queryRelatedFeatures(to: feature)
+
+            for relatedResult in relatedResultsQuery {
+                self.selectedFeature = relatedResult.feature
+                let attributes = selectedFeature!.attributes
+                self.parkName = attributes[.unitKey] as? String ?? "Unknown"
+                self.attributeValue = ""
+                for relatedFeature in relatedResult.features() {
                     if let relatedArcGISFeature = relatedFeature as? ArcGISFeature {
-                        self.selectedFeature = relatedArcGISFeature
                         let attributes = relatedArcGISFeature.attributes
-                        self.parkName = attributes[.unitKey] as? String ?? "Unknown"
                         self.attributeValue = attributes[.annualVisitorsKey] as? String ?? ""
                         calloutPlacement = .location(self.mapPoint!)
                     }
