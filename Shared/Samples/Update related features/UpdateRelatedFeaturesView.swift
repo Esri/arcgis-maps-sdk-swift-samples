@@ -37,8 +37,9 @@ struct UpdateRelatedFeaturesView: View {
                                 parksLayer.selectFeature(identifiedFeature)
                                 model.selectedFeature = identifiedFeature
                                 await queryRelatedFeatures(for: identifiedFeature, tappedScreenPoint: screenPoint)
-                                await mapView.setViewpointCenter(mapPoint)
+                               
                                 model.calloutPlacement = .location(self.model.mapPoint!)
+                                await mapView.setViewpointCenter(mapPoint)
                             }
                         } catch {
                             self.error = error
@@ -184,15 +185,6 @@ private extension UpdateRelatedFeaturesView {
                 let preservesLayer = FeatureLayer(featureTable: preservesTable)
                 map.addOperationalLayer(preservesLayer)
             }
-            //            isLoading = true
-            //            do {
-            
-            //
-
-            //            } catch {
-            //                self.error = error
-            //            }
-            //            isLoading = false
         }
     }
 }
