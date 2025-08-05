@@ -63,7 +63,8 @@ struct SimplifyGeometryView: View {
     
     /// Checks to see whether the polygon geometry has been simplified, if not, simplifies the geometry and then displays it in filled red. 
     private func simplifyGeometry() {
-        guard let original = originalOverlay.graphics.first?.geometry, !GeometryEngine.isSimple(original) else { return }
+        guard let original = originalOverlay.graphics.first?.geometry,
+        !GeometryEngine.isSimple(original) else { return }
         if let simplified = GeometryEngine.simplify(original) {
             // Define a red-filled symbol for the simplified result.
             let redSymbol = SimpleFillSymbol(style: .solid, color: .red, outline: .lineSymbol)
