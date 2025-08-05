@@ -47,9 +47,9 @@ struct UpdateRelatedFeaturesView: View {
                             if let identifiedFeature = identifyResult.geoElements.first as? ArcGISFeature {
                                 parksLayer.selectFeature(identifiedFeature)
                                 selectedFeature = identifiedFeature
-                                calloutPlacement = .geoElement(identifiedFeature)
                                 await queryRelatedFeatures(for: identifiedFeature, tappedScreenPoint: screenPoint)
                                 await mapView.setViewpointCenter(mapPoint)
+                                calloutPlacement = .location(self.mapPoint!)
                             }
                         } catch {
                             self.error = error
@@ -89,12 +89,13 @@ struct UpdateRelatedFeaturesView: View {
                     do {
                         let geodatabase = ServiceGeodatabase(url: .alaskaParksFeatureService)
                         try await geodatabase.load()
+                       
                         parksFeatureTable = geodatabase.table(withLayerID: 1)
                         if let parksTable = parksFeatureTable {
-                            let parksLayer = FeatureLayer(featureTable: parksTable)
-                            parksFeatureLayer = parksLayer
-                            map.addOperationalLayer(parksLayer)
+                            parksFeatureLayer = FeatureLayer(featureTable: parksTable)
+                            map.addOperationalLayer(parksFeatureLayer!)
                         }
+                        
                         preservesTable = geodatabase.table(withLayerID: 0)
                         if let preservesTable = preservesTable {
                             let preservesLayer = FeatureLayer(featureTable: preservesTable)
@@ -120,20 +121,17 @@ struct UpdateRelatedFeaturesView: View {
     
     func queryRelatedFeatures(for feature: ArcGISFeature, tappedScreenPoint: CGPoint) async {
         guard let parksTable = parksFeatureTable else { return }
+        let attributes = selectedFeature!.attributes
+        self.parkName = attributes[.unitKey] as? String ?? "Unknown"
+        self.attributeValue = ""
         do {
             let relatedResultsQuery = try await parksTable.queryRelatedFeatures(to: feature)
             for relatedResult in relatedResultsQuery {
-                self.selectedFeature = relatedResult.feature
-                let attributes = selectedFeature!.attributes
-                self.parkName = attributes[.unitKey] as? String ?? "Unknown"
-                self.attributeValue = ""
                 for relatedFeature in relatedResult.features() {
                     if let relatedArcGISFeature = relatedFeature as? ArcGISFeature {
-                        self.selectedFeature = relatedArcGISFeature
                         let attributes = relatedArcGISFeature.attributes
                         self.attributeValue = attributes[.annualVisitorsKey] as? String ?? ""
                         self.parkName = attributes[.unitKey] as? String ?? "Unknown"
-                        calloutPlacement = .location(self.mapPoint!)
                         self.selectedVisitorValue = self.attributeValue
                     }
                 }
@@ -167,7 +165,7 @@ struct UpdateRelatedFeaturesView: View {
     var loadingView: some View {
         ProgressView(
                """
-               Loading
+               Fetching
                data
                """
         )
