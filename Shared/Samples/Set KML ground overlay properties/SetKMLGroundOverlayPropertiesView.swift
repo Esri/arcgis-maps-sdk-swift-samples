@@ -33,7 +33,7 @@ struct SetKMLGroundOverlayPropertiesView: View {
     /// The current viewpoint of the scene view.
     @State private var viewpoint: Viewpoint?
     /// The opacity slider value.
-    @State private var opacity: Double = 1
+    @State private var opacity: CGFloat = 1
     
     var body: some View {
         SceneView(scene: scene, viewpoint: viewpoint)
@@ -45,9 +45,10 @@ struct SetKMLGroundOverlayPropertiesView: View {
                 // Add the layer to the scene.
                 scene.addOperationalLayer(layer)
                 // Move the viewpoint to the ground overlay.
-                let targetExtent = overlay.geometry as! Envelope
-                let camera = Camera(lookingAt: targetExtent.center, distance: 1250, heading: 45, pitch: 60, roll: 0)
-                viewpoint = Viewpoint(boundingGeometry: targetExtent, camera: camera)
+                if let targetExtent = overlay.extent {
+                    let camera = Camera(lookingAt: targetExtent.center, distance: 1250, heading: 45, pitch: 60, roll: 0)
+                    viewpoint = Viewpoint(boundingGeometry: targetExtent, camera: camera)
+                }
             }
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
@@ -59,8 +60,7 @@ struct SetKMLGroundOverlayPropertiesView: View {
                         }
                         .onChange(of: opacity) {
                             // Change the color of the overlay according to the slider's value.
-                            let alpha = CGFloat(opacity)
-                            overlay.color = UIColor.black.withAlphaComponent(alpha)
+                            overlay.color = .black.withAlphaComponent(opacity)
                         }
                     }
                 }
