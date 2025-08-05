@@ -18,11 +18,11 @@ import SwiftUI
 struct SimplifyGeometryView: View {
     /// A map with a light gray basemap style.
     @State private var map = Map(basemapStyle: .arcGISLightGray)
-    /// Property to track whether geometry has been simplified.
+    /// A Boolean value indicating whether the geometry has been simplified.
     @State private var isSimplified = false
-    /// Graphic overlay for the original polygon.
+    /// The graphics overlay for the original polygon.
     @State private var originalOverlay = GraphicsOverlay(graphics: [makePolygonGraphic()])
-    /// Graphic overlay for the simplified geometry.
+    /// The graphics overlay for the simplified geometry.
     @State private var resultOverlay = GraphicsOverlay()
     /// The polygon graphic geometry.
     private var graphicGeometry: Geometry? {
@@ -75,7 +75,7 @@ struct SimplifyGeometryView: View {
         }
     }
     
-    /// Create polygon geometry that can be simplified.
+    /// Creates a polygon geometry that can be simplified.
     private static func makePolygonGraphic() -> Graphic {
         let part1 = MutablePart(
             points: [
