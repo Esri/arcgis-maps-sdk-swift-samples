@@ -17,6 +17,7 @@ import ArcGISToolkit
 import SwiftUI
 
 struct UpdateRelatedFeaturesView: View {
+    
     @State private var error: Error?
     @State private var isLoading = false
     @State private var model = Model()
@@ -48,7 +49,6 @@ struct UpdateRelatedFeaturesView: View {
                 .callout(placement: $model.calloutPlacement) { _ in
                     calloutContent
                 }
-            
                 .task {
                     isLoading = true
                     do {
@@ -83,14 +83,11 @@ struct UpdateRelatedFeaturesView: View {
                 }
                 .pickerStyle(.menu)
                 .onChange(of: model.selectedVisitorValue) { newValue in
-                    if let feature = self.model.selectedFeature,
-                       newValue != model.attributeValue {
-                        Task {
-                            do {
-                                try await self.model.updateRelatedFeature(feature: feature, newValue: newValue)
-                            } catch {
-                                self.error = error
-                            }
+                    Task {
+                        do {
+                            try await self.model.setSelectedFeatureUpdate(newValue)
+                        } catch {
+                            self.error = error
                         }
                     }
                 }
@@ -134,19 +131,33 @@ extension UpdateRelatedFeaturesView {
         func loadMaps() async throws {
             let geodatabase = ServiceGeodatabase(url: .alaskaParksFeatureService)
             try await geodatabase.load()
-            
             parksFeatureTable = geodatabase.table(withLayerID: 1)
             if let parksTable = parksFeatureTable {
                 parksFeatureLayer = FeatureLayer(featureTable: parksTable)
                 map.addOperationalLayer(parksFeatureLayer!)
             }
-            
             preservesTable = geodatabase.table(withLayerID: 0)
             if let preservesTable = preservesTable {
                 let preservesLayer = FeatureLayer(featureTable: preservesTable)
                 map.addOperationalLayer(preservesLayer)
             }
         }
+        
+        func setSelectedFeatureUpdate(_ newValue: String) async throws {
+            if let feature = selectedFeature,
+               newValue != attributeValue {
+                try await updateRelatedFeature(feature: feature, newValue: newValue)
+            }
+        }
+            //                Task {
+            //                    do {
+            //
+            //                    } catch {
+            //                        self.error = error
+            //                    }
+            //                }
+//            //            }
+//        }
         
         func updateRelatedFeature(feature: ArcGISFeature, newValue: String) async throws {
             try await feature.load()
@@ -158,17 +169,15 @@ extension UpdateRelatedFeaturesView {
                 if let first = editResults.first,
                    first.editResults[0].didCompleteWithErrors == false {
                     parksFeatureLayer?.clearSelection()
-                    //                    model.calloutPlacement = .location(self.model.mapPoint!)
+                    calloutPlacement = .location(mapPoint!)
                 }
             }
         }
         
-        
-        
         func queryRelatedFeatures(for feature: ArcGISFeature, tappedScreenPoint: CGPoint) async throws {
             guard let parksTable = parksFeatureTable else { return }
             let attributes = selectedFeature!.attributes
-            //        self.model.parkName = attributes[.unitKey] as? String ?? "Unknown"
+            parkName = attributes[.unitKey] as? String ?? "Unknown"
             attributeValue = ""
             let relatedResultsQuery = try await parksTable.queryRelatedFeatures(to: feature)
             for relatedResult in relatedResultsQuery {
