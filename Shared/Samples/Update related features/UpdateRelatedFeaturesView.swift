@@ -37,7 +37,7 @@ struct UpdateRelatedFeaturesView: View {
                                 parksLayer.selectFeature(identifiedFeature)
                                 model.selectedFeature = identifiedFeature
                                 await queryRelatedFeatures(for: identifiedFeature, tappedScreenPoint: screenPoint)
-                               
+                                
                                 model.calloutPlacement = .location(self.model.mapPoint!)
                                 await mapView.setViewpointCenter(mapPoint)
                             }
@@ -62,10 +62,11 @@ struct UpdateRelatedFeaturesView: View {
                                 if let feature = self.model.selectedFeature,
                                    newValue != model.attributeValue {
                                     Task {
-                                        await updateRelatedFeature(
-                                            feature: feature,
-                                            newValue: newValue
-                                        )
+                                        do {
+                                            try await self.model.updateRelatedFeature(feature: feature, newValue: newValue)
+                                        } catch {
+                                            self.error = error
+                                        }
                                     }
                                 }
                             }
@@ -117,27 +118,6 @@ struct UpdateRelatedFeaturesView: View {
         }
     }
     
-    func updateRelatedFeature(feature: ArcGISFeature, newValue: String) async {
-        isLoading = true
-        do {
-            try await feature.load()
-            feature.setAttributeValue(newValue, forKey: .annualVisitorsKey)
-            model.attributeValue = newValue
-            try await self.model.preservesTable?.update(feature)
-            if let geodatabase = model.preservesTable?.serviceGeodatabase {
-                let editResults = try await geodatabase.applyEdits()
-                if let first = editResults.first,
-                   first.editResults[0].didCompleteWithErrors == false {
-                    model.parksFeatureLayer?.clearSelection()
-                    //                    model.calloutPlacement = .location(self.model.mapPoint!)
-                }
-            }
-        } catch {
-            self.error = error
-        }
-        isLoading = false
-    }
-    
     var loadingView: some View {
         ProgressView(
                """
@@ -153,7 +133,7 @@ struct UpdateRelatedFeaturesView: View {
     }
 }
 
-private extension UpdateRelatedFeaturesView {
+extension UpdateRelatedFeaturesView {
     @MainActor
     @Observable
     class Model {
@@ -184,6 +164,21 @@ private extension UpdateRelatedFeaturesView {
             if let preservesTable = preservesTable {
                 let preservesLayer = FeatureLayer(featureTable: preservesTable)
                 map.addOperationalLayer(preservesLayer)
+            }
+        }
+        
+        func updateRelatedFeature(feature: ArcGISFeature, newValue: String) async throws {
+            try await feature.load()
+            feature.setAttributeValue(newValue, forKey: .annualVisitorsKey)
+            attributeValue = newValue
+            try await self.preservesTable?.update(feature)
+            if let geodatabase = preservesTable?.serviceGeodatabase {
+                let editResults = try await geodatabase.applyEdits()
+                if let first = editResults.first,
+                   first.editResults[0].didCompleteWithErrors == false {
+                    parksFeatureLayer?.clearSelection()
+                    //                    model.calloutPlacement = .location(self.model.mapPoint!)
+                }
             }
         }
     }
