@@ -149,15 +149,6 @@ extension UpdateRelatedFeaturesView {
                 try await updateRelatedFeature(feature: feature, newValue: newValue)
             }
         }
-            //                Task {
-            //                    do {
-            //
-            //                    } catch {
-            //                        self.error = error
-            //                    }
-            //                }
-//            //            }
-//        }
         
         func updateRelatedFeature(feature: ArcGISFeature, newValue: String) async throws {
             try await feature.load()
