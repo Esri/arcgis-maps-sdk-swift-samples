@@ -143,7 +143,6 @@ private extension ShowDeviceLocationHistoryView {
         /// Makes the simulated location data source for the sample.
         /// - Returns: A simulated location data source in Los Angeles, CA.
         private static func makeSimulatedLocationDataSource() -> SimulatedLocationDataSource {
-            // swiftlint:disable:next force_try
             let routePolyline = try! Polyline.fromJSON(polylineJSON)
             // Densify the simulated path to make it smoother.
             let densifiedRoute = GeometryEngine.geodeticDensify(
