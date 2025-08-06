@@ -36,8 +36,7 @@ struct UpdateRelatedFeaturesView: View {
                             if let identifiedFeature = identifyResult.geoElements.first as? ArcGISFeature {
                                 parksLayer.selectFeature(identifiedFeature)
                                 model.selectedFeature = identifiedFeature
-                                await queryRelatedFeatures(for: identifiedFeature, tappedScreenPoint: screenPoint)
-                                
+                                try await model.queryRelatedFeatures(for: identifiedFeature, tappedScreenPoint: screenPoint)
                                 model.calloutPlacement = .location(self.model.mapPoint!)
                                 await mapView.setViewpointCenter(mapPoint)
                             }
@@ -47,32 +46,7 @@ struct UpdateRelatedFeaturesView: View {
                     }
                 }
                 .callout(placement: $model.calloutPlacement) { _ in
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("\(model.parkName)")
-                            .font(.headline)
-                        if !model.attributeValue.isEmpty {
-                            Text("Annual Visitors:")
-                            Picker("Annual Visitors", selection: $model.selectedVisitorValue) {
-                                ForEach(model.visitorOptions, id: \.self) { option in
-                                    Text(option).tag(option)
-                                }
-                            }
-                            .pickerStyle(.menu)
-                            .onChange(of: model.selectedVisitorValue) { newValue in
-                                if let feature = self.model.selectedFeature,
-                                   newValue != model.attributeValue {
-                                    Task {
-                                        do {
-                                            try await self.model.updateRelatedFeature(feature: feature, newValue: newValue)
-                                        } catch {
-                                            self.error = error
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    .padding()
+                    calloutContent
                 }
             
                 .task {
@@ -96,26 +70,33 @@ struct UpdateRelatedFeaturesView: View {
         }
     }
     
-    func queryRelatedFeatures(for feature: ArcGISFeature, tappedScreenPoint: CGPoint) async {
-        guard let parksTable = model.parksFeatureTable else { return }
-        let attributes = model.selectedFeature!.attributes
-        //        self.model.parkName = attributes[.unitKey] as? String ?? "Unknown"
-        self.model.attributeValue = ""
-        do {
-            let relatedResultsQuery = try await parksTable.queryRelatedFeatures(to: feature)
-            for relatedResult in relatedResultsQuery {
-                for relatedFeature in relatedResult.features() {
-                    if let relatedArcGISFeature = relatedFeature as? ArcGISFeature {
-                        let attributes = relatedArcGISFeature.attributes
-                        self.model.attributeValue = attributes[.annualVisitorsKey] as? String ?? ""
-                        self.model.parkName = attributes[.unitKey] as? String ?? "Unknown"
-                        self.model.selectedVisitorValue = self.model.attributeValue
+    var calloutContent: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("\(model.parkName)")
+                .font(.headline)
+            if !model.attributeValue.isEmpty {
+                Text("Annual Visitors:")
+                Picker("Annual Visitors", selection: $model.selectedVisitorValue) {
+                    ForEach(model.visitorOptions, id: \.self) { option in
+                        Text(option).tag(option)
+                    }
+                }
+                .pickerStyle(.menu)
+                .onChange(of: model.selectedVisitorValue) { newValue in
+                    if let feature = self.model.selectedFeature,
+                       newValue != model.attributeValue {
+                        Task {
+                            do {
+                                try await self.model.updateRelatedFeature(feature: feature, newValue: newValue)
+                            } catch {
+                                self.error = error
+                            }
+                        }
                     }
                 }
             }
-        } catch {
-            self.error = error
         }
+        .padding()
     }
     
     var loadingView: some View {
@@ -178,6 +159,26 @@ extension UpdateRelatedFeaturesView {
                    first.editResults[0].didCompleteWithErrors == false {
                     parksFeatureLayer?.clearSelection()
                     //                    model.calloutPlacement = .location(self.model.mapPoint!)
+                }
+            }
+        }
+        
+        
+        
+        func queryRelatedFeatures(for feature: ArcGISFeature, tappedScreenPoint: CGPoint) async throws {
+            guard let parksTable = parksFeatureTable else { return }
+            let attributes = selectedFeature!.attributes
+            //        self.model.parkName = attributes[.unitKey] as? String ?? "Unknown"
+            attributeValue = ""
+            let relatedResultsQuery = try await parksTable.queryRelatedFeatures(to: feature)
+            for relatedResult in relatedResultsQuery {
+                for relatedFeature in relatedResult.features() {
+                    if let relatedArcGISFeature = relatedFeature as? ArcGISFeature {
+                        let attributes = relatedArcGISFeature.attributes
+                        attributeValue = attributes[.annualVisitorsKey] as? String ?? ""
+                        parkName = attributes[.unitKey] as? String ?? "Unknown"
+                        selectedVisitorValue = attributeValue
+                    }
                 }
             }
         }
