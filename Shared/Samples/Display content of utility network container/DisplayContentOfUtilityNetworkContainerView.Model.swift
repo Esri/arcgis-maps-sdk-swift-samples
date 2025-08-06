@@ -84,7 +84,6 @@ extension DisplayContentOfUtilityNetworkContainerView {
         
         /// Creates legend items with a name and an image.
         /// - Parameter displayScale: The display scale for the swatch images.
-        /// - Returns: An array of legends.
         func updateLegendInfoItems(displayScale: CGFloat) async {
             statusMessage = "Getting Legend Info…"
             // The legend info array that contains all the info from each feature layer.
