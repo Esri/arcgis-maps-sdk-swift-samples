@@ -36,8 +36,8 @@ extension ShowDeviceLocationWithNMEADataSourcesView {
         /// Loads locations from NMEA sentences.
         /// Reads mock NMEA sentences line by line and group them by the timestamp.
         /// - Parameters:
-        ///   - nmeaSourceFile: The URL of the NMEA source file.
-        ///   - speed: The playback time interval in second.
+        ///   - url: The URL of the NMEA source file.
+        ///   - interval: The playback time interval in second.
         init(url: URL, interval: TimeInterval = 1.0) {
             // An empty container for NMEA data.
             var dataBySeconds: [Data] = []
