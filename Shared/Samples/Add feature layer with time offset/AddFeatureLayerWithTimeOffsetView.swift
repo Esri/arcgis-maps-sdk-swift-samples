@@ -59,9 +59,6 @@ struct AddFeatureLayerWithTimeOffsetView: View {
         Calendar.current.dateComponents([.day], from: Date.august4th2000, to: Date.october22nd2000).day!
     )
     
-    /// The format style used to display the extent dates.
-    private let dateFormat = Date.FormatStyle(date: .numeric, time: .omitted)
-    
     var body: some View {
         VStack {
             MapView(map: map, timeExtent: .constant(timeExtent))
@@ -105,10 +102,8 @@ struct AddFeatureLayerWithTimeOffsetView: View {
                     timeExtent = TimeExtent(startDate: newStartDate, endDate: newEndDate)
                 }
             Text(
-                """
-                \(timeExtent.startDate!, format: dateFormat) - \
-                \(timeExtent.endDate!, format: dateFormat)
-                """
+                timeExtent.startDate!..<timeExtent.endDate!,
+                format: .interval.month(.defaultDigits).day().year()
             )
         }
     }
