@@ -145,7 +145,7 @@ extension UpdateRelatedFeaturesView {
     @Observable
     class Model {
         /// A map with a topographic basemap style.
-        var map = Map(basemapStyle: .arcGISTopographic)
+        @ObservationIgnored var map = Map(basemapStyle: .arcGISTopographic)
         
         /// A boolean value the reflects whether the callout should be shown or not.
         var calloutVisible = false
@@ -181,7 +181,7 @@ extension UpdateRelatedFeaturesView {
         var parkName: String = ""
         
         /// Visitor options for selection.
-        var visitorOptions = ["0-1,000", "1,000–10,000", "10,000-50,000", "50,000-100,000", "100,000+"]
+        @ObservationIgnored var visitorOptions = ["0-1,000", "1,000–10,000", "10,000-50,000", "50,000-100,000", "100,000+"]
         
         /// The currently selected visitor option.
         var selectedVisitorValue: String = "0-1,000"
