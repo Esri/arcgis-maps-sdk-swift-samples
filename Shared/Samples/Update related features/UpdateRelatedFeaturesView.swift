@@ -17,7 +17,9 @@ import ArcGISToolkit
 import SwiftUI
 
 struct UpdateRelatedFeaturesView: View {
-    @State private var error: Error?
+    /// The error shown in the error alert.
+    @State private var error: (any Error)?
+    /// A Boolean value indicating whether the feature data is being loaded.
     @State private var isLoading = false
     @State private var model = Model()
     
@@ -31,6 +33,7 @@ struct UpdateRelatedFeaturesView: View {
                         isLoading = true
                         defer { isLoading = false }
                         model.clearAll()
+                        // Ensure parks feature layer is available and clear it.
                         guard let parksLayer = model.parksFeatureLayer else { return }
                         parksLayer.clearSelection()
                         do {
@@ -39,15 +42,19 @@ struct UpdateRelatedFeaturesView: View {
                                 screenPoint: screenPoint,
                                 tolerance: 5
                             )
+                            // If a feature is found, select and query related data.
                             if let identifiedFeature = identifyResult.geoElements.first as? ArcGISFeature {
                                 parksLayer.selectFeature(identifiedFeature)
                                 model.selectedFeature = identifiedFeature
+                                // Query for related preserve data.
                                 try await model.queryRelatedFeatures(
                                     for: identifiedFeature,
                                     tappedScreenPoint: screenPoint
                                 )
+                                // Display a callout at the feature's location.
                                 model.calloutVisible = true
                                 model.calloutPlacement = .location(model.mapPoint!)
+                                // Center the map on the tapped feature.
                                 await mapView.setViewpointCenter(mapPoint)
                             }
                         } catch {
@@ -55,16 +62,19 @@ struct UpdateRelatedFeaturesView: View {
                         }
                     }
                 }
+            // Show a callout with editable content when a feature is selected.
                 .callout(placement: $model.calloutPlacement) { _ in
                     if model.calloutVisible {
                         calloutContent
                     }
                 }
+            // Load initial map and data when the view appears.
                 .task {
                     isLoading = true
                     defer { isLoading = false }
                     do {
                         try await model.loadFeatures()
+                        // Set initial viewpoint to Alaska.
                         await mapView.setViewpoint(
                             Viewpoint(latitude: 65.399121, longitude: -151.521682, scale: 50000000)
                         )
@@ -72,11 +82,13 @@ struct UpdateRelatedFeaturesView: View {
                         self.error = error
                     }
                 }
+            // Show a loading spinner when `isLoading` is true.
                 .overlay(alignment: .center) {
                     if isLoading {
                         loadingView
                     }
                 }
+            // Display error alerts, if needed.
                 .errorAlert(presentingError: $error)
         }
     }
@@ -87,6 +99,7 @@ struct UpdateRelatedFeaturesView: View {
                 .font(.headline)
             if !model.attributeValue.isEmpty {
                 Text("Annual Visitors:")
+                // Picker to allow the user to update visitor range.
                 Picker("Annual Visitors", selection: $model.selectedVisitorValue) {
                     ForEach(model.visitorOptions, id: \.self) { option in
                         Text(option).tag(option)
@@ -107,6 +120,7 @@ struct UpdateRelatedFeaturesView: View {
         .padding()
     }
     
+    /// The loading indicator overlay shown during data fetches.
     var loadingView: some View {
         ProgressView(
                """
@@ -128,6 +142,7 @@ extension UpdateRelatedFeaturesView {
     class Model {
         var map = Map(basemapStyle: .arcGISTopographic)
         var calloutVisible = true
+        // Feature layers and tables for parks and preserves
         var parksFeatureLayer: FeatureLayer?
         var parksFeatureTable: ServiceFeatureTable?
         var preservesTable: ServiceFeatureTable?
@@ -141,20 +156,24 @@ extension UpdateRelatedFeaturesView {
         var visitorOptions = ["0-1,000", "1,000–10,000", "10,000-50,000", "50,000-100,000", "100,000+"]
         var selectedVisitorValue: String = "0-1,000"
         
+        /// Clear selected data and callout.
         func clearAll() {
             relatedSelectedFeature = nil
             attributeValue = ""
             calloutPlacement = nil
         }
         
+        /// Load the feature tables and add them to the map.
         func loadFeatures() async throws {
             let geodatabase = ServiceGeodatabase(url: .alaskaParksFeatureService)
             try await geodatabase.load()
+            // Load parks layer
             parksFeatureTable = geodatabase.table(withLayerID: 1)
             if let parksTable = parksFeatureTable {
                 parksFeatureLayer = FeatureLayer(featureTable: parksTable)
                 map.addOperationalLayer(parksFeatureLayer!)
             }
+            // Load preserves layer
             preservesTable = geodatabase.table(withLayerID: 0)
             if let preservesTable = preservesTable {
                 let preservesLayer = FeatureLayer(featureTable: preservesTable)
@@ -162,17 +181,20 @@ extension UpdateRelatedFeaturesView {
             }
         }
         
+        /// Updates the related feature's "Annual Visitors" attribute with the selected value.
         func setSelectedFeatureUpdate(_ newValue: String) async throws {
             if let feature = relatedSelectedFeature {
                 try await updateRelatedFeature(feature: feature, newValue: newValue)
             }
         }
         
+        /// Performs the actual update to the related feature and applies the edits.
         func updateRelatedFeature(feature: ArcGISFeature, newValue: String) async throws {
             try await feature.load()
             feature.setAttributeValue(newValue, forKey: .annualVisitorsKey)
             attributeValue = newValue
             try await preservesTable?.update(feature)
+            // Apply edits to the service geodatabase
             if let geodatabase = preservesTable?.serviceGeodatabase {
                 let editResults = try await geodatabase.applyEdits()
                 if let first = editResults.first,
@@ -183,10 +205,11 @@ extension UpdateRelatedFeaturesView {
             }
         }
         
+        /// Queries related features (preserves) for a selected park.
         func queryRelatedFeatures(for feature: ArcGISFeature, tappedScreenPoint: CGPoint) async throws {
             guard let parksTable = parksFeatureTable else { return }
             let attributes = feature.attributes
-            // Set higher level park name in case there are no related results
+            // Default to park name from the selected park feature.
             parkName = attributes[.unitKey] as? String ?? "Unknown"
             // reset attribute value in case there are no related feature results.
             attributeValue = ""
