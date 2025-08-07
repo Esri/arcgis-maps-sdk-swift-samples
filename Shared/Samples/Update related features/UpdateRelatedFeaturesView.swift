@@ -93,7 +93,8 @@ struct UpdateRelatedFeaturesView: View {
         }
     }
     
-    /// The content displayed inside the callout when a feature is selected.
+    /// A view displaying callout content, including editable "Annual Visitors" values.
+    /// Includes a picker to allow updating the selected visitor range.
     var calloutContent: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("\(model.parkName)")
@@ -149,7 +150,12 @@ extension UpdateRelatedFeaturesView {
         
         /// Feature layers and tables for parks and preserves
         var parksFeatureLayer: FeatureLayer?
+        
+        /// Used for querying park features and related data.
         var parksFeatureTable: ServiceFeatureTable?
+        
+        /// The service feature table representing preserve data.
+        /// Used to access and update related preserve features connected to parks.
         var preservesTable: ServiceFeatureTable?
         
         /// Selected features and related features.
@@ -158,7 +164,12 @@ extension UpdateRelatedFeaturesView {
         
         /// The location of the callout on the map.
         var calloutPlacement: CalloutPlacement?
+        
+        /// The screen (pixel) coordinates of the user's tap on the map view.
         var screenPoint: CGPoint?
+        
+        /// The geographic `Point` corresponding to the user's tap location on the map.
+        /// This is used to center the map or position the callout.
         var mapPoint: Point?
         
         /// Stores the current visitor count value.
@@ -264,16 +275,18 @@ extension UpdateRelatedFeaturesView {
 }
 
 extension String {
+    /// Attribute key for the "Annual Visitors" field.
     static var annualVisitorsKey: String {
         "ANNUAL_VISITORS"
     }
-    
+    /// Attribute key for the "Unit Name" (park name) field.
     static var unitKey: String {
         "UNIT_NAME"
     }
 }
 
 extension URL {
+    /// URL of the Alaska Parks and Preserves feature service.
     static var alaskaParksFeatureService: URL {
         URL(string: "https://services2.arcgis.com/ZQgQTuoyBrtmoGdP/ArcGIS/rest/services/AlaskaNationalParksPreserves_Update/FeatureServer")!
     }
