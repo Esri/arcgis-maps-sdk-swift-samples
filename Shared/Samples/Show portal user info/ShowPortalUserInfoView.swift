@@ -130,8 +130,7 @@ private extension ShowPortalUserInfoView {
         
         /// Signs out from the portal by revoking OAuth tokens and clearing credential stores.
         func signOut() async {
-            await ArcGISEnvironment.authenticationManager.revokeOAuthTokens()
-            await ArcGISEnvironment.authenticationManager.clearCredentialStores()
+            await ArcGISEnvironment.authenticationManager.signOut()
             portalUser = nil
             portalInfo = nil
             isLoading = false
