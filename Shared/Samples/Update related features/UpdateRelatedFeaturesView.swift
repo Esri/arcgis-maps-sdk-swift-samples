@@ -93,6 +93,7 @@ struct UpdateRelatedFeaturesView: View {
         }
     }
     
+    /// The content displayed inside the callout when a feature is selected.
     var calloutContent: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("\(model.parkName)")
@@ -159,9 +160,17 @@ extension UpdateRelatedFeaturesView {
         var calloutPlacement: CalloutPlacement?
         var screenPoint: CGPoint?
         var mapPoint: Point?
+        
+        /// Stores the current visitor count value.
         var attributeValue: String = ""
+        
+        /// The name of the selected park.
         var parkName: String = ""
+        
+        /// Visitor options for selection.
         var visitorOptions = ["0-1,000", "1,000–10,000", "10,000-50,000", "50,000-100,000", "100,000+"]
+        
+        /// The currently selected visitor option.
         var selectedVisitorValue: String = "0-1,000"
         
         /// Clear selected data and callout.
@@ -171,7 +180,10 @@ extension UpdateRelatedFeaturesView {
             calloutPlacement = nil
         }
         
-        /// Load the feature tables and add them to the map.
+        /// Loads feature tables from the Alaska parks feature service
+        /// and adds them as operational layers to the map.
+        ///
+        /// - Throws: An error if the service geodatabase or tables fail to load.
         func loadFeatures() async throws {
             let geodatabase = ServiceGeodatabase(url: .alaskaParksFeatureService)
             try await geodatabase.load()
@@ -189,14 +201,24 @@ extension UpdateRelatedFeaturesView {
             }
         }
         
-        /// Updates the related feature's "Annual Visitors" attribute with the selected value.
+        /// Initiates the update process on the currently selected related feature
+        /// using the provided "Annual Visitors" value.
+        ///
+        /// - Parameter newValue: The new value for the visitor range.
+        /// - Throws: An error if the update fails or the related feature is not available.
         func setSelectedFeatureUpdate(_ newValue: String) async throws {
             if let feature = relatedSelectedFeature {
                 try await updateRelatedFeature(feature: feature, newValue: newValue)
             }
         }
         
-        /// Performs the actual update to the related feature and applies the edits.
+        /// Updates the related preserve feature with the new "Annual Visitors" value
+        /// and applies the changes to the service geodatabase.
+        ///
+        /// - Parameters:
+        ///   - feature: The related `ArcGISFeature` to be updated.
+        ///   - newValue: The new value to assign to the `ANNUAL_VISITORS` attribute.
+        /// - Throws: An error if the feature fails to load, update, or if apply edits fail.
         func updateRelatedFeature(feature: ArcGISFeature, newValue: String) async throws {
             try await feature.load()
             feature.setAttributeValue(newValue, forKey: .annualVisitorsKey)
@@ -213,7 +235,11 @@ extension UpdateRelatedFeaturesView {
             }
         }
         
-        /// Queries related features (preserves) for a selected park.
+        /// Queries related features (preserves) for a selected park feature
+        /// and stores the result to display and edit.
+        ///
+        /// - Parameter feature: The selected park feature to query related data for.
+        /// - Throws: An error if the related features query fails.
         func queryRelatedFeatures(for feature: ArcGISFeature) async throws {
             guard let parksTable = parksFeatureTable else { return }
             let attributes = feature.attributes
