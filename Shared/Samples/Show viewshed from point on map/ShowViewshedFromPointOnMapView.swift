@@ -55,7 +55,7 @@ struct ShowViewshedFromPointOnMapView: View {
             .overlay(alignment: .center) {
                 // Sets indication when geoprocessingInProgress is true.
                 if geoprocessingInProgress {
-                    ProgressView("Geoprocessing \n   in progress…")
+                    ProgressView("Geoprocessing \n   in progress")
                         .padding()
                         .background(.ultraThinMaterial)
                         .clipShape(.rect(cornerRadius: 10))

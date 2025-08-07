@@ -87,11 +87,11 @@ extension CreateLoadReportView {
         /// used for running this sample.
         private func setupTraceParameters() async throws {
             defer { statusText = nil }
-            statusText = "Loading utility network…"
+            statusText = "Loading utility network"
             
             try await utilityNetwork.load()
             
-            statusText = "Setting up trace parameters…"
+            statusText = "Setting up trace parameters"
             
             let startingLocation = try makeStartingLocation()
             // Get the base condition and trace configuration from a default tier.
@@ -194,7 +194,7 @@ extension CreateLoadReportView {
                   let initialExpression,
                   let traceParameters else { preconditionFailure() }
             
-            statusText = "Creating load report…"
+            statusText = "Creating load report"
             defer { statusText = nil }
             
             do {

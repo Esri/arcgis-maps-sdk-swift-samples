@@ -63,7 +63,7 @@ struct QueryRelatedFeaturesView: View {
                     
                     do {
                         // Identifies the tapped screen point.
-                        loadingStatusText = "Identifying feature…"
+                        loadingStatusText = "Identifying feature"
                         defer { loadingStatusText = nil }
                         
                         let identifyResult = try await mapViewProxy.identify(
@@ -78,7 +78,7 @@ struct QueryRelatedFeaturesView: View {
                         parksFeatureLayer.selectFeature(parkFeature)
                         
                         // Queries for related features of the identified feature.
-                        loadingStatusText = "Querying related features…"
+                        loadingStatusText = "Querying related features"
                         
                         let parksFeatureTable = parksFeatureLayer.featureTable as! ServiceFeatureTable
                         let queryResults = try await parksFeatureTable.queryRelatedFeatures(
@@ -112,7 +112,7 @@ struct QueryRelatedFeaturesView: View {
                 .task {
                     // Loads the parks feature layer and zooms the viewpoint to its extent.
                     do {
-                        loadingStatusText = "Loading feature layer…"
+                        loadingStatusText = "Loading feature layer"
                         defer { loadingStatusText = nil }
                         
                         try await parksFeatureLayer.load()

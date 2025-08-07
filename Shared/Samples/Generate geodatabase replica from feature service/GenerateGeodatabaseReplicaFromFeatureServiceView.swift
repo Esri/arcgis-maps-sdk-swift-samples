@@ -92,7 +92,7 @@ struct GenerateGeodatabaseReplicaFromFeatureServiceView: View {
                         // Shows a progress view when there is a job currently running.
                         if let progress = model.generateGeodatabaseJob?.progress {
                             VStack {
-                                Text("Creating geodatabase…")
+                                Text("Creating geodatabase")
                                     .padding(.bottom)
                                 
                                 ProgressView(progress)

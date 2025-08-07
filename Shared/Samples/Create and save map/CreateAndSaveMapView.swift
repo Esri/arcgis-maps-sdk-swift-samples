@@ -49,7 +49,7 @@ struct CreateAndSaveMapView: View {
             } else {
                 switch status {
                 case .loadingPortal:
-                    ProgressView("Loading portal...")
+                    ProgressView("Loading portal")
                 case .failedToLoadPortal:
                     ContentUnavailableView(
                         "Error",
@@ -76,7 +76,7 @@ struct CreateAndSaveMapView: View {
                         .buttonStyle(.borderedProminent)
                     }
                 case .deletingMap:
-                    ProgressView("Deleting map...")
+                    ProgressView("Deleting map")
                 case .deletedSuccessfully:
                     ContentUnavailableView(
                         "Success",

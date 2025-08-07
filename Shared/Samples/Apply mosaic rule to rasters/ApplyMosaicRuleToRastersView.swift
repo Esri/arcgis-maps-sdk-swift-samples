@@ -41,7 +41,7 @@ struct ApplyMosaicRuleToRastersView: View {
                 }
                 .overlay(alignment: .center) {
                     if isLoading {
-                        ProgressView("Loading...")
+                        ProgressView("Loading")
                             .padding()
                             .background(.ultraThickMaterial)
                             .clipShape(.rect(cornerRadius: 10))

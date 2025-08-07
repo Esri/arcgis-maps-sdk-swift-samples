@@ -55,7 +55,7 @@ struct FindRouteAroundBarriersView: View {
                 }
                 .overlay(alignment: .center) {
                     if routingIsInProgress {
-                        ProgressView("Routing...")
+                        ProgressView("Routing")
                             .padding()
                             .background(.ultraThickMaterial)
                             .clipShape(.rect(cornerRadius: 10))
