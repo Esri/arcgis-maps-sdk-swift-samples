@@ -30,18 +30,24 @@ struct UpdateRelatedFeaturesView: View {
                     Task {
                         isLoading = true
                         defer { isLoading = false }
-                        model.relatedSelectedFeature = nil
+                        model.clearAll()
                         guard let parksLayer = model.parksFeatureLayer else { return }
                         parksLayer.clearSelection()
-                        model.calloutPlacement = nil
                         do {
-                            let identifyResult = try await mapView.identify(on: parksLayer, screenPoint: screenPoint, tolerance: 5)
+                            let identifyResult = try await mapView.identify(
+                                on: parksLayer,
+                                screenPoint: screenPoint,
+                                tolerance: 5
+                            )
                             if let identifiedFeature = identifyResult.geoElements.first as? ArcGISFeature {
                                 parksLayer.selectFeature(identifiedFeature)
                                 model.selectedFeature = identifiedFeature
-                                try await model.queryRelatedFeatures(for: identifiedFeature, tappedScreenPoint: screenPoint)
+                                try await model.queryRelatedFeatures(
+                                    for: identifiedFeature,
+                                    tappedScreenPoint: screenPoint
+                                )
                                 model.calloutVisible = true
-                                model.calloutPlacement = .location(self.model.mapPoint!)
+                                model.calloutPlacement = .location(model.mapPoint!)
                                 await mapView.setViewpointCenter(mapPoint)
                             }
                         } catch {
@@ -56,6 +62,7 @@ struct UpdateRelatedFeaturesView: View {
                 }
                 .task {
                     isLoading = true
+                    defer { isLoading = false }
                     do {
                         try await model.loadFeatures()
                         await mapView.setViewpoint(
@@ -64,7 +71,6 @@ struct UpdateRelatedFeaturesView: View {
                     } catch {
                         self.error = error
                     }
-                    isLoading = false
                 }
                 .overlay(alignment: .center) {
                     if isLoading {
@@ -87,7 +93,7 @@ struct UpdateRelatedFeaturesView: View {
                     }
                 }
                 .pickerStyle(.menu)
-                .onChange(of: model.selectedVisitorValue) { _ , newValue in
+                .onChange(of: model.selectedVisitorValue) { _, newValue in
                     Task {
                         do {
                             try await self.model.setSelectedFeatureUpdate(newValue)
@@ -135,6 +141,12 @@ extension UpdateRelatedFeaturesView {
         var visitorOptions = ["0-1,000", "1,000–10,000", "10,000-50,000", "50,000-100,000", "100,000+"]
         var selectedVisitorValue: String = "0-1,000"
         
+        func clearAll() {
+            relatedSelectedFeature = nil
+            attributeValue = ""
+            calloutPlacement = nil
+        }
+        
         func loadFeatures() async throws {
             let geodatabase = ServiceGeodatabase(url: .alaskaParksFeatureService)
             try await geodatabase.load()
@@ -160,7 +172,7 @@ extension UpdateRelatedFeaturesView {
             try await feature.load()
             feature.setAttributeValue(newValue, forKey: .annualVisitorsKey)
             attributeValue = newValue
-            try await self.preservesTable?.update(feature)
+            try await preservesTable?.update(feature)
             if let geodatabase = preservesTable?.serviceGeodatabase {
                 let editResults = try await geodatabase.applyEdits()
                 if let first = editResults.first,
