@@ -21,6 +21,7 @@ struct UpdateRelatedFeaturesView: View {
     @State private var error: (any Error)?
     /// A Boolean value indicating whether the feature data is being loaded.
     @State private var isLoading = false
+    /// The model that holds the data for displaying and updating the view.
     @State private var model = Model()
     
     var body: some View {
@@ -48,8 +49,7 @@ struct UpdateRelatedFeaturesView: View {
                                 model.selectedFeature = identifiedFeature
                                 // Query for related preserve data.
                                 try await model.queryRelatedFeatures(
-                                    for: identifiedFeature,
-                                    tappedScreenPoint: screenPoint
+                                    for: identifiedFeature
                                 )
                                 // Display a callout at the feature's location.
                                 model.calloutVisible = true
@@ -140,14 +140,22 @@ extension UpdateRelatedFeaturesView {
     @MainActor
     @Observable
     class Model {
+        /// A map with a topographic basemap style.
         var map = Map(basemapStyle: .arcGISTopographic)
-        var calloutVisible = true
-        // Feature layers and tables for parks and preserves
+        
+        /// A boolean value the reflects whether the callout should be shown or not.
+        var calloutVisible = false
+        
+        /// Feature layers and tables for parks and preserves
         var parksFeatureLayer: FeatureLayer?
         var parksFeatureTable: ServiceFeatureTable?
         var preservesTable: ServiceFeatureTable?
+        
+        /// Selected features and related features.
         var selectedFeature: ArcGISFeature?
         var relatedSelectedFeature: ArcGISFeature?
+        
+        /// The location of the callout on the map.
         var calloutPlacement: CalloutPlacement?
         var screenPoint: CGPoint?
         var mapPoint: Point?
@@ -206,7 +214,7 @@ extension UpdateRelatedFeaturesView {
         }
         
         /// Queries related features (preserves) for a selected park.
-        func queryRelatedFeatures(for feature: ArcGISFeature, tappedScreenPoint: CGPoint) async throws {
+        func queryRelatedFeatures(for feature: ArcGISFeature) async throws {
             guard let parksTable = parksFeatureTable else { return }
             let attributes = feature.attributes
             // Default to park name from the selected park feature.
