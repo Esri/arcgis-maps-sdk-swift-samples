@@ -28,7 +28,11 @@ struct UpdateRelatedFeaturesView: View {
                 .onSingleTapGesture { screenPoint, mapPoint in
                     model.screenPoint = screenPoint
                     model.mapPoint = mapPoint
+                    
                     Task {
+                        isLoading = true
+                        defer { isLoading = false }
+                        model.relatedSelectedFeature = nil
                         guard let parksLayer = model.parksFeatureLayer else { return }
                         parksLayer.clearSelection()
                         model.calloutPlacement = nil
@@ -38,6 +42,7 @@ struct UpdateRelatedFeaturesView: View {
                                 parksLayer.selectFeature(identifiedFeature)
                                 model.selectedFeature = identifiedFeature
                                 try await model.queryRelatedFeatures(for: identifiedFeature, tappedScreenPoint: screenPoint)
+                                model.calloutVisible = true
                                 model.calloutPlacement = .location(self.model.mapPoint!)
                                 await mapView.setViewpointCenter(mapPoint)
                             }
@@ -47,7 +52,9 @@ struct UpdateRelatedFeaturesView: View {
                     }
                 }
                 .callout(placement: $model.calloutPlacement) { _ in
-                    calloutContent
+                    if model.calloutVisible {
+                        calloutContent
+                    }
                 }
                 .task {
                     isLoading = true
@@ -82,7 +89,7 @@ struct UpdateRelatedFeaturesView: View {
                     }
                 }
                 .pickerStyle(.menu)
-                .onChange(of: model.selectedVisitorValue) { newValue in
+                .onChange(of: model.selectedVisitorValue) { oldValue, newValue in
                     Task {
                         do {
                             try await self.model.setSelectedFeatureUpdate(newValue)
@@ -116,10 +123,16 @@ extension UpdateRelatedFeaturesView {
     @Observable
     class Model {
         var map = Map(basemapStyle: .arcGISTopographic)
+        var calloutVisible = true
         var parksFeatureLayer: FeatureLayer?
         var parksFeatureTable: ServiceFeatureTable?
         var preservesTable: ServiceFeatureTable?
         var selectedFeature: ArcGISFeature?
+        var relatedSelectedFeature: ArcGISFeature? {
+            didSet {
+                dump(relatedSelectedFeature)
+            }
+        }
         var calloutPlacement: CalloutPlacement?
         var screenPoint: CGPoint?
         var mapPoint: Point?
@@ -144,8 +157,7 @@ extension UpdateRelatedFeaturesView {
         }
         
         func setSelectedFeatureUpdate(_ newValue: String) async throws {
-            if let feature = selectedFeature,
-               newValue != attributeValue {
+            if let feature = relatedSelectedFeature {
                 try await updateRelatedFeature(feature: feature, newValue: newValue)
             }
         }
@@ -167,8 +179,10 @@ extension UpdateRelatedFeaturesView {
         
         func queryRelatedFeatures(for feature: ArcGISFeature, tappedScreenPoint: CGPoint) async throws {
             guard let parksTable = parksFeatureTable else { return }
-            let attributes = selectedFeature!.attributes
+            let attributes = feature.attributes
+            // Set higher level park name in case there are no related results
             parkName = attributes[.unitKey] as? String ?? "Unknown"
+            // reset attribute value in case there are no related feature results.
             attributeValue = ""
             let relatedResultsQuery = try await parksTable.queryRelatedFeatures(to: feature)
             for relatedResult in relatedResultsQuery {
@@ -178,6 +192,7 @@ extension UpdateRelatedFeaturesView {
                         attributeValue = attributes[.annualVisitorsKey] as? String ?? ""
                         parkName = attributes[.unitKey] as? String ?? "Unknown"
                         selectedVisitorValue = attributeValue
+                        relatedSelectedFeature = relatedArcGISFeature
                     }
                 }
             }
