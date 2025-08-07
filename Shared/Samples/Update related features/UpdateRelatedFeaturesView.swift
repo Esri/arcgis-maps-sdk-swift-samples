@@ -17,7 +17,6 @@ import ArcGISToolkit
 import SwiftUI
 
 struct UpdateRelatedFeaturesView: View {
-    
     @State private var error: Error?
     @State private var isLoading = false
     @State private var model = Model()
@@ -28,7 +27,6 @@ struct UpdateRelatedFeaturesView: View {
                 .onSingleTapGesture { screenPoint, mapPoint in
                     model.screenPoint = screenPoint
                     model.mapPoint = mapPoint
-                    
                     Task {
                         isLoading = true
                         defer { isLoading = false }
@@ -59,7 +57,7 @@ struct UpdateRelatedFeaturesView: View {
                 .task {
                     isLoading = true
                     do {
-                        try await model.loadMaps()
+                        try await model.loadFeatures()
                         await mapView.setViewpoint(
                             Viewpoint(latitude: 65.399121, longitude: -151.521682, scale: 50000000)
                         )
@@ -89,7 +87,7 @@ struct UpdateRelatedFeaturesView: View {
                     }
                 }
                 .pickerStyle(.menu)
-                .onChange(of: model.selectedVisitorValue) { oldValue, newValue in
+                .onChange(of: model.selectedVisitorValue) { _ , newValue in
                     Task {
                         do {
                             try await self.model.setSelectedFeatureUpdate(newValue)
@@ -128,11 +126,7 @@ extension UpdateRelatedFeaturesView {
         var parksFeatureTable: ServiceFeatureTable?
         var preservesTable: ServiceFeatureTable?
         var selectedFeature: ArcGISFeature?
-        var relatedSelectedFeature: ArcGISFeature? {
-            didSet {
-                dump(relatedSelectedFeature)
-            }
-        }
+        var relatedSelectedFeature: ArcGISFeature?
         var calloutPlacement: CalloutPlacement?
         var screenPoint: CGPoint?
         var mapPoint: Point?
@@ -141,7 +135,7 @@ extension UpdateRelatedFeaturesView {
         var visitorOptions = ["0-1,000", "1,000–10,000", "10,000-50,000", "50,000-100,000", "100,000+"]
         var selectedVisitorValue: String = "0-1,000"
         
-        func loadMaps() async throws {
+        func loadFeatures() async throws {
             let geodatabase = ServiceGeodatabase(url: .alaskaParksFeatureService)
             try await geodatabase.load()
             parksFeatureTable = geodatabase.table(withLayerID: 1)
