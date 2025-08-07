@@ -59,7 +59,7 @@ A digital elevation model is used to ensure that the displayed route is position
 
 **World-scale AR** is one of three main patterns for working with geographic information in augmented reality. Augmented reality is made possible with the ArcGIS Maps SDK Toolkit. See [Augmented reality](https://developers.arcgis.com/swift/scenes-3d/display-scenes-in-augmented-reality/) in the guide for more information about augmented reality and adding it to your app.
 
-Because most navigation scenarios involve traveling beyond the accurate range for ARKit positioning, this sample relies on **continuous location updates** from the location data source. Because the origin camera is constantly being reset by the location data source, the sample doesn't allow the user to pan to calibrate or adjust the altitude with a slider. The location data source doesn't provide a heading, so it isn't overwritten when the location refreshes.
+Since most navigation scenarios go beyond the range where ARKit can provide accurate positioning, this sample depends on **continuous location updates** from the location data source. Because the location data source constantly resets the origin camera, the sample disables user interactions like panning to calibrate or adjusting altitude with a slider. Additionally, because the location data source doesn’t include heading information, the heading remains unchanged during location updates.
 
 ## Tags
 
