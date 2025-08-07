@@ -125,7 +125,7 @@ extension AuthenticateWithIntegratedWindowsAuthenticationView {
             setupAuthenticator()
         }
         
-        /// Connects to the portal and finds a batch of webmaps.
+        /// Connects to the portal and finds a batch of web maps.
         func connectToPortal() async {
             precondition(portalURL != nil)
             
@@ -166,8 +166,7 @@ extension AuthenticateWithIntegratedWindowsAuthenticationView {
             // point in time based on the workflow desired. For example, it
             // might make sense to remove credentials when the user taps
             // a "sign out" button.
-            await ArcGISEnvironment.authenticationManager.revokeOAuthTokens()
-            await ArcGISEnvironment.authenticationManager.clearCredentialStores()
+            await ArcGISEnvironment.authenticationManager.signOut()
         }
         
         /// Sets up new ArcGIS and Network credential stores that will be persisted in the keychain.
