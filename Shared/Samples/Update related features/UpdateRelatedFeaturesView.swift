@@ -27,7 +27,7 @@ struct UpdateRelatedFeaturesView: View {
             MapView(map: model.map)
                 .onSingleTapGesture { screenPoint, mapPoint in
                     model.screenPoint = screenPoint
-                    self.model.mapPoint = mapPoint
+                    model.mapPoint = mapPoint
                     Task {
                         guard let parksLayer = model.parksFeatureLayer else { return }
                         parksLayer.clearSelection()
