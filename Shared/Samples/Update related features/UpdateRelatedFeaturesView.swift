@@ -282,6 +282,7 @@ extension String {
     static var annualVisitorsKey: String {
         "ANNUAL_VISITORS"
     }
+    
     /// The attribute key for the "Unit Name" (park name) field.
     static var unitKey: String {
         "UNIT_NAME"
