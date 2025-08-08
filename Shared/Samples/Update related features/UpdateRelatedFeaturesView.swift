@@ -145,20 +145,19 @@ extension UpdateRelatedFeaturesView {
         /// A map with a topographic basemap style.
         @ObservationIgnored var map = Map(basemapStyle: .arcGISTopographic)
         
-        /// A boolean value the reflects whether the callout should be shown or not.
+        /// A Boolean value the reflects whether the callout should be shown or not.
         var calloutIsVisible = false
         
-        /// Feature layers and tables for parks and preserves
+        /// The parks feature layer for  querying.
         var parksFeatureLayer: FeatureLayer?
         
-        /// Used for querying park features and related data.
+        /// The parks feature table.
         var parksFeatureTable: ServiceFeatureTable?
         
-        /// The service feature table representing preserve data.
-        /// Used to access and update related preserve features connected to parks.
+        /// The preserves feature table.
         var preservesTable: ServiceFeatureTable?
         
-        /// The feature selected on the map.
+        /// The feature currently selected by the user.
         var selectedFeature: ArcGISFeature?
         
         /// The feature that is related to the selected feature.
@@ -173,7 +172,7 @@ extension UpdateRelatedFeaturesView {
         /// The map point where the map was tapped.
         var mapPoint: Point?
         
-        /// Stores the current visitor count value.
+        /// The current visitor count attribute value.
         var attributeValue = ""
         
         /// The name of the selected park.
@@ -199,15 +198,15 @@ extension UpdateRelatedFeaturesView {
         func loadFeatures() async throws {
             let geodatabase = ServiceGeodatabase(url: .alaskaParksFeatureService)
             try await geodatabase.load()
-            // Load parks layer
+            // Load parks layer.
             parksFeatureTable = geodatabase.table(withLayerID: 1)
-            if let parksTable = parksFeatureTable {
-                parksFeatureLayer = FeatureLayer(featureTable: parksTable)
+            if let parksFeatureTable {
+                parksFeatureLayer = FeatureLayer(featureTable: parksFeatureTable)
                 map.addOperationalLayer(parksFeatureLayer!)
             }
-            // Load preserves layer
+            // Load preserves layer.
             preservesTable = geodatabase.table(withLayerID: 0)
-            if let preservesTable = preservesTable {
+            if let preservesTable {
                 let preservesLayer = FeatureLayer(featureTable: preservesTable)
                 map.addOperationalLayer(preservesLayer)
             }
@@ -219,9 +218,8 @@ extension UpdateRelatedFeaturesView {
         /// - Parameter newValue: The new value for the visitor range.
         /// - Throws: An error if the update fails or the related feature is not available.
         func setSelectedFeatureUpdate(_ newValue: String) async throws {
-            if let feature = relatedSelectedFeature {
-                try await updateRelatedFeature(feature: feature, newValue: newValue)
-            }
+            guard let relatedSelectedFeature else { return }
+            try await updateRelatedFeature(feature: relatedSelectedFeature, newValue: newValue)
         }
         
         /// Updates the related preserve feature with the new "Annual Visitors" value
@@ -236,7 +234,7 @@ extension UpdateRelatedFeaturesView {
             feature.setAttributeValue(newValue, forKey: .annualVisitorsKey)
             attributeValue = newValue
             try await preservesTable?.update(feature)
-            // Apply edits to the service geodatabase
+            // Apply edits to the service geodatabase.
             if let geodatabase = preservesTable?.serviceGeodatabase {
                 let editResults = try await geodatabase.applyEdits()
                 if let first = editResults.first,
@@ -257,7 +255,7 @@ extension UpdateRelatedFeaturesView {
             let attributes = feature.attributes
             // Default to park name from the selected park feature.
             parkName = attributes[.unitKey] as? String ?? "Unknown"
-            // reset attribute value in case there are no related feature results.
+            // Reset attribute value in case there are no related feature results.
             attributeValue = ""
             let relatedResultsQuery = try await parksTable.queryRelatedFeatures(to: feature)
             for relatedResult in relatedResultsQuery {
@@ -276,11 +274,11 @@ extension UpdateRelatedFeaturesView {
 }
 
 extension String {
-    /// Attribute key for the "Annual Visitors" field.
+    /// The attribute key for the "Annual Visitors" field.
     static var annualVisitorsKey: String {
         "ANNUAL_VISITORS"
     }
-    /// Attribute key for the "Unit Name" (park name) field.
+    /// The attribute key for the "Unit Name" (park name) field.
     static var unitKey: String {
         "UNIT_NAME"
     }
