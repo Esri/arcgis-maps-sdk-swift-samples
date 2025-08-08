@@ -56,7 +56,7 @@ struct UpdateRelatedFeaturesView: View {
                 }
                 .task(id: lastSingleTap?.mapPoint) {
                     model.screenPoint = lastSingleTap?.screenPoint ?? .zero
-                    model.mapPoint = lastSingleTap!.mapPoint
+                    model.mapPoint = lastSingleTap?.mapPoint ?? Point(x: 0, y: 0)
                     isLoading = true
                     defer { isLoading = false }
                     model.clearAll()
