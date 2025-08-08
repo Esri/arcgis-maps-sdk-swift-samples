@@ -63,8 +63,8 @@ struct UpdateRelatedFeaturesView: View {
                         }
                     }
                 }
-            // Show a callout with editable content when a feature is selected.
                 .callout(placement: $model.calloutPlacement) { _ in
+                    // Show a callout with editable content when a feature is selected.
                     if model.calloutIsVisible {
                         calloutContent
                     }
