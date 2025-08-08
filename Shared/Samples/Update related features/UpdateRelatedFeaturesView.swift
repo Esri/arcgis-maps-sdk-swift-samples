@@ -89,7 +89,6 @@ struct UpdateRelatedFeaturesView: View {
                         loadingView
                     }
                 }
-            // Display error alerts, if needed.
                 .errorAlert(presentingError: $error)
         }
     }
