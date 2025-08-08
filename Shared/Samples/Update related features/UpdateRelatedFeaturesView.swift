@@ -16,14 +16,14 @@ import ArcGIS
 import SwiftUI
 
 struct UpdateRelatedFeaturesView: View {
-    /// The error shown in the error alert.
-    @State private var error: (any Error)?
+    /// The model that holds the data for displaying and updating the view.
+    @State private var model = Model()
     
     /// A Boolean value indicating whether the feature data is being loaded.
     @State private var isLoading = false
     
-    /// The model that holds the data for displaying and updating the view.
-    @State private var model = Model()
+    /// The error shown in the error alert.
+    @State private var error: (any Error)?
     
     var body: some View {
         MapViewReader { mapView in
