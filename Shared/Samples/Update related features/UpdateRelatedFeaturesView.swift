@@ -158,8 +158,10 @@ extension UpdateRelatedFeaturesView {
         /// Used to access and update related preserve features connected to parks.
         var preservesTable: ServiceFeatureTable?
         
-        /// Selected features and related features.
+        /// The feature selected on the map.
         var selectedFeature: ArcGISFeature?
+        
+        /// The feature that is related to the selected feature.
         var relatedSelectedFeature: ArcGISFeature?
         
         /// The location of the callout on the map.
