@@ -87,8 +87,6 @@ struct UpdateRelatedFeaturesView: View {
                         print("Error during identify/query: \(error)")
                     }
                 }
-            
-            
                 .overlay(alignment: .center) {
                     // Show a loading spinner when `isLoading` is true.
                     if isLoading {
