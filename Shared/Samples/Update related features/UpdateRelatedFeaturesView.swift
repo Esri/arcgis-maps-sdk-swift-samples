@@ -53,7 +53,7 @@ struct UpdateRelatedFeaturesView: View {
                                     for: identifiedFeature
                                 )
                                 // Display a callout at the feature's location.
-                                model.calloutVisible = true
+                                model.calloutIsVisible = true
                                 model.calloutPlacement = .location(model.mapPoint!)
                                 // Center the map on the tapped feature.
                                 await mapView.setViewpointCenter(mapPoint)
@@ -65,7 +65,7 @@ struct UpdateRelatedFeaturesView: View {
                 }
             // Show a callout with editable content when a feature is selected.
                 .callout(placement: $model.calloutPlacement) { _ in
-                    if model.calloutVisible {
+                    if model.calloutIsVisible {
                         calloutContent
                     }
                 }
