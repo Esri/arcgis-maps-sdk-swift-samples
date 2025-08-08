@@ -69,8 +69,8 @@ struct UpdateRelatedFeaturesView: View {
                         calloutContent
                     }
                 }
-            // Load initial map and data when the view appears.
                 .task {
+                    // Load initial map and data when the view appears.
                     isLoading = true
                     defer { isLoading = false }
                     do {
@@ -83,8 +83,8 @@ struct UpdateRelatedFeaturesView: View {
                         self.error = error
                     }
                 }
-            // Show a loading spinner when `isLoading` is true.
                 .overlay(alignment: .center) {
+                    // Show a loading spinner when `isLoading` is true.
                     if isLoading {
                         loadingView
                     }
