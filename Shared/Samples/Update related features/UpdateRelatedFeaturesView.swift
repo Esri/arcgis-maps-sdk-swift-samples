@@ -25,43 +25,14 @@ struct UpdateRelatedFeaturesView: View {
     /// The error shown in the error alert.
     @State private var error: (any Error)?
     
+    /// The last locations in the screen and map where a tap occurred.
+    @State private var lastSingleTap: (screenPoint: CGPoint, mapPoint: Point)?
+    
     var body: some View {
         MapViewReader { mapView in
             MapView(map: model.map)
                 .onSingleTapGesture { screenPoint, mapPoint in
-                    model.screenPoint = screenPoint
-                    model.mapPoint = mapPoint
-                    Task {
-                        isLoading = true
-                        defer { isLoading = false }
-                        model.clearAll()
-                        // Ensure parks feature layer is available and clear it.
-                        guard let parksLayer = model.parksFeatureLayer else { return }
-                        parksLayer.clearSelection()
-                        do {
-                            let identifyResult = try await mapView.identify(
-                                on: parksLayer,
-                                screenPoint: screenPoint,
-                                tolerance: 5
-                            )
-                            // If a feature is found, select and query related data.
-                            if let identifiedFeature = identifyResult.geoElements.first as? ArcGISFeature {
-                                parksLayer.selectFeature(identifiedFeature)
-                                model.selectedFeature = identifiedFeature
-                                // Query for related preserve data.
-                                try await model.queryRelatedFeatures(
-                                    for: identifiedFeature
-                                )
-                                // Display a callout at the feature's location.
-                                model.calloutIsVisible = true
-                                model.calloutPlacement = .location(model.mapPoint!)
-                                // Center the map on the tapped feature.
-                                await mapView.setViewpointCenter(mapPoint)
-                            }
-                        } catch {
-                            self.error = error
-                        }
-                    }
+                    lastSingleTap = (screenPoint, mapPoint)
                 }
                 .callout(placement: $model.calloutPlacement) { _ in
                     // Show a callout with editable content when a feature is selected.
@@ -69,6 +40,40 @@ struct UpdateRelatedFeaturesView: View {
                         calloutContent
                     }
                 }
+                .task(id: lastSingleTap?.mapPoint) {
+                    model.screenPoint = lastSingleTap?.screenPoint ?? .zero
+                    model.mapPoint = lastSingleTap!.mapPoint
+                    isLoading = true
+                    defer { isLoading = false }
+                    model.clearAll()
+
+                    guard let parksLayer = model.parksFeatureLayer else { return }
+                    parksLayer.clearSelection()
+
+                    do {
+                        let identifyResult = try await mapView.identify(
+                            on: parksLayer,
+                            screenPoint: model.screenPoint!,
+                            tolerance: 5
+                        )
+
+                        if let identifiedFeature = identifyResult.geoElements.first as? ArcGISFeature {
+                            parksLayer.selectFeature(identifiedFeature)
+                            model.selectedFeature = identifiedFeature
+
+                            try await model.queryRelatedFeatures(for: identifiedFeature)
+
+                            model.calloutIsVisible = true
+                            model.calloutPlacement = .location(model.mapPoint!)
+
+                            await mapView.setViewpointCenter(model.mapPoint!)
+                        }
+                    } catch {
+                        // Handle the error or log it.
+                        print("Error during identify/query: \(error)")
+                    }
+                }
+            
                 .task {
                     // Load initial map and data when the view appears.
                     isLoading = true
