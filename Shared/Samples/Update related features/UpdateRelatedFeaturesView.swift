@@ -147,7 +147,7 @@ extension UpdateRelatedFeaturesView {
         @ObservationIgnored var map = Map(basemapStyle: .arcGISTopographic)
         
         /// A boolean value the reflects whether the callout should be shown or not.
-        var calloutVisible = false
+        var calloutIsVisible = false
         
         /// Feature layers and tables for parks and preserves
         var parksFeatureLayer: FeatureLayer?
@@ -169,23 +169,22 @@ extension UpdateRelatedFeaturesView {
         /// The screen (pixel) coordinates of the user's tap on the map view.
         var screenPoint: CGPoint?
         
-        /// The geographic `Point` corresponding to the user's tap location on the map.
-        /// This is used to center the map or position the callout.
+        /// The map point where the map was tapped.
         var mapPoint: Point?
         
         /// Stores the current visitor count value.
-        var attributeValue: String = ""
+        var attributeValue = ""
         
         /// The name of the selected park.
-        var parkName: String = ""
+        var parkName = ""
         
         /// Visitor options for selection.
         @ObservationIgnored var visitorOptions = ["0-1,000", "1,000–10,000", "10,000-50,000", "50,000-100,000", "100,000+"]
         
         /// The currently selected visitor option.
-        var selectedVisitorValue: String = "0-1,000"
+        var selectedVisitorValue = "0-1,000"
         
-        /// Clear selected data and callout.
+        /// Clears selected data and callout.
         func clearAll() {
             relatedSelectedFeature = nil
             attributeValue = ""
@@ -287,7 +286,7 @@ extension String {
 }
 
 extension URL {
-    /// URL of the Alaska Parks and Preserves feature service.
+    /// The URL of the Alaska Parks and Preserves feature service.
     static var alaskaParksFeatureService: URL {
         URL(string: "https://services2.arcgis.com/ZQgQTuoyBrtmoGdP/ArcGIS/rest/services/AlaskaNationalParksPreserves_Update/FeatureServer")!
     }

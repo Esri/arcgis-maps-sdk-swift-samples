@@ -2,7 +2,7 @@
 
 Update related features in an online feature service.
 
-![Image of update related features](update-related-features.png)
+![Image of Update related features sample](update-related-features.png)
 
 ## Use case
 
@@ -18,8 +18,8 @@ Once you launch the app, select a national park feature. The app will then ident
 2. Create two `FeatureLayer`s using the previously created service feature tables.
 3. Add these feature layers to the map.
 4. When a `Feature` is selected, identify and highlight the selected feature.
-5. Retrieve related features by calling `ServiceFeatureTable.queryRelatedFeatures` and passing in the selected feature.
-6. Updates can be applied to the server using `ServiceFeatureTable.updateFeature(...)` and `ServiceFeatureTable.applyEdits()`.
+5. Retrieve related features by calling `ServiceFeatureTable.queryRelatedFeatures(to:using:)` and passing in the selected feature.
+6. Updates can be applied to the server using `ServiceFeatureTable.update(_:)` and `ServiceFeatureTable.applyEdits()`.
 
 ## Relevant API
 
