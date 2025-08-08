@@ -83,8 +83,7 @@ struct UpdateRelatedFeaturesView: View {
                             await mapView.setViewpointCenter(model.mapPoint!)
                         }
                     } catch {
-                        // Handle the error or log it.
-                        print("Error during identify/query: \(error)")
+                        self.error = error
                     }
                 }
                 .overlay(alignment: .center) {
