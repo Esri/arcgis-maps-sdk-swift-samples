@@ -40,40 +40,6 @@ struct UpdateRelatedFeaturesView: View {
                         calloutContent
                     }
                 }
-                .task(id: lastSingleTap?.mapPoint) {
-                    model.screenPoint = lastSingleTap?.screenPoint ?? .zero
-                    model.mapPoint = lastSingleTap!.mapPoint
-                    isLoading = true
-                    defer { isLoading = false }
-                    model.clearAll()
-
-                    guard let parksLayer = model.parksFeatureLayer else { return }
-                    parksLayer.clearSelection()
-
-                    do {
-                        let identifyResult = try await mapView.identify(
-                            on: parksLayer,
-                            screenPoint: model.screenPoint!,
-                            tolerance: 5
-                        )
-
-                        if let identifiedFeature = identifyResult.geoElements.first as? ArcGISFeature {
-                            parksLayer.selectFeature(identifiedFeature)
-                            model.selectedFeature = identifiedFeature
-
-                            try await model.queryRelatedFeatures(for: identifiedFeature)
-
-                            model.calloutIsVisible = true
-                            model.calloutPlacement = .location(model.mapPoint!)
-
-                            await mapView.setViewpointCenter(model.mapPoint!)
-                        }
-                    } catch {
-                        // Handle the error or log it.
-                        print("Error during identify/query: \(error)")
-                    }
-                }
-            
                 .task {
                     // Load initial map and data when the view appears.
                     isLoading = true
@@ -88,6 +54,41 @@ struct UpdateRelatedFeaturesView: View {
                         self.error = error
                     }
                 }
+                .task(id: lastSingleTap?.mapPoint) {
+                    model.screenPoint = lastSingleTap?.screenPoint ?? .zero
+                    model.mapPoint = lastSingleTap!.mapPoint
+                    isLoading = true
+                    defer { isLoading = false }
+                    model.clearAll()
+                    
+                    guard let parksLayer = model.parksFeatureLayer else { return }
+                    parksLayer.clearSelection()
+                    
+                    do {
+                        let identifyResult = try await mapView.identify(
+                            on: parksLayer,
+                            screenPoint: model.screenPoint!,
+                            tolerance: 5
+                        )
+                        
+                        if let identifiedFeature = identifyResult.geoElements.first as? ArcGISFeature {
+                            parksLayer.selectFeature(identifiedFeature)
+                            model.selectedFeature = identifiedFeature
+                            
+                            try await model.queryRelatedFeatures(for: identifiedFeature)
+                            
+                            model.calloutIsVisible = true
+                            model.calloutPlacement = .location(model.mapPoint!)
+                            
+                            await mapView.setViewpointCenter(model.mapPoint!)
+                        }
+                    } catch {
+                        // Handle the error or log it.
+                        print("Error during identify/query: \(error)")
+                    }
+                }
+            
+            
                 .overlay(alignment: .center) {
                     // Show a loading spinner when `isLoading` is true.
                     if isLoading {
