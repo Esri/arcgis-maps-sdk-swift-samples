@@ -60,7 +60,7 @@ struct UpdateRelatedFeaturesView: View {
                     isLoading = true
                     defer { isLoading = false }
                     model.clearAll()
-                    
+                    // Ensure parks feature layer is available and clear it.
                     guard let parksLayer = model.parksFeatureLayer else { return }
                     parksLayer.clearSelection()
                     
@@ -70,16 +70,16 @@ struct UpdateRelatedFeaturesView: View {
                             screenPoint: model.screenPoint!,
                             tolerance: 5
                         )
-                        
+                        // If a feature is found, select and query related data.
                         if let identifiedFeature = identifyResult.geoElements.first as? ArcGISFeature {
                             parksLayer.selectFeature(identifiedFeature)
                             model.selectedFeature = identifiedFeature
-                            
+                            // Query for related preserve data.
                             try await model.queryRelatedFeatures(for: identifiedFeature)
-                            
+                            // Display a callout at the feature's location.
                             model.calloutIsVisible = true
                             model.calloutPlacement = .location(model.mapPoint!)
-                            
+                            // Center the map on the tapped feature.
                             await mapView.setViewpointCenter(model.mapPoint!)
                         }
                     } catch {
