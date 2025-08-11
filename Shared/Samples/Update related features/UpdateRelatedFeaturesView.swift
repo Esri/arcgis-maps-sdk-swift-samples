@@ -22,11 +22,11 @@ struct UpdateRelatedFeaturesView: View {
     /// A Boolean value indicating whether the feature data is being loaded.
     @State private var isLoading = false
     
-    /// The error shown in the error alert.
-    @State private var error: (any Error)?
-    
     /// The last locations in the screen and map where a tap occurred.
     @State private var lastSingleTap: (screenPoint: CGPoint, mapPoint: Point)?
+    
+    /// The error shown in the error alert.
+    @State private var error: (any Error)?
     
     var body: some View {
         MapViewReader { mapView in
