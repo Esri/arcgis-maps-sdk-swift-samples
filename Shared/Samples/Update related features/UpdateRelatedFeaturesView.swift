@@ -116,7 +116,8 @@ struct UpdateRelatedFeaturesView: View {
                 .onChange(of: model.selectedVisitorValue) { _, newValue in
                     Task {
                         do {
-                            try await self.model.setSelectedFeatureUpdate(newValue)
+                            guard let lastSingleTap else { return }
+                            try await self.model.updateRelatedFeature(at: lastSingleTap.mapPoint, using: newValue)
                         } catch {
                             self.error = error
                         }
