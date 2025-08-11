@@ -36,9 +36,7 @@ struct UpdateRelatedFeaturesView: View {
                 }
                 .callout(placement: $model.calloutPlacement) { _ in
                     // Show a callout with editable content when a feature is selected.
-                    if model.calloutIsVisible {
-                        calloutContent
-                    }
+                    calloutContent
                 }
                 .task {
                     // Load initial map and data when the view appears.
