@@ -152,10 +152,10 @@ extension UpdateRelatedFeaturesView {
         /// A map with a topographic basemap style.
         @ObservationIgnored var map = Map(basemapStyle: .arcGISTopographic)
         
-        /// A Boolean value the reflects whether the callout should be shown or not.
+        /// A Boolean value indicating whether the callout should be shown or not.
         var calloutIsVisible = false
         
-        /// The parks feature layer for  querying.
+        /// The parks feature layer for querying.
         var parksFeatureLayer: FeatureLayer?
         
         /// The parks feature table.
