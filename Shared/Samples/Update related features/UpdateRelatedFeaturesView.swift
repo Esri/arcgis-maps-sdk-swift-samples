@@ -48,7 +48,11 @@ struct UpdateRelatedFeaturesView: View {
                         try await model.loadFeatures()
                         // Set initial viewpoint to Alaska.
                         await mapView.setViewpoint(
-                            Viewpoint(latitude: 65.399121, longitude: -151.521682, scale: 50000000)
+                            Viewpoint(
+                                latitude: 65.399121,
+                                longitude: -151.521682,
+                                scale: 50000000
+                            )
                         )
                     } catch {
                         self.error = error
