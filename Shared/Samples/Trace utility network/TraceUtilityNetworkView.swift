@@ -37,7 +37,7 @@ struct TraceUtilityNetworkView: View {
                 if model.tracingActivity == .traceRunning,
                    let type = model.pendingTraceParameters?.traceType {
                     VStack {
-                        Text("Running \(String(describing: type)) trace...")
+                        Text("Running \(String(describing: type)) trace")
                         ProgressView()
                             .progressViewStyle(.circular)
                     }

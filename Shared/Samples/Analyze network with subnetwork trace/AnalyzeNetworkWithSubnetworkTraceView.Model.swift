@@ -54,7 +54,7 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
         @Published private(set) var traceEnabled = false
         
         /// The status text to display to the user.
-        @Published private(set) var statusText: String = "Loading utility network…"
+        @Published private(set) var statusText: String = "Loading utility network"
         
         /// The number of trace results from a trace.
         @Published private(set) var traceResultsCount = 0
@@ -156,7 +156,7 @@ extension AnalyzeNetworkWithSubnetworkTraceView {
             defer { statusText = "" }
             defer { traceEnabled = true }
             traceEnabled = false
-            statusText = "Tracing…"
+            statusText = "Tracing"
             guard let location = startingLocation else { preconditionFailure() }
             
             // Create utility trace parameters for the starting location.

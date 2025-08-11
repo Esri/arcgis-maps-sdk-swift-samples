@@ -46,7 +46,7 @@ struct ShowServiceAreasForMultipleFacilitiesView: View {
             MapView(map: map, graphicsOverlays: [graphicsOverlay])
                 .overlay {
                     if isCalculatingServiceArea {
-                        ProgressView("Calculating service area...")
+                        ProgressView("Calculating service area")
                             .padding()
                             .background(.ultraThickMaterial)
                             .clipShape(.rect(cornerRadius: 10))

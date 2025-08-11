@@ -33,7 +33,7 @@ struct FindClosestFacilityFromPointView: View {
             MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
                 .overlay(alignment: .center) {
                     if isRouting {
-                        ProgressView("Routing...")
+                        ProgressView("Routing")
                             .padding()
                             .background(.ultraThickMaterial)
                             .clipShape(.rect(cornerRadius: 10))

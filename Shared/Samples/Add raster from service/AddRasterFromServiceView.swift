@@ -54,7 +54,7 @@ struct AddRasterFromServiceView: View {
             }
             .overlay(alignment: .center) {
                 if currentDrawStatus == .inProgress {
-                    ProgressView("Drawing…")
+                    ProgressView("Drawing")
                         .padding()
                         .background(.ultraThinMaterial)
                         .clipShape(.rect(cornerRadius: 10))

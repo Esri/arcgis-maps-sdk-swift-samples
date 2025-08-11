@@ -112,7 +112,7 @@ struct QueryTableStatisticsGroupAndSortView: View {
         .background(Color(.systemGroupedBackground))
         .overlay(alignment: .center) {
             if isQuerying {
-                ProgressView("Querying Statistics…")
+                ProgressView("Querying Statistics")
                     .padding()
                     .background(.ultraThickMaterial)
                     .clipShape(.rect(cornerRadius: 10))
