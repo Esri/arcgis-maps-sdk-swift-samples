@@ -53,7 +53,7 @@ struct QueryDynamicEntitiesView: View {
                     }
                     .menuOrder(.fixed)
                     .alert("Enter a Flight Number to Query", isPresented: $flightNumberAlertIsShowing) {
-                        TextField("Flight Number", text: $flightNumber)
+                        TextField("Flight Number", text: $flightNumber, prompt: .init("Flight_396"))
                         
                         Button("Done") {
                             selectedQueryType = .trackID(flightNumber)
@@ -215,7 +215,7 @@ private extension QueryDynamicEntitiesView.QueryType {
         switch self {
         case .geometry: "Flights within 15 miles of PHX"
         case .attributes: "Flights arriving in PHX"
-        case .trackID(let trackID): "Flights matching flight number: \(trackID)"
+        case .trackID(let trackID): "Flights matching number: \(trackID)"
         }
     }
 }

@@ -48,7 +48,7 @@ extension QueryDynamicEntitiesView {
         
         /// A geometry representing a 15 mile buffer around the Phoenix airport.
         private let phoenixAirportBuffer = GeometryEngine.geodeticBuffer(
-            around: Point(latitude: 33.4352, longitude: -112.0101),
+            around: .phoenixAirport,
             distance: 15,
             distanceUnit: .miles,
             maxDeviation: .nan,
@@ -62,7 +62,7 @@ extension QueryDynamicEntitiesView {
             setUpGraphicsOverlay()
         }
         
-        /// Monitors the custom dynamic entity data source and its feed when needed.
+        /// Monitors the custom dynamic entity data source and resets its feed when needed.
         func monitorDataSource() async throws {
             for await connectionStatus in dataSource.$connectionStatus {
                 guard connectionStatus == .failed,
@@ -88,8 +88,10 @@ extension QueryDynamicEntitiesView {
             
             switch type {
             case .geometry:
-                // Sets the parameters' geometry to query within the PHX buffer.
+                // Sets the parameters' geometry and spatial relationship to query within the buffer.
                 parameters.geometry = phoenixAirportBuffer
+                parameters.spatialRelationship = .intersects
+                
                 graphicsOverlay.isVisible = true
             case .attributes:
                 // Sets the parameters' where clause to query the entities' attributes.

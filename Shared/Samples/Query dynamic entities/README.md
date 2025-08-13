@@ -16,7 +16,7 @@ Tap the "Query Flights" button and select a query to perform from the menu. Once
 
 1. Create a `DynamicEntityDataSource` to stream dynamic entity events.
 2. Create `DynamicEntityQueryParameters` and set its properties to specify the parameters for the query:
-    1. To spatially filter results, set the `geometry`.
+    1. To spatially filter results, set the `geometry` and `spatialRelationship`. The spatial relationship is `intersects` by default.
     2. To query entities with certain attribute values, set the `whereClause`.
     3. To get entities with specific track IDs, modify the `trackIDs` collection.
 3. To perform a dynamic entities query, call `DynamicEntityDataSource.queryDynamicEntities(using:)` passing in the parameters.
