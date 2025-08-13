@@ -37,7 +37,7 @@ extension FindRouteInMobileMapPackageView {
         }
         
         /// Imports a mobile map package from a given file URL.
-        /// - Parameter URLs: The file URL to the "mmpk" file to import.
+        /// - Parameter fileURL: The file URL to the "mmpk" file to import.
         func importMapPackage(from fileURL: URL) async {
             // Make the URL accessible.
             if !accessedURLs.contains(fileURL) && fileURL.startAccessingSecurityScopedResource() {
@@ -49,7 +49,7 @@ extension FindRouteInMobileMapPackageView {
         }
         
         /// Adds a mobile map package to the map packages list using a given file URL.
-        /// - Parameter URLs: The file URL to the "mmpk" file to add.
+        /// - Parameter fileURL: The file URL to the "mmpk" file to add.
         func addMapPackage(from fileURL: URL) async {
             do {
                 let mapPackage = MobileMapPackage(fileURL: fileURL)

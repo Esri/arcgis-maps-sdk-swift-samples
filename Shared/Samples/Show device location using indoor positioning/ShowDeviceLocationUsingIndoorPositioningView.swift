@@ -66,7 +66,7 @@ struct ShowDeviceLocationUsingIndoorPositioningView: View {
                     ProgressView(
                         """
                         Loading
-                        indoor data…
+                        indoor data
                         """
                     )
                     .padding()

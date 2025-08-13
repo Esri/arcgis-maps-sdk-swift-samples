@@ -40,7 +40,7 @@ struct AddIntegratedMeshLayerView: View {
     /// A Boolean value indicating when the draw status becomes completed
     /// for the first time.
     @State private var initialDrawCompleted = false
-
+    
     /// The camera for zooming the scene view to the location.
     @State private var camera: Camera? = Camera(
         latitude: 41.9906,
@@ -64,7 +64,7 @@ struct AddIntegratedMeshLayerView: View {
             }
             .overlay(alignment: .center) {
                 if !initialDrawCompleted {
-                    ProgressView("Loading...")
+                    ProgressView("Loading")
                         .padding()
                         .background(.ultraThickMaterial)
                         .clipShape(.rect(cornerRadius: 10))

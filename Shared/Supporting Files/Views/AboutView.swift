@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import ArcGIS
 import SwiftUI
 
 struct AboutView: View {
@@ -24,6 +25,11 @@ struct AboutView: View {
     private let arcGISVersion = Bundle.arcGIS.version.isEmpty
     ? Bundle.arcGIS.shortVersion
     : "\(Bundle.arcGIS.shortVersion) (\(Bundle.arcGIS.version))"
+    
+    /// A Boolean value indicating whether the API key alert is presented.
+    @State private var isAPIKeyAlertPresented = false
+    /// The API key entered in the alert.
+    @State private var apiKey = ""
     
     var body: some View {
         NavigationStack {
@@ -64,6 +70,9 @@ struct AboutView: View {
                 } footer: {
                     Text("View details about the API.")
                 }
+#if DEBUG
+                debugSection
+#endif
             }
             .navigationTitle("About")
             .navigationBarTitleDisplayMode(.inline)
@@ -96,4 +105,31 @@ private extension URL {
     static let toolkit = URL(string: "https://github.com/Esri/arcgis-maps-sdk-swift-toolkit")!
     static let apiReference = URL(string: "https://developers.arcgis.com/swift/api-reference/documentation/arcgis/")!
     static let writeReview = URL(string: "https://apps.apple.com/app/id1630449018?action=write-review")!
+}
+
+extension AboutView {
+    /// A section for debugging purposes.
+    var debugSection: some View {
+        Section {
+            Button("Enter API Key") {
+                isAPIKeyAlertPresented = true
+            }
+            .alert("Enter API Key", isPresented: $isAPIKeyAlertPresented) {
+                TextField("Enter API Key Here", text: $apiKey, axis: .vertical)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+                    .textEditorStyle(.plain)
+                Button("Cancel", role: .cancel) {}
+                Button("Submit") {
+                    ArcGISEnvironment.apiKey = APIKey(apiKey)!
+                }
+                .disabled(apiKey.isEmpty)
+                Button("Reset") {
+                    ArcGISEnvironment.apiKey = .iOS
+                }
+            }
+        } footer: {
+            Text("The section above is for testing purposes only.")
+        }
+    }
 }
