@@ -230,7 +230,6 @@ extension UpdateRelatedFeaturesView {
                 if let first = editResults.first,
                    first.editResults[0].didCompleteWithErrors == false {
                     parksFeatureLayer?.clearSelection()
-                    calloutPlacement = .location(mapPoint)
                 }
             }
         }
