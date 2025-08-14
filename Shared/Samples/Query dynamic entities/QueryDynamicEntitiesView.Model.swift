@@ -177,7 +177,7 @@ extension QueryDynamicEntitiesView {
         /// The feed's stream of events.
         let events: AsyncThrowingStream<CustomDynamicEntityFeedEvent, any Error>
         
-        init() async throws {
+        init() {
             let (events, continuation) = AsyncThrowingStream.makeStream(
                 of: CustomDynamicEntityFeedEvent.self
             )
@@ -187,7 +187,7 @@ extension QueryDynamicEntitiesView {
                 do {
                     for try await line in URL.phoenixAirTrafficJSON.lines {
                         // Delays the next observation to simulate live data.
-                        try? await Task.sleep(for: .seconds(0.1))
+                        try await Task.sleep(for: .seconds(0.1))
                         
                         // Decodes the plane from the line and uses it to create a new observation.
                         let plane = try JSONDecoder().decode(Plane.self, from: .init(line.utf8))
@@ -236,7 +236,7 @@ extension QueryDynamicEntitiesView {
         
         /// The type used to create a field for the attribute.
         fileprivate var fieldType: FieldType {
-            isNumeric ? .text : .float64
+            isNumeric ? .float64 : .text
         }
         
         /// A Boolean value indicating whether the attribute has a numeric value.
@@ -264,7 +264,7 @@ extension QueryDynamicEntitiesView.Plane: Decodable {
         
         let attributesDecoder = try container.superDecoder(forKey: .attributes)
         let attributesContainer = try attributesDecoder.container(keyedBy: AttributeKeys.self)
-        attributes = try AttributeKeys.allCases.reduce(into: [String: any Sendable]()) { attributes, key in
+        attributes = try AttributeKeys.allCases.reduce(into: [:]) { attributes, key in
             let attribute = try attributesContainer.decodeIfPresent(key.decodeType, forKey: key)
             attributes[key.rawValue] = attribute
         }
