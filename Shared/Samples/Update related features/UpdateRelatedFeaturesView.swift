@@ -57,8 +57,6 @@ struct UpdateRelatedFeaturesView: View {
                     }
                 }
                 .task(id: lastSingleTap?.mapPoint) {
-                    model.screenPoint = lastSingleTap?.screenPoint ?? .zero
-                    model.mapPoint = lastSingleTap?.mapPoint ?? Point(x: 0, y: 0)
                     isLoading = true
                     defer { isLoading = false }
                     model.clearAll()
@@ -69,7 +67,7 @@ struct UpdateRelatedFeaturesView: View {
                     do {
                         let identifyResult = try await mapView.identify(
                             on: parksLayer,
-                            screenPoint: model.screenPoint!,
+                            screenPoint: lastSingleTap?.screenPoint ?? .zero,
                             tolerance: 5
                         )
                         // If a feature is found, select and query related data.
@@ -80,9 +78,9 @@ struct UpdateRelatedFeaturesView: View {
                             try await model.queryRelatedFeatures(for: identifiedFeature)
                             // Display a callout at the feature's location.
                             model.calloutIsVisible = true
-                            model.calloutPlacement = .location(model.mapPoint!)
+                            model.calloutPlacement = .location(lastSingleTap?.mapPoint ?? Point(x: 0, y: 0))
                             // Center the map on the tapped feature.
-                            await mapView.setViewpointCenter(model.mapPoint!)
+                            await mapView.setViewpointCenter(lastSingleTap?.mapPoint ?? Point(x: 0, y: 0))
                         }
                     } catch {
                         self.error = error
@@ -117,7 +115,7 @@ struct UpdateRelatedFeaturesView: View {
                     Task {
                         do {
                             guard let lastSingleTap else { return }
-                            try await self.model.updateRelatedFeature(at: lastSingleTap.mapPoint, using: newValue)
+                            try await self.model.updateRelatedFeature(at: lastSingleTap.mapPoint, newValue: newValue)
                         } catch {
                             self.error = error
                         }
@@ -172,12 +170,6 @@ extension UpdateRelatedFeaturesView {
         /// The location of the callout on the map.
         var calloutPlacement: CalloutPlacement?
         
-        /// The screen (pixel) coordinates of the user's tap on the map view.
-        var screenPoint: CGPoint?
-        
-        /// The map point where the map was tapped.
-        var mapPoint: Point?
-        
         /// The current visitor count attribute value.
         var attributeValue = ""
         
@@ -218,16 +210,6 @@ extension UpdateRelatedFeaturesView {
             }
         }
         
-        /// Initiates the update process on the currently selected related feature
-        /// using the provided "Annual Visitors" value.
-        ///
-        /// - Parameter newValue: The new value for the visitor range.
-        /// - Throws: An error if the update fails or the related feature is not available.
-        func setSelectedFeatureUpdate(_ newValue: String) async throws {
-            guard let relatedSelectedFeature else { return }
-            try await updateRelatedFeature(feature: relatedSelectedFeature, newValue: newValue)
-        }
-        
         /// Updates the related preserve feature with the new "Annual Visitors" value
         /// and applies the changes to the service geodatabase.
         ///
@@ -235,18 +217,19 @@ extension UpdateRelatedFeaturesView {
         ///   - feature: The related `ArcGISFeature` to be updated.
         ///   - newValue: The new value to assign to the `ANNUAL_VISITORS` attribute.
         /// - Throws: An error if the feature fails to load, update, or if apply edits fail.
-        func updateRelatedFeature(feature: ArcGISFeature, newValue: String) async throws {
-            try await feature.load()
-            feature.setAttributeValue(newValue, forKey: .annualVisitorsKey)
+        func updateRelatedFeature(at mapPoint: Point, newValue: String) async throws {
+            guard let relatedSelectedFeature else { return }
+            try await relatedSelectedFeature.load()
+            relatedSelectedFeature.setAttributeValue(newValue, forKey: .annualVisitorsKey)
             attributeValue = newValue
-            try await preservesTable?.update(feature)
+            try await preservesTable?.update(relatedSelectedFeature)
             // Apply edits to the service geodatabase.
             if let geodatabase = preservesTable?.serviceGeodatabase {
                 let editResults = try await geodatabase.applyEdits()
                 if let first = editResults.first,
                    first.editResults[0].didCompleteWithErrors == false {
                     parksFeatureLayer?.clearSelection()
-                    calloutPlacement = .location(mapPoint!)
+                    calloutPlacement = .location(mapPoint)
                 }
             }
         }
