@@ -116,7 +116,7 @@ struct UpdateRelatedFeaturesView: View {
                     Task {
                         do {
                             guard let lastSingleTap else { return }
-                            try await self.model.updateRelatedFeature(at: lastSingleTap.mapPoint, newValue: newValue)
+                            try await model.updateRelatedFeature(at: lastSingleTap.mapPoint, newValue: newValue)
                         } catch {
                             self.error = error
                         }
