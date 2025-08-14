@@ -511,7 +511,6 @@ private extension Geometry {
         )
         return try! Multipoint.fromJSON(json)
     }
-    // swiftlint:enable force_try
 }
 
 private extension Symbol {
