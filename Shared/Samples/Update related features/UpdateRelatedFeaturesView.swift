@@ -61,6 +61,7 @@ struct UpdateRelatedFeaturesView: View {
                     defer { isLoading = false }
                     model.clearAll()
                     // Ensure parks feature layer is available and clear it.
+                    guard let mapPoint = lastSingleTap?.mapPoint else { return }
                     guard let parksLayer = model.parksFeatureLayer else { return }
                     parksLayer.clearSelection()
                     
@@ -78,9 +79,9 @@ struct UpdateRelatedFeaturesView: View {
                             try await model.queryRelatedFeatures(for: identifiedFeature)
                             // Display a callout at the feature's location.
                             model.calloutIsVisible = true
-                            model.calloutPlacement = .location(lastSingleTap?.mapPoint ?? Point(x: 0, y: 0))
+                            model.calloutPlacement = .location(mapPoint)
                             // Center the map on the tapped feature.
-                            await mapView.setViewpointCenter(lastSingleTap?.mapPoint ?? Point(x: 0, y: 0))
+                            await mapView.setViewpointCenter(mapPoint)
                         }
                     } catch {
                         self.error = error
