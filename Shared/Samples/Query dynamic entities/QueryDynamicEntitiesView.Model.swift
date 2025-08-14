@@ -158,14 +158,6 @@ extension QueryDynamicEntitiesView {
     
     /// A plane that can be decoded from JSON.
     struct Plane {
-        /// A geographical location.
-        struct Point: Decodable { // swiftlint:disable:this nesting
-            /// The x coordinate of the location.
-            let x: Double
-            /// The y coordinate of the location.
-            let y: Double
-        }
-        
         /// The location of the plane.
         let point: Point
         /// The attributes of the plane.
@@ -191,11 +183,9 @@ extension QueryDynamicEntitiesView {
                         
                         // Decodes the plane from the line and uses it to create a new observation.
                         let plane = try JSONDecoder().decode(Plane.self, from: .init(line.utf8))
-                        let newObservation = CustomDynamicEntityFeedEvent.newObservation(
-                            geometry: Point(latitude: plane.point.y, longitude: plane.point.x),
-                            attributes: plane.attributes
+                        continuation.yield(
+                            .newObservation(geometry: plane.point, attributes: plane.attributes)
                         )
-                        continuation.yield(newObservation)
                     }
                 } catch {
                     continuation.finish(throwing: error)
