@@ -24,7 +24,10 @@ struct FavoritesView: View {
     /// The names of the favorite samples loaded from user defaults.
     @AppFavorites private var favoriteNames
     
-    /// A list of the favorite samples.
+    /// The favorited samples to show in the list.
+    ///
+    /// This may contain less elements than `favoriteNames` if the user defaults has invalid values,
+    /// such as the name of a sample that was added in another branch.
     private var favoriteSamples: [Sample] {
         favoriteNames.compactMap { name in
             SamplesApp.samples.first(where: { $0.name == name })
@@ -36,12 +39,8 @@ struct FavoritesView: View {
             ForEach(favoriteSamples, id: \.name) { sample in
                 SampleLink(sample)
             }
-            .onMove { fromOffsets, toOffset in
-                favoriteNames.move(fromOffsets: fromOffsets, toOffset: toOffset)
-            }
-            .onDelete { atOffsets in
-                favoriteNames.remove(atOffsets: atOffsets)
-            }
+            .onMove(perform: moveFavorites(fromOffsets:toOffset:))
+            .onDelete(perform: deleteFavorites(atOffsets:))
         }
         .toolbar {
             ToolbarItemGroup(placement: .topBarTrailing) {
@@ -61,6 +60,35 @@ struct FavoritesView: View {
         .onDisappear {
             editMode?.wrappedValue = .inactive
         }
+    }
+    
+    /// Moves favorites in `favoriteNames` using `favoriteSamples` offsets.
+    /// - Parameters:
+    ///   - source:  The `favoriteSamples` offsets of the favorites to move.
+    ///   - destination: The `favoriteSamples` offset of the favorite before which to insert the favorites.
+    private func moveFavorites(fromOffsets source: IndexSet, toOffset destination: Int) {
+        let favoriteSamples = favoriteSamples
+        let newSource = source.reduce(into: IndexSet()) { indexSet, offset in
+            let index = favoriteNames.firstIndex(of: favoriteSamples[offset].name)!
+            indexSet.insert(index)
+        }
+        let newDestination = destination < favoriteSamples.count
+        ? favoriteNames.firstIndex(of: favoriteSamples[destination].name)!
+        : favoriteNames.count
+        
+        favoriteNames.move(fromOffsets: newSource, toOffset: newDestination)
+    }
+    
+    /// Removes favorites from `favoriteNames` using `favoriteSamples` offsets.
+    /// - Parameter offsets: The `favoriteSamples`  offsets of the favorites to remove.
+    private func deleteFavorites(atOffsets offsets: IndexSet) {
+        let favoriteSamples = favoriteSamples
+        let newOffsets = offsets.reduce(into: IndexSet()) { indexSet, offset in
+            let index = favoriteNames.firstIndex(of: favoriteSamples[offset].name)!
+            indexSet.insert(index)
+        }
+        
+        favoriteNames.remove(atOffsets: newOffsets)
     }
 }
 
