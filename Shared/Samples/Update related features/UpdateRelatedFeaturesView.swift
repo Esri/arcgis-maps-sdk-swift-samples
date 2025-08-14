@@ -115,8 +115,7 @@ struct UpdateRelatedFeaturesView: View {
                 .onChange(of: model.selectedVisitorValue) { _, newValue in
                     Task {
                         do {
-                            guard let lastSingleTap else { return }
-                            try await model.updateRelatedFeature(at: lastSingleTap.mapPoint, newValue: newValue)
+                            try await model.updateRelatedFeature(using: newValue)
                         } catch {
                             self.error = error
                         }
@@ -214,15 +213,13 @@ extension UpdateRelatedFeaturesView {
         /// Updates the related preserve feature with the new "Annual Visitors" value
         /// and applies the changes to the service geodatabase.
         ///
-        /// - Parameters:
-        ///   - feature: The related `ArcGISFeature` to be updated.
-        ///   - newValue: The new value to assign to the `ANNUAL_VISITORS` attribute.
+        /// - Parameter value: The value to assign to the `ANNUAL_VISITORS` attribute.
         /// - Throws: An error if the feature fails to load, update, or if apply edits fail.
-        func updateRelatedFeature(at mapPoint: Point, newValue: String) async throws {
+        func updateRelatedFeature(using value: String) async throws {
             guard let relatedSelectedFeature else { return }
             try await relatedSelectedFeature.load()
-            relatedSelectedFeature.setAttributeValue(newValue, forKey: .annualVisitorsKey)
-            attributeValue = newValue
+            relatedSelectedFeature.setAttributeValue(value, forKey: .annualVisitorsKey)
+            attributeValue = value
             try await preservesTable?.update(relatedSelectedFeature)
             // Apply edits to the service geodatabase.
             if let geodatabase = preservesTable?.serviceGeodatabase {
