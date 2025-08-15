@@ -65,7 +65,7 @@ struct MonitorChangesToLayerViewStateView: View {
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
                     Toggle(
-                        layerIsVisible ? "Layer Visible" : "Layer Hidden",
+                        "Layer Visible",
                         isOn: $layerIsVisible
                     )
                     .onChange(of: layerIsVisible) {
