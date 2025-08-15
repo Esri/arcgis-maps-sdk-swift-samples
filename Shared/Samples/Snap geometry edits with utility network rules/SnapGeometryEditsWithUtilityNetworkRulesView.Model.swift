@@ -279,7 +279,7 @@ private extension Data {
 private extension Geodatabase {
     /// Returns a temporary geodatabase with gas utility network data for Naperville.
     static func napervilleGasUtilities() -> Geodatabase {
-        let temporaryGeodatabaseURL = try! FileManager.default  // swiftlint:disable:this force_try
+        let temporaryGeodatabaseURL = try! FileManager.default
             .url(
                 for: .itemReplacementDirectory,
                 in: .userDomainMask,
