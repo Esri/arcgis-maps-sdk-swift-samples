@@ -266,7 +266,7 @@ extension String {
     }
     
     /// The attribute key for the "Unit Name" (park name) field.
-    static var unitKey: String {
+    static var parkNameKey: String {
         "UNIT_NAME"
     }
 }
