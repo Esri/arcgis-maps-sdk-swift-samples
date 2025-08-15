@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Combine
 import Foundation
 
 /// A wrapper class that manages on-demand resource request.
 @MainActor
-final class OnDemandResource: ObservableObject {
+@Observable
+final class OnDemandResource {
     /// The state of an on-demand resource request.
     enum RequestState {
         /// A request that has not started.
         case notStarted
         /// A request that has started and is downloading.
-        case inProgress(Double)
+        case inProgress
         /// A request that has completed successfully.
         case downloaded
         /// A request that was cancelled.
@@ -36,33 +36,23 @@ final class OnDemandResource: ObservableObject {
     var progress: Progress { request.progress }
     
     /// The current state of the on-demand resource request.
-    @Published private(set) var requestState: RequestState = .notStarted
+    private(set) var requestState: RequestState = .notStarted
     
     /// The error occurred in downloading resources.
-    @Published private(set) var error: (any Error)?
+    private(set) var error: (any Error)?
     
     /// The on-demand resource request.
     private let request: NSBundleResourceRequest
-    
-    /// A set of cancellable instances for the request progress subscription.
-    private var cancellables: Set<AnyCancellable> = []
     
     /// Initializes a request with a set of Resource Tags.
     init(tags: Set<String>) {
         request = NSBundleResourceRequest(tags: tags)
         request.loadingPriority = NSBundleResourceRequestLoadingPriorityUrgent
-        request.progress
-            .publisher(for: \.fractionCompleted, options: .new)
-            .receive(on: DispatchQueue.main)
-            .map { .inProgress($0) }
-            .sink { [weak self] in self?.requestState = $0 }
-            .store(in: &cancellables)
     }
     
     /// Cancels the on-demand resource request.
     func cancel() {
         progress.cancel()
-        cancellables.removeAll()
         request.endAccessingResources()
         requestState = .cancelled
     }

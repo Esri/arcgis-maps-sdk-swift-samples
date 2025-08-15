@@ -25,7 +25,7 @@ struct SampleDetailView: View {
     @State private var isSampleInfoViewPresented = false
     
     /// An object to manage on-demand resources for a sample with dependencies.
-    @StateObject private var onDemandResource: OnDemandResource
+    @State private var onDemandResource: OnDemandResource
     
     /// A Boolean value indicating whether a sample should use on-demand resources.
     private var usesOnDemandResources: Bool {
@@ -51,7 +51,7 @@ struct SampleDetailView: View {
     
     init(sample: Sample) {
         self.sample = sample
-        self._onDemandResource = StateObject(
+        self._onDemandResource = .init(
             wrappedValue: OnDemandResource(tags: [sample.nameInUpperCamelCase])
         )
     }
