@@ -31,9 +31,6 @@ struct QueryDynamicEntitiesView: View {
     /// The result of a dynamic entities query operation.
     @State private var queryResult: Result<[DynamicEntity], any Error>?
     
-    /// The error shown in the error alert.
-    @State private var error: (any Error)?
-    
     var body: some View {
         MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
             .contentInsets(.init(top: 0, leading: 0, bottom: 250, trailing: 0))
@@ -75,14 +72,6 @@ struct QueryDynamicEntitiesView: View {
                     Spacer()
                 }
             }
-            .task {
-                do {
-                    try await model.monitorDataSource()
-                } catch {
-                    self.error = error
-                }
-            }
-            .errorAlert(presentingError: $error)
     }
 }
 
@@ -147,38 +136,23 @@ private extension QueryDynamicEntitiesView {
         /// The latest observation's attributes to display.
         @State private var attributes: [String: any Sendable] = [:]
         
-        /// A Boolean value indicating whether the dynamic entity has been purged.
-        @State private var entityWasPurged = false
-        
         /// A Boolean value indicating whether the disclosure group is expanded.
         @State private var isExpanded = false
         
         var body: some View {
-            DisclosureGroup(isExpanded: $isExpanded) {
-                if !entityWasPurged {
-                    let attributes = attributes.sorted(by: { $0.key < $1.key })
-                    ForEach(attributes, id: \.key) { name, value in
-                        let label = PlaneAttributeKey(rawValue: name)?.label ?? name
-                        if let string = value as? String {
-                            LabeledContent(label, value: string)
-                        } else if let double = value as? Double {
-                            LabeledContent(
-                                label,
-                                value: double,
-                                format: .number.precision(.fractionLength(0...2))
-                            )
-                        }
-                    }
-                } else {
-                    Label(
-                        "Entity was purged. Query again to see the latest observation.",
-                        systemImage: "exclamationmark.triangle"
-                    )
-                }
-            } label: {
-                LabeledContent(entity.attributes["flight_number"] as? String ?? "N/A") {
-                    if entityWasPurged {
-                        Image(systemName: "exclamationmark.triangle")
+            let flightNumber = entity.attributes["flight_number"] as? String
+            DisclosureGroup(flightNumber ?? "N/A", isExpanded: $isExpanded) {
+                let attributes = attributes.sorted(by: { $0.key < $1.key })
+                ForEach(attributes, id: \.key) { name, value in
+                    let label = PlaneAttributeKey(rawValue: name)?.label ?? name
+                    if let string = value as? String {
+                        LabeledContent(label, value: string)
+                    } else if let double = value as? Double {
+                        LabeledContent(
+                            label,
+                            value: double,
+                            format: .number.precision(.fractionLength(0...2))
+                        )
                     }
                 }
             }
@@ -187,7 +161,6 @@ private extension QueryDynamicEntitiesView {
                 
                 for await changedInfo in entity.changes {
                     attributes = changedInfo.receivedObservation?.attributes ?? [:]
-                    entityWasPurged = changedInfo.dynamicEntityWasPurged
                 }
             }
         }

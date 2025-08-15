@@ -62,24 +62,6 @@ extension QueryDynamicEntitiesView {
             setUpGraphicsOverlay()
         }
         
-        /// Monitors the custom dynamic entity data source and resets its feed when needed.
-        func monitorDataSource() async throws {
-            for await connectionStatus in dataSource.$connectionStatus {
-                guard connectionStatus == .failed,
-                      let connectionError = dataSource.connectionError else {
-                    continue
-                }
-                
-                // Resets the data source's feed when it has completed.
-                if case PlaneFeedError.complete = connectionError {
-                    try await dataSource.purgeAll()
-                    try await dataSource.connect()
-                } else {
-                    throw connectionError
-                }
-            }
-        }
-        
         /// Queries the dynamic entities on the data source.
         /// - Parameter type: The type of query to perform.
         /// - Returns: The result of the query operation.
@@ -157,7 +139,7 @@ extension QueryDynamicEntitiesView {
     }
     
     /// A plane that can be decoded from JSON.
-    struct Plane {
+    fileprivate struct Plane {
         /// The location of the plane.
         let point: Point
         /// The attributes of the plane.
@@ -165,41 +147,19 @@ extension QueryDynamicEntitiesView {
     }
     
     /// A custom dynamic entity feed that emits events representing planes.
-    struct PlaneFeed: CustomDynamicEntityFeed {
+    private struct PlaneFeed: CustomDynamicEntityFeed {
         /// The feed's stream of events.
-        let events: AsyncThrowingStream<CustomDynamicEntityFeedEvent, any Error>
-        
-        init() {
-            let (events, continuation) = AsyncThrowingStream.makeStream(
-                of: CustomDynamicEntityFeedEvent.self
-            )
-            self.events = events
+        let events = URL.phoenixAirTrafficJSON.lines.map { line in
+            // Delays the next observation to simulate live data.
+            try await Task.sleep(for: .seconds(0.1))
             
-            Task {
-                do {
-                    for try await line in URL.phoenixAirTrafficJSON.lines {
-                        // Delays the next observation to simulate live data.
-                        try await Task.sleep(for: .seconds(0.1))
-                        
-                        // Decodes the plane from the line and uses it to create a new observation.
-                        let plane = try JSONDecoder().decode(Plane.self, from: .init(line.utf8))
-                        continuation.yield(
-                            .newObservation(geometry: plane.point, attributes: plane.attributes)
-                        )
-                    }
-                } catch {
-                    continuation.finish(throwing: error)
-                }
-                
-                // Throws an error when JSON decoding is complete, so we know when to reset the feed.
-                continuation.finish(throwing: PlaneFeedError.complete)
-            }
+            // Decodes the plane from the line and uses it to create a new observation.
+            let plane = try JSONDecoder().decode(Plane.self, from: .init(line.utf8))
+            return CustomDynamicEntityFeedEvent.newObservation(
+                geometry: plane.point,
+                attributes: plane.attributes
+            )
         }
-    }
-    
-    /// An error with the `PlaneFeed`.
-    enum PlaneFeedError: Error {
-        case complete
     }
     
     /// A type of dynamic entities query.
