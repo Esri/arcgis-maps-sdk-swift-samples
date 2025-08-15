@@ -332,6 +332,8 @@
 		955AFAC62C110B8A009C8FE5 /* ApplyMosaicRuleToRastersView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 955AFAC32C10FD6F009C8FE5 /* ApplyMosaicRuleToRastersView.swift */; };
 		956332482E3455DB0091C877 /* SimplifyGeometryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 956332472E3455D70091C877 /* SimplifyGeometryView.swift */; };
 		9563324A2E3456EC0091C877 /* SimplifyGeometryView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 956332472E3455D70091C877 /* SimplifyGeometryView.swift */; };
+		9563324C2E3950880091C877 /* UpdateRelatedFeaturesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9563324B2E39507E0091C877 /* UpdateRelatedFeaturesView.swift */; };
+		9563324E2E3950B00091C877 /* UpdateRelatedFeaturesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 9563324B2E39507E0091C877 /* UpdateRelatedFeaturesView.swift */; };
 		9579FCEA2C3360BB00FC8A1D /* EditFeatureAttachmentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9579FCE92C3360BB00FC8A1D /* EditFeatureAttachmentsView.swift */; };
 		9579FCEC2C33616B00FC8A1D /* EditFeatureAttachmentsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 9579FCE92C3360BB00FC8A1D /* EditFeatureAttachmentsView.swift */; };
 		95813E392DF88FD300342CBF /* SetMapImageLayerSublayerVisibilityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95813E382DF88FD000342CBF /* SetMapImageLayerSublayerVisibilityView.swift */; };
@@ -747,6 +749,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				9563324E2E3950B00091C877 /* UpdateRelatedFeaturesView.swift in Copy Source Code Files */,
 				9563324A2E3456EC0091C877 /* SimplifyGeometryView.swift in Copy Source Code Files */,
 				95FEAE562E3BF43200727ABA /* ShowWFSLayerWithXMLQueryView.swift in Copy Source Code Files */,
 				1062C6C82E3D81E400B2D7FC /* SetKMLGroundOverlayPropertiesView.swift in Copy Source Code Files */,
@@ -1232,6 +1235,7 @@
 		955271602C0E6749009B1ED4 /* AddRasterFromServiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRasterFromServiceView.swift; sourceTree = "<group>"; };
 		955AFAC32C10FD6F009C8FE5 /* ApplyMosaicRuleToRastersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyMosaicRuleToRastersView.swift; sourceTree = "<group>"; };
 		956332472E3455D70091C877 /* SimplifyGeometryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimplifyGeometryView.swift; sourceTree = "<group>"; };
+		9563324B2E39507E0091C877 /* UpdateRelatedFeaturesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateRelatedFeaturesView.swift; sourceTree = "<group>"; };
 		9579FCE92C3360BB00FC8A1D /* EditFeatureAttachmentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFeatureAttachmentsView.swift; sourceTree = "<group>"; };
 		957B25D32E31BE23007E88F9 /* ShowWFSLayerWithXMLQueryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowWFSLayerWithXMLQueryView.swift; sourceTree = "<group>"; };
 		95813E382DF88FD000342CBF /* SetMapImageLayerSublayerVisibilityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetMapImageLayerSublayerVisibilityView.swift; sourceTree = "<group>"; };
@@ -1862,6 +1866,7 @@
 				D74C8BFA2ABA5572007C76B8 /* Style symbols from mobile style file */,
 				002056C22DD7F6C70016B8A9 /* Take screenshot */,
 				7573E81229D6134C00BEED9C /* Trace utility network */,
+				9563324D2E3950960091C877 /* Update related features */,
 				D74EA7802B6DADA5008F6C7C /* Validate utility network topology */,
 			);
 			path = Samples;
@@ -2857,6 +2862,14 @@
 				956332472E3455D70091C877 /* SimplifyGeometryView.swift */,
 			);
 			path = "Simplify geometry";
+			sourceTree = "<group>";
+		};
+		9563324D2E3950960091C877 /* Update related features */ = {
+			isa = PBXGroup;
+			children = (
+				9563324B2E39507E0091C877 /* UpdateRelatedFeaturesView.swift */,
+			);
+			path = "Update related features";
 			sourceTree = "<group>";
 		};
 		9579FCEB2C3360CA00FC8A1D /* Edit feature attachments */ = {
@@ -4597,6 +4610,7 @@
 				D7E7D0812AEB39D5003AAD02 /* FindRouteInTransportNetworkView.swift in Sources */,
 				D742E4922B04132B00690098 /* DisplayWebSceneFromPortalItemView.swift in Sources */,
 				1C7B85E72DF37F7700B267EA /* SetFeatureLayerRenderingModeOnMapView.swift in Sources */,
+				9563324C2E3950880091C877 /* UpdateRelatedFeaturesView.swift in Sources */,
 				0042E24328E4BF8F001F33D6 /* ShowViewshedFromPointInSceneView.Model.swift in Sources */,
 				95F3A52B2C07F09C00885DED /* SetSurfaceNavigationConstraintView.swift in Sources */,
 				00FA4E572DBC139C008A34CF /* AddRastersAndFeatureTablesFromGeopackageView.swift in Sources */,
