@@ -87,7 +87,7 @@ struct DisplayClustersView: View {
                 .toolbar {
                     ToolbarItem(placement: .bottomBar) {
                         Toggle(
-                            "Feature Clustering",
+                            showsFeatureReduction ? "Feature Clustering Enabled" : "Feature Clustering Disabled",
                             isOn: $showsFeatureReduction
                         )
                         .onChange(of: showsFeatureReduction) {

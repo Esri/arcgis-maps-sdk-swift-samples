@@ -50,7 +50,7 @@ struct ShowDeviceLocationHistoryView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
-                    Toggle("Tracking", isOn: $isTracking)
+                    Toggle(isTracking ? "Tracking Enabled" : "Tracking Disabled", isOn: $isTracking)
                         .disabled(trackingButtonIsDisabled)
                 }
             }

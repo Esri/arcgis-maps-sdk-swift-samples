@@ -45,7 +45,7 @@ struct SetMaxExtentView: View {
         MapView(map: map, graphicsOverlays: [graphicsOverlay])
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
-                    Toggle("Max Extent", isOn: $maxExtentIsSet)
+                    Toggle(maxExtentIsSet ? "Max Extent Enabled" : "Max Extent Disabled", isOn: $maxExtentIsSet)
                         .onChange(of: maxExtentIsSet) {
                             map.maxExtent = if maxExtentIsSet {
                                 // Set the map's max extent to limit the map
