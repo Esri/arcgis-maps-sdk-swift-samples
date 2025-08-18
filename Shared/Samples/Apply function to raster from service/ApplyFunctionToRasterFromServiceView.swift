@@ -29,7 +29,7 @@ struct ApplyFunctionToRasterFromServiceView: View {
                         url: URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/NLCDLandCover2001/ImageServer")!
                     )
                     // Creates a raster function from a json string.
-                    let function = try! RasterFunction.fromJSON(rasterFunctionJSON)
+                    let function = try! RasterFunction.fromJSON(rasterFunctionJSON) // swiftlint:disable:this force_try
                     // Sets the arguments on the function.
                     function.arguments!.setRaster(
                         imageServiceRaster,

@@ -94,6 +94,7 @@ extension SearchForWebMapView {
 private extension Date {
     /// The date after which web maps are supported, July 2, 2014.
     static var webMapSupportedDate: Date {
+        // swiftlint:disable:next force_try
         try! Date(
             "July 2, 2014",
             strategy: Date.FormatStyle().day().month().year().parseStrategy
