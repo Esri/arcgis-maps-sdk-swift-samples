@@ -51,9 +51,7 @@ struct SampleDetailView: View {
     
     init(sample: Sample) {
         self.sample = sample
-        self._onDemandResource = .init(
-            wrappedValue: OnDemandResource(tags: [sample.nameInUpperCamelCase])
-        )
+        self._onDemandResource = .init(wrappedValue: .init(sample: sample))
     }
     
     var body: some View {
@@ -62,7 +60,7 @@ struct SampleDetailView: View {
                 // 'onDemandResource' is created in this branch.
                 Group {
                     switch onDemandResource.requestState {
-                    case .notStarted, .inProgress:
+                    case nil, .notStarted, .inProgress:
                         VStack {
                             ProgressView(onDemandResource.progress)
                             Button("Cancel") {
@@ -87,7 +85,9 @@ struct SampleDetailView: View {
                     }
                 }
                 .task {
-                    guard case .notStarted = onDemandResource.requestState else { return }
+                    guard onDemandResource.requestState == nil else { return }
+                    
+                    await onDemandResource.setUp()
                     await onDemandResource.download()
                 }
             } else {

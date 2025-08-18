@@ -20,7 +20,7 @@ import Foundation
 final class OnDemandResource {
     /// The state of an on-demand resource request.
     enum RequestState {
-        /// A request that has not started.
+        /// A request that has been set up but not started.
         case notStarted
         /// A request that has started and is downloading.
         case inProgress
@@ -35,8 +35,13 @@ final class OnDemandResource {
     /// The progress of the on-demand resource request.
     var progress: Progress { request.progress }
     
+    /// A Boolean value indicating whether a resource request can be initiated.
+    var isDownloadable: Bool {
+        requestState != .inProgress && requestState != .downloaded
+    }
+    
     /// The current state of the on-demand resource request.
-    private(set) var requestState: RequestState = .notStarted
+    private(set) var requestState: RequestState?
     
     /// The error occurred in downloading resources.
     private(set) var error: (any Error)?
@@ -44,10 +49,22 @@ final class OnDemandResource {
     /// The on-demand resource request.
     private let request: NSBundleResourceRequest
     
-    /// Initializes a request with a set of Resource Tags.
-    init(tags: Set<String>) {
-        request = NSBundleResourceRequest(tags: tags)
+    /// The name of the sample associated with the resource request.
+    let sampleName: String
+    
+    /// Initializes a request with a sample.
+    init(sample: Sample) {
+        self.sampleName = sample.name
+        request = NSBundleResourceRequest(tags: [sample.nameInUpperCamelCase])
         request.loadingPriority = NSBundleResourceRequestLoadingPriorityUrgent
+    }
+    
+    /// Sets up the `requestState` by checking if the resource is already on device.
+    func setUp() async {
+        guard requestState == nil else { return }
+        
+        let isResourceAvailable = await request.conditionallyBeginAccessingResources()
+        requestState = isResourceAvailable ? .downloaded : .notStarted
     }
     
     /// Cancels the on-demand resource request.
@@ -59,20 +76,18 @@ final class OnDemandResource {
     
     /// Starts the on-demand resource request.
     func download() async {
-        // Initiates download when it is not being/already downloaded.
-        // Checks if the resource is already on device.
-        let isResourceAvailable = await request.conditionallyBeginAccessingResources()
-        if isResourceAvailable {
+        guard isDownloadable else { return }
+        
+        requestState = .inProgress
+        do {
+            try await request.beginAccessingResources()
             requestState = .downloaded
-        } else {
-            do {
-                try await request.beginAccessingResources()
-                requestState = .downloaded
-            } catch {
-                if (error as NSError).code != NSUserCancelledError {
-                    self.error = error
-                    requestState = .error
-                }
+        } catch {
+            if (error as NSError).code != NSUserCancelledError {
+                self.error = error
+                requestState = .error
+            } else {
+                cancel()
             }
         }
     }
