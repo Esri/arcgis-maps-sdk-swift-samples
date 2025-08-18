@@ -402,6 +402,9 @@
 		D718A1F02B57602000447087 /* ManageBookmarksView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D718A1EA2B575FD900447087 /* ManageBookmarksView.swift */; };
 		D71A9DE22D8CC88D00CA03CB /* SnapGeometryEditsWithUtilityNetworkRulesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71A9DE02D8CC88D00CA03CB /* SnapGeometryEditsWithUtilityNetworkRulesView.swift */; };
 		D71A9DE52D8CC8B500CA03CB /* SnapGeometryEditsWithUtilityNetworkRulesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D71A9DE02D8CC88D00CA03CB /* SnapGeometryEditsWithUtilityNetworkRulesView.swift */; };
+		D71C01592E3C299D00E87E3D /* QueryDynamicEntitiesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71C01542E3C299D00E87E3D /* QueryDynamicEntitiesView.swift */; };
+		D71C015A2E3C299D00E87E3D /* QueryDynamicEntitiesView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71C01552E3C299D00E87E3D /* QueryDynamicEntitiesView.Model.swift */; };
+		D71C01602E3C2A6200E87E3D /* phx_air_traffic.json in Resources */ = {isa = PBXBuildFile; fileRef = D71C015E2E3C2A6200E87E3D /* phx_air_traffic.json */; settings = {ASSET_TAGS = (QueryDynamicEntities, ); }; };
 		D71C5F642AAA7A88006599FD /* CreateSymbolStylesFromWebStylesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71C5F632AAA7A88006599FD /* CreateSymbolStylesFromWebStylesView.swift */; };
 		D71C5F652AAA83D2006599FD /* CreateSymbolStylesFromWebStylesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D71C5F632AAA7A88006599FD /* CreateSymbolStylesFromWebStylesView.swift */; };
 		D71C90A22C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71C909C2C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.swift */; };
@@ -441,6 +444,8 @@
 		D7352F8E2BD992C40013FFEF /* MonitorChangesToDrawStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7352F8A2BD992C40013FFEF /* MonitorChangesToDrawStatusView.swift */; };
 		D7352F912BD992E40013FFEF /* MonitorChangesToDrawStatusView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7352F8A2BD992C40013FFEF /* MonitorChangesToDrawStatusView.swift */; };
 		D73571D72CB613220046A433 /* hydrography in Resources */ = {isa = PBXBuildFile; fileRef = D73571D62CB6131E0046A433 /* hydrography */; settings = {ASSET_TAGS = (ConfigureElectronicNavigationalCharts, ); }; };
+		D73617782E4CF2400008471A /* QueryDynamicEntitiesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D71C01542E3C299D00E87E3D /* QueryDynamicEntitiesView.swift */; };
+		D73617792E4CF2640008471A /* QueryDynamicEntitiesView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D71C01552E3C299D00E87E3D /* QueryDynamicEntitiesView.Model.swift */; };
 		D73723762AF5877500846884 /* FindRouteInMobileMapPackageView.Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73723742AF5877500846884 /* FindRouteInMobileMapPackageView.Models.swift */; };
 		D73723792AF5ADD800846884 /* FindRouteInMobileMapPackageView.MobileMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73723782AF5ADD700846884 /* FindRouteInMobileMapPackageView.MobileMapView.swift */; };
 		D737237A2AF5AE1600846884 /* FindRouteInMobileMapPackageView.MobileMapView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D73723782AF5ADD700846884 /* FindRouteInMobileMapPackageView.MobileMapView.swift */; };
@@ -749,6 +754,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				D73617792E4CF2640008471A /* QueryDynamicEntitiesView.Model.swift in Copy Source Code Files */,
+				D73617782E4CF2400008471A /* QueryDynamicEntitiesView.swift in Copy Source Code Files */,
 				9563324E2E3950B00091C877 /* UpdateRelatedFeaturesView.swift in Copy Source Code Files */,
 				9563324A2E3456EC0091C877 /* SimplifyGeometryView.swift in Copy Source Code Files */,
 				95FEAE562E3BF43200727ABA /* ShowWFSLayerWithXMLQueryView.swift in Copy Source Code Files */,
@@ -1273,6 +1280,9 @@
 		D718A1E62B570F7500447087 /* OrbitCameraAroundObjectView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrbitCameraAroundObjectView.Model.swift; sourceTree = "<group>"; };
 		D718A1EA2B575FD900447087 /* ManageBookmarksView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageBookmarksView.swift; sourceTree = "<group>"; };
 		D71A9DE02D8CC88D00CA03CB /* SnapGeometryEditsWithUtilityNetworkRulesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapGeometryEditsWithUtilityNetworkRulesView.swift; sourceTree = "<group>"; };
+		D71C01542E3C299D00E87E3D /* QueryDynamicEntitiesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryDynamicEntitiesView.swift; sourceTree = "<group>"; };
+		D71C01552E3C299D00E87E3D /* QueryDynamicEntitiesView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryDynamicEntitiesView.Model.swift; sourceTree = "<group>"; };
+		D71C015E2E3C2A6200E87E3D /* phx_air_traffic.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = phx_air_traffic.json; sourceTree = "<group>"; };
 		D71C5F632AAA7A88006599FD /* CreateSymbolStylesFromWebStylesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateSymbolStylesFromWebStylesView.swift; sourceTree = "<group>"; };
 		D71C909C2C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleGeometryTypesWithSymbolsView.swift; sourceTree = "<group>"; };
 		D71C909D2C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleGeometryTypesWithSymbolsView.Views.swift; sourceTree = "<group>"; };
@@ -1788,6 +1798,7 @@
 				D7232EDD2AC1E5410079ABFF /* Play KML tour */,
 				E0EA0B75286638FD00C9621D /* Project geometry */,
 				1C012CF22DE7C3030027F570 /* Project with chosen transformation */,
+				D71C01582E3C299D00E87E3D /* Query dynamic entities */,
 				3E9F77712C6A609B0022CAB5 /* Query feature count and extent */,
 				108EC03F29D25AE1000F35D0 /* Query feature table */,
 				D73F06652B5EE73D000B574F /* Query features with Arcade expression */,
@@ -1997,6 +2008,7 @@
 				1C38921E2DC1749700ADFDDC /* b051f5c3e01048f3bf11c59b41507896 */,
 				D7F8C03F2B605E720072BFA7 /* b5106355f1634b8996e634c04b6a930a */,
 				D70539042CD0122D00F63F4A /* c78b149a1d52414682c86a5feeb13d30 */,
+				D71C015F2E3C2A6200E87E3D /* c78e297e99ad4572a48cdcd0b54bed30 */,
 				00D4EF8128638BF100B9CC30 /* cb1b20748a9f4d128dad8a87244e3e37 */,
 				4C81274E2DCADC82006EF7D2 /* cc68728b5904403ba637e1f1cd2995ae */,
 				4D126D7629CA3B3F00CFB7A7 /* d5bad9f4fee9483791e405880fb466da */,
@@ -3092,6 +3104,23 @@
 				D703F04C2D9334AC0077E3A8 /* SnapGeometryEditsWithUtilityNetworkRulesView.Model.swift */,
 			);
 			path = "Snap geometry edits with utility network rules";
+			sourceTree = "<group>";
+		};
+		D71C01582E3C299D00E87E3D /* Query dynamic entities */ = {
+			isa = PBXGroup;
+			children = (
+				D71C01542E3C299D00E87E3D /* QueryDynamicEntitiesView.swift */,
+				D71C01552E3C299D00E87E3D /* QueryDynamicEntitiesView.Model.swift */,
+			);
+			path = "Query dynamic entities";
+			sourceTree = "<group>";
+		};
+		D71C015F2E3C2A6200E87E3D /* c78e297e99ad4572a48cdcd0b54bed30 */ = {
+			isa = PBXGroup;
+			children = (
+				D71C015E2E3C2A6200E87E3D /* phx_air_traffic.json */,
+			);
+			path = c78e297e99ad4572a48cdcd0b54bed30;
 			sourceTree = "<group>";
 		};
 		D71C5F602AAA7854006599FD /* Create symbol styles from web styles */ = {
@@ -4298,6 +4327,7 @@
 					ListContentsOfKmlFile,
 					NavigateRouteWithRerouting,
 					OrbitCameraAroundObject,
+					QueryDynamicEntities,
 					SearchSymbolStyleDictionary,
 					ShowDeviceLocationWithNmeaDataSources,
 					ShowLineOfSightBetweenGeoelements,
@@ -4348,6 +4378,7 @@
 				1C8438F42DDBD02C005CCBC7 /* GasDeviceAnno.mmpk in Resources */,
 				1CC755E12DC5A6A7004B346F /* Shasta_Elevation in Resources */,
 				D7F8C0412B605E720072BFA7 /* FillmoreTopographicMap.vtpk in Resources */,
+				D71C01602E3C2A6200E87E3D /* phx_air_traffic.json in Resources */,
 				1C293D4D2DCD91BF000B0822 /* color.json in Resources */,
 				9537AFD72C220EF0000923C5 /* ExchangeSetwithoutUpdates in Resources */,
 				D7F8C03E2B605AF60072BFA7 /* ContingentValuesBirdNests.geodatabase in Resources */,
@@ -4786,6 +4817,8 @@
 				1C7B861C2DFB4EAF00B267EA /* ShowExtrudedGraphicsView.swift in Sources */,
 				1C9B74D929DB54560038B06F /* ChangeCameraControllerView.swift in Sources */,
 				D7BEBAD22CBDFE1C00F882E7 /* DisplayAlternateSymbolsAtDifferentScalesView.swift in Sources */,
+				D71C01592E3C299D00E87E3D /* QueryDynamicEntitiesView.swift in Sources */,
+				D71C015A2E3C299D00E87E3D /* QueryDynamicEntitiesView.Model.swift in Sources */,
 				D76000AE2AF19C2300B3084D /* FindRouteInMobileMapPackageView.swift in Sources */,
 				00273CF42A82AB5900A7A77D /* SamplesSearchView.swift in Sources */,
 				D78666AD2A2161F100C60110 /* FindNearestVertexView.swift in Sources */,
