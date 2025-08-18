@@ -472,7 +472,6 @@ private extension Geometry {
         }
     }
     
-    // swiftlint:disable force_try
     static var pinkneysGreen: Geometry {
         let json = Data(
             """

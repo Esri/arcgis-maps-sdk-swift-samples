@@ -480,7 +480,6 @@ private class GeometryEditorModel: ObservableObject {
 }
 
 private extension Geometry {
-    // swiftlint:disable force_try
     static func house() -> Point {
         let json = Data(
             """
@@ -517,7 +516,7 @@ private extension Geometry {
                         [-1067889.49,6998483.56],[-1067880.98,6998527.26]]],
                     "spatialReference":{"latestWkid":3857,"wkid":102100}}
             """.utf8
-            )
+        )
         return try! Polyline.fromJSON(json)
     }
     
