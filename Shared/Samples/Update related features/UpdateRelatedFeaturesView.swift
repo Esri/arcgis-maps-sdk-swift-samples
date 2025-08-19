@@ -240,7 +240,7 @@ extension UpdateRelatedFeaturesView {
             guard let parksTable = parksFeatureTable else { return }
             let attributes = feature.attributes
             // Default to park name from the selected park feature.
-            parkName = attributes[.unitKey] as? String ?? "Unknown"
+            parkName = attributes[.parkNameKey] as? String ?? "Unknown"
             // Reset attribute value in case there are no related feature results.
             attributeValue = ""
             let relatedResultsQuery = try await parksTable.queryRelatedFeatures(to: feature)
@@ -249,7 +249,7 @@ extension UpdateRelatedFeaturesView {
                     if let relatedArcGISFeature = relatedFeature as? ArcGISFeature {
                         let attributes = relatedArcGISFeature.attributes
                         attributeValue = attributes[.annualVisitorsKey] as? String ?? ""
-                        parkName = attributes[.unitKey] as? String ?? "Unknown"
+                        parkName = attributes[.parkNameKey] as? String ?? "Unknown"
                         selectedVisitorValue = attributeValue
                         relatedSelectedFeature = relatedArcGISFeature
                     }
@@ -266,7 +266,7 @@ extension String {
     }
     
     /// The attribute key for the "Unit Name" (park name) field.
-    static var unitKey: String {
+    static var parkNameKey: String {
         "UNIT_NAME"
     }
 }
