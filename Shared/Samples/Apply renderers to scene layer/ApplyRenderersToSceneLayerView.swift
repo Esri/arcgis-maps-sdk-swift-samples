@@ -149,8 +149,6 @@ enum RendererType: CaseIterable {
     }
 }
 
-extension ApplyRenderersToSceneLayerView { }
-
 private extension ClassBreak {
     static var before1900 : ClassBreak {
         ClassBreak(
