@@ -149,7 +149,7 @@ enum RendererType: CaseIterable {
 }
 
 private extension ClassBreak {
-    static var before1900 : ClassBreak {
+    static var before1900: ClassBreak {
         ClassBreak(
             description: "before 1900",
             label: "before 1900",
@@ -170,7 +170,7 @@ private extension ClassBreak {
         )
     }
     
-    static var from1900to1956 : ClassBreak {
+    static var from1900to1956: ClassBreak {
         ClassBreak(
             description: "1900 - 1956",
             label: "1900 - 1956",
@@ -212,7 +212,7 @@ private extension ClassBreak {
         )
     }
     
-    static var after2000 : ClassBreak {
+    static var after2000: ClassBreak {
         ClassBreak(
             description: "after 2000",
             label: "after 2000",
