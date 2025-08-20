@@ -20,10 +20,10 @@ struct ApplyRenderersToSceneLayerView: View {
     @State private var rendererSelection: RendererType = .none
     
     /// The renderer that is applied to the scene layer.
-    @State private var renderer: Renderer?
+    @State private var renderer: Renderer? = nil
     
     /// SceneLayer for Helinksi scene.
-    private let sceneLayer = ArcGISSceneLayer(url: .world)
+    @State private var sceneLayer = ArcGISSceneLayer(url: .world)
     
     @State private var scene: ArcGIS.Scene = {
         var scene = Scene(basemapStyle: .arcGISLightGray)
