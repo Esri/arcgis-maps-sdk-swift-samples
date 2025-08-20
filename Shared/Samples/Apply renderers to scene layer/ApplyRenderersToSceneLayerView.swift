@@ -53,7 +53,7 @@ struct ApplyRenderersToSceneLayerView: View {
         return scene
     }()
     
-    /// Simple renderer that adds yellow mesh to buildings. 
+    /// Simple renderer that adds yellow mesh to buildings.
     @State private var simpleRenderer: SimpleRenderer = {
         let materialFillSymbolLayer = MaterialFillSymbolLayer(color: .yellow)
         materialFillSymbolLayer.colorMixMode = .replace
@@ -213,11 +213,12 @@ struct ApplyRenderersToSceneLayerView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
-                    Picker("Renderer", selection: $rendererSelection) {
+                    Picker("Renderer selected: \(rendererSelection.label)", selection: $rendererSelection) {
                         ForEach(RendererType.allCases, id: \.self) { renderer in
-                            Text(renderer.label)
+                            Text(renderer.label).tag(renderer)
                         }
-                    } .onChange(of: rendererSelection) {
+                    }
+                    .onChange(of: rendererSelection) {
                         switch rendererSelection {
                         case .none:
                             renderer = nil
