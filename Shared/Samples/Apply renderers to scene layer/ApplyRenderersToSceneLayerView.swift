@@ -126,7 +126,7 @@ struct ApplyRenderersToSceneLayerView: View {
     }
 }
 
-/// Enum to manage available renderer options in the Picker.
+// Enum to manage available renderer options in the Picker.
 private enum RendererType: CaseIterable {
     case none
     case simpleRenderer
@@ -147,7 +147,7 @@ private enum RendererType: CaseIterable {
     }
 }
 
-/// Defines custom color and symbol for different ranges of 'yearCompleted'.
+// Defines custom color and symbol for different ranges of 'yearCompleted'.
 private extension ClassBreak {
     static var before1900: ClassBreak {
         ClassBreak(
@@ -234,7 +234,7 @@ private extension ClassBreak {
     }
 }
 
-/// Defines unique value symbols for building usage types.
+// Defines unique value symbols for building usage types.
 private extension UniqueValue {
     static var commercial: UniqueValue {
         UniqueValue(
@@ -291,8 +291,9 @@ private extension UniqueValue {
     }
 }
 
-/// Predefined geometry point for Helsinki city center.
+
 private extension Geometry {
+    /// Predefined geometry point for Helsinki city center.
     static var helsinkiCenter: Point {
         Point(
             x: 2778453.8008,
