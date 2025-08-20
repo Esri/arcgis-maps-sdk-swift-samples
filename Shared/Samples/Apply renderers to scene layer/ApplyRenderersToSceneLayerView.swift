@@ -18,14 +18,13 @@ import SwiftUI
 struct ApplyRenderersToSceneLayerView: View {
     /// Renderer type selected by the user.
     @State private var rendererSelection: RendererType = .none
+
+    /// Scene layer for Helsinki scene.
+    private var sceneLayer: ArcGISSceneLayer {
+        scene.operationalLayers.first as! ArcGISSceneLayer
+    }
     
-    /// The renderer that is applied to the scene layer.
-    @State private var renderer: Renderer?
-    
-    /// SceneLayer for Helsinki scene.
-    @State private var sceneLayer = ArcGISSceneLayer(url: .helsinkiScene)
-    
-    /// Scene with elevation layer and viewpoint centered on Helsinki. 
+    /// Scene with elevation layer and viewpoint centered on Helsinki.
     @State private var scene: ArcGIS.Scene = {
         let scene = Scene(basemapStyle: .arcGISLightGray)
         // Creates the surface and adds it to the scene.
@@ -45,6 +44,8 @@ struct ApplyRenderersToSceneLayerView: View {
                 roll: 0.0
             )
         )
+        // In the scene's constructing closure
+        scene.addOperationalLayer(ArcGISSceneLayer(url: .helsinkiScene))
         return scene
     }()
     
@@ -101,13 +102,6 @@ struct ApplyRenderersToSceneLayerView: View {
     
     var body: some View {
         SceneView(scene: scene)
-            .onAppear {
-                scene.addOperationalLayer(sceneLayer)
-            }
-            .onChange(of: renderer) {
-                // Update scene layer's renderer when render selection changes.
-                sceneLayer.renderer = renderer
-            }
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
                     Picker("Renderer selected", selection: $rendererSelection) {
@@ -119,13 +113,13 @@ struct ApplyRenderersToSceneLayerView: View {
                         // Update the renderer based on selection.
                         switch rendererSelection {
                         case .none:
-                            renderer = nil
+                            sceneLayer.renderer = nil
                         case .simpleRenderer:
-                            renderer = simpleRenderer
+                            sceneLayer.renderer = simpleRenderer
                         case .uniqueValueRenderer:
-                            renderer = uniqueValueRenderer
+                            sceneLayer.renderer = uniqueValueRenderer
                         case .classBreaksRenderer:
-                            renderer = classBreaksRenderer
+                            sceneLayer.renderer = classBreaksRenderer
                         }
                     }
                 }
