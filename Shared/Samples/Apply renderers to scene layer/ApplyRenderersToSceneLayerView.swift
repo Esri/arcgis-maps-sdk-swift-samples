@@ -17,9 +17,16 @@ import SwiftUI
 
 struct ApplyRenderersToSceneLayerView: View {
     @State private var scene: ArcGIS.Scene = {
-        var scene = Scene(basemapStyle: .arcGISStreets)
+        var scene = Scene(basemapStyle: .arcGISImagery)
         let sceneLayer = ArcGISSceneLayer(url: .world)
         scene.addOperationalLayer(sceneLayer)
+        let elevationSource = ArcGISTiledElevationSource(
+            url: .elevation
+        )
+        // Creates the surface and adds it to the scene.
+        let surface = Surface()
+        surface.addElevationSource(elevationSource)
+        scene.baseSurface = surface
         var initialViewPoint = Viewpoint(latitude: 60.16952, longitude: 24.93545, scale: 5000)
         scene.initialViewpoint = initialViewPoint
         return scene
@@ -36,8 +43,11 @@ private extension URL {
     static var world: URL {
         URL(string: "https://www.arcgis.com/home/item.html?id=fdfa7e3168e74bf5b846fc701180930b")!
     }
+    
+    static var elevation: URL {
+        URL(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!
+    }
 }
-
 
 #Preview {
     ApplyRenderersToSceneLayerView()
