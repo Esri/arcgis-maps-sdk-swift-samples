@@ -213,7 +213,7 @@ struct ApplyRenderersToSceneLayerView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
-                    Picker("Renderer selected: \(rendererSelection.label)", selection: $rendererSelection) {
+                    Picker("Renderer selected", selection: $rendererSelection) {
                         ForEach(RendererType.allCases, id: \.self) { renderer in
                             Text(renderer.label).tag(renderer)
                         }
