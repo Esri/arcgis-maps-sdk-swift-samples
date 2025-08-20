@@ -16,10 +16,14 @@ import ArcGIS
 import SwiftUI
 
 struct ApplyRenderersToSceneLayerView: View {
+    
+    @State private var scene: ArcGIS.Scene = {
+        var scene = Scene()
+        return scene
+    }()
+    
     var body: some View {
-        VStack {
-           Text("ApplyRenderersToSceneLayerView")
-        }
+        SceneView(scene: scene)
     }
 }
 
@@ -27,6 +31,15 @@ extension ApplyRenderersToSceneLayerView {
     
 }
 
+
+private extension URL {
+    static var world: URL {
+        URL(string: "https://www.arcgis.com/home/item.html?id=fdfa7e3168e74bf5b846fc701180930b")!
+    }
+}
+
+
 #Preview {
     ApplyRenderersToSceneLayerView()
 }
+
