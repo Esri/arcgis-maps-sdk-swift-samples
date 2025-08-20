@@ -292,7 +292,7 @@ private extension UniqueValue {
 }
 
 /// Predefined geometry point for Helsinki city center.
-extension Geometry {
+private extension Geometry {
     static var helsinkiCenter: Point {
         Point(
             x: 2778453.8008,
