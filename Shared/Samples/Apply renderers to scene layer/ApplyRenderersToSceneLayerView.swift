@@ -16,9 +16,10 @@ import ArcGIS
 import SwiftUI
 
 struct ApplyRenderersToSceneLayerView: View {
-    
     /// The error shown in the error alert.
     @State private var error: (any Error)?
+    
+    @State private var rendererSelection: RendererType = .none
     
     @State private var scene: ArcGIS.Scene = {
         var scene = Scene(basemapStyle: .arcGISLightGray)
@@ -54,14 +55,33 @@ struct ApplyRenderersToSceneLayerView: View {
         SceneView(scene: scene)
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
-//                    Picker("Renderer", selection: ) {
-//                        ForEach(.allCases, id: \.self) { renderer in
-//                            Text(label)
-//                        }
-//                    }
+                    Picker("Renderer", selection: $rendererSelection) {
+                        ForEach(RendererType.allCases, id: \.self) { renderer in
+                            Text(renderer.label)
+                        }
+                    }
                 }
             }
-        
+    }
+}
+
+enum RendererType: CaseIterable {
+    case none
+    case simpleRenderer
+    case uniqueValueRenderer
+    case classBreaksRenderer
+    
+    var label: String {
+        switch self {
+        case .none:
+            return "None"
+        case .simpleRenderer:
+            return "Simple Renderer"
+        case .uniqueValueRenderer:
+            return "Unique Value Renderer"
+        case .classBreaksRenderer:
+            return "Class Breaks Renderer"
+        }
     }
 }
 
