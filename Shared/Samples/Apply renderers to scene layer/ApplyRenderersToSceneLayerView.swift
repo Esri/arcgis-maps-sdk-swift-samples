@@ -15,4 +15,18 @@
 import ArcGIS
 import SwiftUI
 
+struct ApplyRenderersToSceneLayerView: View {
+    var body: some View {
+        VStack {
+           Text("ApplyRenderersToSceneLayerView")
+        }
+    }
+}
 
+extension ApplyRenderersToSceneLayerView {
+    
+}
+
+#Preview {
+    ApplyRenderersToSceneLayerView()
+}
