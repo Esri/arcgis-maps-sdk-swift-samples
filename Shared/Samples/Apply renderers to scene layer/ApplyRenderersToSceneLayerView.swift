@@ -22,7 +22,7 @@ struct ApplyRenderersToSceneLayerView: View {
     /// The renderer that is applied to the scene layer.
     @State private var renderer: Renderer?
     
-    /// SceneLayer for Helsinskii scene.
+    /// SceneLayer for Helsinski scene.
     @State private var sceneLayer = ArcGISSceneLayer(url: .helinkskiSceneURL)
     
     @State private var scene: ArcGIS.Scene = {
@@ -63,7 +63,7 @@ struct ApplyRenderersToSceneLayerView: View {
         return SimpleRenderer(symbol: meshSymbol)
     }()
     
-    /// Renderer that provides color depending on building useage (i.e. commercial, residential)
+    /// Renderer that provides color depending on building useage (i.e. commercial, residential).
     @State private var uniqueValueRenderer: UniqueValueRenderer = {
         UniqueValueRenderer(
             fieldNames: ["usage"],
@@ -85,7 +85,7 @@ struct ApplyRenderersToSceneLayerView: View {
         )
     }()
     
-    /// A class breaks renderer that categorizes data based on 'yearCompleted' values
+    /// A class breaks renderer that categorizes data based on 'yearCompleted' values.
     @State private var classBreaksRenderer: ClassBreaksRenderer = {
         ClassBreaksRenderer(
             fieldName: "yearCompleted",
@@ -104,7 +104,7 @@ struct ApplyRenderersToSceneLayerView: View {
                 scene.addOperationalLayer(sceneLayer)
             }
             .onChange(of: renderer) {
-                // Update the renderer when selection changes
+                // Update the renderer when selection changes.
                 sceneLayer.renderer = renderer
             }
             .toolbar {
@@ -115,7 +115,7 @@ struct ApplyRenderersToSceneLayerView: View {
                         }
                     }
                     .onChange(of: rendererSelection) {
-                        // Update the renderer based on selection
+                        // Update the renderer based on selection.
                         switch rendererSelection {
                         case .none:
                             renderer = nil
@@ -132,7 +132,7 @@ struct ApplyRenderersToSceneLayerView: View {
     }
 }
 
-/// Enum to manage available renderer options in the Picker
+/// Enum to manage available renderer options in the Picker.
 enum RendererType: CaseIterable {
     case none
     case simpleRenderer
@@ -153,7 +153,7 @@ enum RendererType: CaseIterable {
     }
 }
 
-/// Defines custom color and symbol for different ranges of 'yearCompleted'
+/// Defines custom color and symbol for different ranges of 'yearCompleted'.
 private extension ClassBreak {
     static var before1900: ClassBreak {
         ClassBreak(
@@ -240,7 +240,7 @@ private extension ClassBreak {
     }
 }
 
-/// Defines unique value symbols for building usage types
+/// Defines unique value symbols for building usage types.
 private extension UniqueValue {
     static var commercial: UniqueValue {
         UniqueValue(
@@ -297,7 +297,7 @@ private extension UniqueValue {
     }
 }
 
-/// Predefined geometry point for Helsinki Center
+/// Predefined geometry point for Helsinki Center.
 extension Geometry {
     static var helsinkiCenter: Point {
         Point(
