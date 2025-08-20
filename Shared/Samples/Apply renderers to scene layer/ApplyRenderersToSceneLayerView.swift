@@ -22,7 +22,7 @@ struct ApplyRenderersToSceneLayerView: View {
     /// The renderer that is applied to the scene layer.
     @State private var renderer: Renderer?
     
-    /// SceneLayer for Helinksi scene.
+    /// SceneLayer for Helsinskii scene.
     @State private var sceneLayer = ArcGISSceneLayer(url: .helinkskiSceneURL)
     
     @State private var scene: ArcGIS.Scene = {
@@ -36,9 +36,9 @@ struct ApplyRenderersToSceneLayerView: View {
         )
         scene.baseSurface = surface
         scene.initialViewpoint = Viewpoint(
-            boundingGeometry: .helinksiCenter,
+            boundingGeometry: .helsinkiCenter,
             camera: Camera(
-                location: .helinksiCenter,
+                location: .helsinkiCenter,
                 heading: 308.9,
                 pitch: 50.7,
                 roll: 0.0
@@ -299,7 +299,7 @@ private extension UniqueValue {
 
 /// Predefined geometry point for Helsinki Center
 extension Geometry {
-    static var helinksiCenter: Point {
+    static var helsinkiCenter: Point {
         Point(
             x: 2778453.8008,
             y: 8436451.3882,
