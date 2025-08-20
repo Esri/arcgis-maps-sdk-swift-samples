@@ -69,7 +69,7 @@ struct ApplyRenderersToSceneLayerView: View {
             uniqueValues: [
                 .commercial,
                 .residential,
-                .other
+                .otherUsage
             ],
             defaultSymbol: MultilayerMeshSymbol(
                 symbolLayer: MaterialFillSymbolLayer(
@@ -274,7 +274,7 @@ private extension UniqueValue {
         )
     }
     
-    static var other: UniqueValue {
+    static var otherUsage: UniqueValue {
         UniqueValue(
             description: "other",
             label: "other",
