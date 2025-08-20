@@ -23,7 +23,7 @@ struct ApplyRenderersToSceneLayerView: View {
     @State private var renderer: Renderer?
     
     /// SceneLayer for Helinksi scene.
-    @State private var sceneLayer = ArcGISSceneLayer(url: .world)
+    @State private var sceneLayer = ArcGISSceneLayer(url: .helinkskiSceneURL)
     
     @State private var scene: ArcGIS.Scene = {
         var scene = Scene(basemapStyle: .arcGISImagery)
@@ -31,7 +31,7 @@ struct ApplyRenderersToSceneLayerView: View {
         let surface = Surface()
         surface.addElevationSource(
             ArcGISTiledElevationSource(
-                url: .elevation
+                url: .elevationURL
             )
         )
         scene.baseSurface = surface
@@ -311,11 +311,11 @@ extension Geometry {
 
 /// Scene and elevation data sources
 private extension URL {
-    static var world: URL {
+    static var helinkskiSceneURL: URL {
         URL(string: "https://www.arcgis.com/home/item.html?id=fdfa7e3168e74bf5b846fc701180930b")!
     }
     
-    static var elevation: URL {
+    static var elevationURL: URL {
         URL(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!
     }
 }
