@@ -16,9 +16,10 @@ import ArcGIS
 import SwiftUI
 
 struct ApplyRenderersToSceneLayerView: View {
-    
     @State private var scene: ArcGIS.Scene = {
         var scene = Scene()
+        let sceneLayer = ArcGISSceneLayer(url: .world)
+        scene.addOperationalLayer(sceneLayer)
         return scene
     }()
     
@@ -27,10 +28,7 @@ struct ApplyRenderersToSceneLayerView: View {
     }
 }
 
-extension ApplyRenderersToSceneLayerView {
-    
-}
-
+extension ApplyRenderersToSceneLayerView { }
 
 private extension URL {
     static var world: URL {
@@ -42,4 +40,3 @@ private extension URL {
 #Preview {
     ApplyRenderersToSceneLayerView()
 }
-
