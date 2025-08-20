@@ -22,8 +22,8 @@ struct ApplyRenderersToSceneLayerView: View {
     /// The renderer that is applied to the scene layer.
     @State private var renderer: Renderer?
     
-    /// SceneLayer for Helsinski scene.
-    @State private var sceneLayer = ArcGISSceneLayer(url: .helinkskiSceneURL)
+    /// SceneLayer for Helsinki scene.
+    @State private var sceneLayer = ArcGISSceneLayer(url: .helsinkiScene)
     
     /// Scene with elevation layer and viewpoint centered on Helsinki. 
     @State private var scene: ArcGIS.Scene = {
@@ -32,7 +32,7 @@ struct ApplyRenderersToSceneLayerView: View {
         let surface = Surface()
         surface.addElevationSource(
             ArcGISTiledElevationSource(
-                url: .elevationURL
+                url: .worldElevationService
             )
         )
         scene.baseSurface = surface
@@ -312,11 +312,11 @@ extension Geometry {
 
 /// Scene and elevation data sources
 private extension URL {
-    static var helinkskiSceneURL: URL {
+    static var helsinkiScene: URL {
         URL(string: "https://www.arcgis.com/home/item.html?id=fdfa7e3168e74bf5b846fc701180930b")!
     }
     
-    static var elevationURL: URL {
+    static var worldElevationService: URL {
         URL(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!
     }
 }
