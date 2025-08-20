@@ -26,7 +26,7 @@ struct ApplyRenderersToSceneLayerView: View {
     
     @State private var scene: ArcGIS.Scene = {
         var scene = Scene(basemapStyle: .arcGISLightGray)
-//        let sceneLayer = ArcGISSceneLayer(url: .world)
+        //        let sceneLayer = ArcGISSceneLayer(url: .world)
         
         let elevationSource = ArcGISTiledElevationSource(
             url: .elevation
@@ -64,19 +64,114 @@ struct ApplyRenderersToSceneLayerView: View {
         return simpleRenderer
     }()
     
+    @State private var uniqueValueRenderer: UniqueValueRenderer = {
+        UniqueValueRenderer(
+            fieldNames: ["usage"],
+            uniqueValues: [
+                UniqueValue(
+                    description: "commercial buildings",
+                    label: "commercial buildings",
+                    symbol: MultilayerMeshSymbol(
+                        symbolLayer: MaterialFillSymbolLayer(
+                            color: UIColor(red: 245 / 255, green: 213 / 255, blue: 169 / 255, alpha: 200.0 / 255)
+                        )
+                    ),
+                    values: ["general or commercial"]
+                ),
+                UniqueValue(
+                    description: "residential buildings",
+                    label: "residential buildings",
+                    symbol: MultilayerMeshSymbol(
+                        symbolLayer: MaterialFillSymbolLayer(
+                            color: UIColor(red: 210 / 255, green: 254 / 255, blue: 208 / 255, alpha: 1.0)
+                        )
+                    ),
+                    values: ["residential"]
+                ),
+                UniqueValue(
+                    description: "other",
+                    label: "other",
+                    symbol: MultilayerMeshSymbol(
+                        symbolLayer: MaterialFillSymbolLayer(
+                            color: UIColor(red: 253 / 255, green: 198 / 255, blue: 227 / 255, alpha: 150.0 / 255)
+                        )
+                    ),
+                    values: ["other"]
+                )
+            ], defaultSymbol: MultilayerMeshSymbol(
+                symbolLayer: MaterialFillSymbolLayer(
+                    color: UIColor(red: 230 / 255, green: 230 / 255, blue: 230 / 255, alpha: 1.0)
+                )
+            )
+        )
+    }()
+    
+    @State private var classBreaksRenderer: ClassBreaksRenderer = {
+        ClassBreaksRenderer(
+            fieldName: "yearCompleted",
+            classBreaks: [
+                ClassBreak(
+                    description: "before 1900",
+                    label: "before 1900",
+                    minValue: 1725.0,
+                    maxValue: 1899.0,
+                    symbol: {
+                        let symbolLayer = MaterialFillSymbolLayer(
+                            color: UIColor(red: 230 / 255, green: 238 / 255, blue: 207 / 255, alpha: 1.0)
+                        )
+                        symbolLayer.colorMixMode = .tint
+                        return MultilayerMeshSymbol(symbolLayer: symbolLayer)
+                    }()
+                ),
+                ClassBreak(
+                    description: "1900 - 1956",
+                    label: "1900 - 1956",
+                    minValue: 1900.0,
+                    maxValue: 1956.0,
+                    symbol: {
+                        let symbolLayer = MaterialFillSymbolLayer(
+                            color: UIColor(red: 155 / 255, green: 196 / 255, blue: 193 / 255, alpha: 1.0)
+                        )
+                        symbolLayer.colorMixMode = .tint
+                        return MultilayerMeshSymbol(symbolLayer: symbolLayer)
+                    }()
+                ),
+                ClassBreak(
+                    description: "1957 - 2000",
+                    label: "1957 - 2000",
+                    minValue: 1957.0,
+                    maxValue: 2000.0,
+                    symbol: {
+                        let symbolLayer = MaterialFillSymbolLayer(
+                            color: UIColor(red: 105 / 255, green: 168 / 255, blue: 183 / 255, alpha: 1.0)
+                        )
+                        symbolLayer.colorMixMode = .tint
+                        return MultilayerMeshSymbol(symbolLayer: symbolLayer)
+                    }()
+                ),
+                ClassBreak(
+                    description: "after 2000",
+                    label: "after 2000",
+                    minValue: 2001.0,
+                    maxValue: 3000.0,
+                    symbol: {
+                        let symbolLayer = MaterialFillSymbolLayer(
+                            color: UIColor(red: 75/255, green: 126/255, blue: 152/255, alpha: 1.0)
+                        )
+                        symbolLayer.colorMixMode = .tint
+                        return MultilayerMeshSymbol(symbolLayer: symbolLayer)
+                    }()
+                )
+            ]
+        )
+    }()
+    
     var body: some View {
         SceneView(scene: scene)
             .onAppear {
                 // add renderer here
                 scene.addOperationalLayer(sceneLayer)
-                // Create the material fill symbol layer
-                let materialFillSymbolLayer = MaterialFillSymbolLayer(color: .yellow)
-                materialFillSymbolLayer.colorMixMode = .replace
-                materialFillSymbolLayer.edges = SymbolLayerEdges3D(color: .black, width: 0.5)
-                // Create the multilayer mesh symbol with the symbol layer
-                let meshSymbol = MultilayerMeshSymbol(symbolLayer: materialFillSymbolLayer)
-                let simpleRenderer = SimpleRenderer(symbol: meshSymbol)
-                sceneLayer.renderer = simpleRenderer
+                sceneLayer.renderer = classBreaksRenderer
             }
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
