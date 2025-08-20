@@ -17,9 +17,11 @@ import SwiftUI
 
 struct ApplyRenderersToSceneLayerView: View {
     @State private var scene: ArcGIS.Scene = {
-        var scene = Scene()
+        var scene = Scene(basemapStyle: .arcGISStreets)
         let sceneLayer = ArcGISSceneLayer(url: .world)
         scene.addOperationalLayer(sceneLayer)
+        var initialViewPoint = Viewpoint(latitude: 60.16952, longitude: 24.93545, scale: 5000)
+        scene.initialViewpoint = initialViewPoint
         return scene
     }()
     
