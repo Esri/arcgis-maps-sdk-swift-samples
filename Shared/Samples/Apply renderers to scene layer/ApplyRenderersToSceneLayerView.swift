@@ -128,7 +128,7 @@ struct ApplyRenderersToSceneLayerView: View {
     }
 }
 
-// Enum to manage available renderer options in the Picker.
+/// Enum to manage available renderer options in the Picker.
 private enum RendererType: CaseIterable {
     case none
     case simpleRenderer
@@ -305,7 +305,7 @@ private extension Point {
     }
 }
 
-/// Scene and elevation data sources
+// Scene and elevation data sources.
 private extension URL {
     static var helsinkiScene: URL {
         URL(string: "https://www.arcgis.com/home/item.html?id=fdfa7e3168e74bf5b846fc701180930b")!
