@@ -44,7 +44,6 @@ struct ApplyRenderersToSceneLayerView: View {
                 roll: 0.0
             )
         )
-        // In the scene's constructing closure
         scene.addOperationalLayer(ArcGISSceneLayer(url: .helsinkiScene))
         return scene
     }()
