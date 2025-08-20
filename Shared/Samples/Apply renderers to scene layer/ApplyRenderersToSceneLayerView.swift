@@ -27,8 +27,22 @@ struct ApplyRenderersToSceneLayerView: View {
         let surface = Surface()
         surface.addElevationSource(elevationSource)
         scene.baseSurface = surface
-        var initialViewPoint = Viewpoint(latitude: 60.16952, longitude: 24.93545, scale: 5000)
-        scene.initialViewpoint = initialViewPoint
+        var point = Point(
+            x: 2778453.8008,
+            y: 8436451.3882,
+            z: 387.4524,
+            spatialReference: .webMercator
+        )
+        let camera = Camera(
+            location: point,
+            heading: 308.9,
+            pitch: 50.7,
+            roll: 0.0
+        )
+        scene.initialViewpoint = Viewpoint(
+            boundingGeometry: point,
+            camera: camera
+        )
         return scene
     }()
     
