@@ -29,7 +29,7 @@ buildings to their original textured appearance.
    * A `UniqueValueRenderer` using a string field and different `MultilayerMeshSymbol` for each unique value of the building usage.
    * A `ClassBreaksRenderer` using a numeric field and different `MultilayerMeshSymbol` for each value range of the year the building was completed.
 4. Set the scene layer's `renderer` property to the selected renderer.
-5. Set the scene layer's `renderer` property to `null`, resulting in displaying the original texture of the buildings.
+5. Set the scene layer's `renderer` property to `nil`, resulting in displaying the original texture of the buildings.
 
 ## Relevant API
 
