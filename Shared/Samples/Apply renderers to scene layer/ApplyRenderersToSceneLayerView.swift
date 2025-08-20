@@ -27,7 +27,7 @@ struct ApplyRenderersToSceneLayerView: View {
     
     /// Scene with elevation layer and viewpoint centered on Helsinki. 
     @State private var scene: ArcGIS.Scene = {
-        var scene = Scene(basemapStyle: .arcGISLightGray)
+        let scene = Scene(basemapStyle: .arcGISLightGray)
         // Creates the surface and adds it to the scene.
         let surface = Surface()
         surface.addElevationSource(
@@ -134,7 +134,7 @@ struct ApplyRenderersToSceneLayerView: View {
 }
 
 /// Enum to manage available renderer options in the Picker.
-enum RendererType: CaseIterable {
+private enum RendererType: CaseIterable {
     case none
     case simpleRenderer
     case uniqueValueRenderer
