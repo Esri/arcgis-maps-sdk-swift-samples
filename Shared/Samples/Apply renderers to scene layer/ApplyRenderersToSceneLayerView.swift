@@ -16,14 +16,13 @@ import ArcGIS
 import SwiftUI
 
 struct ApplyRenderersToSceneLayerView: View {
-    /// The error shown in the error alert.
-    @State private var error: (any Error)?
-    
+    /// Renderer type selected by the user.
     @State private var rendererSelection: RendererType = .none
     
+    /// The renderer that is applied to the scene layer.
     @State private var renderer: Renderer?
     
-    // Store the scene layer so you can access it later
+    /// SceneLayer for Helinksi scene.
     private let sceneLayer = ArcGISSceneLayer(url: .world)
     
     @State private var scene: ArcGIS.Scene = {
@@ -54,11 +53,11 @@ struct ApplyRenderersToSceneLayerView: View {
         return scene
     }()
     
+    /// Simple renderer that adds yellow mesh to buildings. 
     @State private var simpleRenderer: SimpleRenderer = {
         let materialFillSymbolLayer = MaterialFillSymbolLayer(color: .yellow)
         materialFillSymbolLayer.colorMixMode = .replace
         materialFillSymbolLayer.edges = SymbolLayerEdges3D(color: .black, width: 0.5)
-        // Create the multilayer mesh symbol with the symbol layer
         let meshSymbol = MultilayerMeshSymbol(symbolLayer: materialFillSymbolLayer)
         let simpleRenderer = SimpleRenderer(symbol: meshSymbol)
         return simpleRenderer
@@ -209,7 +208,7 @@ struct ApplyRenderersToSceneLayerView: View {
                 scene.addOperationalLayer(sceneLayer)
                 sceneLayer.renderer = renderer
             }
-            .onChange(of: renderer) { newRenderer in
+            .onChange(of: renderer) { _, newRenderer in
                 sceneLayer.renderer = newRenderer
             }
             .toolbar {
