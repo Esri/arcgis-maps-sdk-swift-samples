@@ -25,6 +25,7 @@ struct ApplyRenderersToSceneLayerView: View {
     /// SceneLayer for Helsinski scene.
     @State private var sceneLayer = ArcGISSceneLayer(url: .helinkskiSceneURL)
     
+    /// Scene with elevation layer and viewpoint centered on Helsinki. 
     @State private var scene: ArcGIS.Scene = {
         var scene = Scene(basemapStyle: .arcGISLightGray)
         // Creates the surface and adds it to the scene.
