@@ -26,7 +26,7 @@ struct ApplyRenderersToSceneLayerView: View {
     @State private var sceneLayer = ArcGISSceneLayer(url: .world)
     
     @State private var scene: ArcGIS.Scene = {
-        var scene = Scene(basemapStyle: .arcGISLightGray)
+        var scene = Scene(basemapStyle: .arcGISImagery)
         // Creates the surface and adds it to the scene.
         let surface = Surface()
         surface.addElevationSource(
@@ -63,6 +63,7 @@ struct ApplyRenderersToSceneLayerView: View {
         return SimpleRenderer(symbol: meshSymbol)
     }()
     
+    /// Renderer that provides color depending on building useage (i.e. commercial, residential)
     @State private var uniqueValueRenderer: UniqueValueRenderer = {
         UniqueValueRenderer(
             fieldNames: ["usage"],
@@ -84,6 +85,7 @@ struct ApplyRenderersToSceneLayerView: View {
         )
     }()
     
+    /// A class breaks renderer that categorizes data based on 'yearCompleted' values
     @State private var classBreaksRenderer: ClassBreaksRenderer = {
         ClassBreaksRenderer(
             fieldName: "yearCompleted",
@@ -102,6 +104,7 @@ struct ApplyRenderersToSceneLayerView: View {
                 scene.addOperationalLayer(sceneLayer)
             }
             .onChange(of: renderer) {
+                // Update the renderer when selection changes
                 sceneLayer.renderer = renderer
             }
             .toolbar {
@@ -112,6 +115,7 @@ struct ApplyRenderersToSceneLayerView: View {
                         }
                     }
                     .onChange(of: rendererSelection) {
+                        // Update the renderer based on selection
                         switch rendererSelection {
                         case .none:
                             renderer = nil
@@ -128,6 +132,7 @@ struct ApplyRenderersToSceneLayerView: View {
     }
 }
 
+/// Enum to manage available renderer options in the Picker
 enum RendererType: CaseIterable {
     case none
     case simpleRenderer
@@ -148,6 +153,7 @@ enum RendererType: CaseIterable {
     }
 }
 
+/// Defines custom color and symbol for different ranges of 'yearCompleted'
 private extension ClassBreak {
     static var before1900: ClassBreak {
         ClassBreak(
@@ -234,6 +240,7 @@ private extension ClassBreak {
     }
 }
 
+/// Defines unique value symbols for building usage types
 private extension UniqueValue {
     static var commercial: UniqueValue {
         UniqueValue(
@@ -290,6 +297,7 @@ private extension UniqueValue {
     }
 }
 
+/// Predefined geometry point for Helsinki Center
 extension Geometry {
     static var helinksiCenter: Point {
         Point(
@@ -301,6 +309,7 @@ extension Geometry {
     }
 }
 
+/// Scene and elevation data sources
 private extension URL {
     static var world: URL {
         URL(string: "https://www.arcgis.com/home/item.html?id=fdfa7e3168e74bf5b846fc701180930b")!
