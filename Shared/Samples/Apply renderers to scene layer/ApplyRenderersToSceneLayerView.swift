@@ -26,7 +26,7 @@ struct ApplyRenderersToSceneLayerView: View {
     @State private var sceneLayer = ArcGISSceneLayer(url: .helinkskiSceneURL)
     
     @State private var scene: ArcGIS.Scene = {
-        var scene = Scene(basemapStyle: .arcGISImagery)
+        var scene = Scene(basemapStyle: .arcGISLightGray)
         // Creates the surface and adds it to the scene.
         let surface = Surface()
         surface.addElevationSource(
