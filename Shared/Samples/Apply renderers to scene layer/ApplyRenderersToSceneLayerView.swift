@@ -21,13 +21,13 @@ struct ApplyRenderersToSceneLayerView: View {
     
     @State private var rendererSelection: RendererType = .none
     
+    @State private var renderer: Renderer?
+    
     // Store the scene layer so you can access it later
     private let sceneLayer = ArcGISSceneLayer(url: .world)
     
     @State private var scene: ArcGIS.Scene = {
         var scene = Scene(basemapStyle: .arcGISLightGray)
-        //        let sceneLayer = ArcGISSceneLayer(url: .world)
-        
         let elevationSource = ArcGISTiledElevationSource(
             url: .elevation
         )
@@ -73,7 +73,12 @@ struct ApplyRenderersToSceneLayerView: View {
                     label: "commercial buildings",
                     symbol: MultilayerMeshSymbol(
                         symbolLayer: MaterialFillSymbolLayer(
-                            color: UIColor(red: 245 / 255, green: 213 / 255, blue: 169 / 255, alpha: 200.0 / 255)
+                            color: UIColor(
+                                red: 245 / 255,
+                                green: 213 / 255,
+                                blue: 169 / 255,
+                                alpha: 200.0 / 255
+                            )
                         )
                     ),
                     values: ["general or commercial"]
@@ -93,14 +98,25 @@ struct ApplyRenderersToSceneLayerView: View {
                     label: "other",
                     symbol: MultilayerMeshSymbol(
                         symbolLayer: MaterialFillSymbolLayer(
-                            color: UIColor(red: 253 / 255, green: 198 / 255, blue: 227 / 255, alpha: 150.0 / 255)
+                            color: UIColor(
+                                red: 253 / 255,
+                                green: 198 / 255,
+                                blue: 227 / 255,
+                                alpha: 150.0 / 255
+                            )
                         )
                     ),
                     values: ["other"]
                 )
-            ], defaultSymbol: MultilayerMeshSymbol(
+            ],
+            defaultSymbol: MultilayerMeshSymbol(
                 symbolLayer: MaterialFillSymbolLayer(
-                    color: UIColor(red: 230 / 255, green: 230 / 255, blue: 230 / 255, alpha: 1.0)
+                    color: UIColor(
+                        red: 230 / 255,
+                        green: 230 / 255,
+                        blue: 230 / 255,
+                        alpha: 1.0
+                    )
                 )
             )
         )
@@ -117,7 +133,12 @@ struct ApplyRenderersToSceneLayerView: View {
                     maxValue: 1899.0,
                     symbol: {
                         let symbolLayer = MaterialFillSymbolLayer(
-                            color: UIColor(red: 230 / 255, green: 238 / 255, blue: 207 / 255, alpha: 1.0)
+                            color: UIColor(
+                                red: 230 / 255,
+                                green: 238 / 255,
+                                blue: 207 / 255,
+                                alpha: 1.0
+                            )
                         )
                         symbolLayer.colorMixMode = .tint
                         return MultilayerMeshSymbol(symbolLayer: symbolLayer)
@@ -130,7 +151,12 @@ struct ApplyRenderersToSceneLayerView: View {
                     maxValue: 1956.0,
                     symbol: {
                         let symbolLayer = MaterialFillSymbolLayer(
-                            color: UIColor(red: 155 / 255, green: 196 / 255, blue: 193 / 255, alpha: 1.0)
+                            color: UIColor(
+                                red: 155 / 255,
+                                green: 196 / 255,
+                                blue: 193 / 255,
+                                alpha: 1.0
+                            )
                         )
                         symbolLayer.colorMixMode = .tint
                         return MultilayerMeshSymbol(symbolLayer: symbolLayer)
@@ -143,7 +169,12 @@ struct ApplyRenderersToSceneLayerView: View {
                     maxValue: 2000.0,
                     symbol: {
                         let symbolLayer = MaterialFillSymbolLayer(
-                            color: UIColor(red: 105 / 255, green: 168 / 255, blue: 183 / 255, alpha: 1.0)
+                            color: UIColor(
+                                red: 105 / 255,
+                                green: 168 / 255,
+                                blue: 183 / 255,
+                                alpha: 1.0
+                            )
                         )
                         symbolLayer.colorMixMode = .tint
                         return MultilayerMeshSymbol(symbolLayer: symbolLayer)
@@ -156,7 +187,12 @@ struct ApplyRenderersToSceneLayerView: View {
                     maxValue: 3000.0,
                     symbol: {
                         let symbolLayer = MaterialFillSymbolLayer(
-                            color: UIColor(red: 75/255, green: 126/255, blue: 152/255, alpha: 1.0)
+                            color: UIColor(
+                                red: 75 / 255,
+                                green: 126 / 255,
+                                blue: 152 / 255,
+                                alpha: 1.0
+                            )
                         )
                         symbolLayer.colorMixMode = .tint
                         return MultilayerMeshSymbol(symbolLayer: symbolLayer)
@@ -171,13 +207,27 @@ struct ApplyRenderersToSceneLayerView: View {
             .onAppear {
                 // add renderer here
                 scene.addOperationalLayer(sceneLayer)
-                sceneLayer.renderer = classBreaksRenderer
+                sceneLayer.renderer = renderer
+            }
+            .onChange(of: renderer) { newRenderer in
+                sceneLayer.renderer = newRenderer
             }
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
                     Picker("Renderer", selection: $rendererSelection) {
                         ForEach(RendererType.allCases, id: \.self) { renderer in
                             Text(renderer.label)
+                        }
+                    } .onChange(of: rendererSelection) {
+                        switch rendererSelection {
+                        case .none:
+                            renderer = nil
+                        case .simpleRenderer:
+                            renderer = simpleRenderer
+                        case .uniqueValueRenderer:
+                            renderer = uniqueValueRenderer
+                        case .classBreaksRenderer:
+                            renderer = classBreaksRenderer
                         }
                     }
                 }
