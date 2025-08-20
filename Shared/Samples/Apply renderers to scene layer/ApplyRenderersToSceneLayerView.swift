@@ -27,22 +27,22 @@ struct ApplyRenderersToSceneLayerView: View {
     
     @State private var scene: ArcGIS.Scene = {
         var scene = Scene(basemapStyle: .arcGISLightGray)
-        let elevationSource = ArcGISTiledElevationSource(
-            url: .elevation
-        )
         // Creates the surface and adds it to the scene.
         let surface = Surface()
-        surface.addElevationSource(elevationSource)
-        scene.baseSurface = surface
-        let camera = Camera(
-            location: .helinksiCenter,
-            heading: 308.9,
-            pitch: 50.7,
-            roll: 0.0
+        surface.addElevationSource(
+            ArcGISTiledElevationSource(
+                url: .elevation
+            )
         )
+        scene.baseSurface = surface
         scene.initialViewpoint = Viewpoint(
             boundingGeometry: .helinksiCenter,
-            camera: camera
+            camera: Camera(
+                location: .helinksiCenter,
+                heading: 308.9,
+                pitch: 50.7,
+                roll: 0.0
+            )
         )
         return scene
     }()
