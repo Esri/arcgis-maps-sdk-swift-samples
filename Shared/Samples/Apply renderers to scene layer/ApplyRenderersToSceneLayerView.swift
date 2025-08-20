@@ -236,7 +236,7 @@ private extension ClassBreak {
     }
 }
 
-// Defines unique value symbols for building usage types.
+/// Defines unique value symbols for building usage types.
 private extension UniqueValue {
     static var commercial: UniqueValue {
         UniqueValue(
