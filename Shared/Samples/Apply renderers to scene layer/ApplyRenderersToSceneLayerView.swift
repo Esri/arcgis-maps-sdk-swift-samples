@@ -36,7 +36,9 @@ struct ApplyRenderersToSceneLayerView: View {
         )
         scene.baseSurface = surface
         scene.initialViewpoint = Viewpoint(
-            boundingGeometry: .helsinkiCenter,
+            latitude: .nan,
+            longitude: .nan,
+            scale: .nan,
             camera: Camera(
                 location: .helsinkiCenter,
                 heading: 308.9,
@@ -291,7 +293,7 @@ private extension UniqueValue {
     }
 }
 
-private extension Geometry {
+private extension Point {
     /// Predefined geometry point for Helsinki city center.
     static var helsinkiCenter: Point {
         Point(
