@@ -21,10 +21,13 @@ struct ApplyRenderersToSceneLayerView: View {
     
     @State private var rendererSelection: RendererType = .none
     
+    // Store the scene layer so you can access it later
+    private let sceneLayer = ArcGISSceneLayer(url: .world)
+    
     @State private var scene: ArcGIS.Scene = {
         var scene = Scene(basemapStyle: .arcGISLightGray)
-        let sceneLayer = ArcGISSceneLayer(url: .world)
-        scene.addOperationalLayer(sceneLayer)
+//        let sceneLayer = ArcGISSceneLayer(url: .world)
+        
         let elevationSource = ArcGISTiledElevationSource(
             url: .elevation
         )
@@ -51,8 +54,30 @@ struct ApplyRenderersToSceneLayerView: View {
         return scene
     }()
     
+    @State private var simpleRenderer: SimpleRenderer = {
+        let materialFillSymbolLayer = MaterialFillSymbolLayer(color: .yellow)
+        materialFillSymbolLayer.colorMixMode = .replace
+        materialFillSymbolLayer.edges = SymbolLayerEdges3D(color: .black, width: 0.5)
+        // Create the multilayer mesh symbol with the symbol layer
+        let meshSymbol = MultilayerMeshSymbol(symbolLayer: materialFillSymbolLayer)
+        let simpleRenderer = SimpleRenderer(symbol: meshSymbol)
+        return simpleRenderer
+    }()
+    
     var body: some View {
         SceneView(scene: scene)
+            .onAppear {
+                // add renderer here
+                scene.addOperationalLayer(sceneLayer)
+                // Create the material fill symbol layer
+                let materialFillSymbolLayer = MaterialFillSymbolLayer(color: .yellow)
+                materialFillSymbolLayer.colorMixMode = .replace
+                materialFillSymbolLayer.edges = SymbolLayerEdges3D(color: .black, width: 0.5)
+                // Create the multilayer mesh symbol with the symbol layer
+                let meshSymbol = MultilayerMeshSymbol(symbolLayer: materialFillSymbolLayer)
+                let simpleRenderer = SimpleRenderer(symbol: meshSymbol)
+                sceneLayer.renderer = simpleRenderer
+            }
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
                     Picker("Renderer", selection: $rendererSelection) {
