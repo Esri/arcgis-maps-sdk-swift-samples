@@ -20,7 +20,7 @@ struct ApplyRenderersToSceneLayerView: View {
     @State private var rendererSelection: RendererType = .none
     
     /// The renderer that is applied to the scene layer.
-    @State private var renderer: Renderer? = nil
+    @State private var renderer: Renderer?
     
     /// SceneLayer for Helinksi scene.
     @State private var sceneLayer = ArcGISSceneLayer(url: .world)
@@ -34,20 +34,14 @@ struct ApplyRenderersToSceneLayerView: View {
         let surface = Surface()
         surface.addElevationSource(elevationSource)
         scene.baseSurface = surface
-        var point = Point(
-            x: 2778453.8008,
-            y: 8436451.3882,
-            z: 387.4524,
-            spatialReference: .webMercator
-        )
         let camera = Camera(
-            location: point,
+            location: .helinksiCenter,
             heading: 308.9,
             pitch: 50.7,
             roll: 0.0
         )
         scene.initialViewpoint = Viewpoint(
-            boundingGeometry: point,
+            boundingGeometry: .helinksiCenter,
             camera: camera
         )
         return scene
@@ -286,6 +280,17 @@ private extension UniqueValue {
                 )
             ),
             values: ["other"]
+        )
+    }
+}
+
+extension Geometry {
+    static var helinksiCenter: Point {
+        Point(
+            x: 2778453.8008,
+            y: 8436451.3882,
+            z: 387.4524,
+            spatialReference: .webMercator
         )
     }
 }
