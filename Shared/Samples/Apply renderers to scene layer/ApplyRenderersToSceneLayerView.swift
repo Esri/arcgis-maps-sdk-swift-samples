@@ -49,12 +49,18 @@ struct ApplyRenderersToSceneLayerView: View {
     
     /// Simple renderer that adds yellow mesh to buildings.
     @State private var simpleRenderer: SimpleRenderer = {
-        let materialFillSymbolLayer = MaterialFillSymbolLayer(color: .yellow)
+        let materialFillSymbolLayer = MaterialFillSymbolLayer(
+            color: .yellow
+        )
         materialFillSymbolLayer.colorMixMode = .replace
-        materialFillSymbolLayer.edges = SymbolLayerEdges3D(color: .black, width: 0.5)
-        let meshSymbol = MultilayerMeshSymbol(symbolLayer: materialFillSymbolLayer)
-        let simpleRenderer = SimpleRenderer(symbol: meshSymbol)
-        return simpleRenderer
+        materialFillSymbolLayer.edges = SymbolLayerEdges3D(
+            color: .black,
+            width: 0.5
+        )
+        let meshSymbol = MultilayerMeshSymbol(
+            symbolLayer: materialFillSymbolLayer
+        )
+        return SimpleRenderer(symbol: meshSymbol)
     }()
     
     @State private var uniqueValueRenderer: UniqueValueRenderer = {
