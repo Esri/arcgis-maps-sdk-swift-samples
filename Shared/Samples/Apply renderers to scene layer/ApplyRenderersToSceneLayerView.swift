@@ -67,51 +67,9 @@ struct ApplyRenderersToSceneLayerView: View {
         UniqueValueRenderer(
             fieldNames: ["usage"],
             uniqueValues: [
-                UniqueValue(
-                    description: "commercial buildings",
-                    label: "commercial buildings",
-                    symbol: MultilayerMeshSymbol(
-                        symbolLayer: MaterialFillSymbolLayer(
-                            color: UIColor(
-                                red: 245 / 255,
-                                green: 213 / 255,
-                                blue: 169 / 255,
-                                alpha: 200.0 / 255
-                            )
-                        )
-                    ),
-                    values: ["general or commercial"]
-                ),
-                UniqueValue(
-                    description: "residential buildings",
-                    label: "residential buildings",
-                    symbol: MultilayerMeshSymbol(
-                        symbolLayer: MaterialFillSymbolLayer(
-                            color: UIColor(
-                                red: 210 / 255,
-                                green: 254 / 255,
-                                blue: 208 / 255,
-                                alpha: 1.0
-                            )
-                        )
-                    ),
-                    values: ["residential"]
-                ),
-                UniqueValue(
-                    description: "other",
-                    label: "other",
-                    symbol: MultilayerMeshSymbol(
-                        symbolLayer: MaterialFillSymbolLayer(
-                            color: UIColor(
-                                red: 253 / 255,
-                                green: 198 / 255,
-                                blue: 227 / 255,
-                                alpha: 150.0 / 255
-                            )
-                        )
-                    ),
-                    values: ["other"]
-                )
+                .commercial,
+                .residential,
+                .other
             ],
             defaultSymbol: MultilayerMeshSymbol(
                 symbolLayer: MaterialFillSymbolLayer(
@@ -130,78 +88,10 @@ struct ApplyRenderersToSceneLayerView: View {
         ClassBreaksRenderer(
             fieldName: "yearCompleted",
             classBreaks: [
-                ClassBreak(
-                    description: "before 1900",
-                    label: "before 1900",
-                    minValue: 1725.0,
-                    maxValue: 1899.0,
-                    symbol: {
-                        let symbolLayer = MaterialFillSymbolLayer(
-                            color: UIColor(
-                                red: 230 / 255,
-                                green: 238 / 255,
-                                blue: 207 / 255,
-                                alpha: 1.0
-                            )
-                        )
-                        symbolLayer.colorMixMode = .tint
-                        return MultilayerMeshSymbol(symbolLayer: symbolLayer)
-                    }()
-                ),
-                ClassBreak(
-                    description: "1900 - 1956",
-                    label: "1900 - 1956",
-                    minValue: 1900.0,
-                    maxValue: 1956.0,
-                    symbol: {
-                        let symbolLayer = MaterialFillSymbolLayer(
-                            color: UIColor(
-                                red: 155 / 255,
-                                green: 196 / 255,
-                                blue: 193 / 255,
-                                alpha: 1.0
-                            )
-                        )
-                        symbolLayer.colorMixMode = .tint
-                        return MultilayerMeshSymbol(symbolLayer: symbolLayer)
-                    }()
-                ),
-                ClassBreak(
-                    description: "1957 - 2000",
-                    label: "1957 - 2000",
-                    minValue: 1957.0,
-                    maxValue: 2000.0,
-                    symbol: {
-                        let symbolLayer = MaterialFillSymbolLayer(
-                            color: UIColor(
-                                red: 105 / 255,
-                                green: 168 / 255,
-                                blue: 183 / 255,
-                                alpha: 1.0
-                            )
-                        )
-                        symbolLayer.colorMixMode = .tint
-                        return MultilayerMeshSymbol(symbolLayer: symbolLayer)
-                    }()
-                ),
-                ClassBreak(
-                    description: "after 2000",
-                    label: "after 2000",
-                    minValue: 2001.0,
-                    maxValue: 3000.0,
-                    symbol: {
-                        let symbolLayer = MaterialFillSymbolLayer(
-                            color: UIColor(
-                                red: 75 / 255,
-                                green: 126 / 255,
-                                blue: 152 / 255,
-                                alpha: 1.0
-                            )
-                        )
-                        symbolLayer.colorMixMode = .tint
-                        return MultilayerMeshSymbol(symbolLayer: symbolLayer)
-                    }()
-                )
+                .before1900,
+                .from1900to1956,
+                .from1957to2000,
+                .after2000
             ]
         )
     }()
@@ -260,6 +150,148 @@ enum RendererType: CaseIterable {
 }
 
 extension ApplyRenderersToSceneLayerView { }
+
+private extension ClassBreak {
+    static var before1900 : ClassBreak {
+        ClassBreak(
+            description: "before 1900",
+            label: "before 1900",
+            minValue: 1725.0,
+            maxValue: 1899.0,
+            symbol: {
+                let symbolLayer = MaterialFillSymbolLayer(
+                    color: UIColor(
+                        red: 230 / 255,
+                        green: 238 / 255,
+                        blue: 207 / 255,
+                        alpha: 1.0
+                    )
+                )
+                symbolLayer.colorMixMode = .tint
+                return MultilayerMeshSymbol(symbolLayer: symbolLayer)
+            }()
+        )
+    }
+    
+    static var from1900to1956 : ClassBreak {
+        ClassBreak(
+            description: "1900 - 1956",
+            label: "1900 - 1956",
+            minValue: 1900.0,
+            maxValue: 1956.0,
+            symbol: {
+                let symbolLayer = MaterialFillSymbolLayer(
+                    color: UIColor(
+                        red: 155 / 255,
+                        green: 196 / 255,
+                        blue: 193 / 255,
+                        alpha: 1.0
+                    )
+                )
+                symbolLayer.colorMixMode = .tint
+                return MultilayerMeshSymbol(symbolLayer: symbolLayer)
+            }()
+        )
+    }
+    
+    static var from1957to2000: ClassBreak {
+        ClassBreak(
+            description: "1957 - 2000",
+            label: "1957 - 2000",
+            minValue: 1957.0,
+            maxValue: 2000.0,
+            symbol: {
+                let symbolLayer = MaterialFillSymbolLayer(
+                    color: UIColor(
+                        red: 105 / 255,
+                        green: 168 / 255,
+                        blue: 183 / 255,
+                        alpha: 1.0
+                    )
+                )
+                symbolLayer.colorMixMode = .tint
+                return MultilayerMeshSymbol(symbolLayer: symbolLayer)
+            }()
+        )
+    }
+    
+    static var after2000 : ClassBreak {
+        ClassBreak(
+            description: "after 2000",
+            label: "after 2000",
+            minValue: 2001.0,
+            maxValue: 3000.0,
+            symbol: {
+                let symbolLayer = MaterialFillSymbolLayer(
+                    color: UIColor(
+                        red: 75 / 255,
+                        green: 126 / 255,
+                        blue: 152 / 255,
+                        alpha: 1.0
+                    )
+                )
+                symbolLayer.colorMixMode = .tint
+                return MultilayerMeshSymbol(symbolLayer: symbolLayer)
+            }()
+        )
+    }
+}
+
+private extension UniqueValue {
+    static var commercial: UniqueValue {
+        UniqueValue(
+            description: "commercial buildings",
+            label: "commercial buildings",
+            symbol: MultilayerMeshSymbol(
+                symbolLayer: MaterialFillSymbolLayer(
+                    color: UIColor(
+                        red: 245 / 255,
+                        green: 213 / 255,
+                        blue: 169 / 255,
+                        alpha: 200.0 / 255
+                    )
+                )
+            ),
+            values: ["general or commercial"]
+        )
+    }
+    
+    static var residential: UniqueValue {
+        UniqueValue(
+            description: "residential buildings",
+            label: "residential buildings",
+            symbol: MultilayerMeshSymbol(
+                symbolLayer: MaterialFillSymbolLayer(
+                    color: UIColor(
+                        red: 210 / 255,
+                        green: 254 / 255,
+                        blue: 208 / 255,
+                        alpha: 1.0
+                    )
+                )
+            ),
+            values: ["residential"]
+        )
+    }
+    
+    static var other: UniqueValue {
+        UniqueValue(
+            description: "other",
+            label: "other",
+            symbol: MultilayerMeshSymbol(
+                symbolLayer: MaterialFillSymbolLayer(
+                    color: UIColor(
+                        red: 253 / 255,
+                        green: 198 / 255,
+                        blue: 227 / 255,
+                        alpha: 150.0 / 255
+                    )
+                )
+            ),
+            values: ["other"]
+        )
+    }
+}
 
 private extension URL {
     static var world: URL {
