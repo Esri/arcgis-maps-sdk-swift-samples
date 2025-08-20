@@ -204,7 +204,6 @@ struct ApplyRenderersToSceneLayerView: View {
     var body: some View {
         SceneView(scene: scene)
             .onAppear {
-                // add renderer here
                 scene.addOperationalLayer(sceneLayer)
                 sceneLayer.renderer = renderer
             }
