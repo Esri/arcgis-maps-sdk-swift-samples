@@ -101,8 +101,8 @@ struct ApplyRenderersToSceneLayerView: View {
             .onAppear {
                 scene.addOperationalLayer(sceneLayer)
             }
-            .onChange(of: renderer) { _, newRenderer in
-                sceneLayer.renderer = newRenderer
+            .onChange(of: renderer) {
+                sceneLayer.renderer = renderer
             }
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
