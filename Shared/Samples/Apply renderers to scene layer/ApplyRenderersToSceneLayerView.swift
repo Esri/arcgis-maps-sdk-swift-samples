@@ -18,7 +18,7 @@ import SwiftUI
 struct ApplyRenderersToSceneLayerView: View {
     /// Renderer type selected by the user.
     @State private var rendererSelection: RendererType = .none
-
+    
     /// Scene layer for Helsinki scene.
     private var sceneLayer: ArcGISSceneLayer {
         scene.operationalLayers.first as! ArcGISSceneLayer
