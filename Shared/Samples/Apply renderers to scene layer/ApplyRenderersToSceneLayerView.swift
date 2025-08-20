@@ -100,7 +100,6 @@ struct ApplyRenderersToSceneLayerView: View {
         SceneView(scene: scene)
             .onAppear {
                 scene.addOperationalLayer(sceneLayer)
-                sceneLayer.renderer = renderer
             }
             .onChange(of: renderer) { _, newRenderer in
                 sceneLayer.renderer = newRenderer
