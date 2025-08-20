@@ -64,7 +64,7 @@ struct ApplyRenderersToSceneLayerView: View {
         return SimpleRenderer(symbol: meshSymbol)
     }()
     
-    /// Renderer that provides color depending on building useage (i.e. commercial, residential).
+    /// Renderer that provides color depending on building usage (i.e. commercial, residential).
     @State private var uniqueValueRenderer: UniqueValueRenderer = {
         UniqueValueRenderer(
             fieldNames: ["usage"],
@@ -105,7 +105,7 @@ struct ApplyRenderersToSceneLayerView: View {
                 ToolbarItem(placement: .bottomBar) {
                     Picker("Renderer selected", selection: $rendererSelection) {
                         ForEach(RendererType.allCases, id: \.self) { renderer in
-                            Text(renderer.label).tag(renderer)
+                            Text(renderer.label)
                         }
                     }
                     .onChange(of: rendererSelection) {
@@ -153,8 +153,8 @@ private extension ClassBreak {
         ClassBreak(
             description: "before 1900",
             label: "before 1900",
-            minValue: 1725.0,
-            maxValue: 1899.0,
+            minValue: 1725,
+            maxValue: 1900,
             symbol: {
                 let symbolLayer = MaterialFillSymbolLayer(
                     color: UIColor(
@@ -174,8 +174,8 @@ private extension ClassBreak {
         ClassBreak(
             description: "1900 - 1956",
             label: "1900 - 1956",
-            minValue: 1900.0,
-            maxValue: 1956.0,
+            minValue: 1900,
+            maxValue: 1957,
             symbol: {
                 let symbolLayer = MaterialFillSymbolLayer(
                     color: UIColor(
@@ -195,8 +195,8 @@ private extension ClassBreak {
         ClassBreak(
             description: "1957 - 2000",
             label: "1957 - 2000",
-            minValue: 1957.0,
-            maxValue: 2000.0,
+            minValue: 1957,
+            maxValue: 2000,
             symbol: {
                 let symbolLayer = MaterialFillSymbolLayer(
                     color: UIColor(
@@ -216,8 +216,8 @@ private extension ClassBreak {
         ClassBreak(
             description: "after 2000",
             label: "after 2000",
-            minValue: 2001.0,
-            maxValue: 3000.0,
+            minValue: 2000,
+            maxValue: 3000,
             symbol: {
                 let symbolLayer = MaterialFillSymbolLayer(
                     color: UIColor(
