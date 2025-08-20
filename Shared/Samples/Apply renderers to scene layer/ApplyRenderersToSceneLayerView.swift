@@ -16,8 +16,12 @@ import ArcGIS
 import SwiftUI
 
 struct ApplyRenderersToSceneLayerView: View {
+    
+    /// The error shown in the error alert.
+    @State private var error: (any Error)?
+    
     @State private var scene: ArcGIS.Scene = {
-        var scene = Scene(basemapStyle: .arcGISImagery)
+        var scene = Scene(basemapStyle: .arcGISLightGray)
         let sceneLayer = ArcGISSceneLayer(url: .world)
         scene.addOperationalLayer(sceneLayer)
         let elevationSource = ArcGISTiledElevationSource(
@@ -48,6 +52,16 @@ struct ApplyRenderersToSceneLayerView: View {
     
     var body: some View {
         SceneView(scene: scene)
+            .toolbar {
+                ToolbarItem(placement: .bottomBar) {
+//                    Picker("Renderer", selection: ) {
+//                        ForEach(.allCases, id: \.self) { renderer in
+//                            Text(label)
+//                        }
+//                    }
+                }
+            }
+        
     }
 }
 
