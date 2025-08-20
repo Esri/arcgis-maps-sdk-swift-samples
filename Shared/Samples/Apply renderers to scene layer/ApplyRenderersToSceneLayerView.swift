@@ -104,7 +104,7 @@ struct ApplyRenderersToSceneLayerView: View {
                 scene.addOperationalLayer(sceneLayer)
             }
             .onChange(of: renderer) {
-                // Update the renderer when selection changes.
+                // Update scene layer's renderer when render selection changes.
                 sceneLayer.renderer = renderer
             }
             .toolbar {
