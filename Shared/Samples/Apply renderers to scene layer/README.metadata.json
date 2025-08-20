@@ -1,0 +1,39 @@
+{
+    "category": "Layers",
+    "description": "Change the appearance of a 3D object scene layer with different renderers.",
+    "ignore": false,
+    "images": [
+        "apply-renderers-to-scene-layer.png"
+    ],
+    "keywords": [
+        "3D",
+        "buildings",
+        "renderer",
+        "scene layer",
+        "symbology",
+        "visualization",
+        "ArcGISSceneLayer",
+        "ClassBreaksRenderer",
+        "MaterialFillSymbolLayer",
+        "MultilayerMeshSymbol",
+        "SceneView",
+        "SimpleRenderer",
+        "SymbolLayerEdges3D",
+        "UniqueValueRenderer"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "ArcGISSceneLayer",
+        "ClassBreaksRenderer",
+        "MaterialFillSymbolLayer",
+        "MultilayerMeshSymbol",
+        "SceneView",
+        "SimpleRenderer",
+        "SymbolLayerEdges3D",
+        "UniqueValueRenderer"
+    ],
+    "snippets": [
+        "ApplyRenderersToSceneLayerView.swift"
+    ],
+    "title": "Apply renderers to scene layer"
+}
