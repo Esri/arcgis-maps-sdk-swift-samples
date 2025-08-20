@@ -87,7 +87,12 @@ struct ApplyRenderersToSceneLayerView: View {
                     label: "residential buildings",
                     symbol: MultilayerMeshSymbol(
                         symbolLayer: MaterialFillSymbolLayer(
-                            color: UIColor(red: 210 / 255, green: 254 / 255, blue: 208 / 255, alpha: 1.0)
+                            color: UIColor(
+                                red: 210 / 255,
+                                green: 254 / 255,
+                                blue: 208 / 255,
+                                alpha: 1.0
+                            )
                         )
                     ),
                     values: ["residential"]
