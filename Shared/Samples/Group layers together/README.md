@@ -25,6 +25,8 @@ The layers in the map will be displayed in a table of contents. For project area
 ## Relevant API
 
 * GroupLayer
+* GroupLayer.VisibilityMode
+* LayerContent
 
 ## Additional information
 
@@ -34,4 +36,4 @@ Group layers can be saved to web scenes. In web maps, group layers will be ignor
 
 ## Tags
 
-group layer, layers
+3D, group layer, layers
