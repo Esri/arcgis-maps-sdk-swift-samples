@@ -16,23 +16,30 @@ import SwiftUI
 
 /// A view with controls for downloading the app's on-demand resources.
 struct DownloadOfflineResourcesView: View {
+    let samples = SamplesApp.samples.filter(\.hasDependencies)
+    
     /// The action to dismiss the view.
     @Environment(\.dismiss) private var dismiss
     
     /// The view models for the on-demand resource requests.
-    @State private var onDemandResources = SamplesApp.samples.compactMap { sample in
-        sample.hasDependencies ? OnDemandResource(sample: sample) : nil
-    }
+    @State private var onDemandResources: [String: OnDemandResource] = [:]
     
     /// The current state of the "download all on-demand resources" request.
-    @State private var downloadAllRequestState: OnDemandResource.RequestState?
+    @State private var downloadAllRequestState: OnDemandResource.RequestState = .notStarted
     
     /// A Boolean value indicating whether confirm cancel alert is showing.
     @State private var confirmCancelAlertIsShowing = false
     
     /// A Boolean value indicating whether all of the `onDemandResources` have successfully downloaded.
     private var allResourcesAreDownloaded: Bool {
-        onDemandResources.allSatisfy { $0.requestState == .downloaded }
+        guard !onDemandResources.isEmpty else { return false }
+        return onDemandResources.values
+            .allSatisfy { $0.requestState == .downloaded }
+    }
+    
+    /// Returns the on-demand resource for the given sample.
+    func resource(for sample: Sample) -> OnDemandResource? {
+        return onDemandResources[sample.name]
     }
     
     var body: some View {
@@ -49,22 +56,22 @@ struct DownloadOfflineResourcesView: View {
                         }
                         .frame(maxWidth: .infinity)
                     }
-                    .disabled(downloadAllRequestState != .notStarted || allResourcesAreDownloaded)
+                    .disabled(onDemandResources.isEmpty || downloadAllRequestState != .notStarted || allResourcesAreDownloaded)
                     .task(id: downloadAllRequestState) {
-                        if downloadAllRequestState == nil {
-                            await setUpResources()
-                        } else if downloadAllRequestState == .inProgress {
-                            await downloadAll()
-                        }
+                        guard downloadAllRequestState == .inProgress else { return }
+                        await downloadAll()
                     }
                     .onChange(of: allResourcesAreDownloaded) {
                         guard allResourcesAreDownloaded else { return }
                         downloadAllRequestState = .downloaded
                     }
                 }
-                
-                ForEach(onDemandResources, id: \.sampleName) { resource in
-                    DownloadOnDemandResourceView(resource: resource)
+                Section {
+                    List(samples, id: \.name) { sample in
+                        if let resource = resource(for: sample) {
+                            DownloadOnDemandResourceView(name: sample.name, resource: resource)
+                        }
+                    }
                 }
             }
             .navigationTitle("Download Offline Resources")
@@ -72,7 +79,7 @@ struct DownloadOfflineResourcesView: View {
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Done") {
-                        if onDemandResources.allSatisfy({ $0.requestState != .inProgress }) {
+                        if onDemandResources.values.allSatisfy({ $0.requestState != .inProgress }) {
                             dismiss()
                         } else {
                             confirmCancelAlertIsShowing = true
@@ -82,7 +89,7 @@ struct DownloadOfflineResourcesView: View {
                         Button("Resume", role: .cancel, action: {})
                         
                         Button("Confirm") {
-                            for resource in onDemandResources where resource.requestState == .inProgress {
+                            for resource in onDemandResources.values where resource.requestState == .inProgress {
                                 resource.cancel()
                             }
                             dismiss()
@@ -90,26 +97,29 @@ struct DownloadOfflineResourcesView: View {
                     }
                 }
             }
-        }
-    }
-    
-    /// Sets up the on-demand resources' request states.
-    private func setUpResources() async {
-        await withTaskGroup { group in
-            for resource in onDemandResources where resource.requestState == nil {
-                group.addTask(operation: resource.setUp)
+            .task {
+                guard onDemandResources.isEmpty else { return }
+                onDemandResources = await withTaskGroup { group in
+                    for sample in samples {
+                        group.addTask {
+                            let resource = await OnDemandResource(tags: sample.odrTags)
+                            return (sample.name, resource)
+                        }
+                    }
+                    var resources: [String: OnDemandResource] = [:]
+                    for await (name, resource) in group {
+                        resources[name] = resource
+                    }
+                    return resources
+                }
             }
-        }
-        
-        if downloadAllRequestState == nil {
-            downloadAllRequestState = .notStarted
         }
     }
     
     /// Downloads all of the on-demand resources that haven't started a request yet.
     private func downloadAll() async {
         await withTaskGroup { group in
-            for resource in onDemandResources where resource.isDownloadable {
+            for resource in onDemandResources.values where resource.isDownloadable {
                 group.addTask(operation: resource.download)
             }
         }
@@ -123,6 +133,8 @@ struct DownloadOfflineResourcesView: View {
 
 /// A view for downloading an `OnDemandResource` and displaying its request state.
 private struct DownloadOnDemandResourceView: View {
+    /// The name of the resource.
+    let name: String
     /// The on-demand resource to download.
     let resource: OnDemandResource
     
@@ -134,7 +146,7 @@ private struct DownloadOnDemandResourceView: View {
             isDownloading = true
         } label: {
             Label {
-                Text(resource.sampleName)
+                Text(name)
                 
                 if resource.requestState == .error, let error = resource.error {
                     Text("Error: \(error)")
@@ -157,15 +169,16 @@ private struct DownloadOnDemandResourceView: View {
 /// Displays a view repenting a given `OnDemandResource.RequestState` case.
 private struct RequestStateView: View {
     /// The on-demand resource request to display.
-    let state: OnDemandResource.RequestState?
+    let state: OnDemandResource.RequestState
     
     var body: some View {
-        if state == nil || state == .inProgress {
+        switch state {
+        case .inProgress:
             ProgressView()
-        } else if state == .downloaded {
+        case .downloaded:
             Image(systemName: "checkmark.circle")
                 .foregroundStyle(.secondary)
-        } else {
+        default:
             Image(systemName: "arrow.down.circle")
         }
     }

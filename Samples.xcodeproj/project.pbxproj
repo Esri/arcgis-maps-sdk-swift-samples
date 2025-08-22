@@ -239,6 +239,7 @@
 		4C8127682DCD4F18006EF7D2 /* ApplyStretchRendererView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4C8127602DCBED62006EF7D2 /* ApplyStretchRendererView.swift */; };
 		4C81276B2DCED03D006EF7D2 /* BrowseWFSLayersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C81276A2DCED03D006EF7D2 /* BrowseWFSLayersView.swift */; };
 		4C81278D2DDBC5EB006EF7D2 /* BrowseWFSLayersView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4C81276A2DCED03D006EF7D2 /* BrowseWFSLayersView.swift */; };
+		4CFC9E132E577FBE00F730C5 /* StringProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFC9E122E577FBB00F730C5 /* StringProtocol.swift */; };
 		4D126D6D29CA1B6000CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D126D6929CA1B6000CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift */; };
 		4D126D7229CA1E1800CFB7A7 /* FileNMEASentenceReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D126D7129CA1E1800CFB7A7 /* FileNMEASentenceReader.swift */; };
 		4D126D7329CA1EFD00CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4D126D6929CA1B6000CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift */; };
@@ -1183,6 +1184,7 @@
 		4C81275C2DCBB72C006EF7D2 /* ShastaBW */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ShastaBW; sourceTree = "<group>"; };
 		4C8127602DCBED62006EF7D2 /* ApplyStretchRendererView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyStretchRendererView.swift; sourceTree = "<group>"; };
 		4C81276A2DCED03D006EF7D2 /* BrowseWFSLayersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseWFSLayersView.swift; sourceTree = "<group>"; };
+		4CFC9E122E577FBB00F730C5 /* StringProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringProtocol.swift; sourceTree = "<group>"; };
 		4D126D6929CA1B6000CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowDeviceLocationWithNMEADataSourcesView.swift; sourceTree = "<group>"; };
 		4D126D7129CA1E1800CFB7A7 /* FileNMEASentenceReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileNMEASentenceReader.swift; sourceTree = "<group>"; };
 		4D126D7B29CA3E6000CFB7A7 /* Redlands.nmea */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Redlands.nmea; sourceTree = "<group>"; };
@@ -1502,6 +1504,7 @@
 				D7A670D62DADBC770060E327 /* EnvironmentValues+RequestReviewModel.swift */,
 				00181B452846AD7100654571 /* View+ErrorAlert.swift */,
 				D7AECFDC2E31448100FD312A /* View+OnTeardown.swift */,
+				4CFC9E122E577FBB00F730C5 /* StringProtocol.swift */,
 				D7142BC32DB71082004F87B7 /* View+PagePresentation.swift */,
 			);
 			path = Extensions;
@@ -4737,6 +4740,7 @@
 				D71371792BD88ECC00EB2F86 /* MonitorChangesToLayerViewStateView.swift in Sources */,
 				D7B759B32B1FFBE300017FDD /* FavoritesView.swift in Sources */,
 				D722BD222A420DAD002C2087 /* ShowExtrudedFeaturesView.swift in Sources */,
+				4CFC9E132E577FBE00F730C5 /* StringProtocol.swift in Sources */,
 				E004A6F6284FA42A002A1FE6 /* SelectFeaturesInFeatureLayerView.swift in Sources */,
 				88FB70392DCC207B00EB76E3 /* ApplySymbologyToShapefileView.swift in Sources */,
 				1C3892312DC59E6000ADFDDC /* ApplyBlendRendererToHillshadeView.SettingsView.swift in Sources */,
