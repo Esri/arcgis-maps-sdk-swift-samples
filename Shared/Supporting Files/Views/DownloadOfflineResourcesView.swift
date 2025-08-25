@@ -52,7 +52,15 @@ struct DownloadOfflineResourcesView: View {
                         Label {
                             Text("Download All")
                         } icon: {
-                            RequestStateView(state: downloadAllRequestState)
+                            switch downloadAllRequestState {
+                            case .inProgress:
+                                ProgressView()
+                            case .downloaded:
+                                Image(systemName: "checkmark.circle")
+                                    .foregroundStyle(.secondary)
+                            default:
+                                Image(systemName: "arrow.down.circle")
+                            }
                         }
                         .frame(maxWidth: .infinity)
                     }
@@ -153,7 +161,16 @@ private struct DownloadOnDemandResourceView: View {
                         .foregroundStyle(.red)
                 }
             } icon: {
-                RequestStateView(state: resource.requestState)
+                switch resource.requestState {
+                case .inProgress:
+                    ProgressView(resource.progress)
+                        .progressViewStyle(GaugeProgressViewStyle())
+                case .downloaded:
+                    Image(systemName: "checkmark.circle")
+                        .foregroundStyle(.secondary)
+                default:
+                    Image(systemName: "arrow.down.circle")
+                }
             }
         }
         .disabled(!resource.isDownloadable)
@@ -166,20 +183,21 @@ private struct DownloadOnDemandResourceView: View {
     }
 }
 
-/// Displays a view repenting a given `OnDemandResource.RequestState` case.
-private struct RequestStateView: View {
-    /// The on-demand resource request to display.
-    let state: OnDemandResource.RequestState
-    
-    var body: some View {
-        switch state {
-        case .inProgress:
-            ProgressView()
-        case .downloaded:
-            Image(systemName: "checkmark.circle")
-                .foregroundStyle(.secondary)
-        default:
-            Image(systemName: "arrow.down.circle")
+/// A circular gauge progress view style.
+private struct GaugeProgressViewStyle: ProgressViewStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        if let fractionCompleted = configuration.fractionCompleted {
+            let gradientStops: [Gradient.Stop] = [
+                .init(color: .accent, location: 0),
+                .init(color: .accent, location: fractionCompleted),
+                .init(color: .init(.tertiarySystemFill), location: fractionCompleted),
+                .init(color: .init(.tertiarySystemFill), location: 1)
+            ]
+            let gradient = AngularGradient(gradient: .init(stops: gradientStops), center: .center)
+            
+            Image(systemName: "circle")
+                .foregroundStyle(gradient)
+                .rotationEffect(.degrees(-90))
         }
     }
 }
