@@ -29,7 +29,7 @@ struct AboutView: View {
     /// A Boolean value indicating whether the API key alert is presented.
     @State private var isAPIKeyAlertPresented = false
     /// A Boolean value indicating whether the download offline resources cover is presented.
-    @State private var isOfflineResourcesCoverPresented = false
+    @State private var isResourceDownloaderPresented = false
     /// The API key entered in the alert.
     @State private var apiKey = ""
     
@@ -75,9 +75,9 @@ struct AboutView: View {
 #if !targetEnvironment(macCatalyst)
                 Section {
                     Button("Download Offline Resources") {
-                        isOfflineResourcesCoverPresented = true
+                        isResourceDownloaderPresented = true
                     }
-                    .fullScreenCover(isPresented: $isOfflineResourcesCoverPresented) {
+                    .fullScreenCover(isPresented: $isResourceDownloaderPresented) {
                         DownloadOfflineResourcesView()
                     }
                 }
