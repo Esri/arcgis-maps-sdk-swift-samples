@@ -41,7 +41,7 @@ final class OnDemandResource {
     }
     
     /// The current state of the on-demand resource request.
-    private(set) var requestState: RequestState?
+    private(set) var requestState: RequestState
     
     /// The error occurred in downloading resources.
     private(set) var error: (any Error)?
@@ -49,19 +49,10 @@ final class OnDemandResource {
     /// The on-demand resource request.
     private let request: NSBundleResourceRequest
     
-    /// The name of the sample associated with the resource request.
-    let sampleName: String
-    
-    /// Initializes a request with a sample.
-    init(sample: Sample) {
-        self.sampleName = sample.name
-        request = NSBundleResourceRequest(tags: [sample.nameInUpperCamelCase])
+    /// Initializes a request with a set of Resource Tags.
+    init(tags: Set<String>) async {
+        request = NSBundleResourceRequest(tags: tags)
         request.loadingPriority = NSBundleResourceRequestLoadingPriorityUrgent
-    }
-    
-    /// Sets up the `requestState` by checking if the resource is already on device.
-    func setUp() async {
-        guard requestState == nil else { return }
         
         let isResourceAvailable = await request.conditionallyBeginAccessingResources()
         requestState = isResourceAvailable ? .downloaded : .notStarted
