@@ -16,6 +16,7 @@ import SwiftUI
 
 /// A view with controls for downloading the app's on-demand resources.
 struct DownloadOfflineResourcesView: View {
+    /// The samples that require offline resources.
     let samples = SamplesApp.samples.filter(\.hasDependencies)
     
     /// The action to dismiss the view.
