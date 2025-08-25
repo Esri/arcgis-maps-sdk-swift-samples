@@ -85,10 +85,10 @@ struct DownloadOfflineResourcesView: View {
                             confirmCancelAlertIsShowing = true
                         }
                     }
-                    .alert("Cancel Downloads?", isPresented: $confirmCancelAlertIsShowing) {
-                        Button("Resume", role: .cancel, action: {})
+                    .alert("Cancel downloads?", isPresented: $confirmCancelAlertIsShowing) {
+                        Button("Don't Cancel", role: .cancel, action: {})
                         
-                        Button("Confirm") {
+                        Button("Cancel") {
                             for resource in onDemandResources.values where resource.requestState == .inProgress {
                                 resource.cancel()
                             }
