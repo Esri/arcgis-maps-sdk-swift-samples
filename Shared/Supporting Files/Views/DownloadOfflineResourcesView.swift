@@ -80,6 +80,8 @@ struct DownloadOfflineResourcesView: View {
                             DownloadOnDemandResourceView(name: sample.name, resource: resource)
                         }
                     }
+                } footer: {
+                    Text("\(.init("Note").bold()): The system may purge downloads at any time.")
                 }
             }
             .navigationTitle("Download Offline Resources")
@@ -102,6 +104,8 @@ struct DownloadOfflineResourcesView: View {
                             }
                             dismiss()
                         }
+                    } message: {
+                        Text("The system may purge the in-progress downloads at any time after canceling.")
                     }
                 }
             }
