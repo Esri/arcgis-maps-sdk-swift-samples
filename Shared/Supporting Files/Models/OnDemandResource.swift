@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Foundation
+import SwiftUI
 
 /// A wrapper class that manages on-demand resource request.
 @MainActor
@@ -62,19 +62,19 @@ final class OnDemandResource {
     func cancel() {
         progress.cancel()
         request.endAccessingResources()
-        requestState = .cancelled
+        withAnimation { requestState = .cancelled }
     }
     
     /// Starts the on-demand resource request.
     func download() async {
         guard isDownloadable else { return }
         
-        requestState = .inProgress
+        withAnimation { requestState = .inProgress }
         do {
             // Note: The system may purge the resources at any time after the
             // request object is deallocated.
             try await request.beginAccessingResources()
-            requestState = .downloaded
+            withAnimation { requestState = .downloaded }
         } catch {
             if (error as NSError).code != NSUserCancelledError {
                 self.error = error
