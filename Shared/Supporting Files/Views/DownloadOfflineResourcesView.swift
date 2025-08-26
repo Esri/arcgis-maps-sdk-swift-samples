@@ -82,7 +82,7 @@ struct DownloadOfflineResourcesView: View {
                         }
                     }
                 } footer: {
-                    Text("\(.init("Note").bold()): The system may purge downloads at any time.")
+                    Text("**Note**: The system may purge downloads at any time.")
                 }
             }
             .navigationTitle("Download Offline Resources")
