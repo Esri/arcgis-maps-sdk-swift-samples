@@ -71,8 +71,6 @@ final class OnDemandResource {
         
         withAnimation { requestState = .inProgress }
         do {
-            // Note: The system may purge the resources at any time after the
-            // request object is deallocated.
             try await request.beginAccessingResources()
             withAnimation { requestState = .downloaded }
         } catch {

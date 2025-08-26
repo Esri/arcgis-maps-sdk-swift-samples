@@ -128,6 +128,7 @@ struct DownloadOfflineResourcesView: View {
     }
     
     /// Downloads all of the on-demand resources that haven't started a request yet.
+    /// - Note: The system may purge the resources at any time after the request object is deallocated.
     private func downloadAll() async {
         await withTaskGroup { group in
             for resource in onDemandResources.values where resource.isDownloadable {
