@@ -239,6 +239,7 @@
 		4C8127682DCD4F18006EF7D2 /* ApplyStretchRendererView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4C8127602DCBED62006EF7D2 /* ApplyStretchRendererView.swift */; };
 		4C81276B2DCED03D006EF7D2 /* BrowseWFSLayersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C81276A2DCED03D006EF7D2 /* BrowseWFSLayersView.swift */; };
 		4C81278D2DDBC5EB006EF7D2 /* BrowseWFSLayersView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4C81276A2DCED03D006EF7D2 /* BrowseWFSLayersView.swift */; };
+		4CFC9E132E577FBE00F730C5 /* StringProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFC9E122E577FBB00F730C5 /* StringProtocol.swift */; };
 		4D126D6D29CA1B6000CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D126D6929CA1B6000CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift */; };
 		4D126D7229CA1E1800CFB7A7 /* FileNMEASentenceReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D126D7129CA1E1800CFB7A7 /* FileNMEASentenceReader.swift */; };
 		4D126D7329CA1EFD00CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 4D126D6929CA1B6000CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift */; };
@@ -637,6 +638,7 @@
 		D7CE9F9B2AE2F575008F7A5F /* streetmap_SD.tpkx in Resources */ = {isa = PBXBuildFile; fileRef = D7CE9F9A2AE2F575008F7A5F /* streetmap_SD.tpkx */; settings = {ASSET_TAGS = (GeocodeOffline, ); }; };
 		D7CE9FA32AE2F595008F7A5F /* san-diego-eagle-locator in Resources */ = {isa = PBXBuildFile; fileRef = D7CE9FA22AE2F595008F7A5F /* san-diego-eagle-locator */; settings = {ASSET_TAGS = (GeocodeOffline, ); }; };
 		D7D1F3532ADDBE5D009CE2DA /* philadelphia.mspk in Resources */ = {isa = PBXBuildFile; fileRef = D7D1F3522ADDBE5D009CE2DA /* philadelphia.mspk */; settings = {ASSET_TAGS = (AugmentRealityToShowTabletopScene, DisplaySceneFromMobileScenePackage, ); }; };
+		D7D847752DB80F4F00390B1D /* DownloadOfflineResourcesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D847742DB80F4F00390B1D /* DownloadOfflineResourcesView.swift */; };
 		D7D9FCF62BF2CC8600F972A2 /* FilterByDefinitionExpressionOrDisplayFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D9FCF22BF2CC8600F972A2 /* FilterByDefinitionExpressionOrDisplayFilterView.swift */; };
 		D7D9FCF92BF2CCA300F972A2 /* FilterByDefinitionExpressionOrDisplayFilterView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7D9FCF22BF2CC8600F972A2 /* FilterByDefinitionExpressionOrDisplayFilterView.swift */; };
 		D7DDF84E2AF43AA2004352D9 /* GeocodeOfflineView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D72C43F22AEB066D00B6157B /* GeocodeOfflineView.Model.swift */; };
@@ -1195,6 +1197,7 @@
 		4C81275C2DCBB72C006EF7D2 /* ShastaBW */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ShastaBW; sourceTree = "<group>"; };
 		4C8127602DCBED62006EF7D2 /* ApplyStretchRendererView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyStretchRendererView.swift; sourceTree = "<group>"; };
 		4C81276A2DCED03D006EF7D2 /* BrowseWFSLayersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseWFSLayersView.swift; sourceTree = "<group>"; };
+		4CFC9E122E577FBB00F730C5 /* StringProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringProtocol.swift; sourceTree = "<group>"; };
 		4D126D6929CA1B6000CFB7A7 /* ShowDeviceLocationWithNMEADataSourcesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowDeviceLocationWithNMEADataSourcesView.swift; sourceTree = "<group>"; };
 		4D126D7129CA1E1800CFB7A7 /* FileNMEASentenceReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileNMEASentenceReader.swift; sourceTree = "<group>"; };
 		4D126D7B29CA3E6000CFB7A7 /* Redlands.nmea */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Redlands.nmea; sourceTree = "<group>"; };
@@ -1418,6 +1421,7 @@
 		D7CE9F9A2AE2F575008F7A5F /* streetmap_SD.tpkx */ = {isa = PBXFileReference; lastKnownFileType = file; path = streetmap_SD.tpkx; sourceTree = "<group>"; };
 		D7CE9FA22AE2F595008F7A5F /* san-diego-eagle-locator */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "san-diego-eagle-locator"; sourceTree = "<group>"; };
 		D7D1F3522ADDBE5D009CE2DA /* philadelphia.mspk */ = {isa = PBXFileReference; lastKnownFileType = file; path = philadelphia.mspk; sourceTree = "<group>"; };
+		D7D847742DB80F4F00390B1D /* DownloadOfflineResourcesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadOfflineResourcesView.swift; sourceTree = "<group>"; };
 		D7D9FCF22BF2CC8600F972A2 /* FilterByDefinitionExpressionOrDisplayFilterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterByDefinitionExpressionOrDisplayFilterView.swift; sourceTree = "<group>"; };
 		D7DDF8502AF47C6C004352D9 /* FindRouteAroundBarriersView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindRouteAroundBarriersView.swift; sourceTree = "<group>"; };
 		D7DFA0E62CBA0242007C31F2 /* AddMapImageLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMapImageLayerView.swift; sourceTree = "<group>"; };
@@ -1491,6 +1495,7 @@
 				00B04272282EC59E0072E1B4 /* AboutView.swift */,
 				D70BE5782A5624A80022CA02 /* CategoriesView.swift */,
 				00E5400D27F3CCA100CF66D5 /* ContentView.swift */,
+				D7D847742DB80F4F00390B1D /* DownloadOfflineResourcesView.swift */,
 				D7B759B22B1FFBE300017FDD /* FavoritesView.swift */,
 				000558092817C51E00224BC6 /* SampleDetailView.swift */,
 				E041ABD6287DB04D0056009B /* SampleInfoView.swift */,
@@ -1517,6 +1522,7 @@
 				D7A670D62DADBC770060E327 /* EnvironmentValues+RequestReviewModel.swift */,
 				00181B452846AD7100654571 /* View+ErrorAlert.swift */,
 				D7AECFDC2E31448100FD312A /* View+OnTeardown.swift */,
+				4CFC9E122E577FBB00F730C5 /* StringProtocol.swift */,
 				D7142BC32DB71082004F87B7 /* View+PagePresentation.swift */,
 			);
 			path = Extensions;
@@ -4729,6 +4735,7 @@
 				E088E1572862579D00413100 /* SetSurfacePlacementModeView.swift in Sources */,
 				9579FCEA2C3360BB00FC8A1D /* EditFeatureAttachmentsView.swift in Sources */,
 				D762AF5F2BF6A7B900ECE3C7 /* EditFeaturesWithFeatureLinkedAnnotationView.swift in Sources */,
+				D7D847752DB80F4F00390B1D /* DownloadOfflineResourcesView.swift in Sources */,
 				1CAF831F2A20305F000E1E60 /* ShowUtilityAssociationsView.swift in Sources */,
 				00E7C15C2BBE1BF000B85D69 /* SnapGeometryEditsView.swift in Sources */,
 				E004A6C128414332002A1FE6 /* SetViewpointRotationView.swift in Sources */,
@@ -4791,6 +4798,7 @@
 				D71371792BD88ECC00EB2F86 /* MonitorChangesToLayerViewStateView.swift in Sources */,
 				D7B759B32B1FFBE300017FDD /* FavoritesView.swift in Sources */,
 				D722BD222A420DAD002C2087 /* ShowExtrudedFeaturesView.swift in Sources */,
+				4CFC9E132E577FBE00F730C5 /* StringProtocol.swift in Sources */,
 				E004A6F6284FA42A002A1FE6 /* SelectFeaturesInFeatureLayerView.swift in Sources */,
 				88FB70392DCC207B00EB76E3 /* ApplySymbologyToShapefileView.swift in Sources */,
 				1C3892312DC59E6000ADFDDC /* ApplyBlendRendererToHillshadeView.SettingsView.swift in Sources */,
