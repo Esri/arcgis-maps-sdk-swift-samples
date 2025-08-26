@@ -105,8 +105,6 @@ struct DownloadOfflineResourcesView: View {
                             }
                             dismiss()
                         }
-                    } message: {
-                        Text("The system may purge the in-progress downloads at any time after canceling.")
                     }
                 }
             }
