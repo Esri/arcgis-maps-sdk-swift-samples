@@ -23,7 +23,7 @@ extension ValidateUtilityNetworkTopologyView {
         // MARK: Properties
         
         /// A map with no specified style.
-        let map = Map()
+        private(set) var map = Map()
         
         /// The graphics overlay for the starting location graphic.
         let graphicsOverlay: GraphicsOverlay = {
@@ -254,8 +254,8 @@ extension ValidateUtilityNetworkTopologyView {
             let portal = Portal(url: .sampleServerPortal, connection: .authenticated)
             let portalItem = PortalItem(portal: portal, id: .napervilleElectric)
             
-            // Set the portal item to the map and load the map.
-            map.item = portalItem
+            // Create and load a map using the portal item.
+            map = .init(item: portalItem)
             map.initialViewpoint = Viewpoint(center: Point(x: -9815160, y: 5128880), scale: 3640)
             try await map.load()
             
