@@ -255,7 +255,7 @@ extension ValidateUtilityNetworkTopologyView {
             let portalItem = PortalItem(portal: portal, id: .napervilleElectric)
             
             // Create and load a map using the portal item.
-            map = .init(item: portalItem)
+            map = Map(item: portalItem)
             map.initialViewpoint = Viewpoint(center: Point(x: -9815160, y: 5128880), scale: 3640)
             try await map.load()
             
