@@ -44,7 +44,7 @@ final class OnDemandResource {
     private(set) var requestState: RequestState
     
     /// The error occurred in downloading resources.
-    private(set) var error: NSError?
+    private(set) var error: (any Error)?
     
     /// The on-demand resource request.
     private let request: NSBundleResourceRequest
@@ -75,7 +75,7 @@ final class OnDemandResource {
             requestState = .downloaded
         } catch {
             if (error as NSError).code != NSUserCancelledError {
-                self.error = error as NSError
+                self.error = error
                 requestState = .error
             } else {
                 cancel()
