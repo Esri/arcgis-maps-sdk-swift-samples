@@ -160,7 +160,7 @@ private struct DownloadOnDemandResourceView: View {
             Label {
                 Text(name)
                 
-                if resource.requestState == .error, let error = resource.error {
+                if resource.requestState == .error, let error = resource.error as? NSError {
                     Text("Error: \(error)")
                         .foregroundStyle(.red)
                 }
