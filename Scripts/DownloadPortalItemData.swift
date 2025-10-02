@@ -153,7 +153,7 @@ func downloadFile(from sourceURL: URL, to downloadDirectory: URL) async throws -
         }
     }()
     let downloadURL = downloadDirectory.appendingPathComponent(downloadName, isDirectory: false)
-    
+    // Optionally removes any existing file without causing error.
     try? FileManager.default.removeItem(at: downloadURL)
     
     if isArchive {
