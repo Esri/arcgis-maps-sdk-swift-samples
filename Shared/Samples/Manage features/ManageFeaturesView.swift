@@ -124,7 +124,7 @@ struct ManageFeaturesView: View {
     func featureCalloutContent(feature: Feature, table: ServiceFeatureTable) -> some View {
         HStack {
             VStack(alignment: .leading) {
-                Text("ID: \(feature.attributeValue(forKey: table.objectIDField) ?? "Unknown")")
+                Text("ID: \(feature.attributeValue(forKey: table.objectIDField) as? String ?? "Unknown")")
                 Text("Damage: \(feature.damageKind?.rawValue ?? "Unknown")")
                     .font(.footnote)
                     .foregroundStyle(.secondary)

@@ -161,7 +161,7 @@ private struct DownloadOnDemandResourceView: View {
                 Text(name)
                 
                 if resource.requestState == .error, let error = resource.error {
-                    Text("Error: \(error)")
+                    Text("Error: \(error.localizedDescription)")
                         .foregroundStyle(.red)
                 }
             } icon: {
