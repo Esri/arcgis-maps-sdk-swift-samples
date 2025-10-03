@@ -24,7 +24,7 @@ struct ContentView: View {
     
     /// The visibility of the leading columns in the navigation split view.
     @State private var columnVisibility: NavigationSplitViewVisibility = .all
-
+    
     /// A Boolean value indicating whether to present the about view.
     @State private var isAboutViewPresented = false
     
