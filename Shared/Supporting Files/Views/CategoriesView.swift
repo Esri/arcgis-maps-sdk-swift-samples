@@ -25,7 +25,7 @@ struct CategoriesView: View {
     @State private var destinationIsPresented = false
     
     /// A Boolean value indicating whether the navigation destination is showing.
-    @State private var fullScreen = false
+    @State private var isFullScreen = false
     
     /// The names of the favorite samples loaded from user defaults.
     @AppFavorites private var favoriteNames
@@ -88,13 +88,13 @@ struct CategoriesView: View {
                 if sampleNeedingTeardown != nil && sampleNeedingTeardown != sampleName {
                     ProgressView("Loading sample")
                 } else if sample.hasTeardown {
-                    SampleDetailView(sample: sample, fullScreen: $fullScreen)
+                    SampleDetailView(sample: sample, fullScreen: $isFullScreen)
                         .id(sampleName)
                         .onAppear {
                             sampleNeedingTeardown = sampleName
                         }
-                        .onChange(of: fullScreen) {
-                            if !fullScreen {
+                        .onChange(of: isFullScreen) {
+                            if isFullScreen {
                                 columnVisibility = .detailOnly
                             } else {
                                 columnVisibility = .doubleColumn
@@ -105,10 +105,10 @@ struct CategoriesView: View {
                             sampleNeedingTeardown = nil
                         }
                 } else {
-                    SampleDetailView(sample: sample, fullScreen: $fullScreen)
+                    SampleDetailView(sample: sample, fullScreen: $isFullScreen)
                         .id(sampleName)
-                        .onChange(of: fullScreen) {
-                            if !fullScreen {
+                        .onChange(of: isFullScreen) {
+                            if isFullScreen {
                                 columnVisibility = .detailOnly
                             } else {
                                 columnVisibility = .doubleColumn

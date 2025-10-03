@@ -106,7 +106,7 @@ struct SampleDetailView: View {
                 // arrow.up.backward.and.arrow.down.forward
                 Button("Full Screen", systemImage: fullScreenImage) {
                     fullScreen.toggle()
-                    fullScreenImage = !fullScreen ? "arrow.down.forward.and.arrow.up.backward" : "arrow.up.backward.and.arrow.down.forward"
+                    fullScreenImage = fullScreen ? "arrow.down.forward.and.arrow.up.backward" : "arrow.up.backward.and.arrow.down.forward"
                 }
             }
             ToolbarItem(placement: .topBarTrailing) {
