@@ -98,7 +98,6 @@ struct CategoriesView: View {
                                 columnVisibility = .detailOnly
                             } else {
                                 columnVisibility = .doubleColumn
-                                
                             }
                         }
                         .environment(\.finishTeardown) {
@@ -109,7 +108,6 @@ struct CategoriesView: View {
                     SampleDetailView(sample: sample, fullScreen: $fullScreen)
                         .id(sampleName)
                         .onChange(of: fullScreen) {
-                            print(fullScreen)
                             if !fullScreen {
                                 columnVisibility = .detailOnly
                             } else {
