@@ -24,7 +24,7 @@ struct CategoriesView: View {
     /// A Boolean value indicating whether the navigation destination is showing.
     @State private var destinationIsPresented = false
     
-    /// A Boolean value indicating whether the navigation destination is showing.
+    /// A Boolean value indicating whether the detail view is full screen.
     @State private var isFullScreen = false
     
     /// The names of the favorite samples loaded from user defaults.
@@ -88,7 +88,7 @@ struct CategoriesView: View {
                 if sampleNeedingTeardown != nil && sampleNeedingTeardown != sampleName {
                     ProgressView("Loading sample")
                 } else if sample.hasTeardown {
-                    SampleDetailView(sample: sample, fullScreen: $isFullScreen)
+                    SampleDetailView(sample: sample, isFullScreen: $isFullScreen)
                         .id(sampleName)
                         .onAppear {
                             sampleNeedingTeardown = sampleName
@@ -105,7 +105,7 @@ struct CategoriesView: View {
                             sampleNeedingTeardown = nil
                         }
                 } else {
-                    SampleDetailView(sample: sample, fullScreen: $isFullScreen)
+                    SampleDetailView(sample: sample, isFullScreen: $isFullScreen)
                         .id(sampleName)
                         .onChange(of: isFullScreen) {
                             if isFullScreen {
