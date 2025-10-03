@@ -23,7 +23,7 @@ struct ContentView: View {
     @Environment(\.requestReviewModel) private var requestReviewModel
     
     /// The visibility of the leading columns in the navigation split view.
-    @State private var columnVisibility: NavigationSplitViewVisibility = .all
+    @State private var columnVisibility: NavigationSplitViewVisibility = .doubleColumn
     
     /// A Boolean value indicating whether to present the about view.
     @State private var isAboutViewPresented = false

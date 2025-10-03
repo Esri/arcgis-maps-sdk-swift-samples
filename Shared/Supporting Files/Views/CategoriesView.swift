@@ -24,6 +24,9 @@ struct CategoriesView: View {
     /// A Boolean value indicating whether the navigation destination is showing.
     @State private var destinationIsPresented = false
     
+    /// A Boolean value indicating whether the navigation destination is showing.
+    @State private var fullScreen = false
+    
     /// The names of the favorite samples loaded from user defaults.
     @AppFavorites private var favoriteNames
     
@@ -90,6 +93,15 @@ struct CategoriesView: View {
                         .onAppear {
                             sampleNeedingTeardown = sampleName
                         }
+                        .onTapGesture {
+                            if !fullScreen {
+                                columnVisibility = .detailOnly
+                                fullScreen = true
+                            } else {
+                                columnVisibility = .doubleColumn
+                                fullScreen = false
+                            }
+                        }
                         .environment(\.finishTeardown) {
                             // Allows the next teardown sample to appear.
                             sampleNeedingTeardown = nil
@@ -97,6 +109,15 @@ struct CategoriesView: View {
                 } else {
                     SampleDetailView(sample: sample)
                         .id(sampleName)
+                        .onTapGesture {
+                            if !fullScreen {
+                                columnVisibility = .detailOnly
+                                fullScreen = true
+                            } else {
+                                columnVisibility = .doubleColumn
+                                fullScreen = false
+                            }
+                        }
                 }
             }
         }
