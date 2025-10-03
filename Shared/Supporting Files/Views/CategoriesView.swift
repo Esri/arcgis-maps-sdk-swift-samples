@@ -94,11 +94,7 @@ struct CategoriesView: View {
                             sampleNeedingTeardown = sampleName
                         }
                         .onChange(of: isFullScreen) {
-                            if isFullScreen {
-                                columnVisibility = .detailOnly
-                            } else {
-                                columnVisibility = .doubleColumn
-                            }
+                            columnVisibility = isFullScreen ? .detailOnly : .doubleColumn
                         }
                         .environment(\.finishTeardown) {
                             // Allows the next teardown sample to appear.
@@ -108,11 +104,7 @@ struct CategoriesView: View {
                     SampleDetailView(sample: sample, isFullScreen: $isFullScreen)
                         .id(sampleName)
                         .onChange(of: isFullScreen) {
-                            if isFullScreen {
-                                columnVisibility = .detailOnly
-                            } else {
-                                columnVisibility = .doubleColumn
-                            }
+                            columnVisibility = isFullScreen ? .detailOnly : .doubleColumn
                         }
                 }
             }

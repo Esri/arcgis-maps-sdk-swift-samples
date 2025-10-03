@@ -104,8 +104,6 @@ struct SampleDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
-                // arrow.down.forward.and.arrow.up.backward
-                // arrow.up.backward.and.arrow.down.forward
                 Button("Full Screen", systemImage: fullScreenImage) {
                     isFullScreen.toggle()
                     fullScreenImage = isFullScreen ? "arrow.down.forward.and.arrow.up.backward" : "arrow.up.backward.and.arrow.down.forward"
