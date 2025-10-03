@@ -24,8 +24,10 @@ struct SampleDetailView: View {
     /// A Boolean value that indicates whether to present the sample's information view.
     @State private var isSampleInfoViewPresented = false
     
-    @Binding var fullScreen: Bool
+    /// A Boolean value indicating whether the detail view is full screen.
+    @Binding var isFullScreen: Bool
     
+    /// A string for indicating which icon to show for full screen state.
     @State var fullScreenImage: String = "arrow.up.backward.and.arrow.down.forward"
     
     /// An object to manage on-demand resources for a sample with dependencies.
@@ -105,8 +107,8 @@ struct SampleDetailView: View {
                 // arrow.down.forward.and.arrow.up.backward
                 // arrow.up.backward.and.arrow.down.forward
                 Button("Full Screen", systemImage: fullScreenImage) {
-                    fullScreen.toggle()
-                    fullScreenImage = fullScreen ? "arrow.down.forward.and.arrow.up.backward" : "arrow.up.backward.and.arrow.down.forward"
+                    isFullScreen.toggle()
+                    fullScreenImage = isFullScreen ? "arrow.down.forward.and.arrow.up.backward" : "arrow.up.backward.and.arrow.down.forward"
                 }
             }
             ToolbarItem(placement: .topBarTrailing) {
