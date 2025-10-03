@@ -25,12 +25,15 @@ struct ContentView: View {
     /// The visibility of the leading columns in the navigation split view.
     @State private var columnVisibility: NavigationSplitViewVisibility = .doubleColumn
     
+//    @State private var fullScreen = false
+    
     /// A Boolean value indicating whether to present the about view.
     @State private var isAboutViewPresented = false
     
     var body: some View {
         NavigationSplitView(columnVisibility: $columnVisibility) {
             CategoriesView(columnVisibility: $columnVisibility)
+//                .toolbar(removing: fullScreen ? .sidebarToggle : nil)
                 .navigationTitle("Categories")
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
@@ -56,6 +59,11 @@ struct ContentView: View {
                         requestReviewModel.lastRequestedReviewVersion = Bundle.main.shortVersion
                     }
                 }
+//                .onChange(of: columnVisibility) {
+//                    if columnVisibility == .detailOnly {
+//                        fullScreen = true
+//                    }
+//                }
         } content: {
             Text("No Category Selected")
         } detail: {

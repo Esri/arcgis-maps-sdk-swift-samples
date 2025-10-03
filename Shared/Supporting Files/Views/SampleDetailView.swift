@@ -16,13 +16,17 @@ import SwiftUI
 
 struct SampleDetailView: View {
     /// The sample to display in the view.
-    private let sample: Sample
+    let sample: Sample
     
     /// The view model for requesting App Store reviews.
     @Environment(\.requestReviewModel) private var requestReviewModel
     
     /// A Boolean value that indicates whether to present the sample's information view.
     @State private var isSampleInfoViewPresented = false
+    
+    @Binding var fullScreen: Bool
+    
+    @State var fullScreenImage: String = "arrow.up.backward.and.arrow.down.forward"
     
     /// An object to manage on-demand resources for a sample with dependencies.
     @State private var onDemandResource: OnDemandResource?
@@ -48,11 +52,7 @@ struct SampleDetailView: View {
                 requestReviewModel.sampleIsShowing = false
             }
     }
-    
-    init(sample: Sample) {
-        self.sample = sample
-    }
-    
+
     var body: some View {
         Group {
             if usesOnDemandResources {
@@ -104,8 +104,9 @@ struct SampleDetailView: View {
             ToolbarItem(placement: .topBarLeading) {
                 // arrow.down.forward.and.arrow.up.backward
                 // arrow.up.backward.and.arrow.down.forward
-                Button("Full Screen", systemImage: "arrow.down.forward.and.arrow.up.backward") {
-                    print("full screen")
+                Button("Full Screen", systemImage: fullScreenImage) {
+                    fullScreen.toggle()
+                    fullScreenImage = !fullScreen ? "arrow.down.forward.and.arrow.up.backward" : "arrow.up.backward.and.arrow.down.forward"
                 }
             }
             ToolbarItem(placement: .topBarTrailing) {

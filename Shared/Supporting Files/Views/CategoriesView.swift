@@ -88,18 +88,17 @@ struct CategoriesView: View {
                 if sampleNeedingTeardown != nil && sampleNeedingTeardown != sampleName {
                     ProgressView("Loading sample")
                 } else if sample.hasTeardown {
-                    SampleDetailView(sample: sample)
+                    SampleDetailView(sample: sample, fullScreen: $fullScreen)
                         .id(sampleName)
                         .onAppear {
                             sampleNeedingTeardown = sampleName
                         }
-                        .onTapGesture {
+                        .onChange(of: fullScreen) {
                             if !fullScreen {
                                 columnVisibility = .detailOnly
-                                fullScreen = true
                             } else {
                                 columnVisibility = .doubleColumn
-                                fullScreen = false
+                                
                             }
                         }
                         .environment(\.finishTeardown) {
@@ -107,15 +106,14 @@ struct CategoriesView: View {
                             sampleNeedingTeardown = nil
                         }
                 } else {
-                    SampleDetailView(sample: sample)
+                    SampleDetailView(sample: sample, fullScreen: $fullScreen)
                         .id(sampleName)
-                        .onTapGesture {
+                        .onChange(of: fullScreen) {
+                            print(fullScreen)
                             if !fullScreen {
                                 columnVisibility = .detailOnly
-                                fullScreen = true
                             } else {
                                 columnVisibility = .doubleColumn
-                                fullScreen = false
                             }
                         }
                 }
