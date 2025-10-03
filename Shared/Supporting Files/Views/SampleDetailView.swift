@@ -101,6 +101,13 @@ struct SampleDetailView: View {
         .navigationTitle(sample.name)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                // arrow.down.forward.and.arrow.up.backward
+                // arrow.up.backward.and.arrow.down.forward
+                Button("Full Screen", systemImage: "arrow.down.forward.and.arrow.up.backward") {
+                    print("full screen")
+                }
+            }
             ToolbarItem(placement: .topBarTrailing) {
                 Menu("Sample Actions", systemImage: "ellipsis.circle") {
                     Button("View Info", systemImage: "info.circle") {
