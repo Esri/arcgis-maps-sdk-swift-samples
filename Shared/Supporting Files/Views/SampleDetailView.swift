@@ -27,8 +27,8 @@ struct SampleDetailView: View {
     /// A Boolean value indicating whether the detail view is full screen.
     @Binding var isFullScreen: Bool
     
-    /// A string for indicating which icon to show for full screen state.
-    @State var fullScreenImage: String = "arrow.up.backward.and.arrow.down.forward"
+    /// A string which gives the icon name for the expansion state of the view.
+    @State private var screenExpansionToggleImage: String = "arrow.up.backward.and.arrow.down.forward"
     
     /// An object to manage on-demand resources for a sample with dependencies.
     @State private var onDemandResource: OnDemandResource?
@@ -104,9 +104,9 @@ struct SampleDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
-                Button("Full Screen", systemImage: fullScreenImage) {
+                Button("Full Screen", systemImage: screenExpansionToggleImage) {
                     isFullScreen.toggle()
-                    fullScreenImage = isFullScreen ? "arrow.down.forward.and.arrow.up.backward" : "arrow.up.backward.and.arrow.down.forward"
+                    screenExpansionToggleImage = isFullScreen ? "arrow.down.forward.and.arrow.up.backward" : "arrow.up.backward.and.arrow.down.forward"
                 }
             }
             ToolbarItem(placement: .topBarTrailing) {
