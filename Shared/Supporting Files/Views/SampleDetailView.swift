@@ -28,9 +28,6 @@ struct SampleDetailView: View {
     /// A Boolean value indicating whether the detail view is full screen.
     @Binding var isFullScreen: Bool
     
-//    /// A Boolean value indicating whether the detail view is full screen.
-//    @Binding var columnVisibility: NavigationSplitViewVisibility
-    
     /// A string which gives the icon name for the expansion state of the view.
     @State private var screenExpansionToggleImage: String = "arrow.up.backward.and.arrow.down.forward"
     
