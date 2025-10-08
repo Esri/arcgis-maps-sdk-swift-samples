@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import Foundation
 import SwiftUI
 
 struct SampleDetailView: View {
@@ -26,6 +27,9 @@ struct SampleDetailView: View {
     
     /// A Boolean value indicating whether the detail view is full screen.
     @Binding var isFullScreen: Bool
+    
+//    /// A Boolean value indicating whether the detail view is full screen.
+//    @Binding var columnVisibility: NavigationSplitViewVisibility
     
     /// A string which gives the icon name for the expansion state of the view.
     @State private var screenExpansionToggleImage: String = "arrow.up.backward.and.arrow.down.forward"
@@ -103,12 +107,15 @@ struct SampleDetailView: View {
         .navigationTitle(sample.name)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Button("Full Screen", systemImage: screenExpansionToggleImage) {
-                    isFullScreen.toggle()
-                    screenExpansionToggleImage = isFullScreen ? "arrow.down.forward.and.arrow.up.backward" : "arrow.up.backward.and.arrow.down.forward"
+            if ProcessInfo.processInfo.operatingSystemVersion.majorVersion >= 26 {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Full Screen", systemImage: screenExpansionToggleImage) {
+                        isFullScreen.toggle()
+                        screenExpansionToggleImage = isFullScreen ? "arrow.down.forward.and.arrow.up.backward" : "arrow.up.backward.and.arrow.down.forward"
+                    }
                 }
             }
+            
             ToolbarItem(placement: .topBarTrailing) {
                 Menu("Sample Actions", systemImage: "ellipsis.circle") {
                     Button("View Info", systemImage: "info.circle") {
