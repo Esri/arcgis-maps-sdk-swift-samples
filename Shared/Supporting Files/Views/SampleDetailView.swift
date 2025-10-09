@@ -55,7 +55,7 @@ struct SampleDetailView: View {
                 requestReviewModel.sampleIsShowing = false
             }
     }
-
+    
     var body: some View {
         Group {
             if usesOnDemandResources {
@@ -104,7 +104,7 @@ struct SampleDetailView: View {
         .navigationTitle(sample.name)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            if ProcessInfo.processInfo.operatingSystemVersion.majorVersion >= 26 && UIDevice.current.userInterfaceIdiom == .pad {
+            if #available(iOS 26, *), UIDevice.current.userInterfaceIdiom == .pad {
                 ToolbarItem(placement: .topBarLeading) {
                     Button("Full Screen", systemImage: screenExpansionToggleImage) {
                         isFullScreen.toggle()
