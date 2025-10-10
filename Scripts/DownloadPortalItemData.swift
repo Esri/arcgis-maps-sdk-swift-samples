@@ -332,7 +332,7 @@ func run() async throws { // swiftlint:disable:this function_body_length cycloma
         }
     }
     
-    /// The maximum number of concurrent download tasks, capped at 10.
+    /// The maximum number of concurrent download tasks, capped at 4.
     let maxConcurrentTasks = min(4, portalItems.count)
     
     try await withThrowingTaskGroup(of: Void.self) { group in
