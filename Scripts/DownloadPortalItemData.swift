@@ -173,119 +173,199 @@ func downloadFile(from sourceURL: URL, to downloadDirectory: URL) async throws -
 
 // MARK: Script Entry
 
-let arguments = CommandLine.arguments
-
-guard arguments.count == 3 else {
-    print("error: Invalid number of arguments.")
-    exit(1)
-}
-
-/// The samples directory, i.e., $SRCROOT/Shared/Samples.
-let samplesDirectoryURL = URL(fileURLWithPath: arguments[1], isDirectory: true)
-/// The download directory, i.e., $SRCROOT/Portal Data.
-let downloadDirectoryURL = URL(fileURLWithPath: arguments[2], isDirectory: true)
-
-// If the download directory does not exist, create it.
-if !FileManager.default.fileExists(atPath: downloadDirectoryURL.path) {
-    do {
-        try FileManager.default.createDirectory(at: downloadDirectoryURL, withIntermediateDirectories: false)
-    } catch {
-        print("error: Error creating download directory: \(error.localizedDescription).")
-        exit(1)
+/// Error thrown by the script.
+enum ScriptError: Error, LocalizedError {
+    case invalidArguments
+    case cannotCreateDirectory(String)
+    case cannotParseDependencies(String)
+    case downloadFailed
+    
+    var errorDescription: String? {
+        switch self {
+        case .invalidArguments:
+            "Invalid number of arguments."
+        case .cannotCreateDirectory(let path):
+            "Cannot create directory: \(path)"
+        case .cannotParseDependencies(let reason):
+            "Cannot parse dependencies: \(reason)"
+        case .downloadFailed:
+            "Failed to download all items."
+        }
     }
 }
 
-/// Portal Items created from iterating through all metadata's "offline\_data".
-let portalItems: Set<PortalItem> = {
+/// Parses all sample dependencies in the given samples directory.
+/// - Parameter samplesDirectoryURL: The URL to the samples directory.
+/// - Throws: Exceptions when unable to read or decode JSON files.
+/// - Returns: A set of `PortalItem` objects.
+func parseSampleDependencies(at samplesDirectoryURL: URL) throws -> [PortalItem] {
     do {
         // Finds all subdirectories under the root Samples directory.
         let sampleSubDirectories = try FileManager.default
-            .contentsOfDirectory(at: samplesDirectoryURL, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles])
+            .contentsOfDirectory(
+                at: samplesDirectoryURL,
+                includingPropertiesForKeys: nil,
+                options: [.skipsHiddenFiles]
+            )
             .filter(\.hasDirectoryPath)
         let sampleJSONs = sampleSubDirectories
             .map { $0.appendingPathComponent("README.metadata.json", isDirectory: false) }
-        // Omit the decoding errors from samples that don't have dependencies.
+        // Omits the decoding errors from samples that don't have dependencies.
         let sampleDependencies = sampleJSONs
             .compactMap { try? parseJSON(at: $0) }
-        return Set(sampleDependencies.lazy.flatMap(\.offlineData))
+        return Array(Set(sampleDependencies.lazy.flatMap(\.offlineData)))
     } catch {
-        print("error: Error decoding Samples dependencies: \(error.localizedDescription)")
-        exit(1)
+        throw ScriptError.cannotParseDependencies(error.localizedDescription)
     }
-}()
+}
 
-typealias Identifier = String
-typealias Filename = String
-typealias DownloadedItems = [Identifier: Filename]
-
-/// The URL to a property list that maintains records of downloaded resources.
-let downloadedItemsURL = downloadDirectoryURL.appendingPathComponent(".downloaded_items.plist", isDirectory: false)
-let previousDownloadedItems: DownloadedItems = {
-    do {
-        let data = try Data(contentsOf: downloadedItemsURL)
-        return try PropertyListDecoder().decode(DownloadedItems.self, from: data)
-    } catch {
-        return [:]
+/// The main script function.
+func run() async throws {
+    let arguments = CommandLine.arguments
+    guard arguments.count == 3 else {
+        throw ScriptError.invalidArguments
     }
-}()
-var downloadedItems = previousDownloadedItems
-
-await withTaskGroup(of: Void.self) { group in
-    for portalItem in portalItems {
+    
+    /// The samples directory, i.e., $SRCROOT/Shared/Samples.
+    let samplesDirectoryURL = URL(fileURLWithPath: arguments[1], isDirectory: true)
+    /// The download directory, i.e., $SRCROOT/Portal Data.
+    let downloadDirectoryURL = URL(fileURLWithPath: arguments[2], isDirectory: true)
+    
+    // If the download directory does not exist, create it.
+    if !FileManager.default.fileExists(atPath: downloadDirectoryURL.path) {
+        do {
+            try FileManager.default.createDirectory(at: downloadDirectoryURL, withIntermediateDirectories: false)
+        } catch {
+            throw ScriptError.cannotCreateDirectory(downloadDirectoryURL.path)
+        }
+    }
+    
+    /// Portal Items created from iterating through all metadata's "offline\_data".
+    let portalItems = try parseSampleDependencies(at: samplesDirectoryURL)
+    
+    typealias Identifier = String
+    typealias Filename = String
+    typealias DownloadedItems = [Identifier: Filename]
+    
+    /// The URL to a property list that maintains records of downloaded resources.
+    let downloadedItemsURL = downloadDirectoryURL.appendingPathComponent(".downloaded_items.plist", isDirectory: false)
+    let previousDownloadedItems: DownloadedItems = {
+        do {
+            let data = try Data(contentsOf: downloadedItemsURL)
+            return try PropertyListDecoder().decode(DownloadedItems.self, from: data)
+        } catch {
+            return [:]
+        }
+    }()
+    var downloadedItems = previousDownloadedItems
+    
+    defer {
+        // Updates the downloaded items property list when there are changes.
+        // It runs at the end of the function, even if there are errors.
+        // Because defer cannot throw, errors are caught and printed.
+        if downloadedItems != previousDownloadedItems {
+            do {
+                let data = try PropertyListEncoder().encode(downloadedItems)
+                try data.write(to: downloadedItemsURL)
+            } catch {
+                print("error: Error recording downloaded items: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    /// Creates a directory for the portal item in the download directory.
+    /// - Parameter portalItem: The portal item.
+    /// - Throws: `ScriptError.cannotCreateDirectory` when unable to create the
+    /// directory.
+    /// - Returns: The URL to the created directory, or `nil` if the portal item
+    /// is already downloaded.
+    func createDirectory(for portalItem: PortalItem) throws -> URL? {
         let destinationURL = downloadDirectoryURL.appendingPathComponent(
             portalItem.identifier,
             isDirectory: true
         )
         
         // Checks to see if an item needs downloading.
+        // Only skips if the item is in the plist and file exists at the
+        // expected location.
         guard downloadedItems[portalItem.identifier] == nil ||
                 !FileManager.default.fileExists(atPath: destinationURL.path) else {
             print("note: Item already downloaded: \(portalItem.identifier)")
-            continue
+            return nil
         }
         
         // Deletes the directory when the item is not in the plist.
         try? FileManager.default.removeItem(at: destinationURL)
         
         do {
-            // Creates an enclosing directory with the portal item ID as its name.
+            // Creates an enclosing directory with the item ID as its name.
             try FileManager.default.createDirectory(
                 at: destinationURL,
                 withIntermediateDirectories: false
             )
+            return destinationURL
         } catch {
-            print("error: Error creating download directory: \(error.localizedDescription)")
-            exit(1)
+            throw ScriptError.cannotCreateDirectory(destinationURL.path)
+        }
+    }
+    
+    /// Handles downloading a portal item to the given destination URL.
+    /// - Parameters:
+    ///   - portalItem: The portal item.
+    ///   - destinationURL: The URL to the portal item download directory.
+    /// - Throws: `ScriptError.downloadFailed` when unable to download the item.
+    func handleDownload(for portalItem: PortalItem, at destinationURL: URL) async throws {
+        do {
+            let downloadName = try await downloadFile(
+                from: portalItem.dataURL,
+                to: destinationURL
+            )
+            downloadedItems.updateValue(downloadName ?? "No Suggested Name", forKey: portalItem.identifier)
+            print("note: (\(downloadedItems.count)/\(portalItems.count)) Downloaded item: \(portalItem.identifier)")
+            fflush(stdout)
+        } catch {
+            print("error: Failed to download item \(portalItem.identifier), \(error.localizedDescription)")
+            fflush(stdout)
+            // Deletes the directory when the item fails to download.
+            try? FileManager.default.removeItem(at: destinationURL)
+            throw ScriptError.downloadFailed
+        }
+    }
+    
+    /// The maximum number of concurrent download tasks, capped at 10.
+    let maxConcurrentTasks = min(4, portalItems.count)
+    
+    try await withThrowingTaskGroup(of: Void.self) { group in
+        for index in 0 ..< maxConcurrentTasks {
+            group.addTask {
+                let portalItem = portalItems[index]
+                guard let destinationURL = try createDirectory(for: portalItem) else { return }
+                try await handleDownload(for: portalItem, at: destinationURL)
+            }
         }
         
-        group.addTask {
-            do {
-                guard let downloadName = try await downloadFile(
-                    from: portalItem.dataURL,
-                    to: destinationURL
-                ) else { return }
-                print("note: Downloaded item: \(portalItem.identifier)")
-                fflush(stdout)
-                
-                _ = await MainActor.run {
-                    downloadedItems.updateValue(downloadName, forKey: portalItem.identifier)
+        var nextPortalItemIndex = maxConcurrentTasks
+        // As each task completes, adds a new task until all portal items are
+        // either downloaded, or an error occurs that causes the group to throw
+        // and cancel all remaining tasks.
+        while try await group.next() != nil {
+            if nextPortalItemIndex < portalItems.indices.endIndex {
+                // Captures the next index so it doesn't go out of range.
+                group.addTask { [nextPortalItemIndex] in
+                    let portalItem = portalItems[nextPortalItemIndex]
+                    guard let destinationURL = try createDirectory(for: portalItem) else { return }
+                    try await handleDownload(for: portalItem, at: destinationURL)
                 }
-            } catch {
-                print("error: Error downloading item \(portalItem.identifier): \(error.localizedDescription)")
-                URLSession.shared.invalidateAndCancel()
-                exit(1)
             }
+            nextPortalItemIndex += 1
         }
     }
 }
 
-// Updates the downloaded items property list record if needed.
-if downloadedItems != previousDownloadedItems {
-    do {
-        let data = try PropertyListEncoder().encode(downloadedItems)
-        try data.write(to: downloadedItemsURL)
-    } catch {
-        print("error: Error recording downloaded items: \(error.localizedDescription)")
-        exit(1)
-    }
+do {
+    try await run()
+} catch {
+    print("error: \(error.localizedDescription)")
+    fflush(stdout)
+    exit(1)
 }
