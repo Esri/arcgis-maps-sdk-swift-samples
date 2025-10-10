@@ -134,10 +134,10 @@ func uncompressArchive(at sourceURL: URL, to destinationURL: URL) throws {
 ///   - downloadDirectory: The directory to store the downloaded data in.
 /// - Throws: Exceptions when downloading, naming, uncompressing, and moving the file.
 /// - Returns: The name of the downloaded file.
-func downloadFile(from sourceURL: URL, to downloadDirectory: URL) async throws -> String? {
+func downloadFile(from sourceURL: URL, to downloadDirectory: URL) async throws -> String {
     let (temporaryURL, response) = try await URLSession.shared.download(from: sourceURL)
     
-    guard let suggestedFilename = response.suggestedFilename else { return nil }
+    guard let suggestedFilename = response.suggestedFilename else { fatalError("No suggested filename from server.") }
     let isArchive = NSString(string: suggestedFilename).pathExtension == "zip"
     
     let downloadName: String = try {
@@ -320,7 +320,7 @@ func run() async throws { // swiftlint:disable:this function_body_length cycloma
                 from: portalItem.dataURL,
                 to: destinationURL
             )
-            downloadedItems.updateValue(downloadName ?? "No Suggested Name", forKey: portalItem.identifier)
+            downloadedItems.updateValue(downloadName, forKey: portalItem.identifier)
             print("note: (\(downloadedItems.count)/\(portalItems.count)) Downloaded item: \(portalItem.identifier)")
             fflush(stdout)
         } catch {
