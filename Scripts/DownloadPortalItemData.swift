@@ -220,7 +220,7 @@ func parseSampleDependencies(at samplesDirectoryURL: URL) throws -> [PortalItem]
 }
 
 /// The main script function.
-func run() async throws {
+func run() async throws { // swiftlint:disable:this function_body_length cyclomatic_complexity
     let arguments = CommandLine.arguments
     guard arguments.count == 3 else {
         throw ScriptError.invalidArguments
