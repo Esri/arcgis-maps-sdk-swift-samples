@@ -349,7 +349,7 @@ func run() async throws { // swiftlint:disable:this function_body_length cycloma
         // either downloaded, or an error occurs that causes the group to throw
         // and cancel all remaining tasks.
         while try await group.next() != nil {
-            if nextPortalItemIndex < portalItems.indices.endIndex {
+            if nextPortalItemIndex < portalItems.count {
                 // Captures the next index so it doesn't go out of range.
                 group.addTask { [nextPortalItemIndex] in
                     let portalItem = portalItems[nextPortalItemIndex]
