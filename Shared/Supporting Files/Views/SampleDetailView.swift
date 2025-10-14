@@ -30,9 +30,6 @@ struct SampleDetailView: View {
     /// A Boolean value indicating whether the detail view is full screen.
     @Binding var isFullScreen: Bool
     
-    /// A string which gives the icon name for the expansion state of the view.
-    @State private var screenExpansionToggleImage: String = "arrow.up.backward.and.arrow.down.forward"
-
     /// An object to manage on-demand resources for a sample with dependencies.
     @State private var onDemandResource: OnDemandResource?
     
@@ -108,9 +105,8 @@ struct SampleDetailView: View {
         .toolbar {
             if #available(iOS 26, *), horizontalSizeClass == .regular {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button("Full Screen", systemImage: screenExpansionToggleImage) {
+                    Button("Full Screen", systemImage: isFullScreen ? "arrow.down.forward.and.arrow.up.backward" : "arrow.up.backward.and.arrow.down.forward") {
                         isFullScreen.toggle()
-                        screenExpansionToggleImage = isFullScreen ? "arrow.down.forward.and.arrow.up.backward" : "arrow.up.backward.and.arrow.down.forward"
                     }
                 }
             }
@@ -135,5 +131,4 @@ struct SampleDetailView: View {
 
 extension SampleDetailView: Identifiable {
     nonisolated var id: String { sample.name }
-    
 }
