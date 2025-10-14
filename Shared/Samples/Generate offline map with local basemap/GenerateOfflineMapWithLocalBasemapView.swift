@@ -260,7 +260,6 @@ private extension GenerateOfflineMapWithLocalBasemapView {
         
         /// Creates a temporary directory.
         private static func createTemporaryDirectory() -> URL {
-            // swiftlint:disable:next force_try
             try! FileManager.default.url(
                 for: .itemReplacementDirectory,
                 in: .userDomainMask,

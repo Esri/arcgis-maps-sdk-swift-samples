@@ -6,13 +6,18 @@
         "group-layers-together.png"
     ],
     "keywords": [
+        "3D",
         "group layer",
         "layers",
-        "GroupLayer"
+        "GroupLayer",
+        "GroupLayer.VisibilityMode",
+        "LayerContent"
     ],
     "redirect_from": [],
     "relevant_apis": [
-        "GroupLayer"
+        "GroupLayer",
+        "GroupLayer.VisibilityMode",
+        "LayerContent"
     ],
     "snippets": [
         "GroupLayersTogetherView.swift",

@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import Combine
 import Foundation
 
 /// A wrapper class that manages on-demand resource request.
 @MainActor
-final class OnDemandResource: ObservableObject {
+@Observable
+final class OnDemandResource {
     /// The state of an on-demand resource request.
     enum RequestState {
-        /// A request that has not started.
+        /// A request that has been set up but not started.
         case notStarted
         /// A request that has started and is downloading.
-        case inProgress(Double)
+        case inProgress
         /// A request that has completed successfully.
         case downloaded
         /// A request that was cancelled.
@@ -35,54 +35,50 @@ final class OnDemandResource: ObservableObject {
     /// The progress of the on-demand resource request.
     var progress: Progress { request.progress }
     
+    /// A Boolean value indicating whether a resource request can be initiated.
+    var isDownloadable: Bool {
+        requestState != .inProgress && requestState != .downloaded
+    }
+    
     /// The current state of the on-demand resource request.
-    @Published private(set) var requestState: RequestState = .notStarted
+    private(set) var requestState: RequestState
     
     /// The error occurred in downloading resources.
-    @Published private(set) var error: (any Error)?
+    private(set) var error: (any Error)?
     
     /// The on-demand resource request.
     private let request: NSBundleResourceRequest
     
-    /// A set of cancellable instances for the request progress subscription.
-    private var cancellables: Set<AnyCancellable> = []
-    
     /// Initializes a request with a set of Resource Tags.
-    init(tags: Set<String>) {
+    init(tags: Set<String>) async {
         request = NSBundleResourceRequest(tags: tags)
         request.loadingPriority = NSBundleResourceRequestLoadingPriorityUrgent
-        request.progress
-            .publisher(for: \.fractionCompleted, options: .new)
-            .receive(on: DispatchQueue.main)
-            .map { .inProgress($0) }
-            .sink { [weak self] in self?.requestState = $0 }
-            .store(in: &cancellables)
+        
+        let isResourceAvailable = await request.conditionallyBeginAccessingResources()
+        requestState = isResourceAvailable ? .downloaded : .notStarted
     }
     
     /// Cancels the on-demand resource request.
     func cancel() {
         progress.cancel()
-        cancellables.removeAll()
         request.endAccessingResources()
         requestState = .cancelled
     }
     
     /// Starts the on-demand resource request.
     func download() async {
-        // Initiates download when it is not being/already downloaded.
-        // Checks if the resource is already on device.
-        let isResourceAvailable = await request.conditionallyBeginAccessingResources()
-        if isResourceAvailable {
+        guard isDownloadable else { return }
+        
+        requestState = .inProgress
+        do {
+            try await request.beginAccessingResources()
             requestState = .downloaded
-        } else {
-            do {
-                try await request.beginAccessingResources()
-                requestState = .downloaded
-            } catch {
-                if (error as NSError).code != NSUserCancelledError {
-                    self.error = error
-                    requestState = .error
-                }
+        } catch {
+            if (error as NSError).code != NSUserCancelledError {
+                self.error = error
+                requestState = .error
+            } else {
+                cancel()
             }
         }
     }

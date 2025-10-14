@@ -69,12 +69,12 @@ extension Sample {
         snippets.compactMap { Bundle.main.url(forResource: $0, withExtension: nil) }
     }
     
-    /// The sample's name in UpperCamelCase.
-    /// - Note: For example, "Display map" -> "DisplayMap".
-    var nameInUpperCamelCase: String {
-        name.capitalized.filter { !$0.isWhitespace && !$0.isPunctuation }
-    }
-    
     /// By default, a sample doesn't have dependencies.
     var hasDependencies: Bool { false }
+    
+    /// The on-demand resource tags for this sample.
+    var odrTags: Set<String> {
+        guard hasDependencies else { return [] }
+        return [name.upperCamelCased()]
+    }
 }

@@ -472,7 +472,6 @@ private extension Geometry {
         }
     }
     
-    // swiftlint:disable force_try
     static var pinkneysGreen: Geometry {
         let json = Data(
             """
@@ -511,7 +510,6 @@ private extension Geometry {
         )
         return try! Multipoint.fromJSON(json)
     }
-    // swiftlint:enable force_try
 }
 
 private extension Symbol {

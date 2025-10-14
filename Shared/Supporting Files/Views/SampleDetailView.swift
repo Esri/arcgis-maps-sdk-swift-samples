@@ -25,7 +25,7 @@ struct SampleDetailView: View {
     @State private var isSampleInfoViewPresented = false
     
     /// An object to manage on-demand resources for a sample with dependencies.
-    @StateObject private var onDemandResource: OnDemandResource
+    @State private var onDemandResource: OnDemandResource?
     
     /// A Boolean value indicating whether a sample should use on-demand resources.
     private var usesOnDemandResources: Bool {
@@ -51,9 +51,6 @@ struct SampleDetailView: View {
     
     init(sample: Sample) {
         self.sample = sample
-        self._onDemandResource = StateObject(
-            wrappedValue: OnDemandResource(tags: [sample.nameInUpperCamelCase])
-        )
     }
     
     var body: some View {
@@ -61,12 +58,17 @@ struct SampleDetailView: View {
             if usesOnDemandResources {
                 // 'onDemandResource' is created in this branch.
                 Group {
-                    switch onDemandResource.requestState {
-                    case .notStarted, .inProgress:
+                    switch onDemandResource?.requestState {
+                    case .none, .notStarted, .inProgress:
                         VStack {
-                            ProgressView(onDemandResource.progress)
+                            if let progress = onDemandResource?.progress {
+                                ProgressView(progress)
+                            } else {
+                                ProgressView()
+                                    .progressViewStyle(.circular)
+                            }
                             Button("Cancel") {
-                                onDemandResource.cancel()
+                                onDemandResource?.cancel()
                             }
                         }
                         .padding()
@@ -79,7 +81,7 @@ struct SampleDetailView: View {
                     case .error:
                         VStack {
                             Image(systemName: "x.circle")
-                            Text(onDemandResource.error!.localizedDescription)
+                            Text(onDemandResource!.error!.localizedDescription)
                         }
                         .padding()
                     case .downloaded:
@@ -87,8 +89,9 @@ struct SampleDetailView: View {
                     }
                 }
                 .task {
-                    guard case .notStarted = onDemandResource.requestState else { return }
-                    await onDemandResource.download()
+                    guard onDemandResource == nil else { return }
+                    onDemandResource = await OnDemandResource(tags: sample.odrTags)
+                    await onDemandResource!.download()
                 }
             } else {
                 // 'onDemandResource' is not created in this branch.
@@ -117,5 +120,5 @@ struct SampleDetailView: View {
 }
 
 extension SampleDetailView: Identifiable {
-    nonisolated var id: String { sample.nameInUpperCamelCase }
+    nonisolated var id: String { sample.name }
 }

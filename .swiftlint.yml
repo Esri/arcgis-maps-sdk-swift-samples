@@ -21,8 +21,8 @@ disabled_rules:
   - file_length
   - for_where
   - force_cast
+  - force_try
   - line_length
-  - notification_center_detachment
   - type_body_length
   - type_name
 

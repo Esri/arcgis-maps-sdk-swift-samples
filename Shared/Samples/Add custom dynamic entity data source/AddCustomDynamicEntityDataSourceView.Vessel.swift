@@ -12,19 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import ArcGIS
+
 extension AddCustomDynamicEntityDataSourceView {
     /// A marine vessel that can be decoded from the vessel JSON.
     struct Vessel {
-        /// A geometry that gives the location of the vessel.
-        struct Geometry: Decodable { // swiftlint:disable:this nesting
-            /// The x coordinate of the geometry.
-            let x: Double
-            /// The y coordinate of the geometry.
-            let y: Double
-        }
-        
         /// The location of the vessel.
-        let geometry: Geometry
+        let geometry: Point
         /// The attributes of the vessel.
         let attributes: [String: any Sendable]
     }
@@ -56,7 +50,7 @@ extension AddCustomDynamicEntityDataSourceView.Vessel: Decodable {
         
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        let geometry = try container.decode(Geometry.self, forKey: .geometry)
+        let geometry = try container.decode(Point.self, forKey: .geometry)
         let attributes: [String: any Sendable] = try {
             let attributes = try container.decode(Attributes.self, forKey: .attributes)
             return [
