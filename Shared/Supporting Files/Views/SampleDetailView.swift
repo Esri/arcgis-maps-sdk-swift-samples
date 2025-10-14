@@ -103,11 +103,13 @@ struct SampleDetailView: View {
         .navigationTitle(sample.name)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            if #available(iOS 26, *), UIDevice.current.userInterfaceIdiom == .pad {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button("Full Screen", systemImage: screenExpansionToggleImage) {
-                        isFullScreen.toggle()
-                        screenExpansionToggleImage = isFullScreen ? "arrow.down.forward.and.arrow.up.backward" : "arrow.up.backward.and.arrow.down.forward"
+            if #available(iOS 26, *) {
+                if UIDevice.current.userInterfaceIdiom == .pad || UIDevice.current.modelName == "iPhone18,2" && UIDevice.current.orientation == .landscapeRight {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button("Full Screen", systemImage: screenExpansionToggleImage) {
+                            isFullScreen.toggle()
+                            screenExpansionToggleImage = isFullScreen ? "arrow.down.forward.and.arrow.up.backward" : "arrow.up.backward.and.arrow.down.forward"
+                        }
                     }
                 }
             }
@@ -132,4 +134,21 @@ struct SampleDetailView: View {
 
 extension SampleDetailView: Identifiable {
     nonisolated var id: String { sample.name }
+}
+
+extension UIDevice {
+    var modelName: String {
+        var systemInfo = utsname()
+        uname(&systemInfo)
+        let machineMirror = Mirror(reflecting: systemInfo.machine)
+        let identifier = machineMirror.children.reduce("") { identifier, element in
+            guard let value = element.value as? Int8, value != 0 else { return identifier }
+            return identifier + String(UnicodeScalar(UInt8(value)))
+        }
+        if let value = ProcessInfo.processInfo.environment["SIMULATOR_MODEL_IDENTIFIER"] {
+            return value
+        } else {
+            return identifier
+        }
+    }
 }
