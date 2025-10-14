@@ -2,13 +2,13 @@
 
 Display a local scene with a topographic surface and 3D scene layer clipped to a local area.
 
-![Image of display local scene](display-local-scene.png)
+![Image of Display local scene sample](display-local-scene.png)
 
 ## Use case
 
 A `LocalSceneView` is a user interface that displays 3D basemaps and layer content described in a `Scene` with a local `Scene.ViewingMode`.
 
-Unlike a global scene which is drawn on a globe using a geographic coordinate system, a local scene is drawn on a flat surface and supports projected coordinate systems. They are generally used to view local data and are often clipped to a specific area of interest. Currently, `LocalSceneView` cannot display data provided by a global scene and `SceneView` cannot display data provided by a local scene.
+Unlike a global scene, which is drawn on a globe using a geographic coordinate system, a local scene is drawn on a flat surface and supports projected coordinate systems. They are generally used to view local data and are often clipped to a specific area of interest. Currently, `LocalSceneView` cannot display data provided by a global scene, and `SceneView` cannot display data provided by a local scene.
 
 The `LocalSceneView` displays the clipped area of the local scene, supports user interactions such as pan and zoom, and provides access to the underlying scene data.
 

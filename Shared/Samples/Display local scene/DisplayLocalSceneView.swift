@@ -23,24 +23,21 @@ struct DisplayLocalSceneView: View {
             viewingMode: .local
         )
         
-        // Add surface.
+        // Adds a surface.
         
-        let surface = Surface()
         let elevationSource = ArcGISTiledElevationSource(
             url: URL(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!
         )
-        surface.addElevationSource(elevationSource)
-        scene.baseSurface = surface
+        scene.baseSurface.addElevationSource(elevationSource)
         
-        // Add layer.
+        // Adds a layer.
         
         let sceneLayer = ArcGISSceneLayer(
             url: URL(string: "https://www.arcgis.com/home/item.html?id=61da8dc1a7bc4eea901c20ffb3f8b7af")!
         )
-        
         scene.addOperationalLayer(sceneLayer)
         
-        // Set clipping area.
+        // Sets the clipping area.
         
         scene.clippingArea = Envelope(
             xRange: 19_454_578.8235...19_455_518.8814,
@@ -49,7 +46,7 @@ struct DisplayLocalSceneView: View {
         )
         scene.clippingIsEnabled = true
         
-        // Set intial viewpoint.
+        // Sets the intial viewpoint.
         
         let camera = Camera(
             location: Point(
@@ -72,6 +69,7 @@ struct DisplayLocalSceneView: View {
     }()
     
     var body: some View {
+        // Creates a local scene view with a local scene.
         LocalSceneView(scene: scene)
     }
 }
