@@ -28,6 +28,9 @@ struct FindRouteAroundBarriersView: View {
     /// The geometry of a direction maneuver to set the viewpoint to.
     @State private var directionGeometry: Geometry?
     
+    /// A Boolean value specifying whether the metadata view should be shown
+    @State private var showMetadata: Bool = false
+    
     /// The error shown in the error alert.
     @State private var error: (any Error)?
     
@@ -110,11 +113,12 @@ struct FindRouteAroundBarriersView: View {
                         }
                         Spacer()
                         
-                        Picker("Features", selection: $featuresSelection) {
-                            Text("Stops").tag(RouteFeatures.stops)
-                            Text("Barriers").tag(RouteFeatures.barriers)
+                        Button("Features") {
+                            showMetadata.toggle()
                         }
-                        .pickerStyle(.segmented)
+                        .popover(isPresented: $showMetadata) {
+                            metadataPopover
+                        }
                         .labelsHidden()
                         Spacer()
                         
@@ -147,6 +151,29 @@ struct FindRouteAroundBarriersView: View {
             }
         }
         .errorAlert(presentingError: $error)
+    }
+    
+    @ViewBuilder var metadataPopover: some View {
+        NavigationStack {
+            Picker("Features", selection: $featuresSelection) {
+                Text("Stops").tag(RouteFeatures.stops)
+                Text("Barriers").tag(RouteFeatures.barriers)
+            }
+            .pickerStyle(.segmented)
+            .pickerStyle(.segmented)
+            .navigationTitle("Select Feature")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") {
+                        showMetadata = false
+                    }
+                }
+            }
+            .padding()
+        }
+        .presentationDetents([.fraction(0.20)])
+        .frame(idealWidth: 250, idealHeight: 120)
     }
 }
 
