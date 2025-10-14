@@ -84,28 +84,26 @@ struct CategoriesView: View {
             .navigationTitle(selectedCategory ?? "")
             .navigationDestination(for: String.self) { sampleName in
                 let sample = SamplesApp.samples.first(where: { $0.name == sampleName })!
-                
-                if sampleNeedingTeardown != nil && sampleNeedingTeardown != sampleName {
-                    ProgressView("Loading sample")
-                } else if sample.hasTeardown {
-                    SampleDetailView(sample: sample, isFullScreen: $isFullScreen)
-                        .id(sampleName)
-                        .onAppear {
-                            sampleNeedingTeardown = sampleName
-                        }
-                        .onChange(of: isFullScreen) {
-                            columnVisibility = isFullScreen ? .detailOnly : .doubleColumn
-                        }
-                        .environment(\.finishTeardown) {
-                            // Allows the next teardown sample to appear.
-                            sampleNeedingTeardown = nil
-                        }
-                } else {
-                    SampleDetailView(sample: sample, isFullScreen: $isFullScreen)
-                        .id(sampleName)
-                        .onChange(of: isFullScreen) {
-                            columnVisibility = isFullScreen ? .detailOnly : .doubleColumn
-                        }
+                Group {
+                    if sampleNeedingTeardown != nil && sampleNeedingTeardown != sampleName {
+                        ProgressView("Loading sample")
+                    } else if sample.hasTeardown {
+                        SampleDetailView(sample: sample, isFullScreen: $isFullScreen)
+                            .id(sampleName)
+                            .onAppear {
+                                sampleNeedingTeardown = sampleName
+                            }
+                            .environment(\.finishTeardown) {
+                                // Allows the next teardown sample to appear.
+                                sampleNeedingTeardown = nil
+                            }
+                    } else {
+                        SampleDetailView(sample: sample, isFullScreen: $isFullScreen)
+                            .id(sampleName)
+                    }
+                }
+                .onChange(of: isFullScreen) {
+                    columnVisibility = isFullScreen ? .detailOnly : .doubleColumn
                 }
             }
         }
