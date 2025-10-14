@@ -41,24 +41,53 @@ struct SetMaxExtentView: View {
     /// A Boolean value indicating whether the max extent is set.
     @State private var maxExtentIsSet = true
     
+    /// A Boolean value specifying whether the metadata view should be shown
+    @State private var showMetadata: Bool = false
+    
     var body: some View {
         MapView(map: map, graphicsOverlays: [graphicsOverlay])
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
-                    Toggle(maxExtentIsSet ? "Max Extent Enabled" : "Max Extent Disabled", isOn: $maxExtentIsSet)
-                        .onChange(of: maxExtentIsSet) {
-                            map.maxExtent = if maxExtentIsSet {
-                                // Set the map's max extent to limit the map
-                                // view to a certain visible area.
-                                .coloradoExtent
-                            } else {
-                                // Set the map's max extent to nil so it doesn't
-                                // limit panning or zooming.
-                                nil
-                            }
-                        }
+                    Button("Max Extent Setting") {
+                        showMetadata.toggle()
+                    }
+                    .popover(isPresented: $showMetadata) {
+                        metadataPopover
+                    }
                 }
             }
+    }
+    
+    @ViewBuilder var metadataPopover: some View {
+        NavigationStack {
+            VStack {
+                Toggle(maxExtentIsSet ? "Max Extent Enabled" : "Max Extent Disabled", isOn: $maxExtentIsSet)
+                    .onChange(of: maxExtentIsSet) {
+                        map.maxExtent = if maxExtentIsSet {
+                            // Set the map's max extent to limit the map
+                            // view to a certain visible area.
+                            .coloradoExtent
+                        } else {
+                            // Set the map's max extent to nil so it doesn't
+                            // limit panning or zooming.
+                            nil
+                        }
+                    }
+            }
+        }
+        .padding()
+        .navigationTitle("Shapefile Metadata")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .confirmationAction) {
+                Button("Done") {
+                    showMetadata = false
+                }
+            }
+        }
+        .presentationDetents([.fraction(0.20)])
+        .frame(idealWidth: 80, idealHeight: 100)
+        padding()
     }
 }
 
