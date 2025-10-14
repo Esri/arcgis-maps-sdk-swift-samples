@@ -19,6 +19,9 @@ struct CreateConvexHullAroundGeometriesView: View {
     /// A map with a topographic basemap.
     @State private var map = Map(basemapStyle: .arcGISTopographic)
     
+    /// A Boolean value specifying whether the metadata view should be shown
+    @State private var showMetadata: Bool = false
+    
     /// The graphics overlay for the geometry graphics.
     @State private var geometriesGraphicsOverlay: GraphicsOverlay = {
         let polygonFillSymbol = SimpleFillSymbol(
@@ -45,22 +48,23 @@ struct CreateConvexHullAroundGeometriesView: View {
     var body: some View {
         MapView(map: map, graphicsOverlays: [convexHullGraphicsOverlay, geometriesGraphicsOverlay])
             .toolbar {
-                ToolbarItemGroup(placement: .bottomBar) {
-                    Toggle(shouldUnion ? "Union Enabled" : "Union Disabled", isOn: $shouldUnion)
-                        .disabled(convexHullGraphicsOverlay.graphics.isEmpty)
-                        .onChange(of: shouldUnion) {
-                            if !createIsOn {
-                                convexHullGraphicsOverlay.removeAllGraphics()
-                                convexHullGraphicsOverlay.addGraphics(
-                                    makeConvexHullGraphics(
-                                        for: [.polygon1, .polygon2],
-                                        unioned: shouldUnion
-                                    )
-                                )
-                            }
-                        }
-                    Button(createIsOn ? "Create" : "Reset") {
-                        if createIsOn {
+                ToolbarItem(placement: .bottomBar) {
+                    Button("Show Shapefile Metadata") {
+                        showMetadata.toggle()
+                    }
+                    .popover(isPresented: $showMetadata) {
+                        metadataPopover
+                    }
+                }
+            }
+    }
+    
+    @ViewBuilder var metadataPopover: some View {
+        NavigationStack {
+            VStack {
+                Toggle(shouldUnion ? "Union Enabled" : "Union Disabled", isOn: $shouldUnion)
+                    .onChange(of: shouldUnion) {
+                        if !createIsOn {
                             convexHullGraphicsOverlay.removeAllGraphics()
                             convexHullGraphicsOverlay.addGraphics(
                                 makeConvexHullGraphics(
@@ -68,16 +72,42 @@ struct CreateConvexHullAroundGeometriesView: View {
                                     unioned: shouldUnion
                                 )
                             )
-                            createIsOn = false
-                        } else {
-                            convexHullGraphicsOverlay.removeAllGraphics()
-                            createIsOn = true
                         }
+                    }
+                Button(createIsOn ? "Create" : "Reset") {
+                    if createIsOn {
+                        convexHullGraphicsOverlay.removeAllGraphics()
+                        convexHullGraphicsOverlay.addGraphics(
+                            makeConvexHullGraphics(
+                                for: [.polygon1, .polygon2],
+                                unioned: shouldUnion
+                            )
+                        )
+                        createIsOn = false
+                    } else {
+                        convexHullGraphicsOverlay.removeAllGraphics()
+                        createIsOn = true
                     }
                 }
             }
+            .navigationTitle("Shapefile Metadata")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") {
+                        showMetadata = false
+                    }
+                }
+            }
+            .padding()
+            .cornerRadius(8)
+            .padding(.horizontal)
+            .presentationDetents([.fraction(0.25)])
+            .frame(idealWidth: 300, idealHeight: 100)
+        }
     }
 }
+
 
 private extension CreateConvexHullAroundGeometriesView {
     /// Creates convex hulls graphic(s) from passed geometries.

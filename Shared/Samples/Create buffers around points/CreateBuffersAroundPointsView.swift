@@ -19,6 +19,9 @@ struct CreateBuffersAroundPointsView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
+    /// A Boolean value specifying whether the metadata view should be shown
+    @State private var showMetadata: Bool = false
+    
     /// The status of the sample.
     @State private var status = Status.addPoints
     
@@ -53,19 +56,13 @@ struct CreateBuffersAroundPointsView: View {
                     .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
             }
             .toolbar {
-                ToolbarItemGroup(placement: .bottomBar) {
-                    // Union toggle switch.
-                    Toggle(shouldUnion ? "Union Enabled" : "Union Disabled", isOn: $shouldUnion)
-                        .onChange(of: shouldUnion) {
-                            if !model.bufferPoints.isEmpty {
-                                model.drawBuffers(unioned: shouldUnion)
-                            }
-                        }
-                    Button("Clear") {
-                        model.clearBufferPoints()
-                        status = .addPoints
+                ToolbarItem(placement: .bottomBar) {
+                    Button("Show Shapefile Metadata") {
+                        showMetadata.toggle()
                     }
-                    .disabled(model.bufferPoints.isEmpty)
+                    .popover(isPresented: $showMetadata) {
+                        metadataPopover
+                    }
                 }
             }
             .alert("Buffer Radius", isPresented: $inputBoxIsPresented, actions: {
@@ -100,6 +97,38 @@ struct CreateBuffersAroundPointsView: View {
             }, message: {
                 Text("Please enter a number between 0 and 300 miles.")
             })
+    }
+    
+    @ViewBuilder var metadataPopover: some View {
+        NavigationStack {
+            VStack {
+                Toggle(shouldUnion ? "Union Enabled" : "Union Disabled", isOn: $shouldUnion)
+                    .onChange(of: shouldUnion) {
+                        if !model.bufferPoints.isEmpty {
+                            model.drawBuffers(unioned: shouldUnion)
+                        }
+                    }
+                Button("Clear") {
+                    model.clearBufferPoints()
+                    status = .addPoints
+                }
+                //                .disabled(model.bufferPoints.isEmpty)
+            }
+            .navigationTitle("Shapefile Metadata")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") {
+                        showMetadata = false
+                    }
+                }
+            }
+            .padding()
+            .cornerRadius(8)
+            .padding(.horizontal)
+            .presentationDetents([.fraction(0.25)])
+            .frame(idealWidth: 300, idealHeight: 100)
+        }
     }
 }
 

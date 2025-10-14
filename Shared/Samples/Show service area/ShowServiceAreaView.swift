@@ -33,6 +33,9 @@ struct ShowServiceAreaView: View {
     /// A Boolean value indicating whether the service area is being solved.
     @State private var isSolvingServiceArea = false
     
+    /// A Boolean value specifying whether the metadata view should be shown
+    @State private var showMetadata: Bool = false
+    
     /// The data model for the sample.
     @StateObject private var model = Model()
     
@@ -48,12 +51,12 @@ struct ShowServiceAreaView: View {
             }
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
-                    Picker("Mode", selection: $selectedGraphicType) {
-                        ForEach(GraphicType.allCases, id: \.self) {
-                            Text($0.label)
-                        }
+                    Button("Facility Mode") {
+                        showMetadata.toggle()
                     }
-                    .pickerStyle(.segmented)
+                    .popover(isPresented: $showMetadata) {
+                        metadataPopover
+                    }
                     Spacer()
                     Button("Time Breaks", systemImage: "gear") {
                         settingsArePresented = true
@@ -97,6 +100,29 @@ struct ShowServiceAreaView: View {
                 }
             }
             .errorAlert(presentingError: $error)
+    }
+    
+    @ViewBuilder var metadataPopover: some View {
+        NavigationStack {
+            Picker("Mode", selection: $selectedGraphicType) {
+                ForEach(GraphicType.allCases, id: \.self) {
+                    Text($0.label)
+                }
+            }
+            .pickerStyle(.segmented)
+            .navigationTitle("Select Type")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") {
+                        showMetadata = false
+                    }
+                }
+            }
+            .padding()
+        }
+        .presentationDetents([.fraction(0.20)])
+        .frame(idealWidth: 100, idealHeight: 100)
     }
 }
 
