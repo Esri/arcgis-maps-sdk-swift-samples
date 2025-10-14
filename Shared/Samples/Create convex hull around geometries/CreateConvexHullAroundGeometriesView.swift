@@ -49,7 +49,7 @@ struct CreateConvexHullAroundGeometriesView: View {
         MapView(map: map, graphicsOverlays: [convexHullGraphicsOverlay, geometriesGraphicsOverlay])
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
-                    Button("Show Shapefile Metadata") {
+                    Button("Convex Hull Settings") {
                         showMetadata.toggle()
                     }
                     .popover(isPresented: $showMetadata) {
@@ -90,7 +90,7 @@ struct CreateConvexHullAroundGeometriesView: View {
                     }
                 }
             }
-            .navigationTitle("Shapefile Metadata")
+            .navigationTitle("Geometry Setting")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
@@ -103,7 +103,7 @@ struct CreateConvexHullAroundGeometriesView: View {
             .cornerRadius(8)
             .padding(.horizontal)
             .presentationDetents([.fraction(0.25)])
-            .frame(idealWidth: 300, idealHeight: 100)
+            .frame(idealWidth: 250, idealHeight: 120)
         }
     }
 }

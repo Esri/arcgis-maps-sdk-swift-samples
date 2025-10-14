@@ -57,12 +57,18 @@ struct CreateBuffersAroundPointsView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
-                    Button("Show Shapefile Metadata") {
+                    Button("Buffer Settings") {
                         showMetadata.toggle()
                     }
                     .popover(isPresented: $showMetadata) {
                         metadataPopover
                     }
+                }
+                ToolbarItem(placement: .bottomBar) {
+                    Button("Clear") {
+                        model.clearBufferPoints()
+                        status = .addPoints
+                    }.disabled(model.bufferPoints.isEmpty)
                 }
             }
             .alert("Buffer Radius", isPresented: $inputBoxIsPresented, actions: {
@@ -108,13 +114,8 @@ struct CreateBuffersAroundPointsView: View {
                             model.drawBuffers(unioned: shouldUnion)
                         }
                     }
-                Button("Clear") {
-                    model.clearBufferPoints()
-                    status = .addPoints
-                }
-                //                .disabled(model.bufferPoints.isEmpty)
             }
-            .navigationTitle("Shapefile Metadata")
+            .navigationTitle("Buffer Radius")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
@@ -127,7 +128,7 @@ struct CreateBuffersAroundPointsView: View {
             .cornerRadius(8)
             .padding(.horizontal)
             .presentationDetents([.fraction(0.25)])
-            .frame(idealWidth: 300, idealHeight: 100)
+            .frame(idealWidth: 250, idealHeight: 120)
         }
     }
 }

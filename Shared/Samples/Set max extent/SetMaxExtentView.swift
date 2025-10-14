@@ -48,7 +48,7 @@ struct SetMaxExtentView: View {
         MapView(map: map, graphicsOverlays: [graphicsOverlay])
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
-                    Button("Max Extent Setting") {
+                    Button("Extent Setting") {
                         showMetadata.toggle()
                     }
                     .popover(isPresented: $showMetadata) {
@@ -74,20 +74,19 @@ struct SetMaxExtentView: View {
                         }
                     }
             }
-        }
-        .padding()
-        .navigationTitle("Shapefile Metadata")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .confirmationAction) {
-                Button("Done") {
-                    showMetadata = false
+            .navigationTitle("Max Extent")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") {
+                        showMetadata = false
+                    }
                 }
             }
+            .presentationDetents([.fraction(0.20)])
+            .frame(idealWidth: 250, idealHeight: 120)
+            .padding()
         }
-        .presentationDetents([.fraction(0.20)])
-        .frame(idealWidth: 80, idealHeight: 100)
-        padding()
     }
 }
 

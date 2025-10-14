@@ -122,7 +122,7 @@ struct ShowServiceAreaView: View {
             .padding()
         }
         .presentationDetents([.fraction(0.20)])
-        .frame(idealWidth: 100, idealHeight: 100)
+        .frame(idealWidth: 250, idealHeight: 120)
     }
 }
 
