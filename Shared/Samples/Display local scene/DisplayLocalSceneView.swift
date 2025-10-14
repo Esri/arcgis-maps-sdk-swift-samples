@@ -46,7 +46,7 @@ struct DisplayLocalSceneView: View {
         )
         scene.clippingIsEnabled = true
         
-        // Sets the intial viewpoint.
+        // Sets the initial viewpoint.
         
         let camera = Camera(
             location: Point(
