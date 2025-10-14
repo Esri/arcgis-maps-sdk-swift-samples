@@ -18,6 +18,9 @@ struct SampleDetailView: View {
     /// The sample to display in the view.
     let sample: Sample
     
+    /// An environmental value we use to determine whether this device displays the UI in columns.
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    
     /// The view model for requesting App Store reviews.
     @Environment(\.requestReviewModel) private var requestReviewModel
     
@@ -29,7 +32,7 @@ struct SampleDetailView: View {
     
     /// A string which gives the icon name for the expansion state of the view.
     @State private var screenExpansionToggleImage: String = "arrow.up.backward.and.arrow.down.forward"
-    
+
     /// An object to manage on-demand resources for a sample with dependencies.
     @State private var onDemandResource: OnDemandResource?
     
@@ -103,13 +106,11 @@ struct SampleDetailView: View {
         .navigationTitle(sample.name)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            if #available(iOS 26, *) {
-                if UIDevice.current.userInterfaceIdiom == .pad || UIDevice.current.modelName == "iPhone18,2" && UIDevice.current.orientation == .landscapeRight {
-                    ToolbarItem(placement: .topBarLeading) {
-                        Button("Full Screen", systemImage: screenExpansionToggleImage) {
-                            isFullScreen.toggle()
-                            screenExpansionToggleImage = isFullScreen ? "arrow.down.forward.and.arrow.up.backward" : "arrow.up.backward.and.arrow.down.forward"
-                        }
+            if #available(iOS 26, *), horizontalSizeClass == .regular {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Full Screen", systemImage: screenExpansionToggleImage) {
+                        isFullScreen.toggle()
+                        screenExpansionToggleImage = isFullScreen ? "arrow.down.forward.and.arrow.up.backward" : "arrow.up.backward.and.arrow.down.forward"
                     }
                 }
             }
@@ -134,21 +135,5 @@ struct SampleDetailView: View {
 
 extension SampleDetailView: Identifiable {
     nonisolated var id: String { sample.name }
-}
-
-extension UIDevice {
-    var modelName: String {
-        var systemInfo = utsname()
-        uname(&systemInfo)
-        let machineMirror = Mirror(reflecting: systemInfo.machine)
-        let identifier = machineMirror.children.reduce("") { identifier, element in
-            guard let value = element.value as? Int8, value != 0 else { return identifier }
-            return identifier + String(UnicodeScalar(UInt8(value)))
-        }
-        if let value = ProcessInfo.processInfo.environment["SIMULATOR_MODEL_IDENTIFIER"] {
-            return value
-        } else {
-            return identifier
-        }
-    }
+    
 }
