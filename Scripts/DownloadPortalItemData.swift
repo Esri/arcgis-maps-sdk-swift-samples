@@ -313,15 +313,16 @@ func run() async throws { // swiftlint:disable:this function_body_length cycloma
     /// - Parameters:
     ///   - portalItem: The portal item.
     ///   - destinationURL: The URL to the portal item download directory.
+    ///   - index: The index of the portal item in the overall list.
     /// - Throws: `ScriptError.downloadFailed` when unable to download the item.
-    func handleDownload(for portalItem: PortalItem, at destinationURL: URL) async throws {
+    func handleDownload(for portalItem: PortalItem, at destinationURL: URL, index: Int) async throws {
         do {
             let downloadName = try await downloadFile(
                 from: portalItem.dataURL,
                 to: destinationURL
             )
             downloadedItems.updateValue(downloadName, forKey: portalItem.identifier)
-            print("note: (\(downloadedItems.count)/\(portalItems.count)) Downloaded item: \(portalItem.identifier)")
+            print("note: (#\(index)/\(portalItems.count)) Downloaded item: \(portalItem.identifier)")
             fflush(stdout)
         } catch {
             print("error: Failed to download item \(portalItem.identifier), \(error.localizedDescription)")
@@ -340,7 +341,7 @@ func run() async throws { // swiftlint:disable:this function_body_length cycloma
             group.addTask {
                 let portalItem = portalItems[index]
                 guard let destinationURL = try createDirectory(for: portalItem) else { return }
-                try await handleDownload(for: portalItem, at: destinationURL)
+                try await handleDownload(for: portalItem, at: destinationURL, index: index)
             }
         }
         
@@ -354,7 +355,7 @@ func run() async throws { // swiftlint:disable:this function_body_length cycloma
                 group.addTask { [nextPortalItemIndex] in
                     let portalItem = portalItems[nextPortalItemIndex]
                     guard let destinationURL = try createDirectory(for: portalItem) else { return }
-                    try await handleDownload(for: portalItem, at: destinationURL)
+                    try await handleDownload(for: portalItem, at: destinationURL, index: nextPortalItemIndex)
                 }
             }
             nextPortalItemIndex += 1
