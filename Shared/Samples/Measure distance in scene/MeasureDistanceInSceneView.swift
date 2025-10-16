@@ -93,7 +93,7 @@ struct MeasureDistanceInSceneView: View {
         .toolbar {
             ToolbarItem(placement: .bottomBar) {
                 // Unit system picker.
-                Picker("", selection: $unitSystemSelection) {
+                Picker("Unit System", selection: $unitSystemSelection) {
                     Text("Imperial").tag(UnitSystem.imperial)
                     Text("Metric").tag(UnitSystem.metric)
                 }
