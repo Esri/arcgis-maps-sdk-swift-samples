@@ -325,7 +325,7 @@ func run() async throws { // swiftlint:disable:this function_body_length cycloma
                 to: destinationURL
             )
             downloadedItems.updateValue(downloadName, forKey: portalItem.identifier)
-            print("note: (\(index)/\(portalItems.count)) Downloaded item: \(portalItem.identifier)")
+            print("note: (\(index + 1)/\(portalItems.count)) Downloaded item: \(portalItem.identifier)")
             fflush(stdout)
         } catch {
             print("error: Failed to download item \(portalItem.identifier), \(error.localizedDescription)")
