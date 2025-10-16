@@ -23,23 +23,23 @@ struct StyleFeaturesWithCustomDictionaryView: View {
     @State private var dictionaryStyleSelection: CustomDictionaryStyle = .file
     
     var body: some View {
-        VStack {
-            MapView(map: model.map)
-            
-            // The picker to toggle between style file and web style.
-            Picker("Dictionary Symbol Style", selection: $dictionaryStyleSelection) {
-                ForEach(CustomDictionaryStyle.allCases, id: \.self) { style in
-                    Text(style.label)
+        MapView(map: model.map)
+            .toolbar {
+                ToolbarItem(placement: .bottomBar) {
+                    // The picker to toggle between style file and web style.
+                    Picker("Dictionary Symbol Style", selection: $dictionaryStyleSelection) {
+                        ForEach(CustomDictionaryStyle.allCases, id: \.self) { style in
+                            Text(style.label)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                    .onChange(of: dictionaryStyleSelection) {
+                        // Update the feature layer with the correct dictionary renderer
+                        // on selection change.
+                        model.restaurantFeatureLayer.renderer = dictionaryStyleSelection == .web ? model.dictionaryRendererFromWebStyle : model.dictionaryRendererFromStyleFile
+                    }
                 }
             }
-            .pickerStyle(.segmented)
-            .padding()
-            .onChange(of: dictionaryStyleSelection) {
-                // Update the feature layer with the correct dictionary renderer
-                // on selection change.
-                model.restaurantFeatureLayer.renderer = dictionaryStyleSelection == .web ? model.dictionaryRendererFromWebStyle : model.dictionaryRendererFromStyleFile
-            }
-        }
     }
 }
 
