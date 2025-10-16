@@ -197,7 +197,7 @@ enum ScriptError: Error, LocalizedError {
 /// Parses all sample dependencies in the given samples directory.
 /// - Parameter samplesDirectoryURL: The URL to the samples directory.
 /// - Throws: Exceptions when unable to read or decode JSON files.
-/// - Returns: A set of `PortalItem` objects.
+/// - Returns: The portal items that represent the offline data.
 func parseSampleDependencies(at samplesDirectoryURL: URL) throws -> [PortalItem] {
     do {
         // Finds all subdirectories under the root Samples directory.
@@ -240,7 +240,7 @@ func run() async throws { // swiftlint:disable:this function_body_length cycloma
         }
     }
     
-    /// Portal Items created from iterating through all metadata's "offline\_data".
+    /// Portal Items created from iterating through all metadata's "offline_data".
     let portalItems = try parseSampleDependencies(at: samplesDirectoryURL)
     
     typealias Identifier = String
@@ -322,7 +322,7 @@ func run() async throws { // swiftlint:disable:this function_body_length cycloma
                 to: destinationURL
             )
             downloadedItems.updateValue(downloadName, forKey: portalItem.identifier)
-            print("note: (#\(index)/\(portalItems.count)) Downloaded item: \(portalItem.identifier)")
+            print("note: (\(index)/\(portalItems.count)) Downloaded item: \(portalItem.identifier)")
             fflush(stdout)
         } catch {
             print("error: Failed to download item \(portalItem.identifier), \(error.localizedDescription)")
