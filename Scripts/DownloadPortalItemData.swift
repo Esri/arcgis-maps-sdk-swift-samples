@@ -213,6 +213,9 @@ func parseSampleDependencies(at samplesDirectoryURL: URL) throws -> [PortalItem]
         // Omits the decoding errors from samples that don't have dependencies.
         let sampleDependencies = sampleJSONs
             .compactMap { try? parseJSON(at: $0) }
+        // Some items are used by multiple samples and their IDs appear more
+        // than once.
+        // Removes duplicates by converting to a Set, then back to an Array.
         return Array(Set(sampleDependencies.lazy.flatMap(\.offlineData)))
     } catch {
         throw ScriptError.cannotParseDependencies(error.localizedDescription)
