@@ -19,7 +19,7 @@ Tap the "Query Flights" button and select a query to perform from the menu. Once
     1. To spatially filter results, set the `geometry` and `spatialRelationship`. The spatial relationship is `intersects` by default.
     2. To query entities with certain attribute values, set the `whereClause`.
     3. To get entities with specific track IDs, modify the `trackIDs` collection.
-3. To perform a dynamic entities query, call `DynamicEntityDataSource.queryDynamicEntities(using:)` passing in the parameters, or use `DynamicEntityDataSource.queryDynamicEntities(withTrackIDs:)` to query with track IDs.
+3. To perform a dynamic entities query, use `DynamicEntityDataSource.queryDynamicEntities(using:)` to query with multiple criteria (such as track IDs, spatial, and/or attribute filters), or use `DynamicEntityDataSource.queryDynamicEntities(withTrackIDs:)` if you want to query *only* by track IDs.
 4. When complete, get the dynamic entities from the result using `DynamicEntityQueryResult.entities()`.
 5. Use `DynamicEntity.changes` to get the entities' change notifications.
 6. Get the new observation from the resulting `DynamicEntityChangedInfo` objects using `receivedObservation` and use `dynamicEntityWasPurged` to determine whether a dynamic entity has been purged.
