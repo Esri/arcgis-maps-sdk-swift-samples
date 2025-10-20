@@ -61,37 +61,76 @@ extension QueryDynamicEntitiesView {
             setUpGraphicsOverlay()
         }
         
-        /// Queries the dynamic entities on the data source.
-        /// - Parameter type: The type of query to perform.
+        /// Queries the dynamic entities on the data source with geometry.
+        /// - Parameter geometry: The geometry to use for the query.
         /// - Returns: The result of the query operation.
-        func queryDynamicEntities(type: QueryType) async -> Result<[DynamicEntity], any Error> {
+        private func queryDynamicEntities(with geometry: Geometry) async -> Result<[DynamicEntity], any Error> {
             let parameters = DynamicEntityQueryParameters()
-            
-            switch type {
-            case .geometry:
-                // Sets the parameters' geometry and spatial relationship to query within the buffer.
-                parameters.geometry = phoenixAirportBuffer
-                parameters.spatialRelationship = .intersects
-                
-                graphicsOverlay.isVisible = true
-            case .attributes:
-                // Sets the parameters' where clause to query the entities' attributes.
-                parameters.whereClause = "status = 'In flight' AND arrival_airport = 'PHX'"
-            case .trackID(let id):
-                // Adds a track ID to query for to the parameters.
-                parameters.addTrackID(id)
-            }
+            // Sets the parameters' geometry and spatial relationship to
+            // query within the buffer.
+            parameters.geometry = geometry
+            parameters.spatialRelationship = .intersects
             
             return await Result {
                 // Performs a dynamic entities query on the data source.
                 let queryResult = try await dataSource.queryDynamicEntities(using: parameters)
-                
-                // Gets the entities from the query result and selects them on the layer.
-                let entities = Array(queryResult.entities())
-                dynamicEntityLayer.selectDynamicEntities(entities)
-                
-                return entities
+                // Gets the dynamic entities from the query result.
+                return Array(queryResult.entities())
             }
+        }
+        
+        /// Queries the dynamic entities on the data source with attributes.
+        /// - Parameter whereClause: The where clause to use for the query.
+        /// - Returns: The result of the query operation.
+        private func queryDynamicEntities(whereClause: String) async -> Result<[DynamicEntity], any Error> {
+            let parameters = DynamicEntityQueryParameters()
+            // Sets the parameters' where clause to query the entities' attributes.
+            parameters.whereClause = whereClause
+            
+            return await Result {
+                // Performs a dynamic entities query on the data source.
+                let queryResult = try await dataSource.queryDynamicEntities(using: parameters)
+                // Gets the dynamic entities from the query result.
+                return Array(queryResult.entities())
+            }
+        }
+        
+        /// Queries the dynamic entities on the data source with track IDs.
+        /// - Parameter trackIDs: The track IDs to use for the query.
+        /// - Returns: The result of the query operation.
+        private func queryDynamicEntities(withTrackIDs trackIDs: [String]) async -> Result<[DynamicEntity], any Error> {
+            await Result {
+                // Performs a dynamic entities query on the data source.
+                // This is a convenient method to the one using query parameters
+                // when querying only by track IDs.
+                let queryResult = try await dataSource.queryDynamicEntities(withTrackIDs: trackIDs)
+                // Gets the dynamic entities from the query result.
+                return Array(queryResult.entities())
+            }
+        }
+        
+        /// Queries the dynamic entities on the data source.
+        /// - Parameter type: The type of query to perform.
+        /// - Returns: The result of the query operation.
+        func queryDynamicEntities(type: QueryType) async -> Result<[DynamicEntity], any Error> {
+            let result: Result<[DynamicEntity], any Error>
+            
+            switch type {
+            case .geometry:
+                result = await queryDynamicEntities(with: phoenixAirportBuffer)
+                // Shows the buffer graphic when querying by geometry.
+                graphicsOverlay.isVisible = true
+            case .attributes:
+                result = await queryDynamicEntities(whereClause: "status = 'In flight' AND arrival_airport = 'PHX'")
+            case .trackID(let id):
+                result = await queryDynamicEntities(withTrackIDs: [id])
+            }
+            
+            if let entities = try? result.get() {
+                // Select the dynamic entities on successful query.
+                dynamicEntityLayer.selectDynamicEntities(entities)
+            }
+            return result
         }
         
         /// Clears selected dynamic entities and hides the graphics overlay.
