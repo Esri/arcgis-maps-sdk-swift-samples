@@ -56,6 +56,26 @@ struct CreateConvexHullAroundGeometriesView: View {
                         metadataPopover
                     }
                 }
+                ToolbarItem(placement: .bottomBar) {
+                    Spacer()
+                }
+                ToolbarItem(placement: .bottomBar) {
+                    Button(createIsOn ? "Create" : "Reset") {
+                        if createIsOn {
+                            convexHullGraphicsOverlay.removeAllGraphics()
+                            convexHullGraphicsOverlay.addGraphics(
+                                makeConvexHullGraphics(
+                                    for: [.polygon1, .polygon2],
+                                    unioned: shouldUnion
+                                )
+                            )
+                            createIsOn = false
+                        } else {
+                            convexHullGraphicsOverlay.removeAllGraphics()
+                            createIsOn = true
+                        }
+                    }
+                }
             }
     }
     
@@ -74,21 +94,6 @@ struct CreateConvexHullAroundGeometriesView: View {
                             )
                         }
                     }
-                Button(createIsOn ? "Create" : "Reset") {
-                    if createIsOn {
-                        convexHullGraphicsOverlay.removeAllGraphics()
-                        convexHullGraphicsOverlay.addGraphics(
-                            makeConvexHullGraphics(
-                                for: [.polygon1, .polygon2],
-                                unioned: shouldUnion
-                            )
-                        )
-                        createIsOn = false
-                    } else {
-                        convexHullGraphicsOverlay.removeAllGraphics()
-                        createIsOn = true
-                    }
-                }
             }
             .navigationTitle("Geometry Setting")
             .navigationBarTitleDisplayMode(.inline)
@@ -99,15 +104,11 @@ struct CreateConvexHullAroundGeometriesView: View {
                     }
                 }
             }
-            .padding()
-            .cornerRadius(8)
-            .padding(.horizontal)
-            .presentationDetents([.fraction(0.25)])
+            .presentationDetents([.fraction(0.20)])
             .frame(idealWidth: 250, idealHeight: 120)
         }
     }
 }
-
 
 private extension CreateConvexHullAroundGeometriesView {
     /// Creates convex hulls graphic(s) from passed geometries.
