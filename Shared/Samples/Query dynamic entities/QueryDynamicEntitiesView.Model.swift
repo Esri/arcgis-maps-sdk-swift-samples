@@ -58,7 +58,6 @@ extension QueryDynamicEntitiesView {
         init() {
             dynamicEntityLayer = DynamicEntityLayer(dataSource: dataSource)
             setUpDynamicEntityLayer()
-            
             setUpGraphicsOverlay()
         }
         
