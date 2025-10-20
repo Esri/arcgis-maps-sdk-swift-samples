@@ -81,19 +81,21 @@ struct CreateConvexHullAroundGeometriesView: View {
     
     @ViewBuilder var metadataPopover: some View {
         NavigationStack {
-            VStack {
-                Toggle(shouldUnion ? "Union Enabled" : "Union Disabled", isOn: $shouldUnion)
-                    .onChange(of: shouldUnion) {
-                        if !createIsOn {
-                            convexHullGraphicsOverlay.removeAllGraphics()
-                            convexHullGraphicsOverlay.addGraphics(
-                                makeConvexHullGraphics(
-                                    for: [.polygon1, .polygon2],
-                                    unioned: shouldUnion
+            Form {
+                Section {
+                    Toggle(shouldUnion ? "Union Enabled" : "Union Disabled", isOn: $shouldUnion)
+                        .onChange(of: shouldUnion) {
+                            if !createIsOn {
+                                convexHullGraphicsOverlay.removeAllGraphics()
+                                convexHullGraphicsOverlay.addGraphics(
+                                    makeConvexHullGraphics(
+                                        for: [.polygon1, .polygon2],
+                                        unioned: shouldUnion
+                                    )
                                 )
-                            )
+                            }
                         }
-                    }
+                }
             }
             .navigationTitle("Geometry Setting")
             .navigationBarTitleDisplayMode(.inline)

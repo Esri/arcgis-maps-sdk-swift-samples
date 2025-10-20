@@ -51,35 +51,14 @@ struct ShowServiceAreaView: View {
             }
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
-                    Button("Facility Mode") {
+                    Button("Settings", systemImage: "gear") {
                         showMetadata.toggle()
                     }
                     .popover(isPresented: $showMetadata) {
                         metadataPopover
                     }
                     Spacer()
-                    Button("Time Breaks", systemImage: "gear") {
-                        settingsArePresented = true
-                    }
-                    .popover(isPresented: $settingsArePresented) {
-                        NavigationStack {
-                            Form {
-                                Stepper("First: \(firstTimeBreak)", value: $firstTimeBreak, in: 1...15)
-                                Stepper("Second: \(secondTimeBreak)", value: $secondTimeBreak, in: 1...15)
-                            }
-                            .navigationTitle("Time Breaks")
-                            .navigationBarTitleDisplayMode(.inline)
-                            .toolbar {
-                                ToolbarItem(placement: .confirmationAction) {
-                                    Button("Done") { settingsArePresented = false }
-                                }
-                            }
-                        }
-                        .presentationDetents([.fraction(0.25)])
-                        .frame(idealWidth: 320, idealHeight: 160)
-                    }
-                    Spacer()
-                    Button("Service Area") {
+                    Button("Generate Service Area") {
                         Task {
                             isSolvingServiceArea = true
                             do {
@@ -104,22 +83,29 @@ struct ShowServiceAreaView: View {
     
     @ViewBuilder var metadataPopover: some View {
         NavigationStack {
-            Picker("Mode", selection: $selectedGraphicType) {
-                ForEach(GraphicType.allCases, id: \.self) {
-                    Text($0.label)
-                }
-            }
-            .pickerStyle(.segmented)
-            .navigationTitle("Select Type")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") {
-                        showMetadata = false
+            Form {
+                Section(header: Text("Facility Mode")) {
+                    Picker("Mode", selection: $selectedGraphicType) {
+                        ForEach(GraphicType.allCases, id: \.self) {
+                            Text($0.label)
+                        }
                     }
+                    .pickerStyle(.segmented)
+                }
+                Section(header: Text("Time Breaks")) {
+                    Stepper("First: \(firstTimeBreak)", value: $firstTimeBreak, in: 1...15)
+                    Stepper("Second: \(secondTimeBreak)", value: $secondTimeBreak, in: 1...15)
                 }
             }
-            .padding()
+        }
+        .navigationTitle("Select Type")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .confirmationAction) {
+                Button("Done") {
+                    showMetadata = false
+                }
+            }
         }
         .presentationDetents([.fraction(0.20)])
         .frame(idealWidth: 250, idealHeight: 120)
