@@ -53,7 +53,7 @@ extension QueryDynamicEntitiesView {
             distanceUnit: .miles,
             maxDeviation: .nan,
             curveType: .geodesic
-        )
+        )!
         
         init() {
             dynamicEntityLayer = DynamicEntityLayer(dataSource: dataSource)
