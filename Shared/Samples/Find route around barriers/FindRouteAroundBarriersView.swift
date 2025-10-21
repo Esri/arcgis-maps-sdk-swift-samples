@@ -67,28 +67,6 @@ struct FindRouteAroundBarriersView: View {
                 }
                 .toolbar {
                     ToolbarItemGroup(placement: .bottomBar) {
-                        Button("Route") {
-                            routingIsInProgress = true
-                        }
-                        .disabled(model.stopsCount < 2)
-                        .task(id: routingIsInProgress) {
-                            guard routingIsInProgress else { return }
-                            
-                            do {
-                                // Route when the button is pressed
-                                try await model.route()
-                                
-                                // Update the viewpoint to the geometry of the new route.
-                                guard let geometry = model.route?.geometry else { return }
-                                await mapViewProxy.setViewpointGeometry(geometry, padding: 50)
-                            } catch {
-                                self.error = error
-                            }
-                            
-                            routingIsInProgress = false
-                        }
-                        Spacer()
-                        
                         SheetButton(title: "Directions") {
                             List {
                                 ForEach(
@@ -112,23 +90,37 @@ struct FindRouteAroundBarriersView: View {
                             await mapViewProxy.setViewpointGeometry(directionGeometry, padding: 100)
                         }
                         Spacer()
-                        
-                        Button("Features") {
+                        Button("Get Route") {
+                            routingIsInProgress = true
+                        }
+                        .disabled(model.stopsCount < 2)
+                        .task(id: routingIsInProgress) {
+                            guard routingIsInProgress else { return }
+                            
+                            do {
+                                // Route when the button is pressed
+                                try await model.route()
+                                
+                                // Update the viewpoint to the geometry of the new route.
+                                guard let geometry = model.route?.geometry else { return }
+                                await mapViewProxy.setViewpointGeometry(geometry, padding: 50)
+                            } catch {
+                                self.error = error
+                            }
+                            
+                            routingIsInProgress = false
+                        }
+                        Spacer()
+                        Button("Settings", systemImage: "gear") {
                             showMetadata.toggle()
                         }
                         .popover(isPresented: $showMetadata) {
                             metadataPopover
+                                .presentationDetents([.fraction(0.30)])
+                                .frame(idealWidth: 250, idealHeight: 120)
                         }
                         .labelsHidden()
                         Spacer()
-                        
-                        SheetButton(title: "Route Settings") {
-                            RouteParametersSettings(for: model.routeParameters)
-                        } label: {
-                            Image(systemName: "gear")
-                        }
-                        Spacer()
-                        
                         Button {
                             model.reset(features: featuresSelection)
                         } label: {
@@ -155,13 +147,26 @@ struct FindRouteAroundBarriersView: View {
     
     @ViewBuilder var metadataPopover: some View {
         NavigationStack {
-            Picker("Features", selection: $featuresSelection) {
-                Text("Stops").tag(RouteFeatures.stops)
-                Text("Barriers").tag(RouteFeatures.barriers)
+            Form {
+                Section(header: Text("Features")) {
+                    Picker("Features", selection: $featuresSelection) {
+                        Text("Stops").tag(RouteFeatures.stops)
+                        Text("Barriers").tag(RouteFeatures.barriers)
+                    }
+                    .pickerStyle(.segmented)
+                }
+                Section {
+                    Toggle("Find Best Sequence", isOn: $model.routeParameters.findsBestSequence)
+                }
+                
+                Section(header: Text("Preserve Stops")) {
+                    Toggle("Preserve First Stop", isOn: $model.routeParameters.preservesFirstStop)
+                    Toggle("Preserve Last Stop", isOn: $model.routeParameters.preservesLastStop)
+                }
+                .disabled(!model.routeParameters.findsBestSequence)
             }
-            .pickerStyle(.segmented)
-            .pickerStyle(.segmented)
-            .navigationTitle("Select Feature")
+            
+            .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
@@ -170,10 +175,7 @@ struct FindRouteAroundBarriersView: View {
                     }
                 }
             }
-            .padding()
         }
-        .presentationDetents([.fraction(0.20)])
-        .frame(idealWidth: 250, idealHeight: 120)
     }
 }
 

@@ -16,49 +16,6 @@ import ArcGIS
 import SwiftUI
 
 extension FindRouteAroundBarriersView {
-    /// A list of settings for modifying route parameters.
-    struct RouteParametersSettings: View {
-        /// The route parameters to modify.
-        private let routeParameters: RouteParameters
-        
-        /// A Boolean value indicating whether routing will find the best sequence.
-        @State private var routingFindsBestSequence: Bool
-        
-        /// A Boolean value indicating whether routing will preserve the first stop.
-        @State private var routePreservesFirstStop: Bool
-        
-        /// A Boolean value indicating whether routing will preserve the last stop.
-        @State private var routePreservesLastStop: Bool
-        
-        init(for routeParameters: RouteParameters) {
-            self.routeParameters = routeParameters
-            self.routingFindsBestSequence = routeParameters.findsBestSequence
-            self.routePreservesFirstStop = routeParameters.preservesFirstStop
-            self.routePreservesLastStop = routeParameters.preservesLastStop
-        }
-        
-        var body: some View {
-            List {
-                Toggle("Find Best Sequence", isOn: $routingFindsBestSequence)
-                    .onChange(of: routingFindsBestSequence) {
-                        routeParameters.findsBestSequence = routingFindsBestSequence
-                    }
-                
-                Section {
-                    Toggle("Preserve First Stop", isOn: $routePreservesFirstStop)
-                        .onChange(of: routePreservesFirstStop) {
-                            routeParameters.preservesFirstStop = routePreservesFirstStop
-                        }
-                    
-                    Toggle("Preserve Last Stop", isOn: $routePreservesLastStop)
-                        .onChange(of: routePreservesLastStop) {
-                            routeParameters.preservesLastStop = routePreservesLastStop
-                        }
-                }
-                .disabled(!routingFindsBestSequence)
-            }
-        }
-    }
     
     /// A button with a given label that brings up a sheet containing given content.
     struct SheetButton<Content: View, Label: View>: View {
