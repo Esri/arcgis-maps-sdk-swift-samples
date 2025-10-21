@@ -48,11 +48,13 @@ struct SetMaxExtentView: View {
         MapView(map: map, graphicsOverlays: [graphicsOverlay])
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
-                    Button("Extent Setting") {
+                    Button("Settings") {
                         showSettings.toggle()
                     }
                     .popover(isPresented: $showSettings) {
                         settings
+                            .presentationDetents([.fraction(0.30)])
+                            .frame(idealWidth: 350, idealHeight: 300)
                     }
                 }
             }
@@ -60,21 +62,23 @@ struct SetMaxExtentView: View {
     
     @ViewBuilder var settings: some View {
         NavigationStack {
-            VStack {
-                Toggle(maxExtentIsSet ? "Max Extent Enabled" : "Max Extent Disabled", isOn: $maxExtentIsSet)
-                    .onChange(of: maxExtentIsSet) {
-                        map.maxExtent = if maxExtentIsSet {
-                            // Set the map's max extent to limit the map
-                            // view to a certain visible area.
-                            .coloradoExtent
-                        } else {
-                            // Set the map's max extent to nil so it doesn't
-                            // limit panning or zooming.
-                            nil
+            Form {
+                Section {
+                    Toggle("Max Extent", isOn: $maxExtentIsSet)
+                        .onChange(of: maxExtentIsSet) {
+                            map.maxExtent = if maxExtentIsSet {
+                                // Set the map's max extent to limit the map
+                                // view to a certain visible area.
+                                .coloradoExtent
+                            } else {
+                                // Set the map's max extent to nil so it doesn't
+                                // limit panning or zooming.
+                                nil
+                            }
                         }
-                    }
+                }
             }
-            .navigationTitle("Max Extent")
+            .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
@@ -83,9 +87,6 @@ struct SetMaxExtentView: View {
                     }
                 }
             }
-            .presentationDetents([.fraction(0.20)])
-            .frame(idealWidth: 250, idealHeight: 120)
-            .padding()
         }
     }
 }

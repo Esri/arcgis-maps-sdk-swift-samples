@@ -82,6 +82,7 @@ struct ShowServiceAreaView: View {
                         isServiceAreaSet = false
                         model.removeAllGraphics()
                     }
+                    .disabled(!isServiceAreaSet)
                 }
             }
             .errorAlert(presentingError: $error)
