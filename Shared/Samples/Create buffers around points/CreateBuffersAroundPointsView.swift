@@ -20,7 +20,7 @@ struct CreateBuffersAroundPointsView: View {
     @StateObject private var model = Model()
     
     /// A Boolean value specifying whether the metadata view should be shown
-    @State private var showMetadata: Bool = false
+    @State private var showSettings: Bool = false
     
     /// The status of the sample.
     @State private var status = Status.addPoints
@@ -58,10 +58,10 @@ struct CreateBuffersAroundPointsView: View {
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
                     Button("Buffer Settings") {
-                        showMetadata.toggle()
+                        showSettings.toggle()
                     }
-                    .popover(isPresented: $showMetadata) {
-                        metadataPopover
+                    .popover(isPresented: $showSettings) {
+                        settings
                     }
                 }
                 ToolbarItem(placement: .bottomBar) {
@@ -105,7 +105,7 @@ struct CreateBuffersAroundPointsView: View {
             })
     }
     
-    @ViewBuilder var metadataPopover: some View {
+    @ViewBuilder var settings: some View {
         NavigationStack {
             VStack {
                 Toggle(shouldUnion ? "Union Enabled" : "Union Disabled", isOn: $shouldUnion)
@@ -120,7 +120,7 @@ struct CreateBuffersAroundPointsView: View {
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Done") {
-                        showMetadata = false
+                        showSettings = false
                     }
                 }
             }

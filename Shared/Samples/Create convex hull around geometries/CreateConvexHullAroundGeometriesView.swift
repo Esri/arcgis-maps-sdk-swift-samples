@@ -20,7 +20,7 @@ struct CreateConvexHullAroundGeometriesView: View {
     @State private var map = Map(basemapStyle: .arcGISTopographic)
     
     /// A Boolean value specifying whether the metadata view should be shown
-    @State private var showMetadata: Bool = false
+    @State private var showSettings: Bool = false
     
     /// The graphics overlay for the geometry graphics.
     @State private var geometriesGraphicsOverlay: GraphicsOverlay = {
@@ -50,10 +50,10 @@ struct CreateConvexHullAroundGeometriesView: View {
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
                     Button("Convex Hull Settings") {
-                        showMetadata.toggle()
+                        showSettings.toggle()
                     }
-                    .popover(isPresented: $showMetadata) {
-                        metadataPopover
+                    .popover(isPresented: $showSettings) {
+                        settings
                     }
                 }
                 ToolbarItem(placement: .bottomBar) {
@@ -79,7 +79,7 @@ struct CreateConvexHullAroundGeometriesView: View {
             }
     }
     
-    @ViewBuilder var metadataPopover: some View {
+    @ViewBuilder var settings: some View {
         NavigationStack {
             Form {
                 Section {
@@ -102,7 +102,7 @@ struct CreateConvexHullAroundGeometriesView: View {
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Done") {
-                        showMetadata = false
+                        showSettings = false
                     }
                 }
             }

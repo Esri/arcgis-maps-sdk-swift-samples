@@ -58,7 +58,7 @@ struct ShowServiceAreaView: View {
                     }
                     .popover(isPresented: $showSettings) {
                         settingsPopover
-                            .presentationDetents([.fraction(0.30)])
+                            .presentationDetents([.fraction(0.35)])
                             .frame(idealWidth: 340, idealHeight: 250)
                     }
                     
@@ -98,9 +98,9 @@ struct ShowServiceAreaView: View {
                     }
                     .pickerStyle(.segmented)
                 }
-                Section(header: Text("Time Radius")) {
-                    Stepper("First Interval Time: \(firstTimeBreak) minutes", value: $firstTimeBreak, in: 1...15)
-                    Stepper("Second Interval Time: \(secondTimeBreak) minutes", value: $secondTimeBreak, in: 1...15)
+                Section(header: Text("Service Time Radius")) {
+                    Stepper("First Interval: \(firstTimeBreak) minutes", value: $firstTimeBreak, in: 1...15)
+                    Stepper("Second Interval: \(secondTimeBreak) minutes", value: $secondTimeBreak, in: 1...15)
                 }
             }
             .navigationTitle("Settings")

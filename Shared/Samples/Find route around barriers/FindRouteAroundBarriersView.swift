@@ -29,7 +29,7 @@ struct FindRouteAroundBarriersView: View {
     @State private var directionGeometry: Geometry?
     
     /// A Boolean value specifying whether the metadata view should be shown
-    @State private var showMetadata: Bool = false
+    @State private var showSettings: Bool = false
     
     /// The error shown in the error alert.
     @State private var error: (any Error)?
@@ -112,12 +112,12 @@ struct FindRouteAroundBarriersView: View {
                         }
                         Spacer()
                         Button("Settings", systemImage: "gear") {
-                            showMetadata.toggle()
+                            showSettings.toggle()
                         }
-                        .popover(isPresented: $showMetadata) {
-                            metadataPopover
-                                .presentationDetents([.fraction(0.30)])
-                                .frame(idealWidth: 250, idealHeight: 120)
+                        .popover(isPresented: $showSettings) {
+                            settings
+                                .presentationDetents([.fraction(0.35)])
+                                .frame(idealWidth: 340, idealHeight: 250)
                         }
                         .labelsHidden()
                         Spacer()
@@ -145,7 +145,7 @@ struct FindRouteAroundBarriersView: View {
         .errorAlert(presentingError: $error)
     }
     
-    @ViewBuilder var metadataPopover: some View {
+    @ViewBuilder var settings: some View {
         NavigationStack {
             Form {
                 Section(header: Text("Features")) {
@@ -171,7 +171,7 @@ struct FindRouteAroundBarriersView: View {
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Done") {
-                        showMetadata = false
+                        showSettings = false
                     }
                 }
             }

@@ -42,23 +42,23 @@ struct SetMaxExtentView: View {
     @State private var maxExtentIsSet = true
     
     /// A Boolean value specifying whether the metadata view should be shown
-    @State private var showMetadata: Bool = false
+    @State private var showSettings: Bool = false
     
     var body: some View {
         MapView(map: map, graphicsOverlays: [graphicsOverlay])
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
                     Button("Extent Setting") {
-                        showMetadata.toggle()
+                        showSettings.toggle()
                     }
-                    .popover(isPresented: $showMetadata) {
-                        metadataPopover
+                    .popover(isPresented: $showSettings) {
+                        settings
                     }
                 }
             }
     }
     
-    @ViewBuilder var metadataPopover: some View {
+    @ViewBuilder var settings: some View {
         NavigationStack {
             VStack {
                 Toggle(maxExtentIsSet ? "Max Extent Enabled" : "Max Extent Disabled", isOn: $maxExtentIsSet)
@@ -79,7 +79,7 @@ struct SetMaxExtentView: View {
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Done") {
-                        showMetadata = false
+                        showSettings = false
                     }
                 }
             }
