@@ -32,6 +32,8 @@ struct ShowServiceAreaView: View {
     @State private var settingsArePresented = false
     /// A Boolean value indicating whether the service area is being solved.
     @State private var isSolvingServiceArea = false
+    /// A Boolean value indicating whether the service area is set..
+    @State private var isServiceAreaSet = false
     
     /// A Boolean value specifying whether the metadata view should be shown
     @State private var showMetadata: Bool = false
@@ -42,6 +44,7 @@ struct ShowServiceAreaView: View {
     var body: some View {
         MapView(map: model.map, graphicsOverlays: model.graphicsOverlays)
             .onSingleTapGesture { _, point in
+                isServiceAreaSet = true
                 switch selectedGraphicType {
                 case .facility:
                     model.addFacilityGraphic(at: point)
@@ -56,7 +59,10 @@ struct ShowServiceAreaView: View {
                     }
                     .popover(isPresented: $showMetadata) {
                         metadataPopover
+                            .presentationDetents([.fraction(0.25)])
+                            .frame(idealWidth: 250, idealHeight: 120)
                     }
+                    
                     Spacer()
                     Button("Generate Service Area") {
                         Task {
@@ -71,9 +77,10 @@ struct ShowServiceAreaView: View {
                             isSolvingServiceArea = false
                         }
                     }
-                    .disabled(isSolvingServiceArea)
+                    .disabled(!isServiceAreaSet || isSolvingServiceArea)
                     Spacer()
                     Button("Clear", systemImage: "trash") {
+                        isServiceAreaSet = false
                         model.removeAllGraphics()
                     }
                 }
@@ -92,23 +99,22 @@ struct ShowServiceAreaView: View {
                     }
                     .pickerStyle(.segmented)
                 }
-                Section(header: Text("Time Breaks")) {
-                    Stepper("First: \(firstTimeBreak)", value: $firstTimeBreak, in: 1...15)
-                    Stepper("Second: \(secondTimeBreak)", value: $secondTimeBreak, in: 1...15)
+                Section(header: Text("Time Radius")) {
+                    Stepper("First Interval Time: \(firstTimeBreak) minutes", value: $firstTimeBreak, in: 1...15)
+                    Stepper("Second Interval Time: \(secondTimeBreak) minutes", value: $secondTimeBreak, in: 1...15)
+                }
+            }
+            .navigationTitle("Settings")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") {
+                        showMetadata = false
+                    }
                 }
             }
         }
-        .navigationTitle("Select Type")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .confirmationAction) {
-                Button("Done") {
-                    showMetadata = false
-                }
-            }
-        }
-        .presentationDetents([.fraction(0.20)])
-        .frame(idealWidth: 250, idealHeight: 120)
+        .cornerRadius(8)
     }
 }
 
