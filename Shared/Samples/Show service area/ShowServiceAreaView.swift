@@ -34,9 +34,8 @@ struct ShowServiceAreaView: View {
     @State private var isSolvingServiceArea = false
     /// A Boolean value indicating whether the service area is set..
     @State private var isServiceAreaSet = false
-    
     /// A Boolean value specifying whether the metadata view should be shown
-    @State private var showMetadata: Bool = false
+    @State private var showSettings: Bool = false
     
     /// The data model for the sample.
     @StateObject private var model = Model()
@@ -55,16 +54,16 @@ struct ShowServiceAreaView: View {
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
                     Button("Settings", systemImage: "gear") {
-                        showMetadata.toggle()
+                        showSettings.toggle()
                     }
-                    .popover(isPresented: $showMetadata) {
-                        metadataPopover
+                    .popover(isPresented: $showSettings) {
+                        settingsPopover
                             .presentationDetents([.fraction(0.25)])
                             .frame(idealWidth: 250, idealHeight: 120)
                     }
                     
                     Spacer()
-                    Button("Generate Service Area") {
+                    Button("Show Service Area") {
                         Task {
                             isSolvingServiceArea = true
                             do {
@@ -88,7 +87,7 @@ struct ShowServiceAreaView: View {
             .errorAlert(presentingError: $error)
     }
     
-    @ViewBuilder var metadataPopover: some View {
+    @ViewBuilder var settingsPopover: some View {
         NavigationStack {
             Form {
                 Section(header: Text("Facility Mode")) {
@@ -109,7 +108,7 @@ struct ShowServiceAreaView: View {
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Done") {
-                        showMetadata = false
+                        showSettings = false
                     }
                 }
             }
