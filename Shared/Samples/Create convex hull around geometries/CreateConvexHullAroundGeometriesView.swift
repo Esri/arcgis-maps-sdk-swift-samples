@@ -54,6 +54,8 @@ struct CreateConvexHullAroundGeometriesView: View {
                     }
                     .popover(isPresented: $showSettings) {
                         settings
+                            .presentationDetents([.fraction(0.30)])
+                            .frame(idealWidth: 350, idealHeight: 300)
                     }
                 }
                 ToolbarItem(placement: .bottomBar) {
@@ -106,8 +108,6 @@ struct CreateConvexHullAroundGeometriesView: View {
                     }
                 }
             }
-            .presentationDetents([.fraction(0.20)])
-            .frame(idealWidth: 250, idealHeight: 120)
         }
     }
 }

@@ -52,6 +52,8 @@ struct ShowShapefileMetadataView: View {
                         }
                         .popover(isPresented: $showMetadata) {
                             metadataPopover
+                                .presentationDetents([.fraction(0.55)])
+                                .frame(idealWidth: 320, idealHeight: 380)
                         }
                     }
                 }
@@ -72,8 +74,7 @@ struct ShowShapefileMetadataView: View {
                     }
                 }
         }
-        .presentationDetents([.fraction(0.55)])
-        .frame(idealWidth: 320, idealHeight: 380)
+        
     }
 }
 
