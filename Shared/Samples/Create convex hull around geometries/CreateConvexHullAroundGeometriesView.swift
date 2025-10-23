@@ -99,7 +99,7 @@ struct CreateConvexHullAroundGeometriesView: View {
                         }
                 }
             }
-            .navigationTitle("Geometry Setting")
+            .navigationTitle("Geometry Settings")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
