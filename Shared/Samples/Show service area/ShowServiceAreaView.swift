@@ -94,7 +94,7 @@ struct ShowServiceAreaView: View {
     @ViewBuilder var settingsPopover: some View {
         NavigationStack {
             Form {
-                Section(header: Text("Facility Mode")) {
+                Section("Facility Mode") {
                     Picker("Mode", selection: $selectedGraphicType) {
                         ForEach(GraphicType.allCases, id: \.self) {
                             Text($0.label)
@@ -102,7 +102,7 @@ struct ShowServiceAreaView: View {
                     }
                     .pickerStyle(.segmented)
                 }
-                Section(header: Text("Service Time Radius")) {
+                Section("Service Time Radius") {
                     Stepper(
                         "First Interval: \(firstTimeBreak) minutes",
                         value: $firstTimeBreak,

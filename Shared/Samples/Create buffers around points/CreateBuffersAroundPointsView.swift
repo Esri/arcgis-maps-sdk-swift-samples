@@ -19,8 +19,8 @@ struct CreateBuffersAroundPointsView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
-    /// A Boolean value specifying whether the settings view should be shown
-    @State private var showSettings: Bool = false
+    /// A Boolean value indicating whether the settings view is showing.
+    @State private var showSettings = false
     
     /// The status of the sample.
     @State private var status = Status.addPoints
@@ -70,7 +70,8 @@ struct CreateBuffersAroundPointsView: View {
                     Button("Clear") {
                         model.clearBufferPoints()
                         status = .addPoints
-                    }.disabled(model.bufferPoints.isEmpty)
+                    }
+                    .disabled(model.bufferPoints.isEmpty)
                 }
             }
             .alert("Buffer Radius", isPresented: $inputBoxIsPresented, actions: {

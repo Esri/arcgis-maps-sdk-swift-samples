@@ -98,7 +98,7 @@ struct FindRouteAroundBarriersView: View {
                             guard routingIsInProgress else { return }
                             
                             do {
-                                // Route when the button is pressed
+                                // Route when the button is pressed.
                                 try await model.route()
                                 
                                 // Update the viewpoint to the geometry of the new route.
@@ -149,7 +149,7 @@ struct FindRouteAroundBarriersView: View {
     @ViewBuilder var settings: some View {
         NavigationStack {
             Form {
-                Section(header: Text("Features")) {
+                Section("Features") {
                     Picker("Features", selection: $featuresSelection) {
                         Text("Stops").tag(RouteFeatures.stops)
                         Text("Barriers").tag(RouteFeatures.barriers)
@@ -160,13 +160,12 @@ struct FindRouteAroundBarriersView: View {
                     Toggle("Find Best Sequence", isOn: $model.routeParameters.findsBestSequence)
                 }
                 
-                Section(header: Text("Preserve Stops")) {
+                Section("Preserve Stops") {
                     Toggle("Preserve First Stop", isOn: $model.routeParameters.preservesFirstStop)
                     Toggle("Preserve Last Stop", isOn: $model.routeParameters.preservesLastStop)
                 }
                 .disabled(!model.routeParameters.findsBestSequence)
             }
-            
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
