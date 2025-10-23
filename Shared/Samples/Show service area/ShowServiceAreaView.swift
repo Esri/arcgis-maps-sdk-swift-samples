@@ -59,7 +59,7 @@ struct ShowServiceAreaView: View {
                     .popover(isPresented: $showSettings) {
                         settingsPopover
                             .presentationDetents([.fraction(0.35)])
-                            .frame(idealWidth: 340, idealHeight: 250)
+                            .frame(idealWidth: 400, idealHeight: 400)
                     }
                     
                     Spacer()
@@ -68,7 +68,10 @@ struct ShowServiceAreaView: View {
                             isSolvingServiceArea = true
                             do {
                                 try await model.showServiceArea(
-                                    timeBreaks: [Double(firstTimeBreak), Double(secondTimeBreak)]
+                                    timeBreaks: [
+                                        Double(firstTimeBreak),
+                                        Double(secondTimeBreak)
+                                    ]
                                 )
                             } catch {
                                 self.error = error

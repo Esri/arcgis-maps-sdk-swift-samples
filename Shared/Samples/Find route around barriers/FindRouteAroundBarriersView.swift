@@ -117,7 +117,7 @@ struct FindRouteAroundBarriersView: View {
                         .popover(isPresented: $showSettings) {
                             settings
                                 .presentationDetents([.fraction(0.35)])
-                                .frame(idealWidth: 340, idealHeight: 250)
+                                .frame(idealWidth: 400, idealHeight: 400)
                         }
                         .labelsHidden()
                         Spacer()
