@@ -48,7 +48,7 @@ struct CreateConvexHullAroundGeometriesView: View {
     var body: some View {
         MapView(map: map, graphicsOverlays: [convexHullGraphicsOverlay, geometriesGraphicsOverlay])
             .toolbar {
-                ToolbarItem(placement: .bottomBar) {
+                ToolbarItemGroup(placement: .bottomBar) {
                     Button("Convex Hull Settings") {
                         showSettings.toggle()
                     }
@@ -57,11 +57,9 @@ struct CreateConvexHullAroundGeometriesView: View {
                             .presentationDetents([.fraction(0.30)])
                             .frame(idealWidth: 350, idealHeight: 300)
                     }
-                }
-                ToolbarItem(placement: .bottomBar) {
+                    
                     Spacer()
-                }
-                ToolbarItem(placement: .bottomBar) {
+                    
                     Button(createIsOn ? "Create" : "Reset") {
                         if createIsOn {
                             convexHullGraphicsOverlay.removeAllGraphics()
