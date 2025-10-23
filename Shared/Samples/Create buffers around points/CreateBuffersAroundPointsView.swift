@@ -62,6 +62,8 @@ struct CreateBuffersAroundPointsView: View {
                     }
                     .popover(isPresented: $showSettings) {
                         settings
+                            .presentationDetents([.fraction(0.25)])
+                            .frame(idealWidth: 250, idealHeight: 120)
                     }
                 }
                 ToolbarItem(placement: .bottomBar) {
@@ -107,13 +109,15 @@ struct CreateBuffersAroundPointsView: View {
     
     @ViewBuilder var settings: some View {
         NavigationStack {
-            VStack {
-                Toggle(shouldUnion ? "Union Enabled" : "Union Disabled", isOn: $shouldUnion)
-                    .onChange(of: shouldUnion) {
-                        if !model.bufferPoints.isEmpty {
-                            model.drawBuffers(unioned: shouldUnion)
+            Form {
+                Section {
+                    Toggle("Union", isOn: $shouldUnion)
+                        .onChange(of: shouldUnion) {
+                            if !model.bufferPoints.isEmpty {
+                                model.drawBuffers(unioned: shouldUnion)
+                            }
                         }
-                    }
+                }
             }
             .navigationTitle("Buffer Radius")
             .navigationBarTitleDisplayMode(.inline)
@@ -124,11 +128,6 @@ struct CreateBuffersAroundPointsView: View {
                     }
                 }
             }
-            .padding()
-            .cornerRadius(8)
-            .padding(.horizontal)
-            .presentationDetents([.fraction(0.25)])
-            .frame(idealWidth: 250, idealHeight: 120)
         }
     }
 }

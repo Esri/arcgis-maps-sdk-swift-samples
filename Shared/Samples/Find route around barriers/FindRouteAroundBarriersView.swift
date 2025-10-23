@@ -114,12 +114,13 @@ struct FindRouteAroundBarriersView: View {
                         Button("Settings", systemImage: "gear") {
                             showSettings.toggle()
                         }
+                        .labelsHidden()
                         .popover(isPresented: $showSettings) {
                             settings
                                 .presentationDetents([.fraction(0.35)])
                                 .frame(idealWidth: 400, idealHeight: 400)
                         }
-                        .labelsHidden()
+                        
                         Spacer()
                         Button {
                             model.reset(features: featuresSelection)
