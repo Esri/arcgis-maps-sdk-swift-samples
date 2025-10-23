@@ -28,21 +28,21 @@ struct ShowExtrudedFeaturesView: View {
     }
     
     var body: some View {
-        VStack {
-            SceneView(scene: scene)
-            
-            // Unit system picker.
-            Picker("Statistic", selection: $statisticSelection) {
-                ForEach(Statistic.allCases, id: \.self) { stat in
-                    Text(stat.label)
+        SceneView(scene: scene)
+            .toolbar {
+                ToolbarItem(placement: .bottomBar) {
+                    // Unit system picker.
+                    Picker("Statistic", selection: $statisticSelection) {
+                        ForEach(Statistic.allCases, id: \.self) { stat in
+                            Text(stat.label)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                    .onChange(of: statisticSelection) {
+                        featureLayer.renderer?.sceneProperties.extrusionExpression = statisticSelection.extrusionExpression
+                    }
                 }
             }
-            .pickerStyle(.segmented)
-            .padding()
-            .onChange(of: statisticSelection) {
-                featureLayer.renderer?.sceneProperties.extrusionExpression = statisticSelection.extrusionExpression
-            }
-        }
     }
 }
 

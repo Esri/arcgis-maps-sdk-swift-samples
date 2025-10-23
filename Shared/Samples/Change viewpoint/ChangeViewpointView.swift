@@ -43,49 +43,47 @@ struct ChangeViewpointView: View {
     
     var body: some View {
         MapViewReader { mapViewProxy in
-            VStack {
-                MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
-                    .onScaleChanged { scale = $0 }
-                    .onVisibleAreaChanged { visibleArea = $0 }
-                    .task(id: viewpointType) {
-                        switch viewpointType {
-                        case .centerAndScale:
-                            await mapViewProxy.setViewpointCenter(model.londonEast, scale: 4e4)
-                        case .geometry:
-                            await mapViewProxy.setViewpointGeometry(
-                                model.griffithParkGeometry,
-                                padding: 50
+            MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
+                .onScaleChanged { scale = $0 }
+                .onVisibleAreaChanged { visibleArea = $0 }
+                .task(id: viewpointType) {
+                    switch viewpointType {
+                    case .centerAndScale:
+                        await mapViewProxy.setViewpointCenter(model.londonEast, scale: 4e4)
+                    case .geometry:
+                        await mapViewProxy.setViewpointGeometry(
+                            model.griffithParkGeometry,
+                            padding: 50
+                        )
+                    case .animate:
+                        if let center = visibleArea?.extent.center {
+                            let currentScale = scale
+                            let targetScale = currentScale / 2
+                            // Zoom in at the current location with animation.
+                            let finishedWithoutInterruption = await mapViewProxy.setViewpoint(
+                                Viewpoint(center: center, scale: targetScale),
+                                duration: 5
                             )
-                        case .animate:
-                            if let center = visibleArea?.extent.center {
-                                let currentScale = scale
-                                let targetScale = currentScale / 2
-                                // Zoom in at the current location with animation.
-                                let finishedWithoutInterruption = await mapViewProxy.setViewpoint(
-                                    Viewpoint(center: center, scale: targetScale),
+                            if finishedWithoutInterruption {
+                                // If the zoom in finishes, zoom out with animation.
+                                await mapViewProxy.setViewpoint(
+                                    Viewpoint(center: center, scale: currentScale),
                                     duration: 5
                                 )
-                                if finishedWithoutInterruption {
-                                    // If the zoom in finishes, zoom out with animation.
-                                    await mapViewProxy.setViewpoint(
-                                        Viewpoint(center: center, scale: currentScale),
-                                        duration: 5
-                                    )
-                                }
                             }
                         }
                     }
-                HStack {
-                    Picker("Viewpoint Type", selection: $viewpointType) {
-                        ForEach(ViewpointType.allCases, id: \.self) { mode in
-                            Text(mode.label)
-                        }
-                    }
-                    .pickerStyle(.segmented)
-                    .frame(maxWidth: 540)
-                    .padding()
                 }
-            }
+                .toolbar {
+                    ToolbarItem(placement: .bottomBar) {
+                        Picker("Viewpoint Type", selection: $viewpointType) {
+                            ForEach(ViewpointType.allCases, id: \.self) { mode in
+                                Text(mode.label)
+                            }
+                        }
+                        .pickerStyle(.segmented)
+                    }
+                }
         }
     }
 }

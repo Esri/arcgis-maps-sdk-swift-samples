@@ -89,16 +89,18 @@ struct MeasureDistanceInSceneView: View {
             Text("Direct: \(directDistanceText)")
             Text("Horizontal: \(horizontalDistanceText)")
             Text("Vertical: \(verticalDistanceText)")
-            
-            // Unit system picker.
-            Picker("", selection: $unitSystemSelection) {
-                Text("Imperial").tag(UnitSystem.imperial)
-                Text("Metric").tag(UnitSystem.metric)
-            }
-            .pickerStyle(.segmented)
-            .padding()
-            .onChange(of: unitSystemSelection) {
-                model.locationDistanceMeasurement.unitSystem = unitSystemSelection
+        }
+        .toolbar {
+            ToolbarItem(placement: .bottomBar) {
+                // Unit system picker.
+                Picker("Unit System", selection: $unitSystemSelection) {
+                    Text("Imperial").tag(UnitSystem.imperial)
+                    Text("Metric").tag(UnitSystem.metric)
+                }
+                .pickerStyle(.segmented)
+                .onChange(of: unitSystemSelection) {
+                    model.locationDistanceMeasurement.unitSystem = unitSystemSelection
+                }
             }
         }
     }

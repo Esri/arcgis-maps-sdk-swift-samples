@@ -16,13 +16,19 @@ import SwiftUI
 
 struct SampleDetailView: View {
     /// The sample to display in the view.
-    private let sample: Sample
+    let sample: Sample
+    
+    /// An environmental value we use to determine whether this device displays the UI in columns.
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     /// The view model for requesting App Store reviews.
     @Environment(\.requestReviewModel) private var requestReviewModel
     
     /// A Boolean value that indicates whether to present the sample's information view.
     @State private var isSampleInfoViewPresented = false
+    
+    /// A Boolean value indicating whether the detail view is full screen.
+    @Binding var isFullScreen: Bool
     
     /// An object to manage on-demand resources for a sample with dependencies.
     @State private var onDemandResource: OnDemandResource?
@@ -47,10 +53,6 @@ struct SampleDetailView: View {
             .onDisappear {
                 requestReviewModel.sampleIsShowing = false
             }
-    }
-    
-    init(sample: Sample) {
-        self.sample = sample
     }
     
     var body: some View {
@@ -101,6 +103,14 @@ struct SampleDetailView: View {
         .navigationTitle(sample.name)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
+            if #available(iOS 26, *), horizontalSizeClass == .regular {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Full Screen", systemImage: isFullScreen ? "arrow.down.forward.and.arrow.up.backward" : "arrow.up.backward.and.arrow.down.forward") {
+                        isFullScreen.toggle()
+                    }
+                }
+            }
+            
             ToolbarItem(placement: .topBarTrailing) {
                 Menu("Sample Actions", systemImage: "ellipsis.circle") {
                     Button("View Info", systemImage: "info.circle") {

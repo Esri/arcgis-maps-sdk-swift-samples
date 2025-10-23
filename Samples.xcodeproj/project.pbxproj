@@ -278,6 +278,8 @@
 		79A47DFC2A20286800D7C5B9 /* CreateAndSaveKMLView.Views.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 79302F862A1ED71B0002336A /* CreateAndSaveKMLView.Views.swift */; };
 		79B7B80A2A1BF8EC00F57C27 /* CreateAndSaveKMLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B7B8092A1BF8EC00F57C27 /* CreateAndSaveKMLView.swift */; };
 		79B7B80B2A1BFDE700F57C27 /* CreateAndSaveKMLView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 79B7B8092A1BF8EC00F57C27 /* CreateAndSaveKMLView.swift */; };
+		79D22F822E9D8EA900B981A5 /* DisplayLocalSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79D22F812E9D8EA000B981A5 /* DisplayLocalSceneView.swift */; };
+		79D22F842E9DACCA00B981A5 /* DisplayLocalSceneView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 79D22F812E9D8EA000B981A5 /* DisplayLocalSceneView.swift */; };
 		79D84D132A81711A00F45262 /* AddCustomDynamicEntityDataSourceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79D84D0D2A815C5B00F45262 /* AddCustomDynamicEntityDataSourceView.swift */; };
 		79D84D152A81718F00F45262 /* AddCustomDynamicEntityDataSourceView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 79D84D0D2A815C5B00F45262 /* AddCustomDynamicEntityDataSourceView.swift */; };
 		8810FB592DC94A7200874936 /* ApplyFunctionToRasterFromServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8810FB582DC94A6600874936 /* ApplyFunctionToRasterFromServiceView.swift */; };
@@ -758,6 +760,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				79D22F842E9DACCA00B981A5 /* DisplayLocalSceneView.swift in Copy Source Code Files */,
 				95321B322E554B88002E9DE2 /* ApplyRenderersToSceneLayerView.swift in Copy Source Code Files */,
 				D73617792E4CF2640008471A /* QueryDynamicEntitiesView.Model.swift in Copy Source Code Files */,
 				D73617782E4CF2400008471A /* QueryDynamicEntitiesView.swift in Copy Source Code Files */,
@@ -1219,6 +1222,7 @@
 		79302F862A1ED71B0002336A /* CreateAndSaveKMLView.Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAndSaveKMLView.Views.swift; sourceTree = "<group>"; };
 		798C2DA62AFC505600EE7E97 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		79B7B8092A1BF8EC00F57C27 /* CreateAndSaveKMLView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAndSaveKMLView.swift; sourceTree = "<group>"; };
+		79D22F812E9D8EA000B981A5 /* DisplayLocalSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayLocalSceneView.swift; sourceTree = "<group>"; };
 		79D84D0D2A815C5B00F45262 /* AddCustomDynamicEntityDataSourceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCustomDynamicEntityDataSourceView.swift; sourceTree = "<group>"; };
 		8810FB582DC94A6600874936 /* ApplyFunctionToRasterFromServiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyFunctionToRasterFromServiceView.swift; sourceTree = "<group>"; };
 		88129D792DD5035A001599A5 /* ShowGeodesicPathBetweenTwoPointsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowGeodesicPathBetweenTwoPointsView.swift; sourceTree = "<group>"; };
@@ -1752,6 +1756,7 @@
 				D7635FEA2B9272CB0044AB97 /* Display clusters */,
 				00A7A1422A2FC58300F035F7 /* Display content of utility network container */,
 				D7497F382AC4B45300167AD2 /* Display dimensions */,
+				79D22F802E9D8E4700B981A5 /* Display local scene */,
 				0074ABB328174B830037244A /* Display map */,
 				F111CCBD288B548400205358 /* Display map from mobile map package */,
 				D752D95B2A3BCDD4003EB25E /* Display map from portal item */,
@@ -2675,6 +2680,14 @@
 				79302F862A1ED71B0002336A /* CreateAndSaveKMLView.Views.swift */,
 			);
 			path = "Create and save KML file";
+			sourceTree = "<group>";
+		};
+		79D22F802E9D8E4700B981A5 /* Display local scene */ = {
+			isa = PBXGroup;
+			children = (
+				79D22F812E9D8EA000B981A5 /* DisplayLocalSceneView.swift */,
+			);
+			path = "Display local scene";
 			sourceTree = "<group>";
 		};
 		79D84D0C2A815BED00F45262 /* Add custom dynamic entity data source */ = {
@@ -4788,6 +4801,7 @@
 				88F93CC129C3D59D0006B28E /* CreateAndEditGeometriesView.swift in Sources */,
 				1C0C1C3929D34DAE005C8B24 /* ChangeViewpointView.swift in Sources */,
 				955271612C0E6749009B1ED4 /* AddRasterFromServiceView.swift in Sources */,
+				79D22F822E9D8EA900B981A5 /* DisplayLocalSceneView.swift in Sources */,
 				D7AE861E2AC39DC50049B626 /* DisplayAnnotationView.swift in Sources */,
 				D734FA0C2A183A5B00246D7E /* SetMaxExtentView.swift in Sources */,
 				D704AA5A2AB22C1A00A3BB63 /* GroupLayersTogetherView.swift in Sources */,
