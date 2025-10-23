@@ -85,7 +85,7 @@ struct CreateConvexHullAroundGeometriesView: View {
         NavigationStack {
             Form {
                 Section {
-                    Toggle(shouldUnion ? "Union Enabled" : "Union Disabled", isOn: $shouldUnion)
+                    Toggle("Union", isOn: $shouldUnion)
                         .onChange(of: shouldUnion) {
                             if !createIsOn {
                                 convexHullGraphicsOverlay.removeAllGraphics()
