@@ -28,7 +28,7 @@ struct FindRouteAroundBarriersView: View {
     /// The geometry of a direction maneuver to set the viewpoint to.
     @State private var directionGeometry: Geometry?
     
-    /// A Boolean value specifying whether the metadata view should be shown
+    /// A Boolean value specifying whether the settings view should be shown
     @State private var showSettings: Bool = false
     
     /// The error shown in the error alert.

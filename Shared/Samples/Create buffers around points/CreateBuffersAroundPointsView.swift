@@ -19,7 +19,7 @@ struct CreateBuffersAroundPointsView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
-    /// A Boolean value specifying whether the metadata view should be shown
+    /// A Boolean value specifying whether the settings view should be shown
     @State private var showSettings: Bool = false
     
     /// The status of the sample.

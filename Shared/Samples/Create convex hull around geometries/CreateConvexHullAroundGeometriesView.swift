@@ -19,7 +19,7 @@ struct CreateConvexHullAroundGeometriesView: View {
     /// A map with a topographic basemap.
     @State private var map = Map(basemapStyle: .arcGISTopographic)
     
-    /// A Boolean value specifying whether the metadata view should be shown
+    /// A Boolean value specifying whether the settings view should be shown
     @State private var showSettings: Bool = false
     
     /// The graphics overlay for the geometry graphics.

@@ -41,7 +41,7 @@ struct SetMaxExtentView: View {
     /// A Boolean value indicating whether the max extent is set.
     @State private var maxExtentIsSet = true
     
-    /// A Boolean value specifying whether the metadata view should be shown
+    /// A Boolean value specifying whether the settings view should be shown
     @State private var showSettings: Bool = false
     
     var body: some View {
