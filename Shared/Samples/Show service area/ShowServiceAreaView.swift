@@ -125,7 +125,6 @@ struct ShowServiceAreaView: View {
                 }
             }
         }
-        .cornerRadius(8)
     }
 }
 
