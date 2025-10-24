@@ -53,8 +53,8 @@ struct SetMaxExtentView: View {
                     }
                     .popover(isPresented: $showSettings) {
                         settings
-                            .presentationDetents([.fraction(0.30)])
                             .frame(idealWidth: 350, idealHeight: 300)
+                            .presentationCompactAdaptation(.popover)
                     }
                 }
             }

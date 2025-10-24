@@ -56,17 +56,18 @@ struct CreateBuffersAroundPointsView: View {
                     .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
             }
             .toolbar {
-                ToolbarItem(placement: .bottomBar) {
+                ToolbarItemGroup(placement: .bottomBar) {
                     Button("Buffer Settings") {
-                        showSettings.toggle()
+                        showSettings = true
                     }
                     .popover(isPresented: $showSettings) {
                         settings
-                            .presentationDetents([.fraction(0.25)])
-                            .frame(idealWidth: 250, idealHeight: 120)
+                            .frame(idealWidth: 380, idealHeight: 170)
+                            .presentationCompactAdaptation(.popover)
                     }
-                }
-                ToolbarItem(placement: .bottomBar) {
+                    
+                    Spacer()
+                    
                     Button("Clear") {
                         model.clearBufferPoints()
                         status = .addPoints

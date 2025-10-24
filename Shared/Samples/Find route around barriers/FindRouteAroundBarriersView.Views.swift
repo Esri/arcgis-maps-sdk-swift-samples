@@ -16,7 +16,6 @@ import ArcGIS
 import SwiftUI
 
 extension FindRouteAroundBarriersView {
-    
     /// A button with a given label that brings up a sheet containing given content.
     struct SheetButton<Content: View, Label: View>: View {
         /// The string to display as the title of the sheet
@@ -39,8 +38,8 @@ extension FindRouteAroundBarriersView {
             }
             .popover(isPresented: $sheetIsShowing) {
                 sheetContent
-                    .presentationDetents([.fraction(0.5)])
                     .frame(idealWidth: 320, idealHeight: 240)
+                    .presentationCompactAdaptation(.popover)
             }
         }
         
