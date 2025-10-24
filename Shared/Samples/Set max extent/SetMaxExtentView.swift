@@ -41,8 +41,8 @@ struct SetMaxExtentView: View {
     /// A Boolean value indicating whether the max extent is set.
     @State private var maxExtentIsSet = true
     
-    /// A Boolean value specifying whether the settings view should be shown
-    @State private var showSettings: Bool = false
+    /// A Boolean value indicating whether the settings view is showing.
+    @State private var showSettings = false
     
     var body: some View {
         MapView(map: map, graphicsOverlays: [graphicsOverlay])

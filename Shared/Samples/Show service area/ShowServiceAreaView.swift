@@ -34,8 +34,8 @@ struct ShowServiceAreaView: View {
     @State private var isSolvingServiceArea = false
     /// A Boolean value indicating whether the service area is set.
     @State private var isServiceAreaSet = false
-    /// A Boolean value specifying whether the settings view should be shown
-    @State private var showSettings: Bool = false
+    /// A Boolean value indicating whether the settings view is showing.
+    @State private var showSettings = false
     
     /// The data model for the sample.
     @StateObject private var model = Model()
