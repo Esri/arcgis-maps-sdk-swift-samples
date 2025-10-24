@@ -28,8 +28,6 @@ struct ShowServiceAreaView: View {
     @State private var firstTimeBreak: Int = 3
     /// Second time break property set in second stepper.
     @State private var secondTimeBreak: Int = 8
-    /// A Boolean value indicating whether the time breaks settings are presented.
-    @State private var settingsArePresented = false
     /// A Boolean value indicating whether the service area is being solved.
     @State private var isSolvingServiceArea = false
     /// A Boolean value indicating whether the service area is set.
