@@ -56,7 +56,7 @@ struct ShowServiceAreaView: View {
                     }
                     .popover(isPresented: $showSettings) {
                         settingsPopover
-                            .frame(idealWidth: 400, idealHeight: 400)
+                            .frame(idealWidth: 320, idealHeight: 400)
                             .presentationCompactAdaptation(.popover)
                     }
                     

@@ -62,7 +62,7 @@ struct CreateBuffersAroundPointsView: View {
                     }
                     .popover(isPresented: $showSettings) {
                         settings
-                            .frame(idealWidth: 380, idealHeight: 170)
+                            .frame(idealWidth: 320, idealHeight: 170)
                             .presentationCompactAdaptation(.popover)
                     }
                     

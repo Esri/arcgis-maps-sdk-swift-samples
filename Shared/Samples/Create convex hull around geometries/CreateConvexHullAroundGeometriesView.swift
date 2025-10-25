@@ -54,7 +54,7 @@ struct CreateConvexHullAroundGeometriesView: View {
                     }
                     .popover(isPresented: $showSettings) {
                         settings
-                            .frame(idealWidth: 350, idealHeight: 300)
+                            .frame(idealWidth: 320, idealHeight: 300)
                             .presentationCompactAdaptation(.popover)
                     }
                     
