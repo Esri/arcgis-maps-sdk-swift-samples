@@ -92,7 +92,7 @@ struct ShowServiceAreaView: View {
     @ViewBuilder var settingsPopover: some View {
         NavigationStack {
             Form {
-                Section("Facility Mode") {
+                Section("Add Facility or Barrier") {
                     Picker("Mode", selection: $selectedGraphicType) {
                         ForEach(GraphicType.allCases, id: \.self) {
                             Text($0.label)
