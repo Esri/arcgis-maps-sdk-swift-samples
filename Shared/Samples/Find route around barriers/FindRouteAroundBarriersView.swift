@@ -29,7 +29,7 @@ struct FindRouteAroundBarriersView: View {
     @State private var directionGeometry: Geometry?
     
     /// A Boolean value indicating whether the settings view is showing.
-    @State private var showSettings = false
+    @State var showSettings = false
     
     /// The error shown in the error alert.
     @State private var error: (any Error)?

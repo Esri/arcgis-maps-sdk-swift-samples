@@ -30,6 +30,9 @@ extension FindRouteAroundBarriersView {
         /// A Boolean value indicating whether routing will preserve the last stop.
         @State private var routePreservesLastStop: Bool
         
+        /// The route features to be added or removed from the map.
+        @State private var featuresSelection: RouteFeatures = .stops
+        
         init(for routeParameters: RouteParameters) {
             self.routeParameters = routeParameters
             self.routingFindsBestSequence = routeParameters.findsBestSequence
@@ -37,30 +40,62 @@ extension FindRouteAroundBarriersView {
             self.routePreservesLastStop = routeParameters.preservesLastStop
         }
         
+        //        var body: some View {
+        //            List {
+        //                Toggle("Find Best Sequence", isOn: $routingFindsBestSequence)
+        //                    .onChange(of: routingFindsBestSequence) {
+        //                        routeParameters.findsBestSequence = routingFindsBestSequence
+        //                    }
+        //
+        //                Section {
+        //                    Toggle("Preserve First Stop", isOn: $routePreservesFirstStop)
+        //                        .onChange(of: routePreservesFirstStop) {
+        //                            routeParameters.preservesFirstStop = routePreservesFirstStop
+        //                        }
+        //
+        //                    Toggle("Preserve Last Stop", isOn: $routePreservesLastStop)
+        //                        .onChange(of: routePreservesLastStop) {
+        //                            routeParameters.preservesLastStop = routePreservesLastStop
+        //                        }
+        //                }
+        //                .disabled(!routingFindsBestSequence)
+        //            }
+        //        }
+        //    }
+        
         var body: some View {
-            List {
-                Toggle("Find Best Sequence", isOn: $routingFindsBestSequence)
-                    .onChange(of: routingFindsBestSequence) {
-                        routeParameters.findsBestSequence = routingFindsBestSequence
+            NavigationStack {
+                Form {
+                    Section("Features") {
+                        Picker("Features", selection: $featuresSelection) {
+                            Text("Stops").tag(RouteFeatures.stops)
+                            Text("Barriers").tag(RouteFeatures.barriers)
+                        }
+                        .pickerStyle(.segmented)
                     }
-                
-                Section {
-                    Toggle("Preserve First Stop", isOn: $routePreservesFirstStop)
-                        .onChange(of: routePreservesFirstStop) {
-                            routeParameters.preservesFirstStop = routePreservesFirstStop
-                        }
+                    Section {
+                        Toggle("Find Best Sequence", isOn: $routingFindsBestSequence)
+                    }
                     
-                    Toggle("Preserve Last Stop", isOn: $routePreservesLastStop)
-                        .onChange(of: routePreservesLastStop) {
-                            routeParameters.preservesLastStop = routePreservesLastStop
-                        }
+                    Section("Preserve Stops") {
+                        Toggle("Preserve First Stop", isOn: $routePreservesFirstStop)
+                        Toggle("Preserve Last Stop", isOn: $routePreservesLastStop)
+                    }
+                    .disabled(!routeParameters.findsBestSequence)
                 }
-                .disabled(!routingFindsBestSequence)
+                .navigationTitle("Settings")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .confirmationAction) {
+                        Button("Done") {
+//                            showSettings = false
+                        }
+                    }
+                }
             }
         }
     }
-    
-    
+
     /// A button with a given label that brings up a sheet containing given content.
     struct SheetButton<Content: View, Label: View>: View {
         /// The string to display as the title of the sheet
