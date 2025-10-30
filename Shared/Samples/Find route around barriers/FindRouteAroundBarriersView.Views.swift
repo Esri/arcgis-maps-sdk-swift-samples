@@ -33,11 +33,14 @@ extension FindRouteAroundBarriersView {
         /// The route features to be added or removed from the map.
         @State private var featuresSelection: RouteFeatures = .stops
         
-        init(for routeParameters: RouteParameters) {
+        @Binding private var isDoneTapped: Bool
+        
+        init(for routeParameters: RouteParameters, doneTapped: Binding<Bool>) {
             self.routeParameters = routeParameters
             self.routingFindsBestSequence = routeParameters.findsBestSequence
             self.routePreservesFirstStop = routeParameters.preservesFirstStop
             self.routePreservesLastStop = routeParameters.preservesLastStop
+            self._isDoneTapped = doneTapped
         }
         
         //        var body: some View {
@@ -88,6 +91,7 @@ extension FindRouteAroundBarriersView {
                 .toolbar {
                     ToolbarItem(placement: .confirmationAction) {
                         Button("Done") {
+                            isDoneTapped = false
 //                            showSettings = false
                         }
                     }
