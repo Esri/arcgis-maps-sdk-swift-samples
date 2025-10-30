@@ -101,7 +101,7 @@ struct AnalyzeHotspotsView: View {
                         }
                         .popover(isPresented: $isAnalysisSheetPresented) {
                             analysisForm
-                                .frame(idealWidth: 320, idealHeight: 150)
+                                .frame(idealWidth: 250, idealHeight: 150)
                                 .presentationCompactAdaptation(.popover)
                         }
                     }
