@@ -29,7 +29,10 @@ struct FindRouteAroundBarriersView: View {
     @State private var directionGeometry: Geometry?
     
     /// A Boolean value indicating whether the settings view is showing.
-    @State var showSettings = false
+    @State private var showSettings = false
+
+    /// A Boolean value indicating whether the settings view is showing.
+    @State private var showRoute = false
     
     /// The error shown in the error alert.
     @State private var error: (any Error)?
@@ -67,22 +70,17 @@ struct FindRouteAroundBarriersView: View {
                 }
                 .toolbar {
                     ToolbarItemGroup(placement: .bottomBar) {
-                        SheetButton(title: "Directions") {
-                            List {
-                                ForEach(
-                                    Array((model.route?.directionManeuvers ?? []).enumerated()),
-                                    id: \.offset
-                                ) { (_, direction) in
-                                    Button {
-                                        directionGeometry = direction.geometry
-                                    } label: {
-                                        Text(direction.text)
-                                    }
-                                }
-                            }
-                        } label: {
-                            Image(systemName: "arrow.triangle.turn.up.right.diamond")
+                        Spacer()
+                        Button("Directions", systemImage: "arrow.triangle.turn.up.right.diamond") {
+                            showRoute.toggle()
                         }
+                        .labelsHidden()
+                        .popover(isPresented: $showRoute) {
+                            routeSheet
+                                .presentationDetents([.fraction(0.35)])
+                                .frame(idealWidth: 400, idealHeight: 400)
+                        }
+                        
                         .disabled(model.route == nil)
                         .task(id: directionGeometry) {
                             guard let directionGeometry else { return }
@@ -144,6 +142,32 @@ struct FindRouteAroundBarriersView: View {
             }
         }
         .errorAlert(presentingError: $error)
+    }
+    
+    @ViewBuilder var routeSheet: some View {
+        NavigationStack {
+            List {
+                ForEach(
+                    Array((model.route?.directionManeuvers ?? []).enumerated()),
+                    id: \.offset
+                ) { (_, direction) in
+                    Button {
+                        directionGeometry = direction.geometry
+                    } label: {
+                        Text(direction.text)
+                    }
+                }
+            }
+            .navigationTitle("Route Directions")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") {
+                        showRoute = false
+                    }
+                }
+            }
+        }
     }
     
     @ViewBuilder var settings: some View {
