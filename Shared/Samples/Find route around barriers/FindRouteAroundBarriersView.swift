@@ -31,7 +31,7 @@ struct FindRouteAroundBarriersView: View {
     /// A Boolean value indicating whether the settings view is showing.
     @State private var showSettings = false
 
-    /// A Boolean value indicating whether the settings view is showing.
+    /// A Boolean value indicating whether the directions list is showing.
     @State private var showRoute = false
     
     /// The error shown in the error alert.
