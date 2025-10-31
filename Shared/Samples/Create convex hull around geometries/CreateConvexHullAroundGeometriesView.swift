@@ -50,7 +50,7 @@ struct CreateConvexHullAroundGeometriesView: View {
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
                     Button("Convex Hull Settings") {
-                        showSettings.toggle()
+                        showSettings = true
                     }
                     .popover(isPresented: $showSettings) {
                         settings

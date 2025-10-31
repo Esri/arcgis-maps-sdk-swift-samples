@@ -49,7 +49,7 @@ struct SetMaxExtentView: View {
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
                     Button("Settings") {
-                        showSettings.toggle()
+                        showSettings = true
                     }
                     .popover(isPresented: $showSettings) {
                         settings

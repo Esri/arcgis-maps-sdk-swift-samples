@@ -52,7 +52,7 @@ struct ShowServiceAreaView: View {
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
                     Button("Settings", systemImage: "gear") {
-                        showSettings.toggle()
+                        showSettings = true
                     }
                     .popover(isPresented: $showSettings) {
                         settingsPopover

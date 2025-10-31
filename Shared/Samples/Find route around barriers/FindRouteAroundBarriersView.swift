@@ -72,7 +72,7 @@ struct FindRouteAroundBarriersView: View {
                     ToolbarItemGroup(placement: .bottomBar) {
                         Spacer()
                         Button("Directions", systemImage: "arrow.triangle.turn.up.right.diamond") {
-                            showRoute.toggle()
+                            showRoute = true
                         }
                         .labelsHidden()
                         .popover(isPresented: $showRoute) {
@@ -109,7 +109,7 @@ struct FindRouteAroundBarriersView: View {
                         }
                         Spacer()
                         Button("Settings", systemImage: "gear") {
-                            showSettings.toggle()
+                            showSettings = true
                         }
                         .labelsHidden()
                         .popover(isPresented: $showSettings) {
@@ -150,10 +150,8 @@ struct FindRouteAroundBarriersView: View {
                     Array((model.route?.directionManeuvers ?? []).enumerated()),
                     id: \.offset
                 ) { (_, direction) in
-                    Button {
+                    Button(direction.text) {
                         directionGeometry = direction.geometry
-                    } label: {
-                        Text(direction.text)
                     }
                 }
             }
