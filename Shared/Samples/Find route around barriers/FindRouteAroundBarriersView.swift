@@ -80,7 +80,6 @@ struct FindRouteAroundBarriersView: View {
                                 .presentationDetents([.fraction(0.35)])
                                 .frame(idealWidth: 400, idealHeight: 400)
                         }
-                        
                         .disabled(model.route == nil)
                         .task(id: directionGeometry) {
                             guard let directionGeometry else { return }
