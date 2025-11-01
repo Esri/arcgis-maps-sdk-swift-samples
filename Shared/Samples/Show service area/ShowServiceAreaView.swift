@@ -33,7 +33,7 @@ struct ShowServiceAreaView: View {
     /// A Boolean value indicating whether the service area is set.
     @State private var isServiceAreaSet = false
     /// A Boolean value indicating whether the settings view is showing.
-    @State private var showSettings = false
+    @State private var settingsAreVisible = false
     
     /// The data model for the sample.
     @StateObject private var model = Model()
@@ -52,9 +52,9 @@ struct ShowServiceAreaView: View {
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
                     Button("Settings", systemImage: "gear") {
-                        showSettings = true
+                        settingsAreVisible = true
                     }
-                    .popover(isPresented: $showSettings) {
+                    .popover(isPresented: $settingsAreVisible) {
                         settingsPopover
                             .frame(idealWidth: 320, idealHeight: 400)
                             .presentationCompactAdaptation(.popover)
@@ -118,7 +118,7 @@ struct ShowServiceAreaView: View {
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Done") {
-                        showSettings = false
+                        settingsAreVisible = false
                     }
                 }
             }

@@ -20,7 +20,7 @@ struct CreateConvexHullAroundGeometriesView: View {
     @State private var map = Map(basemapStyle: .arcGISTopographic)
     
     /// A Boolean value indicating whether the settings view is showing.
-    @State private var showSettings = false
+    @State private var settingsAreVisible = false
     
     /// The graphics overlay for the geometry graphics.
     @State private var geometriesGraphicsOverlay: GraphicsOverlay = {
@@ -52,7 +52,7 @@ struct CreateConvexHullAroundGeometriesView: View {
                     Button("Convex Hull Settings") {
                         showSettings = true
                     }
-                    .popover(isPresented: $showSettings) {
+                    .popover(isPresented: $settingsAreVisible) {
                         settings
                             .frame(idealWidth: 320, idealHeight: 300)
                             .presentationCompactAdaptation(.popover)
@@ -102,7 +102,7 @@ struct CreateConvexHullAroundGeometriesView: View {
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Done") {
-                        showSettings = false
+                        settingsAreVisible = false
                     }
                 }
             }

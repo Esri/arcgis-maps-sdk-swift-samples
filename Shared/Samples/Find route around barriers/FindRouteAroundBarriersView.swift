@@ -29,7 +29,7 @@ struct FindRouteAroundBarriersView: View {
     @State private var directionGeometry: Geometry?
     
     /// A Boolean value indicating whether the settings view is showing.
-    @State private var showSettings = false
+    @State private var settingsAreVisible = false
 
     /// A Boolean value indicating whether the directions list is showing.
     @State private var showRoute = false
@@ -109,10 +109,10 @@ struct FindRouteAroundBarriersView: View {
                         }
                         Spacer()
                         Button("Settings", systemImage: "gear") {
-                            showSettings = true
+                            settingsAreVisible = true
                         }
                         .labelsHidden()
-                        .popover(isPresented: $showSettings) {
+                        .popover(isPresented: $settingsAreVisible) {
                             settings
                                 .presentationDetents([.fraction(0.35)])
                                 .frame(idealWidth: 400, idealHeight: 400)
@@ -192,7 +192,7 @@ struct FindRouteAroundBarriersView: View {
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Done") {
-                        showSettings = false
+                        settingsAreVisible = false
                     }
                 }
             }

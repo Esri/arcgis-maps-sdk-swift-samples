@@ -20,7 +20,7 @@ struct CreateBuffersAroundPointsView: View {
     @StateObject private var model = Model()
     
     /// A Boolean value indicating whether the settings view is showing.
-    @State private var showSettings = false
+    @State private var settingsAreVisible = false
     
     /// The status of the sample.
     @State private var status = Status.addPoints
@@ -60,7 +60,7 @@ struct CreateBuffersAroundPointsView: View {
                     Button("Buffer Settings") {
                         showSettings = true
                     }
-                    .popover(isPresented: $showSettings) {
+                    .popover(isPresented: $settingsAreVisible) {
                         settings
                             .frame(idealWidth: 320, idealHeight: 170)
                             .presentationCompactAdaptation(.popover)
@@ -126,7 +126,7 @@ struct CreateBuffersAroundPointsView: View {
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Done") {
-                        showSettings = false
+                        settingsAreVisible = false
                     }
                 }
             }

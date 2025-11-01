@@ -42,7 +42,7 @@ struct SetMaxExtentView: View {
     @State private var maxExtentIsSet = true
     
     /// A Boolean value indicating whether the settings view is showing.
-    @State private var showSettings = false
+    @State private var settingsAreVisible = false
     
     var body: some View {
         MapView(map: map, graphicsOverlays: [graphicsOverlay])
@@ -51,7 +51,7 @@ struct SetMaxExtentView: View {
                     Button("Settings") {
                         showSettings = true
                     }
-                    .popover(isPresented: $showSettings) {
+                    .popover(isPresented: $settingsAreVisible) {
                         settings
                             .frame(idealWidth: 320, idealHeight: 300)
                             .presentationCompactAdaptation(.popover)
@@ -83,7 +83,7 @@ struct SetMaxExtentView: View {
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Done") {
-                        showSettings = false
+                        settingsAreVisible = false
                     }
                 }
             }
