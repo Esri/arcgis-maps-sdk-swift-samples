@@ -33,8 +33,8 @@ struct AddBuildingSceneLayerView: View {
         return scene
     }()
     
-    /// A Boolean value that indicates if the full model of the building scene layer is showing or not.
-    @State private var showsFullModel = false
+    /// A Boolean value that indicates if the full model of the building scene layer is visible or not.
+    @State private var fullModelIsVisible = false
     
     /// The camera for zooming the local scene view to the building scene layer.
     @State private var camera: Camera? = Camera(
@@ -58,9 +58,10 @@ struct AddBuildingSceneLayerView: View {
                 )
                 
                 // Sets the altitude offset of the building scene layer.
-                // Upon first inspection of the model, it does not line up with the global
-                // elevation layer perfectly. To fix this, add an altitude offset to align
-                // the model with the ground surface.
+                // Upon first inspection of the model, it does not line up
+                // with the global elevation layer perfectly. To fix this,
+                // add an altitude offset to align the model with the
+                // ground surface.
                 buildingSceneLayer.altitudeOffset = 1
                 
                 try? await buildingSceneLayer.load()
@@ -68,8 +69,7 @@ struct AddBuildingSceneLayerView: View {
                 // Adds building scene layer to scene.
                 scene.addOperationalLayer(buildingSceneLayer)
                 
-                // Get the overview and full model sublayers for the
-                // toggle.
+                // Get the overview and full model sublayers for the toggle.
                 let sublayers = buildingSceneLayer.sublayers
                 overviewSublayer = sublayers.first(where: { $0.name == "Overview" })
                 fullModelSublayer = sublayers.first(where: { $0.name == "Full Model" })
@@ -79,24 +79,24 @@ struct AddBuildingSceneLayerView: View {
                     // Shows the toggle when we have a valid full model
                     // sublayer since we need that for the toggle.
                     if fullModelSublayer != nil {
-                        Toggle("Full Model", isOn: $showsFullModel)
+                        Toggle("Full Model", isOn: $fullModelIsVisible)
                             .toggleStyle(.button)
                     } else {
                         ProgressView()
                     }
                 }
             }
-            .onChange(of: showsFullModel) {
+            .onChange(of: fullModelIsVisible) {
                 // Toggle the visibility of the full model sublayer.
                 // This does not affect the 'isVisible' property of
                 // individual sublayers within the full model.
-                fullModelSublayer?.isVisible = showsFullModel
+                fullModelSublayer?.isVisible = fullModelIsVisible
                 // The overview sublayer represents the exterior shell of
                 // the building. The full model sublayer includes this
                 // shell along with interior components. To avoid rendering
                 // artifacts like z-fighting and redundant drawing, we
                 // only display one at a time.
-                overviewSublayer?.isVisible = !showsFullModel
+                overviewSublayer?.isVisible = !fullModelIsVisible
             }
     }
 }
