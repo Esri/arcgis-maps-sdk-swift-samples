@@ -30,7 +30,7 @@ struct FindRouteAroundBarriersView: View {
     
     /// A Boolean value indicating whether the settings view is showing.
     @State private var settingsAreVisible = false
-
+    
     /// A Boolean value indicating whether the directions list is showing.
     @State private var showRoute = false
     
@@ -178,14 +178,8 @@ struct FindRouteAroundBarriersView: View {
                     .pickerStyle(.segmented)
                 }
                 Section {
-                    Toggle("Find Best Sequence", isOn: $model.routeParameters.findsBestSequence)
+                    RouteParametersSettings(for: model.routeParameters)
                 }
-                
-                Section("Preserve Stops") {
-                    Toggle("Preserve First Stop", isOn: $model.routeParameters.preservesFirstStop)
-                    Toggle("Preserve Last Stop", isOn: $model.routeParameters.preservesLastStop)
-                }
-                .disabled(!model.routeParameters.findsBestSequence)
             }
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
@@ -195,6 +189,54 @@ struct FindRouteAroundBarriersView: View {
                         settingsAreVisible = false
                     }
                 }
+            }
+        }
+    }
+}
+
+extension FindRouteAroundBarriersView {
+    /// A list of settings for modifying route parameters.
+    struct RouteParametersSettings: View {
+        /// The route parameters to modify.
+        private let routeParameters: RouteParameters
+        
+        /// A Boolean value indicating whether routing will find the best sequence.
+        @State private var routingFindsBestSequence: Bool = true
+        
+        /// A Boolean value indicating whether routing will preserve the first stop.
+        @State private var routePreservesFirstStop: Bool = true
+        
+        /// A Boolean value indicating whether routing will preserve the last stop.
+        @State private var routePreservesLastStop: Bool = true
+        
+        init(for routeParameters: RouteParameters) {
+            self.routeParameters = routeParameters
+        }
+        
+        var body: some View {
+            List {
+                Toggle("Find Best Sequence", isOn: $routingFindsBestSequence)
+                    .onChange(of: routingFindsBestSequence) {
+                        routeParameters.findsBestSequence = routingFindsBestSequence
+                    }
+                
+                Section {
+                    Toggle("Preserve First Stop", isOn: $routePreservesFirstStop)
+                        .onChange(of: routePreservesFirstStop) {
+                            routeParameters.preservesFirstStop = routePreservesFirstStop
+                        }
+                    
+                    Toggle("Preserve Last Stop", isOn: $routePreservesLastStop)
+                        .onChange(of: routePreservesLastStop) {
+                            routeParameters.preservesLastStop = routePreservesLastStop
+                        }
+                }
+                .disabled(!routingFindsBestSequence)
+            }
+            .onAppear {
+                self.routingFindsBestSequence = routeParameters.findsBestSequence
+                self.routePreservesFirstStop = routeParameters.preservesFirstStop
+                self.routePreservesLastStop = routeParameters.preservesLastStop
             }
         }
     }
