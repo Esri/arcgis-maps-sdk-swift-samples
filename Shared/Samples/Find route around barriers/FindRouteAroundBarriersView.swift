@@ -146,10 +146,7 @@ struct FindRouteAroundBarriersView: View {
     @ViewBuilder var routeSheet: some View {
         NavigationStack {
             List {
-                ForEach(
-                    Array((model.route?.directionManeuvers ?? []).enumerated()),
-                    id: \.offset
-                ) { (_, direction) in
+                ForEach(model.route?.directionManeuvers ?? [], id: \.text) { direction in
                     Button(direction.text) {
                         directionGeometry = direction.geometry
                     }
