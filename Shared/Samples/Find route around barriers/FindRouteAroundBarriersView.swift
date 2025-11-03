@@ -114,8 +114,8 @@ struct FindRouteAroundBarriersView: View {
                         .labelsHidden()
                         .popover(isPresented: $settingsAreVisible) {
                             settings
-                                .presentationDetents([.fraction(0.35)])
-                                .frame(idealWidth: 400, idealHeight: 400)
+                                .presentationDetents([.fraction(0.5)])
+                                .frame(idealWidth: 400, idealHeight: 500)
                         }
                         
                         Spacer()
@@ -177,9 +177,7 @@ struct FindRouteAroundBarriersView: View {
                     }
                     .pickerStyle(.segmented)
                 }
-                Section {
-                    RouteParametersSettings(for: model.routeParameters)
-                }
+                RouteParametersSettings(for: model.routeParameters)
             }
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
@@ -214,25 +212,23 @@ extension FindRouteAroundBarriersView {
         }
         
         var body: some View {
-            List {
+            Section {
                 Toggle("Find Best Sequence", isOn: $routingFindsBestSequence)
                     .onChange(of: routingFindsBestSequence) {
                         routeParameters.findsBestSequence = routingFindsBestSequence
                     }
-                
-                Section {
-                    Toggle("Preserve First Stop", isOn: $routePreservesFirstStop)
-                        .onChange(of: routePreservesFirstStop) {
-                            routeParameters.preservesFirstStop = routePreservesFirstStop
-                        }
-                    
-                    Toggle("Preserve Last Stop", isOn: $routePreservesLastStop)
-                        .onChange(of: routePreservesLastStop) {
-                            routeParameters.preservesLastStop = routePreservesLastStop
-                        }
-                }
-                .disabled(!routingFindsBestSequence)
             }
+            Section("Preserve Stops") {
+                Toggle("Preserve First Stop", isOn: $routePreservesFirstStop)
+                    .onChange(of: routePreservesFirstStop) {
+                        routeParameters.preservesFirstStop = routePreservesFirstStop
+                    }
+                Toggle("Preserve Last Stop", isOn: $routePreservesLastStop)
+                    .onChange(of: routePreservesLastStop) {
+                        routeParameters.preservesLastStop = routePreservesLastStop
+                    }
+            }
+            .disabled(!routingFindsBestSequence)
             .onAppear {
                 self.routingFindsBestSequence = routeParameters.findsBestSequence
                 self.routePreservesFirstStop = routeParameters.preservesFirstStop
