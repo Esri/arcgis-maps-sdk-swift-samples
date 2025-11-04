@@ -41,7 +41,9 @@ struct ShowServiceAreaView: View {
     var body: some View {
         MapView(map: model.map, graphicsOverlays: model.graphicsOverlays)
             .onSingleTapGesture { _, point in
-                isServiceAreaSet = true
+                if !isServiceAreaSet {
+                    isServiceAreaSet = true
+                }
                 switch selectedGraphicType {
                 case .facility:
                     model.addFacilityGraphic(at: point)

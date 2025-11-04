@@ -145,11 +145,9 @@ struct FindRouteAroundBarriersView: View {
     
     @ViewBuilder var routeSheet: some View {
         NavigationStack {
-            List {
-                ForEach(model.route?.directionManeuvers ?? [], id: \.text) { direction in
-                    Button(direction.text) {
-                        directionGeometry = direction.geometry
-                    }
+            List(model.route?.directionManeuvers ?? [], id: \.text) { direction in
+                Button(direction.text) {
+                    directionGeometry = direction.geometry
                 }
             }
             .navigationTitle("Route Directions")
@@ -196,13 +194,11 @@ extension FindRouteAroundBarriersView {
         private let routeParameters: RouteParameters
         
         /// A Boolean value indicating whether routing will find the best sequence.
-        @State private var routingFindsBestSequence: Bool = true
-        
+        @State private var routingFindsBestSequence = true
         /// A Boolean value indicating whether routing will preserve the first stop.
-        @State private var routePreservesFirstStop: Bool = true
-        
+        @State private var routePreservesFirstStop = true
         /// A Boolean value indicating whether routing will preserve the last stop.
-        @State private var routePreservesLastStop: Bool = true
+        @State private var routePreservesLastStop = true
         
         init(for routeParameters: RouteParameters) {
             self.routeParameters = routeParameters
@@ -227,9 +223,9 @@ extension FindRouteAroundBarriersView {
             }
             .disabled(!routingFindsBestSequence)
             .onAppear {
-                self.routingFindsBestSequence = routeParameters.findsBestSequence
-                self.routePreservesFirstStop = routeParameters.preservesFirstStop
-                self.routePreservesLastStop = routeParameters.preservesLastStop
+                routingFindsBestSequence = routeParameters.findsBestSequence
+                routePreservesFirstStop = routeParameters.preservesFirstStop
+                routePreservesLastStop = routeParameters.preservesLastStop
             }
         }
     }
