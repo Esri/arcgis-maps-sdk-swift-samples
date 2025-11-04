@@ -53,7 +53,7 @@ struct AddBuildingSceneLayerView: View {
         LocalSceneView(scene: scene, camera: $camera)
             .task {
                 let buildingSceneLayer = BuildingSceneLayer(
-                    url: URL(string: "https://arcgisruntime.maps.arcgis.com/home/item.html?id=e989757f7dbc460eae592eefa4562e07")!
+                    url: URL(string: "https://www.arcgis.com/home/item.html?id=e989757f7dbc460eae592eefa4562e07")!
                 )
                 
                 // Sets the altitude offset of the building scene layer.
@@ -63,12 +63,13 @@ struct AddBuildingSceneLayerView: View {
                 // ground surface.
                 buildingSceneLayer.altitudeOffset = 1
                 
+                // Expliclity loading the layer to retrieve the sublayers.
                 try? await buildingSceneLayer.load()
                 
                 // Adds building scene layer to scene.
                 scene.addOperationalLayer(buildingSceneLayer)
                 
-                // Get the overview and full model sublayers for the toggle.
+                // Gets the overview and full model sublayers for the toggle.
                 let sublayers = buildingSceneLayer.sublayers
                 overviewSublayer = sublayers.first(where: { $0.name == "Overview" })
                 fullModelSublayer = sublayers.first(where: { $0.name == "Full Model" })
