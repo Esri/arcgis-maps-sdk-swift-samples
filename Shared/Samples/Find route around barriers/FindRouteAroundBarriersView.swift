@@ -172,7 +172,7 @@ struct FindRouteAroundBarriersView: View {
                     }
                     .pickerStyle(.segmented)
                 }
-                RouteParametersSettings(for: model.routeParameters)
+                RouteParametersSettings(routeParameters: model.routeParameters)
             }
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
@@ -191,7 +191,7 @@ extension FindRouteAroundBarriersView {
     /// A list of settings for modifying route parameters.
     struct RouteParametersSettings: View {
         /// The route parameters to modify.
-        private let routeParameters: RouteParameters
+        let routeParameters: RouteParameters
         
         /// A Boolean value indicating whether routing will find the best sequence.
         @State private var routingFindsBestSequence = true
@@ -199,10 +199,6 @@ extension FindRouteAroundBarriersView {
         @State private var routePreservesFirstStop = true
         /// A Boolean value indicating whether routing will preserve the last stop.
         @State private var routePreservesLastStop = true
-        
-        init(for routeParameters: RouteParameters) {
-            self.routeParameters = routeParameters
-        }
         
         var body: some View {
             Section {
