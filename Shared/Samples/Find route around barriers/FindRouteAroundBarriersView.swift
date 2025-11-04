@@ -32,7 +32,7 @@ struct FindRouteAroundBarriersView: View {
     @State private var settingsAreVisible = false
     
     /// A Boolean value indicating whether the directions list is showing.
-    @State private var showRoute = false
+    @State private var routeIsShowing = false
     
     /// The error shown in the error alert.
     @State private var error: (any Error)?
@@ -72,10 +72,10 @@ struct FindRouteAroundBarriersView: View {
                     ToolbarItemGroup(placement: .bottomBar) {
                         Spacer()
                         Button("Directions", systemImage: "arrow.triangle.turn.up.right.diamond") {
-                            showRoute = true
+                            routeIsShowing = true
                         }
                         .labelsHidden()
-                        .popover(isPresented: $showRoute) {
+                        .popover(isPresented: $routeIsShowing) {
                             routeSheet
                                 .presentationDetents([.fraction(0.35)])
                                 .frame(idealWidth: 400, idealHeight: 400)
@@ -155,7 +155,7 @@ struct FindRouteAroundBarriersView: View {
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Done") {
-                        showRoute = false
+                        routeIsShowing = false
                     }
                 }
             }
