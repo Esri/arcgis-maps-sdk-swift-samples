@@ -24,7 +24,6 @@ struct AddBuildingSceneLayerView: View {
         )
         
         // Adds a surface.
-        
         let elevationSource = ArcGISTiledElevationSource(
             url: URL(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!
         )
@@ -80,7 +79,9 @@ struct AddBuildingSceneLayerView: View {
                     // sublayer since we need that for the toggle.
                     if fullModelSublayer != nil {
                         Toggle("Full Model", isOn: $fullModelIsVisible)
-                            .toggleStyle(.button)
+#if targetEnvironment(macCatalyst)
+                            .toggleStyle(.switch)
+#endif
                     } else {
                         ProgressView()
                     }
