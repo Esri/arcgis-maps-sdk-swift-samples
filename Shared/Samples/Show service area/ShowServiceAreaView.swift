@@ -31,7 +31,7 @@ struct ShowServiceAreaView: View {
     /// A Boolean value indicating whether the service area is being solved.
     @State private var isSolvingServiceArea = false
     /// A Boolean value indicating whether the service area is set.
-    @State private var isServiceAreaSet = false
+    @State private var serviceAreaIsSet = false
     /// A Boolean value indicating whether the settings view is showing.
     @State private var settingsAreVisible = false
     
@@ -41,8 +41,8 @@ struct ShowServiceAreaView: View {
     var body: some View {
         MapView(map: model.map, graphicsOverlays: model.graphicsOverlays)
             .onSingleTapGesture { _, point in
-                if !isServiceAreaSet {
-                    isServiceAreaSet = true
+                if !serviceAreaIsSet {
+                    serviceAreaIsSet = true
                 }
                 switch selectedGraphicType {
                 case .facility:
@@ -79,13 +79,13 @@ struct ShowServiceAreaView: View {
                             isSolvingServiceArea = false
                         }
                     }
-                    .disabled(!isServiceAreaSet || isSolvingServiceArea)
+                    .disabled(!serviceAreaIsSet || isSolvingServiceArea)
                     Spacer()
                     Button("Clear", systemImage: "trash") {
-                        isServiceAreaSet = false
+                        serviceAreaIsSet = false
                         model.removeAllGraphics()
                     }
-                    .disabled(!isServiceAreaSet)
+                    .disabled(!serviceAreaIsSet)
                 }
             }
             .errorAlert(presentingError: $error)

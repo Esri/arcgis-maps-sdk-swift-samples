@@ -58,7 +58,7 @@ struct CreateBuffersAroundPointsView: View {
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
                     Button("Buffer Settings") {
-                        showSettings = true
+                        settingsAreVisible = true
                     }
                     .popover(isPresented: $settingsAreVisible) {
                         settings
