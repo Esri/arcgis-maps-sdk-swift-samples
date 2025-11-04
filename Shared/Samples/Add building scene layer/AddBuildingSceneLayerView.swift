@@ -63,7 +63,7 @@ struct AddBuildingSceneLayerView: View {
                 // ground surface.
                 buildingSceneLayer.altitudeOffset = 1
                 
-                // Expliclity loading the layer to retrieve the sublayers.
+                // Explicitly loading the layer to retrieve the sublayers.
                 try? await buildingSceneLayer.load()
                 
                 // Adds building scene layer to scene.
