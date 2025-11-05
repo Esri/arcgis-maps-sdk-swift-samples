@@ -41,11 +41,30 @@ struct SetMaxExtentView: View {
     /// A Boolean value indicating whether the max extent is set.
     @State private var maxExtentIsSet = true
     
+    /// A Boolean value indicating whether the settings view is showing.
+    @State private var settingsAreVisible = false
+    
     var body: some View {
         MapView(map: map, graphicsOverlays: [graphicsOverlay])
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
-                    Toggle(maxExtentIsSet ? "Max Extent Enabled" : "Max Extent Disabled", isOn: $maxExtentIsSet)
+                    Button("Settings") {
+                        settingsAreVisible = true
+                    }
+                    .popover(isPresented: $settingsAreVisible) {
+                        settings
+                            .frame(idealWidth: 320, idealHeight: 300)
+                            .presentationCompactAdaptation(.popover)
+                    }
+                }
+            }
+    }
+    
+    @ViewBuilder var settings: some View {
+        NavigationStack {
+            Form {
+                Section {
+                    Toggle("Max Extent", isOn: $maxExtentIsSet)
                         .onChange(of: maxExtentIsSet) {
                             map.maxExtent = if maxExtentIsSet {
                                 // Set the map's max extent to limit the map
@@ -59,6 +78,16 @@ struct SetMaxExtentView: View {
                         }
                 }
             }
+            .navigationTitle("Settings")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") {
+                        settingsAreVisible = false
+                    }
+                }
+            }
+        }
     }
 }
 
