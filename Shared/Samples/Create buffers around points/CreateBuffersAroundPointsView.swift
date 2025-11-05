@@ -19,6 +19,9 @@ struct CreateBuffersAroundPointsView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
+    /// A Boolean value indicating whether the settings view is showing.
+    @State private var settingsAreVisible = false
+    
     /// The status of the sample.
     @State private var status = Status.addPoints
     
@@ -54,13 +57,17 @@ struct CreateBuffersAroundPointsView: View {
             }
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
-                    // Union toggle switch.
-                    Toggle(shouldUnion ? "Union Enabled" : "Union Disabled", isOn: $shouldUnion)
-                        .onChange(of: shouldUnion) {
-                            if !model.bufferPoints.isEmpty {
-                                model.drawBuffers(unioned: shouldUnion)
-                            }
-                        }
+                    Button("Buffer Settings") {
+                        settingsAreVisible = true
+                    }
+                    .popover(isPresented: $settingsAreVisible) {
+                        settings
+                            .frame(idealWidth: 320, idealHeight: 170)
+                            .presentationCompactAdaptation(.popover)
+                    }
+                    
+                    Spacer()
+                    
                     Button("Clear") {
                         model.clearBufferPoints()
                         status = .addPoints
@@ -100,6 +107,30 @@ struct CreateBuffersAroundPointsView: View {
             }, message: {
                 Text("Please enter a number between 0 and 300 miles.")
             })
+    }
+    
+    @ViewBuilder var settings: some View {
+        NavigationStack {
+            Form {
+                Section {
+                    Toggle("Union", isOn: $shouldUnion)
+                        .onChange(of: shouldUnion) {
+                            if !model.bufferPoints.isEmpty {
+                                model.drawBuffers(unioned: shouldUnion)
+                            }
+                        }
+                }
+            }
+            .navigationTitle("Buffer Radius")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") {
+                        settingsAreVisible = false
+                    }
+                }
+            }
+        }
     }
 }
 

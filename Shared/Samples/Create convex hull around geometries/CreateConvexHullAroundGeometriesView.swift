@@ -19,6 +19,9 @@ struct CreateConvexHullAroundGeometriesView: View {
     /// A map with a topographic basemap.
     @State private var map = Map(basemapStyle: .arcGISTopographic)
     
+    /// A Boolean value indicating whether the settings view is showing.
+    @State private var settingsAreVisible = false
+    
     /// The graphics overlay for the geometry graphics.
     @State private var geometriesGraphicsOverlay: GraphicsOverlay = {
         let polygonFillSymbol = SimpleFillSymbol(
@@ -46,19 +49,17 @@ struct CreateConvexHullAroundGeometriesView: View {
         MapView(map: map, graphicsOverlays: [convexHullGraphicsOverlay, geometriesGraphicsOverlay])
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
-                    Toggle(shouldUnion ? "Union Enabled" : "Union Disabled", isOn: $shouldUnion)
-                        .disabled(convexHullGraphicsOverlay.graphics.isEmpty)
-                        .onChange(of: shouldUnion) {
-                            if !createIsOn {
-                                convexHullGraphicsOverlay.removeAllGraphics()
-                                convexHullGraphicsOverlay.addGraphics(
-                                    makeConvexHullGraphics(
-                                        for: [.polygon1, .polygon2],
-                                        unioned: shouldUnion
-                                    )
-                                )
-                            }
-                        }
+                    Button("Convex Hull Settings") {
+                        settingsAreVisible = true
+                    }
+                    .popover(isPresented: $settingsAreVisible) {
+                        settings
+                            .frame(idealWidth: 320, idealHeight: 300)
+                            .presentationCompactAdaptation(.popover)
+                    }
+                    
+                    Spacer()
+                    
                     Button(createIsOn ? "Create" : "Reset") {
                         if createIsOn {
                             convexHullGraphicsOverlay.removeAllGraphics()
@@ -76,6 +77,36 @@ struct CreateConvexHullAroundGeometriesView: View {
                     }
                 }
             }
+    }
+    
+    @ViewBuilder var settings: some View {
+        NavigationStack {
+            Form {
+                Section {
+                    Toggle("Union", isOn: $shouldUnion)
+                        .onChange(of: shouldUnion) {
+                            if !createIsOn {
+                                convexHullGraphicsOverlay.removeAllGraphics()
+                                convexHullGraphicsOverlay.addGraphics(
+                                    makeConvexHullGraphics(
+                                        for: [.polygon1, .polygon2],
+                                        unioned: shouldUnion
+                                    )
+                                )
+                            }
+                        }
+                }
+            }
+            .navigationTitle("Geometry Settings")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") {
+                        settingsAreVisible = false
+                    }
+                }
+            }
+        }
     }
 }
 
