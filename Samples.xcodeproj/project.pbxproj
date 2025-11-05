@@ -270,6 +270,8 @@
 		75DD739529D38B1B0010229D /* NavigateRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75DD739129D38B1B0010229D /* NavigateRouteView.swift */; };
 		75DD739929D38B420010229D /* NavigateRouteView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 75DD739129D38B1B0010229D /* NavigateRouteView.swift */; };
 		7900C5F62A83FC3F002D430F /* AddCustomDynamicEntityDataSourceView.Vessel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7900C5F52A83FC3F002D430F /* AddCustomDynamicEntityDataSourceView.Vessel.swift */; };
+		790238CC2EA9859C00C39582 /* AddBuildingSceneLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790238CB2EA9859000C39582 /* AddBuildingSceneLayerView.swift */; };
+		790238CD2EA986D100C39582 /* AddBuildingSceneLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 790238CB2EA9859000C39582 /* AddBuildingSceneLayerView.swift */; };
 		792222DD2A81AA5D00619FFE /* AIS_MarineCadastre_SelectedVessels_CustomDataSource.jsonl in Resources */ = {isa = PBXBuildFile; fileRef = 792222DC2A81AA5D00619FFE /* AIS_MarineCadastre_SelectedVessels_CustomDataSource.jsonl */; settings = {ASSET_TAGS = (AddCustomDynamicEntityDataSource, ); }; };
 		79302F852A1ED4E30002336A /* CreateAndSaveKMLView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79302F842A1ED4E30002336A /* CreateAndSaveKMLView.Model.swift */; };
 		79302F872A1ED71B0002336A /* CreateAndSaveKMLView.Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79302F862A1ED71B0002336A /* CreateAndSaveKMLView.Views.swift */; };
@@ -760,6 +762,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				790238CD2EA986D100C39582 /* AddBuildingSceneLayerView.swift in Copy Source Code Files */,
 				79D22F842E9DACCA00B981A5 /* DisplayLocalSceneView.swift in Copy Source Code Files */,
 				95321B322E554B88002E9DE2 /* ApplyRenderersToSceneLayerView.swift in Copy Source Code Files */,
 				D73617792E4CF2640008471A /* QueryDynamicEntitiesView.Model.swift in Copy Source Code Files */,
@@ -1217,6 +1220,7 @@
 		7573E81829D6134C00BEED9C /* TraceUtilityNetworkView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TraceUtilityNetworkView.swift; sourceTree = "<group>"; };
 		75DD739129D38B1B0010229D /* NavigateRouteView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigateRouteView.swift; sourceTree = "<group>"; };
 		7900C5F52A83FC3F002D430F /* AddCustomDynamicEntityDataSourceView.Vessel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCustomDynamicEntityDataSourceView.Vessel.swift; sourceTree = "<group>"; };
+		790238CB2EA9859000C39582 /* AddBuildingSceneLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBuildingSceneLayerView.swift; sourceTree = "<group>"; };
 		792222DC2A81AA5D00619FFE /* AIS_MarineCadastre_SelectedVessels_CustomDataSource.jsonl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AIS_MarineCadastre_SelectedVessels_CustomDataSource.jsonl; sourceTree = "<group>"; };
 		79302F842A1ED4E30002336A /* CreateAndSaveKMLView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAndSaveKMLView.Model.swift; sourceTree = "<group>"; };
 		79302F862A1ED71B0002336A /* CreateAndSaveKMLView.Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAndSaveKMLView.Views.swift; sourceTree = "<group>"; };
@@ -1661,6 +1665,7 @@
 			isa = PBXGroup;
 			children = (
 				0000FB6D2BBDB17600845921 /* Add 3D tiles layer */,
+				79FB577E2EA8394E009BF9AC /* Add building scene layer */,
 				79D84D0C2A815BED00F45262 /* Add custom dynamic entity data source */,
 				4D2ADC3E29C26D05003B367F /* Add dynamic entity layer */,
 				D7848EFD2CBD986400F6F546 /* Add elevation source from raster */,
@@ -2697,6 +2702,14 @@
 				7900C5F52A83FC3F002D430F /* AddCustomDynamicEntityDataSourceView.Vessel.swift */,
 			);
 			path = "Add custom dynamic entity data source";
+			sourceTree = "<group>";
+		};
+		79FB577E2EA8394E009BF9AC /* Add building scene layer */ = {
+			isa = PBXGroup;
+			children = (
+				790238CB2EA9859000C39582 /* AddBuildingSceneLayerView.swift */,
+			);
+			path = "Add building scene layer";
 			sourceTree = "<group>";
 		};
 		8810FB572DC94A5600874936 /* Apply function to raster from service */ = {
@@ -4636,6 +4649,7 @@
 				88AF55532DDBFA7B003F146E /* CreateAndSaveMapView.swift in Sources */,
 				D7201D042CC6D3B5004BDB7D /* AddVectorTiledLayerFromCustomStyleView.swift in Sources */,
 				E004A6ED2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift in Sources */,
+				790238CC2EA9859C00C39582 /* AddBuildingSceneLayerView.swift in Sources */,
 				E041ABD7287DB04D0056009B /* SampleInfoView.swift in Sources */,
 				D7635FFD2B9277DC0044AB97 /* ConfigureClustersView.SettingsView.swift in Sources */,
 				D769DF332BEC1A1C0062AE95 /* EditGeodatabaseWithTransactionsView.Model.swift in Sources */,
