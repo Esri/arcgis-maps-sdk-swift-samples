@@ -53,7 +53,7 @@ struct AddBuildingSceneLayerView: View {
         LocalSceneView(scene: scene, camera: $camera)
             .task {
                 let buildingSceneLayer = BuildingSceneLayer(
-                    url: URL(string: "https://www.arcgis.com/home/item.html?id=e989757f7dbc460eae592eefa4562e07")!
+                    url: URL(string: "https://www.arcgis.com/home/item.html?id=669f6279c579486eb4a0acc7eb59d7ca")!
                 )
                 
                 // Sets the altitude offset of the building scene layer.
