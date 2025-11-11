@@ -73,14 +73,11 @@ struct ApplyScheduledUpdatesToPreplannedMapAreaView: View {
                 }
             } message: {
                 // Get the download size for the update.
-                let downloadSizeString = ByteCountFormatter.string(
-                    from: Measurement(
-                        value: Double(model.updatesInfo?.scheduledUpdatesDownloadSize ?? .zero),
-                        unit: .bytes
-                    ),
-                    countStyle: .file
+                let downloadSize = Measurement<UnitInformationStorage>(
+                    value: Double(model.updatesInfo?.scheduledUpdatesDownloadSize ?? .zero),
+                    unit: .bytes
                 )
-                Text("A \(downloadSizeString) update is available. Would you like to apply it?")
+                Text("A \(downloadSize, format: .byteCount(style: .file)) update is available. Would you like to apply it?")
             }
             .alert("Scheduled Updates Unavailable", isPresented: $noUpdatesAlertIsPresented) {
             } message: {
