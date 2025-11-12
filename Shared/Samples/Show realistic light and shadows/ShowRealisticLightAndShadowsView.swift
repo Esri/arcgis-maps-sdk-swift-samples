@@ -61,7 +61,7 @@ struct ShowRealisticLightAndShadowsView: View {
     
     /// An overlay showing the date time adjusted by the slider.
     private var dateTimeOverlay: some View {
-        Text(sunDate.formatted(date: .abbreviated, time: .shortened))
+        Text(sunDate, format: Date.FormatStyle(date: .abbreviated, time: .shortened))
             .frame(maxWidth: .infinity)
             .padding(.vertical, 6)
             .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
