@@ -24,10 +24,6 @@ struct SimplifyGeometryView: View {
     @State private var originalOverlay = GraphicsOverlay(graphics: [makePolygonGraphic()])
     /// The graphics overlay for the simplified geometry.
     @State private var resultOverlay = GraphicsOverlay()
-    /// The polygon graphic geometry.
-    private var graphicGeometry: Geometry? {
-        originalOverlay.graphics.first?.geometry
-    }
     
     var body: some View {
         MapViewReader { mapView in
