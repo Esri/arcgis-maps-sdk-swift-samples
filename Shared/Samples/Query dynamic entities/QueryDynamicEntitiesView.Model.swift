@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import ArcGIS
-import SwiftUI
+import Foundation
 
 extension QueryDynamicEntitiesView {
     /// The view model for this sample.
