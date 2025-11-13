@@ -26,9 +26,6 @@ struct SetUpLocationDrivenGeotriggersView: View {
     /// A Boolean value indicating whether to show the popup.
     @State private var isShowingPopup = false
     
-    /// A string for the fence geotrigger notification status.
-    @State private var fenceGeotriggerText = ""
-    
     /// Starts the geotrigger monitors and handles posted notifications.
     /// - Parameter geotriggerMonitors: The geotrigger monitors to start.
     private func startGeotriggerMonitors(_ geotriggerMonitors: [GeotriggerMonitor]) async throws {
@@ -66,14 +63,10 @@ struct SetUpLocationDrivenGeotriggersView: View {
                     self.error = error
                 }
             }
-            .task(id: model.fenceGeotriggerStatus) {
-                // Set fence geotrigger text.
-                fenceGeotriggerText = model.fenceGeotriggerStatus.label
-            }
             .overlay(alignment: .top) {
                 // Status text overlay.
                 VStack {
-                    Text(fenceGeotriggerText)
+                    Text(model.fenceGeotriggerStatus.label)
                         .frame(maxWidth: .infinity, alignment: .leading)
                     
                     let nearbyFeatures = model.nearbyFeatures
