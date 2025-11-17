@@ -28,10 +28,6 @@ struct ShowPortalUserInfoView: View {
             PortalDetailsView(
                 url: $model.portalURLString,
                 model: $model,
-                // Update the model when the portal URL is changed by the user.
-                onSetUrl: {
-                    model.portalURLString = $0
-                },
                 // Sign out the user.
                 onSignOut: {
                     Task {
@@ -167,8 +163,6 @@ private extension ShowPortalUserInfoView {
         @Binding var url: String
         /// Binding to the user info model containing user state and data.
         @Binding var model: ShowPortalUserInfoView.Model
-        /// Closure called when the portal URL is set or changed.
-        var onSetUrl: (String) -> Void
         /// Closure called when the user signs out.
         var onSignOut: () -> Void
         /// Closure called to load the portal user info.

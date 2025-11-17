@@ -112,6 +112,7 @@ struct UpdateRelatedFeaturesView: View {
                     }
                 }
                 .pickerStyle(.menu)
+                .fixedSize()
                 .onChange(of: model.selectedVisitorValue) { _, newValue in
                     Task {
                         do {

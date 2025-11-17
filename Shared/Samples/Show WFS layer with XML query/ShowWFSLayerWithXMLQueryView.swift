@@ -22,12 +22,6 @@ struct ShowWFSLayerWithXMLQueryView: View {
     /// Map with the Topographic basemap style.
     @State private var map = Map(basemapStyle: .arcGISTopographic)
     
-    /// A WFS (Web Feature Service) feature table using a specified URL and table name.
-    @State private var seattleTreesTable = WFSFeatureTable(
-        url: .seattleDowntownFeatures,
-        tableName: .seattleTreesDowntown
-    )
-    
     /// A Boolean value indicating whether the XML query is being loaded.
     @State private var isLoading = false
     
