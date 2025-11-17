@@ -45,8 +45,8 @@ struct ShowViewshedFromPointInSceneView: View {
                         NavigationStack {
                             ViewshedSettingsView(model: model)
                         }
-                        .presentationDetents([.fraction(0.5)])
-                        .frame(idealWidth: 320, idealHeight: 380)
+                        .frame(idealWidth: 400, idealHeight: 500)
+                        .presentationCompactAdaptation(.popover)
                     }
                 }
             }
