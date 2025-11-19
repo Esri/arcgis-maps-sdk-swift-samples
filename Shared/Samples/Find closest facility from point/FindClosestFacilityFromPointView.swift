@@ -74,6 +74,7 @@ struct FindClosestFacilityFromPointView: View {
                     // Zoom to the extents to view the layers' features.
                     guard let extent = GeometryEngine.combineExtents(of: layerExtents) else { return }
                     await mapViewProxy.setViewpointGeometry(extent, padding: 30)
+                    model.map.maxExtent = extent
                 }
         }
         .task {
