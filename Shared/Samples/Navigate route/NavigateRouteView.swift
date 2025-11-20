@@ -278,6 +278,17 @@ private extension NavigateRouteView {
         
         /// Monitors the asynchronous stream of voice guidances.
         private func trackVoiceGuidance() async {
+            do {
+                try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback)
+            } catch let error as NSError {
+                print("Error: Could not set audio category: \(error), \(error.userInfo)")
+            }
+            
+            do {
+                try AVAudioSession.sharedInstance().setActive(true)
+            } catch let error as NSError {
+                print("Error: Could not setActive to true: \(error), \(error.userInfo)")
+            }
             for await voiceGuidance in routeTracker.voiceGuidances {
                 speechSynthesizer.stopSpeaking(at: .word)
                 speechSynthesizer.speak(AVSpeechUtterance(string: voiceGuidance.text))
