@@ -218,15 +218,11 @@ extension NavigateRouteWithReroutingView {
             guard !voiceGuidance.text.isEmpty else { return }
             do {
                 try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback)
-            } catch let error as NSError {
-                print("Error: Could not set audio category: \(error), \(error.userInfo)")
-            }
-            
-            do {
                 try AVAudioSession.sharedInstance().setActive(true)
             } catch let error as NSError {
-                print("Error: Could not setActive to true: \(error), \(error.userInfo)")
+                print(error)
             }
+            
             let utterance = AVSpeechUtterance(string: voiceGuidance.text)
             speechSynthesizer.stopSpeaking(at: .word)
             speechSynthesizer.speak(utterance)
