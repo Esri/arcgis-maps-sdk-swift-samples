@@ -63,6 +63,14 @@ private extension FindClosestFacilityToMultiplePointsView {
         let map = {
             let map = Map(basemapStyle: .arcGISStreets)
             map.initialViewpoint = Viewpoint(latitude: 32.727, longitude: -117.175, scale: 144_400)
+            let envelope = Envelope(
+                xMin: -13049024,
+                yMin: 3856693,
+                xMax: -13039785,
+                yMax: 3862925,
+                spatialReference: .webMercator
+            )
+            map.maxExtent = envelope
             return map
         }()
         
