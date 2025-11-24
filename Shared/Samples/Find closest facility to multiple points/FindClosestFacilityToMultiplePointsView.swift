@@ -200,4 +200,3 @@ private extension Envelope {
 #Preview {
     FindClosestFacilityToMultiplePointsView()
 }
-
