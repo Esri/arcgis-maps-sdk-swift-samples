@@ -193,6 +193,18 @@ private extension URL {
     }
 }
 
+private extension Envelope {
+    /// An envelope of the San Diego city limits.
+    static var sanDiegoCityLimits: Envelope {
+        Envelope(
+            xRange: -13049024 ... -13039785,
+            yRange: 3856693...3862925,
+            spatialReference: .webMercator
+        )
+    }
+}
+
 #Preview {
     FindClosestFacilityToMultiplePointsView()
 }
+
