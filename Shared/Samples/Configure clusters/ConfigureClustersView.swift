@@ -32,6 +32,12 @@ struct ConfigureClustersView: View {
     /// The map view's scale.
     @State private var mapViewScale = 0.0
     
+    /// The radius of feature clusters selected by the user.
+    @State private var selectedRadius = 60
+    
+    /// The maximum scale of feature clusters selected by the user.
+    @State private var selectedMaxScale = 0
+    
     var body: some View {
         MapViewReader { proxy in
             MapView(map: model.map)
@@ -62,17 +68,6 @@ struct ConfigureClustersView: View {
                                 .frame(idealWidth: 400, idealHeight: 500)
                                 .presentationCompactAdaptation(.popover)
                         }
-//                        .popover(isPresented: $showsSettings) {
-//                            settingsView
-//                                .frame(idealWidth: 400, idealHeight: 500)
-//                                .presentationCompactAdaptation(.popover)
-//                        }
-                        
-                        //                        .popover(isPresented: $showsSettings) { [mapViewScale] in
-                        //                            SettingsView(model: model, mapViewScale: mapViewScale)
-                        //                                .presentationDetents([.fraction(0.5)])
-                        //                                .frame(idealWidth: 320, idealHeight: 340)
-                        //                        }
                     }
                 }
                 .task {
@@ -91,24 +86,20 @@ struct ConfigureClustersView: View {
                 }
                 
                 Section("Clustering Properties") {
-                    Picker("Cluster Radius", selection: $model.radius) {
+                    Picker("Cluster Radius", selection: $selectedRadius) {
                         ForEach([30, 45, 60, 75, 90], id: \.self) { radius in
                             Text("\(radius)")
                         }
+                    }.onChange(of: selectedRadius) {
+                        model.radius = Double(selectedRadius)
                     }
-                    //                    .onChange(of: model.radius) {
-                    //                        model.radius = Double(selectedRadius)
-                    //                    }
-                    
-                    Picker("Cluster Max Scale", selection:$model.maxScale) {
+                    Picker("Cluster Max Scale", selection: $selectedMaxScale) {
                         ForEach([0, 1000, 5000, 10000, 50000, 100000, 500000], id: \.self) { scale in
                             Text(("\(scale)"))
                         }
+                    }.onChange(of: selectedMaxScale) {
+                        model.maxScale = Double(selectedMaxScale)
                     }
-                    //                    .onChange(of: selectedMaxScale) {
-                    //                        model.maxScale = Double(selectedMaxScale)
-                    //                    }
-                    
                     LabeledContent(
                         "Current Map Scale",
                         value: mapViewScale,
@@ -126,18 +117,6 @@ struct ConfigureClustersView: View {
                 }
             }
         }
-        //        /// The map view's scale.
-        //        let mapViewScale: Double
-        //
-        //        /// The radius of feature clusters selected by the user.
-        //       var selectedRadius = 60
-        //
-        //        /// The maximum scale of feature clusters selected by the user.
-        //        var selectedMaxScale = 0
-        //
-        //        var body: some View {
-        //
-        //        }
     }
 }
 
