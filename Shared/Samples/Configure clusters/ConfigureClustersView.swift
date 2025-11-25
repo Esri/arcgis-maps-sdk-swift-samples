@@ -57,11 +57,22 @@ struct ConfigureClustersView: View {
                         Button("Clustering Settings") {
                             showsSettings = true
                         }
-                        .popover(isPresented: $showsSettings) { [mapViewScale] in
-                            SettingsView(model: model, mapViewScale: mapViewScale)
-                                .presentationDetents([.fraction(0.5)])
-                                .frame(idealWidth: 320, idealHeight: 340)
+                        .popover(isPresented: $showsSettings) {
+                            settingsView
+                                .frame(idealWidth: 400, idealHeight: 500)
+                                .presentationCompactAdaptation(.popover)
                         }
+//                        .popover(isPresented: $showsSettings) {
+//                            settingsView
+//                                .frame(idealWidth: 400, idealHeight: 500)
+//                                .presentationCompactAdaptation(.popover)
+//                        }
+                        
+                        //                        .popover(isPresented: $showsSettings) { [mapViewScale] in
+                        //                            SettingsView(model: model, mapViewScale: mapViewScale)
+                        //                                .presentationDetents([.fraction(0.5)])
+                        //                                .frame(idealWidth: 320, idealHeight: 340)
+                        //                        }
                     }
                 }
                 .task {
@@ -69,6 +80,64 @@ struct ConfigureClustersView: View {
                     try? await model.setup()
                 }
         }
+    }
+    
+    @ViewBuilder var settingsView: some View {
+        NavigationStack {
+            Form {
+                Section("Cluster Labels Visibility") {
+                    Toggle("Show Labels", isOn: $model.showsLabels)
+                        .toggleStyle(.switch)
+                }
+                
+                Section("Clustering Properties") {
+                    Picker("Cluster Radius", selection: $model.radius) {
+                        ForEach([30, 45, 60, 75, 90], id: \.self) { radius in
+                            Text("\(radius)")
+                        }
+                    }
+                    //                    .onChange(of: model.radius) {
+                    //                        model.radius = Double(selectedRadius)
+                    //                    }
+                    
+                    Picker("Cluster Max Scale", selection:$model.maxScale) {
+                        ForEach([0, 1000, 5000, 10000, 50000, 100000, 500000], id: \.self) { scale in
+                            Text(("\(scale)"))
+                        }
+                    }
+                    //                    .onChange(of: selectedMaxScale) {
+                    //                        model.maxScale = Double(selectedMaxScale)
+                    //                    }
+                    
+                    LabeledContent(
+                        "Current Map Scale",
+                        value: mapViewScale,
+                        format: .number.precision(.fractionLength(0))
+                    )
+                }
+            }
+            .navigationTitle("Clustering Settings")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") {
+                        showsSettings = false
+                    }
+                }
+            }
+        }
+        //        /// The map view's scale.
+        //        let mapViewScale: Double
+        //
+        //        /// The radius of feature clusters selected by the user.
+        //       var selectedRadius = 60
+        //
+        //        /// The maximum scale of feature clusters selected by the user.
+        //        var selectedMaxScale = 0
+        //
+        //        var body: some View {
+        //
+        //        }
     }
 }
 
