@@ -234,6 +234,13 @@ private extension NavigateRouteView {
         
         /// Starts monitoring multiple asynchronous streams of information.
         private func startTracking() async {
+            do {
+                let session = AVAudioSession.sharedInstance()
+                try session.setCategory(.playback, mode: .voicePrompt)
+                try session.setActive(true)
+            } catch let error as NSError {
+                self.error = error
+            }
             await withTaskGroup(of: Void.self) { group in
                 group.addTask { await self.trackAutoPanMode() }
                 group.addTask { await self.trackStatus() }
@@ -278,13 +285,7 @@ private extension NavigateRouteView {
         
         /// Monitors the asynchronous stream of voice guidances.
         private func trackVoiceGuidance() async {
-            do {
-                let session = AVAudioSession.sharedInstance()
-                try session.setCategory(.playback)
-                try session.setActive(true)
-            } catch let error as NSError {
-                self.error = error
-            }
+           
             
             for await voiceGuidance in routeTracker.voiceGuidances {
                 speechSynthesizer.stopSpeaking(at: .word)

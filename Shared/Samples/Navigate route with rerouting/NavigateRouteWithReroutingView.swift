@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import ArcGIS
+import AVFAudio
 import SwiftUI
 
 struct NavigateRouteWithReroutingView: View {
@@ -98,7 +99,13 @@ struct NavigateRouteWithReroutingView: View {
         }
         .task(id: model.isNavigating) {
             guard model.isNavigating, let routeTracker = model.routeTracker else { return }
-            
+            do {
+                let session = AVAudioSession.sharedInstance()
+                try session.setCategory(.playback, mode: .voicePrompt)
+                try session.setActive(true)
+            } catch let error as NSError {
+                self.error = error
+            }
             await withTaskGroup(of: Void.self) { group in
                 group.addTask { @MainActor @Sendable in
                     // Handle new tracking statuses from the route tracker.
@@ -107,15 +114,10 @@ struct NavigateRouteWithReroutingView: View {
                         await model.updateProgress(using: trackingStatus)
                     }
                 }
-                
                 group.addTask { @MainActor @Sendable in
                     // Speak new voice guidances from the route tracker.
                     for await voiceGuidance in routeTracker.voiceGuidances {
-                        do {
-                            try model.speakVoiceGuidance(voiceGuidance)
-                        } catch let error as NSError {
-                            self.error = error
-                        }
+                        model.speakVoiceGuidance(voiceGuidance)
                     }
                 }
             }
