@@ -111,7 +111,11 @@ struct NavigateRouteWithReroutingView: View {
                 group.addTask { @MainActor @Sendable in
                     // Speak new voice guidances from the route tracker.
                     for await voiceGuidance in routeTracker.voiceGuidances {
-                        model.speakVoiceGuidance(voiceGuidance)
+                        do {
+                            try model.speakVoiceGuidance(voiceGuidance)
+                        } catch let error as NSError {
+                            self.error = error
+                        }
                     }
                 }
             }

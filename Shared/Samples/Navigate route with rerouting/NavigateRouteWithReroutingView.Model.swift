@@ -214,15 +214,10 @@ extension NavigateRouteWithReroutingView {
         
         /// Speaks a given voice guidance.
         /// - Parameter voiceGuidance: The `VoiceGuidance`.
-        func speakVoiceGuidance(_ voiceGuidance: VoiceGuidance) {
+        func speakVoiceGuidance(_ voiceGuidance: VoiceGuidance) throws {
             guard !voiceGuidance.text.isEmpty else { return }
-            do {
-                try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback)
-                try AVAudioSession.sharedInstance().setActive(true)
-            } catch let error as NSError {
-                print(error)
-            }
-            
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback)
+            try AVAudioSession.sharedInstance().setActive(true)
             let utterance = AVSpeechUtterance(string: voiceGuidance.text)
             speechSynthesizer.stopSpeaking(at: .word)
             speechSynthesizer.speak(utterance)

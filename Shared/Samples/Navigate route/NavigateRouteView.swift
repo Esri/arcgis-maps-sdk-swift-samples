@@ -282,7 +282,7 @@ private extension NavigateRouteView {
                 try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback)
                 try AVAudioSession.sharedInstance().setActive(true)
             } catch let error as NSError {
-                print(error)
+                self.error = error
             }
             
             for await voiceGuidance in routeTracker.voiceGuidances {
