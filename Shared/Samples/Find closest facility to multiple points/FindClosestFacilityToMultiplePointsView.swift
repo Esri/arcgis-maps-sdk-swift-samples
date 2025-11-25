@@ -190,8 +190,8 @@ private extension Envelope {
     /// An envelope of the San Diego city limits.
     static var sanDiegoCityLimits: Envelope {
         Envelope(
-            xRange: -13049024 ... -13039785,
-            yRange: 3856693...3862925,
+            xRange: -13_049_024 ... -13_039_785,
+            yRange: 3_856_693...3_862_925,
             spatialReference: .webMercator
         )
     }
