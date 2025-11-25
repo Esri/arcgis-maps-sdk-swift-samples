@@ -279,8 +279,9 @@ private extension NavigateRouteView {
         /// Monitors the asynchronous stream of voice guidances.
         private func trackVoiceGuidance() async {
             do {
-                try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback)
-                try AVAudioSession.sharedInstance().setActive(true)
+                let session = AVAudioSession.sharedInstance()
+                try session.setCategory(.playback)
+                try session.setActive(true)
             } catch let error as NSError {
                 self.error = error
             }
