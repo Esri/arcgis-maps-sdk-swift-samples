@@ -25,9 +25,9 @@ In the filter controls, select floor and category options to filter what parts o
 ## Relevant API
 
 * BuildingComponentSublayer
-* BuildingGroupSublayer
 * BuildingFilter
 * BuildingFilterBlock
+* BuildingGroupSublayer
 * BuildingSceneLayer
 * LocalSceneView
 * Scene
