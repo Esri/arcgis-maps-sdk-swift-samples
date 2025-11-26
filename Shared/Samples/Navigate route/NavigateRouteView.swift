@@ -235,6 +235,7 @@ private extension NavigateRouteView {
         /// Starts monitoring multiple asynchronous streams of information.
         private func startTracking() async {
             do {
+                // The category is set so that the navigation instructions are spoken even when silent mode is turned on.
                 let session = AVAudioSession.sharedInstance()
                 try session.setCategory(.playback, mode: .voicePrompt)
                 try session.setActive(true)

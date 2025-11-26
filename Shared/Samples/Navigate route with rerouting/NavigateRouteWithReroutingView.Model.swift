@@ -216,6 +216,7 @@ extension NavigateRouteWithReroutingView {
         /// - Parameter voiceGuidance: The `VoiceGuidance`.
         func speakVoiceGuidance(_ voiceGuidance: VoiceGuidance) {
             guard !voiceGuidance.text.isEmpty else { return }
+            
             let utterance = AVSpeechUtterance(string: voiceGuidance.text)
             speechSynthesizer.stopSpeaking(at: .word)
             speechSynthesizer.speak(utterance)
