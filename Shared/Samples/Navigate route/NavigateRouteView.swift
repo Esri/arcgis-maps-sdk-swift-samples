@@ -239,7 +239,7 @@ private extension NavigateRouteView {
                 let session = AVAudioSession.sharedInstance()
                 try session.setCategory(.playback, mode: .voicePrompt)
                 try session.setActive(true)
-            } catch let error as NSError {
+            } catch {
                 self.error = error
             }
             await withTaskGroup(of: Void.self) { group in
