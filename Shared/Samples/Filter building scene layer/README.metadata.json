@@ -10,9 +10,9 @@
         "building scene layer",
         "layers",
         "BuildingComponentSublayer",
-        "BuildingGroupSublayer",
         "BuildingFilter",
         "BuildingFilterBlock",
+        "BuildingGroupSublayer",
         "BuildingSceneLayer",
         "LocalSceneView",
         "Scene"
@@ -20,9 +20,9 @@
     "redirect_from": [],
     "relevant_apis": [
         "BuildingComponentSublayer",
-        "BuildingGroupSublayer",
         "BuildingFilter",
         "BuildingFilterBlock",
+        "BuildingGroupSublayer",
         "BuildingSceneLayer",
         "LocalSceneView",
         "Scene"
