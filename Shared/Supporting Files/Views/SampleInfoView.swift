@@ -36,7 +36,7 @@ struct SampleInfoView: View {
         .ignoresSafeArea(edges: [.horizontal, .bottom])
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .principal) {
+            ToolbarItem(placement: .automatic) {
                 Picker("Information Mode", selection: $informationMode) {
                     ForEach(InformationMode.allCases, id: \.self) { mode in
                         Text(mode.label)
