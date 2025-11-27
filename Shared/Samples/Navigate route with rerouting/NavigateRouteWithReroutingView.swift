@@ -99,6 +99,7 @@ struct NavigateRouteWithReroutingView: View {
         }
         .task(id: model.isNavigating) {
             guard model.isNavigating, let routeTracker = model.routeTracker else { return }
+            
             do {
                 // The category is set so that the navigation instructions are spoken even when silent mode is turned on.
                 let session = AVAudioSession.sharedInstance()
@@ -107,6 +108,7 @@ struct NavigateRouteWithReroutingView: View {
             } catch {
                 self.error = error
             }
+            
             await withTaskGroup(of: Void.self) { group in
                 group.addTask { @MainActor @Sendable in
                     // Handle new tracking statuses from the route tracker.
