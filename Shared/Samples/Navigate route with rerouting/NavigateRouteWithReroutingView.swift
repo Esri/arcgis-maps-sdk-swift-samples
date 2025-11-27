@@ -115,6 +115,7 @@ struct NavigateRouteWithReroutingView: View {
                         await model.updateProgress(using: trackingStatus)
                     }
                 }
+                                                
                 group.addTask { @MainActor @Sendable in
                     // Speak new voice guidances from the route tracker.
                     for await voiceGuidance in routeTracker.voiceGuidances {
