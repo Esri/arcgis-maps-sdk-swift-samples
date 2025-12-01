@@ -534,11 +534,9 @@
 		D7634FB02A43B8B000F8AEFB /* CreateConvexHullAroundGeometriesView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7634FAE2A43B7AC00F8AEFB /* CreateConvexHullAroundGeometriesView.swift */; };
 		D7635FF12B9272CB0044AB97 /* DisplayClustersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7635FED2B9272CB0044AB97 /* DisplayClustersView.swift */; };
 		D7635FFB2B9277DC0044AB97 /* ConfigureClustersView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7635FF52B9277DC0044AB97 /* ConfigureClustersView.Model.swift */; };
-		D7635FFD2B9277DC0044AB97 /* ConfigureClustersView.SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7635FF72B9277DC0044AB97 /* ConfigureClustersView.SettingsView.swift */; };
 		D7635FFE2B9277DC0044AB97 /* ConfigureClustersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7635FF82B9277DC0044AB97 /* ConfigureClustersView.swift */; };
 		D76360002B9296420044AB97 /* ConfigureClustersView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7635FF82B9277DC0044AB97 /* ConfigureClustersView.swift */; };
 		D76360012B92964A0044AB97 /* ConfigureClustersView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7635FF52B9277DC0044AB97 /* ConfigureClustersView.Model.swift */; };
-		D76360022B9296520044AB97 /* ConfigureClustersView.SettingsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7635FF72B9277DC0044AB97 /* ConfigureClustersView.SettingsView.swift */; };
 		D76360032B9296580044AB97 /* DisplayClustersView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7635FED2B9272CB0044AB97 /* DisplayClustersView.swift */; };
 		D76495212B74687E0042699E /* ValidateUtilityNetworkTopologyView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = D76495202B74687E0042699E /* ValidateUtilityNetworkTopologyView.Model.swift */; };
 		D76495222B7468940042699E /* ValidateUtilityNetworkTopologyView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D76495202B74687E0042699E /* ValidateUtilityNetworkTopologyView.Model.swift */; };
@@ -905,7 +903,6 @@
 				1C8EC74B2BAE28A9001A6929 /* AugmentRealityToCollectDataView.swift in Copy Source Code Files */,
 				000D43182B993A030003D3C2 /* ConfigureBasemapStyleParametersView.swift in Copy Source Code Files */,
 				D76360032B9296580044AB97 /* DisplayClustersView.swift in Copy Source Code Files */,
-				D76360022B9296520044AB97 /* ConfigureClustersView.SettingsView.swift in Copy Source Code Files */,
 				D76360012B92964A0044AB97 /* ConfigureClustersView.Model.swift in Copy Source Code Files */,
 				D76360002B9296420044AB97 /* ConfigureClustersView.swift in Copy Source Code Files */,
 				D7781D4C2B7ECCC800E53C51 /* NavigateRouteWithReroutingView.Model.swift in Copy Source Code Files */,
@@ -4645,7 +4642,6 @@
 				E004A6ED2849556E002A1FE6 /* CreatePlanarAndGeodeticBuffersView.swift in Sources */,
 				790238CC2EA9859C00C39582 /* AddBuildingSceneLayerView.swift in Sources */,
 				E041ABD7287DB04D0056009B /* SampleInfoView.swift in Sources */,
-				D7635FFD2B9277DC0044AB97 /* ConfigureClustersView.SettingsView.swift in Sources */,
 				D769DF332BEC1A1C0062AE95 /* EditGeodatabaseWithTransactionsView.Model.swift in Sources */,
 				1C43BC822A43781200509BF8 /* SetVisibilityOfSubtypeSublayerView.Model.swift in Sources */,
 				D71FCB8A2AD6277F000E517C /* CreateMobileGeodatabaseView.Model.swift in Sources */,
