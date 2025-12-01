@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import ArcGIS
+import AVFAudio
 import SwiftUI
 
 struct NavigateRouteWithReroutingView: View {
@@ -98,6 +99,15 @@ struct NavigateRouteWithReroutingView: View {
         }
         .task(id: model.isNavigating) {
             guard model.isNavigating, let routeTracker = model.routeTracker else { return }
+            
+            do {
+                // The category is set so that the navigation instructions are spoken even when silent mode is turned on.
+                let session = AVAudioSession.sharedInstance()
+                try session.setCategory(.playback, mode: .voicePrompt)
+                try session.setActive(true)
+            } catch {
+                self.error = error
+            }
             
             await withTaskGroup(of: Void.self) { group in
                 group.addTask { @MainActor @Sendable in
