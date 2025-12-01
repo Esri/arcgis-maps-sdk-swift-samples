@@ -32,12 +32,6 @@ struct ConfigureClustersView: View {
     /// The map view's scale.
     @State private var mapViewScale = 0.0
     
-    /// The radius of feature clusters selected by the user.
-    @State private var selectedRadius = 60
-    
-    /// The maximum scale of feature clusters selected by the user.
-    @State private var selectedMaxScale = 0
-    
     var body: some View {
         MapViewReader { proxy in
             MapView(map: model.map)
@@ -65,7 +59,7 @@ struct ConfigureClustersView: View {
                         }
                         .popover(isPresented: $showsSettings) {
                             settingsView
-                                .frame(idealWidth: 400, idealHeight: 500)
+                                .frame(idealWidth: 320, idealHeight: 340)
                                 .presentationCompactAdaptation(.popover)
                         }
                     }
@@ -86,19 +80,15 @@ struct ConfigureClustersView: View {
                 }
                 
                 Section("Clustering Properties") {
-                    Picker("Cluster Radius", selection: $selectedRadius) {
-                        ForEach([30, 45, 60, 75, 90], id: \.self) { radius in
-                            Text("\(radius)")
+                    Picker("Cluster Radius", selection: $model.radius) {
+                        ForEach([30.0, 45.0, 60.0, 75.0, 90.0], id: \.self) { radius in
+                            Text(radius, format: .number)
                         }
-                    }.onChange(of: selectedRadius) {
-                        model.radius = Double(selectedRadius)
                     }
-                    Picker("Cluster Max Scale", selection: $selectedMaxScale) {
-                        ForEach([0, 1000, 5000, 10000, 50000, 100000, 500000], id: \.self) { scale in
-                            Text(("\(scale)"))
+                    Picker("Cluster Max Scale", selection: $model.maxScale) {
+                        ForEach([0.0, 1000.0, 5000.0, 10000.0, 50000.0, 100000.0, 500000.0], id: \.self) { scale in
+                            Text(scale, format: .number)
                         }
-                    }.onChange(of: selectedMaxScale) {
-                        model.maxScale = Double(selectedMaxScale)
                     }
                     LabeledContent(
                         "Current Map Scale",
