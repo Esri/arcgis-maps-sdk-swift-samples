@@ -28,9 +28,6 @@ struct DownloadOfflineResourcesView: View {
     /// The current state of the "download all on-demand resources" request.
     @State private var downloadAllRequestState: OnDemandResource.RequestState = .notStarted
     
-    /// A Boolean value indicating whether confirm cancel alert is showing.
-    @State private var confirmCancelAlertIsShowing = false
-    
     /// A Boolean value indicating whether all of the `onDemandResources` have successfully downloaded.
     private var allResourcesAreDownloaded: Bool {
         guard !onDemandResources.isEmpty else { return false }
@@ -89,20 +86,15 @@ struct DownloadOfflineResourcesView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") {
-                        if onDemandResources.values.allSatisfy({ $0.requestState != .inProgress }) {
-                            dismiss()
-                        } else {
-                            confirmCancelAlertIsShowing = true
-                        }
-                    }
-                    .alert("Cancel downloads?", isPresented: $confirmCancelAlertIsShowing) {
-                        Button("Don't Cancel", role: .cancel, action: {})
-                        
+                    if onDemandResources.values.contains(where: { $0.requestState == .inProgress }) {
                         Button("Cancel") {
                             for resource in onDemandResources.values where resource.requestState == .inProgress {
                                 resource.cancel()
                             }
+                            dismiss()
+                        }
+                    } else {
+                        Button("Done") {
                             dismiss()
                         }
                     }
