@@ -63,14 +63,6 @@ struct DownloadOfflineResourcesView: View {
                         .frame(maxWidth: .infinity)
                     }
                     .disabled(onDemandResources.isEmpty || downloadAllRequestState != .notStarted || allResourcesAreDownloaded)
-                    .task(id: downloadAllRequestState) {
-                        guard downloadAllRequestState == .inProgress else { return }
-                        await downloadAll()
-                    }
-                    .onChange(of: allResourcesAreDownloaded) {
-                        guard allResourcesAreDownloaded else { return }
-                        downloadAllRequestState = .downloaded
-                    }
                 }
                 Section {
                     List(samples, id: \.name) { sample in
@@ -115,6 +107,14 @@ struct DownloadOfflineResourcesView: View {
                     }
                     return resources
                 }
+            }
+            .task(id: downloadAllRequestState) {
+                guard downloadAllRequestState == .inProgress else { return }
+                await downloadAll()
+            }
+            .onChange(of: allResourcesAreDownloaded) {
+                guard allResourcesAreDownloaded else { return }
+                downloadAllRequestState = .downloaded
             }
         }
     }
