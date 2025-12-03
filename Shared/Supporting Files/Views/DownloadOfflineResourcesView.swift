@@ -16,9 +16,6 @@ import SwiftUI
 
 /// A view with controls for downloading the app's on-demand resources.
 struct DownloadOfflineResourcesView: View {
-    /// The samples that require offline resources.
-    let samples = SamplesApp.samples.filter(\.hasDependencies)
-    
     /// The action to dismiss the view.
     @Environment(\.dismiss) private var dismiss
     
@@ -42,11 +39,6 @@ struct DownloadOfflineResourcesView: View {
         onDemandResources.values.reduce(into: Set()) { result, resource in
             result.insert(resource.requestState)
         }
-    }
-    
-    /// Returns the on-demand resource for the given sample.
-    func resource(for sample: Sample) -> OnDemandResource? {
-        return onDemandResources[sample.name]
     }
     
     var body: some View {
@@ -74,10 +66,8 @@ struct DownloadOfflineResourcesView: View {
                     .disabled(onDemandResources.isEmpty || isDownloadingAll || allResourcesAreDownloaded)
                 }
                 Section {
-                    List(samples, id: \.name) { sample in
-                        if let resource = resource(for: sample) {
-                            DownloadOnDemandResourceView(name: sample.name, resource: resource)
-                        }
+                    List(onDemandResources.sorted(by: { $0.key < $1.key }), id: \.key) { name, resource in
+                        DownloadOnDemandResourceView(name: name, resource: resource)
                     }
                 } footer: {
                     Text("**Note**: The system may purge downloads at any time.")
@@ -104,7 +94,7 @@ struct DownloadOfflineResourcesView: View {
             .task {
                 guard onDemandResources.isEmpty else { return }
                 onDemandResources = await withTaskGroup { group in
-                    for sample in samples {
+                    for sample in SamplesApp.samples where sample.hasDependencies {
                         group.addTask {
                             let resource = await OnDemandResource(tags: sample.odrTags)
                             return (sample.name, resource)
@@ -140,11 +130,6 @@ struct DownloadOfflineResourcesView: View {
                     downloadAllProgress?.addChildUnits(resource.progress)
                 }
             }
-        }
-        
-        // Automatically dismisses the view if all of the resources have downloaded successfully.
-        if allResourcesAreDownloaded {
-            dismiss()
         }
     }
 }
