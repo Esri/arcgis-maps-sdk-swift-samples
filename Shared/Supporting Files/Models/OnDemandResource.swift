@@ -47,12 +47,13 @@ final class OnDemandResource {
     private(set) var error: (any Error)?
     
     /// The on-demand resource request.
-    private let request: NSBundleResourceRequest
+    private var request: NSBundleResourceRequest
     
     /// Initializes a request with a set of Resource Tags.
     init(tags: Set<String>) async {
-        request = NSBundleResourceRequest(tags: tags)
+        let request = NSBundleResourceRequest(tags: tags)
         request.loadingPriority = NSBundleResourceRequestLoadingPriorityUrgent
+        self.request = request
         
         let isResourceAvailable = await request.conditionallyBeginAccessingResources()
         requestState = isResourceAvailable ? .downloaded : .notStarted
@@ -69,8 +70,17 @@ final class OnDemandResource {
     func download() async {
         guard isDownloadable else { return }
         
-        requestState = .inProgress
+        // Recreates the request if a download has been attempted before so
+        // beginAccessingResources() can be called again without crashing.
+        if requestState == .cancelled || requestState == .error {
+            request = NSBundleResourceRequest(tags: request.tags)
+            request.loadingPriority = NSBundleResourceRequestLoadingPriorityUrgent
+            
+            error = nil
+        }
+        
         do {
+            requestState = .inProgress
             try await request.beginAccessingResources()
             requestState = .downloaded
         } catch {
