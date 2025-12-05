@@ -15,7 +15,7 @@ In the filter controls, select floor and category options to filter what parts o
 ## How it works
 
 1. Create a `Scene` with the URL to a Building Scene Layer service.
-2. Create a `LocalSceneView` and add the scene.
+2. Create a `LocalSceneView` with the scene.
 3. Retrieve the `BuildingSceneLayer` from the scene's operational layers.
 4. When a floor is selected, a `BuildingFilter` is created with two `BuildingFilterBlocks`. One highlights the selected floor, the second applies an x-ray view style to the floors below the selected floor.
 5. Apply the filter to the `activeFilter` of the `BuildingSceneLayer` to view the changes to the model.

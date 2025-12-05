@@ -19,25 +19,21 @@ extension FilterBuildingSceneLayerView {
     /// The building sublayer toggle which is used to build a toggle view for
     /// each sublayer in a building group sublayer.
     struct BuildingSublayerToggleView: View {
-        /// A Boolean value indicating if the sublayer is visible.
-        @State private var isVisible: Bool
-        
         /// The sublayer used to build this view.
         let sublayer: BuildingSublayer
         
-        /// Creates a building sublayer view using the sublayer.
-        /// - Parameter sublayer: The sublayer to help build this view.
-        init(sublayer: BuildingSublayer) {
-            // Sets the initial value of the toggle to the
-            // current visibility of the sublayer.
-            isVisible = sublayer.isVisible
-            self.sublayer = sublayer
-        }
+        /// A Boolean value indicating if the sublayer is visible.
+        @State private var isVisible = true
         
         var body: some View {
             Toggle(sublayer.name, isOn: $isVisible)
                 .onChange(of: isVisible) {
                     sublayer.isVisible = isVisible
+                }
+                .onAppear {
+                    // Sets the value of the toggle to the
+                    // current visibility of the sublayer.
+                    isVisible = sublayer.isVisible
                 }
         }
     }

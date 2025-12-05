@@ -40,9 +40,7 @@ struct FilterBuildingSceneLayerView: View {
     /// This is used to clear the feature selection.
     @State private var selectedSublayer: BuildingComponentSublayer?
     /// The popup to be shown as the result of the layer identify operation.
-    @State private var popup: Popup? {
-        didSet { showPopup = popup != nil }
-    }
+    @State private var popup: Popup?
     /// A Boolean value specifying whether the popup view should be shown or not.
     @State private var showPopup = false
     
@@ -54,30 +52,7 @@ struct FilterBuildingSceneLayerView: View {
                 }
                 .task {
                     do {
-                        try await scene.load()
-                        
-                        guard let buildingSceneLayer = scene.operationalLayers.first as? BuildingSceneLayer else { return }
-                        
-                        try await buildingSceneLayer.load()
-                        self.buildingSceneLayer = buildingSceneLayer
-                        
-                        // Gets the full model which contains all the sublayers.
-                        guard let fullModelSublayer = buildingSceneLayer.sublayers
-                            .first(where: { $0.name == "Full Model" }) as? BuildingGroupSublayer else { return }
-                        
-                        groupSublayers = fullModelSublayer.sublayers
-                            .compactMap { $0 as? BuildingGroupSublayer }
-                        
-                        // Gets the attribute statistics to get the floor
-                        // information.
-                        let statistics = try await buildingSceneLayer.statistics
-                        
-                        // Gets the floor statistics.
-                        guard let floorStatistics = statistics[.floorFieldKey] else { return }
-                        
-                        // Gets all the available floors and sorts the floors
-                        // from top to bottom floor.
-                        availableFloors = floorStatistics.mostFrequentValues.sorted { $0 > $1 } + [.allFloorsLabel]
+                        try await setup()
                     } catch {
                         self.error = error
                     }
@@ -103,6 +78,7 @@ struct FilterBuildingSceneLayerView: View {
                     
                     component.selectFeature(feature)
                     popup = sublayerResult.popups.first
+                    showPopup = popup != nil
                     selectedSublayer = component
                 }
         }
@@ -123,6 +99,35 @@ struct FilterBuildingSceneLayerView: View {
             PopupView(root: popup!, isPresented: $showPopup)
                 .frame(idealWidth: 320, idealHeight: 600)
         }
+    }
+    
+    /// Sets up the view by loading the scene and the building scene layer to get the
+    /// information needed for the settings.
+    private func setup() async throws {
+        try await scene.load()
+        
+        guard let buildingSceneLayer = scene.operationalLayers.first as? BuildingSceneLayer else { return }
+        
+        try await buildingSceneLayer.load()
+        self.buildingSceneLayer = buildingSceneLayer
+        
+        // Gets the full model which contains all the sublayers.
+        guard let fullModelSublayer = buildingSceneLayer.sublayers
+            .first(where: { $0.name == "Full Model" }) as? BuildingGroupSublayer else { return }
+        
+        groupSublayers = fullModelSublayer.sublayers
+            .compactMap { $0 as? BuildingGroupSublayer }
+        
+        // Gets the attribute statistics to get the floor
+        // information.
+        let statistics = try await buildingSceneLayer.statistics
+        
+        // Gets the floor statistics.
+        guard let floorStatistics = statistics[.floorFieldKey] else { return }
+        
+        // Gets all the available floors and sorts the floors
+        // from top to bottom floor.
+        availableFloors = floorStatistics.mostFrequentValues.sorted { $0 > $1 } + [.allFloorsLabel]
     }
     
     /// The floor filter used with the building scene layer to show only the

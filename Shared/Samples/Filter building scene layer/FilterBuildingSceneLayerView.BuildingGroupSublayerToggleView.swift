@@ -19,21 +19,11 @@ extension FilterBuildingSceneLayerView {
     /// The building group sublayer toggle which has a toggle for the visibility of the group
     /// and each of its sublayers.
     struct BuildingGroupSublayerToggleView: View {
-        /// A Boolean value indicating if the group sublayer is visible.
-        @State private var isVisible: Bool
-        
         /// The group sublayer which is used to build this view.
         let groupSublayer: BuildingGroupSublayer
         
-        /// Creates the custom toggle view with a group sublayer.
-        /// - Parameter groupSublayer: The group sublayer which is used to build this view.
-        init(groupSublayer: BuildingGroupSublayer) {
-            // Sets the initial value of the toggle to the
-            // current visibility of the group sublayer.
-            isVisible = groupSublayer.isVisible
-            
-            self.groupSublayer = groupSublayer
-        }
+        /// A Boolean value indicating if the group sublayer is visible.
+        @State private var isVisible: Bool = true
         
         var body: some View {
             DisclosureGroup {
@@ -48,6 +38,11 @@ extension FilterBuildingSceneLayerView {
                     .onChange(of: isVisible) {
                         groupSublayer.isVisible = isVisible
                     }
+            }
+            .onAppear {
+                // Sets the value of the toggle to the
+                // current visibility of the group sublayer.
+                isVisible = groupSublayer.isVisible
             }
         }
     }
