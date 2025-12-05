@@ -135,7 +135,7 @@ struct FilterBuildingSceneLayerView: View {
     private var floorFilter: BuildingFilter? {
         // To see all the floors we need to remove the filter
         // by setting it to 'nil'.
-        guard selectedFloor != "All" else { return nil }
+        guard selectedFloor != .allFloorsLabel else { return nil }
         
         return BuildingFilter(
             name: "Floor filter",

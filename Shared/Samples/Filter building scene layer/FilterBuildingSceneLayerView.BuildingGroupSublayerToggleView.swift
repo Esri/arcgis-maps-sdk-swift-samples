@@ -23,7 +23,7 @@ extension FilterBuildingSceneLayerView {
         let groupSublayer: BuildingGroupSublayer
         
         /// A Boolean value indicating if the group sublayer is visible.
-        @State private var isVisible: Bool = true
+        @State private var isVisible = true
         
         var body: some View {
             DisclosureGroup {
