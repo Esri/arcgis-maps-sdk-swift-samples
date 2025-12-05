@@ -19,40 +19,30 @@ import SwiftUI
 struct FilterBuildingSceneLayerView: View {
     /// A scene with the building scene layer which displays ESRI building E.
     @State private var scene = Scene(url: URL(string: "https://www.arcgis.com/home/item.html?id=b7c387d599a84a50aafaece5ca139d44")!)!
-    
     /// The building scene layer used in the scene.
     ///
     /// This is used to set the active filter on the layer.
     @State private var buildingSceneLayer: BuildingSceneLayer?
-    
     /// A Boolean value indicating if the settings are visible or not.
     @State private var settingsAreVisible = false
-    
     /// The available floors to show in the settings.
     @State private var availableFloors: [String] = []
-    
     /// The selected floor from the floor picker in the settings.
     @State private var selectedFloor: String = .allFloorsLabel
-    
     /// The group sublayers used to build the visibility toggles in the settings.
     @State private var groupSublayers: [BuildingGroupSublayer] = []
-    
     /// The error shown in the error alert.
     @State private var error: (any Error)?
-    
     /// The point where the user has tapped on the screen.
     @State private var tapPoint: CGPoint?
-    
     /// The building sublayer that has a feature selected.
     ///
     /// This is used to clear the feature selection.
     @State private var selectedSublayer: BuildingComponentSublayer?
-    
     /// The popup to be shown as the result of the layer identify operation.
     @State private var popup: Popup? {
         didSet { showPopup = popup != nil }
     }
-    
     /// A Boolean value specifying whether the popup view should be shown or not.
     @State private var showPopup = false
     

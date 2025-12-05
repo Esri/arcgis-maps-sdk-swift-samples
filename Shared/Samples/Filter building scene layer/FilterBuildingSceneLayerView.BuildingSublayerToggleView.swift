@@ -29,7 +29,7 @@ extension FilterBuildingSceneLayerView {
         /// - Parameter sublayer: The sublayer to help build this view.
         init(sublayer: BuildingSublayer) {
             // Sets the initial value of the toggle to the
-            // current visbility of the sublayer.
+            // current visibility of the sublayer.
             isVisible = sublayer.isVisible
             self.sublayer = sublayer
         }

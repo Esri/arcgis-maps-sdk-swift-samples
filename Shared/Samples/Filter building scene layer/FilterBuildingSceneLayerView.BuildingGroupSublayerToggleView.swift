@@ -16,7 +16,7 @@ import ArcGIS
 import SwiftUI
 
 extension FilterBuildingSceneLayerView {
-    /// The building group sublayer toggle which has a toggle for the visbility of the group
+    /// The building group sublayer toggle which has a toggle for the visibility of the group
     /// and each of its sublayers.
     struct BuildingGroupSublayerToggleView: View {
         /// A Boolean value indicating if the group sublayer is visible.
@@ -29,7 +29,7 @@ extension FilterBuildingSceneLayerView {
         /// - Parameter groupSublayer: The group sublayer which is used to build this view.
         init(groupSublayer: BuildingGroupSublayer) {
             // Sets the initial value of the toggle to the
-            // current visbility of the group sublayer.
+            // current visibility of the group sublayer.
             isVisible = groupSublayer.isVisible
             
             self.groupSublayer = groupSublayer
