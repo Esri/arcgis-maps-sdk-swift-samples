@@ -33,7 +33,7 @@ final class OnDemandResource {
     }
     
     /// The progress of the on-demand resource request.
-    var progress: Progress { request.progress }
+    let progress = Progress(totalUnitCount: 100)
     
     /// A Boolean value indicating whether a resource request can be initiated.
     var isDownloadable: Bool {
@@ -49,6 +49,11 @@ final class OnDemandResource {
     /// The on-demand resource request.
     private var request: NSBundleResourceRequest
     
+    /// A task for monitoring `request.progress` to update `self.progress`.
+    ///
+    /// This is needed because passing `request.progress` to a `ProgressView` can cause race condition crashes.
+    @ObservationIgnored private var progressTask: Task<Void, Never>?
+    
     /// Initializes a request with a set of Resource Tags.
     init(tags: Set<String>) async {
         let request = NSBundleResourceRequest(tags: tags)
@@ -59,9 +64,13 @@ final class OnDemandResource {
         requestState = isResourceAvailable ? .downloaded : .notStarted
     }
     
+    deinit {
+        progressTask?.cancel()
+    }
+    
     /// Cancels the on-demand resource request.
     func cancel() {
-        progress.cancel()
+        progressTask?.cancel()
         request.endAccessingResources()
         requestState = .cancelled
     }
@@ -79,6 +88,27 @@ final class OnDemandResource {
             error = nil
         }
         
+        // Monitors `request.progress` to update `self.progress`.
+        progressTask = Task { @MainActor [weak self] in
+            guard let self else { return }
+            
+            // A stream is used here because `progress.publisher` doesn't always produce values.
+            let stream = AsyncStream { continuation in
+                let observation = request.progress
+                    .observe(\.fractionCompleted, options: [.initial, .new]) { _, change in
+                        guard let newValue = change.newValue else { return }
+                        continuation.yield(newValue)
+                    }
+                continuation.onTermination = { _ in
+                    observation.invalidate()
+                }
+            }
+            
+            for await fractionCompleted in stream {
+                self.progress.completedUnitCount = Int64(fractionCompleted * 100)
+            }
+        }
+        
         do {
             requestState = .inProgress
             try await request.beginAccessingResources()
@@ -91,6 +121,8 @@ final class OnDemandResource {
                 cancel()
             }
         }
+        
+        progressTask?.cancel()
     }
 }
 
