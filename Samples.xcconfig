@@ -1,0 +1,4 @@
+// This configuration file sets default code signing settings for the project, which can be overwritten via the UI-based
+// settings from the IDE.
+// This file can be used by the CI process to update or override signing-related settings as needed.
+CODE_SIGN_STYLE = Automatic

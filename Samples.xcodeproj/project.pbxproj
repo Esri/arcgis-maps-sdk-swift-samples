@@ -1158,6 +1158,7 @@
 		10CFF54E2DD2AC300027F144 /* AuthenticateWithPKICertificateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticateWithPKICertificateView.swift; sourceTree = "<group>"; };
 		10D321922BDB187400B39B1B /* naperville_imagery.tpkx */ = {isa = PBXFileReference; lastKnownFileType = file; path = naperville_imagery.tpkx; sourceTree = "<group>"; };
 		10D321952BDB1CB500B39B1B /* GenerateOfflineMapWithLocalBasemapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateOfflineMapWithLocalBasemapView.swift; sourceTree = "<group>"; };
+		168213632EE7569B008452FB /* Samples.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Samples.xcconfig; sourceTree = "<group>"; };
 		1C012CF12DE7C3030027F570 /* ProjectWithChosenTransformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectWithChosenTransformationView.swift; sourceTree = "<group>"; };
 		1C0C1C3429D34DAE005C8B24 /* ChangeViewpointView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeViewpointView.swift; sourceTree = "<group>"; };
 		1C17E1C72DDFB6FB00A012CB /* GenerateGeodatabaseReplicaFromFeatureServiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateGeodatabaseReplicaFromFeatureServiceView.swift; sourceTree = "<group>"; };
@@ -2098,6 +2099,7 @@
 				00E5401427F3CCA200CF66D5 /* Products */,
 				003D7C332821EBCC009DDFD2 /* Scripts */,
 				00E5400B27F3CCA100CF66D5 /* Shared */,
+				168213632EE7569B008452FB /* Samples.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -4927,6 +4929,7 @@
 /* Begin XCBuildConfiguration section */
 		00E5402227F3CCA200CF66D5 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 168213632EE7569B008452FB /* Samples.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -4988,6 +4991,7 @@
 		};
 		00E5402327F3CCA200CF66D5 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 168213632EE7569B008452FB /* Samples.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -5042,6 +5046,7 @@
 		};
 		00E5402527F3CCA200CF66D5 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 168213632EE7569B008452FB /* Samples.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -5071,6 +5076,7 @@
 		};
 		00E5402627F3CCA200CF66D5 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 168213632EE7569B008452FB /* Samples.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
