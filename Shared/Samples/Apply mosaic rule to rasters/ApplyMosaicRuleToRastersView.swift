@@ -103,7 +103,7 @@ struct ApplyMosaicRuleToRastersView: View {
                                     }
                                 }
                             }
-                            .frame(idealWidth: 500, idealHeight: 300)
+                            .frame(idealWidth: 400, idealHeight: 400)
                             .presentationCompactAdaptation(.popover)
                         }
                     }
