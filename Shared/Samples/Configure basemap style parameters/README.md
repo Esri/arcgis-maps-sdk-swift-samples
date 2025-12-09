@@ -10,9 +10,9 @@ When creating an application that is used in multiple countries, basemaps can re
 
 ## How to use the sample
 
-This sample showcases the workflow of configuring basemap style parameters by displaying a basemap with labels in different languages and launches with a `Viewpoint` near Bulgaria, Greece, and Turkey, as they use three different alphabets: Cyrillic, Greek, and Latin, respectively. By default, the `BasemapStyleLanguage` is set to `local`, which displays all labels in their corresponding local language. This can be changed to `global`, which displays all labels in English. The `specific` option sets all labels to a selected language and overrides the `BasemapStyleLanguage` settings.
+This sample showcases the workflow of configuring basemap style parameters by displaying a basemap with labels in different languages and launches with a `Viewpoint` near Athens, Greece. By default, the `BasemapStyleLanguage` is set to `local`, which displays all labels in their corresponding local language. This can be changed to `global`, which displays all labels in English. The `specific` option sets all labels to a selected language and overrides the `BasemapStyleLanguage` settings.
 
-Pan and zoom to navigate the map and see how different labels are displayed in these countries depending on the selected `BasemapStyleLanguage`: all English, all Greek, all Bulgarian, all Turkish, or each their own.
+Pan and zoom to navigate the map to neighboring countries that use different alphabets, such as Bulgaria, and Turkey, to see how different labels are displayed depending on the selected `BasemapStyleLanguage`: all English, all Greek, all Bulgarian, all Turkish, or each their own.
 
 ## How it works
 
