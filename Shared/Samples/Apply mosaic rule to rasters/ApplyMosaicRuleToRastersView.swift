@@ -25,6 +25,9 @@ struct ApplyMosaicRuleToRastersView: View {
     /// The data model for the sample.
     @StateObject private var model = Model()
     
+    /// A Boolean value indicating whether the settings view is showing.
+    @State private var settingsAreVisible = false
+    
     /// Holds the reference to the currently selected rule.
     @State private var ruleSelection: RuleSelection = .objectID
     
@@ -67,22 +70,42 @@ struct ApplyMosaicRuleToRastersView: View {
                 }
                 .toolbar {
                     ToolbarItemGroup(placement: .bottomBar) {
-                        Picker("Mosaic Rule", selection: $ruleSelection) {
-                            ForEach(RuleSelection.allCases, id: \.self) { rule in
-                                Text(rule.label)
+                        Button("Mosaic Rules") {
+                            settingsAreVisible = true
+                        }
+                        .popover(isPresented: $settingsAreVisible) {
+                            NavigationStack {
+                                Form {
+                                    Picker("Mosaic Rule", selection: $ruleSelection) {
+                                        ForEach(RuleSelection.allCases, id: \.self) { rule in
+                                            Text(rule.label)
+                                        }
+                                    }
+                                    .task(id: ruleSelection) {
+                                        isLoading = true
+                                        model.imageServiceRaster.mosaicRule = ruleSelection.rule
+                                        await mapProxy.setViewpoint(
+                                            Viewpoint(
+                                                center: model.imageServiceRasterCenter,
+                                                scale: 25000
+                                            )
+                                        )
+                                    }
+                                    .pickerStyle(.inline)
+                                }
+                                .navigationTitle("Mosaic Rules")
+                                .navigationBarTitleDisplayMode(.inline)
+                                .toolbar {
+                                    ToolbarItem(placement: .confirmationAction) {
+                                        Button("Done") {
+                                            settingsAreVisible = false
+                                        }
+                                    }
+                                }
                             }
+                            .frame(idealWidth: 500, idealHeight: 300)
+                            .presentationCompactAdaptation(.popover)
                         }
-                        .task(id: ruleSelection) {
-                            isLoading = true
-                            model.imageServiceRaster.mosaicRule = ruleSelection.rule
-                            await mapProxy.setViewpoint(
-                                Viewpoint(
-                                    center: model.imageServiceRasterCenter,
-                                    scale: 25000
-                                )
-                            )
-                        }
-                        .pickerStyle(.automatic)
                     }
                 }
         }
