@@ -16,31 +16,29 @@ import SwiftUI
 
 /// A view with controls for downloading the app's on-demand resources.
 struct DownloadOfflineResourcesView: View {
-    /// The samples that require offline resources.
-    let samples = SamplesApp.samples.filter(\.hasDependencies)
-    
     /// The action to dismiss the view.
     @Environment(\.dismiss) private var dismiss
+    
+    /// The progress of a download-all operation.
+    @State private var downloadAllProgress: Progress?
     
     /// The view models for the on-demand resource requests.
     @State private var onDemandResources: [String: OnDemandResource] = [:]
     
-    /// The current state of the "download all on-demand resources" request.
-    @State private var downloadAllRequestState: OnDemandResource.RequestState = .notStarted
-    
-    /// A Boolean value indicating whether confirm cancel alert is showing.
-    @State private var confirmCancelAlertIsShowing = false
-    
     /// A Boolean value indicating whether all of the `onDemandResources` have successfully downloaded.
-    private var allResourcesAreDownloaded: Bool {
-        guard !onDemandResources.isEmpty else { return false }
-        return onDemandResources.values
-            .allSatisfy { $0.requestState == .downloaded }
-    }
+    private var allResourcesAreDownloaded: Bool { uniqueRequestStates == [.downloaded] }
     
-    /// Returns the on-demand resource for the given sample.
-    func resource(for sample: Sample) -> OnDemandResource? {
-        return onDemandResources[sample.name]
+    /// A Boolean value indicating whether there is an on going download-all operation.
+    private var isDownloadingAll: Bool { downloadAllProgress != nil }
+    
+    /// A Boolean value indicating whether there is an in progress download.
+    private var isDownloadingResource: Bool { uniqueRequestStates.contains(.inProgress) }
+    
+    /// The distinct request states of all on-demand resources.
+    private var uniqueRequestStates: Set<OnDemandResource.RequestState> {
+        onDemandResources.values.reduce(into: Set()) { result, resource in
+            result.insert(resource.requestState)
+        }
     }
     
     var body: some View {
@@ -48,38 +46,28 @@ struct DownloadOfflineResourcesView: View {
             Form {
                 Section {
                     Button {
-                        downloadAllRequestState = .inProgress
+                        downloadAllProgress = Progress()
                     } label: {
                         Label {
                             Text("Download All")
                         } icon: {
-                            switch downloadAllRequestState {
-                            case .inProgress:
-                                ProgressView()
-                            case .downloaded:
+                            if let downloadAllProgress {
+                                ProgressView(downloadAllProgress)
+                                    .progressViewStyle(GaugeProgressViewStyle())
+                            } else if allResourcesAreDownloaded {
                                 Image(systemName: "checkmark.circle")
                                     .foregroundStyle(.secondary)
-                            default:
+                            } else {
                                 Image(systemName: "arrow.down.circle")
                             }
                         }
                         .frame(maxWidth: .infinity)
                     }
-                    .disabled(onDemandResources.isEmpty || downloadAllRequestState != .notStarted || allResourcesAreDownloaded)
-                    .task(id: downloadAllRequestState) {
-                        guard downloadAllRequestState == .inProgress else { return }
-                        await downloadAll()
-                    }
-                    .onChange(of: allResourcesAreDownloaded) {
-                        guard allResourcesAreDownloaded else { return }
-                        downloadAllRequestState = .downloaded
-                    }
+                    .disabled(onDemandResources.isEmpty || isDownloadingAll || allResourcesAreDownloaded)
                 }
                 Section {
-                    List(samples, id: \.name) { sample in
-                        if let resource = resource(for: sample) {
-                            DownloadOnDemandResourceView(name: sample.name, resource: resource)
-                        }
+                    List(onDemandResources.sorted(by: { $0.key < $1.key }), id: \.key) { name, resource in
+                        DownloadOnDemandResourceView(name: name, resource: resource)
                     }
                 } footer: {
                     Text("**Note**: The system may purge downloads at any time.")
@@ -89,20 +77,15 @@ struct DownloadOfflineResourcesView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") {
-                        if onDemandResources.values.allSatisfy({ $0.requestState != .inProgress }) {
-                            dismiss()
-                        } else {
-                            confirmCancelAlertIsShowing = true
-                        }
-                    }
-                    .alert("Cancel downloads?", isPresented: $confirmCancelAlertIsShowing) {
-                        Button("Don't Cancel", role: .cancel, action: {})
-                        
+                    if isDownloadingResource {
                         Button("Cancel") {
                             for resource in onDemandResources.values where resource.requestState == .inProgress {
                                 resource.cancel()
                             }
+                            dismiss()
+                        }
+                    } else {
+                        Button("Done") {
                             dismiss()
                         }
                     }
@@ -111,7 +94,7 @@ struct DownloadOfflineResourcesView: View {
             .task {
                 guard onDemandResources.isEmpty else { return }
                 onDemandResources = await withTaskGroup { group in
-                    for sample in samples {
+                    for sample in SamplesApp.samples where sample.hasDependencies {
                         group.addTask {
                             let resource = await OnDemandResource(tags: sample.odrTags)
                             return (sample.name, resource)
@@ -124,6 +107,14 @@ struct DownloadOfflineResourcesView: View {
                     return resources
                 }
             }
+            .task(id: isDownloadingAll) {
+                guard isDownloadingAll else { return }
+                await downloadAll()
+            }
+            .onChange(of: isDownloadingResource) {
+                guard isDownloadingAll, !isDownloadingResource else { return }
+                downloadAllProgress = nil
+            }
         }
     }
     
@@ -131,14 +122,14 @@ struct DownloadOfflineResourcesView: View {
     /// - Note: The system may purge the resources at any time after the request object is deallocated.
     private func downloadAll() async {
         await withTaskGroup { group in
-            for resource in onDemandResources.values where resource.isDownloadable {
-                group.addTask(operation: resource.download)
+            for resource in onDemandResources.values {
+                if resource.isDownloadable {
+                    group.addTask(operation: resource.download)
+                    downloadAllProgress?.addChildUnits(resource.progress)
+                } else if resource.requestState == .inProgress {
+                    downloadAllProgress?.addChildUnits(resource.progress)
+                }
             }
-        }
-        
-        // Automatically dismisses the view if all of the resources have downloaded successfully.
-        if allResourcesAreDownloaded {
-            dismiss()
         }
     }
 }
@@ -203,5 +194,14 @@ private struct GaugeProgressViewStyle: ProgressViewStyle {
                 .foregroundStyle(gradient)
                 .rotationEffect(.degrees(-90))
         }
+    }
+}
+
+private extension Progress {
+    /// Adds a process object and its unit count as a suboperation of a progress tree.
+    /// - Parameter progress: The progress instance to add to the progress tree.
+    func addChildUnits(_ progress: Progress) {
+        addChild(progress, withPendingUnitCount: progress.totalUnitCount)
+        totalUnitCount += progress.totalUnitCount
     }
 }
