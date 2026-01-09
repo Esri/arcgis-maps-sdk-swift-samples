@@ -16,29 +16,34 @@ import ArcGIS
 import SwiftUI
 
 struct FilterFeaturesInSceneView: View {
-    /// The view model for this sample.
-    @StateObject private var model = Model()
-    
-    /// The error shown in the error alert.
-    @State private var error: (any Error)?
+    /// The result of the loading the view model for this sample.
+    @State private var modelResult: Result<Model, any Error>?
     
     var body: some View {
-        SceneView(scene: model.scene, graphicsOverlays: [model.graphicsOverlay])
-            .task {
-                do {
-                    try await model.scene.load()
-                } catch {
-                    self.error = error
-                }
-            }
-            .toolbar {
-                ToolbarItem(placement: .bottomBar) {
-                    Button(model.filterState.label) {
-                        model.handleFilterState()
+        switch modelResult {
+        case .success(let model):
+            SceneView(scene: model.scene, graphicsOverlays: [model.graphicsOverlay])
+                .toolbar {
+                    ToolbarItem(placement: .bottomBar) {
+                        Button(model.filterState.label) {
+                            model.handleFilterState()
+                        }
                     }
                 }
+        case .failure(let error):
+            ContentUnavailableView {
+                Label("Error Setting Up Sample", systemImage: "exclamationmark.triangle")
+            } description: {
+                Text(String(reflecting: error))
+            } actions: {
+                Button("Retry") { modelResult = nil }
             }
-            .errorAlert(presentingError: $error)
+        case nil:
+            ProgressView("Loading model")
+                .task {
+                    modelResult = await Result(awaiting: Model.init)
+                }
+        }
     }
 }
 
@@ -46,100 +51,102 @@ private extension FilterFeaturesInSceneView {
     /// The model used to store the geo model and other expensive objects
     /// used in this view.
     @MainActor
-    class Model: ObservableObject {
+    @Observable
+    final class Model {
         /// The scene for this sample.
-        let scene: ArcGIS.Scene
+        let scene: ArcGIS.Scene = {
+            let scene = Scene()
+            
+            // Adds the World Elevation 3D elevation source to the scene's base surface.
+            let elevationSource = ArcGISTiledElevationSource(url: .worldElevationService)
+            scene.baseSurface.addElevationSource(elevationSource)
+            
+            // Sets the initial viewpoint for the scene.
+            scene.initialViewpoint = .sanFranciscoBuildings
+            
+            return scene
+        }()
         
-        /// The open street map layer for the sample.
-        private let osmBuildings = ArcGISSceneLayer(
-            item: PortalItem(
-                portal: .arcGISOnline(connection: .anonymous),
-                id: .osmBuildings
-            )
-        )
+        /// The "Buildings" ArcGIS scene layer from the scene's basemap.
+        private let buildingsLayer: ArcGISSceneLayer
         
-        /// The San Francisco buildings scene layer for the sample.
-        private let buildingsSceneLayer = ArcGISSceneLayer(
-            url: URL(string: "https://tiles.arcgis.com/tiles/z2tnIkrLQ2BRzr6P/arcgis/rest/services/SanFrancisco_Bldgs/SceneServer")!
-        )
+        /// An ArcGIS scene layer containing detailed buildings in San Francisco, CA, USA.
+        private let detailedBuildingsLayer = ArcGISSceneLayer(url: .sanFranciscoBuildings)
         
         /// The graphics overlay for the scene view.
         let graphicsOverlay = GraphicsOverlay()
         
-        /// A polygon that shows the extent of the detailed buildings scene layer.
-        private let polygon: ArcGIS.Polygon = makeFilteringPolygon()
+        /// A polygon filter for filtering the features in the `buildingsLayer`.
+        private let polygonFilter: SceneLayerPolygonFilter
         
         /// A red extent boundary graphic that represents the full extent of the detailed buildings scene layer.
-        private let sanFranciscoExtentGraphic: Graphic
+        private let sanFranciscoExtentGraphic: Graphic = {
+            // Creates a graphic from a red outline symbol.
+            let redLineSymbol = SimpleLineSymbol(color: .red, width: 5)
+            let redOutlineFillSymbol = SimpleFillSymbol(color: .clear, outline: redLineSymbol)
+            let graphic = Graphic(symbol: redOutlineFillSymbol)
+            
+            // Initially hides the graphic, since the filter has not been applied yet.
+            graphic.isVisible = false
+            
+            return graphic
+        }()
         
         /// The filter state for the scene view.
-        @Published private(set) var filterState: FilterState = .addBuildings
+        private(set) var filterState: FilterState = .filter
         
-        init() {
-            // Create basemap.
-            let vectorTiledLayer = ArcGISVectorTiledLayer(
-                item: PortalItem(
-                    portal: .arcGISOnline(connection: .anonymous),
-                    id: .osmTopographic
-                )
+        init() async throws {
+            // Creates the "Navigation" 3D basemap and sets it on the scene.
+            let basemap = Basemap(url: .navigation3DBasemap)!
+            scene.basemap = basemap
+            
+            // Gets the "Buildings" base layer from the basemap.
+            try await basemap.load()
+            let buildingsBaseLayer = basemap.baseLayers.first(where: { $0.name == "Buildings" })
+            guard let buildingsLayer = buildingsBaseLayer as? ArcGISSceneLayer else {
+                throw SetupError.missingBuildingsLayer
+            }
+            self.buildingsLayer = buildingsLayer
+            
+            // Creates a polygon from the detailedBuildingsLayer's extent.
+            try await detailedBuildingsLayer.load()
+            guard let extent = detailedBuildingsLayer.fullExtent else {
+                throw SetupError.missingDetailedBuildingsLayerExtent
+            }
+            let polygon = Polygon(points: [
+                Point(x: extent.xMin, y: extent.yMin),
+                Point(x: extent.xMax, y: extent.yMin),
+                Point(x: extent.xMax, y: extent.yMax),
+                Point(x: extent.xMin, y: extent.yMax)
+            ])
+            
+            // Adds the polygon to the graphic and adds the graphic to the overlay.
+            sanFranciscoExtentGraphic.geometry = polygon
+            graphicsOverlay.addGraphic(sanFranciscoExtentGraphic)
+            
+            // Creates a disjoint scene layer polygon filter using the polygon.
+            polygonFilter = SceneLayerPolygonFilter(
+                polygons: [polygon],
+                spatialRelationship: .disjoint
             )
-            scene = Scene(basemap: Basemap(baseLayers: [vectorTiledLayer, osmBuildings]))
             
-            // Create scene topography.
-            let elevationServiceURL = URL(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!
-            let elevationSource = ArcGISTiledElevationSource(url: elevationServiceURL)
-            let surface = Surface()
-            surface.addElevationSource(elevationSource)
-            scene.baseSurface = surface
-            
-            // Set the initial viewpoint of the scene.
-            scene.initialViewpoint = .sanFranciscoBuildings
-            
-            let simpleFillSymbol = SimpleFillSymbol(
-                style: .solid,
-                color: .clear,
-                outline: SimpleLineSymbol(
-                    style: .solid,
-                    color: .red,
-                    width: 5
-                )
-            )
-            
-            sanFranciscoExtentGraphic = Graphic(
-                geometry: polygon,
-                symbol: simpleFillSymbol
-            )
+            // Adds the detailed buildings layer to the scene.
+            // The layer is also initially hidden to that it doesn't
+            // clip into the `buildingsLayer` while it is unfiltered.
+            detailedBuildingsLayer.isVisible = false
+            scene.addOperationalLayer(detailedBuildingsLayer)
         }
         
-        /// Creates a polygon that represents the detailed buildings scene layer full extent.
-        /// - Returns: A polygon.
-        private static func makeFilteringPolygon() -> ArcGIS.Polygon {
-            // The buildings scene layer fullExtent.
-            let extent = Envelope(
-                xRange: -122.514 ... -122.357,
-                yRange: 37.705...37.831,
-                zRange: -148.843...551.801,
-                spatialReference: SpatialReference(wkid: .wgs84, verticalWKID: WKID(5773)!)
-            )
-            
-            let builder = PolygonBuilder(spatialReference: extent.spatialReference)
-            builder.add(Point(x: extent.xMin, y: extent.yMin))
-            builder.add(Point(x: extent.xMax, y: extent.yMin))
-            builder.add(Point(x: extent.xMax, y: extent.yMax))
-            builder.add(Point(x: extent.xMin, y: extent.yMax))
-            
-            return builder.toGeometry()
-        }
-        
-        /// Handles the filter state of the sample by either loading, filtering, or reseting the scene.
+        /// Handles the filter state of the sample.
         func handleFilterState() {
             switch filterState {
-            case .addBuildings:
-                // Show the detailed buildings scene layer and extent graphic.
-                addBuildings()
             case .filter:
-                // Hide buildings within the detailed building extent so they don't clip.
-                filterScene()
+                // Applies the polygon filter to the buildings layer and shows the extent graphic.
+                buildingsLayer.polygonFilter = polygonFilter
+                sanFranciscoExtentGraphic.isVisible = true
+            case .showDetailedBuildings:
+                // Shows the detailed buildings scene layer.
+                detailedBuildingsLayer.isVisible = true
             case .reset:
                 // Reset the scene to its original state.
                 resetScene()
@@ -149,71 +156,65 @@ private extension FilterFeaturesInSceneView {
             filterState = filterState.next()
         }
         
-        /// Loads the detailed buildings scene layer and adds an extent graphic.
-        private func addBuildings() {
-            scene.addOperationalLayer(buildingsSceneLayer)
-            graphicsOverlay.addGraphic(sanFranciscoExtentGraphic)
-        }
-        
-        /// Applies a polygon filter to the open street map buildings layer.
-        private func filterScene() {
-            if let polygonFilter = osmBuildings.polygonFilter {
-                // After the scene is reset, the layer will have a polygon filter, but that filter
-                // will not have polygons set.
-                // Add the polygon back to the polygon filter.
-                polygonFilter.addPolygon(polygon)
-            } else {
-                // Initially, the building layer does not have a polygon filter, set it.
-                osmBuildings.polygonFilter = SceneLayerPolygonFilter(
-                    polygons: [polygon],
-                    spatialRelationship: .disjoint
-                )
-            }
-        }
-        
         /// Resets the scene filters and hides the detailed buildings and extent graphic.
         private func resetScene() {
-            // Remove the detailed buildings layer from the scene.
-            scene.removeAllOperationalLayers()
-            // Clear OSM buildings polygon filter.
-            osmBuildings.polygonFilter?.removeAllPolygons()
-            // Remove red extent boundary graphic from graphics overlay.
-            graphicsOverlay.removeAllGraphics()
+            // Hides the detailed buildings layer.
+            detailedBuildingsLayer.isVisible = false
+            // Removes the polygon filter from the building layer.
+            buildingsLayer.polygonFilter = nil
+            // Hides the red extent boundary graphic.
+            sanFranciscoExtentGraphic.isVisible = false
         }
     }
     
     /// The different states for filtering features in a scene.
-    enum FilterState: Equatable {
-        case addBuildings, filter, reset
+    enum FilterState {
+        case filter, showDetailedBuildings, reset
         
         /// A human-readable label for the filter state.
         var label: String {
             switch self {
-            case .addBuildings: return "Add Buildings"
-            case .filter: return "Filter"
-            case .reset: return "Reset"
+            case .filter: "Filter"
+            case .showDetailedBuildings: "Show Detailed Buildings"
+            case .reset: "Reset"
             }
         }
         
         /// The next filter state to apply to a scene.
         func next() -> Self {
             switch self {
-            case .addBuildings:
-                return .filter
             case .filter:
+                return .showDetailedBuildings
+            case .showDetailedBuildings:
                 return .reset
             case .reset:
-                return .addBuildings
+                return .filter
             }
         }
     }
+    
+    /// An error that can occur during the sample's setup.
+    enum SetupError: Error {
+        case missingBuildingsLayer
+        case missingDetailedBuildingsLayerExtent
+    }
 }
 
-private extension PortalItem.ID {
-    /// The ID used in the "OpenStreetMap 3D Buildings" portal item.
-    static var osmBuildings: Self { Self("ca0470dbbddb4db28bad74ed39949e25")! }
-    /// The ID used in the "OpenStreetMap Topographic (for 3D)" portal item.
-    static var osmTopographic: Self { Self("1e7d1784d1ef4b79ba6764d0bd6c3150")! }
+private extension URL {
+    /// The URL to the "Navigation" 3D basemap on ArcGIS Online.
+    static var navigation3DBasemap: URL {
+        URL(string: "https://www.arcgis.com/home/item.html?id=00a5f468dda941d7bf0b51c144aae3f0")!
+    }
+    
+    /// The URL to the San Francisco Buildings scene server on ArcGIS REST.
+    static var sanFranciscoBuildings: URL {
+        URL(string: "https://tiles.arcgis.com/tiles/z2tnIkrLQ2BRzr6P/arcgis/rest/services/SanFrancisco_Bldgs/SceneServer")!
+    }
+    
+    /// The URL to the World Elevation 3D image server on ArcGIS REST.
+    static var worldElevationService: URL {
+        URL(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!
+    }
 }
 
 private extension Viewpoint {
@@ -223,11 +224,9 @@ private extension Viewpoint {
         longitude: .nan,
         scale: .nan,
         camera: Camera(
-            location: Point(
-                x: -122.421,
-                y: 37.7041,
-                z: 207
-            ),
+            latitude: 37.702425,
+            longitude: -122.421008,
+            altitude: 207,
             heading: 60,
             pitch: 70,
             roll: 0
