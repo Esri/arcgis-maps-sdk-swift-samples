@@ -53,17 +53,6 @@ struct FilterFeaturesInSceneView: View {
 }
 
 private extension FilterFeaturesInSceneView {
-    /// The different states for filtering features in a scene.
-    enum FilterState {
-        case filter, showDetailedBuildings, reset
-    }
-    
-    /// An error that can occur during the sample's setup.
-    enum SetupError: Error {
-        case missingBuildingsLayer
-        case missingDetailedBuildingsLayerExtent
-    }
-    
     /// The model used to store the geo model and other expensive objects
     /// used in this view.
     @Observable
@@ -107,8 +96,19 @@ private extension FilterFeaturesInSceneView {
             return graphic
         }()
         
+        /// The different states for filtering features in a scene.
+        enum FilterState { // swiftlint:disable:this nesting
+            case filter, showDetailedBuildings, reset
+        }
+        
         /// The filter state for the scene view.
         private(set) var filterState: FilterState = .filter
+        
+        /// An error that can occur during the model's initialization.
+        enum InitializationError: Error { // swiftlint:disable:this nesting
+            case missingBuildingsLayer
+            case missingDetailedBuildingsLayerExtent
+        }
         
         init() async throws {
             // Creates the "Navigation" 3D basemap and sets it on the scene.
@@ -119,14 +119,14 @@ private extension FilterFeaturesInSceneView {
             try await basemap.load()
             guard let buildingsLayer = basemap.baseLayers
                 .first(where: { $0.name == "Buildings" }) as? ArcGISSceneLayer else {
-                throw SetupError.missingBuildingsLayer
+                throw InitializationError.missingBuildingsLayer
             }
             self.buildingsLayer = buildingsLayer
             
             // Creates a polygon from the detailedBuildingsLayer's extent.
             try await detailedBuildingsLayer.load()
             guard let extent = detailedBuildingsLayer.fullExtent else {
-                throw SetupError.missingDetailedBuildingsLayerExtent
+                throw InitializationError.missingDetailedBuildingsLayerExtent
             }
             let polygon = Polygon(
                 points: [
