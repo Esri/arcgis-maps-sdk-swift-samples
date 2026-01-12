@@ -50,7 +50,6 @@ struct FilterFeaturesInSceneView: View {
 private extension FilterFeaturesInSceneView {
     /// The model used to store the geo model and other expensive objects
     /// used in this view.
-    @MainActor
     @Observable
     final class Model {
         /// The scene for this sample.
@@ -102,8 +101,8 @@ private extension FilterFeaturesInSceneView {
             
             // Gets the "Buildings" base layer from the basemap.
             try await basemap.load()
-            let buildingsBaseLayer = basemap.baseLayers.first(where: { $0.name == "Buildings" })
-            guard let buildingsLayer = buildingsBaseLayer as? ArcGISSceneLayer else {
+            guard let buildingsLayer = basemap.baseLayers
+                .first(where: { $0.name == "Buildings" }) as? ArcGISSceneLayer else {
                 throw SetupError.missingBuildingsLayer
             }
             self.buildingsLayer = buildingsLayer
@@ -113,12 +112,14 @@ private extension FilterFeaturesInSceneView {
             guard let extent = detailedBuildingsLayer.fullExtent else {
                 throw SetupError.missingDetailedBuildingsLayerExtent
             }
-            let polygon = Polygon(points: [
-                Point(x: extent.xMin, y: extent.yMin),
-                Point(x: extent.xMax, y: extent.yMin),
-                Point(x: extent.xMax, y: extent.yMax),
-                Point(x: extent.xMin, y: extent.yMax)
-            ])
+            let polygon = Polygon(
+                points: [
+                    Point(x: extent.xMin, y: extent.yMin),
+                    Point(x: extent.xMax, y: extent.yMin),
+                    Point(x: extent.xMax, y: extent.yMax),
+                    Point(x: extent.xMin, y: extent.yMax)
+                ]
+            )
             
             // Adds the polygon to the graphic and adds the graphic to the overlay.
             sanFranciscoExtentGraphic.geometry = polygon

@@ -15,9 +15,9 @@ The sample initializes showing the "Navigation" 3D Basemap. Tap the "Filter" but
 ## How it works
 
 1. Create a `Surface` for the scene and set the World Elevation 3D as an elevation source.
-2. Construct a `Basemap` for the scene using the "Navigation" 3D Basemap, load it, then search for the "Buildings" base layer.
+2. Create a `Basemap` for the scene using the "Navigation" 3D Basemap, load it, then search for the "Buildings" base layer.
 3. Add the 3D San Francisco Buildings `ArcGISSceneLayer` to the scene's operational layers and set its visibility to `false` so it does not intersect the 3D basemap buildings.
-4. Construct a `SceneLayerPolygonFilter` with the extent of the San Francisco Buildings Scene Layer and the `SceneLayerPolygonFilter.SpatialRelationship.disjoint` enum to hide all features within the extent.
+4. Create a `SceneLayerPolygonFilter` with the extent of the San Francisco Buildings Scene Layer and the `SceneLayerPolygonFilter.SpatialRelationship.disjoint` enum to hide all features within the extent.
 5. Set the `SceneLayerPolygonFilter` on the Buildings layer to hide all buildings within the extent of the San Francisco Buildings layer.
 6. Set the visibility of the 3D San Francisco Buildings layer to `true` to show the 3D buildings in the extent.
 
