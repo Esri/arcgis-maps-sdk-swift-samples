@@ -53,6 +53,17 @@ struct FilterFeaturesInSceneView: View {
 }
 
 private extension FilterFeaturesInSceneView {
+    /// The different states for filtering features in a scene.
+    enum FilterState {
+        case filter, showDetailedBuildings, reset
+    }
+    
+    /// An error that can occur during the sample's setup.
+    enum SetupError: Error {
+        case missingBuildingsLayer
+        case missingDetailedBuildingsLayerExtent
+    }
+    
     /// The model used to store the geo model and other expensive objects
     /// used in this view.
     @Observable
@@ -171,17 +182,6 @@ private extension FilterFeaturesInSceneView {
             
             filterState = .filter
         }
-    }
-    
-    /// The different states for filtering features in a scene.
-    enum FilterState {
-        case filter, showDetailedBuildings, reset
-    }
-    
-    /// An error that can occur during the sample's setup.
-    enum SetupError: Error {
-        case missingBuildingsLayer
-        case missingDetailedBuildingsLayerExtent
     }
 }
 
