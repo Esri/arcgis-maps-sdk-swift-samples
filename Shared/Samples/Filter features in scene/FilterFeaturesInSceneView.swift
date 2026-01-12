@@ -25,8 +25,13 @@ struct FilterFeaturesInSceneView: View {
             SceneView(scene: model.scene, graphicsOverlays: [model.graphicsOverlay])
                 .toolbar {
                     ToolbarItem(placement: .bottomBar) {
-                        Button(model.filterState.label) {
-                            model.handleFilterState()
+                        switch model.filterState {
+                        case .filter:
+                            Button("Filter", action: model.filterScene)
+                        case .showDetailedBuildings:
+                            Button("Show Detailed Buildings", action: model.showDetailedBuildings)
+                        case .reset:
+                            Button("Reset", action: model.resetScene)
                         }
                     }
                 }
@@ -138,60 +143,39 @@ private extension FilterFeaturesInSceneView {
             scene.addOperationalLayer(detailedBuildingsLayer)
         }
         
-        /// Handles the filter state of the sample.
-        func handleFilterState() {
-            switch filterState {
-            case .filter:
-                // Applies the polygon filter to the buildings layer and shows the extent graphic.
-                buildingsLayer.polygonFilter = polygonFilter
-                sanFranciscoExtentGraphic.isVisible = true
-            case .showDetailedBuildings:
-                // Shows the detailed buildings scene layer.
-                detailedBuildingsLayer.isVisible = true
-            case .reset:
-                // Reset the scene to its original state.
-                resetScene()
-            }
+        /// Filters the `buildingsLayer` features within the `detailedBuildingsLayer` extent.
+        func filterScene() {
+            // Applies the polygon filter to the buildings layer.
+            buildingsLayer.polygonFilter = polygonFilter
+            // Shows graphic to indicate the filtered extent.
+            sanFranciscoExtentGraphic.isVisible = true
             
-            // Set the next filter state to be applied to the scene.
-            filterState = filterState.next()
+            filterState = .showDetailedBuildings
+        }
+        
+        /// Shows the detailed buildings scene layer.
+        func showDetailedBuildings() {
+            detailedBuildingsLayer.isVisible = true
+            
+            filterState = .reset
         }
         
         /// Resets the scene filters and hides the detailed buildings and extent graphic.
-        private func resetScene() {
+        func resetScene() {
             // Hides the detailed buildings layer.
             detailedBuildingsLayer.isVisible = false
             // Removes the polygon filter from the building layer.
             buildingsLayer.polygonFilter = nil
             // Hides the red extent boundary graphic.
             sanFranciscoExtentGraphic.isVisible = false
+            
+            filterState = .filter
         }
     }
     
     /// The different states for filtering features in a scene.
     enum FilterState {
         case filter, showDetailedBuildings, reset
-        
-        /// A human-readable label for the filter state.
-        var label: String {
-            switch self {
-            case .filter: "Filter"
-            case .showDetailedBuildings: "Show Detailed Buildings"
-            case .reset: "Reset"
-            }
-        }
-        
-        /// The next filter state to apply to a scene.
-        func next() -> Self {
-            switch self {
-            case .filter:
-                return .showDetailedBuildings
-            case .showDetailedBuildings:
-                return .reset
-            case .reset:
-                return .filter
-            }
-        }
     }
     
     /// An error that can occur during the sample's setup.
