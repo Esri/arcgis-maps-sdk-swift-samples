@@ -39,11 +39,11 @@ struct FilterFeaturesInSceneView: View {
             ContentUnavailableView {
                 Label("Error Setting Up Sample", systemImage: "exclamationmark.triangle")
             } description: {
-                Text(String(reflecting: error))
+                Text(error.localizedDescription)
             } actions: {
                 Button("Retry") { modelResult = nil }
             }
-        case nil:
+        case .none:
             ProgressView("Loading model")
                 .task {
                     modelResult = await Result(awaiting: Model.init)
