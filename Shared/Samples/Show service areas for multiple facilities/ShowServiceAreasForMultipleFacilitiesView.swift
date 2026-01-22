@@ -30,7 +30,7 @@ struct ShowServiceAreasForMultipleFacilitiesView: View {
     @State private var graphicsOverlay = GraphicsOverlay()
     
     /// The error that occurred during calculating the service area.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     /// A Boolean value indicating if the service area is being calculated.
     @State private var isCalculatingServiceArea = false
@@ -46,7 +46,7 @@ struct ShowServiceAreasForMultipleFacilitiesView: View {
             MapView(map: map, graphicsOverlays: [graphicsOverlay])
                 .overlay {
                     if isCalculatingServiceArea {
-                        ProgressView("Calculating service area...")
+                        ProgressView("Calculating service area")
                             .padding()
                             .background(.ultraThickMaterial)
                             .clipShape(.rect(cornerRadius: 10))

@@ -17,7 +17,7 @@ import SwiftUI
 
 struct ShowViewshedFromPointOnMapView: View {
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     /// The point on the map where the user tapped.
     @State private var tapLocation: Point?
@@ -55,7 +55,7 @@ struct ShowViewshedFromPointOnMapView: View {
             .overlay(alignment: .center) {
                 // Sets indication when geoprocessingInProgress is true.
                 if geoprocessingInProgress {
-                    ProgressView("Geoprocessing \n   in progress…")
+                    ProgressView("Geoprocessing \n   in progress")
                         .padding()
                         .background(.ultraThinMaterial)
                         .clipShape(.rect(cornerRadius: 10))

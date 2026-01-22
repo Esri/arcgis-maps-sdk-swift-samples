@@ -20,7 +20,7 @@ struct AddFeatureCollectionLayerFromQueryView: View {
     @State private var map = Map(basemapStyle: .arcGISOceans)
     
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     var body: some View {
         MapView(map: map)

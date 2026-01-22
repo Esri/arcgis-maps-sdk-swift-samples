@@ -104,7 +104,7 @@ extension StyleSymbolsFromMobileStyleFileView {
         )
         
         /// The error shown in the error alert.
-        @Published var error: Error?
+        @Published var error: (any Error)?
         
         /// Updates the display scale of the current symbol and symbols list.
         func updateDisplayScale(using displayScale: Double) async {

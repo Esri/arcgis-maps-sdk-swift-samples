@@ -28,8 +28,14 @@ struct FindRouteAroundBarriersView: View {
     /// The geometry of a direction maneuver to set the viewpoint to.
     @State private var directionGeometry: Geometry?
     
+    /// A Boolean value indicating whether the settings view is showing.
+    @State private var settingsAreVisible = false
+    
+    /// A Boolean value indicating whether the directions list is showing.
+    @State private var routeIsShowing = false
+    
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     var body: some View {
         MapViewReader { mapViewProxy in
@@ -55,7 +61,7 @@ struct FindRouteAroundBarriersView: View {
                 }
                 .overlay(alignment: .center) {
                     if routingIsInProgress {
-                        ProgressView("Routing...")
+                        ProgressView("Routing")
                             .padding()
                             .background(.ultraThickMaterial)
                             .clipShape(.rect(cornerRadius: 10))
@@ -64,7 +70,24 @@ struct FindRouteAroundBarriersView: View {
                 }
                 .toolbar {
                     ToolbarItemGroup(placement: .bottomBar) {
-                        Button("Route") {
+                        Spacer()
+                        Button("Directions", systemImage: "arrow.triangle.turn.up.right.diamond") {
+                            routeIsShowing = true
+                        }
+                        .labelsHidden()
+                        .popover(isPresented: $routeIsShowing) {
+                            routeSheet
+                                .presentationDetents([.fraction(0.35)])
+                                .frame(idealWidth: 400, idealHeight: 400)
+                        }
+                        .disabled(model.route == nil)
+                        .task(id: directionGeometry) {
+                            guard let directionGeometry else { return }
+                            model.directionGraphic.geometry = directionGeometry
+                            await mapViewProxy.setViewpointGeometry(directionGeometry, padding: 100)
+                        }
+                        Spacer()
+                        Button("Get Route") {
                             routingIsInProgress = true
                         }
                         .disabled(model.stopsCount < 2)
@@ -72,7 +95,7 @@ struct FindRouteAroundBarriersView: View {
                             guard routingIsInProgress else { return }
                             
                             do {
-                                // Route when the button is pressed
+                                // Route when the button is pressed.
                                 try await model.route()
                                 
                                 // Update the viewpoint to the geometry of the new route.
@@ -85,46 +108,17 @@ struct FindRouteAroundBarriersView: View {
                             routingIsInProgress = false
                         }
                         Spacer()
-                        
-                        SheetButton(title: "Directions") {
-                            List {
-                                ForEach(
-                                    Array((model.route?.directionManeuvers ?? []).enumerated()),
-                                    id: \.offset
-                                ) { (_, direction) in
-                                    Button {
-                                        directionGeometry = direction.geometry
-                                    } label: {
-                                        Text(direction.text)
-                                    }
-                                }
-                            }
-                        } label: {
-                            Image(systemName: "arrow.triangle.turn.up.right.diamond")
+                        Button("Settings", systemImage: "gear") {
+                            settingsAreVisible = true
                         }
-                        .disabled(model.route == nil)
-                        .task(id: directionGeometry) {
-                            guard let directionGeometry else { return }
-                            model.directionGraphic.geometry = directionGeometry
-                            await mapViewProxy.setViewpointGeometry(directionGeometry, padding: 100)
-                        }
-                        Spacer()
-                        
-                        Picker("Features", selection: $featuresSelection) {
-                            Text("Stops").tag(RouteFeatures.stops)
-                            Text("Barriers").tag(RouteFeatures.barriers)
-                        }
-                        .pickerStyle(.segmented)
                         .labelsHidden()
-                        Spacer()
-                        
-                        SheetButton(title: "Route Settings") {
-                            RouteParametersSettings(for: model.routeParameters)
-                        } label: {
-                            Image(systemName: "gear")
+                        .popover(isPresented: $settingsAreVisible) {
+                            settings
+                                .frame(idealWidth: 400, idealHeight: 500)
+                                .presentationCompactAdaptation(.popover)
                         }
-                        Spacer()
                         
+                        Spacer()
                         Button {
                             model.reset(features: featuresSelection)
                         } label: {
@@ -147,6 +141,89 @@ struct FindRouteAroundBarriersView: View {
             }
         }
         .errorAlert(presentingError: $error)
+    }
+    
+    @ViewBuilder var routeSheet: some View {
+        NavigationStack {
+            List(model.route?.directionManeuvers ?? [], id: \.text) { direction in
+                Button(direction.text) {
+                    directionGeometry = direction.geometry
+                }
+            }
+            .navigationTitle("Route Directions")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") {
+                        routeIsShowing = false
+                    }
+                }
+            }
+        }
+    }
+    
+    @ViewBuilder var settings: some View {
+        NavigationStack {
+            Form {
+                Section("Features") {
+                    Picker("Features", selection: $featuresSelection) {
+                        Text("Stops").tag(RouteFeatures.stops)
+                        Text("Barriers").tag(RouteFeatures.barriers)
+                    }
+                    .pickerStyle(.segmented)
+                }
+                RouteParametersSettings(routeParameters: model.routeParameters)
+            }
+            .navigationTitle("Settings")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") {
+                        settingsAreVisible = false
+                    }
+                }
+            }
+        }
+    }
+}
+
+extension FindRouteAroundBarriersView {
+    /// A list of settings for modifying route parameters.
+    struct RouteParametersSettings: View {
+        /// The route parameters to modify.
+        let routeParameters: RouteParameters
+        
+        /// A Boolean value indicating whether routing will find the best sequence.
+        @State private var routingFindsBestSequence = true
+        /// A Boolean value indicating whether routing will preserve the first stop.
+        @State private var routePreservesFirstStop = true
+        /// A Boolean value indicating whether routing will preserve the last stop.
+        @State private var routePreservesLastStop = true
+        
+        var body: some View {
+            Section {
+                Toggle("Find Best Sequence", isOn: $routingFindsBestSequence)
+                    .onChange(of: routingFindsBestSequence) {
+                        routeParameters.findsBestSequence = routingFindsBestSequence
+                    }
+            }
+            Section("Preserve Stops") {
+                Toggle("Preserve First Stop", isOn: $routePreservesFirstStop)
+                    .onChange(of: routePreservesFirstStop) {
+                        routeParameters.preservesFirstStop = routePreservesFirstStop
+                    }
+                Toggle("Preserve Last Stop", isOn: $routePreservesLastStop)
+                    .onChange(of: routePreservesLastStop) {
+                        routeParameters.preservesLastStop = routePreservesLastStop
+                    }
+            }
+            .disabled(!routingFindsBestSequence)
+            .onAppear {
+                routingFindsBestSequence = routeParameters.findsBestSequence
+                routePreservesFirstStop = routeParameters.preservesFirstStop
+                routePreservesLastStop = routeParameters.preservesLastStop
+            }
+        }
     }
 }
 

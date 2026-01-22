@@ -17,7 +17,7 @@ import SwiftUI
 
 struct ManageFeaturesView: View {
     /// The data for the view.
-    @State private var data: Result<Data, Error>?
+    @State private var data: Result<Data, any Error>?
     
     /// The result of the latest action.
     @State private var status = ""
@@ -124,7 +124,7 @@ struct ManageFeaturesView: View {
     func featureCalloutContent(feature: Feature, table: ServiceFeatureTable) -> some View {
         HStack {
             VStack(alignment: .leading) {
-                Text("ID: \(feature.attributeValue(forKey: table.objectIDField) ?? "Unknown")")
+                Text("ID: \(feature.attributeValue(forKey: table.objectIDField) as? String ?? "Unknown")")
                 Text("Damage: \(feature.damageKind?.rawValue ?? "Unknown")")
                     .font(.footnote)
                     .foregroundStyle(.secondary)

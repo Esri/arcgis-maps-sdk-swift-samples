@@ -23,7 +23,7 @@ struct GenerateOfflineMapView: View {
     @State private var isCancellingJob = false
     
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     /// The view model for this sample.
     @StateObject private var model = Model()
@@ -224,7 +224,6 @@ private extension GenerateOfflineMapView {
         
         /// Creates a temporary directory.
         private static func createTemporaryDirectory() -> URL {
-            // swiftlint:disable:next force_try
             try! FileManager.default.url(
                 for: .itemReplacementDirectory,
                 in: .userDomainMask,

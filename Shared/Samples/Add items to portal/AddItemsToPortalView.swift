@@ -27,7 +27,7 @@ struct AddItemsToPortalView: View {
     /// A Boolean value indicating whether the delete alert is presented.
     @State private var deleteAlertIsPresented = false
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     /// The portal item to delete when the delete alert is presented.
     @State private var portalItemToDelete: PortalItem?
     /// A list of portal items when the portal is logged in.
@@ -85,7 +85,7 @@ struct AddItemsToPortalView: View {
             ArcGISEnvironment.authenticationManager.handleChallenges(using: authenticator)
             
             // In real world applications, uncomment this code to persist
-            // credentials in the keychain and remove `signOut()` from `onDisappear`.
+            // credentials in the keychain and remove `signOut()` from `onTeardown`.
             // Task { try await setupPersistentCredentialStorage() }
             
             // Temporarily unsets the API key for this sample to use OAuth.
@@ -103,7 +103,9 @@ struct AddItemsToPortalView: View {
             
             // Sets the API key back to the original value.
             ArcGISEnvironment.apiKey = apiKey
-            await signOut()
+            
+            // Signs out from the portal by revoking OAuth tokens and clearing credential stores.
+            await ArcGISEnvironment.authenticationManager.signOut()
         }
     }
     
@@ -171,12 +173,6 @@ struct AddItemsToPortalView: View {
                 ($0.creationDate ?? .distantPast) > ($1.creationDate ?? .distantPast)
             }
         }
-    }
-    
-    /// Signs out from the portal by revoking OAuth tokens and clearing credential stores.
-    private func signOut() async {
-        await ArcGISEnvironment.authenticationManager.revokeOAuthTokens()
-        await ArcGISEnvironment.authenticationManager.clearCredentialStores()
     }
     
     /// Sets up new ArcGIS and Network credential stores that will be persisted in the keychain.

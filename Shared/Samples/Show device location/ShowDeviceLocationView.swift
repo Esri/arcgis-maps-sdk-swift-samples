@@ -18,7 +18,7 @@ import SwiftUI
 
 struct ShowDeviceLocationView: View {
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     /// A Boolean value indicating whether the settings button is disabled.
     @State private var settingsButtonIsDisabled = true

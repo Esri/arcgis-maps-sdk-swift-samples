@@ -26,7 +26,7 @@ extension GenerateOfflineMapWithCustomParametersView {
         @Binding var isGeneratingOfflineMap: Bool
         
         /// The error shown in the error alert.
-        @State private var error: Error?
+        @State private var error: (any Error)?
         
         /// The min scale level for the output. Note that lower values are zoomed further out,
         /// i.e. 0 has the least detail, but one tile covers the entire Earth.

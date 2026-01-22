@@ -31,7 +31,7 @@ struct CreateAndSaveMapView: View {
     @State private var map: Map?
     
     /// The error that occurred, if any, when trying to save the map to the portal.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     /// The status of the sample workflow.
     @State private var status: Status = .loadingPortal
@@ -49,7 +49,7 @@ struct CreateAndSaveMapView: View {
             } else {
                 switch status {
                 case .loadingPortal:
-                    ProgressView("Loading portal...")
+                    ProgressView("Loading portal")
                 case .failedToLoadPortal:
                     ContentUnavailableView(
                         "Error",
@@ -76,7 +76,7 @@ struct CreateAndSaveMapView: View {
                         .buttonStyle(.borderedProminent)
                     }
                 case .deletingMap:
-                    ProgressView("Deleting map...")
+                    ProgressView("Deleting map")
                 case .deletedSuccessfully:
                     ContentUnavailableView(
                         "Success",
@@ -395,8 +395,7 @@ private extension CreateAndSaveMapView {
         // point in time based on the workflow desired. For example, it
         // might make sense to remove credentials when the user taps
         // a "sign out" button.
-        await ArcGISEnvironment.authenticationManager.revokeOAuthTokens()
-        await ArcGISEnvironment.authenticationManager.clearCredentialStores()
+        await ArcGISEnvironment.authenticationManager.signOut()
     }
     
     /// Sets up new ArcGIS and Network credential stores that will be persisted in the keychain.

@@ -16,7 +16,10 @@ import SwiftUI
 
 struct SampleDetailView: View {
     /// The sample to display in the view.
-    private let sample: Sample
+    let sample: Sample
+    
+    /// An environmental value we use to determine whether this device displays the UI in columns.
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     /// The view model for requesting App Store reviews.
     @Environment(\.requestReviewModel) private var requestReviewModel
@@ -24,8 +27,11 @@ struct SampleDetailView: View {
     /// A Boolean value that indicates whether to present the sample's information view.
     @State private var isSampleInfoViewPresented = false
     
+    /// A Boolean value indicating whether the detail view is full screen.
+    @Binding var isFullScreen: Bool
+    
     /// An object to manage on-demand resources for a sample with dependencies.
-    @StateObject private var onDemandResource: OnDemandResource
+    @State private var onDemandResource: OnDemandResource?
     
     /// A Boolean value indicating whether a sample should use on-demand resources.
     private var usesOnDemandResources: Bool {
@@ -49,24 +55,22 @@ struct SampleDetailView: View {
             }
     }
     
-    init(sample: Sample) {
-        self.sample = sample
-        self._onDemandResource = StateObject(
-            wrappedValue: OnDemandResource(tags: [sample.nameInUpperCamelCase])
-        )
-    }
-    
     var body: some View {
         Group {
             if usesOnDemandResources {
                 // 'onDemandResource' is created in this branch.
                 Group {
-                    switch onDemandResource.requestState {
-                    case .notStarted, .inProgress:
+                    switch onDemandResource?.requestState {
+                    case .none, .notStarted, .inProgress:
                         VStack {
-                            ProgressView(onDemandResource.progress)
+                            if let progress = onDemandResource?.progress {
+                                ProgressView(progress)
+                            } else {
+                                ProgressView()
+                                    .progressViewStyle(.circular)
+                            }
                             Button("Cancel") {
-                                onDemandResource.cancel()
+                                onDemandResource?.cancel()
                             }
                         }
                         .padding()
@@ -79,7 +83,7 @@ struct SampleDetailView: View {
                     case .error:
                         VStack {
                             Image(systemName: "x.circle")
-                            Text(onDemandResource.error!.localizedDescription)
+                            Text(onDemandResource!.error!.localizedDescription)
                         }
                         .padding()
                     case .downloaded:
@@ -87,8 +91,9 @@ struct SampleDetailView: View {
                     }
                 }
                 .task {
-                    guard case .notStarted = onDemandResource.requestState else { return }
-                    await onDemandResource.download()
+                    guard onDemandResource == nil else { return }
+                    onDemandResource = await OnDemandResource(tags: sample.odrTags)
+                    await onDemandResource!.download()
                 }
             } else {
                 // 'onDemandResource' is not created in this branch.
@@ -98,6 +103,14 @@ struct SampleDetailView: View {
         .navigationTitle(sample.name)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
+            if #available(iOS 26, *), horizontalSizeClass == .regular {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Full Screen", systemImage: isFullScreen ? "arrow.down.forward.and.arrow.up.backward" : "arrow.up.backward.and.arrow.down.forward") {
+                        isFullScreen.toggle()
+                    }
+                }
+            }
+            
             ToolbarItem(placement: .topBarTrailing) {
                 Menu("Sample Actions", systemImage: "ellipsis.circle") {
                     Button("View Info", systemImage: "info.circle") {
@@ -117,5 +130,5 @@ struct SampleDetailView: View {
 }
 
 extension SampleDetailView: Identifiable {
-    nonisolated var id: String { sample.nameInUpperCamelCase }
+    nonisolated var id: String { sample.name }
 }

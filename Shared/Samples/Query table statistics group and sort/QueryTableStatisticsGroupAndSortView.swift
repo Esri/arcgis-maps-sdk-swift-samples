@@ -45,7 +45,7 @@ struct QueryTableStatisticsGroupAndSortView: View {
     @State private var presentedSheetView: SheetView?
     
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     /// A Boolean value indicating whether edits have been made to the from.
     private var formHasEdits: Bool {
@@ -112,7 +112,7 @@ struct QueryTableStatisticsGroupAndSortView: View {
         .background(Color(.systemGroupedBackground))
         .overlay(alignment: .center) {
             if isQuerying {
-                ProgressView("Querying Statistics…")
+                ProgressView("Querying Statistics")
                     .padding()
                     .background(.ultraThickMaterial)
                     .clipShape(.rect(cornerRadius: 10))

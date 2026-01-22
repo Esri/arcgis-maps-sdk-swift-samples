@@ -29,7 +29,7 @@ struct ConfigureElectronicNavigationalChartsView: View {
     @State private var isShowingDisplaySettings = false
     
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     var body: some View {
         MapViewReader { mapViewProxy in
@@ -256,7 +256,6 @@ private extension FileManager {
     /// Creates a temporary directory.
     /// - Returns: The URL of the created directory.
     static func createTemporaryDirectory() -> URL {
-        // swiftlint:disable:next force_try
         try! FileManager.default.url(
             for: .itemReplacementDirectory,
             in: .userDomainMask,

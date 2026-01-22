@@ -20,7 +20,7 @@ extension View {
     /// it is not `nil`. When the user taps "OK", this value is set to `nil`, and the alert is dismissed.
     ///
     /// If the given `error` is a `CancellationError`, it is ignored, and the alert is not presented.
-    func errorAlert(presentingError error: Binding<Error?>) -> some View {
+    func errorAlert(presentingError error: Binding<(some Error)?>) -> some View {
         /// A binding to a Boolean value indicating whether to present the alert.
         let isPresented: Binding<Bool>
         if error.wrappedValue != nil && !(error.wrappedValue is CancellationError) {
@@ -34,7 +34,7 @@ extension View {
                 error.wrappedValue = nil
             }
         } message: { error in
-            Text(String(reflecting: error))
+            Text((error as? LocalizedError)?.errorDescription ?? String(reflecting: error))
         }
     }
 }

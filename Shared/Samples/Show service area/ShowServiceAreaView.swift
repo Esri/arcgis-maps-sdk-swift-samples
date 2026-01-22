@@ -23,15 +23,17 @@ struct ShowServiceAreaView: View {
     /// Used to track whether to add facilities or barriers to the map.
     @State private var selectedGraphicType: GraphicType = .facility
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     /// First time break property set in first stepper.
     @State private var firstTimeBreak: Int = 3
     /// Second time break property set in second stepper.
     @State private var secondTimeBreak: Int = 8
-    /// A Boolean value indicating whether the time breaks settings are presented.
-    @State private var settingsArePresented = false
     /// A Boolean value indicating whether the service area is being solved.
     @State private var isSolvingServiceArea = false
+    /// A Boolean value indicating whether the service area is set.
+    @State private var serviceAreaIsSet = false
+    /// A Boolean value indicating whether the settings view is showing.
+    @State private var settingsAreVisible = false
     
     /// The data model for the sample.
     @StateObject private var model = Model()
@@ -39,6 +41,9 @@ struct ShowServiceAreaView: View {
     var body: some View {
         MapView(map: model.map, graphicsOverlays: model.graphicsOverlays)
             .onSingleTapGesture { _, point in
+                if !serviceAreaIsSet {
+                    serviceAreaIsSet = true
+                }
                 switch selectedGraphicType {
                 case .facility:
                     model.addFacilityGraphic(at: point)
@@ -48,40 +53,25 @@ struct ShowServiceAreaView: View {
             }
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
-                    Picker("Mode", selection: $selectedGraphicType) {
-                        ForEach(GraphicType.allCases, id: \.self) {
-                            Text($0.label)
-                        }
+                    Button("Settings", systemImage: "gear") {
+                        settingsAreVisible = true
                     }
-                    .pickerStyle(.segmented)
+                    .popover(isPresented: $settingsAreVisible) {
+                        settingsPopover
+                            .frame(idealWidth: 400, idealHeight: 500)
+                            .presentationCompactAdaptation(.popover)
+                    }
+                    
                     Spacer()
-                    Button("Time Breaks", systemImage: "gear") {
-                        settingsArePresented = true
-                    }
-                    .popover(isPresented: $settingsArePresented) {
-                        NavigationStack {
-                            Form {
-                                Stepper("First: \(firstTimeBreak)", value: $firstTimeBreak, in: 1...15)
-                                Stepper("Second: \(secondTimeBreak)", value: $secondTimeBreak, in: 1...15)
-                            }
-                            .navigationTitle("Time Breaks")
-                            .navigationBarTitleDisplayMode(.inline)
-                            .toolbar {
-                                ToolbarItem(placement: .confirmationAction) {
-                                    Button("Done") { settingsArePresented = false }
-                                }
-                            }
-                        }
-                        .presentationDetents([.fraction(0.25)])
-                        .frame(idealWidth: 320, idealHeight: 160)
-                    }
-                    Spacer()
-                    Button("Service Area") {
+                    Button("Show Service Area") {
                         Task {
                             isSolvingServiceArea = true
                             do {
                                 try await model.showServiceArea(
-                                    timeBreaks: [Double(firstTimeBreak), Double(secondTimeBreak)]
+                                    timeBreaks: [
+                                        Double(firstTimeBreak),
+                                        Double(secondTimeBreak)
+                                    ]
                                 )
                             } catch {
                                 self.error = error
@@ -89,14 +79,52 @@ struct ShowServiceAreaView: View {
                             isSolvingServiceArea = false
                         }
                     }
-                    .disabled(isSolvingServiceArea)
+                    .disabled(!serviceAreaIsSet || isSolvingServiceArea)
                     Spacer()
                     Button("Clear", systemImage: "trash") {
+                        serviceAreaIsSet = false
                         model.removeAllGraphics()
                     }
+                    .disabled(!serviceAreaIsSet)
                 }
             }
             .errorAlert(presentingError: $error)
+    }
+    
+    @ViewBuilder var settingsPopover: some View {
+        NavigationStack {
+            Form {
+                Section("Add Facility or Barrier") {
+                    Picker("Mode", selection: $selectedGraphicType) {
+                        ForEach(GraphicType.allCases, id: \.self) {
+                            Text($0.label)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                }
+                Section("Service Time Radius") {
+                    Stepper(
+                        "First Interval: \(firstTimeBreak) minutes",
+                        value: $firstTimeBreak,
+                        in: 1...15
+                    )
+                    Stepper(
+                        "Second Interval: \(secondTimeBreak) minutes",
+                        value: $secondTimeBreak,
+                        in: 1...15
+                    )
+                }
+            }
+            .navigationTitle("Settings")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") {
+                        settingsAreVisible = false
+                    }
+                }
+            }
+        }
     }
 }
 

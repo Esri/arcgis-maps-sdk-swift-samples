@@ -147,9 +147,9 @@ struct Animate3DGraphicView: View {
             }
             
             Section {
-                Toggle("Auto-Heading Enabled", isOn: $model.cameraController.autoHeadingIsEnabled)
-                Toggle("Auto-Pitch Enabled", isOn: $model.cameraController.autoPitchIsEnabled)
-                Toggle("Auto-Roll Enabled", isOn: $model.cameraController.autoRollIsEnabled)
+                Toggle("Auto-Heading", isOn: $model.cameraController.autoHeadingIsEnabled)
+                Toggle("Auto-Pitch", isOn: $model.cameraController.autoPitchIsEnabled)
+                Toggle("Auto-Roll", isOn: $model.cameraController.autoRollIsEnabled)
             }
         }
     }

@@ -55,7 +55,7 @@ struct DisplayOGCAPICollectionView: View {
     /// A Boolean value indicating whether the map view is navigating.
     @State private var isNavigating = false
     /// The error if the populate operation failed, otherwise `nil`.
-    @State private var populateError: Error?
+    @State private var populateError: (any Error)?
     /// The OGC feature collection table.
     private var ogcFeatureTable: OGCFeatureCollectionTable {
         (map.operationalLayers.first as! FeatureLayer).featureTable as! OGCFeatureCollectionTable

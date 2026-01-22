@@ -1,0 +1,30 @@
+{
+    "category": "Visualization",
+    "description": "Edit the values of a KML ground overlay.",
+    "ignore": false,
+    "images": [
+        "set-kml-ground-overlay-properties.png"
+    ],
+    "keywords": [
+        "KML",
+        "KMZ",
+        "Keyhole",
+        "OGC",
+        "imagery",
+        "KMLDataset",
+        "KMLGroundOverlay",
+        "KMLIcon",
+        "KMLLayer"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "KMLDataset",
+        "KMLGroundOverlay",
+        "KMLIcon",
+        "KMLLayer"
+    ],
+    "snippets": [
+        "SetKMLGroundOverlayPropertiesView.swift"
+    ],
+    "title": "Set KML ground overlay properties"
+}

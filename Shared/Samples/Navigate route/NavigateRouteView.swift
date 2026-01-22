@@ -86,7 +86,7 @@ private extension NavigateRouteView {
         @Published var isResettingRoute = false
         
         /// The error shown in the error alert.
-        @Published var error: Error?
+        @Published var error: (any Error)?
         
         /// The viewpoint of the map.
         @Published var viewpoint: Viewpoint?

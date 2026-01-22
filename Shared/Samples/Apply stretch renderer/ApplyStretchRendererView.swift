@@ -37,7 +37,7 @@ struct ApplyStretchRendererView: View {
     /// The map displayed by the map view.
     @State private var map = makeMap()
     /// The error if the raster layer load operation failed, otherwise `nil`.
-    @State private var rasterLayerLoadError: Error?
+    @State private var rasterLayerLoadError: (any Error)?
     /// A Boolean value that indicates whether the settings sheet is presented.
     @State private var isSettingsFormPresented = false
     

@@ -20,7 +20,7 @@ struct ShowDeviceLocationWithNMEADataSourcesView: View {
     @StateObject private var model = Model()
     
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     /// A string for GPS accuracy.
     @State private var accuracyStatus = "Accuracy info will be shown here."

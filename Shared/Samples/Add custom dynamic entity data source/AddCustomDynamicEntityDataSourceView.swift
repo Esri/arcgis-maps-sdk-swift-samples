@@ -127,13 +127,10 @@ private struct VesselFeed: CustomDynamicEntityFeed {
             from: line.data(using: .utf8)!
         )
         
-        // The location of the vessel that was decoded from the JSON.
-        let location = vessel.geometry
-        
         // We successfully decoded the vessel JSON so we should
         // add that vessel as a new observation.
         return CustomDynamicEntityFeedEvent.newObservation(
-            geometry: Point(x: location.x, y: location.y, spatialReference: .wgs84),
+            geometry: vessel.geometry,
             attributes: vessel.attributes
         )
     }

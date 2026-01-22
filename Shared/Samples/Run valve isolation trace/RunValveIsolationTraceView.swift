@@ -179,9 +179,9 @@ private extension RunValveIsolationTraceView.Model.TracingActivity {
     /// A human-readable label for the tracing activity.
     var label: String {
         switch self {
-        case .loadingNetwork: return "Loading utility network…"
-        case .startingLocation: return "Getting starting location feature…"
-        case .runningTrace: return "Running isolation trace…"
+        case .loadingNetwork: return "Loading utility network"
+        case .startingLocation: return "Getting starting location feature"
+        case .runningTrace: return "Running isolation trace"
         }
     }
 }

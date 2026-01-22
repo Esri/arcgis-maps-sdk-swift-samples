@@ -17,7 +17,7 @@ import SwiftUI
 
 struct ShowDeviceLocationHistoryView: View {
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     /// A Boolean value indicating whether the tracking button is disabled.
     @State private var trackingButtonIsDisabled = true
@@ -143,7 +143,6 @@ private extension ShowDeviceLocationHistoryView {
         /// Makes the simulated location data source for the sample.
         /// - Returns: A simulated location data source in Los Angeles, CA.
         private static func makeSimulatedLocationDataSource() -> SimulatedLocationDataSource {
-            // swiftlint:disable:next force_try
             let routePolyline = try! Polyline.fromJSON(polylineJSON)
             // Densify the simulated path to make it smoother.
             let densifiedRoute = GeometryEngine.geodeticDensify(

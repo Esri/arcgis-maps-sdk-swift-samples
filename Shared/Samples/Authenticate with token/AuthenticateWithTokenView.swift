@@ -36,7 +36,7 @@ struct AuthenticateWithTokenView: View {
     }()
     
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     var body: some View {
         MapView(map: map)
@@ -86,8 +86,7 @@ private extension AuthenticateWithTokenView {
         // point in time based on the workflow desired. For example, it
         // might make sense to remove credentials when the user taps
         // a "sign out" button.
-        await ArcGISEnvironment.authenticationManager.revokeOAuthTokens()
-        await ArcGISEnvironment.authenticationManager.clearCredentialStores()
+        await ArcGISEnvironment.authenticationManager.signOut()
     }
     
     /// Sets up new ArcGIS and Network credential stores that will be persisted in the keychain.

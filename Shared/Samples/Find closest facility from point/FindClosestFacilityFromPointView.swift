@@ -26,14 +26,14 @@ struct FindClosestFacilityFromPointView: View {
     @State private var routingIsDisabled = true
     
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     var body: some View {
         MapViewReader { mapViewProxy in
             MapView(map: model.map, graphicsOverlays: [model.graphicsOverlay])
                 .overlay(alignment: .center) {
                     if isRouting {
-                        ProgressView("Routing...")
+                        ProgressView("Routing")
                             .padding()
                             .background(.ultraThickMaterial)
                             .clipShape(.rect(cornerRadius: 10))

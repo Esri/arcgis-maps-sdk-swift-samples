@@ -26,7 +26,7 @@ struct GenerateGeodatabaseReplicaFromFeatureServiceView: View {
     @State private var isGeneratingGeodatabase = false
     
     /// The error shown in the error alert.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     var body: some View {
         GeometryReader { geometryProxy in
@@ -92,7 +92,7 @@ struct GenerateGeodatabaseReplicaFromFeatureServiceView: View {
                         // Shows a progress view when there is a job currently running.
                         if let progress = model.generateGeodatabaseJob?.progress {
                             VStack {
-                                Text("Creating geodatabase…")
+                                Text("Creating geodatabase")
                                     .padding(.bottom)
                                 
                                 ProgressView(progress)
