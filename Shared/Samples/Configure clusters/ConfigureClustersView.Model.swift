@@ -13,13 +13,15 @@
 // limitations under the License.
 
 import ArcGIS
+import SwiftUI
 import UIKit.UIColor
 
 extension ConfigureClustersView {
     /// The model used to store the geo model and other expensive objects
     /// used in this view.
     @MainActor
-    class Model: ObservableObject {
+    @Observable
+    class Model {
         /// A Zurich buildings web map.
         let map = Map(
             item: PortalItem(
@@ -38,7 +40,7 @@ extension ConfigureClustersView {
         }
         
         /// A Boolean value indicating whether cluster labels are displayed.
-        var showsLabels: Bool {
+       @Binding var showsLabels: Bool {
             didSet {
                 clusteringFeatureReduction.showsLabels = showsLabels
             }
@@ -46,7 +48,7 @@ extension ConfigureClustersView {
         
         /// The maximum scale of feature clusters.
         /// - Note: The default value for max scale is 0.
-        var maxScale: Double {
+        @Binding var maxScale: Double {
             didSet {
                 clusteringFeatureReduction.maxScale = maxScale
             }
@@ -55,7 +57,7 @@ extension ConfigureClustersView {
         /// The radius of feature clusters.
         /// - Note: The default value for cluster radius is 60.
         /// Larger radius allows more features to be grouped into a cluster.
-        var radius: Double {
+        @Binding var radius: Double {
             didSet {
                 clusteringFeatureReduction.radius = radius
             }
