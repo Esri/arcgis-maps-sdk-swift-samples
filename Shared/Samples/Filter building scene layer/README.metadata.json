@@ -1,0 +1,36 @@
+{
+    "category": "Layers",
+    "description": "Explore details of a building scene by using filters and sublayer visibility.",
+    "ignore": false,
+    "images": [
+        "filter-building-scene-layer.png"
+    ],
+    "keywords": [
+        "3D",
+        "building scene layer",
+        "layers",
+        "BuildingComponentSublayer",
+        "BuildingFilter",
+        "BuildingFilterBlock",
+        "BuildingGroupSublayer",
+        "BuildingSceneLayer",
+        "LocalSceneView",
+        "Scene"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "BuildingComponentSublayer",
+        "BuildingFilter",
+        "BuildingFilterBlock",
+        "BuildingGroupSublayer",
+        "BuildingSceneLayer",
+        "LocalSceneView",
+        "Scene"
+    ],
+    "snippets": [
+        "FilterBuildingSceneLayerView.swift",
+        "FilterBuildingSceneLayerView.BuildingGroupSublayerToggleView.swift",
+        "FilterBuildingSceneLayerView.BuildingSublayerToggleView.swift"
+    ],
+    "title": "Filter building scene layer"
+}
