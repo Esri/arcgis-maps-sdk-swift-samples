@@ -40,7 +40,6 @@ extension ConfigureClustersView {
         }
         
         /// A Boolean value indicating whether cluster labels are displayed.
-
         var showsLabels: Bool {
             didSet {
                 clusteringFeatureReduction.showsLabels = showsLabels
