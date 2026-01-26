@@ -40,7 +40,8 @@ extension ConfigureClustersView {
         }
         
         /// A Boolean value indicating whether cluster labels are displayed.
-       @Binding var showsLabels: Bool {
+
+        var showsLabels: Bool {
             didSet {
                 clusteringFeatureReduction.showsLabels = showsLabels
             }
@@ -48,7 +49,7 @@ extension ConfigureClustersView {
         
         /// The maximum scale of feature clusters.
         /// - Note: The default value for max scale is 0.
-        @Binding var maxScale: Double {
+        var maxScale: Double {
             didSet {
                 clusteringFeatureReduction.maxScale = maxScale
             }
@@ -57,7 +58,7 @@ extension ConfigureClustersView {
         /// The radius of feature clusters.
         /// - Note: The default value for cluster radius is 60.
         /// Larger radius allows more features to be grouped into a cluster.
-        @Binding var radius: Double {
+        var radius: Double {
             didSet {
                 clusteringFeatureReduction.radius = radius
             }

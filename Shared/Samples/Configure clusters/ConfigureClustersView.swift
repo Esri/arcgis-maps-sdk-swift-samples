@@ -18,7 +18,7 @@ import SwiftUI
 
 struct ConfigureClustersView: View {
     /// The model for the sample.
-    private var model = Model()
+    @State private var model = Model()
     
     /// The popup to be shown as the result of the layer identify operation.
     @State private var popup: Popup?
@@ -75,17 +75,17 @@ struct ConfigureClustersView: View {
         NavigationStack {
             Form {
                 Section("Cluster Labels Visibility") {
-                    Toggle("Show Labels", isOn: model.$showsLabels)
+                    Toggle("Show Labels", isOn: $model.showsLabels)
                         .toggleStyle(.switch)
                 }
                 
                 Section("Clustering Properties") {
-                    Picker("Cluster Radius", selection: model.$radius) {
+                    Picker("Cluster Radius", selection: $model.radius) {
                         ForEach([30.0, 45.0, 60.0, 75.0, 90.0], id: \.self) { radius in
                             Text(radius, format: .number)
                         }
                     }
-                    Picker("Cluster Max Scale", selection: model.$maxScale) {
+                    Picker("Cluster Max Scale", selection: $model.maxScale) {
                         ForEach([0.0, 1000.0, 5000.0, 10000.0, 50000.0, 100000.0, 500000.0], id: \.self) { scale in
                             Text(scale, format: .number)
                         }
