@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import ArcGIS
-import SwiftUI
 import UIKit.UIColor
 
 extension ConfigureClustersView {
