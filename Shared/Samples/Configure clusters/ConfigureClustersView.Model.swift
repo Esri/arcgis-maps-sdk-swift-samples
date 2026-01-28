@@ -20,7 +20,7 @@ extension ConfigureClustersView {
     /// used in this view.
     @MainActor
     @Observable
-        class Model {
+    class Model {
         /// A Zurich buildings web map.
         let map = Map(
             item: PortalItem(
