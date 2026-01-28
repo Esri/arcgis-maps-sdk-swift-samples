@@ -18,7 +18,7 @@ import SwiftUI
 
 struct ConfigureClustersView: View {
     /// The model for the sample.
-    @StateObject private var model = Model()
+    @State private var model = Model()
     
     /// The popup to be shown as the result of the layer identify operation.
     @State private var popup: Popup?
@@ -58,7 +58,7 @@ struct ConfigureClustersView: View {
                             showsSettings = true
                         }
                         .popover(isPresented: $showsSettings) { [mapViewScale] in
-                            SettingsView(model: model, mapViewScale: mapViewScale)
+                            SettingsView(model: $model, mapViewScale: mapViewScale)
                                 .presentationDetents([.fraction(0.5)])
                                 .frame(idealWidth: 320, idealHeight: 340)
                         }

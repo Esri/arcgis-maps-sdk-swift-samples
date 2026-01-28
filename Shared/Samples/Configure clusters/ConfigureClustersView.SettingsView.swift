@@ -17,7 +17,7 @@ import SwiftUI
 extension ConfigureClustersView {
     struct SettingsView: View {
         /// The model for the sample.
-        @ObservedObject var model: Model
+        @Binding var model: Model
         
         /// The action to dismiss the settings sheet.
         @Environment(\.dismiss) private var dismiss: DismissAction
