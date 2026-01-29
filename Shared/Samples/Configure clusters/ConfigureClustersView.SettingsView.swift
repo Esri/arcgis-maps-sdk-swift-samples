@@ -31,32 +31,47 @@ extension ConfigureClustersView {
         /// The maximum scale of feature clusters selected by the user.
         @State private var selectedMaxScale = 0
         
+        
+        let scales: [Double] = [0, 1000, 5000, 10000, 50000, 100000, 500000]
+        
         var body: some View {
             NavigationStack {
                 Form {
                     Section("Cluster Labels Visibility") {
-                        Toggle("Show Labels", isOn: $model.showsLabels)
+                        Toggle("Show Labels", isOn: Binding(
+                            get: { model.showsLabels },
+                            set: { model.showsLabels = $0 }
+                        ))
                             .toggleStyle(.switch)
                     }
                     
                     Section("Clustering Properties") {
-                        Picker("Cluster Radius", selection: $selectedRadius) {
+                        Picker("Cluster Radius", selection: Binding(
+                            get: { Int(model.radius) },
+                            set: { model.radius = Double($0) }
+                        )) {
                             ForEach([30, 45, 60, 75, 90], id: \.self) { radius in
                                 Text("\(radius)")
                             }
                         }
-                        .onChange(of: selectedRadius) {
-                            model.radius = Double(selectedRadius)
-                        }
-                        
-                        Picker("Cluster Max Scale", selection: $selectedMaxScale) {
-                            ForEach([0, 1000, 5000, 10000, 50000, 100000, 500000], id: \.self) { scale in
-                                Text(("\(scale)"))
+//                        .onChange(of: selectedRadius) {
+//                            model.radius = Double(selectedRadius)
+//                        }
+//                        
+                        Picker(
+                            "Cluster Max Scale",
+                            selection: Binding(
+                                get: { model.maxScale },
+                                set: { model.maxScale = $0 }
+                            )
+                        ) {
+                            ForEach(scales, id: \.self) { scale in
+                                Text("\(Int(scale))") // show as integer
                             }
                         }
-                        .onChange(of: selectedMaxScale) {
-                            model.maxScale = Double(selectedMaxScale)
-                        }
+//                        .onChange(of: selectedMaxScale) {
+//                            model.maxScale = Double(selectedMaxScale)
+//                        }
                         
                         LabeledContent(
                             "Current Map Scale",
