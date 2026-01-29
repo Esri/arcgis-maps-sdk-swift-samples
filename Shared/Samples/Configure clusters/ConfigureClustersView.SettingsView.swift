@@ -25,13 +25,6 @@ extension ConfigureClustersView {
         /// The map view's scale.
         let mapViewScale: Double
         
-        /// The radius of feature clusters selected by the user.
-        @State private var selectedRadius = 60
-        
-        /// The maximum scale of feature clusters selected by the user.
-        @State private var selectedMaxScale = 0
-        
-        
         let scales: [Double] = [0, 1000, 5000, 10000, 50000, 100000, 500000]
         
         var body: some View {
@@ -54,10 +47,6 @@ extension ConfigureClustersView {
                                 Text("\(radius)")
                             }
                         }
-//                        .onChange(of: selectedRadius) {
-//                            model.radius = Double(selectedRadius)
-//                        }
-//                        
                         Picker(
                             "Cluster Max Scale",
                             selection: Binding(
@@ -69,9 +58,7 @@ extension ConfigureClustersView {
                                 Text("\(Int(scale))") // show as integer
                             }
                         }
-//                        .onChange(of: selectedMaxScale) {
-//                            model.maxScale = Double(selectedMaxScale)
-//                        }
+
                         
                         LabeledContent(
                             "Current Map Scale",
