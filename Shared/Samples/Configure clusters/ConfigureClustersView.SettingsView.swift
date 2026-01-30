@@ -46,7 +46,6 @@ extension ConfigureClustersView {
                                 Text(scale, format: .number)
                             }
                         }
-
                         
                         LabeledContent(
                             "Current Map Scale",
