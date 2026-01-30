@@ -17,7 +17,7 @@ import SwiftUI
 extension ConfigureClustersView {
     struct SettingsView: View {
         /// The model for the sample.
-        @Binding var model: Model
+        @Bindable var model: Model
         
         /// The action to dismiss the settings sheet.
         @Environment(\.dismiss) private var dismiss: DismissAction
@@ -31,31 +31,19 @@ extension ConfigureClustersView {
             NavigationStack {
                 Form {
                     Section("Cluster Labels Visibility") {
-                        Toggle("Show Labels", isOn: Binding(
-                            get: { model.showsLabels },
-                            set: { model.showsLabels = $0 }
-                        ))
+                        Toggle("Show Labels", isOn: $model.showsLabels)
                             .toggleStyle(.switch)
                     }
                     
                     Section("Clustering Properties") {
-                        Picker("Cluster Radius", selection: Binding(
-                            get: { Int(model.radius) },
-                            set: { model.radius = Double($0) }
-                        )) {
+                        Picker("Cluster Radius", selection: $model.radius) {
                             ForEach([30, 45, 60, 75, 90], id: \.self) { radius in
                                 Text("\(radius)")
                             }
                         }
-                        Picker(
-                            "Cluster Max Scale",
-                            selection: Binding(
-                                get: { model.maxScale },
-                                set: { model.maxScale = $0 }
-                            )
-                        ) {
+                        Picker("Cluster Max Scale", selection: $model.maxScale) {
                             ForEach(scales, id: \.self) { scale in
-                                Text("\(Int(scale))") // show as integer
+                                Text(scale, format: .number)
                             }
                         }
 
