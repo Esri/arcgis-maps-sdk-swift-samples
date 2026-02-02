@@ -27,6 +27,8 @@ extension ConfigureClustersView {
         
         let scales: [Double] = [0, 1000, 5000, 10000, 50000, 100000, 500000]
         
+        let radii: [Double] = [30, 45, 60, 75, 90]
+        
         var body: some View {
             NavigationStack {
                 Form {
@@ -37,8 +39,8 @@ extension ConfigureClustersView {
                     
                     Section("Clustering Properties") {
                         Picker("Cluster Radius", selection: $model.radius) {
-                            ForEach([30, 45, 60, 75, 90], id: \.self) { radius in
-                                Text("\(radius)")
+                            ForEach(radii, id: \.self) { radius in
+                                Text(radius, format: .number)
                             }
                         }
                         Picker("Cluster Max Scale", selection: $model.maxScale) {
