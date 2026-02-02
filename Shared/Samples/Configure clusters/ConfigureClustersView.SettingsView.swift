@@ -25,9 +25,11 @@ extension ConfigureClustersView {
         /// The map view's scale.
         let mapViewScale: Double
         
-        let scales: [Double] = [0, 1000, 5000, 10000, 50000, 100000, 500000]
-        
+        /// The radius options for feature clusters.
         let radii: [Double] = [30, 45, 60, 75, 90]
+        
+        /// The maximum scale options for feature clusters.
+        let scales: [Double] = [0, 1000, 5000, 10000, 50000, 100000, 500000]
         
         var body: some View {
             NavigationStack {
