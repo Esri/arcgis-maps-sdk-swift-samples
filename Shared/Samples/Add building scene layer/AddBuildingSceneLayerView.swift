@@ -19,8 +19,8 @@ struct AddBuildingSceneLayerView: View {
     /// A local scene with topographic basemap style and a tiled elevation source.
     @State private var scene: ArcGIS.Scene = {
         let scene = Scene(
-            basemapStyle: .arcGISTopographic,
-            viewingMode: .local
+            viewingMode: .local,
+            basemapStyle: .arcGISTopographic
         )
         
         // Adds a surface.
