@@ -61,29 +61,29 @@ private extension SpatialReference {
     var name: String {
         switch self {
         case .berghausStar:
-            return "Berghaus Star AAG"
+            "Berghaus Star AAG"
         case .fuller:
-            return "Fuller"
+            "Fuller"
         case .newZealandMapGrid:
-            return "New Zealand Map Grid"
+            "New Zealand Map Grid"
         case .northPoleStereographic:
-            return "North Pole Stereographic"
+            "North Pole Stereographic"
         case .peirceQuincuncial:
-            return "Peirce Quincuncial"
+            "Peirce Quincuncial"
         case .utmZone10N:
-            return "UTM Zone 10 N"
+            "UTM Zone 10 N"
         case .worldBonne:
-            return "World Bonne"
+            "World Bonne"
         case .worldOrthographic:
-            return "World Orthographic"
+            "World Orthographic"
         case .worldGoodeHomolosine:
-            return "World Goode Homolosine"
+            "World Goode Homolosine"
         case .webMercator:
-            return "Web Mercator"
+            "Web Mercator"
         case .wgs84:
-            return "WGS 84"
+            "WGS 84"
         default:
-            return "Unknown"
+            "Unknown"
         }
     }
     
