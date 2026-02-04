@@ -59,29 +59,30 @@ private extension URL {
 private extension SpatialReference {
     /// A human-readable name for the spatial reference.
     var name: String {
-        if self == .berghausStar {
+        switch self {
+        case .berghausStar:
             return "Berghaus Star AAG"
-        } else if self == .fuller {
+        case .fuller:
             return "Fuller"
-        } else if self == .newZealandMapGrid {
+        case .newZealandMapGrid:
             return "New Zealand Map Grid"
-        } else if self == .northPoleStereographic {
+        case .northPoleStereographic:
             return "North Pole Stereographic"
-        } else if self == .peirceQuincuncial {
+        case .peirceQuincuncial:
             return "Peirce Quincuncial"
-        } else if self == .utmZone10N {
+        case .utmZone10N:
             return "UTM Zone 10 N"
-        } else if self == .worldBonne {
+        case .worldBonne:
             return "World Bonne"
-        } else if self == .worldOrthographic {
+        case .worldOrthographic:
             return "World Orthographic"
-        } else if self == .worldGoodeHomolosine {
+        case .worldGoodeHomolosine:
             return "World Goode Homolosine"
-        } else if self == .webMercator {
+        case .webMercator:
             return "Web Mercator"
-        } else if self == .wgs84 {
+        case .wgs84:
             return "WGS 84"
-        } else {
+        default:
             return "Unknown"
         }
     }
