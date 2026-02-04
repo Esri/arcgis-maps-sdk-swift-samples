@@ -6,8 +6,13 @@
         "set-spatial-reference.png"
     ],
     "keywords": [
+        "Web Mercator",
+        "WGS84",
         "WKID",
+        "coordinate system",
         "project",
+        "projection",
+        "spatial reference", 
         "ArcGISMapImageLayer",
         "Basemap",
         "Map",
