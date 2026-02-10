@@ -10,7 +10,7 @@ Choosing the correct spatial reference is important for ensuring accurate projec
 
 ## How to use the sample
 
-Pan and zoom around the map. Observe how the map is displayed in World Bonne spatial reference. Pick a different spatial reference and see the map reproject.
+Pan and zoom around the map. Observe how the map is displayed in the World Bonne spatial reference. Pick a different spatial reference and see the map reproject.
 
 ## How it works
 
