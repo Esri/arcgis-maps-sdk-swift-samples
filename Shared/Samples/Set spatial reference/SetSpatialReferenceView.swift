@@ -31,17 +31,16 @@ struct SetSpatialReferenceView: View {
         MapView(map: map)
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
-                    Menu("Set Spatial Reference") {
-                        Picker("Spatial Reference", selection: $selectedSpatialReference) {
-                            ForEach(SpatialReference.allOptions, id: \.wkid) { spatialReference in
-                                Text(spatialReference.name)
-                                    .tag(spatialReference)
-                            }
-                        }
-                        .onChange(of: selectedSpatialReference) {
-                            map.setSpatialReference(selectedSpatialReference)
+                    Picker("Spatial Reference", selection: $selectedSpatialReference) {
+                        ForEach(SpatialReference.allOptions, id: \.wkid) { spatialReference in
+                            Text(spatialReference.name)
+                                .tag(spatialReference)
                         }
                     }
+                    .onChange(of: selectedSpatialReference) {
+                        map.setSpatialReference(selectedSpatialReference)
+                    }
+                    .fixedSize()
                 }
             }
     }
