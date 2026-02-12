@@ -24,21 +24,120 @@ struct SetSpatialReferenceView: View {
         )
         return map
     }()
+    /// The currently selected spatial reference.
+    @State private var selectedSpatialReference: SpatialReference = .worldBonne
     
     var body: some View {
         MapView(map: map)
+            .toolbar {
+                ToolbarItem(placement: .bottomBar) {
+                    Picker("Spatial Reference", selection: $selectedSpatialReference) {
+                        ForEach(SpatialReference.allOptions, id: \.wkid) { spatialReference in
+                            Text(spatialReference.name)
+                                .tag(spatialReference)
+                        }
+                    }
+                    .onChange(of: selectedSpatialReference) {
+                        map.setSpatialReference(selectedSpatialReference)
+                    }
+                    .fixedSize()
+                }
+            }
     }
 }
 
-private extension SpatialReference {
-    /// The spatial reference for the sample, World Bonne (WKID: 54024).
-    static var worldBonne: Self { SpatialReference(wkid: WKID(54024)!)! }
-}
-
 private extension URL {
-    /// The URL to the World Cities map service for the image layer.
+    /// The URL to the World Cities map service for the map image layer.
     static var worldCities: URL {
         URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/SampleWorldCities/MapServer")!
+    }
+}
+
+// MARK: - Spatial References
+
+private extension SpatialReference {
+    /// A human-readable name for the spatial reference.
+    var name: String {
+        switch self {
+        case .berghausStar:
+            "Berghaus Star AAG"
+        case .fuller:
+            "Fuller"
+        case .newZealandMapGrid:
+            "New Zealand Map Grid"
+        case .northPoleStereographic:
+            "North Pole Stereographic"
+        case .peirceQuincuncial:
+            "Peirce Quincuncial"
+        case .utmZone10N:
+            "UTM Zone 10 N"
+        case .worldBonne:
+            "World Bonne"
+        case .worldOrthographic:
+            "World Orthographic"
+        case .worldGoodeHomolosine:
+            "World Goode Homolosine"
+        case .webMercator:
+            "Web Mercator"
+        case .wgs84:
+            "WGS 84"
+        default:
+            "Unknown"
+        }
+    }
+    
+    /// Berghaus Star AAG (WKID: 102299).
+    static var berghausStar: SpatialReference {
+        SpatialReference(wkid: WKID(102299)!)!
+    }
+    /// Fuller (WKID: 54050).
+    static var fuller: SpatialReference {
+        SpatialReference(wkid: WKID(54050)!)!
+    }
+    /// New Zealand Map Grid (WKID: 27200).
+    static var newZealandMapGrid: SpatialReference {
+        SpatialReference(wkid: WKID(27200)!)!
+    }
+    /// North Pole Stereographic (WKID: 102018).
+    static var northPoleStereographic: SpatialReference {
+        SpatialReference(wkid: WKID(102018)!)!
+    }
+    /// Peirce quincuncial North Pole in a square (WKID: 54090).
+    static var peirceQuincuncial: SpatialReference {
+        SpatialReference(wkid: WKID(54090)!)!
+    }
+    /// UTM Zone 10 N (WKID: 32610).
+    static var utmZone10N: SpatialReference {
+        SpatialReference(wkid: WKID(32610)!)!
+    }
+    /// World Bonne (WKID: 54024).
+    static var worldBonne: SpatialReference {
+        SpatialReference(wkid: WKID(54024)!)!
+    }
+    /// World Goode Homolosine Land (WKID: 54052).
+    static var worldGoodeHomolosine: SpatialReference {
+        SpatialReference(wkid: WKID(54052)!)!
+    }
+    /// Orthographic projection of the World from Space (WKID: 102038).
+    static var worldOrthographic: SpatialReference {
+        SpatialReference(wkid: WKID(102038)!)!
+    }
+    
+    /// All available spatial references for selection.
+    static var allOptions: [SpatialReference] {
+        return [
+            .berghausStar,
+            .fuller,
+            .newZealandMapGrid,
+            .northPoleStereographic,
+            .peirceQuincuncial,
+            .utmZone10N,
+            .worldBonne,
+            .worldGoodeHomolosine,
+            .worldOrthographic,
+            .webMercator,
+            .wgs84
+        ]
     }
 }
 
