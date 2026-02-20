@@ -278,6 +278,8 @@
 		798C2DA72AFC505600EE7E97 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 798C2DA62AFC505600EE7E97 /* PrivacyInfo.xcprivacy */; };
 		79A47DFB2A20286800D7C5B9 /* CreateAndSaveKMLView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 79302F842A1ED4E30002336A /* CreateAndSaveKMLView.Model.swift */; };
 		79A47DFC2A20286800D7C5B9 /* CreateAndSaveKMLView.Views.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 79302F862A1ED71B0002336A /* CreateAndSaveKMLView.Views.swift */; };
+		79B2B6E72F479415007E652A /* ConfigureSceneEnvironmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B2B6E62F479411007E652A /* ConfigureSceneEnvironmentView.swift */; };
+		79B2B6E82F4794BD007E652A /* ConfigureSceneEnvironmentView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 79B2B6E62F479411007E652A /* ConfigureSceneEnvironmentView.swift */; };
 		79B7B80A2A1BF8EC00F57C27 /* CreateAndSaveKMLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B7B8092A1BF8EC00F57C27 /* CreateAndSaveKMLView.swift */; };
 		79B7B80B2A1BFDE700F57C27 /* CreateAndSaveKMLView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 79B7B8092A1BF8EC00F57C27 /* CreateAndSaveKMLView.swift */; };
 		79D22F822E9D8EA900B981A5 /* DisplayLocalSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79D22F812E9D8EA000B981A5 /* DisplayLocalSceneView.swift */; };
@@ -766,6 +768,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				79B2B6E82F4794BD007E652A /* ConfigureSceneEnvironmentView.swift in Copy Source Code Files */,
 				79E8A3092ED673F200432F4E /* FilterBuildingSceneLayerView.BuildingGroupSublayerToggleView.swift in Copy Source Code Files */,
 				79E8A30A2ED673F200432F4E /* FilterBuildingSceneLayerView.BuildingSublayerToggleView.swift in Copy Source Code Files */,
 				79FFD35D2ED113AE00800C23 /* FilterBuildingSceneLayerView.swift in Copy Source Code Files */,
@@ -1232,6 +1235,7 @@
 		79302F842A1ED4E30002336A /* CreateAndSaveKMLView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAndSaveKMLView.Model.swift; sourceTree = "<group>"; };
 		79302F862A1ED71B0002336A /* CreateAndSaveKMLView.Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAndSaveKMLView.Views.swift; sourceTree = "<group>"; };
 		798C2DA62AFC505600EE7E97 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		79B2B6E62F479411007E652A /* ConfigureSceneEnvironmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureSceneEnvironmentView.swift; sourceTree = "<group>"; };
 		79B7B8092A1BF8EC00F57C27 /* CreateAndSaveKMLView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAndSaveKMLView.swift; sourceTree = "<group>"; };
 		79D22F812E9D8EA000B981A5 /* DisplayLocalSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayLocalSceneView.swift; sourceTree = "<group>"; };
 		79D84D0D2A815C5B00F45262 /* AddCustomDynamicEntityDataSourceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCustomDynamicEntityDataSourceView.swift; sourceTree = "<group>"; };
@@ -1749,6 +1753,7 @@
 				000D43152B9918420003D3C2 /* Configure basemap style parameters */,
 				D7635FF32B9277DC0044AB97 /* Configure clusters */,
 				D74F6C412D0CD51B00D4FB15 /* Configure electronic navigational charts */,
+				79B2B6E52F4793FB007E652A /* Configure scene environment */,
 				1C8438F72DDBDE1F005CCBC7 /* Control annotation sublayer visibility */,
 				88F93CBE29C3D4E30006B28E /* Create and edit geometries */,
 				79B7B8082A1BF8B300F57C27 /* Create and save KML file */,
@@ -2686,6 +2691,14 @@
 				792222DC2A81AA5D00619FFE /* AIS_MarineCadastre_SelectedVessels_CustomDataSource.jsonl */,
 			);
 			path = a8a942c228af4fac96baa78ad60f511f;
+			sourceTree = "<group>";
+		};
+		79B2B6E52F4793FB007E652A /* Configure scene environment */ = {
+			isa = PBXGroup;
+			children = (
+				79B2B6E62F479411007E652A /* ConfigureSceneEnvironmentView.swift */,
+			);
+			path = "Configure scene environment";
 			sourceTree = "<group>";
 		};
 		79B7B8082A1BF8B300F57C27 /* Create and save KML file */ = {
@@ -4700,6 +4713,7 @@
 				D70789922CD160FD000DF215 /* ApplyDictionaryRendererToGraphicsOverlayView.swift in Sources */,
 				D77570C02A2942F800F490CD /* AnimateImagesWithImageOverlayView.swift in Sources */,
 				D7848EFE2CBD986400F6F546 /* AddElevationSourceFromRasterView.swift in Sources */,
+				79B2B6E72F479415007E652A /* ConfigureSceneEnvironmentView.swift in Sources */,
 				D7054AE92ACCCB6C007235BA /* Animate3DGraphicView.SettingsView.swift in Sources */,
 				D78FA4942C3C88880079313E /* CreateDynamicBasemapGalleryView.Views.swift in Sources */,
 				E0EA0B772866390E00C9621D /* ProjectGeometryView.swift in Sources */,
