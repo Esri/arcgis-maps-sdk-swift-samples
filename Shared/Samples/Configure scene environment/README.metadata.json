@@ -1,0 +1,33 @@
+{
+    "category": "Scenes",
+    "description": "Configure the environment settings in a local scene to change the lighting conditions and background appearance.",
+    "ignore": false,
+    "images": [
+        "configure-scene-environment.png"
+    ],
+    "keywords": [
+        "3D",
+        "environment",
+        "lighting",
+        "scene",
+        "LocalSceneView",
+        "Scene",
+        "SceneEnvironment",
+        "SceneLighting",
+        "SunLighting",
+        "VirtualLighting"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "LocalSceneView",
+        "Scene",
+        "SceneEnvironment",
+        "SceneLighting",
+        "SunLighting",
+        "VirtualLighting"
+    ],
+    "snippets": [
+        "ConfigureSceneEnvironmentView.swift"
+    ],
+    "title": "Configure scene environment"
+}
