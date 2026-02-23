@@ -16,7 +16,7 @@ import ArcGIS
 import SwiftUI
 
 struct ConfigureSceneEnvironmentView: View {
-    /// A local scene with a scene layer in Sante Fe.
+    /// A local scene with a scene layer in Santa Fe.
     @State private var scene = Scene(url: URL(string: "https://www.arcgis.com/home/item.html?id=fcebd77958634ac3874bbc0e6b0677a4")!)!
     /// The environment for the scene.
     @State private var environment: SceneEnvironment?
