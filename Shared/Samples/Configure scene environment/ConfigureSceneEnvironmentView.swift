@@ -186,7 +186,7 @@ private struct EnvironmentSettingsView: View {
             environment.backgroundColor = UIColor(backgroundColor)
             
             // We turn off the atmosphere and stars if the user
-            // expliclity set the background color so they can see the
+            // explicitly set the background color so they can see the
             // new background color they set.
             atmosphereIsEnabled = false
             starsAreEnabled = false
@@ -206,7 +206,7 @@ private struct EnvironmentSettingsView: View {
     }
     
     private func makeLighting(lightingType: LightingType) -> SceneLighting {
-        return switch lightingType {
+        switch lightingType {
         case .virtual:
             VirtualLighting(
                 directShadowsAreEnabled: directShadowsAreEnabled
