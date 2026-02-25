@@ -14,7 +14,7 @@ For an analytic scenario, like examining a building scene layer, the developer m
 
 ## How to use the sample
 
-At start-up, you will see a local scene with button at the bottom to open the scene environment controls. Adjusting the controls will change the scene's environment altering the presentation of the scene.
+At start-up, you will see a local scene with a button at the bottom to open the scene environment controls. Adjusting the controls will change the scene's environment, altering the presentation of the scene.
 
 ### Sky and Background color settings
 
@@ -39,15 +39,15 @@ If sun lighting is active, the slider under the buttons will set the hour of the
 
 ## How it works
 
-1. Create a `Scene` from an online resource and add it to the `LocalSceneView`. The sample’s controls are updated to reflect the web scene's initial environment.
+1. Create a `Scene` from an online resource and create a `LocalSceneView` with the new scene. The sample’s controls are updated to reflect the web scene's initial environment.
 2. Changes to the sky and background color settings will set values directly on the `SceneEnvironment` object.
-    * `atmosphereIsEnabled` and `starsAreEnabled` are boolean properties dictating whether the atmosphere and star field are visible.
-    * Colors selected from the color picker are set to the `backgroundColor`.
+    * `atmosphereIsEnabled` and `starsAreEnabled` are Boolean properties indicating whether the atmosphere and star field are visible.
+    * The color selected using the color picker is set to the `backgroundColor`.
 3. Changes to the settings in the lighting controls manipulate the `SceneLighting` object in the `SceneEnvironment.lighting` property.
     * Switching between “Sun” and “Virtual” lighting assigns a new `SunLighting` or `VirtualLighting` object to the lighting property.
         * Sun lighting simulates the position of the sun based on a given date and time. This includes lighting conditions for day, twilight, and night.
         * For virtual lighting, the light source is always on and is slightly offset from the camera. As the scene rotated or panned, the light source stays in the same position relative to the camera.
-    * The “Shadows” button sets the `directShadowsAreEnabled` boolean property on the lightning object. This toggles the shadows cast by objects in the scene.
+    * The “Shadows” button sets the `directShadowsAreEnabled` Boolean property on the lightning object. This toggles the shadows cast by objects in the scene.
     * If `SunLighting` is active, manipulating the slider changes the seconds of the `simulatedDate` property on the lighting object. `VirtualLighting` does not have a slider because the lighting is always the same regardless of time.
 
 ## Relevant API

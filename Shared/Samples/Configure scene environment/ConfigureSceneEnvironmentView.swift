@@ -131,10 +131,11 @@ private struct EnvironmentSettingsView: View {
                         Slider(value: $dateSecond, in: .dateSecondValues) {
                             Text("Time")
                         } minimumValueLabel: {
-                            Image(systemName: "sun.max.fill")
+                            Image(systemName: "sun.max")
                         } maximumValueLabel: {
-                            Image(systemName: "moon.fill")
+                            Image(systemName: "moon")
                         }
+                        .symbolVariant(.fill)
                         .onChange(of: dateSecond) {
                             sliderValueChanged(toValue: dateSecond)
                         }
@@ -148,7 +149,7 @@ private struct EnvironmentSettingsView: View {
                 // Update local properties with current environment values.
                 atmosphereIsEnabled = environment.atmosphereIsEnabled
                 starsAreEnabled = environment.starsAreEnabled
-                backgroundColor = Color(environment.backgroundColor)
+                backgroundColor = Color(uiColor: environment.backgroundColor)
                 
                 let lighting = environment.lighting
                 directShadowsAreEnabled = environment.lighting.directShadowsAreEnabled
@@ -181,16 +182,17 @@ private struct EnvironmentSettingsView: View {
     /// can see it right away. The background color is rendered behind the atmosphere and stars
     /// so we need to turn them both off to see the background color.
     private func setBackgroundColor() {
-        if backgroundColor != Color(environment.backgroundColor) {
-            // Set the background color.
-            environment.backgroundColor = UIColor(backgroundColor)
-            
-            // We turn off the atmosphere and stars if the user
-            // explicitly set the background color so they can see the
-            // new background color they set.
-            atmosphereIsEnabled = false
-            starsAreEnabled = false
+        guard backgroundColor != Color(uiColor: environment.backgroundColor) else {
+            return
         }
+        
+        // Set the background color.
+        environment.backgroundColor = UIColor(backgroundColor)
+        
+        // We turn off the atmosphere and stars if the user explicitly set the
+        // background color so they can see the new background color they set.
+        atmosphereIsEnabled = false
+        starsAreEnabled = false
     }
     
     private enum LightingType: CaseIterable {
@@ -222,13 +224,13 @@ private struct EnvironmentSettingsView: View {
     /// Handles the slider value changed event and sets the simulated date.
     /// - Parameter value: The slider's value.
     private func sliderValueChanged(toValue value: TimeInterval) {
-        let dateComponents = DateComponents(second: Int(value))
-        let date = Calendar.current.date(byAdding: dateComponents, to: startOfDay)!
+        let date = Calendar.current
+            .date(byAdding: .second, value: Int(value), to: startOfDay)!
         simulatedDate = date
     }
 }
 
-private extension ClosedRange where Bound == TimeInterval {
+private extension ClosedRange<TimeInterval> {
     /// The range of possible date second values.
     /// The range is 28,800 to 79,200 seconds in this example,
     /// which means 8am to 10pm.
