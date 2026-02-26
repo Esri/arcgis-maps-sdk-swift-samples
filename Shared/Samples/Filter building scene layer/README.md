@@ -10,17 +10,28 @@ Buildings and their component parts (in this example, structural, electrical, or
 
 ## How to use the sample
 
-In the filter controls, select floor and category options to filter what parts of the Building Scene Layer are displayed in the scene. Tap on any of the building features to identify them.
+Once the scene is loaded, tap the "Settings" gear button to view the filtering options.
+
+* Select a floor from the "Floors" menu to view the internal details of each floor or "All" to view the entire model. Selecting a floor applies a filter that hides all floors above the selected floor and gives the floors below a transparent, X-ray renderer.
+* Expand the categories under the top-level disciplines to show or hide individual categories in the building model. The entire discipline may be shown or hidden as well.
+* Tap on any features in the building to view the attributes of the feature.
 
 ## How it works
 
 1. Create a `Scene` with the URL to a Building Scene Layer service.
 2. Create a `LocalSceneView` with the scene.
 3. Retrieve the `BuildingSceneLayer` from the scene's operational layers.
-4. When a floor is selected, a `BuildingFilter` is created with two `BuildingFilterBlocks`. One highlights the selected floor, the second applies an x-ray view style to the floors below the selected floor.
-5. Apply the filter to the `activeFilter` of the `BuildingSceneLayer` to view the changes to the model.
-6. Select or deselect categories or sublayers to toggle the visibility of the features in those sublayers.
-7. Tap on the building features to perform an identify operation on the `BuildingSceneLayer`. If a feature is identified, a popup with the feature's attribute will be displayed.
+4. When a floor is selected:
+    1. A new `BuildingFilter` is created with two `BuildingFilterBlock` objects.
+    2. One block defines the solid renderer for features on the selected floor.
+    3. The second block defines the X-ray filter for features on the floors below the selected floor.
+    4. Features that exist on floors above the selected floor are not rendered.
+    5. If “All” is selected, the `activeFilter` property on the building scene layer is set to `nil` so all features are rendered according to their default settings.
+5. Architectural disciplines and categories are represented by `BuildingGroupSublayer` and `BuildingSublayer` objects containing features within a building scene layer. When checked or unchecked, the visibility of the group or sublayer is set to true (visible) or false (hidden).
+6. When a building feature is tapped on:
+    1. A call to `identify(on:screenPoint:tolerance:returnPopupsOnly:maximumResults:)` on the `LocalSceneViewProxy` is initiated based on a change of the tap location.
+    2. The `sublayerResults` property of the returned `IdentifyLayerResult` will contain the identified features. Note that the building scene layer features are NOT returned in the `geoElements` property of the results.
+    3. The details of the first identified feature are shown in a popup.
 
 ## Relevant API
 
