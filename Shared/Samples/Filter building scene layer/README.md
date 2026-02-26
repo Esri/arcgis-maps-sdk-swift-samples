@@ -10,11 +10,11 @@ Buildings and their component parts (in this example, structural, electrical, or
 
 ## How to use the sample
 
-Once the scene is loaded, click the "Settings" gear button to view the filtering options.
+Once the scene is loaded, tap the "Settings" gear button to view the filtering options.
 
-* Select a floor from the "Floor" menu to view the internal details of each floor or "All" to view the entire model. Selecting a floor applies a filter that hides all floors above the selected floor and gives the floors below a transparent, X-ray renderer.
+* Select a floor from the "Floors" menu to view the internal details of each floor or "All" to view the entire model. Selecting a floor applies a filter that hides all floors above the selected floor and gives the floors below a transparent, X-ray renderer.
 * Expand the categories under the top-level disciplines to show or hide individual categories in the building model. The entire discipline may be shown or hidden as well.
-* Click on any features in the building to view the attributes of the feature.
+* Tap on any features in the building to view the attributes of the feature.
 
 ## How it works
 
@@ -28,9 +28,8 @@ Once the scene is loaded, click the "Settings" gear button to view the filtering
     4. Features that exist on floors above the selected floor are not rendered.
     5. If “All” is selected, the `activeFilter` property on the building scene layer is set to `nil` so all features are rendered according to their default settings.
 5. Architectural disciplines and categories are represented by `BuildingGroupSublayer` and `BuildingSublayer` objects containing features within a building scene layer. When checked or unchecked, the visibility of the group or sublayer is set to true (visible) or false (hidden).
-6. When a building feature is clicked on:
-    1. A call to `identify(on:screenPoint:tolerance:returnPopupsOnly:maximumResults:)` on the `LocalSceneViewProxy` is
-       initiated based on a change of the tap location.
+6. When a building feature is tapped on:
+    1. A call to `identify(on:screenPoint:tolerance:returnPopupsOnly:maximumResults:)` on the `LocalSceneViewProxy` is initiated based on a change of the tap location.
     2. The `sublayerResults` property of the returned `IdentifyLayerResult` will contain the identified features. Note that the building scene layer features are NOT returned in the `geoElements` property of the results.
     3. The details of the first identified feature are shown in a popup.
 
