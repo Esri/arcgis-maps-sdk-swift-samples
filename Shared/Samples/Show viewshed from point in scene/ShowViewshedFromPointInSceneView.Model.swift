@@ -20,7 +20,7 @@ extension ShowViewshedFromPointInSceneView {
     /// used in this view.
     class Model: ObservableObject {
         /// The location viewshed used in the sample.
-        let viewshed: LocationViewshed
+        let viewshed: ExploratoryLocationViewshed
         
         /// An analysis overlay that contains a location viewshed analysis.
         let analysisOverlay: AnalysisOverlay
@@ -29,23 +29,23 @@ extension ShowViewshedFromPointInSceneView {
         let scene = makeScene()
         
         /// The color used to display non-visible areas of a viewshed.
-        @Published var obstructedAreaColor = Color(uiColor: Viewshed.obstructedColor) {
+        @Published var obstructedAreaColor = Color(uiColor: ExploratoryViewshed.obstructedColor) {
             didSet {
-                Viewshed.obstructedColor = UIColor(obstructedAreaColor)
+                ExploratoryViewshed.obstructedColor = UIColor(obstructedAreaColor)
             }
         }
         
         /// The color used to display visible areas of a viewshed.
-        @Published var visibleColor = Color(uiColor: Viewshed.visibleColor) {
+        @Published var visibleColor = Color(uiColor: ExploratoryViewshed.visibleColor) {
             didSet {
-                Viewshed.visibleColor = UIColor(visibleColor)
+                ExploratoryViewshed.visibleColor = UIColor(visibleColor)
             }
         }
         
         /// The color used to render the frustum outline.
-        @Published var frustumOutlineColor = Color(uiColor: Viewshed.frustumOutlineColor) {
+        @Published var frustumOutlineColor = Color(uiColor: ExploratoryViewshed.frustumOutlineColor) {
             didSet {
-                Viewshed.frustumOutlineColor = UIColor(frustumOutlineColor)
+                ExploratoryViewshed.frustumOutlineColor = UIColor(frustumOutlineColor)
             }
         }
         
@@ -109,7 +109,7 @@ extension ShowViewshedFromPointInSceneView {
         }
         
         init() {
-            self.viewshed = LocationViewshed(
+            self.viewshed = ExploratoryLocationViewshed(
                 location: Point(x: -4.50, y: 48.4, z: 100, spatialReference: .wgs84),
                 heading: 20,
                 pitch: 70,
