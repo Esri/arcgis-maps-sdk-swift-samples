@@ -15,14 +15,14 @@ Tap on the map to set the observer location. Tap and hold to set the line of sig
 ## How it works
 
 1. Create an `AnalysisOverlay` and add it to the scene view.
-2. Create a `LocationLineOfSight` with initial observer and target locations and add it to the analysis overlay.
+2. Create an `ExploratoryLocationLineOfSight` with initial observer and target locations and add it to the analysis overlay.
 3. Track the screen taps using the `onSingleTapGesture` and `onLongPressGesture`.
 4. Use the scene point to update the target location with `lineOfSight.targetLocation` and the observer location with `lineOfSight.observerLocation`.
 
 ## Relevant API
 
 * AnalysisOverlay
-* LocationLineOfSight
+* ExploratoryLocationLineOfSight
 * SceneView
 
 ## Tags
