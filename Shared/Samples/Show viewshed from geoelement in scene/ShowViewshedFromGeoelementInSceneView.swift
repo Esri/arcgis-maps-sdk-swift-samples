@@ -119,7 +119,7 @@ private extension ShowViewshedFromGeoelementInSceneView {
             graphicsOverlay.addGraphic(tankGraphic)
             
             // Create a viewshed to attach to the tank.
-            let geoElementViewshed = GeoElementViewshed(
+            let geoElementViewshed = ExploratoryGeoElementViewshed(
                 geoElement: tankGraphic,
                 horizontalAngle: 90,
                 verticalAngle: 40,
