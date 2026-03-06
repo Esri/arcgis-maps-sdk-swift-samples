@@ -13,8 +13,8 @@
         "AnalysisOverlay",
         "ArcGISTiledElevationSource",
         "Camera",
+        "ExploratoryLocationViewshed",
         "IntegratedMeshLayer",
-        "LocationViewshed",
         "Scene",
         "SceneView"
     ],
@@ -23,8 +23,8 @@
         "AnalysisOverlay",
         "ArcGISTiledElevationSource",
         "Camera",
+        "ExploratoryLocationViewshed",
         "IntegratedMeshLayer",
-        "LocationViewshed",
         "Scene",
         "SceneView"
     ],

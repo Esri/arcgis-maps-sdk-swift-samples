@@ -20,7 +20,7 @@ struct ShowViewshedFromCameraInSceneView: View {
     @State private var camera: Camera?
     
     /// The viewshed which is updated by the camera.
-    @State private var viewshed: LocationViewshed
+    @State private var viewshed: ExploratoryLocationViewshed
     
     /// A 3D Scene setup with imagery basemap, elevation, and mesh layer.
     @State private var scene: ArcGIS.Scene = {
@@ -55,15 +55,15 @@ struct ShowViewshedFromCameraInSceneView: View {
         )
         self.camera = camera
         
-        self.viewshed = LocationViewshed(
+        self.viewshed = ExploratoryLocationViewshed(
             camera: camera,
             minDistance: 1.0,
             maxDistance: 1_000.0
         )
         
         // Set visual appearance of the viewshed.
-        Viewshed.visibleColor = .green.withAlphaComponent(0.5)
-        Viewshed.obstructedColor = .red.withAlphaComponent(0.5)
+        ExploratoryViewshed.visibleColor = .green.withAlphaComponent(0.5)
+        ExploratoryViewshed.obstructedColor = .red.withAlphaComponent(0.5)
         
         // Add the new viewshed to the overlay.
         analysisOverlay.addAnalysis(viewshed)
