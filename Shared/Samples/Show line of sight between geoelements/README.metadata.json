@@ -11,8 +11,8 @@
         "visibility",
         "visibility analysis",
         "AnalysisOverlay",
-        "GeoElementLineOfSight",
-        "LineOfSight.TargetVisibility"
+        "ExploratoryGeoElementLineOfSight",
+        "ExploratoryGeoElementLineOfSight.TargetVisibility"
     ],
     "redirect_from": [],
     "offline_data": [
@@ -20,8 +20,8 @@
     ],
     "relevant_apis": [
         "AnalysisOverlay",
-        "GeoElementLineOfSight",
-        "LineOfSight.TargetVisibility"
+        "ExploratoryGeoElementLineOfSight",
+        "ExploratoryGeoElementLineOfSight.TargetVisibility"
     ],
     "snippets": [
         "ShowLineOfSightBetweenGeoelementsView.swift"
