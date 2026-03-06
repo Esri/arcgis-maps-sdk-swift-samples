@@ -128,7 +128,7 @@ private extension MeasureDistanceInSceneView {
         let analysisOverlay = AnalysisOverlay()
         
         /// The location distance measurement.
-        let locationDistanceMeasurement = LocationDistanceMeasurement(
+        let locationDistanceMeasurement = ExploratoryLocationDistanceMeasurement(
             startLocation: Point(x: -4.494677, y: 48.384472, z: 24.772694, spatialReference: .wgs84),
             endLocation: Point(x: -4.495646, y: 48.384377, z: 58.501115, spatialReference: .wgs84)
         )

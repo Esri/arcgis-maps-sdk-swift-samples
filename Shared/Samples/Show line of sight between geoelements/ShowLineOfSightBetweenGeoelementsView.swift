@@ -171,7 +171,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         let analysisOverlay = AnalysisOverlay()
         
         /// A line of sight analysis between the observer and the taxi graphic.
-        private let lineOfSight: GeoElementLineOfSight
+        private let lineOfSight: ExploratoryGeoElementLineOfSight
         
         /// A graphic representing the taxi model that will be animated.
         private let taxiGraphic: Graphic = {
@@ -201,11 +201,11 @@ private extension ShowLineOfSightBetweenGeoelementsView {
         @ObservationIgnored private var displayLink: CADisplayLink!
         
         /// The target visibility of the taxi graphic from the point of view of the observer.
-        var targetVisibility: GeoElementLineOfSight.TargetVisibility = .unknown
+        var targetVisibility: ExploratoryGeoElementLineOfSight.TargetVisibility = .unknown
         
         init() {
             graphicsOverlay.addGraphics([observerGraphic, taxiGraphic])
-            lineOfSight = GeoElementLineOfSight(observer: observerGraphic, target: taxiGraphic)
+            lineOfSight = ExploratoryGeoElementLineOfSight(observer: observerGraphic, target: taxiGraphic)
             lineOfSight.targetOffsetZ = 2
             analysisOverlay.addAnalysis(lineOfSight)
         }
@@ -289,7 +289,7 @@ private extension ShowLineOfSightBetweenGeoelementsView {
     }
 }
 
-private extension GeoElementLineOfSight.TargetVisibility {
+private extension ExploratoryGeoElementLineOfSight.TargetVisibility {
     /// A human-readable label for each target visibility.
     var label: String {
         switch self {

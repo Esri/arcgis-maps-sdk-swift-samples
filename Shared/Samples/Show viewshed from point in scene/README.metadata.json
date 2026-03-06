@@ -14,16 +14,16 @@
         "AnalysisOverlay",
         "ArcGISSceneLayer",
         "ArcGISTiledElevationSource",
-        "LocationViewshed",
-        "Viewshed"
+        "ExploratoryLocationViewshed",
+        "ExploratoryViewshed"
     ],
     "redirect_from": [],
     "relevant_apis": [
         "AnalysisOverlay",
         "ArcGISSceneLayer",
         "ArcGISTiledElevationSource",
-        "LocationViewshed",
-        "Viewshed"
+        "ExploratoryLocationViewshed",
+        "ExploratoryViewshed"
     ],
     "snippets": [
         "ShowViewshedFromPointInSceneView.swift",

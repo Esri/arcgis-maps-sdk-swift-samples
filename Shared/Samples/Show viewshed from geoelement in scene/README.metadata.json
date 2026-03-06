@@ -14,7 +14,7 @@
         "viewshed",
         "visibility analysis",
         "AnalysisOverlay",
-        "GeoElementViewshed",
+        "ExploratoryGeoElementViewshed",
         "GeodeticDistanceResult",
         "ModelSceneSymbol",
         "OrbitGeoElementCameraController",
@@ -26,7 +26,7 @@
     "redirect_from": [],
     "relevant_apis": [
         "AnalysisOverlay",
-        "GeoElementViewshed",
+        "ExploratoryGeoElementViewshed",
         "GeodeticDistanceResult",
         "ModelSceneSymbol",
         "OrbitGeoElementCameraController",

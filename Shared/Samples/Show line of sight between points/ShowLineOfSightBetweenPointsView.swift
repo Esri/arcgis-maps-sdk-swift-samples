@@ -37,7 +37,7 @@ struct ShowLineOfSightBetweenPointsView: View {
     @State private var analysisOverlay = AnalysisOverlay()
     
     /// The line of sight analysis.
-    @State private var lineOfSight: LocationLineOfSight?
+    @State private var lineOfSight: ExploratoryLocationLineOfSight?
     
     /// A Boolean value indicating whether to show the target instructions.
     @State private var shouldShowTargetInstruction = false
@@ -49,7 +49,7 @@ struct ShowLineOfSightBetweenPointsView: View {
                 guard let scenePoint else { return }
                 if lineOfSight == nil {
                     // Create and set initial line of sight analysis with tapped scene point.
-                    lineOfSight = LocationLineOfSight(observerLocation: scenePoint, targetLocation: scenePoint)
+                    lineOfSight = ExploratoryLocationLineOfSight(observerLocation: scenePoint, targetLocation: scenePoint)
                     analysisOverlay.addAnalysis(lineOfSight!)
                     shouldShowTargetInstruction = true
                 } else {
