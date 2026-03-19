@@ -15,7 +15,7 @@
 import ArcGIS
 import SwiftUI
 
-struct ShowLineOfSightBetweenPointsView: View {
+struct ShowExploratoryLineOfSightBetweenPointsView: View {
     /// A scene with an imagery basemap and centered on mountains in Chile.
     @State private var scene: ArcGIS.Scene = {
         // Creates a scene.
@@ -89,5 +89,5 @@ private extension URL {
 }
 
 #Preview {
-    ShowLineOfSightBetweenPointsView()
+    ShowExploratoryLineOfSightBetweenPointsView()
 }
