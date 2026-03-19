@@ -358,7 +358,7 @@
 		95A86A5B2E1C50C2000BF570 /* ShowPortalUserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A86A5A2E1C50BF000BF570 /* ShowPortalUserInfoView.swift */; };
 		95A86A5D2E1C51A9000BF570 /* ShowPortalUserInfoView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 95A86A5A2E1C50BF000BF570 /* ShowPortalUserInfoView.swift */; };
 		95ADF34F2C3CBAE800566FF6 /* EditFeatureAttachmentsView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 9547085B2C3C719800CA8579 /* EditFeatureAttachmentsView.Model.swift */; };
-		95B096A02E136365006AFA8F /* Dolmus3ds in Resources */ = {isa = PBXBuildFile; fileRef = 95B0969F2E136365006AFA8F /* Dolmus3ds */; settings = {ASSET_TAGS = (ShowLineOfSightBetweenGeoelements, ); }; };
+		95B096A02E136365006AFA8F /* Dolmus3ds in Resources */ = {isa = PBXBuildFile; fileRef = 95B0969F2E136365006AFA8F /* Dolmus3ds */; settings = {ASSET_TAGS = (ShowExploratoryLineOfSightBetweenGeoelements, ); }; };
 		95D2EE0F2C334D1600683D53 /* ShowServiceAreaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95D2EE0E2C334D1600683D53 /* ShowServiceAreaView.swift */; };
 		95DEB9B62C127A92009BEC35 /* ShowViewshedFromPointOnMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95DEB9B52C127A92009BEC35 /* ShowViewshedFromPointOnMapView.swift */; };
 		95DEB9B82C127B5E009BEC35 /* ShowViewshedFromPointOnMapView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 95DEB9B52C127A92009BEC35 /* ShowViewshedFromPointOnMapView.swift */; };
@@ -4408,7 +4408,7 @@
 					QueryDynamicEntities,
 					SearchSymbolStyleDictionary,
 					ShowDeviceLocationWithNmeaDataSources,
-					ShowLineOfSightBetweenGeoelements,
+					ShowExploratoryLineOfSightBetweenGeoelements,
 					ShowMobileMapPackageExpirationDate,
 					ShowShapefileMetadata,
 					ShowViewshedFromGeoelementInScene,
