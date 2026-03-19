@@ -333,8 +333,8 @@
 		951896D62E2AEB7700144F9B /* ShowViewshedFromCameraInSceneView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 951896D22E2AE5E400144F9B /* ShowViewshedFromCameraInSceneView.swift */; };
 		951961AC2E00BC420088B0C2 /* ShowGeodesicSectorAndEllipseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951961AB2E00BC3C0088B0C2 /* ShowGeodesicSectorAndEllipseView.swift */; };
 		951961AE2E00BD430088B0C2 /* SetMapImageLayerSublayerVisibilityView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 95813E382DF88FD000342CBF /* SetMapImageLayerSublayerVisibilityView.swift */; };
-		9520B2B52E135AD800B3BEF9 /* ShowLineOfSightBetweenGeoelementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9520B2B42E135AD800B3BEF9 /* ShowLineOfSightBetweenGeoelementsView.swift */; };
-		9520B2B62E135AEE00B3BEF9 /* ShowLineOfSightBetweenGeoelementsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 9520B2B42E135AD800B3BEF9 /* ShowLineOfSightBetweenGeoelementsView.swift */; };
+		9520B2B52E135AD800B3BEF9 /* ShowExploratoryLineOfSightBetweenGeoelementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9520B2B42E135AD800B3BEF9 /* ShowExploratoryLineOfSightBetweenGeoelementsView.swift */; };
+		9520B2B62E135AEE00B3BEF9 /* ShowExploratoryLineOfSightBetweenGeoelementsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 9520B2B42E135AD800B3BEF9 /* ShowExploratoryLineOfSightBetweenGeoelementsView.swift */; };
 		9525404E2DF904BA004090B9 /* SetFeatureLayerRenderingModeOnSceneView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 9501BBEE2DF39DA50054F4BD /* SetFeatureLayerRenderingModeOnSceneView.swift */; };
 		9529D1942C01676200B5C1A3 /* SelectFeaturesInSceneLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 954AEDED2C01332600265114 /* SelectFeaturesInSceneLayerView.swift */; };
 		95321B302E554B31002E9DE2 /* ApplyRenderersToSceneLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95321B2F2E554B20002E9DE2 /* ApplyRenderersToSceneLayerView.swift */; };
@@ -788,7 +788,7 @@
 				1C8438F92DDBDE1F005CCBC7 /* ControlAnnotationSublayerVisibilityView.swift in Copy Source Code Files */,
 				951896BD2E29B20500144F9B /* ShowShapefileMetadataView.swift in Copy Source Code Files */,
 				95A86A5D2E1C51A9000BF570 /* ShowPortalUserInfoView.swift in Copy Source Code Files */,
-				9520B2B62E135AEE00B3BEF9 /* ShowLineOfSightBetweenGeoelementsView.swift in Copy Source Code Files */,
+				9520B2B62E135AEE00B3BEF9 /* ShowExploratoryLineOfSightBetweenGeoelementsView.swift in Copy Source Code Files */,
 				95FFEB442E06211B00543993 /* ShowGeodesicSectorAndEllipseView.swift in Copy Source Code Files */,
 				885F89BA2E0B5F8900C2E456 /* ManageFeaturesView.swift in Copy Source Code Files */,
 				889F9DB72E133D500025A98E /* ShowMagnifierView.swift in Copy Source Code Files */,
@@ -1263,7 +1263,7 @@
 		951896BA2E29B15600144F9B /* ShowShapefileMetadataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowShapefileMetadataView.swift; sourceTree = "<group>"; };
 		951896D22E2AE5E400144F9B /* ShowViewshedFromCameraInSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowViewshedFromCameraInSceneView.swift; sourceTree = "<group>"; };
 		951961AB2E00BC3C0088B0C2 /* ShowGeodesicSectorAndEllipseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowGeodesicSectorAndEllipseView.swift; sourceTree = "<group>"; };
-		9520B2B42E135AD800B3BEF9 /* ShowLineOfSightBetweenGeoelementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowLineOfSightBetweenGeoelementsView.swift; sourceTree = "<group>"; };
+		9520B2B42E135AD800B3BEF9 /* ShowExploratoryLineOfSightBetweenGeoelementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowExploratoryLineOfSightBetweenGeoelementsView.swift; sourceTree = "<group>"; };
 		95321B2F2E554B20002E9DE2 /* ApplyRenderersToSceneLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyRenderersToSceneLayerView.swift; sourceTree = "<group>"; };
 		9537AFD62C220EF0000923C5 /* ExchangeSetwithoutUpdates */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExchangeSetwithoutUpdates; sourceTree = "<group>"; };
 		9547085B2C3C719800CA8579 /* EditFeatureAttachmentsView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFeatureAttachmentsView.Model.swift; sourceTree = "<group>"; };
@@ -1882,7 +1882,7 @@
 				00ABA94B2BF671FC00C0488C /* Show grid */,
 				D751017D2A2E490800B8FA48 /* Show labels on layer */,
 				1C293D562DD53523000B0822 /* Show labels on layer in 3D */,
-				9520B24B2E13520400B3BEF9 /* Show line of sight between geoelements */,
+				9520B24B2E13520400B3BEF9 /* Show exploratory line of sight between geoelements */,
 				D7CC33FB2A31475C00198EDF /* Show line of sight between points */,
 				889F9DB42E133CDB0025A98E /* Show magnifier */,
 				D7337C5C2ABD137400A5D865 /* Show mobile map package expiration date */,
@@ -2891,12 +2891,12 @@
 			path = "Show geodesic sector and ellipse";
 			sourceTree = "<group>";
 		};
-		9520B24B2E13520400B3BEF9 /* Show line of sight between geoelements */ = {
+		9520B24B2E13520400B3BEF9 /* Show exploratory line of sight between geoelements */ = {
 			isa = PBXGroup;
 			children = (
-				9520B2B42E135AD800B3BEF9 /* ShowLineOfSightBetweenGeoelementsView.swift */,
+				9520B2B42E135AD800B3BEF9 /* ShowExploratoryLineOfSightBetweenGeoelementsView.swift */,
 			);
-			path = "Show line of sight between geoelements";
+			path = "Show exploratory line of sight between geoelements";
 			sourceTree = "<group>";
 		};
 		9520B26A2E13555800B3BEF9 /* 3af5cfec0fd24dac8d88aea679027cb9 */ = {
@@ -4916,7 +4916,7 @@
 				D718A1ED2B575FD900447087 /* ManageBookmarksView.swift in Sources */,
 				D73723762AF5877500846884 /* FindRouteInMobileMapPackageView.Models.swift in Sources */,
 				D74ECD0D2BEEAE2F007C0FA6 /* EditAndSyncFeaturesWithFeatureServiceView.Model.swift in Sources */,
-				9520B2B52E135AD800B3BEF9 /* ShowLineOfSightBetweenGeoelementsView.swift in Sources */,
+				9520B2B52E135AD800B3BEF9 /* ShowExploratoryLineOfSightBetweenGeoelementsView.swift in Sources */,
 				00CB9138284814A4005C2C5D /* SearchWithGeocodeView.swift in Sources */,
 				1C43BC7F2A43781200509BF8 /* SetVisibilityOfSubtypeSublayerView.Views.swift in Sources */,
 				95321B302E554B31002E9DE2 /* ApplyRenderersToSceneLayerView.swift in Sources */,

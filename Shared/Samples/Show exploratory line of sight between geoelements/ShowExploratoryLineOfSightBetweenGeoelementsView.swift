@@ -15,7 +15,7 @@
 import ArcGIS
 import SwiftUI
 
-struct ShowLineOfSightBetweenGeoelementsView: View {
+struct ShowExploratoryLineOfSightBetweenGeoelementsView: View {
     /// The view model for the sample.
     @State private var model = Model()
     
@@ -105,7 +105,7 @@ struct ShowLineOfSightBetweenGeoelementsView: View {
     }
 }
 
-private extension ShowLineOfSightBetweenGeoelementsView {
+private extension ShowExploratoryLineOfSightBetweenGeoelementsView {
     /// View model responsible for setting up the 3D scene, graphics, animation,
     /// and performing line of sight analysis between moving and static geoelements.
     @MainActor

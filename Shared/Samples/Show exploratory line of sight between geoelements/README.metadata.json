@@ -7,14 +7,16 @@
     ],
     "keywords": [
         "3D",
-        "line of sight",
+        "exploratory line of sight",
         "visibility",
         "visibility analysis",
         "AnalysisOverlay",
         "ExploratoryGeoElementLineOfSight",
         "ExploratoryGeoElementLineOfSight.TargetVisibility"
     ],
-    "redirect_from": [],
+    "redirect_from": [
+        "/swift/sample-code/show-line-of-sight-between-geoelements/"
+    ],
     "offline_data": [
         "3af5cfec0fd24dac8d88aea679027cb9"
     ],
