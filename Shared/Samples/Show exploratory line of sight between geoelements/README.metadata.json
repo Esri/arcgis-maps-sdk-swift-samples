@@ -1,9 +1,9 @@
 {
     "category": "Analysis",
-    "description": "Show a line of sight between two moving objects.",
+    "description": "Show an exploratory line of sight between two moving objects.",
     "ignore": false,
     "images": [
-        "show-line-of-sight-between-geoelements.png"
+        "show-exploratory-line-of-sight-between-geoelements.png"
     ],
     "keywords": [
         "3D",
@@ -26,7 +26,7 @@
         "ExploratoryGeoElementLineOfSight.TargetVisibility"
     ],
     "snippets": [
-        "ShowLineOfSightBetweenGeoelementsView.swift"
+        "ShowExploratoryLineOfSightBetweenGeoelementsView.swift"
     ],
-    "title": "Show line of sight between geoelements"
+    "title": "Show exploratory line of sight between geoelements"
 }
