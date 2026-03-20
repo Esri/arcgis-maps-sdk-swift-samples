@@ -1,16 +1,18 @@
-# Show viewshed from camera in scene
+# Show exploratory viewshed from camera in scene
 
-Analyze the viewshed for a camera showing the visible and obstructed areas from an observer's vantage point.
+Analyze the exploratory viewshed for a camera showing the visible and obstructed areas from an observer's vantage point.
 
-![Image of show viewshed from camera in scene sample](show-viewshed-from-camera-in-scene.png)
+![Image of Show exploratory viewshed from camera in scene sample](show-viewshed-from-camera-in-scene.png)
 
 ## Use case
 
-A viewshed analysis is a type of visual analysis you can perform on a scene. The viewshed aims to answer the question 'What can I see from a given location?'. The output is an overlay with two different colors - one representing the visible areas (green) and the other representing the obstructed areas (red).
+An exploratory viewshed analysis is a type of visual analysis you can perform at the current rendered resolution of a scene. The exploratory viewshed aims to answer the question 'What can I see from a given location?'. The output is an overlay with two different colors - one representing the visible areas (green) and the other representing the obstructed areas (red).
+
+Note: This analysis is a form of "exploratory analysis", which means the results are calculated on the current scale of the data, and the results are generated very quickly but not persisted. If persisted analysis performed at the full resolution of the data is required, consider using a `ViewshedFunction` to perform a viewshed calculation instead.
 
 ## How to use the sample
 
-The sample will start with a viewshed created from the initial camera location, so only the visible (green) portion of the viewshed will be visible. Move around the scene to see the obstructed (red) portions. Tap the 'Viewshed from here' button to update the viewshed to the current camera position.
+The sample will start with an exploratory viewshed created from the initial camera location, so only the visible (green) portion of the exploratory viewshed will be visible. Move around the scene to see the obstructed (red) portions. Tap the 'Viewshed from here' button to update the exploratory viewshed to the current camera position.
 
 ## How it works
 
@@ -34,4 +36,4 @@ The scene shows an integrated mesh layer of [Girona, Spain](https://www.arcgis.c
 
 ## Tags
 
-3D, integrated mesh, viewshed, visibility analysis
+3D, exploratory viewshed, integrated mesh, visibility analysis
