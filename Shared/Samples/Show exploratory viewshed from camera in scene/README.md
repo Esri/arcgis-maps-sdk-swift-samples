@@ -18,7 +18,7 @@ The sample will start with an exploratory viewshed created from the initial came
 
 1. Get the current camera.
 2. Create an `ExploratoryLocationViewshed`, passing in the `Camera` and a min/max distance.
-3. Update the viewshed from a camera.
+3. Update the exploratory viewshed from a camera.
 
 ## Relevant API
 
