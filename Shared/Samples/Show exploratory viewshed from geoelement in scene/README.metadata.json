@@ -1,6 +1,6 @@
 {
     "category": "Analysis",
-    "description": "Analyze the viewshed for an object (GeoElement) in a scene.",
+    "description": "Analyze the exploratory viewshed for an object (GeoElement) in a scene.",
     "ignore": false,
     "images": [
         "show-exploratory-viewshed-from-geoelement-in-scene.png"
