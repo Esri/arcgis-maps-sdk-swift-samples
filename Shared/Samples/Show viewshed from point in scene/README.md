@@ -1,23 +1,23 @@
-# Show viewshed from point in scene
+# Show exploratory viewshed from point in scene
 
-Perform a viewshed analysis from a defined vantage point.
+Perform an exploratory viewshed analysis from a defined vantage point.
 
-![Screenshot of show viewshed from point in scene sample](show-viewshed-from-point-in-scene.png)
+![Screenshot of Show exploratory viewshed from point in scene sample](show-exploratory-viewshed-from-point-in-scene.png)
 
 ## Use case
 
-A 3D viewshed analysis is a type of visual analysis you can perform on a scene. The viewshed shows what can be seen from a given location. The output is an overlay with two different colors - one representing the visible areas (green) and the other representing the obstructed areas (red).
+An exploratory viewshed analysis is a type of visual analysis you can perform at the current rendered resolution of a scene. The exploratory viewshed shows what can be seen from a given location. The output is an overlay with two different colors - one representing the visible areas (green) and the other representing the obstructed areas (red).
 
-Viewshed analysis is a form of "exploratory analysis", which means the results are calculated on the current scale of the data, and the results are generated very quickly. If more "conclusive" results are required, consider using a geoprocessing task to perform a viewshed analysis instead.
+Note: This analysis is a form of "exploratory analysis", which means the results are calculated on the current scale of the data, and the results are generated very quickly but not persisted. If persisted analysis performed at the full resolution of the data is required, consider using a `ViewshedFunction` to perform a viewshed calculation instead.
 
 ## How to use the sample
 
-Tap on the map to add an observer location. Use the sliders to change the properties (heading, pitch, etc.), of the viewshed and see them updated in real time. To move the viewshed, tap anywhere on the screen.
+Tap on the map to add an observer location. Use the sliders to change the properties (heading, pitch, etc.), of the exploratory viewshed and see them updated in real time. To move the exploratory viewshed, tap anywhere on the screen.
 
 ## How it works
 
 1. Create an `ExploratoryLocationViewshed` passing in the observer location, heading, pitch, horizontal/vertical angles, and min/max distances.
-2. Set the property values on the viewshed instance for location, direction, range, and visibility properties.
+2. Set the property values on the exploratory viewshed instance for location, direction, range, and visibility properties.
 
 ## Relevant API
 
