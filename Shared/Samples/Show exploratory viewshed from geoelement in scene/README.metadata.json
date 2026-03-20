@@ -3,15 +3,15 @@
     "description": "Analyze the viewshed for an object (GeoElement) in a scene.",
     "ignore": false,
     "images": [
-        "show-viewshed-from-geoelement-in-scene.png"
+        "show-exploratory-viewshed-from-geoelement-in-scene.png"
     ],
     "keywords": [
         "3D",
         "analysis",
         "buildings",
+        "exploratory viewshed",
         "model",
         "scene",
-        "viewshed",
         "visibility analysis",
         "AnalysisOverlay",
         "ExploratoryGeoElementViewshed",
@@ -33,7 +33,7 @@
         "static GeometryEngine.geodeticDistance(from:to:distanceUnit:azimuthUnit:curveType:)"
     ],
     "snippets": [
-        "ShowViewshedFromGeoelementInSceneView.swift"
+        "ShowExploratoryViewshedFromGeoelementInSceneView.swift"
     ],
-    "title": "Show viewshed from geoelement in scene"
+    "title": "Show exploratory viewshed from geoelement in scene"
 }
