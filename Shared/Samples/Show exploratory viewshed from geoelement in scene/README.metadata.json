@@ -23,7 +23,9 @@
     "offline_data": [
         "07d62a792ab6496d9b772a24efea45d0"
     ],
-    "redirect_from": [],
+    "redirect_from": [
+        "/swift/sample-code/show-viewshed-from-geoelement-in-scene/"
+    ],
     "relevant_apis": [
         "AnalysisOverlay",
         "ExploratoryGeoElementViewshed",

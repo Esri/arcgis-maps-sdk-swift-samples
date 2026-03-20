@@ -18,7 +18,9 @@
         "Scene",
         "SceneView"
     ],
-    "redirect_from": [],
+    "redirect_from": [
+        "/swift/sample-code/show-viewshed-from-camera-in-scene/"
+    ],
     "relevant_apis": [
         "AnalysisOverlay",
         "ArcGISTiledElevationSource",
