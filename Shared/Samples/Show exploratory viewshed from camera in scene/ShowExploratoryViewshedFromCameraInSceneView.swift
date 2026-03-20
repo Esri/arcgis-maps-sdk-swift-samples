@@ -15,7 +15,7 @@
 import ArcGIS
 import SwiftUI
 
-struct ShowViewshedFromCameraInSceneView: View {
+struct ShowExploratoryViewshedFromCameraInSceneView: View {
     /// A camera for the scene that determines where the viewshed is set from.
     @State private var camera: Camera?
     
@@ -86,4 +86,8 @@ struct ShowViewshedFromCameraInSceneView: View {
             }
         }
     }
+}
+
+#Preview {
+    ShowExploratoryViewshedFromCameraInSceneView()
 }
