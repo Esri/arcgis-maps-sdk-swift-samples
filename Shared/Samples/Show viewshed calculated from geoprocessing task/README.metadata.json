@@ -17,7 +17,9 @@
         "GeoprocessingResult",
         "GeoprocessingTask"
     ],
-    "redirect_from": [],
+    "redirect_from": [
+        "/swift/sample-code/show-viewshed-from-point-on-map/"
+    ],
     "relevant_apis": [
         "FeatureCollectionTable",
         "GeoprocessingFeatures",
