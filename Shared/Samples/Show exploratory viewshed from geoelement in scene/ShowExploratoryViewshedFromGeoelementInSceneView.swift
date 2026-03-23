@@ -15,7 +15,7 @@
 import ArcGIS
 import SwiftUI
 
-struct ShowViewshedFromGeoelementInSceneView: View {
+struct ShowExploratoryViewshedFromGeoelementInSceneView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
@@ -50,7 +50,7 @@ struct ShowViewshedFromGeoelementInSceneView: View {
     }
 }
 
-private extension ShowViewshedFromGeoelementInSceneView {
+private extension ShowExploratoryViewshedFromGeoelementInSceneView {
     /// The view model for the sample.
     class Model: ObservableObject {
         /// A scene with an imagery basemap.
