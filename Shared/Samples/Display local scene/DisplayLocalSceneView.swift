@@ -33,7 +33,7 @@ struct DisplayLocalSceneView: View {
         // Adds a layer.
         
         let sceneLayer = ArcGISSceneLayer(
-            url: URL(string: "https://www.arcgis.com/home/item.html?id=61da8dc1a7bc4eea901c20ffb3f8b7af")!
+            url: URL(string: "https://www.arcgis.com/home/item.html?id=7a63e9808a054d39964a8b4712c85657")!
         )
         scene.addOperationalLayer(sceneLayer)
         
