@@ -30,7 +30,7 @@ struct ApplyMapAlgebraView: View {
     var body: some View {
         MapView(map: model.map)
             .overlay(alignment: .top) {
-                Text("Raster data Copyright Scottish Government and SEPA (2014)")
+                Text("Raster data copyright Scottish Government and SEPA (2014)")
                     .font(.caption)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 6)
