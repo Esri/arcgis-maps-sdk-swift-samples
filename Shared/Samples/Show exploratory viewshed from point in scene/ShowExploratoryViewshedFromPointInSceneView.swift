@@ -15,7 +15,7 @@
 import ArcGIS
 import SwiftUI
 
-struct ShowViewshedFromPointInSceneView: View {
+struct ShowExploratoryViewshedFromPointInSceneView: View {
     /// The view model for the sample.
     @StateObject private var model = Model()
     
@@ -55,6 +55,6 @@ struct ShowViewshedFromPointInSceneView: View {
 
 #Preview {
     NavigationStack {
-        ShowViewshedFromPointInSceneView()
+        ShowExploratoryViewshedFromPointInSceneView()
     }
 }

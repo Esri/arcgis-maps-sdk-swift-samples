@@ -14,7 +14,7 @@
 
 import SwiftUI
 
-extension ShowViewshedFromPointInSceneView {
+extension ShowExploratoryViewshedFromPointInSceneView {
     struct ViewshedSettingsView: View {
         /// The view model for the sample.
         @ObservedObject var model: Model

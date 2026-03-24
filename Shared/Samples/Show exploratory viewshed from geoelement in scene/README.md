@@ -1,0 +1,41 @@
+# Show exploratory viewshed from geoelement in scene
+
+Analyze the exploratory viewshed for an object (GeoElement) in a scene.
+
+![Image of Show exploratory viewshed from geoelement in scene sample](show-exploratory-viewshed-from-geoelement-in-scene.png)
+
+## Use case
+
+An exploratory viewshed analysis is a type of visual analysis you can perform at the current rendered resolution of a scene. The exploratory viewshed aims to answer the question 'What can I see from a given location?'. The output is an overlay with two different colors - one representing the visible areas (green) and the other representing the obstructed areas (red).
+
+Note: This analysis is a form of "exploratory analysis", which means the results are calculated on the current scale of the data, and the results are generated very quickly but not persisted. If persisted analysis performed at the full resolution of the data is required, consider using a `ViewshedFunction` to perform a viewshed calculation instead.
+
+## How to use the sample
+
+Tap to set a destination for the vehicle (a `GeoElement`). The vehicle will 'drive' towards the tapped location. The exploratory viewshed analysis will update as the vehicle moves.
+
+## How it works
+
+1. Create and show the scene, with an elevation source and a buildings layer.
+2. Add a model (the `GeoElement`) to represent the observer (in this case, a tank).
+    * Use a `SimpleRenderer` which has a heading expression set in the `GraphicsOverlay`. This way you can relate the viewshed's heading to the `GeoElement` object's heading.
+3. Create an `ExploratoryGeoElementViewshed` with configuration for the viewshed analysis.
+4. Add the viewshed to an `AnalysisOverlay` and add the overlay to the scene.
+5. Configure the SceneView `CameraController` to orbit the vehicle.
+
+## Relevant API
+
+* AnalysisOverlay
+* ExploratoryGeoElementViewshed
+* GeodeticDistanceResult
+* ModelSceneSymbol
+* OrbitGeoElementCameraController
+* static GeometryEngine.geodeticDistance(from:to:distanceUnit:azimuthUnit:curveType:)
+
+## About the data
+
+This sample shows [buildings in Brest, France Scene](https://www.arcgis.com/home/item.html?id=b343e14455fe45b98a2c20ebbceec0b0) from ArcGIS Online. The sample uses a [Tank model scene symbol](http://www.arcgis.com/home/item.html?id=07d62a792ab6496d9b772a24efea45d0) hosted as an item on ArcGIS Online.
+
+## Tags
+
+3D, analysis, buildings, exploratory viewshed, model, scene, visibility analysis

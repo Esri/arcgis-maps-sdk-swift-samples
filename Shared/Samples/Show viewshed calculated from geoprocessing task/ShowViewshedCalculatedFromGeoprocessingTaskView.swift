@@ -15,7 +15,7 @@
 import ArcGIS
 import SwiftUI
 
-struct ShowViewshedFromPointOnMapView: View {
+struct ShowViewshedCalculatedFromGeoprocessingTaskView: View {
     /// The error shown in the error alert.
     @State private var error: (any Error)?
     
@@ -66,7 +66,7 @@ struct ShowViewshedFromPointOnMapView: View {
     }
 }
 
-private extension ShowViewshedFromPointOnMapView {
+private extension ShowViewshedCalculatedFromGeoprocessingTaskView {
     @MainActor
     class Model: ObservableObject {
         /// A map with topographic basemap.
@@ -177,5 +177,5 @@ private extension URL {
 }
 
 #Preview {
-    ShowViewshedFromPointOnMapView()
+    ShowViewshedCalculatedFromGeoprocessingTaskView()
 }

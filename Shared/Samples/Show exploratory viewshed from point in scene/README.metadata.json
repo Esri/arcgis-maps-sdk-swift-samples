@@ -1,0 +1,36 @@
+{
+    "category": "Analysis",
+    "description": "Perform an exploratory viewshed analysis from a defined vantage point.",
+    "ignore": false,
+    "images": [
+        "show-exploratory-viewshed-from-point-in-scene.png"
+    ],
+    "keywords": [
+        "3D",
+        "exploratory viewshed",
+        "frustum",
+        "scene",
+        "visibility analysis",
+        "AnalysisOverlay",
+        "ArcGISSceneLayer",
+        "ArcGISTiledElevationSource",
+        "ExploratoryLocationViewshed",
+        "ExploratoryViewshed"
+    ],
+    "redirect_from": [
+        "/swift/sample-code/show-viewshed-from-point-in-scene/"
+    ],
+    "relevant_apis": [
+        "AnalysisOverlay",
+        "ArcGISSceneLayer",
+        "ArcGISTiledElevationSource",
+        "ExploratoryLocationViewshed",
+        "ExploratoryViewshed"
+    ],
+    "snippets": [
+        "ShowExploratoryViewshedFromPointInSceneView.swift",
+        "ShowExploratoryViewshedFromPointInSceneView.Model.swift",
+        "ShowExploratoryViewshedFromPointInSceneView.ViewshedSettingsView.swift"
+    ],
+    "title": "Show exploratory viewshed from point in scene"
+}
