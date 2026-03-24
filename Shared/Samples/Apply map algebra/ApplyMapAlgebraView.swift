@@ -66,8 +66,13 @@ struct ApplyMapAlgebraView: View {
                             }
                         }
                     } else {
-                        Button("Categorize") {
+                        Button {
                             categorizeButtonIsTapped = true
+                        } label: {
+                            if model.isPerformingAnalysis {
+                                ProgressView()
+                            }
+                            Text("Categorize")
                         }
                         .disabled(model.isPerformingAnalysis)
                     }
