@@ -38,18 +38,22 @@ extension SamplesApp {
     func license() {
         if let licenseStringLiteral = String.licenseKey,
            let licenseKey = LicenseKey(licenseStringLiteral) {
-            // Sets the license with an extension if one is included. Both are
+            // Sets the license with extensions if they are included. They are
             // required to access all samples, including utility network
-            // capabilities.
-            if let extensionLicenseStringLiteral = String.extensionLicenseKey,
-               let extensionLicenseKey = LicenseKey(extensionLicenseStringLiteral) {
-                _ = try? ArcGISEnvironment.setLicense(
-                    with: licenseKey,
-                    extensions: [extensionLicenseKey]
-                )
-            } else {
-                _ = try? ArcGISEnvironment.setLicense(with: licenseKey)
+            // and spatial analysis ones.
+            var extensions: [LicenseKey] = []
+            if let aeStringLiteral = String.advancedEditingExtensionLicenseKey,
+               let advancedEditingLicenseKey = LicenseKey(aeStringLiteral) {
+                extensions.append(advancedEditingLicenseKey)
             }
+            if let analysisStringLiteral = String.analysisExtensionLicenseKey,
+               let analysisLicenseKey = LicenseKey(analysisStringLiteral) {
+                extensions.append(analysisLicenseKey)
+            }
+            _ = try? ArcGISEnvironment.setLicense(
+                with: licenseKey,
+                extensions: extensions
+            )
         }
         // Authentication with an API key or named user is required to access
         // basemaps and other location services.
