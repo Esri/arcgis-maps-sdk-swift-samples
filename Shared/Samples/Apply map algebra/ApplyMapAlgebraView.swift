@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import ArcGIS
-import Combine
 import SwiftUI
 
 struct ApplyMapAlgebraView: View {
@@ -39,16 +38,18 @@ struct ApplyMapAlgebraView: View {
             }
             .task(id: categorizeButtonIsTapped) {
                 guard categorizeButtonIsTapped else { return }
+                defer { categorizeButtonIsTapped = false }
                 do {
                     // Performs the map algebra analysis to categorize
                     // geomorphic areas based on elevation, and creates a
                     // raster layer with the results.
-                    let raster = try await model.performAnalysis(fromFilesAt: [.arranElevation])
-                    let resultsLayer = model.makeGeomorphicCategorizationRasterLayer(raster: raster)
-                    model.map.addOperationalLayer(resultsLayer)
-                    model.selectRasterLayer(resultsLayer)
-                    withAnimation {
-                        resultsLayerIsAvailable = true
+                    if let raster = try await model.performAnalysis(fromFilesAt: [.arranElevation]) {
+                        let resultsLayer = model.makeGeomorphicCategorizationRasterLayer(raster: raster)
+                        model.map.addOperationalLayer(resultsLayer)
+                        model.selectRasterLayer(resultsLayer)
+                        withAnimation {
+                            resultsLayerIsAvailable = true
+                        }
                     }
                 } catch {
                     self.error = error
@@ -121,7 +122,7 @@ private extension ApplyMapAlgebraView {
         /// - Parameter raster: The raster to perform the analysis on.
         /// - Returns: A new raster containing the results of the analysis.
         @MainActor
-        func performAnalysis(fromFilesAt urls: [URL]) async throws -> Raster {
+        func performAnalysis(fromFilesAt urls: [URL]) async throws -> Raster? {
             isPerformingAnalysis = true
             defer { isPerformingAnalysis = false }
             
@@ -184,20 +185,20 @@ private extension ApplyMapAlgebraView {
                 )
             if FileManager.default.fileExists(atPath: temporaryDirectoryURL.path) {
                 try FileManager.default.removeItem(at: temporaryDirectoryURL)
-            } else {
-                try FileManager.default.createDirectory(
-                    at: temporaryDirectoryURL,
-                    withIntermediateDirectories: true
-                )
             }
+            try FileManager.default.createDirectory(
+                at: temporaryDirectoryURL,
+                withIntermediateDirectories: true
+            )
             
-            // Exports the disrete field to files in GeoTIFF format.
+            // Exports the discrete field to files in GeoTIFF format.
             let exportedFiles = try await geomorphicCategoryField.export(
                 toFilesInDirectory: temporaryDirectoryURL,
                 filenamePrefix: "geomorphicCategorization"
             )
             
-            let geomorphicRaster = Raster(fileURL: exportedFiles.first!)
+            guard let fileURL = exportedFiles.first else { return nil }
+            let geomorphicRaster = Raster(fileURL: fileURL)
             return geomorphicRaster
         }
         
@@ -226,11 +227,7 @@ private extension ApplyMapAlgebraView {
         /// - Parameter rasterLayer: The raster layer to make visible.
         func selectRasterLayer(_ rasterLayer: RasterLayer) {
             for case let layer as RasterLayer in map.operationalLayers {
-                if let id = layer.id, id == rasterLayer.id {
-                    layer.isVisible = true
-                } else {
-                    layer.isVisible = false
-                }
+                layer.isVisible = layer === rasterLayer
             }
         }
     }
