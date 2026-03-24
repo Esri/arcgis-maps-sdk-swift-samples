@@ -221,7 +221,7 @@ private extension ApplyMapAlgebraView {
             layer.opacity = 0.5
             return layer
         }
-
+        
         /// Makes a raster layer visible in the map's operational layers and
         /// hide all other raster layers.
         /// - Parameter rasterLayer: The raster layer to make visible.
