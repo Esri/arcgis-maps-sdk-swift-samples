@@ -160,7 +160,12 @@ private extension GenerateOfflineMapView {
             // Initializes the online map.
             onlineMap = Map(item: napervillePortalItem)
             // Sets the min scale to avoid requesting a huge download.
+            // Use a more conservative scale on iPad due to larger screen size.
+            #if os(iOS)
+            onlineMap.minScale = UIDevice.current.userInterfaceIdiom == .pad ? 5e4 : 1e4
+            #else
             onlineMap.minScale = 1e4
+            #endif
         }
         
         deinit {
