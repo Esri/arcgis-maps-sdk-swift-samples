@@ -124,7 +124,7 @@ private extension ApplyMapAlgebraView {
         
         /// Applies the map algebra to the elevation raster and creates a new
         /// raster layer with the results.
-        /// - Parameter raster: The raster to perform the analysis on.
+        /// - Parameter urls: One or more raster file paths.
         /// - Returns: A new raster containing the results of the analysis.
         @MainActor
         func performAnalysis(fromFilesAt urls: [URL]) async throws -> Raster? {
