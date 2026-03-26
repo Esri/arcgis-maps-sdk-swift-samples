@@ -71,6 +71,8 @@
 		0074ABBF28174BCF0037244A /* DisplayMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0074ABBE28174BCF0037244A /* DisplayMapView.swift */; };
 		0074ABC428174F430037244A /* Sample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0074ABC128174F430037244A /* Sample.swift */; };
 		0074ABCD2817BCC30037244A /* SamplesApp+Samples.swift.tache in Sources */ = {isa = PBXBuildFile; fileRef = 0074ABCA2817B8DB0037244A /* SamplesApp+Samples.swift.tache */; };
+		0082E7132F730C93006A4C7F /* arran.tif in Resources */ = {isa = PBXBuildFile; fileRef = 0082E7112F730C93006A4C7F /* arran.tif */; settings = {ASSET_TAGS = (ApplyMapAlgebra, ); }; };
+		0082E7142F73108D006A4C7F /* ApplyMapAlgebraView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 00D6C1BA2F719FA5000CA40E /* ApplyMapAlgebraView.swift */; };
 		0086F40128E3770A00974721 /* ShowExploratoryViewshedFromPointInSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0086F3FD28E3770900974721 /* ShowExploratoryViewshedFromPointInSceneView.swift */; };
 		00A7A1462A2FC58300F035F7 /* DisplayContentOfUtilityNetworkContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A7A1432A2FC58300F035F7 /* DisplayContentOfUtilityNetworkContainerView.swift */; };
 		00A7A14A2A2FC5B700F035F7 /* DisplayContentOfUtilityNetworkContainerView.Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A7A1492A2FC5B700F035F7 /* DisplayContentOfUtilityNetworkContainerView.Model.swift */; };
@@ -87,6 +89,7 @@
 		00D4EF9028638BF100B9CC30 /* LA_Trails.geodatabase in Resources */ = {isa = PBXBuildFile; fileRef = 00D4EF8228638BF100B9CC30 /* LA_Trails.geodatabase */; settings = {ASSET_TAGS = (AddFeatureLayers, ); }; };
 		00D4EF9A28638BF100B9CC30 /* AuroraCO.gpkg in Resources */ = {isa = PBXBuildFile; fileRef = 00D4EF8F28638BF100B9CC30 /* AuroraCO.gpkg */; settings = {ASSET_TAGS = (AddFeatureLayers, AddRastersAndFeatureTablesFromGeopackage, ); }; };
 		00D4EFB12863CE6300B9CC30 /* ScottishWildlifeTrust_reserves in Resources */ = {isa = PBXBuildFile; fileRef = 00D4EFB02863CE6300B9CC30 /* ScottishWildlifeTrust_reserves */; settings = {ASSET_TAGS = (AddFeatureLayers, ); }; };
+		00D6C1BB2F719FAB000CA40E /* ApplyMapAlgebraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D6C1BA2F719FA5000CA40E /* ApplyMapAlgebraView.swift */; };
 		00E1D90B2BC0AF97001AEB6A /* SnapGeometryEditsView.SnapSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E1D90A2BC0AF97001AEB6A /* SnapGeometryEditsView.SnapSettingsView.swift */; };
 		00E1D90D2BC0B125001AEB6A /* SnapGeometryEditsView.GeometryEditorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E1D90C2BC0B125001AEB6A /* SnapGeometryEditsView.GeometryEditorModel.swift */; };
 		00E1D90F2BC0B1E8001AEB6A /* SnapGeometryEditsView.GeometryEditorMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E1D90E2BC0B1E8001AEB6A /* SnapGeometryEditsView.GeometryEditorMenu.swift */; };
@@ -768,6 +771,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				0082E7142F73108D006A4C7F /* ApplyMapAlgebraView.swift in Copy Source Code Files */,
 				79B2B6E82F4794BD007E652A /* ConfigureSceneEnvironmentView.swift in Copy Source Code Files */,
 				79E8A3092ED673F200432F4E /* FilterBuildingSceneLayerView.BuildingGroupSublayerToggleView.swift in Copy Source Code Files */,
 				79E8A30A2ED673F200432F4E /* FilterBuildingSceneLayerView.BuildingSublayerToggleView.swift in Copy Source Code Files */,
@@ -1115,6 +1119,7 @@
 		0074ABBE28174BCF0037244A /* DisplayMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayMapView.swift; sourceTree = "<group>"; };
 		0074ABC128174F430037244A /* Sample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sample.swift; sourceTree = "<group>"; };
 		0074ABCA2817B8DB0037244A /* SamplesApp+Samples.swift.tache */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "SamplesApp+Samples.swift.tache"; sourceTree = "<group>"; };
+		0082E7112F730C93006A4C7F /* arran.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = arran.tif; sourceTree = "<group>"; };
 		0086F3FD28E3770900974721 /* ShowExploratoryViewshedFromPointInSceneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowExploratoryViewshedFromPointInSceneView.swift; sourceTree = "<group>"; };
 		00A7A1432A2FC58300F035F7 /* DisplayContentOfUtilityNetworkContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayContentOfUtilityNetworkContainerView.swift; sourceTree = "<group>"; };
 		00A7A1492A2FC5B700F035F7 /* DisplayContentOfUtilityNetworkContainerView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayContentOfUtilityNetworkContainerView.Model.swift; sourceTree = "<group>"; };
@@ -1130,6 +1135,7 @@
 		00D4EF8228638BF100B9CC30 /* LA_Trails.geodatabase */ = {isa = PBXFileReference; lastKnownFileType = file; path = LA_Trails.geodatabase; sourceTree = "<group>"; };
 		00D4EF8F28638BF100B9CC30 /* AuroraCO.gpkg */ = {isa = PBXFileReference; lastKnownFileType = file; path = AuroraCO.gpkg; sourceTree = "<group>"; };
 		00D4EFB02863CE6300B9CC30 /* ScottishWildlifeTrust_reserves */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ScottishWildlifeTrust_reserves; sourceTree = "<group>"; };
+		00D6C1BA2F719FA5000CA40E /* ApplyMapAlgebraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyMapAlgebraView.swift; sourceTree = "<group>"; };
 		00E1D90A2BC0AF97001AEB6A /* SnapGeometryEditsView.SnapSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapGeometryEditsView.SnapSettingsView.swift; sourceTree = "<group>"; };
 		00E1D90C2BC0B125001AEB6A /* SnapGeometryEditsView.GeometryEditorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapGeometryEditsView.GeometryEditorModel.swift; sourceTree = "<group>"; };
 		00E1D90E2BC0B1E8001AEB6A /* SnapGeometryEditsView.GeometryEditorMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapGeometryEditsView.GeometryEditorMenu.swift; sourceTree = "<group>"; };
@@ -1720,6 +1726,7 @@
 				1CC755E32DC95625004B346F /* Apply function to raster from file */,
 				8810FB572DC94A5600874936 /* Apply function to raster from service */,
 				88E52E6D2DC969CF00F48409 /* Apply hillshade renderer to raster */,
+				00D6C1B92F719F99000CA40E /* Apply map algebra */,
 				955AFAC52C10FD74009C8FE5 /* Apply mosaic rule to rasters */,
 				D771D0C52CD55211004C13CB /* Apply raster rendering rule */,
 				95321B312E554B76002E9DE2 /* Apply renderers to scene layer */,
@@ -1937,6 +1944,14 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		0082E7122F730C93006A4C7F /* aa97788593e34a32bcaae33947fdc271 */ = {
+			isa = PBXGroup;
+			children = (
+				0082E7112F730C93006A4C7F /* arran.tif */,
+			);
+			path = aa97788593e34a32bcaae33947fdc271;
+			sourceTree = "<group>";
+		};
 		0086F3FC28E3770900974721 /* Show exploratory viewshed from point in scene */ = {
 			isa = PBXGroup;
 			children = (
@@ -2040,6 +2055,7 @@
 				D7BEBA9F2CBD9CCA00F882E7 /* 98092369c4ae4d549bbbd45dba993ebc */,
 				D721EEA62ABDFF550040BE46 /* 174150279af74a2ba6f8b87a567f480b */,
 				792222DB2A81AA5D00619FFE /* a8a942c228af4fac96baa78ad60f511f */,
+				0082E7122F730C93006A4C7F /* aa97788593e34a32bcaae33947fdc271 */,
 				D7464F202ACE0910007FEE88 /* b5f977c78ec74b3a8857ca86d1d9b318 */,
 				1C38921E2DC1749700ADFDDC /* b051f5c3e01048f3bf11c59b41507896 */,
 				D7F8C03F2B605E720072BFA7 /* b5106355f1634b8996e634c04b6a930a */,
@@ -2093,6 +2109,14 @@
 				00D4EF8F28638BF100B9CC30 /* AuroraCO.gpkg */,
 			);
 			path = 68ec42517cdd439e81b036210483e8e7;
+			sourceTree = "<group>";
+		};
+		00D6C1B92F719F99000CA40E /* Apply map algebra */ = {
+			isa = PBXGroup;
+			children = (
+				00D6C1BA2F719FA5000CA40E /* ApplyMapAlgebraView.swift */,
+			);
+			path = "Apply map algebra";
 			sourceTree = "<group>";
 		};
 		00E5400627F3CCA100CF66D5 = {
@@ -4382,6 +4406,7 @@
 					ApplyDictionaryRendererToGraphicsOverlay,
 					ApplyFunctionToRasterFromFile,
 					ApplyHillshadeRendererToRaster,
+					ApplyMapAlgebra,
 					ApplyRgbRenderer,
 					ApplyScheduledUpdatesToPreplannedMapArea,
 					ApplyStretchRenderer,
@@ -4460,6 +4485,7 @@
 				1C293D4D2DCD91BF000B0822 /* color.json in Resources */,
 				9537AFD72C220EF0000923C5 /* ExchangeSetwithoutUpdates in Resources */,
 				D7F8C03E2B605AF60072BFA7 /* ContingentValuesBirdNests.geodatabase in Resources */,
+				0082E7132F730C93006A4C7F /* arran.tif in Resources */,
 				E041AC1E288076A60056009B /* info.css in Resources */,
 				D7CE9F9B2AE2F575008F7A5F /* streetmap_SD.tpkx in Resources */,
 				D721EEA82ABDFF550040BE46 /* LothianRiversAnno.mmpk in Resources */,
@@ -4875,6 +4901,7 @@
 				D74EA7842B6DADA5008F6C7C /* ValidateUtilityNetworkTopologyView.swift in Sources */,
 				00E1D90D2BC0B125001AEB6A /* SnapGeometryEditsView.GeometryEditorModel.swift in Sources */,
 				E088E1742863B5F800413100 /* GenerateOfflineMapView.swift in Sources */,
+				00D6C1BB2F719FAB000CA40E /* ApplyMapAlgebraView.swift in Sources */,
 				0074ABC428174F430037244A /* Sample.swift in Sources */,
 				95E980712C26183000CB8912 /* BrowseOGCAPIFeatureServiceView.swift in Sources */,
 				D713C6D72CB990600073AA72 /* AddKMLLayerView.swift in Sources */,
