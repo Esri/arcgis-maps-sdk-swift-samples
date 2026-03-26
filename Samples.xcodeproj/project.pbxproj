@@ -1119,7 +1119,6 @@
 		00A7A1432A2FC58300F035F7 /* DisplayContentOfUtilityNetworkContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayContentOfUtilityNetworkContainerView.swift; sourceTree = "<group>"; };
 		00A7A1492A2FC5B700F035F7 /* DisplayContentOfUtilityNetworkContainerView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayContentOfUtilityNetworkContainerView.Model.swift; sourceTree = "<group>"; };
 		00ABA94D2BF6721700C0488C /* ShowGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowGridView.swift; sourceTree = "<group>"; };
-		00ACF554293E6C6A0059B2A9 /* Samples.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Samples.entitlements; sourceTree = "<group>"; };
 		00B04272282EC59E0072E1B4 /* AboutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		00B042E5282EDC690072E1B4 /* SetBasemapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetBasemapView.swift; sourceTree = "<group>"; };
 		00B04FB4283EEBA80026C882 /* DisplayOverviewMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayOverviewMapView.swift; sourceTree = "<group>"; };
@@ -1563,14 +1562,6 @@
 				002056E72DDD40430016B8A9 /* DisplayOGCAPICollectionView.swift */,
 			);
 			path = "Display OGC API collection";
-			sourceTree = "<group>";
-		};
-		0023DE5029D648FA0098243A /* macOS */ = {
-			isa = PBXGroup;
-			children = (
-				00ACF554293E6C6A0059B2A9 /* Samples.entitlements */,
-			);
-			path = macOS;
 			sourceTree = "<group>";
 		};
 		003D7C332821EBCC009DDFD2 /* Scripts */ = {
@@ -2099,7 +2090,6 @@
 			isa = PBXGroup;
 			children = (
 				00966EE62811F64D009D3DD7 /* iOS */,
-				0023DE5029D648FA0098243A /* macOS */,
 				00CCB8A6285D059300BBAB70 /* Portal Data */,
 				00E5401427F3CCA200CF66D5 /* Products */,
 				003D7C332821EBCC009DDFD2 /* Scripts */,
