@@ -12,15 +12,16 @@ Note: License strings are not required for development. Without licensing or lic
   touch .secrets
   ```
 
-2. Add your **License String** to the secrets file. Licensing the app will remove the 'Licensed for Developer Use Only' watermark. Licensing the app is optional in development but required for production. Add your **Extension License String** and **API Key** access token to the secrets file if needed. If the license string is set, an **Advanced Editing** extension will be required to access all the samples, such as those with utility network capabilities. Learn more about how to [Get a license](https://developers.arcgis.com/swift/license-and-deployment/get-a-license/).
+2. Add your **License String** to the secrets file. Licensing the app will remove the 'Licensed for Developer Use Only' watermark. Licensing the app is optional in development but required for production. Add your **Extension License String** and **API Key** access token to the secrets file if needed. If the license string is set, an **Advanced Editing** and an **Analysis** extension will be required to access all the samples, such as those with utility network and analysis capabilities. Learn more about how to [Get a license](https://developers.arcgis.com/swift/license-and-deployment/get-a-license/).
 
   ```sh
   echo ARCGIS_LICENSE_KEY=your-license-key >> .secrets
-  echo ARCGIS_EXTENSION_LICENSE_KEY=your-extension-license-key >> .secrets
+  echo ADVANCED_EDITING_EXTENSION_LICENSE_KEY=your-ae-extension-license-key >> .secrets
+  echo ANALYSIS_EXTENSION_LICENSE_KEY=your-na-extension-license-key >> .secrets
   echo ARCGIS_API_KEY_IOS=your-api-key >> .secrets
   ```
 
-  > Replace 'your-license-key', 'your-extension-license-key' and 'your-api-key' with your keys.
+  > Replace 'your-license-key', 'your-ae-extension-license-key', 'your-na-extension-license-key', and 'your-api-key' with your keys.
 
 Visit the developer's website to learn more about [Deployment](https://developers.arcgis.com/swift/license-and-deployment/) and [Security and authentication](https://developers.arcgis.com/documentation/security-and-authentication/).
 
