@@ -140,6 +140,12 @@ func downloadFile(from sourceURL: URL, to downloadDirectory: URL) async throws -
     guard let suggestedFilename = response.suggestedFilename else { fatalError("No suggested filename from server.") }
     let isArchive = NSString(string: suggestedFilename).pathExtension == "zip"
     
+    // For unknown reason, iOS On-Demand Resources don't work with tiff files,
+    // when they are included in the app bundle as a single file. The script
+    // will enclose a standalone tiff file in a folder to work around this issue.
+    // https://github.com/Esri/arcgis-maps-sdk-swift-samples/pull/604
+    let isTif = ["tif", "tiff"].contains(NSString(string: suggestedFilename).pathExtension)
+    
     let downloadName: String = try {
         // If the downloaded file is an archive and contains
         //   - 1 file, use the name of that file.
@@ -164,6 +170,15 @@ func downloadFile(from sourceURL: URL, to downloadDirectory: URL) async throws -
         : downloadURL.deletingLastPathComponent()
         
         try uncompressArchive(at: temporaryURL, to: extractURL)
+    } else if isTif {
+        // Encloses the tiff file in a folder to work around the issue with
+        // iOS On-Demand Resources.
+        let enclosingFolderURL = downloadURL.deletingPathExtension()
+        try FileManager.default.createDirectory(at: enclosingFolderURL, withIntermediateDirectories: true)
+        try FileManager.default.moveItem(
+            at: temporaryURL,
+            to: enclosingFolderURL.appendingPathComponent(downloadName, isDirectory: false)
+        )
     } else {
         try FileManager.default.moveItem(at: temporaryURL, to: downloadURL)
     }
