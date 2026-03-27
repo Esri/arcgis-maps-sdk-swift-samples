@@ -241,6 +241,6 @@ private extension ApplyMapAlgebraView {
 private extension URL {
     /// Arran elevation GeoTIFF raster.
     static var arranElevation: URL {
-        Bundle.main.url(forResource: "arran", withExtension: "tif")!
+        Bundle.main.url(forResource: "arran", withExtension: "tif", subdirectory: "arran")!
     }
 }

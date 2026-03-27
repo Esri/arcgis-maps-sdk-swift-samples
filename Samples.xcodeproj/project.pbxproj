@@ -14,6 +14,8 @@
 		000B75712E33F67600C4B257 /* GenerateGeodatabaseReplicaFromFeatureServiceView.Model.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 1C17E1CB2DE6456B00A012CB /* GenerateGeodatabaseReplicaFromFeatureServiceView.Model.swift */; };
 		000D43162B9918420003D3C2 /* ConfigureBasemapStyleParametersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000D43132B9918420003D3C2 /* ConfigureBasemapStyleParametersView.swift */; };
 		000D43182B993A030003D3C2 /* ConfigureBasemapStyleParametersView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 000D43132B9918420003D3C2 /* ConfigureBasemapStyleParametersView.swift */; };
+		000DADC42F772C7700C0F2A3 /* arran in Resources */ = {isa = PBXBuildFile; fileRef = 000DADC32F772C7100C0F2A3 /* arran */; settings = {ASSET_TAGS = (ApplyMapAlgebra, ); }; };
+		000DADCD2F772EE400C0F2A3 /* srtm in Resources */ = {isa = PBXBuildFile; fileRef = 000DADCC2F772EE200C0F2A3 /* srtm */; settings = {ASSET_TAGS = (ApplyHillshadeRendererToRaster, ); }; };
 		00181B462846AD7100654571 /* View+ErrorAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00181B452846AD7100654571 /* View+ErrorAlert.swift */; };
 		001C6DE127FE8A9400D472C2 /* AppSecrets.swift.masque in Sources */ = {isa = PBXBuildFile; fileRef = 001C6DD827FE585A00D472C2 /* AppSecrets.swift.masque */; };
 		002056C52DD7F6D30016B8A9 /* TakeScreenshotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002056C42DD7F6CF0016B8A9 /* TakeScreenshotView.swift */; };
@@ -71,7 +73,6 @@
 		0074ABBF28174BCF0037244A /* DisplayMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0074ABBE28174BCF0037244A /* DisplayMapView.swift */; };
 		0074ABC428174F430037244A /* Sample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0074ABC128174F430037244A /* Sample.swift */; };
 		0074ABCD2817BCC30037244A /* SamplesApp+Samples.swift.tache in Sources */ = {isa = PBXBuildFile; fileRef = 0074ABCA2817B8DB0037244A /* SamplesApp+Samples.swift.tache */; };
-		0082E7132F730C93006A4C7F /* arran.tif in Resources */ = {isa = PBXBuildFile; fileRef = 0082E7112F730C93006A4C7F /* arran.tif */; settings = {ASSET_TAGS = (ApplyMapAlgebra, ); }; };
 		0082E7142F73108D006A4C7F /* ApplyMapAlgebraView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 00D6C1BA2F719FA5000CA40E /* ApplyMapAlgebraView.swift */; };
 		0086F40128E3770A00974721 /* ShowExploratoryViewshedFromPointInSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0086F3FD28E3770900974721 /* ShowExploratoryViewshedFromPointInSceneView.swift */; };
 		00A7A1462A2FC58300F035F7 /* DisplayContentOfUtilityNetworkContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A7A1432A2FC58300F035F7 /* DisplayContentOfUtilityNetworkContainerView.swift */; };
@@ -118,7 +119,6 @@
 		00FA4E6B2DCAD4E3008A34CF /* ApplyRGBRendererView.SettingsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 00FA4E652DCA7386008A34CF /* ApplyRGBRendererView.SettingsView.swift */; };
 		00FA4E722DCBD7A9008A34CF /* ApplySimpleRendererToFeatureLayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FA4E712DCBD7A6008A34CF /* ApplySimpleRendererToFeatureLayerView.swift */; };
 		00FA4E732DCBDA58008A34CF /* ApplySimpleRendererToFeatureLayerView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 00FA4E712DCBD7A6008A34CF /* ApplySimpleRendererToFeatureLayerView.swift */; };
-		00FA4E822DCD5AEE008A34CF /* srtm in Resources */ = {isa = PBXBuildFile; fileRef = 00FA4E812DCD5AD0008A34CF /* srtm */; settings = {ASSET_TAGS = (ApplyHillshadeRendererToRaster, ); }; };
 		00FA4E8B2DCD7233008A34CF /* ApplySimpleRendererToGraphicsOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FA4E882DCD7233008A34CF /* ApplySimpleRendererToGraphicsOverlayView.swift */; };
 		00FA4E8D2DCD7536008A34CF /* ApplySimpleRendererToGraphicsOverlayView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = 00FA4E882DCD7233008A34CF /* ApplySimpleRendererToGraphicsOverlayView.swift */; };
 		1016FB522DDCE7CC00B87699 /* CreateGeometriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1016FB512DDCE7CC00B87699 /* CreateGeometriesView.swift */; };
@@ -1095,6 +1095,8 @@
 		0000FB6B2BBDB17600845921 /* Add3DTilesLayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Add3DTilesLayerView.swift; sourceTree = "<group>"; };
 		000558092817C51E00224BC6 /* SampleDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleDetailView.swift; sourceTree = "<group>"; };
 		000D43132B9918420003D3C2 /* ConfigureBasemapStyleParametersView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigureBasemapStyleParametersView.swift; sourceTree = "<group>"; };
+		000DADC32F772C7100C0F2A3 /* arran */ = {isa = PBXFileReference; lastKnownFileType = folder; path = arran; sourceTree = "<group>"; };
+		000DADCC2F772EE200C0F2A3 /* srtm */ = {isa = PBXFileReference; lastKnownFileType = folder; path = srtm; sourceTree = "<group>"; };
 		00181B452846AD7100654571 /* View+ErrorAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ErrorAlert.swift"; sourceTree = "<group>"; };
 		001C6DD827FE585A00D472C2 /* AppSecrets.swift.masque */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AppSecrets.swift.masque; sourceTree = "<group>"; };
 		002056C42DD7F6CF0016B8A9 /* TakeScreenshotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TakeScreenshotView.swift; sourceTree = "<group>"; };
@@ -1119,7 +1121,6 @@
 		0074ABBE28174BCF0037244A /* DisplayMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayMapView.swift; sourceTree = "<group>"; };
 		0074ABC128174F430037244A /* Sample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sample.swift; sourceTree = "<group>"; };
 		0074ABCA2817B8DB0037244A /* SamplesApp+Samples.swift.tache */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "SamplesApp+Samples.swift.tache"; sourceTree = "<group>"; };
-		0082E7112F730C93006A4C7F /* arran.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = arran.tif; sourceTree = "<group>"; };
 		0086F3FD28E3770900974721 /* ShowExploratoryViewshedFromPointInSceneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowExploratoryViewshedFromPointInSceneView.swift; sourceTree = "<group>"; };
 		00A7A1432A2FC58300F035F7 /* DisplayContentOfUtilityNetworkContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayContentOfUtilityNetworkContainerView.swift; sourceTree = "<group>"; };
 		00A7A1492A2FC5B700F035F7 /* DisplayContentOfUtilityNetworkContainerView.Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayContentOfUtilityNetworkContainerView.Model.swift; sourceTree = "<group>"; };
@@ -1151,7 +1152,6 @@
 		00FA4E652DCA7386008A34CF /* ApplyRGBRendererView.SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyRGBRendererView.SettingsView.swift; sourceTree = "<group>"; };
 		00FA4E672DCA87A5008A34CF /* ApplyRGBRendererView.RangeSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyRGBRendererView.RangeSlider.swift; sourceTree = "<group>"; };
 		00FA4E712DCBD7A6008A34CF /* ApplySimpleRendererToFeatureLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplySimpleRendererToFeatureLayerView.swift; sourceTree = "<group>"; };
-		00FA4E812DCD5AD0008A34CF /* srtm */ = {isa = PBXFileReference; lastKnownFileType = folder; path = srtm; sourceTree = "<group>"; };
 		00FA4E882DCD7233008A34CF /* ApplySimpleRendererToGraphicsOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplySimpleRendererToGraphicsOverlayView.swift; sourceTree = "<group>"; };
 		1016FB512DDCE7CC00B87699 /* CreateGeometriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGeometriesView.swift; sourceTree = "<group>"; };
 		102B6A362BFD5B55009F763C /* IdentifyFeaturesInWMSLayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentifyFeaturesInWMSLayerView.swift; sourceTree = "<group>"; };
@@ -1539,6 +1539,14 @@
 				000D43132B9918420003D3C2 /* ConfigureBasemapStyleParametersView.swift */,
 			);
 			path = "Configure basemap style parameters";
+			sourceTree = "<group>";
+		};
+		000DADC72F772ECC00C0F2A3 /* ae9739163a76437ea02482e1a807b806 */ = {
+			isa = PBXGroup;
+			children = (
+				000DADCC2F772EE200C0F2A3 /* srtm */,
+			);
+			path = ae9739163a76437ea02482e1a807b806;
 			sourceTree = "<group>";
 		};
 		00181B442846AD3900654571 /* Extensions */ = {
@@ -1938,7 +1946,7 @@
 		0082E7122F730C93006A4C7F /* aa97788593e34a32bcaae33947fdc271 */ = {
 			isa = PBXGroup;
 			children = (
-				0082E7112F730C93006A4C7F /* arran.tif */,
+				000DADC32F772C7100C0F2A3 /* arran */,
 			);
 			path = aa97788593e34a32bcaae33947fdc271;
 			sourceTree = "<group>";
@@ -2021,7 +2029,6 @@
 				00C94A0228B53DCC004E42D9 /* 7c4c679ab06a4df19dc497f577f111bd */,
 				D701D7242A37C7E4006FF0C8 /* 07d62a792ab6496d9b772a24efea45d0 */,
 				D7D1F3512ADDBE5D009CE2DA /* 7dd2f97bb007466ea939160d0de96a9d */,
-				00FA4E7C2DCD5959008A34CF /* 9c802ab0c93a4e45a16311c666fe81c1 */,
 				9537AFC82C220ECB000923C5 /* 9d2987a825c646468b3ce7512fb76e2d */,
 				00D4EF8328638BF100B9CC30 /* 15a7cbd3af1e47cfa5d2c6b93dc44fc2 */,
 				D7CE9F992AE2F575008F7A5F /* 22c3083d4fa74e3e9b25adfc9f8c0496 */,
@@ -2046,6 +2053,7 @@
 				D721EEA62ABDFF550040BE46 /* 174150279af74a2ba6f8b87a567f480b */,
 				792222DB2A81AA5D00619FFE /* a8a942c228af4fac96baa78ad60f511f */,
 				0082E7122F730C93006A4C7F /* aa97788593e34a32bcaae33947fdc271 */,
+				000DADC72F772ECC00C0F2A3 /* ae9739163a76437ea02482e1a807b806 */,
 				D7464F202ACE0910007FEE88 /* b5f977c78ec74b3a8857ca86d1d9b318 */,
 				1C38921E2DC1749700ADFDDC /* b051f5c3e01048f3bf11c59b41507896 */,
 				1C8438F22DDBCFFC005CCBC7 /* b87307dcfb26411eb2e92e1627cb615b */,
@@ -2187,14 +2195,6 @@
 				00FA4E712DCBD7A6008A34CF /* ApplySimpleRendererToFeatureLayerView.swift */,
 			);
 			path = "Apply simple renderer to feature layer";
-			sourceTree = "<group>";
-		};
-		00FA4E7C2DCD5959008A34CF /* 9c802ab0c93a4e45a16311c666fe81c1 */ = {
-			isa = PBXGroup;
-			children = (
-				00FA4E812DCD5AD0008A34CF /* srtm */,
-			);
-			path = 9c802ab0c93a4e45a16311c666fe81c1;
 			sourceTree = "<group>";
 		};
 		00FA4E8A2DCD7233008A34CF /* Apply simple renderer to graphics overlay */ = {
@@ -4475,11 +4475,11 @@
 				1C293D4D2DCD91BF000B0822 /* color.json in Resources */,
 				9537AFD72C220EF0000923C5 /* ExchangeSetwithoutUpdates in Resources */,
 				D7F8C03E2B605AF60072BFA7 /* ContingentValuesBirdNests.geodatabase in Resources */,
-				0082E7132F730C93006A4C7F /* arran.tif in Resources */,
 				E041AC1E288076A60056009B /* info.css in Resources */,
 				D7CE9F9B2AE2F575008F7A5F /* streetmap_SD.tpkx in Resources */,
 				D721EEA82ABDFF550040BE46 /* LothianRiversAnno.mmpk in Resources */,
 				D7C16D1F2AC5FE8200689E89 /* Pyrenees.csv in Resources */,
+				000DADCD2F772EE400C0F2A3 /* srtm in Resources */,
 				E041AC1A287F54580056009B /* highlight.min.js in Resources */,
 				D7497F402AC4BA4100167AD2 /* Edinburgh_Pylon_Dimensions.mmpk in Resources */,
 				D7C523402BED9BBF00E8221A /* SanFrancisco.tpkx in Resources */,
@@ -4490,11 +4490,11 @@
 				D762DA0E2D94C750001052DD /* NapervilleGasUtilities.geodatabase in Resources */,
 				004FE87129DF5D8700075217 /* Bristol in Resources */,
 				D713C6F72CB9B9A60073AA72 /* US_State_Capitals.kml in Resources */,
-				00FA4E822DCD5AEE008A34CF /* srtm in Resources */,
 				D7C16D252AC5FEA600689E89 /* Snowdon.csv in Resources */,
 				D73F8CF42AB1089900CD39DA /* Restaurant.stylx in Resources */,
 				D7BB3DD22C5D781800FFCD56 /* SaveTheBay.geodatabase in Resources */,
 				D707899B2CD16324000DF215 /* Mil2525DMessages.xml in Resources */,
+				000DADC42F772C7700C0F2A3 /* arran in Resources */,
 				D74C8C022ABA6202007C76B8 /* emoji-mobile.stylx in Resources */,
 				D7CE9FA32AE2F595008F7A5F /* san-diego-eagle-locator in Resources */,
 				D70539102CD012BB00F63F4A /* militaryoverlay.geodatabase in Resources */,
