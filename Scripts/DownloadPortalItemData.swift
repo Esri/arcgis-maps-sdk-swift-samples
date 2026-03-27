@@ -143,7 +143,7 @@ func downloadFile(from sourceURL: URL, to downloadDirectory: URL) async throws -
     // For unknown reason, iOS On-Demand Resources don't work with tiff files,
     // when they are included in the app bundle as a single file. The script
     // will enclose a standalone tiff file in a folder to work around this issue.
-    // https://github.com/Esri/arcgis-maps-sdk-swift-samples/pull/604
+    // https://github.com/Esri/arcgis-maps-sdk-swift-samples/pull/757
     let isTif = ["tif", "tiff"].contains(NSString(string: suggestedFilename).pathExtension)
     
     let downloadName: String = try {
