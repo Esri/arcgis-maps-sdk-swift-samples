@@ -140,9 +140,11 @@ func downloadFile(from sourceURL: URL, to downloadDirectory: URL) async throws -
     guard let suggestedFilename = response.suggestedFilename else { fatalError("No suggested filename from server.") }
     let isArchive = NSString(string: suggestedFilename).pathExtension == "zip"
     
-    // For unknown reason, iOS On-Demand Resources don't work with tiff files,
-    // when they are included in the app bundle as a single file. The script
-    // will enclose a standalone tiff file in a folder to work around this issue.
+    // Xcode's build system can emit "Build input file cannot be found" errors
+    // for standalone TIFF files that are tracked in the project but not
+    // declared as outputs of the script phase that generates them. To avoid
+    // this, the script encloses a standalone TIFF file in a folder so Xcode
+    // tracks the enclosing directory instead of the individual file.
     // https://github.com/Esri/arcgis-maps-sdk-swift-samples/pull/757
     let isTif = ["tif", "tiff"].contains(NSString(string: suggestedFilename).pathExtension)
     
