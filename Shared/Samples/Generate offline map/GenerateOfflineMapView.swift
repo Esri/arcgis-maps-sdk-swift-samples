@@ -160,7 +160,7 @@ private extension GenerateOfflineMapView {
             // Initializes the online map.
             onlineMap = Map(item: napervillePortalItem)
             // Sets the min scale to avoid requesting a huge download.
-            onlineMap.minScale = 1e4
+            onlineMap.minScale = 5000
         }
         
         deinit {
@@ -181,12 +181,7 @@ private extension GenerateOfflineMapView {
         /// - Returns: A `GenerateOfflineMapParameters` if there are no errors.
         private func makeGenerateOfflineMapParameters(areaOfInterest: Envelope) async throws -> GenerateOfflineMapParameters {
             // Returns the default parameters for the offline map task.
-            let parameters = try await offlineMapTask.makeDefaultGenerateOfflineMapParameters(areaOfInterest: areaOfInterest)
-            // Limit the levels of detail to reduce tile count.
-            // This prevents requesting too many tiles from the service.
-            parameters.minScale = 2e4
-            parameters.maxScale = 1e4
-            return parameters
+            return try await offlineMapTask.makeDefaultGenerateOfflineMapParameters(areaOfInterest: areaOfInterest)
         }
         
         /// Generates the offline map.
