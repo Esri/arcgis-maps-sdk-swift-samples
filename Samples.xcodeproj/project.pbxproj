@@ -450,6 +450,8 @@
 		D72F27302ADA1E9900F906DA /* AugmentRealityToShowTabletopSceneView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D72F272B2ADA1E4400F906DA /* AugmentRealityToShowTabletopSceneView.swift */; };
 		D72FE7032CE6D05600BBC0FE /* AppFavorites.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72FE7022CE6D05600BBC0FE /* AppFavorites.swift */; };
 		D72FE7082CE6DA1900BBC0FE /* SampleMenuButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72FE7072CE6DA1900BBC0FE /* SampleMenuButtons.swift */; };
+		D73169B12F7D98CD00AB132D /* ShowInteractiveViewshedWithAnalysisOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73169AF2F7D98CD00AB132D /* ShowInteractiveViewshedWithAnalysisOverlayView.swift */; };
+		D73169B42F7D990600AB132D /* ShowInteractiveViewshedWithAnalysisOverlayView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D73169AF2F7D98CD00AB132D /* ShowInteractiveViewshedWithAnalysisOverlayView.swift */; };
 		D731F3C12AD0D2AC00A8431E /* IdentifyGraphicsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D731F3C02AD0D2AC00A8431E /* IdentifyGraphicsView.swift */; };
 		D731F3C22AD0D2BB00A8431E /* IdentifyGraphicsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D731F3C02AD0D2AC00A8431E /* IdentifyGraphicsView.swift */; };
 		D7337C5A2ABCFDB100A5D865 /* StyleSymbolsFromMobileStyleFileView.SymbolOptionsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7337C592ABCFDB100A5D865 /* StyleSymbolsFromMobileStyleFileView.SymbolOptionsListView.swift */; };
@@ -771,6 +773,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
+				D73169B42F7D990600AB132D /* ShowInteractiveViewshedWithAnalysisOverlayView.swift in Copy Source Code Files */,
 				0082E7142F73108D006A4C7F /* ApplyMapAlgebraView.swift in Copy Source Code Files */,
 				79B2B6E82F4794BD007E652A /* ConfigureSceneEnvironmentView.swift in Copy Source Code Files */,
 				79E8A3092ED673F200432F4E /* FilterBuildingSceneLayerView.BuildingGroupSublayerToggleView.swift in Copy Source Code Files */,
@@ -1333,6 +1336,7 @@
 		D72F272B2ADA1E4400F906DA /* AugmentRealityToShowTabletopSceneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AugmentRealityToShowTabletopSceneView.swift; sourceTree = "<group>"; };
 		D72FE7022CE6D05600BBC0FE /* AppFavorites.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFavorites.swift; sourceTree = "<group>"; };
 		D72FE7072CE6DA1900BBC0FE /* SampleMenuButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleMenuButtons.swift; sourceTree = "<group>"; };
+		D73169AF2F7D98CD00AB132D /* ShowInteractiveViewshedWithAnalysisOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowInteractiveViewshedWithAnalysisOverlayView.swift; sourceTree = "<group>"; };
 		D731F3C02AD0D2AC00A8431E /* IdentifyGraphicsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentifyGraphicsView.swift; sourceTree = "<group>"; };
 		D7337C592ABCFDB100A5D865 /* StyleSymbolsFromMobileStyleFileView.SymbolOptionsListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleSymbolsFromMobileStyleFileView.SymbolOptionsListView.swift; sourceTree = "<group>"; };
 		D7337C5F2ABD142D00A5D865 /* ShowMobileMapPackageExpirationDateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowMobileMapPackageExpirationDateView.swift; sourceTree = "<group>"; };
@@ -1891,6 +1895,7 @@
 				88129D782DD5034B001599A5 /* Show geodesic path between two points */,
 				951961AD2E00BC760088B0C2 /* Show geodesic sector and ellipse */,
 				00ABA94B2BF671FC00C0488C /* Show grid */,
+				D73169B02F7D98CD00AB132D /* Show interactive viewshed with analysis overlay */,
 				D751017D2A2E490800B8FA48 /* Show labels on layer */,
 				1C293D562DD53523000B0822 /* Show labels on layer in 3D */,
 				889F9DB42E133CDB0025A98E /* Show magnifier */,
@@ -3297,6 +3302,14 @@
 			path = "Augment reality to show tabletop scene";
 			sourceTree = "<group>";
 		};
+		D73169B02F7D98CD00AB132D /* Show interactive viewshed with analysis overlay */ = {
+			isa = PBXGroup;
+			children = (
+				D73169AF2F7D98CD00AB132D /* ShowInteractiveViewshedWithAnalysisOverlayView.swift */,
+			);
+			path = "Show interactive viewshed with analysis overlay";
+			sourceTree = "<group>";
+		};
 		D731F3BD2AD0D22500A8431E /* Identify graphics */ = {
 			isa = PBXGroup;
 			children = (
@@ -4619,6 +4632,7 @@
 				95F891292C46E9D60010EBED /* ShowDeviceLocationUsingIndoorPositioningView.swift in Sources */,
 				00FA4E8B2DCD7233008A34CF /* ApplySimpleRendererToGraphicsOverlayView.swift in Sources */,
 				1C2538562BABACFD00337307 /* AugmentRealityToNavigateRouteView.swift in Sources */,
+				D73169B12F7D98CD00AB132D /* ShowInteractiveViewshedWithAnalysisOverlayView.swift in Sources */,
 				1C7B85DF2DEE47F200B267EA /* QueryWithTimeExtentView.swift in Sources */,
 				1C2538572BABACFD00337307 /* AugmentRealityToNavigateRouteView.ARSceneView.swift in Sources */,
 				D72FE7082CE6DA1900BBC0FE /* SampleMenuButtons.swift in Sources */,

@@ -1,0 +1,40 @@
+{
+    "category": "Analysis",
+    "description": "Perform an interactive viewshed analysis to determine visible and non-visible areas from a given observer position.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "analysis overlay",
+        "elevation",
+        "field analysis",
+        "interactive",
+        "raster",
+        "spatial analysis",
+        "terrain",
+        "viewshed",
+        "visibility",
+        "AnalysisOverlay",
+        "Colormap",
+        "ColormapRenderer",
+        "ContinuousField",
+        "ContinuousFieldFunction",
+        "FieldAnalysis",
+        "ViewshedFunction",
+        "ViewshedParameters"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "AnalysisOverlay",
+        "Colormap",
+        "ColormapRenderer",
+        "ContinuousField",
+        "ContinuousFieldFunction",
+        "FieldAnalysis",
+        "ViewshedFunction",
+        "ViewshedParameters"
+    ],
+    "snippets": [
+        "ShowInteractiveViewshedWithAnalysisOverlayView.swift"
+    ],
+    "title": "Show interactive viewshed with analysis overlay"
+}
