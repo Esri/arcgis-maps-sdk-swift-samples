@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 90;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -728,13 +728,15 @@
 			inputFiles = (
 				"$(SRCROOT)/Shared/Samples/",
 			);
-			isEditable = 1;
 			name = "Generate Sample Initializers from Source Code Files";
 			outputFiles = (
 				"$(DERIVED_FILE_DIR)/$(INPUT_FILE_BASE)",
 			);
 			runOncePerArchitecture = 0;
-			script = "xcrun --sdk macosx swift \"${SRCROOT}/Scripts/GenerateSampleViewSourceCode.swift\" \"${SCRIPT_INPUT_FILE_0}\" \"${INPUT_FILE_PATH}\" \"${SCRIPT_OUTPUT_FILE_0}\" \n";
+			script = (
+				"xcrun --sdk macosx swift \"${SRCROOT}/Scripts/GenerateSampleViewSourceCode.swift\" \"${SCRIPT_INPUT_FILE_0}\" \"${INPUT_FILE_PATH}\" \"${SCRIPT_OUTPUT_FILE_0}\" ",
+				"",
+			);
 		};
 		0083586F27FE3BCF00192A15 /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
@@ -744,32 +746,31 @@
 			inputFiles = (
 				"$(SRCROOT)/.secrets",
 			);
-			isEditable = 1;
 			name = "Generate Swift Code from Secrets";
 			outputFiles = (
 				"$(DERIVED_FILE_DIR)/$(INPUT_FILE_BASE)",
 			);
 			runOncePerArchitecture = 0;
-			script = "\"${SRCROOT}/Scripts/masquerade\" -i \"${INPUT_FILE_PATH}\" -o \"${SCRIPT_OUTPUT_FILE_0}\" -s \"${SCRIPT_INPUT_FILE_0}\" -f\n";
+			script = (
+				"\"${SRCROOT}/Scripts/masquerade\" -i \"${INPUT_FILE_PATH}\" -o \"${SCRIPT_OUTPUT_FILE_0}\" -s \"${SCRIPT_INPUT_FILE_0}\" -f",
+				"",
+			);
 		};
 /* End PBXBuildRule section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		00144B5E280634840090DD5D /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
 			dstPath = "";
-			dstSubfolderSpec = 10;
+			dstSubfolder = Frameworks;
 			files = (
 			);
 			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 		0039A4E82885C4E300592C86 /* Copy Source Code Files */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
 			dstPath = "";
-			dstSubfolderSpec = 7;
+			dstSubfolder = Resources;
 			files = (
 				0082E7142F73108D006A4C7F /* ApplyMapAlgebraView.swift in Copy Source Code Files */,
 				79B2B6E82F4794BD007E652A /* ConfigureSceneEnvironmentView.swift in Copy Source Code Files */,
@@ -1087,7 +1088,6 @@
 				7573E82429D6136C00BEED9C /* TraceUtilityNetworkView.swift in Copy Source Code Files */,
 			);
 			name = "Copy Source Code Files";
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -1498,11 +1498,9 @@
 /* Begin PBXFrameworksBuildPhase section */
 		00E5401027F3CCA200CF66D5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 				00C43AED2947DC350099AE34 /* ArcGISToolkit in Frameworks */,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
@@ -4359,8 +4357,6 @@
 				0083586F27FE3BCF00192A15 /* PBXBuildRule */,
 				0074ABCC2817B8E60037244A /* PBXBuildRule */,
 			);
-			dependencies = (
-			);
 			name = Samples;
 			packageProductDependencies = (
 				00C43AEC2947DC350099AE34 /* ArcGISToolkit */,
@@ -4452,7 +4448,7 @@
 			packageReferences = (
 				00C43AEB2947DC350099AE34 /* XCRemoteSwiftPackageReference "arcgis-maps-sdk-swift-toolkit" */,
 			);
-			preferredProjectObjectVersion = 77;
+			preferredProjectObjectVersion = 90;
 			productRefGroup = 00E5401427F3CCA200CF66D5 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -4465,7 +4461,6 @@
 /* Begin PBXResourcesBuildPhase section */
 		00E5401127F3CCA200CF66D5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 				95B096A02E136365006AFA8F /* Dolmus3ds in Resources */,
 				1C8438F42DDBD02C005CCBC7 /* GasDeviceAnno.mmpk in Resources */,
@@ -4526,7 +4521,6 @@
 				D7C16D222AC5FE9800689E89 /* GrandCanyon.csv in Resources */,
 				D7BEBAA02CBD9CCA00F882E7 /* MontereyElevation.dt2 in Resources */,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
@@ -4534,86 +4528,88 @@
 		001C6DDC27FE5CE800D472C2 /* Create .secrets File If It Does Not Exist */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
 			name = "Create .secrets File If It Does Not Exist";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"$(SRCROOT)/.secrets",
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ ! -e \"$SRCROOT/.secrets\" ]\nthen\n    touch \"$SRCROOT/.secrets\"\nfi\n";
+			shellScript = (
+				"if [ ! -e \"$SRCROOT/.secrets\" ]",
+				"then",
+				"    touch \"$SRCROOT/.secrets\"",
+				"fi",
+				"",
+			);
 		};
 		0039A4E72885C45200592C86 /* Copy README.md Files For Source Code View */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
 			name = "Copy README.md Files For Source Code View";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo $BUILT_PRODUCTS_DIR\n\n# Directory to which the readmes will be copied.\nREADMES_DIR=${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/READMEs\nmkdir -p \"${READMES_DIR}\"\n\n# Root readme for the project to skip.\nDEFAULT_README=$SRCROOT/README.md\n\n# Find all README.md files in the project.\nfind ${SRCROOT} -name \"README.md\" | while read file\ndo\n    # Skip the root readme for project.\n    if [ \"$file\" = \"$DEFAULT_README\" ]\n    then\n        echo $BUILT_PRODUCTS_DIR\n        continue\n    fi\n    \n    # Extract the folder name from the path.\n    FILE_PATH=$(dirname \"$file\")\n    FOLDER_NAME=$(basename \"$FILE_PATH\")\n    \n    cp \"${file}\" \"${READMES_DIR}/${FOLDER_NAME}.md\"\ndone\n";
+			shellScript = (
+				"echo $BUILT_PRODUCTS_DIR",
+				"",
+				"# Directory to which the readmes will be copied.",
+				"READMES_DIR=${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/READMEs",
+				"mkdir -p \"${READMES_DIR}\"",
+				"",
+				"# Root readme for the project to skip.",
+				"DEFAULT_README=$SRCROOT/README.md",
+				"",
+				"# Find all README.md files in the project.",
+				"find ${SRCROOT} -name \"README.md\" | while read file",
+				"do",
+				"    # Skip the root readme for project.",
+				"    if [ \"$file\" = \"$DEFAULT_README\" ]",
+				"    then",
+				"        echo $BUILT_PRODUCTS_DIR",
+				"        continue",
+				"    fi",
+				"    ",
+				"    # Extract the folder name from the path.",
+				"    FILE_PATH=$(dirname \"$file\")",
+				"    FOLDER_NAME=$(basename \"$FILE_PATH\")",
+				"    ",
+				"    cp \"${file}\" \"${READMES_DIR}/${FOLDER_NAME}.md\"",
+				"done",
+				"",
+			);
 		};
 		00CCB8A3285BA2FD00BBAB70 /* Download Portal Item Data */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
 			name = "Download Portal Item Data";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "SAMPLES_DIRECTORY=\"${SRCROOT}/Shared/Samples\"\nDOWNLOAD_DIRECTORY=\"${SRCROOT}/Portal Data\"\nxcrun --sdk macosx swift \"${SRCROOT}/Scripts/DownloadPortalItemData.swift\" \"$SAMPLES_DIRECTORY\" \"$DOWNLOAD_DIRECTORY\"\n";
+			shellScript = (
+				"SAMPLES_DIRECTORY=\"${SRCROOT}/Shared/Samples\"",
+				"DOWNLOAD_DIRECTORY=\"${SRCROOT}/Portal Data\"",
+				"xcrun --sdk macosx swift \"${SRCROOT}/Scripts/DownloadPortalItemData.swift\" \"$SAMPLES_DIRECTORY\" \"$DOWNLOAD_DIRECTORY\"",
+				"",
+			);
 		};
 		00E5402B27F77A5A00CF66D5 /* Lint Sources */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
 			name = "Lint Sources";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = (
+				"if [[ \"$(uname -m)\" == arm64 ]]; then",
+				"    export PATH=\"/opt/homebrew/bin:$PATH\"",
+				"fi",
+				"",
+				"if which swiftlint > /dev/null; then",
+				"  swiftlint",
+				"else",
+				"  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"",
+				"fi",
+				"",
+			);
 		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		00E5400F27F3CCA200CF66D5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 				95FEAE552E3BF42A00727ABA /* ShowWFSLayerWithXMLQueryView.swift in Sources */,
 				95F891292C46E9D60010EBED /* ShowDeviceLocationUsingIndoorPositioningView.swift in Sources */,
@@ -4953,12 +4949,11 @@
 				D7464F1E2ACE04B3007FEE88 /* IdentifyRasterCellView.swift in Sources */,
 				D7588F5F2B7D8DAA008B75E2 /* NavigateRouteWithReroutingView.swift in Sources */,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		00E5402227F3CCA200CF66D5 /* Debug */ = {
+		00E5402227F3CCA200CF66D5 /* Debug configuration for PBXProject "Samples" */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 168213632EE7569B008452FB /* Samples.xcconfig */;
 			buildSettings = {
@@ -5020,7 +5015,7 @@
 			};
 			name = Debug;
 		};
-		00E5402327F3CCA200CF66D5 /* Release */ = {
+		00E5402327F3CCA200CF66D5 /* Release configuration for PBXProject "Samples" */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 168213632EE7569B008452FB /* Samples.xcconfig */;
 			buildSettings = {
@@ -5075,7 +5070,7 @@
 			};
 			name = Release;
 		};
-		00E5402527F3CCA200CF66D5 /* Debug */ = {
+		00E5402527F3CCA200CF66D5 /* Debug configuration for PBXNativeTarget "Samples" */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 168213632EE7569B008452FB /* Samples.xcconfig */;
 			buildSettings = {
@@ -5108,7 +5103,7 @@
 			};
 			name = Debug;
 		};
-		00E5402627F3CCA200CF66D5 /* Release */ = {
+		00E5402627F3CCA200CF66D5 /* Release configuration for PBXNativeTarget "Samples" */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 168213632EE7569B008452FB /* Samples.xcconfig */;
 			buildSettings = {
@@ -5149,19 +5144,17 @@
 		00E5400A27F3CCA100CF66D5 /* Build configuration list for PBXProject "Samples" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				00E5402227F3CCA200CF66D5 /* Debug */,
-				00E5402327F3CCA200CF66D5 /* Release */,
+				00E5402227F3CCA200CF66D5 /* Debug configuration for PBXProject "Samples" */,
+				00E5402327F3CCA200CF66D5 /* Release configuration for PBXProject "Samples" */,
 			);
-			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 		00E5402427F3CCA200CF66D5 /* Build configuration list for PBXNativeTarget "Samples" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				00E5402527F3CCA200CF66D5 /* Debug */,
-				00E5402627F3CCA200CF66D5 /* Release */,
+				00E5402527F3CCA200CF66D5 /* Debug configuration for PBXNativeTarget "Samples" */,
+				00E5402627F3CCA200CF66D5 /* Release configuration for PBXNativeTarget "Samples" */,
 			);
-			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
