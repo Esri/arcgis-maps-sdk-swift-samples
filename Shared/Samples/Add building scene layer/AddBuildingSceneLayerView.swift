@@ -71,8 +71,8 @@ struct AddBuildingSceneLayerView: View {
                 
                 // Gets the overview and full model sublayers for the toggle.
                 let sublayers = buildingSceneLayer.sublayers
-                overviewSublayer = sublayers.first(where: { $0.name == "Overview" })
-                fullModelSublayer = sublayers.first(where: { $0.name == "Full Model" })
+                overviewSublayer = sublayers.first(where: { $0.modelName == "Overview" })
+                fullModelSublayer = sublayers.first(where: { $0.modelName == "FullModel" })
             }
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
