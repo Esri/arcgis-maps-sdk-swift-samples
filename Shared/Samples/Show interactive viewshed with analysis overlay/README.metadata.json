@@ -2,7 +2,9 @@
     "category": "Analysis",
     "description": "Perform an interactive viewshed analysis to determine visible and non-visible areas from a given observer position.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "show-interactive-viewshed-with-analysis-overlay.png"
+    ],
     "keywords": [
         "analysis overlay",
         "elevation",

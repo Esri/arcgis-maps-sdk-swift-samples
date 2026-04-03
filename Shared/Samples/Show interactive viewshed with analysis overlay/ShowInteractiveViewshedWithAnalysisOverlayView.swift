@@ -20,7 +20,7 @@ struct ShowInteractiveViewshedWithAnalysisOverlayView: View {
     @State private var model = Model()
     /// A Boolean value indicating whether the viewshed settings are showing.
     @State private var isShowingSettings = false
-    /// The screen point of the viewshed analysis' observer.
+    /// The screen point of the viewshed's observer used to determine if it is being dragged.
     @State private var observerScreenPoint: CGPoint?
     /// The error shown in the error alert.
     @State private var error: (any Error)?
@@ -44,6 +44,7 @@ struct ShowInteractiveViewshedWithAnalysisOverlayView: View {
                 moveObserver(to: mapPoint, screenPoint: screenPoint)
             }
             .onDrawStatusChanged { drawStatus in
+                // Sets the initial observerScreenPoint value, so the observer can be dragged.
                 guard observerScreenPoint == nil,
                       let observerPoint = model.viewshedParameters.observerPosition,
                       drawStatus == .completed else {
@@ -239,6 +240,7 @@ private struct ViewshedSettings: View {
 #endif
         }
         .onAppear {
+            // Sets the state property initial values using the parameters.
             elevationSamplingInterval = parameters.elevationSamplingInterval
             fieldOfView.value = parameters.fieldOfView
             heading.value = parameters.heading
@@ -251,16 +253,6 @@ private struct ViewshedSettings: View {
 
 // MARK: Extensions
 
-private extension FormatStyle where Self == Measurement<UnitAngle>.FormatStyle {
-    /// A style for formatting a unit angle measurement.
-    static var angle: Self { .measurement(width: .narrow, usage: .asProvided) }
-}
-
-private extension FormatStyle where Self == Measurement<UnitLength>.FormatStyle {
-    /// A style for formatting a unit length measurement.
-    static var length: Self { .measurement(width: .abbreviated, usage: .asProvided) }
-}
-
 private extension CGPoint {
     /// Returns the Euclidean distance from this point to another point.
     /// - Parameter other: The point to measure the distance from.
@@ -271,13 +263,19 @@ private extension CGPoint {
     }
 }
 
+private extension FormatStyle where Self == Measurement<UnitAngle>.FormatStyle {
+    /// A style for formatting a unit angle measurement.
+    static var angle: Self { .measurement(width: .narrow, usage: .asProvided) }
+}
+
+private extension FormatStyle where Self == Measurement<UnitLength>.FormatStyle {
+    /// A style for formatting a unit length measurement.
+    static var length: Self { .measurement(width: .abbreviated, usage: .asProvided) }
+}
+
 private extension URL {
     /// A URL to a local GeoTIFF file containing elevation data of the Isle of Arran, Scotland.
     static var arranTIF: URL {
         Bundle.main.url(forResource: "arran", withExtension: "tif", subdirectory: "arran")!
     }
-}
-
-#Preview {
-    ShowInteractiveViewshedWithAnalysisOverlayView()
 }
