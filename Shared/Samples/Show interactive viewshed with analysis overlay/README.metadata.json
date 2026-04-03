@@ -22,6 +22,9 @@
         "ViewshedFunction",
         "ViewshedParameters"
     ],
+    "offline_data": [
+        "aa97788593e34a32bcaae33947fdc271"
+    ],
     "redirect_from": [],
     "relevant_apis": [
         "AnalysisOverlay",
