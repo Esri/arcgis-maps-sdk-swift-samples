@@ -184,33 +184,43 @@ private struct ViewshedSettings: View {
     var body: some View {
         Form {
             Group {
-                MeasurementSlider("Observer Elevation", value: $observerElevation, in: 2...200)
-                    .onChange(of: observerElevation) {
-                        parameters.observerPosition = parameters.observerPosition?.withBuilder {
-                            $0.z = observerElevation.value
+                VStack {
+                    LabeledContent("Observer Elevation", value: observerElevation, format: .length)
+                    Slider(value: $observerElevation.value, in: 2...200, step: 1)
+                        .onChange(of: observerElevation) {
+                            parameters.observerPosition = parameters.observerPosition?.withBuilder {
+                                $0.z = observerElevation.value
+                            }
                         }
-                    }
-                
-                MeasurementSlider("Target Height", value: $targetHeight, in: 20...1000, step: 10)
-                    .onChange(of: targetHeight) {
-                        parameters.targetHeight = targetHeight.value
-                    }
-                
-                MeasurementSlider("Max Radius", value: $maxRadius, in: 2500...20000, step: 100)
-                    .onChange(of: maxRadius) {
-                        parameters.maxRadius = maxRadius.value
-                    }
-                
-                MeasurementSlider("Field of View", value: $fieldOfView, in: 5...360)
-                    .onChange(of: fieldOfView) {
-                        parameters.fieldOfView = fieldOfView.value
-                    }
-                
-                MeasurementSlider("Heading", value: $heading, in: 0...360)
-                    .onChange(of: heading) {
-                        parameters.heading = heading.value
-                    }
-                
+                }
+                VStack {
+                    LabeledContent("Target Height", value: targetHeight, format: .length)
+                    Slider(value: $targetHeight.value, in: 20...1000, step: 10)
+                        .onChange(of: targetHeight) {
+                            parameters.targetHeight = targetHeight.value
+                        }
+                }
+                VStack {
+                    LabeledContent("Max Radius", value: maxRadius, format: .length)
+                    Slider(value: $maxRadius.value, in: 2500...20000, step: 100)
+                        .onChange(of: maxRadius) {
+                            parameters.maxRadius = maxRadius.value
+                        }
+                }
+                VStack {
+                    LabeledContent("Field of View", value: fieldOfView, format: .angle)
+                    Slider(value: $fieldOfView.value, in: 5...360, step: 1)
+                        .onChange(of: fieldOfView) {
+                            parameters.fieldOfView = fieldOfView.value
+                        }
+                }
+                VStack {
+                    LabeledContent("Heading", value: heading, format: .angle)
+                    Slider(value: $heading.value, in: 0...360, step: 1)
+                        .onChange(of: heading) {
+                            parameters.heading = heading.value
+                        }
+                }
                 VStack {
                     Text("Elevation Sampling Interval (m)")
                     Picker("Elevation Sampling Interval", selection: $elevationSamplingInterval) {
@@ -239,37 +249,17 @@ private struct ViewshedSettings: View {
     }
 }
 
-/// A slider selecting a measurement value.
-private struct MeasurementSlider<Unit: Dimension>: View {
-    typealias Value = Measurement<Unit>
-    
-    /// The range of the valid values for the slider.
-    private let bounds: ClosedRange<Double>
-    /// A format style used to convert the measurement value to a string representation.
-    private let formatStyle = Value.FormatStyle(width: .narrow, usage: .asProvided)
-    /// The string used to describe the measurement.
-    private let label: String
-    /// The distance between each valid value.
-    private let step: Double
-    /// The selected measurement value.
-    @Binding private var value: Value
-    
-    init(_ label: String, value: Binding<Value>, in bounds: ClosedRange<Double>, step: Double = 1) {
-        self.label = label
-        self._value = value
-        self.bounds = bounds
-        self.step = step
-    }
-    
-    var body: some View {
-        VStack {
-            LabeledContent(label, value: value, format: formatStyle)
-            Slider(value: $value.value, in: bounds, step: step)
-        }
-    }
+// MARK: Extensions
+
+private extension FormatStyle where Self == Measurement<UnitAngle>.FormatStyle {
+    /// A style for formatting a unit angle measurement.
+    static var angle: Self { .measurement(width: .narrow, usage: .asProvided) }
 }
 
-// MARK: Extensions
+private extension FormatStyle where Self == Measurement<UnitLength>.FormatStyle {
+    /// A style for formatting a unit length measurement.
+    static var length: Self { .measurement(width: .abbreviated, usage: .asProvided) }
+}
 
 private extension CGPoint {
     /// Returns the Euclidean distance from this point to another point.
