@@ -33,11 +33,17 @@ extension FilterBuildingSceneLayerView {
                         // for its sublayers should be disabled.
                         .disabled(!isVisible)
                 }
+#if targetEnvironment(macCatalyst)
+                .padding(.horizontal, 4)
+#endif
             } label: {
                 Toggle(groupSublayer.name, isOn: $isVisible)
                     .onChange(of: isVisible) {
                         groupSublayer.isVisible = isVisible
                     }
+#if targetEnvironment(macCatalyst)
+                    .padding(.horizontal, 4)
+#endif
             }
             .onAppear {
                 // Sets the value of the toggle to the
