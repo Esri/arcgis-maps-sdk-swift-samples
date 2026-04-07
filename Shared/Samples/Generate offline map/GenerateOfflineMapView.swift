@@ -32,6 +32,9 @@ struct GenerateOfflineMapView: View {
         GeometryReader { geometry in
             MapViewReader { mapView in
                 MapView(map: model.offlineMap ?? model.onlineMap)
+                    .onScaleChanged { scale in
+                        model.mapViewScale = scale
+                    }
                     .interactionModes(isGeneratingOfflineMap ? [] : [.pan, .zoom])
                     .errorAlert(presentingError: $error)
                     .task {
@@ -141,6 +144,9 @@ private extension GenerateOfflineMapView {
         /// The generate offline map job.
         @Published private(set) var generateOfflineMapJob: GenerateOfflineMapJob!
         
+        /// The current scale of the map view.
+        @Published var mapViewScale: Double = 0
+        
         /// The offline map task.
         private var offlineMapTask: OfflineMapTask!
         
@@ -159,8 +165,6 @@ private extension GenerateOfflineMapView {
         init() {
             // Initializes the online map.
             onlineMap = Map(item: napervillePortalItem)
-            // Sets the min scale to avoid requesting a huge download.
-            onlineMap.minScale = 1e4
         }
         
         deinit {
@@ -181,7 +185,12 @@ private extension GenerateOfflineMapView {
         /// - Returns: A `GenerateOfflineMapParameters` if there are no errors.
         private func makeGenerateOfflineMapParameters(areaOfInterest: Envelope) async throws -> GenerateOfflineMapParameters {
             // Returns the default parameters for the offline map task.
-            return try await offlineMapTask.makeDefaultGenerateOfflineMapParameters(areaOfInterest: areaOfInterest)
+            let parameters = try await offlineMapTask.makeDefaultGenerateOfflineMapParameters(areaOfInterest: areaOfInterest)
+            if mapViewScale > 0 {
+                parameters.maxScale = mapViewScale / 2
+                parameters.minScale = mapViewScale * 2
+            }
+            return parameters
         }
         
         /// Generates the offline map.
