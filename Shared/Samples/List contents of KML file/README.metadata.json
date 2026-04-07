@@ -19,11 +19,12 @@
         "KMLLayer",
         "KMLNetworkLink",
         "KMLNode",
+        "KMLPhotoOverlay",
         "KMLPlacemark",
         "KMLScreenOverlay"
     ],
     "offline_data": [
-        "da301cb122874d5497f8a8f6c81eb36e"
+        "b3ebedc3bed940fa985d824d55c44a2f"
     ],
     "redirect_from": [],
     "relevant_apis": [
@@ -35,6 +36,7 @@
         "KMLLayer",
         "KMLNetworkLink",
         "KMLNode",
+        "KMLPhotoOverlay",
         "KMLPlacemark",
         "KMLScreenOverlay"
     ],

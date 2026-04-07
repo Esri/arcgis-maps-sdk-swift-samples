@@ -478,6 +478,7 @@
 		D73E61A12BDB221B00457932 /* EditWithBranchVersioningView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D73E619A2BDB21F400457932 /* EditWithBranchVersioningView.swift */; };
 		D73F06692B5EE73D000B574F /* QueryFeaturesWithArcadeExpressionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73F06662B5EE73D000B574F /* QueryFeaturesWithArcadeExpressionView.swift */; };
 		D73F066C2B5EE760000B574F /* QueryFeaturesWithArcadeExpressionView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D73F06662B5EE73D000B574F /* QueryFeaturesWithArcadeExpressionView.swift */; };
+		D73F3D082F85C9E700CE19FD /* esri_kml_sample_data.kmz in Resources */ = {isa = PBXBuildFile; fileRef = D73F3D062F85C9E700CE19FD /* esri_kml_sample_data.kmz */; settings = {ASSET_TAGS = (ListContentsOfKmlFile, ); }; };
 		D73F8CF42AB1089900CD39DA /* Restaurant.stylx in Resources */ = {isa = PBXBuildFile; fileRef = D73F8CF32AB1089900CD39DA /* Restaurant.stylx */; settings = {ASSET_TAGS = (StyleFeaturesWithCustomDictionary, ); }; };
 		D73FC0FD2AD4A18D0067A19B /* CreateMobileGeodatabaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73FC0FC2AD4A18D0067A19B /* CreateMobileGeodatabaseView.swift */; };
 		D73FC0FE2AD4A19A0067A19B /* CreateMobileGeodatabaseView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D73FC0FC2AD4A18D0067A19B /* CreateMobileGeodatabaseView.swift */; };
@@ -530,7 +531,6 @@
 		D75C35672AB50338003CD55F /* GroupLayersTogetherView.GroupLayerListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75C35662AB50338003CD55F /* GroupLayersTogetherView.GroupLayerListView.swift */; };
 		D75E5EE62CC0340100252595 /* ListContentsOfKMLFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75E5EE22CC0340100252595 /* ListContentsOfKMLFileView.swift */; };
 		D75E5EE92CC0342700252595 /* ListContentsOfKMLFileView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D75E5EE22CC0340100252595 /* ListContentsOfKMLFileView.swift */; };
-		D75E5EEC2CC0466900252595 /* esri_test_data.kmz in Resources */ = {isa = PBXBuildFile; fileRef = D75E5EEA2CC0466900252595 /* esri_test_data.kmz */; settings = {ASSET_TAGS = (ListContentsOfKmlFile, ); }; };
 		D75E5EF12CC049D500252595 /* EditFeaturesUsingFeatureFormsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75E5EED2CC049D500252595 /* EditFeaturesUsingFeatureFormsView.swift */; };
 		D75E5EF42CC04A0C00252595 /* EditFeaturesUsingFeatureFormsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D75E5EED2CC049D500252595 /* EditFeaturesUsingFeatureFormsView.swift */; };
 		D75F66362B48EABC00434974 /* SearchForWebMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75F66332B48EABC00434974 /* SearchForWebMapView.swift */; };
@@ -1350,6 +1350,7 @@
 		D73E61922BDAEE6600457932 /* MatchViewpointOfGeoViewsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchViewpointOfGeoViewsView.swift; sourceTree = "<group>"; };
 		D73E619A2BDB21F400457932 /* EditWithBranchVersioningView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditWithBranchVersioningView.swift; sourceTree = "<group>"; };
 		D73F06662B5EE73D000B574F /* QueryFeaturesWithArcadeExpressionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueryFeaturesWithArcadeExpressionView.swift; sourceTree = "<group>"; };
+		D73F3D062F85C9E700CE19FD /* esri_kml_sample_data.kmz */ = {isa = PBXFileReference; lastKnownFileType = file; path = esri_kml_sample_data.kmz; sourceTree = "<group>"; };
 		D73F8CF32AB1089900CD39DA /* Restaurant.stylx */ = {isa = PBXFileReference; lastKnownFileType = file; path = Restaurant.stylx; sourceTree = "<group>"; };
 		D73FC0FC2AD4A18D0067A19B /* CreateMobileGeodatabaseView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateMobileGeodatabaseView.swift; sourceTree = "<group>"; };
 		D73FCFF42B02A3AA0006360D /* FindAddressWithReverseGeocodeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindAddressWithReverseGeocodeView.swift; sourceTree = "<group>"; };
@@ -1379,7 +1380,6 @@
 		D75B58502AAFB3030038B3B4 /* StyleFeaturesWithCustomDictionaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleFeaturesWithCustomDictionaryView.swift; sourceTree = "<group>"; };
 		D75C35662AB50338003CD55F /* GroupLayersTogetherView.GroupLayerListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupLayersTogetherView.GroupLayerListView.swift; sourceTree = "<group>"; };
 		D75E5EE22CC0340100252595 /* ListContentsOfKMLFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListContentsOfKMLFileView.swift; sourceTree = "<group>"; };
-		D75E5EEA2CC0466900252595 /* esri_test_data.kmz */ = {isa = PBXFileReference; lastKnownFileType = file; path = esri_test_data.kmz; sourceTree = "<group>"; };
 		D75E5EED2CC049D500252595 /* EditFeaturesUsingFeatureFormsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFeaturesUsingFeatureFormsView.swift; sourceTree = "<group>"; };
 		D75F66332B48EABC00434974 /* SearchForWebMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchForWebMapView.swift; sourceTree = "<group>"; };
 		D76000AB2AF19C2300B3084D /* FindRouteInMobileMapPackageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindRouteInMobileMapPackageView.swift; sourceTree = "<group>"; };
@@ -2057,6 +2057,7 @@
 				792222DB2A81AA5D00619FFE /* a8a942c228af4fac96baa78ad60f511f */,
 				0082E7122F730C93006A4C7F /* aa97788593e34a32bcaae33947fdc271 */,
 				000DADC72F772ECC00C0F2A3 /* ae9739163a76437ea02482e1a807b806 */,
+				D73F3D072F85C9E700CE19FD /* b3ebedc3bed940fa985d824d55c44a2f */,
 				D7464F202ACE0910007FEE88 /* b5f977c78ec74b3a8857ca86d1d9b318 */,
 				1C38921E2DC1749700ADFDDC /* b051f5c3e01048f3bf11c59b41507896 */,
 				1C8438F22DDBCFFC005CCBC7 /* b87307dcfb26411eb2e92e1627cb615b */,
@@ -2068,7 +2069,6 @@
 				4D126D7629CA3B3F00CFB7A7 /* d5bad9f4fee9483791e405880fb466da */,
 				88FB703A2DCC211E00EB76E3 /* d98b3e5293834c5f852f13c569930caa */,
 				D77572AC2A295DC100F490CD /* d1453556d91e46dea191c20c398b82cd */,
-				D75E5EEB2CC0466900252595 /* da301cb122874d5497f8a8f6c81eb36e */,
 				D7E7D0862AEB3C36003AAD02 /* df193653ed39449195af0c9725701dca */,
 				D70539082CD0122D00F63F4A /* e0d41b4b409a49a5a7ba11939d8535dc */,
 				F111CCC2288B63DB00205358 /* e1f3a7254cb845b09450f54937c16061 */,
@@ -3391,6 +3391,14 @@
 			path = "Query features with Arcade expression";
 			sourceTree = "<group>";
 		};
+		D73F3D072F85C9E700CE19FD /* b3ebedc3bed940fa985d824d55c44a2f */ = {
+			isa = PBXGroup;
+			children = (
+				D73F3D062F85C9E700CE19FD /* esri_kml_sample_data.kmz */,
+			);
+			path = b3ebedc3bed940fa985d824d55c44a2f;
+			sourceTree = "<group>";
+		};
 		D73F8CF22AB1089900CD39DA /* 751138a2e0844e06853522d54103222a */ = {
 			isa = PBXGroup;
 			children = (
@@ -3587,14 +3595,6 @@
 				D75E5EE22CC0340100252595 /* ListContentsOfKMLFileView.swift */,
 			);
 			path = "List contents of KML file";
-			sourceTree = "<group>";
-		};
-		D75E5EEB2CC0466900252595 /* da301cb122874d5497f8a8f6c81eb36e */ = {
-			isa = PBXGroup;
-			children = (
-				D75E5EEA2CC0466900252595 /* esri_test_data.kmz */,
-			);
-			path = da301cb122874d5497f8a8f6c81eb36e;
 			sourceTree = "<group>";
 		};
 		D75E5EF02CC049D500252595 /* Edit features using feature forms */ = {
@@ -4528,9 +4528,9 @@
 				4C81275D2DCBB745006EF7D2 /* ShastaBW in Resources */,
 				D705390A2CD0122D00F63F4A /* mil2525d.stylx in Resources */,
 				D77572AE2A295DDE00F490CD /* PacificSouthWest2 in Resources */,
-				D75E5EEC2CC0466900252595 /* esri_test_data.kmz in Resources */,
 				10D321932BDB187400B39B1B /* naperville_imagery.tpkx in Resources */,
 				00D4EFB12863CE6300B9CC30 /* ScottishWildlifeTrust_reserves in Resources */,
+				D73F3D082F85C9E700CE19FD /* esri_kml_sample_data.kmz in Resources */,
 				D7781D492B7EB03400E53C51 /* SanDiegoTourPath.json in Resources */,
 				D7C16D222AC5FE9800689E89 /* GrandCanyon.csv in Resources */,
 				D7BEBAA02CBD9CCA00F882E7 /* MontereyElevation.dt2 in Resources */,
