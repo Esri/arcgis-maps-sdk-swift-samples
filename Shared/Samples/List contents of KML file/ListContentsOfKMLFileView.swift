@@ -102,7 +102,7 @@ private extension ListContentsOfKMLFileView {
         /// Sets up the KML dataset and adds it to the scene as layer.
         private func setUpKMLDataset() async throws {
             // Creates the dataset using a local ".kml" file in the bundle.
-            let kmlDataset = KMLDataset(name: "esri_test_data", bundle: .main)!
+            let kmlDataset = KMLDataset(name: "esri_kml_sample_data", bundle: .main)!
             try await kmlDataset.load()
             self.kmlDataset = kmlDataset
             
