@@ -38,9 +38,9 @@ struct SetFeatureLayerRenderingModeOnMapView: View {
         let polygonTable = ServiceFeatureTable(url: URL(string: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/Energy/Geology/FeatureServer/9")!)
         
         let featureLayers: [FeatureLayer] = [
-            FeatureLayer(featureTable: pointTable),
+            FeatureLayer(featureTable: polygonTable),
             FeatureLayer(featureTable: polylineTable),
-            FeatureLayer(featureTable: polygonTable)
+            FeatureLayer(featureTable: pointTable)
         ]
         
         // Adds layers with dynamic and static rendering
