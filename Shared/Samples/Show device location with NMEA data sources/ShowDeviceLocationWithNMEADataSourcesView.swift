@@ -267,7 +267,7 @@ private extension NMEAGNSSSystem {
             return "The Quasi-Zenith Satellite System"
         case .navIC:
             return "The Navigation Indian Constellation"
-        default:
+        @unknown default:
             return "Unknown GNSS type"
         }
     }
