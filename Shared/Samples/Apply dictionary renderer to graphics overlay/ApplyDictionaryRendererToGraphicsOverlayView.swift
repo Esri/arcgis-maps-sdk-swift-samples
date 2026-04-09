@@ -143,9 +143,9 @@ private extension ApplyDictionaryRendererToGraphicsOverlayView {
         ) {
             switch elementName {
             case "_control_points":
-                currentMessage?.controlPoints = currentElementContents.split(separator: ";")
+                currentMessage?.controlPoints = currentElementContents.components(separatedBy: ";")
                     .map { pair in
-                        let coordinates = pair.split(separator: ",")
+                        let coordinates = pair.components(separatedBy: ",")
                         return (x: Double(coordinates.first!)!, y: Double(coordinates.last!)!)
                     }
             case "message":
