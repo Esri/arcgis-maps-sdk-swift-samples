@@ -19,7 +19,7 @@ struct AddSceneLayerFromServiceView: View {
     /// A scene with an imagery basemap and a 3D buildings layer.
     @State private var scene: ArcGIS.Scene = {
         // Creates a scene layer using a URL to a scene layer service.
-        let sceneLayer = ArcGISSceneLayer(url: .portlandBuildingService)
+        let sceneLayer = ArcGISSceneLayer(url: .buildingsService)
         
         // Creates a scene and adds the scene layer to its operational layers.
         let scene = Scene(basemapStyle: .arcGISImagery)
@@ -30,8 +30,8 @@ struct AddSceneLayerFromServiceView: View {
         scene.baseSurface.addElevationSource(elevationSource)
         
         // Sets the scene's initial viewpoint to center the scene view on the scene layer.
-        let point = Point(x: -122.66949, y: 45.51869, z: 227, spatialReference: .wgs84)
-        let camera = Camera(location: point, heading: 219, pitch: 82, roll: 0)
+        let point = Point(x: -122.670, y: 45.517, z: 175.0, spatialReference: .wgs84)
+        let camera = Camera(location: point, heading: 215, pitch: 75, roll: 0)
         let viewpoint = Viewpoint(latitude: .nan, longitude: .nan, scale: .nan, camera: camera)
         scene.initialViewpoint = viewpoint
         
@@ -45,9 +45,9 @@ struct AddSceneLayerFromServiceView: View {
 }
 
 private extension URL {
-    /// The URL of a scene service containing buildings in Portland, OR, USA.
-    static var portlandBuildingService: URL {
-        URL(string: "https://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/Buildings_Portland/SceneServer")!
+    /// The URL of a scene service containing global buildings.
+    static var buildingsService: URL {
+        URL(string: "https://basemaps3d.arcgis.com/arcgis/rest/services/Esri3D_Buildings_v1/SceneServer")!
     }
     
     /// The URL of the Terrain 3D ArcGIS REST Service.

@@ -318,7 +318,7 @@ private extension Geometry {
     }
 }
 
-extension URL {
+private extension URL {
     /// The URL of the Terrain 3D ArcGIS REST Service.
     static var elevationService: URL {
         URL(string: "https://elevation3d.arcgis.com/arcgis/rest/services/WorldElevation3D/Terrain3D/ImageServer")!
