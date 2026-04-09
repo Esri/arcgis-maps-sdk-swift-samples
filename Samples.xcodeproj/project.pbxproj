@@ -647,6 +647,8 @@
 		D7C97B562B75C10C0097CDA1 /* ValidateUtilityNetworkTopologyView.Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C97B552B75C10C0097CDA1 /* ValidateUtilityNetworkTopologyView.Views.swift */; };
 		D7CC33FF2A31475C00198EDF /* ShowExploratoryLineOfSightBetweenPointsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CC33FD2A31475C00198EDF /* ShowExploratoryLineOfSightBetweenPointsView.swift */; };
 		D7CC34002A3147FF00198EDF /* ShowExploratoryLineOfSightBetweenPointsView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7CC33FD2A31475C00198EDF /* ShowExploratoryLineOfSightBetweenPointsView.swift */; };
+		D7CDCBA92F86C38300B6C6AE /* ShowLineOfSightAnalysisInMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CDCBA72F86C38300B6C6AE /* ShowLineOfSightAnalysisInMapView.swift */; };
+		D7CDCBAC2F86C3CE00B6C6AE /* ShowLineOfSightAnalysisInMapView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7CDCBA72F86C38300B6C6AE /* ShowLineOfSightAnalysisInMapView.swift */; };
 		D7CDD38B2CB86F0A00DE9766 /* AddPointCloudLayerFromFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CDD3852CB86F0A00DE9766 /* AddPointCloudLayerFromFileView.swift */; };
 		D7CDD38C2CB86F4A00DE9766 /* AddPointCloudLayerFromFileView.swift in Copy Source Code Files */ = {isa = PBXBuildFile; fileRef = D7CDD3852CB86F0A00DE9766 /* AddPointCloudLayerFromFileView.swift */; };
 		D7CDD38F2CB872EA00DE9766 /* sandiego-north-balboa-pointcloud.slpk in Resources */ = {isa = PBXBuildFile; fileRef = D7CDD38D2CB872EA00DE9766 /* sandiego-north-balboa-pointcloud.slpk */; settings = {ASSET_TAGS = (AddPointCloudLayerFromFile, ); }; };
@@ -774,6 +776,7 @@
 			dstPath = "";
 			dstSubfolder = Resources;
 			files = (
+				D7CDCBAC2F86C3CE00B6C6AE /* ShowLineOfSightAnalysisInMapView.swift in Copy Source Code Files */,
 				D73169B42F7D990600AB132D /* ShowInteractiveViewshedWithAnalysisOverlayView.swift in Copy Source Code Files */,
 				0082E7142F73108D006A4C7F /* ApplyMapAlgebraView.swift in Copy Source Code Files */,
 				79B2B6E82F4794BD007E652A /* ConfigureSceneEnvironmentView.swift in Copy Source Code Files */,
@@ -1446,6 +1449,7 @@
 		D7C6420B2B4F47E10042B8F7 /* SearchForWebMapView.Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchForWebMapView.Model.swift; sourceTree = "<group>"; };
 		D7C97B552B75C10C0097CDA1 /* ValidateUtilityNetworkTopologyView.Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValidateUtilityNetworkTopologyView.Views.swift; sourceTree = "<group>"; };
 		D7CC33FD2A31475C00198EDF /* ShowExploratoryLineOfSightBetweenPointsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowExploratoryLineOfSightBetweenPointsView.swift; sourceTree = "<group>"; };
+		D7CDCBA72F86C38300B6C6AE /* ShowLineOfSightAnalysisInMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowLineOfSightAnalysisInMapView.swift; sourceTree = "<group>"; };
 		D7CDD3852CB86F0A00DE9766 /* AddPointCloudLayerFromFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPointCloudLayerFromFileView.swift; sourceTree = "<group>"; };
 		D7CDD38D2CB872EA00DE9766 /* sandiego-north-balboa-pointcloud.slpk */ = {isa = PBXFileReference; lastKnownFileType = file; path = "sandiego-north-balboa-pointcloud.slpk"; sourceTree = "<group>"; };
 		D7CE9F9A2AE2F575008F7A5F /* streetmap_SD.tpkx */ = {isa = PBXFileReference; lastKnownFileType = file; path = streetmap_SD.tpkx; sourceTree = "<group>"; };
@@ -1896,6 +1900,7 @@
 				D73169B02F7D98CD00AB132D /* Show interactive viewshed with analysis overlay */,
 				D751017D2A2E490800B8FA48 /* Show labels on layer */,
 				1C293D562DD53523000B0822 /* Show labels on layer in 3D */,
+				D7CDCBA82F86C38300B6C6AE /* Show line of sight analysis in map */,
 				889F9DB42E133CDB0025A98E /* Show magnifier */,
 				D7337C5C2ABD137400A5D865 /* Show mobile map package expiration date */,
 				1C42E04129D2396B004FC4BE /* Show popup */,
@@ -3997,6 +4002,14 @@
 			path = "Show exploratory line of sight between points";
 			sourceTree = "<group>";
 		};
+		D7CDCBA82F86C38300B6C6AE /* Show line of sight analysis in map */ = {
+			isa = PBXGroup;
+			children = (
+				D7CDCBA72F86C38300B6C6AE /* ShowLineOfSightAnalysisInMapView.swift */,
+			);
+			path = "Show line of sight analysis in map";
+			sourceTree = "<group>";
+		};
 		D7CDD3882CB86F0A00DE9766 /* Add point cloud layer from file */ = {
 			isa = PBXGroup;
 			children = (
@@ -4921,6 +4934,7 @@
 				88C5E0EB2DCBC1E20091D271 /* ApplyScenePropertyExpressionsView.swift in Sources */,
 				9547085C2C3C719800CA8579 /* EditFeatureAttachmentsView.Model.swift in Sources */,
 				D71C90A22C6C249B0018C63E /* StyleGeometryTypesWithSymbolsView.swift in Sources */,
+				D7CDCBA92F86C38300B6C6AE /* ShowLineOfSightAnalysisInMapView.swift in Sources */,
 				3E54CF222C66AFBE00DD2F18 /* AddWebTiledLayerView.swift in Sources */,
 				D7F913572DF0F272009CF629 /* QueryTableStatisticsGroupAndSortView.Views.swift in Sources */,
 				0042E24528E4F82C001F33D6 /* ShowExploratoryViewshedFromPointInSceneView.ViewshedSettingsView.swift in Sources */,

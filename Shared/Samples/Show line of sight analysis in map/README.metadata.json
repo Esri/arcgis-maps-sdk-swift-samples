@@ -1,0 +1,38 @@
+{
+    "category": "Analysis",
+    "description": "Perform a line of sight analysis in a map view between fixed observer and target positions.",
+    "ignore": false,
+    "images": [],
+    "keywords": [
+        "analysis",
+        "elevation",
+        "line of sight",
+        "map view",
+        "spatial analysis",
+        "terrain",
+        "visibility",
+        "ContinuousField",
+        "GeometryEngine",
+        "GraphicsOverlay",
+        "LineOfSight",
+        "LineOfSightFunction",
+        "LineOfSightParameters",
+        "LineOfSightPosition",
+        "ObserverTargetPairs"
+    ],
+    "redirect_from": [],
+    "relevant_apis": [
+        "ContinuousField",
+        "GeometryEngine",
+        "GraphicsOverlay",
+        "LineOfSight",
+        "LineOfSightFunction",
+        "LineOfSightParameters",
+        "LineOfSightPosition",
+        "ObserverTargetPairs"
+    ],
+    "snippets": [
+        "ShowLineOfSightAnalysisInMapView.swift"
+    ],
+    "title": "Show line of sight analysis in map"
+}
