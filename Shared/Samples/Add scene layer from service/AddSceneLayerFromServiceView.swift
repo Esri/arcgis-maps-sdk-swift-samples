@@ -19,7 +19,7 @@ struct AddSceneLayerFromServiceView: View {
     /// A scene with an imagery basemap and a 3D buildings layer.
     @State private var scene: ArcGIS.Scene = {
         // Creates a scene layer using a URL to a scene layer service.
-        let sceneLayer = ArcGISSceneLayer(url: .buildingService)
+        let sceneLayer = ArcGISSceneLayer(url: .buildingsService)
         
         // Creates a scene and adds the scene layer to its operational layers.
         let scene = Scene(basemapStyle: .arcGISImagery)
