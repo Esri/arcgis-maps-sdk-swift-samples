@@ -33,7 +33,7 @@ struct SetFeatureLayerRenderingModeOnSceneView: View {
     
     init() {
         // The service feature tables using point, polygon, and polyline services.
-        let featureTables: [ServiceFeatureTable] = [.polygonTable, .polylineTable, .pointTable,].map(ServiceFeatureTable.init(url:))
+        let featureTables: [ServiceFeatureTable] = [.polygonTable, .polylineTable, .pointTable].map(ServiceFeatureTable.init(url:))
         // Iterate through the feature tables and use them to set up feature layers.
         // Set the rendering mode for either dynamic or static rendering,
         // and add the feature layers to the scene.
