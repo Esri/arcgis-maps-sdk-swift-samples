@@ -46,7 +46,7 @@ struct AddSceneLayerFromServiceView: View {
 
 private extension URL {
     /// The URL of a scene service containing global buildings.
-    static var buildingService: URL {
+    static var buildingsService: URL {
         URL(string: "https://basemaps3d.arcgis.com/arcgis/rest/services/Esri3D_Buildings_v1/SceneServer")!
     }
     
