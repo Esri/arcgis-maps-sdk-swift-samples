@@ -50,7 +50,7 @@ extension GeocodeOfflineView {
         }()
         
         /// The locator task used to preform the geocode operations, loaded from a local file.
-        private let locatorTask = LocatorTask(name: "SanDiego_StreetAddress", bundle: .main)
+        private let locatorTask = LocatorTask(url: .sanDiegoStreetAddressLocator)
         
         /// The placement of the callout on the map.
         @Published var calloutPlacement: CalloutPlacement?
@@ -164,8 +164,13 @@ extension GeocodeOfflineView {
 }
 
 private extension URL {
-    /// A URL to the local tile package of the streets in San Diego, CA, USA.
-    static var streetMap: Self {
-        Bundle.main.url(forResource: "streetmap_SD", withExtension: "tpkx")!
+    /// A URL to the San Diego street address locator.
+    static var sanDiegoStreetAddressLocator: Self {
+        Bundle.main.url(
+            forResource: "SanDiego_StreetAddress",
+            withExtension: "loc",
+            subdirectory: "san-diego-eagle-locator"
+        )!
     }
 }
+
