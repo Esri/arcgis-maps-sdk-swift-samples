@@ -25,7 +25,7 @@ extension GeocodeOfflineView {
         /// A map with a tiled layer of the streets in San Diego, CA, USA.
         let map = {
             // Create a tiled layer using the local tile package.
-            let tileCache = TileCache(fileURL: .streetMap)
+            let tileCache = TileCache(fileURL: .sanDiegoStreetAddressLocator)
             let tiledLayer = ArcGISTiledLayer(tileCache: tileCache)
             
             // Create a map with the tiled layer as base layer.
@@ -71,8 +71,6 @@ extension GeocodeOfflineView {
         /// - Parameter address: The given text address to geocode.
         /// - Returns: The extent of the result's display location.
         func geocodeSearch(address: String) async -> Envelope? {
-            guard let locatorTask else { return nil }
-            
             // Create geocode parameters.
             let geocodeParameters = GeocodeParameters()
             geocodeParameters.addResultAttributeName("Match_addr")
@@ -99,8 +97,6 @@ extension GeocodeOfflineView {
         /// Reverse geocodes a given location and adds a marker with the corresponding address at the result's location.
         /// - Parameter mapPoint: The point on the map to reverse geocode.
         func reverseGeocode(mapPoint: Point) async {
-            guard let locatorTask else { return }
-            
             //  Normalized the map point.
             guard let normalizedPoint = GeometryEngine.normalizeCentralMeridian(
                 of: mapPoint
@@ -173,4 +169,3 @@ private extension URL {
         )!
     }
 }
-
