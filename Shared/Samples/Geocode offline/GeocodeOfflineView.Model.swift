@@ -169,6 +169,7 @@ private extension URL {
         )!
     }
     
+    /// A URL to the local tile package of the streets in San Diego, CA, USA.
     static var streetMap: Self {
         Bundle.main.url(forResource: "streetmap_SD", withExtension: "tpkx")!
     }
