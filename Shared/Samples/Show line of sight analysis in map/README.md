@@ -12,15 +12,15 @@ Note: This analysis is a form of "data-driven analysis", which means the analysi
 
 ## How to use the sample
 
-The sample loads with a map centered on the Isle of Arran, Scotland, and runs a line of sight analysis from multiple observer points (triangles) to a fixed target point (beacon icon) located at the highest point of the island. Solid green line segments represent visible portions of each line of sight result, and dashed gray segments represent not visible portions. For each observer, the information panel reports whether the target is visible and over what distance the line remains unobstructed. Use the checkbox in the panel to show only results where the target is visible from the observer.
+The sample loads with a map centered on the Isle of Arran, Scotland, and runs a line of sight analysis from multiple observer points (triangles) to a fixed target point (beacon icon) located at the highest point of the island. Solid green line segments represent visible portions of each line of sight result, and dashed gray segments represent not visible portions. For each observer, the information view shows whether the target is visible and over what distance the line remains unobstructed. Use the toggle to show only results where the target is visible from the observer.
 
 ## How it works
 
-1. Create a `Map` and set it on a `MapView`.
+1. Create a `Map` and pass it to a `MapView`.
 2. Create a `GraphicsOverlay` and add target and observer points to it, along with an appropriate symbol. Create another `GraphicsOverlay` that will display the line of sight result graphics.
 3. Create a `ContinuousField` from a raster file containing elevation data.
 4. Create a list of `LineOfSightPosition` from target and observer `Point`s and a `HeightOrigin.relative`.
-5. Configure `LineOfSightParameters` with `ObserverTargetPairs.withManyToMany`, using the list of observer and target line of sight positions.
+5. Configure `LineOfSightParameters` with `ObserverTargetPairs`, using the list of observer and target line of sight positions.
 6. Create a `LineOfSightFunction` from the continuous field and line of sight parameters.
 7. Evaluate the function to get `LineOfSight` results.
 8. Check if the results contain any `LineOfSight.error`s.
@@ -30,14 +30,14 @@ The sample loads with a map centered on the Isle of Arran, Scotland, and runs a 
 
 ## Relevant API
 
-- ContinuousField
-- GeometryEngine
-- GraphicsOverlay
-- LineOfSight
-- LineOfSightFunction
-- LineOfSightParameters
-- LineOfSightPosition
-- ObserverTargetPairs
+* ContinuousField
+* GeometryEngine
+* GraphicsOverlay
+* LineOfSight
+* LineOfSightFunction
+* LineOfSightParameters
+* LineOfSightPosition
+* ObserverTargetPairs
 
 ## About the data
 

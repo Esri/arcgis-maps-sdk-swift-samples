@@ -2,7 +2,9 @@
     "category": "Analysis",
     "description": "Perform a line of sight analysis in a map view between fixed observer and target positions.",
     "ignore": false,
-    "images": [],
+    "images": [
+        "show-line-of-sight-analysis-in-map.png"
+    ],
     "keywords": [
         "analysis",
         "elevation",

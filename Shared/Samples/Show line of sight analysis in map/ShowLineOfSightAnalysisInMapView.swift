@@ -128,7 +128,7 @@ private final class Model {
     ]
     
     init() {
-        // Creates graphics to show the target and observer positions.
+        // Creates graphics to display the target and observer positions on the map.
         let beaconImage = UIImage(named: "beacon")!
         let beaconSymbol = PictureMarkerSymbol(image: beaconImage)
         beaconSymbol.width = 22
@@ -142,7 +142,7 @@ private final class Model {
     }
     
     /// Runs a line of sight analysis.
-    /// - Returns: The infos for the analysis line of sight results.
+    /// - Returns: Information about the line of sight results.
     func evaluate​Line​sOf​Sight() async throws -> [LineOfSightInfo] {
         // Creates a continuous field using a TIF file containing elevation data.
         let elevationField = try await ContinuousField.field(fromFilesAt: [.arranTIF], bandIndex: 0)
@@ -158,14 +158,14 @@ private final class Model {
             targets: [targetPosition],
         )
         
-        // Creates and evaluates a line of sight function to get the line of sight results.
+        // Creates and evaluates a line of sight function to get the lines of sight.
         let lineOfSightFunction = LineOfSightFunction(
             elevation: elevationField,
             parameters: parameters,
         )
         let lineOfSightResults = try await lineOfSightFunction.evaluate()
         
-        // Creates and adds graphics for the line of sight results to show them on the map.
+        // Creates and adds graphics for the results to show the lines of sight on the map.
         let lineOfSightGraphics = makeLineOfSightGraphics(lineOfSightResults)
         lineOfSightGraphicsOverlay.addGraphics(lineOfSightGraphics)
         
@@ -220,10 +220,9 @@ private struct LineOfSightInfo: Hashable {
         if let error = lineOfSight.error {
             // Uses the error as the description if line of sight could not be evaluated.
             let illegalStateError = lineOfSight.error as? IllegalStateError
-            let errorDescription = illegalStateError?.details ?? error.localizedDescription
-            description = "Error: \(errorDescription)"
+            description = illegalStateError?.details ?? error.localizedDescription
         } else {
-            // Calculates the visible distances from the observer in meters.
+            // Calculates the visible distance from the observer in meters.
             let visibleLength = if let visibleLine = lineOfSight.visibleLine {
                 GeometryEngine.geodeticLength(of: visibleLine, lengthUnit: nil, curveType: .geodesic)
             } else {
