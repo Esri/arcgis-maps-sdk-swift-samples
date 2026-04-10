@@ -25,7 +25,7 @@ extension GeocodeOfflineView {
         /// A map with a tiled layer of the streets in San Diego, CA, USA.
         let map = {
             // Create a tiled layer using the local tile package.
-            let tileCache = TileCache(fileURL: .sanDiegoStreetAddressLocator)
+            let tileCache = TileCache(fileURL: .streetMap)
             let tiledLayer = ArcGISTiledLayer(tileCache: tileCache)
             
             // Create a map with the tiled layer as base layer.
@@ -167,5 +167,9 @@ private extension URL {
             withExtension: "loc",
             subdirectory: "san-diego-eagle-locator"
         )!
+    }
+    
+    static var streetMap: Self {
+        Bundle.main.url(forResource: "streetmap_SD", withExtension: "tpkx")!
     }
 }
