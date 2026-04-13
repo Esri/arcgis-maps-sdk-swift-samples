@@ -131,8 +131,7 @@ private final class Model {
     
     init() {
         // Creates graphics to display the target and observer positions on the map.
-        let beaconImage = UIImage(named: "beacon")!
-        let beaconSymbol = PictureMarkerSymbol(image: beaconImage)
+        let beaconSymbol = PictureMarkerSymbol(image: .beacon)
         beaconSymbol.width = 22
         beaconSymbol.height = 22
         
