@@ -73,7 +73,6 @@ struct ShowLineOfSightAnalysisInMapView: View {
 // MARK: Model
 
 /// The view model for this sample.
-@MainActor
 @Observable
 private final class Model {
     /// A map with a dark hillshade basemap initially centered on the Isle of Arran, Scotland.
@@ -96,7 +95,7 @@ private final class Model {
     private let positionGraphicsOverlay = GraphicsOverlay()
     
     /// The height of the target and observer position points.
-    nonisolated private static let positionHeight = 5.0
+    private static let positionHeight = 5.0
     
     /// The target observer's location on the map.
     private let targetPoint = Point(
@@ -144,6 +143,7 @@ private final class Model {
     
     /// Runs a line of sight analysis.
     /// - Returns: Information about the line of sight results.
+    @MainActor
     func evaluateLinesOfSight() async throws -> [LineOfSightInfo] {
         // Creates a continuous field using a TIF file containing elevation data.
         let elevationField = try await ContinuousField.field(fromFilesAt: [.arranTIF], bandIndex: 0)
