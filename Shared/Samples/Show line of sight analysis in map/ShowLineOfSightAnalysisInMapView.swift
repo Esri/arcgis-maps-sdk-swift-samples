@@ -51,10 +51,12 @@ struct ShowLineOfSightAnalysisInMapView: View {
                     
                     Spacer()
                     
-                    Toggle("Show Obstructed", isOn: $isShowingObstructed)
-                        .onChange(of: isShowingObstructed) {
-                            model.setObstructedVisibility(isVisible: isShowingObstructed)
-                        }
+                    Menu("Settings", systemImage: "gear") {
+                        Toggle("Show Obstructed", isOn: $isShowingObstructed)
+                            .onChange(of: isShowingObstructed) {
+                                model.setObstructedVisibility(isVisible: isShowingObstructed)
+                            }
+                    }
                 }
             }
             .task {
