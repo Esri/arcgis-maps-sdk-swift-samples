@@ -97,7 +97,7 @@ private extension FilterFeaturesInSceneView {
         }()
         
         /// The different states for filtering features in a scene.
-        enum FilterState { // swiftlint:disable:this nesting
+        enum FilterState {
             case filter, showDetailedBuildings, reset
         }
         
@@ -105,7 +105,7 @@ private extension FilterFeaturesInSceneView {
         private(set) var filterState: FilterState = .filter
         
         /// An error that can occur during the model's initialization.
-        enum InitializationError: Error { // swiftlint:disable:this nesting
+        enum InitializationError: Error {
             case missingBuildingsLayer
             case missingDetailedBuildingsLayerExtent
         }
