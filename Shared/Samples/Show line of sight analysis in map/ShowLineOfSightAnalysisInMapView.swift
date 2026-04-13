@@ -226,7 +226,7 @@ private struct LineOfSightInfo: Hashable {
         } else {
             // Calculates the visible distance from the observer in meters.
             let visibleLength = if let visibleLine = lineOfSight.visibleLine {
-                GeometryEngine.geodeticLength(of: visibleLine, lengthUnit: nil, curveType: .geodesic)
+                GeometryEngine.geodeticLength(of: visibleLine, lengthUnit: .meters, curveType: .geodesic)
             } else {
                 0.0
             }
@@ -265,7 +265,7 @@ private struct LineOfSightInfoView: View {
                 Image(systemName: "xmark")
             }
         }
-        .task(id: info.observerSymbol) {
+        .task {
             observerSymbolSwatch = try? await info.observerSymbol.makeSwatch(
                 scale: displayScale,
                 size: CGSize(width: 24, height: 24)
