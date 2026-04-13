@@ -59,7 +59,7 @@ struct ShowLineOfSightAnalysisInMapView: View {
             }
             .task {
                 do {
-                    lineOfSightInfos = try await model.evaluate​Line​sOf​Sight()
+                    lineOfSightInfos = try await model.evaluateLinesOfSight()
                 } catch {
                     self.error = error
                 }
@@ -94,13 +94,13 @@ private final class Model {
     private let positionGraphicsOverlay = GraphicsOverlay()
     
     /// The height of the target and observer position points.
-    nonisolated private static let positionHieght = 5.0
+    nonisolated private static let positionHeight = 5.0
     
     /// The target observer's location on the map.
     private let targetPoint = Point(
         x: -577955.365,
         y: 7484288.220,
-        z: positionHieght,
+        z: positionHeight,
         spatialReference: .webMercator
     )
     
@@ -112,7 +112,7 @@ private final class Model {
         let symbol: SimpleMarkerSymbol
         
         init(x: Double, y: Double, color: UIColor) {
-            point = Point(x: x, y: y, z: positionHieght, spatialReference: .webMercator)
+            point = Point(x: x, y: y, z: positionHeight, spatialReference: .webMercator)
             symbol = SimpleMarkerSymbol(style: .triangle, color: color, size: 15)
         }
     }
@@ -143,7 +143,7 @@ private final class Model {
     
     /// Runs a line of sight analysis.
     /// - Returns: Information about the line of sight results.
-    func evaluate​Line​sOf​Sight() async throws -> [LineOfSightInfo] {
+    func evaluateLinesOfSight() async throws -> [LineOfSightInfo] {
         // Creates a continuous field using a TIF file containing elevation data.
         let elevationField = try await ContinuousField.field(fromFilesAt: [.arranTIF], bandIndex: 0)
         
