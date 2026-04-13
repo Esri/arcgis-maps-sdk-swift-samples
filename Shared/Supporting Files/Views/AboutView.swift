@@ -140,6 +140,12 @@ extension AboutView {
                     ArcGISEnvironment.apiKey = .iOS
                 }
             }
+            
+            Button("Print API Key") {
+                if let apiKey = ArcGISEnvironment.apiKey {
+                    print("API key: \(apiKey)")
+                }
+            }
         } footer: {
             Text("The section above is for testing purposes only.")
         }
