@@ -43,7 +43,7 @@ struct ApplyStretchRendererView: View {
     
     /// The settings for a stretch renderer.
     struct RendererSettings: Equatable {
-        enum StretchType: CaseIterable { // swiftlint:disable:this nesting
+        enum StretchType: CaseIterable {
             case minMax, percentClip, standardDeviation
         }
         
