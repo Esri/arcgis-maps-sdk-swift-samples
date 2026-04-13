@@ -26,7 +26,7 @@ The sample loads with a map centered on the Isle of Arran, Scotland, and runs a 
 8. Check if the results contain any `LineOfSight.error`s.
 9. Create a `Graphic` from each result, using the geometry of the result's `visibleLine` or `notVisibleLine` result, and an appropriate symbol.
 10. Use `LineOfSight.targetVisibility` to determine if the observer position has a direct line of sight to the target position.
-11. Get the length of the visible line result with `GeometryEngine.lengthGeodetic` to report results.
+11. Get the length of the visible line result with `GeometryEngine.geodeticLength` to report results.
 
 ## Relevant API
 
