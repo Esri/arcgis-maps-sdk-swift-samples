@@ -49,7 +49,7 @@ extension GeocodeOfflineView {
             return Graphic(symbol: markerSymbol)
         }()
         
-        /// The locator task used to preform the geocode operations, loaded from a local file.
+        /// The locator task used to perform the geocode operations, loaded from a local file.
         private let locatorTask = LocatorTask(url: .sanDiegoStreetAddressLocator)
         
         /// The placement of the callout on the map.
