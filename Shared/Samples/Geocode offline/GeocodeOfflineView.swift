@@ -24,7 +24,7 @@ struct GeocodeOfflineView: View {
         center: Point(x: -13_042_250, y: 3_857_970, spatialReference: .webMercator),
         scale: 2e4
     )
-    
+
     /// The text in the search bar.
     @State private var searchText = ""
     
@@ -33,6 +33,9 @@ struct GeocodeOfflineView: View {
     
     /// A Boolean value indicating whether the "No results found." alert is showing.
     @State private var resultAlertIsShowing = false
+    
+    /// The error that occurred during reverse geocoding.
+    @State private var error: Error?
     
     /// A pre-populated list of example addresses.
     private let exampleAddresses = [
@@ -44,7 +47,7 @@ struct GeocodeOfflineView: View {
     ]
     
     var body: some View {
-        GeocodeMapView(model: model, viewpoint: $viewpoint)
+        GeocodeMapView(model: model, viewpoint: $viewpoint, error: $error)
             .searchable(text: $searchText, prompt: "Type in an address")
             .autocorrectionDisabled()
             .onSubmit(of: .search) {
@@ -98,6 +101,9 @@ private extension GeocodeOfflineView {
         /// The current viewpoint of the map view.
         @Binding var viewpoint: Viewpoint
         
+        /// The error that occurred during reverse geocoding.
+        @Binding var error: Error?
+        
         /// The point on the map where the user tapped.
         @State private var tapLocation: Point?
         
@@ -127,9 +133,14 @@ private extension GeocodeOfflineView {
                     // Reverse geocode the tap location when it changes.
                     if let tapLocation {
                         dismissSearch()
-                        await model.reverseGeocode(mapPoint: tapLocation)
+                        do {
+                            try await model.reverseGeocode(mapPoint: tapLocation)
+                        } catch let error {
+                            self.error = error
+                        }
                     }
                 }
+                .errorAlert(presentingError: $error)
         }
     }
 }

@@ -96,7 +96,7 @@ extension GeocodeOfflineView {
         
         /// Reverse geocodes a given location and adds a marker with the corresponding address at the result's location.
         /// - Parameter mapPoint: The point on the map to reverse geocode.
-        func reverseGeocode(mapPoint: Point) async {
+        func reverseGeocode(mapPoint: Point) async throws {
             //  Normalized the map point.
             guard let normalizedPoint = GeometryEngine.normalizeCentralMeridian(
                 of: mapPoint
