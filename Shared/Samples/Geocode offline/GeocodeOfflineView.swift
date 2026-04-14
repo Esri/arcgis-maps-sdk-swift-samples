@@ -35,7 +35,7 @@ struct GeocodeOfflineView: View {
     @State private var resultAlertIsShowing = false
     
     /// The error that occurred during reverse geocoding.
-    @State private var error: Error?
+    @State private var error: (any Error)?
     
     /// A pre-populated list of example addresses.
     private let exampleAddresses = [
@@ -102,7 +102,7 @@ private extension GeocodeOfflineView {
         @Binding var viewpoint: Viewpoint
         
         /// The error that occurred during reverse geocoding.
-        @Binding var error: Error?
+        @Binding var error: (any Error)?
         
         /// The point on the map where the user tapped.
         @State private var tapLocation: Point?
