@@ -18,55 +18,80 @@ import SwiftUI
 struct ShowLineOfSightAnalysisInMapView: View {
     /// The view model for the sample.
     @State private var model = Model()
-    /// Information about the line of sight analysis results.
-    @State private var lineOfSightInfos: [LineOfSightInfo] = []
-    /// A Boolean value indicating whether the info view is showing.
-    @State private var isShowingInfoView = false
+    /// The placement of the visibility description callout.
+    @State private var calloutPlacement: CalloutPlacement?
     /// A Boolean value indicating whether the obstructed line of sight graphics are showing.
     @State private var isShowingObstructed = true
     /// The error shown in the error alert.
     @State private var error: (any Error)?
     
+    /// The states of the sample.
+    private enum SampleState: Equatable {
+        /// A line of sight analysis is being run.
+        case evaluatingLinesOfSight
+        /// The given tap point is being identified.
+        case identifying(tapPoint: CGPoint)
+    }
+    /// The current state of the sample.
+    @State private var sampleState: SampleState? = .evaluatingLinesOfSight
+    
     var body: some View {
-        MapView(map: model.map, graphicsOverlays: model.graphicOverlays)
-            .overlay(alignment: .top) {
-                Text("Raster data copyright Scottish Government and SEPA (2014)")
-                    .font(.caption)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 6)
-                    .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
-            }
-            .toolbar {
-                ToolbarItemGroup(placement: .bottomBar) {
-                    Button("Info") {
-                        isShowingInfoView.toggle()
+        MapViewReader { mapViewProxy in
+            MapView(map: model.map, graphicsOverlays: model.graphicOverlays)
+                .callout(placement: $calloutPlacement.animation(.default.speed(2))) { placement in
+                    if let attributes = placement.geoElement?.attributes,
+                       let visibilityDescription = attributes[.visibilityDescription] as? String {
+                        Text(visibilityDescription)
+                            .padding(6)
                     }
-                    .popover(isPresented: $isShowingInfoView) {
-                        List(lineOfSightInfos, id: \.self) { info in
-                            LineOfSightInfoView(info: info)
+                }
+                .onSingleTapGesture { screenPoint, _ in
+                    guard sampleState == nil else { return }
+                    sampleState = .identifying(tapPoint: screenPoint)
+                }
+                .task(id: sampleState) {
+                    guard let sampleState else { return }
+                    defer { self.sampleState = nil }
+                    
+                    do {
+                        switch sampleState {
+                        case .evaluatingLinesOfSight:
+                            try await model.evaluateLinesOfSight()
+                        case let .identifying(tapPoint):
+                            calloutPlacement = nil
+                            
+                            let identifyResult = try await mapViewProxy.identify(
+                                on: model.observerGraphicsOverlay,
+                                screenPoint: tapPoint,
+                                tolerance: 10
+                            )
+                            
+                            guard let observerGraphic = identifyResult.graphics.first else { return }
+                            calloutPlacement = .geoElement(observerGraphic)
                         }
-                        .presentationDetents([.fraction(0.5)])
-                        .frame(idealWidth: 320, idealHeight: 380)
-                    }
-                    
-                    Spacer()
-                    
-                    Menu("Settings", systemImage: "gear") {
-                        Toggle("Show Obstructed", isOn: $isShowingObstructed)
-                            .onChange(of: isShowingObstructed) {
-                                model.setObstructedVisibility(isVisible: isShowingObstructed)
-                            }
+                    } catch {
+                        self.error = error
                     }
                 }
-            }
-            .task {
-                do {
-                    lineOfSightInfos = try await model.evaluateLinesOfSight()
-                } catch {
-                    self.error = error
+                .errorAlert(presentingError: $error)
+        }
+        .overlay(alignment: .top) {
+            Text("Raster data copyright Scottish Government and SEPA (2014)")
+                .font(.caption)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 6)
+                .background(.thinMaterial, ignoresSafeAreaEdges: .horizontal)
+        }
+        .toolbar {
+            ToolbarItem(placement: .bottomBar) {
+                Menu("Settings", systemImage: "gear") {
+                    Toggle("Show Obstructed", isOn: $isShowingObstructed)
+                        .onChange(of: isShowingObstructed) {
+                            model.setObstructedVisibility(isVisible: isShowingObstructed)
+                        }
                 }
             }
-            .errorAlert(presentingError: $error)
+        }
     }
 }
 
@@ -78,21 +103,24 @@ private final class Model {
     /// A map with a dark hillshade basemap initially centered on the Isle of Arran, Scotland.
     let map: Map = {
         let map = Map(basemapStyle: .arcGISHillshadeDark)
-        let initialExtent = Envelope(xRange: -584770 ... -570630, yRange: 7471510 ... 7494260)
+        let initialExtent = Envelope(xRange: -585030 ... -570890, yRange: 7472900 ... 7495670)
         map.initialViewpoint = Viewpoint(boundingGeometry: initialExtent)
         return map
     }()
     
     /// The overlays containing the graphics to display on the map.
     var graphicOverlays: [GraphicsOverlay] {
-        return [lineOfSightGraphicsOverlay, positionGraphicsOverlay]
+        return [lineOfSightGraphicsOverlay, targetGraphicsOverlay, observerGraphicsOverlay]
     }
+    
+    /// The overlay containing the observer position graphics.
+    let observerGraphicsOverlay = GraphicsOverlay()
+    
+    /// The overlay containing the target position graphic.
+    private let targetGraphicsOverlay = GraphicsOverlay()
     
     /// The overlay containing the line of sight analysis result graphics.
     private let lineOfSightGraphicsOverlay = GraphicsOverlay()
-    
-    /// The overlay containing the target and observer position graphics.
-    private let positionGraphicsOverlay = GraphicsOverlay()
     
     /// The height of the target and observer position points.
     private static let positionHeight = 5.0
@@ -135,16 +163,15 @@ private final class Model {
         beaconSymbol.height = 22
         
         let targetGraphic = Graphic(geometry: targetPoint, symbol: beaconSymbol)
-        positionGraphicsOverlay.addGraphic(targetGraphic)
+        targetGraphicsOverlay.addGraphic(targetGraphic)
         
         let observerGraphics = observers.map { Graphic(geometry: $0.point, symbol: $0.symbol) }
-        positionGraphicsOverlay.addGraphics(observerGraphics)
+        observerGraphicsOverlay.addGraphics(observerGraphics)
     }
     
     /// Runs a line of sight analysis.
-    /// - Returns: Information about the line of sight results.
     @MainActor
-    func evaluateLinesOfSight() async throws -> [LineOfSightInfo] {
+    func evaluateLinesOfSight() async throws {
         // Creates a continuous field using a TIF file containing elevation data.
         let elevationField = try await ContinuousField.field(fromFilesAt: [.arranTIF], bandIndex: 0)
         
@@ -170,8 +197,11 @@ private final class Model {
         let lineOfSightGraphics = makeLineOfSightGraphics(lineOfSightResults)
         lineOfSightGraphicsOverlay.addGraphics(lineOfSightGraphics)
         
-        return zip(lineOfSightResults, observers).map { lineOfSight, observer in
-            LineOfSightInfo(lineOfSight, observerSymbol: observer.symbol)
+        // Adds descriptions of the results' visibility to the corresponding observer graphics.
+        let lineOfSightObserverPairs = zip(lineOfSightResults, observerGraphicsOverlay.graphics)
+        for (lineOfSight, observerGraphic) in lineOfSightObserverPairs {
+            let visibilityDescription = lineOfSight.visibilityDescription
+            observerGraphic.setAttributeValue(visibilityDescription, forKey: .visibilityDescription)
         }
     }
     
@@ -179,7 +209,7 @@ private final class Model {
     /// - Parameter isVisible: A Boolean value indicating whether the graphics should be visible.
     func setObstructedVisibility(isVisible: Bool) {
         for graphic in lineOfSightGraphicsOverlay.graphics {
-            guard let targetVisibility = graphic.attributes["targetVisibility"] as? Float,
+            guard let targetVisibility = graphic.attributes[.targetVisibility] as? Float,
                   targetVisibility != 1 else {
                 continue
             }
@@ -195,12 +225,12 @@ private final class Model {
         return linesOfSight.flatMap { linesOfSight in
             let visibleLineGraphic = Graphic(
                 geometry: linesOfSight.visibleLine,
-                attributes: ["targetVisibility": linesOfSight.targetVisibility],
+                attributes: [.targetVisibility: linesOfSight.targetVisibility],
                 symbol: visibleLineSymbol
             )
             let notVisibleLineGraphic = Graphic(
                 geometry: linesOfSight.notVisibleLine,
-                attributes: ["targetVisibility": linesOfSight.targetVisibility],
+                attributes: [.targetVisibility: linesOfSight.targetVisibility],
                 symbol: notVisibleLineSymbol
             )
             return [visibleLineGraphic, notVisibleLineGraphic]
@@ -208,23 +238,18 @@ private final class Model {
     }
 }
 
-// MARK: - LineOfSightInfo
+// MARK: Extensions
 
-/// Information about a line of sight analysis result.
-private struct LineOfSightInfo: Hashable {
-    /// The description of the line of sight result.
-    let description: String
-    /// The symbol of the line of sight's observer.
-    let observerSymbol: Symbol
-    
-    init(_ lineOfSight: LineOfSight, observerSymbol: Symbol) {
-        if let error = lineOfSight.error {
+private extension LineOfSight {
+    /// A description of the line of sight's visibility.
+    var visibilityDescription: String {
+        if let error {
             // Uses the error as the description if line of sight could not be evaluated.
-            let illegalStateError = lineOfSight.error as? IllegalStateError
-            description = illegalStateError?.details ?? error.localizedDescription
+            let illegalStateError = error as? IllegalStateError
+            return illegalStateError?.details ?? error.localizedDescription
         } else {
             // Calculates the visible distance from the observer in meters.
-            let visibleLength = if let visibleLine = lineOfSight.visibleLine {
+            let visibleLength = if let visibleLine {
                 GeometryEngine.geodeticLength(of: visibleLine, lengthUnit: .meters, curveType: .geodesic)
             } else {
                 0.0
@@ -232,48 +257,21 @@ private struct LineOfSightInfo: Hashable {
             let formattedVisibleLength = visibleLength.formatted(.number.rounded(increment: 1))
             
             // Uses `notVisibleLine` to determine if the target is visible from the observer.
-            description = if lineOfSight.notVisibleLine == nil {
+            return if notVisibleLine == nil {
                 "Target visible from observer after \(formattedVisibleLength) m."
             } else {
                 "Target obstructed from observer after \(formattedVisibleLength) m."
             }
         }
-        
-        self.observerSymbol = observerSymbol
     }
 }
 
-/// A view that displays information about a line of sight analysis result.
-private struct LineOfSightInfoView: View {
-    /// The line of sight information to display.
-    let info: LineOfSightInfo
-    
-    /// The display scale of this environment.
-    @Environment(\.displayScale) private var displayScale
-    
-    /// An image of the observer's symbol.
-    @State private var observerSymbolSwatch: UIImage?
-    
-    var body: some View {
-        Label {
-            Text(info.description)
-        } icon: {
-            if let observerSymbolSwatch {
-                Image(uiImage: observerSymbolSwatch)
-            } else {
-                Image(systemName: "xmark")
-            }
-        }
-        .task {
-            observerSymbolSwatch = try? await info.observerSymbol.makeSwatch(
-                scale: displayScale,
-                size: CGSize(width: 24, height: 24)
-            )
-        }
-    }
+private extension String {
+    /// A key for an attribute that describes a line of sight's visibility.
+    static var visibilityDescription: String { "visibilityDescription" }
+    /// A key for an attribute that contains a line of sight's target visibility.
+    static var targetVisibility: String { "targetVisibility" }
 }
-
-// MARK: - Extensions
 
 private extension URL {
     /// A URL to a local GeoTIFF file containing elevation data of the Isle of Arran, Scotland.

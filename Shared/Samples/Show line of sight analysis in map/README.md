@@ -12,7 +12,7 @@ Note: This analysis is a form of "data-driven analysis", which means the analysi
 
 ## How to use the sample
 
-The sample loads with a map centered on the Isle of Arran, Scotland, and runs a line of sight analysis from multiple observer points (triangles) to a fixed target point (beacon icon) located at the highest point of the island. Solid green line segments represent visible portions of each line of sight result, and dashed gray segments represent not visible portions. For each observer, the information view shows whether the target is visible and over what distance the line remains unobstructed. Use the toggle to show only results where the target is visible from the observer.
+The sample loads with a map centered on the Isle of Arran, Scotland, and runs a line of sight analysis from multiple observer points (triangles) to a fixed target point (beacon icon) located at the highest point of the island. Solid green line segments represent visible portions of each line of sight result, and dashed gray segments represent not visible portions. Tap on each observer to see a callout that reports whether the target is visible and over what distance the line remains unobstructed. Use the toggle to show only results where the target is visible from the observer.
 
 ## How it works
 
@@ -23,10 +23,9 @@ The sample loads with a map centered on the Isle of Arran, Scotland, and runs a 
 5. Configure `LineOfSightParameters` with `ObserverTargetPairs`, using the list of observer and target line of sight positions.
 6. Create a `LineOfSightFunction` from the continuous field and line of sight parameters.
 7. Evaluate the function to get `LineOfSight` results.
-8. Check if the results contain any `LineOfSight.error`s.
-9. Create a `Graphic` from each result, using the geometry of the result's `visibleLine` or `notVisibleLine` result, and an appropriate symbol.
-10. Use `LineOfSight.targetVisibility` to determine if the observer position has a direct line of sight to the target position.
-11. Get the length of the visible line result with `GeometryEngine.geodeticLength` to report results.
+8. Create a `Graphic` from each result, using the geometry of the result's `visibleLine` or `notVisibleLine` result, and an appropriate symbol.
+9. Use `LineOfSight.targetVisibility` to determine if the observer position has a direct line of sight to the target position.
+10. Get the length of the visible line result with `GeometryEngine.geodeticLength` to report results.
 
 ## Relevant API
 
