@@ -26,12 +26,17 @@ struct AboutView: View {
     ? Bundle.arcGIS.shortVersion
     : "\(Bundle.arcGIS.shortVersion) (\(Bundle.arcGIS.version))"
     
-    /// A Boolean value indicating whether the API key alert is presented.
-    @State private var isAPIKeyAlertPresented = false
     /// A Boolean value indicating whether the download offline resources cover is presented.
     @State private var isResourceDownloaderPresented = false
     /// The API key entered in the alert.
     @State private var apiKey = ""
+    
+    // MARK: Debug
+    
+    /// A Boolean value indicating whether the API key alert is presented.
+    @State private var isAPIKeyAlertPresented = false
+    /// A Boolean value indicating whether the API key verification alert is presented.
+    @State private var isAPIKeyVerificationAlertPresented = false
     
     var body: some View {
         NavigationStack {
@@ -138,13 +143,27 @@ extension AboutView {
                 .disabled(apiKey.isEmpty)
                 Button("Reset") {
                     ArcGISEnvironment.apiKey = .iOS
+                    apiKey.removeAll()
+                }
+                Button("Verify") {
+                    // Click "Show partial API key" to get the most recent key
+                    // from the Swift Sample Viewer Release portal item.
+                    // Paste the partial key into the text field and tap Verify.
+                    // An alert will indicate whether the most recent API key
+                    // is in use.
+                    isAPIKeyVerificationAlertPresented = true
                 }
             }
-            
-            Button("Print API Key") {
-                if let apiKey = ArcGISEnvironment.apiKey {
-                    print("API key: \(apiKey)")
+            .alert("API Key Verification Result", isPresented: $isAPIKeyVerificationAlertPresented) {
+            } message: {
+                let message: String
+                if let currentApiKey = ArcGISEnvironment.apiKey,
+                   currentApiKey.rawValue.hasSuffix(apiKey) {
+                    message = "Success: The most recent API key is in use."
+                } else {
+                    message = "Failure: The most recent API key is not in use."
                 }
+                return Text(message)
             }
         } footer: {
             Text("The section above is for testing purposes only.")
