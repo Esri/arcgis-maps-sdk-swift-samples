@@ -29,7 +29,6 @@ struct AboutView: View {
     /// A Boolean value indicating whether the download offline resources cover is presented.
     @State private var isResourceDownloaderPresented = false
     
-    
     var body: some View {
         NavigationStack {
             List {
