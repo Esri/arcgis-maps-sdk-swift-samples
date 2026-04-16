@@ -29,14 +29,16 @@ struct AboutView: View {
     /// A Boolean value indicating whether the download offline resources cover is presented.
     @State private var isResourceDownloaderPresented = false
     /// The API key entered in the alert.
-    @State private var apiKey = ""
+    @State private var apiKeyInput = ""
     
     // MARK: Debug
     
     /// A Boolean value indicating whether the API key alert is presented.
     @State private var isAPIKeyAlertPresented = false
-    /// A Boolean value indicating whether the API key verification alert is presented.
-    @State private var isAPIKeyVerificationAlertPresented = false
+    /// A Boolean value indicating whether the API key expiration date alert is presented.
+    @State private var isExpirationDateAlertPresented = false
+    /// The expiration date of the API key in-use.
+    @State private var apiKeyExpirationDate: Date?
     
     var body: some View {
         NavigationStack {
@@ -124,7 +126,7 @@ private extension URL {
     static let writeReview = URL(string: "https://apps.apple.com/app/id1630449018?action=write-review")!
 }
 
-extension AboutView {
+private extension AboutView {
     /// A section for debugging purposes.
     var debugSection: some View {
         Section {
@@ -132,41 +134,65 @@ extension AboutView {
                 isAPIKeyAlertPresented = true
             }
             .alert("Enter API Key", isPresented: $isAPIKeyAlertPresented) {
-                TextField("Enter API Key Here", text: $apiKey, axis: .vertical)
+                TextField("Enter API Key Here", text: $apiKeyInput, axis: .vertical)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                     .textEditorStyle(.plain)
                 Button("Cancel", role: .cancel) {}
                 Button("Submit") {
-                    ArcGISEnvironment.apiKey = APIKey(apiKey)!
+                    ArcGISEnvironment.apiKey = APIKey(apiKeyInput)!
                 }
-                .disabled(apiKey.isEmpty)
+                .disabled(apiKeyInput.isEmpty)
                 Button("Reset") {
                     ArcGISEnvironment.apiKey = .iOS
-                    apiKey.removeAll()
-                }
-                Button("Verify") {
-                    // Click "Show partial API key" to get the most recent key
-                    // from the Swift Sample Viewer Release portal item.
-                    // Paste the partial key into the text field and tap Verify.
-                    // An alert will indicate whether the most recent API key
-                    // is in use.
-                    isAPIKeyVerificationAlertPresented = true
+                    apiKeyInput.removeAll()
                 }
             }
-            .alert("API Key Verification Result", isPresented: $isAPIKeyVerificationAlertPresented) {
-            } message: {
-                let message: String
-                if let currentApiKey = ArcGISEnvironment.apiKey,
-                   currentApiKey.rawValue.hasSuffix(apiKey) {
-                    message = "Success: The most recent API key is in use."
-                } else {
-                    message = "Failure: The most recent API key is not in use."
+            
+            Button("Verify Expiration Date") {
+                // An alert shows the expiration date for the API key in-use.
+                // Compare it with the date in the Swift Sample Viewer Release
+                // portal item.
+                Task {
+                    apiKeyExpirationDate = try await getAPIKeyExpirationDate()
+                    isExpirationDateAlertPresented = true
                 }
-                return Text(message)
+            }
+            .alert("API Key Expiration Date", isPresented: $isExpirationDateAlertPresented) {
+            } message: {
+                Text(apiKeyExpirationDate == nil ? "Failed to get expiration date" : apiKeyExpirationDate!.formatted(date: .abbreviated, time: .omitted))
             }
         } footer: {
             Text("The section above is for testing purposes only.")
         }
+    }
+    
+    /// Gets the expiration date of the API key in-use by making a request to
+    /// the ArcGIS REST API.
+    func getAPIKeyExpirationDate() async throws -> Date? {
+        guard let apiKey = ArcGISEnvironment.apiKey else { return nil }
+        
+        struct APIResponse: Decodable {
+            let appInfo: AppInfo
+            
+            struct AppInfo: Decodable {
+                let expirationDate: Date
+            }
+        }
+        
+        // An endpoint to get the current authenticated user identified by the
+        // API key access token. The response contains an `appInfo` object,
+        // which has the expiration date of the API key.
+        // https://developers.arcgis.com/rest/users-groups-and-items/self/
+        let (data, _) = try await ArcGISEnvironment.urlSession.data(
+            from: URL(string: "https://www.arcgis.com/sharing/rest/Community/self")!,
+            queryParameters: ["f": "json", "token": apiKey.rawValue]
+        )
+        
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .millisecondsSince1970
+        let jsonResponse = try decoder.decode(APIResponse.self, from: data)
+        let expirationDate = jsonResponse.appInfo.expirationDate
+        return expirationDate
     }
 }
