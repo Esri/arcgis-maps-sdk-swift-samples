@@ -160,7 +160,11 @@ private extension AboutView {
             }
             .alert("API Key Expiration Date", isPresented: $isExpirationDateAlertPresented) {
             } message: {
-                Text(apiKeyExpirationDate == nil ? "Failed to get expiration date" : apiKeyExpirationDate!.formatted(date: .abbreviated, time: .omitted))
+                Text(
+                    apiKeyExpirationDate == nil
+                    ? "Failed to get expiration date"
+                    : apiKeyExpirationDate!.formatted(date: .abbreviated, time: .omitted)
+                )
             }
         } footer: {
             Text("The section above is for testing purposes only.")
