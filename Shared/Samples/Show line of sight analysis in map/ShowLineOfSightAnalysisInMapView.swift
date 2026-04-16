@@ -250,18 +250,18 @@ private extension LineOfSight {
             return illegalStateError?.details ?? error.localizedDescription
         } else {
             // Calculates the visible distance from the observer in meters.
-            let visibleLength = if let visibleLine {
+            let visibleMeters = if let visibleLine {
                 GeometryEngine.geodeticLength(of: visibleLine, lengthUnit: .meters, curveType: .geodesic)
             } else {
                 0.0
             }
-            let formattedVisibleLength = visibleLength.formatted(.number.rounded(increment: 1))
+            let visibleMeasurement = Measurement(value: visibleMeters, unit: UnitLength.meters)
             
             // Uses `notVisibleLine` to determine if the target is visible from the observer.
             return if notVisibleLine == nil {
-                "Target visible from observer after \(formattedVisibleLength) m."
+                "Target visible from observer after \(visibleMeasurement.formatted())."
             } else {
-                "Target obstructed from observer after \(formattedVisibleLength) m."
+                "Target obstructed from observer after \(visibleMeasurement.formatted())."
             }
         }
     }
