@@ -19,7 +19,7 @@ struct AboutView: View {
     @Environment(\.dismiss) private var dismiss: DismissAction
     
     private var copyrightText: Text {
-        Text("Copyright © 2022 - 2025 Esri. All Rights Reserved.")
+        Text("Copyright © 2022 - 2026 Esri. All Rights Reserved.")
     }
     
     private let arcGISVersion = Bundle.arcGIS.version.isEmpty
