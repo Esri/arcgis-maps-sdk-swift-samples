@@ -32,6 +32,7 @@ struct ShowLineOfSightAnalysisInMapView: View {
         /// The given tap point is being identified.
         case identifying(tapPoint: CGPoint)
     }
+    
     /// The current state of the sample.
     @State private var sampleState: SampleState? = .evaluatingLinesOfSight
     
