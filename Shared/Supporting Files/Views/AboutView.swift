@@ -173,6 +173,7 @@ private extension AboutView {
     
     /// Gets the expiration date of the API key in-use by making a request to
     /// the ArcGIS REST API.
+    /// - Returns: The expiration date of the API key if available.
     func getAPIKeyExpirationDate() async throws -> Date? {
         guard let apiKey = ArcGISEnvironment.apiKey else { return nil }
         
